@@ -274,7 +274,7 @@ export class EventsAnalyticsComponent implements OnInit {
           beforeDraw: function (chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
             ctx.height = 128
-            ctx.font = "Google Sans"
+            ctx.font = "Poppins"
             var chartArea = chartInstance.chartArea;
           }
         }]

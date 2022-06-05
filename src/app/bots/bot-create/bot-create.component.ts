@@ -107,7 +107,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   botDefaultSelectedLang: string = 'English - en';
   botDefaultSelectedLangCode: string = 'en'
   language: string;
-
+  template: string;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -130,6 +131,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   ngOnInit() {
     this.logger.log('[BOT-CREATE] »»»» Bot Create Component on Init !!!')
     this.auth.checkRoleForCurrentProject();
+    this.getBrowserVersion();
 
     this.detectBrowserLang();
 
@@ -155,6 +157,13 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.translateFileTypeNotSupported();
 
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
     this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
@@ -187,7 +196,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       this.logger.log('[BOT-CREATE] --->  PARAMS', params);
       this.logger.log('[BOT-CREATE] --->  PARAMS botType', this.botType);
 
-
+      this.template = params.template;
       if (this.botType === 'native') {
         this.botType = 'resolution'
       }
@@ -346,7 +355,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
 
-  // CREATE (mongoDB)
+  // CREATE 
   createBot() {
     this.displayInfoModal = 'block'
     this.SHOW_CIRCULAR_SPINNER = true;
@@ -364,16 +373,22 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       // the type 'native' needs to be changed into 'internal' for the service
       _botType = 'internal'
       this.language = this.botDefaultSelectedLangCode;
+
+      // -------------------------------------------------------------------------------------------
+      // Publish the bot name to be able to check in the native bot sidebar if the bot name changes,
+      // to prevent the bot name from updating every time a bot sidebar menu item is clicked
+      // -------------------------------------------------------------------------------------------
+      // this.faqKbService.publishBotName(this.faqKbName)
+
     } else {
       _botType = this.botType
     }
 
-    // this.is_external_bot
+
     // ------------------------------------------------------------------------------------------------------------------------------
     // Create bot - note for the creation of a dialogflow bot see the bottom uploaddialogflowBotCredential() called in the complete() 
     // ------------------------------------------------------------------------------------------------------------------------------
-    this.faqKbService.addFaqKb(this.faqKbName, this.faqKbUrl, _botType, this.bot_description, this.language)
-
+    this.faqKbService.createFaqKb(this.faqKbName, this.faqKbUrl, _botType, this.bot_description, this.language, this.template)
       .subscribe((faqKb) => {
         this.logger.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
 
@@ -393,18 +408,17 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
           this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);
         }
 
+      }, (error) => {
+
+        this.logger.error('[BOT-CREATE] CREATE FAQKB - POST REQUEST ERROR ', error);
+
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.CREATE_DIALOGFLOW_BOT_ERROR = true;
+
+        if (this.botType !== 'dialogflow') {
+          this.CREATE_BOT_ERROR = true;
+        }
       },
-        (error) => {
-
-          this.logger.error('[BOT-CREATE] CREATE FAQKB - POST REQUEST ERROR ', error);
-
-          this.SHOW_CIRCULAR_SPINNER = false;
-          this.CREATE_DIALOGFLOW_BOT_ERROR = true;
-
-          if (this.botType !== 'dialogflow') {
-            this.CREATE_BOT_ERROR = true;
-          }
-        },
         () => {
           this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
 
@@ -457,6 +471,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         });
   }
 
+
+
+
   uploaddialogflowBotCredential(bot_Id, formData) {
     this.faqKbService.uploadDialogflowBotCredetial(bot_Id, formData).subscribe((res) => {
       this.logger.log('[BOT-CREATE] CREATE FAQKB - uploadDialogflowBotCredetial - RES ', res);
@@ -494,11 +511,13 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       let bot_type = ''
       if (this.botType === 'resolution') {
         bot_type = 'native'
+        this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.newBot_Id + "/" + bot_type]);
       } else {
-        bot_type = this.botType
+        bot_type = this.botType;
+        this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
       }
       // this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
-      this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
+
     } else {
       this.present_modal_attacch_bot_to_dept()
     }
@@ -514,11 +533,13 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     let bot_type = ''
     if (this.botType === 'resolution') {
       bot_type = 'native'
+      this.router.navigate(['project/' + this.project._id + '/chatbots/' + this.newBot_Id + "/" + bot_type + "/intents"]);
     } else {
       bot_type = this.botType
+      this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
+
     }
     // this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
-    this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
 
   }
 

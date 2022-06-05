@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "2.2.32-rc20",
+  "version": "2.2.35.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
@@ -67,6 +67,7 @@
     "moment-timezone": "^0.5.34",
     "mydatepicker": "^2.6.11",
     "ng-simple-slideshow": "^1.2.9",
+    "ng2-tooltip-directive": "^2.9.20",
     "ngx-color-picker": "^6.7.0",
     "perfect-scrollbar": "1.1.0",
     "roboto-fontface": "^0.10.0",

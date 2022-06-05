@@ -5,6 +5,7 @@ import { ContactsService } from '../services/contacts.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'appdashboard-contact-edit',
@@ -35,12 +36,14 @@ export class ContactEditComponent implements OnInit {
   editContactSuccessNoticationMsg: string;
   editContactErrorNoticationMsg: string;
   showSpinner = false;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
     private contactsService: ContactsService,
     private notify: NotifyService,
     private translate: TranslateService,
+    public auth: AuthService,
     private logger: LoggerService
   ) { }
 
@@ -49,7 +52,15 @@ export class ContactEditComponent implements OnInit {
     this.translateEditContactErrorMsg();
 
     this.getRequesterIdParamAndThenGetContactById();
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
   // TRANSLATION
   translateEditContactSuccessMsg() {
     this.translate.get('EditContactSuccessNoticationMsg')

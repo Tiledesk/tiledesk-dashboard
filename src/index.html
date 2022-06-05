@@ -215,6 +215,75 @@
   });
 </script> -->
 
+  <!-- ---------------------------------------------------- -->
+  <!-- Disables the creation of a new project -->
+  <!-- ---------------------------------------------------- -->
+ 
+<!-- 
+  <script>
+     var href = document.location.href;
+    if (href.indexOf('intelcia') > -1) {
+      console.log('DUMMY SCRIPT  href contains intelcia', href)
+    } else {
+      var oldHref = document.location.href;
+      console.log('SCRIPT DNPC oldHref ', oldHref)
+      window.onload = function () {
+        var bodyList = document.querySelector("body")
+        // console.log('SCRIPT DNPC bodyList ', bodyList)
+
+        hide_navbar_create_project_btn()
+        hide_recent_project_create_project_card()
+
+        var observer = new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+      
+            if (oldHref != document.location.href) {
+              oldHref = document.location.href;
+              console.log('SCRIPT DNPC HREF Changed ')
+              hide_navbar_create_project_btn()
+              hide_recent_project_create_project_card()
+            }
+          });
+        });
+
+        var config = {
+          childList: true,
+          subtree: true
+        };
+
+        observer.observe(bodyList, config);
+      };
+
+      if (window.performance) {
+        console.log("SCRIPT works window.performance fine on this browser");
+      }
+
+      if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+        console.log("SCRIPT DNPC This page is reloaded");
+        hide_recent_project_create_project_card()
+      } else {
+        console.info("This page is not reloaded");
+      }
+
+      function hide_navbar_create_project_btn() {
+        var navbar_createprjct_btn = document.getElementById("navbar_create_prjct");
+        console.log('SCRIPT DNPC navbar_createprjct_btn', navbar_createprjct_btn);
+        if (navbar_createprjct_btn) {
+          navbar_createprjct_btn.style.display = "none";
+        }
+      }
+
+      function hide_recent_project_create_project_card() {
+        var projects_list_createprjct_card = document.getElementById("create-prjct-card");
+        console.log('SCRIPT DNPC projects_list_createprjct_card', projects_list_createprjct_card);
+        if (projects_list_createprjct_card) {
+          projects_list_createprjct_card.style.display = "none";
+        }
+      }
+
+    }
+  </script> -->
+
 
 </head>
 

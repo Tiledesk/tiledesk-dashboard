@@ -66,6 +66,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   projectUsersArray: any;
   objectKeys = Object.keys;
+  isChromeVerGreaterThan100:boolean;
   constructor(
     private usersService: UsersService,
     public auth: AuthService,
@@ -87,7 +88,15 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.getAllProjectUsers();
     this.buildActivitiesOptions();
     // this.getProjectUsers();
+    this.getBrowserVersion();
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   ngOnDestroy() {
     this.logger.log('[ActivitiesComponent] % »»» WebSocketJs WF +++++ ws-requests--- activities ngOnDestroy')
@@ -475,11 +484,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       let botType = ''
       if (bot.type === 'internal') {
         botType = 'native'
+        this.router.navigate(['project/' + this.projectId + '/bots/intents/' + bot_id + "/" + botType]);
       } else {
         botType = bot.type
+        this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
       }
 
-      this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+     
 
     } else {
 

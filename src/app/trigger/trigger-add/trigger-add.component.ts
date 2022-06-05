@@ -15,6 +15,7 @@ import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { browserRefresh } from './../../app.component';
+import { AuthService } from 'app/core/auth.service';
 @Component({
   selector: 'appdashboard-trigger-add',
   templateUrl: './trigger-add.component.html',
@@ -52,6 +53,8 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   selected_dept: string;
   action_clone: any
   public browserRefresh: boolean;
+  isChromeVerGreaterThan100: boolean;
+  
   // departments = new Array;     --> get from BaseTriggerComponent
 
   // messageCondition: string;    --> get from BaseTriggerComponent
@@ -68,7 +71,8 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     public translate: TranslateService,
     public usersService: UsersService,
     public faqKbService: FaqKbService,
-    public logger: LoggerService
+    public logger: LoggerService,
+    private auth: AuthService
   ) {
 
     super(translate, departmentService, usersService, faqKbService, logger)
@@ -77,7 +81,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   ngOnInit() {
     super.ngOnInit()
     this.detectBrowserRefresh();
-
+    
     this.triggerForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: '',
@@ -134,8 +138,15 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
     this.cleanForm();
 
-
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   detectBrowserRefresh() {
     this.logger.log('[TRIGGER-ADD] - CALLING browserRefresh')

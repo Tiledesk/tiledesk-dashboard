@@ -1,4 +1,5 @@
-<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+<!-- margin-top:6px; -->
+<div class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
   <span *ngIf="CREATE_VIEW">
@@ -250,17 +251,16 @@
                   </span>
                 </div>
               </div>
-
-              <div *ngIf="CURRENT_USER_ROLE !== 'agent'" class="row" style="margin-top: 12px;">
+              <!-- ---------------------------------------------------- -->
+              <!-- start project user-tags -->
+              <!-- -------------------------------------------------------- -->
+              <!-- <div *ngIf="CURRENT_USER_ROLE !== 'agent'" class="row" style="margin-top: 12px;">
                 <label class="col-sm-2 custom-label" style="white-space: nowrap;">
                   {{'Tags.Tag'  | translate}}
                 </label>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                   <div class="pu-tag-input-wrapper">
 
-                    <!-- ------------------------------------------------------- -->
-                    <!-- Dropdown select tag color -->
-                    <!-- ------------------------------------------------------- -->
                     <div class="dropdown" style="float: left;">
                       <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
                         <b class="caret" style="color:#000000"></b>
@@ -287,18 +287,11 @@
                       (ngModelChange)="onChangeTagname($event)" [(ngModel)]="tagname" class="input" type="text"
                       placeholder="{{ 'Tags.AddTags' | translate }} ...">
                     <div class="tag-color-dot" [ngStyle]="{'background-color':tag_selected_color}"></div>
-
-
-                    <!-- ------------------------------------------------------- -->
-                    <!-- Add tag btn -->
-                    <!-- ------------------------------------------------------- -->
                     <button class="btn btn-primary add-tag-to-pu-btn" (click)="addTagToProjectUser()" type="submit"
                       [disabled]="!tagname || tagname?.length === 0 ">
                       <span class="icon add-tag-icon">
                         <i class="material-icons">add_circle</i>
                       </span>
-                      <!-- {{ "Tags.AddTags" | translate }} -->
-                      <!-- <span class="add-tags-text"> Add </span> -->
                     </button>
                   </div>
 
@@ -306,10 +299,9 @@
                     {{'TagNameIsRequired' | translate }}
                   </div>
                 </div>
-              </div>
+              </div> -->
 
-              <label class="col-sm-2 custom-label"> </label>
-              <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">  margin: -3px -2px; -->
+              <!-- <label class="col-sm-2 custom-label"> </label>
               <form style="position: relative;">
                 <div class="pu-tags-container">
                   <span class="pu-tag" *ngFor="let tag of tagsArray" role="button">
@@ -334,7 +326,9 @@
 
                   </span>
                 </div>
-              </form>
+              </form> -->
+
+              <!-- end project user tags -->
 
 
             </div> <!-- ./ card-content -->

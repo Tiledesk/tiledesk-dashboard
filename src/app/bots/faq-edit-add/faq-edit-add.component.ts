@@ -58,6 +58,7 @@ export class FaqEditAddComponent implements OnInit {
   done_msg: string;
   errorDeletingAnswerMsg: string;
   answerSuccessfullyDeleted: string;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -97,7 +98,16 @@ export class FaqEditAddComponent implements OnInit {
       }
     }
     this.getCurrentProject();
+
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
 
   // GET FROM ROUTE PARAMS (PASSED FROM FAQ COMPONENT):
@@ -343,8 +353,9 @@ export class FaqEditAddComponent implements OnInit {
         // this.notify.showNotification('FAQ successfully created', 2, 'done');
         this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
 
-        // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
-        this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb, this.botType]);
+       
+        // this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb, this.botType]);
+        this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.id_faq_kb + "/" + this.botType]);
       });
 
   }

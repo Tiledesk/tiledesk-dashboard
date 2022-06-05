@@ -1,6 +1,121 @@
 
 # tiledesk-dashboard
 
+### 2.2.35.2
+- Enhances the text area for sending messages on the conversation detail page
+
+### 2.2.35.1
+- Add 'hover' style rules to the buttons on app store page
+- Opens the contacts conversations available in the "conversation info" sidebar in a new tab
+
+### 2.2.35 (compatible with server v2.2.26)
+- Deploys in production
+
+### 2.2.35-rc7
+- Adds a check on the "create new app page" about the validity of the installation url and the "render url" of the app
+- Displays the "Start" button in the app card of the app store page if the app is enabled for the app store
+- Adds to the "create new app" page the ability to enable the app for the App Store 
+- Sends the project via 'postMessage' to the iframe of the apps enabled for the Apps Store
+- Adds tooltips to the conversation icons on the "monitor" page, on the "not real time" conversations page and on the history page
+
+### 2.2.35-rc6
+- Fixes the bug: on the app store page, clicking on the manage button of an app redirects to the 'not found' page
+
+### 2.2.35-rc5  
+- Adds the ability to send a message directly from the conversation detail page for all type of conversations
+- Adds in the real time conversations page the ability to see the preview of the chat by hovering the mouse over the message column
+- Adds the ability to reopen an archived conversation on the history page
+- Adds a button in the left sidebar of the conversation details that opens the "apps sidebar"
+- Adds an accordion to the right sidebar of the conversation details that displays the contact's conversations
+- Add the ability in the "monitor" page to archive multiple conversations at the same time
+- Fixes the bug: app sidebar overlaps with conversation detail content
+- Adds the ability to create custom apps and view them in the conversation details "apps sidebar"
+- Displays the label "No app installed for this project" in the sidebar available in the conversation detail that displays the "v2 apps"
+- Adds 'start' button in app store for the cards of the "v2 apps" which allows to view the app in full screen
+- Adds scrolling to the top of the conversation detail page when clicking the button to open the apps sidebar
+- Increases the number of intents displayed per page on the "Resolution" chatbots edit page
+- Send through a "postMessage" the current conversation to the server which returns the app iframes displayed in the "apps sidebar"
+
+### 2.2.35-rc4
+- Add the ability to send a message directly from the conversation detail page when the conversation is of type "form" or "email"
+
+### 2.2.35-rc3
+- Fixes the bug: Dialogflow bot creation doesn't work in pre
+
+### 2.2.35-rc2
+- Fixes the bug: in the filter by date range of the "Activities" page the field for selecting the date "to" is enabled even if the date has not been selected in the "from" field
+
+### 2.2.35-rc1
+- Adds a badge indicating the project plan to the project cards of the "Your Projects" page
+- Fixes the bug: the role of teammates is not translated in the cards of the "Your projects" page
+- Adds the Email item in the menu (available in Settings> Email) in which there is the possibility for the end user to create a ticket by sending an email (email ticketing)
+
+### 2.2.34
+- Deploys in production
+
+### 2.2.34-rc2 
+- Displays the plan creation date and plan exipiration date in the subscription tab of project settings for enterprise plans
+- Fixes the bug: if the teammate has the role of agent when switching from the dashboard to the chat and vice versa, the icons that only owners and admins have access to are displayed briefly in the left sidebar
+- Adds the "Edit Profile" button and a link to the help center in the teammate details drawer
+
+### 2.2.34-rc1
+- Adds the ability to filter by conversation type on non-real-time conversations, archived conversations, and real-time conversations
+- Adds the ticket ID to the real time conversation table list
+
+### 2.2.33
+- Deploys in production
+
+### 2.2.33-rc7
+- Adds the ticket id in the non-real time conversations table and in the archived conversations table
+- Removes from the login page the link to the old version of the dashbaord
+- Replaces all Tiledesk logos bearing the version number "v2" with Tiledesk logos without version number
+
+### 2.2.33-rc6
+- Adds the "Beta" badge to the "Security" tab available in Project Settings
+- Add style rules to disable the "Add a project" button available in the combo box of the navigation bar
+
+### 2.2.33-rc5
+- Fixes the bug: the drop-down menu for project selection goes under the "bottom navigation bar"
+- Allows agents to use the "Monitor" page
+- Fixes the bug: the dashboard language does not match the icon indicating the language in which the dashboard should be translated
+- Fixes the bug: in the teammate drawer if the full name is too long it overlaps the email
+- Fixes the bug: in the teammate drawer if the email is too long it exceeds the width of the drawer
+- Adds the ability in the left sidebar " conversation info" displayed in the chat to change the requester's full name and email on the fly
+
+### 2.2.33-rc4
+- Adds script
+
+### 2.2.33-rc3
+- Adds the ability to restrict access to only those users within an IP address range
+
+### 2.2.33-rc2
+- Change the URL of the environment variable "CHAT_BASE_URL" from absolute to relative
+
+### 2.2.33-rc1
+- Adds the tab "Security" in Project settings
+- Adds in the right sidebar "conversation info" displayed in the chat the ability to change the full name of the contact (in progress)
+
+### 2.2.32.1
+- Fixes bug and minor improvements 
+
+### 2.2.32
+- Deploys in production
+
+### 2.2.32-rc23
+- Fix graphics issues due to chrome update
+- Displays the complete date in the left sidebar "conversation detail" displayed in the chat
+- Adds a tooltip to the "notifications" badge of the navbar that indicates the number of conversations assigned to the current user and the number of unassigned conversations
+
+### 2.2.32-rc22
+- Adds a left sidebar for the bots of "Resolution" type
+- Adds the ability to select a template for the  "resolution" bot type
+- Fixes the bug: "Bottom navigation bar" menu items are not clickable when the window width is less than 992 px
+
+### 2.2.32-rc21
+- Fixes the bug: the bot avatar images are displayed stretched in the chatbot list
+- Adds the ability to search for answers in the bot details
+- Adds paging of answers on the bot's detail page
+
 ### 2.2.32-rc20
 - Merge branch 'features/new-sidebar'
 
@@ -193,9 +308,6 @@
 - Adds the ability (only to teammates with the role of owner of projects with an "Enterprise" plan) to manage notification email templates
 - Adds the ability (only to teammates with the role of owner of projects with an "Enterprise" plan) to configure SMTP settings and send test emails
 - Adds the chat21 widget
-
-### 2.2.31.1
-- Fixes the bug: the method "tiledesk_widget_login" does not run after registering a new teammates
 
 ### 2.2.31-rc1
 - Fixes the bug: when a language is selected for a trigger that has the key "request.create" the value of the selected language contains the country code

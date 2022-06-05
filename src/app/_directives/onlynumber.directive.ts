@@ -60,13 +60,13 @@ export class OnlynumberDirective {
     document.execCommand('insertText', false, pastedInput);
   }
 
-  @HostListener('drop', ['$event'])
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    const textData = event.dataTransfer.getData('text').replace(/\D/g, '');
-    this.inputElement.focus();
-    document.execCommand('insertText', false, textData);
-  }
+  // @HostListener('drop', ['$event'])
+  // onDrop(event: DragEvent) {
+  //   event.preventDefault();
+  //   const textData = event.dataTransfer.getData('text').replace(/\D/g, '');
+  //   this.inputElement.focus();
+  //   document.execCommand('insertText', false, textData);
+  // }
 
 
 }

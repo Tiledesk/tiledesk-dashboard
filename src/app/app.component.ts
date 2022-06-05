@@ -61,6 +61,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     subscription: Subscription;
     public_Key: string;
 
+    browserName = '';
+    browserVersion = '';
+
     // private logger: LoggerService = LoggerInstance.getInstance();
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
@@ -75,9 +78,27 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private metaTitle: Title,
         public brandService: BrandService,
         public script: ScriptService,
-        private logger: LoggerService
+        private logger: LoggerService,
+        
         // private faqKbService: FaqKbService,
     ) {
+
+        // const { userAgent } = navigator
+        // if (userAgent.includes('Firefox/')) {
+        //     console.log(`Firefox v${userAgent.split('Firefox/')[1]}`)
+        // } else if (userAgent.includes('Edg/')) {
+        //     console.log(`Edg v${userAgent.split('Edg/')[1]}`)
+        // } else if (userAgent.includes('Chrome/')) {
+        //     console.log(`Chrome v${userAgent.split('Chrome/')[1]}`)
+        // } else if (userAgent.includes('Safari/')) {
+        //     console.log(userAgent)
+        // }
+        // https://www.positronx.io/angular-detect-browser-name-and-version-tutorial-example/
+        this.browserName = this.detectBrowserName();
+        this.browserVersion = this.detectBrowserVersion();
+        // console.log('[APP-COMPONENT] - browserName  ',  this.browserName)
+        // console.log('[APP-COMPONENT] - browserVersion  ',  this.browserVersion)
+        this.auth.browserNameAndVersion(this.browserName, this.browserVersion) 
         // this.getBrand();
 
         // script.load('dummy').then(data => {
@@ -181,7 +202,42 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-
+    detectBrowserName() { 
+        const agent = window.navigator.userAgent.toLowerCase()
+        switch (true) {
+          case agent.indexOf('edge') > -1:
+            return 'edge';
+          case agent.indexOf('opr') > -1 && !!(<any>window).opr:
+            return 'opera';
+          case agent.indexOf('chrome') > -1 && !!(<any>window).chrome:
+            return 'chrome';
+          case agent.indexOf('trident') > -1:
+            return 'ie';
+          case agent.indexOf('firefox') > -1:
+            return 'firefox';
+          case agent.indexOf('safari') > -1:
+            return 'safari';
+          default:
+            return 'other';
+        }
+      }
+       
+      detectBrowserVersion(){
+          var userAgent = navigator.userAgent, tem, 
+          matchTest = userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+          
+          if(/trident/i.test(matchTest[1])){
+              tem =  /\brv[ :]+(\d+)/g.exec(userAgent) || [];
+              return 'IE '+(tem[1] || '');
+          }
+          if(matchTest[1]=== 'Chrome'){
+              tem = userAgent.match(/\b(OPR|Edge)\/(\d+)/);
+              if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+          }
+          matchTest= matchTest[2]? [matchTest[1], matchTest[2]]: [navigator.appName, navigator.appVersion, '-?'];
+          if((tem= userAgent.match(/version\/(\d+)/i))!= null) matchTest.splice(1, 1, tem[1]);
+          return matchTest.join(' ');
+      }
 
 
     setFavicon(brand) {

@@ -44,7 +44,7 @@ export class BotService {
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
 
-       this.logger.log('BotService - NavigationEnd');
+        this.logger.log('BotService - NavigationEnd');
         this.test.next('»»»»»»»»»   change of route »»»»»»»»»');
 
       }
@@ -57,7 +57,7 @@ export class BotService {
       this.TOKEN = this.user.token
       // this.getToken();
     } else {
-     this.logger.log('No user is signed in');
+      this.logger.log('No user is signed in');
     }
   }
 
@@ -66,7 +66,7 @@ export class BotService {
    */
   public getMongDbBots(): Observable<Bot[]> {
     const url = this.MONGODB_BASE_URL;
-   this.logger.log('MONGO DB BOT URL', url);
+    this.logger.log('MONGO DB BOT URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -84,7 +84,7 @@ export class BotService {
   public getMongDbBotById(id: string): Observable<Bot[]> {
     let url = this.MONGODB_BASE_URL;
     url += `${id}`;
-   this.logger.log('MONGO DB GET BOT BY BOT ID URL', url);
+    this.logger.log('MONGO DB GET BOT BY BOT ID URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -107,7 +107,7 @@ export class BotService {
 
     const body = { 'fullname': `${fullName}`, 'id_faq_kb': `${id_faq_kb}` };
 
-   this.logger.log('ADD BOT POST REQUEST BODY ', body);
+    this.logger.log('ADD BOT POST REQUEST BODY ', body);
 
     const url = this.MONGODB_BASE_URL;
 
@@ -125,7 +125,7 @@ export class BotService {
 
     let url = this.MONGODB_BASE_URL;
     url += `${id}# chat21-api-nodejs`;
-   this.logger.log('DELETE URL ', url);
+    this.logger.log('DELETE URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -147,7 +147,7 @@ export class BotService {
 
     let url = this.MONGODB_BASE_URL;
     url = url += `${id}`;
-   this.logger.log('PUT URL ', url);
+    this.logger.log('PUT URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -157,7 +157,7 @@ export class BotService {
 
     const body = { 'fullname': `${fullName}`, 'id_faq_kb': `${id_faq_kb}` };
 
-   this.logger.log('PUT REQUEST BODY ', body);
+    this.logger.log('PUT REQUEST BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)

@@ -178,11 +178,15 @@ import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-pan
 import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
 import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component';
 import { AutologinComponent } from './auth/autologin/autologin.component';
+// APP
 import { AppStoreComponent } from './app-store/app-store.component';
+import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
+import { AppCreateComponent } from './app-store/app-create/app-create.component';
 import { AppStoreService } from './services/app-store.service';
+
 import { BrandService } from './services/brand.service';
 import { ScriptService } from './services/script/script.service';
-import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
+
 // import { PerfectScrollbarTdDirective } from './_directives/td-perfect-scrollbar/perfect-scrollbar-td.directive';
 import { DocsUrlRowComponent } from './components/docs-url-row/docs-url-row.component';
 import { VisitorsComponent } from './visitors/visitors.component';
@@ -220,6 +224,15 @@ import { WidgetPrechatFormComponent } from './widget-prechat-form/widget-prechat
 
 import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { OnlynumberDirective } from './_directives/onlynumber.directive';
+import { NativeBotSidebarComponent } from './bots/native-bot-sidebar/native-bot-sidebar.component';
+import { NativeBotComponent } from './bots/native-bot/native-bot.component';
+import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
+import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
+import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
+import { CutomTooltipOptions } from './utils/util';
+import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component';
+
+
 // console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -413,9 +426,15 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SmtpSettingsComponent,
     SettingsSidebarComponent,
     WidgetPrechatFormComponent,
- 
+    NativeBotSidebarComponent,
+    NativeBotComponent,
+    NativeBotSelectTypeComponent,
+    EmailTicketingComponent,
+    WsSidebarAppsComponent,
+    AppCreateComponent
   ],
   imports: [
+    TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
     CreditCardDirectivesModule,
     MatTooltipModule,
     /* PRIVATE */

@@ -335,7 +335,7 @@ export class SentimentComponent implements OnInit, OnDestroy {
               var ctx = chartInstance.chart.ctx;
               //this.logger.log("chartistance",chartInstance)
               //ctx.fillStyle = 'red'; // your color here
-              ctx.font = "Google Sans"
+              ctx.font = "Poppins"
               var chartArea = chartInstance.chartArea;
               //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
             }

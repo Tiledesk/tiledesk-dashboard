@@ -1,5 +1,5 @@
-<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
-  <!-- goBackToFaqKbList() -->
+<!-- margin-top:6px;  -->
+<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
     keyboard_arrow_left
   </i>
@@ -269,10 +269,10 @@
                 </div>
               </div>
 
-              <!-- 
-              // ---------------------------------------------------------
-              // Bot - select Dialogflow bot language
-              // --------------------------------------------------------- -->
+               
+              <!-- --------------------------------------------------------- -->
+              <!-- Bot - select Dialogflow bot language -->
+              <!-- --------------------------------------------------------- -->
               <div class="row" style="margin-bottom: 18px;">
                 <label class="col-sm-12 custom-label__dlgflowbot">
                   {{ 'DefaultBotLanguageInDialogflow' | translate }}
@@ -286,10 +286,10 @@
                 </div>
               </div>
 
-              <!-- 
-              // ---------------------------------------------------------
-              // Dialogflow knowledge base ID
-              // --------------------------------------------------------- -->
+               
+              <!-- --------------------------------------------------------- -->
+              <!-- Dialogflow knowledge base ID -->
+              <!-- --------------------------------------------------------- -->
               <div class="row" style="margin-bottom: 18px;">
                 <label class="col-sm-12 custom-label__dlgflowbot">
                   {{ 'DialogflowKnowledgeBaseID' | translate }}
@@ -336,7 +336,7 @@
               <div class="col-sm-10"
                 [ngClass]="{'col-sm-10' : botType !== 'dialogflow', 'col-sm-12' : botType === 'dialogflow'}">
 
-                <button [ngStyle]="{'margin-left':botType === 'dialogflow' ? '30px' : 0 }" class="btn btn-primary"
+                <button id="create-bot-btn" [ngStyle]="{'margin-left':botType === 'dialogflow' ? '30px' : 0 }" class="btn btn-primary"
                   [disabled]="btn_create_bot_is_disabled" (click)="createBot()">
                   {{ "BotsAddEditPage.CreateBot" | translate }}
                 </button>
@@ -402,8 +402,8 @@
 
               <p style="color:#7695a5">
                 {{'Resolution_bot_train_SendImagesVideoAndMore' | translate: tparams }}.
-                <span style="" (click)="openDocsResolutionBotSendImageVideosMore()">
-                  {{'HereHowSendImageVideosMore' | translate }}
+                <span class="link-in-right-sidebar"  (click)="openDocsResolutionBotSendImageVideosMore()">
+                 {{'HereHowSendImageVideosMore' | translate }}
                 </span>
               </p>
 

@@ -55,6 +55,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   PROJECT_SETTINGS_AUTH_ROUTE: boolean;
   PROJECT_SETTINGS_ADVANCED_ROUTE: boolean;
   PROJECT_SETTINGS_NOTIFICATION_ROUTE: boolean;
+  PROJECT_SETTINGS_SECURITY_ROUTE: boolean;
 
   showSpinner = true;
 
@@ -111,6 +112,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isVisibleAdvancedTab: boolean;
   isVisibleDeveloperTab: boolean;
   isVisibleNotificationTab: boolean;
+  isVisibleSecurityTab: boolean;
   max_agent_assigned_chat: number
   reassignment_delay: number
   automatic_idle_chats: number
@@ -149,6 +151,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   assigned_conv_on: boolean;
   unassigned_conv_on: boolean;
+  ip_restrictions_on: boolean;
   USER_ROLE: string;
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
@@ -178,7 +181,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   CVC_LENGHT: number;
   DISPLAY_ADD_CARD_COMPLETED: boolean = false;
   no_default_payment_method_id_array: Array<string>
-  isActiveSubscription : boolean = false;
+  isActiveSubscription: boolean = false;
+  isChromeVerGreaterThan100: boolean
   formErrors: FormErrors = {
     'creditCard': '',
     'expirationDate': '',
@@ -187,7 +191,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   validationMessages = {
     'creditCard': {
 
-      'pattern': 'CC Nunber must be a valid',
+      'pattern': 'CC Number must be a valid',
     },
     'expirationDate': {
 
@@ -199,7 +203,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     },
 
   };
-
+  allowedIPs: any
   /**
    * 
    * @param projectService 
@@ -241,6 +245,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.getBrowserVersion()
     this.getCurrentUrlAndSwitchView();
     this.getProjectPlan();
     this.listenCancelSubscription();
@@ -257,6 +262,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.listenSidebarIsOpened();
 
     this.buildCreditCardForm()
+  }
+
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
   }
 
   buildCreditCardForm() {
@@ -519,6 +532,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
 
+      if (key.includes("IPS")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let ips = key.split(":");
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (ips[1] === "F") {
+          this.isVisibleSecurityTab = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
+        } else {
+          this.isVisibleSecurityTab = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
+        }
+      }
+
     });
 
     if (!this.public_Key.includes("PAY")) {
@@ -539,6 +565,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (!this.public_Key.includes("NOT")) {
       // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
       this.isVisibleNotificationTab = false;
+    }
+
+    if (!this.public_Key.includes("IPS")) {
+      //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("IPS")', this.public_Key.includes("IPS"));
+      this.isVisibleSecurityTab = false;
     }
 
   }
@@ -582,7 +613,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
-      (currentUrl.indexOf('/project-settings/notification') === -1)
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1)
+
     ) {
       this.logger.log('%ProjectEditAddComponent router.url', this.router.url);
 
@@ -591,19 +624,21 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_NOTIFICATION ', this.PROJECT_SETTINGS_NOTIFICATION_ROUTE);
-
+      this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_SECURITY_ROUTE ', this.PROJECT_SETTINGS_SECURITY_ROUTE);
       /** THE ACTIVE ROUTE IS /project-settings/payments */
     } else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') !== -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
-      (currentUrl.indexOf('/project-settings/notification') === -1)
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1)
 
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
@@ -611,6 +646,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
 
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
@@ -623,13 +659,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') !== -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
-      (currentUrl.indexOf('/project-settings/notification') === -1)
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = true;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
@@ -641,13 +679,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') !== -1) &&
-      (currentUrl.indexOf('/project-settings/notification') === -1)
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = true;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
@@ -659,13 +699,31 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
-      (currentUrl.indexOf('/project-settings/notification') !== -1)
+      (currentUrl.indexOf('/project-settings/notification') !== -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = true;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
+    }
+
+    else if (
+      (currentUrl.indexOf('/project-settings/general') === -1) &&
+      (currentUrl.indexOf('/project-settings/payments') === -1) &&
+      (currentUrl.indexOf('/project-settings/auth') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') !== -1)
+    ) {
+      this.PROJECT_SETTINGS_ROUTE = false;
+      this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
+      this.PROJECT_SETTINGS_AUTH_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = true;
     }
 
   }
@@ -731,7 +789,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.router.navigate(['project/' + this.id_project + '/project-settings/notification'])
   }
 
+  goToProjectSettings_Security() {
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Security');
+    this.router.navigate(['project/' + this.id_project + '/project-settings/security'])
+  }
+
   goToCustomizeNotificationEmailPage() {
+
     this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name)
     if (this.profile_name === 'enterprise') {
       if (this.USER_ROLE === 'owner') {
@@ -791,7 +855,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.subscription_is_active = projectProfileData.subscription_is_active;
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.subscription_start_date = projectProfileData.subscription_start_date;
-        this.subscription_creation_date = projectProfileData.subscription_creation_date;
+        if (projectProfileData.subscription_creation_date) {
+          this.subscription_creation_date = projectProfileData.subscription_creation_date;
+        } else {
+          this.subscription_creation_date = projectProfileData.subscription_start_date;
+
+
+        }
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > subscription_creation_date', this.subscription_creation_date)
         this.prjct_profile_type = projectProfileData.profile_type;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
 
@@ -988,32 +1059,43 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.showSpinner = false;
     });
   }
-
+  // cus_JvdAzyrsRuRnA0
   getCustomerAndPaymentMethods() {
     this.projectService.getStripeCustomer().subscribe((customer: any) => {
-      // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer ', customer);
+      this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer ', customer);
       if (customer) {
         this.customer_id = customer.id
         this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer id', this.customer_id);
-        if (customer.invoice_settings) {
+        if (customer.invoice_settings && customer.invoice_settings.default_payment_method !== null) {
           this.customer_default_payment_method_id = customer.invoice_settings.default_payment_method
-          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id ', this.customer_default_payment_method_id);
+          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from invoice_settings > default_payment_method)', this.customer_default_payment_method_id);
+        } else {
+          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from invoice_settings > default_payment_method) 2', this.customer_default_payment_method_id);
+          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from customer > default_source) 2', customer.default_source);
+          this.customer_default_payment_method_id = customer.default_source
         }
-        if (customer.paymentMethods)
+        this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION -  this.customer_default_payment_method_id', this.customer_default_payment_method_id);
+        if (customer.paymentMethods) {
           // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethods ', customer.paymentMethods.data);
           customer.paymentMethods.data.forEach(paymentmethod => {
-            // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
-            if (this.customer_default_payment_method_id === paymentmethod.id) {
+            this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
+            if (this.customer_default_payment_method_id !== null && this.customer_default_payment_method_id === paymentmethod.id) {
               this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
               if (paymentmethod.card) {
+                this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod CARD', paymentmethod.card);
+                this.default_card_brand_name = paymentmethod.card.brand;
+                this.card_last_four_digits = paymentmethod.card.last4;
+              }
+            } else if (this.customer_default_payment_method_id === null) {
+              if (paymentmethod.card) {
+                this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > NO default paymentMethod OT deafult source - CARD', paymentmethod.card);
                 this.default_card_brand_name = paymentmethod.card.brand;
                 this.card_last_four_digits = paymentmethod.card.last4;
               }
             }
-
           });
+        }
       }
-
     }, (error) => {
       this.logger.error('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER error ', error);
 
@@ -1154,7 +1236,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.projectService.updateStripeCustomer(this.customer_id, creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc).subscribe((updatedcustomer: any) => {
       this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER - customer ', updatedcustomer);
       // if (updatedcustomer) {
-
+       
       //   console.log('[PRJCT-EDIT-ADD] - UPDATE - customer_id ', this.customer_id);
       // }
 
@@ -1174,7 +1256,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.CARD_HAS_ERROR = false;
       this.SPINNER_IN_ADD_CARD_MODAL = false
       this.DISPLAY_ADD_CARD_COMPLETED = true
-      this.getCustomerAndPaymentMethods();
+      setTimeout(() => {
+        this.getCustomerAndPaymentMethods();
+      }, 0);
       this.getCustomerPaymentMethodsListAndDeleteNotDefault()
     });
   }
@@ -1349,12 +1433,23 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
    */
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+      // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
 
       if (project) {
         this.projectName_toUpdate = project.name;
         this.logger.log('[PRJCT-EDIT-ADD] - PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
 
+        if (project.ipFilter) {
+          let IP_filterArrayToString = project.ipFilter.toString()
+          // console.log('[PRJCT-EDIT-ADD] - IP FILTER ARRAY : ', IP_filterArrayToString);
+          let IP_filterArrayToStringSpaced = IP_filterArrayToString.replace(/,/g, ', ');
+          // console.log('[PRJCT-EDIT-ADD] - IP FILTER ARRAY : ', IP_filterArrayToStringSpaced);
+          this.allowedIPs = IP_filterArrayToStringSpaced
+        }
+
+        if (project.ipFilterEnabled) {
+          this.ip_restrictions_on = project.ipFilterEnabled
+        }
         // used in onProjectNameChange to enable / disable the 'update project name' btn
         this.project_name = project.name;
 
@@ -1552,6 +1647,94 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
+
+  toggleEnableIPrestrictions($event) {
+    this.ip_restrictions_on = $event.target.checked;
+  }
+
+  allowedIPsChanged($event) {
+    // console.log("[PRJCT-EDIT-ADD] allowedIPsChanged $event ", $event)
+  }
+
+  saveIPranges() {
+    this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - id_project", this.id_project)
+    this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges", this.allowedIPs)
+
+    this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - ip_restrictions_on", this.ip_restrictions_on)
+    let allowedIPsArray = []
+    if (this.allowedIPs) {
+      const allowedIPsTrimmed = this.allowedIPs.replace(/\s/g, '');
+      this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges allowedIPsTrimmed ", allowedIPsTrimmed)
+      allowedIPsArray = allowedIPsTrimmed.split(',')
+      this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges split ", allowedIPsArray)
+      // if (allowedIPsArray.length === 0) {
+      //   console.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges is empty ")
+      // }
+    } else {
+      this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPs is empty ")
+      this.ip_restrictions_on = false;
+    }
+
+
+    if (this.ip_restrictions_on && allowedIPsArray.length > 0) {
+      swal({
+        title: "Are you sure?",
+        text: "Adding IP-based access restrictions can break Tiledesk access!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willAddIpRanges) => {
+          if (willAddIpRanges) {
+
+            this.logger.log('[PRJCT-EDIT-ADD] swal willAddIpRanges', willAddIpRanges)
+            // this.id_project,
+
+            this.projectService.addAllowedIPranges(this.id_project, this.ip_restrictions_on, allowedIPsArray).subscribe((res: any) => {
+              this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges res ', res)
+
+            }, (error) => {
+              this.logger.error('[PRJCT-EDIT-ADD] addAllowedIPranges - ERROR ', error);
+
+              swal("Sorry, an error occurred saving IPs addresses", {
+                icon: "error",
+              });
+
+            }, () => {
+              this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges * COMPLETE *');
+
+              swal("IP addresses successfully added", {
+                icon: "success",
+              }).then((okpressed) => {
+
+              });
+
+            });
+
+
+            // swal("Poof! Your imaginary file has been deleted!", {
+            //   icon: "success",
+            // });
+          } else {
+            // swal("Your imaginary file is safe!");
+          }
+        });
+    } else if (this.ip_restrictions_on === false || allowedIPsArray.length === 0) {
+
+      this.projectService.addAllowedIPranges(this.id_project, this.ip_restrictions_on, allowedIPsArray).subscribe((res: any) => {
+        this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges res ', res)
+
+      }, (error) => {
+        this.logger.error('[PRJCT-EDIT-ADD] addAllowedIPranges - ERROR ', error);
+      }, () => {
+        this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges * COMPLETE *');
+
+
+      });
+    }
+  }
+
+
 
 
   onProjectNameChange(event) {
@@ -1823,26 +2006,26 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   deleteProject() {
     // if (this.prjct_profile_type !== 'payment') {
-      this.SHOW_CIRCULAR_SPINNER = true;
-      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT TO DELETE ', this.project_id_to_delete);
-      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT ', this.id_project);
+    this.SHOW_CIRCULAR_SPINNER = true;
+    this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT TO DELETE ', this.project_id_to_delete);
+    this.logger.log('[PRJCT-EDIT-ADD] - deleteProject ID PROJECT ', this.id_project);
 
-      this.projectService.deleteProject(this.id_project).subscribe((data) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - deleteProject RES ', data);
+    this.projectService.deleteProject(this.id_project).subscribe((data) => {
+      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject RES ', data);
 
-      }, (error) => {
+    }, (error) => {
+      this.SHOW_CIRCULAR_SPINNER = false;
+      this.logger.error('[PRJCT-EDIT-ADD] - deleteProject - ERROR ', error);
+      this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
+    }, () => {
+      this.logger.log('[PRJCT-EDIT-ADD] - deleteProject * COMPLETE *');
+
+      setTimeout(() => {
         this.SHOW_CIRCULAR_SPINNER = false;
-        this.logger.error('[PRJCT-EDIT-ADD] - deleteProject - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
-      }, () => {
-        this.logger.log('[PRJCT-EDIT-ADD] - deleteProject * COMPLETE *');
-
-        setTimeout(() => {
-          this.SHOW_CIRCULAR_SPINNER = false;
-          this.notify.showNotificationChangeProject(this.deleteSuccessMsg, 2, 'done');
-          this.router.navigate(['/projects']);
-        }, 1500);
-      });
+        this.notify.showNotificationChangeProject(this.deleteSuccessMsg, 2, 'done');
+        this.router.navigate(['/projects']);
+      }, 1500);
+    });
     // } else {
     //   console.log('[PRJCT-EDIT-ADD] - deleteProject > project profile type' , this.prjct_profile_type );
     // }

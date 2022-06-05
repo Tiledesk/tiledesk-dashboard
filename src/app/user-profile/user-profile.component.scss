@@ -183,7 +183,10 @@ button.close {
   padding-left: 0px;
   display: flex;
   flex-grow: 1;
+  // z-index: 1049;
 }
+
+
 
 .bottom-nav li {
   float: left;
@@ -193,6 +196,12 @@ button.close {
   display: block;
   height: 52px;
   cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .bottom-nav li { 
+    z-index: 1049
+  }
 }
 
 .bottom-nav li a {
@@ -273,7 +282,7 @@ button.close {
 
 @media (max-width: 991px) {
   .bottom-nav {
-    top: -2px !important;
+    // top: -2px !important;
   }
 
   .chart-wrapper {

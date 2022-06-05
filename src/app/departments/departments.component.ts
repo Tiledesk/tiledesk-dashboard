@@ -60,6 +60,7 @@ export class DepartmentsComponent implements OnInit {
   trialExpired: boolean;
   subscriptionInactiveOrTrialExpired: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private deptService: DepartmentService,
     private router: Router,
@@ -84,7 +85,15 @@ export class DepartmentsComponent implements OnInit {
     this.getProjectPlan();
     this.getBrowserLanguage();
     this.listenSidebarIsOpened();
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }  
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {

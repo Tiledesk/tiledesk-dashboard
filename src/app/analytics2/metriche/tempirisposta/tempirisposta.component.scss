@@ -1,4 +1,3 @@
-// @import url(https://fonts.googleapis.com/css?family=Google+Sans);
 
 .card-header-custom {
     box-shadow: none!important;
@@ -8,7 +7,7 @@
 }
 
 .request_count_footer {
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: 'Poppins', 'Roboto',  'Arial', sans-serif;
     font-size: 16px;
     color:rgba(0,0,0,.54); 
     text-align: center;
@@ -33,7 +32,7 @@
     padding-top: 24px;
     font-size: 18px;
     //color: #fff;
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: 'Poppins', 'Roboto',  'Arial', sans-serif;
 }
 
 .clock{
@@ -53,18 +52,17 @@
     line-height: 0;
     padding-top: 94px;
     color: #073f74;
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: 'Poppins', 'Roboto',  'Arial', sans-serif;
 }
 
 .chart-container{
     //background-color: #1e88e5;
-    font-family: 'Google Sans', sans-serif !important;
+    font-family: 'Poppins', 'Roboto',  'Arial', sans-serif;
 }
 
 .boxdays{
     height: 33px; 
-    //border: 1px solid grey;
-    //font-family: 'Google Sans', sans-serif !important;
+
     font-size:100%;
     display: inline-block; //-->allow content vertical align
     vertical-align: middle;

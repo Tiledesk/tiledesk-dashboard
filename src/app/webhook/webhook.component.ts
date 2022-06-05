@@ -4,6 +4,7 @@ import { WebhookService } from './../services/webhook.service';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
+import { AuthService } from 'app/core/auth.service';
 @Component({
   selector: 'appdashboard-webhook',
   templateUrl: './webhook.component.html',
@@ -23,19 +24,28 @@ export class WebhookComponent implements OnInit {
   showSecretError: string;
   sharedSecret: string;
   subscriptionIDToDelete: string;
-
+  isChromeVerGreaterThan100: boolean
   constructor(
     private webhookService: WebhookService,
     public translate: TranslateService,
     private notify: NotifyService,
     private location: Location,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private auth: AuthService,
   ) { }
 
   ngOnInit() {
     this.getSubscriptions();
     this.translateNotificationMsgs();
+    this.getBrowserVersion() 
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
   translateNotificationMsgs() {
     this.translate.get('Webhook.NotificationMsgs')

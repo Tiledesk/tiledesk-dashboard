@@ -26,7 +26,7 @@ export class NotificationSettingsComponent implements OnInit {
 
   updateSuccessMsg: string;
   updateErrorMsg: string;
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private _location: Location,
     private auth: AuthService,
@@ -46,7 +46,15 @@ export class NotificationSettingsComponent implements OnInit {
     this.getCurrentProject();
     this.getProjects();
     this.translateNotificationMsgs();
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   ngAfterViewInit() {
     this.checkCurrentStatus();

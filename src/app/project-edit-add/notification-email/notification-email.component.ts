@@ -29,6 +29,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   projectId: string;
   anErrorHasOccurredMsg : string;
   emailTemplateUpdatedSuccessfullyMsg: string;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     public location: Location,
     public projectService: ProjectService,
@@ -54,7 +55,15 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
     //   let ps = new PerfectScrollbar(bottom_navbar, {suppressScrollY: true});
     //   ps.update();
     // }
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
  getTranslations() {
   this.translate.get('AnErrorHasOccurred')

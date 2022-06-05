@@ -306,7 +306,7 @@ p.member:hover {
 }
 
 .customh4 {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   font-size: 16px;
   font-weight: 400;
   //    color: #394f5a !important;
@@ -773,6 +773,7 @@ $f21blue: #039be5;
   border: 1px solid #eee;
   margin-top: 1px;
   margin-bottom: 1px;
+  object-fit: cover;
 }
 
 // #team-container {
@@ -924,4 +925,64 @@ $f21blue: #039be5;
   position: absolute;
   top: 19px;
   left: 22px;
+}
+
+.ticket-id-badge {
+  float: left;
+  background-color: #e8e8e8;
+  color: #737376;
+  font-size: 11px;
+  font-weight: 500;
+  min-width: 20px;
+  text-align: center;
+  position: relative;
+  top: 1px;
+  border-radius: 4px;
+  margin-right: 3px;
+  padding: 0px 2px;
+}
+
+::ng-deep .convs-custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 11px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins" !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+
+.custom-input-group---btn {
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+}
+
+
+// .custom-input-group---btn:hover {
+//   background-color: rgba(60, 64, 67, 0.08);
+//   -webkit-transition: background-color 300ms linear;
+//   -ms-transition: background-color 300ms linear;
+//   transition: background-color 300ms linear;
+
+//   .archive-icon-icon {
+//     color: black !important;
+//   }
+// }
+
+.custom-input-group---btn:active {
+  background-color: rgba(60, 64, 67, 0.12);
+  outline: none;
+}
+
+::ng-deep .mat-white-tooltip {
+  background-color: #fff !important;
+  font-size: 11px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins" !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  border: 1px solid #ccc;
+  color:#000 !important ;
+  font-weight: 400 !important ;
 }

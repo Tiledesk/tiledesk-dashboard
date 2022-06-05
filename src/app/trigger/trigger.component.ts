@@ -42,6 +42,7 @@ export class TriggerComponent implements OnInit {
   text_to_display = '' // is diplayed if customtext = true
   translateparam: any; 
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private auth: AuthService,
     private triggerService: TriggerService,
@@ -53,6 +54,7 @@ export class TriggerComponent implements OnInit {
 
   ngOnInit() {
     this.translateparam = { helpdoc: this.trigger_docs_title };
+    this.getBrowserVersion() 
     this.showSpinner = true;
     this.getCurrentProject();
     this.getAllTrigger();
@@ -62,6 +64,14 @@ export class TriggerComponent implements OnInit {
     this.has_selected_system = false;
     this.listenSidebarIsOpened();
   }
+
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {

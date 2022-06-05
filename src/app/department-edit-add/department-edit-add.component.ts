@@ -18,6 +18,8 @@ import { AppConfigService } from '../services/app-config.service';
 import { ComponentCanDeactivate } from '../core/pending-changes.guard';
 import { Observable } from 'rxjs/Observable';
 import { LoggerService } from '../services/logger/logger.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -31,6 +33,7 @@ const swal = require('sweetalert');
 })
 // , ComponentCanDeactivate
 export class DepartmentEditAddComponent implements OnInit, AfterViewInit, ComponentCanDeactivate {
+  private unsubscribe$: Subject<any> = new Subject<any>();
 
   @Input() ws_requestslist_deptIdSelected: string;
   @Input() display_dept_sidebar: boolean;
@@ -109,7 +112,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   youHaveUnsavedChangesMsg: string;
   cancelMsg: string;
   areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving: string
-
+  isChromeVerGreaterThan100: boolean;
+  USER_ROLE: string
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -280,6 +284,27 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     // this.getProjectUsers();
 
     this.translateLabels()
+    this.getBrowserVersion()
+  }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+
+        this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+        this.USER_ROLE = userRole;
+      })
+  }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
   }
 
   // -------------------------------------------------------------------------------------
@@ -901,11 +926,17 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     let botType = ''
     if (this.bot_type === 'internal') {
       botType = 'native'
+      if (this.USER_ROLE !== 'agent') {
+        this.router.navigate(['project/' + this.project._id + '/bots/intents/', this.selectedId, botType]);
+      }
     } else {
-      botType = this.bot_type
+      botType = this.bot_type;
+      if (this.USER_ROLE !== 'agent') {
+        this.router.navigate(['project/' + this.project._id + '/bots', this.selectedId, botType]);
+      }
     }
 
-    this.router.navigate(['project/' + this.project._id + '/bots', this.selectedId, botType]);
+
   }
 
   goToMemberProfile(memberid) {

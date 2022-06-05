@@ -91,7 +91,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   UPLOAD_ENGINE_IS_FIREBASE: boolean
   profile_name: string
   IS_OPEN_SETTINGS_SIDEBAR: boolean
-
+  isChromeVerGreaterThan100: boolean
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -116,8 +116,17 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getProjectPlan()
     this.getOSCODE()
     this.getChatUrl()
-    this.listenSidebarIsOpened()
+    this.listenSidebarIsOpened();
+    this.getBrowserVersion()
   }
+
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {

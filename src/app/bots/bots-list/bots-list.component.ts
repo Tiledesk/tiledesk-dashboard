@@ -71,7 +71,7 @@ export class BotListComponent implements OnInit {
   isVisibleAnalytics: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -91,6 +91,7 @@ export class BotListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getBrowserVersion();
     this.auth.checkRoleForCurrentProject();
     this.getProfileImageStorage();
     this.translateTrashBotSuccessMsg();
@@ -103,6 +104,13 @@ export class BotListComponent implements OnInit {
     this.getTranslations();
     this.listenSidebarIsOpened();
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }  
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
@@ -222,7 +230,7 @@ export class BotListComponent implements OnInit {
       }
 
 
-      /* this.showSpinner = false moved in getFaqByFaqKbId:
+      /* this.showSpinner = false moved in getAllFaqByFaqKbId:
        * in this callback stop the spinner only if there isn't faq-kb and
        * if there is an error */
       // this.showSpinner = false;
@@ -234,7 +242,7 @@ export class BotListComponent implements OnInit {
       () => {
         this.logger.log('[BOTS-LIST] GET BOTS COMPLETE');
         // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-        this.getFaqByFaqKbId();
+        this.getAllFaqByFaqKbId();
       });
 
   }
@@ -277,17 +285,17 @@ export class BotListComponent implements OnInit {
     this.rowIndexSelected = undefined;
   }
 
- 
 
-  getFaqByFaqKbId() {
+
+  getAllFaqByFaqKbId() {
     // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
     let i: number;
     for (i = 0; i < this.faqkbList.length; i++) {
       this.logger.log('[BOTS-LIST] getFaqByFaqKbId ID FAQ KB ', this.faqkbList[i]._id);
       this.faqKbId = this.faqkbList[i]._id;
 
-      this.faqService.getFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
-        this.logger.log('[BOTS-LIST] getFaqByFaqKbId GET BOT FAQs - FAQs ARRAY ', faq);
+      this.faqService.getAllFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
+        this.logger.log('[BOTS-LIST] getAllFaqByFaqKbId GET BOT FAQs - FAQs ARRAY ', faq);
 
         if (faq) {
           let j: number;
@@ -415,14 +423,13 @@ export class BotListComponent implements OnInit {
    */
 
   onCloseDeleteBotModal() {
-
     this.displayDeleteBotModal = 'none';
   }
+
   // ENABLED THE BUTTON 'DELETE BOT' IF THE BOT ID TYPED BY THE USER
   // MATCHES TO THE BOT ID
   checkIdBotTyped() {
     this.logger.log('[BOTS-LIST] BOT ID TYPED BY USER', this.bot_id_typed);
-
     if (this.id_toDelete === this.bot_id_typed) {
       this.ID_BOT_TYPED_MATCHES_THE_BOT_ID = true;
       this.logger.log('[BOTS-LIST] »» BOT ID TYPED MATCHES THE BOT ID ', this.ID_BOT_TYPED_MATCHES_THE_BOT_ID)
@@ -539,31 +546,32 @@ export class BotListComponent implements OnInit {
   // ---------------------------------------------------------------------------
   // Go to faq.component to: Add / Edit FAQ, Edit Bot name
   // ---------------------------------------------------------------------------
-  goToFaqPage(idFaqKb: string, botType: string) {
-
+  goToBotDtls(idFaqKb: string, botType: string, botname: string) {
+    this.logger.log('[BOTS-LIST] NAME OF THE BOT SELECTED ', botname);
     let _botType = ""
     if (botType === 'internal') {
       _botType = 'native'
+
+      // -------------------------------------------------------------------------------------------
+      // Publish the bot name to be able to check in the native bot sidebar if the bot name changes,
+      // to prevent the bot name from updating every time a bot sidebar menu item is clicked
+      // -------------------------------------------------------------------------------------------
+      // this.faqKbService.publishBotName(botname)
+
+      this.router.navigate(['project/' + this.project._id + '/bots/intents/', idFaqKb, _botType]);
     } else {
       _botType = botType
+      this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
     }
 
     this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', idFaqKb, 'bot type ', botType);
-    this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
+
   }
 
 
-  // !! NO MORE USED - REPLACED WITH goToFaqPage (see above)
-  // GO TO THE COMPONENT FAQ-KB-EDIT-ADD
-  // goToEditAddPage_EDIT(idFaqKb: string) {
-  //   this.router.navigate(['project/' + this.project._id + '/editfaqkb', idFaqKb]);
-  // }
-
-
-
+  // to  check if is used 
   goToTestFaqPage(remoteFaqKbKey: string) {
     this.logger.log('[BOTS-LIST] REMOTE FAQKB KEY SELECTED ', remoteFaqKbKey);
-
     this.router.navigate(['project/' + this.project._id + '/faq/test', remoteFaqKbKey]);
   }
 

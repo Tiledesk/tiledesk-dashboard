@@ -932,7 +932,7 @@ export class UsersService {
   // //  http://localhost:3001/6256ac8c729977ad37f0aee6/project_users/ID_PROJECT_USER
   public updateProjectUserTags(projectUser_id: string, tagarray: any) {
     let url = this.PROJECT_USER_URL + projectUser_id;
-    console.log('[USER-SERV] - UPDATE PROJECT-USER TAG URL ', url);
+    this.logger.log('[USER-SERV] - UPDATE PROJECT-USER TAG URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -942,7 +942,7 @@ export class UsersService {
 
     // const body = { 'role': user_role, 'max_served_chat': max_served_chat };
     const body = { 'tags': tagarray };
-    console.log('[USER-SERV] - UPDATE PROJECT-USER TAG  BODY ', body);
+    this.logger.log('[USER-SERV] - UPDATE PROJECT-USER TAG  BODY ', body);
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
@@ -1014,8 +1014,8 @@ export class UsersService {
           user.token = this.TOKEN;
           this.logger.log('[USER-SERV] - UPDATED USER + token (before to set in storage) ', user)
 
-          /* PUBLISH THE UPDATED USER CURRENT USER */
-          this.auth.publishUpdatedUser(user)
+          this.createUserAvatarAndPublishUpdatedUser(user)
+    
 
         } else {
           callback('error');
@@ -1028,6 +1028,25 @@ export class UsersService {
           callback('error')
         });
   }
+
+  createUserAvatarAndPublishUpdatedUser(user) {
+    this.logger.log('[USER-PROFILE] - createProjectUserAvatar ', user)
+    let fullname = ''
+    if (user && user.firstname && user.lastname) {
+      fullname = user.firstname + ' ' + user.lastname
+      user['fullname_initial'] = avatarPlaceholder(fullname)
+      user['fillColour'] = getColorBck(fullname)
+    } else if (user && user.firstname) {
+      fullname = user.firstname
+      user['fullname_initial'] = avatarPlaceholder(fullname)
+      user['fillColour'] = getColorBck(fullname)
+    } else {
+      user['fullname_initial'] = 'N/A'
+      user['fillColour'] = 'rgb(98, 100, 167)'
+    }
+      /* PUBLISH THE UPDATED USER CURRENT USER */
+      this.auth.publishUpdatedUser(user)
+}
 
   /**
    * CHANGE PSW

@@ -37,7 +37,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   idBot: string;
   currentUserFirstname: string;
   botName: string;
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -65,7 +65,14 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     //     this.onInitSearchRemoteFaq(this.questionToTest);
     //   }, 500);
     // }
+    this.getBrowserVersion()
+  }
 
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
   }
 
 

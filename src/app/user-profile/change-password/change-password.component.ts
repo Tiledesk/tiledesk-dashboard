@@ -32,7 +32,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
 
   warning: string;
   selectAProjectToManageNotificationEmails: string;
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
@@ -47,7 +47,15 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     this.getUserIdFromRouteParams();
     this.getCurrentProject();
     this.translateStrings();
+    this.getBrowserVersion() 
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   translateStrings() {
       this.translate.get('Warning')

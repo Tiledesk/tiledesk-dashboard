@@ -100,7 +100,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   id_request: string;
   payIsVisible: boolean;
   public_Key: any;
-
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private http: Http,
     private contactsService: ContactsService,
@@ -137,7 +137,15 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       "click": function () { this.closable = true; },
       "hide.bs.dropdown": function () { return this.closable; }
     });
+    this.getBrowserVersion();
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;

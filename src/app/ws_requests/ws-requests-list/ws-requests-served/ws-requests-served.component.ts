@@ -17,6 +17,7 @@ import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
+import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 
 const swal = require('sweetalert');
 
@@ -64,8 +65,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   isMobile: boolean;
   FIREBASE_AUTH: boolean;
 
-
-
+  requests_selected = [];
+  allChecked = false;
+  allConversationsaveBeenArchivedMsg: string;
   /**
    * Constructor
    * @param botLocalDbService 
@@ -94,7 +96,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     public notify: NotifyService,
     public translate: TranslateService,
     public logger: LoggerService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private wsMsgsService: WsMsgsService,
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
   }
@@ -112,25 +115,101 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getProjectUserRole();
     this.detectMobile();
     this.getFirebaseAuth();
+
   }
 
   ngOnChanges() {
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
+    // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
+    if (this.wsRequestsServed.length > 0) {
+      this.wsRequestsServed.forEach(request => {
+        // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
+        this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+      });
+    }
   }
 
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+
+    if (this.wsRequestsServed.length > 0) {
+      this.wsRequestsServed.forEach(request => {
+        // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
+        this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+        this.unsuscribeRequestById(request.request_id);
+        this.unsuscribeMessages(request.request_id);
+      });
+    }
   }
+
+  unsuscribeRequestById(idrequest) {
+    this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
+  }
+
+  unsuscribeMessages(idrequest) {
+    this.wsMsgsService.unsubsToWS_MsgsByRequestId(idrequest);
+  }
+
+  subscribeToWs_MsgsByRequestId(request, id_request: string) {
+    this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
+    this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
+
+    this.getWsMsgs$(request, id_request);
+  }
+
+  getWsMsgs$(request, id_request) {
+    this.wsMsgsService.wsMsgsList$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((wsmsgs) => {
+
+        if (wsmsgs) {
+          // console.log('[WS-REQUESTS-MSGS] getWsMsgs$ request', request)
+          const msgsArray = []
+          wsmsgs.forEach((msgs, index) => {
+            // && (this.currentUserID !== msgs['sender'])
+            if ((id_request === msgs['recipient'])) {
+
+              // console.log('[WS-REQUESTS-MSGS] for id request ', id_request, ' msgs ', msgs, 'index ', index)
+              msgsArray.push(msgs)
+            }
+          });
+          // console.log('[WS-REQUESTS-MSGS] msgsArray ',msgsArray)
+
+
+
+          request['msgsArray'] = msgsArray.sort(function compare(a, b) {
+            if (a['createdAt'] > b['createdAt']) {
+              return -1;
+            }
+            if (a['createdAt'] < b['createdAt']) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+
+
+
+      }, error => {
+        this.showSpinner = false;
+        this.logger.error('[WS-REQUESTS-MSGS] - getWsMsgs$ - ERROR ', error)
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsMsgs$ * COMPLETE * ')
+      });
+  }
+
+
 
   getFirebaseAuth() {
     if (this.appConfigService.getConfig().firebaseAuth === true) {
       this.FIREBASE_AUTH = true;
-      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
     } else if (this.appConfigService.getConfig().firebaseAuth === false) {
       this.FIREBASE_AUTH = false;
-      this.logger.log('[HISTORY & NORT-CONVS] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - FIREBASE_AUTH IS ', this.FIREBASE_AUTH);
     }
   }
 
@@ -186,7 +265,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.translateCancel();
     this.translateJoinToChat();
     this.translateAreYouSure();
+    this.translateAllConversationsHaveBeenArchived()
   }
+
+
 
 
   // --------------------------------------------------
@@ -334,13 +416,19 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     let botType = ''
     if (bot_type === 'internal') {
       botType = 'native'
+      if (this.ROLE_IS_AGENT === false) {
+        this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot_id, botType]);
+      }
+
     } else {
       botType = bot_type
+
+      if (this.ROLE_IS_AGENT === false) {
+        this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+      }
     }
 
-    if (this.ROLE_IS_AGENT === false) {
-      this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
-    }
+
   }
 
 
@@ -670,6 +758,15 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       });
   }
 
+
+  translateAllConversationsHaveBeenArchived() {
+    this.translate.get('AllConversationsaveBeenArchived')
+      .subscribe((text: string) => {
+        this.allConversationsaveBeenArchivedMsg = text
+      })
+
+  }
+
   _getProjectUserByUserId(member_id) {
     this.usersService.getProjectUserByUserId(member_id)
       .subscribe((projectUser: any) => {
@@ -685,6 +782,163 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         this.logger.log('[WS-REQUESTS-LIST][SERVED] GET projectUser by USER-ID * COMPLETE *');
       });
   }
+
+  selectAll(e) {
+    this.logger.log("[WS-REQUESTS-LIST][SERVED] > Is checked: ", e.target.checked)
+    var checkbox = <HTMLInputElement>document.getElementById("allServedCheckbox");
+    if (checkbox) {
+      this.logger.log("[WS-REQUESTS-LIST][SERVED] **++ checkbox Indeterminate: ", checkbox.indeterminate);
+    }
+
+    if (e.target.checked == true) {
+      this.logger.log('SELECT ALL e.target.checked ', e.target.checked)
+      this.allChecked = true;
+      for (let request of this.wsRequestsServed) {
+        // console.log('SELECT ALL request ', request)
+
+
+        const index = this.requests_selected.indexOf(request.request_id);
+        if (index > -1) {
+          this.logger.log("[WS-REQUESTS-LIST][SERVED] **++ Already present in requests_selected")
+        } else {
+          this.logger.log("[WS-REQUESTS-LIST][SERVED] *+*+ Request Selected: ", request.request_id);
+          this.requests_selected.push(request.request_id);
+        }
+
+        if (request['isSelected'] === true) {
+          this.logger.log("[WS-REQUESTS-LIST][SERVED] **++ Already selected")
+        } else {
+          // console.log("[WS-REQUESTS-LIST][SERVED] *+*+ Request Selected: ", request.request_id);
+
+          request['isSelected'] = true
+
+        }
+      }
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
+    } else if (e.target.checked == false) {
+      for (let request of this.wsRequestsServed) {
+        // console.log('SELECT ALL request ', request)
+        // const index = this.requests_selected.indexOf(request.request_id);
+        if (request.hasOwnProperty('isSelected')) {
+          if (request['isSelected'] === true) {
+            request['isSelected'] = false
+
+          } else {
+            request['isSelected'] = false
+          }
+        }
+      }
+      // else {
+      //   request['isSelected'] = true
+      // }
+      this.allChecked = false;
+      this.requests_selected = [];
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length)
+    }
+
+  }
+
+  change(request) {
+    var checkbox = <HTMLInputElement>document.getElementById("allServedCheckbox");
+    if (checkbox) {
+      this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+    }
+
+    this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox request: ", request);
+    if (request.hasOwnProperty('isSelected')) {
+      if (request.isSelected === true) {
+        request.isSelected = false
+      } else if (request.isSelected === false) {
+        request.isSelected = true
+      }
+    } else {
+      request.isSelected = true
+    }
+
+
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - change - SELECTED REQUEST ID: ', request.request_id);
+    const index = this.requests_selected.indexOf(request.request_id);
+    this.logger.log("[WS-REQUESTS-LIST][SERVED] - change - request selected INDEX: ", index);
+
+    if (index > -1) {
+      this.requests_selected.splice(index, 1);
+      if (checkbox) {
+        checkbox.indeterminate = true;
+        this.logger.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+      }
+      if (this.requests_selected.length == 0) {
+        if (checkbox) {
+          checkbox.indeterminate = false;
+          this.logger.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+        }
+        this.allChecked = false;
+      }
+    } else {
+      this.requests_selected.push(request.request_id);
+      if (checkbox) {
+        checkbox.indeterminate = true;
+        this.logger.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+      }
+      if (this.requests_selected.length == this.wsRequestsServed.length) {
+        if (checkbox) {
+          checkbox.indeterminate = false;
+          this.logger.log("[WS-REQUESTS-LIST][SERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
+        }
+        this.allChecked = true;
+      }
+    }
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
+  }
+
+  archiveSelected() {
+    let count = 0;
+    this.requests_selected.forEach((requestid, index) => {
+      this.wsRequestsService.closeSupportGroup(requestid)
+        .subscribe((data: any) => {
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+
+          // this.allChecked = false;
+          // this.requests_selected = []
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
+        }, (err) => {
+          this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
+
+
+          //  NOTIFY ERROR 
+          // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+        }, () => {
+          // this.ngOnInit();
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
+          count = count + 1;
+          //  NOTIFY SUCCESS
+          // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+          const index = this.requests_selected.indexOf(requestid);
+          if (index > -1) {
+            this.requests_selected.splice(index, 1);
+          }
+          this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
+
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - this.requests_selected.length ', this.requests_selected.length);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - requests_selected array ', this.requests_selected);
+
+          if (this.requests_selected.length === 0) {
+            this.allChecked = false;
+            var checkbox = <HTMLInputElement>document.getElementById("allServedCheckbox");
+            this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
+            this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+            if (checkbox) {
+              checkbox.indeterminate = false;
+
+            }
+          }
+
+        });
+    })
+  }
+
 
 
 }

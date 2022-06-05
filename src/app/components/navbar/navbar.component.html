@@ -42,12 +42,12 @@
             </li> -->
         <!-- // ======= ./END - TEST - LOGOUT FROM FIREBASE ======= // -->
 
-        <li *ngIf="DETECTED_CHAT_PAGE">
+        <!-- <li *ngIf="DETECTED_CHAT_PAGE">
           <a target="_blank" href="{{ CHAT_BASE_URL }}">
             <i class="material-icons">open_in_new</i>
             {{ "NavBar.RunChatInAStandAloneTab" | translate }}
           </a>
-        </li>
+        </li> -->
 
 
 
@@ -216,7 +216,7 @@
         <!--  ------------------------------------------------ -->
         <li *ngIf="project">
           <a href="#" class="dropdown-toggle project-dropdown" data-toggle="dropdown">
-            <i class="material-icons" style="margin-right: 3px;">keyboard_arrow_down</i>
+            <i id="navbar-dropdown" class="material-icons" style="margin-right: 3px;">keyboard_arrow_down</i>
             <span style="text-transform: none"> {{ project.name }} </span>
             <!-- <p class="hidden-lg hidden-md">Projects</p> -->
           </a>
@@ -331,13 +331,17 @@
         <!--  ------------------------------------------------ -->
         <!--  NOTIFICATION -->
         <!--  ------------------------------------------------ -->
-        <li *ngIf="project" class="dropdown">
+        <li *ngIf="project" class="dropdown" matTooltipClass="custom-mat-tooltip-navbar"
+        matTooltip="{{ 'Unserved' | translate }}: {{ unservedRequestCount }} - {{ 'AssignedToYou' | translate}}: {{currentUserRequestCount}}" 
+        #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100">
           <a routerLink="project/{{ project._id }}/wsrequests" class="dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons">notifications</i>
 
             <!-- SHOW THE BADGE OVER NOTIFICATION IF THE COUNT OF UNSERVED OR TO ASSIGNED TO CURRENT USER REQUESTS IS > 0 -->
             <span *ngIf="unservedRequestCount > 0 || currentUserRequestCount > 0 ">
-              <span class="notification">{{ unservedRequestCount + currentUserRequestCount }}</span>
+              <span class="notification" >
+              {{ unservedRequestCount + currentUserRequestCount }}
+            </span>
             </span>
 
             <!-- <p class="hidden-lg hidden-md">Notifications</p> -->
@@ -424,7 +428,7 @@
 
 <!-- ------------============= PENDING EMAIL VERIFICATION ALERT =============------------ -->
 <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
-  <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false" data-notify="container"
+  <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false" data-notify="container" style="z-index: 1055;"
     class="alert alert-danger animated fadeInDown alert-pending-email-verification" role="alert"
     data-notify-position="top-center" [ngClass]="{'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true }">
     <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->

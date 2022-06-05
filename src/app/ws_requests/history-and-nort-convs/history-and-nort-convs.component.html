@@ -1,10 +1,11 @@
-<p *ngIf="IS_HERE_FOR_HISTORY" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px"
-  class="navbar-brand">
+<!-- margin-top:6px; -->
+<p *ngIf="IS_HERE_FOR_HISTORY" style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   {{ "History" | translate }}
 </p>
-
-<div *ngIf="!IS_HERE_FOR_HISTORY" class="navbar-brand"
-  style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+<!-- margin-top:6px; -->
+<div *ngIf="!IS_HERE_FOR_HISTORY" class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
 
@@ -90,7 +91,7 @@
             </div>
           </div>
 
-          
+
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - central section -->
           <!-- ---------------------------------------------------------------- -->
@@ -143,7 +144,7 @@
 
           </div>
 
-          
+
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - right section -->
           <!-- ---------------------------------------------------------------- -->
@@ -164,7 +165,7 @@
           <div class="filter-bar-advanced-options" *ngIf="showAdvancedSearchOption">
             <div style="margin-top: 6px;">
               <div class="row">
- 
+
                 <!-- ---------------------------------------------------------- -->
                 <!-- Select DEPARTMENTS -->
                 <!-- ---------------------------------------------------------- -->
@@ -183,7 +184,7 @@
                   </div>
                 </div>
 
-            
+
                 <!-- ---------------------------------------------------------- -->
                 <!-- Select DATE RANGE -->
                 <!-- ---------------------------------------------------------- -->
@@ -234,7 +235,7 @@
                   <div class="col-sm-12">
                     <ng-select [items]="tags_array" bindLabel="name" bindValue="name"
                       placeholder="{{'Tags.SelectTag' | translate}}" [(ngModel)]="selecteTagName"
-                      (change)="tagNameSelected()">
+                      (change)="tagNameSelected()" [clearable]='false'>
                       <ng-template ng-label-tmp let-item="item">
                         <!-- <img height="15" width="15" [src]="item.avatar" /> -->
                         <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div>
@@ -263,7 +264,19 @@
                     </ng-select>
                   </div>
                 </div>
-                <div class="col-sm-6"></div>
+                <div class="col-sm-6">
+                  <!-- <label class="col-sm-12 label-7695a5">
+                    {{ 'ConversationType' | translate }}
+                  </label>
+                  <div class="col-sm-12">
+                    <ng-select name="conversationtype" [(ngModel)]="conversation_type"
+                      (change)="requestsTypeSelectFromAdvancedOption()" [items]="conversationType" bindLabel="name"
+                      [clearable]='false' [searchable]="false" bindValue="id"
+                      placeholder="{{'SelectConversationType' | translate }}">
+                    </ng-select>
+                  </div> -->
+
+                </div>
               </div>
 
 
@@ -272,8 +285,9 @@
               <!-- ------------------------------------------ -->
               <div class="row">
                 <div class="col-sm-12" style="margin-top: 16px;">
-                  <button #searchbtnbottom type="submit" class="btn btn-tdblu-no-boxshadow pull-right"
-                    (click)="search()" style="padding:9px 30px;     margin-right: 15px;">
+                  <button #searchbtnbottom id="search_in_advanced_filter" type="submit"
+                    class="btn btn-tdblu-no-boxshadow pull-right" (click)="search()"
+                    style="padding:9px 30px;     margin-right: 15px;">
 
                     {{ 'Search' | translate}}
                   </button>
@@ -313,8 +327,9 @@
             <span class="msg-alert">
               <!-- History is only available for the past 14 days. Renew your subscription for unlimited chat history -->
               {{ 'HistoryPage.HistoryIsOnlyAvailableForThePast14Days' | translate }}.
-              <span class="upgrade-plan-for-unlimited-history" style="color: #039be5; cursor:pointer" (click)="openModalSubsExpiredOrGoToPricing()">
-                {{ "Pricing.UpgradeYourPlan" | translate }} 
+              <span class="upgrade-plan-for-unlimited-history" style="color: #039be5; cursor:pointer"
+                (click)="openModalSubsExpiredOrGoToPricing()">
+                {{ "Pricing.UpgradeYourPlan" | translate }}
               </span>
               {{ 'HistoryPage.ForUnlimitedChatHistory' | translate }}
             </span>
@@ -331,7 +346,7 @@
   <!--  Applied filter -->
   <!--  ---------------------------------------------------------------- -->
   <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;"
-    *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
+    *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor || conversation_type">
 
     <div class="applied-filter-title">
       {{'AppliedFilters' | translate}}
@@ -388,6 +403,23 @@
       {{selecteTagNameValue}}
     </div>
 
+    <div *ngIf="conversation_type && conversationTypeValue" class="applied-filter">
+      <span *ngIf="conversationTypeValue === 'chat21'">
+        Chat
+      </span>
+
+      <span *ngIf="conversationTypeValue === 'form'">
+        Ticket
+      </span>
+
+
+      <span style="text-transform: capitalize;"
+        *ngIf="conversationTypeValue !== 'chat21' && conversationTypeValue !== 'form'">
+        {{conversationTypeValue}}
+      </span>
+
+    </div>
+
 
     <!-- <div class="applied-filter">
       <span
@@ -405,7 +437,7 @@
   <div class="row" *ngIf="!IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px ">
     <div class="col-xs-12 conversations-count">
       <span
-        *ngIf="requests_status === 'all' && !fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor">
+        *ngIf="requests_status === 'all' && !fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor && !conversation_type">
         {{ 'TotalConversations' | translate }}:
         <!-- https://stackoverflow.com/questions/13014808/is-there-anyway-to-animate-an-ellipsis-with-css-animations -->
         <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
@@ -415,7 +447,7 @@
       </span>
 
       <span
-        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor">
+        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor || conversation_type">
         {{ 'ConversationsFound' | translate }}:
         <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
         <span *ngIf="!showSpinner">
@@ -428,7 +460,7 @@
   <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="font-size: 16px;margin-bottom: 8px">
     <div class="col-xs-12 conversations-count">
       <span
-        *ngIf="!fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor">
+        *ngIf="!fullText_applied_filter && !startDateFormatted && !selectedAgentFirstname && !selectedDeptName && !selecteTagColor  && !conversation_type">
         {{ 'TotalConversations' | translate }}:
         <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
         <span *ngIf="!showSpinner">
@@ -437,7 +469,7 @@
       </span>
 
       <span
-        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor">
+        *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || selecteTagColor || conversation_type">
         {{ 'ConversationsFound' | translate }}:
         <span *ngIf="showSpinner" class="loading">{{'ProcessingNoDot' | translate}} </span>
         <span *ngIf="!showSpinner">
@@ -519,16 +551,16 @@
                 <th class="table-header-option" style="text-align: center" (click)="search()">
                   <div class="refresh-icon-wpr"
                     [ngClass]="{'not_is_owner': CURRENT_USER_ROLE !== 'owner' && IS_HERE_FOR_HISTORY, 'is_agent': CURRENT_USER_ROLE === 'agent' && !IS_HERE_FOR_HISTORY }">
-                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;">
+                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;" matTooltipClass="mat-white-tooltip" matTooltip="{{ 'Refresh' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                       <span class="material-icons refresh-page-icon" style="vertical-align:middle; cursor: pointer;position: relative;
                     top: 1px; color:grey;">
                         refresh
                       </span>
-                      <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                      <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                         {{ 'Refresh' | translate }}
-
                         <i></i>
-                      </span>
+                      </span> -->
                     </button>
                   </div>
                 </th>
@@ -540,16 +572,17 @@
                   <!-- --------------------------------------------------- -->
                   <div *ngIf="request_selected.length > 0 && CURRENT_USER_ROLE === 'owner'" class="delete-selected-wpr">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
-                      (click)="deleteSelected()">
+                      (click)="deleteSelected()" matTooltipClass="mat-white-tooltip" matTooltip="{{ 'Delete' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
 
                       <span class="material-icons delete-forever-icon"
                         style="vertical-align:middle; cursor: pointer; color:grey;">
                         delete_forever
                       </span>
-                      <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                      <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                         {{ 'Delete' | translate }}
                         <i></i>
-                      </span>
+                      </span> -->
                     </button>
                   </div>
                 </th>
@@ -562,17 +595,17 @@
                   <!-- ---------------------------------------------------------------------------------------- -->
                   <div *ngIf="request_selected.length > 0" class="archive-selected-wpr">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
-                      (click)="archiveSelected()">
+                      (click)="archiveSelected()" matTooltipClass="mat-white-tooltip" matTooltip="{{ 'VisitorsPage.Resolve' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
 
                       <span class="material-icons delete-forever-icon"
                         style="vertical-align:middle; cursor: pointer; color:grey;">
                         archive
                       </span>
-                      <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                      <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                         {{ 'VisitorsPage.Resolve' | translate }}
-
                         <i></i>
-                      </span>
+                      </span> -->
                     </button>
                   </div>
 
@@ -582,16 +615,17 @@
                   <div *ngIf="request_selected.length > 0 && CURRENT_USER_ROLE === 'owner'"
                     class="delete-selected-wpr-in-nort">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
-                      (click)="deleteSelected()">
+                      (click)="deleteSelected()"  matTooltipClass="mat-white-tooltip" matTooltip="{{ 'Delete' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                       <!-- [ngClass]="{'is_visible-delete-selected': request_selected.length > 0}" -->
                       <span class="material-icons delete-forever-icon"
-                        style="vertical-align:middle; cursor: pointer; color:grey;">
+                        style="vertical-align:middle; cursor: pointer; color:grey;" >
                         delete_forever
                       </span>
-                      <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
+                      <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                         {{ 'Delete' | translate }}
                         <i></i>
-                      </span>
+                      </span> -->
                     </button>
                   </div>
                 </th>
@@ -665,6 +699,15 @@
                 <!-- CHANNNEL  -->
                 <!--  ----------------------------- -->
                 <th> </th>
+
+                <!--  ----------------------------- -->
+                <!--  Ticket id  -->
+                <!--  ----------------------------- -->
+                <!-- <th class="table-header-text" style="text-align: center;">
+                  <span class="column-th-span">
+                    {{ 'TicketId' | translate }}
+                  </span>
+                </th> -->
 
                 <!--  ----------------------------- -->
                 <!--  REQUESTER  -->
@@ -823,7 +866,7 @@
                 <!-- ------------------------------ -->
                 <!-- ******* ICONS ******* -->
                 <!-- ------------------------------ -->
-                <td style="text-align:center">
+                <td class="request-type-icon" style="text-align:center; width: 1%; white-space: nowrap;">
                   <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                     <!--  ------------------------------ -->
@@ -831,12 +874,19 @@
                     <!--  ------------------------------ -->
                     <span *ngIf="request?.status === 1000">
                       <span *ngIf="!request?.subject">
-                        <img style="width: 30px;" src="assets/img/request_icons/statusClosed.svg" class="img-fluid">
+                        <img style="width: 30px;" src="assets/img/request_icons/statusClosed.svg" class="img-fluid"
+                        matTooltipClass="mat-white-tooltip"
+                        matTooltip="{{ 'RequestMsgsPage.RequestResolved' | translate }}" #tooltip="matTooltip"
+                        matTooltipPosition='right' matTooltipHideDelay="100">
                       </span>
 
                       <span *ngIf="request?.subject">
                         <img style="width: 30px;" src="assets/img/request_icons/statusClosed_internal.svg"
-                          class="img-fluid">
+                          class="img-fluid" 
+                          matTooltipClass="mat-white-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.InternalRequestResolved' | translate }}"
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='right' matTooltipHideDelay="100">
                       </span>
                     </span>
                   </span>
@@ -845,17 +895,21 @@
                   <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN -->
                   <!-- THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
                   <!-- ---------------------------------------------------------------------------------------------- -->
+                  <!-- rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}" -->
                   <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
-                    <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                      title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
-
+                    <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
 
                       <!-- ------------------------------ -->
                       <!-- SERVED BY ME REQUEST -->
                       <!-- ------------------------------ -->
                       <span *ngIf="!request?.subject">
 
-                        <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid">
+                        <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid"   
+                        matTooltipClass="mat-white-tooltip"
+                        matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='right' 
+                        matTooltipHideDelay="100">
 
                       </span>
 
@@ -865,7 +919,10 @@
                       <!-- ------------------------------ -->
                       <span *ngIf="request?.subject">
                         <img style="width: 30px;" src="assets/img/request_icons/status200_joined_internal.svg"
-                          class="img-fluid">
+                          class="img-fluid" 
+                          matTooltipClass="mat-white-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='right' matTooltipHideDelay="100">
 
                       </span>
                     </span>
@@ -876,9 +933,9 @@
                   <!--  IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN -->
                   <!--  THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
                   <!--  --------------------------------------------------------------------------------------------------- -->
+                  <!-- rel="tooltip"  title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}" -->
                   <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined">
-                    <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                      title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
+                    <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
 
 
                       <!--  ------------------------------ -->
@@ -886,7 +943,10 @@
                       <!--  ------------------------------ -->
                       <span *ngIf="!request?.subject">
                         <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg"
-                          class="img-fluid">
+                          class="img-fluid"      
+                          matTooltipClass="mat-white-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='right' matTooltipHideDelay="100">
                       </span>
 
 
@@ -895,7 +955,10 @@
                       <!-- ---------------------------------- -->
                       <span *ngIf="request?.subject">
                         <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
-                          class="img-fluid">
+                          class="img-fluid"  
+                          matTooltipClass="mat-white-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}"
+                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                       </span>
                     </span>
                   </span>
@@ -908,7 +971,12 @@
                   <span *ngIf="request?.status === 100 && !request?.subject">
                     <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-                      <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid">
+                      <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid"
+                      matTooltipClass="mat-white-tooltip" 
+                      matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}"
+                      #tooltip="matTooltip" 
+                      matTooltipPosition='right' 
+                      matTooltipHideDelay="100">
 
                     </span>
                   </span>
@@ -920,19 +988,14 @@
                   <span *ngIf="request?.status === 100 && request?.subject">
                     <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-                      <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid">
+                      <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid"
+                      matTooltipClass="mat-white-tooltip"
+                      matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}" #tooltip="matTooltip"
+                      matTooltipPosition='right'
+                      matTooltipHideDelay="100">
 
                     </span>
                   </span>
-
-
-                  <!-- ---------------------------------- -->
-                  <!-- UNSERVED internal -->
-                  <!-- ---------------------------------- -->
-                  <!-- <ng-template #internal_unserved_request>
-        
-                      <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid" >
-                    </ng-template>         -->
                 </td>
 
                 <!-- ===== REQUEST ID ===== -->
@@ -946,6 +1009,11 @@
                 <!-- --------------------------------------- -->
                 <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
                   style="cursor:pointer">
+                  <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
+                    matTooltipClass="mat-white-tooltip" matTooltip="{{ 'TicketId' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                    #{{request?.ticket_id }}
+                  </span>
                   <p class="column-td" [innerHTML]="getRequestText(request?.first_text)"> </p>
 
                   <!-- --------------------------------------- -->
@@ -1171,8 +1239,21 @@
                   </div>
                 </td>
 
+                <!-- ------------------------------------------------- -->
+                <!-- Ticket id  -->
+                <!-- ------------------------------------------------- -->
+                <!-- <td style="text-align: center;">
+                  <p *ngIf="request?.ticket_id" class="column-td">
+                   {{request?.ticket_id }}
+                  </p>
+                  <p *ngIf="!request?.ticket_id" class="column-td">
+                   n/a
+                  </p>
+                </td> -->
 
-                <!-- ===== REQUESTER FULL NAME ===== -->
+                <!-- ------------------------------------------------- -->
+                <!-- REQUESTER FULL NAME  -->
+                <!-- ------------------------------------------------- -->
                 <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap;
                   width: 1%;" rel="tooltip" title="{{ request?.requester_id }}">
 
@@ -1594,9 +1675,9 @@
                 </td>
 
                 <!-- --------------------------------------------------- -->
-                <!-- Action Delete if IS_HERE_FOR_HISTORY -->
+                <!-- Action Delete and Reopen if IS_HERE_FOR_HISTORY -->
                 <!-- --------------------------------------------------- -->
-                <td *ngIf="IS_HERE_FOR_HISTORY">
+                <td class="td-actions text-right" *ngIf="IS_HERE_FOR_HISTORY">
                   <button type="button" class="btn btn-danger btn-simple btn-xs tool_tip"
                     (click)='deleteArchivedRequest(request?.request_id)' [disabled]="CURRENT_USER_ROLE !== 'owner'">
 
@@ -1604,6 +1685,26 @@
 
                     <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
                       <span style="text-transform: capitalize;"> {{ 'Delete' | translate }} </span>
+                      <i></i>
+                    </span>
+
+                  </button>
+
+                  <button type="button" class="btn btn-danger btn-simple btn-xs tool_tip"
+                    (click)='reopenArchivedRequest(request?.request_id)' [disabled]="CURRENT_USER_ROLE !== 'owner'">
+                  
+
+                    <i class="material-icons" style="color: #3ea9f5; transform: rotate(180deg);">archive</i>
+                    <!-- <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
+                      data-icon="comments" class="svg-inline--fa fa-comments fa-w-18" role="img"
+                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                      <path fill="#3ea9f5"
+                        d="M416 192c0-88.4-93.1-160-208-160S0 103.6 0 192c0 34.3 14.1 65.9 38 92-13.4 30.2-35.5 54.2-35.8 54.5-2.2 2.3-2.8 5.7-1.5 8.7S4.8 352 8 352c36.6 0 66.9-12.3 88.7-25 32.2 15.7 70.3 25 111.3 25 114.9 0 208-71.6 208-160zm122 220c23.9-26 38-57.7 38-92 0-66.9-53.5-124.2-129.3-148.1.9 6.6 1.3 13.3 1.3 20.1 0 105.9-107.7 192-240 192-10.8 0-21.3-.8-31.7-1.9C207.8 439.6 281.8 480 368 480c41 0 79.1-9.2 111.3-25 21.8 12.7 52.1 25 88.7 25 3.2 0 6.1-1.9 7.3-4.8 1.3-2.9.7-6.3-1.5-8.7-.3-.3-22.4-24.2-35.8-54.5z">
+                      </path>
+                    </svg> -->
+
+                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                      <span style="text-transform: capitalize;"> {{ 'Reopen' | translate }} </span>
                       <i></i>
                     </span>
 
@@ -1674,10 +1775,10 @@
                       title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
                       (click)='openChatAtSelectedConversation(request?.request_id, request?.lead?.fullname)'>
 
-                      <!--
-                    // ------------------------------------------------------------------------------------------------------
-                    // SVG font-awesome chat icon icon
-                    // ------------------------------------------------------------------------------------------------------ -->
+                      
+                    <!-- ------------------------------------------------------------------------------------------------------ -->
+                    <!-- SVG font-awesome chat icon icon -->
+                    <!-- ------------------------------------------------------------------------------------------------------ -->
                       <svg style="height: 15px; width:auto;position: relative; top: 4px;" aria-hidden="true"
                         focusable="false" data-prefix="fas" data-icon="comments"
                         class="svg-inline--fa fa-comments fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg"

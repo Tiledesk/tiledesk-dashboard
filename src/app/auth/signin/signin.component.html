@@ -41,7 +41,7 @@
               <!-- height: auto; margin-top: 3px; margin-left: 30px;" -->
               <!-- max-width: 280px; -->
               <!-- src="assets/img/logos/tiledesk_2.0_logo_all_white_v2.svg" -->
-              <img [src]="companyLogoAllWithe_Url" class="img-fluid" style="width: 90%;
+              <img [src]="companyLogoAllWithe_Url" class="img-fluid" style="width: 80%;
               margin-top: 30px;
               margin-bottom: 30px;" />
             </a>
@@ -64,13 +64,13 @@
           </button>
         </div>
         <!-- We are excited to announce that we released Tiledesk V2 with powerful new feature. <br><br> -->
-        <div *ngIf="isVisibleV1L === true" style="margin:auto;width:350px; font-family: 'Montserrat', sans-serif; color:#fff; font-size:16px; line-height: 1.5em;
+        <!-- <div *ngIf="isVisibleV1L === true" style="margin:auto;width:350px; font-family: 'Montserrat', sans-serif; color:#fff; font-size:16px; line-height: 1.5em;
       font-weight: 400; letter-spacing: 2px;padding-top: 40px; text-align: center;">
 
           {{ 'IfYouWantToLoginToTheOldVersion' | translate}}
           <span style="text-decoration:underline; cursor: pointer;text-transform: lowercase;" (click)="goToTiledekV1()">
             {{'ClickHere' | translate}} </span>
-        </div>
+        </div> -->
 
         <div class="round-div"> </div>
 
@@ -212,13 +212,13 @@
             <!-- <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
         <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p> -->
 
-            <p *ngIf="isVisibleV1L === true" class="left-panel-gotov1-link"
+            <!-- <p *ngIf="isVisibleV1L === true" class="left-panel-gotov1-link"
               style="color: #666666; font-size: 1.1em; text-align: center; margin-top: 16px;">
               {{ "IfYouWantToLoginToTheOldVersion" | translate }}
               <span style="color: #03a5e8; cursor:pointer; text-transform: lowercase;" (click)="goToTiledekV1()">
                 {{ "ClickHere" | translate }}
               </span>
-            </p>
+            </p> -->
           </form>
         </div>
 

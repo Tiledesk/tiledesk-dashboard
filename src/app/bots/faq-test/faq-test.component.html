@@ -1,7 +1,9 @@
-<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+<!-- margin-top:6px; -->
+<div class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <!-- goBackToFaqKbList() -->
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
-  Bot Test 
+  <!-- Bot Test  -->
+  {{'Training' | translate}}
 </div>
 
 <div class="main-content" style="padding-top:0px">

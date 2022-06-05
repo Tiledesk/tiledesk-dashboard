@@ -34,7 +34,7 @@ export class TagsComponent implements OnInit, AfterViewInit {
   baseUrl: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   hasError = false;
-
+ 
   tagColor = [
     { name: 'red', hex: '#FF5C55' },
     { name: 'orange', hex: '#F89D34' },
@@ -44,6 +44,7 @@ export class TagsComponent implements OnInit, AfterViewInit {
     { name: 'violet', hex: '#CB80DD' },
   ];
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     public translate: TranslateService,
     private notify: NotifyService,
@@ -61,7 +62,15 @@ export class TagsComponent implements OnInit, AfterViewInit {
     this.translateNotificationMsgs();
     this.getImageStorage();
     this.listenSidebarIsOpened();
+    this.getBrowserVersion() 
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   } 
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {

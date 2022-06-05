@@ -132,7 +132,7 @@ input[type="text"] {
   color: #949597;
   font-size: 20px;
   margin-bottom: 0px;
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins", Arial, sans-serif;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -140,9 +140,9 @@ input[type="text"] {
 }
 
 .project-user-role {
-  font-size: 16px;
-  margin-top: 22px;
-  font-family: "Google Sans", sans-serif !important;
+  font-size: 14px;
+  margin-top: 11px;
+  font-family: "Poppins", Arial, sans-serif;
   color: #7695a5;
   text-transform: capitalize;
 }
@@ -421,7 +421,7 @@ input[type="text"] {
   margin-bottom: 0px;
   font-size: 16px;
   color: #3c4858;
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins", Arial, sans-serif;
   font-weight: 600;
 }
 .user-profile-email {
@@ -482,12 +482,10 @@ input[type="text"] {
 }
 
 .head-title {
-  // font-family: "Google Sans", sans-serif !important;
-  // margin-top: 95px;
-  // color: #f0806f;
+
   color: $brand-recent-project-text;
   margin-top: 25px;
-  // font-weight: 600;
+
 }
 
 .head-sub-title {
@@ -507,7 +505,7 @@ input[type="text"] {
   color: $brand-secodary;
   text-align: center;
   margin-bottom: 15px;
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins", Arial, sans-serif;
   font-weight: 400;
   font-size: 24px;
 }
@@ -540,6 +538,7 @@ input[type="text"] {
 .disabled-card-add-project {
   pointer-events: none;
   opacity: 0.6;
+  cursor: not-allowed;
 }
 
 // .loading {
@@ -556,6 +555,7 @@ input[type="text"] {
 .id-project {
   font-size: 12px !important;
   color: #7695a5;
+  margin-bottom: 5px;
 }
 
 // NOT USED
@@ -754,3 +754,27 @@ input[type="text"] {
 // ---------------------------------
 // TOOLTIP END
 // ---------------------------------
+
+// free #faba3e
+// pro  #3ea9f5
+// enterprise #6772e5
+.pro-badge {
+background-color: #3ea9f5;
+}
+.enterprise-badge {
+  background-color: #6772e5;
+}
+
+.free-badge {
+  background-color: #faba3e;
+}
+
+.project-plan-badge {
+  width: fit-content;
+  border-radius: 4px;
+  padding: 0px 5px;
+  color: #fff;
+  text-transform: capitalize;
+  font-size: 11px;
+  font-weight: 400;
+}

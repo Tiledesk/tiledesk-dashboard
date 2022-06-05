@@ -213,8 +213,8 @@
         </li>
       </ng-container>
 
-      <!-- Conversation list {{ 'Requests' | translate }} -->
-      <ng-container *ngIf="USER_ROLE !== 'agent'">
+      <!-- Conversation list {{ 'Requests' | translate }} *ngIf="USER_ROLE !== 'agent'" -->
+      <ng-container>
         <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
           matTooltip="Monitor" #tooltip="matTooltip" matTooltipPosition='right'
           matTooltipHideDelay="100" [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center;">

@@ -31,6 +31,8 @@ import { LoggerService } from '../../services/logger/logger.service';
 import 'firebase/database';
 import { ProjectService } from 'app/services/project.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { AppStoreService } from 'app/services/app-store.service';
+
 const swal = require('sweetalert');
 
 @Component({
@@ -45,8 +47,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   @ViewChild('scrollMe')
   private myScrollContainer: ElementRef;
 
+  @ViewChild('navbarBrand')
+  private navbarBrand: ElementRef;
+
   @ViewChild('openChatBtn')
   private openChatBtn: ElementRef;
+
+  @ViewChild('sendMessageTexarea') sendMessageTexarea: ElementRef;
 
   SERVER_BASE_PATH: string;
   CHAT_BASE_URL: string;
@@ -109,12 +116,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   contact_id: string; // Not yet used
   NODEJS_REQUEST_CNTCT_FOUND: boolean;
-  OPEN_RIGHT_SIDEBAR = false;
+  OPEN_RIGHT_SIDEBAR: boolean = false;
+  OPEN_APPS_RIGHT_SIDEBAR: boolean = false;
   selectedQuestion: string;
 
   id_request: string;
 
   train_bot_sidebar_height: any;
+  apps_sidebar_height: any;
   storageBucket: string;
   baseUrl: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
@@ -220,8 +229,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   tag_name: string;
   tag_selected_color = '#43B1F2';
   tag_new_selected_color: string;
- 
+  isChromeVerGreaterThan100: boolean;
+  DISPLAY_EDIT_FULLNAME_ICON: boolean = false
+  contactNewFirstName: string;
+  contactNewLastName: string;
+  contactNewEmail: string;
+  EMAIL_IS_VALID: boolean = true
+  chat_message: string;
   @ViewChild('Selecter') ngselect: NgSelectComponent;
+  // for accordion Contact conversations
+  contact_requests: any
+  pageNo = 0;
+  totalPagesNo_roundToUp: number;
+  displaysFooterPagination: boolean;
+  HAS_OPENED_APPS: boolean = false;
+
+
   /**
    * Constructor
    * @param router 
@@ -262,7 +285,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private tagsService: TagsService,
     public contactsService: ContactsService,
     public logger: LoggerService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    public appStoreService: AppStoreService,
+
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -272,7 +297,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   @ViewChild('cont') contEl: any;
- 
+
 
   // -----------------------------------------------------------------------------------------------------
   // @ HostListener window:resize
@@ -297,6 +322,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px';
       this.logger.log('[WS-REQUESTS-MSGS] - USER LIST MODAL - ON RESIZE -> users_list_modal_height', this.users_list_modal_height);
       this.train_bot_sidebar_height = elemMainContent.clientHeight + 'px';
+
+      this.apps_sidebar_height = elemMainContent.clientHeight + 60 + 'px';
+
       this.logger.log('[WS-REQUESTS-MSGS] - MODAL HEIGHT ', this.users_list_modal_height);
     }
 
@@ -304,7 +332,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // Right sidebar width on resize
     // ------------------------------
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
-    this.rightSidebarWidth = rightSidebar.offsetWidth
+    if (rightSidebar) {
+      this.rightSidebarWidth = rightSidebar.offsetWidth
+    }
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -324,15 +354,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getOSCODE();
     this.getFirebaseAuth();
     this.getBrowserLang();
-
+    this.getBrowserVersion()
 
   }
+
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+  }
+
   ngAfterViewInit() {
     // -----------------------------------
     // Right sidebar width after view init
     // -----------------------------------
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
-    this.rightSidebarWidth = rightSidebar.offsetWidth;
+    if (rightSidebar) {
+      this.rightSidebarWidth = rightSidebar.offsetWidth;
+    }
   }
 
   ngOnDestroy() {
@@ -646,8 +687,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.request = wsrequest;
 
         if (this.request) {
-          //  console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
-
+          this.logger.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+          if (this.request.lead) {
+            this.getContactRequests(this.request.lead._id)
+          }
           // -------------------------------------------------------------------
           // User Agent
           // -------------------------------------------------------------------
@@ -1109,11 +1152,95 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ * COMPLETE *')
       });
 
-
-
-
   }
 
+
+
+  decreasePageNumber() {
+    this.pageNo -= 1;
+
+    this.logger.log('[CONTACTS-DTLS] - DECREASE PAGE NUMBER ', this.pageNo);
+    this.getContactRequests(this.request.lead._id)
+  }
+
+  increasePageNumber() {
+    this.pageNo += 1;
+    this.logger.log('[CONTACTS-DTLS]  - INCREASE PAGE NUMBER ', this.pageNo);
+    this.getContactRequests(this.request.lead._id)
+  }
+
+  getContactRequests(lead_id) {
+    this.contactsService.getRequestsByRequesterId(lead_id, this.pageNo)
+
+      .subscribe((requests_object: any) => {
+
+        if (requests_object) {
+          this.logger.log('[WS-REQUESTS-MSGS]] - get CONTACT REQUESTS OBJECTS ', requests_object);
+          this.contact_requests = requests_object['requests'];
+          this.logger.log('[WS-REQUESTS-MSGS] - get CONTACT REQUESTS LIST (got by requester_id) ', this.contact_requests);
+
+          this.contact_requests = requests_object['requests'];
+
+
+          this.contact_requests.forEach(request => {
+            request.currentUserIsJoined = false;
+            this.logger.log('[WS-REQUESTS-MSGS] - CONTACT REQUEST ', request)
+            request.participants.forEach(p => {
+              this.logger.log('[WS-REQUESTS-MSGS] CONTACT REQUEST Participant ', p);
+              if (p === this.currentUserID) {
+                request.currentUserIsJoined = true;
+                return
+              }
+            })
+          });
+
+
+          const requestsCount = requests_object['count'];
+          this.logger.log('[WS-REQUESTS-MSGS] - CONTACT REQUESTS COUNT ', requestsCount);
+
+          this.displayHideFooterPagination(requestsCount);
+
+          const requestsPerPage = requests_object['perPage'];
+          this.logger.log('[WS-REQUESTS-MSGS]] - CONTACT N° OF REQUESTS X PAGE ', requestsPerPage);
+
+          const totalPagesNo = requestsCount / requestsPerPage;
+          this.logger.log('[WS-REQUESTS-MSGS] - CONTACT REQUESTS TOTAL PAGES NUMBER', totalPagesNo);
+
+          this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+          this.logger.log('[WS-REQUESTS-MSGS] - TOTAL PAGES NUMBER ROUND TO UP ', this.totalPagesNo_roundToUp);
+
+        }
+      }, (error) => {
+        this.showSpinner = false;
+        this.logger.error('[WS-REQUESTS-MSGS] - GET REQUEST BY REQUESTER ID - ERROR ', error);
+      }, () => {
+        this.showSpinner = false;
+        this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY REQUESTER ID * COMPLETE *');
+      });
+  }
+
+  displayHideFooterPagination(requests_count) {
+    // DISPLAY / HIDE PAGINATION IN THE FOOTER
+    if (requests_count >= 16) {
+      this.displaysFooterPagination = true;
+
+      this.logger.log('[CONTACTS-DTLS] ', requests_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+    } else {
+      this.displaysFooterPagination = false;
+
+      this.logger.log('[CONTACTS-DTLS] ', requests_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+    }
+  }
+
+
+  goToRequestMsgs(request_recipient: string) {
+    if (this.CHAT_PANEL_MODE === false) {
+      this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
+    } else  if (this.CHAT_PANEL_MODE === true)  {
+      const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
+      window.open(url, '_blank');
+    }
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Messages ws-subscription and get msgs from BS subscription
@@ -1408,7 +1535,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       const inputElm = <HTMLElement>document.querySelector('.tag-name-in-conv-detail');
       inputElm.blur();
       this.ngselect.close()
-     
+
     }
   }
 
@@ -1738,10 +1865,32 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
+
+
+  // ---------------------------------------------------------------------------------------
+  // @ Contact conversation accordion
+  // ---------------------------------------------------------------------------------------
+  openContactConversationAccordion() {
+    // var acc = document.getElementsByClassName("accordion");
+    var acc = <HTMLElement>document.querySelector('.contact-conversation-accordion');
+    // this.logger.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT - open attributes-decoded-jwt-accordion -  accordion elem ', acc);
+    acc.classList.toggle("active");
+    // var panel = acc.nextElementSibling ;
+    var panel = <HTMLElement>document.querySelector('.contact-conversation-accordion-panel')
+    // this.logger.log('WS-REQUESTS-MSGS - ATTRIBUTES DECODED JWT-  open attributes-decoded-jwt-panel  -  panel ', panel);
+
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  }
+
+
   // ------------------------------------------------
   // LISTEN TO SCROLL POSITION (CALLED FROM TEMPLATE)
   // ------------------------------------------------
-  onScroll(event: any): void {
+  onScrollMsgs(event: any): void {
     // this.logger.log('[WS-REQUESTS-MSGS] CALL ON SCROLL ')
     const scrollPosition = this.myScrollContainer.nativeElement.scrollTop;
 
@@ -1782,7 +1931,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     // this not works if is commented BUG RESOLVE
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
-    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px';
+
+
     this.logger.log('[WS-REQUESTS-MSGS] - REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
 
 
@@ -1796,14 +1947,32 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.train_bot_sidebar_top_pos = mainPanelScrollPosition + 'px'
   }
 
-
   handleCloseRightSidebar(event) {
     this.logger.log('[WS-REQUESTS-MSGS] - CLOSE RIGHT SIDEBAR ', event);
     this.OPEN_RIGHT_SIDEBAR = event;
-
-    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
   }
+
+  openAppsSidebar() {
+    this.OPEN_APPS_RIGHT_SIDEBAR = true;
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.apps_sidebar_height = elemMainContent.clientHeight + 60 + 'px'
+
+    this.logger.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.apps_sidebar_height);
+
+
+    if (this.CHAT_PANEL_MODE === false) {
+      this.navbarBrand.nativeElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+    } else {
+      this.appStoreService.hasOpenAppsSidebar(true)
+    }
+  }
+
+  handleCloseAppsRightSidebar(event) {
+    this.logger.log('[WS-REQUESTS-MSGS] - CLOSE APPS RIGHT SIDEBAR ', event);
+    this.OPEN_APPS_RIGHT_SIDEBAR = event;
+  }
+
+
 
 
 
@@ -2530,14 +2699,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         let botType = ''
         if (bot.type === 'internal') {
+
           botType = 'native'
+          if (this.CURRENT_USER_ROLE !== 'agent') {
+            this.router.navigate(['project/' + this.id_project + '/bots/intents/', id_bot, botType]);
+          }
         } else {
+          if (this.CURRENT_USER_ROLE !== 'agent') {
+            this.router.navigate(['project/' + this.id_project + '/bots', id_bot, botType]);
+          }
           botType = bot.type
         }
 
-        if (this.CURRENT_USER_ROLE !== 'agent') {
-          this.router.navigate(['project/' + this.id_project + '/bots', id_bot, botType]);
-        }
+
       } else {
         // this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
         this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
@@ -2738,6 +2912,176 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.priority_update_failed = text;
       });
   }
+
+
+
+  openDropDown() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
+    this.logger.log('openDropDown ', elemDropDown)
+    elemDropDown.classList.add("dropdown__menu--active");
+    this.contactNewFirstName = undefined;
+    this.contactNewLastName = undefined;
+  }
+
+  openDropDownEditEmail() {
+    const elemDropDownEditEmail = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
+    this.logger.log('elemDropDownEditEmail ', elemDropDownEditEmail)
+    elemDropDownEditEmail.classList.add("dropdown__menu_edit_email--active");
+    this.contactNewEmail = undefined;
+  }
+
+  closeDropdown() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
+    elemDropDown.classList.remove("dropdown__menu--active");
+  }
+
+  closeDropdownEditEmail() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
+    elemDropDown.classList.remove("dropdown__menu_edit_email--active");
+  }
+
+  updateContactEmail() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
+    elemDropDown.classList.remove("dropdown__menu_edit_email--active");
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewEmail', this.contactNewEmail)
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  request', this.request)
+    this.request.lead.email = this.contactNewEmail
+
+    this.updateContactemail(this.request.lead._id, this.contactNewEmail);
+  }
+
+  emailChange(event) {
+    this.EMAIL_IS_VALID = this.validateEmail(event)
+  }
+
+
+  validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    return re.test(String(email).toLowerCase());
+  }
+
+  updateContactFullName() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
+    elemDropDown.classList.remove("dropdown__menu--active");
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewFirstName', this.contactNewFirstName)
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewLastName', this.contactNewLastName)
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  request', this.request)
+    // request?.lead?.fullname
+    if (this.contactNewFirstName && !this.contactNewLastName) {
+
+      const lead_fullname = this.contactNewFirstName
+      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase only contactNewFirstName - lead_fullname', lead_fullname)
+      this._createRequesterAvatar(lead_fullname)
+
+      this.request.lead.fullname = lead_fullname
+      this.updateContactName(this.request.lead._id, lead_fullname);
+    } else if (this.contactNewFirstName && this.contactNewLastName) {
+
+      const lead_fullname = this.contactNewFirstName + ' ' + this.contactNewLastName
+      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase  contactNewFirstName & contactNewLastName - lead_fullname', lead_fullname)
+      this.request.lead.fullname = lead_fullname
+      this._createRequesterAvatar(lead_fullname)
+      this.updateContactName(this.request.lead._id, lead_fullname);
+    }
+  }
+  _createRequesterAvatar(lead_fullname) {
+    if (lead_fullname) {
+      this.requester_fullname_initial = avatarPlaceholder(lead_fullname);
+      this.fillColour = getColorBck(lead_fullname)
+    } else {
+
+      this.requester_fullname_initial = 'N/A';
+      this.fillColour = 'rgb(98, 100, 167)';
+    }
+
+  }
+
+  updateContactName(lead_id, lead_fullname) {
+    this.contactsService.updateLeadFullname(lead_id, lead_fullname)
+      .subscribe((contact) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATED CONTACT ', contact);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('Contact successfully updated', 2, 'done')
+      });
+  }
+
+  updateContactemail(lead_id, lead_email) {
+    this.contactsService.updateLeadEmail(lead_id, lead_email)
+      .subscribe((contact) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATED CONTACT ', contact);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('Contact successfully updated', 2, 'done')
+      });
+  }
+
+  sendChatMessage() {
+
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
+    this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message)
+      .subscribe((msg) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE * COMPLETE *');
+        this.chat_message = undefined;
+        this.sendMessageTexarea.nativeElement.style.height = null
+      });
+  }
+
+  onKeydownEnter(e: any) {
+    console.log("[WS-REQUESTS-MSGS] - returnChangeTextArea - onKeydown in MSG-TEXT-AREA event", e)
+   
+    e.preventDefault(); // Prevent press enter from creating new line 
+    if(this.chat_message && this.chat_message.length > 0){
+      this.sendChatMessage()
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+
+    // Note: on mac keyboard "metakey" matches "cmd"
+    if (event.key === 'Enter' && event.altKey || event.key === 'Enter' && event.ctrlKey || event.key === 'Enter' && event.metaKey) {
+      console.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
+      if (this.chat_message !== undefined && this.chat_message.trim() !== '') {
+      //  console.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
+        this.chat_message = this.chat_message + "\r\n"
+      }
+    }
+    // offsetHeight
+    console.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement', this.sendMessageTexarea.nativeElement) 
+    console.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight) 
+    // console.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.offsetHeight', this.sendMessageTexarea.nativeElement.offsetHeight)
+    // this.sendMessageTexarea.nativeElement.style.height = 'auto';
+    
+    this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`; 
+
+ 
+    // const sendMessageTexareaEl = <HTMLElement>document.querySelector('.send-message-texarea');
+    // console.log('[WS-REQUESTS-MSGS] sendMessageTexareaEl', sendMessageTexareaEl) 
+    // this.sendMessageTexarea.nativeElement.style.height = 'auto';
+
+  }
+
+
+
 
 
   // NO MORE USED - REPLACED BY getProjectUsersAndBots

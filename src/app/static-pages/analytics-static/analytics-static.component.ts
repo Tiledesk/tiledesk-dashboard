@@ -38,7 +38,7 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
   USER_ROLE: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
-
+  isChromeVerGreaterThan100:boolean;
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -58,7 +58,15 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
 
     this.getProjectUserRole();
     this.getTranslationStrings();
+    this.getBrowserVersion();
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;

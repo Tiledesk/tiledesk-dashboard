@@ -480,7 +480,7 @@ export class RichiesteComponent implements OnInit {
             //ctx.fillStyle = 'red'; // your color here
             ctx.height = 128
             //chartInstance.chart.canvas.parentNode.style.height = '128px';
-            ctx.font = "Google Sans"
+            ctx.font = "Poppins"
 
             var chartArea = chartInstance.chartArea;
             //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
@@ -742,7 +742,7 @@ export class RichiesteComponent implements OnInit {
               //ctx.fillStyle = 'red'; // your color here
               ctx.height = 128
               //chartInstance.chart.canvas.parentNode.style.height = '128px';
-              ctx.font = "Google Sans"
+              ctx.font = "Poppins"
 
               var chartArea = chartInstance.chartArea;
               //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);

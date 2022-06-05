@@ -16,7 +16,41 @@
     <table class="table table-hover unserved_requests_table">
       <thead class="text">
         <tr>
-          <th></th>
+
+          <!-- ----------------------------------------------- -->
+          <!-- Checkbox -->
+          <!-- ----------------------------------------------- -->
+          <th style="width: 46px;
+          text-align: right;
+          padding-right: 3px;
+          padding-bottom: 4px !important;">
+
+            <label for="allCheckbox">
+              <input id="allCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
+                type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
+                (click)="selectAll($event)">
+            </label>
+
+
+          </th>
+
+
+
+          <!-- --------------------------------------------------------- -->
+          <!-- Requests Icons th (in this th put the button to archive -->
+          <!-- ---------------------------------------------------------- -->
+          <th style="padding-top: 6px;padding-bottom: 6px !important;">
+            <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn" type="button"
+              (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
+              matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+              matTooltipHideDelay="100">
+
+              <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;">
+                archive
+              </span>
+            </button>
+
+          </th>
 
           <!-- ------------------- -->
           <!-- MESSAGE -->
@@ -83,7 +117,7 @@
         <!-- ------------------------ -->
         <tr *ngIf="wsRequestsUnserved?.length === 0">
           <!-- <tr *ngIf="displayNoRequestString"> -->
-          <td colspan="8" style="text-align: center; padding-top: 16px;">
+          <td colspan="9" style="text-align: center; padding-top: 16px;">
             <p style="font-size:1em; color:#737376; font-weight: 100">
               {{ 'NoRequests' | translate }}
             </p>
@@ -96,6 +130,19 @@
         <!-- ------------------------- -->
         <tr *ngFor="let request of wsRequestsUnserved; trackBy: trackByFn; let i= index">
 
+          <!-- ------------------------------------------------------------------------------------------------------ -->
+          <!-- Checkbox -->
+          <!-- ------------------------------------------------------------------------------------------------------ -->
+          <td style="text-align:center; white-space: nowrap; width: 1%;">
+            <div class="checkbox">
+              <label>
+                <!-- allChecked === true -->
+                <input type="checkbox" class="form-check-input" [checked]="request?.isSelected"
+                  style="width: 16px;height: 16px;" value="{{ request.request_id }}" (click)="change(request)"
+                  [disabled]="ROLE_IS_AGENT === true">
+              </label>
+            </div>
+          </td>
 
           <!-- -------------------------------------------------------------------------------- -->
           <!-- VISIBILITY ICON -->
@@ -108,7 +155,12 @@
             <div *ngIf="request?.status === 100 && !request?.subject" style="position: relative;">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-                <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid">
+                <img style="width: 30px;" src="assets/img/request_icons/status100.svg" class="img-fluid"
+                  matTooltipClass="mat-white-tooltip" 
+                  matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}"
+                  #tooltip="matTooltip" 
+                  matTooltipPosition='right' 
+                  matTooltipHideDelay="100">
 
                 <div class="abandoned_chat-badge-wpr" (click)="$event.stopPropagation();toggleTooltip(i)"
                   *ngIf="request?.attributes?.last_abandoned_by_project_user_array?.length > 0 ">
@@ -131,7 +183,8 @@
                       <div *ngIf="request.attributes.last_abandoned_by_project_user_array[0].has_image === true">
                         <div class="pu-user-avatar-wpr white___tooltip"
                           style="width: 24px !important;height: 24px !important;">
-                          <img style="width: 24px !important;height: 24px !important; border-radius: 50%; object-fit: cover;"
+                          <img
+                            style="width: 24px !important;height: 24px !important; border-radius: 50%; object-fit: cover;"
                             src={{request.attributes.last_abandoned_by_project_user_array[0].img_url}} />
 
                           <div class="pu-user-name-wpr white___tooltiptext" style="white-space: nowrap;">
@@ -175,8 +228,8 @@
                               class="served-by-desktop-c-in-tooltip white___tooltip">
                               <div class="served-by-desktop-d-in-tooltip">
                                 <div class="served-by-desktop-e-in-tooltip">
-                                  <img *ngIf="agent.has_image"
-                                    src={{agent.img_url}} alt="" onerror="this.src='assets/img/no_image_user.png'">
+                                  <img *ngIf="agent.has_image" src={{agent.img_url}} alt=""
+                                    onerror="this.src='assets/img/no_image_user.png'">
 
                                   <div *ngIf="!agent.has_image" class="avatar-when-not-has-image"
                                     [ngStyle]="{'background-color': agent?.fillColour }">
@@ -210,7 +263,13 @@
             <!-- ------------------------------------------------------------------------------------------------------  -->
             <div *ngIf="request?.status === 100 && request?.subject" style="position: relative;">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid">
+
+                <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}" #tooltip="matTooltip"
+                  matTooltipPosition='right'
+                  matTooltipHideDelay="100">
+
                 <div class="abandoned_chat-badge-wpr" (click)="$event.stopPropagation();toggleTooltip(i)"
                   *ngIf="request?.attributes?.last_abandoned_by_project_user_array?.length > 0 ">
                   <span class="tool_tip">
@@ -272,8 +331,8 @@
                               class="served-by-desktop-c-in-tooltip white___tooltip">
                               <div class="served-by-desktop-d-in-tooltip">
                                 <div class="served-by-desktop-e-in-tooltip">
-                                  <img *ngIf="agent.has_image"
-                                    src={{agent.img_url}} alt="" onerror="this.src='assets/img/no_image_user.png'">
+                                  <img *ngIf="agent.has_image" src={{agent.img_url}} alt=""
+                                    onerror="this.src='assets/img/no_image_user.png'">
 
                                   <div *ngIf="!agent.has_image" class="avatar-when-not-has-image"
                                     [ngStyle]="{'background-color': agent?.fillColour }">
@@ -309,8 +368,16 @@
           <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
             style="cursor:pointer; width: 215px;">
             <!-- [innerHTML]="getRequestText(request?.first_text)" -->
+
+            <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
+              matTooltipClass="mat-white-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
+              matTooltipPosition='right' matTooltipHideDelay="100">
+              #{{request?.ticket_id }}
+            </span>
+
             <p class="column-td" rel="tooltip" title="{{ request?._id }}"
               style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
+
               {{ request?.first_text }}
             </p>
 
@@ -543,7 +610,7 @@
             <!-- REQUESTER VERIFIED ICON (UNSERVED REQUEST SECTION)-->
             <!-- [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" -->
             <span class="requester-avatar-wrapper">
-              <span class="requester-avatar" 
+              <span class="requester-avatar"
                 [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
                 [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname,  requester_avatar_not_has_email: !request?.lead?.email }">
                 <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>

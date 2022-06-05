@@ -33,7 +33,7 @@ export class SmtpSettingsComponent implements OnInit {
   public cancelMsg: string;
   public authenticationFailedMsg: string;
   public anErrorHasOccurredMsg: string;
-
+  isChromeVerGreaterThan100: boolean
   constructor(
     public projectService: ProjectService,
     private auth: AuthService,
@@ -46,7 +46,15 @@ export class SmtpSettingsComponent implements OnInit {
   ngOnInit() {
     this.subscribeToCurrentProjectAndGetProjectById();
     this.getTranslations();
+    this.getBrowserVersion()
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
 
   getTranslations() {

@@ -33,6 +33,7 @@ import {
   URL_dialogflow_connector
 } from '../../utils/util';
 
+
 const swal = require('sweetalert');
 // import $ = require('jquery');
 // declare const $: any;
@@ -137,7 +138,10 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   WEBHOOK_URL_IS_VALID: boolean;
   WEBHOOK_URL_HAS_ERROR: boolean;
 
-  display_intent_name_in_table: boolean = false;
+  display_intent_name_in_table: boolean = true;
+  display_message_in_table: boolean = false;
+  display_questions_in_table: boolean = true;
+  display_answer_in_table: boolean = true;
   display_topic_in_table: boolean = false;
   previousUrl: string;
   currentUrl: string;
@@ -163,9 +167,18 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   botDefaultSelectedLang: any
   language: string;
   payIsVisible: boolean;
+  pageNo = 0;
+  has_searched: boolean = false;
+  totalPagesNo_roundToUp: number;
+  totalPagesAfterSearchNo_roundToUp: number;
+  faqPerPageLimit: number = 10;
+  fullText: string;
+  fullText_temp: string;
+  queryString: string;
+  paginated_answers_count: number;
 
   @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
-
+  isChromeVerGreaterThan100:boolean;
   constructor(
     private faqService: FaqService,
     private router: Router,
@@ -220,8 +233,15 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.getTranslations();
 
     this.getDeptsByProjectId();
-
+    this.getBrowserVersion();
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
+     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+   }
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
     this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
@@ -361,6 +381,17 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.logger.log('[FAQ-COMP] check value display_intent_name_in_table', this.display_intent_name_in_table)
   }
 
+  checkValueMessage($event) {
+    this.logger.log('[FAQ-COMP] check value display_message_in_table', this.display_message_in_table)
+  }
+  checkQuestions($event) {
+    this.logger.log('[FAQ-COMP] check value display_questions_in_table', this.display_questions_in_table)
+  }
+
+  checkAnswer($event) {
+    this.logger.log('[FAQ-COMP] check value display_answer_in_table', this.display_answer_in_table)
+  }
+
 
   checkValueTopic(event: any) {
     this.logger.log('[FAQ-COMP] check value display_topic_in_table', this.display_topic_in_table)
@@ -440,7 +471,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         this.checkBotImageExistOnNative();
       }
       this.getFaqKbById();
-      this.getFaqByFaqKbIdAndRepliesCount();
+      this.getAllFaqByFaqKbId();
+      this.getPaginatedFaqByFaqKbIdAndRepliesCount()
       this.getDeptsByProjectId();
     }
   }
@@ -1172,17 +1204,123 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
 
 
-
   // -----------------------------------------------------------------------------------------
   // GET ONLY THE FAQ WITH THE FAQ-KB ID PASSED FROM FAQ-KB COMPONENT & THEN GET REPLIES COUNT
   // -----------------------------------------------------------------------------------------
-  getFaqByFaqKbIdAndRepliesCount() {
-    this.faqService.getFaqByFaqKbId(this.id_faq_kb).subscribe((faq: any) => {
+  getAllFaqByFaqKbId() {
+    this.faqService.getAllFaqByFaqKbId(this.id_faq_kb).subscribe((faq: any) => {
       this.logger.log('[FAQ-COMP] - GET FAQS', faq);
-      this.faq = faq;
+      // this.faq = faq;
 
       if (faq) {
-        this.faq_lenght = faq.length
+
+        if (this.has_searched === false) {
+          this.faq_lenght = faq.length
+          const totalPagesNo = faq.length / this.faqPerPageLimit;
+          this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+        }
+        // this.faqService.getCountOfFaqReplies(this.id_faq_kb).subscribe((res: any) => {
+        //   this.logger.log("[FAQ-COMP] REPLIES COUNT RESPONSE: ", res);
+
+        //   for (let fq of this.faq) {
+        //     this.logger.log("[FAQ-COMP] FQ id: ", fq._id)
+        //     let reply: any;
+        //     for (reply of res) {
+        //       // this.logger.log("REPLY id: ", reply._id._answerid)
+        //       if (fq._id == reply._id._answerid) {
+        //         this.logger.log("[FAQ-COMP] RES count: ", reply.count);
+        //         fq['message_count'] = reply.count;
+        //         this.logger.log("[FAQ-COMP] MESSAGE COUNT: ", fq['message_count'])
+        //       }
+        //     }
+        //   }
+        // })
+      }
+    }, (error) => {
+      this.logger.log('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - ERR ', error);
+    }, () => {
+      this.logger.log('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
+    });
+  }
+
+  fulltextChange($event) {
+    this.logger.log('[FAQ-COMP] - fulltextChange ', $event);
+    this.fullText = $event
+    this.logger.log('[FAQ-COMP] - fulltextChange  $event length', $event.length);
+    if ($event.length === 0) {
+      this.queryString = undefined;
+      this.has_searched = false;
+      this.getPaginatedFaqByFaqKbIdAndRepliesCount();
+      this.getAllFaqByFaqKbId()
+    }
+  }
+
+  clearFullText() {
+    this.fullText = '';
+    this.queryString = undefined;
+    this.has_searched = false;
+    this.getPaginatedFaqByFaqKbIdAndRepliesCount();
+    this.getAllFaqByFaqKbId()
+  }
+
+  searchOnEnterPressed(event: any) {
+    this.logger.log('searchOnEnterPressed event', event);
+    if (event.key === "Enter") {
+      this.search()
+    }
+  }
+
+  search() {
+    this.pageNo = 0
+    if (this.fullText && this.fullText.length > 0) {
+      this.has_searched = true;
+      this.queryString = this.fullText;
+    }
+    // else {
+    //   console.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.fullText);
+    //   this.fullText_temp = '';
+    // }
+
+    // this.queryString = this.fullText_temp
+    this.logger.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.queryString)
+    this.getPaginatedFaqByFaqKbIdAndRepliesCount();
+    this.getAllSearcedFaq()
+  }
+
+
+  // ------------------------------------------------------------------------------
+  // PAGINATION
+  // ------------------------------------------------------------------------------
+  decreasePageNumber() {
+    this.pageNo -= 1;
+    this.logger.log('[FAQ-COMP] - DECREASE PAGE NUMBER ', this.pageNo);
+    this.getPaginatedFaqByFaqKbIdAndRepliesCount()
+  }
+
+  increasePageNumber() {
+    this.pageNo += 1;
+    this.logger.log('[FAQ-COMP] - INCREASE PAGE NUMBER ', this.pageNo);
+    this.getPaginatedFaqByFaqKbIdAndRepliesCount()
+  }
+
+  // -----------------------------------------------------------------------------------------
+  // GET PAGINATED FAQS
+  // -----------------------------------------------------------------------------------------
+  getPaginatedFaqByFaqKbIdAndRepliesCount() {
+    this.showSpinner = true;
+    this.faqService.getPaginatedFaqByFaqKbId(this.id_faq_kb, this.pageNo, this.faqPerPageLimit, this.queryString).subscribe((faq: any) => {
+      this.logger.log('[FAQ-COMP] - GET Paginated FAQS', faq);
+      
+
+      if (faq) {
+        this.faq = faq;
+        this.paginated_answers_count = faq.length
+        // if (this.has_searched === true) {
+        //   this.faq_lenght = faq.length
+        //   const totalPagesNo = faq.length / this.faqPerPageLimit;
+        //   this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+        // }
+        // this.faq_lenght = faq.length
         // in aggiornamento
         this.faqService.getCountOfFaqReplies(this.id_faq_kb).subscribe((res: any) => {
           this.logger.log("[FAQ-COMP] REPLIES COUNT RESPONSE: ", res);
@@ -1211,6 +1349,37 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.logger.log('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }
+
+// -----------------------------------------------------------------------------------------
+  // GET ALL serched faq
+  // -----------------------------------------------------------------------------------------
+  getAllSearcedFaq() {
+
+    this.faqService.getCountOfAllSearcedFaq(this.id_faq_kb, this.queryString).subscribe((faq: any) => {
+      this.logger.log('[FAQ-COMP] - GET ALL SEARCHED FAQS', faq);
+      // this.faq = faq;
+
+      if (faq) {
+        // this.paginated_answers_count = faq.length
+        if (this.has_searched === true) {
+          this.faq_lenght = faq.length
+          const totalPagesNo = faq.length / this.faqPerPageLimit;
+          this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+        }
+        // this.faq_lenght = faq.length
+   
+      }
+    }, (error) => {
+    
+      this.logger.error('[FAQ-COMP] >> GET ALL SEARCHED FAQS - ERROR', error);
+    }, () => {
+   
+      this.logger.log('[FAQ-COMP] >> GET ALL SEARCHED FAQS - COMPLETE');
+    });
+
+  } 
+
+
 
   exportFaqsToCsv() {
     // tslint:disable-next-line:max-line-length

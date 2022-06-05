@@ -1,5 +1,6 @@
 <!-- NEW FOR THIS TEMPLATE -->
-<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+<!-- margin-top:6px; -->
+<div class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <!-- goBack() -->
   <!-- goBackToFaqList() -->
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
@@ -7,11 +8,11 @@
   </i>
   <span *ngIf="CREATE_VIEW">
     <!-- Aggiungi FAQ -->
-    {{ "FaqEditAddPage.AddFaq" | translate }}
+    {{ "AddIntent" | translate }}
   </span>
   <span *ngIf="EDIT_VIEW">
     <!-- Modifica FAQ -->
-    {{ "FaqEditAddPage.EditFaq" | translate }}
+    {{ "EditIntent" | translate }}
   </span>
 </div>
 
@@ -32,7 +33,7 @@
               <div class="col-sm-12 col-md-12">
                 <h3 class="card_title__underlined">
                   <span class="card_title__underline">
-                    {{ "FaqEditAddPage.Answer" | translate }}
+                    Intent
                   </span>
                 </h3>
               </div>
@@ -46,7 +47,7 @@
               {{'IntentName' | translate}} <span style="color:#ff5252">*</span>
             </label>
             <div class="col-sm-12">
-              <input id="intent-name" name="intent-name" [(ngModel)]="intent_name" class="input" type="text"
+              <input id="intent-name" name="intent-name" [(ngModel)]="intent_name" class="input" type="text" autocomplete="off"
                 style="margin-bottom: 3px;" placeholder="{{'EnterIntentName' | translate}}">
             </div>
 
@@ -123,7 +124,7 @@
               <button class="btn btn-primary pull-right create-answer-btn"
                 [disabled]="question?.length < 2 || answer?.length < 2 || intent_name?.length < 1" (click)="create()">
                 <!-- Crea FAQ  -->
-                {{ "FaqEditAddPage.CreateFaq" | translate }}
+                {{ "AddIntent" | translate }}
               </button>
             </div>
 
@@ -143,7 +144,7 @@
               <div class="col-sm-12 col-md-12">
                 <h3 class="card_title__underlined">
                   <span class="card_title__underline">
-                    {{ "FaqEditAddPage.Answer" | translate }}
+                    Intent
                   </span>
                 </h3>
               </div>
@@ -234,11 +235,11 @@
               <button class="btn btn-primary pull-right update-answer-btn" (click)="edit()"
                 [disabled]="question_toUpdate?.length < 2 || answer_toUpdate?.length < 2 || intent_name?.length < 1">
 
-                {{ "FaqEditAddPage.UpdateFaq" | translate }}
+                {{ "UpdateIntent" | translate }}
               </button>
               <button class="btn btn-danger pull-right delete-answer-btn" (click)='presentSwalModalDeleteFaq()'
                 style="margin-right: 8px;">
-                {{ 'FaqPage.DeleteFaq' | translate }}
+                {{ 'DeleteIntent' | translate }}
               </button>
             </div>
 

@@ -28,7 +28,39 @@
       <thead class="text">
         <tr>
           <!-- <th></th> -->
-          <th></th>
+
+          <!-- ----------------------------------------------- -->
+          <!-- Checkbox -->
+          <!-- ----------------------------------------------- -->
+          <th style="width: 46px;
+          text-align: right;
+          padding-right: 3px;
+          padding-bottom: 4px !important;">
+     
+              <label for="allServedCheckbox">
+                <input id="allServedCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
+                  type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
+                  (click)="selectAll($event)">
+              </label>
+            
+
+          </th>
+
+          <!-- --------------------------------------------------------- -->
+          <!-- Requests Icons th (in this th put the button to archive -->
+          <!-- ---------------------------------------------------------- -->
+          <th style="padding-top: 6px;padding-bottom: 6px !important;">
+            <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn tool_tip" type="button" 
+            (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
+            matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+
+            <span class="material-icons archive-icon"
+              style="vertical-align:middle; cursor: pointer; color:grey;">
+              archive
+            </span>
+          </button>
+
+          </th>
 
           <!-- ====== SERVED REQUETS ID ===== -->
           <!-- <th>
@@ -119,7 +151,7 @@
         <!-- IF THERE ISN'T SERVED REQUEST -->
         <!-- ------------------------------------------------------------ -->
         <tr *ngIf="wsRequestsServed?.length === 0">
-          <td colspan="9" style="text-align: center; padding-top: 16px;">
+          <td colspan="10" style="text-align: center; padding-top: 16px;">
             <p style="font-size:1em; color:#737376; font-weight: 100">
 
               {{ 'NoRequests' | translate }}
@@ -128,18 +160,24 @@
         </tr>
 
         <!-- ------------------------------ -->
-        <!-- SERVED FOR -->
+        <!-- CONVS SERVED FOR -->
         <!-- ------------------------------ -->
         <tr *ngFor="let request of wsRequestsServed; trackBy: trackByFn">
 
-          <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
-        THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
-          <!-- <td>
-          <span *ngIf="request?.currentUserIsJoined === true"> 
-            J
-          </span>
-        </td> -->
-
+          <!-- ------------------------------------------------------------------------------------------------------ -->
+          <!-- Checkbox -->
+          <!-- ------------------------------------------------------------------------------------------------------ -->
+          <td style="text-align:center; white-space: nowrap; width: 1%;">
+            <div class="checkbox">
+              <label>
+                <!-- allChecked === true -->
+                <input type="checkbox" class="form-check-input" [checked]="request?.isSelected"
+                  style="width: 16px;height: 16px;" value="{{ request.request_id }}"
+                  (click)="change(request)"
+                  [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
+              </label>
+            </div>
+          </td>
 
           <!-- ------------------------------------------------------------------------------------------------------ -->
           <!-- ICONS -->
@@ -149,12 +187,15 @@
 
             <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
             THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
+            <!-- rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}" -->
             <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
-              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
+              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
 
                 <span *ngIf="!request?.subject">
-                  <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid">
+                  <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid"
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
+                  #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                 </span>
 
                 <!-- --------------------------------- -->
@@ -162,7 +203,10 @@
                 <!-- --------------------------------- -->
                 <span *ngIf="request?.subject">
                   <img style="width: 30px;" src="assets/img/request_icons/status200_joined_internal.svg"
-                    class="img-fluid">
+                    class="img-fluid"  
+                    matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">
 
                 </span>
               </span>
@@ -172,12 +216,15 @@
             <!--  IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN -->
             <!--  THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
             <!-- ------------------------------------------------------------------------------------------------------ -->
+            <!-- rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}" -->
             <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined">
-              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
+              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                 <span *ngIf="!request?.subject">
-                  <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg" class="img-fluid">
+                  <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg" class="img-fluid" 
+                  matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
+                  matTooltipPosition='right' matTooltipHideDelay="100">
 
                 </span>
 
@@ -188,7 +235,10 @@
                 <span *ngIf="request?.subject">
 
                   <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
-                    class="img-fluid">
+                    class="img-fluid" 
+                    matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                 </span>
 
               </span>
@@ -196,17 +246,22 @@
           </td>
 
           <!-- ------------------------------------------------------------------------------------------------------ -->
-          <!-- Message -->
+          <!-- Message has-details -->
           <!-- ------------------------------------------------------------------------------------------------------ -->
-          <td class="td-first-text" [ngClass]="{'padding_5' : request?.tags?.length > 0}"
-            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; width: 215px;">
-            <!-- max-width: 400px -->
-            <!-- [innerHTML]="getRequestText(request?.first_text)" -->
-            <!-- [innerHTML]="getRequestText(request?.first_text)  | marked | sanitizeHtml" -->
+          <td class="td-first-text " [ngClass]="{'padding_5' : request?.tags?.length > 0}"
+            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; width: 215px;" >
+            <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
+              matTooltipClass="mat-white-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
+              matTooltipPosition='right' matTooltipHideDelay="100">
+              #{{request?.ticket_id }}
+            </span>
             <p class="column-td"
-              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
-              <!-- {{ request?.text }} -->
+              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;" 
+              tooltip="<p  class='ng2-tooltip-subject' *ngIf='request?.subject'>{{request?.subject}}</p> <p class='ng2-tooltip-firt-text'>{{request?.first_text}}</p> <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>  <hr class='ng2-tooltip-divider-line'> <div class='ng2-latest-comment-sender-and-date-wpr'> <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p> <p class='ng2-comment-date'>  {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p> </div> <p class='ng2-latest-comment'>  {{ request?.msgsArray[0]?.text}} </p> ">
+          
               {{ request?.first_text }}
+
+          
             </p>
 
 
@@ -288,7 +343,14 @@
                 </a>
                </div> -->
             </section>
+
+            <!-- <span class="details">more info here</span> -->
+         
           </td>
+
+          <!-- <ng-template #HtmlContent>
+            <p>Hello i'm a <strong>bold</strong> text!</p>
+          </ng-template> -->
 
           <!-- ---------------------------------------- -->
           <!-- @ Priority & Message Channel  -->
@@ -789,12 +851,15 @@
                     </div>
 
                     <span
-                      style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
+                      style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap; text-align: center;"
                       class="top">
                       <span style="text-transform: capitalize;"> {{ agent?.firstname }}
                         <span *ngIf="agent?.lastname">
                           {{ agent?.lastname | slice:0:1 }}.
                         </span>
+                        <!-- <span style="display: block; font-weight: 300;font-size: 10px; text-transform: lowercase" *ngIf="agent._id === currentUserID">
+                         ({{'AssignedToYou'|translate}}) 
+                        </span> -->
 
                       </span>
                       <i></i>

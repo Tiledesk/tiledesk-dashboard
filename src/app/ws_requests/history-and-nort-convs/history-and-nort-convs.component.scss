@@ -26,7 +26,7 @@ input[type="text"] {
 }
 
 .table-header-option {
-  width: 6%;
+  // width: 6%;
 }
 // to here
 
@@ -332,6 +332,7 @@ p.member:hover {
   border: 1px solid #eee;
   margin-top: 1px;
   margin-bottom: 1px;
+  object-fit: cover;
 }
 
 .served-by-bot-type-logo {
@@ -550,7 +551,8 @@ p.member:hover {
 .input-group:focus-within {
   // background: white;
   // box-shadow: 1px 3px 20px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  border: 0.1px solid white;
+  // border: 0.1px solid white;
+  border: 1px solid #d9d9d9;
   background: rgba(255, 255, 255, 1);
   // border: 1px solid transparent;
   // -webkit-box-shadow: 0 1px 1px 0 rgba(65, 69, 73, 0.3), 0 1px 3px 1px rgba(65, 69, 73, 0.15);
@@ -580,7 +582,7 @@ p.member:hover {
 }
 
 .customh4 {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   font-size: 16px;
   font-weight: 400;
   //    color: #394f5a !important;
@@ -708,7 +710,7 @@ p.member:hover {
   background-color: #e8f0fe;
   color: #1a73e8;
   padding: 6px 12px;
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   border-radius: 10px;
   font-weight: 500;
   height: 32px;
@@ -721,7 +723,7 @@ p.member:hover {
 
   color: #353f45;
   padding: 6px 12px;
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   border-radius: 10px;
   font-weight: 500;
   height: 32px;
@@ -735,7 +737,7 @@ p.member:hover {
 
   color: #353f45;
   padding: 6px 12px;
-  font-family: "Google Sans", sans-serif !important;
+  font-family: "Poppins";
   border-radius: 10px;
   font-weight: 500;
   height: 32px;
@@ -810,4 +812,41 @@ p.member:hover {
   to {
     width: 20px;    
   }
+}
+
+
+.ticket-id-badge {
+  float: left;
+  background-color: #e8e8e8;
+  color: #737376;
+  font-size: 11px;
+  font-weight: 500;
+  min-width: 20px;
+  text-align: center;
+  position: relative;
+  top: 1px;
+  border-radius: 4px;
+  margin-right: 3px;
+  padding: 0px 2px;
+}
+
+::ng-deep .convs-custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 11px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins" !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+::ng-deep .mat-white-tooltip {
+  background-color: #fff !important;
+  font-size: 11px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins" !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  border: 1px solid #ccc;
+  color:#000 !important ;
+  font-weight: 400 !important ;
 }
