@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.35.2
+- Enhances the text area for sending messages on the conversation detail page
+
 ### 2.2.35.1
 - Add 'hover' style rules to the buttons on app store page
 - Opens the contacts conversations available in the "conversation info" sidebar in a new tab
