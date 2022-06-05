@@ -53,6 +53,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   @ViewChild('openChatBtn')
   private openChatBtn: ElementRef;
 
+  @ViewChild('sendMessageTexarea') sendMessageTexarea: ElementRef;
+
   SERVER_BASE_PATH: string;
   CHAT_BASE_URL: string;
 
@@ -3039,7 +3041,43 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE * COMPLETE *');
         this.chat_message = undefined;
+        this.sendMessageTexarea.nativeElement.style.height = null
       });
+  }
+
+  onKeydownEnter(e: any) {
+    console.log("[WS-REQUESTS-MSGS] - returnChangeTextArea - onKeydown in MSG-TEXT-AREA event", e)
+   
+    e.preventDefault(); // Prevent press enter from creating new line 
+    if(this.chat_message && this.chat_message.length > 0){
+      this.sendChatMessage()
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+
+    // Note: on mac keyboard "metakey" matches "cmd"
+    if (event.key === 'Enter' && event.altKey || event.key === 'Enter' && event.ctrlKey || event.key === 'Enter' && event.metaKey) {
+      console.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
+      if (this.chat_message !== undefined && this.chat_message.trim() !== '') {
+      //  console.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
+        this.chat_message = this.chat_message + "\r\n"
+      }
+    }
+    // offsetHeight
+    console.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement', this.sendMessageTexarea.nativeElement) 
+    console.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight) 
+    // console.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.offsetHeight', this.sendMessageTexarea.nativeElement.offsetHeight)
+    // this.sendMessageTexarea.nativeElement.style.height = 'auto';
+    
+    this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`; 
+
+ 
+    // const sendMessageTexareaEl = <HTMLElement>document.querySelector('.send-message-texarea');
+    // console.log('[WS-REQUESTS-MSGS] sendMessageTexareaEl', sendMessageTexareaEl) 
+    // this.sendMessageTexarea.nativeElement.style.height = 'auto';
+
   }
 
 

@@ -226,8 +226,9 @@
 }
 
 #fixed-button {
-  bottom: 85px;
-  // right: 55px;
+  // bottom: 85px;
+  // bottom: 190px;
+  bottom: 21px;
   right: 25px;
   position: absolute;
   background-color: #eeeeee;
@@ -3010,15 +3011,21 @@ span .conv-svg-icon {
   margin-left: 6px;
 }
 .send-message-texarea {
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  resize: none;
+  outline: none;
   width: 100%;
-  -webkit-appearance: none;
-  border: 1px solid #ccc !important;
-  padding: 0 8px;
+  padding: 12px 20px 10px;
+  border-color: transparent;
+  background-color: transparent;
+  height: 46px;
   box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  border-radius: 5px;
-  color: #3c4858;
+  color: #3c4858 ;
+  -webkit-appearance: none ;
 }
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
