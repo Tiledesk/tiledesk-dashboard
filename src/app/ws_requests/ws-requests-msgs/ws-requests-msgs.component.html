@@ -2951,7 +2951,7 @@
                 <!--  ---------------------------------------------------------------- -->
                 <!--  @ Apps row -->
                 <!--  ---------------------------------------------------------------- -->
-                <div class="row">
+                <div class="row" *ngIf="isVisibleAPP === true">
                   <div class="col-sm-12 app-row-wpr">
                     <p class="row-header  app-row" (click)="openAppsSidebar()"
                       style="padding-left: 13px; padding-right: 15px;font-size: 14px;">

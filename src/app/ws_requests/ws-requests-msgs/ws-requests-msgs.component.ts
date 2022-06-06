@@ -200,6 +200,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   requestHasBeenArchivedNoticationMsg_part1: string;
 
   isVisibleLBS: boolean;
+  isVisibleAPP: boolean;
   public_Key: string;
 
   DISPLAY_BTN_CREATE_JIRA_ISSUE: boolean
@@ -510,11 +511,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.isVisibleLBS = true;
           // this.logger.log('[WS-REQUESTS-MSGS] - lbs is', this.isVisibleLBS);
         }
+   
+      }
+
+      if (key.includes("APP")) {
+        let app = key.split(":");
+        if (app[1] === "F") {
+          this.isVisibleAPP = false;
+        } else {
+          this.isVisibleAPP = true;
+        }
+        //  console.log('PUBLIC-KEY (SIDEBAR) - IS VISIBLE APP ', this.isVisibleAPP);
       }
     });
     if (!this.public_Key.includes("LBS")) {
       // this.logger.log('PUBLIC-KEY (SIDEBAR) - key.includes("LBS")', this.public_Key.includes("LBS"));
       this.isVisibleLBS = false;
+    }
+    if (!this.public_Key.includes("APP")) {
+      this.isVisibleAPP = false;
     }
   }
 
