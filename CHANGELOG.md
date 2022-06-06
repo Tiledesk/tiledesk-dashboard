@@ -3,6 +3,7 @@
 
 ### 2.2.35.2
 - Enhances the text area for sending messages on the conversation detail page
+- Adds the ability on the conversation detail page to send a message as a public reply or as an internal note
 
 ### 2.2.35.1
 - Add 'hover' style rules to the buttons on app store page
