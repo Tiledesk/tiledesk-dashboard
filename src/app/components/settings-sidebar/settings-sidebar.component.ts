@@ -23,35 +23,36 @@ export class SettingsSidebarComponent implements OnInit {
     'ticket',
     'sendTranscript',
   ]
-  isVisibleANA: boolean
-  isVisibleACT: boolean
-  isVisibleTRI: boolean
-  isVisibleGRO: boolean
-  isVisibleDEP: boolean
-  isVisibleOPH: boolean
-  isVisibleCAR: boolean
-  isVisibleLBS: boolean
-  isVisibleAPP: boolean
-  TAG_ROUTE_IS_ACTIVE: boolean
-  CANNED_RESPONSES_ROUTE_IS_ACTIVE: boolean
-  DEPTS_ROUTE_IS_ACTIVE: boolean
-  TRIGGER_ROUTE_IS_ACTIVE: boolean
-  TEAMMATES_ROUTE_IS_ACTIVE: boolean
-  GROUPS_ROUTE_IS_ACTIVE: boolean
-  WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean
-  CHATBOT_ROUTE_IS_ACTIVE: boolean
-  PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean
-  OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean
-  public_Key: string
-  USER_ROLE: any
-  CHAT_BASE_URL: string
-  project: any
-  route: string
-  sidebar_settings_height: any
-  IS_OPEN: boolean = true
+  isVisibleANA: boolean;
+  isVisibleACT: boolean;
+  isVisibleTRI: boolean;
+  isVisibleGRO: boolean;
+  isVisibleDEP: boolean;
+  isVisibleOPH: boolean;
+  isVisibleCAR: boolean;
+  isVisibleLBS: boolean;
+  isVisibleAPP: boolean;
+  isVisibleETK: boolean;
+  TAG_ROUTE_IS_ACTIVE: boolean;
+  CANNED_RESPONSES_ROUTE_IS_ACTIVE: boolean;
+  DEPTS_ROUTE_IS_ACTIVE: boolean;
+  TRIGGER_ROUTE_IS_ACTIVE: boolean;
+  TEAMMATES_ROUTE_IS_ACTIVE: boolean;
+  GROUPS_ROUTE_IS_ACTIVE: boolean;
+  WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
+  CHATBOT_ROUTE_IS_ACTIVE: boolean;
+  PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean;
+  OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
+  public_Key: string;
+  USER_ROLE: any;
+  CHAT_BASE_URL: string;
+  project: any;
+  route: string;
+  sidebar_settings_height: any;
+  IS_OPEN: boolean = true;
   routing_and_depts_lbl: string;
   teammatates_and_groups_lbl: string;
-  USER_HAS_TOGGLE_SIDEBAR: boolean 
+  USER_HAS_TOGGLE_SIDEBAR: boolean;
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
     public appConfigService: AppConfigService,
@@ -102,7 +103,7 @@ export class SettingsSidebarComponent implements OnInit {
     this.logger.log('[SETTINGS-SIDEBAR] IS_OPEN >>>>>', IS_OPEN)
     // this.IS_OPEN = IS_OPENù
     this.USER_HAS_TOGGLE_SIDEBAR = true
-    this.logger.log('[SETTINGS-SIDEBAR] toggleSettingsSidebar USER_HAS_TOGGLE_SIDEBAR >>>>>',  this.USER_HAS_TOGGLE_SIDEBAR)
+    this.logger.log('[SETTINGS-SIDEBAR] toggleSettingsSidebar USER_HAS_TOGGLE_SIDEBAR >>>>>', this.USER_HAS_TOGGLE_SIDEBAR)
     this.auth.toggleSettingsSidebar(IS_OPEN)
   }
 
@@ -125,14 +126,14 @@ export class SettingsSidebarComponent implements OnInit {
   getWindowWidthOnInit() {
     const onInitWindoeWidth = window.innerWidth;
     this.logger.log('SETTINGS-SIDEBAR] ON INIT WINDOW WIDTH >>>>>> ', onInitWindoeWidth);
-    this.logger.log('SETTINGS-SIDEBAR] ON INIT USER_HAS_TOGGLE_SIDEBAR >>>>>> ',this.USER_HAS_TOGGLE_SIDEBAR);
+    this.logger.log('SETTINGS-SIDEBAR] ON INIT USER_HAS_TOGGLE_SIDEBAR >>>>>> ', this.USER_HAS_TOGGLE_SIDEBAR);
     // if (this.USER_HAS_TOGGLE_SIDEBAR === false) {
-      if (onInitWindoeWidth < 1200) {
-        this.toggleSettingsSidebar(false)
-      }
-      if (onInitWindoeWidth >= 1200) {
-        this.toggleSettingsSidebar(true)
-      }
+    if (onInitWindoeWidth < 1200) {
+      this.toggleSettingsSidebar(false)
+    }
+    if (onInitWindoeWidth >= 1200) {
+      this.toggleSettingsSidebar(true)
+    }
     // }
   }
 
@@ -258,6 +259,15 @@ export class SettingsSidebarComponent implements OnInit {
           this.isVisibleAPP = true;
         }
       }
+
+      if (key.includes('ETK')) {
+        let etk = key.split(':')
+        if (etk[1] === 'F') {
+          this.isVisibleETK = false;
+        } else {
+          this.isVisibleETK = true;
+        }
+      }
     })
 
     if (!this.public_Key.includes('CAR')) {
@@ -270,6 +280,9 @@ export class SettingsSidebarComponent implements OnInit {
 
     if (!this.public_Key.includes('APP')) {
       this.isVisibleAPP = false
+    }
+    if (!this.public_Key.includes('ETK')) {
+      this.isVisibleETK = false
     }
   }
 
