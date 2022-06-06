@@ -1111,7 +1111,7 @@ span.navbar-brand-sidebar-settings {
   z-index: 1050;
   position: relative;
   margin-top: 6px;
-  
+
   border-right: 1px solid #e5effe;
 }
 span.navbar-brand-sidebar-settings.is_opened {
@@ -1134,13 +1134,13 @@ span.navbar-brand-sidebar-settings > span {
 
 span.navbar-brand-title {
   z-index: 1050;
-    position: relative;
-    margin-top: 8px;
-    margin-left: 4px;
+  position: relative;
+  margin-top: 8px;
+  margin-left: 4px;
 }
 
 .tag-input-wrap .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
-  color: rgba(0,0,0,0.87) !important;
+  color: rgba(0, 0, 0, 0.87) !important;
 }
 
 #select-prechat-form-fields-wpr .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
@@ -1148,7 +1148,7 @@ span.navbar-brand-title {
 }
 
 .modal {
-  z-index: 1055!important; // default bottstrap css value  1050
+  z-index: 1055 !important; // default bottstrap css value  1050
 }
 
 .pre-chat-form-fields-wpr .checkbox .checkbox-material .check {
@@ -1156,8 +1156,8 @@ span.navbar-brand-title {
   border: 1px solid #ccc;
 }
 
-// fix for CHROME version 101.XXX  
-// .navbar-brand { 
+// fix for CHROME version 101.XXX
+// .navbar-brand {
 //   position: absolute !important;
 //     top: 0px;
 // }
@@ -1167,13 +1167,11 @@ span.navbar-brand-title {
   z-index: 1050 !important;
 }
 
-
 .disable-dropdown-menu-btn {
   pointer-events: none;
   opacity: 0.6;
   cursor: not-allowed;
 }
-
 
 .custom-ng2-tooltip {
   font-family: "Roboto", Arial, sans-serif;
@@ -1192,20 +1190,20 @@ span.navbar-brand-title {
 .ng2-tooltip-subject {
   font-weight: 500;
   font-size: 14px;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
 .ng2-tooltip-firt-text {
   font-weight: 400;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 14px;
 }
 
 .ng2-most-recent-comment-section-title {
   font-weight: 400;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 14px;
-  color: rgb(104,115,125);
+  color: rgb(104, 115, 125);
   margin-bottom: 0px;
   margin-top: 14px;
 }
@@ -1214,7 +1212,7 @@ span.navbar-brand-title {
   margin-top: 6px !important;
   margin-bottom: 14px;
   border: 0;
-  border-top: 1px solid rgb(226, 228,229) !important;
+  border-top: 1px solid rgb(226, 228, 229) !important;
 }
 
 .ng2-latest-comment-sender-and-date-wpr {
@@ -1224,22 +1222,22 @@ span.navbar-brand-title {
 .ng2-comment-sender {
   font-weight: 500;
   font-size: 14px;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   // float: left;
   flex: 1;
 }
 
 .ng2-comment-date {
-  color: rgb(104,115,125);
+  color: rgb(104, 115, 125);
   font-weight: 400;
   font-size: 12px;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   // float: right;
 }
 
 .ng2-latest-comment {
   font-weight: 400;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 14px;
 }
 
@@ -1247,7 +1245,21 @@ footer ul {
   line-height: 0px;
 }
 
+// select reply type (send message i conversation detail)
+.ng-select.select-response-type {
+  text-align: initial !important;
+  margin-left: 12px !important;
+  max-width: 250px;
+}
 
+.ng-select.select-response-type:focus {
+ 
+    outline: none !important;
 
-
-
+}
+.ng-select.select-response-type .ng-select-container {
+  display: flex !important;
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  border: unset !important;
+}

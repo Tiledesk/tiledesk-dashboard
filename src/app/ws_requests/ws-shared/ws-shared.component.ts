@@ -38,6 +38,21 @@ export class WsSharedComponent implements OnInit {
       avatar: 'assets/img/priority_icons/low_v2.svg'
     },
   ];
+  // internal_note.svg
+  // public_answer.svg
+  responseType = [
+    {
+      id: 1,
+      name: 'Public answer',
+      icon: 'assets/img/public_answer.svg'
+    },
+    {
+      id: 2,
+      name: 'Internal note',
+      icon: 'assets/img/internal_note.svg'
+    },
+
+  ]
 
 
 

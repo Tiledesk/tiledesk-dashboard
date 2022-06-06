@@ -243,7 +243,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   totalPagesNo_roundToUp: number;
   displaysFooterPagination: boolean;
   HAS_OPENED_APPS: boolean = false;
-
+  selectedResponseTypeID: number = 1;
 
   /**
    * Constructor
@@ -1236,7 +1236,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   goToRequestMsgs(request_recipient: string) {
     if (this.CHAT_PANEL_MODE === false) {
       this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
-    } else  if (this.CHAT_PANEL_MODE === true)  {
+    } else if (this.CHAT_PANEL_MODE === true) {
       const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
       window.open(url, '_blank');
     }
@@ -3028,11 +3028,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   sendChatMessage() {
-
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
-    this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message)
+    this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message, this.selectedResponseTypeID)
       .subscribe((msg) => {
         this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
       }, (error) => {
@@ -3046,38 +3045,55 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onKeydownEnter(e: any) {
-    console.log("[WS-REQUESTS-MSGS] - returnChangeTextArea - onKeydown in MSG-TEXT-AREA event", e)
-   
-    e.preventDefault(); // Prevent press enter from creating new line 
-    if(this.chat_message && this.chat_message.length > 0){
-      this.sendChatMessage()
+    this.logger.log("[WS-REQUESTS-MSGS] - returnChangeTextArea - onKeydown in MSG-TEXT-AREA event", e)
+
+    // e.preventDefault(); // Prevent press enter from creating new line 
+    if (this.chat_message && this.chat_message.length > 0) {
+      // this.sendChatMessage()
     }
   }
 
+
+  onPasteInSendMsg() {
+    this.logger.log('[WS-REQUESTS-MSGS] ON PASTE IN SEND MSG sendMessageTexarea scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight);
+    setTimeout(() => {
+      this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
+    }, 250);
+  }
+
+  onChangeTextInSendMsg($event) {
+    setTimeout(() => {
+      this.logger.log('[WS-REQUESTS-MSGS] ON Change IN SEND MSG sendMessageTexarea scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight);
+      this.logger.log('[WS-REQUESTS-MSGS] ON Change IN SEND MSG sendMessageTexarea offsetHeight', this.sendMessageTexarea.nativeElement.offsetHeight);
+      // this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
+      this.sendMessageTexarea.nativeElement.style.height = `${46}px`;
+      this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
+    }, 250);
+  }
+
+
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-
     // Note: on mac keyboard "metakey" matches "cmd"
     if (event.key === 'Enter' && event.altKey || event.key === 'Enter' && event.ctrlKey || event.key === 'Enter' && event.metaKey) {
-      console.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
+      this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
       if (this.chat_message !== undefined && this.chat_message.trim() !== '') {
-      //  console.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
+        //  console.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
         this.chat_message = this.chat_message + "\r\n"
+        this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
       }
     }
-    // offsetHeight
-    console.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement', this.sendMessageTexarea.nativeElement) 
-    console.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight) 
-    // console.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.offsetHeight', this.sendMessageTexarea.nativeElement.offsetHeight)
-    // this.sendMessageTexarea.nativeElement.style.height = 'auto';
-    
-    this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`; 
 
- 
-    // const sendMessageTexareaEl = <HTMLElement>document.querySelector('.send-message-texarea');
-    // console.log('[WS-REQUESTS-MSGS] sendMessageTexareaEl', sendMessageTexareaEl) 
-    // this.sendMessageTexarea.nativeElement.style.height = 'auto';
+    this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement', this.sendMessageTexarea.nativeElement)
+    this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight)
+  }
 
+  onChangeReplyType(selectedResponseTypeID) {
+    this.logger.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)
+    this.selectedResponseTypeID = selectedResponseTypeID;
+    const selectResponseTypeElem = <HTMLElement>document.querySelector('.select-response-type');
+    selectResponseTypeElem.blur();
   }
 
 

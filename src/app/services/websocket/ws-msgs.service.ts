@@ -20,6 +20,7 @@ export class WsMsgsService {
   public wsMsgsGotAllData$: BehaviorSubject<any> = new BehaviorSubject(null);
   SERVER_BASE_PATH: string;
   // public _wsMsgsList = new Subject<any>();
+  CURRENT_USER_ID: string;
 
   constructor(
     http: Http,
@@ -32,7 +33,7 @@ export class WsMsgsService {
     this.wsMsgsList = [];
     this.logger.log('[WS-MSGS-SERV] - HELLO !!! wsMsgsList ', this.wsMsgsList)
     this.getCurrentProject();
-    this.getUserToken();
+    this.getUserTokenAndUserId();
     this.getAppConfig();
   }
 
@@ -41,10 +42,11 @@ export class WsMsgsService {
     // console.log('[WS-MSGS-SERV] getAppConfig SERVER_BASE_PATH', this.SERVER_BASE_PATH);
   }
 
-  getUserToken() {
+  getUserTokenAndUserId() {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
         this.TOKEN = user.token;
+        this.CURRENT_USER_ID = user._id
         // console.log('[WS-MSGS-SERV] TOKEN ',   this.TOKEN)
       }
 
@@ -173,7 +175,7 @@ export class WsMsgsService {
 
 
 
-  public sendChatMessage(projectid: string, convid: string, chatmsg:string) {
+  public sendChatMessage(projectid: string, convid: string, chatmsg: string, replytypedid: number) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -181,8 +183,14 @@ export class WsMsgsService {
     const options = new RequestOptions({ headers });
     // const url = "https://api.tiledesk.com/v2/5b55e806c93dde00143163dd/requests/support-group-1234/messages;" 
     const url = this.SERVER_BASE_PATH + projectid + '/requests/' + convid + '/messages'
-    this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL', this.SERVER_BASE_PATH)  
-    const body = { 'text': chatmsg};
+    this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL', this.SERVER_BASE_PATH)
+    const body = { 'text': chatmsg };
+    if (replytypedid === 2) {
+      body['attributes'] = {
+        "privateFor": this.CURRENT_USER_ID
+      }
+
+    }
 
     this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL BODY ', body);
     return this.http

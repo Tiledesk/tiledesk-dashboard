@@ -2815,6 +2815,7 @@ span .conv-svg-icon {
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
+  padding-left: 6px;
 }
 
 .bordered-btn {
@@ -2905,6 +2906,23 @@ span .conv-svg-icon {
   padding-top: 8px !important;
   padding-bottom: 8px !important;
   border: 1px solid #e5effe !important;
+}
+
+#chat-wpr {
+  height: 500px;
+  overflow-y: auto;
+  padding: 0px;
+  padding-left: 25px;
+  padding-right: 25px;
+  border-bottom: 3px solid #3ea9f5;
+}
+
+.card---footer {
+  text-align: center;
+  margin-bottom: 0px;
+  padding-top: 2px;
+  margin-left: 31px;
+  margin-right: -31px;
 }
 
 // Custom scollbar fo the chat right sidebar
@@ -3011,6 +3029,7 @@ span .conv-svg-icon {
   margin-left: 6px;
 }
 .send-message-texarea {
+  max-height: 500px;
   font-size: 16px;
   line-height: 20px;
   letter-spacing: -0.01em;
@@ -3024,8 +3043,16 @@ span .conv-svg-icon {
   background-color: transparent;
   height: 46px;
   box-sizing: border-box;
-  color: #3c4858 ;
-  -webkit-appearance: none ;
+  color: #3c4858;
+  -webkit-appearance: none;
+}
+
+.send-chat-msg-btn {
+  margin-top: 0px;
+  margin-bottom: 6px;
+  margin-right: 16px;
+  padding-top: 9px;
+  padding-bottom: 9px;
 }
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */

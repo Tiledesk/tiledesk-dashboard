@@ -1,5 +1,6 @@
 <!-- margin-top:6px; -->
-<div #navbarBrand *ngIf="CHAT_PANEL_MODE === false" class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px"
+<div #navbarBrand *ngIf="CHAT_PANEL_MODE === false" class="navbar-brand"
+  style="z-index: 1050;position: relative; padding-left:30px"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
@@ -199,7 +200,7 @@
 
 
             <div #scrollMe id="chat-wpr" class="card-content"
-              style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px "
+              style=""
               (scroll)="onScrollMsgs($event)">
               <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
 
@@ -345,16 +346,14 @@
                                 <!-- --------------------------------------- -->
                                 <!-- Usecase  Firebase (bot) -->
                                 <!-- --------------------------------------- -->
-                                <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                                  class="bot-img-in-msg-list"
+                                <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="bot-img-in-msg-list"
                                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{message?.sender | slice:4 }}%2Fphoto.jpg?alt=media"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                                 <!-- --------------------------------------- -->
                                 <!-- Usecase  Native (bot) -->
                                 <!-- --------------------------------------- -->
-                                <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                  class="bot-img-in-msg-list"
+                                <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot-img-in-msg-list"
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{message?.sender | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
                               </span>
@@ -434,17 +433,18 @@
 
             </div>
             <!-- max-height:175px; -->
-            <div class="card-footer"
-              style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto;     border-top: 3px solid #3ea9f5; ">
-              <div class="stats" style="width: 100%; min-height: 69px;">
-             
+            <div class="card---footer"
+              style="">
+              <!-- class="stats" -->
+              <div class=" chat-btns-and-text-row-wpr"  style="width: 100%; min-height: 69px;">
+
                 <!-- nk new -->
                 <div class="row chat-btns-and-text-row h-100 w-100">
 
                   <!-- (click)="openChatInNewWindow()" -->
                   <!-- <div class="centered-buttons" style="width: 100%; padding: 0px 35px;"> -->
 
-                  <div class="col-xs-12 plr-0" >
+                  <div class="col-xs-12 plr-0">
                     <div class="row w-100" style="height: 62px;"
                       *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
                       <!-- This conversation is not assigned to you. In order to write a message, click "Join". -->
@@ -524,25 +524,46 @@
 
                     <div class="col-xs-12  w-100 plr-0">
                       <div class="row w-100">
-                        <div class="col-xs-12 h-100 plr-0" style="    margin-top: -7px; border-top: 3px solid #3ea9f5;">
-                          <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message"  rows="1"
-                          placeholder="Write your message"   (keydown.enter)="onKeydownEnter($event)" ></textarea>
-               
+                        <div class="col-xs-12 h-100 plr-0" style="  margin-top: -7px; border-top: 3px solid #3ea9f5; margin-bottom: 8px;" [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
+                          <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message" rows="1"
+                            placeholder="Write your message" (keydown.enter)="onKeydownEnter($event)"
+                            (paste)="onPasteInSendMsg($event)"
+                            (ngModelChange)="onChangeTextInSendMsg($event)"></textarea>
+
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-xs-12  w-100 plr-0">
-                    <div class="row w-100">
-                      <div class="col-xs-12 h-100 plr-0" style="    margin-top: -7px;  ">
-                
-                        <button class="btn btn-primary pull-right" style="margin-top: 0px;margin-bottom: 0px; margin-right: 29px;" 
-                        (click)="sendChatMessage()" [disabled]="!chat_message">
-                          Send
-                        </button>
-             
+
+                    <div class="col-xs-12  w-100 plr-0">
+                      <div class="row w-100">
+                        <div class="col-xs-5 h-100 plr-0" style="    margin-top: -4px;  ">
+                     
+                            <ng-select class="select-response-type"  [clearable]="false" [searchable]="false" [items]="responseType" bindLabel="name"
+                              bindValue="id" [(ngModel)]="selectedResponseTypeID"  (change)="onChangeReplyType(selectedResponseTypeID)">
+
+                              <ng-template ng-label-tmp let-item="item">
+                                <img height="15" width="15" style="width: 15px; height: auto" [src]="item.icon" />
+                                <b>{{item.name}}</b>
+                              </ng-template>
+                              <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <img height="15" width="15" style="width: 15px; height: auto" [src]="item.icon" />
+                                <b>{{item.name}}</b>
+                              </ng-template>
+
+                            </ng-select>
+                          
+                        </div>
+                        <div class="col-xs-7 h-100 plr-0" style="    margin-top: -4px;  ">
+
+                          <button class="btn btn-primary pull-right send-chat-msg-btn"
+                            style="" (click)="sendChatMessage()"
+                            [disabled]="!chat_message || chat_message?.length === 0 ">
+                            Send
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                    <!-- </div> -->
 
 
 
@@ -630,7 +651,7 @@
                         [ngClass]="{'visible-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
 
                         <!-- [ngStyle]="{'background-color': fillColour }" -->
-                        <span  class="requester-avatar-wrapper-in-right-sidebar">
+                        <span class="requester-avatar-wrapper-in-right-sidebar">
                           <span class="_requester-avatar_as_title-in-right-sidebar"
                             [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
                             [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, '_requester-avatar_as_title-in-chat': CHAT_PANEL_MODE === true && REQUESTER_IS_VERIFIED === false, '_requester-verified-avatar_as_title-in-chat' : CHAT_PANEL_MODE === true && REQUESTER_IS_VERIFIED === true}">
@@ -2007,7 +2028,8 @@
 
                               <tr *ngFor="let request of contact_requests">
                                 <!-- [ngStyle]="{'cursor': CHAT_PANEL_MODE === false ? 'pointer' : null}" -->
-                                <td style="text-align:center; width: 1%; white-space: nowrap;"  (click)='goToRequestMsgs(request?.request_id)'  style="cursor:pointer" >
+                                <td style="text-align:center; width: 1%; white-space: nowrap;"
+                                  (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                                   <!-- ------------------------------------- -->
                                   <!-- IF IS A CLOSED REQUEST -->
@@ -2015,7 +2037,8 @@
                                   <span *ngIf="request?.status === 1000 && !request?.subject"
                                     matTooltipClass="custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.RequestResolved' | translate }}"
-                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE">
+                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                    [matTooltipDisabled]="CHAT_PANEL_MODE">
 
                                     <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                                       <style type="text/css">
@@ -2043,8 +2066,9 @@
                                   <!-- ------------------------------------- -->
                                   <span *ngIf="request?.status === 1000 && request?.subject"
                                     matTooltipClass="custom-mat-tooltip"
-                                    matTooltip="{{ 'RequestMsgsPage.InternalRequestResolved' | translate }}" 
-                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE">
+                                    matTooltip="{{ 'RequestMsgsPage.InternalRequestResolved' | translate }}"
+                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                    [matTooltipDisabled]="CHAT_PANEL_MODE">
 
                                     <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                                       <style type="text/css">
@@ -2074,7 +2098,8 @@
                                   <span *ngIf="request?.status === 100 && !request?.subject"
                                     matTooltipClass="custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}"
-                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE">
+                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                    [matTooltipDisabled]="CHAT_PANEL_MODE">
 
                                     <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                                       <style type="text/css">
@@ -2106,7 +2131,8 @@
                                   <span *ngIf="request?.status === 100 && request?.subject"
                                     matTooltipClass="custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}"
-                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE">
+                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                    [matTooltipDisabled]="CHAT_PANEL_MODE">
 
                                     <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                                       <style type="text/css">
@@ -2135,7 +2161,8 @@
                                     *ngIf="request?.status === 200 && request?.currentUserIsJoined  && !request?.subject"
                                     matTooltipClass="custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
-                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE">
+                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                    [matTooltipDisabled]="CHAT_PANEL_MODE">
 
                                     <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                                       <style type="text/css">
@@ -2164,7 +2191,8 @@
                                     *ngIf="request?.status === 200 && request?.currentUserIsJoined  && request?.subject"
                                     matTooltipClass="custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}"
-                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE">
+                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                    [matTooltipDisabled]="CHAT_PANEL_MODE">
 
                                     <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                                       <style type="text/css">
@@ -2193,7 +2221,8 @@
                                     *ngIf="request?.status === 200 && !request?.currentUserIsJoined && !request?.subject"
                                     matTooltipClass="custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}"
-                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE">
+                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                    [matTooltipDisabled]="CHAT_PANEL_MODE">
 
                                     <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                                       <style type="text/css">
@@ -2225,7 +2254,8 @@
                                     *ngIf="request?.status === 200 && !request?.currentUserIsJoined && request?.subject"
                                     matTooltipClass="custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}"
-                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100" [matTooltipDisabled]="CHAT_PANEL_MODE">
+                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                    [matTooltipDisabled]="CHAT_PANEL_MODE">
 
                                     <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                                       <style type="text/css">
@@ -3282,7 +3312,7 @@
                                 Bot
                               </td>
 
-                               
+
                               <!-- ------------------------------------------------------ -->
                               <!-- column displayed on the over -->
                               <!-- ------------------------------------------------------ -->
@@ -3648,7 +3678,7 @@
             <div class="modal-header" style="padding-bottom:15px">
               <button type="button" class="close" aria-label="Close" (click)="closeLeaveChatModal()">
                 <!-- color: #fff -->
-                <span aria-hidden="true" >&times;</span>
+                <span aria-hidden="true">&times;</span>
               </button>
               <h4 class="modal-title" style="color: #f44336">
                 <i class="material-icons" style="vertical-align: middle">info</i>
@@ -3762,7 +3792,7 @@
         </appdashboard-ws-train-bot>
       </div>
       <!-- [ngStyle]="{'height':train_bot_sidebar_height }" -->
-      <div *ngIf="OPEN_APPS_RIGHT_SIDEBAR === true" class="view-side" >
+      <div *ngIf="OPEN_APPS_RIGHT_SIDEBAR === true" class="view-side">
         <appdashboard-ws-sidebar-apps [ngStyle]="{'height':apps_sidebar_height }"
           (valueChange)='handleCloseAppsRightSidebar($event)' [request]="request">
         </appdashboard-ws-sidebar-apps>
