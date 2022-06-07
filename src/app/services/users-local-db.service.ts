@@ -106,6 +106,16 @@ export class LocalDbService {
     }
   }
 
+  storeIsOpenAppSidebar(isopen): void {
+      localStorage.setItem(this.prefix + 'appssidebar', isopen);
+      // console.log('HEY - SAVE IN STORAGE !!! appssidebar isopen ', isopen);
+  }
+
+  getStoredIsOpenAppSidebar() {
+    const isOpen = localStorage.getItem(this.prefix + 'appssidebar');
+    return isOpen
+  }
+
 
 }
 

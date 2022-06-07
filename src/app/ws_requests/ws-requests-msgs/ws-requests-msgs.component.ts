@@ -342,6 +342,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
   ngOnInit() {
+
     this.getParamRequestId();
     this.getCurrentProject();
     this.getLoggedUser();
@@ -360,6 +361,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
+
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
@@ -374,6 +376,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
     if (rightSidebar) {
       this.rightSidebarWidth = rightSidebar.offsetWidth;
+    }
+
+    if (this.request) {
+      this.getfromStorageIsOpenAppSidebar()
+    }
+  }
+
+  getfromStorageIsOpenAppSidebar() {
+    const isOpenAppSidebar = this.usersLocalDbService.getStoredIsOpenAppSidebar();
+    this.logger.log("[WS-REQUESTS-MSGS] isOpenAppSidebar ", isOpenAppSidebar);
+    if (isOpenAppSidebar) {
+      if (isOpenAppSidebar === 'true') {
+        this.OPEN_APPS_RIGHT_SIDEBAR = true
+        setTimeout(() => {
+          const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+          this.apps_sidebar_height = elemMainContent.clientHeight + 60 + 'px'
+        }, 250);
+      } else {
+        this.OPEN_APPS_RIGHT_SIDEBAR = false;
+      }
+    } else {
+      this.logger.log("[WS-REQUESTS-MSGS] isOpenAppSidebar is null");
+      this.OPEN_APPS_RIGHT_SIDEBAR = false;
     }
   }
 
@@ -511,7 +536,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.isVisibleLBS = true;
           // this.logger.log('[WS-REQUESTS-MSGS] - lbs is', this.isVisibleLBS);
         }
-   
+
       }
 
       if (key.includes("APP")) {
@@ -689,6 +714,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getWsRequestById$();
   }
 
+
+
   // -----------------------------------
   // @ Subscribe to bs request by id
   // -----------------------------------
@@ -702,6 +729,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.request = wsrequest;
 
         if (this.request) {
+          this.getfromStorageIsOpenAppSidebar()
+
           this.logger.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {
             this.getContactRequests(this.request.lead._id)
@@ -1962,10 +1991,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.train_bot_sidebar_top_pos = mainPanelScrollPosition + 'px'
   }
 
-  handleCloseRightSidebar(event) {
-    this.logger.log('[WS-REQUESTS-MSGS] - CLOSE RIGHT SIDEBAR ', event);
-    this.OPEN_RIGHT_SIDEBAR = event;
-  }
+  // handleCloseRightSidebar(event) {
+  //   console.log('[WS-REQUESTS-MSGS] - CLOSE RIGHT SIDEBAR ', event);
+  //   this.OPEN_RIGHT_SIDEBAR = event;
+  //   this.usersLocalDbService.storeIsOpenAppSidebar(false)
+  // }
 
   openAppsSidebar() {
     this.OPEN_APPS_RIGHT_SIDEBAR = true;
@@ -1974,6 +2004,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.logger.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.apps_sidebar_height);
 
+    this.usersLocalDbService.storeIsOpenAppSidebar(true)
 
     if (this.CHAT_PANEL_MODE === false) {
       this.navbarBrand.nativeElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
@@ -1985,11 +2016,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   handleCloseAppsRightSidebar(event) {
     this.logger.log('[WS-REQUESTS-MSGS] - CLOSE APPS RIGHT SIDEBAR ', event);
     this.OPEN_APPS_RIGHT_SIDEBAR = event;
+    this.usersLocalDbService.storeIsOpenAppSidebar(false)
   }
-
-
-
-
 
   openSelectUsersModal(actionSelected) {
     this.actionInModal = actionSelected

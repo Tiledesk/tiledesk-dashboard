@@ -269,18 +269,18 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
 
   closeAppsRightSideBar() {
     this.logger.log('[WS-SIDEBAR-APPS] - closeRightSideBar this.valueChange ', this.valueChange)
-    // this.valueChange.next()
+   
     this.valueChange.emit(false);
     this.isOpenRightSidebar = false;
     this.appStoreService.setRequestHaChangedToNull();
 
-    [].forEach.call(
-      document.querySelectorAll('footer ul li a'),
-      function (el) {
-        // this.logger.log('footer > ul > li > a element: ', el);
-        el.setAttribute('style', 'text-transform: none');
-      }
-    );
+    // [].forEach.call(
+    //   document.querySelectorAll('footer ul li a'),
+    //   function (el) {
+    //     // this.logger.log('footer > ul > li > a element: ', el);
+    //     el.setAttribute('style', 'text-transform: none');
+    //   }
+    // );
 
   }
 
