@@ -362,6 +362,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
 
+
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
@@ -511,7 +512,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       if (_elemMainPanel.classList.contains('main-panel-chat-panel-mode')) {
         _elemMainPanel.classList.remove("main-panel-chat-panel-mode");
       }
-
     }
   }
 
@@ -3097,7 +3097,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  onPasteInSendMsg() {
+  onPasteInSendMsg($event) {
     this.logger.log('[WS-REQUESTS-MSGS] ON PASTE IN SEND MSG sendMessageTexarea scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight);
     setTimeout(() => {
       this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
