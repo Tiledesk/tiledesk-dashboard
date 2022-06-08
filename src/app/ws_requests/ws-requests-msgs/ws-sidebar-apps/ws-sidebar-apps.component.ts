@@ -37,6 +37,7 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
   current_value: any;
   previous_value: any;
   private unsubscribe$: Subject<any> = new Subject<any>();
+  APP_SIDEBAR_WIDE: boolean = false;
 
   constructor(
     private logger: LoggerService,
@@ -222,13 +223,15 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
     })
     return promise;
   }
+
   getIframeHasLoaded(appid, apptitle) {
     var self = this;
     // this.logger.log('[WS-SIDEBAR-APPS] GET iframe appid', appid)
     var iframe = document.getElementById(appid) as HTMLIFrameElement;
     // console.log('[WS-SIDEBAR-APPS] GET iframe ', iframe)
     if (iframe) {
-
+      let spinnerElem = <HTMLElement>document.querySelector('.stretchspinner-sidebarapps')
+      spinnerElem.classList.add("hide-stretchspinner")
       // this.appsSidebar.nativeElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
       // iframe.addEventListener("load",  () => {
       // console.log("[WS-SIDEBAR-APPS] GET - Finish Load IFRAME  ", iframe);
@@ -269,10 +272,24 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
 
   closeAppsRightSideBar() {
     this.logger.log('[WS-SIDEBAR-APPS] - closeRightSideBar this.valueChange ', this.valueChange)
-   
+
     this.valueChange.emit(false);
     this.isOpenRightSidebar = false;
     this.appStoreService.setRequestHaChangedToNull();
+
+    if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === false) {
+      const appsRightSideBarEle = <HTMLElement>document.querySelector('.apps-right-side-bar');
+      // console.log('HAS CLICKED ENLARGE SIDEBAR WIDE appsRightSideBarEle ', appsRightSideBarEle)
+      appsRightSideBarEle.classList.add("apps-sidebar-wide");
+      if (this.APP_SIDEBAR_WIDE === true) {
+        appsRightSideBarEle.classList.remove("apps-sidebar-wide");
+      }
+    } else if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === true) {
+      if (this.APP_SIDEBAR_WIDE === true) {
+        const msg = { action: 'closeAppsSidebarWideMode', parameter: this.APP_SIDEBAR_WIDE }
+        window.top.postMessage(msg, '*')
+      }
+    }
 
     // [].forEach.call(
     //   document.querySelectorAll('footer ul li a'),
@@ -285,6 +302,22 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
 
-
+  enlargeSidebarWide() {
+    this.APP_SIDEBAR_WIDE = !this.APP_SIDEBAR_WIDE
+    // console.log('HAS CLICKED ENLARGE SIDEBAR WIDE ', this.APP_SIDEBAR_WIDE)
+    if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === false) {
+      const appsRightSideBarEle = <HTMLElement>document.querySelector('.apps-right-side-bar');
+      // console.log('HAS CLICKED ENLARGE SIDEBAR WIDE appsRightSideBarEle ', appsRightSideBarEle)
+      appsRightSideBarEle.classList.add("apps-sidebar-wide");
+      if (this.APP_SIDEBAR_WIDE === true) {
+        appsRightSideBarEle.classList.add("apps-sidebar-wide");
+      } else if (this.APP_SIDEBAR_WIDE === false) {
+        appsRightSideBarEle.classList.remove("apps-sidebar-wide");
+      }
+    } else if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === true) {
+      const msg = { action: 'openAppsSidebarWideMode', parameter: this.APP_SIDEBAR_WIDE }
+      window.top.postMessage(msg, '*')
+    }
+  }
 
 }

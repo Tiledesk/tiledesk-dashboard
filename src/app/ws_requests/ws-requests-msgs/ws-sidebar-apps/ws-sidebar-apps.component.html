@@ -7,6 +7,19 @@
       style="font-weight: 400; text-transform: none; margin-top:0px; font-size: 16px; padding-top: 15px;padding-left: 36px;">
       <!-- Train Bot -->
       {{ 'Apps' | translate }}
+      <!-- "{'margin-top':isChromeVerGreaterThan100 === true ? '-61px' : '6px', 'margin-left':isChromeVerGreaterThan100 === true ? '55px' : '4px'}"></svg> -->
+      <span  class="width-wide-btn-wpr" style="position: absolute;right: 38px; cursor:pointer" (click)="enlargeSidebarWide()">
+        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24"
+          width="24px" fill="#fff" [ngStyle]="{'fill':APP_SIDEBAR_WIDE === true ? '#039be5' : '#fff'}">
+          <g>
+            <rect fill="none" height="24" width="24" />
+          </g>
+          <g>
+            <path
+              d="M20,4H4C2.9,4,2,4.9,2,6v12c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V6C22,4.9,21.1,4,20,4z M4,18V6h2v12H4z M8,18V6h8v12H8z M20,18h-2V6h2V18z" />
+          </g>
+        </svg>
+      </span>
       <i class="material-icons" style="padding-right: 25px; float: right;cursor:pointer"
         (click)="closeAppsRightSideBar()">close</i>
     </h5>
@@ -14,22 +27,41 @@
   <!-- [ngStyle]="{ 'height': app.iframeHeight + 'px'}" -->
   <div *ngIf="SIDEBAR_APPS_IN_CHAT_PANEL_MODE === false" class="dashbord-app-wpr">
     <div *ngFor="let app of dashboardApps">
-      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;height:390px" id="{{app._id}}" frameBorder="0" allowfullscreen
-        (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe>
+
+      <div class="stretchspinner-sidebarapps">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+
+      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;height:390px" id="{{app._id}}" frameBorder="0"
+        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe>
     </div>
 
-    <div *ngIf="dashboardApps?.length === 0" class="no-apps"> 
+    <div *ngIf="dashboardApps?.length === 0" class="no-apps">
       No apps installed for this project
-   </div>
+    </div>
   </div>
   <!-- [ngStyle]="{ 'height': app.iframeHeight + 'px'}" -->
   <div *ngIf="SIDEBAR_APPS_IN_CHAT_PANEL_MODE === true" class="webchat-app-wpr">
     <div *ngFor="let app of webchatApps">
-      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;height:630px" id="{{app?._id}}" frameBorder="0" allowfullscreen
-        (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe>
+
+      <div class="stretchspinner-sidebarapps">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+
+
+      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;height:630px" id="{{app?._id}}" frameBorder="0"
+        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe>
     </div>
-    <div *ngIf="webchatApps?.length === 0" class="no-apps"> 
-       No apps installed for this project
+    <div *ngIf="webchatApps?.length === 0" class="no-apps">
+      No apps installed for this project
     </div>
 
   </div>
