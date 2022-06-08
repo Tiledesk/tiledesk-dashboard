@@ -286,7 +286,9 @@
     // margin: 0 0 25px;
     &.alt {
       // background: #75d5fd !important;
-      background: #0099ff !important;
+      background: #0099ff;
+    }&.internal-note {
+      background: rgb(254, 214, 168);
     }
     .txt {
       // padding: 8px 55px 8px 14px;
@@ -360,7 +362,12 @@
     .bubble-arrow.alt:after {
       transform: rotate(45deg) scaleY(-1);
       // border-top: 9px solid #75d5fd !important;
-      border-top: 9px solid #039be5 !important;
+      border-top: 9px solid #039be5;
+    }
+    .bubble-arrow.alt.internal-note:after {
+      transform: rotate(45deg) scaleY(-1);
+     
+      border-top: 9px solid rgb(254, 214, 168);;
     }
   }
 }
