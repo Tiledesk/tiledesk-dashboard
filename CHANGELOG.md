@@ -7,6 +7,7 @@
 - Fixes the bug: the button to open the apps sidebar in the sidebar of the conversation details page is always visible
 - Fixes the bug: the Email menu item available in the Settings sidebar is always visible
 - Implements the automatic opening of the apps sidebar if it has already been opened
+- Add the ability to display the app sidebar in "wide mode"
 
 ### 2.2.35.1
 - Add 'hover' style rules to the buttons on app store page
