@@ -61,6 +61,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // messagesList: WsMessage[] = [];
   messagesList: any;
   showSpinner = true;
+  // showSpinner = false;
   showSpinner_inModalUserList = true;
   id_project: string;
 
@@ -455,11 +456,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   getBaseUrl() {
     const href = window.location.href;
-    this.logger.log('[WS-REQUESTS-MSGS] - getBaseUrl - href ', href)
+    // console.log('[WS-REQUESTS-MSGS] - getBaseUrl - href ', href)
 
     const hrefArray = href.split('/#/');
     this.dshbrdBaseUrl = hrefArray[0]
-    this.logger.log('[WS-REQUESTS-MSGS] - getBaseUrl - dshbrdBaseUrl ', this.dshbrdBaseUrl)
+    // console.log('[WS-REQUESTS-MSGS] - getBaseUrl - dshbrdBaseUrl ', this.dshbrdBaseUrl)
   }
 
   getProfileImageStorage() {
@@ -660,7 +661,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (this.id_request !== undefined) { // this avoid to apply 'redirectTo' when the page is refreshed (indeed in this case this.id_request is undefined)
         if (this.id_request !== params.requestid) { // this occur when the user click on the in-app notification when is in the request' details page
-          this.redirectTo('project/' + params.projectid + '/wsrequest/' + params.requestid + '/messages', params.projectid);
+          this.redirectTo('project/' + params.projectid + '/wsrequest/' + params.requestid + 'showSpinner', params.projectid);
         }
       }
 
@@ -707,9 +708,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * @param id_request 
    */
   subscribeToWs_RequestById(id_request) {
-    this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id: ', id_request)
+    // console.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id: ', id_request)
+    let _id_request = ''
+    if (id_request.includes('%2B')) {
+      // console.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request contains %2B' ,id_request.includes('%2B') ,' run replace' )
+      _id_request = id_request.replace( /\%2B/g, '+' )
+
+    } else {
+      // console.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request NOT contains %2B' ,id_request.includes('%2B') , )
+      _id_request = id_request
+    }
+
+  
     // Start websocket subscription ro ws request by id
-    this.wsRequestsService.subscribeTo_wsRequestById(id_request);
+    // this.wsRequestsService.subscribeTo_wsRequestById(id_request);
+    this.wsRequestsService.subscribeTo_wsRequestById(_id_request);
+   
     // Subscribe to ws request by id
     this.getWsRequestById$();
   }
@@ -1219,7 +1233,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((requests_object: any) => {
 
         if (requests_object) {
-          this.logger.log('[WS-REQUESTS-MSGS]] - get CONTACT REQUESTS OBJECTS ', requests_object);
+          // console.log('[WS-REQUESTS-MSGS]] - get CONTACT REQUESTS OBJECTS ', requests_object);
           this.contact_requests = requests_object['requests'];
           this.logger.log('[WS-REQUESTS-MSGS] - get CONTACT REQUESTS LIST (got by requester_id) ', this.contact_requests);
 
@@ -1290,7 +1304,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Messages ws-subscription and get msgs from BS subscription
   // -----------------------------------------------------------------------------------------------------
   subscribeToWs_MsgsByRequestId(id_request: string) {
-    this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
+  //  console.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.listenToGotAllMsg()
     this.getWsMsgs$();
