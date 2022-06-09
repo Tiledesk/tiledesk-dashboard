@@ -3063,6 +3063,10 @@ span .conv-svg-icon {
   padding-bottom: 9px;
 }
 
+.min-height-in-panel-mode {
+  min-height: 1106px
+}
+
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
 // .swal-size-sm {
 //   width: 260px !important;
