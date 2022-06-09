@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.36
+- Deploys in production
+
 ### 2.2.35.2
 - Enhances the text area for sending messages on the conversation detail page
 - Fixes the bug: the button to open the apps sidebar in the sidebar of the conversation details page is always visible
