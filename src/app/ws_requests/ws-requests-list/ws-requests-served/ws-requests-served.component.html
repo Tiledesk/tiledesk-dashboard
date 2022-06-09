@@ -255,14 +255,19 @@
               matTooltipPosition='right' matTooltipHideDelay="100">
               #{{request?.ticket_id }}
             </span>
-            <p class="column-td"
+            <p *ngIf="request?.channel?.name !== 'email'" class="column-td" 
               style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;" 
-              tooltip="<p  class='ng2-tooltip-subject' *ngIf='request?.subject'>{{request?.subject}}</p> <p class='ng2-tooltip-firt-text'>{{request?.first_text  | htmlEntitiesEncode | marked}}</p> <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>  <hr class='ng2-tooltip-divider-line'> <div class='ng2-latest-comment-sender-and-date-wpr'> <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p> <p class='ng2-comment-date'>  {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p> </div> <p class='ng2-latest-comment'>  {{ request?.msgsArray[0]?.text}} </p> ">
-          
+              tooltip="<p  class='ng2-tooltip-subject' *ngIf='request?.subject'>{{request?.subject}}</p> <p  class='ng2-tooltip-firt-text'>{{request?.first_text }}</p>  <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>  <hr class='ng2-tooltip-divider-line'> <div class='ng2-latest-comment-sender-and-date-wpr'> <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p> <p class='ng2-comment-date'>  {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p> </div> <p class='ng2-latest-comment'>  {{ request?.msgsArray[0]?.text}} </p> ">
               {{ request?.first_text }}
 
-          
             </p>
+
+            <p *ngIf="request?.channel?.name === 'email'" class="column-td" 
+            style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;" 
+            tooltip="<p  class='ng2-tooltip-subject' *ngIf='request?.subject'>{{request?.subject}}</p> <p *ngIf='request?.channel?.name === 'email''>{{request?.first_text  | htmlEntitiesEncode | marked}}</p> <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>  <hr class='ng2-tooltip-divider-line'> <div class='ng2-latest-comment-sender-and-date-wpr'> <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p> <p class='ng2-comment-date'>  {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p> </div> <p class='ng2-latest-comment'>  {{ request?.msgsArray[0]?.text}} </p> ">
+            {{ request?.first_text }}
+
+          </p>
 
 
             <!-- 
