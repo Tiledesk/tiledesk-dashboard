@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LocalDbService } from 'app/services/users-local-db.service';
 @Component({
   selector: 'appdashboard-ws-sidebar-apps',
   templateUrl: './ws-sidebar-apps.component.html',
@@ -44,7 +45,8 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
     private translate: TranslateService,
     public router: Router,
     public appStoreService: AppStoreService,
-    public auth: AuthService
+    public auth: AuthService,
+    public usersLocalDbService: LocalDbService,
   ) { }
 
   ngOnInit() {
@@ -57,6 +59,30 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngAfterViewInit() {
     // this.subscribeToHasOpenAppsSidebar()
+
+    this.getfromStorageAppsSidebarIsInWideMode() 
+  }
+
+  getfromStorageAppsSidebarIsInWideMode() {
+    const appsSidebarIsInWideMode = this.usersLocalDbService.getStoredIsWideAppSidebar();
+    console.log('[WS-SIDEBAR-APPS] appsSidebarIsInWideMode (get from storage) ', appsSidebarIsInWideMode)
+    if (appsSidebarIsInWideMode === 'true') {
+      this.APP_SIDEBAR_WIDE = true
+      if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === false) {
+        const appsRightSideBarEle = <HTMLElement>document.querySelector('.apps-right-side-bar');
+        // console.log('HAS CLICKED ENLARGE SIDEBAR WIDE appsRightSideBarEle ', appsRightSideBarEle)
+        appsRightSideBarEle.classList.add("apps-sidebar-wide");
+        if (this.APP_SIDEBAR_WIDE === true) {
+          appsRightSideBarEle.classList.add("apps-sidebar-wide");
+        }
+        //  else if (this.APP_SIDEBAR_WIDE === false) {
+        //   appsRightSideBarEle.classList.remove("apps-sidebar-wide");
+        // }
+      } else if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === true) {
+        const msg = { action: 'openAppsSidebarWideMode', parameter: this.APP_SIDEBAR_WIDE }
+        window.top.postMessage(msg, '*')
+      }
+    }
   }
 
   ngOnDestroy() {
@@ -230,8 +256,9 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
     var iframe = document.getElementById(appid) as HTMLIFrameElement;
     // console.log('[WS-SIDEBAR-APPS] GET iframe ', iframe)
     if (iframe) {
-      let spinnerElem = <HTMLElement>document.querySelector('.stretchspinner-sidebarapps')
-      spinnerElem.classList.add("hide-stretchspinner")
+      // let spinnerElem = <HTMLElement>document.querySelector('.stretchspinner-sidebarapps')
+      // spinnerElem.classList.add("hide-stretchspinner")
+
       // this.appsSidebar.nativeElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
       // iframe.addEventListener("load",  () => {
       // console.log("[WS-SIDEBAR-APPS] GET - Finish Load IFRAME  ", iframe);
@@ -291,24 +318,26 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
       }
     }
 
-    // [].forEach.call(
-    //   document.querySelectorAll('footer ul li a'),
-    //   function (el) {
-    //     // this.logger.log('footer > ul > li > a element: ', el);
-    //     el.setAttribute('style', 'text-transform: none');
-    //   }
-    // );
+    [].forEach.call(
+      document.querySelectorAll('footer ul li a'),
+      function (el) {
+        // this.logger.log('footer > ul > li > a element: ', el);
+        el.setAttribute('style', 'text-transform: none');
+      }
+    );
 
   }
 
 
   enlargeSidebarWide() {
     this.APP_SIDEBAR_WIDE = !this.APP_SIDEBAR_WIDE
-    // console.log('HAS CLICKED ENLARGE SIDEBAR WIDE ', this.APP_SIDEBAR_WIDE)
+    this.usersLocalDbService.storeIsWideAppSidebar(true)
+    console.log('HAS CLICKED ENLARGE SIDEBAR WIDE ', this.APP_SIDEBAR_WIDE)
+    this.usersLocalDbService.storeIsWideAppSidebar(this.APP_SIDEBAR_WIDE)
     if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === false) {
       const appsRightSideBarEle = <HTMLElement>document.querySelector('.apps-right-side-bar');
       // console.log('HAS CLICKED ENLARGE SIDEBAR WIDE appsRightSideBarEle ', appsRightSideBarEle)
-      appsRightSideBarEle.classList.add("apps-sidebar-wide");
+      // appsRightSideBarEle.classList.add("apps-sidebar-wide");
       if (this.APP_SIDEBAR_WIDE === true) {
         appsRightSideBarEle.classList.add("apps-sidebar-wide");
       } else if (this.APP_SIDEBAR_WIDE === false) {

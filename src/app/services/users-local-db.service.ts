@@ -49,13 +49,13 @@ export class LocalDbService {
     }
   }
 
-  saveUserInStorageWithProjectUserId(projectuserid: string, userobj: any)  {
+  saveUserInStorageWithProjectUserId(projectuserid: string, userobj: any) {
     localStorage.setItem(this.prefix + projectuserid, JSON.stringify(userobj));
     this.logger.log('[USERS-LOCAL-DB] - SET IN STORAGE USER-OBJCT WITH KEY PROJECT-USER-ID ', projectuserid);
   }
 
   getUserInStorageWithProjectUserId(projectuserid: string) {
-     if (projectuserid) {
+    if (projectuserid) {
       const prefixedMemberId = this.prefix + projectuserid;
       // this.logger.log('HEY MEMBER prefixedMemberId !!! ', prefixedMemberId);
       const member = JSON.parse((localStorage.getItem(prefixedMemberId)));
@@ -107,13 +107,23 @@ export class LocalDbService {
   }
 
   storeIsOpenAppSidebar(isopen): void {
-      localStorage.setItem(this.prefix + 'appssidebar', isopen);
-      // console.log('HEY - SAVE IN STORAGE !!! appssidebar isopen ', isopen);
+    localStorage.setItem(this.prefix + 'appssidebar', isopen);
+    // console.log('HEY - SAVE IN STORAGE !!! appssidebar isopen ', isopen);
   }
 
   getStoredIsOpenAppSidebar() {
     const isOpen = localStorage.getItem(this.prefix + 'appssidebar');
     return isOpen
+  }
+
+  storeIsWideAppSidebar(iswide): void {
+    localStorage.setItem(this.prefix + 'appssidebarwidemode', iswide);
+    console.log('HEY - SAVE IN STORAGE !!! appssidebar wide mode ', iswide);
+  }
+
+  getStoredIsWideAppSidebar() {
+    const isWide = localStorage.getItem(this.prefix + 'appssidebarwidemode');
+    return isWide
   }
 
 
