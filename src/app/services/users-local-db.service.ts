@@ -118,7 +118,7 @@ export class LocalDbService {
 
   storeIsWideAppSidebar(iswide): void {
     localStorage.setItem(this.prefix + 'appssidebarwidemode', iswide);
-    console.log('HEY - SAVE IN STORAGE !!! appssidebar wide mode ', iswide);
+    // console.log('HEY - SAVE IN STORAGE !!! appssidebar wide mode ', iswide);
   }
 
   getStoredIsWideAppSidebar() {

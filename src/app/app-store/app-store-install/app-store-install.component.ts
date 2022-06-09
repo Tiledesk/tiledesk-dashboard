@@ -124,7 +124,7 @@ export class AppStoreInstallComponent implements OnInit {
         self.logger.log('[APP-STORE-INSTALL] GET iframeDoc readyState spinnerElem', spinnerElem)
         spinnerElem.classList.add("hide-stretchspinner")
 
-        console.log("[APP-STORE-INSTALL]  - app", app)
+        // console.log("[APP-STORE-INSTALL]  - app", app)
         if (app.version === 'v2' && app.where.appsstore === true) {
           const isIFrame = (input: HTMLElement | null): input is HTMLIFrameElement =>
             input !== null && input.tagName === 'IFRAME';
