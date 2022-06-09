@@ -3,15 +3,17 @@
 
 ### 2.2.35.2
 - Enhances the text area for sending messages on the conversation detail page
-- Adds the ability on the conversation detail page to send a message as a public reply or as an internal note
 - Fixes the bug: the button to open the apps sidebar in the sidebar of the conversation details page is always visible
 - Fixes the bug: the Email menu item available in the Settings sidebar is always visible
 - Implements the automatic opening of the apps sidebar if it has already been opened
+- Implements automatic opening of app sidebar in "wide mode" if it has already been displayed in "wide mode"
 - Add the ability to display the app sidebar in "wide mode"
+- Fixes the bug: the chat sidebar 'conversation info' does not open if the request is made from the whatsapp channel
+- Adds the html encoding on the "monitor" page to the popup displayed when the mouse hovers over the messages of the assigned conversations
 
 ### 2.2.35.1
 - Add 'hover' style rules to the buttons on app store page
-- Opens the contacts conversations available in the "conversation info" sidebar in a new tab
+- Opens the contacts conversations available in the chat "conversation info" sidebar in a new tab
 
 ### 2.2.35 (compatible with server v2.2.26)
 - Deploys in production
