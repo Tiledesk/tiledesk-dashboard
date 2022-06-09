@@ -27,7 +27,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   iFrame_placeholder: string
   showSpinner: boolean;
   projectId: string;
-  anErrorHasOccurredMsg : string;
+  anErrorHasOccurredMsg: string;
   emailTemplateUpdatedSuccessfullyMsg: string;
   isChromeVerGreaterThan100: boolean;
   constructor(
@@ -59,25 +59,25 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
- getTranslations() {
-  this.translate.get('AnErrorHasOccurred')
+  getTranslations() {
+    this.translate.get('AnErrorHasOccurred')
       .subscribe((text: string) => {
         this.anErrorHasOccurredMsg = text;
       });
-  
-  this.translate.get('EmailTemplateUpdatedSuccessfully')
-  .subscribe((text: string) => {
-    this.emailTemplateUpdatedSuccessfullyMsg = text;
-  });
-}
 
-  
+    this.translate.get('EmailTemplateUpdatedSuccessfully')
+      .subscribe((text: string) => {
+        this.emailTemplateUpdatedSuccessfullyMsg = text;
+      });
+  }
+
+
 
   // setPerfectScrollbar() {
   //   const bottom_navbar = <HTMLElement>document.querySelector('.email-tmplt-bottom-nav');
@@ -101,7 +101,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
     this.projectService.getProjectById(project_id).subscribe((project: any) => {
       this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project ', project);
       // console.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates ', project.settings.email.templates);
-      if (project && project.settings && project.settings.email && project.settings.email.templates ) {
+      if (project && project.settings && project.settings.email && project.settings.email.templates) {
         this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates ', project.settings.email.templates);
 
 
@@ -112,7 +112,9 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
         if (project.settings.email.templates.hasOwnProperty(this.active_template)) {
           this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates hasOwnProperty ', this.active_template);
           this.emailTemplate = project.settings.email.templates[this.active_template];
-          (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")).srcdoc = this.emailTemplate
+          if (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")) {
+            (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")).srcdoc = this.emailTemplate
+          }
         } else {
           this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates NOT hasOwnProperty ', this.active_template, 'RUN GET DEFAULT TEMPLATE');
           this.getAssignedRequestTemplate();
@@ -135,7 +137,9 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
       this.logger.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE res ', res)
       if (res && res.template) {
         this.emailTemplate = res.template;
-        (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")).srcdoc = this.emailTemplate
+        if (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")) {
+          (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")).srcdoc = this.emailTemplate
+        }
       }
     }, (error) => {
       this.logger.error('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE error ', error);
@@ -187,13 +191,15 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
 
   // NOT USED
   seePreview() {
-    (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")).srcdoc = this.emailTemplate;
+    if (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")) {
+      (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")).srcdoc = this.emailTemplate;
+    }
     const see_preview_btn = <HTMLElement>document.querySelector('.see_preview_btn');
     see_preview_btn.blur();
 
   }
 
-// NOT USED
+  // NOT USED
   // ftxt() {
   //   console.log('[NOTIFICATION-EMAIL] FIND TEXT ON TEXAREA textToSearch', this.textToSearch)
   //   if (this.emailTemplate.includes(this.textToSearch)) {

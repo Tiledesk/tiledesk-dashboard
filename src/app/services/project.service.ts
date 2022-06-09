@@ -565,6 +565,7 @@ export class ProjectService {
 
     let body = {}
     body["settings.email.templates." + temaplateName] = template;
+    // body["settings.email.templates." + temaplateName + '.html'] = template;
     // -------------------------------------------------------
     // Andrea L
     // -------------------------------------------------------
