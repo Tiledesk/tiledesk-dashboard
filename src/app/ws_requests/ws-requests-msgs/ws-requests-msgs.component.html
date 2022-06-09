@@ -536,9 +536,8 @@
 
                     <div class="col-xs-12  w-100 plr-0">
                       <div class="row w-100">
-                        <div class="col-xs-5 h-100 plr-0" style="    margin-top: -4px;  ">
-                     
-                            <!-- <ng-select class="select-response-type"  [clearable]="false" [searchable]="false" [items]="responseType" bindLabel="name"
+                     <!--   <div class="col-xs-5 h-100 plr-0" style="    margin-top: -4px;  ">
+                             <ng-select class="select-response-type"  [clearable]="false" [searchable]="false" [items]="responseType" bindLabel="name"
                               bindValue="id" [(ngModel)]="selectedResponseTypeID"  (change)="onChangeReplyType(selectedResponseTypeID)">
                               <ng-template ng-label-tmp let-item="item">
                                 <img height="15" width="15" style="width: 15px; height: auto" [src]="item.icon" />
@@ -548,15 +547,14 @@
                                 <img height="15" width="15" style="width: 15px; height: auto" [src]="item.icon" />
                                 <b>{{item.name}}</b>
                               </ng-template>
-                            </ng-select> -->
-                          
-                        </div>
-                        <div class="col-xs-7 h-100 plr-0" style="    margin-top: -4px;  ">
+                            </ng-select> 
+                        </div> -->
+                        <div class="col-xs-12 h-100 plr-0" style="    margin-top: -4px;  ">
 
                           <button class="btn btn-primary pull-right send-chat-msg-btn"
                             (click)="sendChatMessage()"
                             [disabled]="!chat_message || chat_message?.length === 0 ">
-                            Send
+                            {{'Send' | translate}}
                           </button>
                         </div>
                       </div>
