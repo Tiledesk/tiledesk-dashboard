@@ -7,7 +7,8 @@ export const CutomTooltipOptions: TooltipOptions = {
     'shadow': true,
     'hide-delay-mobile': 0,
     'hideDelayAfterClick': 3000,
-    'hide-delay': 0
+    'hide-delay': 0,
+    'placement': 'top',
   }
 
 

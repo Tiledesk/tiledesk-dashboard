@@ -3123,7 +3123,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.logger.log('[WS-REQUESTS-MSGS] ON Change IN SEND MSG sendMessageTexarea scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight);
       this.logger.log('[WS-REQUESTS-MSGS] ON Change IN SEND MSG sendMessageTexarea offsetHeight', this.sendMessageTexarea.nativeElement.offsetHeight);
       // this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
-      this.sendMessageTexarea.nativeElement.style.height = `${46}px`;
+      this.sendMessageTexarea.nativeElement.style.height = `${47}px`;
       this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
     }, 250);
   }
