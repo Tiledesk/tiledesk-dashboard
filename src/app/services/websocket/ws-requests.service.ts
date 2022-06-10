@@ -36,7 +36,7 @@ export class WsRequestsService implements OnDestroy {
   public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public projectUsersOfProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public wsOnDataUnservedConvs$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
- 
+
   public ws__RequestsList$: any;
 
   public wsRequest$ = new Subject()
@@ -295,40 +295,40 @@ export class WsRequestsService implements OnDestroy {
 
             // if (notification.event.method === 'CREATE') {
 
-              // self.wsRequestsList.push(data[0]);
-              // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA data published ",  self.wsRequestsList);
+            // self.wsRequestsList.push(data[0]);
+            // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA data published ",  self.wsRequestsList);
 
-              // self.wsRequestsList$.next(data);
-              // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA data published ",  data);
+            // self.wsRequestsList$.next(data);
+            // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA data published ",  data);
 
-              // if (data) {
-              //   if (Array.isArray(data)) {
-              //     // https://stackoverflow.com/questions/18983138/callback-after-all-asynchronous-foreach-callbacks-are-completed
-              //     let requests = data.map((item) => {
-              //       return new Promise((resolve) => {
-              //         self.asyncFunction(item, resolve);
-              //       });
-              //     })
-              //     Promise.all(requests).then(() => {
-              //       self.ws_All_RequestsLength$.next(data.length);
-              //     });
-              //   }
-              // }
-              // this.wsRequestsList$.next(this.wsRequestsList);
+            // if (data) {
+            //   if (Array.isArray(data)) {
+            //     // https://stackoverflow.com/questions/18983138/callback-after-all-asynchronous-foreach-callbacks-are-completed
+            //     let requests = data.map((item) => {
+            //       return new Promise((resolve) => {
+            //         self.asyncFunction(item, resolve);
+            //       });
+            //     })
+            //     Promise.all(requests).then(() => {
+            //       self.ws_All_RequestsLength$.next(data.length);
+            //     });
+            //   }
+            // }
+            // this.wsRequestsList$.next(this.wsRequestsList);
 
 
 
-              // ------------------------------- 
-              // let wsOnDataConvsList = [];
-              // wsOnDataConvsList.push(data)
-              // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA wsOnDataConvsList ", wsOnDataConvsList);
-              // // if (wsOnDataRequestsList.length > 0) {
-              // let wsOnDataConvsUnserved = wsOnDataConvsList[0].filter((el) => {
-              //   return el.status === 100;
-              // });
-              // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA ONLY UNSERVED  ", wsOnDataConvsUnserved);
-              // self.wsOnDataUnservedConvs$.next(wsOnDataConvsUnserved);
-              // }
+            // ------------------------------- 
+            // let wsOnDataConvsList = [];
+            // wsOnDataConvsList.push(data)
+            // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA wsOnDataConvsList ", wsOnDataConvsList);
+            // // if (wsOnDataRequestsList.length > 0) {
+            // let wsOnDataConvsUnserved = wsOnDataConvsList[0].filter((el) => {
+            //   return el.status === 100;
+            // });
+            // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA ONLY UNSERVED  ", wsOnDataConvsUnserved);
+            // self.wsOnDataUnservedConvs$.next(wsOnDataConvsUnserved);
+            // }
             // }
 
             if (data) {
@@ -366,7 +366,7 @@ export class WsRequestsService implements OnDestroy {
     if (request !== null && request !== undefined) {
       this.wsRequestsList.push(request);
       // this.wsRequestsList$.next(this.wsRequestsList);
-     
+
     }
 
     if (this.wsRequestsList) {
@@ -716,7 +716,7 @@ export class WsRequestsService implements OnDestroy {
       .map((res) => res.json());
   }
 
-    // --------------------------------------------------
+  // --------------------------------------------------
   // @ Delete request 
   // --------------------------------------------------
   public deleteRequest(request_id: string) {
@@ -849,6 +849,27 @@ export class WsRequestsService implements OnDestroy {
       .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
+
+  // -----------------------------------------------------------------------------------------
+  // @ Export transcript to CSV
+  // -----------------------------------------------------------------------------------------
+  public exportTranscriptAsCSVFile(idrequest: string) {
+    // https://tiledesk-server-pre.herokuapp.com/615577276b34e900353c1a63/requests/support-group-615577276b34e900353c1a63-0a8b507ddd384daf8e400f223083687f/messages/csv
+//     https://tiledesk-server-pre.herokuapp.com/62728d1ca76e050040cee42e/requests/support-group-62728d1ca76e050040cee42e-e1e4b00def724a0798d4d03c38beb921/messages/csv"
+
+
+  const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + idrequest + '/messages/csv';
+  this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD TRANSCRIPT AS CSV URL ', url);
+
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/csv');
+
+  headers.append('Authorization', this.TOKEN);
+
+  return this.http
+    .get(url, { headers })
+    .map((response) => response.text());
+}
 
 
   // -----------------------------------------------------------------------------------------
@@ -1019,7 +1040,7 @@ export class WsRequestsService implements OnDestroy {
   public getHistoryAndNortRequests(operator: string, status: string, querystring: string, pagenumber: number) {
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUESTS - operator  ', operator);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - status  ', status);
-  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
+    //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
 
     let _querystring = ''
@@ -1037,7 +1058,7 @@ export class WsRequestsService implements OnDestroy {
     if (status !== 'all') {
       url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber + '&no_populate=true';
       // console.log('url status != all ' ,url )
-    
+
     } else {
       url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber + '&no_populate=true';
       // console.log('url status all ' ,url )
