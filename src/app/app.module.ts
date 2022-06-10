@@ -212,7 +212,8 @@ import { CreateBotComponent } from './department-edit-add/create-bot/create-bot.
 import { SatisfactionComponent } from './analytics2/metriche/satisfaction/satisfaction.component';
 import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing/unauthorized-for-pricing.component';
 import { EventsAnalyticsComponent } from './analytics2/metriche/events-analytics/events-analytics.component';
-import { SanitizeHtmlPipe } from './sanitize-html.pipe';
+import { SanitizeHtmlPipe } from './sanitize-html.pipe'; // used for iframe to bypass security 
+import { SafeHtmlPipe } from './safe-html.pipe'; // used to sanitize email 
 import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';
 import { Autolinkerjs } from './autolinkerjs.pipe';
 import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';
@@ -419,6 +420,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     EventsAnalyticsComponent,
     MarkedPipe,
     SanitizeHtmlPipe,
+    SafeHtmlPipe,
     UnauthorizedForProjectComponent,
     Autolinkerjs,
     HtmlEntitiesEncodePipe,
