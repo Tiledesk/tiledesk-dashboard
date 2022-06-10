@@ -1234,6 +1234,7 @@
         "RequesterId": "ИД подносиоца захтева:",
         "Close": "Затворитe",
         "ContainsTheWords": "Садржи речи",
+        "SearchByWordsOrByTicketID": "Search by words or by ticket ID (e.g. #123)",
         "FilterByDepartment": "Одељење",
         "AllDepts": "Сва одељења",
         "Agent": "Агент",
