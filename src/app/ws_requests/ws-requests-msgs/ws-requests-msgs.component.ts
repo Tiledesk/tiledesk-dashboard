@@ -712,18 +712,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     let _id_request = ''
     if (id_request.includes('%2B')) {
       // console.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request contains %2B' ,id_request.includes('%2B') ,' run replace' )
-      _id_request = id_request.replace( /\%2B/g, '+' )
+      _id_request = id_request.replace(/\%2B/g, '+')
 
     } else {
       // console.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request NOT contains %2B' ,id_request.includes('%2B') , )
       _id_request = id_request
     }
 
-  
+
     // Start websocket subscription ro ws request by id
     // this.wsRequestsService.subscribeTo_wsRequestById(id_request);
     this.wsRequestsService.subscribeTo_wsRequestById(_id_request);
-   
+
     // Subscribe to ws request by id
     this.getWsRequestById$();
   }
@@ -739,7 +739,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsrequest) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+      //  console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -902,6 +902,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
             this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
+            // console.log('this.request.lead ' , this.request.lead)
+            // if (this.request.lead && this.request.lead.email) {
+            //   console.log('this.request.lead email ' , this.request.lead.email)
+            //  this.contactNewEmail = this.request.lead.email
+            //  console.log('contactNewEmail ' , this.contactNewEmail)
+            // }
             this.getRequesterAvailabilityStatus(this.requester_id);
           } else {
             this.requester_id = "n.a.";
@@ -1304,7 +1310,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Messages ws-subscription and get msgs from BS subscription
   // -----------------------------------------------------------------------------------------------------
   subscribeToWs_MsgsByRequestId(id_request: string) {
-  //  console.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
+    //  console.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.listenToGotAllMsg()
     this.getWsMsgs$();
@@ -2634,6 +2640,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html';
     this.logger.log('[WS-REQUESTS-MSGS] openTranscript url ', url);
     window.open(url, '_blank');
+  }
+
+  exportTranscriptToCSV() {
+    this.wsRequestsService.exportTranscriptAsCSVFile(this.id_request).subscribe((res: any) => {
+      // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV', res);
+    }, (error) => {
+      // console.error('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV - ERROR  ', error);
+    }, () => {
+      // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV * COMPLETE *');
+    });
   }
 
   goToTags() {

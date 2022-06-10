@@ -107,82 +107,6 @@
                       </ul>
                     </div>
 
-                    <!-- <button class="btn btn-white bordered-btn pull-right" (click)='openleaveChatModal()'
-                      [disabled]="IS_CURRENT_USER_JOINED === false" matTooltipClass="custom-mat-tooltip"
-                      matTooltip="{{ 'UnassignYouFromTheConversation' | translate }}" #tooltip="matTooltip"
-                      matTooltipPosition='below' matTooltipHideDelay="100">
-                      <i class="material-icons">exit_to_app</i>
-                      <span> {{ 'VisitorsPage.LeaveChat' | translate }} </span>
-                    </button> -->
-
-                    <!-- ---------------------------------------------- -->
-                    <!--  ACTIONS DROPDOWN MENU -->
-                    <!--  THIS is HIDDEN - moved in the right sidebar -->
-                    <!-- ---------------------------------------------- -->
-                    <div class="dropdown pull-right" style="display: none;">
-                      <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                        style="padding:6px 15px; margin-top: 15px">
-                        <!-- {{ 'VisitorsPage.Actions' | translate }} -->
-                        {{ 'Actions' | translate }}
-                        <b class="caret"></b>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000}">
-                          <!-- <a (click)='openArchiveRequestModal(request?.request_id)' style="padding-left: 15px; padding-right: 15px;"> -->
-                          <a (click)='archiveRequest(request?.request_id)'
-                            style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">close</i>
-                            <span style="position: relative; top: 1px; cursor:pointer">
-                              {{ 'RequestMsgsPage.CloseTheRequest' | translate }}
-                            </span>
-                          </a>
-                        </li>
-                        <li class="divider"></li>
-                        <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
-                        <li>
-                          <a (click)='openSelectUsersModal(action = "reassign")'
-                            style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
-                            <span style="position: relative; top: 1px; cursor:pointer">
-                              {{ 'VisitorsPage.ReassignRequest' | translate }}
-                            </span>
-                          </a>
-                        </li>
-                        <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
-                        <li>
-                          <a (click)='openSelectUsersModal(action = "invite")'
-                            style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">person_add</i>
-                            <span style="position: relative; top: 1px; cursor:pointer">
-                              {{ 'VisitorsPage.AddAgent' | translate }}
-                            </span>
-                          </a>
-                        </li>
-
-                        <li class="divider"></li>
-                        <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}">
-
-                          <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
-                            <span style="position: relative; top: 1px; cursor:pointer">
-                              {{ 'VisitorsPage.LeaveChat' | translate }}
-                            </span>
-                          </a>
-                        </li>
-
-                        <li class="divider"></li>
-                        <li>
-                          <a (click)='openTranscript()' style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">open_in_new</i>
-                            <span style="position: relative; top: 1px; cursor:pointer">
-
-                              {{ 'VisitorsPage.Open' | translate }} transcript
-                            </span>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-
                   </div>
                 </div>
               </div>
@@ -200,7 +124,6 @@
 
 
             <div #scrollMe id="chat-wpr" class="card-content"
-              style=""
               (scroll)="onScrollMsgs($event)">
               <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
 
@@ -768,6 +691,7 @@
                                 <label for="email-input" style="margin-bottom: 4px;">
                                   {{'ContactEmail' | translate}}
                                 </label>
+                       
                                 <input id="email-input" type="email" class="dropdown--input" name="contact_new_email"
                                   autocomplete="off" [(ngModel)]="contactNewEmail"
                                   (ngModelChange)="emailChange($event)">
@@ -1158,8 +1082,6 @@
                                 </span>
                               </a>
                             </li>
-
-                            <!-- *ngIf="CHAT_PANEL_MODE === false" -->
                             <li class="divider"></li>
                             <li>
                               <a (click)='openTranscript()' style="padding-left: 15px; padding-right: 15px;">
@@ -1170,6 +1092,15 @@
                                 </span>
                               </a>
                             </li>
+                            <!-- <li class="divider"></li>
+                            <li>
+                              <a (click)='exportTranscriptToCSV()' style="padding-left: 15px; padding-right: 15px;">
+                                <i class="material-icons" style="padding-right: 5px;">save_alt</i>
+                                <span style="position: relative; top: 1px; cursor:pointer">
+                                  {{ 'ExporTranscriptToCSV' | translate }}
+                                </span>
+                              </a>
+                            </li> -->
                           </ul>
                         </div>
 
