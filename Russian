@@ -1234,6 +1234,7 @@
         "RequesterId": "Идентификатор запрашивающего:",
         "Close": "Закрывать",
         "ContainsTheWords": "Содержит слова",
+        "SearchByWordsOrByTicketID": "Search by words or by ticket ID (e.g. #123)",
         "FilterByDepartment": "Oтделение",
         "AllDepts": "Все отделы",
         "Agent": "Агент",
