@@ -1234,6 +1234,7 @@
         "RequesterId": "Requester Id:",
         "Close": "Close",
         "ContainsTheWords": "Contains the words",
+        "SearchByWordsOrByTicketID": "Search by words or by ticket ID (e.g. #123)",
         "FilterByDepartment": "Department",
         "AllDepts": "All departments",
         "Agent": "Agent",
