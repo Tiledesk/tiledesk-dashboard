@@ -108,9 +108,9 @@
                   </span>
                 </button>
               </span>
-
+              <!-- {{ 'HistoryPage.ContainsTheWords' | translate }} -->
               <input name="fullText" [(ngModel)]="fullText" (ngModelChange)="fulltextChange($event)" autocomplete="off"
-                class="search-field" placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}"
+                class="search-field" placeholder=" {{ 'HistoryPage.SearchByWordsOrByTicketID' | translate }} "
                 (keypress)="searchOnEnterPressed($event)">
 
               <!-- // CLEAR SEARCH FULL-TEXT BTN -->
@@ -265,7 +265,7 @@
                   </div>
                 </div>
                 <div class="col-sm-6">
-                  <!-- <label class="col-sm-12 label-7695a5">
+                  <label class="col-sm-12 label-7695a5">
                     {{ 'ConversationType' | translate }}
                   </label>
                   <div class="col-sm-12">
@@ -274,7 +274,7 @@
                       [clearable]='false' [searchable]="false" bindValue="id"
                       placeholder="{{'SelectConversationType' | translate }}">
                     </ng-select>
-                  </div> -->
+                  </div>
 
                 </div>
               </div>

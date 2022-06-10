@@ -1019,7 +1019,7 @@ export class WsRequestsService implements OnDestroy {
   public getHistoryAndNortRequests(operator: string, status: string, querystring: string, pagenumber: number) {
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUESTS - operator  ', operator);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - status  ', status);
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
+  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
 
     let _querystring = ''
@@ -1036,8 +1036,11 @@ export class WsRequestsService implements OnDestroy {
     let url = '';
     if (status !== 'all') {
       url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber + '&no_populate=true';
+      // console.log('url status != all ' ,url )
+    
     } else {
       url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber + '&no_populate=true';
+      // console.log('url status all ' ,url )
     }
 
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - GET REQUESTS URL ', url);

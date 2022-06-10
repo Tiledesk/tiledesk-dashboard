@@ -117,7 +117,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   selecteTagColor: string; // used in applied filter
   selecteTagColor_temp: string; // used in applied filter
   selecteTagName_temp: string;  // used in applied filter
-  
+
   conversation_type: any;
   conversationTypeValue: string;  // used in applied filter
 
@@ -183,7 +183,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   operator: string;
   requests_status: any;
- 
+
   selectedDeptName: string;
   selectedDeptName_temp: string;
   selectedAgentFirstname: string;
@@ -207,7 +207,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     { id: 'form', name: 'Ticket' }
   ]
 
-  
+
 
   start_date_is_null = true
 
@@ -225,6 +225,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   public_Key: any;
   current_selected_prjct: any;
   isChromeVerGreaterThan100: boolean;
+  SEARCH_FOR_TICKET_ID: boolean = false;
   /**
    * 
    * @param router 
@@ -293,11 +294,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -1009,8 +1010,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
-   this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-   
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+
   }
 
 
@@ -1162,8 +1163,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   requestsTypeSelectFromAdvancedOption() {
     this.logger.log('this.conversation_type: ', this.conversation_type)
-  
-  
+
+
   }
 
   fulltextChange($event) {
@@ -1250,13 +1251,20 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   searchOnEnterPressed(event: any) {
-    this.logger.log('searchOnEnterPressed event', event);
+    //  console.log('searchOnEnterPressed event', event);
+
+    //  if( event.key === "#" )
+    //  console.log('searchOnEnterPressed event', event);
+
 
     if (event.key === "Enter") {
       this.search()
     }
   }
 
+  onlyNumbers(stringWithoutHash) {
+    return /^[0-9]+$/.test(stringWithoutHash);
+  }
 
   search() {
     this.has_searched = true;
@@ -1275,12 +1283,40 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // }
 
     if (this.fullText) {
+      // console.log('searchOnEnterPressed this.fullText ', this.fullText)
 
-      this.fullTextValue = this.fullText;
+
+      if (this.fullText.indexOf('#') !== -1) {
+        // console.log('String contains # ');
+        const indexOfHash = this.fullText.indexOf("#");
+        // console.log('indexOfHash # ', indexOfHash);
+        if (indexOfHash === 0) {
+          const stringWithoutHash = this.fullText.substring(1);
+          // console.log('string Without Hash ', stringWithoutHash);
+          const stringWithoutHashHasOnlyNumbers = this.onlyNumbers(stringWithoutHash)
+          // console.log('stringWithoutHashHasOnlyNumbers ', stringWithoutHashHasOnlyNumbers);
+          if (stringWithoutHashHasOnlyNumbers === true) {
+            this.SEARCH_FOR_TICKET_ID = true
+            // console.log('SEARCH_FOR_TICKET_ID ', this.SEARCH_FOR_TICKET_ID) 
+          } else {
+            this.SEARCH_FOR_TICKET_ID = false
+          }
+        }
+      } else {
+        // console.log('String Not contains # ');
+         this.SEARCH_FOR_TICKET_ID = false
+      }
+
+      if (this.SEARCH_FOR_TICKET_ID === false) {
+        this.fullTextValue = this.fullText;
+      } else if (this.SEARCH_FOR_TICKET_ID === true) {
+        this.fullTextValue = this.fullText.substring(1);
+      }
+      
       this.fullText_applied_filter = this.fullText_temp;
-      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR FULL TEXT ', this.fullTextValue);
+      // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR FULL TEXT ', this.fullTextValue);
     } else {
-      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR DEPT TEXT ', this.fullText);
+      // console.log('[HISTORY & NORT-CONVS] -  SEARCH FOR FULL TEXT (else) ', this.fullText);
       this.fullTextValue = '';
       this.fullText_applied_filter = null;
     }
@@ -1353,15 +1389,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (this.conversation_type) {
       this.conversationTypeValue = this.conversation_type
-      this.logger.log('search this.conversation_type ', this.conversation_type ) 
-      this.logger.log('search this.conversationTypeValue ', this.conversationTypeValue ) 
- 
+      this.logger.log('search this.conversation_type ', this.conversation_type)
+      this.logger.log('search this.conversationTypeValue ', this.conversationTypeValue)
+
     } else {
       this.conversationTypeValue = '';
-    
+
     }
 
-    
+
 
 
     // !!!!! NOT USED ????
@@ -1377,8 +1413,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     // if (this.fullText !== undefined && this.deptName !== undefined && this.startDate !== undefined || this.endDate !== undefined) {
     // tslint:disable-next-line:max-line-length
+    let variable_parameter = 'full_text='
+    if (this.SEARCH_FOR_TICKET_ID === true) {
+      variable_parameter = "ticket_id="
+    }
+
     this.queryString =
-      'full_text=' + this.fullTextValue + '&'
+      variable_parameter + this.fullTextValue + '&'
       + 'dept_id=' + this.deptIdValue + '&'
       + 'start_date=' + this.startDateValue + '&'
       + 'end_date=' + this.endDateValue + '&'
@@ -1387,7 +1428,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'tags=' + this.selecteTagNameValue + '&'
       + 'channel=' + this.conversationTypeValue
 
-    this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
+  //  console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
 
     // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
     if (this.showAdvancedSearchOption === false) {
@@ -1444,10 +1485,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     } else {
       this.conversationTypeValue = '';
-    
+
     }
 
-    
+
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
@@ -1642,7 +1683,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       if (this.ROLE_IS_AGENT === false) {
         this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot_id, botType]);
       }
-      
+
     } else {
       botType = bot_type
       if (this.ROLE_IS_AGENT === false) {
@@ -1651,7 +1692,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     }
 
-   
+
   }
 
 
@@ -1958,17 +1999,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }, (error) => {
       this.logger.error('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST - ERROR ', error);
 
-  
+
     }, () => {
       this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST * COMPLETE *');
-      for( var i = 0; i < this.requestList.length; i++){ 
-    
-        if ( this.requestList[i].request_id === request_id) { 
-        // console.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED  id of the REQUEST  REOPENED ', this.requestList[i].request_id);
-          this.requestList.splice(i, 1); 
+      for (var i = 0; i < this.requestList.length; i++) {
+
+        if (this.requestList[i].request_id === request_id) {
+          // console.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED  id of the REQUEST  REOPENED ', this.requestList[i].request_id);
+          this.requestList.splice(i, 1);
         }
-    
-    }
+
+      }
     })
   }
 
