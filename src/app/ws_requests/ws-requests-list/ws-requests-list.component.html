@@ -73,15 +73,18 @@
   <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;"
     (click)='goToNoRealtimeConversations()'>
     <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
-      style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
-      <span aria-hidden="true" class="material-icons" style="margin-top: 3px; color:#3ea9f5">
-        view_list
+      style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }"  matTooltipClass="mat-white-tooltip"
+      matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+      <span aria-hidden="true" class="material-icons" style="margin-top: 3px; color:#3ea9f5; font-size: 27px;
+      position: relative;
+      top: -3px;">
+        manage_search
       </span>
-      <div class="bottom"
+      <!-- <div class="bottom"
         style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
         {{ 'ThisScreenDisplayAMaximumOf100RealTime' | translate }}
         <i></i>
-      </div>
+      </div> -->
     </a>
 
     <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
@@ -94,19 +97,18 @@
   <!-- SHOW SERVED REQUEST MAP -->
   <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
-      style="cursor: pointer; display: unset;">
+      style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
+      matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
       <span class="material-icons" style="margin-top: 3px; color:#3ea9f5">
         pin_drop
       </span>
-      <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content;
+      <!-- <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content;
         white-space: nowrap;">
         {{'ViewServedRequestsMap' | translate}}
         <i></i>
-      </div>
+      </div> -->
     </a>
-
   </li>
-
 </ul>
 
 <!-- 
@@ -143,15 +145,18 @@
   <li class="see-no-realtime-request" style="float: right; padding-right: 5px;" (click)='goToNoRealtimeConversations()'>
     <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
       style="cursor: pointer; display: unset; color:#3ea9f5;"
-      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }">
-      <span class="material-icons">
-        view_list
+      [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }" matTooltipClass="mat-white-tooltip"
+      matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+      <span class="material-icons" style="font-size: 27px;
+      position: relative;
+      top: -2px;"> 
+        manage_search
       </span>
-      <div class="bottom"
+      <!-- <div class="bottom"
         style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: 200px;">
         {{ 'ThisScreenDisplayAMaximumOf100RealTime' | translate }}
         <i></i>
-      </div>
+      </div> -->
     </a>
     <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
       <span>
@@ -187,15 +192,16 @@
   <!-- SHOW SERVED REQUEST MAP * FOR SMALL SCREEN -->
   <li class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
-      style="cursor: pointer; display: unset;">
+      style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
+      matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
       <span class="material-icons" style="margin-top: 0px;color:#3ea9f5">
         pin_drop
       </span>
-      <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content;
+      <!-- <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content;
         white-space: nowrap;">
         {{ 'ViewServedRequestsMap' | translate }}
         <i></i>
-      </div>
+      </div> -->
     </a>
 
     <!-- <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">

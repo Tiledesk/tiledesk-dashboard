@@ -585,8 +585,8 @@ span .switch-agent-admin-requests-btn {
 
   .see-no-realtime-request {
     margin-top: 13px;
-    margin-left: 15px;
-    margin-right: 15px;
+    margin-left: 23px;
+    margin-right: 0px;
   }
 
   .served-unserved-sum {
@@ -1545,6 +1545,19 @@ $f21blue: #039be5;
   .filter-convs-title-wpr {
     padding-left: 6px;
   }
+}
+
+
+::ng-deep .mat-white-tooltip {
+  background-color: #fff !important;
+  font-size: 11px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins" !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  border: 1px solid #ccc;
+  color:#000 !important ;
+  font-weight: 400 !important ;
 }
 
 
