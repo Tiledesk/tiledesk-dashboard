@@ -2082,6 +2082,7 @@
     "MostRecentComment": "Најновији коментар",
     "ContactConversations":"Контакт разговори",
     "ClickHereForMoreAdvancedSearches":"Кликните овде за напредније претраге (као што су тикет id, ознаке и друго) и да видите све захтеве (ова страница приказује до 100 разговора у реалном времену)",
+    "ExporTranscriptToCSV":"Извези транскрипт у ЦСВ",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

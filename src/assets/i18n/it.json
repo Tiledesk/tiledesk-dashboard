@@ -2080,5 +2080,6 @@
     "Reopen":"Riapri",
     "MostRecentComment": "Commento più recente",
     "ContactConversations":"Conversazioni del contatto",
-    "ClickHereForMoreAdvancedSearches":"Clicca qui per ricerche più avanzate (come ID ticket, tag e altro) e per visualizzare tutte le richieste (questa pagina mostra fino a 100 conversazioni in tempo reale)"
+    "ClickHereForMoreAdvancedSearches":"Clicca qui per ricerche più avanzate (come ID ticket, tag e altro) e per visualizzare tutte le richieste (questa pagina mostra fino a 100 conversazioni in tempo reale)",
+    "ExporTranscriptToCSV":"Esporta trascrizione in CSV"
 }

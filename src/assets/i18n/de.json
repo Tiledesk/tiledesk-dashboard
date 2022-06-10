@@ -2081,5 +2081,6 @@
 	"Reopen":"Öffnen Sie wieder",
 	"MostRecentComment": "Neuester Kommentar",
 	"ContactConversations":"Konversationen kontaktieren",
-	"ClickHereForMoreAdvancedSearches":"Klicken Sie hier für erweiterte Suchen (wie Ticket-IDs, Tags und mehr) und um alle Anfragen anzuzeigen (diese Seite zeigt bis zu 100 Konversationen in Echtzeit)"
+	"ClickHereForMoreAdvancedSearches":"Klicken Sie hier für erweiterte Suchen (wie Ticket-IDs, Tags und mehr) und um alle Anfragen anzuzeigen (diese Seite zeigt bis zu 100 Konversationen in Echtzeit)",
+	"ExporTranscriptToCSV":"Transkript nach CSV exportieren"
 }
