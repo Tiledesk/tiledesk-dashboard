@@ -1234,6 +1234,7 @@
         "RequesterId": "İstek Sahibi Kimliği:",
         "Close": "Kapat",
         "ContainsTheWords": "kelimeleri içerir",
+        "SearchByWordsOrByTicketID": "Search by words or by ticket ID (e.g. #123)",
         "FilterByDepartment": "Departman",
         "AllDepts": "Bütün departmanlar",
         "Agent": "Bütün departmanlar",
