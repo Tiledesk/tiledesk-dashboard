@@ -1,6 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.2.37-rc1
+- Adds the ability to change the credit card for the subscription projects
+- Adds Security tab in Settings > Project Settings from which the end-user can restrict access to Tiledesk to only those users within a range of IP addresses
+- Adds the ability on the history page and non-real-time conversations page to filter the conversations by Ticket ID and Conversation Type
+- Adds the ability to tag a teammate on their details page
+- Adds the Serbian language
+- Adds the ability when creating a 'Resolution bot' to select a pre-built template
+ 
 ### 2.2.36
 - Deploys in production
 
