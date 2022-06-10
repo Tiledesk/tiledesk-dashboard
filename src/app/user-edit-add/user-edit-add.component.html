@@ -254,7 +254,7 @@
               <!-- ---------------------------------------------------- -->
               <!-- start project user-tags -->
               <!-- -------------------------------------------------------- -->
-              <!-- <div *ngIf="CURRENT_USER_ROLE !== 'agent'" class="row" style="margin-top: 12px;">
+             <div *ngIf="CURRENT_USER_ROLE !== 'agent'" class="row" style="margin-top: 12px;">
                 <label class="col-sm-2 custom-label" style="white-space: nowrap;">
                   {{'Tags.Tag'  | translate}}
                 </label>
@@ -285,7 +285,7 @@
 
                     <input id="tag_name" name="tag_name" (keyup.enter)="onPressEnterInIputTypeNewTag()"
                       (ngModelChange)="onChangeTagname($event)" [(ngModel)]="tagname" class="input" type="text"
-                      placeholder="{{ 'Tags.AddTags' | translate }} ...">
+                      placeholder="{{ 'Tags.AddTags' | translate }} ..." style="height: 37px;">
                     <div class="tag-color-dot" [ngStyle]="{'background-color':tag_selected_color}"></div>
                     <button class="btn btn-primary add-tag-to-pu-btn" (click)="addTagToProjectUser()" type="submit"
                       [disabled]="!tagname || tagname?.length === 0 ">
@@ -299,9 +299,9 @@
                     {{'TagNameIsRequired' | translate }}
                   </div>
                 </div>
-              </div> -->
+              </div> 
 
-              <!-- <label class="col-sm-2 custom-label"> </label>
+              <label class="col-sm-2 custom-label"> </label>
               <form style="position: relative;">
                 <div class="pu-tags-container">
                   <span class="pu-tag" *ngFor="let tag of tagsArray" role="button">
@@ -326,7 +326,7 @@
 
                   </span>
                 </div>
-              </form> -->
+              </form> 
 
               <!-- end project user tags -->
 
