@@ -543,9 +543,11 @@
                     <!-- -------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION CREDIT CARD -->
                     <!-- -------------------------------------------------------------------------------------  -->
-                    
-             <!--  // the good one      
-               <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise' &&  subscription_is_active === true" style="margin-top: 16px;">
+
+
+                    <div class="row"
+                      *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise' &&  subscription_is_active === true"
+                      style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label">
                         {{"PaymentInformation" | translate }}
                       </label>
@@ -568,7 +570,7 @@
                         </span>
 
                       </div>
-                    </div> -->
+                    </div>
 
                     <!-- -------------------------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION START DATE OR PLAN START DATE IF ENTERPRISE -->
@@ -1349,8 +1351,8 @@
                     </div>
 
                     <div class="col-xs-12">
-                      <button id="customize-email-template" (click)="goToCustomizeNotificationEmailPage()" class="btn btn-primary"
-                        style="margin-top:5px; padding:6px 15px ">
+                      <button id="customize-email-template" (click)="goToCustomizeNotificationEmailPage()"
+                        class="btn btn-primary" style="margin-top:5px; padding:6px 15px ">
                         {{ "ProjectEditPage.CustomizeEmailTemplateBtn" | translate }}
                       </button>
                     </div>
