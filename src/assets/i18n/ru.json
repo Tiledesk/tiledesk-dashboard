@@ -1234,13 +1234,14 @@
         "RequesterId": "Идентификатор запрашивающего:",
         "Close": "Закрывать",
         "ContainsTheWords": "Содержит слова",
+        "SearchByWordsOrByTicketID": "Поиск по словам или по идентификатору билета (например, #123)",
         "FilterByDepartment": "Oтделение",
         "AllDepts": "Все отделы",
         "Agent": "Агент",
         "AllAgents": "Все агенты",
         "DateRange": "Диапазон дат",
         "ClearSearch": "Очистить поиск",
-        "HistoryIsOnlyAvailableForThePast14Days": "История доступна только за последние 14 дней",
+        "HistoryIsOnlyAvailableForThePast14Days": "История доступна только за последние 14 дней",
         "ForUnlimitedChatHistory": "чтобы получить неограниченную историю чата"
     },
     "Trigger": {
