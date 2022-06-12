@@ -2,6 +2,10 @@
 # tiledesk-dashboard
 
 ### 2.2.37-rc1
+- Adds the existing email to the popup, available in the chat, which allows to change the contact's email on the fly
+- Adds a link to all contact properties to the popup, available in chat, which allows you to change the contact email and full contact name on the fly
+
+### 2.2.37-rc1
 - Adds the ability to change the credit card for the subscription projects
 - Adds Security tab in Settings > Project Settings from which the end-user can restrict access to Tiledesk to only those users within a range of IP addresses
 - Adds the ability on the history page and non-real-time conversations page to filter the conversations by Ticket ID and Conversation Type
