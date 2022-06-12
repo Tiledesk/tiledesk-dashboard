@@ -30,12 +30,7 @@
                 type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
                 (click)="selectAll($event)">
             </label>
-
-
           </th>
-
-
-
           <!-- --------------------------------------------------------- -->
           <!-- Requests Icons th (in this th put the button to archive -->
           <!-- ---------------------------------------------------------- -->
@@ -44,12 +39,10 @@
               (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
               matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
               matTooltipHideDelay="100">
-
               <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;">
                 archive
               </span>
             </button>
-
           </th>
 
           <!-- ------------------- -->
@@ -356,7 +349,6 @@
                     </span>
                   </span>
                 </div>
-
               </span>
             </div>
           </td>
@@ -376,10 +368,53 @@
             </span>
 
             <p class="column-td" rel="tooltip" title="{{ request?._id }}"
-              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
-
+              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"
+              [tooltip]="HtmlContent" content-type="template">
               {{ request?.first_text }}
             </p>
+
+            <ng-template #HtmlContent>
+              <div class="ng2-tooltip-header">
+                <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 100 && !request?.subject" >
+                  {{ 'RequestMsgsPage.RequestUnserved' | translate }}
+                </span>
+                <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 100 && request?.subject" >
+                  {{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}
+                </span>
+             
+                
+                <span class="ng2-tooltip-ticket-id">#{{request?.ticket_id}}</span>
+                <span class="ng2-tooltip-priority">  
+                  <span style="color: #68737d; font-weight:300"> {{'Priority' | translate }}:</span>  
+                  {{request?.priority | translate}}
+                </span>
+                <span class="ng2-tooltip-channel">  
+                  <span style="color: #68737d; font-weight:300"> {{'MessageChannel' | translate }}:</span>  
+                  <span  *ngIf="request?.channel?.name === 'chat21'"> Chat </span> 
+                  <span  *ngIf="request?.channel?.name === 'telegram'"> Telegram </span>
+                  <span  *ngIf="request?.channel?.name === 'whatsapp'"> WhatsApp </span>  
+                  <span  *ngIf="request?.channel?.name === 'messenger'"> Messenger </span>
+                  <span  *ngIf="request?.channel?.name === 'email'"> Email </span>
+                  <span  *ngIf="request?.channel?.name === 'form'"> Form </span>
+                  
+                </span>
+              </div>
+              <p class='ng2-tooltip-subject' *ngIf='request?.subject'>
+                <span style="color: #68737d; font-weight:300"> {{'Subject' | translate }}:</span> {{request?.subject}}
+              </p> 
+              <div class='ng2-tooltip-firt-text' [innerHTML]="request?.first_text  | htmlEntitiesEncode | marked">
+           
+              </div>
+              <!-- <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>
+              <hr class='ng2-tooltip-divider-line'> 
+              <div class='ng2-latest-comment-sender-and-date-wpr'> 
+                <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p>
+                  <p class='ng2-comment-date'>  {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
+              </div> 
+              <p class='ng2-latest-comment' [innerHTML]="request?.msgsArray[0]?.text  | htmlEntitiesEncode | marked">  
+            
+              </p> -->
+            </ng-template>
 
             <!-- --------------------------------------- -->
             <!-- Request Tag -->

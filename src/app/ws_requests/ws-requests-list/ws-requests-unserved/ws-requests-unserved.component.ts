@@ -127,7 +127,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
 
   ngOnChanges() {
-    this.logger.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
+   console.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
     // this.wsRequestsService.wsOnDataUnservedConvs$
     //   .subscribe((ondataUnserveConvs) => {
     //     console.log("WS-REQUEST-UNSERVED ondataUnserveConvs ", ondataUnserveConvs);
