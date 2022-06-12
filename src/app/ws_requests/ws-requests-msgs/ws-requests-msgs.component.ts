@@ -739,7 +739,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsrequest) => {
-      //  console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        //  console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -903,11 +903,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.requester_id = this.request.lead.lead_id;
             this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
             // console.log('this.request.lead ' , this.request.lead)
-            // if (this.request.lead && this.request.lead.email) {
-            //   console.log('this.request.lead email ' , this.request.lead.email)
-            //  this.contactNewEmail = this.request.lead.email
-            //  console.log('contactNewEmail ' , this.contactNewEmail)
-            // }
+            if (this.request.lead && this.request.lead.email) {
+              this.logger.log('this.request.lead email ', this.request.lead.email)
+
+              // used to set as initial value the existing emauk in the input displayed in the chat used to change the email on flyt
+              this.contactNewEmail = this.request.lead.email
+              this.logger.log('contactNewEmail ', this.contactNewEmail)
+            }
             this.getRequesterAvailabilityStatus(this.requester_id);
           } else {
             this.requester_id = "n.a.";
@@ -1218,7 +1220,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
-
+  goToEditContact() {
+    const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/_edit/' + this.request.lead._id;
+    window.open(url, '_blank');
+  }
 
   decreasePageNumber() {
     this.pageNo -= 1;
@@ -3000,7 +3005,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const elemDropDownEditEmail = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
     this.logger.log('elemDropDownEditEmail ', elemDropDownEditEmail)
     elemDropDownEditEmail.classList.add("dropdown__menu_edit_email--active");
-    this.contactNewEmail = undefined;
+    // this.contactNewEmail = undefined;
   }
 
   closeDropdown() {

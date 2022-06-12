@@ -661,13 +661,20 @@
                                 </button>
 
                               </div>
+                              <div class="view-all-lead-properties" (click)="goToEditContact()"> 
+                               <span> {{'ViewAll' | translate}}  </span>  
+                               <span class="material-icons-outlined" style="font-size: 13px;
+                               vertical-align: middle;">
+                                  open_in_new
+                                  </span> 
+                              </div>
                             </form>
                           </div>
                         </div>
 
 
                         <div class="chat-panel-mode-contact-email" (click)="openDropDownEditEmail()">
-                          <a style="margin-top: 8px; text-transform: lowercase; text-decoration: underline;cursor:pointer ; font-size:14px; font-weight: 400; color: #3880ff;"
+                          <a class="lead-email-anchor"
                             target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
                             {{request?.lead?.email}}
                           </a>
@@ -714,8 +721,14 @@
 
                                   {{'Update' | translate}}
                                 </button>
-
                               </div>
+                              <div class="view-all-lead-properties" (click)="goToEditContact()"> 
+                                <span> {{'ViewAll' | translate}}  </span>  
+                                <span class="material-icons-outlined" style="font-size: 13px;
+                                vertical-align: middle;">
+                                   open_in_new
+                                   </span> 
+                               </div>
                             </form>
                           </div>
                         </div>

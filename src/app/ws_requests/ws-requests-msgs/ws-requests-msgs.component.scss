@@ -287,7 +287,8 @@
     &.alt {
       // background: #75d5fd !important;
       background: #0099ff;
-    }&.internal-note {
+    }
+    &.internal-note {
       background: rgb(254, 214, 168);
     }
     .txt {
@@ -366,8 +367,8 @@
     }
     .bubble-arrow.alt.internal-note:after {
       transform: rotate(45deg) scaleY(-1);
-     
-      border-top: 9px solid rgb(254, 214, 168);;
+
+      border-top: 9px solid rgb(254, 214, 168);
     }
   }
 }
@@ -2272,6 +2273,32 @@ span .conv-svg-icon {
 .chat-panel-mode-contact-email:hover ~ .edit-email-icon-wpr {
   opacity: 1;
 }
+
+.lead-email-anchor {
+  margin-top: 8px;
+  text-transform: lowercase;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  color: #3880ff;
+}
+
+.lead-email-anchor:hover {
+  text-decoration: underline;
+}
+
+.view-all-lead-properties {
+  font-weight: 400;
+  color: #3880ff;
+  font-size:14px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.view-all-lead-properties:hover {
+  text-decoration: underline;
+}
+
 .edit-email-icon-wpr {
   opacity: 0;
   height: 21px;
@@ -3066,7 +3093,7 @@ span .conv-svg-icon {
 }
 
 .min-height-in-panel-mode {
-  min-height: 1106px
+  min-height: 1106px;
 }
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
