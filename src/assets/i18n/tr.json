@@ -2083,6 +2083,7 @@
     "ContactConversations":"Temasa geçmek chat",
     "ClickHereForMoreAdvancedSearches":"Daha gelişmiş aramalar (bilet kimliği, etiketler vb. gibi) ve tüm istekleri görmek için burayı tıklayın (bu sayfa 100'e kadar gerçek zamanlı konuşmayı gösterir)",
     "ExporTranscriptToCSV":"Transkript CSV'ye aktar",
+    "ViewAll":"Tümünü görüntüle",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
