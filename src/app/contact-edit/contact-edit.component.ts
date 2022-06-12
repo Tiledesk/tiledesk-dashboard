@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ContactsService } from '../services/contacts.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -37,6 +37,7 @@ export class ContactEditComponent implements OnInit {
   editContactErrorNoticationMsg: string;
   showSpinner = false;
   isChromeVerGreaterThan100: boolean;
+  HIDE_GO_BACK_BTN: boolean;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -44,7 +45,8 @@ export class ContactEditComponent implements OnInit {
     private notify: NotifyService,
     private translate: TranslateService,
     public auth: AuthService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -53,14 +55,29 @@ export class ContactEditComponent implements OnInit {
 
     this.getRequesterIdParamAndThenGetContactById();
     this.getBrowserVersion()
+    this.getCurrentRouteUrlToHideDisplayGoToBackBtn()
   }
 
+
+  getCurrentRouteUrlToHideDisplayGoToBackBtn() {
+    const currentUrl = this.router.url;
+    // console.log('currentUrl ', currentUrl)
+    if ((currentUrl.indexOf('/_edit') !== -1)) {
+
+      // console.log('Hide go back btn')
+      this.HIDE_GO_BACK_BTN = true
+    } else if ((currentUrl.indexOf('/edit') !== -1)) {
+      // console.log('display go back btn')
+      this.HIDE_GO_BACK_BTN = false
+    }
+  }
+ 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
   // TRANSLATION
   translateEditContactSuccessMsg() {
     this.translate.get('EditContactSuccessNoticationMsg')
@@ -135,11 +152,11 @@ export class ContactEditComponent implements OnInit {
     }
 
     if (this.lead_email) {
-      this.lead_email =  this.lead_email.trim()
+      this.lead_email = this.lead_email.trim()
     }
 
     if (this.lead_company) {
-      this.lead_company =  this.lead_company.trim()
+      this.lead_company = this.lead_company.trim()
     }
 
     if (this.lead_street_address) {
