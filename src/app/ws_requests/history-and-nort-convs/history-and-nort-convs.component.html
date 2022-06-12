@@ -1014,8 +1014,59 @@
                     #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                     #{{request?.ticket_id }}
                   </span>
-                  <p class="column-td" [innerHTML]="getRequestText(request?.first_text)"> </p>
+                  <p class="column-td" [innerHTML]="getRequestText(request?.first_text)" [tooltip]="HtmlContent" content-type="template"> </p>
 
+                  <ng-template #HtmlContent>
+                    <div class="ng2-tooltip-header">
+                      <span class="ng2-tooltip-badge--assigned-to-cu" *ngIf="request?.status == 200 && request?.currentUserIsJoined === true && !request?.subject" >
+                        {{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}
+                      </span>
+                      <span class="ng2-tooltip-badge--assigned-to-cu" *ngIf="request?.status == 200 && request?.currentUserIsJoined === true && request?.subject" >
+                        {{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}
+                      </span>
+                      <span class="ng2-tooltip-badge--assigned" *ngIf="request?.status == 200 && !request?.currentUserIsJoined === true && !request?.subject" >
+                        {{ 'RequestMsgsPage.RequestServedBy' | translate }}
+                      </span>
+                      <span class="ng2-tooltip-badge--assigned" *ngIf="request?.status == 200 && !request?.currentUserIsJoined === true && request?.subject" >
+                        {{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}
+                      </span>
+                      <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 100 && !request?.subject" >
+                        {{ 'RequestMsgsPage.RequestUnserved' | translate }}
+                      </span>
+                      <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 100 && request?.subject" >
+                        {{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}
+                      </span>
+                      
+                      <span class="ng2-tooltip-ticket-id">#{{request?.ticket_id}}</span>
+                      <span class="ng2-tooltip-priority">  
+                        <span style="color: #68737d; font-weight:300"> {{'Priority' | translate }}:</span>  
+                        {{request?.priority | translate}}
+                      </span>
+                      <span class="ng2-tooltip-channel">  
+                        <span style="color: #68737d; font-weight:300"> {{'MessageChannel' | translate }}:</span>  
+                        <span  *ngIf="request?.channel?.name === 'chat21'"> Chat </span> 
+                        <span  *ngIf="request?.channel?.name === 'telegram'"> Telegram </span>
+                        <span  *ngIf="request?.channel?.name === 'whatsapp'"> WhatsApp </span>  
+                        <span  *ngIf="request?.channel?.name === 'messenger'"> Messenger </span>
+                        <span  *ngIf="request?.channel?.name === 'email'"> Email </span>
+                        <span  *ngIf="request?.channel?.name === 'form'"> Form </span>
+                        
+                      </span>
+                    </div>
+                    <p class='ng2-tooltip-subject' *ngIf='request?.subject'>
+                      <span style="color: #68737d; font-weight:300"> {{'Subject' | translate }}:</span> {{request?.subject}}
+                    </p> 
+                    <div class='ng2-tooltip-firt-text' [innerHTML]="request?.first_text  | htmlEntitiesEncode | marked"></div>
+                    <span  *ngIf="request?.status == 200">
+                      <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>
+                      <hr class='ng2-tooltip-divider-line'> 
+                      <div class='ng2-latest-comment-sender-and-date-wpr'> 
+                        <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p>
+                          <p class='ng2-comment-date'>  {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
+                      </div> 
+                      <p class='ng2-latest-comment' [innerHTML]="request?.msgsArray[0]?.text  | htmlEntitiesEncode | marked"> </p>
+                    </span>
+                  </ng-template>
                   <!-- --------------------------------------- -->
                   <!-- Request Tag -->
                   <!-- --------------------------------------- -->

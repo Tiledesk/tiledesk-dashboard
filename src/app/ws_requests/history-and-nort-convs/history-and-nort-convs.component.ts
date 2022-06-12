@@ -27,6 +27,7 @@ import { TagsService } from '../../services/tags.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { v } from '@angular/core/src/render3';
+import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 // import swal from 'sweetalert';
 // https://github.com/t4t5/sweetalert/issues/890 <- issue ERROR in node_modules/sweetalert/typings/sweetalert.d.ts(4,9): error TS2403
 
@@ -262,7 +263,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public selectOptionsTranslatePipe: SelectOptionsTranslatePipe,
     private tagsService: TagsService,
     public logger: LoggerService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private wsMsgsService: WsMsgsService,
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
   }
@@ -291,6 +293,19 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.getTag();
     this.getFirebaseAuth();
     this.getBrowserVersion()
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+
+    if (this.requestList.length > 0) {
+      this.requestList.forEach(request => {
+        // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
+        this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+        this.unsuscribeRequestById(request.request_id);
+        this.unsuscribeMessages(request.request_id);
+      });
+    }
   }
 
   getBrowserVersion() {
@@ -668,7 +683,60 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.getRequests()
   }
 
+  unsuscribeRequestById(idrequest) {
+    this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
+  }
 
+  unsuscribeMessages(idrequest) {
+    this.wsMsgsService.unsubsToWS_MsgsByRequestId(idrequest);
+  }
+
+  subscribeToWs_MsgsByRequestId(request, id_request: string) {
+    this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
+    this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
+
+    this.getWsMsgs$(request, id_request);
+  }
+
+  getWsMsgs$(request, id_request) {
+    this.wsMsgsService.wsMsgsList$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((wsmsgs) => {
+
+        if (wsmsgs) {
+          // console.log('[WS-REQUESTS-MSGS] getWsMsgs$ request', request)
+          const msgsArray = []
+          wsmsgs.forEach((msgs, index) => {
+            // && (this.currentUserID !== msgs['sender'])
+            if ((id_request === msgs['recipient'])) {
+
+              // console.log('[WS-REQUESTS-MSGS] for id request ', id_request, ' msgs ', msgs, 'index ', index)
+              msgsArray.push(msgs)
+            }
+          });
+          // console.log('[WS-REQUESTS-MSGS] msgsArray ',msgsArray)
+
+
+
+          request['msgsArray'] = msgsArray.sort(function compare(a, b) {
+            if (a['createdAt'] > b['createdAt']) {
+              return -1;
+            }
+            if (a['createdAt'] < b['createdAt']) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+      }, error => {
+        this.showSpinner = false;
+        this.logger.error('[WS-REQUESTS-MSGS] - getWsMsgs$ - ERROR ', error)
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsMsgs$ * COMPLETE * ')
+      });
+  }
 
   // GET REQUEST COPY - START
   getRequests() {
@@ -695,10 +763,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.logger.log('[HISTORY & NORT-CONVS] - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
           this.requestList = requests['requests'];
-
+          console.log('requestList ', this.requestList) 
           for (const request of this.requestList) {
-
+          
             if (request) {
+
+              this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+
               request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
               // -------------------------------------------------------------------
@@ -1947,9 +2018,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+ 
 
   deleteArchivedRequest(request_id) {
     this.logger.log('[HISTORY & NORT-CONVS] - deleteArchivedRequest request_id ', request_id)
