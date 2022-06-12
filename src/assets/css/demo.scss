@@ -1187,9 +1187,57 @@ span.navbar-brand-title {
   margin-left: 65px;
 }
 
+.ng2-tooltip-header {
+  margin-bottom: 12px;
+}
+
+.ng2-tooltip-badge--assigned-to-cu {
+  text-transform: uppercase;
+  background: #4daf4f;
+  color: #fff;
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 400;
+  margin-right: 12px;
+}
+.ng2-tooltip-badge--assigned {
+  text-transform: uppercase;
+  background: #05BDD4;
+  color: #fff;
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 400;
+  margin-right: 12px;
+}
+
+.ng2-tooltip-badge--unassigned {
+  text-transform: uppercase;
+  background: #ED4537;
+  color: #fff;
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 400;
+  margin-right: 12px;
+}
+
+
+
+
+.ng2-tooltip-ticket-id {
+  vertical-align: middle;
+  margin-right: 12px;
+}
+
+.ng2-tooltip-channel {
+  margin-left: 12px;
+}
+
 .ng2-tooltip-subject {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
@@ -1253,9 +1301,7 @@ footer ul {
 }
 
 .ng-select.select-response-type:focus {
- 
-    outline: none !important;
-
+  outline: none !important;
 }
 .ng-select.select-response-type .ng-select-container {
   display: flex !important;

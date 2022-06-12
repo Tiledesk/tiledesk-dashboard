@@ -190,9 +190,6 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
             return 0;
           });
         }
-
-
-
       }, error => {
         this.showSpinner = false;
         this.logger.error('[WS-REQUESTS-MSGS] - getWsMsgs$ - ERROR ', error)

@@ -249,7 +249,7 @@
           <!-- Message has-details -->
           <!-- ------------------------------------------------------------------------------------------------------ -->
           <td class="td-first-text " [ngClass]="{'padding_5' : request?.tags?.length > 0}"
-            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; width: 215px;" >
+            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; width: 215px;">
             <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
               matTooltipClass="mat-white-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
               matTooltipPosition='right' matTooltipHideDelay="100">
@@ -257,11 +257,62 @@
             </span>
             <!-- *ngIf="request?.channel?.name !== 'email'" -->
             <p  class="column-td" 
-              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;" 
-              tooltip="<p  class='ng2-tooltip-subject' *ngIf='request?.subject'>{{request?.subject}}</p> <p  class='ng2-tooltip-firt-text'>{{request?.first_text  | htmlEntitiesEncode | marked }}</p>  <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>  <hr class='ng2-tooltip-divider-line'> <div class='ng2-latest-comment-sender-and-date-wpr'> <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p> <p class='ng2-comment-date'>  {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p> </div> <p class='ng2-latest-comment'>  {{ request?.msgsArray[0]?.text | htmlEntitiesEncode | marked}} </p> ">
+              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"  
+              [tooltip]="HtmlContent" content-type="template" >
               {{ request?.first_text }}
 
             </p>
+
+  
+          <ng-template #HtmlContent>
+            <div class="ng2-tooltip-header">
+              <span class="ng2-tooltip-badge--assigned-to-cu" *ngIf="request?.status == 200 && request?.currentUserIsJoined === true && !request?.subject" >
+                {{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}
+              </span>
+              <span class="ng2-tooltip-badge--assigned-to-cu" *ngIf="request?.status == 200 && request?.currentUserIsJoined === true && request?.subject" >
+                {{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}
+              </span>
+              <span class="ng2-tooltip-badge--assigned" *ngIf="request?.status == 200 && !request?.currentUserIsJoined === true && !request?.subject" >
+                {{ 'RequestMsgsPage.RequestServedBy' | translate }}
+              </span>
+              <span class="ng2-tooltip-badge--assigned" *ngIf="request?.status == 200 && !request?.currentUserIsJoined === true && request?.subject" >
+                {{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}
+              </span>
+              
+              <span class="ng2-tooltip-ticket-id">#{{request?.ticket_id}}</span>
+              <span class="ng2-tooltip-priority">  
+                <span style="color: #68737d; font-weight:300"> {{'Priority' | translate }}:</span>  
+                {{request?.priority | translate}}
+              </span>
+              <span class="ng2-tooltip-channel">  
+                <span style="color: #68737d; font-weight:300"> {{'MessageChannel' | translate }}:</span>  
+                <span  *ngIf="request?.channel?.name === 'chat21'"> Chat </span> 
+                <span  *ngIf="request?.channel?.name === 'telegram'"> Telegram </span>
+                <span  *ngIf="request?.channel?.name === 'whatsapp'"> WhatsApp </span>  
+                <span  *ngIf="request?.channel?.name === 'messenger'"> Messenger </span>
+                <span  *ngIf="request?.channel?.name === 'email'"> Email </span>
+                <span  *ngIf="request?.channel?.name === 'form'"> Form </span>
+                
+              </span>
+            </div>
+            <p class='ng2-tooltip-subject' *ngIf='request?.subject'>
+              <span style="color: #68737d; font-weight:300"> {{'Subject' | translate }}:</span> {{request?.subject}}
+            </p> 
+            <div class='ng2-tooltip-firt-text' [innerHTML]="request?.first_text  | htmlEntitiesEncode | marked">
+         
+            </div>
+            <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>
+            <hr class='ng2-tooltip-divider-line'> 
+            <div class='ng2-latest-comment-sender-and-date-wpr'> 
+              <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p>
+                <p class='ng2-comment-date'>  {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
+            </div> 
+            <p class='ng2-latest-comment' [innerHTML]="request?.msgsArray[0]?.text  | htmlEntitiesEncode | marked">  
+          
+            </p>
+          </ng-template>
+
+       
             <!-- *ngIf="request?.channel?.name === 'email'" -->
             <!-- <p  class="column-td" 
             style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;" 
@@ -271,10 +322,10 @@
           </p> -->
 
 
-            <!-- 
-            // ---------------------------------------
-            // Request Tag
-            // --------------------------------------- -->
+             
+            <!-- --------------------------------------- -->
+            <!-- Request Tag -->
+            <!-- --------------------------------------- -->
             <section style="max-width: 210px;" *ngIf="request?.tags?.length > 0">
 
               <div style="display: inline-block;" *ngFor="let tag of request?.tags;  let i=index">
@@ -337,21 +388,9 @@
                 </div>
               </div>
 
-              <!-- 
-              // --------------------------------------------------------------------
-              // Display more tags
-              // -------------------------------------------------------------------- -->
-              <!-- <div  [id]="'less_tags_btn_for_request_' + request?.request_id" style="display: none" *ngIf="request?.tags?.length > 2">
-                <a  (click)="$event.stopPropagation(); displayLessTag(request?.request_id)" style="font-size: 11px;
-                color: rgba(0, 0, 0, 0.54) !important;
-                position: relative;
-                top: -2px;"> display less
-                </a>
-               </div> -->
             </section>
 
-            <!-- <span class="details">more info here</span> -->
-         
+
           </td>
 
           <!-- <ng-template #HtmlContent>
