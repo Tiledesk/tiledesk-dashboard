@@ -358,6 +358,7 @@ const routes: Routes = [
   
   { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/contact/_edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // called from the dropodown of the chat to change contact email , name amd lastname on fly (use to not display the goBack)
   { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] },
