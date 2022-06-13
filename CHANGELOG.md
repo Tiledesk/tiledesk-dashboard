@@ -8,6 +8,7 @@
 - Adds, in the "monitor page"  the pop-up window of the message  of the conversation of the unassigned conversations
 - Adds, on the non-real-time conversations page, the pop-up window to the message of the conversations
 - Adds, on the History page, the pop-up window to the message of the conversations
+- Fixes the bug: the "Email" menu item is highlighted when "canned responses" are active
 
 ### 2.2.37-rc1
 - Adds the ability to change the credit card for the subscription projects
