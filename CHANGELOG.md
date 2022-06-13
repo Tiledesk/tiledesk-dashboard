@@ -1,7 +1,7 @@
 
 # tiledesk-dashboard
 
-### 2.2.37-rc1
+### 2.2.37-rc2
 - Adds the existing email to the popup, available in the chat, which allows to change the contact's email on the fly
 - Adds a link to all contact properties to the popup, available in chat, which allows you to change the contact email and full contact name on the fly
 - Adds, in the "monitor page" to the pop-up window of the message  of the conversation of the assigned conversations: the badge indicating the status of the conversation, the ticket ID, the priority and the channel
