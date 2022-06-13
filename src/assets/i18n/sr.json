@@ -2086,6 +2086,7 @@
     "ViewAll":"Прикажи све",
     "ProOnly": "Само Про",
     "EnterpriseOnly": "Само Ентерприсе",
+    "WidgetFooterBranding":"Брендирање подножја виџета",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

@@ -2084,5 +2084,6 @@
     "ExporTranscriptToCSV":"Esporta trascrizione in CSV",
     "ViewAll":"Mostra tutto",
     "ProOnly": "Solo Pro",
-    "EnterpriseOnly": "Solo Enterprise"
+    "EnterpriseOnly": "Solo Enterprise",
+    "WidgetFooterBranding":"Personalizzazione del piè di pagina del widget"
 }

@@ -2086,6 +2086,7 @@
     "ViewAll":"Ver tudo",
     "ProOnly": "Apenas Pro",
     "EnterpriseOnly": "Apenas Enterprise",
+    "WidgetFooterBranding":"Branding de rodapé de widget",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

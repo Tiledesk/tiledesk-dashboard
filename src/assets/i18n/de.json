@@ -2085,5 +2085,6 @@
 	"ExporTranscriptToCSV":"Transkript nach CSV exportieren",
 	"ViewAll":"Alle ansehen",
 	"ProOnly": "Nur Pro",
-	"EnterpriseOnly": "Nur Enterprise"
+	"EnterpriseOnly": "Nur Enterprise",
+	"WidgetFooterBranding":"Widget-Fußzeilen-Branding"
 }
