@@ -34,6 +34,7 @@ export class SettingsSidebarComponent implements OnInit {
   isVisibleAPP: boolean;
   isVisibleETK: boolean;
   TAG_ROUTE_IS_ACTIVE: boolean;
+  EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   CANNED_RESPONSES_ROUTE_IS_ACTIVE: boolean;
   DEPTS_ROUTE_IS_ACTIVE: boolean;
   TRIGGER_ROUTE_IS_ACTIVE: boolean;
@@ -403,6 +404,16 @@ export class SettingsSidebarComponent implements OnInit {
         this.TAG_ROUTE_IS_ACTIVE,
       )
     }
+
+
+    if (this.route.indexOf('/email') !== -1) {
+      this.EMAIL_TICKETING_ROUTE_IS_ACTIVE = true
+      this.logger.log('[SETTING-SIDEBAR] - EMAIL_TICKETING_ROUTE_IS_ACTIVE  ', this.EMAIL_TICKETING_ROUTE_IS_ACTIVE)
+    } else {
+      this.EMAIL_TICKETING_ROUTE_IS_ACTIVE = false
+      this.logger.log('[SETTING-SIDEBAR] - EMAIL_TICKETING_ROUTE_IS_ACTIVE  ', this.EMAIL_TICKETING_ROUTE_IS_ACTIVE)
+    }
+
 
     if (this.route.indexOf('/cannedresponses') !== -1) {
       this.CANNED_RESPONSES_ROUTE_IS_ACTIVE = true

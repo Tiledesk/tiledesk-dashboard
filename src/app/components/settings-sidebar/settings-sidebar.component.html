@@ -77,7 +77,7 @@
     <!-- EMAIL-TICKETING -->
     <!-- ------------------------------------------------------- -->
     <ng-container *ngIf="USER_ROLE !== 'agent' && isVisibleETK">
-      <li [ngClass]="{'active-item': CANNED_RESPONSES_ROUTE_IS_ACTIVE}" (click)="goToEmailTicketing()"
+      <li [ngClass]="{'active-item': EMAIL_TICKETING_ROUTE_IS_ACTIVE}" (click)="goToEmailTicketing()"
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar"
         matTooltip="{{'userEmail' | translate}}" #tooltip="matTooltip" matTooltipPosition='right'
         matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
