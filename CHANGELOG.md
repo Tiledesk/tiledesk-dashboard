@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.37-rc3
+- Adds the "Pro Only" badge to the Departments section available in Settings > Routing and Depts
+- Adds the "Enterprise Only" badge to the "Customize the notification email template" section and to "SMTP settings" section available in Settings > Project Settings > Notifications
+- Fixes the bug: the end user has access to the "Customize the notification email template" and "SMTP settings" functionality even when the Enterprise plan has expired
+- Adds the ability in Settings > Widget to customize the widget footer branding (i.e. the unbranding)
+
 ### 2.2.37-rc2
 - Adds the existing email to the popup, available in the chat, which allows to change the contact's email on the fly
 - Adds a link to all contact properties to the popup, available in chat, which allows you to change the contact email and full contact name on the fly
