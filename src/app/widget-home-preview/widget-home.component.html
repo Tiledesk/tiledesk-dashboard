@@ -251,14 +251,16 @@
                   C-96,148.3-98.2,146.1-101,146.1C-101,146.1-101,146.1-101,146.1z M-101,154.6c-2,0-3.7-1.6-3.7-3.6s1.6-3.6,3.7-3.6
                   s3.7,1.6,3.7,3.6l0,0C-97.3,153-99,154.6-101,154.6z" [ngStyle]="{'fill': primaryColor }"></path>
                 </svg>
-                <a target="_blank" [href]="company_site_url" style="color: #AAAAAA;
+                <a target="_blank" href="{{footerImageHref}}" style="color: #AAAAAA;
                 font-size: 11px;
                 font-weight: 500;
                 line-height: 28px;">
                 <span style="position: relative;left: -18px;  top: 6px; font-weight:400">
                   POWERED BY 
                   <!-- <b>{{company_name}}</b>  -->
-                  <img style="width: 60px; height:auto;margin-left: 0px;position:relative;top: -2px;" src="assets/img/logos/tiledesk-logo.svg">
+                  <!-- <img style="width: 60px; height:auto;margin-left: 0px;position:relative;top: -2px;" src="assets/img/logos/tiledesk-logo.svg"> -->
+                  <img width="{{footerImageWidth}}"   style="height:auto;margin-left: 0px;position:relative;top: -2px;" src="{{footerImageUrl}}">
+                  
                 </span>
               </a>
             </div>

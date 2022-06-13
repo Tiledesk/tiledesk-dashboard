@@ -54,6 +54,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public secondaryColor: string;
   public logoUrl: string;
   public hasOwnLogo = false;
+  public footerBrand: string
   public id_project: string;
 
   default_dept: Department[];
@@ -132,6 +133,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public waitingTimeNotFoundMsg: string; // WAITING_TIME_NOT_FOUND
   public waitingTimeFoundMsg: string; //  WAITING_TIME_FOUND
   public LABEL_PLACEHOLDER: string; //  "type your message.."
+ 
   placeholderOnlineMsg: string;
   placeholderOfflineMsg: string;
   placeholderofficeClosedMsg: string;
@@ -1113,6 +1115,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // if (event.length === 0 || event) {  }
   }
 
+  onChangeFooterBrand(event) {
+    this.footerBrand = event;
+    this.logger.log('[WIDGET-SET-UP] - FOOTER BRAND CHANGE: ', this.footerBrand);
+  }
+
   onChangeOfficeClosedMsg(event) {
     this.officeClosedMsg = event;
     this.logger.log('[WIDGET-SET-UP] - OFFICE CLOSED MSG CHANGE: ', this.officeClosedMsg);
@@ -1146,6 +1153,17 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.logger.log('[WIDGET-SET-UP] - HAS_SELECT_DYMANIC_REPLY_TIME_MSG : ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
     }
 
+  }
+
+  saveFooterBrand() {
+    const footerbrand_save_btn = <HTMLElement>document.querySelector('.footerbrand-save-btn');
+    this.logger.log('[WIDGET-SET-UP]) - footerbrand_save_btn: ', footerbrand_save_btn);
+    if (footerbrand_save_btn) {
+      footerbrand_save_btn.blur()
+    }
+    this.widgetObj['poweredBy'] =  this.footerBrand;
+    this.widgetService.updateWidgetProject(this.widgetObj)
+  
   }
 
   saveReplyTime() {
@@ -1402,39 +1420,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
       if (project.widget) {
         this.widgetObj = project.widget;
-
-        // const projectCreateAt = project.createdAt
-        // const projectYYYYMMDD = project.createdAt.slice(0, 10);
-        // // 
-        // const prjectCreationDateIsBefore = moment(projectYYYYMMDD).isBefore('2022-04-01');
-        // console.log('WIDGET-SET-UP] - PRJCT WIDGET visualTool (onInit): ', project.widget.visualTool)
-
-        // // const preChatFormCustomFieldsEnabled = project.widget.preChatFormCustomFieldsEnabled;
-        // console.log('[WIDGET-SET-UP] - PRJCT CEATED preChatFormJson (onInit): ', project.widget.preChatFormJson);
-       
-          // if (prjectCreationDateIsBefore === true && preChatFormJsonIsFilled === true) {
-          //   this.displayNewCustomPrechatFormBuilder = false;
-          // } else if (prjectCreationDateIsBefore === true && preChatFormJsonIsFilled === false) {
-          //   this.displayNewCustomPrechatFormBuilder = true;
-          // } else if (prjectCreationDateIsBefore === false && preChatFormJsonIsFilled === false) {
-          //   this.displayNewCustomPrechatFormBuilder = true;
-          // } else if (prjectCreationDateIsBefore === false && preChatFormJsonIsFilled === true) {
-          //   this.displayNewCustomPrechatFormBuilder = true;
-          // }
-
-          //   console.log('[WIDGET-SET-UP] - PRJCT CEATED preChatFormJsonIsFilled (onInit): ', preChatFormJsonIsFilled);
-          //   // console.log('[WIDGET-SET-UP] - PRJCT CEATED preChatFormCustomFieldsEnabled (onInit): ', preChatFormCustomFieldsEnabled);
-          //   console.log('[WIDGET-SET-UP] - PRJCT CEATED prjectCreationDateIsBefore (onInit): ', prjectCreationDateIsBefore);
-          //   console.log('[WIDGET-SET-UP] - PRJCT CEATED projectYYYYMMDD (onInit): ', projectYYYYMMDD);
-          //   console.log('[WIDGET-SET-UP] - PRJCT CEATED AT (onInit): ', projectCreateAt);
-          //   console.log('[WIDGET-SET-UP] - PRJCT-WIDGET (onInit): ', project.widget);
-
-          // } else if (prjectCreationDateIsBefore === true) {
-          //   this.displayNewCustomPrechatFormBuilder = false;
-          // } else if (prjectCreationDateIsBefore === false) {
-          //   this.displayNewCustomPrechatFormBuilder = true;
-          // }
-
           // ------------------------------------------------------------------------
           // @ calloutTimer
           // WIDGET AND CALLOUT-TIMER DEFINED
@@ -1458,6 +1443,26 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected, ' - IS DISABLED ', this.CALLOUT_IS_DISABLED);
 
           }
+          // ------------------------------------------------------------------------
+          // @ poweredBy
+          // WIDGET AND POWERED-BY DEFINED
+          // ------------------------------------------------------------------------
+          if (project.widget.poweredBy) {
+            this.footerBrand = project.widget.poweredBy;
+            
+            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) POWERED-BY (footerBrand) : ', this.footerBrand);
+
+          } else {
+            // ------------------------------------------------------------------------
+            // @ poweredBy
+            // WIDGET DEFINED BUT NOT POWERED-BY - SET DEFAULT
+            // ------------------------------------------------------------------------
+            this.logger.log('[WIDGET-SET-UP] - onInit WIDGET DEFINED BUT POWERED-BY IS: ', project.widget.poweredBy, ' > SET DEFAULT ')
+            // this.calloutTimerSecondSelected = -1;
+            this.footerBrand = '<a href="https://tiledesk.com/" target="_blank" title="Tiledesk"><image src="https://tiledesk.com/wp-content/uploads/2020/08/tiledesk-logo.svg" width="60"></a>';
+          }
+
+          
 
           // ------------------------------------------------------------------------
           // @ Logochat
@@ -1470,9 +1475,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             this.hasOwnLogo = true;
             this.LOGO_IS_ON = true;
 
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
-              ' HAS HOWN LOGO ', this.hasOwnLogo,
-              ' LOGO IS ON', this.LOGO_IS_ON);
+            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,  ' HAS HOWN LOGO ', this.hasOwnLogo, ' LOGO IS ON', this.LOGO_IS_ON);
 
             // ------------------------------------------------------------------------
             // @ Logochat
@@ -1485,9 +1488,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             this.hasOwnLogo = false;
             this.LOGO_IS_ON = false;
 
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
-              ' HAS HOWN LOGO ', this.hasOwnLogo,
-              ' LOGO IS ON', this.LOGO_IS_ON);
+            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat, ' HAS HOWN LOGO ', this.hasOwnLogo,  ' LOGO IS ON', this.LOGO_IS_ON);
 
 
             // ------------------------------------------------------------------------
@@ -1675,8 +1676,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = true
 
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > SET DEFAULT LOGOURL: ',
-            this.logoUrl, 'HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > SET DEFAULT LOGOURL: ', this.logoUrl, 'HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
 
           // -----------------------------------------------------------------------
           // @ themeColor
@@ -1701,6 +1701,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // this.calloutTimerSecondSelected = -1;
           this.calloutTimerSecondSelected = 5;
           this.CALLOUT_IS_DISABLED = true;
+
+          // -----------------------------------------------------------------------
+          // @ POWERED-BY
+          // WIDGET UNDEFINED
+          // -----------------------------------------------------------------------
+          this.footerBrand = '<a href="https://tiledesk.com/" target="_blank" title="Tiledesk"><image src="https://tiledesk.com/wp-content/uploads/2020/08/tiledesk-logo.svg" width="60"></a>';
 
           // -----------------------------------------------------------------------
           // @ preChatForm
@@ -2131,13 +2137,22 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_CHAT = true;
-
     this.HAS_FOCUSED_ONLINE_MSG = false;
     this.HAS_FOCUSED_OFFLINE_MSG = true;
     this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
     this.widget_preview_selected = "0002"
     this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+  }
 
+  onFocusFooterBranding() {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+    this.HAS_FOCUSED_ONLINE_MSG = false;
+    this.HAS_FOCUSED_OFFLINE_MSG = true;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
+    this.widget_preview_selected = "0000"
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
   }
 
   onFocusOfficeClosedGreetings() {

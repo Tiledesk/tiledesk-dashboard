@@ -4,7 +4,8 @@
 	{{'WidgetSetUp' | translate}}
 </div> -->
 
-<span class="navbar-brand navbar-brand-sidebar-settings" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+<span class="navbar-brand navbar-brand-sidebar-settings"
+	[ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
 	[ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 	<i class="material-icons">settings</i>
 
@@ -193,11 +194,11 @@
 														</span>
 													</div>
 
-													 
-										<!-- ----------------------------------------------------------------------------------------------------------------------- -->	
-										<!-- REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG -->
-										<!-- !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA -->
-										<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+
+													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+													<!-- REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG -->
+													<!-- !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA -->
+													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
 													<div class="script-wrap"
 														style="padding-left: 46px;padding-right: 20px;">
 														<pre class="widget-design-pre"
@@ -238,11 +239,11 @@
 
 													</div>
 
-													 
-<!-- ----------------------------------------------------------------------------------------------------------------------- -->
-<!-- REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG -->
-<!-- !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE -->
-<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+
+													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+													<!-- REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG -->
+													<!-- !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE -->
+													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
 													<textarea name="exampleClipboard" class="textarea" readonly
 														id="hidden-texarea" rows="20" value="" type="text"
 														style="opacity: .01;height:0; position:absolute; z-index: -1;">
@@ -345,7 +346,7 @@
 							<div id="widget-all-settings-form" class="form-horizontal">
 
 								<!-- ---------------------------------------------------------------------------- -->
-								<!-- @ WidgetAppearance SECTION --> 
+								<!-- @ WidgetAppearance SECTION -->
 								<!-- ---------------------------------------------------------------------------- -->
 								<button type="button" class="widget-section-accordion widget-section-header">
 
@@ -377,7 +378,7 @@
 								<div class="widget-section-container"
 									style="height: auto; transition-duration: 0.613s;">
 									<div class="section-offset" style="height: 512px;">
-										
+
 										<!-- ---------------------------------------- -->
 										<!-- Preset colors -->
 										<!-- ---------------------------------------- -->
@@ -684,7 +685,7 @@
 												</div>
 											</div>
 										</div>
-										
+
 										<!-- ---------------------------------------- -->
 										<!-- Logo on /off switch -->
 										<!-- ---------------------------------------- -->
@@ -835,6 +836,89 @@
 									</div>
 								</div>
 
+
+								<!-- ---------------------------------------------------------------------------- -->
+								<!-- @ Unbranding SECTION -->
+								<!-- ---------------------------------------------------------------------------- -->
+								<button type="button" class="widget-section-accordion widget-section-header">
+
+									<div class="widget-section-title">
+										<div class="widget-setting-icon-wrap">
+											<svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
+												viewBox="0 0 512 512">
+												<title>Sparkles</title>
+												<path
+													d="M259.92 262.91L216.4 149.77a9 9 0 00-16.8 0l-43.52 113.14a9 9 0 01-5.17 5.17L37.77 311.6a9 9 0 000 16.8l113.14 43.52a9 9 0 015.17 5.17l43.52 113.14a9 9 0 0016.8 0l43.52-113.14a9 9 0 015.17-5.17l113.14-43.52a9 9 0 000-16.8l-113.14-43.52a9 9 0 01-5.17-5.17zM108 68L88 16 68 68 16 88l52 20 20 52 20-52 52-20-52-20zM426.67 117.33L400 48l-26.67 69.33L304 144l69.33 26.67L400 240l26.67-69.33L496 144l-69.33-26.67z"
+													fill="none" stroke="currentColor" stroke-linecap="round"
+													stroke-linejoin="round" stroke-width="32" />
+											</svg>
+										</div>
+										<h4 class="widget-section-header__title-underlined">
+											Unbranding
+										</h4>
+									</div>
+									<div class="widget-section-arrow">
+										<i class="material-icons widget-section-arrow-icon">
+											keyboard_arrow_down
+										</i>
+									</div>
+								</button>
+								<div class="widget-section-container"
+									style="height: auto; transition-duration: 0.613s;">
+									<div class="section-offset">
+
+										<!-- -------------------------- -->
+										<!--  Widget  Footer Branding -->
+										<!-- -------------------------- -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+											<label class="col-sm-12 control-label widget-settings-control-label">
+
+												{{ "WidgetFooterBranding" | translate}}
+
+												<!-- <span class="widget_design__Tooltip">
+													<span>
+														<i class="material-icons"
+															style="position: relative;top: 2px; font-size:14px; color:#7695a5">
+															help_outline
+														</i>
+													</span>
+													<span class="widget_design__Tooltiptext"
+														style="margin-left: -108px;min-width: 225px;height:fit-content">
+														{{ 'TheOfflineMessageIsWhatSiteVisitors' | translate: tparams }}
+													</span>
+												</span> -->
+											</label>
+											
+											<div class="col-sm-12">
+												<textarea (focus)="onFocusFooterBranding()" [(ngModel)]="footerBrand"
+													(ngModelChange)="onChangeFooterBrand($event)" rows="3"
+													style="width: 100%;border-radius: 5px;border: solid 1px #ddd; padding: 8px; font-weight: 400;resize: vertical">	</textarea>
+												<div *ngIf="footerBrand?.length <= 0"
+													style="font-size: 11px; color: #f44336;">
+													{{ 'RequiredField' | translate}}
+												</div>
+											</div>
+										</div>
+
+										<!-- ------------------------------------- -->
+										<!-- Save Footer branding-->
+										<!-- ------------------------------------- -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
+							
+											<div class="col-sm-12">
+											
+												<button class="btn btn-success-no-boxshadow  footerbrand-save-btn"
+													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
+													(click)="saveFooterBrand()" [disabled]="footerBrand?.length === 0 ||  !footerBrand">
+													{{ 'UpdateWidget' | translate }}
+												</button>
+											</div>
+										</div>
+									</div> <!-- ./	section-offset -->
+								</div>
+								<!-- / end Unbranding section -->
 
 								<!-- ---------------------------------------------------------------------------- -->
 								<!-- @ Greetings SECTION -->
@@ -1546,32 +1630,32 @@
 										</i>
 									</div>
 								</button>
-								
+
 								<!-- max-height: 1460px !important -->
 								<div class="widget-section-container prechatform"
 									style="height: auto; transition-duration: 0.613s; "
 									[ngClass]="{'panel-prechatform-height': HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS === true}">
 									<div class="section-offset">
-										
+
 										<div class="form-group"
-										 style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
-											<label 
-											class="col-sm-12 control-label widget-settings-control-head-label-info"
-											(click)="scroll(multilanguage)" style="margin-left: 14px;
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+											<label
+												class="col-sm-12 control-label widget-settings-control-head-label-info"
+												(click)="scroll(multilanguage)" style="margin-left: 14px;
 											margin-bottom: 6px !important;
 											margin-top: 12px;
 											padding-right: 30px;">
 
-											{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
-												style="font-weight: bold;">{{selectedLangName}} </span><br>
-											<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
-											{{'ChangePreviewIn' | translate}} <span
-												class="anchor-to-multilanguage-section">
-												{{'MultilanguageSection' | translate}}</span>
-											{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
+												{{ 'WidgetPreviewIsDisplayedIn' | translate }} <span
+													style="font-weight: bold;">{{selectedLangName}} </span><br>
+												<!-- {{'ChangePreviewToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}} -->
+												{{'ChangePreviewIn' | translate}} <span
+													class="anchor-to-multilanguage-section">
+													{{'MultilanguageSection' | translate}}</span>
+												{{'ToCustomizeTheFollowingFieldsInAnotherLanguage' | translate}}
 											</label>
 										</div>
-									
+
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
 
@@ -1579,14 +1663,18 @@
 											<!-- Enable / Disable default PreChetForm (Name & Email) -->
 											<!-- ------------------------------------------------------ -->
 											<div class="default-prechat-form-switch-wpr" style="display: flex;">
-												<label class="col-sm-12 control-label widget-settings-control-label default-prechat-form-switch-label"
-												style="position: relative;top: -6px; font-size: 14px !important; width: fit-content;">
-												{{ 'EnableDisablePreChatForm' | translate }}
+												<label
+													class="col-sm-12 control-label widget-settings-control-label default-prechat-form-switch-label"
+													style="position: relative;top: -6px; font-size: 14px !important; width: fit-content;">
+													{{ 'EnableDisablePreChatForm' | translate }}
 												</label>
 												<!-- "position: relative;top: 3px; -->
-												<i class="material-icons" style="font-size:18px; color:#566787; cursor: pointer;vertical-align: middle;"  matTooltipClass="custom-mat-tooltip-in-widget-setup" 
-												matTooltip=" {{'AskYourVisitorForTheirNameAndEmailBeforeStartingAChat' | translate}}"
-												#tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+												<i class="material-icons"
+													style="font-size:18px; color:#566787; cursor: pointer;vertical-align: middle;"
+													matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip=" {{'AskYourVisitorForTheirNameAndEmailBeforeStartingAChat' | translate}}"
+													#tooltip="matTooltip" matTooltipPosition='right'
+													matTooltipHideDelay="100">
 													help_outline
 												</i>
 											</div>
@@ -1623,7 +1711,8 @@
 											<div class="col-sm-12">
 												<textarea [(ngModel)]="LABEL_COMPLETE_FORM"
 													(ngModelChange)="onChangeLabelCompleteForm($event)" rows="1"
-													style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: vertical" [disabled]="preChatForm === false" >	
+													style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: vertical"
+													[disabled]="preChatForm === false">
 												</textarea>
 											</div>
 											<!-- -------------------------------------------------------------------------- -->
@@ -1634,30 +1723,33 @@
 											<!-- Enable / disable custom pre-chat form style="display: flex;"-->
 											<!-- -------------------------------------------------------------------------- -->
 											<div class="custom-prechat-form-switch-wpr">
-												<label class="col-sm-12 control-label widget-settings-control-label custom-prechat-form-switch-label"
-												style="position: relative;top: -6px;  font-size: 14px !important; margin-top: 6px; width: fit-content;">
+												<label
+													class="col-sm-12 control-label widget-settings-control-label custom-prechat-form-switch-label"
+													style="position: relative;top: -6px;  font-size: 14px !important; margin-top: 6px; width: fit-content;">
 													{{'EnableDisableCustomPreChatForm' | translate}}
 												</label>
 												<i class="material-icons custom-prechat-form-help-icon" style="font-size:18px; color:#566787; cursor: pointer; vertical-align: middle;position: relative;
-												top: 4px;"  matTooltipClass="custom-mat-tooltip-in-widget-setup" 
+												top: 4px;" matTooltipClass="custom-mat-tooltip-in-widget-setup"
 													matTooltip=" {{'CustomizeTheInformationYouRequestFromCustomersInThePreChatForm' | translate}}"
-													#tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" >
-														help_outline
+													#tooltip="matTooltip" matTooltipPosition='right'
+													matTooltipHideDelay="100">
+													help_outline
 												</i>
-											
+
 												<!-- <label class="col-sm-12 control-label widget-settings-control-head-label" style="font-size:12px!important; padding-top: 2px;
 												margin-top: -8px;padding-bottom: 4px;">
 													{{'CustomizeTheInformationYouRequestFromCustomersInThePreChatForm' |
 													translate}}
 												</label> -->
 											</div>
-											<label  *ngIf="displayNewCustomPrechatFormBuilder === false" style="color:#03a5e8; cursor:pointer;font-size:12px!important; padding-top: 2px;
-											margin-top: 3px;padding-bottom: 4px;width: 100%; text-align: left;padding-left: 15px;position: absolute;right: 0;"
-													(click)="goToPrechatFormExample()">
-													{{'HereSomeExamples' | translate}}. 
+											<label *ngIf="displayNewCustomPrechatFormBuilder === false"
+												style="color:#03a5e8; cursor:pointer;font-size:12px!important; padding-top: 2px;
+											margin-top: 3px;padding-bottom: 4px;width: 100%; text-align: left;padding-left: 15px;position: absolute;right: 0;" (click)="goToPrechatFormExample()">
+												{{'HereSomeExamples' | translate}}.
 											</label>
 
-											<div class="col-sm-12"  [ngStyle]="{'margin-top':displayNewCustomPrechatFormBuilder === false ? '14px' : 0 }">
+											<div class="col-sm-12"
+												[ngStyle]="{'margin-top':displayNewCustomPrechatFormBuilder === false ? '14px' : 0 }">
 												<div class="nw-onoffswitch-wrapper" style="clear: both;">
 													<div class="nw-onoffswitch">
 														<input (change)="customizePrechatformFieldsCheckBox($event)"
@@ -1672,13 +1764,14 @@
 													</div>
 												</div>
 											</div>
-											
+
 											<!-- -------------------------------------------------------------------------- -->
 											<!-- ./ Enable / disable custom pre-chat form -->
 											<!-- -------------------------------------------------------------------------- -->
 
-											
-											<div class="default-pre-chat-form-field-wpr" *ngIf="preChatFormCustomFieldsEnabled === false">
+
+											<div class="default-pre-chat-form-field-wpr"
+												*ngIf="preChatFormCustomFieldsEnabled === false">
 												<!-- -------------------------------------------------------------------------- -->
 												<!-- DEFAULT PRE-CHAT FORM NAME -->
 												<!-- -------------------------------------------------------------------------- -->
@@ -1691,14 +1784,15 @@
 
 												<div class="col-sm-12">
 													<input class="custom-input" [(ngModel)]="LABEL_FIELD_NAME"
-														(ngModelChange)="onChangeDafultPrechatFormName($event)" 
-														[ngClass]="{'field-disabled' : preChatForm === false}">	
+														(ngModelChange)="onChangeDafultPrechatFormName($event)"
+														[ngClass]="{'field-disabled' : preChatForm === false}">
 												</div>
 
 												<!-- -------------------------------------------------------------------------- -->
 												<!-- DEFAULT PRE-CHAT FORM EMAIL -->
 												<!-- -------------------------------------------------------------------------- -->
-												<label class="col-sm-12 control-label widget-settings-control-label" style="margin-top: 4px;">
+												<label class="col-sm-12 control-label widget-settings-control-label"
+													style="margin-top: 4px;">
 													{{'RequestMsgsPage.ChatFormUserEmail' | translate}}
 												</label>
 												<span class="active-language-label" style="margin-left: 15px;">
@@ -1707,8 +1801,8 @@
 
 												<div class="col-sm-12">
 													<input class="custom-input" [(ngModel)]="LABEL_FIELD_EMAIL"
-														(ngModelChange)="onChangeDafultPrechatFormEmail($event)" 
-														[ngClass]="{'field-disabled' : preChatForm === false}">	
+														(ngModelChange)="onChangeDafultPrechatFormEmail($event)"
+														[ngClass]="{'field-disabled' : preChatForm === false}">
 												</div>
 											</div>
 										</div>
@@ -1732,35 +1826,40 @@
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px;margin-right: -15px;">
 
-									
-										
+
+
 											<div class="col-sm-12" *ngIf="preChatFormCustomFieldsEnabled === true">
 												<ng-container *ngIf="displayNewCustomPrechatFormBuilder === true">
-													<div class="pre-chat-form-fields-wpr"*ngFor="let field of prechatFormArray">
-											
+													<div class="pre-chat-form-fields-wpr"
+														*ngFor="let field of prechatFormArray">
+
 														<div class="row">
 															<div class="col-xs-12">
 																<div class="row aligned-row">
-																	<div class="col-xs-7 col-sm-9" style="padding-right: 1px;">
+																	<div class="col-xs-7 col-sm-9"
+																		style="padding-right: 1px;">
 																		<div class="pre-chat-form-field-div">
 																			<!-- <a href="#" class="close" data-dismiss="alert"
 																				aria-label="close"
 																				(click)="removePrechatFormField(field)">&times;</a> -->
 																			<span style="font-weight: 400;">
 																				{{field?.name | translate }}
-																		</span>
+																			</span>
 																			<input *ngIf="field.name === 'userFullname'"
 																				(ngModelChange)="onChangeUserFullNameLabel($event)"
 																				[(ngModel)]="LABEL_PRECHAT_USER_FULLNAME"
-																				type="{{field.type}}" id="{{field.name}}">
+																				type="{{field.type}}"
+																				id="{{field.name}}">
 																			<input *ngIf="field.name === 'userEmail'"
 																				(ngModelChange)="onChangeEmailLabel($event)"
 																				[(ngModel)]="LABEL_PRECHAT_USER_EMAIL"
-																				type="{{field.type}}" id="{{field.name}}">
+																				type="{{field.type}}"
+																				id="{{field.name}}">
 																			<input *ngIf="field.name === 'userPhone'"
 																				(ngModelChange)="onChangePhoneLabel($event)"
 																				[(ngModel)]="LABEL_PRECHAT_USER_PHONE"
-																				type="{{field.type}}" id="{{field.name}}">
+																				type="{{field.type}}"
+																				id="{{field.name}}">
 																			<input
 																				*ngIf="field.name === 'acceptedTermsPrivacy'"
 																				(ngModelChange)="onChangeAcceptTermsPrivacyLabel($event)"
@@ -1774,24 +1873,29 @@
 																				id="{{field.name}}"></textarea>
 
 																			<!-- First meessage label -->
-																			<input *ngIf="field?.name === 'firstMessage'"
+																			<input
+																				*ngIf="field?.name === 'firstMessage'"
 																				(ngModelChange)="onChangeFirstMessagel($event)"
 																				[(ngModel)]="LABEL_PRECHAT_FIRST_MESSAGE"
 																				id="{{field?.name}}">
 																			<!-- First meessage rows -->
-																			<input *ngIf="field?.name === 'firstMessage'"
+																			<input
+																				*ngIf="field?.name === 'firstMessage'"
 																				(ngModelChange)="onChangeFirstMessageRow($event, field)"
-																				[(ngModel)]="PRECHAT_FIRST_MESSAGE_ROWS" type="number" style="max-width: 50px;margin-top: 6px;height: 29px;">
-																				<span *ngIf="field?.name === 'firstMessage'" style="color: #3c4858;font-weight: 400;padding-left: 5px;">
-																					{{'TextareaRows' | translate}}
-																				</span>
+																				[(ngModel)]="PRECHAT_FIRST_MESSAGE_ROWS"
+																				type="number"
+																				style="max-width: 50px;margin-top: 6px;height: 29px;">
+																			<span *ngIf="field?.name === 'firstMessage'"
+																				style="color: #3c4858;font-weight: 400;padding-left: 5px;">
+																				{{'TextareaRows' | translate}}
+																			</span>
 																			<!-- <input *ngIf="field?.name !== 'firstMessage'
 																			&& field?.name !== 'termsPrivacyLabel' 
 																			&& field?.name !== 'acceptedTermsPrivacy' 
 																			&& field?.name !== 'userEmail' 
 																			&& field?.name !== 'userFullname'"
 																				id="{{field?.name}}"> -->
-																				
+
 																			<div class="checkbox"
 																				*ngIf="field.name !== 'termsPrivacyLabel' && field.name !== ''"
 																				style="padding-top: 3px;">
@@ -1800,78 +1904,94 @@
 																						name="{{field.name}}"
 																						(change)="onChangeFieldIsRequired($event, field )"
 																						[checked]="field.mandatory">
-																					<span style="position: relative;top: 3px;">
-																						{{'Mandatory' | translate}} 
+																					<span
+																						style="position: relative;top: 3px;">
+																						{{'Mandatory' | translate}}
 																					</span>
 																				</label>
 																			</div>
 																		</div>
 																	</div>
-																	<div class="col-xs-2 col-sm-1"  style="margin-bottom: 7px; padding-left: 1px; padding-right: 1px;">
+																	<div class="col-xs-2 col-sm-1"
+																		style="margin-bottom: 7px; padding-left: 1px; padding-right: 1px;">
 																		<div
 																			class="pre-chat-form-field-move-up-and-down-wpr">
-																			<div class="move-up-field-btn" id="{{field.name + '_btn_up'}}" (click)="moveUp(field)">
-																				<span class="material-icons move-up-material-icons">
+																			<div class="move-up-field-btn"
+																				id="{{field.name + '_btn_up'}}"
+																				(click)="moveUp(field)">
+																				<span
+																					class="material-icons move-up-material-icons">
 																					expand_less
 																				</span>
 																			</div>
-																			<div class="move-down-field-btn" id="{{field.name + '_btn_down'}}" (click)="moveDown(field)">
-																				<span class="material-icons move-down-material-icons">
+																			<div class="move-down-field-btn"
+																				id="{{field.name + '_btn_down'}}"
+																				(click)="moveDown(field)">
+																				<span
+																					class="material-icons move-down-material-icons">
 																					expand_more
 																				</span>
 																			</div>
 																		</div>
 																	</div>
-																	<div class="col-xs-2 col-sm-1"  style="margin-bottom: 5px; padding-left: 1px; padding-right: 1px;">
-																		<div class="pre-chat-form-remove-field-btn--wpr" (click)="removePrechatFormField(field)">
-																			<div class="remove-field-btn" id="{{field.name + '_remove_field'}}">
-																				<span class="material-icons remove-field-material-icons">
-																				close
+																	<div class="col-xs-2 col-sm-1"
+																		style="margin-bottom: 5px; padding-left: 1px; padding-right: 1px;">
+																		<div class="pre-chat-form-remove-field-btn--wpr"
+																			(click)="removePrechatFormField(field)">
+																			<div class="remove-field-btn"
+																				id="{{field.name + '_remove_field'}}">
+																				<span
+																					class="material-icons remove-field-material-icons">
+																					close
 																				</span>
 																			</div>
 																		</div>
 																	</div>
 																</div>
 															</div>
-														
+
 														</div>
 													</div>
 												</ng-container>
 
 
-												<div  *ngIf="displayNewCustomPrechatFormBuilder === true" id="select-prechat-form-fields-wpr">
+												<div *ngIf="displayNewCustomPrechatFormBuilder === true"
+													id="select-prechat-form-fields-wpr">
 
 													<div class="row">
 														<div class="col-xs-11" style="padding-right: 0px;">
-													<ng-select #Selecter (change)="addPrechatFormField($event)" class="select-prechat-form-field"
-														[items]="preChatFormFields" bindLabel="name" bindValue="name"
-														[(ngModel)]="preChatFormFieldName" [clearable]="false"
-														[clearSearchOnAdd]="true"
-														(focus)="focusOnSelectaddPrechatFormField()"
-														placeholder="{{'SelectFields' | translate}}" 
-														dropdownPosition='top'>
+															<ng-select #Selecter (change)="addPrechatFormField($event)"
+																class="select-prechat-form-field"
+																[items]="preChatFormFields" bindLabel="name"
+																bindValue="name" [(ngModel)]="preChatFormFieldName"
+																[clearable]="false" [clearSearchOnAdd]="true"
+																(focus)="focusOnSelectaddPrechatFormField()"
+																placeholder="{{'SelectFields' | translate}}"
+																dropdownPosition='top'>
 
-														<ng-template ng-label-tmp let-item="item">
-															{{item.name | translate}}
-														</ng-template>
-														<ng-template ng-option-tmp let-item="item" let-index="index">
-															{{item.name | translate}}
-														</ng-template>
-													
-														<!-- <ng-template ng-footer-tmp>
+																<ng-template ng-label-tmp let-item="item">
+																	{{item.name | translate}}
+																</ng-template>
+																<ng-template ng-option-tmp let-item="item"
+																	let-index="index">
+																	{{item.name | translate}}
+																</ng-template>
+
+																<!-- <ng-template ng-footer-tmp>
 															<div style="cursor:pointer" (click)="presentModalCreateCustomField()">
 																<span class="material-icons" style="vertical-align: middle; color:#0f62ff"> add </span>
 																<span style="color:#0f62ff"> Adds your custom field</span>
 															  </div>
 													   </ng-template> -->
-													</ng-select>
-												</div>
-											</div>
+															</ng-select>
+														</div>
+													</div>
 												</div>
 												<!-- ---------------------------------------------------------------------------- -->
 												<!-- TEXAREA TO BUILD PRECHAT FOERM MANUALLY -->
 												<!-- ---------------------------------------------------------------------------- -->
-												<textarea *ngIf="displayNewCustomPrechatFormBuilder === false"  id="prechat-form-texarea" rows="24"
+												<textarea *ngIf="displayNewCustomPrechatFormBuilder === false"
+													id="prechat-form-texarea" rows="24"
 													[(ngModel)]="prechatFormTexareaJson"
 													style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: none;">
 												</textarea>
@@ -2062,7 +2182,8 @@
 						</div>
 
 						<!-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ -->
-						<div class="col-xs-12 col-sm-5 appearance-preview-wrapper" id="appearance-widget-preview-wpr" style="overflow: hidden;
+						<div class="col-xs-12 col-sm-5 appearance-preview-wrapper" id="appearance-widget-preview-wpr"
+							style="overflow: hidden;
 					position: sticky;
 					position: -webkit-sticky;
 					top: -20px;
@@ -2090,10 +2211,12 @@
 											[DISPLAY_LAUNCER_BUTTON]="DISPLAY_LAUNCER_BUTTON"
 											[waitingTimeFoundMsg]="waitingTimeFoundMsg" [currentUserId]="currentUserId"
 											[UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE"
-											[imageUrl]="imageUrl" [newConversation]="newConversation"
+											[imageUrl]="imageUrl" 
+											[newConversation]="newConversation"
 											[noConversation]="noConversation"
 											[HAS_SELECT_DYMANIC_REPLY_TIME_MSG]="HAS_SELECT_DYMANIC_REPLY_TIME_MSG"
-											[HAS_SELECT_STATIC_REPLY_TIME_MSG]="HAS_SELECT_STATIC_REPLY_TIME_MSG">
+											[HAS_SELECT_STATIC_REPLY_TIME_MSG]="HAS_SELECT_STATIC_REPLY_TIME_MSG"
+											[footerBrand]="footerBrand">
 										</appdashboard-widget-home>
 
 
