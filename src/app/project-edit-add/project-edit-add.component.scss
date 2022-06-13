@@ -356,7 +356,7 @@ button.close {
 }
 
 @media (max-width: 991px) {
-  .bottom-nav li { 
+  .bottom-nav li {
     // z-index: 1049
   }
 }
@@ -659,7 +659,6 @@ $f21blue: #039be5;
   color: #262f3c;
 }
 
-
 .cc-number-field--cc-image-wpr {
   opacity: 1;
   position: absolute;
@@ -848,9 +847,20 @@ $f21blue: #039be5;
   top: -1px;
 }
 
-
 .disabled-card-add-project {
   pointer-events: none;
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.enterprise-only-badge {
+  background: #6772e5;
+  font-size: 11px;
+  color: #fff;
+  border-radius: 3px;
+  padding: 3px 6px;
+  text-transform: uppercase;
+  font-weight: 400;
+  position: relative;
+  top: -1px;
 }
