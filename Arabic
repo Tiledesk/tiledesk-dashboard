@@ -2084,6 +2084,8 @@
     "ClickHereForMoreAdvancedSearches": "Click here for more advanced searches (such as ticket IDs, tags and more) and to view all requests (this page shows up to 100 conversations in real time)",
     "ExporTranscriptToCSV": "Export transcript to CSV",
     "ViewAll": "View all",
+    "ProOnly": "Pro only",
+    "EnterpriseOnly": "Enterprise only",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",
