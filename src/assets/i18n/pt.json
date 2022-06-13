@@ -2084,6 +2084,8 @@
     "ClickHereForMoreAdvancedSearches":"Clique aqui para pesquisas mais avançadas (como IDs de tickets, tags e mais) e para visualizar todas as solicitações (esta página mostra até 100 conversas em tempo real)",
     "ExporTranscriptToCSV":"Exportar transcrição para CSV",
     "ViewAll":"Ver tudo",
+    "ProOnly": "Apenas Pro",
+    "EnterpriseOnly": "Apenas Enterprise",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

@@ -401,6 +401,17 @@ table > tbody > tr.default-dept-disabled > td {
   font-style: italic;
 }
 
+.pro-only-badge {
+  background: #3ea9f5;
+  font-size: 11px;
+  color: #fff;
+  border-radius: 3px;
+  padding: 3px 6px;
+  text-transform: uppercase;
+  font-weight: 400;
+  position: relative;
+  top: -1px;
+}
 
 // .card_title__underlined {
 //   text-transform: none;
