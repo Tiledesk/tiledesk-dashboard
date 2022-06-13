@@ -1036,6 +1036,12 @@
                       <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 100 && request?.subject" >
                         {{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}
                       </span>
+                      <span class="ng2-tooltip-badge--resolved" *ngIf="request?.status === 1000 && !request?.subject" >
+                        {{ 'RequestMsgsPage.RequestResolved' | translate }}
+                      </span>
+                      <span class="ng2-tooltip-badge--resolved" *ngIf="request?.status === 1000 && request?.subject" >
+                        {{ 'RequestMsgsPage.InternalRequestResolved' | translate }}
+                      </span>
                       
                       <span class="ng2-tooltip-ticket-id">#{{request?.ticket_id}}</span>
                       <span class="ng2-tooltip-priority">  
@@ -1057,7 +1063,7 @@
                       <span style="color: #68737d; font-weight:300"> {{'Subject' | translate }}:</span> {{request?.subject}}
                     </p> 
                     <div class='ng2-tooltip-firt-text' [innerHTML]="request?.first_text  | htmlEntitiesEncode | marked"></div>
-                    <span  *ngIf="request?.status == 200">
+                    <span  *ngIf="request?.msgsArray.length > 0">
                       <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>
                       <hr class='ng2-tooltip-divider-line'> 
                       <div class='ng2-latest-comment-sender-and-date-wpr'> 
