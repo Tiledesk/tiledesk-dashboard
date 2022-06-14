@@ -41,6 +41,7 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
   public footerImageUrl: string
   public footerImageHref: string
   public footerImageWidth: string
+  public footerPoweredByString: string
 
   constructor() { }
 
@@ -58,42 +59,52 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // console.log('footerBrand  ', this.footerBrand)
-    if (this.footerBrand) {
+    // if (this.footerBrand) {
+
+      // ------------------------------------------------------
+      // No more uses replaced wiyj innerHTML in the tempalte
+      // ------------------------------------------------------
+    //   var elem = document.createElement("div");
+    //   elem.innerHTML = this.footerBrand;
+    //   let images = null
+    //   if (elem.getElementsByTagName("img")) {
+    //     images = elem.getElementsByTagName("img");
+    //     // console.log('img', images)
+    //     if (images) {
+    //       let imageWidth = images[0]['width'];
+    //       // console.log('img imageWidth', imageWidth)
+    //       this.footerImageWidth = imageWidth
 
 
-      var elem = document.createElement("div");
-      elem.innerHTML = this.footerBrand;
-      let images = null
-      if (elem.getElementsByTagName("img")) {
-        images = elem.getElementsByTagName("img");
-        // console.log('img', images)
-        if (images) {
-          let imageWidth = images[0]['width'];
-          // console.log('img imageWidth', imageWidth)
-          this.footerImageWidth = imageWidth
-        }
-      } else if (elem.getElementsByTagName("image")) {
-        images = elem.getElementsByTagName("image");
-        if (images) {
-          // console.log('image', images)
-          let imageWidth = images[0]['width'];
-          this.footerImageWidth = imageWidth
-          // console.log('image imageWidth', imageWidth)
-        }
-      }
-      for (var i = 0; i < images.length; i++) {
-        // console.log(images[i].src);
-        this.footerImageUrl = images[i].src
-      }
+    //     }
+    //   } else if (elem.getElementsByTagName("image")) {
+    //     images = elem.getElementsByTagName("image");
+    //     if (images) {
+    //       // console.log('image', images)
+    //       let imageWidth = images[0]['width'];
+    //       this.footerImageWidth = imageWidth
+    //       // console.log('image imageWidth', imageWidth)
 
-      let regexHref = /href="([^\'\"]+)/g
-      var href = regexHref.exec(this.footerBrand);
-      // console.log('href ', href[1])
-      this.footerImageHref = href[1]
+    //     }
+    //   }
+    //   for (var i = 0; i < images.length; i++) {
+    //     // console.log(images[i].src);
+    //     this.footerImageUrl = images[i].src
+    //   }
+
+    //   let regexHref = /href="([^\'\"]+)/g
+    //   var href = regexHref.exec(this.footerBrand);
+    //   // console.log('href ', href[1])
+    //   this.footerImageHref = href[1]
 
 
+    //   this.footerPoweredByString = this.footerBrand.split('<span>').pop().split('</span>')[0];
+    //   console.log('footerPoweredByString ', this.footerPoweredByString)
 
-    }
+    //   let regexSpan = /<\s*span[^>]*>(.*?)<\s*\/\s*span>/g
+    //   let spanValue = regexSpan.exec(this.footerBrand);
+    //   console.log('spanValue ', spanValue)
+    // }
 
 
   }

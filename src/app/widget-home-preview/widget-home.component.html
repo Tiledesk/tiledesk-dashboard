@@ -1,4 +1,3 @@
-
 <div class="widget-container">
   <div id="chat21-container" *ngIf="!DISPLAY_LAUNCER_BUTTON">
     <!-- height':  (LOGO_IS_ON === true ) ? '480px' : '428px' -->
@@ -37,7 +36,8 @@
 
                 <div class="c21-text">
                   <!-- padding-top: 16px; -->
-                  <div class="c21-text-wellcome" style="font-size: 30px;margin-bottom: 10px;font-weight: 500; overflow: hidden;"
+                  <div class="c21-text-wellcome"
+                    style="font-size: 30px;margin-bottom: 10px;font-weight: 500; overflow: hidden;"
                     [ngStyle]="{'color': secondaryColor}">
 
                     <span>
@@ -45,7 +45,8 @@
                       <!-- {{ placeholderWelcomeTitle }} -->
                     </span>
                   </div>
-                  <div class="c21-text-intro" style="font-size: 15px; font-weight: 500; font-family: 'Google Sans', sans-serif !important;"
+                  <div class="c21-text-intro"
+                    style="font-size: 15px; font-weight: 500; font-family: 'Google Sans', sans-serif !important;"
                     [ngStyle]="{'color': secondaryColor}">
 
                     <span>
@@ -65,15 +66,15 @@
                   <div class="c21-card" [ngStyle]="{'border-top': primaryColorBorder }" style="margin-top: 25px;">
                     <div id="c21-app-list-conversations">
                       <div class="c21-header">
-                      
+
                         <div class="c21-title" *ngIf="C21_BODY_HOME">
                           {{ noConversation }}
                         </div>
-                      
+
                         <div class="c21-title" *ngIf="!C21_BODY_HOME">
                           <!-- {{ 'PreviousConversations' | translate}} -->
                           {{ 'YourConversations' | translate}}
-                          
+
                         </div>
 
                         <div class="clear"></div>
@@ -97,14 +98,14 @@
                           <div class="c21-body-conv" [ngClass]="{'c21-body-conv-home' : C21_BODY_HOME === true}">
                             <div class="c21-left-conv">
                               <div class="c21-icon-avatar" style="height: 52px;width: 52px;">
-                                
-                              
+
+
                                 <!-- // WIDGET HOME NO CONVERSATION  -->
                                 <div class="c21-avatar-image contact-avatar" *ngIf="C21_BODY_HOME"
                                   [style.background-image]="'url(' + userProfileImageurl + ')'">
                                 </div>
 
-          
+
                               </div>
                             </div>
 
@@ -130,21 +131,21 @@
                             <div class="c21-left-conv">
                               <div class="c21-icon-avatar" style="height: 52px;width: 52px;">
                                 <!-- <img src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{currentUserId}}%2Fphoto.jpg?alt=media"/> -->
-                              
-                                                            <!-- // WIDGET HOME WITH CONVERSATION  -->
+
+                                <!-- // WIDGET HOME WITH CONVERSATION  -->
                                 <!-- <div class="c21-avatar-image contact-avatar" *ngIf="!C21_BODY_HOME"
                                   style="background-image: url(&quot;https://user-images.githubusercontent.com/32448495/39111365-214552a0-46d5-11e8-9878-e5c804adfe6a.png&quot;);">
                                 </div> -->
 
                                 <div class="c21-ball" style="background-color: rgb(115, 205, 208);">
-                                  <span  class="c21-ball-label" sty>T</span>
+                                  <span class="c21-ball-label" sty>T</span>
                                 </div>
                               </div>
                             </div>
 
                             <div class="c21-right-conv" *ngIf="!C21_BODY_HOME">
                               <div class="c21-last-time">
-                                2           {{ 'MinutesAgo' | translate }}
+                                2 {{ 'MinutesAgo' | translate }}
                               </div>
                               <div class="truncate c21-name">
                                 You</div>
@@ -162,20 +163,20 @@
                           <div class="c21-body-conv" [ngClass]="{'c21-body-conv-home' : C21_BODY_HOME === true}">
                             <div class="c21-left-conv">
                               <div class="c21-icon-avatar" style="height: 52px;width: 52px;">
-                  
+
 
                                 <div class="c21-ball" style="background-color:#ffffff;">
                                   <!-- <span  class="c21-ball-label" sty>T</span> -->
-                                    <div class="c21-avatar-image contact-avatar" *ngIf="!C21_BODY_HOME"
-                                  style="background-image: url(&quot;https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F5f971a7021d065001241949a%2Fthumb_photo.jpg?alt=media&quot;);">
-                                </div>
+                                  <div class="c21-avatar-image contact-avatar" *ngIf="!C21_BODY_HOME"
+                                    style="background-image: url(&quot;https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F5f971a7021d065001241949a%2Fthumb_photo.jpg?alt=media&quot;);">
+                                  </div>
                                 </div>
                               </div>
                             </div>
 
                             <div class="c21-right-conv" *ngIf="!C21_BODY_HOME">
                               <div class="c21-last-time">
-                                4  {{ 'MinutesAgo' | translate }}
+                                4 {{ 'MinutesAgo' | translate }}
                               </div>
                               <div class="truncate c21-name">
                                 Tily - welcome bot</div>
@@ -220,16 +221,18 @@
           </div>
           <!-- style="bottom: 47px;" -->
           <!-- C21_BODY_HOME > {{ C21_BODY_HOME }} -->
-          <div class="c21-footer_nk"  [ngStyle]="{'bottom':  (C21_BODY_HOME === true) ? '-42px' : '57px'}">
+          <div class="c21-footer_nk" [ngStyle]="{'bottom':  (C21_BODY_HOME === true) ? '-42px' : '57px'}">
             <div id="c21-powered-by">
-           
 
-                <svg _ngcontent-c10="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="22"
-                  id="Livello_1"
-                  style="enable-background:new -113 139 24 24; border-radius: 4px;margin-top: 5px;margin-left: 5px;float:left"
-                  version="1.0" viewBox="-113 139 24 24" width="22" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px">
+              <!-- margin-top: 5px;margin-left: 5px; -->
+              <svg _ngcontent-c10="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="22"
+                id="Livello_1"
+                style="enable-background:new -113 139 24 24; border-radius: 4px;float:left; position: absolute;
+                top: 6px;
+                left: 5px;"
+                version="1.0" viewBox="-113 139 24 24" width="22" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px">
 
-                  <path _ngcontent-c10="" class="svg-icon" d="M-90.7,148.6l-1.6-0.2c-0.2-0.5-0.4-1.1-0.6-1.6l0.9-1.4c0.4-0.6,0.3-1.3-0.2-1.8l-1.4-1.4
+                <path _ngcontent-c10="" class="svg-icon" d="M-90.7,148.6l-1.6-0.2c-0.2-0.5-0.4-1.1-0.6-1.6l0.9-1.4c0.4-0.6,0.3-1.3-0.2-1.8l-1.4-1.4
                   c-0.3-0.3-0.7-0.4-1-0.4c-0.3,0-0.6,0.1-0.8,0.2l-1.4,0.9c-0.5-0.3-1-0.5-1.6-0.7l-0.3-1.6c-0.1-0.7-0.7-1.2-1.4-1.2h-2
                   c-0.7,0-1.3,0.5-1.4,1.2l-0.3,1.6l-1.6,0.7l-1.3-0.9c-0.3-0.2-0.5-0.2-0.8-0.2c-0.4,0-0.7,0.1-1,0.4l-1.5,1.4
                   c-0.5,0.5-0.6,1.2-0.2,1.8l1,1.4c-0.3,0.5-0.5,1-0.6,1.5l-1.6,0.2c-0.7,0.1-1.2,0.7-1.2,1.4v2c0,0.7,0.5,1.3,1.2,1.4l1.6,0.2
@@ -246,23 +249,24 @@
                   c0-0.1,0-0.1,0.1-0.1l0,0h2.1c0.1,0,0.1,0,0.1,0.1c0,0,0,0,0,0l0.3,2c0,0.2,0.2,0.4,0.5,0.5c0.7,0.2,1.4,0.5,2.1,0.9
                   c0.2,0.1,0.5,0.1,0.7-0.1l1.7-1.2c0,0,0,0,0.1,0h0.1l1.4,1.4c0.1,0.1,0.1,0.1,0,0.2l-1.2,1.7c-0.1,0.2-0.1,0.5,0,0.6
                   c0.4,0.6,0.6,1.3,0.8,2c0.1,0.2,0.3,0.4,0.5,0.5l2,0.4c0.1,0,0.1,0,0.1,0.1l0,0V152L-90.8,152z"
-                    [ngStyle]="{'fill': primaryColor }"></path>
-                  <path _ngcontent-c10="" d="M-101,146.1c-2.7,0-4.9,2.2-4.8,4.9c0,2.7,2.2,4.9,4.9,4.8c2.7,0,4.8-2.2,4.8-4.9
+                  [ngStyle]="{'fill': primaryColor }"></path>
+                <path _ngcontent-c10="" d="M-101,146.1c-2.7,0-4.9,2.2-4.8,4.9c0,2.7,2.2,4.9,4.9,4.8c2.7,0,4.8-2.2,4.8-4.9
                   C-96,148.3-98.2,146.1-101,146.1C-101,146.1-101,146.1-101,146.1z M-101,154.6c-2,0-3.7-1.6-3.7-3.6s1.6-3.6,3.7-3.6
                   s3.7,1.6,3.7,3.6l0,0C-97.3,153-99,154.6-101,154.6z" [ngStyle]="{'fill': primaryColor }"></path>
-                </svg>
-                <a target="_blank" href="{{footerImageHref}}" style="color: #AAAAAA;
+              </svg>
+              <!-- <a target="_blank" href="{{footerImageHref}}" style="color: #AAAAAA;
                 font-size: 11px;
                 font-weight: 500;
                 line-height: 28px;">
                 <span style="position: relative;left: -18px;  top: 6px; font-weight:400">
-                  POWERED BY 
-                  <!-- <b>{{company_name}}</b>  -->
-                  <!-- <img style="width: 60px; height:auto;margin-left: 0px;position:relative;top: -2px;" src="assets/img/logos/tiledesk-logo.svg"> -->
-                  <img width="{{footerImageWidth}}"   style="height:auto;margin-left: 0px;position:relative;top: -2px;" src="{{footerImageUrl}}">
-                  
+                  POWERED BY
+                  <!- - <b>{{company_name}}</b> - ->
+                    <!- - <img style="width: 60px; height:auto;margin-left: 0px;position:relative;top: -2px;"  src="assets/img/logos/tiledesk-logo.svg"> - ->
+                      <!- - width="{{footerImageWidth}}" - ->
+                        <img style="width: 60px;height:auto;margin-left: 0px;position:relative;top: -2px;"   src="{{footerImageUrl}}">
                 </span>
-              </a>
+              </a> -->
+              <div class="footer-wpr-text-and-logo" [innerHTML]="footerBrand"></div>
             </div>
           </div>
         </div>

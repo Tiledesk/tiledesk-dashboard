@@ -864,6 +864,7 @@
 									</div>
 								</button>
 								<div class="widget-section-container"
+									[ngClass]="{'feature-not-available' : prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true}"
 									style="height: auto; transition-duration: 0.613s;">
 									<div class="section-offset">
 
@@ -876,24 +877,26 @@
 
 												{{ "WidgetFooterBranding" | translate}}
 
-												<!-- <span class="widget_design__Tooltip">
-													<span>
+											
+													<span style="cursor: pointer;"	
+													matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip=" {{'ToCustomizeTheWidgetFooterWithYourBrand' | translate}}"
+													#tooltip="matTooltip" 
+													matTooltipPosition='below'
+													matTooltipHideDelay="100">
 														<i class="material-icons"
 															style="position: relative;top: 2px; font-size:14px; color:#7695a5">
 															help_outline
 														</i>
 													</span>
-													<span class="widget_design__Tooltiptext"
-														style="margin-left: -108px;min-width: 225px;height:fit-content">
-														{{ 'TheOfflineMessageIsWhatSiteVisitors' | translate: tparams }}
-													</span>
-												</span> -->
+												
+												
 											</label>
-											
+
 											<div class="col-sm-12">
 												<textarea (focus)="onFocusFooterBranding()" [(ngModel)]="footerBrand"
-													(ngModelChange)="onChangeFooterBrand($event)" rows="3"
-													style="width: 100%;border-radius: 5px;border: solid 1px #ddd; padding: 8px; font-weight: 400;resize: vertical">	</textarea>
+													(ngModelChange)="onChangeFooterBrand($event)" rows="3" class="widget-setup-texarea"
+													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">	</textarea>
 												<div *ngIf="footerBrand?.length <= 0"
 													style="font-size: 11px; color: #f44336;">
 													{{ 'RequiredField' | translate}}
@@ -906,13 +909,29 @@
 										<!-- ------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
-							
+
 											<div class="col-sm-12">
-											
+
 												<button class="btn btn-success-no-boxshadow  footerbrand-save-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
-													(click)="saveFooterBrand()" [disabled]="footerBrand?.length === 0 ||  !footerBrand">
+													(click)="saveFooterBrand()"
+													[disabled]="(footerBrand?.length === 0 ||  !footerBrand) || (prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true)">
 													{{ 'UpdateWidget' | translate }}
+												</button>
+
+												<button class="btn btn-get-feature-no-boxshadow pull-right" *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true"
+													(click)="goToPricing()"
+													matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}"
+													#tooltip="matTooltip" 
+													matTooltipPosition='below'
+													matTooltipHideDelay="100">
+													<span class="material-icons-outlined get-feature-upgrade-plan-icon">
+														upgrade
+													</span>
+													<span>
+														{{ 'Pricing.UpgradePlan' | translate }}
+													</span>
 												</button>
 											</div>
 										</div>
@@ -2211,8 +2230,7 @@
 											[DISPLAY_LAUNCER_BUTTON]="DISPLAY_LAUNCER_BUTTON"
 											[waitingTimeFoundMsg]="waitingTimeFoundMsg" [currentUserId]="currentUserId"
 											[UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE"
-											[imageUrl]="imageUrl" 
-											[newConversation]="newConversation"
+											[imageUrl]="imageUrl" [newConversation]="newConversation"
 											[noConversation]="noConversation"
 											[HAS_SELECT_DYMANIC_REPLY_TIME_MSG]="HAS_SELECT_DYMANIC_REPLY_TIME_MSG"
 											[HAS_SELECT_STATIC_REPLY_TIME_MSG]="HAS_SELECT_STATIC_REPLY_TIME_MSG"

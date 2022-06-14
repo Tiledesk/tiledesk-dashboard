@@ -24,6 +24,7 @@ import { takeUntil } from 'rxjs/operators';
 import { URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -309,6 +310,17 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public USER_ROLE: string;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
+
+  public prjct_name: string;
+  public prjct_profile_name: string;
+  public profile_name: string;
+  public prjct_profile_type: string;
+  public prjct_trial_expired: boolean;
+  public subscription_is_active: boolean;
+  public subscription_end_date: Date;
+  public onlyOwnerCanManageTheAccountPlanMsg: string;
+  public learnMoreAboutDefaultRoles : string;
+  public payIsVisible: boolean;
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -325,6 +337,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     private analyticsService: AnalyticsService,
     private logger: LoggerService,
     private usersService: UsersService,
+    private prjctPlanService: ProjectPlanService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -371,9 +384,62 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.logger.log('[WIDGET-SET-UP] LANGUAGE ', this.lang);
     this.listenSidebarIsOpened();
     this.geti118nTranslations();
-    this.getBrowserVersion() 
+    this.getBrowserVersion();
+    this.getProjectPlan()
   }
 
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectProfileData: any) => {
+        this.logger.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
+        if (projectProfileData) {
+
+         
+          this.prjct_name = projectProfileData.name;
+          this.prjct_profile_name = projectProfileData.profile_name;
+          this.profile_name = projectProfileData.profile_name;
+          this.prjct_trial_expired = projectProfileData.trial_expired;
+          this.prjct_profile_type = projectProfileData.profile_type;
+          this.subscription_is_active = projectProfileData.subscription_is_active;
+          this.subscription_end_date = projectProfileData.subscription_end_date;
+
+        }
+      }, error => {
+
+        this.logger.error('[HOME] - getProjectPlan - ERROR', error);
+      }, () => {
+        this.logger.log('[HOME] - getProjectPlan * COMPLETE *')
+      });
+  }
+
+  goToPricing() {
+    this.logger.log('[ANALYTICS-STATIC] - goToPricing projectId ', this.id_project);
+    if (this.payIsVisible) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        } else {
+          this.router.navigate(['project/' + this.id_project + '/pricing']);
+        }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
+  }
+    // else {
+    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
+    // }
+  
+    presentModalOnlyOwnerCanManageTheAccountPlan() {
+      // https://github.com/t4t5/sweetalert/issues/845
+      this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+  
+    }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
@@ -394,6 +460,19 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       .subscribe((text: any) => {
         this.custom_prechat_form_is_empty_and_will_be_disabled_msg = text
       })
+
+
+      this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+      this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
+      });
 
   }
 
@@ -747,6 +826,19 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.isVisible = false;
         } else {
           this.isVisible = true;
+        }
+      }
+
+      if (key.includes("PAY")) {
+        this.logger.log('[ANALYTICS-STATIC] PUBLIC-KEY - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.payIsVisible = false;
+          this.logger.log('[ANALYTICS-STATIC] - pay isVisible', this.payIsVisible);
+        } else {
+          this.payIsVisible = true;
+          this.logger.log('[ANALYTICS-STATIC] - pay isVisible', this.payIsVisible);
         }
       }
     });
@@ -1416,7 +1508,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
  
-      this.logger.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
+      // console.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
 
       if (project.widget) {
         this.widgetObj = project.widget;
@@ -1427,8 +1519,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           if (project.widget.calloutTimer) {
             this.calloutTimerSecondSelected = project.widget.calloutTimer;
             this.CALLOUT_IS_DISABLED = false;
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected,
-              'IS DISABLED ', this.CALLOUT_IS_DISABLED);
+            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected, 'IS DISABLED ', this.CALLOUT_IS_DISABLED);
 
           } else {
 
@@ -1459,7 +1550,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             // ------------------------------------------------------------------------
             this.logger.log('[WIDGET-SET-UP] - onInit WIDGET DEFINED BUT POWERED-BY IS: ', project.widget.poweredBy, ' > SET DEFAULT ')
             // this.calloutTimerSecondSelected = -1;
-            this.footerBrand = '<a href="https://tiledesk.com/" target="_blank" title="Tiledesk"><image src="https://tiledesk.com/wp-content/uploads/2020/08/tiledesk-logo.svg" width="60"></a>';
+            this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>POWERED BY</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>';
           }
 
           
@@ -1706,7 +1797,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // @ POWERED-BY
           // WIDGET UNDEFINED
           // -----------------------------------------------------------------------
-          this.footerBrand = '<a href="https://tiledesk.com/" target="_blank" title="Tiledesk"><image src="https://tiledesk.com/wp-content/uploads/2020/08/tiledesk-logo.svg" width="60"></a>';
+          this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>POWERED BY</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>';
 
           // -----------------------------------------------------------------------
           // @ preChatForm

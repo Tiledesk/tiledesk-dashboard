@@ -831,6 +831,27 @@ div.clear {
     font-weight: 500;
 }
 
+.footer-wpr-text-and-logo {
+    height: 100%;
+}
+
+::ng-deep #c21-powered-by > div > a > img {
+    width: 68px;
+    height: auto;
+}
+
+::ng-deep #c21-powered-by > div > a  {
+    position: relative;
+    top: 7px;
+}
+
+::ng-deep #c21-powered-by > div > a >  span  {
+    color: #aaa;
+    font-size: 12px;
+    position: relative;
+    top: 1px;
+}
+
 // #chat21-home-component .c21-header-container .c21-logo img {
 //     max-width: 100%;
 //     max-height: 100%;

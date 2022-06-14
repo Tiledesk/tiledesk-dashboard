@@ -1351,18 +1351,18 @@ input[type="text"]:disabled {
   .appearance-save-btn-desktop {
     display: none;
   }
-  .custom-prechat-form-switch-label{
+  .custom-prechat-form-switch-label {
     margin-top: 12px !important;
     padding-bottom: 0px !important;
   }
 
-  .default-prechat-form-switch-label{
+  .default-prechat-form-switch-label {
     margin-top: 7px !important;
     padding-bottom: 0px !important;
   }
 
   .custom-prechat-form-help-icon {
-    top: -6px!important
+    top: -6px !important;
   }
 }
 
@@ -2322,7 +2322,7 @@ button.buttonRounded:hover {
 }
 
 .select-prechat-form-field {
-max-width: 570px;
+  max-width: 570px;
 }
 
 pre {
@@ -2673,14 +2673,56 @@ pre {
 }
 
 ::ng-deep .custom-mat-tooltip-in-widget-setup {
-  background-color: #555555  !important;
+  background-color: #555555 !important;
   color: #fff !important;
-  font-size: 12px  !important;
+  font-size: 12px !important;
   line-height: 1.2;
   border-radius: 2px !important;
-  font-family: 'Poppins' !important;
-  padding-top:8px!important;
-  padding-bottom:8px!important;
-  border: 1px solid #555555!important;
+  font-family: "Poppins" !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  border: 1px solid #555555 !important;
 }
 
+.feature-not-available {
+  background-color: #fcf9fe;
+  padding-right: 16px;
+  border-radius: 3px;
+  padding-top: 16px;
+  padding-bottom: 186px;
+}
+
+.btn-get-feature-no-boxshadow {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  background: transparent;
+  border: 1px solid #d1d9e0;
+  color: #3ea9f5;
+  font-weight: 400;
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 6px 15px !important;
+}
+
+.btn-get-feature-no-boxshadow:hover {
+  background-color: #eff2f6;
+  border: 1px solid #acb8cb;
+  color: #333;
+}
+
+.get-feature-upgrade-plan-icon {
+  vertical-align: middle;
+  color: #3ea9f5;
+  font-size: 21px;
+}
+
+.widget-setup-texarea {
+  width: 100%;
+  border-radius: 5px;
+  border: solid 1px #ddd;
+  padding: 8px;
+  font-weight: 400;
+  resize: vertical;
+}
