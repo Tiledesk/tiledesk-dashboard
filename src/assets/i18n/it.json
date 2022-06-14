@@ -2085,5 +2085,7 @@
     "ViewAll":"Mostra tutto",
     "ProOnly": "Solo Pro",
     "EnterpriseOnly": "Solo Enterprise",
-    "WidgetFooterBranding":"Personalizzazione del piè di pagina del widget"
+    "WidgetFooterBranding":"Personalizzazione del piè di pagina del widget",
+    "UpgradePlanToGetTheFeature": "Aggiorna il piano per ottenere la funzione",
+    "ToCustomizeTheWidgetFooterWithYourBrand":"Per personalizzare il footer del widget con il tuo brand cambia l'URL dell'immagine all'attributo src e l'URL all'attributo href (quest'ultimo è l'indirizzo a cui sarà rendirizzato l'utente finale quando clicca sul logo) . Se vuoi che non compaia 'POWERED BY' nel footer rimuovi questa stringa dalla texarea."
 }

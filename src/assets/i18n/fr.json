@@ -2087,6 +2087,8 @@
     "ProOnly": "Pro uniquement",
     "EnterpriseOnly": "Enterprise uniquement",
     "WidgetFooterBranding":"Image de marque du pied de page du widget",
+    "UpgradePlanToGetTheFeature": "Plan de mise à niveau pour obtenir la fonctionnalité",
+    "ToCustomizeTheWidgetFooterWithYourBrand":"Pour personnaliser le pied de page du widget avec votre marque, remplacez l'URL de l'image par l'attribut src et l'URL par l'attribut href (ce dernier est l'adresse vers laquelle l'utilisateur final sera redirigé lorsqu'il cliquera sur le logo). Si vous ne voulez pas que 'POWERED BY' apparaisse dans le pied de page, supprimez cette chaîne de la zone de texte.",
     "CHAT_IONIC": {
         "LABEL_TU": "vous: ",
         "LABEL_MSG_PUSH_START_CHAT": "Pas encore de conversation",

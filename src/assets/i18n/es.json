@@ -2087,6 +2087,8 @@
     "ProOnly": "Solo Pro",
     "EnterpriseOnly": "Solo Enterprise",
     "WidgetFooterBranding":"Marca de pie de página de widget",
+    "UpgradePlanToGetTheFeature": "Plan de actualización para obtener la función",
+    "ToCustomizeTheWidgetFooterWithYourBrand":"Para personalizar el pie de página del widget con su marca, cambie la URL de la imagen al atributo src y la URL al atributo href (este último es la dirección a la que se redirigirá al usuario final cuando haga clic en el logotipo). Si no desea que aparezca 'POWERED BY' en el pie de página, elimine esta cadena del área de texto.",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

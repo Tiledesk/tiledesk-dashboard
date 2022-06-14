@@ -2086,5 +2086,7 @@
 	"ViewAll":"Alle ansehen",
 	"ProOnly": "Nur Pro",
 	"EnterpriseOnly": "Nur Enterprise",
-	"WidgetFooterBranding":"Widget-Fußzeilen-Branding"
+	"WidgetFooterBranding":"Widget-Fußzeilen-Branding",
+	"UpgradePlanToGetTheFeature": "Upgrade-Plan, um die Funktion zu erhalten",
+	"ToCustomizeTheWidgetFooterWithYourBrand":"Um die Widget-Fußzeile mit Ihrer Marke anzupassen, ändern Sie die URL des Bildes in das src-Attribut und die URL in das href-Attribut (letzteres ist die Adresse, zu der der Endbenutzer umgeleitet wird, wenn er auf das Logo klickt) . Wenn Sie nicht möchten, dass „POWERED BY“ in der Fußzeile erscheint, entfernen Sie diese Zeichenfolge aus dem Texbereich."
 }

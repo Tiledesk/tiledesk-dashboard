@@ -2087,6 +2087,8 @@
     "ProOnly": "Apenas Pro",
     "EnterpriseOnly": "Apenas Enterprise",
     "WidgetFooterBranding":"Branding de rodapé de widget",
+    "UpgradePlanToGetTheFeature": "Plano de upgrade para obter o recurso",
+    "ToCustomizeTheWidgetFooterWithYourBrand":"Para personalizar o rodapé do widget com sua marca, altere a URL da imagem para o atributo src e a URL para o atributo href (este último é o endereço para o qual o usuário final será redirecionado ao clicar no logotipo). Se você não quiser que 'POWERED BY' apareça no rodapé, remova esta string da texarea.",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

@@ -2087,6 +2087,8 @@
     "ProOnly": "Yalnızca Pro",
     "EnterpriseOnly": "Yalnızca Enterprise",
     "WidgetFooterBranding":"Widget altbilgisi markalama",
+    "UpgradePlanToGetTheFeature": "Özelliği almak için planı yükseltin",
+    "ToCustomizeTheWidgetFooterWithYourBrand":"Widget alt bilgisini markanızla özelleştirmek için, resmin URL'sini src niteliğine ve URL'sini de href niteliğine değiştirin (ikincisi, logoya tıkladıklarında son kullanıcının yönlendirileceği adrestir). Altbilgide 'POWERED BY' görünmesini istemiyorsanız, bu dizeyi texarea'dan kaldırın.",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
