@@ -3732,8 +3732,9 @@
         </appdashboard-ws-train-bot>
       </div>
       <!-- [ngStyle]="{'height':train_bot_sidebar_height }" -->
+      <!-- [apps_sidebar_height]="apps_sidebar_height" -->
       <div *ngIf="OPEN_APPS_RIGHT_SIDEBAR === true" class="view-side">
         <appdashboard-ws-sidebar-apps [ngStyle]="{'height':apps_sidebar_height }"  [ngClass]="{'min-height-in-panel-mode': CHAT_PANEL_MODE === true}"
-          (valueChange)='handleCloseAppsRightSidebar($event)' [request]="request">
+          (valueChange)='handleCloseAppsRightSidebar($event)' [request]="request" [apps_sidebar_height]="apps_sidebar_height" >
         </appdashboard-ws-sidebar-apps>
       </div>

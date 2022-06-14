@@ -28,16 +28,8 @@
   <div *ngIf="SIDEBAR_APPS_IN_CHAT_PANEL_MODE === false" class="dashbord-app-wpr">
     <div *ngFor="let app of dashboardApps">
 
-      <!-- <div class="stretchspinner-sidebarapps">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
-      </div> -->
-
-      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;height:390px" id="{{app._id}}" frameBorder="0"
-        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe>
+      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%; min-height:390px" id="{{app._id}}" frameBorder="0"
+        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)" [ngStyle]="{'height.px': dashboardIframeHeight}"></iframe>
     </div>
 
     <div *ngIf="dashboardApps?.length === 0" class="no-apps">
@@ -48,17 +40,9 @@
   <div *ngIf="SIDEBAR_APPS_IN_CHAT_PANEL_MODE === true" class="webchat-app-wpr">
     <div *ngFor="let app of webchatApps">
 
-      <!-- <div class="stretchspinner-sidebarapps">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
-      </div> -->
 
-
-      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;height:630px" id="{{app?._id}}" frameBorder="0"
-        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe>
+      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;min-height:630px" id="{{app?._id}}" frameBorder="0"
+        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"  [ngStyle]="{'height.px': webchatIframeHeight}" ></iframe>
     </div>
     <div *ngIf="webchatApps?.length === 0" class="no-apps">
       No apps installed for this project

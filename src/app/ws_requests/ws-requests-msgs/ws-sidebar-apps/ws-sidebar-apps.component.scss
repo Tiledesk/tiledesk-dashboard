@@ -113,3 +113,19 @@
 .hide-stretchspinner {
     display: none;
 }
+
+// Custom scollbar fo the chat right sidebar
+.apps-right-side-bar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.apps-right-side-bar::-webkit-scrollbar-track {
+    background-color: #f9f9f9;
+}
+.apps-right-side-bar::-webkit-scrollbar-thumb {
+    background-color: #b9b9b9;
+    border-radius: 0px;
+}
+.apps-right-side-bar::-webkit-scrollbar-thumb:hover {
+    background-color: #727272;
+}
