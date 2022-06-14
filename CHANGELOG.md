@@ -6,6 +6,7 @@
 - Adds the "Enterprise Only" badge to the "Customize the notification email template" section and to "SMTP settings" section available in Settings > Project Settings > Notifications
 - Fixes the bug: the end user has access to the "Customize the notification email template" and "SMTP settings" functionality even when the Enterprise plan has expired
 - Adds the ability in Settings > Widget to customize the widget footer branding (i.e. the unbranding)
+- Enhances App Sidebar: dynamically change the height of the app iframe based on the number of apps installed
 
 ### 2.2.37-rc2
 - Adds the existing email to the popup, available in the chat, which allows to change the contact's email on the fly
