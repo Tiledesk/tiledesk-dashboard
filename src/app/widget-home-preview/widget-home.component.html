@@ -266,7 +266,10 @@
                         <img style="width: 60px;height:auto;margin-left: 0px;position:relative;top: -2px;"   src="{{footerImageUrl}}">
                 </span>
               </a> -->
-              <div class="footer-wpr-text-and-logo" [innerHTML]="footerBrand"></div>
+              <div *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true || prjct_profile_type === 'free' && prjct_trial_expired === false" 
+              class="footer-wpr-text-and-logo" [innerHTML]="footerBrand"></div>
+              <div *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true" 
+              class="footer-wpr-text-and-logo" [innerHTML]="defaultFooter"></div>
             </div>
           </div>
         </div>

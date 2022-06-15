@@ -38,10 +38,16 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
   @Input() DISPLAY_LAUNCER_BUTTON: boolean;
   @Input() footerBrand: string;
 
+  @Input() prjct_profile_type: string
+  @Input() subscription_is_active: boolean;
+	@Input() prjct_trial_expired: boolean;
+
   public footerImageUrl: string
   public footerImageHref: string
   public footerImageWidth: string
   public footerPoweredByString: string
+
+  public defaultFooter = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>POWERED BY</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>'
 
   constructor() { }
 
@@ -59,6 +65,10 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // console.log('footerBrand  ', this.footerBrand)
+    // console.log('prjct_profile_type  ', this.prjct_profile_type)
+    // console.log('subscription_is_active  ', this.subscription_is_active)
+    // console.log('prjct_trial_expired  ', this.prjct_trial_expired)
+    
     // if (this.footerBrand) {
 
       // ------------------------------------------------------
