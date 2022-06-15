@@ -55,6 +55,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public secondaryColor: string;
   public logoUrl: string;
   public hasOwnLogo = false;
+
+  public customLauncherURL: string;
+  public hasOwnLauncherLogo: boolean = false;
+
+
   public footerBrand: string
   public id_project: string;
 
@@ -110,6 +115,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   calloutContainerWidth: any;
   IMAGE_EXIST: boolean;
+  CUSTOM_LAUNCHER_LOGO_EXIST: boolean;
 
   translations: any
   selected_translation: Array<any> = []
@@ -134,7 +140,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public waitingTimeNotFoundMsg: string; // WAITING_TIME_NOT_FOUND
   public waitingTimeFoundMsg: string; //  WAITING_TIME_FOUND
   public LABEL_PLACEHOLDER: string; //  "type your message.."
- 
+
   placeholderOnlineMsg: string;
   placeholderOfflineMsg: string;
   placeholderofficeClosedMsg: string;
@@ -167,17 +173,17 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   hasBuiltPrechatformWithVisualTool: boolean;
   NEW_PRECHAT_LABEL_ARE_MISSING: boolean = false;
   en_missing_labels =
-  {
-    "Full name": "Full name",
-    "Email": "Email", 
-    "Phone":"Phone", 
-    "Invalid email address":"Invalid email address",
-    "Your message for the support team": "Your message for the support team",
-    "Before proceeding in the conversation please agree to our <a href='https://tiledesk.com/termsofservice/' target='_blank'>Terms</a> and <a href='https://tiledesk.com/privacy.html' target='_blank'>Privacy Policy</a>": "Before proceeding in the conversation please agree to our <a href='https://tiledesk.com/termsofservice/' target='_blank'>Terms</a> and <a href='https://tiledesk.com/privacy.html' target='_blank'>Privacy Policy</a>",
-    "I agree":"I agree",
-    "This field is required": "This field is required"
-  }
- 
+    {
+      "Full name": "Full name",
+      "Email": "Email",
+      "Phone": "Phone",
+      "Invalid email address": "Invalid email address",
+      "Your message for the support team": "Your message for the support team",
+      "Before proceeding in the conversation please agree to our <a href='https://tiledesk.com/termsofservice/' target='_blank'>Terms</a> and <a href='https://tiledesk.com/privacy.html' target='_blank'>Privacy Policy</a>": "Before proceeding in the conversation please agree to our <a href='https://tiledesk.com/termsofservice/' target='_blank'>Terms</a> and <a href='https://tiledesk.com/privacy.html' target='_blank'>Privacy Policy</a>",
+      "I agree": "I agree",
+      "This field is required": "This field is required"
+    }
+
 
   preChatFormFields = [
     {
@@ -319,7 +325,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public subscription_is_active: boolean;
   public subscription_end_date: Date;
   public onlyOwnerCanManageTheAccountPlanMsg: string;
-  public learnMoreAboutDefaultRoles : string;
+  public learnMoreAboutDefaultRoles: string;
   public payIsVisible: boolean;
   constructor(
     private notify: NotifyService,
@@ -397,7 +403,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.logger.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
         if (projectProfileData) {
 
-         
+
           this.prjct_name = projectProfileData.name;
           this.prjct_profile_name = projectProfileData.profile_name;
           this.profile_name = projectProfileData.profile_name;
@@ -431,22 +437,22 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
-    // else {
-    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
-    // }
-  
-    presentModalOnlyOwnerCanManageTheAccountPlan() {
-      // https://github.com/t4t5/sweetalert/issues/845
-      this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-  
-    }
+  // else {
+  //   this.notify._displayContactUsModal(true, 'upgrade_plan');
+  // }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+
+  }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }  
+  }
 
 
   geti118nTranslations() {
@@ -462,13 +468,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       })
 
 
-      this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
-      this.translate.get('LearnMoreAboutDefaultRoles')
+    this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
@@ -1132,7 +1138,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // for custom prechat-form
         this.LABEL_PRECHAT_USER_FULLNAME = this.selected_translation["LABEL_PRECHAT_USER_FULLNAME"]
         // console.log('getCurrentTranslation this.LABEL_PRECHAT_USER_FULLNAME ', this.LABEL_PRECHAT_USER_FULLNAME)
-       
+
         // if (this.LABEL_PRECHAT_USER_FULLNAME === undefined) {
         //   this.NEW_PRECHAT_LABEL_ARE_MISSING = true;
         //   console.log('getCurrentTranslation NEW_PRECHAT_LABEL_ARE_MISSING ', this.NEW_PRECHAT_LABEL_ARE_MISSING)
@@ -1153,8 +1159,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // for default prechat-form
         this.LABEL_FIELD_NAME = this.selected_translation["LABEL_FIELD_NAME"]
         this.LABEL_FIELD_EMAIL = this.selected_translation["LABEL_FIELD_EMAIL"]
-       
-       
+
+
       }
     });
   }
@@ -1253,9 +1259,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     if (footerbrand_save_btn) {
       footerbrand_save_btn.blur()
     }
-    this.widgetObj['poweredBy'] =  this.footerBrand;
+    this.widgetObj['poweredBy'] = this.footerBrand;
     this.widgetService.updateWidgetProject(this.widgetObj)
-  
+
   }
 
   saveReplyTime() {
@@ -1507,340 +1513,362 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
- 
-      // console.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
+
+      console.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
 
       if (project.widget) {
         this.widgetObj = project.widget;
-          // ------------------------------------------------------------------------
-          // @ calloutTimer
-          // WIDGET AND CALLOUT-TIMER DEFINED
-          // ------------------------------------------------------------------------
-          if (project.widget.calloutTimer) {
-            this.calloutTimerSecondSelected = project.widget.calloutTimer;
-            this.CALLOUT_IS_DISABLED = false;
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected, 'IS DISABLED ', this.CALLOUT_IS_DISABLED);
-
-          } else {
-
-            // ------------------------------------------------------------------------
-            // @ calloutTimer
-            // WIDGET DEFINED BUT NOT CALLOUT-TIMER - SET DEFAULT
-            // ------------------------------------------------------------------------
-            this.logger.log('[WIDGET-SET-UP] - onInit WIDGET DEFINED BUT CALLOUT-TIMER IS: ', this.calloutTimerSecondSelected, ' > SET DEFAULT ')
-            // this.calloutTimerSecondSelected = -1;
-            this.calloutTimerSecondSelected = 5;
-            this.CALLOUT_IS_DISABLED = true;
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected, ' - IS DISABLED ', this.CALLOUT_IS_DISABLED);
-
-          }
-          // ------------------------------------------------------------------------
-          // @ poweredBy
-          // WIDGET AND POWERED-BY DEFINED
-          // ------------------------------------------------------------------------
-          if (project.widget.poweredBy) {
-            this.footerBrand = project.widget.poweredBy;
-            
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) POWERED-BY (footerBrand) : ', this.footerBrand);
-
-          } else {
-            // ------------------------------------------------------------------------
-            // @ poweredBy
-            // WIDGET DEFINED BUT NOT POWERED-BY - SET DEFAULT
-            // ------------------------------------------------------------------------
-            this.logger.log('[WIDGET-SET-UP] - onInit WIDGET DEFINED BUT POWERED-BY IS: ', project.widget.poweredBy, ' > SET DEFAULT ')
-            // this.calloutTimerSecondSelected = -1;
-            this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>POWERED BY</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>';
-          }
-
-          
-
-          // ------------------------------------------------------------------------
-          // @ Logochat
-          // case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
-          // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SETTED HIS LOGO)
-          // ------------------------------------------------------------------------
-          // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-          if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
-            this.logoUrl = project.widget.logoChat;
-            this.hasOwnLogo = true;
-            this.LOGO_IS_ON = true;
-
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,  ' HAS HOWN LOGO ', this.hasOwnLogo, ' LOGO IS ON', this.LOGO_IS_ON);
-
-            // ------------------------------------------------------------------------
-            // @ Logochat
-            // case logoChat = 'nologo' > no logo is displayed
-            // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO')
-            // ------------------------------------------------------------------------
-            // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-          } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
-            this.logoUrl = 'No Logo';
-            this.hasOwnLogo = false;
-            this.LOGO_IS_ON = false;
-
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat, ' HAS HOWN LOGO ', this.hasOwnLogo,  ' LOGO IS ON', this.LOGO_IS_ON);
-
-
-            // ------------------------------------------------------------------------
-            // @ Logochat
-            // case logoChat = '' > display the tiledesk logo and in the input field display the text 'tiledesklogo'
-            // logoChat (WIDGET DEFINED BUT NOT LOGOCHAT - SET DEFAULT)
-            // ------------------------------------------------------------------------
-          } else {
-            // this.logoUrl = 'tiledesklogo'
-            this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
-            this.hasOwnLogo = false;
-            this.LOGO_IS_ON = true
-
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
-              ' HAS HOWN LOGO ', this.hasOwnLogo,
-              ' LOGO IS ON', this.LOGO_IS_ON);
-          }
-
-          // -----------------------------------------
-          // Pre-chat form
-          // -----------------------------------------
-          if (project.widget.preChatForm) {
-            this.preChatForm = true;
-          } else {
-            this.preChatForm = false;
-          }
-
-          if (project.widget.preChatFormCustomFieldsEnabled) {
-            this.preChatFormCustomFieldsEnabled = true
-          } else {
-            this.preChatFormCustomFieldsEnabled = false;
-          }
-
-          if (project.widget.preChatFormJson) {
-              // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) preChatFormJson: ', project.widget.preChatFormJson)
-              // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.visualTool: ',project.widget.visualTool)
-              // PRECHAT_FIRST_MESSAGE_ROWS
-              project.widget.preChatFormJson.forEach(field => {
-                // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) preChatFormJson - field: ',field)
-                if (field.name === 'firstMessage') {
-                  this.PRECHAT_FIRST_MESSAGE_ROWS =  field.rows
-                }
-             });
-           
-
-            if (project.widget.visualTool && project.widget.visualTool === true) {
-              this.hasBuiltPrechatformWithVisualTool = true
-              this.displayNewCustomPrechatFormBuilder = true
-            } else if (project.widget.visualTool && project.widget.visualTool === false) {
-              this.hasBuiltPrechatformWithVisualTool = false
-              this.displayNewCustomPrechatFormBuilder = false
-            } else if (!project.widget.visualTool) {
-              this.hasBuiltPrechatformWithVisualTool = false
-              this.displayNewCustomPrechatFormBuilder = false
-            }            
-
-            // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) > displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
-            // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) > hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
-            // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
-            this.prechatFormArray = project.widget.preChatFormJson;
-            this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson, null, 4);
-            this.removepreChatFormFieldsIfAlreadyUsed(this.preChatFormFields, project.widget.preChatFormJson);
-            // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) prechatFormTexareaJson: ', this.prechatFormTexareaJson)
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED typeof: ', typeof project.widget.preChatFormJson)
-          } else {
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED ')
-            
-            this.hasBuiltPrechatformWithVisualTool = true
-            this.displayNewCustomPrechatFormBuilder = true
-            this.PRECHAT_FIRST_MESSAGE_ROWS =  5
-            // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
-            // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
-           
-            // this.prechatFormObject = this.widgetDefaultSettings.preChatFormJson;
-            // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
-            // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED: ', this.widgetDefaultSettings.preChatFormJson)
-            // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED typeof: ', typeof this.widgetDefaultSettings.preChatFormJson)
-
-          }
-
-          // -----------------------------------------
-          // NATIVE Rating
-          // -----------------------------------------
-          if (project.widget.nativeRating) {
-            this.nativeRating = true;
-          } else {
-            this.nativeRating = false;
-          }
-
-
-
-          // ------------------------------------------------------------------------
-          // @ themeColor
-          // themeColor (WIDGET AND THEME-COLOR DEFINED)
-          // ------------------------------------------------------------------------
-          if (project.widget.themeColor) {
-
-            this.primaryColor = project.widget.themeColor;
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR: ', this.primaryColor);
-            this.primaryColorRgb = this.hexToRgb(this.primaryColor)
-            this.generateRgbaGradientAndBorder(this.primaryColorRgb);
-          } else {
-
-            // ------------------------------------------------------------------------
-            // @ themeColor
-            // case themeColor IS undefined
-            // themeColor (WIDGET DEFINED BUT NOT THEME-COLOR - SET DEFAULT)
-            // ------------------------------------------------------------------------
-            this.primaryColor = this.widgetDefaultSettings.themeColor
-
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR: ', project.widget.themeColor,
-              ' IS UNDEFINED > SET DEFAULT ', this.primaryColor);
-
-            this.primaryColorRgb = this.hexToRgb(this.primaryColor)
-            this.generateRgbaGradientAndBorder(this.primaryColorRgb);
-          }
-
-          // ------------------------------------------------------------------------
-          // @ themeForegroundColor
-          // (WIDGET AND THEME-FOREGROUND-COLOR DEFINED)
-          // ------------------------------------------------------------------------
-          if (project.widget.themeForegroundColor) {
-            this.secondaryColor = project.widget.themeForegroundColor;
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', this.secondaryColor);
-          } else {
-
-            // ------------------------------------------------------------------------
-            // @ themeForegroundColor
-            // case themeForegroundColor IS undefined
-            // themeForegroundColor (WIDGET DEFINED BUT NOT THEME-FOREGROUND-COLOR )
-            // ------------------------------------------------------------------------
-            this.secondaryColor = this.widgetDefaultSettings.themeForegroundColor;
-
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', project.widget.themeForegroundColor,
-              ' IS UNDEFINED > SET DEFAULT ', this.secondaryColor);
-          }
-
-          // ------------------------------------------------------------------------
-          // @ Align
-          // align (WIDGET AND ALIGN DEFINED)
-          // ------------------------------------------------------------------------
-          if (project.widget.align && project.widget.align === 'left') {
-            this.hasSelectedLeftAlignment = true;
-            this.hasSelectedRightAlignment = false;
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) ALIGN: ', project.widget.align);
-          } else {
-
-            // -----------------------------------------------------------------------
-            // @ Align
-            // WIDGET DEFINED BUT NOT ALIGN
-            // -----------------------------------------------------------------------
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) ALIGN: ', project.widget.align, 'IS UNDEFINED > SET DEFAULT');
-            this.hasSelectedLeftAlignment = false;
-            this.hasSelectedRightAlignment = true;
-          }
-
-          // -----------------------------------------------------------------------
-          // @ Reply time
-          // WIDGET DEFINED
-          // -----------------------------------------------------------------------
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) DYNAMIC REPLY TIME: ', project.widget.dynamicWaitTimeReply);
-
-          if (project.widget.dynamicWaitTimeReply === true) {
-            this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
-            this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_STATIC_REPLY_TIME_MSG);
-          } else {
-            this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
-            this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
-            this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_STATIC_REPLY_TIME_MSG);
-          }
+        // ------------------------------------------------------------------------
+        // @ calloutTimer
+        // WIDGET AND CALLOUT-TIMER DEFINED
+        // ------------------------------------------------------------------------
+        if (project.widget.calloutTimer) {
+          this.calloutTimerSecondSelected = project.widget.calloutTimer;
+          this.CALLOUT_IS_DISABLED = false;
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected, 'IS DISABLED ', this.CALLOUT_IS_DISABLED);
 
         } else {
 
-          this.widgetObj = {}
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED)');
-          // -----------------------------------------------------------------------
-          // @ LogoChat
-          // WIDGET UNDEFINED
-          // -----------------------------------------------------------------------
+          // ------------------------------------------------------------------------
+          // @ calloutTimer
+          // WIDGET DEFINED BUT NOT CALLOUT-TIMER - SET DEFAULT
+          // ------------------------------------------------------------------------
+          this.logger.log('[WIDGET-SET-UP] - onInit WIDGET DEFINED BUT CALLOUT-TIMER IS: ', this.calloutTimerSecondSelected, ' > SET DEFAULT ')
+          // this.calloutTimerSecondSelected = -1;
+          this.calloutTimerSecondSelected = 5;
+          this.CALLOUT_IS_DISABLED = true;
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected, ' - IS DISABLED ', this.CALLOUT_IS_DISABLED);
+
+        }
+        // ------------------------------------------------------------------------
+        // @ poweredBy
+        // WIDGET AND POWERED-BY DEFINED
+        // ------------------------------------------------------------------------
+        if (project.widget.poweredBy) {
+          this.footerBrand = project.widget.poweredBy;
+
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) POWERED-BY (footerBrand) : ', this.footerBrand);
+
+        } else {
+          // ------------------------------------------------------------------------
+          // @ poweredBy
+          // WIDGET DEFINED BUT NOT POWERED-BY - SET DEFAULT
+          // ------------------------------------------------------------------------
+          this.logger.log('[WIDGET-SET-UP] - onInit WIDGET DEFINED BUT POWERED-BY IS: ', project.widget.poweredBy, ' > SET DEFAULT ')
+          // this.calloutTimerSecondSelected = -1;
+          this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>POWERED BY</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>';
+        }
+
+        // -------------------------------------------
+        // @ baloonImage LauncherLogo
+        // -------------------------------------------
+        if (project.widget.baloonImage) {
+          this.customLauncherURL = project.widget.baloonImage;
+          this.hasOwnLauncherLogo = true;
+
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BALOON IMAGE : ', this.customLauncherURL);
+
+        } else {
+          // ------------------------------------------------------------------------
+          // @ poweredBy
+          // WIDGET DEFINED BUT NOT POWERED-BY - SET DEFAULT
+          // ------------------------------------------------------------------------
+          this.hasOwnLauncherLogo = false;
+        }
+
+
+
+        // ------------------------------------------------------------------------
+        // @ Logochat
+        // case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
+        // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SETTED HIS LOGO)
+        // ------------------------------------------------------------------------
+        // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
+        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+          this.logoUrl = project.widget.logoChat;
+          this.hasOwnLogo = true;
+          this.LOGO_IS_ON = true;
+
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat, ' HAS HOWN LOGO ', this.hasOwnLogo, ' LOGO IS ON', this.LOGO_IS_ON);
+
+          // ------------------------------------------------------------------------
+          // @ Logochat
+          // case logoChat = 'nologo' > no logo is displayed
+          // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO')
+          // ------------------------------------------------------------------------
+          // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
+        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+          this.logoUrl = 'No Logo';
+          this.hasOwnLogo = false;
+          this.LOGO_IS_ON = false;
+
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat, ' HAS HOWN LOGO ', this.hasOwnLogo, ' LOGO IS ON', this.LOGO_IS_ON);
+
+
+          // ------------------------------------------------------------------------
+          // @ Logochat
+          // case logoChat = '' > display the tiledesk logo and in the input field display the text 'tiledesklogo'
+          // logoChat (WIDGET DEFINED BUT NOT LOGOCHAT - SET DEFAULT)
+          // ------------------------------------------------------------------------
+        } else {
           // this.logoUrl = 'tiledesklogo'
           this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = true
 
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > SET DEFAULT LOGOURL: ', this.logoUrl, 'HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat, ' HAS HOWN LOGO ', this.hasOwnLogo, ' LOGO IS ON', this.LOGO_IS_ON);
+        }
 
-          // -----------------------------------------------------------------------
-          // @ themeColor
-          // WIDGET UNDEFINED
-          // -----------------------------------------------------------------------
-          this.primaryColor = this.widgetDefaultSettings.themeColor
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME COLOR: ', this.primaryColor);
-          this.primaryColorRgb = this.hexToRgb(this.primaryColor)
-          this.generateRgbaGradientAndBorder(this.primaryColorRgb);
 
-          // -----------------------------------------------------------------------
-          // @ themeForegroundColor
-          // WIDGET UNDEFINED
-          // -----------------------------------------------------------------------
-          this.secondaryColor = this.widgetDefaultSettings.themeForegroundColor;
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME-FOREGROUND COLOR: ', this.secondaryColor);
-
-          // -----------------------------------------------------------------------
-          // @ calloutTimer
-          // WIDGET UNDEFINED
-          // -----------------------------------------------------------------------
-          // this.calloutTimerSecondSelected = -1;
-          this.calloutTimerSecondSelected = 5;
-          this.CALLOUT_IS_DISABLED = true;
-
-          // -----------------------------------------------------------------------
-          // @ POWERED-BY
-          // WIDGET UNDEFINED
-          // -----------------------------------------------------------------------
-          this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>POWERED BY</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>';
-
-          // -----------------------------------------------------------------------
-          // @ preChatForm
-          // WIDGET UNDEFINED
-          // -----------------------------------------------------------------------
+        // -----------------------------------------
+        // Pre-chat form
+        // -----------------------------------------
+        if (project.widget.preChatForm) {
+          this.preChatForm = true;
+        } else {
           this.preChatForm = false;
+        }
+
+        if (project.widget.preChatFormCustomFieldsEnabled) {
+          this.preChatFormCustomFieldsEnabled = true
+        } else {
           this.preChatFormCustomFieldsEnabled = false;
+        }
+
+        if (project.widget.preChatFormJson) {
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) preChatFormJson: ', project.widget.preChatFormJson)
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.visualTool: ',project.widget.visualTool)
+          // PRECHAT_FIRST_MESSAGE_ROWS
+          project.widget.preChatFormJson.forEach(field => {
+            // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) preChatFormJson - field: ',field)
+            if (field.name === 'firstMessage') {
+              this.PRECHAT_FIRST_MESSAGE_ROWS = field.rows
+            }
+          });
+
+
+          if (project.widget.visualTool && project.widget.visualTool === true) {
+            this.hasBuiltPrechatformWithVisualTool = true
+            this.displayNewCustomPrechatFormBuilder = true
+          } else if (project.widget.visualTool && project.widget.visualTool === false) {
+            this.hasBuiltPrechatformWithVisualTool = false
+            this.displayNewCustomPrechatFormBuilder = false
+          } else if (!project.widget.visualTool) {
+            this.hasBuiltPrechatformWithVisualTool = false
+            this.displayNewCustomPrechatFormBuilder = false
+          }
+
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) > displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) > hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
+          // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
+          this.prechatFormArray = project.widget.preChatFormJson;
+          this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson, null, 4);
+          this.removepreChatFormFieldsIfAlreadyUsed(this.preChatFormFields, project.widget.preChatFormJson);
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) prechatFormTexareaJson: ', this.prechatFormTexareaJson)
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED typeof: ', typeof project.widget.preChatFormJson)
+        } else {
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED ')
+
           this.hasBuiltPrechatformWithVisualTool = true
           this.displayNewCustomPrechatFormBuilder = true
-          this.PRECHAT_FIRST_MESSAGE_ROWS =  5
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > preChatForm: ', this.preChatForm);
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > preChatFormCustomFieldsEnabled: ', this.preChatFormCustomFieldsEnabled);
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > PRECHAT_FIRST_MESSAGE_ROWS: ', this.PRECHAT_FIRST_MESSAGE_ROWS);
-          // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
+          this.PRECHAT_FIRST_MESSAGE_ROWS = 5
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
+
           // this.prechatFormObject = this.widgetDefaultSettings.preChatFormJson;
-          // -----------------------------------------------------------------------
-          // @ nativeRating
-          // WIDGET UNDEFINED
-          // -----------------------------------------------------------------------
+          // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED: ', this.widgetDefaultSettings.preChatFormJson)
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON UNDEFINED typeof: ', typeof this.widgetDefaultSettings.preChatFormJson)
+
+        }
+
+        // -----------------------------------------
+        // NATIVE Rating
+        // -----------------------------------------
+        if (project.widget.nativeRating) {
+          this.nativeRating = true;
+        } else {
           this.nativeRating = false;
+        }
 
 
+
+        // ------------------------------------------------------------------------
+        // @ themeColor
+        // themeColor (WIDGET AND THEME-COLOR DEFINED)
+        // ------------------------------------------------------------------------
+        if (project.widget.themeColor) {
+
+          this.primaryColor = project.widget.themeColor;
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR: ', this.primaryColor);
+          this.primaryColorRgb = this.hexToRgb(this.primaryColor)
+          this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+        } else {
+
+          // ------------------------------------------------------------------------
+          // @ themeColor
+          // case themeColor IS undefined
+          // themeColor (WIDGET DEFINED BUT NOT THEME-COLOR - SET DEFAULT)
+          // ------------------------------------------------------------------------
+          this.primaryColor = this.widgetDefaultSettings.themeColor
+
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR: ', project.widget.themeColor,
+            ' IS UNDEFINED > SET DEFAULT ', this.primaryColor);
+
+          this.primaryColorRgb = this.hexToRgb(this.primaryColor)
+          this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+        }
+
+        // ------------------------------------------------------------------------
+        // @ themeForegroundColor
+        // (WIDGET AND THEME-FOREGROUND-COLOR DEFINED)
+        // ------------------------------------------------------------------------
+        if (project.widget.themeForegroundColor) {
+          this.secondaryColor = project.widget.themeForegroundColor;
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', this.secondaryColor);
+        } else {
+
+          // ------------------------------------------------------------------------
+          // @ themeForegroundColor
+          // case themeForegroundColor IS undefined
+          // themeForegroundColor (WIDGET DEFINED BUT NOT THEME-FOREGROUND-COLOR )
+          // ------------------------------------------------------------------------
+          this.secondaryColor = this.widgetDefaultSettings.themeForegroundColor;
+
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', project.widget.themeForegroundColor,
+            ' IS UNDEFINED > SET DEFAULT ', this.secondaryColor);
+        }
+
+        // ------------------------------------------------------------------------
+        // @ Align
+        // align (WIDGET AND ALIGN DEFINED)
+        // ------------------------------------------------------------------------
+        if (project.widget.align && project.widget.align === 'left') {
+          this.hasSelectedLeftAlignment = true;
+          this.hasSelectedRightAlignment = false;
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) ALIGN: ', project.widget.align);
+        } else {
 
           // -----------------------------------------------------------------------
-          // @ Reply time
-          // WIDGET UNDEFINED
+          // @ Align
+          // WIDGET DEFINED BUT NOT ALIGN
           // -----------------------------------------------------------------------
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) ALIGN: ', project.widget.align, 'IS UNDEFINED > SET DEFAULT');
+          this.hasSelectedLeftAlignment = false;
+          this.hasSelectedRightAlignment = true;
+        }
+
+        // -----------------------------------------------------------------------
+        // @ Reply time
+        // WIDGET DEFINED
+        // -----------------------------------------------------------------------
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) DYNAMIC REPLY TIME: ', project.widget.dynamicWaitTimeReply);
+
+        if (project.widget.dynamicWaitTimeReply === true) {
           this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
           this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_STATIC_REPLY_TIME_MSG);
+        } else {
+          this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = false;
+          this.HAS_SELECT_STATIC_REPLY_TIME_MSG = true;
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_STATIC_REPLY_TIME_MSG);
         }
 
-      }, (error) => {
-        this.logger.error('[WIDGET-SET-UP] - GET PROJECT BY ID - ERROR ', error);
-        this.showSpinner = false;
-      }, () => {
-        this.logger.log('[WIDGET-SET-UP] - GET PROJECT BY ID - COMPLETE ');
+      } else {
 
-        this.showSpinner = false;
-      });
+        this.widgetObj = {}
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED)');
+        // -----------------------------------------------------------------------
+        // @ LogoChat
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        // this.logoUrl = 'tiledesklogo'
+        this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+        this.hasOwnLogo = false;
+        this.LOGO_IS_ON = true
+
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > SET DEFAULT LOGOURL: ', this.logoUrl, 'HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
+
+        // -----------------------------------------------------------------------
+        // @ LauncherLogo
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.hasOwnLauncherLogo = false;
+
+        // -----------------------------------------------------------------------
+        // @ themeColor
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.primaryColor = this.widgetDefaultSettings.themeColor
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME COLOR: ', this.primaryColor);
+        this.primaryColorRgb = this.hexToRgb(this.primaryColor)
+        this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+
+        // -----------------------------------------------------------------------
+        // @ themeForegroundColor
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.secondaryColor = this.widgetDefaultSettings.themeForegroundColor;
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME-FOREGROUND COLOR: ', this.secondaryColor);
+
+        // -----------------------------------------------------------------------
+        // @ calloutTimer
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        // this.calloutTimerSecondSelected = -1;
+        this.calloutTimerSecondSelected = 5;
+        this.CALLOUT_IS_DISABLED = true;
+
+        // -----------------------------------------------------------------------
+        // @ POWERED-BY
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>POWERED BY</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>';
+
+        // -----------------------------------------------------------------------
+        // @ preChatForm
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.preChatForm = false;
+        this.preChatFormCustomFieldsEnabled = false;
+        this.hasBuiltPrechatformWithVisualTool = true
+        this.displayNewCustomPrechatFormBuilder = true
+        this.PRECHAT_FIRST_MESSAGE_ROWS = 5
+        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > preChatForm: ', this.preChatForm);
+        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > preChatFormCustomFieldsEnabled: ', this.preChatFormCustomFieldsEnabled);
+        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
+        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
+        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > PRECHAT_FIRST_MESSAGE_ROWS: ', this.PRECHAT_FIRST_MESSAGE_ROWS);
+        // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
+        // this.prechatFormObject = this.widgetDefaultSettings.preChatFormJson;
+        // -----------------------------------------------------------------------
+        // @ nativeRating
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.nativeRating = false;
+
+
+
+        // -----------------------------------------------------------------------
+        // @ Reply time
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
+        this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG);
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  HAS_SELECT_DYMANIC_REPLY_TIME_MSG: ', this.HAS_SELECT_STATIC_REPLY_TIME_MSG);
+      }
+
+    }, (error) => {
+      this.logger.error('[WIDGET-SET-UP] - GET PROJECT BY ID - ERROR ', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[WIDGET-SET-UP] - GET PROJECT BY ID - COMPLETE ');
+
+      this.showSpinner = false;
+    });
   }
 
 
@@ -2307,6 +2335,45 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
+  onFocuCustomLauncherURLInput() {
+    this.DISPLAY_CALLOUT = true;
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    this.widget_preview_selected = "0003";
+
+  } 
+
+  launcherLogoChange(event) {
+    console.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
+
+    if (event.length === 0) {
+      this.hasOwnLauncherLogo = false;
+      this.customLauncherURL = null
+      console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.customLauncherURL  ', this.customLauncherURL);
+    } else {
+
+      this.verifyImageURL(event, (imageExists) => {
+        // return imageExists
+        if (imageExists === true) {
+          console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
+          this.hasOwnLauncherLogo = true;
+          this.CUSTOM_LAUNCHER_LOGO_EXIST = true;
+          console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - hasOwnLauncherLogo: ', this.hasOwnLauncherLogo);
+          console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - launcherLogo: ', this.customLauncherURL);
+
+
+        } else {
+          console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
+          this.hasOwnLauncherLogo = false;
+          this.CUSTOM_LAUNCHER_LOGO_EXIST = false;
+        }
+      });
+
+    }
+  }
+
+
   // SWITCH BTN ON / OFF
   onLogoOnOff($event) {
     this.DISPLAY_WIDGET_HOME = true;
@@ -2368,9 +2435,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       appearance_save_btn_bottom.blur()
     }
 
+    // Custom launcher btn
+    if (this.customLauncherURL) {
+      this.widgetObj['baloonImage'] = this.customLauncherURL
+    } else { !this.customLauncherURL } {
+      delete this.widgetObj['baloonImage']
+    }
+
     /// LOGO
     if (this.logoUrl && this.LOGO_IS_ON === true) {
-
       // if (this.logoUrl !== 'tiledesklogo') {
       if (this.logoUrl !== 'https://tiledesk.com/tiledesk-logo-white.png') {
         this.hasOwnLogo = true;
@@ -2569,7 +2642,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.LABEL_COMPLETE_FORM = $event;
   }
 
-  onChangeDafultPrechatFormName ($event) {
+  onChangeDafultPrechatFormName($event) {
     // console.log('[WIDGET-SET-UP] - onChangeDafultPrechatFormName ', $event);
     this.LABEL_FIELD_NAME = $event
   }
@@ -2863,7 +2936,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.widgetObj['visualTool'] = true;
         } else if (this.hasBuiltPrechatformWithVisualTool === false) {
           this.widgetObj['visualTool'] = false;
-        } 
+        }
         this.widgetService.updateWidgetProject(this.widgetObj)
       } else {
         this.notify.showWidgetStyleUpdateNotification(this.invalidJSON_ErrorMsg, 4, 'report_problem');
@@ -2987,6 +3060,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_CALLOUT = true;
     this.DISPLAY_WIDGET_CHAT = false;
     this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    this.widget_preview_selected = "0003"
 
     this.logger.log('[WIDGET-SET-UP] - LEFT ALIGNMENT SELECTED ', left_selected);
     this.hasSelectedLeftAlignment = true;
@@ -2994,7 +3068,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     // *** ADD PROPERTY
     this.widgetObj['align'] = 'left'
-    this.widget_preview_selected = "0003"
+
   }
 
   aligmentRightSelected(right_selected: boolean) {
@@ -3002,13 +3076,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_WIDGET_CHAT = false;
     this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    this.widget_preview_selected = "0003"
+
     this.logger.log('[WIDGET-SET-UP] - RIGHT ALIGNMENT SELECTED ', right_selected);
     this.hasSelectedLeftAlignment = false;
     this.hasSelectedRightAlignment = true;
 
     // *** REMOVE PROPERTY
     delete this.widgetObj['align'];
-    this.widget_preview_selected = "0003"
+
   }
 
 

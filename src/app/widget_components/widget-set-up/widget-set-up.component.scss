@@ -1922,15 +1922,16 @@ button.buttonRounded:hover {
   padding-bottom: 3px;
   font-weight: 600 !important;
   letter-spacing: 0.2px;
+  padding-right: 4px;
 }
 
 .widget-settings-control-head-label {
-  font-size: 14px !important;
+  font-size: 15px !important;
   color: #566787 !important;
   text-align: left;
   padding-bottom: 12px;
   font-family: "Poppins";
-  font-weight: 300 !important;
+  font-weight: 500 !important;
 }
 
 .widget-settings-control-head-label-info {
@@ -2727,15 +2728,20 @@ pre {
   resize: vertical;
 }
 
-
 .pro-only-badge {
   background: #3ea9f5;
-  font-size: 11px;
+  font-size: 9px;
   color: #fff;
   border-radius: 3px;
   padding: 3px 6px;
   text-transform: uppercase;
   font-weight: 400;
   position: relative;
-  top: -1px;
+  top: -3px;
+}
+
+#custom-launcher-button-placeholder {
+  width: 60px;
+  height: 60px;
+  margin-right: 6px;
 }
