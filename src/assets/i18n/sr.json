@@ -2089,6 +2089,9 @@
     "WidgetFooterBranding":"Брендирање подножја виџета",
     "UpgradePlanToGetTheFeature": "Надоградите план да бисте добили функцију",
     "ToCustomizeTheWidgetFooterWithYourBrand":"Да бисте прилагодили подножје виџета са својим брендом, промените УРЛ слике у атрибут срц и УРЛ у хреф атрибут (потоњи је адреса на коју ће крајњи корисник бити преусмерен када кликне на лого). Ако не желите да се „POWERED BY“ појави у подножју, уклоните овај низ из тексареа.",
+    "CustomLauncherButton": "Дугме за прилагођено покретање",
+    "LauncherButtonURL": "УРЛ дугмета покретача",
+    "EnterTheURLOfTheLauncherButtonImage":"Унесите УРЛ слике дугмета покретача",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

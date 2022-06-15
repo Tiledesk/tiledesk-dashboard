@@ -2089,6 +2089,9 @@
     "WidgetFooterBranding":"Брендирование нижнего колонтитула виджета",
     "UpgradePlanToGetTheFeature": "Обновите план, чтобы получить эту функцию",
     "ToCustomizeTheWidgetFooterWithYourBrand":"Чтобы настроить нижний колонтитул виджета с вашим брендом, измените URL-адрес изображения на атрибут src, а URL-адрес — на атрибут href (последний — это адрес, на который будет перенаправлен конечный пользователь, когда он нажмет на логотип). Если вы не хотите, чтобы «POWERED BY» отображалось в нижнем колонтитуле, удалите эту строку из texarea.",
+    "CustomLauncherButton": "Кнопка пользовательского запуска",
+    "LauncherButtonURL": "URL кнопки запуска",
+    "EnterTheURLOfTheLauncherButtonImage":"Введите URL-адрес изображения кнопки запуска",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",
