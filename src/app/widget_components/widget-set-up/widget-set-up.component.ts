@@ -327,6 +327,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public onlyOwnerCanManageTheAccountPlanMsg: string;
   public learnMoreAboutDefaultRoles: string;
   public payIsVisible: boolean;
+  public featureIsAvailable:  boolean;
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -355,6 +356,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.getProjectPlan()
     this.getProjectUserRole();
     // this.HAS_SELECT_INSTALL_WITH_CODE = false
     this.getProfileImageStorage();
@@ -391,7 +393,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.listenSidebarIsOpened();
     this.geti118nTranslations();
     this.getBrowserVersion();
-    this.getProjectPlan()
+    
   }
 
   getProjectPlan() {
@@ -412,17 +414,25 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.subscription_is_active = projectProfileData.subscription_is_active;
           this.subscription_end_date = projectProfileData.subscription_end_date;
 
+          if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+            this.featureIsAvailable = false;
+            // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
+          } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true || this.prjct_profile_type === 'free' && this.prjct_trial_expired === false) {
+            this.featureIsAvailable = true;
+            // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
+          }
+
         }
       }, error => {
 
-        this.logger.error('[HOME] - getProjectPlan - ERROR', error);
+        this.logger.error('[WIDGET-SET-UP] - getProjectPlan - ERROR', error);
       }, () => {
-        this.logger.log('[HOME] - getProjectPlan * COMPLETE *')
+        this.logger.log('[WIDGET-SET-UP] - getProjectPlan * COMPLETE *')
       });
   }
 
   goToPricing() {
-    this.logger.log('[ANALYTICS-STATIC] - goToPricing projectId ', this.id_project);
+    this.logger.log('[WIDGET-SET-UP] - goToPricing projectId ', this.id_project);
     if (this.payIsVisible) {
       if (this.USER_ROLE === 'owner') {
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
@@ -687,12 +697,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getAndManageAccordionInstallWidget() {
     var acc = document.getElementsByClassName("accordion-install-widget");
 
-    this.logger.log('[WIDGET-SET-UP] ACCORDION INSTALL WIDGET', acc);
+    // console.log('[WIDGET-SET-UP] ACCORDION INSTALL WIDGET', acc);
 
     var i: number;
     for (i = 0; i < acc.length; i++) {
       this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW - INSTALL WIDGET - QUI ENTRO');
-      this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW - INSTALL WIDGET - acc[i]', acc[i]);
+      // console.log('[WIDGET-SET-UP] ACCORDION ARROW - INSTALL WIDGET - acc[i]', acc[i]);
 
       const self = this;
 
@@ -772,11 +782,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.logger.log('[WIDGET-SET-UP] ACCORDION i', i, 'acc[i]', acc[i]);
       // Open the first accordion https://codepen.io/fpavision/details/xxxONGv
       var firstAccordion = acc[0];
+      // console.log('firstAccordion' , firstAccordion)
       var firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
+      // console.log('firstPanel' , firstPanel)
       // this.logger.log('WIDGET DESIGN ACCORDION FIRST PANEL', firstPanel);
 
-      firstAccordion.classList.add("active");
-      firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
+      setTimeout(() => {
+        firstAccordion.classList.add("active");
+        firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
+      }, 1000);
+    
 
 
       var arrow_icon_div = firstAccordion.children[1];
@@ -790,7 +805,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         self.logger.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
-        self.logger.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
+        // console.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
 
         var arrow_icon_div = this.children[1];
         // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
@@ -1514,7 +1529,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
 
-      console.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
+      // console.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
 
       if (project.widget) {
         this.widgetObj = project.widget;
@@ -1566,7 +1581,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.customLauncherURL = project.widget.baloonImage;
           this.hasOwnLauncherLogo = true;
 
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BALOON IMAGE : ', this.customLauncherURL);
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BALOON IMAGE : ', this.customLauncherURL);
 
         } else {
           // ------------------------------------------------------------------------
@@ -2342,29 +2357,29 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     this.widget_preview_selected = "0003";
 
-  } 
+  }
 
   launcherLogoChange(event) {
-    console.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
+    // console.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
 
     if (event.length === 0) {
-      this.hasOwnLauncherLogo = false;
+      
       this.customLauncherURL = null
-      console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.customLauncherURL  ', this.customLauncherURL);
+      // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.customLauncherURL  ', this.customLauncherURL);
     } else {
 
       this.verifyImageURL(event, (imageExists) => {
         // return imageExists
         if (imageExists === true) {
-          console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
+          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
           this.hasOwnLauncherLogo = true;
           this.CUSTOM_LAUNCHER_LOGO_EXIST = true;
-          console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - hasOwnLauncherLogo: ', this.hasOwnLauncherLogo);
-          console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - launcherLogo: ', this.customLauncherURL);
+          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - hasOwnLauncherLogo: ', this.hasOwnLauncherLogo);
+          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - launcherLogo: ', this.customLauncherURL);
 
 
         } else {
-          console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
+          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
           this.hasOwnLauncherLogo = false;
           this.CUSTOM_LAUNCHER_LOGO_EXIST = false;
         }
@@ -2414,6 +2429,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
   }
 
+  onFocusLogoInput() {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_LAUNCER_BUTTON = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_CALLOUT = false;
+    this.C21_BODY_HOME = true;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    this.widget_preview_selected = "0000"
+  }
+
 
   /**
    * *** ---------------------------- ***
@@ -2434,11 +2459,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     if (appearance_save_btn_bottom) {
       appearance_save_btn_bottom.blur()
     }
-
+    // console.log('saveWidgetAppearance customLauncherURL ', this.customLauncherURL)
     // Custom launcher btn
-    if (this.customLauncherURL) {
+    if (this.hasOwnLauncherLogo === true) {
+      // console.log('saveWidgetAppearance customLauncherURL HERE 1')
       this.widgetObj['baloonImage'] = this.customLauncherURL
-    } else { !this.customLauncherURL } {
+    } else  if (this.hasOwnLauncherLogo === false) {
+      // console.log('saveWidgetAppearance customLauncherURL HERE 2')
       delete this.widgetObj['baloonImage']
     }
 

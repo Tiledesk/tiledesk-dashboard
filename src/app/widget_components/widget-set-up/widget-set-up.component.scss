@@ -595,12 +595,12 @@ input[type="text"]:disabled {
 }
 
 .widget-settings-palette {
-  height: 34px;
-  width: 34px;
+  height: 33px;
+  width: 33px;
   border: 1px solid #eee;
   cursor: pointer;
   float: left;
-  margin-top: 1px;
+  margin-top: 2px;
   margin-left: 1px;
   border-bottom-left-radius: 5px;
   border-top-left-radius: 5px;
@@ -2689,8 +2689,17 @@ pre {
   background-color: #fcf9fe;
   padding-right: 16px;
   border-radius: 3px;
-  padding-top: 16px;
-  padding-bottom: 186px;
+  // padding-top: 16px;
+  // padding-bottom: 186px;
+}
+
+.custom-launcher-feature-not-available {
+  background-color: #fcf9fe;
+  padding-right: 16px;
+  border-radius: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  // height: 202px;
 }
 
 .btn-get-feature-no-boxshadow {
@@ -2744,4 +2753,15 @@ pre {
   width: 60px;
   height: 60px;
   margin-right: 6px;
+}
+
+.section-offset-feature-not-available {
+ height: 658px ;
+}
+.section-offset-feature-available {
+  height: 621px;
+}
+
+.widget-section-container-feature-not-available {
+  max-height:658px !important;
 }

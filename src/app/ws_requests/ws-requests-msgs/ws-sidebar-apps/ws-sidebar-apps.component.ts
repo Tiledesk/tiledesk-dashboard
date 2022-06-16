@@ -148,20 +148,20 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('[WS-SIDEBAR-APPS] request', this.request)
+    // console.log('[WS-SIDEBAR-APPS] request', this.request)
 
-    for (const propName in changes) {
-      console.log('[WS-SIDEBAR-APPS] propName', propName)
-      // if (changes.hasOwnProperty(propName)) {
-      //   switch (propName) {
-      //     case 'myFirstInputParameter': {
-      //       this.doSomething(change.currentValue)
-      //     }
-      //   }
-      // }
-    }
+    // for (const propName in changes) {
+    //   console.log('[WS-SIDEBAR-APPS] propName', propName)
+    //   // if (changes.hasOwnProperty(propName)) {
+    //   //   switch (propName) {
+    //   //     case 'myFirstInputParameter': {
+    //   //       this.doSomething(change.currentValue)
+    //   //     }
+    //   //   }
+    //   // }
+    // }
 
-    console.log('[WS-SIDEBAR-APPS] request changes', changes)
+    // console.log('[WS-SIDEBAR-APPS] request changes', changes)
 
     if (changes.request && changes.request.firstChange === false && changes.request.currentValue && changes.request.previousValue) {
       this.logger.log('[WS-SIDEBAR-APPS] request changes firstChange', changes.request.firstChange)
@@ -229,18 +229,18 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
 
           }
         });
-        console.log("[WS-SIDEBAR-APPS] apps_sidebar_height: ", this.apps_sidebar_height);
-        console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
-        console.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY: ", this.webchatApps);
+        // console.log("[WS-SIDEBAR-APPS] apps_sidebar_height: ", this.apps_sidebar_height);
+        // console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
+        // console.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY: ", this.webchatApps);
 
-        console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY : ", this.dashboardApps);
-        console.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY: ", this.webchatApps);
-        // / this.dashboardApps.length;
+        // console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY : ", this.dashboardApps);
+        // console.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY: ", this.webchatApps);
+       
         if (this.dashboardApps.length > 0) {
-          console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY LENGHT : ", this.dashboardApps.length)
+          // console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY LENGHT : ", this.dashboardApps.length)
           const apps_sidebar_height_number = parseInt(this.apps_sidebar_height, 10)
           this.dashboardIframeHeight = (apps_sidebar_height_number / this.dashboardApps.length);
-          console.log("[WS-SIDEBAR-APPS] DASHBOARD dashboardIframeHeight : ", this.dashboardIframeHeight)
+          // console.log("[WS-SIDEBAR-APPS] DASHBOARD dashboardIframeHeight : ", this.dashboardIframeHeight)
           this.dashboardApps.forEach(app => {
             app['iframeUrl'] = app.runURL + '?request_id=' + this.request['request_id'] + '&project_id=' + this.projectId + '&app_name=' + app.title
             this.logger.log('[WS-SIDEBAR-APPS] apps', this.apps)
@@ -251,8 +251,8 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
         if (this.webchatApps.length > 0) {
           const apps_sidebar_height_number = parseInt(this.apps_sidebar_height, 10)
           this.webchatIframeHeight = (apps_sidebar_height_number / this.webchatApps.length);
-          console.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY LENGHT : ", this.webchatApps.length)
-          console.log("[WS-SIDEBAR-APPS] WEBCHAT webchatIframeHeight : ", this.webchatIframeHeight)
+          // console.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY LENGHT : ", this.webchatApps.length)
+          // console.log("[WS-SIDEBAR-APPS] WEBCHAT webchatIframeHeight : ", this.webchatIframeHeight)
           this.webchatApps.forEach(app => {
             app['iframeUrl'] = app.runURL + '?request_id=' + this.request['request_id'] + '&project_id=' + this.projectId + '&app_name=' + app.title
             this.logger.log('[WS-SIDEBAR-APPS] apps', this.apps)
@@ -350,7 +350,7 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
   enlargeSidebarWide() {
     this.APP_SIDEBAR_WIDE = !this.APP_SIDEBAR_WIDE
     this.usersLocalDbService.storeIsWideAppSidebar(true)
-    console.log('HAS CLICKED ENLARGE SIDEBAR WIDE ', this.APP_SIDEBAR_WIDE)
+    // console.log('HAS CLICKED ENLARGE SIDEBAR WIDE ', this.APP_SIDEBAR_WIDE)
     this.usersLocalDbService.storeIsWideAppSidebar(this.APP_SIDEBAR_WIDE)
     if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === false) {
       const appsRightSideBarEle = <HTMLElement>document.querySelector('.apps-right-side-bar');

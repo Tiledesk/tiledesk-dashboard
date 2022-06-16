@@ -49,6 +49,7 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
 
   @Input() hasOwnLauncherLogo: boolean;
   @Input() customLauncherURL: string;
+  @Input() featureIsAvailable: boolean
 
   public defaultFooter = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>POWERED BY</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>'
 

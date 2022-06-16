@@ -373,11 +373,11 @@
 											keyboard_arrow_down
 										</i>
 									</div>
-
 								</button>
-								<div class="widget-section-container"
+
+								<div id="widget-section-container-zero" class="widget-section-container"
 									style="height: auto; transition-duration: 0.613s;">
-									<div class="section-offset" style="height: 621px;">
+									<div id="section-offset-zero" class="section-offset">
 
 										<!-- ---------------------------------------- -->
 										<!-- Preset colors -->
@@ -690,8 +690,7 @@
 
 												<span class="widget_design__Tooltip">
 													<span>
-														<i class="material-icons"
-															style="font-size: 18px;
+														<i class="material-icons" style="font-size: 18px;
 															color: #566787;
 															cursor: pointer;
 															vertical-align: middle;">
@@ -721,7 +720,6 @@
 
 
 											<label class="col-sm-12 control-label widget-settings-control-label">
-												
 												{{ 'displayLogo' | translate }}
 											</label>
 											<div class="col-sm-12">
@@ -746,7 +744,6 @@
 										<!-- ---------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px;margin-top: 0px;">
-
 											<label
 												class="col-sm-12 control-label widget-settings-control-label padding-top-2">
 												{{ 'YourLogoURL' | translate }}
@@ -754,15 +751,16 @@
 
 											<div class="col-sm-12">
 												<div class="wrapper-logo-link">
-
 													<!-- (blur)="onBlurChangeLogo()"  -->
 													<!-- (ngModelChange)="logoChange($event)"  -->
 													<input class="custom-input" id="change-logo"
-														(ngModelChange)="logoChange($event)" [(ngModel)]="logoUrl"
+														(ngModelChange)="logoChange($event)" 
+														[(ngModel)]="logoUrl"
 														style="font-weight: 400;"
 														[ngClass]="{'image-not-exist-input-border' : IMAGE_EXIST === false, 'input-is-disabled': LOGO_IS_ON === false}"
 														placeholder="{{ 'YourLogoURL' | translate }}"
-														[disabled]="LOGO_IS_ON === false">
+														[disabled]="LOGO_IS_ON === false"
+														(focus)="onFocusLogoInput()">
 
 													<span *ngIf="IMAGE_EXIST === false"
 														style="color:#f44336; display: block;font-size: 12px;">
@@ -803,13 +801,13 @@
 										<!-- Custom launcher -->
 										<!-- ---------------------------------------- -->
 										<div class="form-group"
-											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
-											<label class="col-sm-12 control-label widget-settings-control-head-label">
+											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;"
+											[ngClass]="{'custom-launcher-feature-not-available' : prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true}">
+											<label class="col-xs-6 control-label widget-settings-control-head-label">
 
 												{{'CustomLauncherButton' | translate }}
 												<span>
-													<i class="material-icons"
-														style="font-size: 18px;
+													<i class="material-icons" style="font-size: 18px;
 														color: #566787;
 														cursor: pointer;
 														vertical-align: middle;">
@@ -817,15 +815,31 @@
 													</i>
 												</span>
 
-												<span class="pro-only-badge"> {{'ProOnly' | translate }}
+												<span class="pro-only-badge" style="top:-1px !important"> {{'ProOnly' |
+													translate }}
 												</span>
 											</label>
+											<div class="col-xs-6">
+												<button class="btn btn-get-feature-no-boxshadow pull-right"
+													*ngIf="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true"
+													(click)="goToPricing()"
+													matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}"
+													#tooltip="matTooltip" matTooltipPosition='below'
+													matTooltipHideDelay="100">
+													<span class="material-icons-outlined get-feature-upgrade-plan-icon">
+														upgrade
+													</span>
+													<span>
+														{{ 'Pricing.UpgradePlan' | translate }}
+													</span>
+												</button>
+											</div>
 											<div class="col-sm-12">
 												<div class="wrapper-custom-launcher" style="margin-top: 3px;">
-
 													<div class="row">
 														<div class="col-xs-2">
-															<div *ngIf="hasOwnLauncherLogo === false"
+															<div *ngIf="hasOwnLauncherLogo === false || featureIsAvailable === false"
 																id="custom-launcher-button-placeholder">
 																<!-- ---------------------------------------------- -->
 																<!--  Launcher button placeholder -->
@@ -889,25 +903,26 @@
 															<!-- ---------------------------------------------- -->
 															<!-- Custom launcher button IMG of the end-user -->
 															<!-- ---------------------------------------------- -->
-															<div *ngIf="hasOwnLauncherLogo === true"
+															<div *ngIf="hasOwnLauncherLogo === true && featureIsAvailable === true"
 																id="custom-launcher-button-in-widget-setup">
 																<img alt="custom-launcher-logo"
 																	[src]="customLauncherURL"
 																	style="height: 60px; width: 60">
 															</div>
 														</div>
-														
+
 														<div class="col-xs-10">
 															<div class="row">
 																<div class="col-xs-12">
-																	<label class="control-label widget-settings-control-label">
+																	<label
+																		class="control-label widget-settings-control-label">
 																		{{'LauncherButtonURL' | translate}}
 																	</label>
 																</div>
 																<div class="col-xs-12">
-																<!-- ------------------------------------------------------ -->
-																<!-- Input to enter the URL of the custom launcher button -->
-																<!-- ------------------------------------------------------ -->
+																	<!-- ------------------------------------------------------ -->
+																	<!-- Input to enter the URL of the custom launcher button -->
+																	<!-- ------------------------------------------------------ -->
 																	<input class="custom-input"
 																		id="change-launcher-logo"
 																		(focus)="onFocuCustomLauncherURLInput()"
@@ -915,7 +930,8 @@
 																		[(ngModel)]="customLauncherURL"
 																		style="font-weight: 400;max-width: 100% !important;"
 																		[ngClass]="{'image-not-exist-input-border' : CUSTOM_LAUNCHER_LOGO_EXIST === false}"
-																		placeholder="{{ 'EnterTheURLOfTheLauncherButtonImage' | translate }}">
+																		placeholder="{{ 'EnterTheURLOfTheLauncherButtonImage' | translate }}"
+																		[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">
 
 
 																	<span *ngIf="IMAGE_EXIST === false"
@@ -923,6 +939,7 @@
 																		{{ "LogoImageNotFound" | translate}}
 																	</span>
 																</div>
+
 															</div>
 														</div>
 													</div>
@@ -987,11 +1004,8 @@
 										<!-- -------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
-											<label class="col-sm-12 control-label widget-settings-control-label">
-
+											<label class="col-xs-6 control-label widget-settings-control-label">
 												{{ "WidgetFooterBranding" | translate}}
-
-
 												<span style="cursor: pointer;"
 													matTooltipClass="custom-mat-tooltip-in-widget-setup"
 													matTooltip=" {{'ToCustomizeTheWidgetFooterWithYourBrand' | translate}}"
@@ -1002,9 +1016,24 @@
 														help_outline
 													</i>
 												</span>
-
-
 											</label>
+
+											<div class="col-xs-6">
+												<button class="btn btn-get-feature-no-boxshadow pull-right"
+													*ngIf="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true"
+													(click)="goToPricing()"
+													matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}"
+													#tooltip="matTooltip" matTooltipPosition='below'
+													matTooltipHideDelay="100">
+													<span class="material-icons-outlined get-feature-upgrade-plan-icon">
+														upgrade
+													</span>
+													<span>
+														{{ 'Pricing.UpgradePlan' | translate }}
+													</span>
+												</button>
+											</div>
 
 											<div class="col-sm-12">
 												<textarea (focus)="onFocusFooterBranding()" [(ngModel)]="footerBrand"
@@ -1033,20 +1062,7 @@
 													{{ 'UpdateWidget' | translate }}
 												</button>
 
-												<button class="btn btn-get-feature-no-boxshadow pull-right"
-													*ngIf="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true"
-													(click)="goToPricing()"
-													matTooltipClass="custom-mat-tooltip-in-widget-setup"
-													matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}"
-													#tooltip="matTooltip" matTooltipPosition='below'
-													matTooltipHideDelay="100">
-													<span class="material-icons-outlined get-feature-upgrade-plan-icon">
-														upgrade
-													</span>
-													<span>
-														{{ 'Pricing.UpgradePlan' | translate }}
-													</span>
-												</button>
+
 											</div>
 										</div>
 									</div> <!-- ./	section-offset -->
@@ -2369,21 +2385,20 @@
 											[subscription_is_active]="subscription_is_active"
 											[prjct_trial_expired]="prjct_trial_expired"
 											[hasOwnLauncherLogo]="hasOwnLauncherLogo"
-											[customLauncherURL]="customLauncherURL">
+											[customLauncherURL]="customLauncherURL"
+											[featureIsAvailable]="featureIsAvailable">
 										</appdashboard-widget-home>
 
 
 										<appdashboard-widget-callout *ngIf="DISPLAY_CALLOUT"
-											[newInnerWidth]="newInnerWidth" 
-											[callout_emoticon]="callout_emoticon"
-											[calloutTitleForPreview]="calloutTitleForPreview" 
-											[calloutMsg]="calloutMsg"
-											[primaryColor]="primaryColor" 
-											[secondaryColor]="secondaryColor"
+											[newInnerWidth]="newInnerWidth" [callout_emoticon]="callout_emoticon"
+											[calloutTitleForPreview]="calloutTitleForPreview" [calloutMsg]="calloutMsg"
+											[primaryColor]="primaryColor" [secondaryColor]="secondaryColor"
 											[hasSelectedRightAlignment]="hasSelectedRightAlignment"
 											[hasSelectedLeftAlignment]="hasSelectedLeftAlignment"
 											[hasOwnLauncherLogo]="hasOwnLauncherLogo"
-											[customLauncherURL]="customLauncherURL">
+											[customLauncherURL]="customLauncherURL"
+											[featureIsAvailable]="featureIsAvailable">
 										</appdashboard-widget-callout>
 
 
