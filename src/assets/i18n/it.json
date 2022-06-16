@@ -2090,5 +2090,6 @@
     "ToCustomizeTheWidgetFooterWithYourBrand":"Per personalizzare il footer del widget con il tuo brand cambia l'URL dell'immagine all'attributo src e l'URL all'attributo href (quest'ultimo è l'indirizzo a cui sarà rendirizzato l'utente finale quando clicca sul logo) . Se vuoi che non compaia 'POWERED BY' nel footer rimuovi questa stringa dalla texarea.",
     "CustomLauncherButton": "Bouton lanceur personnalisé",
     "LauncherButtonURL": "URL del pulsante di avvio",
-    "EnterTheURLOfTheLauncherButtonImage":"Inserisci l'URL dell'immagine del pulsante di avvio"
+    "EnterTheURLOfTheLauncherButtonImage":"Inserisci l'URL dell'immagine del pulsante di avvio",
+    "CustomizeTheWidgetLaunchButtonWithYourLogo":"Personalizza il pulsante di avvio del widget con il tuo logo. Il formato dell'immagine del logo può essere in formato PNG, JPG o SVG. Le immagini (60x60px) con sfondi trasparenti funzionano meglio"
 }
