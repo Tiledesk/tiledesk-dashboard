@@ -806,7 +806,10 @@
 											<label class="col-xs-6 control-label widget-settings-control-head-label">
 
 												{{'CustomLauncherButton' | translate }}
-												<span>
+											<span matTooltipClass="custom-mat-tooltip-in-widget-setup"
+												matTooltip=" {{'CustomizeTheWidgetLaunchButtonWithYourLogo' | translate}}"
+												#tooltip="matTooltip" matTooltipPosition='below'
+												matTooltipHideDelay="100">
 													<i class="material-icons" style="font-size: 18px;
 														color: #566787;
 														cursor: pointer;
