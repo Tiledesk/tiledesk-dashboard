@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.2.37-rc4
-- Adds the ability in Settings> Widget to change the default widget launch button
+- Adds the ability in Settings > Widget to change the default widget launch button
 
 ### 2.2.37-rc3
 - Adds the "Pro Only" badge to the Departments section available in Settings > Routing and Depts
