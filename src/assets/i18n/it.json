@@ -2091,5 +2091,6 @@
     "CustomLauncherButton": "Bouton lanceur personnalisé",
     "LauncherButtonURL": "URL del pulsante di avvio",
     "EnterTheURLOfTheLauncherButtonImage":"Inserisci l'URL dell'immagine del pulsante di avvio",
-    "CustomizeTheWidgetLaunchButtonWithYourLogo":"Personalizza il pulsante di avvio del widget con il tuo logo. Il formato dell'immagine del logo può essere in formato PNG, JPG o SVG. Le immagini (60x60px) con sfondi trasparenti funzionano meglio"
+    "CustomizeTheWidgetLaunchButtonWithYourLogo":"Personalizza il pulsante di avvio del widget con il tuo logo. Il formato dell'immagine del logo può essere in formato PNG, JPG o SVG. Le immagini (60x60px) con sfondi trasparenti funzionano meglio",
+    "ConnectYourRASAServer":"Collega il tuo server RASA"
 }

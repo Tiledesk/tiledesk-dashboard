@@ -2093,6 +2093,7 @@
     "LauncherButtonURL": "URL кнопки запуска",
     "EnterTheURLOfTheLauncherButtonImage":"Введите URL-адрес изображения кнопки запуска",
     "CustomizeTheWidgetLaunchButtonWithYourLogo":"Настройте кнопку запуска виджета с вашим логотипом. Формат изображения логотипа может быть в формате PNG, JPG или SVG. Лучше всего подходят изображения (60x60px) с прозрачным фоном.",
+    "ConnectYourRASAServer":"Подключите свой сервер RASA",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

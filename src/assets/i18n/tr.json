@@ -2093,6 +2093,7 @@
     "LauncherButtonURL": "Başlatıcı Düğmesi URL'si",
     "EnterTheURLOfTheLauncherButtonImage":"Başlatıcı düğmesi görüntüsünün URL'sini girin",
     "CustomizeTheWidgetLaunchButtonWithYourLogo":"Widget başlatma düğmesini logonuzla özelleştirin. Logo resim formatı PNG, JPG veya SVG formatında olabilir. Saydam arka plana sahip resimler (60x60 piksel) en iyi sonucu verir",
+    "ConnectYourRASAServer":"RASA sunucunuzu bağlayın",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

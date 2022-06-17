@@ -2093,6 +2093,7 @@
     "LauncherButtonURL": "УРЛ дугмета покретача",
     "EnterTheURLOfTheLauncherButtonImage":"Унесите УРЛ слике дугмета покретача",
     "CustomizeTheWidgetLaunchButtonWithYourLogo":"Прилагодите дугме за покретање виџета својим логотипом. Формат слике логотипа може бити у ПНГ, ЈПГ или СВГ формату. Најбоље функционишу слике (60к60пк) са провидном позадином",
+    "ConnectYourRASAServer":"Повежите свој RASA сервер",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

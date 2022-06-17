@@ -2093,6 +2093,7 @@
     "LauncherButtonURL": "URL do botão do iniciador",
     "EnterTheURLOfTheLauncherButtonImage":"Digite o URL da imagem do botão do iniciador",
     "CustomizeTheWidgetLaunchButtonWithYourLogo":"Personalize o botão de inicialização do widget com seu logotipo. O formato da imagem do logotipo pode estar no formato PNG, JPG ou SVG. Imagens (60x60px) com fundos transparentes funcionam melhor",
+    "ConnectYourRASAServer":"Conecte seu servidor RASA",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",
