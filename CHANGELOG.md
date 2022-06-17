@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.37-rc5
+- Adds the ability to create RASA type bots
+
 ### 2.2.37-rc4
 - Adds the ability in Settings > Widget to change the default widget launch button
 
