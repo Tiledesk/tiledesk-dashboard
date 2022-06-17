@@ -227,11 +227,13 @@ import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { OnlynumberDirective } from './_directives/onlynumber.directive';
 import { NativeBotSidebarComponent } from './bots/native-bot-sidebar/native-bot-sidebar.component';
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
+import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
 import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 import { CutomTooltipOptions } from './utils/util';
 import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component';
+
 
 
 // console.log('************** APPMODULE ******************');
@@ -433,7 +435,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     NativeBotSelectTypeComponent,
     EmailTicketingComponent,
     WsSidebarAppsComponent,
-    AppCreateComponent
+    AppCreateComponent,
+    RasaBotComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

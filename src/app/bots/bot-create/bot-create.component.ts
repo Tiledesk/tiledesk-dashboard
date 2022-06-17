@@ -159,11 +159,11 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   } 
+  }
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
     this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
@@ -177,8 +177,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   onSelectBotId() {
     this.logger.log('[BOT-CREATE] --->  onSelectBotId ', this.selected_bot_id);
     this.dept_id = this.selected_bot_id
-
-
     const hasFound = this.depts_without_bot_array.filter((obj: any) => {
       return obj.id === this.selected_bot_id;
     });
@@ -295,26 +293,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       });
   }
 
-
-  // getFaqKbId() {
-  //   this.id_faq_kb = this.route.snapshot.params['faqkbid'];
-  //   this.logger.log('FAQ KB HAS PASSED id_faq_kb ', this.id_faq_kb);
-  // }
-
-  // /**
-  //  * GET FAQ-KB BY ID
-  //  */
-  // getFaqKbById() {
-  //   this.faqKbService.getFaqKbById(this.id_faq_kb).subscribe((faqKb: any) => {
-  //     this.logger.log('MONGO DB FAQ-KB GET BY ID', faqKb);
-  //     this.faqKbNameToUpdate = faqKb.name;
-  //     this.faqKbUrlToUpdate = faqKb.url;
-  //     this.logger.log('MONGO DB FAQ-KB NAME', this.faqKbNameToUpdate);
-
-  //     this.showSpinner = false;
-  //   });
-  // }
-
   detectBrowserLang() {
     this.browser_lang = this.translate.getBrowserLang();
     this.logger.log('[BOT-CREATE - BROWSER LANGUAGE ', this.browser_lang);
@@ -322,7 +300,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      this.project = project
+      if (project) {
+        this.project = project
+      }
       // this.logger.log('[BOT-CREATE 00 -> FAQ-KB EDIT ADD COMP project ID from AUTH service subscription  ', this.project._id)
     });
   }

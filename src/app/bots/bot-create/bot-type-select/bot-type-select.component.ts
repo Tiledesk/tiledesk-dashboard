@@ -124,6 +124,10 @@ export class BotTypeSelectComponent implements OnInit {
    }
   }
 
+  goToCreateRasaBot() {
+    this.router.navigate(['project/' + this.projectId + '/bot/rasa/create']);
+  }
+
   goBack() {
     this.location.back();
   }

@@ -114,6 +114,7 @@ import { MessagesComponent } from './analytics2/metriche/messages/messages.compo
 import { RichiesteComponent } from './analytics2/metriche/richieste/richieste.component';
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
+import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
 import { AppCreateComponent } from './app-store/app-create/app-create.component';
 
@@ -245,6 +246,9 @@ const routes: Routes = [
   // { path: 'project/:projectid/bots/createfaqkb', component: BotCreateComponent, canActivate: [AuthGuard] }, // replaced by the bottom path
   { path: 'project/:projectid/bots/create/:type', component: BotCreateComponent, canActivate: [AuthGuard] },
 
+   // rasa bot
+   { path: 'project/:projectid/bot/rasa/create', component: RasaBotComponent, canActivate: [AuthGuard] },
+
   // native bot (to create these is required to pass the template )
   { path: 'project/:projectid/bots/create/:type/:template', component: BotCreateComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editfaqkb/:faqkbid', component: BotCreateComponent, canActivate: [AuthGuard] },
@@ -261,6 +265,7 @@ const routes: Routes = [
   { path: 'project/:projectid/bots/fulfillment/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] },  
   { path: 'project/:projectid/bots/prebuilt', component: NativeBotSelectTypeComponent, canActivate: [AuthGuard] },  
 
+ 
 
   { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
 

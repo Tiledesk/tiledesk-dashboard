@@ -167,6 +167,18 @@
               </div>
 
               <!-- ------------------------------------------------------------------------------------------- -->
+              <!-- Server URL (for RASA) -->
+              <!-- ------------------------------------------------------------------------------------------- -->
+              <div *ngIf="botType === 'rasa'" class="row" style="margin-bottom: 8px;">
+                <label class="col-sm-2 custom-label">
+                 RASA Webhook
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                  <input id="rasa_server_URL" name="faqKb_name" [(ngModel)]="rasaServerURL" class="input" type="text">
+                </div>
+              </div>
+
+              <!-- ------------------------------------------------------------------------------------------- -->
               <!-- Bot language (only for native, i.e. Resolution bot) -->
               <!-- ------------------------------------------------------------------------------------------- -->
               <div *ngIf="botType === 'native'" class="row" style="margin-bottom: 8px;">

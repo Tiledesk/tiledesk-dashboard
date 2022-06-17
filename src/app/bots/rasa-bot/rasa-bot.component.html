@@ -1,0 +1,455 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
+    keyboard_arrow_left
+  </i>
+  {{ "BotsAddEditPage.AddBot" | translate }}
+</div>
+
+
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+
+
+        <!-- ------------------------------------------------------ -->
+        <!-- Link to documentation / tutorial -->
+        <!-- ------------------------------------------------------ -->
+    <div class="row" style="margin-right: -30px; margin-left: -30px;">
+      <div class="col-xs-12"
+        style="background-color: rgb(241,241,241);margin-top: -15px;	padding: 20px 20px 10px 36px;">
+        <div style="font-size: 14px;font-weight: 400;margin-bottom: 6px;line-height: 20px;">
+          <span>
+            <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+              data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+              <path fill="#0f62ff"
+                d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
+              </path>
+            </svg>
+          </span>
+
+          <span class="link-to-doc-in-header" (click)="openExternalBotIntegrationTutorial()">
+            <!-- {{ "ConnectYourExternalChatbotsTo" | translate: tparams }} -->
+            Learn how this works
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card card--no-border" style="margin-top: 0px; padding-bottom:25px">
+          <div class="card-content">
+
+            <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+            <div class="row">
+              <!-- <label class="col-sm-2 custom-label"> </label> -->
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3 class="card_title__underlined">
+                      <span class="card_title__underline">
+                        <span>
+                          {{ 'ConnectYourRASAServer' | translate }}
+                        </span>
+                      </span>
+                    </h3>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="create-bot-section-subtitle"> </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- ------------------------------------------------------ -->
+            <!-- Bot name - common for native, external and identity -->
+            <!-- ------------------------------------------------------ -->
+            <div class="row" style="margin-top: 18px;">
+              <label class="col-sm-2 custom-label">
+
+                {{ "BotsAddEditPage.BotName" | translate }}
+              </label>
+              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+
+                <input  [(ngModel)]="faqKbName" class="input" type="text"
+                  placeholder='{{ "BotsAddEditPage.BotName" | translate }}'>
+              </div>
+            </div>
+
+
+
+            <!-- ------------------------------------------------------ -->
+            <!-- RASA Webhook URL -->
+            <!-- ------------------------------------------------------ -->
+            <div class="row" style="margin-top: 8px;">
+              <label class="col-sm-2 custom-label">RASA Webhook URL</label>
+              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <input [(ngModel)]="rasaServerUrl" class="input" type="text" 
+                  placeholder="e.g. http://54.78.99.65/webhooks/rest/webhook">
+                   
+              </div>
+            </div>
+
+
+
+            <!-- ------------------------------------------------------  -->
+            <!--Description -->
+            <!-- ------------------------------------------------------ -->
+            <div class="row" style="margin-top: 4px;">
+              <label class="col-sm-2 custom-label">
+
+                {{ "Description" | translate }}
+              </label>
+              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <textarea [(ngModel)]="rasaBotDescription" placeholder="{{ 'Description' | translate }}" class="input"
+                  type="text" rows="3" style="margin-bottom: 0px;"></textarea>
+              </div>
+            </div>
+
+
+
+
+            <div class="row">
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:10px"></div>
+              <!-- [disabled]="btn_create_bot_is_disabled" -->
+              <div class="col-sm-2"></div>
+              <div class="col-sm-10">
+                <button id="create-rasa-bot-btn" class="btn btn-primary" (click)="createRasaBot()">
+                  {{ "BotsAddEditPage.CreateBot" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ----------------------------------------------- -->
+      <!-- RIGHT SIDEBAR -->
+      <!-- ----------------------------------------------- -->
+      <div class="col-md-4">
+        <!-- padding-top:25px; padding-bottom:25px -->
+        <div class="card card--no-border" style="margin-top:0px">
+          <div class="card-content">
+
+
+
+            <!-- ------------------------------------------------- -->
+            <!-- RIGHT SIDEBAR   -->
+            <!-- ------------------------------------------------- -->
+            <section>
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "ConnectYourExternalChatbotsTo" | translate: tparams }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <p style="color:#7695a5">
+                {{ "BotsPage.ExternabotQuickTips" | translate: tparams }}
+                <span class="link-in-right-sidebar" (click)="openExternalBotIntegrationTutorial()">
+
+                  {{ "HereThe_Tutorial" | translate }}
+
+                </span>
+              </p>
+            </section>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- MODAL - INFO WINDOWS -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayInfoModal }"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+   
+    <div class="modal-content">
+
+      <div class="modal-header custom--modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()"
+          style="position: absolute; right: 14px; top: 20px;">
+          <span aria-hidden="true">
+            
+            <svg class="tide-icon" width="24" height="24" viewBox="0 0 24 24">
+              <path
+                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+              </path>
+            </svg>
+          </span>
+        </button>
+
+        <h2 class="modal-title custom__modal__title">
+          <span style="vertical-align: middle;">
+            {{ "BotsAddEditPage.CreateBot" | translate }}
+          </span>
+        </h2>
+      </div>
+
+      <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px">
+
+      <div class="modal-body"
+        style="padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px; line-height: 1;min-height: 161px;">
+  
+        <div style="text-align: center">
+
+          <div *ngIf="SHOW_CIRCULAR_SPINNER" style="min-height: 171px;">
+            <div class="stretchspinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>
+          </div>
+
+          <!-- ---------------------------------------- -->
+          <!-- WHEN NO ERROR OCCUR  -->
+          <!-- ---------------------------------------- -->
+          <div *ngIf="!CREATE_BOT_ERROR && !SHOW_CIRCULAR_SPINNER">
+       
+            <div class="success-checkmark">
+              <div class="check-icon">
+                <span class="success-icon-line success-line-tip"></span>
+                <span class="success-icon-line success-line-long"></span>
+                <div class="success-icon-circle"></div>
+                <div class="success-icon-fix"></div>
+              </div>
+            </div>
+
+            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;">
+              {{ "BotsAddEditPage.Completed" | translate }}
+            </h3>
+          </div>
+
+          <!-- ---------------------------------------- -->
+          <!-- ERROR -->
+          <!-- ---------------------------------------- -->
+          <div *ngIf="CREATE_BOT_ERROR && !SHOW_CIRCULAR_SPINNER">
+            <!-- ------------------------------------------------------ -->
+            <!-- New error animate icon -->
+            <!-- ------------------------------------------------------ -->
+            <div class="swal2-icon swal2-error swal2-animate-error-icon" style="display: flex;">
+              <span class="swal2-x-mark">
+                <span class="swal2-x-mark-line-left"></span>
+                <span class="swal2-x-mark-line-right">
+                </span>
+              </span>
+            </div>
+
+            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;">
+              {{ "BotsAddEditPage.AnErrorHasOccurred" | translate }}
+
+              <span *ngIf="DIALOGFLOW_BOT_ERROR_MSG === 'Not a valid JSON file.'"
+                style="font-size: 16px;display: block;color: #f27474;">
+                {{ DIALOGFLOW_BOT_ERROR_MSG | translate}}
+              </span>
+            </h3>
+          </div>
+        </div>
+      </div> <!-- ./ modal-body -->
+
+      <div class="modal-footer modal-footer-no-bkgrnd">
+        <button *ngIf="CREATE_BOT_ERROR === false" class="btn btn-primary"
+          (click)="goTo_EditBot()" style="margin-right: 8px;">
+          <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
+        </button>
+
+        <button *ngIf="CREATE_BOT_ERROR === true" class="btn btn-primary"
+          (click)="onCloseModal()" style="margin-right: 8px;">
+          <span> {{ "Close" | translate }} </span>
+        </button>
+
+        <button *ngIf="SHOW_CIRCULAR_SPINNER" class="btn btn-primary" style="margin-right: 8px;">
+          <i class="fa fa-spinner fa-spin"></i>
+          {{'Processing' | translate}}
+        </button>
+      </div>
+
+    </div> <!-- /.modal-content -->
+  </div> <!-- /.modal-dialog -->
+</div> <!-- /.modal -->
+
+<!-- MODAL - ATTACH_BOT_TO_DEPT -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalAttacchBotToDept }"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header custom--modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModalAttacchBotToDept()"
+          style="position: absolute; right: 14px;top: 20px;">
+          <span aria-hidden="true">
+            <!-- &times; -->
+            <svg class="tide-icon" width="24" height="24" viewBox="0 0 24 24">
+              <path
+                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+              </path>
+            </svg>
+          </span>
+        </button>
+
+        <h2 class="modal-title custom__modal__title">
+          <span style="vertical-align: middle;">
+            {{ "HookTheBot" | translate }}
+          </span>
+        </h2>
+      </div>
+
+      <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px">
+      <!-- padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px;  -->
+      <div class="modal-body"
+        [ngClass]="{'modal-body-no-padding-top': DISPLAY_SELECT_DEPTS_WITHOUT_BOT && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false}"
+        style="line-height: 1 !important;height: 161px!important;text-align: center!important; margin: auto!important;">
+
+        <span *ngIf="!DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
+          <h4 *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false" style="padding-left: 12px; padding-right: 12px;"
+            [innerHTML]="'DoYouWantToActivateTheBotForNewConversations' | translate: translateparamBotName "> </h4>
+          <!-- <h3> {{ 'DoYouWantToActivateTheBotForNewVonversations' | translate: translateparamBotName }} </h3> -->
+        </span>
+
+        <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
+          <h4 *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+            [innerHTML]="'DoYouWantToActivateBotForOneOfTheFollowingDepts' | translate: translateparamBotName "> </h4>
+        </span>
+
+        <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT" style="text-align: left;">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="select-dept-without-bot-wpr" *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+                style="padding-right: 26px; padding-left: 26px;">
+                <ng-select [items]="depts_without_bot_array" bindValue="id" bindLabel="name"
+                  placeholder="{{'SelectDepartment'|translate}}" [(ngModel)]="selected_bot_id"
+                  (change)="onSelectBotId()">
+                </ng-select>
+              </div>
+            </div>
+            <!-- <div class="col-xs-4">
+              <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === false" class="btn btn-tdblu-no-boxshadow"
+                (click)="hookBotToDept()" [disabled]="DISPLAY_SELECT_DEPTS_WITHOUT_BOT && !selected_bot_id">
+                <span> {{ "ActivateBot" | translate }} </span>
+              </button>
+
+            </div> -->
+          </div>
+        </span>
+
+
+        <!-- [ngClass]="{'stretchspinner-more-top': DISPLAY_SELECT_DEPTS_WITHOUT_BOT }" -->
+        <!-- <div *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false">
+          <div class="stretchspinner" style="top: 50px;">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+        </div> -->
+
+        <div *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === true">
+
+          <span *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS">
+
+            <svg style="width: 55px;" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+              <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1"
+                cy="65.1" r="62.1" />
+              <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round"
+                stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
+            </svg>
+            <h5 style="color:#73AF55;"> {{'BotSuccessfullyActivated' | translate }}</h5>
+
+          </span>
+          <span *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR">
+
+            <svg style="width: 55px;" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+              <circle class="path circle" fill="none" stroke="#D06079" stroke-width="6" stroke-miterlimit="10" cx="65.1"
+                cy="65.1" r="62.1" />
+              <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round"
+                stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+              <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round"
+                stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2" />
+            </svg>
+
+
+            <h5 style="color:#D06079;"> {{'AnErroOccurredWhileActivatingTheBot' | translate }}</h5>
+          </span>
+
+        </div>
+        <!-- <span (click)="hookBotToDept()"> {{'ActivateBotsForNewConversations' | translate}}</span> -->
+
+      </div> <!-- /.modal-body -->
+
+      <div class="modal-footer modal-footer-no-bkgrnd">
+
+        <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
+          <button *ngIf="!selected_bot_id && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+            class="btn btn-gray-no-boxshadow" (click)="goTo_EditBot()" style="margin-right:8px">
+            <span> {{ 'Ignore' | translate}} </span>
+          </button>
+
+          <button *ngIf="selected_bot_id &&  HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+            class="btn btn-tdblu-no-boxshadow" (click)="hookBotToDept()" style="margin-right:8px">
+            <i *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+              class="fa fa-spinner fa-spin"></i>
+            <span> {{ 'ActivateFor' | translate}} {{selected_bot_name}} </span>
+          </button>
+
+          <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === true"
+            class="btn btn-tdblu-no-boxshadow" (click)="goTo_EditBot()" style="margin-right: 8px;">
+            <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
+          </button>
+
+        </span>
+
+        <span *ngIf="!DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
+
+          <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === false && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+            class="btn btn-gray-no-boxshadow" (click)="goTo_EditBot()" style="margin-right:8px">
+            <span> {{ 'Ignore' | translate}} </span>
+          </button>
+
+          <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === false && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+            class="btn btn-tdblu-no-boxshadow" (click)="hookBotToDept()" style="margin-right:8px">
+            <span> {{ 'ActivateBot' | translate}} </span>
+          </button>
+
+          <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+            class="btn btn-tdblu-no-boxshadow" style="margin-right: 8px;">
+            <i class="fa fa-spinner fa-spin"></i>
+            {{'Processing' | translate}}
+          </button>
+
+          <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === true"
+            class="btn btn-tdblu-no-boxshadow" (click)="goTo_EditBot()" style="margin-right: 8px;">
+            <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
+          </button>
+
+
+        </span>
+
+      </div>
+
+
+
+    </div> <!-- /.modal-content -->
+
+
+
+  </div> <!-- /.modal-dialog -->
+</div> <!-- /.modal -->

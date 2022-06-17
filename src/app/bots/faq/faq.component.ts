@@ -76,6 +76,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   faqKb_name: string;
   faqKbUrlToUpdate: string;
+  rasaServerURL: string;
+  rasaBotServerURL: string;
   faqKb_id: string;
   faqKb_created_at: any;
   faqKb_description: string;
@@ -178,7 +180,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   paginated_answers_count: number;
 
   @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
-  isChromeVerGreaterThan100:boolean;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private faqService: FaqService,
     private router: Router,
@@ -237,11 +239,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
     this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
@@ -289,7 +291,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   getParamsBotType() {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
-
+      // console.log('getParamsBotType params', params) 
       if (this.botType && this.botType === 'external') {
         this.botTypeForInput = 'External'
         this.is_external_bot = true
@@ -304,6 +306,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
       if (this.botType && this.botType === 'native') {
         this.botTypeForInput = 'Resolution'
+      }
+
+
+      if (this.botType && this.botType === 'rasa') {
+        this.botTypeForInput = 'RASA'
       }
 
       this.logger.log('[FAQ-COMP] --->  PARAMS', params);
@@ -971,7 +978,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.showSpinnerInUpdateBotCard = true
     // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
     this.faqKbService.getFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
-      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
       this.faq_kb_remoteKey = faqkb.kbkey_remote
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
@@ -995,6 +1002,10 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - webhookUrl ', this.webhookUrl);
 
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - LANGUAGE ', faqkb.language);
+
+      if (faqkb.type === 'rasa') {
+        this.rasaServerURL = faqkb.url
+      }
 
       // for the comnobobox "select bot language" -now not used because the user cannot change the language of the bot he chose during creation
       // this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)]
@@ -1310,7 +1321,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.showSpinner = true;
     this.faqService.getPaginatedFaqByFaqKbId(this.id_faq_kb, this.pageNo, this.faqPerPageLimit, this.queryString).subscribe((faq: any) => {
       this.logger.log('[FAQ-COMP] - GET Paginated FAQS', faq);
-      
+
 
       if (faq) {
         this.faq = faq;
@@ -1350,7 +1361,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     });
   }
 
-// -----------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------
   // GET ALL serched faq
   // -----------------------------------------------------------------------------------------
   getAllSearcedFaq() {
@@ -1367,17 +1378,17 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
           this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
         }
         // this.faq_lenght = faq.length
-   
+
       }
     }, (error) => {
-    
+
       this.logger.error('[FAQ-COMP] >> GET ALL SEARCHED FAQS - ERROR', error);
     }, () => {
-   
+
       this.logger.log('[FAQ-COMP] >> GET ALL SEARCHED FAQS - COMPLETE');
     });
 
-  } 
+  }
 
 
 

@@ -14,6 +14,7 @@ export class FaqKbService {
   http: Http;
   SERVER_BASE_PATH: string;
   DLGFLW_BOT_CREDENTIAL_BASE_URL: string;
+  RASA_BOT_CREDENTIAL_BASE_URL: string;
   FAQKB_URL: any;
   TOKEN: string;
   user: any;
@@ -68,6 +69,7 @@ export class FaqKbService {
 
 
         this.DLGFLW_BOT_CREDENTIAL_BASE_URL = this.appConfigService.getConfig().botcredendialsURL + this.project._id + '/bots/';
+        this.RASA_BOT_CREDENTIAL_BASE_URL = this.appConfigService.getConfig().rasaBotCredentialsURL + this.project._id + '/bots/'
       }
     });
   }
@@ -189,7 +191,58 @@ export class FaqKbService {
       .get(url, { headers })
       .map((response) => response.json());
   }
-  
+
+
+  public createRasaBot(name: string, bottype: string, rasaServerUrl: string, description: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const url = this.FAQKB_URL;
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
+
+    // const isPreDeploy = false
+
+    const body = { 'name': name, 'type': bottype, 'url': rasaServerUrl, 'description': description, 'id_project': this.project._id, };
+
+
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
+    // let url = `http://localhost:3000/${project_id}/faq_kb/`;
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
+
+
+  public connectBotToRasaServer(botid: string, serverurl: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const url = this.RASA_BOT_CREDENTIAL_BASE_URL + botid;
+    console.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
+
+    // const isPreDeploy = false
+
+    const body = { 'serverUrl': serverurl };
+
+
+    console.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - BODY ', body);
+    // let url = `http://localhost:3000/${project_id}/faq_kb/`;
+    console.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
 
   /**
    * CREATE BOT external or dialogflow (POST)
@@ -217,11 +270,11 @@ export class FaqKbService {
       body['language'] = resbotlanguage
       body['template'] = resbottemplate
     }
-  
+
     this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 
 
-   
+
     // let url = `http://localhost:3000/${project_id}/faq_kb/`;
     this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
@@ -396,8 +449,8 @@ export class FaqKbService {
   }
 
   getNumberOfMessages(idBot, bottype) {
-    this.logger.log('[FAQ-KB.SERV] - getNumberOfMessages idBot ', idBot) 
-    this.logger.log('[FAQ-KB.SERV] - getNumberOfMessages bottype', bottype) 
+    this.logger.log('[FAQ-KB.SERV] - getNumberOfMessages idBot ', idBot)
+    this.logger.log('[FAQ-KB.SERV] - getNumberOfMessages bottype', bottype)
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN

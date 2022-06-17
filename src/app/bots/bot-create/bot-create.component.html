@@ -1,5 +1,6 @@
 <!-- margin-top:6px;  -->
-<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
     keyboard_arrow_left
   </i>
@@ -9,6 +10,9 @@
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
+    <!-- ------------------------------------------------------ -->
+    <!-- Link to documentation / tutorial -->
+    <!-- ------------------------------------------------------ -->
     <div class="row" style="margin-right: -30px; margin-left: -30px;" *ngIf="botType !== 'identity'">
       <div class="col-xs-12"
         style="background-color: rgb(241,241,241);margin-top: -15px;	padding: 20px 20px 10px 36px;">
@@ -269,7 +273,7 @@
                 </div>
               </div>
 
-               
+
               <!-- --------------------------------------------------------- -->
               <!-- Bot - select Dialogflow bot language -->
               <!-- --------------------------------------------------------- -->
@@ -286,7 +290,7 @@
                 </div>
               </div>
 
-               
+
               <!-- --------------------------------------------------------- -->
               <!-- Dialogflow knowledge base ID -->
               <!-- --------------------------------------------------------- -->
@@ -336,8 +340,8 @@
               <div class="col-sm-10"
                 [ngClass]="{'col-sm-10' : botType !== 'dialogflow', 'col-sm-12' : botType === 'dialogflow'}">
 
-                <button id="create-bot-btn" [ngStyle]="{'margin-left':botType === 'dialogflow' ? '30px' : 0 }" class="btn btn-primary"
-                  [disabled]="btn_create_bot_is_disabled" (click)="createBot()">
+                <button id="create-bot-btn" [ngStyle]="{'margin-left':botType === 'dialogflow' ? '30px' : 0 }"
+                  class="btn btn-primary" [disabled]="btn_create_bot_is_disabled" (click)="createBot()">
                   {{ "BotsAddEditPage.CreateBot" | translate }}
                 </button>
               </div>
@@ -402,8 +406,8 @@
 
               <p style="color:#7695a5">
                 {{'Resolution_bot_train_SendImagesVideoAndMore' | translate: tparams }}.
-                <span class="link-in-right-sidebar"  (click)="openDocsResolutionBotSendImageVideosMore()">
-                 {{'HereHowSendImageVideosMore' | translate }}
+                <span class="link-in-right-sidebar" (click)="openDocsResolutionBotSendImageVideosMore()">
+                  {{'HereHowSendImageVideosMore' | translate }}
                 </span>
               </p>
 
