@@ -1849,56 +1849,56 @@
     "SimplyReplyAgentOnTheLastResponseLine": "ما عليك سوى الرد \"\\ agent\" في سطر الرد الأخير",
     "HereHowToHandoffToTheHumanAgent": "إليك كيفية التسليم إلى العامل البشري",
     "MessageChannel": "قناة",
-    "AdvancedSearch": "Advanced search",
-    "Refresh": "Refresh",
-    "AllConversationsaveBeenArchived": "All conversations have been archived",
-    "AddUser": "Add user",
-    "SelectRequester": "Select requester",
-    "AddRequester": "Add requester",
-    "SelectAssignee": "Select assignee",
-    "GoToTheRequestDetails": "Go to the request's details",
-    "CreateNewRequester": "Create new requester",
-    "ConversationsFound": "Conversations found",
-    "CreateTicketOnJira": "Create ticket on Jira",
-    "TicketType": "Ticket type",
-    "SelectTicketType": "Select ticket type",
-    "CreateJiraTicket": "Create ticket",
-    "NameIsRequired": "Name is required",
-    "NewRequesterCreatedSuccessfully": "New requester created successfully",
-    "ViewRequesterDetails": "View requester details",
-    "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Only teammates with the owner role can manage the account’s plan",
-    "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Only team members with the owner role can manage email templates",
-    "LearnMoreAboutDefaultRoles": "Learn more about default roles",
-    "LearnHowCreateAGroup": "Learn how create a group",
-    "HookTheBot": "Activate this bot",
-    "ActivateBotsForNewConversations": "Activate bots for new conversations",
-    "DoYouWantToActivateTheBotForNewConversations": "Do you want to activate the <span class='bot_name_bold'>{{ bot_name }}</span> bot for new conversations?",
-    "DoYouWantToActivateBotForOneOfTheFollowingDepts": "Do you want to activate bot <span class='bot_name_bold'>{{bot_name}}</span> for one of the following departments?",
-    "ActivateBot": "Activate bot",
-    "BotSuccessfullyActivated": "Bot successfully activated",
-    "AnErroOccurredWhileActivatingTheBot": "An error occurred while activating the bot",
-    "SelectDepartment": "Select department",
-    "Ignore": "Ignore",
-    "ActivateFor": "Activate for",
-    "ActivateForBot": "Activate bot for",
-    "DepartmentsThisBotIsAssociatedWith": "Departments this bot is associated with",
-    "NoDeptsAreAssociatedWithThisBot": "No departments are associated with this bot",
-    "ManageTheBotIn": "Manage all bots and departments in",
-    "YourWebServiceWillReceivePostRequestFrom": "Your web service will receive a POST request from {{ company_name }} in the form of the response to a user query matched by intents with webhook enabled.",
-    "ThisUrlWilReceiveAPostRequestFrom": "This url will receive a POST request from {{ company_name }} every time the webhook is triggered by an intent.",
-    "EnterWebhookURL": "Enter Webhook URL",
-    "IntentName": "Intent name",
-    "EnterIntentName": "Enter intent name",
-    "BotDetails": "Bot details",
-    "AdvancedChatboStylingButtons": "Advanced chatbot styling: buttons",
-    "StylingYourChatbotReplies": "Styling your chatbot replies",
-    "WebhookmentUrlMustBeAHttpsUrl": "The webhook URL must be an https or http URL",
-    "WebhookmentUrlMustBeAValidUrl": "The webhook URL must be a valid URL",
-    "EnableWebhookCallForThisIntent": "Enable webhook call for this intent",
-    "HideShowColumns": "Customize table: hide/show columns",
-    "AnswerWithTheIntentNameAlreadyExists": "Answer with the intent name {{ intent_name }} already exists",
-    "HowToGenerateDialogflowGoogleCredentialsFile": "How to generate Dialogflow Google credentials file",
-    "MicrolanguageGuide": "Microlanguage guide",
+    "AdvancedSearch": "البحث المتقدم",
+    "Refresh": "ينعش",
+    "AllConversationsaveBeenArchived": "تم أرشفة جميع المحادثات",
+    "AddUser": "إضافة مستخدم",
+    "SelectRequester": "حدد الطالب",
+    "AddRequester": "إضافة الطالب",
+    "SelectAssignee": "حدد المحال إليه",
+    "GoToTheRequestDetails": "انتقل إلى تفاصيل الطلب",
+    "CreateNewRequester": "إنشاء طالب جديد",
+    "ConversationsFound": "وجدت الأحاديث",
+    "CreateTicketOnJira": "إنشاء تذكرة على Jira",
+    "TicketType": "نوع التذكرة",
+    "SelectTicketType": "حدد نوع التذكرة",
+    "CreateJiraTicket": "إنشاء تذكرة",
+    "NameIsRequired": "مطلوب اسم",
+    "NewRequesterCreatedSuccessfully": "تم إنشاء الطالب الجديد بنجاح",
+    "ViewRequesterDetails": "عرض تفاصيل الطالب",
+    "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "يمكن لأعضاء الفريق الذين لديهم دور المالك فقط إدارة خطة الحساب",
+    "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "يمكن فقط لأعضاء الفريق الذين لديهم دور المالك إدارة قوالب البريد الإلكتروني",
+    "LearnMoreAboutDefaultRoles": "تعرف على المزيد حول الأدوار الافتراضية",
+    "LearnHowCreateAGroup": "تعرف على كيفية إنشاء مجموعة",
+    "HookTheBot": "قم بتنشيط هذا الروبوت",
+    "ActivateBotsForNewConversations": "تنشيط الروبوتات للمحادثات الجديدة",
+    "DoYouWantToActivateTheBotForNewConversations": "هل تريد تفعيل الروبوت <span class='bot_name_bold'>{{ bot_name }}</span> للمحادثات الجديدة؟",
+    "DoYouWantToActivateBotForOneOfTheFollowingDepts": "هل تريد تفعيل bot <span class='bot_name_bold'>{{bot_name}}</span> لإحدى الأقسام التالية؟",
+    "ActivateBot": "تفعيل البوت",
+    "BotSuccessfullyActivated": "تم تفعيل البوت بنجاح",
+    "AnErroOccurredWhileActivatingTheBot": "حدث خطأ أثناء تنشيط الروبوت",
+    "SelectDepartment": "حدد القسم",
+    "Ignore": "يتجاهل",
+    "ActivateFor": "التنشيط لـ",
+    "ActivateForBot": "تنشيط البوت لـ",
+    "DepartmentsThisBotIsAssociatedWith": "الأقسام التي يرتبط بها هذا الروبوت",
+    "NoDeptsAreAssociatedWithThisBot": "لا توجد أقسام مرتبطة بهذا الروبوت",
+    "ManageTheBotIn": "إدارة جميع الروبوتات والإدارات في",
+    "YourWebServiceWillReceivePostRequestFrom": "ستتلقى خدمة الويب الخاصة بك طلب POST من {{ company_name }} في شكل استجابة لاستعلام المستخدم المطابق للنوايا مع تمكين webhook.",
+    "ThisUrlWilReceiveAPostRequestFrom": "سيتلقى عنوان url هذا طلب POST من {{ company_name }} كل مرة يتم فيها تشغيل webhook بواسطة نية.",
+    "EnterWebhookURL": "أدخل عنوان URL للويب هوك",
+    "IntentName": "اسم النية",
+    "EnterIntentName": "أدخل اسم النية",
+    "BotDetails": "تفاصيل البوت",
+    "AdvancedChatboStylingButtons": "تصميم روبوت المحادثة المتقدم: الأزرار",
+    "StylingYourChatbotReplies": "تصميم ردود chatbot الخاص بك",
+    "WebhookmentUrlMustBeAHttpsUrl": "يجب أن يكون عنوان URL الخاص بـ webhook هو https أو http URL",
+    "WebhookmentUrlMustBeAValidUrl": "يجب أن يكون عنوان URL الخاص بـ webhook عنوان URL صالحًا",
+    "EnableWebhookCallForThisIntent": "تفعيل استدعاء الرد التلقائي على الويب لهذا الغرض",
+    "HideShowColumns": "تخصيص الجدول: إخفاء / إظهار الأعمدة",
+    "AnswerWithTheIntentNameAlreadyExists": "الإجابة التي تحمل الاسم {{ intent_name }} موجودة بالفعل",
+    "HowToGenerateDialogflowGoogleCredentialsFile": "كيفية إنشاء ملف بيانات اعتماد Google Dialogflow",
+    "MicrolanguageGuide": "دليل اللغة الدقيقة",
     "HowHandlingImagesVideosButtonsAndMore": "كيفية التعامل مع الصور ومقاطع الفيديو والأزرار والمزيد",
     "TheRequestWillBeReassignedToTheAgent": "سيتم إعادة تعيين المحادثة إلى الوكيل",
     "Type": "نوع",
@@ -2008,56 +2008,56 @@
     "New Conversation": "محادثة جديدة",
     "Authentication Triggers": "مشغلات المصادقة",
     "DailyAverage": "المتوسط اليومي",
-    "Apps": "Apps",
-    "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "Change your status to available",
-    "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "Change your status to unavailable",
-    "UnassignYouFromTheConversation": "Unassign you from the conversation",
-    "TicketId": "Ticket ID",
-    "BeSureThatYourWebServiceMeetsAllTheWebhookRequirements": "Be sure that your web service meets all the webhook requirements specific to the API version enabled in this agent.",
-    "LearnMoreAboutWebhookRequirements": "Learn more about webhook requirements",
-    "YouAreCurrentlySetToUnavailable": "You are currently set to Unavailable and are not receiving new conversations",
-    "Shortcuts": "Shortcuts",
-    "AddLanguages": "Add languages",
-    "TheLanguageWillBeRemovedFromYourProject": "The {{ language_name }} language will be removed from your project",
-    "HowWebhooksWorks": "How webhooks works",
-    "WebhooksQuickTipsIntroduction": "Webhooks are a powerful resource that you can use to automate your use cases and improve your productivity.",
-    "LearnHowToConnectDialogflowAgents": "Learn how to connect Dialogflow agents",
-    "TheDashboardIsTranslatedIntoEnglish": "The dashboard is translated into English. To change language click on the flag",
-    "LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish": "Sorry, this language is not yet available, the dashboard will be translated into English",
-    "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "Sorry, this language is not yet available, the dashboard has been translated into English",
-    "OnlyATeammateWithTheOwnerRoleCanDeleteAProject": "Only a teammate with the Owner role can delete a project",
-    "NotAssigned_M": "Not assigned",
-    "NotAssigned_F": "Not assigned",
-    "Assigned_M": "Assigned",
-    "Assigned_F": "Assigned",
-    "ViewTheConversationsHistory": "View the conversations history",
-    "SelectATagOrCreateANewOne": "Select a tag or create a new one",
-    "CreateNewTag": "Create a new tag",
-    "TypeNewTagHere": "Type a new tag here",
-    "userFullname": "Full name",
-    "userEmail": "Email",
-    "userPhone": "Phone",
-    "acceptedTermsPrivacy": "Accept terms and privacy ",
-    "termsPrivacyLabel": "Terms and privacy Compliance",
-    "firstMessage": "First message",
-    "TheCustomPreChatFormIsEmptyAndWillBeDisabled": "The custom pre-chat form is empty and will be disabled",
-    "EnableDisableCustomPreChatForm": "Enable custom fields",
-    "SelectFields": "Select fields",
-    "PreChatFormTitle": "Pre-chat form title",
-    "PreChatForm": "Pre-chat form",
-    "Mandatory": "Mandatory",
-    "EnableDisablePreChatForm": "Enable pre-chat form",
-    "WelcomeToTheNewMenu": "Welcome to the new menu",
-    "NowYouHaveMoreSpaceToUseYourChatBotsApps": "Now you have more space to use your Chat, Bots and Apps. Enjoy!",
-    "PreviewNotAvailable": "Preview not available",
-    "TextareaRows": "Textarea rows",
-    "ChangeCard": "Change card",
-    "ExpirationDate": "Expiration date",
-    "CardNumber": "Card number",
-    "CardChangedSuccessfully": "Card changed successfully",
-    "PaymentInformation": "Payment information",
-    "TagNameIsRequired": "Tag name is required",
-    "Logout": "Logout",
+    "Apps": "تطبيقات",
+    "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "تغيير حالتك إلى متاح",
+    "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "تغيير حالتك إلى غير متوفر",
+    "UnassignYouFromTheConversation": "قم بإلغاء تعيينك من المحادثة",
+    "TicketId": "معرف التذكرة",
+    "BeSureThatYourWebServiceMeetsAllTheWebhookRequirements": "تأكد من أن خدمة الويب لديك تلبي جميع متطلبات الرد التلقائي على الويب الخاصة بإصدار واجهة برمجة التطبيقات المُمكّن في هذا الوكيل.",
+    "LearnMoreAboutWebhookRequirements": "تعرف على المزيد حول متطلبات الرد التلقائي على الويب",
+    "YouAreCurrentlySetToUnavailable": "أنت مضبوط حاليًا على غير متاح ولا تتلقى محادثات جديدة",
+    "Shortcuts": "الاختصارات",
+    "AddLanguages": "أضف اللغات",
+    "TheLanguageWillBeRemovedFromYourProject": "ستتم إزالة اللغة {{ language_name }} من مشروعك",
+    "HowWebhooksWorks": "كيف يعمل الخطاف على الويب",
+    "WebhooksQuickTipsIntroduction": "تعد Webhooks موردًا قويًا يمكنك استخدامه لأتمتة حالات الاستخدام وتحسين إنتاجيتك.",
+    "LearnHowToConnectDialogflowAgents": "تعرف على كيفية توصيل وكلاء Dialogflow",
+    "TheDashboardIsTranslatedIntoEnglish": "لوحة القيادة مترجمة إلى اللغة الإنجليزية. لتغيير اللغة اضغط على العلم",
+    "LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish": "عذرًا ، هذه اللغة غير متوفرة بعد ، ستتم ترجمة لوحة التحكم إلى اللغة الإنجليزية",
+    "LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish": "عذرًا ، هذه اللغة غير متوفرة بعد ، تمت ترجمة لوحة التحكم إلى اللغة الإنجليزية",
+    "OnlyATeammateWithTheOwnerRoleCanDeleteAProject": "يمكن فقط لزميل في الفريق له دور المالك حذف المشروع",
+    "NotAssigned_M": "غيرمعتمد",
+    "NotAssigned_F": "غيرمعتمد",
+    "Assigned_M": "تعيين",
+    "Assigned_F": "تعيين",
+    "ViewTheConversationsHistory": "عرض محفوظات المحادثات",
+    "SelectATagOrCreateANewOne": "حدد علامة أو أنشئ علامة جديدة",
+    "CreateNewTag": "أنشئ علامة جديدة",
+    "TypeNewTagHere": "اكتب علامة جديدة هنا",
+    "userFullname": "الاسم الكامل",
+    "userEmail": "بريد الالكتروني",
+    "userPhone": "هاتف",
+    "acceptedTermsPrivacy": "قبول الشروط والخصوصية ",
+    "termsPrivacyLabel": "الشروط والامتثال للخصوصية",
+    "firstMessage": "الرسالة الأولى",
+    "TheCustomPreChatFormIsEmptyAndWillBeDisabled": "نموذج ما قبل الدردشة المخصص فارغ وسيتم تعطيله",
+    "EnableDisableCustomPreChatForm": "تمكين الحقول المخصصة",
+    "SelectFields": "حدد الحقول",
+    "PreChatFormTitle": "عنوان استمارة ما قبل الدردشة",
+    "PreChatForm": "استمارة ما قبل الدردشة",
+    "Mandatory": "إلزامي",
+    "EnableDisablePreChatForm": "تفعيل نموذج ما قبل الدردشة",
+    "WelcomeToTheNewMenu": "مرحبا بكم في القائمة الجديدة",
+    "NowYouHaveMoreSpaceToUseYourChatBotsApps": "لديك الآن مساحة أكبر لاستخدام الدردشة والروبوتات والتطبيقات. استمتع!",
+    "PreviewNotAvailable": "المعاينة غير متوفرة",
+    "TextareaRows": "صفوف Textarea",
+    "ChangeCard": "تغيير البطاقة",
+    "ExpirationDate": "تاريخ الإنتهاء",
+    "CardNumber": "رقم البطاقة",
+    "CardChangedSuccessfully": "تم تغيير البطاقة بنجاح",
+    "PaymentInformation": "معلومات الدفع",
+    "TagNameIsRequired": "اسم العلامة مطلوب",
+    "Logout": "تسجيل خروج",
     "NoAnswersMatchedYourSearch": "لا توجد إجابات تطابق بحثك",
     "WebhookDisabledForThisIntent": "تم تعطيل الويب هوك لهذا الغرض",
     "WebhookEnabledForThisIntent": "تم تمكين Webhook لهذه النية",
@@ -2110,293 +2110,293 @@
             "الاثنين",
             "يوم الثلاثاء",
             "الأربعاء",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
+            "يوم الخميس",
+            "جمعة",
+            "السبت",
+            "الأحد"
         ],
-        "LABEL_SEND": "Send",
-        "ID_CONVERSATION": "Id conversation",
-        "LABEL_CREATED_THE": "group created on",
-        "LABEL_INFO_ATTRIBUTE": "Attributes",
-        "LABEL_INFO_ADVANCED": "Advanced",
-        "LABEL_CLIENT": "Client ",
-        "LABEL_SOURCEPAGE": "Source ",
-        "LABEL_DEPARTMENT_ID": "Department id ",
-        "LABEL_DEPARTMENT_NAME": "Department ",
-        "requester_id": "Requester ID",
-        "projectId": "Project ID ",
-        "LABEL_NAME": "User Name ",
-        "LABEL_EMAIL": "Email ",
-        "LABEL_MEMBERS": "Participants",
-        "LABEL_INFO_MESSAGE": "Info message",
-        "LABEL_READ_BY": "Read by",
-        "LABEL_STATUS_MESSAGE": "state",
-        "LABEL_SENT_THE": "sent on",
-        "LABEL_SENT_BY": "from",
-        "LABEL_GUEST": "Guest",
-        "LABEL_CREATE_TICKET": "Create a ticket",
-        "LABEL_SEND_BY_EMAIL": "Send by email",
-        "LABEL_VIDEO_CHAT": "Video call",
-        "LABEL_LEAVE_GROUP": "Leave the group",
-        "LABEL_CLOSE_GROUP": "Close",
-        "ALERT_TITLE": "Attention!",
-        "CLOSE_ALERT_CONFIRM_LABEL": "OK",
-        "CLOSE_ALERT_CANCEL_LABEL": "CANCEL",
-        "LEAVE_ALERT_MSG": "Leave the group?",
-        "CLOSE_ALERT_MSG": "Close the conversation?",
-        "VIDEOCHAT_ALERT_MSG": "Service unavailable",
-        "CLOSING_CONVERSATION_SPINNER_MSG": "Please wait.<br> We are closing the conversation",
-        "CONVERSATION_CLOSED_ALERT_MSG": "The conversation was successfully closed.",
-        "CANNOT_CLOSE_CONVERSATION_ALERT_MSG": "Unable to close the conversation",
-        "LEAVING_GROUP_SPINNER_MSG": "Please wait.<br> You are leaving the group",
-        "CONVERSATION_LEFT_ALERT_MSG": "The group was successfully left.",
-        "CANNOT_LEAVE_GROUP_ALERT_MSG": "The group could not be left",
-        "GREETING": "Hi, {{ value }}",
-        "ARCHIVED_CONVERSATIONS_PAGE_NO_CONVERSATIONS_ARCHIVED": "There is no conversation in the archive",
-        "INFO_SUPPORT_USER_ADDED_SUBJECT": "you",
-        "INFO_SUPPORT_USER_ADDED_YOU_VERB": "have been added to ",
-        "INFO_SUPPORT_USER_ADDED_VERB": "joined",
-        "INFO_SUPPORT_USER_ADDED_COMPLEMENT": "the chat",
+        "LABEL_SEND": "إرسال",
+        "ID_CONVERSATION": "معرف محادثة",
+        "LABEL_CREATED_THE": "تم إنشاء المجموعة في",
+        "LABEL_INFO_ATTRIBUTE": "صفات",
+        "LABEL_INFO_ADVANCED": "متقدم",
+        "LABEL_CLIENT": "عميل ",
+        "LABEL_SOURCEPAGE": "مصدر ",
+        "LABEL_DEPARTMENT_ID": "معرف القسم ",
+        "LABEL_DEPARTMENT_NAME": " قسم، أقسام ",
+        "requester_id": "معرف مقدم الطلب",
+        "projectId": "معرف المشروع ",
+        "LABEL_NAME": "اسم االمستخدم ",
+        "LABEL_EMAIL": "بريد الالكتروني ",
+        "LABEL_MEMBERS": "مشاركون",
+        "LABEL_INFO_MESSAGE": "رسالة معلومات",
+        "LABEL_READ_BY": "قرأ من قبل",
+        "LABEL_STATUS_MESSAGE": "حالة",
+        "LABEL_SENT_THE": "أرسلت في",
+        "LABEL_SENT_BY": "من",
+        "LABEL_GUEST": "زائر",
+        "LABEL_CREATE_TICKET": "إنشاء تذكرة",
+        "LABEL_SEND_BY_EMAIL": "ارسل بالبريد الإلكترونى",
+        "LABEL_VIDEO_CHAT": "مكالمة فيديو",
+        "LABEL_LEAVE_GROUP": "اترك المجموعة",
+        "LABEL_CLOSE_GROUP": "اغلاق",
+        "ALERT_TITLE": "انتباه!",
+        "CLOSE_ALERT_CONFIRM_LABEL": "موافق",
+        "CLOSE_ALERT_CANCEL_LABEL": "إلغاء",
+        "LEAVE_ALERT_MSG": "مغادرة المجموعة؟",
+        "CLOSE_ALERT_MSG": "أغلق المحادثة؟",
+        "VIDEOCHAT_ALERT_MSG": "الخدمة غير متوفرة",
+        "CLOSING_CONVERSATION_SPINNER_MSG": "أرجو الإنتظار.<br> نحن نغلق المحادثة",
+        "CONVERSATION_CLOSED_ALERT_MSG": "تم إغلاق المحادثة بنجاح.",
+        "CANNOT_CLOSE_CONVERSATION_ALERT_MSG": "تعذر إغلاق المحادثة",
+        "LEAVING_GROUP_SPINNER_MSG": "أرجو الإنتظار.<br> أنت تغادر المجموعة",
+        "CONVERSATION_LEFT_ALERT_MSG": "تم ترك المجموعة بنجاح.",
+        "CANNOT_LEAVE_GROUP_ALERT_MSG": "لا يمكن ترك المجموعة",
+        "GREETING": "مرحبًا {{ value }}",
+        "ARCHIVED_CONVERSATIONS_PAGE_NO_CONVERSATIONS_ARCHIVED": "لا توجد محادثة في الأرشيف",
+        "INFO_SUPPORT_USER_ADDED_SUBJECT": "أنت",
+        "INFO_SUPPORT_USER_ADDED_YOU_VERB": "تمت إضافته إلى ",
+        "INFO_SUPPORT_USER_ADDED_VERB": "انضم",
+        "INFO_SUPPORT_USER_ADDED_COMPLEMENT": "المحادثة",
         "INFO_SUPPORT_USER_ADDED_MESSAGE": "{{ subject }} {{ verb }} {{ complement }}",
-        "INFO_SUPPORT_CHAT_REOPENED": "Chat reopened",
-        "INFO_SUPPORT_CHAT_CLOSED": "Chat closed",
+        "INFO_SUPPORT_CHAT_REOPENED": "تمت إعادة فتح الدردشة",
+        "INFO_SUPPORT_CHAT_CLOSED": "الدردشة مغلقة",
         "INFO_A_NEW_SUPPORT_REQUEST_HAS_BEEN_ASSIGNED_TO_YOU": "تم تعيين طلب دعم جديد لك",
         "LABEL_PROFILE": "الملف الشخصي",
-        "LABEL_CLOSE": "Closed",
-        "LABEL_DISCONNECT": "Disconnect",
-        "LABEL_NEW_CHAT": "New chat",
-        "LABEL_FORGOT_PASSWORD": "Did you forget your password?",
-        "LABEL_SIGNIN": "Sign in",
-        "LABEL_SIGNIN_TO": "Signin to",
-        "LABEL_SIGNIN_ERROR": "Sign in error",
-        "LABEL_PASSWORD": "Password",
-        "LABEL_ERROR_EMAIL": "Enter a valid email address.",
-        "LABEL_ERROR_PASSWORD": "The password must be at least 6 characters.",
-        "LABEL_LOGIN": "Login",
-        "LABEL_LOGOUT": "Logout",
-        "LABEL_WELCOME_TO": "Welcome to",
-        "LABEL_SIGNUP": "Sign up",
-        "LABEL_ALREDY_HAVE_AN_ACCOUNT": "Already have an account?",
-        "LABEL_DONT_HAVE_AN_ACCOUNT_YET": "Don't have an account yet?",
-        "LABEL_FORGOT_YOUR_PASSWORD": "Forgot your password?",
-        "LABEL_CLICK_HERE": "Click here",
-        "LABEL_REGISTRATION": "Registration",
-        "LABEL_PLACEHOLDER_EMAIL": "Your email",
-        "LABEL_PLACEHOLDER_PASSWORD": "Your password",
-        "LABEL_PLACEHOLDER_NAME": "Your name",
-        "LABEL_PLACEHOLDER_LAST_NAME": "Your last name",
-        "LABEL_LAST_NAME": "Last name",
-        "LABEL_FIELD_NOT_EMPTY": "The field can not be empty.",
-        "LABEL_NEW_PASSWORD": "Generate a new password",
-        "LABEL_CLOSED": "Closed",
-        "LABEL_INFO": "Informations",
-        "ALERT_NOTIFICATION": "Warning: sending notifications is disabled, changes the browser settings to allow sending notifications.",
-        "LABEL_EXTERNAL_ID": "External Id",
-        "LABEL_IAT": "Iat",
-        "LABEL_REQUEST_DETAIL": "Request detail",
-        "LABEL_ENTER_MSG": "Enter a message or press / for canned responses",
-        "LABEL_ENTER_MSG_SHORT": "Enter a message",
-        "LABEL_ENTER_MSG_SHORTER": "Enter...",
-        "LABEL_MSG_LOGIN_TILEDESK": "Go to login to start chatting",
-        "LABEL_ARCHIVED": "Archived",
-        "LABEL_INFO_CONVERSATION": "Info conversation",
-        "LABEL_INFO_USER": "Info user",
-        "LABEL_IS_WRITING": "typing",
-        "LABEL_VERSION": "version",
-        "LABEL_CONTACTS": "Contacts",
-        "LABEL_PLACEHOLDER": "type your message..",
-        "LABEL_START_NW_CONV": "New conversation",
-        "LABEL_FIRST_MSG": "Describe shortly your problem, you will be contacted by an agent.",
-        "LABEL_FIRST_MSG_NO_AGENTS": "🤔 All operators are offline at the moment. You can anyway describe your problem. It will be assigned to the support team who will answer you as soon as possible.",
-        "LABEL_SELECT_TOPIC": "Select a topic",
-        "LABEL_COMPLETE_FORM": "Complete the form to start a conversation with the next available agent.",
-        "LABEL_FIELD_NAME": "Name",
-        "LABEL_ERROR_FIELD_NAME": "Required field (minimum 5 characters).",
-        "LABEL_FIELD_EMAIL": "Email",
-        "LABEL_ERROR_FIELD_EMAIL": "Enter a valid email address.",
-        "LABEL_WRITING": "is writing...",
-        "AGENT_NOT_AVAILABLE": " Offline",
-        "AGENT_AVAILABLE": " Online",
-        "GUEST_LABEL": "Guest",
-        "ALL_AGENTS_OFFLINE_LABEL": "All operators are offline at the moment",
-        "LABEL_LOADING": "Loading...",
-        "CALLOUT_TITLE_PLACEHOLDER": "Need Help?",
-        "CALLOUT_MSG_PLACEHOLDER": "Click here and start chatting with us!",
-        "CUSTOMER_SATISFACTION": "Customer satisfaction",
-        "YOUR_OPINION_ON_OUR_CUSTOMER_SERVICE": "your opinion on our customer service",
-        "DOWNLOAD_TRANSCRIPT": "Download transcript",
-        "BACK": "Back",
-        "YOUR_RATING": "your rating",
-        "WRITE_YOUR_OPINION": "Write your opinion ... (optional)",
-        "SUBMIT": "Submit",
-        "THANK_YOU_FOR_YOUR_EVALUATION": "Thank you for your evaluation",
-        "YOUR_RATING_HAS_BEEN_RECEIVED": "your rating has been received",
-        "ALERT_LEAVE_CHAT": "Do you want to leave the chat?",
-        "YES": "Yes",
-        "NO": "No",
-        "BUTTON_CLOSE_TO_ICON": "Minimize chat",
-        "BUTTON_EDIT_PROFILE": "Update profile",
-        "RATE_CHAT": "Rate chat",
-        "WELLCOME_TITLE": "Hi, welcome to Tiledesk 👋",
-        "WELLCOME_MSG": "How can we help?",
-        "WELLCOME": "Welcome",
-        "OPTIONS": "options",
-        "SOUND_OFF": "sound off",
-        "SOUND_ON": "sound on",
-        "LOGOUT": "logout",
-        "CLOSE": "close",
-        "PREV_CONVERSATIONS": "Your conversations",
-        "YOU": "You",
-        "SHOW_ALL_CONV": "show all",
-        "START_A_CONVERSATION": "Start a conversation",
-        "NO_CONVERSATION": "No conversation",
-        "SEE_PREVIOUS": "see previous",
-        "WAITING_TIME_FOUND": "The team typically replies in $reply_time",
-        "WAITING_TIME_NOT_FOUND": "The team will reply as soon as possible",
-        "CLOSED": "CLOSED",
-        "PleaseSelectChatToStartMessaging": "Please select a chat to start messaging",
+        "LABEL_CLOSE": "مغلق",
+        "LABEL_DISCONNECT": "قطع الاتصال",
+        "LABEL_NEW_CHAT": "محادثة جديدة",
+        "LABEL_FORGOT_PASSWORD": "هل نسيت كلمة المرور الخاصة بك؟",
+        "LABEL_SIGNIN": "تسجيل الدخول",
+        "LABEL_SIGNIN_TO": "تسجيل الدخول إلى",
+        "LABEL_SIGNIN_ERROR": "خطأ في تسجيل الدخول",
+        "LABEL_PASSWORD": "كلمة المرور",
+        "LABEL_ERROR_EMAIL": "أدخل عنوان بريد إلكتروني صالح.",
+        "LABEL_ERROR_PASSWORD": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.",
+        "LABEL_LOGIN": "تسجيل الدخول",
+        "LABEL_LOGOUT": "تسجيل خروج",
+        "LABEL_WELCOME_TO": "مرحبا بك في",
+        "LABEL_SIGNUP": "اشتراك",
+        "LABEL_ALREDY_HAVE_AN_ACCOUNT": "هل لديك حساب؟",
+        "LABEL_DONT_HAVE_AN_ACCOUNT_YET": "لا تملك حسابا حتى الآن؟",
+        "LABEL_FORGOT_YOUR_PASSWORD": "نسيت رقمك السري؟",
+        "LABEL_CLICK_HERE": "انقر هنا",
+        "LABEL_REGISTRATION": "تسجيل",
+        "LABEL_PLACEHOLDER_EMAIL": "بريدك الالكتروني",
+        "LABEL_PLACEHOLDER_PASSWORD": "كلمة السر خاصتك",
+        "LABEL_PLACEHOLDER_NAME": "اسمك",
+        "LABEL_PLACEHOLDER_LAST_NAME": "اسمك الاخير",
+        "LABEL_LAST_NAME": "الكنية",
+        "LABEL_FIELD_NOT_EMPTY": "لا يمكن أن يكون الحقل فارغًا.",
+        "LABEL_NEW_PASSWORD": "أنشئ كلمة مرور جديدة",
+        "LABEL_CLOSED": "مغلق",
+        "LABEL_INFO": "معلومات",
+        "ALERT_NOTIFICATION": "تحذير: إرسال الإخطارات معطل ، يغير إعدادات المتصفح للسماح بإرسال الإشعارات.",
+        "LABEL_EXTERNAL_ID": "معرف خارجي",
+        "LABEL_IAT": "إيات",
+        "LABEL_REQUEST_DETAIL": "طلب التفاصيل",
+        "LABEL_ENTER_MSG": "أدخل رسالة أو اضغط على / للردود الجاهزة",
+        "LABEL_ENTER_MSG_SHORT": "أدخل رسالة",
+        "LABEL_ENTER_MSG_SHORTER": "يدخل...",
+        "LABEL_MSG_LOGIN_TILEDESK": "اذهب إلى تسجيل الدخول لبدء الدردشة",
+        "LABEL_ARCHIVED": "مؤرشف",
+        "LABEL_INFO_CONVERSATION": "محادثة معلومات",
+        "LABEL_INFO_USER": "مستخدم المعلومات",
+        "LABEL_IS_WRITING": "الكتابة",
+        "LABEL_VERSION": "الإصدار",
+        "LABEL_CONTACTS": "جهات الاتصال",
+        "LABEL_PLACEHOLDER": "اكتب رسالتك ..",
+        "LABEL_START_NW_CONV": "محادثة جديدة",
+        "LABEL_FIRST_MSG": "صِف مشكلتك بعد قليل ، وسيتواصل معك أحد الوكلاء.",
+        "LABEL_FIRST_MSG_NO_AGENTS": "🤔 جميع المشغلين غير متصلين في الوقت الحالي. يمكنك على أي حال وصف مشكلتك. سيتم تعيينه لفريق الدعم الذي سيرد عليك في أقرب وقت ممكن.",
+        "LABEL_SELECT_TOPIC": "اختر عنوانا",
+        "LABEL_COMPLETE_FORM": "أكمل النموذج لبدء محادثة مع الوكيل المتاح التالي.",
+        "LABEL_FIELD_NAME": "اسم",
+        "LABEL_ERROR_FIELD_NAME": "حقل مطلوب (بحد أدنى 5 أحرف).",
+        "LABEL_FIELD_EMAIL": "بريد الالكتروني",
+        "LABEL_ERROR_FIELD_EMAIL": "أدخل عنوان بريد إلكتروني صالح.",
+        "LABEL_WRITING": "يكتب...",
+        "AGENT_NOT_AVAILABLE": " غير متصل على الانترنت",
+        "AGENT_AVAILABLE": " متصل",
+        "GUEST_LABEL": "زائر",
+        "ALL_AGENTS_OFFLINE_LABEL": "جميع المشغلين غير متصلون في الوقت الحالي",
+        "LABEL_LOADING": "جار التحميل...",
+        "CALLOUT_TITLE_PLACEHOLDER": "تحتاج مساعدة؟",
+        "CALLOUT_MSG_PLACEHOLDER": "انقر هنا وابدأ الدردشة معنا!",
+        "CUSTOMER_SATISFACTION": "رضا العملاء",
+        "YOUR_OPINION_ON_OUR_CUSTOMER_SERVICE": "رأيك في خدمة العملاء لدينا",
+        "DOWNLOAD_TRANSCRIPT": "تنزيل النص",
+        "BACK": "عودة",
+        "YOUR_RATING": "تقييمك",
+        "WRITE_YOUR_OPINION": "أكتب رأيك ... (اختياري)",
+        "SUBMIT": "إرسال",
+        "THANK_YOU_FOR_YOUR_EVALUATION": "شكرا لتقييمك",
+        "YOUR_RATING_HAS_BEEN_RECEIVED": "لقد تم استلام تقييمك",
+        "ALERT_LEAVE_CHAT": "هل تريد مغادرة الدردشة؟",
+        "YES": "نعم",
+        "NO": "رقم",
+        "BUTTON_CLOSE_TO_ICON": "تصغير الدردشة",
+        "BUTTON_EDIT_PROFILE": "تحديث الملف",
+        "RATE_CHAT": "معدل الدردشة",
+        "WELLCOME_TITLE": "مرحبًا ، مرحبًا بك في Tiledesk 👋",
+        "WELLCOME_MSG": "كيف يمكن أن نساعد؟",
+        "WELLCOME": "مرحبا",
+        "OPTIONS": "والخيارات",
+        "SOUND_OFF": "الصوت مقفل",
+        "SOUND_ON": "الصوت مفعل",
+        "LOGOUT": "تسجيل خروج",
+        "CLOSE": "أغلق",
+        "PREV_CONVERSATIONS": "محادثاتك",
+        "YOU": "أنت",
+        "SHOW_ALL_CONV": "عرض الكل",
+        "START_A_CONVERSATION": "بدء محادثة",
+        "NO_CONVERSATION": "لا محادثة",
+        "SEE_PREVIOUS": "انظر السابق",
+        "WAITING_TIME_FOUND": "يرد الفريق عادةً بـ $reply_time",
+        "WAITING_TIME_NOT_FOUND": "سيقوم الفريق بالرد في أقرب وقت ممكن",
+        "CLOSED": "مغلق",
+        "PleaseSelectChatToStartMessaging": "الرجاء تحديد دردشة لبدء المراسلة",
         "FromThisAreNew": "------------------",
-        "Preview": "Preview",
-        "AddACaption": "Add a caption",
+        "Preview": "معاينة",
+        "AddACaption": "إضافة تسمية توضيحية",
         "AnErrorOccurredWhileUnsubscribingFromNotifications": "عفواً! حدث خطأ أثناء إلغاء الاشتراك من الإشعارات",
-        "SIGNIN_ERROR_USER_NOT_FOUND": "Authentication failed. User not found.",
-        "SIGNIN_ERROR_USER_WRONG_PSW": "Authentication failed. Wrong password.",
-        "Email is required": "Email is required.",
-        "Email must be a valid email": "Email must be a valid email.",
-        "Password is required": "Password is required.",
-        "Password must be at least 6 characters long": "Password must be at least 6 characters long.",
-        "UPLOAD_FILE_ERROR": "An unexpected error occurred while uploading the file",
-        "DROP_IMAGE_HERE_TO_SEND_IT": "Drop image here to send it",
-        "ONLY_IMAGE_FILES_ARE_ALLOWED_TO_PASTE": "Only image files and text are allowed to be pasted",
-        "FAILED_TO_UPLOAD_THE_FORMAT_IS_NOT_SUPPORTED": "Failed to upload: the format is not supported",
-        "SENT_AN_IMAGE": "sent an image",
-        "SENT_AN_ATTACHMENT": "sent an attachment",
-        "NO_INFORMATION_AVAILABLE": "No information available",
-        "CONTACT_ID": "Contact ID",
-        "USER_ID": "User ID",
-        "CLOSE_TOAST": "Close",
-        "WAITING_FOR_NETWORK": "Waiting for network",
-        "Available": "Available",
-        "Unavailable": "Unavailable",
-        "Busy": "Busy",
-        "YouAreAboutToJoinThisChat": "You are about to join this chat",
-        "Cancel": "Cancel",
-        "AreYouSure": "Are you sure?",
-        "UnassignedConversations": "Unassigned Conversations",
-        "NewConversations": "New conversations",
-        "UPLOAD": "Upload",
-        "CANNED_RESPONSES": "Canned responses",
-        "NO_CANNED_RESPONSES": "No canned responses",
-        "THERE_ARE_NO_CANNED_RESPONSES_AVAILABLE": "There are no canned responses available",
-        "TO_CREATE_THEM_GO_TO_THE_PROJECT": "To create them go to the project (you can click on the name of the project available in the right sidebar) and under the menu item 'Settings' in the Dashboard sidebar click on 'Canned responses' and then on the 'Create response' button",
-        "YES_CANNED_RESPONSES": "View the canned responses by clicking on the ⚡️ button or by typing a / in the text area, you can also filter the list by typing after the /",
-        "VIEW_ALL_CONVERSATIONS": "View all conversations",
-        "CONVERSATIONS_IN_QUEUE": "conversations in queue, pick one",
-        "CONVERSATION_IN_QUEUE": "conversation in queue, pick it",
-        "NO_CONVERSATION_IN_QUEUE": "no conversation in queue",
-        "PIN_A_PROJECT": "Pin a Project",
-        "PINNED_PROJECT": "Pinned project",
-        "CHANGE_PINNED_PROJECT": "Change pinned project",
-        "CHANGE_TO_AVAILABLE_UNAVAILABLE": "change to available/unavailable",
-        "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "Change your status to available",
-        "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "Change your status to unavailable",
-        "ALL_CONVS_SERVED": "Were all conversations served? Good job!",
-        "PaydPlanName": "{{projectprofile}} Plan",
-        "PaydPlanNamePro": "Pro Plan",
-        "PaydPlanNameEnterprise": "Enterprise plan",
-        "ProPlanTrial": "Pro Plan (trial)",
-        "FreePlan": "Free Plan",
-        "SubscriptionPaymentProblem": "Subscription payment problem",
-        "ThePlanHasExpired": "The plan has expired",
-        "owner": "Owner",
-        "admin": "Administrator",
-        "agent": "Agent",
-        "Conversations": "Conversations",
-        "Apps": "Apps",
-        "Analytics": "Analytics",
-        "Activities": "Activities",
-        "History": "History",
-        "Settings": "Settings",
-        "Resolve": "Resolve",
-        "Archive": "Archive",
-        "ActionNotAllowed": "Action not allowed",
-        "YouAreNoLongerAmongTheTeammatesManagingThisConversation": "You are no longer among the teammates managing this conversation"
+        "SIGNIN_ERROR_USER_NOT_FOUND": "المصادقة فشلت. المستخدم ليس موجود.",
+        "SIGNIN_ERROR_USER_WRONG_PSW": "المصادقة فشلت. كلمة مرور خاطئة.",
+        "Email is required": "البريد الالكتروني مطلوب.",
+        "Email must be a valid email": "يجب أن يكون البريد الإلكتروني بريدًا إلكترونيًا صالحًا.",
+        "Password is required": "كلمة المرور مطلوبة.",
+        "Password must be at least 6 characters long": "الرقم السري يجب الا يقل عن 6 احرف على الاقل.",
+        "UPLOAD_FILE_ERROR": "حدث خطأ غير متوقع أثناء تحميل الملف",
+        "DROP_IMAGE_HERE_TO_SEND_IT": "أفلت الصورة هنا لإرسالها",
+        "ONLY_IMAGE_FILES_ARE_ALLOWED_TO_PASTE": "يُسمح فقط بلصق ملفات الصور والنصوص",
+        "FAILED_TO_UPLOAD_THE_FORMAT_IS_NOT_SUPPORTED": "فشل التحميل: التنسيق غير مدعوم",
+        "SENT_AN_IMAGE": "أرسل صورة",
+        "SENT_AN_ATTACHMENT": "أرسل مرفقًا",
+        "NO_INFORMATION_AVAILABLE": "لا توجد معلومات متاحة",
+        "CONTACT_ID": "معرف جهة الاتصال",
+        "USER_ID": "معرف المستخدم",
+        "CLOSE_TOAST": "قريب",
+        "WAITING_FOR_NETWORK": "في انتظار الشبكة",
+        "Available": "متوفرة",
+        "Unavailable": "غير متوفره",
+        "Busy": "مشغول",
+        "YouAreAboutToJoinThisChat": "أنت على وشك الانضمام إلى هذه الدردشة",
+        "Cancel": "يلغي",
+        "AreYouSure": "هل أنت متأكد؟",
+        "UnassignedConversations": "المحادثات غير المعينة",
+        "NewConversations": "محادثات جديدة",
+        "UPLOAD": "تحميل",
+        "CANNED_RESPONSES": "الردود الجاهزة",
+        "NO_CANNED_RESPONSES": "لا توجد ردود جاهزة",
+        "THERE_ARE_NO_CANNED_RESPONSES_AVAILABLE": "لا توجد ردود جاهزة متاحة",
+        "TO_CREATE_THEM_GO_TO_THE_PROJECT": "لإنشائها ، انتقل إلى المشروع (يمكنك النقر فوق اسم المشروع المتاح في الشريط الجانبي الأيمن) وتحت عنصر القائمة \"الإعدادات\" في الشريط الجانبي للوحة التحكم ، انقر فوق \"الردود الجاهزة\" ثم على الزر \"إنشاء رد\"",
+        "YES_CANNED_RESPONSES": "عرض الردود الجاهزة بالنقر فوق الزر ⚡️ أو عن طريق كتابة / في منطقة النص ، يمكنك أيضًا تصفية القائمة عن طريق الكتابة بعد /",
+        "VIEW_ALL_CONVERSATIONS": "عرض جميع المحادثات",
+        "CONVERSATIONS_IN_QUEUE": "المحادثات في قائمة الانتظار ، اختر واحدة",
+        "CONVERSATION_IN_QUEUE": "محادثة في قائمة الانتظار ، اخترها",
+        "NO_CONVERSATION_IN_QUEUE": "لا محادثة في قائمة الانتظار",
+        "PIN_A_PROJECT": "تثبيت مشروع",
+        "PINNED_PROJECT": "مشروع مثبت",
+        "CHANGE_PINNED_PROJECT": "تغيير المشروع المثبت",
+        "CHANGE_TO_AVAILABLE_UNAVAILABLE": "التغيير إلى متاح / غير متاح",
+        "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "تغيير حالتك إلى متاح",
+        "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "تغيير حالتك إلى غير متوفر",
+        "ALL_CONVS_SERVED": "هل تم تقديم جميع المحادثات؟ أحسنت!",
+        "PaydPlanName": "{{projectprofile}} خطة",
+        "PaydPlanNamePro": "خطة احترافية",
+        "PaydPlanNameEnterprise": "خطة المؤسسة",
+        "ProPlanTrial": "خطة Pro (نسخة تجريبية)",
+        "FreePlan": "خطة مجانية",
+        "SubscriptionPaymentProblem": "مشكلة دفع الاشتراك",
+        "ThePlanHasExpired": "انتهت صلاحية الخطة",
+        "owner": "صاحب",
+        "admin": "مدير",
+        "agent": "وكيل",
+        "Conversations": "المحادثات",
+        "Apps": "تطبيقات",
+        "Analytics": "تحليلات",
+        "Activities": "أنشطة",
+        "History": "تاريخ",
+        "Settings": "إعدادات",
+        "Resolve": "حل",
+        "Archive": "أرشيف",
+        "ActionNotAllowed": "الإجراء غير مسموح به",
+        "YouAreNoLongerAmongTheTeammatesManagingThisConversation": "لم تعد من بين زملائك في الفريق الذين يديرون هذه المحادثة"
     },
     "WIDGET": {
-        "LABEL_PLACEHOLDER": "type your message..",
-        "LABEL_START_NW_CONV": "New conversation",
-        "LABEL_FIRST_MSG": "Describe shortly your problem, you will be contacted by an agent.",
-        "LABEL_FIRST_MSG_NO_AGENTS": "🤔  All operators are offline at the moment. You can anyway describe your problem. It will be assigned to the support team who will get back to you as soon as possible.",
-        "LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED": "🤔  Our offices are closed. You can anyway describe your problem. It will be assigned to the support team who will get back to you as soon as possible.",
-        "LABEL_SELECT_TOPIC": "Select a topic",
-        "LABEL_COMPLETE_FORM": "Complete the form to start a conversation with the next available agent.",
-        "LABEL_FIELD_NAME": "Name",
-        "LABEL_ERROR_FIELD_NAME": "Required field (minimum 5 characters).",
-        "LABEL_FIELD_EMAIL": "Email",
-        "LABEL_ERROR_FIELD_EMAIL": "Enter a valid email address.",
-        "LABEL_WRITING": "is writing...",
-        "AGENT_NOT_AVAILABLE": " Offline",
-        "AGENT_AVAILABLE": " Online",
-        "GUEST_LABEL": "Guest",
-        "ALL_AGENTS_OFFLINE_LABEL": "All operators are offline at the moment",
-        "LABEL_LOADING": "Loading...",
-        "CALLOUT_TITLE_PLACEHOLDER": "🖐 Need Help?",
-        "CALLOUT_MSG_PLACEHOLDER": "Click here and start chatting with us!",
-        "CUSTOMER_SATISFACTION": "Customer satisfaction",
-        "YOUR_OPINION_ON_OUR_CUSTOMER_SERVICE": "Your opinion on our customer service",
-        "DOWNLOAD_TRANSCRIPT": "Download transcript",
-        "BACK": "Back",
-        "YOUR_RATING": "your rating",
-        "WRITE_YOUR_OPINION": "Write your opinion ... (optional)",
-        "SUBMIT": "Submit",
-        "THANK_YOU_FOR_YOUR_EVALUATION": "Thank you for your evaluation",
-        "YOUR_RATING_HAS_BEEN_RECEIVED": "your rating has been received",
-        "ALERT_LEAVE_CHAT": "Do you want to leave the chat?",
-        "YES": "Yes",
-        "NO": "No",
-        "BUTTON_CLOSE_TO_ICON": "Minimize chat",
-        "BUTTON_EDIT_PROFILE": "Update profile",
-        "BUTTON_DOWNLOAD_TRANSCRIPT": "Download transcript",
-        "RATE_CHAT": "Rate chat",
-        "WELLCOME_TITLE": "Hi, welcome to Tiledesk 👋",
-        "WELLCOME_MSG": "How can we help?",
-        "WELLCOME": "Welcome",
-        "WELCOME_TITLE": "Hi, welcome to Tiledesk 👋",
-        "WELCOME_MSG": "How can we help?",
-        "WELCOME": "Welcome",
-        "OPTIONS": "options",
-        "SOUND_OFF": "sound off",
-        "SOUND_ON": "sound on",
-        "LOGOUT": "logout",
-        "CLOSE": "Close",
-        "PREV_CONVERSATIONS": "Your conversations",
-        "YOU": "You",
-        "SHOW_ALL_CONV": "show all",
-        "START_A_CONVERSATION": "Start a conversation",
-        "NO_CONVERSATION": "No conversation",
-        "SEE_PREVIOUS": "see previous",
-        "WAITING_TIME_FOUND": "The team typically replies in $reply_time",
-        "WAITING_TIME_NOT_FOUND": "The team will reply as soon as possible",
-        "CLOSED": "Closed",
-        "INFO_SUPPORT_USER_ADDED_SUBJECT": "you",
-        "INFO_SUPPORT_USER_ADDED_YOU_VERB": "you have been added ",
-        "INFO_SUPPORT_USER_ADDED_COMPLEMENT": "the chat",
-        "INFO_SUPPORT_USER_ADDED_VERB": "joined",
-        "INFO_SUPPORT_CHAT_REOPENED": "Chat reopened",
-        "INFO_SUPPORT_CHAT_CLOSED": "Chat closed",
-        "TICKET_TAKING": "The request has been received and the assistance staff is dealing with it.\nTo add more comments, reply to this email.",
-        "LABEL_ERROR_FIELD_REQUIRED": "Required field",
-        "SENT_AN_ATTACHMENT": "sent an attachment",
-        "SENT_AN_IMAGE": "sent an image",
-        "LABEL_PRECHAT_USER_FULLNAME": "Full name",
-        "LABEL_PRECHAT_USER_EMAIL": "Email",
-        "LABEL_PRECHAT_USER_EMAIL_ERROR": "Invalid email address",
-        "LABEL_PRECHAT_USER_PHONE": "Phone",
-        "LABEL_PRECHAT_USER_PHONE_ERROR": "Phone is required",
-        "LABEL_PRECHAT_FIRST_MESSAGE": "Your message for the support team",
-        "LABEL_PRECHAT_STATIC_TERMS_PRIVACY": "Before proceeding in the conversation please agree to our <a href='https://tiledesk.com/termsofservice/' target='_blank'>Terms</a> and <a href='https://tiledesk.com/privacy.html' target='_blank'>Privacy Policy</a>",
-        "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY": "I agree",
-        "PRECHAT_REQUIRED_ERROR": "This field is required"
+        "LABEL_PLACEHOLDER": "اكتب رسالتك ..",
+        "LABEL_START_NW_CONV": "محادثة جديدة",
+        "LABEL_FIRST_MSG": "صِف مشكلتك بعد قليل ، وسيتواصل معك أحد الوكلاء.",
+        "LABEL_FIRST_MSG_NO_AGENTS": "🤔 جميع المشغلين غير متصلين في الوقت الحالي. يمكنك على أي حال وصف مشكلتك. سيتم تعيينه لفريق الدعم الذي سيعود إليك في أقرب وقت ممكن.",
+        "LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED": "🤔 مكاتبنا مغلقة. يمكنك على أي حال وصف مشكلتك. سيتم تعيينه لفريق الدعم الذي سيعود إليك في أقرب وقت ممكن.",
+        "LABEL_SELECT_TOPIC": "اختر عنوانا",
+        "LABEL_COMPLETE_FORM": "أكمل النموذج لبدء محادثة مع الوكيل المتاح التالي.",
+        "LABEL_FIELD_NAME": "اسم",
+        "LABEL_ERROR_FIELD_NAME": "حقل مطلوب (بحد أدنى 5 أحرف).",
+        "LABEL_FIELD_EMAIL": "البريد الإلكتروني",
+        "LABEL_ERROR_FIELD_EMAIL": "أدخل عنوان بريد إلكتروني صالح.",
+        "LABEL_WRITING": "يكتب...",
+        "AGENT_NOT_AVAILABLE": " غير متصل على الانترنت",
+        "AGENT_AVAILABLE": " متصل",
+        "GUEST_LABEL": "زائر",
+        "ALL_AGENTS_OFFLINE_LABEL": "جميع المشغلين غير متصلون في الوقت الحالي",
+        "LABEL_LOADING": "جار التحميل...",
+        "CALLOUT_TITLE_PLACEHOLDER": "🖐 بحاجة الى مساعدة؟",
+        "CALLOUT_MSG_PLACEHOLDER": "انقر هنا وابدأ الدردشة معنا!",
+        "CUSTOMER_SATISFACTION": "رضا العملاء",
+        "YOUR_OPINION_ON_OUR_CUSTOMER_SERVICE": "رأيك في خدمة العملاء لدينا",
+        "DOWNLOAD_TRANSCRIPT": "تنزيل النص",
+        "BACK": "خلف",
+        "YOUR_RATING": "تقييمك",
+        "WRITE_YOUR_OPINION": "أكتب رأيك ... (اختياري)",
+        "SUBMIT": "يُقدِّم",
+        "THANK_YOU_FOR_YOUR_EVALUATION": "شكرا لتقييمك",
+        "YOUR_RATING_HAS_BEEN_RECEIVED": "لقد تم استلام تقييمك",
+        "ALERT_LEAVE_CHAT": "هل تريد مغادرة الدردشة؟",
+        "YES": "نعم",
+        "NO": "لا",
+        "BUTTON_CLOSE_TO_ICON": "تصغير الدردشة",
+        "BUTTON_EDIT_PROFILE": "تحديث الملف",
+        "BUTTON_DOWNLOAD_TRANSCRIPT": "تنزيل النص",
+        "RATE_CHAT": "معدل الدردشة",
+        "WELLCOME_TITLE": "مرحبًا ، مرحبًا بك في Tiledesk 👋",
+        "WELLCOME_MSG": "كيف يمكن أن نساعد؟",
+        "WELLCOME": "أهلا وسهلا",
+        "WELCOME_TITLE": "مرحبًا ، مرحبًا بك في Tiledesk 👋",
+        "WELCOME_MSG": "كيف يمكن أن نساعد؟",
+        "WELCOME": "أهلا وسهلا",
+        "OPTIONS": "والخيارات",
+        "SOUND_OFF": "الصوت مقفل",
+        "SOUND_ON": "الصوت مفعل",
+        "LOGOUT": "تسجيل خروج",
+        "CLOSE": "قريب",
+        "PREV_CONVERSATIONS": "محادثاتك",
+        "YOU": "أنت",
+        "SHOW_ALL_CONV": "عرض الكل",
+        "START_A_CONVERSATION": "بدء محادثة",
+        "NO_CONVERSATION": "لا محادثة",
+        "SEE_PREVIOUS": "انظر السابق",
+        "WAITING_TIME_FOUND": "يرد الفريق عادةً بـ $reply_time",
+        "WAITING_TIME_NOT_FOUND": "سيقوم الفريق بالرد في أقرب وقت ممكن",
+        "CLOSED": "مغلق",
+        "INFO_SUPPORT_USER_ADDED_SUBJECT": "أنت",
+        "INFO_SUPPORT_USER_ADDED_YOU_VERB": "لقد تم اضافتك ",
+        "INFO_SUPPORT_USER_ADDED_COMPLEMENT": "المحادثة",
+        "INFO_SUPPORT_USER_ADDED_VERB": "انضم",
+        "INFO_SUPPORT_CHAT_REOPENED": "تمت إعادة فتح الدردشة",
+        "INFO_SUPPORT_CHAT_CLOSED": "الدردشة مغلقة",
+        "TICKET_TAKING": "تم استلام الطلب ويقوم طاقم المساعدة بالتعامل معه.\nلإضافة المزيد من التعليقات ، قم بالرد على هذا البريد الإلكتروني.",
+        "LABEL_ERROR_FIELD_REQUIRED": "يتطلب حقلا",
+        "SENT_AN_ATTACHMENT": "أرسل مرفقًا",
+        "SENT_AN_IMAGE": "أرسل صورة",
+        "LABEL_PRECHAT_USER_FULLNAME": "الاسم الكامل",
+        "LABEL_PRECHAT_USER_EMAIL": "البريد الإلكتروني",
+        "LABEL_PRECHAT_USER_EMAIL_ERROR": "عنوان البريد الإلكتروني غير صالح",
+        "LABEL_PRECHAT_USER_PHONE": "هاتف",
+        "LABEL_PRECHAT_USER_PHONE_ERROR": "الهاتف مطلوب",
+        "LABEL_PRECHAT_FIRST_MESSAGE": "رسالتك لفريق الدعم",
+        "LABEL_PRECHAT_STATIC_TERMS_PRIVACY": "قبل متابعة المحادثة ، يرجى الموافقة على سياسة الخصوصية الخاصة بشروط <a href='https://tiledesk.com/termsofservice/' target='_blank'></a> و <a href='https://tiledesk.com/privacy.html' target='_blank'></a>",
+        "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY": "أنا موافق",
+        "PRECHAT_REQUIRED_ERROR": "هذه الخانة مطلوبه"
     }
 }
