@@ -978,7 +978,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.showSpinnerInUpdateBotCard = true
     // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
     this.faqKbService.getFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
-      console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
       this.faq_kb_remoteKey = faqkb.kbkey_remote
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);

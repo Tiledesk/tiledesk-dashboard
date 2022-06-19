@@ -228,16 +228,16 @@ export class FaqKbService {
     const options = new RequestOptions({ headers });
 
     const url = this.RASA_BOT_CREDENTIAL_BASE_URL + botid;
-    console.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
 
     // const isPreDeploy = false
 
     const body = { 'serverUrl': serverurl };
 
 
-    console.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - BODY ', body);
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - BODY ', body);
     // let url = `http://localhost:3000/${project_id}/faq_kb/`;
-    console.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
 
     return this.http
       .post(url, JSON.stringify(body), options)
