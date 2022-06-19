@@ -245,7 +245,9 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-3">
+      <div  [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true, 
+      'col-sm-12 col-md-4' : (natIsVisible === false && dgfIsVisible === true) || (natIsVisible === true && dgfIsVisible === false),
+      'col-sm-6 col-md-6' : dgfIsVisible === false && natIsVisible === false }">
         <!-- --------------------------------------- -->
         <!-- RASA -->
         <!-- --------------------------------------- --> 
