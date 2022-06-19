@@ -3197,6 +3197,12 @@
                                     [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
                                     src="assets/img/Dialogflow_logo_no_text.png" />
                                 </span>
+
+                                <span *ngIf="bot.type === 'rasa'">
+                                  <img class="ws-request-msgs-bot-type-logo"
+                                    [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                                    src="assets/img/rasa_bot_logo.png" />
+                                </span>
                               </td>
                               <!-- line-height:10px; -->
                               <td style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">

@@ -149,6 +149,10 @@
                             <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
                           </span>
 
+                          <span *ngIf="faqkb.type === 'rasa'">
+                            <img class="bot-type-logo" src="assets/img/rasa_bot_logo.png" />
+                          </span>
+
                           <!-- <span class="tooltiptext">
                         {{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }}
                       </span> -->

@@ -654,6 +654,11 @@
                         <img class="dept_bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
                       </span>
 
+                      <span *ngIf="bot_type === 'rasa'">
+                        <img class="dept_bot-type-logo" src="assets/img/rasa_bot_logo.png" />
+                      </span>
+
+
                     </div>
                     <span class="dept___bot" style="position: relative;top: 5px;">
                       {{ selectedValue }}
