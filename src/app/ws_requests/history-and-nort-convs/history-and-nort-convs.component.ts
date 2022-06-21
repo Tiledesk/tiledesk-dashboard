@@ -119,7 +119,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   selecteTagColor_temp: string; // used in applied filter
   selecteTagName_temp: string;  // used in applied filter
 
-  conversation_type: any;
+  conversation_type: any = 'all';
+  // conversation_type: any;
   conversationTypeValue: string;  // used in applied filter
 
   subscription: Subscription;
@@ -201,11 +202,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   ];
 
   conversationType = [
+    { id: 'all', name: 'All' },
     { id: 'chat21', name: 'Chat' },
     { id: 'telegram', name: 'Telegram' },
-    { id: 'messenger', name: 'Messenger' },
+    { id: 'messenger', name: 'Facebook Messenger' },
     { id: 'email', name: 'Email' },
-    { id: 'form', name: 'Ticket' }
+    { id: 'form', name: 'Ticket' },
+    { id: 'whatsapp', name: 'WhatsApp' }
   ]
 
 
@@ -765,7 +768,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.requestList = requests['requests'];
           // console.log('requestList ', this.requestList) 
           for (const request of this.requestList) {
-          
+
             if (request) {
 
               this.subscribeToWs_MsgsByRequestId(request, request.request_id)
@@ -1375,7 +1378,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         }
       } else {
         // console.log('String Not contains # ');
-         this.SEARCH_FOR_TICKET_ID = false
+        this.SEARCH_FOR_TICKET_ID = false
       }
 
       if (this.SEARCH_FOR_TICKET_ID === false) {
@@ -1383,7 +1386,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       } else if (this.SEARCH_FOR_TICKET_ID === true) {
         this.fullTextValue = this.fullText.substring(1);
       }
-      
+
       this.fullText_applied_filter = this.fullText_temp;
       // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR FULL TEXT ', this.fullTextValue);
     } else {
@@ -1458,7 +1461,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
 
 
-    if (this.conversation_type) {
+    if (this.conversation_type && this.conversation_type !== 'all') {
       this.conversationTypeValue = this.conversation_type
       this.logger.log('search this.conversation_type ', this.conversation_type)
       this.logger.log('search this.conversationTypeValue ', this.conversationTypeValue)
@@ -1499,7 +1502,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'tags=' + this.selecteTagNameValue + '&'
       + 'channel=' + this.conversationTypeValue
 
-  //  console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
+    // console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
 
     // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
     if (this.showAdvancedSearchOption === false) {
@@ -1603,10 +1606,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.selectedAgentId = '';
     this.requester_email = '';
     this.selecteTagName = '';
-    this.conversation_type = '';
+    this.conversation_type = 'all';
 
     if (!this.IS_HERE_FOR_HISTORY) {
-      this.requests_status = 'all' // I comment this because it causes bugs
+      this.requests_status = 'all'
     }
 
     // this.fullTextValue = '';
@@ -1625,12 +1628,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.fullText_applied_filter = null;
     this.selecteTagName = null
     this.selecteTagColor = null
-    this.conversation_type = null
+
 
     // tslint:disable-next-line:max-line-length
     this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=' + '&' + 'participant=' + '&' + 'requester_email=' + '&' + 'tags=' + '&' + 'channel=';
     this.pageNo = 0;
     this.logger.log('[HISTORY & NORT-CONVS] - CLEAR SEARCH fullTextValue ', this.fullTextValue)
+    // console.log('[HISTORY & NORT-CONVS] - CLEAR SEARCH fullTextValue ', this.queryString)
 
     this.getRequests();
 
@@ -2018,7 +2022,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
- 
+
 
   deleteArchivedRequest(request_id) {
     this.logger.log('[HISTORY & NORT-CONVS] - deleteArchivedRequest request_id ', request_id)

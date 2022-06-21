@@ -404,17 +404,17 @@
     </div>
 
     <div *ngIf="conversation_type && conversationTypeValue" class="applied-filter">
-      <span *ngIf="conversationTypeValue === 'chat21'">
+      <span *ngIf="conversationTypeValue === 'chat21' && conversationTypeValue  !== 'all'">
         Chat
       </span>
 
-      <span *ngIf="conversationTypeValue === 'form'">
+      <span *ngIf="conversationTypeValue === 'form' && conversationTypeValue  !== 'all'">
         Ticket
       </span>
 
 
       <span style="text-transform: capitalize;"
-        *ngIf="conversationTypeValue !== 'chat21' && conversationTypeValue !== 'form'">
+        *ngIf="conversationTypeValue !== 'chat21' && conversationTypeValue !== 'form' && conversation_type !== 'all' && conversationTypeValue  !== 'all' ">
         {{conversationTypeValue}}
       </span>
 
@@ -1053,7 +1053,7 @@
                         <span  *ngIf="request?.channel?.name === 'chat21'"> Chat </span> 
                         <span  *ngIf="request?.channel?.name === 'telegram'"> Telegram </span>
                         <span  *ngIf="request?.channel?.name === 'whatsapp'"> WhatsApp </span>  
-                        <span  *ngIf="request?.channel?.name === 'messenger'"> Messenger </span>
+                        <span  *ngIf="request?.channel?.name === 'messenger'">Facebook Messenger </span>
                         <span  *ngIf="request?.channel?.name === 'email'"> Email </span>
                         <span  *ngIf="request?.channel?.name === 'form'"> Form </span>
                         
@@ -1254,7 +1254,7 @@
                             {{'MessageChannel' | translate}}:
                           </span>
 
-                          <span style="font-weight: 400;">Messenger </span>
+                          <span style="font-weight: 400;">Facebook Messenger </span>
                           <i></i>
                         </span>
                       </span>
