@@ -121,8 +121,7 @@ export class AuthService {
     this.checkIfExistStoredUserAndPublish()
     this.checkStoredProjectAndPublishIfPublishedProjectIsNull()
 
-    this.logger.log(
-      '[AUTH-SERV] appConfigService.getConfig().pushEngine 1 ', appConfigService.getConfig().pushEngine)
+    this.logger.log(  '[AUTH-SERV] appConfigService.getConfig().pushEngine 1 ', appConfigService.getConfig().pushEngine)
     if (appConfigService.getConfig().pushEngine === 'firebase') {
       this.logger.log('[AUTH-SERV] appConfigService.getConfig().pushEngine 2 ', appConfigService.getConfig().pushEngine)
       this.checkIfFCMIsSupported()
@@ -130,7 +129,9 @@ export class AuthService {
 
     this.checkIfExpiredSessionModalIsOpened()
     this.getAppConfigAnBuildUrl()
+
   }
+
 
   browserNameAndVersion(browserName, browserVersion) {
     // console.log('[AUTH-SERV] browserName ', browserName)
@@ -662,10 +663,7 @@ export class AuthService {
                     .then((firebase_user) => {
                       this.logger.log('[AUTH-SERV] SSO - LOGIN - 4. FIREBASE CUSTOM AUTH DATA ', firebase_user)
 
-                      if (
-                        this.appConfigService.getConfig().pushEngine ===
-                        'firebase'
-                      ) {
+                      if (this.appConfigService.getConfig().pushEngine === 'firebase') {
                         // if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
                         this.getPermission()
                         // } else {
@@ -720,9 +718,11 @@ export class AuthService {
         .then((permission) => {
           this.logger.log('[AUTH-SERV] SSO - LOGIN - 5B. >>>> getPermission Notification permission granted. - permission', permission)
           this.logger.log('[AUTH-SERV] SSO - LOGIN - 5B. - vapidKey >>>> ', this.appConfigService.getConfig().firebase.vapidKey)
+
           return messaging.getToken({
             vapidKey: this.appConfigService.getConfig().firebase.vapidKey,
           })
+
         })
         .then((FCMtoken) => {
           this.logger.log('[AUTH-SERV] >>>> getPermission FCMtoken', FCMtoken)
@@ -731,7 +731,7 @@ export class AuthService {
           this.updateToken(FCMtoken)
         })
         .catch((err) => {
-          this.logger.log('[AUTH-SERV] SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.', err)
+          this.logger.error('[AUTH-SERV] SSO - LOGIN - 5C. >>>> getPermission Unable to get permission to notify.', err)
         })
     } else {
       this.logger.log('[AUTH-SERV] SSO - LOGIN - 5F. FCM NOT SUPPORTED')
