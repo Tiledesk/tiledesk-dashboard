@@ -4,6 +4,7 @@
 ### 2.2.37-rc6
 - Adds the "WhatsApp" option to the conversation type filter and the ability to reset the filter by selecting "All"
 - Change all occurrences of the string "Messenger" corresponding to the "Messenger" channel in "Facebook Messenger"
+- Adds the options "Message Create (Telegram)", "Message Create (Messenger)" and "Message Create (WhatsApp)" in the combo box "Select event" available on the webhook page (Project settings > Developer > Manage webhooks)
 
 ### 2.2.37-rc5
 - Adds the ability to create RASA type bots
