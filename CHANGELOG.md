@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.37-rc6
+- Adds the "WhatsApp" option to the conversation type filter and the ability to reset the filter by selecting "All"
+- Change all occurrences of the string "Messenger" corresponding to the "Messenger" channel in "Facebook Messenger"
+
 ### 2.2.37-rc5
 - Adds the ability to create RASA type bots
 - Adds the RASA logo on the avatar of the RASA type bots
