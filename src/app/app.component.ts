@@ -29,7 +29,7 @@ import * as moment from 'moment';
 import { BrandService } from './services/brand.service';
 import { ScriptService } from './services/script/script.service';
 import { LoggerService } from './services/logger/logger.service';
-
+import { NotifyService } from './core/notify.service';
 
 @Component({
     selector: 'appdashboard-root',
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         public brandService: BrandService,
         public script: ScriptService,
         private logger: LoggerService,
-        
+        private notify: NotifyService
         // private faqKbService: FaqKbService,
     ) {
 
@@ -98,7 +98,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.browserVersion = this.detectBrowserVersion();
         // console.log('[APP-COMPONENT] - browserName  ',  this.browserName)
         // console.log('[APP-COMPONENT] - browserVersion  ',  this.browserVersion)
-        this.auth.browserNameAndVersion(this.browserName, this.browserVersion) 
+        this.auth.browserNameAndVersion(this.browserName, this.browserVersion)
         // this.getBrand();
 
         // script.load('dummy').then(data => {
@@ -146,7 +146,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.log('[APP-COMPONENT] AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
             firebase.initializeApp(firebase_conf);
 
+            this.listenToFCMForegroundMsgs();
 
+            // this.notify.showForegroungPushNotification("App installed successfully", 2, 'done');
+            
             localStorage.removeItem('firebase:previous_websocket_failure');
 
         } else {
@@ -158,7 +161,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
-        
+
         if (this.auth.user_bs && this.auth.user_bs.value) {
             this.logger.log('[APP-COMPONENT] this.auth.user_bs.value._id ', this.auth.user_bs.value._id)
             const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
@@ -176,7 +179,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             moment.locale(dshbrd_lang)
         } else {
             this.logger.log('[APP-COMPONENT] There is no logged in user')
-            
+
         }
 
         // if (browserLang) {
@@ -202,42 +205,56 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    detectBrowserName() { 
+
+    listenToFCMForegroundMsgs() {
+        const messaging = firebase.messaging()
+        messaging.onMessage((payload) => {
+            console.log('Message received. ', payload);
+            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text);
+        });
+    }
+
+    sendForegroundMsg() {
+        console.log('snd test foreground notification');
+    this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti");
+    }
+
+    detectBrowserName() {
         const agent = window.navigator.userAgent.toLowerCase()
         switch (true) {
-          case agent.indexOf('edge') > -1:
-            return 'edge';
-          case agent.indexOf('opr') > -1 && !!(<any>window).opr:
-            return 'opera';
-          case agent.indexOf('chrome') > -1 && !!(<any>window).chrome:
-            return 'chrome';
-          case agent.indexOf('trident') > -1:
-            return 'ie';
-          case agent.indexOf('firefox') > -1:
-            return 'firefox';
-          case agent.indexOf('safari') > -1:
-            return 'safari';
-          default:
-            return 'other';
+            case agent.indexOf('edge') > -1:
+                return 'edge';
+            case agent.indexOf('opr') > -1 && !!(<any>window).opr:
+                return 'opera';
+            case agent.indexOf('chrome') > -1 && !!(<any>window).chrome:
+                return 'chrome';
+            case agent.indexOf('trident') > -1:
+                return 'ie';
+            case agent.indexOf('firefox') > -1:
+                return 'firefox';
+            case agent.indexOf('safari') > -1:
+                return 'safari';
+            default:
+                return 'other';
         }
-      }
-       
-      detectBrowserVersion(){
-          var userAgent = navigator.userAgent, tem, 
-          matchTest = userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-          
-          if(/trident/i.test(matchTest[1])){
-              tem =  /\brv[ :]+(\d+)/g.exec(userAgent) || [];
-              return 'IE '+(tem[1] || '');
-          }
-          if(matchTest[1]=== 'Chrome'){
-              tem = userAgent.match(/\b(OPR|Edge)\/(\d+)/);
-              if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
-          }
-          matchTest= matchTest[2]? [matchTest[1], matchTest[2]]: [navigator.appName, navigator.appVersion, '-?'];
-          if((tem= userAgent.match(/version\/(\d+)/i))!= null) matchTest.splice(1, 1, tem[1]);
-          return matchTest.join(' ');
-      }
+    }
+
+    detectBrowserVersion() {
+        var userAgent = navigator.userAgent, tem,
+            matchTest = userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+
+        if (/trident/i.test(matchTest[1])) {
+            tem = /\brv[ :]+(\d+)/g.exec(userAgent) || [];
+            return 'IE ' + (tem[1] || '');
+        }
+        if (matchTest[1] === 'Chrome') {
+            tem = userAgent.match(/\b(OPR|Edge)\/(\d+)/);
+            if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+        }
+        matchTest = matchTest[2] ? [matchTest[1], matchTest[2]] : [navigator.appName, navigator.appVersion, '-?'];
+        if ((tem = userAgent.match(/version\/(\d+)/i)) != null) matchTest.splice(1, 1, tem[1]);
+        return matchTest.join(' ');
+    }
 
 
     setFavicon(brand) {
@@ -463,7 +480,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (e instanceof NavigationEnd) {
 
 
-            //    console.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
+                //    console.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
                 if ((e.url.indexOf('/unserved-request-for-panel') !== -1) || (e.url.indexOf('/projects-for-panel') !== -1) || (e.url.indexOf('/request-for-panel') !== -1)) {
                     // window.addEventListener("load", () => {
                     this.logger.log('[APP-COMP] - HIDE WIDGET - PAGE LOAD')
@@ -609,7 +626,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     //       });
                     //       ps.update();
                     // }
-                    
+
 
 
                 } else {

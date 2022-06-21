@@ -441,14 +441,36 @@ export class BotListComponent implements OnInit {
 
   trashTheBot() {
     this.showSpinner = true;
-    if (this._botType !== 'dialogflow') {
+    if (this._botType !== 'dialogflow' && this._botType !== 'rasa') {
 
       this.updateBotAsTrashed();
-    } else {
+    } else if (this._botType === 'dialogflow')  {
       this.deleteDlflwBotCredentialAndUpdateBotAsTrashed();
+    } else if (this._botType === 'rasa')  {
+      this.deleteRasaBotDataAndUpdateBotAsTrashed();
     }
   }
 
+
+  deleteRasaBotDataAndUpdateBotAsTrashed() {
+    this.faqKbService.deleteRasaBotData(this.id_toDelete).subscribe((res: any) => {
+      this.logger.log('[BOTS-LIST] deleteRasaBotData - RES ', res);
+
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] deleteRasaBotData - ERROR ', error);
+
+      // =========== NOTIFY ERROR ===========
+      this.notify.showWidgetStyleUpdateNotification(this.trashBotErrorNoticationMsg, 4, 'report_problem');
+
+    }, () => {
+      this.logger.log('[BOTS-LIST] deleteRasaBotData * COMPLETE *');
+
+      // ------------------------------------------------------------------
+      // Update as trashed the bot on our db
+      // ------------------------------------------------------------------
+      this.updateBotAsTrashed()
+    });
+  }
 
   deleteDlflwBotCredentialAndUpdateBotAsTrashed() {
     // ------------------------------------------------------------------

@@ -1004,7 +1004,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - LANGUAGE ', faqkb.language);
 
       if (faqkb.type === 'rasa') {
-        this.rasaServerURL = faqkb.url
+        this.getRasaBotServer()
       }
 
       // for the comnobobox "select bot language" -now not used because the user cannot change the language of the bot he chose during creation
@@ -1051,6 +1051,21 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         this.logger.log('[FAQ-COMP] GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
         this.showSpinnerInUpdateBotCard = false
       });
+  }
+
+  getRasaBotServer() {
+    this.faqKbService.getRasaBotServer(this.id_faq_kb)
+      .subscribe((rasabotdata) => {
+        this.logger.log('[FAQ-COMP] - GET RASA BOT DATA ', rasabotdata);
+        if (rasabotdata) {
+          this.logger.log('[FAQ-COMP] - GET RASA BOT DATA value ', rasabotdata.value);
+          this.rasaServerURL = rasabotdata.value.serverUrl
+        }
+      }, (error) => {
+        this.logger.error('[FAQ-COMP] -  ERROR ', error);
+      }, () => {
+        this.logger.log('[FAQ-COMP] -  COMPLETE ');
+      });
 
   }
 
@@ -1092,7 +1107,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         }
       }, () => {
         this.logger.log('[FAQ-COMP] EDIT BOT - * COMPLETE *');
-        if (this.botType !== 'dialogflow') {
+        if (this.botType !== 'dialogflow' && this.botType !== 'rasa') {
           // =========== NOTIFY SUCCESS===========
           this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
         }
@@ -1102,11 +1117,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
           // --------------------------------------------------------------------------------
           // Update dialogflow bot
           // --------------------------------------------------------------------------------
-          this.logger.log(
-            '[FAQ-COMP] Update BOT dialogflow »»»»»»»»»»» Bot Type: ', this.botType,
-            ' - uploadedFile: ', this.uploadedFile,
-            ' - lang Code ', this.dlgflwSelectedLangCode,
-            ' - kbs (knowledgeBaseID) ', this.dlgflwKnowledgeBaseID);
+          this.logger.log('[FAQ-COMP] Update BOT dialogflow »»»»»»»»»»» Bot Type: ', this.botType, ' - uploadedFile: ', this.uploadedFile, ' - lang Code ', this.dlgflwSelectedLangCode, ' - kbs (knowledgeBaseID) ', this.dlgflwKnowledgeBaseID);
 
 
           const formData = new FormData();
@@ -1143,8 +1154,26 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
           this.uploaddialogflowBotCredential(this.id_faq_kb, formData);
 
         }
+        if (this.botType === 'rasa') {
+          this.connectRasaBotToRasaServer(this.id_faq_kb, this.rasaServerURL)
+        }
       });
   }
+
+  connectRasaBotToRasaServer(bot_Id, rasaServerUrl) {
+    this.faqKbService.connectBotToRasaServer(bot_Id, rasaServerUrl).subscribe((res) => {
+      this.logger.log('[BOT-CREATE] CREATE FAQKB - connectRasaServer - RES ', res);
+
+    }, (error) => {
+      this.logger.error('[BOT-CREATE] UPDATE  - RasaServer - ERROR ', error);
+
+    }, () => {
+
+      this.logger.log('[BOT-CREATE] CREATE FAQKB - RasaServer * COMPLETE *');
+    });
+  }
+
+
 
   uploaddialogflowBotCredential(bot_Id, formData) {
     this.faqKbService.uploadDialogflowBotCredetial(bot_Id, formData).subscribe((res) => {

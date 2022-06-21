@@ -256,6 +256,60 @@ export class NotifyService {
     });
   }
 
+
+
+  showForegroungPushNotification(sender: string, msg:string) {
+    $.notify({
+      icon: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png',
+      title: sender,
+      message: msg
+    },{
+      type: 'minimalist',
+      delay: 5000,
+      placement: {
+        from: 'top',
+        align: 'center'
+      },
+      icon_type: 'image',
+      template: '<div data-notify="container" class="col-xs-5 col-sm-5 alert alert-{0}" role="alert">' +
+        '<img data-notify="icon" class="pull-left">' +
+        '<span data-notify="title">{1}</span>' +
+        '<span data-notify="message">{2}</span>' +
+      '</div>'
+    });
+
+    // const type = ['#F1F2F0', 'info', 'success', 'warning', 'danger'];
+  
+    // const   icon_bckgrnd_color = '#F1F2F0'
+  
+    // this.notify = $.notify({
+    //   // icon: 'glyphicon glyphicon-warning-sign',
+    //   // message: message
+
+    // }, {
+    //   type: type[0],
+    //   // timer: 1500,
+    //   delay: 1500,
+
+    //   placement: {
+    //     from: 'top',
+    //     align: 'center'
+    //   },
+    //   // animate: {
+    //   //   enter: 'animated zoomIn',
+    //   //   exit: 'animated zoomOut'
+    //   // },
+    //   // tslint:disable-next-line:max-line-length
+    //   template: '<div data-notify="container" class="col-xs-11 col-sm-3  alert alert-{0}" style="text-align: left; padding-top: 8px;padding-bottom: 8px;" role="alert">' +
+    //     '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+    //     // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
+    //     // tslint:disable-next-line:max-line-length
+    //     `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: ${icon_bckgrnd_color}; border-radius: 50%; font-size:16px " class="material-icons">` + 'done' + '</i> </span> ' +
+    //     '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + 'CIAO' + '</span>' +
+    //     '</div>'
+    // });
+  }  
+
   showWidgetStyleUpdateNotification(message, notificationColor, icon) {
     const type = ['', 'info', 'success', 'warning', 'danger'];
     // const color = Math.floor((Math.random() * 4) + 1);

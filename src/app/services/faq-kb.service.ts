@@ -193,7 +193,7 @@ export class FaqKbService {
   }
 
 
-  public createRasaBot(name: string, bottype: string, rasaServerUrl: string, description: string) {
+  public createRasaBot(name: string, bottype: string, description: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -205,7 +205,7 @@ export class FaqKbService {
 
     // const isPreDeploy = false
 
-    const body = { 'name': name, 'type': bottype, 'url': rasaServerUrl, 'description': description, 'id_project': this.project._id, };
+    const body = { 'name': name, 'type': bottype, 'description': description, 'id_project': this.project._id, };
 
 
     this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
@@ -219,7 +219,6 @@ export class FaqKbService {
 
 
 
-
   public connectBotToRasaServer(botid: string, serverurl: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -228,19 +227,47 @@ export class FaqKbService {
     const options = new RequestOptions({ headers });
 
     const url = this.RASA_BOT_CREDENTIAL_BASE_URL + botid;
-    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
+    this.logger.log('[FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
 
     // const isPreDeploy = false
 
     const body = { 'serverUrl': serverurl };
 
 
-    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - BODY ', body);
+    this.logger.log('[FAQ-KB.SERV] - connectBotToRasaServer - BODY ', body);
     // let url = `http://localhost:3000/${project_id}/faq_kb/`;
-    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
+    this.logger.log('[FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
 
     return this.http
       .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  public getRasaBotServer(botid: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const url = this.RASA_BOT_CREDENTIAL_BASE_URL + botid;
+    console.log('[FAQ-KB.SERV] - getRasaBotServer - URL ', url);
+    return this.http
+      .get(url, options)
+      .map((res) => res.json());
+  }
+
+  public deleteRasaBotData(botid: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const url = this.RASA_BOT_CREDENTIAL_BASE_URL + botid;
+    console.log('[FAQ-KB.SERV] - getRasaBotServer - URL ', url);
+    return this.http
+      .delete(url, options)
       .map((res) => res.json());
   }
 

@@ -40,6 +40,9 @@ export class RasaBotComponent implements OnInit {
   depts_length: number;
 
   // goToEditBot = true;
+  showSpinner: any; 
+  tparams: any; // to check if are used 
+  openExternalBotIntegrationTutorial: any // to check if are used 
 
   newBot_name: string;
   newBot_Id: string;
@@ -69,7 +72,7 @@ export class RasaBotComponent implements OnInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      console.log("[CREATE - Rasa Bot] isChromeVerGreaterThan100 ", this.isChromeVerGreaterThan100);
+      this.logger.log("[CREATE - Rasa Bot] isChromeVerGreaterThan100 ", this.isChromeVerGreaterThan100);
     })
   }
 
@@ -85,25 +88,25 @@ export class RasaBotComponent implements OnInit {
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      console.log('[BOT-CREATE] --->  DEPTS RES ', departments);
+      this.logger.log('[BOT-CREATE] --->  DEPTS RES ', departments);
 
       if (departments) {
         this.depts_length = departments.length
-        console.log('[BOT-CREATE] --->  DEPTS LENGHT ', this.depts_length);
+        this.logger.log('[BOT-CREATE] --->  DEPTS LENGHT ', this.depts_length);
 
         if (this.depts_length === 1) {
           this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = false
           this.dept_id = departments[0]['_id']
 
-          console.log('[BOT-CREATE] --->  DEFAULT DEPT HAS BOT ', departments[0].hasBot);
+          this.logger.log('[BOT-CREATE] --->  DEFAULT DEPT HAS BOT ', departments[0].hasBot);
           if (departments[0].hasBot === true) {
 
-            console.log('[BOT-CREATE] --->  DEFAULT DEPT HAS BOT ');
-            console.log('[BOT-CREATE] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+            this.logger.log('[BOT-CREATE] --->  DEFAULT DEPT HAS BOT ');
+            this.logger.log('[BOT-CREATE] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
           } else {
 
             this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
-            console.log('[BOT-CREATE] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+            this.logger.log('[BOT-CREATE] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
           }
 
         }
@@ -114,35 +117,35 @@ export class RasaBotComponent implements OnInit {
           departments.forEach(dept => {
 
             if (dept.hasBot === true) {
-              console.log('[BOT-CREATE] --->  DEPT HAS BOT ');
-              console.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+              this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT ');
+              this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
             } else {
 
               this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
-              console.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+              this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
               this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
             }
           });
 
-          console.log('[BOT-CREATE] --->  DEPT ARRAY OF DEPT WITHOUT BOT ', this.depts_without_bot_array);
+          this.logger.log('[BOT-CREATE] --->  DEPT ARRAY OF DEPT WITHOUT BOT ', this.depts_without_bot_array);
         }
 
       }
     }, error => {
-      console.error('[BOT-CREATE --->  DEPTS RES - ERROR', error);
+      this.logger.error('[BOT-CREATE --->  DEPTS RES - ERROR', error);
     }, () => {
-      console.log('[BOT-CREATE --->  DEPTS RES - COMPLETE')
+      this.logger.log('[BOT-CREATE --->  DEPTS RES - COMPLETE')
 
     });
   }
 
   onSelectBotId() {
-    console.log('[BOT-CREATE] --->  onSelectBotId ', this.selected_bot_id);
+    this.logger.log('[BOT-CREATE] --->  onSelectBotId ', this.selected_bot_id);
     this.dept_id = this.selected_bot_id
     const hasFound = this.depts_without_bot_array.filter((obj: any) => {
       return obj.id === this.selected_bot_id;
     });
-    console.log('[BOT-CREATE] private logger: LoggerService --->  onSelectBotId dept found', hasFound);
+    this.logger.log('[BOT-CREATE] private logger: LoggerService --->  onSelectBotId dept found', hasFound);
 
     if (hasFound.length > 0) {
       this.selected_bot_name = hasFound[0]['name']
@@ -157,12 +160,12 @@ export class RasaBotComponent implements OnInit {
     this.displayInfoModal = 'block'
     this.SHOW_CIRCULAR_SPINNER = true;
 
-   console.log('[BOT-CREATE] HAS CLICKED CREATE NEW FAQ-KB');
-   console.log('[BOT-CREATE] Create Bot - NAME ', this.faqKbName);
-   console.log('[BOT-CREATE] Create Bot - SERVER URL ', this.rasaServerUrl);
-   console.log('[BOT-CREATE] Create Bot - PROJ ID ', this.project._id);
+    this.logger.log('[BOT-CREATE] HAS CLICKED CREATE NEW FAQ-KB');
+    this.logger.log('[BOT-CREATE] Create Bot - NAME ', this.faqKbName);
+    this.logger.log('[BOT-CREATE] Create Bot - SERVER URL ', this.rasaServerUrl);
+    this.logger.log('[BOT-CREATE] Create Bot - PROJ ID ', this.project._id);
 
- console.log('[BOT-CREATE] Create Bot - Bot DESCRIPTION ', this.rasaBotDescription);
+    this.logger.log('[BOT-CREATE] Create Bot - Bot DESCRIPTION ', this.rasaBotDescription);
 
   
     
@@ -170,9 +173,9 @@ export class RasaBotComponent implements OnInit {
     // ------------------------------------------------------------------------------------------------------------------------------
     // Create bot - note for the creation of a dialogflow bot see the bottom uploaddialogflowBotCredential() called in the complete() 
     // ------------------------------------------------------------------------------------------------------------------------------
-    this.faqKbService.createRasaBot(this.faqKbName,  'rasa', this.rasaServerUrl, this.rasaBotDescription)
+    this.faqKbService.createRasaBot(this.faqKbName,  'rasa', this.rasaBotDescription)
       .subscribe((faqKb) => {
-       console.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
+        this.logger.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
 
         if (faqKb) {
           this.newBot_name = faqKb.name;
@@ -198,7 +201,7 @@ export class RasaBotComponent implements OnInit {
 
          
       
-          this.connectRasaBotToRasaServer(this.newBot_Id, this.rasaServerUrl) 
+          this.connectRasaBotToRasaServer(this.newBot_Id, this.rasaServerUrl.trim()) 
 
           // if the bot type is 'dialogflow' with the bot-id returned from the response of 'createBot()' run another POST CALLBACK with the uploaded credential
 
@@ -226,12 +229,12 @@ export class RasaBotComponent implements OnInit {
       this.CREATE_BOT_ERROR = false;
       this.SHOW_CIRCULAR_SPINNER = false;
 
-     console.log('[BOT-CREATE] CREATE FAQKB - connectRasaServer * COMPLETE *');
+      this.logger.log('[BOT-CREATE] CREATE FAQKB - connectRasaServer * COMPLETE *');
     });
   }
 
   goTo_EditBot() {
-    console.log(' goTo_EditBot -  PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT)
+    this.logger.log(' goTo_EditBot -  PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT)
     if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === false) {
         this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/rasa"]);
     } else {
