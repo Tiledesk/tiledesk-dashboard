@@ -15,6 +15,7 @@
   min-height: 293px;
   box-shadow: 0 14px 30px 0 rgba(60, 72, 91, 0.22);
   border-radius: 10px;
+  height: 95%;
 }
 
 .bot-card:hover {
@@ -54,8 +55,19 @@
   .card---header--identity-bot {
     background-image: linear-gradient(to right, #d5400c, #aa330a);
   }
+
   .card---header--rasa-bot {
-    background-image: linear-gradient(to right,rgba(90, 23, 238, 0.6) #5a17ee);
+    background-image: linear-gradient(to right,#7a45f1, #5a17ee);
+  }
+}
+
+
+.aligned-row {
+  display: flex;
+  flex-flow: row wrap;
+
+  &::before {
+    display: block;
   }
 }
 
