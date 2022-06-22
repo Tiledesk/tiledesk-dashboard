@@ -226,10 +226,7 @@ export class AuthService {
             window['tiledesk_widget_autologin']()
           }
         } catch (err) {
-          this.logger.error(
-            '[AUTH-SERV] Calling tiledesk_widget_autologin err',
-            err,
-          )
+          this.logger.error( '[AUTH-SERV] Calling tiledesk_widget_autologin err', err )
         }
       })
     }
@@ -239,17 +236,11 @@ export class AuthService {
     if (firebase.messaging.isSupported()) {
       // Supported
       this.FCM_Supported = true
-      this.logger.log(
-        '[AUTH-SERV] *** >>>> FCM is Supported: ',
-        this.FCM_Supported,
-      )
+      this.logger.log( '[AUTH-SERV] *** >>>> FCM is Supported: ',   this.FCM_Supported)
     } else {
       // NOT Supported
       this.FCM_Supported = false
-      this.logger.log(
-        '[AUTH-SERV] *** >>>> FCM is Supported: ',
-        this.FCM_Supported,
-      )
+      this.logger.log( '[AUTH-SERV] *** >>>> FCM is Supported: ',  this.FCM_Supported )
     }
   }
 
