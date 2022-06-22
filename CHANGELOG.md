@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.37-rc7
+- Updates the home page section "Latest Updates"
+- Adds app notification to indicate that a RASA bot update was successful
+
 ### 2.2.37-rc6
 - Adds the "WhatsApp" option to the conversation type filter and the ability to reset the filter by selecting "All"
 - Change all occurrences of the string "Messenger" corresponding to the "Messenger" channel in "Facebook Messenger"
