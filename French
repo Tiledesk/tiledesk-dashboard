@@ -603,8 +603,8 @@
         "ClickHereToResend": "Cliquez ici pour renvoyer l'e-mail de vérification",
         "BotHasBeenRemoved": "ce bot a été supprimé",
         "YourDetails": "Vos détails",
-        "AddYourOwnPicture": "⚡️ Ajoutez votre propre photo pour donner à vos conversations une sensation plus intime !",
-        "AddYourOwnPicture_": "⚡️ Ajoutez votre propre photo pour donner à vos conversations une sensation plus intime, car votre visiteur peut voir à qui il parle !",
+        "AddYourOwnPicture": "⚡️ Add your own picture to give your conversations a more intimate feel!",
+        "AddYourOwnPicture_": "⚡️ Add your own picture to give your conversations a more intimate feel, as your visitor can see who they are talking to!",
         "PreferredSize": "Taille d'image préférée 128x128 px - Format d'image : .jpeg ou .png"
     },
     "ChangePsw": {
