@@ -63,7 +63,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     browserName = '';
     browserVersion = '';
-
+    count: number = 0;
     // private logger: LoggerService = LoggerInstance.getInstance();
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
@@ -146,10 +146,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.log('[APP-COMPONENT] AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
             firebase.initializeApp(firebase_conf);
 
-            this.listenToFCMForegroundMsgs();
+            // this.listenToFCMForegroundMsgs();
 
             // this.notify.showForegroungPushNotification("App installed successfully", 2, 'done');
-            
+
             localStorage.removeItem('firebase:previous_websocket_failure');
 
         } else {
@@ -210,13 +210,21 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const messaging = firebase.messaging()
         messaging.onMessage((payload) => {
             console.log('Message received. ', payload);
-            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text);
+            const link = payload.notification.click_action +  "#/conversation-detail/" + payload.data.recipient
+            console.log('Message received link ', link);
+            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link) ;
         });
     }
 
     sendForegroundMsg() {
+        // https://support-pre.tiledesk.com/chat-ionic5/#/conversation-detail/support-group-62728d1ca76e050040cee42e-025be323bc914f9f9f727ca0b7364eb7/Chicco/active
         console.log('snd test foreground notification');
-    this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti");
+        const link = "https://support-pre.tiledesk.com/chat-ionic5/#/conversation-detail/support-group-62728d1ca76e050040cee42e-b2d556d1e9d040bda36d56731059c886"
+        console.log('snd test foreground notification link ', link);
+        this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link);
+        this.count = this.count + 1;
+        console.log('snd test foreground notification count ', this.count);
+        this.wsMsgsService.foregroundRequestCount(this.count)
     }
 
     detectBrowserName() {

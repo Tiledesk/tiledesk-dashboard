@@ -49,7 +49,6 @@ export class WsMsgsService {
         this.CURRENT_USER_ID = user._id
         // console.log('[WS-MSGS-SERV] TOKEN ',   this.TOKEN)
       }
-
     });
   }
 
@@ -60,15 +59,15 @@ export class WsMsgsService {
       // // tslint:disable-next-line:no-debugger
       // debugger
       if (project) {
-
         this.project_id = project._id
         // set the list of messages to empty before subscribing
-
       }
-
     });
   }
 
+  foregroundRequestCount(msgscount) {
+   console.log('[WS-MSGS-SERV] - foreground Request Count ', msgscount)
+  } 
 
   // -----------------------------------------------------------------------------------------------------
   // methods for Request's Messages 

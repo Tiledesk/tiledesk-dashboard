@@ -57,9 +57,9 @@ export class NotifyService {
   constructor(
     public location: Location,
     private logger: LoggerService
-  
-  ) { 
-   
+
+  ) {
+
   }
 
 
@@ -257,31 +257,40 @@ export class NotifyService {
   }
 
 
-
-  showForegroungPushNotification(sender: string, msg:string) {
+  // '<img data-notify="icon" class="pull-left">' +
+  // icon: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png',
+  // (click)="openMsgInChat(${link})"
+  // icon_type: 'image',
+  showForegroungPushNotification(sender: string, msg: string, link: string) {
+    console.log('[NOTIFY-SERVICE] showForegroungPushNotification link', link)
+    $.notifyDefaults({
+      url_target: "_self"
+    });
     $.notify({
-      icon: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png',
       title: sender,
-      message: msg
-    },{
+      message: msg,
+      url: link,
+    }, {
       type: 'minimalist',
-      delay: 5000,
+      delay: 555555000,
       placement: {
         from: 'top',
         align: 'center'
       },
-      icon_type: 'image',
-      template: '<div data-notify="container" class="col-xs-5 col-sm-5 alert alert-{0}" role="alert">' +
-        '<img data-notify="icon" class="pull-left">' +
+      
+      template: '<div data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
+     ' <span data-notify="icon"></span>'+
         '<span data-notify="title">{1}</span>' +
         '<span data-notify="message">{2}</span>' +
-      '</div>'
+        `<a href="{3}" data-notify="url"></a>` +
+        '</div>'
     });
 
+    
     // const type = ['#F1F2F0', 'info', 'success', 'warning', 'danger'];
-  
+
     // const   icon_bckgrnd_color = '#F1F2F0'
-  
+
     // this.notify = $.notify({
     //   // icon: 'glyphicon glyphicon-warning-sign',
     //   // message: message
@@ -308,7 +317,9 @@ export class NotifyService {
     //     '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + 'CIAO' + '</span>' +
     //     '</div>'
     // });
-  }  
+  }
+
+  openMsgInChat() {}
 
   showWidgetStyleUpdateNotification(message, notificationColor, icon) {
     const type = ['', 'info', 'success', 'warning', 'danger'];
@@ -509,10 +520,10 @@ export class NotifyService {
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan(onlyOwnerCanManageTheAccountPlanMsg: string, learnMoreAboutDefaultRoles: string) {
-   
+
     const el = document.createElement('div')
     // el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + learnMoreAboutDefaultRoles + "</a>"
-    el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' +`<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
