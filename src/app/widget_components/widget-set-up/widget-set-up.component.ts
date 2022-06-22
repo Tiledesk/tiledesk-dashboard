@@ -2365,6 +2365,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     if (event.length === 0) {
       
       this.customLauncherURL = null
+      this.hasOwnLauncherLogo = false;
       // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.customLauncherURL  ', this.customLauncherURL);
     } else {
 

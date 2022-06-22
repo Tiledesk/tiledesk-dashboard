@@ -754,13 +754,11 @@
 													<!-- (blur)="onBlurChangeLogo()"  -->
 													<!-- (ngModelChange)="logoChange($event)"  -->
 													<input class="custom-input" id="change-logo"
-														(ngModelChange)="logoChange($event)" 
-														[(ngModel)]="logoUrl"
+														(ngModelChange)="logoChange($event)" [(ngModel)]="logoUrl"
 														style="font-weight: 400;"
 														[ngClass]="{'image-not-exist-input-border' : IMAGE_EXIST === false, 'input-is-disabled': LOGO_IS_ON === false}"
 														placeholder="{{ 'YourLogoURL' | translate }}"
-														[disabled]="LOGO_IS_ON === false"
-														(focus)="onFocusLogoInput()">
+														[disabled]="LOGO_IS_ON === false" (focus)="onFocusLogoInput()">
 
 													<span *ngIf="IMAGE_EXIST === false"
 														style="color:#f44336; display: block;font-size: 12px;">
@@ -806,10 +804,10 @@
 											<label class="col-xs-6 control-label widget-settings-control-head-label">
 
 												{{'CustomLauncherButton' | translate }}
-											<span matTooltipClass="custom-mat-tooltip-in-widget-setup"
-												matTooltip=" {{'CustomizeTheWidgetLaunchButtonWithYourLogo' | translate}}"
-												#tooltip="matTooltip" matTooltipPosition='below'
-												matTooltipHideDelay="100">
+												<span matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip=" {{'CustomizeTheWidgetLaunchButtonWithYourLogo' | translate}}"
+													#tooltip="matTooltip" matTooltipPosition='below'
+													matTooltipHideDelay="100">
 													<i class="material-icons" style="font-size: 18px;
 														color: #566787;
 														cursor: pointer;
@@ -906,12 +904,14 @@
 															<!-- ---------------------------------------------- -->
 															<!-- Custom launcher button IMG of the end-user -->
 															<!-- ---------------------------------------------- -->
-															<div *ngIf="hasOwnLauncherLogo === true && featureIsAvailable === true"
-																id="custom-launcher-button-in-widget-setup">
-																<img alt="custom-launcher-logo"
-																	[src]="customLauncherURL"
-																	style="height: 60px; width: 60">
-															</div>
+															<ng-container *ngIf="featureIsAvailable === true">
+																<div *ngIf="hasOwnLauncherLogo === true"
+																	id="custom-launcher-button-in-widget-setup">
+																	<img alt="custom-launcher-logo"
+																		[src]="customLauncherURL"
+																		style="height: 60px; width: 60">
+																</div>
+															</ng-container>
 														</div>
 
 														<div class="col-xs-10">
