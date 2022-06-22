@@ -146,7 +146,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.log('[APP-COMPONENT] AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
             firebase.initializeApp(firebase_conf);
 
-            // this.listenToFCMForegroundMsgs();
+            this.listenToFCMForegroundMsgs();
 
             // this.notify.showForegroungPushNotification("App installed successfully", 2, 'done');
 
