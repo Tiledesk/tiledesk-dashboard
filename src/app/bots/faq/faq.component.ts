@@ -1166,9 +1166,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
     }, (error) => {
       this.logger.error('[BOT-CREATE] UPDATE  - RasaServer - ERROR ', error);
-
+      this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
     }, () => {
-
+      this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
       this.logger.log('[BOT-CREATE] CREATE FAQKB - RasaServer * COMPLETE *');
     });
   }
