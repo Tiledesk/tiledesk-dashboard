@@ -603,8 +603,8 @@
         "ClickHereToResend": "انقر هنا لإعادة إرسال رسالة التحقق",
         "BotHasBeenRemoved": "تمت إزالة هذا الروبوت",
         "YourDetails": "تفاصيلك",
-        "AddYourOwnPicture": "⚡️ أضف صورتك الخاصة لإضفاء طابع أكثر حميمية على محادثاتك!",
-        "AddYourOwnPicture_": "⚡️ أضف صورتك الخاصة لإضفاء طابع أكثر حميمية على محادثاتك ، حيث يمكن للزائر معرفة من يتحدثون إليه!",
+        "AddYourOwnPicture": "⚡️ Add your own picture to give your conversations a more intimate feel!",
+        "AddYourOwnPicture_": "⚡️ Add your own picture to give your conversations a more intimate feel, as your visitor can see who they are talking to!",
         "PreferredSize": "حجم الصورة المفضل 128 × 128 بكسل - تنسيق الصورة: .jpeg أو .png"
     },
     "ChangePsw": {
