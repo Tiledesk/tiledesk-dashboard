@@ -603,8 +603,8 @@
         "ClickHereToResend": "Нажмите здесь, чтобы повторно отправить электронное письмо с подтверждением",
         "BotHasBeenRemoved": "этот бот был удален",
         "YourDetails": "Ваши данные",
-        "AddYourOwnPicture": "⚡️ Добавьте свою фотографию, чтобы сделать ваши разговоры более интимными!",
-        "AddYourOwnPicture_": "⚡️ Добавьте свою фотографию, чтобы придать вашим разговорам более интимный вид, так как ваш посетитель может видеть, с кем он разговаривает!",
+        "AddYourOwnPicture": "⚡️ Add your own picture to give your conversations a more intimate feel!",
+        "AddYourOwnPicture_": "⚡️ Add your own picture to give your conversations a more intimate feel, as your visitor can see who they are talking to!",
         "PreferredSize": "Предпочтительный размер изображения 128x128 пикселей - Формат изображения: .jpeg или .png"
     },
     "ChangePsw": {
