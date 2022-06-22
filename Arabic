@@ -2094,6 +2094,7 @@
     "EnterTheURLOfTheLauncherButtonImage": "أدخل عنوان URL لصورة زر المشغل",
     "CustomizeTheWidgetLaunchButtonWithYourLogo": "تخصيص زر تشغيل القطعة مع شعارك. يمكن أن يكون تنسيق صورة الشعار بتنسيق PNG أو JPG أو SVG. تعمل الصور (60 × 60 بكسل) ذات الخلفيات الشفافة بشكل أفضل",
     "ConnectYourRASAServer": "قم بتوصيل خادم RASA الخاص بك",
+    "ReadMoreOnOurCHANGELOGPage": "Read more on our CHANGELOG page",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",
