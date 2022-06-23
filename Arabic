@@ -417,7 +417,7 @@
     "ru": "الروسية",
     "tr": "اللغة التركية",
     "sr": "الصربية",
-    "ar": "Arabic",
+    "ar": "عربي",
     "ChooseALanguage": "اختر لغة",
     "Delete": "حذف",
     "NoUnservedRequests": "لا محادثات غير معينة",
@@ -604,8 +604,8 @@
         "ClickHereToResend": "انقر هنا لإعادة إرسال رسالة التحقق",
         "BotHasBeenRemoved": "تمت إزالة هذا الروبوت",
         "YourDetails": "تفاصيلك",
-        "AddYourOwnPicture": "⚡️ Add your own picture to give your conversations a more intimate feel!",
-        "AddYourOwnPicture_": "⚡️ Add your own picture to give your conversations a more intimate feel, as your visitor can see who they are talking to!",
+        "AddYourOwnPicture": "⚡️ أضف صورتك الخاصة لإضفاء طابع أكثر حميمية على محادثاتك!",
+        "AddYourOwnPicture_": "⚡️ أضف صورتك الخاصة لإضفاء طابع أكثر حميمية على محادثاتك ، حيث يمكن للزائر معرفة من يتحدثون إليه!",
         "PreferredSize": "حجم الصورة المفضل 128 × 128 بكسل - تنسيق الصورة: .jpeg أو .png"
     },
     "ChangePsw": {
@@ -2095,7 +2095,7 @@
     "EnterTheURLOfTheLauncherButtonImage": "أدخل عنوان URL لصورة زر المشغل",
     "CustomizeTheWidgetLaunchButtonWithYourLogo": "تخصيص زر تشغيل القطعة مع شعارك. يمكن أن يكون تنسيق صورة الشعار بتنسيق PNG أو JPG أو SVG. تعمل الصور (60 × 60 بكسل) ذات الخلفيات الشفافة بشكل أفضل",
     "ConnectYourRASAServer": "قم بتوصيل خادم RASA الخاص بك",
-    "ReadMoreOnOurCHANGELOGPage": "Read more on our CHANGELOG page",
+    "ReadMoreOnOurCHANGELOGPage": "اقرأ المزيد على صفحة CHANGELOG",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",
