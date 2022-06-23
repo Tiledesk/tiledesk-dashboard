@@ -10,6 +10,7 @@ export class WidgetSharedComponent implements OnInit {
   availableTranslations: Array<any> = []
 
   languages = [
+    { code: 'ar', name: 'Arabic', type: '--- Pre-translated ---' },
     { code: 'en', name: 'English', type: '--- Pre-translated ---' },
     { code: 'fr', name: 'French', type: '--- Pre-translated ---' },
     { code: 'de', name: 'German', type: '--- Pre-translated ---' },
@@ -25,7 +26,6 @@ export class WidgetSharedComponent implements OnInit {
     { code: 'ak', name: 'Akan', type: '--- Needs own translation ---' },
     { code: 'sq', name: 'Albanian', type: '--- Needs own translation ---' },
     { code: 'am', name: 'Amharic', type: '--- Needs own translation ---' },
-    { code: 'ar', name: 'Arabic', type: '--- Needs own translation ---' },
     { code: 'an', name: 'Aragonese', type: '--- Needs own translation ---' },
     { code: 'hy', name: 'Armenian', type: '--- Needs own translation ---' },
     { code: 'as', name: 'Assamese', type: '--- Needs own translation ---' },
