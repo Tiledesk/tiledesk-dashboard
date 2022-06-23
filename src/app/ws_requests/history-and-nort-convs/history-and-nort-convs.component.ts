@@ -207,7 +207,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     { id: 'telegram', name: 'Telegram' },
     { id: 'messenger', name: 'Facebook Messenger' },
     { id: 'email', name: 'Email' },
-    { id: 'form', name: 'Ticket' },
+    { id: 'form', name: 'ticket' },
     { id: 'whatsapp', name: 'WhatsApp' }
   ]
 
@@ -1555,15 +1555,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.selecteTagColor = null
     }
 
-    if (this.conversation_type) {
+    if (this.conversation_type && this.conversation_type !== 'all') {
       this.conversationTypeValue = this.conversation_type
 
     } else {
       this.conversationTypeValue = '';
 
     }
-
-
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
@@ -1589,6 +1587,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + '&' +
       'channel=' + this.conversationTypeValue
 
+    // console.log('clearFullText queryString ' , this.queryString ) 
     this.pageNo = 0
     this.getRequests();
 
@@ -1629,8 +1628,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.fullText_applied_filter = null;
     this.selecteTagName = null
     this.selecteTagColor = null
-
-
+    this.conversationTypeValue = 'all'
     // tslint:disable-next-line:max-line-length
     this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=' + '&' + 'participant=' + '&' + 'requester_email=' + '&' + 'tags=' + '&' + 'channel=';
     this.pageNo = 0;
