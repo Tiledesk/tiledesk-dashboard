@@ -376,7 +376,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   toggleDisplayTeammates() {
-    this.DISPLAY_TEAMMATES = !this.DISPLAY_TEAMMATES
+    this.DISPLAY_TEAMMATES = !this.DISPLAY_TEAMMATES;
+    // console.log('DISPLAY_TEAMMATES ',   this.DISPLAY_TEAMMATES)
     // if (this.DISPLAY_TEAMMATES === false) {
     //   this.DISPLAY_TEAMMATES = true;
     //   this.logger.log('[HOME] > DISPLAY_TEAMMATES', this.DISPLAY_TEAMMATES)
@@ -386,8 +387,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // }
   }
 
-  toggleDisplayChatbots() {
-    this.DISPLAY_CHATBOTS = !this.DISPLAY_CHATBOTS
+  toggleDisplayChatbots(DISPLAY_CHATBOTS) {
+    // this.DISPLAY_CHATBOTS = !this.DISPLAY_CHATBOTS
+    // console.log('DISPLAY_CHATBOTS ',   this.DISPLAY_CHATBOTS)
     // if (this.DISPLAY_CHATBOTS === false) {
     //   this.DISPLAY_CHATBOTS = true;
     //   this.logger.log('[HOME] > DISPLAY_CHATBOTS', this.DISPLAY_CHATBOTS)

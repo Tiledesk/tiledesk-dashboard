@@ -144,7 +144,7 @@
           </div>
 
           <!-- /// CHATBOT AGENTS -->
-          <div class="served-by-desktop-a--home-header" (click)="toggleDisplayChatbots()">
+          <div class="served-by-desktop-a--home-header" (click)="toggleDisplayChatbots(DISPLAY_CHATBOTS = !DISPLAY_CHATBOTS)">
             <ng-container *ngIf="!DISPLAY_CHATBOTS">
               <div class="served-by-desktop-b">
                 <div class="served-by-desktop-d">
@@ -1257,7 +1257,7 @@
                 <li class="arrow-container" style="font-size: 18px; color: #0f62ff; font-weight: 400;"
                   (click)="goToChangelogBlog()">
                   <div id="arrow_1" class="arrow-wrapper">
-                    <div class="text-block" style="margin-right: 16px;position: relative;top: -2px;">
+                    <div class="text-block" style="margin-right: 16px;position: relative;top: -2px;line-height: 24px;">
                       <!-- {{ 'ReadMoreOnOurBlog' | translate }} -->
                       {{ 'ReadMoreOnOurCHANGELOGPage' | translate }}
                       
