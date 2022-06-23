@@ -191,7 +191,11 @@
                 <div class="col-sm-6">
                   <label for="contain" class="col-sm-12 label-7695a5">
                     {{ 'HistoryPage.DateRange' | translate }}
+                    <span *ngIf="date_picker_is_disabled" class="pro-only-badge" style="top:-1px !important">
+                      {{'ProOnly' | translate }}
+                    </span>
                   </label>
+
                   <div class="col-sm-6 left-date-picker">
                     <my-date-picker placeholder="{{ 'From' | translate }}" name="mydate"
                       (dateChanged)="startDateSelected($event)" [options]="myDatePickerOptions" [(ngModel)]="startDate"
@@ -251,8 +255,8 @@
                 </div>
               </div>
 
-              <div class="row" *ngIf="!IS_HERE_FOR_HISTORY">
-                <div class="col-sm-6">
+              <div class="row">
+                <div class="col-sm-6" *ngIf="!IS_HERE_FOR_HISTORY">
                   <label class="col-sm-12 label-7695a5">
                     {{ "Status" | translate }}
                   </label>
@@ -347,8 +351,9 @@
   <!--  ---------------------------------------------------------------- -->
   <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;"
     *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor 
-    || (conversation_type && conversation_type !== 'all') || (conversationTypeValue && conversationTypeValue !== 'all')">
-   
+    || (conversation_type && conversation_type !== 'all') || (conversationTypeValue && conversationTypeValue !== 'all')  || conversationTypeValue !== undefined ">
+
+    <!-- conversation_type {{ conversation_type }} - conversationTypeValue {{conversationTypeValue}} -->
     <div class="applied-filter-title">
       {{'AppliedFilters' | translate}}
     </div>
@@ -369,15 +374,11 @@
     </div>
 
     <div *ngIf="startDateFormatted" class="applied-filter">
-
       <span *ngIf="startDateFormatted && !endDateFormatted">
-
         after
       </span>
-
       {{startDateFormatted}}
       <span *ngIf="endDateFormatted">
-
         - {{endDateFormatted}}
       </span>
     </div>
@@ -404,22 +405,32 @@
       {{selecteTagNameValue}}
     </div>
 
-   
-    <div *ngIf="conversation_type && conversationTypeValue" class="applied-filter">
-      <span
-        *ngIf="conversationTypeValue === 'chat21' && conversationTypeValue  !== 'all' && conversation_type !== 'all'">
+
+    <div *ngIf="conversationTypeValue  !== 'all' && conversation_type !== 'all'" class="applied-filter">
+      <span *ngIf="conversationTypeValue === 'chat21' || conversation_type  === 'chat21'">
         Chat
       </span>
 
-      <span *ngIf="conversationTypeValue === 'form' && conversationTypeValue  !== 'all' && conversation_type !== 'all'">
+      <span *ngIf="conversationTypeValue === 'form' || conversation_type  === 'form'">
         Ticket
       </span>
 
-
-      <span style="text-transform: capitalize;"
-        *ngIf="conversationTypeValue !== 'chat21' && conversationTypeValue !== 'form' && conversation_type !== 'all' && conversationTypeValue  !== 'all' ">
-        {{conversationTypeValue}}
+      <span *ngIf="conversationTypeValue === 'messenger' || conversation_type  === 'messenger'">
+        Facebook messenger
       </span>
+
+      <span *ngIf="conversationTypeValue === 'telegram' || conversation_type  === 'telegram'">
+        Telegram
+      </span>
+
+      <span *ngIf="conversationTypeValue === 'whatsapp' || conversation_type  === 'whatsapp'">
+        WhatsApp
+      </span>
+
+      <span *ngIf="conversationTypeValue === 'email' || conversation_type  === 'email'">
+        Email
+      </span>
+
 
     </div>
 

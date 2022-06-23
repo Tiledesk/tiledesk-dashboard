@@ -713,7 +713,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           const msgsArray = []
           wsmsgs.forEach((msgs, index) => {
             if ((msgs)) {
-              if ( (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') ||  (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support') ){
+              if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
                 // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
               } else {
                 msgsArray.push(msgs)
@@ -1237,7 +1237,43 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   requestsTypeSelectFromAdvancedOption() {
-    this.logger.log('this.conversation_type: ', this.conversation_type)
+    console.log('this.conversationTypeValue: ', this.conversationTypeValue)
+    console.log('this.conversation_type: ', this.conversation_type)
+    if (this.conversation_type === 'all') {
+      this.conversationTypeValue = 'all'
+    }
+
+    if (this.conversation_type === 'chat21') {
+      this.conversationTypeValue = 'chat21'
+    }
+
+    
+    if (this.conversation_type === 'telegram') {
+      this.conversationTypeValue = 'telegram'
+    }
+
+    if (this.conversation_type === 'messenger') {
+      this.conversationTypeValue = 'messenger'
+    }
+
+    if (this.conversation_type === 'messenger') {
+      this.conversationTypeValue = 'messenger'
+    }
+
+   
+
+    if (this.conversation_type === 'email') {
+      this.conversationTypeValue = 'email'
+    }
+
+    if (this.conversation_type === 'form') {
+      this.conversationTypeValue = 'form'
+    }
+
+    if (this.conversation_type === 'whatsapp') {
+      this.conversationTypeValue = 'whatsapp'
+    }
+
 
 
   }

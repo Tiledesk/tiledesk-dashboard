@@ -850,3 +850,16 @@ p.member:hover {
   color:#000 !important ;
   font-weight: 400 !important ;
 }
+
+
+.pro-only-badge {
+  background: #3ea9f5;
+  font-size: 9px;
+  color: #fff;
+  border-radius: 3px;
+  padding: 3px 6px;
+  text-transform: uppercase;
+  font-weight: 400;
+  position: relative;
+  top: -3px;
+}
