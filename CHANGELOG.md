@@ -3,8 +3,6 @@
 
 ### 2.2.37
 - Deploys in production
-- the ability to change the default widget launch button
-- widget footer unbranding and customizing in Settings > Widget within the Pro Plan
 - a pop-up window of the conversation’s message showing the main information of the conversation
 - an enhanced App Sidebar: change dynamically  the height of the app iframe based on the number of apps installed
 - the ability to create RASA-type bots
