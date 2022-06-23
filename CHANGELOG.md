@@ -9,6 +9,7 @@
 - an enhanced App Sidebar: change dynamically  the height of the app iframe based on the number of apps installed
 - the ability to create RASA-type bots
 - Improves the panel displayed on the hover on the messages of conversations by not displaying the "info" type messages
+- Fixes the bug: Clear full text search does not work on non-real time conversation page and conversation history page
 
 
 ### 2.2.37-rc7
