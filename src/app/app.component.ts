@@ -15,6 +15,8 @@ import { environment } from '../environments/environment';
 export const firebaseConfig = environment.firebase;
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/messaging';
+
 import { AppConfigService } from './services/app-config.service';
 import { WsRequestsService } from './services/websocket/ws-requests.service';
 import { WsMsgsService } from './services/websocket/ws-msgs.service';
@@ -145,8 +147,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const firebase_conf = appConfigService.getConfig().firebase;
             this.logger.log('[APP-COMPONENT] AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
             firebase.initializeApp(firebase_conf);
+        
 
-            this.listenToFCMForegroundMsgs();
+            // this.listenToFCMForegroundMsgs();
 
             // this.notify.showForegroungPushNotification("App installed successfully", 2, 'done');
 
@@ -210,9 +213,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const messaging = firebase.messaging()
         messaging.onMessage((payload) => {
             console.log('Message received. ', payload);
-            const link = payload.notification.click_action +  "#/conversation-detail/" + payload.data.recipient
-            console.log('Message received link ', link);
-            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link) ;
+            // const link = payload.notification.click_action +  "#/conversation-detail/" + payload.data.recipient
+            // console.log('Message received link ', link);
+            // this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link) ;
         });
     }
 
