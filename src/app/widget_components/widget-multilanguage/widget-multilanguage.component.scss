@@ -11,7 +11,7 @@
   padding-left: 0px;
   display: flex;
   flex-grow: 1;
-  z-index: 1049;
+  // z-index: 1049;
 }
 
 .bottom-nav-widget-translations li {
@@ -23,6 +23,18 @@
   height: 52px;
   cursor: pointer;
 }
+
+@media (max-width: 991px){
+  .bottom-nav-widget-translations li { 
+      
+      z-index: 1049;
+  }
+
+  .bottom-nav-widget-translations {
+    top: 4px !important;
+  }
+}
+
 
 .bottom-nav-widget-translations li a {
   padding: 18px 15px;
@@ -107,15 +119,7 @@ $f21blue: #039be5;
   }
 }
 
-@media (max-width: 991px) {
-  .bottom-nav-widget-translations {
-    top: 4px !important;
-  }
 
-  // .chart-wrapper {
-  //     margin-top:60px !important;
-  // }
-}
 
 @media (max-width: 370px) {
   .bottom-nav-widget-translations {
