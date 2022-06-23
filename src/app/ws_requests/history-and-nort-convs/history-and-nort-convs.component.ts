@@ -1237,8 +1237,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   requestsTypeSelectFromAdvancedOption() {
-    console.log('this.conversationTypeValue: ', this.conversationTypeValue)
-    console.log('this.conversation_type: ', this.conversation_type)
+    // console.log('this.conversationTypeValue: ', this.conversationTypeValue)
+    // console.log('this.conversation_type: ', this.conversation_type)
     if (this.conversation_type === 'all') {
       this.conversationTypeValue = 'all'
     }
