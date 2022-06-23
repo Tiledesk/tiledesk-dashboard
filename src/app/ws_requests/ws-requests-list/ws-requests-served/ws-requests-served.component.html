@@ -36,13 +36,13 @@
           text-align: right;
           padding-right: 3px;
           padding-bottom: 4px !important;">
-     
-              <label for="allServedCheckbox">
-                <input id="allServedCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
-                  type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
-                  (click)="selectAll($event)">
-              </label>
-            
+
+            <label for="allServedCheckbox">
+              <input id="allServedCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
+                type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
+                (click)="selectAll($event)">
+            </label>
+
 
           </th>
 
@@ -50,15 +50,15 @@
           <!-- Requests Icons th (in this th put the button to archive -->
           <!-- ---------------------------------------------------------- -->
           <th style="padding-top: 6px;padding-bottom: 6px !important;">
-            <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn tool_tip" type="button" 
-            (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
-            matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+            <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn tool_tip" type="button"
+              (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
+              matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+              matTooltipHideDelay="100">
 
-            <span class="material-icons archive-icon"
-              style="vertical-align:middle; cursor: pointer; color:grey;">
-              archive
-            </span>
-          </button>
+              <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;">
+                archive
+              </span>
+            </button>
 
           </th>
 
@@ -172,8 +172,7 @@
               <label>
                 <!-- allChecked === true -->
                 <input type="checkbox" class="form-check-input" [checked]="request?.isSelected"
-                  style="width: 16px;height: 16px;" value="{{ request.request_id }}"
-                  (click)="change(request)"
+                  style="width: 16px;height: 16px;" value="{{ request.request_id }}" (click)="change(request)"
                   [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
               </label>
             </div>
@@ -189,13 +188,13 @@
             THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
             <!-- rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}" -->
             <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
-              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
+              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                 <span *ngIf="!request?.subject">
                   <img style="width: 30px;" src="assets/img/request_icons/status200_joined.svg" class="img-fluid"
-                  matTooltipClass="mat-white-tooltip"
-                  matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
-                  #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                    matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">
                 </span>
 
                 <!-- --------------------------------- -->
@@ -203,8 +202,7 @@
                 <!-- --------------------------------- -->
                 <span *ngIf="request?.subject">
                   <img style="width: 30px;" src="assets/img/request_icons/status200_joined_internal.svg"
-                    class="img-fluid"  
-                    matTooltipClass="mat-white-tooltip"
+                    class="img-fluid" matTooltipClass="mat-white-tooltip"
                     matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">
 
@@ -221,10 +219,9 @@
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
                 <span *ngIf="!request?.subject">
-                  <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg" class="img-fluid" 
-                  matTooltipClass="mat-white-tooltip"
-                  matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
-                  matTooltipPosition='right' matTooltipHideDelay="100">
+                  <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined.svg" class="img-fluid"
+                    matTooltipClass="mat-white-tooltip" matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
 
                 </span>
 
@@ -235,10 +232,9 @@
                 <span *ngIf="request?.subject">
 
                   <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
-                    class="img-fluid" 
-                    matTooltipClass="mat-white-tooltip"
-                    matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}"
-                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                    class="img-fluid" matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">
                 </span>
 
               </span>
@@ -256,63 +252,67 @@
               #{{request?.ticket_id }}
             </span>
             <!-- *ngIf="request?.channel?.name !== 'email'" -->
-            <p  class="column-td" 
-              style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"  
-              [tooltip]="HtmlContent" content-type="template" >
+            <p class="column-td" style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"
+              [tooltip]="HtmlContent" content-type="template">
               {{ request?.first_text }}
 
             </p>
 
-  
-          <ng-template #HtmlContent>
-            <div class="ng2-tooltip-header">
-              <span class="ng2-tooltip-badge--assigned-to-cu" *ngIf="request?.status == 200 && request?.currentUserIsJoined === true && !request?.subject" >
-                {{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}
-              </span>
-              <span class="ng2-tooltip-badge--assigned-to-cu" *ngIf="request?.status == 200 && request?.currentUserIsJoined === true && request?.subject" >
-                {{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}
-              </span>
-              <span class="ng2-tooltip-badge--assigned" *ngIf="request?.status == 200 && !request?.currentUserIsJoined === true && !request?.subject" >
-                {{ 'RequestMsgsPage.RequestServedBy' | translate }}
-              </span>
-              <span class="ng2-tooltip-badge--assigned" *ngIf="request?.status == 200 && !request?.currentUserIsJoined === true && request?.subject" >
-                {{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}
-              </span>
-              
-              <span class="ng2-tooltip-ticket-id">#{{request?.ticket_id}}</span>
-              <span class="ng2-tooltip-priority">  
-                <span style="color: #68737d; font-weight:300"> {{'Priority' | translate }}:</span>  
-                {{request?.priority | translate}}
-              </span>
-              <span class="ng2-tooltip-channel">  
-                <span style="color: #68737d; font-weight:300"> {{'MessageChannel' | translate }}:</span>  
-                <span  *ngIf="request?.channel?.name === 'chat21'"> Chat </span> 
-                <span  *ngIf="request?.channel?.name === 'telegram'"> Telegram </span>
-                <span  *ngIf="request?.channel?.name === 'whatsapp'"> WhatsApp </span>  
-                <span  *ngIf="request?.channel?.name === 'messenger'">Facebook Messenger </span>
-                <span  *ngIf="request?.channel?.name === 'email'"> Email </span>
-                <span  *ngIf="request?.channel?.name === 'form'"> Form </span>
-                
-              </span>
-            </div>
-            <p class='ng2-tooltip-subject' *ngIf='request?.subject'>
-              <span style="color: #68737d; font-weight:300"> {{'Subject' | translate }}:</span> {{request?.subject}}
-            </p> 
-            <div class='ng2-tooltip-firt-text' [innerHTML]="request?.first_text  | htmlEntitiesEncode | marked">
-         
-            </div>
-            <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>
-            <hr class='ng2-tooltip-divider-line'> 
-            <div class='ng2-latest-comment-sender-and-date-wpr'> 
-              <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p>
-                <p class='ng2-comment-date'>  {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
-            </div> 
-            <p class='ng2-latest-comment' [innerHTML]="request?.msgsArray[0]?.text  | htmlEntitiesEncode | marked">  
-          
-            </p>
-          </ng-template>
 
-       
+            <ng-template #HtmlContent>
+              <div class="ng2-tooltip-header">
+                <span class="ng2-tooltip-badge--assigned-to-cu"
+                  *ngIf="request?.status == 200 && request?.currentUserIsJoined === true && !request?.subject">
+                  {{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}
+                </span>
+                <span class="ng2-tooltip-badge--assigned-to-cu"
+                  *ngIf="request?.status == 200 && request?.currentUserIsJoined === true && request?.subject">
+                  {{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}
+                </span>
+                <span class="ng2-tooltip-badge--assigned"
+                  *ngIf="request?.status == 200 && !request?.currentUserIsJoined === true && !request?.subject">
+                  {{ 'RequestMsgsPage.RequestServedBy' | translate }}
+                </span>
+                <span class="ng2-tooltip-badge--assigned"
+                  *ngIf="request?.status == 200 && !request?.currentUserIsJoined === true && request?.subject">
+                  {{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}
+                </span>
+
+                <span class="ng2-tooltip-ticket-id">#{{request?.ticket_id}}</span>
+                <span class="ng2-tooltip-priority">
+                  <span style="color: #68737d; font-weight:300"> {{'Priority' | translate }}:</span>
+                  {{request?.priority | translate}}
+                </span>
+                <span class="ng2-tooltip-channel">
+                  <span style="color: #68737d; font-weight:300"> {{'MessageChannel' | translate }}:</span>
+                  <span *ngIf="request?.channel?.name === 'chat21'"> Chat </span>
+                  <span *ngIf="request?.channel?.name === 'telegram'"> Telegram </span>
+                  <span *ngIf="request?.channel?.name === 'whatsapp'"> WhatsApp </span>
+                  <span *ngIf="request?.channel?.name === 'messenger'">Facebook Messenger </span>
+                  <span *ngIf="request?.channel?.name === 'email'"> Email </span>
+                  <span *ngIf="request?.channel?.name === 'form'"> Form </span>
+
+                </span>
+              </div>
+              <p class='ng2-tooltip-subject' *ngIf='request?.subject'>
+                <span style="color: #68737d; font-weight:300"> {{'Subject' | translate }}:</span> {{request?.subject}}
+              </p>
+              <div class='ng2-tooltip-firt-text' [innerHTML]="request?.first_text  | htmlEntitiesEncode | marked">
+              </div>
+              <span *ngIf="request?.msgsArray.length > 0">
+                <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>
+                <hr class='ng2-tooltip-divider-line'>
+                <div class='ng2-latest-comment-sender-and-date-wpr'>
+                  <p class='ng2-comment-sender'> {{ request?.msgsArray[0]?.senderFullname}} </p>
+                  <p class='ng2-comment-date'> {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
+                </div>
+
+                <p class='ng2-latest-comment' [innerHTML]="request?.msgsArray[0]?.text  | htmlEntitiesEncode | marked">
+                </p>
+              </span>
+            </ng-template>
+
+
             <!-- *ngIf="request?.channel?.name === 'email'" -->
             <!-- <p  class="column-td" 
             style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;" 
@@ -322,7 +322,7 @@
           </p> -->
 
 
-             
+
             <!-- --------------------------------------- -->
             <!-- Request Tag -->
             <!-- --------------------------------------- -->
@@ -550,7 +550,7 @@
             <!-- REQUESTER VERIFIED ICON (SERVED REQUEST SECTION) -->
             <!-- [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" -->
             <span class="requester-avatar-wrapper">
-              <span class="requester-avatar" 
+              <span class="requester-avatar"
                 [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
                 [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, requester_avatar_not_has_email: !request?.lead?.email }">
                 <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
@@ -888,7 +888,7 @@
                         <!-- [ngStyle]="{'background-color': agent?.fillColour }" -->
                         <div *ngIf="!agent?.hasImage"
                           [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
-                          class="altenative-avatar-wrap" 
+                          class="altenative-avatar-wrap"
                           [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.fillColour + ')'}">
                           <span class="altenative-avatar">
                             {{ agent?.fullname_initial }}

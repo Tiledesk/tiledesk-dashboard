@@ -712,11 +712,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           // console.log('[WS-REQUESTS-MSGS] getWsMsgs$ request', request)
           const msgsArray = []
           wsmsgs.forEach((msgs, index) => {
-            // && (this.currentUserID !== msgs['sender'])
-            if ((id_request === msgs['recipient'])) {
-
-              // console.log('[WS-REQUESTS-MSGS] for id request ', id_request, ' msgs ', msgs, 'index ', index)
-              msgsArray.push(msgs)
+            if ((msgs)) {
+              if ( (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') ||  (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support') ){
+                // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+              } else {
+                msgsArray.push(msgs)
+              }
             }
           });
           // console.log('[WS-REQUESTS-MSGS] msgsArray ',msgsArray)
