@@ -8,6 +8,7 @@
 - a pop-up window of the conversation’s message showing the main information of the conversation
 - an enhanced App Sidebar: change dynamically  the height of the app iframe based on the number of apps installed
 - the ability to create RASA-type bots
+- new language available: Arabic
 - Improves the panel displayed on the hover on the messages of conversations by not displaying the "info" type messages
 - Fixes the bug: Clear full text search does not work on non-real time conversation page and conversation history page
 
