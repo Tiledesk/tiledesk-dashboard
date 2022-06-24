@@ -28,6 +28,8 @@ import { environment } from '../../../environments/environment';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { WsRequestsService } from './../../services/websocket/ws-requests.service';
+import { WsMsgsService } from './../../services/websocket/ws-msgs.service';
+
 import { LoggerService } from './../../services/logger/logger.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util'
 declare const $: any;
@@ -212,7 +214,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     prjct_name: string;
     private unsubscribe$: Subject<any> = new Subject<any>();
     current_selected_prjct: any;
-
+    new_messages_count: number;
     constructor(
         private router: Router,
         public location: Location,
@@ -229,7 +231,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private deptService: DepartmentService,
         public brandService: BrandService,
         public wsRequestsService: WsRequestsService,
-        private logger: LoggerService
+        private logger: LoggerService,
+        private wsMsgsService: WsMsgsService
     ) {
         this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
@@ -273,6 +276,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getChatUrl();
         this.isMac();
         this.listenHasDeleteUserProfileImage();
+        this.listenToForegroundNotificationCount()
     }
 
     getLoggedUser() {
@@ -1094,6 +1098,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)
             }, () => {
                 this.logger.log('[SIDEBAR] - GET WS CURRENT-USER IS BUSY *** complete *** ')
+            });
+
+
+    }
+
+    listenToForegroundNotificationCount()   {
+    
+        this.wsMsgsService.foregroundNotificationCount$
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((foregroundNoticationCount) => {
+                console.log('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
+               this.new_messages_count = foregroundNoticationCount;
+            }, error => {
+                console.error('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT * ERROR * ', error)
+            }, () => {
+                console.log('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT *** COMPLETE *** ')
             });
 
 

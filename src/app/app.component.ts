@@ -213,16 +213,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const messaging = firebase.messaging()
         messaging.onMessage((payload) => {
             console.log('Message received. ', payload);
-            // const link = payload.notification.click_action +  "#/conversation-detail/" + payload.data.recipient
-            // console.log('Message received link ', link);
-            // this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link) ;
+            const link = payload.notification.click_action +  "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
+            console.log('Message received link ', link);
+            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link) ;
         });
     }
 
     sendForegroundMsg() {
         // https://support-pre.tiledesk.com/chat-ionic5/#/conversation-detail/support-group-62728d1ca76e050040cee42e-025be323bc914f9f9f727ca0b7364eb7/Chicco/active
         console.log('snd test foreground notification');
-        const link = "https://support-pre.tiledesk.com/chat-ionic5/#/conversation-detail/support-group-62728d1ca76e050040cee42e-b2d556d1e9d040bda36d56731059c886"
+        const link = "https://console.tiledesk.com/v2/chat/#/conversation-detail/support-group-6228d9d792d1ed0019240d2b-7f4cc830069f48458b8fd7070f4a7f48/Bot/active"
         console.log('snd test foreground notification link ', link);
         this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link);
         this.count = this.count + 1;
@@ -506,7 +506,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // )};
             }
-
 
         });
 
