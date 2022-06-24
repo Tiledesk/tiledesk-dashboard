@@ -42,7 +42,7 @@ export class RasaBotComponent implements OnInit {
   // goToEditBot = true;
   showSpinner: any; 
   tparams: any; // to check if are used 
-  openExternalBotIntegrationTutorial: any // to check if are used 
+
 
   newBot_name: string;
   newBot_Id: string;
@@ -293,6 +293,11 @@ export class RasaBotComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  openRasaIntegrationTutorial() {
+    const url = 'https://gethelp.tiledesk.com/articles/rasa-ai-integration/';
+    window.open(url, '_blank');
   }
 
 
