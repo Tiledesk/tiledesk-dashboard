@@ -790,7 +790,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       setTimeout(() => {
         firstAccordion.classList.add("active");
         firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
-      }, 1000);
+      }, 1500);
     
 
 
