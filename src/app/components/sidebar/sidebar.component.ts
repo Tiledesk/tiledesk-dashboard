@@ -215,6 +215,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private unsubscribe$: Subject<any> = new Subject<any>();
     current_selected_prjct: any;
     new_messages_count: number;
+
+    NOTIFICATION_SOUND: string;
+    storedValuePrefix = 'dshbrd----'
+    hasPlayed = false
     constructor(
         private router: Router,
         public location: Location,
@@ -277,6 +281,26 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.isMac();
         this.listenHasDeleteUserProfileImage();
         this.listenToForegroundNotificationCount()
+        this.setNotificationSound();
+    }
+
+
+    setNotificationSound() {
+        // NOTIFICATION_SOUND = 'enabled';
+        const storedNotificationSound = localStorage.getItem(this.storedValuePrefix + 'sound');
+        this.logger.log('[SIDEBAR] NOTIFICATION_SOUND STORED ', storedNotificationSound)
+
+        if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
+            this.logger.log('[SIDEBAR] NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
+            this.NOTIFICATION_SOUND = storedNotificationSound;
+        } else {
+
+            this.NOTIFICATION_SOUND = 'enabled';
+
+            localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
+            this.logger.log('[SIDEBAR] NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
+        }
+
     }
 
     getLoggedUser() {
