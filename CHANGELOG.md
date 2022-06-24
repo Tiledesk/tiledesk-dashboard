@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.38
+- Deploys in production
+- the ability to change the default widget launch button within the Pro Plan
+- widget footer unbranding and customizing in Settings > Widget within the Pro Plan
+
 ### 2.2.37
 - Deploys in production
 - a pop-up window of the conversation’s message showing the main information of the conversation
@@ -9,7 +14,6 @@
 - new language available: Arabic
 - Improves the panel displayed on the hover on the messages of conversations by not displaying the "info" type messages
 - Fixes the bug: Clear full text search does not work on non-real time conversation page and conversation history page
-
 
 ### 2.2.37-rc7
 - Updates the home page section "Latest Updates"
