@@ -2094,5 +2094,7 @@
     "EnterTheURLOfTheLauncherButtonImage":"Inserisci l'URL dell'immagine del pulsante di avvio",
     "CustomizeTheWidgetLaunchButtonWithYourLogo":"Personalizza il pulsante di avvio del widget con il tuo logo. Il formato dell'immagine del logo può essere in formato PNG, JPG o SVG. Le immagini (60x60px) con sfondi trasparenti funzionano meglio",
     "ConnectYourRASAServer":"Collega il tuo server RASA",
-    "ReadMoreOnOurCHANGELOGPage": "Maggiori informazioni sulla nostra pagina di CHANGELOG"
+    "ReadMoreOnOurCHANGELOGPage": "Maggiori informazioni sulla nostra pagina di CHANGELOG",
+    "IntegratingRasaWithTiledesk":"L'integrazione di Rasa con Tiledesk offre molti vantaggi, primo tra tutti la possibilità di deviare le attuali conversazioni RASA verso gli esseri umani.",
+    "HereHowIntegratingRasaWithTiledesk":"Ecco come integrare Rasa con Tiledesk"
 }

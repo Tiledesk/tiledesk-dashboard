@@ -2096,6 +2096,8 @@
     "CustomizeTheWidgetLaunchButtonWithYourLogo":"Прилагодите дугме за покретање виџета својим логотипом. Формат слике логотипа може бити у ПНГ, ЈПГ или СВГ формату. Најбоље функционишу слике (60к60пк) са провидном позадином",
     "ConnectYourRASAServer":"Повежите свој RASA сервер",
     "ReadMoreOnOurCHANGELOGPage": "Прочитајте више на нашој страници ЦХАНГЕЛОГ",
+    "IntegratingRasaWithTiledesk":"Интеграција Раса-е са Тиледеск-ом нуди многе предности, пре свега могућност да се тренутни РАСА разговори преусмере на људе.",
+    "HereHowIntegratingRasaWithTiledesk":"Ево како се Rasa интегрише са Tiledesk",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

@@ -2096,6 +2096,8 @@
     "CustomizeTheWidgetLaunchButtonWithYourLogo":"Personaliza el botón de inicio del widget con tu logotipo. El formato de la imagen del logotipo puede ser PNG, JPG o SVG. Las imágenes (60x60px) con fondos transparentes funcionan mejor",
     "ConnectYourRASAServer":"Conecta tu servidor RASA",
     "ReadMoreOnOurCHANGELOGPage": "Lea más en nuestra página REGISTRO DE CAMBIOS",
+    "IntegratingRasaWithTiledesk":"La integración de Rasa con Tiledesk ofrece muchas ventajas, en primer lugar, la posibilidad de desviar las conversaciones actuales de RASA a los humanos.",
+    "HereHowIntegratingRasaWithTiledesk":"Aquí cómo integrar Rasa con Tiledesk",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

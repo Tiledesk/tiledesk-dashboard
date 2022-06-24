@@ -2095,5 +2095,7 @@
 	"EnterTheURLOfTheLauncherButtonImage":"Geben Sie die URL des Launcher-Schaltflächenbildes ein",
 	"CustomizeTheWidgetLaunchButtonWithYourLogo":"Passen Sie die Widget-Startschaltfläche mit Ihrem Logo an. Das Logo-Bildformat kann im PNG-, JPG- oder SVG-Format vorliegen. Bilder (60x60 Pixel) mit transparentem Hintergrund funktionieren am besten",
 	"ConnectYourRASAServer":"Verbinden Sie Ihren RASA-Server",
-	"ReadMoreOnOurCHANGELOGPage": "Lesen Sie mehr auf unserer CHANGELOG-Seite"
+	"ReadMoreOnOurCHANGELOGPage": "Lesen Sie mehr auf unserer CHANGELOG-Seite",
+	"IntegratingRasaWithTiledesk":"Die Integration von Rasa mit Tiledesk bietet viele Vorteile, allen voran die Möglichkeit, aktuelle RASA-Gespräche auf Menschen umzulenken.",
+	"HereHowIntegratingRasaWithTiledesk":"Hier erfahren Sie, wie Sie Rasa mit Tiledesk integrieren"
 }
