@@ -1333,11 +1333,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     soundON() {
         this.NOTIFICATION_SOUND = 'enabled';
-        this.setNoticationSoundUserPreference(this.NOTIFICATION_SOUND)
+        this.setNoticationSoundUserPreference(this.NOTIFICATION_SOUND);
+        this.wsRequestsService.hasChangedSoundPreference(this.NOTIFICATION_SOUND)
     }
     soundOFF() {
         this.NOTIFICATION_SOUND = 'disabled';
-        this.setNoticationSoundUserPreference(this.NOTIFICATION_SOUND)
+        this.setNoticationSoundUserPreference(this.NOTIFICATION_SOUND);
+        this.wsRequestsService.hasChangedSoundPreference(this.NOTIFICATION_SOUND)
     }
 
     setNoticationSoundUserPreference(value) {

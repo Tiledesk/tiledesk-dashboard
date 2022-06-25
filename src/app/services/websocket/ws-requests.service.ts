@@ -6,13 +6,13 @@ import { AuthService } from '../../core/auth.service';
 import { WebSocketJs } from "./websocket-js";
 import { Request } from '../../models/request-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../../services/app-config.service';
 
 
 import { LoggerService } from '../../services/logger/logger.service';
+import { LocalDbService } from '../users-local-db.service';
 export interface Message {
   action: string;
   payload: {
@@ -36,6 +36,8 @@ export class WsRequestsService implements OnDestroy {
   public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public projectUsersOfProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public wsOnDataUnservedConvs$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+  public foregroundNotificationCount$: BehaviorSubject<number> = new BehaviorSubject(null);
+  public hasChangedSoundPreference$: BehaviorSubject<string> = new BehaviorSubject(null);
 
   public ws__RequestsList$: any;
 
@@ -93,7 +95,8 @@ export class WsRequestsService implements OnDestroy {
     public auth: AuthService,
     public webSocketJs: WebSocketJs,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public usersLocalDbService: LocalDbService
   ) {
     this.http = http;
 
@@ -129,6 +132,16 @@ export class WsRequestsService implements OnDestroy {
       }
     });
   }
+
+  publishAndStoreForegroundRequestCount(msgscount) {
+    console.log('[WS-MSGS-SERV] - foreground Request Count ', msgscount)
+    this.foregroundNotificationCount$.next(msgscount)
+    this.usersLocalDbService.storeForegrondNotificationsCount(msgscount)
+   } 
+
+   hasChangedSoundPreference(soundPreference) {
+    this.hasChangedSoundPreference$.next(soundPreference)
+   }
 
   // -----------------------------------------------------------------------------------------------------
   // methods for REQUESTS 

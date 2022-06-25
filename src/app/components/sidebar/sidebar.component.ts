@@ -184,6 +184,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
     CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
 
+    IS_REQUEST_FOR_PANEL_ROUTE: boolean;
+    IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
+
     prjct_profile_name: string;
 
     prjct_trial_expired: boolean;
@@ -219,6 +222,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     NOTIFICATION_SOUND: string;
     storedValuePrefix = 'dshbrd----'
     hasPlayed = false
+    currentUrl: string;
+    audio: any;
     constructor(
         private router: Router,
         public location: Location,
@@ -255,14 +260,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
         this.getProfileImageStorage();
-
-        
-
         this.getUserAvailability();
         this.getUserUserIsBusy();
         this.getProjectUserId();
 
-        
+
 
         this.hasChangedAvailabilityStatusInUsersComp();
 
@@ -280,28 +282,94 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getChatUrl();
         this.isMac();
         this.listenHasDeleteUserProfileImage();
-        this.listenToForegroundNotificationCount()
-        this.setNotificationSound();
+        this.listenToForegroundNotificationCount();
+        this.listenSoundPreference();
+        this.getNotificationSoundPreferences();
+        this.getCurrentURL();
     }
 
 
-    setNotificationSound() {
+    getCurrentURL() {
+        const currentUrl = this.router.url;
+        console.log('[SIDEBAR] CURRENT URL ', currentUrl)
+    }
+
+    getNotificationSoundPreferences() {
         // NOTIFICATION_SOUND = 'enabled';
         const storedNotificationSound = localStorage.getItem(this.storedValuePrefix + 'sound');
-        this.logger.log('[SIDEBAR] NOTIFICATION_SOUND STORED ', storedNotificationSound)
 
         if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
-            this.logger.log('[SIDEBAR] NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
+
             this.NOTIFICATION_SOUND = storedNotificationSound;
+            console.log('[SIDEBAR] NOTIFICATION_SOUND -  this.NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
         } else {
-
             this.NOTIFICATION_SOUND = 'enabled';
-
-            localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
-            this.logger.log('[SIDEBAR] NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
+            console.log('[SIDEBAR] NOTIFICATION_SOUND -  this.NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
         }
-
     }
+
+    listenSoundPreference() {
+        this.wsRequestsService.hasChangedSoundPreference$
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((newSoundPreference) => {
+                console.log('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED ', newSoundPreference);
+                this.NOTIFICATION_SOUND = newSoundPreference;
+            }, error => {
+                console.error('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED * ERROR * ', error)
+            }, () => {
+                console.log('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED *** COMPLETE *** ')
+            });
+    }
+
+    listenToForegroundNotificationCount() {
+        this.wsRequestsService.foregroundNotificationCount$
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((foregroundNoticationCount) => {
+                console.log('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
+                this.new_messages_count = foregroundNoticationCount;
+
+                if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
+                    // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+                    if (this.hasPlayed === false) {
+                        // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
+                        this.audio = new Audio();
+
+                        this.audio.src = 'assets/intuition-561.mp3';
+
+                        this.audio.load();
+
+                        this.audio.play().then(() => {
+
+                            this.hasPlayed = true
+                            console.log('[SIDEBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
+
+                            setTimeout(() => {
+                                this.hasPlayed = false;
+                                console.log('[SIDEBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
+
+                            }, 4000);
+                        }).catch((error: any) => {
+                            console.log('[APP-COMP] ***soundMessage error*', error);
+                        });
+
+                    }
+
+                }
+
+
+
+            }, error => {
+                console.error('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT * ERROR * ', error)
+            }, () => {
+                console.log('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT *** COMPLETE *** ')
+            });
+    }
+
+
 
     getLoggedUser() {
         this.auth.user_bs.subscribe((user) => {
@@ -515,16 +583,30 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (!this.public_Key.includes("PAY")) {
             this.isVisiblePAY = false;
         }
-
     }
 
 
     getCurrentRoute() {
         this.router.events.filter((event: any) => event instanceof NavigationEnd)
             .subscribe(event => {
+                if (event.url.indexOf('/request-for-panel') !== -1) {
+                    this.IS_REQUEST_FOR_PANEL_ROUTE = true;
+                    console.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                } else {
+                    this.IS_REQUEST_FOR_PANEL_ROUTE = false;
+                    console.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                }
+
+                if (event.url.indexOf('/unserved-request-for-panel') !== -1) {
+                    this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = true;
+                    console.log('[SIDEBAR] NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                } else {
+                    this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = false;
+                    console.log('[SIDEBAR] NavigationEnd- IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                }
 
                 if (event.url.indexOf('/autologin') !== -1) {
-                    this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
+                    console.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.AUTOLOGIN_ROUTE_IS_ACTIVE = true;
 
                 } else {
@@ -815,13 +897,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.CONTACT_CONVS_ROUTE_IS_ACTIVE = false;
                     // console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
                 }
-
-
-
-
-
-
-
             });
     }
 
@@ -1127,23 +1202,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     }
 
-    listenToForegroundNotificationCount()   {
-    
-        this.wsMsgsService.foregroundNotificationCount$
-            .pipe(
-                takeUntil(this.unsubscribe$)
-            )
-            .subscribe((foregroundNoticationCount) => {
-                console.log('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
-               this.new_messages_count = foregroundNoticationCount;
-            }, error => {
-                console.error('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT * ERROR * ', error)
-            }, () => {
-                console.log('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT *** COMPLETE *** ')
-            });
 
-
-    }
     // NO MORE USED - SUBSTITUDED WITH changeAvailabilityState
     // availale_unavailable_status(hasClickedChangeStatus: boolean) {
     //     hasClickedChangeStatus = hasClickedChangeStatus;
@@ -1173,7 +1232,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             if (this.project) {
 
                 // this.getDeptsAndFilterDefaultDept();
-                
+
                 this.projectId = this.project._id
                 this.getProjectUserRole(this.projectId);
                 this.findCurrentProjectAmongAll(this.projectId)

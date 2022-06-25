@@ -126,6 +126,11 @@ export class LocalDbService {
     return isWide
   }
 
+  storeForegrondNotificationsCount(count) : void {
+    localStorage.setItem(this.prefix + 'foregroundcount', count);
+    console.log('HEY - SAVE IN STORAGE !!! Foregrond Notifications Count ', count);
+  }
+
 
 }
 

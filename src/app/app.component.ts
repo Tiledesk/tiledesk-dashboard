@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Self, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Self, OnDestroy, HostListener } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -33,6 +33,8 @@ import { ScriptService } from './services/script/script.service';
 import { LoggerService } from './services/logger/logger.service';
 import { NotifyService } from './core/notify.service';
 
+
+
 @Component({
     selector: 'appdashboard-root',
     templateUrl: './app.component.html',
@@ -66,6 +68,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     browserName = '';
     browserVersion = '';
     count: number = 0;
+    public setIntervalTime: any;
+    public isTabVisible: boolean = true;
+
     // private logger: LoggerService = LoggerInstance.getInstance();
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
@@ -81,9 +86,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         public brandService: BrandService,
         public script: ScriptService,
         private logger: LoggerService,
-        private notify: NotifyService
+        private notify: NotifyService,
+
         // private faqKbService: FaqKbService,
     ) {
+        console.log('HI! [APP-COMPONENT] ')
+        // https://www.freecodecamp.org/news/how-to-check-internet-connection-status-with-javascript/
 
         // const { userAgent } = navigator
         // if (userAgent.includes('Firefox/')) {
@@ -147,11 +155,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const firebase_conf = appConfigService.getConfig().firebase;
             this.logger.log('[APP-COMPONENT] AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
             firebase.initializeApp(firebase_conf);
-        
 
-            // this.listenToFCMForegroundMsgs();
-
-            // this.notify.showForegroungPushNotification("App installed successfully", 2, 'done');
+            // ----------------------------------------------------
+            // Listen to FOREGROND MESSAGES
+            // ----------------------------------------------------
+            this.listenToFCMForegroundMsgs();
 
             localStorage.removeItem('firebase:previous_websocket_failure');
 
@@ -208,14 +216,31 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
+    @HostListener('document:visibilitychange', [])
+    visibilitychange() {
+        console.log("document ", document);
+        console.log("document is hidden", document.hidden, ' document title', document.title);
+        if (document.hidden) {
+            this.isTabVisible = false
+        } else {
+            // TAB IS ACTIVE --> restore title and DO NOT SOUND
+
+            this.isTabVisible = true;
+
+        }
+    }
+
 
     listenToFCMForegroundMsgs() {
         const messaging = firebase.messaging()
         messaging.onMessage((payload) => {
             console.log('Message received. ', payload);
-            const link = payload.notification.click_action +  "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
+            const link = payload.notification.click_action + "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
             console.log('Message received link ', link);
-            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link) ;
+            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link);
+            this.count = this.count + 1;
+            console.log('snd test foreground notification count ', this.count);
+            this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
         });
     }
 
@@ -227,7 +252,39 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link);
         this.count = this.count + 1;
         console.log('snd test foreground notification count ', this.count);
-        this.wsMsgsService.foregroundRequestCount(this.count)
+        this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
+        const brand = this.brandService.getBrand();
+        // if (this.count > 0) {
+        //     clearInterval(this.setIntervalTime)
+        //     this.setIntervalTime =    setInterval(() => {
+        //         this.metaTitle.setTitle( '(' + this.count + ')' + ' ' + brand['metaTitle'] )
+        //     }, 1000);
+        // }
+
+        if (this.count > 0) {
+            const that = this
+            clearInterval(this.setIntervalTime)
+            this.setIntervalTime = window.setInterval(function () {
+                document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
+            }, 1000);
+        }
+
+        // let isOpenNotification = false 
+        // console.log('snd test foreground isOpenNotification ',isOpenNotification);
+
+        //   if (isOpenNotification === false) {
+
+        //     this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link);
+
+        //     isOpenNotification = true
+        //     setTimeout(() => {
+        //         isOpenNotification = false;
+        //         console.log('snd test foreground isOpenNotification ',isOpenNotification);
+        //       }, 2000);
+
+        //   } else if (isOpenNotification === true) {
+        //     this.notify.updateForegroungPushNotification("Milani Salame", "belli alla brace", link);
+        //   }
     }
 
     detectBrowserName() {
