@@ -338,7 +338,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
                         this.audio = new Audio();
 
-                        this.audio.src = 'assets/intuition-561.mp3';
+                        this.audio.src = 'assets/pling.mp3';
 
                         this.audio.load();
 
