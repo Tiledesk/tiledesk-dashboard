@@ -33,7 +33,7 @@ import { ScriptService } from './services/script/script.service';
 import { LoggerService } from './services/logger/logger.service';
 import { NotifyService } from './core/notify.service';
 import { avatarPlaceholder, getColorBck } from './utils/util';
-
+import { LocalDbService } from './services/users-local-db.service';
 
 
 @Component({
@@ -71,7 +71,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     count: number = 0;
     public setIntervalTime: any;
     public isTabVisible: boolean = true;
-
+    public tabTitle: string;
     // private logger: LoggerService = LoggerInstance.getInstance();
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
@@ -88,7 +88,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         public script: ScriptService,
         private logger: LoggerService,
         private notify: NotifyService,
-
+        public usersLocalDbService: LocalDbService
         // private faqKbService: FaqKbService,
     ) {
         console.log('HI! [APP-COMPONENT] ')
@@ -125,6 +125,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (brand) {
             this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
+            this.tabTitle = document.title;
+            console.log('[APP-COMPONENT] - GET BRAND brandService > brand  this.tabTitle ', this.tabTitle)
         }
         this.setFavicon(brand); // here used with "import brand from ..." now see in getBrand()
 
@@ -161,8 +163,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             // Listen to FOREGROND MESSAGES
             // ----------------------------------------------------
             this.listenToFCMForegroundMsgs();
-            this.subscribeToStoredForegroundAndManageAppTab()
-
+           
+            console.log('document.visibilityState  ', document.visibilityState) 
+            if ( document.visibilityState === 'hidden') {
+                this.isTabVisible = false;
+                this.subscribeToStoredForegroundAndManageAppTab();
+            }  else if  ( document.visibilityState === 'visible') {
+                this.isTabVisible = true;
+                this.subscribeToStoredForegroundAndManageAppTab();
+            }
+         
             localStorage.removeItem('firebase:previous_websocket_failure');
 
         } else {
@@ -174,7 +184,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
-       console.log('[APP-COMPONENT] browserLang ', browserLang)
+        console.log('[APP-COMPONENT] browserLang ', browserLang)
         if (this.auth.user_bs && this.auth.user_bs.value) {
             this.logger.log('[APP-COMPONENT] this.auth.user_bs.value._id ', this.auth.user_bs.value._id)
             const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
@@ -220,44 +230,80 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @HostListener('document:visibilitychange', [])
     visibilitychange() {
-        console.log("document ", document);
+        // console.log("document ", document);
         console.log("document is hidden", document.hidden, ' document title', document.title);
+
         if (document.hidden) {
-            this.isTabVisible = false
+            this.isTabVisible = false;
+            this.subscribeToStoredForegroundAndManageAppTab()
         } else {
             // TAB IS ACTIVE --> restore title and DO NOT SOUND
-
+            console.log("document is hidden 2", document.hidden);
             this.isTabVisible = true;
-
+            this.subscribeToStoredForegroundAndManageAppTab()
+            
         }
     }
 
+    @HostListener('window:storage', ['$event'])
+    onStorageChanged(event: any) {
+
+        if (event.key !== 'dshbrd----foregroundcount') {
+            return;
+        }
+        const foregrondNotificationsCount = +this.usersLocalDbService.getForegrondNotificationsCount();
+        console.log('onStorageChanged', foregrondNotificationsCount)
+    }
+
+  
 
     subscribeToStoredForegroundAndManageAppTab() {
-
         this.wsRequestsService.foregroundNotificationCount$
-
             .subscribe((foregroundNoticationCount) => {
                 console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
-
+                console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION this.isTabVisible ', this.isTabVisible);
 
                 if (foregroundNoticationCount && foregroundNoticationCount > 0) {
                     this.count = foregroundNoticationCount;
-                    if (document.title.charAt(0) === '(') {
-                        console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT DOCUMENT TITLE 1', document.title)
-                    } else {
-                        console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT DOCUMENT TITLE 2', document.title)
-                        const brand = this.brandService.getBrand();
-                        if (this.count > 0) {
-                            const that = this
-                            clearInterval(this.setIntervalTime)
-                            this.setIntervalTime = window.setInterval(function () {
-                                document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
-                            }, 1000);
-                        }
+                    console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', this.count)
+                    //     if (document.title.charAt(0) === '(') {
+                    //         console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT DOCUMENT TITLE 1', document.title)
+                    //     } else {
+                    //         console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT isTabVisible', this.isTabVisible)
 
+                    //         const brand = this.brandService.getBrand();
+
+                    //         if (this.count > 0) {
+                    //             const that = this
+                    //             clearInterval(this.setIntervalTime)
+                    //             this.setIntervalTime = window.setInterval(function () {
+                    //                 document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
+                    //             }, 1000);
+                    //         }
+
+                    //     }
+
+
+                    let isBlurred = false;
+                    const brand = this.brandService.getBrand();
+                    const that = this
+                    // window.onblur = function () {
+                        if (this.isTabVisible === false) { 
+                        console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1')
+                        isBlurred = true;
+                        this.setIntervalTime = window.setInterval(function () {
+                            document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];;
+                        }, 1000);
+                    }
+                    // window.onfocus = function () {
+                        if (this.isTabVisible === true) {
+                        console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 2')
+                        isBlurred = false;
+                        document.title =  brand['metaTitle']
+                        clearInterval(this.setIntervalTime);
                     }
                 }
+
             })
     }
 
@@ -271,20 +317,23 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
             const link = payload.notification.click_action + "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
             console.log('Message received link ', link);
-            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link,  requester_avatar_initial,  requester_avatar_bckgrnd);
+            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link, requester_avatar_initial, requester_avatar_bckgrnd);
             this.count = this.count + 1;
             console.log('snd test foreground notification count ', this.count);
             this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
-            const brand = this.brandService.getBrand();
+            // const brand = this.brandService.getBrand();
+            // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT listenToFCMForegroundMsgs ', this.isTabVisible)
 
-            if (this.count > 0) {
-                const that = this
-                clearInterval(this.setIntervalTime)
-                this.setIntervalTime = window.setInterval(function () {
-                    document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
-                }, 1000);
-            }
-    
+            // if (!this.isTabVisible) {
+            //     if (this.count > 0) {
+            //         const that = this
+            //         clearInterval(this.setIntervalTime)
+            //         this.setIntervalTime = window.setInterval(function () {
+            //             document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
+            //         }, 1000);
+            //     }
+            // }
+
         });
     }
 
@@ -296,7 +345,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     doRecipient_fullname_bckgrnd(recipient_fullname) {
         const recipient_fullname_background = getColorBck(recipient_fullname);
         return recipient_fullname_background;
-    
+
     }
 
     sendForegroundMsg() {
@@ -309,7 +358,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('snd test foreground notification');
         const link = "https://console.tiledesk.com/v2/chat/#/conversation-detail/support-group-6228d9d792d1ed0019240d2b-7f4cc830069f48458b8fd7070f4a7f48/Bot/active"
         console.log('snd test foreground notification link ', link);
-        this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link, requester_avatar_initial,  requester_avatar_bckgrnd);
+        this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link, requester_avatar_initial, requester_avatar_bckgrnd);
         this.count = this.count + 1;
         console.log('snd test foreground notification count ', this.count);
         this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
