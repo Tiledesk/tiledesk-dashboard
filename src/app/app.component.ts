@@ -174,7 +174,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
-
+       console.log('[APP-COMPONENT] browserLang ', browserLang)
         if (this.auth.user_bs && this.auth.user_bs.value) {
             this.logger.log('[APP-COMPONENT] this.auth.user_bs.value._id ', this.auth.user_bs.value._id)
             const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')

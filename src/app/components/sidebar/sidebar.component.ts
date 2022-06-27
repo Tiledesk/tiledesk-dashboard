@@ -285,14 +285,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.listenToForegroundNotificationCount();
         this.listenSoundPreference();
         this.getNotificationSoundPreferences();
-        this.getCurrentURL();
     }
 
 
-    getCurrentURL() {
-        const currentUrl = this.router.url;
-        console.log('[SIDEBAR] CURRENT URL ', currentUrl)
-    }
+
 
     getNotificationSoundPreferences() {
         // NOTIFICATION_SOUND = 'enabled';
