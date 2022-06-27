@@ -1337,6 +1337,14 @@ footer ul {
 	height: 50px;
 	margin-right: 12px;
 }
+
+
+.alert-minimalist > .foreground-notification-img-circle {
+  height: 50px;
+	margin-right: 12px;
+  width: 50px;
+  text-align: center;
+}
 .alert-minimalist > [data-notify="title"] {
 	color: rgb(51, 51, 51);
 	display: block;

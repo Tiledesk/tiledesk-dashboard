@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.39
+- Deploys in production
+- Removes the in-app notifications for unserved conversations and adds "foreground notifications" of messages assigned to the current user 
+
 ### 2.2.38
 - Deploys in production
 - the ability to change the default widget launch button within the Pro Plan

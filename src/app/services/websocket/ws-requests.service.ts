@@ -6,13 +6,13 @@ import { AuthService } from '../../core/auth.service';
 import { WebSocketJs } from "./websocket-js";
 import { Request } from '../../models/request-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../../services/app-config.service';
 
 
 import { LoggerService } from '../../services/logger/logger.service';
+import { LocalDbService } from '../users-local-db.service';
 export interface Message {
   action: string;
   payload: {
@@ -36,6 +36,8 @@ export class WsRequestsService implements OnDestroy {
   public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public projectUsersOfProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public wsOnDataUnservedConvs$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+  public foregroundNotificationCount$: BehaviorSubject<number> = new BehaviorSubject(null);
+  public hasChangedSoundPreference$: BehaviorSubject<string> = new BehaviorSubject(null);
 
   public ws__RequestsList$: any;
 
@@ -93,7 +95,8 @@ export class WsRequestsService implements OnDestroy {
     public auth: AuthService,
     public webSocketJs: WebSocketJs,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public usersLocalDbService: LocalDbService
   ) {
     this.http = http;
 
@@ -104,7 +107,7 @@ export class WsRequestsService implements OnDestroy {
     // NOTE_nk: comment this.getCurrentProjectAndSubscribeTo_WsRequests()
     this.getCurrentProjectAndSubscribeTo_WsRequests()
     this.getLoggedUser();
-
+    this.getStoredForegroungNotificationAndPublish()
   }
 
 
@@ -128,6 +131,20 @@ export class WsRequestsService implements OnDestroy {
         this.currentUserID = user._id
       }
     });
+  }
+  getStoredForegroungNotificationAndPublish() {
+    const foregrondNotificationsCount = +this.usersLocalDbService.getForegrondNotificationsCount();
+    this.foregroundNotificationCount$.next(foregrondNotificationsCount)
+  }
+
+  publishAndStoreForegroundRequestCount(msgscount) {
+    console.log('[WS-MSGS-SERV] - foreground Request Count ', msgscount)
+    this.foregroundNotificationCount$.next(msgscount)
+    this.usersLocalDbService.storeForegrondNotificationsCount(msgscount)
+  }
+
+  hasChangedSoundPreference(soundPreference) {
+    this.hasChangedSoundPreference$.next(soundPreference)
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -855,21 +872,21 @@ export class WsRequestsService implements OnDestroy {
   // -----------------------------------------------------------------------------------------
   public exportTranscriptAsCSVFile(idrequest: string) {
     // https://tiledesk-server-pre.herokuapp.com/615577276b34e900353c1a63/requests/support-group-615577276b34e900353c1a63-0a8b507ddd384daf8e400f223083687f/messages/csv
-//     https://tiledesk-server-pre.herokuapp.com/62728d1ca76e050040cee42e/requests/support-group-62728d1ca76e050040cee42e-e1e4b00def724a0798d4d03c38beb921/messages/csv"
+    //     https://tiledesk-server-pre.herokuapp.com/62728d1ca76e050040cee42e/requests/support-group-62728d1ca76e050040cee42e-e1e4b00def724a0798d4d03c38beb921/messages/csv"
 
 
-  const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + idrequest + '/messages/csv';
-  this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD TRANSCRIPT AS CSV URL ', url);
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + idrequest + '/messages/csv';
+    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD TRANSCRIPT AS CSV URL ', url);
 
-  const headers = new Headers();
-  headers.append('Content-Type', 'application/csv');
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/csv');
 
-  headers.append('Authorization', this.TOKEN);
+    headers.append('Authorization', this.TOKEN);
 
-  return this.http
-    .get(url, { headers })
-    .map((response) => response.text());
-}
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.text());
+  }
 
 
   // -----------------------------------------------------------------------------------------

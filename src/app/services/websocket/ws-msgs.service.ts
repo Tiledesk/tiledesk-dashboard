@@ -18,6 +18,7 @@ export class WsMsgsService {
   TOKEN: string
   public wsMsgsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public wsMsgsGotAllData$: BehaviorSubject<any> = new BehaviorSubject(null);
+  
   SERVER_BASE_PATH: string;
   // public _wsMsgsList = new Subject<any>();
   CURRENT_USER_ID: string;
@@ -65,9 +66,7 @@ export class WsMsgsService {
     });
   }
 
-  foregroundRequestCount(msgscount) {
-   console.log('[WS-MSGS-SERV] - foreground Request Count ', msgscount)
-  } 
+
 
   // -----------------------------------------------------------------------------------------------------
   // methods for Request's Messages 

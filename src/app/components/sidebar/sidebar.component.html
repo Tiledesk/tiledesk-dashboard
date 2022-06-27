@@ -162,6 +162,7 @@
             </svg>
           </span>
 
+          <span *ngIf="new_messages_count !== null && new_messages_count > 0 " class="new-messages-count">{{new_messages_count}} </span>
         </a>
       </li>
 

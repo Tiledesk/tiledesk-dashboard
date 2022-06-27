@@ -45,7 +45,7 @@ const swal = require('sweetalert');
     styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
-   
+
     URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
     // used to unsuscribe from behaviour subject
     private unsubscribe$: Subject<any> = new Subject<any>();
@@ -187,11 +187,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.getCurrentProject();
         this.getProjectUserRole();
         this.getProfileImageStorage();
-        this.updateUnservedRequestCount();
-        this.updateCurrentUserRequestCount();
-        this.notifyLastUnservedAndCurrentUserRequest();
 
-        this.checkRequestStatusInShown_requests();
+        // -------------------------------------------
+        //  Replaced with Foregrond notification
+        // -------------------------------------------
+        // this.updateUnservedRequestCount();
+        // this.updateCurrentUserRequestCount();
+        // this.notifyLastUnservedAndCurrentUserRequest();
+        // this.checkRequestStatusInShown_requests();
 
         this.getLoggedUser();
 
@@ -839,7 +842,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
             }
         } else {
-           this.presentModalOnlyOwnerCanManageTheAccountPlan()
+            this.presentModalOnlyOwnerCanManageTheAccountPlan()
         }
     }
 
@@ -1036,22 +1039,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 // const storedRequest = []
                 if (requests) {
                     requests.forEach(r => {
-                        // this.logger.log('IN-APP-NOTIFICATION request ', r)
-
-                        // storedRequest.push(r.id + '_' + r.updatedAt)
-                        // localStorage.setItem(r.id + '_' + r.updatedAt, 'false');
 
                         if (r.status !== 100) {
                             // this.logger.log('REQUEST WITH STATUS != 100 ', r.status)
                             this.shown_requests[r.id] = false;
-
-                            // this.logger.log('[NAVBAR] REQUEST WITH STATUS != 100 ', r.status)
                         }
                     });
 
-                    // localStorage.setItem('request', JSON.stringify(storedRequest));
-
-                    // this.logger.log('IN-APP-NOTIFICATION shown_requests ', this.shown_requests)
                 }
             }, error => {
                 this.logger.error('[NAVBAR] checkRequestStatusInShown_requests * ERROR * ', error)
@@ -1074,15 +1068,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                 if (requests) {
                     requests.forEach(r => {
-
-                        // this.logger.log('[NAVBAR]notifyLastUnservedRequest REQUEST shown_requests ', this.shown_requests);
-                        // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST shown_my_requests ', this.shown_my_requests);
-                        // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST r ', r);
-
-                        // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST this.user ID  ', this.user._id);
-
-                        // const membersArray = Object.keys(r.members); // old used with firestore 
-                        // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST membersArray ', membersArray);
 
                         const participantsArray = r.participants // new used with ws 
                         // this.logger.log([NAVBAR] participantsArray ', participantsArray);
@@ -1113,9 +1098,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                         }
 
 
-                        // if current user is in particioants means that is a request served by the current user
-                        // if (this.user !== null && !this.shown_my_requests[r.id] && currentUserIsInParticipants === true) {
-
                         if (this.user !== null && !storedRequest && currentUserIsInParticipants === true) {
                             // const requestCreationDate = moment(r.createdAt);
                             const requestUpdatedTime = moment(r.updatedAt);
@@ -1124,12 +1106,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                             // const dateDiff = currentTime.diff(requestCreationDate, 'h');
                             const dateDiff = currentTime.diff(requestUpdatedTime, 's');
-                            // this.logger.log('[NAVBAR] IN-APP-NOTIFICATION currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
 
-
-
-                            // if (dateDiff < 5) {
-                            // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
                             const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
 
                             let contact_fullname = ''
@@ -1140,8 +1117,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                                 contact_fullname = ""
                             }
 
-                            // this.logger.log('NAV (showNotification) before to show notification (my) this.notify ', this.notify)
-                            // if (this.notify === undefined) {
                             this.showNotification(
                                 '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
                                 '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
@@ -1150,29 +1125,19 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                                 'border-left-color: rgb(77, 175, 79)',
                                 'new-chat-icon-served-by-me.png'
                             );
-                            // } 
-                            // else {
-                            //     setTimeout(() => {
-                            //     this.notify.update({'message': '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
-                            //     '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
-                            //     '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`});
-                            // }, 1500);
 
-                            // }
 
                             this.shown_my_requests[r.id] = true;
-                            // this.logger.log('IN-APP-NOTIFICATION shown_my_requests ', this.shown_my_requests)
-                            // this.shown_my_requests[r.request_id] = true;
+
 
                             // --------------------------------------------------------------------------
-                            // @ set request to store
+                            // @ set request to store (notifyLastUnservedAndCurrentUserRequest)
                             // --------------------------------------------------------------------------
                             localStorage.setItem(r.id + '_' + r.status, 'true');
-                            // }
+
                         }
 
                     });
-                    // this.unservedRequestCount = count;
                 }
             }, error => {
                 this.logger.error('[NAVBAR] notifyLastUnservedRequest * ERROR * ', error)
@@ -1229,10 +1194,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // r.notification_already_shown = true;
 
         // --------------------------------------------------------------------------
-        // @ set request to store
+        // @ set request to store (doUnservedDateDiffAndShowNotification)
         // --------------------------------------------------------------------------
         localStorage.setItem(r.id + '_' + r.status, 'true');
-        // }
+
 
     }
 
@@ -1333,11 +1298,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     soundON() {
         this.NOTIFICATION_SOUND = 'enabled';
-        this.setNoticationSoundUserPreference(this.NOTIFICATION_SOUND)
+        this.setNoticationSoundUserPreference(this.NOTIFICATION_SOUND);
+        this.wsRequestsService.hasChangedSoundPreference(this.NOTIFICATION_SOUND)
     }
     soundOFF() {
         this.NOTIFICATION_SOUND = 'disabled';
-        this.setNoticationSoundUserPreference(this.NOTIFICATION_SOUND)
+        this.setNoticationSoundUserPreference(this.NOTIFICATION_SOUND);
+        this.wsRequestsService.hasChangedSoundPreference(this.NOTIFICATION_SOUND)
     }
 
     setNoticationSoundUserPreference(value) {

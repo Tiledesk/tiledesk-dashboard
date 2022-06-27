@@ -12,6 +12,10 @@ export interface Msg {
   style: string;
 }
 
+// demo Bootstrap Notify
+// https://grotesquegentleadvance--samkhaled.repl.co/
+
+
 @Injectable()
 export class NotifyService {
 
@@ -20,7 +24,7 @@ export class NotifyService {
   private _msgSource = new Subject<Msg | null>();
 
   msg = this._msgSource.asObservable();
-
+  foregroungNotification: any;
   route: string;
   notify: any;
   notifySendingVerifyEmail: any;
@@ -257,36 +261,73 @@ export class NotifyService {
   }
 
 
-  // '<img data-notify="icon" class="pull-left">' +
-  // icon: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png',
-  // (click)="openMsgInChat(${link})"
-  // icon_type: 'image',
-  showForegroungPushNotification(sender: string, msg: string, link: string) {
+  updateForegroungPushNotification(sender: string, msg: string, link: string) {
     console.log('[NOTIFY-SERVICE] showForegroungPushNotification link', link)
     $.notifyDefaults({
       url_target: "_self"
     });
-    $.notify({
+    this.foregroungNotification.update({
       title: sender,
       message: msg,
       url: link,
     }, {
       type: 'minimalist',
-      delay: 555555000,
+      delay: 2000,
       placement: {
         from: 'top',
         align: 'center'
       },
-      
+
       template: '<div data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
-     ' <span data-notify="icon"></span>'+
+        ' <span data-notify="icon"></span>' +
+        '<span data-notify="title">{1}</span>' +
+        '<span data-notify="message">{2}</span>' +
+        `<a href="{3}" data-notify="url"></a>` +
+        '</div>'
+    });
+  }
+
+  // '<img data-notify="icon" class="pull-left">' +
+  // icon: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png',
+  // (click)="openMsgInChat(${link})"
+  // icon_type: 'image',
+  showForegroungPushNotification(sender: string, msg: string, link: string, requester_avatar_initial: string, requester_avatar_bckgrnd: string) {
+    console.log('[NOTIFY-SERVICE] showForegroungPushNotification link', link)
+    console.log('[NOTIFY-SERVICE] showForegroungPushNotification requester_avatar_initial', requester_avatar_initial)
+    console.log('[NOTIFY-SERVICE] showForegroungPushNotification requester_avatar_bckgrnd', requester_avatar_bckgrnd)
+    $.notifyDefaults({
+      url_target: "_self"
+    });
+    this.foregroungNotification = $.notify({
+
+      title: sender,
+      message: msg,
+      url: link,
+    }, {
+      type: 'minimalist',
+      delay: 3000,
+      placement: {
+        from: 'top',
+        align: 'center'
+      },
+      // '<span data-notify="icon"></span>' +
+      // '<img data-notify="icon" class="img-circle pull-left">' +
+      // [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
+
+      // '<span class="foreground-notification-img-circle pull-left  [ngStyle]="{"background": '+ requester_avatar_bckgrnd +' } ">' +
+      // requester_avatar_initial 
+      // +'</span>' +
+      template: '<div data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
+        '<span data-notify="icon"></span>' +
         '<span data-notify="title">{1}</span>' +
         '<span data-notify="message">{2}</span>' +
         `<a href="{3}" data-notify="url"></a>` +
         '</div>'
     });
 
-    
+
+
+
     // const type = ['#F1F2F0', 'info', 'success', 'warning', 'danger'];
 
     // const   icon_bckgrnd_color = '#F1F2F0'
@@ -319,7 +360,7 @@ export class NotifyService {
     // });
   }
 
-  openMsgInChat() {}
+  openMsgInChat() { }
 
   showWidgetStyleUpdateNotification(message, notificationColor, icon) {
     const type = ['', 'info', 'success', 'warning', 'danger'];
