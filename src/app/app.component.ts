@@ -32,6 +32,7 @@ import { BrandService } from './services/brand.service';
 import { ScriptService } from './services/script/script.service';
 import { LoggerService } from './services/logger/logger.service';
 import { NotifyService } from './core/notify.service';
+import { avatarPlaceholder, getColorBck } from './utils/util';
 
 
 
@@ -160,6 +161,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             // Listen to FOREGROND MESSAGES
             // ----------------------------------------------------
             this.listenToFCMForegroundMsgs();
+            this.subscribeToStoredForegroundAndManageAppTab()
 
             localStorage.removeItem('firebase:previous_websocket_failure');
 
@@ -231,35 +233,87 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
+    subscribeToStoredForegroundAndManageAppTab() {
+
+        this.wsRequestsService.foregroundNotificationCount$
+
+            .subscribe((foregroundNoticationCount) => {
+                console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
+
+
+                if (foregroundNoticationCount && foregroundNoticationCount > 0) {
+                    this.count = foregroundNoticationCount;
+                    if (document.title.charAt(0) === '(') {
+                        console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT DOCUMENT TITLE 1', document.title)
+                    } else {
+                        console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT DOCUMENT TITLE 2', document.title)
+                        const brand = this.brandService.getBrand();
+                        if (this.count > 0) {
+                            const that = this
+                            clearInterval(this.setIntervalTime)
+                            this.setIntervalTime = window.setInterval(function () {
+                                document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
+                            }, 1000);
+                        }
+
+                    }
+                }
+            })
+    }
+
+
     listenToFCMForegroundMsgs() {
         const messaging = firebase.messaging()
         messaging.onMessage((payload) => {
             console.log('Message received. ', payload);
+            const recipient_fullname = payload.data.recipient_fullname
+            const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
+            const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
             const link = payload.notification.click_action + "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
             console.log('Message received link ', link);
-            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link);
+            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link,  requester_avatar_initial,  requester_avatar_bckgrnd);
             this.count = this.count + 1;
             console.log('snd test foreground notification count ', this.count);
             this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
+            const brand = this.brandService.getBrand();
+
+            if (this.count > 0) {
+                const that = this
+                clearInterval(this.setIntervalTime)
+                this.setIntervalTime = window.setInterval(function () {
+                    document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
+                }, 1000);
+            }
+    
         });
     }
 
+    doRecipient_fullname_initial(recipient_fullname) {
+        const recipient_fullname_initial = avatarPlaceholder(recipient_fullname)
+        return recipient_fullname_initial;
+    }
+
+    doRecipient_fullname_bckgrnd(recipient_fullname) {
+        const recipient_fullname_background = getColorBck(recipient_fullname);
+        return recipient_fullname_background;
+    
+    }
+
     sendForegroundMsg() {
+        const recipient_fullname = 'Milani Salame'
+        const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
+        const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
+        console.log('recipient_fullname initial', requester_avatar_initial);
+        console.log('recipient_fullname bckgnd', requester_avatar_bckgrnd);
         // https://support-pre.tiledesk.com/chat-ionic5/#/conversation-detail/support-group-62728d1ca76e050040cee42e-025be323bc914f9f9f727ca0b7364eb7/Chicco/active
         console.log('snd test foreground notification');
         const link = "https://console.tiledesk.com/v2/chat/#/conversation-detail/support-group-6228d9d792d1ed0019240d2b-7f4cc830069f48458b8fd7070f4a7f48/Bot/active"
         console.log('snd test foreground notification link ', link);
-        this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link);
+        this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link, requester_avatar_initial,  requester_avatar_bckgrnd);
         this.count = this.count + 1;
         console.log('snd test foreground notification count ', this.count);
         this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
         const brand = this.brandService.getBrand();
-        // if (this.count > 0) {
-        //     clearInterval(this.setIntervalTime)
-        //     this.setIntervalTime =    setInterval(() => {
-        //         this.metaTitle.setTitle( '(' + this.count + ')' + ' ' + brand['metaTitle'] )
-        //     }, 1000);
-        // }
 
         if (this.count > 0) {
             const that = this
