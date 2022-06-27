@@ -10,7 +10,7 @@
     </div>
 
   </div> -->
-  
+
   <div class="container-fluid">
     <div class="navbar-header">
       <!-- <button type="button" class="navbar-toggle" style="margin-top:3px" data-toggle="collapse"
@@ -52,10 +52,10 @@
 
 
 
-        <!-- 
-        ------------ ============================= ------------
-        ************ UPGRADE (PROFILE TYPE = FREE) ************
-        ------------ ============================= ------------    -->
+
+        <!-- ------------------------------------------------  -->
+        <!--  UPGRADE (PROFILE TYPE = FREE) -->
+        <!-- ------------------------------------------------  -->
         <ng-container *ngIf="isVisible">
           <li *ngIf="project && prjct_profile_type === 'free'">
 
@@ -141,7 +141,8 @@
               <!--  ------------------------------------------------ -->
               <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
                 (click)="openModalSubsExpired()" class="expired__Tooltip">
-                <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative; top: 2px">
+                <i class="material-icons"
+                  style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative; top: 2px">
                   error_outline
                 </i>
                 <span class="expired__Tooltiptext"
@@ -331,24 +332,22 @@
         <!--  ------------------------------------------------ -->
         <!--  NOTIFICATION -->
         <!--  ------------------------------------------------ -->
-        <li *ngIf="project" class="dropdown" matTooltipClass="custom-mat-tooltip-navbar"
-        matTooltip="{{ 'Unserved' | translate }}: {{ unservedRequestCount }} - {{ 'AssignedToYou' | translate}}: {{currentUserRequestCount}}" 
-        #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100">
+        <!-- <li *ngIf="project" class="dropdown" matTooltipClass="custom-mat-tooltip-navbar"
+          matTooltip="{{ 'Unserved' | translate }}: {{ unservedRequestCount }} - {{ 'AssignedToYou' | translate}}: {{currentUserRequestCount}}"
+          #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100">
           <a routerLink="project/{{ project._id }}/wsrequests" class="dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons">notifications</i>
 
-            <!-- SHOW THE BADGE OVER NOTIFICATION IF THE COUNT OF UNSERVED OR TO ASSIGNED TO CURRENT USER REQUESTS IS > 0 -->
+            <!- - SHOW THE BADGE OVER NOTIFICATION IF THE COUNT OF UNSERVED OR TO ASSIGNED TO CURRENT USER REQUESTS IS > 0 - ->
             <span *ngIf="unservedRequestCount > 0 || currentUserRequestCount > 0 ">
-              <span class="notification" >
-              {{ unservedRequestCount + currentUserRequestCount }}
+              <span class="notification">
+                {{ unservedRequestCount + currentUserRequestCount }}
+              </span>
             </span>
-            </span>
-
-            <!-- <p class="hidden-lg hidden-md">Notifications</p> -->
           </a>
-        </li>
+        </li> -->
 
-         <!--  ------------------------------------------------ -->
+        <!--  ------------------------------------------------ -->
         <!--  Dashboard language -->
         <!--  ------------------------------------------------ -->
         <!-- <li *ngIf="project">
