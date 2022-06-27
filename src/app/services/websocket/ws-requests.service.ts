@@ -107,7 +107,7 @@ export class WsRequestsService implements OnDestroy {
     // NOTE_nk: comment this.getCurrentProjectAndSubscribeTo_WsRequests()
     this.getCurrentProjectAndSubscribeTo_WsRequests()
     this.getLoggedUser();
-
+    this.getStoredForegroungNotificationAndPublish()
   }
 
 
@@ -132,16 +132,20 @@ export class WsRequestsService implements OnDestroy {
       }
     });
   }
+  getStoredForegroungNotificationAndPublish() {
+    const foregrondNotificationsCount = +this.usersLocalDbService.getForegrondNotificationsCount();
+    this.foregroundNotificationCount$.next(foregrondNotificationsCount)
+  }
 
   publishAndStoreForegroundRequestCount(msgscount) {
     console.log('[WS-MSGS-SERV] - foreground Request Count ', msgscount)
     this.foregroundNotificationCount$.next(msgscount)
     this.usersLocalDbService.storeForegrondNotificationsCount(msgscount)
-   } 
+  }
 
-   hasChangedSoundPreference(soundPreference) {
+  hasChangedSoundPreference(soundPreference) {
     this.hasChangedSoundPreference$.next(soundPreference)
-   }
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // methods for REQUESTS 
@@ -868,21 +872,21 @@ export class WsRequestsService implements OnDestroy {
   // -----------------------------------------------------------------------------------------
   public exportTranscriptAsCSVFile(idrequest: string) {
     // https://tiledesk-server-pre.herokuapp.com/615577276b34e900353c1a63/requests/support-group-615577276b34e900353c1a63-0a8b507ddd384daf8e400f223083687f/messages/csv
-//     https://tiledesk-server-pre.herokuapp.com/62728d1ca76e050040cee42e/requests/support-group-62728d1ca76e050040cee42e-e1e4b00def724a0798d4d03c38beb921/messages/csv"
+    //     https://tiledesk-server-pre.herokuapp.com/62728d1ca76e050040cee42e/requests/support-group-62728d1ca76e050040cee42e-e1e4b00def724a0798d4d03c38beb921/messages/csv"
 
 
-  const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + idrequest + '/messages/csv';
-  this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD TRANSCRIPT AS CSV URL ', url);
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + idrequest + '/messages/csv';
+    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD TRANSCRIPT AS CSV URL ', url);
 
-  const headers = new Headers();
-  headers.append('Content-Type', 'application/csv');
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/csv');
 
-  headers.append('Authorization', this.TOKEN);
+    headers.append('Authorization', this.TOKEN);
 
-  return this.http
-    .get(url, { headers })
-    .map((response) => response.text());
-}
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.text());
+  }
 
 
   // -----------------------------------------------------------------------------------------
