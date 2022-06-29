@@ -91,7 +91,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         public usersLocalDbService: LocalDbService
         // private faqKbService: FaqKbService,
     ) {
-        console.log('HI! [APP-COMPONENT] ')
+        // console.log('HI! [APP-COMPONENT] ')
         // https://www.freecodecamp.org/news/how-to-check-internet-connection-status-with-javascript/
 
         // const { userAgent } = navigator
@@ -125,8 +125,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (brand) {
             this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
-            this.tabTitle = document.title;
-            console.log('[APP-COMPONENT] - GET BRAND brandService > brand  this.tabTitle ', this.tabTitle)
+            // this.tabTitle = document.title;
+            // console.log('[APP-COMPONENT] - GET BRAND brandService > brand  this.tabTitle ', this.tabTitle)
         }
         this.setFavicon(brand); // here used with "import brand from ..." now see in getBrand()
 
@@ -163,16 +163,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             // Listen to FOREGROND MESSAGES
             // ----------------------------------------------------
             this.listenToFCMForegroundMsgs();
-           
-            console.log('document.visibilityState  ', document.visibilityState) 
-            if ( document.visibilityState === 'hidden') {
-                this.isTabVisible = false;
-                this.subscribeToStoredForegroundAndManageAppTab();
-            }  else if  ( document.visibilityState === 'visible') {
-                this.isTabVisible = true;
-                this.subscribeToStoredForegroundAndManageAppTab();
-            }
-         
+            this.subscribeToStoredForegroundAndManageAppTab()
+
+            // console.log('document.visibilityState  ', document.visibilityState)
+            // if (document.visibilityState === 'hidden') {
+            //     this.isTabVisible = false;
+               
+            // } else if (document.visibilityState === 'visible') {
+            //     this.isTabVisible = true;
+            
+            // }
+
             localStorage.removeItem('firebase:previous_websocket_failure');
 
         } else {
@@ -184,7 +185,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
-        console.log('[APP-COMPONENT] browserLang ', browserLang)
+        // console.log('[APP-COMPONENT] browserLang ', browserLang)
         if (this.auth.user_bs && this.auth.user_bs.value) {
             this.logger.log('[APP-COMPONENT] this.auth.user_bs.value._id ', this.auth.user_bs.value._id)
             const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
@@ -228,229 +229,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    @HostListener('document:visibilitychange', [])
-    visibilitychange() {
-        // console.log("document ", document);
-        console.log("document is hidden", document.hidden, ' document title', document.title);
 
-        if (document.hidden) {
-            this.isTabVisible = false;
-            this.subscribeToStoredForegroundAndManageAppTab()
-        } else {
-            // TAB IS ACTIVE --> restore title and DO NOT SOUND
-            console.log("document is hidden 2", document.hidden);
-            this.isTabVisible = true;
-            this.subscribeToStoredForegroundAndManageAppTab()
-            
-        }
-    }
-
-    @HostListener('window:storage', ['$event'])
-    onStorageChanged(event: any) {
-
-        if (event.key !== 'dshbrd----foregroundcount') {
-            return;
-        }
-        const foregrondNotificationsCount = +this.usersLocalDbService.getForegrondNotificationsCount();
-        console.log('onStorageChanged', foregrondNotificationsCount)
-    }
-
-  
-
-    subscribeToStoredForegroundAndManageAppTab() {
-        this.wsRequestsService.foregroundNotificationCount$
-            .subscribe((foregroundNoticationCount) => {
-                console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
-                console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION this.isTabVisible ', this.isTabVisible);
-
-                if (foregroundNoticationCount && foregroundNoticationCount > 0) {
-                    this.count = foregroundNoticationCount;
-                    console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', this.count)
-                    //     if (document.title.charAt(0) === '(') {
-                    //         console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT DOCUMENT TITLE 1', document.title)
-                    //     } else {
-                    //         console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT isTabVisible', this.isTabVisible)
-
-                    //         const brand = this.brandService.getBrand();
-
-                    //         if (this.count > 0) {
-                    //             const that = this
-                    //             clearInterval(this.setIntervalTime)
-                    //             this.setIntervalTime = window.setInterval(function () {
-                    //                 document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
-                    //             }, 1000);
-                    //         }
-
-                    //     }
-
-
-                    let isBlurred = false;
-                    const brand = this.brandService.getBrand();
-                    const that = this
-                    // window.onblur = function () {
-                        if (this.isTabVisible === false) { 
-                        console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1')
-                        isBlurred = true;
-                        this.setIntervalTime = window.setInterval(function () {
-                            document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];;
-                        }, 1000);
-                    }
-                    // window.onfocus = function () {
-                        if (this.isTabVisible === true) {
-                        console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 2')
-                        isBlurred = false;
-                        document.title =  brand['metaTitle']
-                        clearInterval(this.setIntervalTime);
-                    }
-                }
-
-            })
-    }
-
-
-    listenToFCMForegroundMsgs() {
-        const messaging = firebase.messaging()
-        messaging.onMessage((payload) => {
-            console.log('Message received. ', payload);
-            const recipient_fullname = payload.data.recipient_fullname
-            const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
-            const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
-            const link = payload.notification.click_action + "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
-            console.log('Message received link ', link);
-            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link, requester_avatar_initial, requester_avatar_bckgrnd);
-            this.count = this.count + 1;
-            console.log('snd test foreground notification count ', this.count);
-            this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
-            // const brand = this.brandService.getBrand();
-            // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT listenToFCMForegroundMsgs ', this.isTabVisible)
-
-            // if (!this.isTabVisible) {
-            //     if (this.count > 0) {
-            //         const that = this
-            //         clearInterval(this.setIntervalTime)
-            //         this.setIntervalTime = window.setInterval(function () {
-            //             document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
-            //         }, 1000);
-            //     }
-            // }
-
-        });
-    }
-
-    doRecipient_fullname_initial(recipient_fullname) {
-        const recipient_fullname_initial = avatarPlaceholder(recipient_fullname)
-        return recipient_fullname_initial;
-    }
-
-    doRecipient_fullname_bckgrnd(recipient_fullname) {
-        const recipient_fullname_background = getColorBck(recipient_fullname);
-        return recipient_fullname_background;
-
-    }
-
-    sendForegroundMsg() {
-        const recipient_fullname = 'Milani Salame'
-        const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
-        const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
-        console.log('recipient_fullname initial', requester_avatar_initial);
-        console.log('recipient_fullname bckgnd', requester_avatar_bckgrnd);
-        // https://support-pre.tiledesk.com/chat-ionic5/#/conversation-detail/support-group-62728d1ca76e050040cee42e-025be323bc914f9f9f727ca0b7364eb7/Chicco/active
-        console.log('snd test foreground notification');
-        const link = "https://console.tiledesk.com/v2/chat/#/conversation-detail/support-group-6228d9d792d1ed0019240d2b-7f4cc830069f48458b8fd7070f4a7f48/Bot/active"
-        console.log('snd test foreground notification link ', link);
-        this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link, requester_avatar_initial, requester_avatar_bckgrnd);
-        this.count = this.count + 1;
-        console.log('snd test foreground notification count ', this.count);
-        this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
-        const brand = this.brandService.getBrand();
-
-        if (this.count > 0) {
-            const that = this
-            clearInterval(this.setIntervalTime)
-            this.setIntervalTime = window.setInterval(function () {
-                document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
-            }, 1000);
-        }
-
-        // let isOpenNotification = false 
-        // console.log('snd test foreground isOpenNotification ',isOpenNotification);
-
-        //   if (isOpenNotification === false) {
-
-        //     this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link);
-
-        //     isOpenNotification = true
-        //     setTimeout(() => {
-        //         isOpenNotification = false;
-        //         console.log('snd test foreground isOpenNotification ',isOpenNotification);
-        //       }, 2000);
-
-        //   } else if (isOpenNotification === true) {
-        //     this.notify.updateForegroungPushNotification("Milani Salame", "belli alla brace", link);
-        //   }
-    }
-
-    detectBrowserName() {
-        const agent = window.navigator.userAgent.toLowerCase()
-        switch (true) {
-            case agent.indexOf('edge') > -1:
-                return 'edge';
-            case agent.indexOf('opr') > -1 && !!(<any>window).opr:
-                return 'opera';
-            case agent.indexOf('chrome') > -1 && !!(<any>window).chrome:
-                return 'chrome';
-            case agent.indexOf('trident') > -1:
-                return 'ie';
-            case agent.indexOf('firefox') > -1:
-                return 'firefox';
-            case agent.indexOf('safari') > -1:
-                return 'safari';
-            default:
-                return 'other';
-        }
-    }
-
-    detectBrowserVersion() {
-        var userAgent = navigator.userAgent, tem,
-            matchTest = userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-
-        if (/trident/i.test(matchTest[1])) {
-            tem = /\brv[ :]+(\d+)/g.exec(userAgent) || [];
-            return 'IE ' + (tem[1] || '');
-        }
-        if (matchTest[1] === 'Chrome') {
-            tem = userAgent.match(/\b(OPR|Edge)\/(\d+)/);
-            if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
-        }
-        matchTest = matchTest[2] ? [matchTest[1], matchTest[2]] : [navigator.appName, navigator.appVersion, '-?'];
-        if ((tem = userAgent.match(/version\/(\d+)/i)) != null) matchTest.splice(1, 1, tem[1]);
-        return matchTest.join(' ');
-    }
-
-
-    setFavicon(brand) {
-        var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-        this.logger.log('[APP-COMPONENT] setFavicon ', link)
-        link['type'] = 'image/x-icon';
-        link['rel'] = 'shortcut icon';
-        if (brand) {
-            link['href'] = brand.favicon__url;
-        }
-        document.getElementsByTagName('head')[0].appendChild(link);
-
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
-
-    switchLanguage(language: string) {
-        this.translate.use(language);
-    }
 
     ngOnInit() {
-        this.logger.log('[APP-COMPONENT] ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
+        // console.log('[APP-COMPONENT] ====== >>> HELLO APP.COMP (ngOnInit)  ')
         this.logger.log('[APP-COMPONENT] !! FIREBASE  ', firebase);
+      
 
         // this.closeWSAndResetWsRequestsIfUserIsSignedOut();
         this.closeWSAndResetWsRequestsIfUserIsSignedOut_NoFB();
@@ -504,6 +288,189 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // -----------------------------------------------------------------------------------------------------
         this.getCurrentUserAndConnectToWs();
     }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+
+    switchLanguage(language: string) {
+        this.translate.use(language);
+    }
+
+    @HostListener('document:visibilitychange', [])
+    visibilitychange() {
+        // console.log("document ", document);
+        // console.log(">>>> document is hidden", document.hidden, " >>>> document title ", document.title, " >>>> FOREGROUND COUNT ", this.count);
+    
+        if (document.hidden) {
+            this.isTabVisible = false;
+            // this.subscribeToStoredForegroundAndManageAppTab()
+        } else {
+            // TAB IS ACTIVE --> restore title and DO NOT SOUND
+            // console.log("document is hidden 2", document.hidden);
+            this.isTabVisible = true;
+            // this.subscribeToStoredForegroundAndManageAppTab()
+        }
+    }
+
+    @HostListener('window:storage', ['$event'])
+    onStorageChanged(event: any) {
+        // console.log('>>>>>>>> onStorageChanged event', event)
+        if ((event.key !== 'dshbrd----foregroundcount') && (event.key !== 'dshbrd----sound')) {
+            return;
+        }
+        const foregrondNotificationsCount = +this.usersLocalDbService.getForegrondNotificationsCount();
+        // console.log('>>>>>>>> onStorageChanged foregrondNotificationsCount', foregrondNotificationsCount)
+        this.count = foregrondNotificationsCount
+        this.wsRequestsService.publishAndStoreForegroundRequestCount(foregrondNotificationsCount)
+        if (this.count === 0) {
+            const brand = this.brandService.getBrand();
+            document.title = brand['metaTitle']
+            this.metaTitle.setTitle(brand['metaTitle']);
+            // console.log('>>>>>>>> onStorageChanged use case this.count ', foregrondNotificationsCount, ' document.title', document.title)
+            // this.ngOnInit()
+        }
+
+        if (event.key === 'dshbrd----sound') {
+            this.wsRequestsService.hasChangedSoundPreference(event.newValue)
+        }
+
+    }
+
+
+
+    subscribeToStoredForegroundAndManageAppTab() {
+        this.wsRequestsService.foregroundNotificationCount$
+            .subscribe((foregroundNoticationCount) => {
+                // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
+                // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION this.isTabVisible ', this.isTabVisible);
+                const brand = this.brandService.getBrand();
+                // && foregroundNoticationCount > 0
+                if (foregroundNoticationCount) {
+                    this.count = foregroundNoticationCount;
+                    // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', this.count)
+
+                    let isBlurred = false;
+
+                    const that = this
+                    window.onblur = function () {
+                        // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW NOT HAS FOCUS this.count ', this.count)
+                        isBlurred = true;
+
+                        this.setIntervalTime = window.setInterval(function () {
+                            document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
+                            // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW NOT HAS FOCUS  HERE YES ')
+                            // document.title = that.count > 0 ?  '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
+                        }, 1000);
+                    }
+                    window.onfocus = function () {
+                        // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW HAS FOCUS ')
+                        isBlurred = false;
+                        document.title = brand['metaTitle']
+                        clearInterval(this.setIntervalTime);
+                    }
+                }
+            })
+    }
+
+
+    listenToFCMForegroundMsgs() {
+        const messaging = firebase.messaging()
+        messaging.onMessage((payload) => {
+            // console.log('Message received. ', payload);
+            const recipient_fullname = payload.data.recipient_fullname
+            const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
+            const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
+            const link = payload.notification.click_action + "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
+            // console.log('Message received link ', link);
+            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link, requester_avatar_initial, requester_avatar_bckgrnd);
+            this.count = this.count + 1;
+            // console.log('snd test foreground notification count ', this.count);
+            this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
+
+
+        });
+    }
+
+    doRecipient_fullname_initial(recipient_fullname) {
+        const recipient_fullname_initial = avatarPlaceholder(recipient_fullname)
+        return recipient_fullname_initial;
+    }
+
+    doRecipient_fullname_bckgrnd(recipient_fullname) {
+        const recipient_fullname_background = getColorBck(recipient_fullname);
+        return recipient_fullname_background;
+
+    }
+
+    // sendForegroundMsg() {
+    //     const recipient_fullname = 'Milani Salame'
+    //     const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
+    //     const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
+    //     console.log('recipient_fullname initial', requester_avatar_initial);
+    //     console.log('recipient_fullname bckgnd', requester_avatar_bckgrnd);
+    //     // https://support-pre.tiledesk.com/chat-ionic5/#/conversation-detail/support-group-62728d1ca76e050040cee42e-025be323bc914f9f9f727ca0b7364eb7/Chicco/active
+    //     console.log('snd test foreground notification');
+    //     const link = "https://console.tiledesk.com/v2/chat/#/conversation-detail/support-group-6228d9d792d1ed0019240d2b-7f4cc830069f48458b8fd7070f4a7f48/Bot/active"
+    //     console.log('snd test foreground notification link ', link);
+    //     this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link, requester_avatar_initial, requester_avatar_bckgrnd);
+    //     this.count = this.count + 1;
+    //     console.log('snd test foreground notification count ', this.count);
+    //     this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
+    //     // const brand = this.brandService.getBrand();
+    // }
+
+    detectBrowserName() {
+        const agent = window.navigator.userAgent.toLowerCase()
+        switch (true) {
+            case agent.indexOf('edge') > -1:
+                return 'edge';
+            case agent.indexOf('opr') > -1 && !!(<any>window).opr:
+                return 'opera';
+            case agent.indexOf('chrome') > -1 && !!(<any>window).chrome:
+                return 'chrome';
+            case agent.indexOf('trident') > -1:
+                return 'ie';
+            case agent.indexOf('firefox') > -1:
+                return 'firefox';
+            case agent.indexOf('safari') > -1:
+                return 'safari';
+            default:
+                return 'other';
+        }
+    }
+
+    detectBrowserVersion() {
+        var userAgent = navigator.userAgent, tem,
+            matchTest = userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+
+        if (/trident/i.test(matchTest[1])) {
+            tem = /\brv[ :]+(\d+)/g.exec(userAgent) || [];
+            return 'IE ' + (tem[1] || '');
+        }
+        if (matchTest[1] === 'Chrome') {
+            tem = userAgent.match(/\b(OPR|Edge)\/(\d+)/);
+            if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+        }
+        matchTest = matchTest[2] ? [matchTest[1], matchTest[2]] : [navigator.appName, navigator.appVersion, '-?'];
+        if ((tem = userAgent.match(/version\/(\d+)/i)) != null) matchTest.splice(1, 1, tem[1]);
+        return matchTest.join(' ');
+    }
+
+
+    setFavicon(brand) {
+        var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+        this.logger.log('[APP-COMPONENT] setFavicon ', link)
+        link['type'] = 'image/x-icon';
+        link['rel'] = 'shortcut icon';
+        if (brand) {
+            link['href'] = brand.favicon__url;
+        }
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+    }
+
+
 
 
     // ---------------------------
@@ -646,11 +613,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     hideWidgetInComponentDisplayedInChat() {
-
         this.subscription = this.router.events.subscribe((e) => {
             if (e instanceof NavigationEnd) {
-
-
                 //    console.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
                 if ((e.url.indexOf('/unserved-request-for-panel') !== -1) || (e.url.indexOf('/projects-for-panel') !== -1) || (e.url.indexOf('/request-for-panel') !== -1)) {
                     // window.addEventListener("load", () => {
@@ -666,10 +630,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // )};
             }
-
         });
-
-
 
         // this.router.events.subscribe((val) => {
         //     if (this.location.path() !== '') {

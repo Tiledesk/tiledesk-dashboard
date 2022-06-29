@@ -261,40 +261,40 @@ export class NotifyService {
   }
 
 
-  updateForegroungPushNotification(sender: string, msg: string, link: string) {
-    console.log('[NOTIFY-SERVICE] showForegroungPushNotification link', link)
-    $.notifyDefaults({
-      url_target: "_self"
-    });
-    this.foregroungNotification.update({
-      title: sender,
-      message: msg,
-      url: link,
-    }, {
-      type: 'minimalist',
-      delay: 2000,
-      placement: {
-        from: 'top',
-        align: 'center'
-      },
+  // updateForegroungPushNotification(sender: string, msg: string, link: string) {
+  //   console.log('[NOTIFY-SERVICE] showForegroungPushNotification link', link)
+  //   $.notifyDefaults({
+  //     url_target: "_self"
+  //   });
+  //   this.foregroungNotification.update({
+  //     title: sender,
+  //     message: msg,
+  //     url: link,
+  //   }, {
+  //     type: 'minimalist',
+  //     delay: 2000,
+  //     placement: {
+  //       from: 'top',
+  //       align: 'center'
+  //     },
 
-      template: '<div data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
-        ' <span data-notify="icon"></span>' +
-        '<span data-notify="title">{1}</span>' +
-        '<span data-notify="message">{2}</span>' +
-        `<a href="{3}" data-notify="url"></a>` +
-        '</div>'
-    });
-  }
+  //     template: '<div data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
+  //       ' <span data-notify="icon"></span>' +
+  //       '<span data-notify="title">{1}</span>' +
+  //       '<span data-notify="message">{2}</span>' +
+  //       `<a href="{3}" data-notify="url"></a>` +
+  //       '</div>'
+  //   });
+  // }
 
   // '<img data-notify="icon" class="pull-left">' +
   // icon: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png',
   // (click)="openMsgInChat(${link})"
   // icon_type: 'image',
   showForegroungPushNotification(sender: string, msg: string, link: string, requester_avatar_initial: string, requester_avatar_bckgrnd: string) {
-    console.log('[NOTIFY-SERVICE] showForegroungPushNotification link', link)
-    console.log('[NOTIFY-SERVICE] showForegroungPushNotification requester_avatar_initial', requester_avatar_initial)
-    console.log('[NOTIFY-SERVICE] showForegroungPushNotification requester_avatar_bckgrnd', requester_avatar_bckgrnd)
+    // console.log('[NOTIFY-SERVICE] showForegroungPushNotification link', link)
+    // console.log('[NOTIFY-SERVICE] showForegroungPushNotification requester_avatar_initial', requester_avatar_initial)
+    // console.log('[NOTIFY-SERVICE] showForegroungPushNotification requester_avatar_bckgrnd', requester_avatar_bckgrnd)
     $.notifyDefaults({
       url_target: "_self"
     });
