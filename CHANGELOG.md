@@ -3,9 +3,10 @@
 
 ### 2.2.39
 - Deploys in production
-- Removes the in-app notifications for unserved conversations and adds "foreground notifications" of messages assigned to the current user 
+- Adds the foreground notifications with the ability to be redirected to the corresponding chat conversation if clicked
 - Adds the Ukrainian language
 - Adds the ability to select Ukrainian as the preferred language for the dashboard and chat
+- Synchronizes the chat with the notifications sound preferences (enable / disable) set in the dashboard
 - Displays the title of the document with the number of new unread messages only if the browser tab of the dashboard is active
 
 ### 2.2.38
