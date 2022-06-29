@@ -234,7 +234,7 @@ import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 import { CutomTooltipOptions } from './utils/util';
 import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component';
 
-
+// NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
 
 // console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
