@@ -1642,6 +1642,12 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     window.open(url, '_blank');
   }
 
+
+  openRasaIntegrationTutorial() {
+    const url = 'https://gethelp.tiledesk.com/articles/rasa-ai-integration/';
+    window.open(url, '_blank');
+  }
+
   // -----------------------------------------------------------------------
   // Resolution bot doc link
   // -----------------------------------------------------------------------

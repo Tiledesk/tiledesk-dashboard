@@ -124,3 +124,13 @@
   line-height: 28px;
   margin-top: 28px;
 }
+
+
+.custom-link {
+  color: #0f62ff;
+  cursor: pointer;
+}
+
+.custom-link:hover {
+  text-decoration: underline;
+}

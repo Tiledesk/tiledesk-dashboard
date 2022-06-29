@@ -883,6 +883,33 @@
             </section>
             <!-- ./ end section External -->
 
+            <!-- ------------------------------------------------- -->
+            <!-- RIGHT SIDEBAR External  -->
+            <!-- ------------------------------------------------- -->
+            <section *ngIf="botType === 'rasa'">
+              <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined" style="margin-top: 10px!important;">
+                    <span class="card_title__underline">
+                      {{ 'ConnectYourRASAServer' | translate }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <p style="color:#7695a5">
+                {{'IntegratingRasaWithTiledesk' | translate}}
+                <span style="display: block;" class="custom-link" (click)="openRasaIntegrationTutorial()">
+                  <!-- {{ "HereTheTutorial" | translate: tparams }} -->
+                  {{'HereHowIntegratingRasaWithTiledesk' | translate}}
+                </span>
+              </p>
+            </section>
+             <!-- ./ end section RASA -->
+
           </div>
         </div>
       </div> <!-- ./ col-md-4 -->

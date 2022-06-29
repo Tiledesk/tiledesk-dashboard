@@ -251,7 +251,7 @@ export class FaqKbService {
     const options = new RequestOptions({ headers });
 
     const url = this.RASA_BOT_CREDENTIAL_BASE_URL + botid;
-    console.log('[FAQ-KB.SERV] - getRasaBotServer - URL ', url);
+    // console.log('[FAQ-KB.SERV] - getRasaBotServer - URL ', url);
     return this.http
       .get(url, options)
       .map((res) => res.json());
@@ -265,7 +265,7 @@ export class FaqKbService {
     const options = new RequestOptions({ headers });
 
     const url = this.RASA_BOT_CREDENTIAL_BASE_URL + botid;
-    console.log('[FAQ-KB.SERV] - getRasaBotServer - URL ', url);
+    // console.log('[FAQ-KB.SERV] - getRasaBotServer - URL ', url);
     return this.http
       .delete(url, options)
       .map((res) => res.json());
