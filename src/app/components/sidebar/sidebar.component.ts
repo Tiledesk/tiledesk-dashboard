@@ -297,10 +297,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
 
             this.NOTIFICATION_SOUND = storedNotificationSound;
-            console.log('[SIDEBAR] NOTIFICATION_SOUND -  this.NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
+            this.logger.log('[SIDEBAR] NOTIFICATION_SOUND -  this.NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
         } else {
             this.NOTIFICATION_SOUND = 'enabled';
-            console.log('[SIDEBAR] NOTIFICATION_SOUND -  this.NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
+            this.logger.log('[SIDEBAR] NOTIFICATION_SOUND -  this.NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
         }
     }
 
@@ -310,12 +310,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((newSoundPreference) => {
-                console.log('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED ', newSoundPreference);
+                this.logger.log('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED ', newSoundPreference);
                 this.NOTIFICATION_SOUND = newSoundPreference;
             }, error => {
-                console.error('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED * ERROR * ', error)
+                this.logger.error('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED * ERROR * ', error)
             }, () => {
-                console.log('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED *** COMPLETE *** ')
+                this.logger.log('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED *** COMPLETE *** ')
             });
     }
 
@@ -325,7 +325,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 takeUntil(this.unsubscribe$)
             )
             .subscribe((foregroundNoticationCount) => {
-                console.log('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
+                this.logger.log('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
                 this.new_messages_count = foregroundNoticationCount;
 
                 if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
@@ -341,15 +341,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         this.audio.play().then(() => {
 
                             this.hasPlayed = true
-                            console.log('[SIDEBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
+                            this.logger.log('[SIDEBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
 
                             setTimeout(() => {
                                 this.hasPlayed = false;
-                                console.log('[SIDEBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
+                                this.logger.log('[SIDEBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
 
                             }, 4000);
                         }).catch((error: any) => {
-                            console.log('[APP-COMP] ***soundMessage error*', error);
+                            this.logger.log('[APP-COMP] ***soundMessage error*', error);
                         });
 
                     }
@@ -359,9 +359,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
             }, error => {
-                console.error('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT * ERROR * ', error)
+                this.logger.error('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT * ERROR * ', error)
             }, () => {
-                console.log('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT *** COMPLETE *** ')
+                this.logger.log('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT *** COMPLETE *** ')
             });
     }
 
@@ -587,22 +587,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             .subscribe(event => {
                 if (event.url.indexOf('/request-for-panel') !== -1) {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = true;
-                    console.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    this.logger.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 } else {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = false;
-                    console.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    this.logger.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 }
 
                 if (event.url.indexOf('/unserved-request-for-panel') !== -1) {
                     this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = true;
-                    console.log('[SIDEBAR] NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                    this.logger.log('[SIDEBAR] NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 } else {
                     this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = false;
-                    console.log('[SIDEBAR] NavigationEnd- IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                    this.logger.log('[SIDEBAR] NavigationEnd- IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 }
 
                 if (event.url.indexOf('/autologin') !== -1) {
-                    console.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
+                    this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.AUTOLOGIN_ROUTE_IS_ACTIVE = true;
 
                 } else {

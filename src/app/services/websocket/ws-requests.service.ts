@@ -138,7 +138,7 @@ export class WsRequestsService implements OnDestroy {
   }
 
   publishAndStoreForegroundRequestCount(msgscount) {
-    console.log('[WS-MSGS-SERV] - foreground Request Count ', msgscount)
+    // console.log('[WS-MSGS-SERV] - foreground Request Count ', msgscount)
     this.foregroundNotificationCount$.next(msgscount)
     this.usersLocalDbService.storeForegrondNotificationsCount(msgscount)
   }
