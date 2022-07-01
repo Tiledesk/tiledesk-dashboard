@@ -2,6 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.2.40
+- Deploys in production
 - Fixes the bug: the dashboard browser tab blinks 0 when there are no new notifications
 - Displays a desktop notification when a foreground message is received
 - Displays a in app notification when a unassigned chat is received
