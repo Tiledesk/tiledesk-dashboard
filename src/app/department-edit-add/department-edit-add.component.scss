@@ -170,7 +170,7 @@ input[type="radio"] {
   border-left-width: 5px;
   border-radius: 3px;
   margin: 0 auto;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   font-size: 14px;
 }
 
@@ -217,7 +217,7 @@ input[type="radio"] {
 // END - CUSTOM NOTIFICATION
 
 .title-attribute {
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   color: #394f5a;
   font-weight: 400;
 }
@@ -316,7 +316,7 @@ input[type="radio"] {
 }
 
 .row-header {
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   color: #394f5a;
   font-weight: 500;
   margin-bottom: 5px;
@@ -394,32 +394,7 @@ input[type="radio"] {
   padding-left: 5px;
 }
 
-// .card_title__underlined {
-//   text-transform: none;
-//   color: #566787;
-//   margin-bottom: 0px;
-//   height: 40px !important;
-//   position: relative;
-//   font-family: Google Sans, sans-serif;
-//   height: 30px;
-//   font-size: 16px;
-//   margin-top: 10px;
-// }
 
-// .card_title__underline {
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   bottom: -1px;
-//   border-bottom: 2px solid $brand-primary;
-//   z-index: 1;
-// }
-
-// .section-subtitle {
-//   height: 20px;
-//   border-top: 1px solid #ddd;
-//   // width: calc((100% / 3) + 372px);
-// }
 select[disabled] {
   color: #999999;
   background-color: rgb(248, 249, 249);
@@ -636,7 +611,7 @@ select[disabled] {
   white-space: nowrap;
   position: relative;
   top: 16px;
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   font-weight: 400;
 }
 

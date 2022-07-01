@@ -868,7 +868,7 @@ and also iPads specifically.
 }
 
 .request-category {
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   // font-weight: 500;
   font-size: 18px;
   position: relative;
@@ -880,8 +880,8 @@ span .conv-svg-icon {
   top: 9px;
 }
 .row-header {
-  // font-family: "Google Sans", sans-serif !important;
-  font-family: "Poppins";
+ 
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   color: #394f5a;
   font-weight: 500;
   margin-bottom: 5px;
@@ -1087,7 +1087,6 @@ span .conv-svg-icon {
 }
 
 .title-attribute {
-  // font-family: 'Google Sans',sans-serif!important;
   color: #394f5a;
   font-weight: 400;
 }
@@ -1130,7 +1129,7 @@ span .conv-svg-icon {
   font-size: 12px;
   color: #394f5a;
   font-weight: 500;
-  font-family: "Google Sans", sans-serif !important;
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
 }
 
 .decoded-jwt-attributes {
@@ -2667,7 +2666,7 @@ span .conv-svg-icon {
   display: flex !important;
 }
 .altenative-avatar-conv-detail {
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   font-weight: 400;
   position: absolute;
   color: #fff;
@@ -2926,7 +2925,7 @@ span .conv-svg-icon {
   background-color: #2d323e !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: "Poppins" !important;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
@@ -2936,7 +2935,7 @@ span .conv-svg-icon {
   color: #555555 !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: "Poppins" !important;
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
   border: 1px solid #e5effe !important;

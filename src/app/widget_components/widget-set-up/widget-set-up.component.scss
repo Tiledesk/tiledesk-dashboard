@@ -416,7 +416,7 @@ div.clear {
 }
 
 .c21-last-time {
-  font-family: "Google Sans", sans-serif !important;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   font-size: 9px;
   color: #aaa;
   float: right;
@@ -435,7 +435,7 @@ div.clear {
 }
 
 .c21-msg {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   font-weight: 400;
   color: #3a3c4c;
   font-size: 12px;
@@ -531,7 +531,6 @@ div.clear {
 }
 .c21-header-container .c21-text .c21-text-wellcome {
   line-height: normal;
-  // font-family: 'Google Sans',sans-serif!important;
 }
 
 // #chat21-home-component .c21-header-container .c21-logo img {
@@ -737,86 +736,7 @@ input[type="text"]:disabled {
   color: #3c4858;
 }
 
-// ------------------
-// CALLOUT CLONE
-// ------------------
 
-// .eye-catcher-card {
-//   position: relative;
-//   z-index: 999999000;
-//   // bottom: 95px;
-//   // right: 20px;
-//   cursor: pointer;
-//   background-color: #fff;
-//   border: 1px solid #dedfde;
-//   // -webkit-box-shadow: 0 2px 8px 0 rgba(35, 47, 53, 0.1);
-//   // box-shadow: 0 2px 8px 0 rgba(35, 47, 53, 0.1);
-
-//   -webkit-box-shadow: 0 3px 6px 0 rgba(70, 82, 89, 0.1), 0 10px 20px 0 rgba(70, 82, 89, 0.15);
-//   box-shadow: 0 3px 6px 0 rgba(70, 82, 89, 0.1), 0 10px 20px 0 rgba(70, 82, 89, 0.15);
-
-//   width: 270px;
-//   // min-height: 102px;
-//   float: right;
-// }
-
-// .ec_left {
-//   width: 70px;
-//   padding-left: 20px;
-//   // padding-top: 24px;
-//   padding-top: 14px;
-//   padding-bottom: 16px;
-//   -webkit-box-sizing: border-box;
-//   box-sizing: border-box;
-// }
-
-// .eye-catcher_column {
-//   float: left;
-// }
-
-// .chat21-card-emoticons {
-//   font-size: 30px;
-// }
-
-// .ec_right {
-//   width: calc(100% - 70px);
-//   // padding-top: 16px;
-//   padding-top: 6px;
-// }
-
-// .eye-catcher-card-text-wrapper {
-//   width: 200px;
-// }
-
-// .eye-catcher-card-title {
-//   font-family: "Google Sans", sans-serif;
-//   // font-size: 19px;
-//   font-size: 15px;
-//   color: #44484a;
-//   padding-left: 5px;
-//   padding-right: 10px;
-//   // font-weight: 500;
-//   margin-bottom: 6px;
-//   word-wrap: break-word;
-//   margin-top: 0;
-//   line-height: normal;
-// }
-
-// .eye-catcher-card-msg {
-//   font-family: "Google Sans", sans-serif;
-//   color: #44484a;
-//   padding-left: 5px;
-//   padding-right: 10px;
-//   margin-top: 6px;
-//   // margin-bottom: 16px;
-//   margin-bottom: 6px;
-//   letter-spacing: 1px;
-//   // font-weight: 500;
-//   word-wrap: break-word;
-//   font-size: 16px;
-//   line-height: normal;
-//   font-size: 12px;
-// }
 
 #chat21-launcher-button-in-callout {
   border-radius: 50%;
@@ -1577,42 +1497,17 @@ button.buttonRounded:hover {
 }
 
 .widget-appearance-section {
-  font-family: Google Sans, sans-serif;
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   font-weight: 600;
   margin-bottom: 4px;
   font-size: 14px;
 }
 
-// .card_title__underlined {
-//   text-transform: none;
-//   color: #566787;
-//   margin-bottom: 0px;
-//   height: 40px !important;
-//   position: relative;
-//   font-family: Google Sans, sans-serif;
-//   font-size: 16px;
-//   margin-top: 10px;
-// }
-
-// .card_title__underline {
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   bottom: -1px;
-//   border-bottom: 2px solid $brand-primary;
-//   z-index: 1;
-// }
-
-// .section-subtitle {
-//   height: 20px;
-//   border-top: 1px solid #ddd;
-//   // width: calc((100% / 3) + 372px);
-// }
 
 .card-title {
   text-transform: none;
   color: #566787;
-  font-family: Google Sans, sans-serif;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   height: 30px;
   font-size: 16px;
 }
@@ -1807,7 +1702,7 @@ button.buttonRounded:hover {
   margin-bottom: 0px;
   height: 40px !important;
   position: relative;
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   // font-size: 18px;
   font-size: 18px;
   margin-top: 10px;
@@ -1930,12 +1825,12 @@ button.buttonRounded:hover {
   color: #566787 !important;
   text-align: left;
   padding-bottom: 12px;
-  font-family: "Poppins";
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   font-weight: 500 !important;
 }
 
 .widget-settings-control-head-label-info {
-  font-family: "Poppins";
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   color: #566787 !important;
   text-align: left;
   padding: 6px 12px;
@@ -2175,12 +2070,12 @@ button.buttonRounded:hover {
 
 .current-language-text {
   color: #3ecf8e;
-  font-family: "Poppins";
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   font-weight: 400;
 }
 
 .language-name {
-  font-family: "Poppins";
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   font-weight: 400;
 }
 .selected-language-name {
@@ -2196,7 +2091,7 @@ button.buttonRounded:hover {
 
 .preview-button-text {
   line-height: 42px;
-  font-family: "Poppins";
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
 }
 
 // ./end new switch left / right widget alignment
@@ -2268,7 +2163,7 @@ button.buttonRounded:hover {
   // padding-right: 42px;
   font-size: 18px;
   font-weight: 600;
-  font-family: Google Sans, sans-serif;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   padding-left: 0px;
   border-bottom-color: #ececec;
   // padding-top: 30px;
@@ -2567,7 +2462,7 @@ pre {
 
 .widget-live-test-text {
   cursor: pointer;
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   font-size: 18px;
   color: #1bb978;
 }
@@ -2679,7 +2574,7 @@ pre {
   font-size: 12px !important;
   line-height: 1.2;
   border-radius: 2px !important;
-  font-family: "Poppins" !important;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
   border: 1px solid #555555 !important;

@@ -36,6 +36,7 @@ import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { URL_understanding_default_roles } from '../../utils/util';
+import { threadId } from 'worker_threads';
 const swal = require('sweetalert');
 
 
@@ -195,6 +196,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // this.updateCurrentUserRequestCount();
         // this.notifyLastUnservedAndCurrentUserRequest();
         // this.checkRequestStatusInShown_requests();
+
+        this.notifyLastUnserved();
 
         this.getLoggedUser();
 
@@ -1053,6 +1056,90 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 this.logger.log('[NAVBAR] checkRequestStatusInShown_requests */* COMPLETE */*')
             })
     }
+
+
+
+    notifyLastUnserved() {
+        // this.requestsService.requestsList_bs.subscribe((requests) => {
+        this.subscription = this.wsRequestsService.wsRequestsList$
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((requests) => {
+
+                if (requests) {
+                    requests.forEach(r => {
+
+                        const participantsArray = r.participants // new used with ws 
+                        // this.logger.log([NAVBAR] participantsArray ', participantsArray);
+
+                        // const currentUserIsInMembers = membersArray.includes(this.user._id);  // old used with firestore 
+                        const currentUserIsInParticipants = participantsArray.includes(this.user._id); // new used with ws 
+                        // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST currentUserIsInParticipants ', currentUserIsInParticipants);
+
+
+                        // --------------------------------------------------------------------------
+                        // @ get stored request
+                        // --------------------------------------------------------------------------
+                        const storedRequest = localStorage.getItem(r.id + '_' + r.status);
+                        // this.logger.log('[NAVBAR] IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
+
+                        // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
+                        if (r.status === 100 && !storedRequest && this.user !== null) {
+
+
+                            // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
+                            if (this.ROLE_IS_AGENT === true) {
+                                if (this.hasmeInAgents(r.agents) === true) {
+                                    this.displayUnservedInAppNotification(r)
+                                }
+                            } else {
+                                this.displayUnservedInAppNotification(r)
+                            }
+                        }
+
+
+
+                    });
+                }
+            }, error => {
+                this.logger.error('[NAVBAR] notifyLastUnservedRequest * ERROR * ', error)
+            }, () => {
+                this.logger.log('[NAVBAR] notifyLastUnservedRequest */* COMPLETE */*')
+            })
+    }
+
+
+    displayUnservedInAppNotification(r) {
+ 
+        // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+        const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
+        this.logger.log('[NAVBAR] unserved request url ', url);
+
+        this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) before to show notification (unserved) this.notify ', this.notify)
+
+        let contact_fullname = ''
+        if (r.lead && r.lead.fullname) {
+            contact_fullname = r.lead.fullname
+        } else {
+            contact_fullname = ""
+        }
+
+        this.notifyService.showUnservedNotication( contact_fullname, r.first_text, url )
+     
+
+        this.shown_requests[r.id] = true;
+    
+
+        // --------------------------------------------------------------------------
+        // @ set request to store (doUnservedDateDiffAndShowNotification)
+        // --------------------------------------------------------------------------
+        localStorage.setItem(r.id + '_' + r.status, 'true');
+
+
+    }
+
+
 
     /*** from 14 feb 19 are displayed also the request assigned to the current user */
     // NOTE: ARE DISPLAYED IN THE NOTIFICATION ONLY THE UNSERVED REQUEST (support_status = 100)

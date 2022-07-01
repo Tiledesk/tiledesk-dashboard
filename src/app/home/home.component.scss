@@ -164,7 +164,7 @@
 }
 
 .custom_title {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   margin-top: 10px;
   line-height: 1.2em;
   color: $brand-secodary;
@@ -172,7 +172,7 @@
 }
 
 .custom_subtitle {
-  font-family: "Google Sans", sans-serif !important;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
 }
 
 .container-fluid {
@@ -255,7 +255,7 @@
 }
 
 .project-name-and-plan {
-  font-family: "Google Sans", sans-serif;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   font-size: 21px;
   position: relative;
   line-height: 32px;
@@ -1088,7 +1088,7 @@
   opacity: 1;
   position: absolute;
   top: 0;
-  font-family: "Poppins";
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   color: #303f9f !important;
 }
 
@@ -1101,7 +1101,7 @@
   opacity: 0;
   position: absolute;
   top: 0;
-  font-family: "Poppins";
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
 }
 
 .home-graph-title-container:hover {
@@ -1140,7 +1140,7 @@
   margin-bottom: 2px !important;
   color: #ffffff !important;
   font-weight: 200 !important;
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   font-size: 21px;
 }
 .getting-started-card-subtitle-home-header {
@@ -1153,7 +1153,7 @@
   text-align: center;
   color: #ffffff !important;
   font-weight: 400 !important;
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   font-size: 16px;
 }
 
@@ -1171,7 +1171,7 @@
   margin-bottom: 2px !important;
   color: #303f9f !important;
   font-weight: 400 !important;
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
 }
 
 .getting-started-card-subtitle {
@@ -1194,7 +1194,7 @@
   text-align: center;
   color: #303f9f !important;
   font-weight: 400 !important;
-  font-family: "Google Sans", sans-serif !important;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   font-size: 16px;
 }
 
@@ -1427,7 +1427,7 @@
 // }
 
 .n-header-home-title {
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   color: #fff;
   // color: #1a73e8;
   font-weight: 300;
@@ -1804,7 +1804,7 @@
   color: #fff;
   font-size: 21px;
   margin-top: 20px;
-  font-family: "Poppins";
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
 }
 
 .shortcuts-card {
@@ -2073,7 +2073,7 @@
 
 .dialog-popup-wpr .dialog-popup-title {
   -webkit-font-smoothing: antialiased;
-  font-family: "Poppins", Roboto;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   font-size: 21px;
   color: #202124;
   line-height: 21px;
@@ -2103,7 +2103,7 @@
   cursor: pointer;
   z-index: 0;
   -webkit-font-smoothing: antialiased;
-  font-family: "Poppins", Roboto;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   letter-spacing: 0.25px;
   font-weight: 500;
   height: 36px;

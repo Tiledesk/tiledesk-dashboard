@@ -37,7 +37,7 @@ p.member:hover {
 }
 
 .title-attribute {
-  font-family: "Google Sans", sans-serif !important;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   color: #394f5a;
   font-weight: 500;
 }
@@ -47,7 +47,7 @@ p.member:hover {
 }
 
 .ws_requets_msgs__attributes {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   color: #394f5a;
   font-weight: 500;
 }
@@ -60,7 +60,7 @@ p.member:hover {
 }
 
 .row-header {
-  font-family: "Google Sans", sans-serif !important;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   color: #394f5a;
   font-weight: 500;
   margin-bottom: 5px;
@@ -144,7 +144,7 @@ p.member:hover {
   font-size: 18px;
   font-weight: 400;
   display: block;
-  font-family: "Poppins";
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   font-weight: 400;
   position: absolute;
   left: 50%;
@@ -253,33 +253,7 @@ p.member:hover {
   margin-right: 5px;
 }
 
-// UNDERLINE
-// .card_title__underlined {
-//   text-transform: none;
-//   color: #566787;
-//   margin-bottom: 0px;
-//   height: 40px !important;
-//   position: relative;
-//   font-family: Google Sans, sans-serif;
-//   height: 30px;
-//   font-size: 16px;
-//   margin-top: 10px;
-// }
 
-// .card_title__underline {
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   bottom: -1px;
-//   border-bottom: 2px solid $brand-primary;
-//   z-index: 1;
-// }
-
-// .section-subtitle {
-//   height: 20px;
-//   border-top: 1px solid #ddd;
-//   // width: calc((100% / 3) + 372px);
-// }
 
 #btn-chat-with {
   margin-top: 5px;
@@ -297,7 +271,7 @@ p.member:hover {
   color: #394f5a;
   font-size: 12px;
   font-weight: 500;
-  font-family: "Google Sans", sans-serif !important;
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   position:relative;
   top: 8px;
 }

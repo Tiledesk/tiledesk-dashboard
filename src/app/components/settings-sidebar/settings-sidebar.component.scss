@@ -53,9 +53,7 @@
 
 .custom_paragraph {
     color: rgb(100, 116, 145);
-    // color: rgba(0,0,0, 0.87);
-    // color: $brand-sidebar-inactive-item-text-color;
-    // font-family: "Google Sans", sans-serif !important;
+
     line-height: 1.4;
     margin-bottom: 0px;
     padding-left: 8px;
@@ -159,7 +157,7 @@ li > a {
     color: #555555 !important;
     font-size: 12px  !important;
     border-radius: 2px !important;
-    font-family: 'Poppins' !important;
+    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
     padding-top:8px!important;
     padding-bottom:8px!important;
     border: 1px solid #e5effe!important;

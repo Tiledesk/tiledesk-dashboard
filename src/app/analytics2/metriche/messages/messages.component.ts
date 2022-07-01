@@ -309,7 +309,7 @@ export class MessagesComponent implements OnInit {
           beforeDraw: function (chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
             ctx.height = 128
-            ctx.font = "Poppins"
+            ctx.font = 'Roboto';
             var chartArea = chartInstance.chartArea;
           }
         }]

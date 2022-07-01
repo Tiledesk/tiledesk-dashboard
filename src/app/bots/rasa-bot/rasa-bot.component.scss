@@ -167,7 +167,7 @@ button.close {
 }
 
 .checkbox-label {
-  font-family: "Google Sans", sans-serif !important;
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   color: #394f5a;
   font-weight: 500;
 }
@@ -567,35 +567,7 @@ input[type="text"]:disabled::placeholder {
   opacity: 1;
 }
 
-// TOOLTIP END
 
-// .card_title__underlined {
-//   text-transform: none;
-//   color: #566787;
-//   margin-bottom: 0px;
-//   height: 40px !important;
-//   position: relative;
-//   font-family: Google Sans, sans-serif;
-//   height: 30px;
-//   font-size: 16px;
-//   margin-top: 10px;
-//   z-index: 0;
-// }
-
-// .card_title__underline {
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   bottom: -1px;
-//   border-bottom: 2px solid $brand-primary;
-//   z-index: 1;
-// }
-
-// .section-subtitle {
-//   height: 20px;
-//   border-top: 1px solid #ddd;
-//   // width: calc((100% / 3) + 372px);
-// }
 
 .create-bot-section-subtitle {
   height: 20px;
