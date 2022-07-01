@@ -191,16 +191,11 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
       this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = true;
       this.logger.log('[WS-SIDEBAR-APPS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
 
-      // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel')
-      // _elemMainPanel.classList.add("main-panel-chat-panel-mode");
-
+   
     } else {
       this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = false;
       this.logger.log('[WS-SIDEBAR-APPS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
-      // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-      // if (_elemMainPanel.classList.contains('main-panel-chat-panel-mode')) {
-      //   _elemMainPanel.classList.remove("main-panel-chat-panel-mode");
-      // }
+
     }
   }
 

@@ -166,7 +166,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         public appConfigService: AppConfigService,
         public brandService: BrandService,
         public LocalDbService: LocalDbService,
-        private logger: LoggerService
+        private logger: LoggerService,
+      
     ) {
 
 
@@ -1126,7 +1127,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         }
 
         this.notifyService.showUnservedNotication( contact_fullname, r.first_text, url )
-     
+
+        const count = +this.LocalDbService.getForegrondNotificationsCount();
+        this.wsRequestsService.publishAndStoreForegroundRequestCount(count)
 
         this.shown_requests[r.id] = true;
     

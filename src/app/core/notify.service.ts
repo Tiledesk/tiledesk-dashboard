@@ -305,7 +305,7 @@ export class NotifyService {
       url: link,
     }, {
       type: 'minimalist',
-      delay: 3000,
+      delay: 6000,
       placement: {
         from: 'top',
         align: 'center'
@@ -319,45 +319,51 @@ export class NotifyService {
       // +'</span>' +
       template: '<div data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
         '<span data-notify="icon"></span>' +
+        '<span data-notify="header">New message</span>' +
         '<span data-notify="title">{1}</span>' +
         '<span data-notify="message">{2}</span>' +
         `<a href="{3}" data-notify="url"></a>` +
         '</div>'
     });
+  }
 
 
+  showUnservedNotication( sender,msg, link)  {
+    // console.log('[NOTIFY-SERVICE] showUnservedNotication link', link)
+    // console.log('[NOTIFY-SERVICE] showUnservedNotication requester_avatar_initial', requester_avatar_initial)
+    // console.log('[NOTIFY-SERVICE] showUnservedNotication requester_avatar_bckgrnd', requester_avatar_bckgrnd)
+    $.notifyDefaults({
+      url_target: "_self"
+    });
+    this.foregroungNotification = $.notify({
 
+      title: sender,
+      message: msg,
+      url: link,
+    }, {
+      type: 'minimalist-pooled',
+      delay: 6000,
+      placement: {
+        from: 'top',
+        align: 'center'
+      },
+      // '<span data-notify="icon"></span>' +
+      // '<img data-notify="icon" class="img-circle pull-left">' +
+      // [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
 
-    // const type = ['#F1F2F0', 'info', 'success', 'warning', 'danger'];
-
-    // const   icon_bckgrnd_color = '#F1F2F0'
-
-    // this.notify = $.notify({
-    //   // icon: 'glyphicon glyphicon-warning-sign',
-    //   // message: message
-
-    // }, {
-    //   type: type[0],
-    //   // timer: 1500,
-    //   delay: 1500,
-
-    //   placement: {
-    //     from: 'top',
-    //     align: 'center'
-    //   },
-    //   // animate: {
-    //   //   enter: 'animated zoomIn',
-    //   //   exit: 'animated zoomOut'
-    //   // },
-    //   // tslint:disable-next-line:max-line-length
-    //   template: '<div data-notify="container" class="col-xs-11 col-sm-3  alert alert-{0}" style="text-align: left; padding-top: 8px;padding-bottom: 8px;" role="alert">' +
-    //     '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-    //     // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
-    //     // tslint:disable-next-line:max-line-length
-    //     `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: ${icon_bckgrnd_color}; border-radius: 50%; font-size:16px " class="material-icons">` + 'done' + '</i> </span> ' +
-    //     '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + 'CIAO' + '</span>' +
-    //     '</div>'
-    // });
+      // '<span class="foreground-notification-img-circle pull-left  [ngStyle]="{"background": '+ requester_avatar_bckgrnd +' } ">' +
+      // requester_avatar_initial 
+      // +'</span>' +
+      template: '<div data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
+      
+        '<span data-notify="icon"></span>' +
+        '<span data-notify="header">New unassigned chat</span>' +
+        '<span data-notify="title">{1}</span>' +
+        '<span data-notify="message">{2}</span>' +
+        `<a href="{3}" data-notify="url"></a>` +
+        '</div>' 
+       
+    });
   }
 
   openMsgInChat() { }

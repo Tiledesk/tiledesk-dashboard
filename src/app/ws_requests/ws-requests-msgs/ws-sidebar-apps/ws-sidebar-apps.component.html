@@ -28,7 +28,7 @@
   <div *ngIf="SIDEBAR_APPS_IN_CHAT_PANEL_MODE === false" class="dashbord-app-wpr">
     <div *ngFor="let app of dashboardApps">
 
-      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%; min-height:390px" id="{{app._id}}" frameBorder="0"
+      <iframe class="app-sidebar-iframe" [src]="app.iframeUrl | sanitizeHtml" style="width:100%; min-height:390px" id="{{app._id}}" frameBorder="0"
         allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)" [ngStyle]="{'height.px': dashboardIframeHeight}"></iframe>
     </div>
 
@@ -41,7 +41,7 @@
     <div *ngFor="let app of webchatApps">
 
 
-      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;min-height:630px" id="{{app?._id}}" frameBorder="0"
+      <iframe class="app-sidebar-iframe" [src]="app.iframeUrl | sanitizeHtml" style="width:100%;min-height:630px" id="{{app?._id}}" frameBorder="0"
         allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"  [ngStyle]="{'height.px': webchatIframeHeight}" ></iframe>
     </div>
     <div *ngIf="webchatApps?.length === 0" class="no-apps">

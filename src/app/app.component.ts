@@ -162,17 +162,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             // ----------------------------------------------------
             // Listen to FOREGROND MESSAGES
             // ----------------------------------------------------
-            this.listenToFCMForegroundMsgs();
-            // this.subscribeToStoredForegroundAndManageAppTab()
+            const isSafari =  /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            // console.log('[APP-COMPONENT] isSafari ', isSafari)
+            if (isSafari === false) {
 
-            // console.log('document.visibilityState  ', document.visibilityState)
-            // if (document.visibilityState === 'hidden') {
-            //     this.isTabVisible = false;
-
-            // } else if (document.visibilityState === 'visible') {
-            //     this.isTabVisible = true;
-
-            // }
+                // console.log('[APP-COMPONENT] HERE YES ')
+                this.listenToFCMForegroundMsgs();
+            }
+         
 
             localStorage.removeItem('firebase:previous_websocket_failure');
 
@@ -325,9 +322,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.count === 0) {
             const brand = this.brandService.getBrand();
             document.title = brand['metaTitle']
-            this.metaTitle.setTitle(brand['metaTitle']);
-            // console.log('>>>>>>>> onStorageChanged use case this.count ', foregrondNotificationsCount, ' document.title', document.title)
-            // this.ngOnInit()
         }
 
         if (event.key === 'dshbrd----sound') {
@@ -347,7 +341,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 // && foregroundNoticationCount > 0
                 if (foregroundNoticationCount) {
                     this.count = foregroundNoticationCount;
-                    console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', this.count)
+                    // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', this.count)
                 }
 
 
@@ -355,7 +349,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     manageDocumentTitle() {
-        console.log('[APP-COMPONENT] - manageDocumentTitle ', this.count)
+        // console.log('[APP-COMPONENT] - manageDocumentTitle ', this.count)
         const brand = this.brandService.getBrand();
         let isBlurred = false;
 
@@ -363,22 +357,20 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // window.onblur = function () {
         // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW NOT HAS FOCUS this.count ', this.count)
         if (this.isTabVisible === false && that.count > 0) {
-            console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT  isTabVisible ', this.isTabVisible)
+            // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT  isTabVisible ', this.isTabVisible)
             isBlurred = true;
 
             this.setIntervalTime = window.setInterval(function () {
-                // document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
-                console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW NOT HAS FOCUS  HERE YES  document.title ', document.title)
-                // document.title = that.count > 0 ?  '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
-
+               
+                // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW NOT HAS FOCUS  HERE YES  document.title ', document.title)
                 document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
 
             }, 1000);
         }
         // window.onfocus = function () {
         if (this.isTabVisible === true) {
-            console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION isTabVisible ', this.isTabVisible)
-            console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 2  WINDOW HAS FOCUS ')
+            // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION isTabVisible ', this.isTabVisible)
+            // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 2  WINDOW HAS FOCUS ')
             isBlurred = false;
             document.title = brand['metaTitle']
             clearInterval(this.setIntervalTime);
@@ -389,7 +381,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     listenToFCMForegroundMsgs() {
         const messaging = firebase.messaging()
         messaging.onMessage((payload) => {
-            // console.log('Message received. ', payload);
+           
+            //  console.log(' listenToFCMForegroundMsgs Message received. ', payload);
             const recipient_fullname = payload.data.recipient_fullname
             const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
             const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
@@ -437,15 +430,15 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const recipient_fullname = 'Milani Salame'
         const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
         const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
-        console.log('recipient_fullname initial', requester_avatar_initial);
-        console.log('recipient_fullname bckgnd', requester_avatar_bckgrnd);
+        // console.log('recipient_fullname initial', requester_avatar_initial);
+        // console.log('recipient_fullname bckgnd', requester_avatar_bckgrnd);
         // https://support-pre.tiledesk.com/chat-ionic5/#/conversation-detail/support-group-62728d1ca76e050040cee42e-025be323bc914f9f9f727ca0b7364eb7/Chicco/active
-        console.log('snd test foreground notification');
+        // console.log('snd test foreground notification');
         const link = "https://console.tiledesk.com/v2/chat/#/conversation-detail/support-group-6228d9d792d1ed0019240d2b-7f4cc830069f48458b8fd7070f4a7f48/Bot/active"
-        console.log('snd test foreground notification link ', link);
+        // console.log('snd test foreground notification link ', link);
         this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link, requester_avatar_initial, requester_avatar_bckgrnd);
         this.count = this.count + 1;
-        console.log('snd test foreground notification count ', this.count);
+        // console.log('snd test foreground notification count ', this.count);
         this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
         // const brand = this.brandService.getBrand();
     }

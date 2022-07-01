@@ -941,7 +941,7 @@ my-app .main-panel .main-content .card {
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);
-  font-family: "Google Sans";
+  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
   font-size: 16px;
   display: block;
 }
@@ -1032,7 +1032,7 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
   margin-bottom: 0px;
   height: 40px !important;
   position: relative;
-  font-family: "Poppins";
+  font-family:'Poppins','Roboto', 'Arial', sans-serif;
   height: 30px;
   font-size: 16px;
   margin-top: 10px;
@@ -1326,13 +1326,27 @@ footer ul {
 // FOREGROUND NOTIFICATION
 .alert-minimalist {
 	// background-color: rgb(241, 242, 240);
-  background-color: #f1f0f0;
+  // background-color: #f1f0f0;
+  background-color: #cce5ff;
 	border-color: rgba(149, 149, 149, 0.3);
 	border-radius: 3px;
 	color: rgb(149, 149, 149);
-	padding: 10px;
+	padding: 0px;
   cursor: pointer;
+  min-width:300px
 }
+.alert-minimalist > [data-notify="header"] {
+	height: 25px;
+  // background-color: rgb(235, 235, 235 );
+  background-color: #0d6efd!important;
+  color: #fff;
+  font-weight:400;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px; 
+  padding: 3px 16px;
+}
+
+
 .alert-minimalist > [data-notify="icon"] {
 	height: 50px;
 	margin-right: 12px;
@@ -1351,6 +1365,8 @@ footer ul {
 	font-weight: bold;
   margin-left: 6px;
 	margin-bottom: 5px;
+  padding: 0px 10px;
+  margin-top: 5px;
 }
 .alert-minimalist > [data-notify="message"] {
 	font-size: 14px;
@@ -1358,8 +1374,87 @@ footer ul {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-left: 6px;
+  padding: 0px 10px;
+  padding-bottom: 10px;
 }
 .alert-minimalist > span {
   display: block;
   max-width: 100%;
+}
+
+// UNASSIGNED NOTIFICATION
+.alert-minimalist-pooled {
+	// background-color: rgb(241, 242, 240);
+  // background-color: #fff;
+  background-color: #fff3cd;
+	border-color: rgba(149, 149, 149, 0.3);
+  
+	border-radius: 3px;
+	color: rgb(149, 149, 149);
+	padding: 0px;
+  cursor: pointer;
+  min-width:300px
+}
+.alert-minimalist-pooled > [data-notify="header"] {
+	height: 25px;
+  // background-color: rgb(235, 235, 235 );
+  background-color:  #ffc107;
+  color:#fff;
+  font-weight:400;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px; 
+  padding: 3px 16px;
+}
+
+
+.alert-minimalist-pooled > [data-notify="icon"] {
+	height: 50px;
+	margin-right: 12px;
+}
+
+
+.alert-minimalist-pooled > .foreground-notification-img-circle {
+  height: 50px;
+	margin-right: 12px;
+  width: 50px;
+  text-align: center;
+}
+.alert-minimalist-pooled > [data-notify="title"] {
+	color: rgb(51, 51, 51);
+	display: block;
+	font-weight: bold;
+  margin-left: 6px;
+	margin-bottom: 5px;
+  padding: 0px 10px;
+  margin-top: 5px;
+}
+.alert-minimalist-pooled > [data-notify="message"] {
+	font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 6px;
+  padding: 0px 10px;
+  padding-bottom: 10px;
+}
+.alert-minimalist-pooled > span {
+  display: block;
+  max-width: 100%;
+}
+
+
+// Apps sidebar
+.main-panel-chat-panel-mode-appsidebar-open {
+  // overflow-y: hidden;
+}
+
+.app-sidebar-iframe::-webkit-scrollbar {
+  // display: none;
+  // width: 0px;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.app-sidebar-iframe {
+  // -ms-overflow-style: none;  /* IE and Edge */
+  // scrollbar-width: none;  /* Firefox */
 }
