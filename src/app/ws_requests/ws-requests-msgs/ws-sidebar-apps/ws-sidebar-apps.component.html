@@ -38,7 +38,7 @@
        <!-- [ngStyle]="{'height.vh': frameHeightDashbordHeight}" -->
        <!-- min-height:390px -->
        <!--  -->
-      <iframe   [src]="app.iframeUrl | sanitizeHtml" style="width:100%; " id="{{app._id}}" frameBorder="0"
+      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%; " id="{{app._id}}" frameBorder="0"
         allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)" 
         [ngStyle]="{'height': first ? 'calc(' +frameHeightDashbordHeight + 'vh - 110px)' :  'calc(' +frameHeightDashbordHeight + 'vh - 0px)'}" ></iframe>
     </div>
