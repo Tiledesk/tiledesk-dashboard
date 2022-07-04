@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.41-rc1
+- Adds the ability to send "Public Answer" or "Internal Note" messages from the conversation detail page
+- Enhances dynamic height of apps sidebar iframes
+
 ### 2.2.40
 - Deploys in production
 - Fixes the bug: the dashboard browser tab blinks 0 when there are no new notifications
