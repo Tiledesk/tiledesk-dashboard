@@ -185,7 +185,8 @@ export class WsMsgsService {
     const body = { 'text': chatmsg };
     if (replytypedid === 2) {
       body['attributes'] = {
-        "privateFor": this.CURRENT_USER_ID
+        "privateFor": this.CURRENT_USER_ID,
+        "subtype": 'private'
       }
 
     }
