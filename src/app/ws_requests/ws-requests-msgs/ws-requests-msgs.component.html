@@ -123,8 +123,7 @@
 
 
 
-            <div #scrollMe id="chat-wpr" class="card-content"
-              (scroll)="onScrollMsgs($event)">
+            <div #scrollMe id="chat-wpr" class="card-content" (scroll)="onScrollMsgs($event)">
               <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
@@ -143,17 +142,17 @@
                         <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
                         <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
                         <!-- -------------------------------------------------------------- -->
-                        <p *ngIf="message?.type === 'text'" class="type-info-msg-text"
+                        <!-- <p *ngIf="message?.type === 'text'" class="type-info-msg-text"
                           [innerHTML]="message?.text | htmlEntitiesEncode | marked">
+                          {{ message?.createdAt | amDateFormat: 'LL'}} 
+                        </p> -->
+
+                        <p *ngIf="message?.type === 'text'" class="type-info-msg-text">
+                          {{ message?.text }} <span style=" color: rgba(43 ,43,43, .8);font-size: 11px;"> ({{ message?.createdAt | amDateFormat: 'LL'}}) </span>
                         </p>
-                        <!-- <div *ngIf="message?.type === 'image'" class="message ow">
-                              <div class="image-container" style="height:200px; width:200px;">
-                                <img src={{message.metadata.src}} class="message-img" />
-                              </div>
-                            </div> -->
-                        <!-- <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} </span> -->
+
                       </div>
-                     
+
                     </div>
                   </div>
 
@@ -215,9 +214,9 @@
                               </div>
                             </div>
                             <span class="timestamp">
-                              <!-- {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}  -->
-                              {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY (HH:mm:ss)') : (
-                              message?.createdAt | amDateFormat:'DD MMM YYYY (HH:mm:ss)')}}
+                              {{ message?.createdAt | amDateFormat: 'LL'}}
+                              <!-- {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY (HH:mm:ss)') : (
+                              message?.createdAt | amDateFormat:'DD MMM YYYY (HH:mm:ss)')}} -->
                             </span>
                           </div>
                           <div class="bubble-arrow"></div>
@@ -333,12 +332,14 @@
                             </div>
 
                             <span class="timestamp">
-                              <!-- {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} -->
+                              {{ message?.createdAt | amDateFormat: 'LL'}}
+                              <!-- {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}
                               {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY (HH:mm:ss)') : (
-                              message?.createdAt | amDateFormat:'DD MMM YYYY (HH:mm:ss)')}}
+                              message?.createdAt | amDateFormat:'DD MMM YYYY (HH:mm:ss)')}}-->
                             </span>
                           </div>
-                          <div class="bubble-arrow alt" [ngClass]="{'internal-note': message?.attributes?.subtype === 'private'}"></div>
+                          <div class="bubble-arrow alt"
+                            [ngClass]="{'internal-note': message?.attributes?.subtype === 'private'}"></div>
                         </div>
                       </div>
                     </div>
@@ -358,7 +359,7 @@
             <!-- max-height:175px; -->
             <div class="card---footer">
               <!-- class="stats" -->
-              <div class=" chat-btns-and-text-row-wpr"  style="width: 100%; min-height: 69px;">
+              <div class=" chat-btns-and-text-row-wpr" style="width: 100%; min-height: 69px;">
 
                 <!-- nk new -->
                 <div class="row chat-btns-and-text-row h-100 w-100">
@@ -441,12 +442,14 @@
                       </div>
                     </div>
 
-
+                    <!-- ------------------------------------------------ -->
                     <!-- texarea send message  -->
-
+                    <!-- ------------------------------------------------ -->
                     <div class="col-xs-12  w-100 plr-0">
                       <div class="row w-100">
-                        <div class="col-xs-12 h-100 plr-0" style="  margin-top: -7px; border-top: 3px solid #3ea9f5; margin-bottom: 8px;" [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
+                        <div class="col-xs-12 h-100 plr-0"
+                          style="  margin-top: -7px; border-top: 3px solid #3ea9f5; margin-bottom: 8px;"
+                          [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
                           <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message" rows="1"
                             placeholder="Write your message" (keydown.enter)="onKeydownEnter($event)"
                             (paste)="onPasteInSendMsg($event)"
@@ -458,23 +461,23 @@
 
                     <div class="col-xs-12  w-100 plr-0">
                       <div class="row w-100">
-                       <div class="col-xs-5 h-100 plr-0" style="    margin-top: -4px;  ">
-                             <ng-select class="select-response-type"  [clearable]="false" [searchable]="false" [items]="responseType" bindLabel="name"
-                              bindValue="id" [(ngModel)]="selectedResponseTypeID"  (change)="onChangeReplyType(selectedResponseTypeID)">
-                              <ng-template ng-label-tmp let-item="item">
-                                <img height="15" width="15" style="width: 15px; height: auto" [src]="item.icon" />
-                                <b>{{item.name}}</b>
-                              </ng-template>
-                              <ng-template ng-option-tmp let-item="item" let-index="index">
-                                <img height="15" width="15" style="width: 15px; height: auto" [src]="item.icon" />
-                                <b>{{item.name}}</b>
-                              </ng-template>
-                            </ng-select> 
+                        <div class="col-xs-5 h-100 plr-0" style="    margin-top: -4px;  ">
+                          <ng-select class="select-response-type" [clearable]="false" [searchable]="false"
+                            [items]="responseType" bindLabel="name" bindValue="id" [(ngModel)]="selectedResponseTypeID"
+                            (change)="onChangeReplyType(selectedResponseTypeID)">
+                            <ng-template ng-label-tmp let-item="item">
+                              <img height="15" width="15" style="width: 15px; height: auto" [src]="item.icon" />
+                              <b>{{item.name}}</b>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                              <img height="15" width="15" style="width: 15px; height: auto" [src]="item.icon" />
+                              <b>{{item.name}}</b>
+                            </ng-template>
+                          </ng-select>
                         </div>
                         <div class="col-xs-12 h-100 plr-0" style="    margin-top: -4px;  ">
 
-                          <button class="btn btn-primary pull-right send-chat-msg-btn"
-                            (click)="sendChatMessage()"
+                          <button class="btn btn-primary pull-right send-chat-msg-btn" (click)="sendChatMessage()"
                             [disabled]="!chat_message || chat_message?.length === 0 ">
                             {{'Send' | translate}}
                           </button>
@@ -660,12 +663,12 @@
                                 </button>
 
                               </div>
-                              <div class="view-all-lead-properties" (click)="goToEditContact()"> 
-                               <span> {{'ViewAll' | translate}}  </span>  
-                               <span class="material-icons-outlined" style="font-size: 13px;
+                              <div class="view-all-lead-properties" (click)="goToEditContact()">
+                                <span> {{'ViewAll' | translate}} </span>
+                                <span class="material-icons-outlined" style="font-size: 13px;
                                vertical-align: middle;">
                                   open_in_new
-                                  </span> 
+                                </span>
                               </div>
                             </form>
                           </div>
@@ -673,8 +676,8 @@
 
 
                         <div class="chat-panel-mode-contact-email" (click)="openDropDownEditEmail()">
-                          <a class="lead-email-anchor"
-                            target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
+                          <a class="lead-email-anchor" target="_blank" *ngIf="request?.lead?.email"
+                            href="mailto:{{request?.lead?.email}}">
                             {{request?.lead?.email}}
                           </a>
                           <a *ngIf="!request?.lead?.email"
@@ -697,7 +700,7 @@
                                 <label for="email-input" style="margin-bottom: 4px;">
                                   {{'ContactEmail' | translate}}
                                 </label>
-                       
+
                                 <input id="email-input" type="email" class="dropdown--input" name="contact_new_email"
                                   autocomplete="off" [(ngModel)]="contactNewEmail"
                                   (ngModelChange)="emailChange($event)">
@@ -721,13 +724,13 @@
                                   {{'Update' | translate}}
                                 </button>
                               </div>
-                              <div class="view-all-lead-properties" (click)="goToEditContact()"> 
-                                <span> {{'ViewAll' | translate}}  </span>  
+                              <div class="view-all-lead-properties" (click)="goToEditContact()">
+                                <span> {{'ViewAll' | translate}} </span>
                                 <span class="material-icons-outlined" style="font-size: 13px;
                                 vertical-align: middle;">
-                                   open_in_new
-                                   </span> 
-                               </div>
+                                  open_in_new
+                                </span>
+                              </div>
                             </form>
                           </div>
                         </div>
@@ -1866,7 +1869,7 @@
                       </div>
                     </div> -->
 
-                                   <!--  ---------------------------------------------------------------- -->
+                <!--  ---------------------------------------------------------------- -->
                 <!--  @ Apps row -->
                 <!--  ---------------------------------------------------------------- -->
                 <div class="row" *ngIf="isVisibleAPP === true">
@@ -1874,15 +1877,15 @@
                     <p class="row-header  app-row" (click)="openAppsSidebar()"
                       style="padding-left: 13px; padding-right: 15px;font-size: 14px;">
 
-                      <span style="position: relative; top: 4px;" >
+                      <span style="position: relative; top: 4px;">
                         <span class="material-icons">
                           apps
                         </span>
-                     
-                      <span style="position: relative;top: -6px;">
-                        {{ "Apps" | translate }}
+
+                        <span style="position: relative;top: -6px;">
+                          {{ "Apps" | translate }}
+                        </span>
                       </span>
-                    </span>
                     </p>
                   </div>
                 </div>
@@ -2846,7 +2849,7 @@
                               </div>
 
                             </div>
-                           
+
                             <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
                               style="text-align: right;">
                               <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
@@ -2857,7 +2860,7 @@
 
                             </div>
                           </div>
-              
+
 
                         </div>
                       </div>
@@ -2971,10 +2974,10 @@
                               </span>
 
 
-                               
-                          <!-- --------------------------------------------------------------------------------------------------- -->
-                          <!-- the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle) -->
-                          <!-- --------------------------------------------------------------------------------------------------- -->
+
+                              <!-- --------------------------------------------------------------------------------------------------- -->
+                              <!-- the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle) -->
+                              <!-- --------------------------------------------------------------------------------------------------- -->
                               <span *ngIf="CHAT_PANEL_MODE === true" style="color: #566787">
                                 <span *ngIf="actionInModal === 'reassign'">
                                   <h4 style="font-weight:400"
@@ -3007,7 +3010,7 @@
                               </span>
                             </th>
 
-                    
+
                             <th *ngIf="!isMobile && CHAT_PANEL_MODE === false"></th>
                           </tr>
                         </thead>
@@ -3710,7 +3713,8 @@
 
       <!-- [ngStyle]="{'height':apps_sidebar_height }" -->
       <div *ngIf="OPEN_APPS_RIGHT_SIDEBAR === true" class="view-side">
-        <appdashboard-ws-sidebar-apps   [ngClass]="{'min-height-in-panel-mode': CHAT_PANEL_MODE === true}"
-          (valueChange)='handleCloseAppsRightSidebar($event)' [request]="request" [apps_sidebar_height]="apps_sidebar_height" >
+        <appdashboard-ws-sidebar-apps [ngClass]="{'min-height-in-panel-mode': CHAT_PANEL_MODE === true}"
+          (valueChange)='handleCloseAppsRightSidebar($event)' [request]="request"
+          [apps_sidebar_height]="apps_sidebar_height">
         </appdashboard-ws-sidebar-apps>
       </div>

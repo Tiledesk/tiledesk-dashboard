@@ -32,7 +32,7 @@ import 'firebase/database';
 import { ProjectService } from 'app/services/project.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { AppStoreService } from 'app/services/app-store.service';
-
+import * as moment from 'moment';
 const swal = require('sweetalert');
 
 @Component({
@@ -358,9 +358,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getFirebaseAuth();
     this.getBrowserLang();
     this.getBrowserVersion()
-
+    this.setMomentLocale()
   }
 
+
+  setMomentLocale() {
+    this.browserLang = this.translate.getBrowserLang();
+    // console.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
+
+    let stored_preferred_lang = undefined
+    if (this.auth.user_bs && this.auth.user_bs.value) {
+      stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+    }
+    // const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+    let dshbrd_lang = ''
+    if (this.browserLang && !stored_preferred_lang) {
+      dshbrd_lang = this.browserLang
+    } else if (this.browserLang && stored_preferred_lang) {
+      dshbrd_lang = stored_preferred_lang
+    }
+    moment.locale(dshbrd_lang)
+
+  }
 
 
 
