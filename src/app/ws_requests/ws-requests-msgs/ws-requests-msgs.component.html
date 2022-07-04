@@ -1867,12 +1867,34 @@
                       </div>
                     </div> -->
 
+                                   <!--  ---------------------------------------------------------------- -->
+                <!--  @ Apps row -->
+                <!--  ---------------------------------------------------------------- -->
+                <div class="row" *ngIf="isVisibleAPP === true">
+                  <div class="col-sm-12 app-row-wpr">
+                    <p class="row-header  app-row" (click)="openAppsSidebar()"
+                      style="padding-left: 13px; padding-right: 15px;font-size: 14px;">
+
+                      <span style="position: relative; top: 4px;" >
+                        <span class="material-icons">
+                          apps
+                        </span>
+                     
+                      <span style="position: relative;top: -6px;">
+                        {{ "Apps" | translate }}
+                      </span>
+                    </span>
+                    </p>
+                  </div>
+                </div>
+
                 <!--  ---------------------------------------------------------------- -->
                 <!--  @ Pre-chat form accordion -->
                 <!--  ---------------------------------------------------------------- -->
                 <div *ngIf="request?.attributes?.preChatForm" class="row">
+                  <!-- margin-top:10px -->
                   <div class="col-sm-12 attributes-pre-chat-form-accordion-wpr"
-                    style="padding-left: 0px; padding-right: 0px; margin-top:10px">
+                    style="padding-left: 0px; padding-right: 0px;">
                     <p class="row-header  attributes-pre-chat-form-accordion"
                       (click)="openAttributesPrechatFormAccordion()">
                       <span>
@@ -2602,7 +2624,7 @@
 
                 <!-- ----------------------------------------------------------------------------- -->
                 <!-- Notes -->
-                <!--  ----------------------------------------------------------------------------- -->
+                <!-- ----------------------------------------------------------------------------- -->
                 <div class="row">
                   <div class="col-sm-12"
                     style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;">
@@ -2705,37 +2727,19 @@
                 <!-- ------------------------------------------------------ -->
                 <!-- Rating  -->
                 <!-- ------------------------------------------------------ -->
-                <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
-                <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
-                <div class="row">
+                <div id="rating" class="row">
                   <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;">
                     <p class="row-header">
-                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
                         {{ "RequestMsgsPage.Rating" | translate }}
-
                       </span>
-
-                      <!-- <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span> -->
                     </p>
-                    <!-- <p class="row-body"  style="margin-bottom:0px">  
-                        <span style="color:#394f5a;"> {{ "RequestMsgsPage.Rating" | translate }}: </span>
-                        {{ rating }}
-                    </p> -->
-
                     <p class="row-body" style="margin-bottom:0px">
-
                       <span style="color: #7695a5;display: block; font-weight: 400;"> {{ rating }}</span>
-
                       <span class="ws_requets_msgs__attributes">
                         {{ "RequestMsgsPage.RatingMessage" | translate }}:
                       </span>
                       <span style="font-weight: 400;"> {{ rating_message }}</span>
-
                     </p>
                   </div>
                 </div>
@@ -2776,27 +2780,7 @@
                       <button class="btn btn-tdblu-no-boxshadow pull-left" (click)="createJiraTicket()"
                         style="padding:9px 30px;" [disabled]="!selectedJiraType">
                         {{'CreateJiraTicket' | translate}}
-
                       </button>
-
-
-                      <!-- <div class="ticket-type-wpr">
-                      <label class="col-sm-12" style="text-align: left; color:#7695a5;">
-                        {{ 'TicketType' | translate }}
-                      </label>
-                      <ng-select [items]="jira_issue_types" bindLabel="name" bindValue="id"
-                        placeholder="{{'SelectTicketType' | translate}}" [(ngModel)]="selectedJiraType"
-                        (change)="selectJiraType()">
-                        <ng-template ng-label-tmp let-item="item">
-                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                          <span> {{item.name}}</span>
-                        </ng-template>
-                        <ng-template ng-option-tmp let-item="item" let-index="index">
-                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                          <span>{{item.name}}<span>
-                        </ng-template>
-                      </ng-select>
-                    </div> -->
 
                     </p>
                   </div>
@@ -2806,7 +2790,7 @@
                 <!--  ---------------------------------------------------------------- -->
                 <!--  @ Attributes accordion -->
                 <!--  ---------------------------------------------------------------- -->
-                <div *ngIf="request?.attributes" class="row">
+                <div id="attributes-accordion" *ngIf="request?.attributes" class="row">
                   <div class="col-sm-12 attributes-accordion-wpr">
                     <p class="row-header  attributes-accordion" (click)="openAttributesAccordion()"
                       style="padding-left: 13px; padding-right: 15px;font-size: 14px;">
@@ -2863,9 +2847,7 @@
                               </div>
 
                             </div>
-                            <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
-                            <!-- [ngClass]="{'down' : attributeFullText === true}" -->
-                            <!-- white-space: nowrap;width: 1%; -->
+                           
                             <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
                               style="text-align: right;">
                               <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
@@ -2876,11 +2858,7 @@
 
                             </div>
                           </div>
-                          <!--   <div class="debug_div">
-                                L : {{attribute?.attributeValueL}} <br>
-                                L + 180 : {{attribute?.attributeValueL + 180}} <br>
-                                SB WIDTH : {{rightSidebarWidth}} 
-                              </div> -->
+              
 
                         </div>
                       </div>
@@ -2889,9 +2867,9 @@
                 </div> <!-- ./ end new attributes accordion -->
 
                 <!--  ---------------------------------------------------------------- -->
-                <!--  @ Apps row -->
+                <!--  @ Apps row - Moved up -->
                 <!--  ---------------------------------------------------------------- -->
-                <div class="row" *ngIf="isVisibleAPP === true">
+                <!-- <div class="row" *ngIf="isVisibleAPP === true">
                   <div class="col-sm-12 app-row-wpr">
                     <p class="row-header  app-row" (click)="openAppsSidebar()"
                       style="padding-left: 13px; padding-right: 15px;font-size: 14px;">
@@ -2906,7 +2884,7 @@
                       </span>
                     </p>
                   </div>
-                </div>
+                </div> -->
 
               </div>
             </div>
@@ -2994,10 +2972,10 @@
                               </span>
 
 
-                              <!-- 
-                          // ---------------------------------------------------------------------------------------------
-                          // the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle)
-                          // --------------------------------------------------------------------------------------------- -->
+                               
+                          <!-- --------------------------------------------------------------------------------------------------- -->
+                          <!-- the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle) -->
+                          <!-- --------------------------------------------------------------------------------------------------- -->
                               <span *ngIf="CHAT_PANEL_MODE === true" style="color: #566787">
                                 <span *ngIf="actionInModal === 'reassign'">
                                   <h4 style="font-weight:400"
@@ -3030,14 +3008,7 @@
                               </span>
                             </th>
 
-                            <!-- <th>
-                        <span style="color: #566787">
-                          <strong>
-                            Email
-                          </strong>
-                        </span>
-                      </th> -->
-
+                    
                             <th *ngIf="!isMobile && CHAT_PANEL_MODE === false"></th>
                           </tr>
                         </thead>
@@ -3737,10 +3708,10 @@
           [selectedQuestion]="selectedQuestion" (valueChange)='handleCloseRightSidebar($event)'>
         </appdashboard-ws-train-bot>
       </div>
-      <!-- [ngStyle]="{'height':train_bot_sidebar_height }" -->
-      <!-- [apps_sidebar_height]="apps_sidebar_height" -->
+
+      <!-- [ngStyle]="{'height':apps_sidebar_height }" -->
       <div *ngIf="OPEN_APPS_RIGHT_SIDEBAR === true" class="view-side">
-        <appdashboard-ws-sidebar-apps [ngStyle]="{'height':apps_sidebar_height }"  [ngClass]="{'min-height-in-panel-mode': CHAT_PANEL_MODE === true}"
+        <appdashboard-ws-sidebar-apps   [ngClass]="{'min-height-in-panel-mode': CHAT_PANEL_MODE === true}"
           (valueChange)='handleCloseAppsRightSidebar($event)' [request]="request" [apps_sidebar_height]="apps_sidebar_height" >
         </appdashboard-ws-sidebar-apps>
       </div>

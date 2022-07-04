@@ -43,6 +43,10 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
   APP_SIDEBAR_WIDE: boolean = false;
   dashboardIframeHeight: number;
   webchatIframeHeight: number;
+  frameHeightDashbordHeight:number = 100
+  frameHeightWebchatHeight:number = 100
+
+
   constructor(
     private logger: LoggerService,
     private translate: TranslateService,
@@ -233,9 +237,16 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
        
         if (this.dashboardApps.length > 0) {
           // console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY LENGHT : ", this.dashboardApps.length)
+       
+          
+          this.frameHeightDashbordHeight =  (this.frameHeightDashbordHeight / this.dashboardApps.length)
+          // console.log("[WS-SIDEBAR-APPS] DASHBOARD frameHeight : ", this.frameHeightDashbordHeight)
+
+
           const apps_sidebar_height_number = parseInt(this.apps_sidebar_height, 10)
           this.dashboardIframeHeight = (apps_sidebar_height_number / this.dashboardApps.length);
           // console.log("[WS-SIDEBAR-APPS] DASHBOARD dashboardIframeHeight : ", this.dashboardIframeHeight)
+           
           this.dashboardApps.forEach(app => {
             app['iframeUrl'] = app.runURL + '?request_id=' + this.request['request_id'] + '&project_id=' + this.projectId + '&app_name=' + app.title
             this.logger.log('[WS-SIDEBAR-APPS] apps', this.apps)
@@ -244,6 +255,12 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
         }
 
         if (this.webchatApps.length > 0) {
+        // console.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY LENGHT : ", this.webchatApps.length)
+
+          this.frameHeightWebchatHeight =  (this.frameHeightWebchatHeight / this.webchatApps.length)
+          // console.log("[WS-SIDEBAR-APPS] WEBCHAT frameHeight : ", this.frameHeightWebchatHeight)
+
+
           const apps_sidebar_height_number = parseInt(this.apps_sidebar_height, 10)
           this.webchatIframeHeight = (apps_sidebar_height_number / this.webchatApps.length);
           // console.log("[WS-SIDEBAR-APPS] WEBCHAT APPS ARRAY LENGHT : ", this.webchatApps.length)

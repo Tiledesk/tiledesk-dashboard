@@ -244,7 +244,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   pageNo = 0;
   totalPagesNo_roundToUp: number;
   displaysFooterPagination: boolean;
-  HAS_OPENED_APPS: boolean = false;
+  // HAS_OPENED_APPS: boolean = false;
   selectedResponseTypeID: number = 1;
 
   /**
@@ -388,19 +388,38 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getfromStorageIsOpenAppSidebar() {
     const isOpenAppSidebar = this.usersLocalDbService.getStoredIsOpenAppSidebar();
     this.logger.log("[WS-REQUESTS-MSGS] isOpenAppSidebar ", isOpenAppSidebar);
+
+    const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    const elemRightSidebar = <HTMLElement>document.querySelector('.right-card');
+
     if (isOpenAppSidebar) {
       if (isOpenAppSidebar === 'true') {
         this.OPEN_APPS_RIGHT_SIDEBAR = true
+        if (this.CHAT_PANEL_MODE === true) {
+
+
+          _elemMainPanel.classList.add("main-panel-chat-appsidebar-open");
+          elemRightSidebar.classList.add("right-card-appsidebar-open");
+        }
         setTimeout(() => {
           const elemMainContent = <HTMLElement>document.querySelector('.main-content');
           this.apps_sidebar_height = elemMainContent.clientHeight + 60 + 'px'
         }, 250);
       } else {
         this.OPEN_APPS_RIGHT_SIDEBAR = false;
+
+        if (this.CHAT_PANEL_MODE === true) {
+          _elemMainPanel.classList.remove("main-panel-chat-appsidebar-open");
+          elemRightSidebar.classList.remove("right-card-appsidebar-open");
+        }
       }
     } else {
       this.logger.log("[WS-REQUESTS-MSGS] isOpenAppSidebar is null");
       this.OPEN_APPS_RIGHT_SIDEBAR = false;
+      if (this.CHAT_PANEL_MODE === true) {
+        _elemMainPanel.classList.remove("main-panel-chat-appsidebar-open");
+        elemRightSidebar.classList.remove("right-card-appsidebar-open");
+      }
     }
   }
 
@@ -499,7 +518,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.CHAT_PANEL_MODE = false
     if (this.router.url.indexOf('/request-for-panel') !== -1) {
       this.CHAT_PANEL_MODE = true;
-      this.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+      // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
 
       const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
       // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
@@ -507,7 +526,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     } else {
       this.CHAT_PANEL_MODE = false;
-      this.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+      // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
       const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
       // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
       if (_elemMainPanel.classList.contains('main-panel-chat-panel-mode')) {
@@ -2027,14 +2046,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.apps_sidebar_height = elemMainContent.clientHeight + 60 + 'px'
 
-    this.logger.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.apps_sidebar_height);
+    const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    const elemRightSidebar = <HTMLElement>document.querySelector('.right-card');
+
+
+    // console.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.apps_sidebar_height);
 
     this.usersLocalDbService.storeIsOpenAppSidebar(true)
 
     if (this.CHAT_PANEL_MODE === false) {
       this.navbarBrand.nativeElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
     } else {
-      this.appStoreService.hasOpenAppsSidebar(true)
+      this.appStoreService.hasOpenAppsSidebar(true);
+      // _elemMainPanel.scrollIntoView();
+    
+      
+        _elemMainPanel.classList.add("main-panel-chat-appsidebar-open");
+         elemRightSidebar.classList.add("right-card-appsidebar-open");
     }
   }
 
@@ -2042,6 +2070,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] - CLOSE APPS RIGHT SIDEBAR ', event);
     this.OPEN_APPS_RIGHT_SIDEBAR = event;
     this.usersLocalDbService.storeIsOpenAppSidebar(false)
+
+     const elemRightSidebar = <HTMLElement>document.querySelector('.right-card');
+    
+    if (this.CHAT_PANEL_MODE === true) {
+      const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+      _elemMainPanel.classList.remove("main-panel-chat-appsidebar-open");
+      elemRightSidebar.classList.remove("right-card-appsidebar-open");
+
+    }
   }
 
   openSelectUsersModal(actionSelected) {

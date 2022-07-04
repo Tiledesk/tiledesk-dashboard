@@ -1442,11 +1442,12 @@ footer ul {
   max-width: 100%;
 }
 
-
+// ::-webkit-scrollbar
 // Apps sidebar
-.main-panel-chat-panel-mode-appsidebar-open {
+.main-panel-chat-appsidebar-open {
+  height: 500% !important;
   // overflow-y: hidden;
-}
+} 
 
 .app-sidebar-iframe::-webkit-scrollbar {
   // display: none;
@@ -1457,4 +1458,9 @@ footer ul {
 .app-sidebar-iframe {
   // -ms-overflow-style: none;  /* IE and Edge */
   // scrollbar-width: none;  /* Firefox */
+}
+
+.right-card-appsidebar-open {
+//  height: 10px !important;
+display: none;
 }

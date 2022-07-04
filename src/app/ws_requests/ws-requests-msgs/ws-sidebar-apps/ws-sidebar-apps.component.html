@@ -1,3 +1,4 @@
+<!-- height: calc(100vh - 60px)" height: 100vh -->
 <div class="apps-right-side-bar" style=" box-shadow: 0 2px 6px rgb(0 27 71 / 12%);"
   [ngClass]="{'apps-right-side-bar-panel-mode': SIDEBAR_APPS_IN_CHAT_PANEL_MODE}">
 
@@ -26,10 +27,20 @@
   </div>
   <!-- [ngStyle]="{ 'height': app.iframeHeight + 'px'}" -->
   <div *ngIf="SIDEBAR_APPS_IN_CHAT_PANEL_MODE === false" class="dashbord-app-wpr">
-    <div *ngFor="let app of dashboardApps">
-
-      <iframe class="app-sidebar-iframe" [src]="app.iframeUrl | sanitizeHtml" style="width:100%; min-height:390px" id="{{app._id}}" frameBorder="0"
-        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)" [ngStyle]="{'height.px': dashboardIframeHeight}"></iframe>
+    <div class="dashbord-app--wpr-f" *ngFor="let app of dashboardApps; let first = first;">
+      <!-- [ngStyle]="{'height.px': dashboardIframeHeight}" -->
+      <!-- [ngStyle]="{'height.px': webchatIframeHeight}" -->
+      <!-- <iframe  *ngIf="dashboardApps?.length === 1" [src]="app.iframeUrl | sanitizeHtml" style="width:100%; min-height:390px; height: calc(100vh - 100px)" id="{{app._id}}" frameBorder="0"
+        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe> -->
+        <!-- [ngStyle]="{'width': someAngularVariable +'px', 'left': 'calc(100% - ' +someAngularVariable + 'px)' }" -->
+      
+       <!-- *ngIf="dashboardApps?.length > 1" -->
+       <!-- [ngStyle]="{'height.vh': frameHeightDashbordHeight}" -->
+       <!-- min-height:390px -->
+       <!--  -->
+      <iframe   [src]="app.iframeUrl | sanitizeHtml" style="width:100%; " id="{{app._id}}" frameBorder="0"
+        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)" 
+        [ngStyle]="{'height': first ? 'calc(' +frameHeightDashbordHeight + 'vh - 110px)' :  'calc(' +frameHeightDashbordHeight + 'vh - 0px)'}" ></iframe>
     </div>
 
     <div *ngIf="dashboardApps?.length === 0" class="no-apps">
@@ -38,11 +49,17 @@
   </div>
   <!-- [ngStyle]="{ 'height': app.iframeHeight + 'px'}" -->
   <div *ngIf="SIDEBAR_APPS_IN_CHAT_PANEL_MODE === true" class="webchat-app-wpr">
-    <div *ngFor="let app of webchatApps">
+    <div class="webchat-app--wpr-f" *ngFor="let app of webchatApps; let first = first;">
 
-
-      <iframe class="app-sidebar-iframe" [src]="app.iframeUrl | sanitizeHtml" style="width:100%;min-height:630px" id="{{app?._id}}" frameBorder="0"
-        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"  [ngStyle]="{'height.px': webchatIframeHeight}" ></iframe>
+      <!-- <iframe *ngIf="webchatApps?.length === 1" [src]="app.iframeUrl | sanitizeHtml" style="width:100%;min-height:630px;height: calc(100vh - 60px)" id="{{app?._id}}" frameBorder="0"
+        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)" ></iframe> -->
+        <!-- *ngIf="webchatApps?.length > 1" -->
+        <!-- [ngStyle]="{'height': 'calc(' +frameHeightWebchatHeight + 'vh - 60px)'}" -->
+        <!-- [ngStyle]="{'height.vh': frameHeightWebchatHeight}" -->
+        <!-- min-height:630px -->
+      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;" id="{{app?._id}}" frameBorder="0"
+        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)" 
+        [ngStyle]="{'height': first ? 'calc(' +frameHeightWebchatHeight + 'vh - 60px)' : 'calc(' +frameHeightWebchatHeight + 'vh - 0px)'}"   ></iframe>
     </div>
     <div *ngIf="webchatApps?.length === 0" class="no-apps">
       No apps installed for this project
