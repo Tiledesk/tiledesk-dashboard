@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.41-rc2
+- Fixes the bug: The balloon message on the conversation detail page is not yellow for internal notes 
+- Adds the date to the "info message" on the conversation detail page
+
 ### 2.2.41-rc1
 - Adds the ability to send "Public Answer" or "Internal Note" messages from the conversation detail page
 - Enhances dynamic height of apps sidebar iframes
