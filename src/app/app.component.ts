@@ -35,6 +35,7 @@ import { NotifyService } from './core/notify.service';
 import { avatarPlaceholder, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 
+declare const gtag: Function;
 
 @Component({
     selector: 'appdashboard-root',
@@ -91,6 +92,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         public usersLocalDbService: LocalDbService
         // private faqKbService: FaqKbService,
     ) {
+
+        this.router.events.subscribe((event) => {
+         
+            if (event instanceof NavigationEnd) {
+              gtag('config','G-BKHKLWGG6F', { 'page_path': event.urlAfterRedirects });
+            }   
+          
+          })
         // console.log('HI! [APP-COMPONENT] ')
         // https://www.freecodecamp.org/news/how-to-check-internet-connection-status-with-javascript/
 
