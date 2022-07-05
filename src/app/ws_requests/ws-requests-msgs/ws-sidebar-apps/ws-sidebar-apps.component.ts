@@ -72,7 +72,7 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
 
   getfromStorageAppsSidebarIsInWideMode() {
     const appsSidebarIsInWideMode = this.usersLocalDbService.getStoredIsWideAppSidebar();
-    console.log('[WS-SIDEBAR-APPS] appsSidebarIsInWideMode (get from storage) ', appsSidebarIsInWideMode)
+    // console.log('[WS-SIDEBAR-APPS] appsSidebarIsInWideMode (get from storage) ', appsSidebarIsInWideMode)
     if (appsSidebarIsInWideMode === 'true') {
       this.APP_SIDEBAR_WIDE = true
       if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === false) {
@@ -237,8 +237,6 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
        
         if (this.dashboardApps.length > 0) {
           // console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY LENGHT : ", this.dashboardApps.length)
-       
-          
           this.frameHeightDashbordHeight =  (this.frameHeightDashbordHeight / this.dashboardApps.length)
           // console.log("[WS-SIDEBAR-APPS] DASHBOARD frameHeight : ", this.frameHeightDashbordHeight)
 
