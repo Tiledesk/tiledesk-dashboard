@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "2.2.41-rc2",
+  "version": "2.2.41-rc3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
@@ -55,6 +55,7 @@
     "core-js": "^2.6.12",
     "emoji-regex": "^9.2.2",
     "express": "^4.17.3",
+    "file-saver": "^2.0.5",
     "firebase": "^7.24.0",
     "googleapis": "19.0.0",
     "humanize-duration": "^3.27.1",
