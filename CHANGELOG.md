@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.41-rc3
+- Adds the ability to download images from the chat section of the conversation detail page
+
 ### 2.2.41-rc2
 - Fixes the bug: The balloon message on the conversation detail page is not yellow for internal notes 
 - Adds the date to the "info message" on the conversation detail page
