@@ -233,6 +233,7 @@ import { EmailTicketingComponent } from './email-ticketing/email-ticketing.compo
 import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 import { CutomTooltipOptions } from './utils/util';
 import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component';
+import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
 
@@ -436,7 +437,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     EmailTicketingComponent,
     WsSidebarAppsComponent,
     AppCreateComponent,
-    RasaBotComponent
+    RasaBotComponent,
+    ImageViewerComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

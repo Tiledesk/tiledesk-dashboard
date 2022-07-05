@@ -209,7 +209,7 @@
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
                               <!-- style="height:200px; width:200px;" -->
-                              <div class="image-container">
+                              <div class="image-container" style="cursor:pointer"  (click)="openImageViewerModal(message?.metadata)">
                                 <img src={{message.metadata.src}} class="message-img" />
                               </div>
                             </div>
@@ -295,7 +295,7 @@
 
                             <div *ngIf="message?.type === 'image'" class="message ow alt">
                               <!-- style="height:200px; width:200px;" -->
-                              <div class="image-container">
+                              <div class="image-container" style="cursor:pointer"  (click)="openImageViewerModal(message?.metadata)">
                                 <img src={{message.metadata.src}} class="message-img" />
 
                                 <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>

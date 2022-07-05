@@ -246,7 +246,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   displaysFooterPagination: boolean;
   // HAS_OPENED_APPS: boolean = false;
   selectedResponseTypeID: number = 1;
-
+  imageViewerModal: any
   /**
    * Constructor
    * @param router 
@@ -381,7 +381,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
-
+  openImageViewerModal(imageMetadata) {
+    console.log("[WS-REQUESTS-MSGS] downloadImage imageMetadata  ", imageMetadata);
+    this.imageViewerModal   = document.getElementById("image-viewer-modal");
+    this.imageViewerModal.style.display = "block";
+    var modalImg = <HTMLImageElement>document.getElementById("image-viewer-img");
+    var captionText = document.getElementById("caption");
+    modalImg.src = imageMetadata.src
+    if (captionText) {
+   
+      captionText.innerHTML = imageMetadata.name ? imageMetadata.name : decodeURIComponent(decodeURIComponent(imageMetadata.name).split('/').pop());
+      // console.log('XXXX ', decodeURIComponent(decodeURIComponent(url).split('/').pop()))
+    }
+  } 
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
