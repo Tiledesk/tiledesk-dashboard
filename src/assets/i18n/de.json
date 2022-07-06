@@ -2098,5 +2098,15 @@
 	"ConnectYourRASAServer":"Verbinden Sie Ihren RASA-Server",
 	"ReadMoreOnOurCHANGELOGPage": "Lesen Sie mehr auf unserer CHANGELOG-Seite",
 	"IntegratingRasaWithTiledesk":"Die Integration von Rasa mit Tiledesk bietet viele Vorteile, allen voran die Möglichkeit, aktuelle RASA-Gespräche auf Menschen umzulenken.",
-	"HereHowIntegratingRasaWithTiledesk":"Hier erfahren Sie, wie Sie Rasa mit Tiledesk integrieren"
+	"HereHowIntegratingRasaWithTiledesk":"Hier erfahren Sie, wie Sie Rasa mit Tiledesk integrieren",
+	"CreateNewApp":"Erstelle eine neue App",
+    "LearnMore":"Mehr erfahren",
+    "Install":"Installieren",
+    "Manage":"Managen",
+    "Uninstall":"Deinstallieren",
+    "Start":"Anfang",
+    "RemoveCondition":"Bedingung entfernen",
+    "AddCondition": "Bedingung hinzufügen",
+    "RemoveAction":"Aktion entfernen",
+    "AddAction":"Aktion hinzufügen"
 }
