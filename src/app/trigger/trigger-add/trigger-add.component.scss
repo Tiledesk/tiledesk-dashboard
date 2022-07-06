@@ -15,7 +15,7 @@ input[type="text"] {
   padding-left: 16px !important;
   padding-right: 16px !important;
   text-align: right !important;
-  margin-top:5px !important;
+  margin-top: 5px !important;
 }
 
 .custom-input {
@@ -41,7 +41,7 @@ ng-select {
   margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 500;
-  color: rgba(0,0,0,.54);
+  color: rgba(0, 0, 0, 0.54);
 }
 
 @media (max-width: 768px) {
@@ -63,13 +63,13 @@ ng-select {
     padding-bottom: 8px !important;
   }
   .add-remove-icons-wrap {
-    margin-top:3px !important;
+    margin-top: 3px !important;
   }
 }
 
 .add-remove-icons-wrap {
-  text-align: right; 
-  margin-top:10px
+  text-align: right;
+  margin-top: 10px;
 }
 
 .form-control {
@@ -85,8 +85,6 @@ ng-select {
   margin: 10px 0 0 0;
 }
 
-
-
 .is-invalid {
   // margin-left: 28px;
   margin-left: 0px;
@@ -98,7 +96,7 @@ ng-select {
 .condition {
   background-color: rgba(227, 230, 232, 0.6);
   // padding: 7px 0px;
-  padding:2px 8px;
+  padding: 2px 8px;
   width: 90%;
   margin: 10px auto;
   border-radius: 4px;
@@ -112,7 +110,6 @@ ng-select {
 .custom-icon:hover {
   opacity: 0.6;
 }
-
 
 .card-custom-trigger {
   padding-top: 15px;
@@ -504,24 +501,32 @@ $f21blue: #039be5;
   }
 }
 
-
 ::ng-deep .custom-mat-tooltip {
   background-color: #2d323e !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: "Poppins","Roboto", "Arial", sans-serif !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
 
-.icon-add-trigger-conditions {
- display: none;
+.trigger--add-icon {
+  display: none;
 }
 
-.last-icon-add-trigger-conditions {
- display: block !important;
+.trigger--add-icon-last {
+  display: inline-block;
+  margin-right: 7px;
 }
 
+.trigger-status {
+  margin-left: 0px;
+  font-size: 12px;
+  color: #7695a5;
+  line-height: 1.2em;
+  font-weight: 400;
+  margin-top:8px;
+}
 
 // // MODAL START --> PLACE MODAL ON CENTER OF CURRET WINDOW
 // .modal {

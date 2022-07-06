@@ -1,5 +1,6 @@
 <!-- margin-top:6px; -->
-<div class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+<div class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
   <!-- Profilo -->
@@ -31,14 +32,11 @@
                         <span class="onoffswitch-switch"></span>
                       </label>
                     </div>
-                    <!-- <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(true)" [ngClass]="{'li-active' : triggerForm.value.enabled === true}">{{ "Trigger.Add_Edit.TriggerENABLED" | translate }}</button>
-                        <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(false)" [ngClass]="{'li-active' : triggerForm.value.enabled === false}">{{ "Trigger.Add_Edit.TriggerDISABLED" | translate }}</button> -->
-                    <!-- font-style: oblique -->
-                    <div class="row"
-                      style="margin-left: 0px; font-size: 12px;color: #7695a5; line-height: 1.2em;font-weight: 100;">
-                      <!-- {{ "Trigger.Add_Edit.SetTheStatusOfTriggerByDefaultIsSetToENABLED" | translate }} -->
+                 
+                    <div class="row trigger-status">
                       <span> {{ "Trigger.Add_Edit.SetTheStatusOfTrigger" | translate }} </span>
-                      <span style="display: block;"> {{ "Trigger.Add_Edit.ByDefaultIsSetToENABLED" | translate }}
+                      <!-- style="display: block;" -->
+                      <span> {{ "Trigger.Add_Edit.ByDefaultIsSetToENABLED" | translate }}
                       </span>
                     </div>
                   </div>
@@ -121,7 +119,7 @@
                     <!-- ---------------ARRAY !!!ANY!!! CONDITION START-------------------- -->
                     <div *ngIf="conditionType==='conditions.any'">
                       <div formArrayName="any"
-                        *ngFor="let condition of triggerForm.get('conditions.any').controls; let i = index">
+                        *ngFor="let condition of triggerForm.get('conditions.any').controls; let i = index; let last = last">
                         <div [formGroupName]="i">
 
                           <div class="form-group row condition">
@@ -199,11 +197,17 @@
                             </div>
 
                             <div class="add-remove-icons-wrap">
-                              <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)>
+                              <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)
+                                matTooltipClass="custom-mat-tooltip" matTooltip="{{'RemoveCondition' | translate}}" #tooltip="matTooltip"
+                                matTooltipPosition='above' matTooltipHideDelay="100">
                                 <i class="material-icons custom-icon">remove</i>
                               </span>
                               <!-- padding-right:8px; -->
-                              <span class="icon" style=" cursor: pointer;" (click)=addConditions()>
+                              <span [ngClass]="{'trigger--add-icon-last': last}" class="icon trigger--add-icon"
+                                style=" cursor: pointer;" (click)=addConditions() 
+                                matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{'AddCondition' | translate}}" #tooltip="matTooltip" matTooltipPosition='above'
+                                matTooltipHideDelay="100">
                                 <i class="material-icons custom-icon">add</i>
                               </span>
                             </div>
@@ -217,7 +221,7 @@
                     <!-- ---------------ARRAY !!!ALL!!! CONDITION START-------------------- -->
                     <div *ngIf="conditionType==='conditions.all'">
                       <div formArrayName="all"
-                        *ngFor="let condition of triggerForm.get('conditions.all').controls; let i = index">
+                        *ngFor="let condition of triggerForm.get('conditions.all').controls; let i = index; let last = last">
                         <div [formGroupName]="i">
                           <div class="form-group row condition">
 
@@ -321,11 +325,16 @@
 
 
                             <div class="add-remove-icons-wrap">
-                              <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)>
+                              <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)
+                                matTooltipClass="custom-mat-tooltip" matTooltip="{{'RemoveCondition' | translate}}" #tooltip="matTooltip"
+                                matTooltipPosition='above' matTooltipHideDelay="100">
                                 <i class="material-icons custom-icon">remove</i>
                               </span>
                               <!-- padding-right:8px; -->
-                              <span class="icon" style="cursor: pointer;" (click)=addConditions()>
+                              <span [ngClass]="{'trigger--add-icon-last': last}" class="icon trigger--add-icon" 
+                                style="cursor: pointer;" (click)=addConditions()
+                                matTooltipClass="custom-mat-tooltip" matTooltip="{{'AddCondition' | translate}}" #tooltip="matTooltip"
+                                matTooltipPosition='above' matTooltipHideDelay="100">
                                 <i class="material-icons custom-icon">add</i>
                               </span>
                             </div>
@@ -357,7 +366,7 @@
                   <!-- --------------------------------------------------------------- -->
                   <div>
                     <div formArrayName="actions"
-                      *ngFor="let action of triggerForm.get('actions').controls; let j = index">
+                      *ngFor="let action of triggerForm.get('actions').controls; let j = index; let last = last">
                       <div [formGroupName]="j">
 
                         <div class="form-group row condition">
@@ -469,12 +478,18 @@
                           </div>
 
 
-                          <div class="add-remove-icons-wrap" style="">
-                            <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeAction(j)>
+                          <div class="add-remove-icons-wrap">
+                            <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeAction(j)
+                            matTooltipClass="custom-mat-tooltip" matTooltip="{{'RemoveAction' | translate}}" #tooltip="matTooltip"
+                            matTooltipPosition='above' matTooltipHideDelay="100">
                               <i class="material-icons custom-icon">remove</i>
                             </span>
                             <!-- padding-right:8px;  -->
-                            <span class="icon" style="cursor: pointer;" (click)=addActions()>
+                            <span [ngClass]="{'trigger--add-icon-last': last}" class="icon trigger--add-icon" 
+                            style="cursor: pointer;" (click)=addActions()
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'AddAction' | translate}}" #tooltip="matTooltip" matTooltipPosition='above'
+                            matTooltipHideDelay="100">
                               <i class="material-icons custom-icon">add</i>
                             </span>
                           </div>
@@ -488,13 +503,19 @@
                 <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER END------<<<<<<<<< -->
 
                 <div class="form-group" style="border-top: solid 1px #ddd; padding-top: 18px;margin-top: 16px;">
-                  <button class="btn btn-primary" type="submit">{{ "Trigger.Add_Edit.CreateTriggerButton" | translate
-                    }}</button>
-                  <!-- <button class="btn btn-light" type='button'  (click)="goBack()">{{ "Trigger.Add_Edit.CancelButton" | translate }}</button> -->
+                 
+                  <button class="btn btn-primary" type="submit">
+                    {{ "Trigger.Add_Edit.CreateTriggerButton" | translate}}
+                  </button>
+                  <button class="btn btn-light" type='button'  (click)="goBack()">
+                    {{ "Trigger.Add_Edit.CancelButton" | translate }}
+                  </button>
                 </div>
 
-
+            
               </form>
+       
+              
             </div>
 
           </div>

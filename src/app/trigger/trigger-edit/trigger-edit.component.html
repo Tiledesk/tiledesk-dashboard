@@ -1,5 +1,6 @@
 <!-- margin-top:6px;  -->
-<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
   <!-- Profilo -->
@@ -31,14 +32,12 @@
                         <span class="onoffswitch-switch"></span>
                       </label>
                     </div>
-                    <!-- <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(true)" [ngClass]="{'li-active' : triggerForm.value.enabled === true}">{{ "Trigger.Add_Edit.TriggerENABLED" | translate }}</button>
-                    <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(false)" [ngClass]="{'li-active' : triggerForm.value.enabled === false}">{{ "Trigger.Add_Edit.TriggerDISABLED" | translate }}</button> -->
-                    <!-- font-style: oblique -->
-                    <div class="row"
-                      style="margin-left: 0px; font-size: 12px; color: #7695a5; line-height: 1.2em;font-weight: 100;">
+
+                    <div class="row trigger-status">
                       <!-- {{ "Trigger.Add_Edit.SetTheStatusOfTriggerByDefaultIsSetToENABLED" | translate }} -->
                       <span> {{ "Trigger.Add_Edit.SetTheStatusOfTrigger" | translate }} </span>
-                      <span style="display: block;"> {{ "Trigger.Add_Edit.ByDefaultIsSetToENABLED" | translate }}
+                      <!-- style="display: block;" -->
+                      <span> {{ "Trigger.Add_Edit.ByDefaultIsSetToENABLED" | translate }}
                       </span>
 
                     </div>
@@ -70,7 +69,6 @@
                 <!-- >>>>>>>>>>>>-------section PERSONALIZZA TRIGGER START------<<<<<<<<< -->
                 <!-- style="border-bottom: solid 1px #ddd" -->
                 <div>
-
                   <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 trigger-section-title">
                       {{ "Trigger.Add_Edit.CustomizeTrigger" | translate }}
@@ -125,7 +123,7 @@
                     <!-- ---------------ARRAY !!!ANY!!! CONDITION START-------------------- -->
                     <div *ngIf="conditionType === 'conditions.any'">
                       <div formArrayName="any"
-                        *ngFor="let condition of triggerForm.get('conditions.any').controls; let i = index">
+                        *ngFor="let condition of triggerForm.get('conditions.any').controls; let i = index; let last = last">
                         <div [formGroupName]="i">
                           <div class="form-group row condition">
 
@@ -206,12 +204,17 @@
                               </ng-select>
                             </div>
 
-                            <div class="add-remove-icons-wrap" style="">
-                              <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)>
+                            <div class="add-remove-icons-wrap">
+                              <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)
+                                matTooltipClass="custom-mat-tooltip" matTooltip="{{'RemoveCondition' | translate}}"
+                                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                                 <i class="material-icons custom-icon">remove</i>
                               </span>
                               <!-- padding-right:8px;  -->
-                              <span class="icon" style="cursor: pointer;" (click)=addConditions()>
+                              <span [ngClass]="{'trigger--add-icon-last': last}" class="icon trigger--add-icon"
+                                style="cursor: pointer;" (click)=addConditions() matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{'AddCondition' | translate}}" #tooltip="matTooltip"
+                                matTooltipPosition='above' matTooltipHideDelay="100">
                                 <i class="material-icons custom-icon">add</i>
                               </span>
                             </div>
@@ -225,7 +228,7 @@
                     <!-- ---------------ARRAY !!!ALL!!! CONDITION START-------------------- -->
                     <div *ngIf="conditionType==='conditions.all'">
                       <div formArrayName="all"
-                        *ngFor="let condition of triggerForm.get('conditions.all').controls; let i = index">
+                        *ngFor="let condition of triggerForm.get('conditions.all').controls; let i = index; let last = last">
                         <div [formGroupName]="i">
                           <div class="form-group row condition">
 
@@ -327,12 +330,16 @@
                               </div>
                             </div>
 
-                            <div class="add-remove-icons-wrap" style="">
-                              <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)>
+                            <div class="add-remove-icons-wrap">
+                              <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)
+                              matTooltipClass="custom-mat-tooltip" matTooltip="{{'RemoveCondition' | translate}}" #tooltip="matTooltip"
+                              matTooltipPosition='above' matTooltipHideDelay="100">
                                 <i class="material-icons custom-icon">remove</i>
                               </span>
                               <!-- padding-right:8px;  -->
-                              <span class="icon" style="cursor: pointer;" (click)=addConditions()>
+                              <span [ngClass]="{'trigger--add-icon-last': last}" class="icon trigger--add-icon" style="cursor: pointer;" (click)=addConditions()
+                                matTooltipClass="custom-mat-tooltip" matTooltip="{{'AddCondition' | translate}}"
+                                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                                 <i class="material-icons custom-icon">add</i>
                               </span>
                             </div>
@@ -357,20 +364,20 @@
                     </label>
                   </div>
 
-                  <!-- 
-                  // ---------------------------------------------------------------
-                  // ARRAY !!!ACTIONS!!! START
-                  // --------------------------------------------------------------- -->
+                   
+                  <!-- --------------------------------------------------------------- -->
+                  <!-- ARRAY !!!ACTIONS!!! START -->
+                  <!-- --------------------------------------------------------------- -->
                   <div>
                     <div formArrayName="actions"
-                      *ngFor="let action of triggerForm.get('actions').controls; let j = index">
+                      *ngFor="let action of triggerForm.get('actions').controls; let j = index; let last = last">
                       <div [formGroupName]="j">
                         <div class="form-group row condition">
 
-                          <!-- 
-                          // ---------------------------
-                          // First condition
-                          // --------------------------- -->
+                           
+                          <!-- --------------------------- -->
+                          <!-- First condition -->
+                          <!-- --------------------------- -->
                           <div class="col-sm-3">
                             <ng-select class="custom-select " formControlName="key"
                               (change)="onSelectedAction($event, action)"
@@ -394,10 +401,9 @@
                             action.value.key !== 'request.reopen' && 
                             action.value.key !== 'request.department.bot.launch'" formGroupName="parameters">
 
-                            <!-- 
-                            // ---------------------------
-                            // @ Action Second condition
-                            // --------------------------- -->
+                            <!-- --------------------------- -->
+                            <!-- @ Action Second condition -->
+                            <!-- --------------------------- -->
                             <div class="col-sm-3" *ngIf="action.value.type==='input' ">
                               <input class="custom-input" formControlName="fullName" type="text"
                                 [placeholder]="action.value.placeholder">
@@ -456,11 +462,17 @@
 
 
                           <div class="add-remove-icons-wrap">
-                            <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeAction(j)>
+                            <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeAction(j)
+                            matTooltipClass="custom-mat-tooltip" matTooltip="{{'RemoveAction' | translate}}" #tooltip="matTooltip"
+                            matTooltipPosition='above' matTooltipHideDelay="100">
                               <i class="material-icons custom-icon">remove</i>
                             </span>
                             <!-- padding-right:8px;  -->
-                            <span class="icon" style="cursor: pointer;" (click)=addActions()>
+                            <span [ngClass]="{'trigger--add-icon-last': last}" class="icon trigger--add-icon" 
+                            style="cursor: pointer;" (click)=addActions()
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'AddAction' | translate}}" #tooltip="matTooltip" matTooltipPosition='above'
+                            matTooltipHideDelay="100">
                               <i class="material-icons custom-icon">add</i>
                             </span>
                           </div>
@@ -474,9 +486,10 @@
                 <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER END------<<<<<<<<< -->
 
                 <div class="form-group" style="border-top: solid 1px #ddd; padding-top: 18px;margin-top: 16px;">
-                  <button class="btn btn-primary" type="submit">{{ "Trigger.Add_Edit.UpdateTriggerButton" | translate
-                    }}</button>
-                  <!-- <button class="btn btn-light" type='button' (click)="goBack()">{{ "Trigger.Add_Edit.CancelButton" | translate }}</button> -->
+                  <button class="btn btn-primary" type="submit">
+                    {{ "Trigger.Add_Edit.UpdateTriggerButton" | translate}}
+                  </button>
+                  <button class="btn btn-default" type='button' (click)="goBack()">{{ "Trigger.Add_Edit.CancelButton" | translate }}</button>
 
                   <button *ngIf="IS_PRE_BUILT_TRIGGER === true" class="btn btn-white pull-right" type='button'
                     (click)="openModalConfirmResetSettings()">
@@ -579,7 +592,7 @@
 
           <!--             FORM ERROR             -->
           <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE">
-         
+
             <div class="error-banmark">
               <div class="ban-icon">
                 <span class="icon-line line-long-invert"></span>
