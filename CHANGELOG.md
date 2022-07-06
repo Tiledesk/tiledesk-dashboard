@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.41
+- Deploys in production
+- Adds the ability to download images from the chat section of the conversation detail page
+- Adds the ability to send "Public Answer" or "Internal Note" messages from the conversation detail page
+- Enhances dynamic height of apps sidebar iframes
+
 ### 2.2.41-rc3
 - Adds the ability to download images from the chat section of the conversation detail page
 
