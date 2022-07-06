@@ -382,7 +382,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   openImageViewerModal(imageMetadata) {
-    console.log("[WS-REQUESTS-MSGS] downloadImage imageMetadata  ", imageMetadata);
+    // console.log("[WS-REQUESTS-MSGS] downloadImage imageMetadata  ", imageMetadata);
     this.imageViewerModal   = document.getElementById("image-viewer-modal");
     this.imageViewerModal.style.display = "block";
     var modalImg = <HTMLImageElement>document.getElementById("image-viewer-img");

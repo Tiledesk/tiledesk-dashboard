@@ -9,7 +9,8 @@
       <!-- Train Bot -->
       {{ 'Apps' | translate }}
       <!-- "{'margin-top':isChromeVerGreaterThan100 === true ? '-61px' : '6px', 'margin-left':isChromeVerGreaterThan100 === true ? '55px' : '4px'}"></svg> -->
-      <span  class="width-wide-btn-wpr" style="position: absolute;right: 38px; cursor:pointer" (click)="enlargeSidebarWide()">
+      <span class="width-wide-btn-wpr" style="position: absolute;right: 38px; cursor:pointer"
+        (click)="enlargeSidebarWide()">
         <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24"
           width="24px" fill="#fff" [ngStyle]="{'fill':APP_SIDEBAR_WIDE === true ? '#039be5' : '#fff'}">
           <g>
@@ -32,15 +33,21 @@
       <!-- [ngStyle]="{'height.px': webchatIframeHeight}" -->
       <!-- <iframe  *ngIf="dashboardApps?.length === 1" [src]="app.iframeUrl | sanitizeHtml" style="width:100%; min-height:390px; height: calc(100vh - 100px)" id="{{app._id}}" frameBorder="0"
         allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe> -->
-        <!-- [ngStyle]="{'width': someAngularVariable +'px', 'left': 'calc(100% - ' +someAngularVariable + 'px)' }" -->
-      
-       <!-- *ngIf="dashboardApps?.length > 1" -->
-       <!-- [ngStyle]="{'height.vh': frameHeightDashbordHeight}" -->
-       <!-- min-height:390px -->
-       <!--  -->
-      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%; " id="{{app._id}}" frameBorder="0"
+      <!-- [ngStyle]="{'width': someAngularVariable +'px', 'left': 'calc(100% - ' +someAngularVariable + 'px)' }" -->
+
+      <!-- *ngIf="dashboardApps?.length > 1" -->
+      <!-- [ngStyle]="{'height.vh': frameHeightDashbordHeight}" -->
+      <!-- min-height:390px -->
+     
+      <iframe *ngIf="dashboardApps?.length === 1" [src]="app.iframeUrl | sanitizeHtml"
+        style="width:100%; min-height:390px; height: calc(100vh + 100px)" id="{{app._id}}" frameBorder="0"
+        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe>
+      <!-- <iframe  *ngIf="dashboardApps?.length > 1" [src]="app.iframeUrl | sanitizeHtml" style="width:100%; " id="{{app._id}}" frameBorder="0"
         allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)" 
-        [ngStyle]="{'height': first ? 'calc(' +frameHeightDashbordHeight + 'vh - 110px)' :  'calc(' +frameHeightDashbordHeight + 'vh - 0px)'}" ></iframe>
+        [ngStyle]="{'height': first ? 'calc(' +frameHeightDashbordHeight + 'vh - 110px)' :  'calc(' +frameHeightDashbordHeight + 'vh - 0px)'}" ></iframe> -->
+      <iframe *ngIf="dashboardApps?.length > 1" [src]="app.iframeUrl | sanitizeHtml" style="width:100%; "
+        id="{{app._id}}" frameBorder="0" allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"
+        [ngStyle]="{'height.px': dashboardIframeHeight}"></iframe>
     </div>
 
     <div *ngIf="dashboardApps?.length === 0" class="no-apps">
@@ -53,13 +60,13 @@
 
       <!-- <iframe *ngIf="webchatApps?.length === 1" [src]="app.iframeUrl | sanitizeHtml" style="width:100%;min-height:630px;height: calc(100vh - 60px)" id="{{app?._id}}" frameBorder="0"
         allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)" ></iframe> -->
-        <!-- *ngIf="webchatApps?.length > 1" -->
-        <!-- [ngStyle]="{'height': 'calc(' +frameHeightWebchatHeight + 'vh - 60px)'}" -->
-        <!-- [ngStyle]="{'height.vh': frameHeightWebchatHeight}" -->
-        <!-- min-height:630px -->
-      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;" id="{{app?._id}}" frameBorder="0"
-        allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)" 
-        [ngStyle]="{'height': first ? 'calc(' +frameHeightWebchatHeight + 'vh - 60px)' : 'calc(' +frameHeightWebchatHeight + 'vh - 0px)'}"   ></iframe>
+      <!-- *ngIf="webchatApps?.length > 1" -->
+      <!-- [ngStyle]="{'height': 'calc(' +frameHeightWebchatHeight + 'vh - 60px)'}" -->
+      <!-- [ngStyle]="{'height.vh': frameHeightWebchatHeight}" -->
+      <!-- min-height:630px -->
+      <iframe [src]="app.iframeUrl | sanitizeHtml" style="width:100%;" id="{{app?._id}}" frameBorder="0" allowfullscreen
+        (load)="getIframeHasLoaded(app?._id, app?.title)"
+        [ngStyle]="{'height': first ? 'calc(' +frameHeightWebchatHeight + 'vh - 60px)' : 'calc(' +frameHeightWebchatHeight + 'vh - 0px)'}"></iframe>
     </div>
     <div *ngIf="webchatApps?.length === 0" class="no-apps">
       No apps installed for this project

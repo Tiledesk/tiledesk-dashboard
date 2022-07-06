@@ -751,7 +751,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
         // console.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
-        this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS ', requests['requests']);
+        // console.log('[HISTORY & NORT-CONVS] - GET REQUESTS ', requests['requests']);
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS COUNT ', requests['count']);
 
 
