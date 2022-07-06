@@ -1987,7 +1987,7 @@
     "ticket": "Ticket",
     "sendTranscript": "Send chat transcript",
     "ResetToDefaults": "Reset to defaults",
-    "ThisActionIsNotReversible": "This action is not reversible and will remove all you changes",
+    "ThisActionIsNotReversible": "This action is not reversible. It will restore the trigger to its original settings by removing any changes made.",
     "SendTo": "Send to",
     "Send": "Send",
     "AuthenticationFailed": "Authentication failed, the test email could not be sent",

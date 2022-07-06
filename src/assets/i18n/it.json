@@ -1987,7 +1987,7 @@
     "ticket":"Ticket",
     "sendTranscript": "Invia chat transcript",
     "ResetToDefaults": "Ripristina predefiniti",
-    "ThisActionIsNotReversible":"Questa azione non è reversibile e rimuoverà tutte le modifiche",
+    "ThisActionIsNotReversible":"Questa azione non è reversibile. Ripristinerà il trigger alle impostazioni originali rimuovendo le modifiche apportate.",
     "SendTo":"Invia a",
     "Send":"Invia",
     "AuthenticationFailed":"Autenticazione fallita, non è stato possibile inviare l'e-mail di prova",

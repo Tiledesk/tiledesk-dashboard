@@ -1987,7 +1987,7 @@
     "ticket": "Bilet",
     "sendTranscript": "Sohbet dökümü gönder",
     "ResetToDefaults": "Varsayılanlara dön",
-    "ThisActionIsNotReversible": "Bu eylem geri alınamaz ve yaptığınız tüm değişiklikleri kaldıracak",
+    "ThisActionIsNotReversible": "Bu eylem geri alınamaz. Yapılan değişiklikleri kaldırarak tetikleyiciyi orijinal ayarlarına geri yükleyecektir.",
     "SendTo": "Gönderildi",
     "Send": "Göndermek",
     "AuthenticationFailed": "Kimlik doğrulama başarısız oldu, test e-postası gönderilemedi",

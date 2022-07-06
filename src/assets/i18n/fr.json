@@ -1987,7 +1987,7 @@
     "ticket": "Ticket",
     "sendTranscript": "Envoyer la transcription du chat",
     "ResetToDefaults": "Réinitialiser les paramètres par défaut",
-    "ThisActionIsNotReversible": "Cette action est irréversible et supprimera toutes vos modifications",
+    "ThisActionIsNotReversible": "Cette action n'est pas réversible. Il restaurera le déclencheur à ses paramètres d'origine en supprimant toutes les modifications apportées.",
     "SendTo": "Envoyer à",
     "Send": "Envoyer",
     "AuthenticationFailed": "Échec de l'authentification, l'e-mail de test n'a pas pu être envoyé",

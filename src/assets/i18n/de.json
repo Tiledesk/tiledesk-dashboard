@@ -1987,7 +1987,7 @@
 	"ticket": "Fahrkarte",
 	"sendTranscript": "Chat-Transkript senden",
 	"ResetToDefaults": "Voreinstellung",
-	"ThisActionIsNotReversible": "Diese Aktion kann nicht rückgängig gemacht werden und entfernt alle Ihre Änderungen",
+	"ThisActionIsNotReversible": "Diese Aktion ist nicht umkehrbar. Der Trigger wird auf seine ursprünglichen Einstellungen zurückgesetzt, indem alle vorgenommenen Änderungen entfernt werden.",
 	"SendTo": "Senden an",
 	"Send": "Senden",
 	"AuthenticationFailed": "Authentifizierung fehlgeschlagen, die Test-E-Mail konnte nicht gesendet werden",

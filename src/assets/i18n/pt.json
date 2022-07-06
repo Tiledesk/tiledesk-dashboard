@@ -1987,7 +1987,7 @@
     "ticket": "Bilhete",
     "sendTranscript": "Enviar transcrição do bate-papo",
     "ResetToDefaults": "Redefinir para os padrões",
-    "ThisActionIsNotReversible": "Esta ação não é reversível e removerá todas as suas alterações",
+    "ThisActionIsNotReversible": "Esta ação não é reversível. Ele irá restaurar o gatilho para suas configurações originais, removendo todas as alterações feitas.",
     "SendTo": "Enviar para",
     "Send": "Mandar",
     "AuthenticationFailed": "Falha na autenticação, o e-mail de teste não pôde ser enviado",

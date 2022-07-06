@@ -1987,7 +1987,7 @@
     "ticket": "Ticket",
     "sendTranscript": "Enviar transcripción del chat",
     "ResetToDefaults": "Restablecer valores por defecto",
-    "ThisActionIsNotReversible": "Esta acción no es reversible y eliminará todos los cambios",
+    "ThisActionIsNotReversible": "Esta acción no es reversible. Restaurará el activador a su configuración original eliminando cualquier cambio realizado.",
     "SendTo": "Enviar a",
     "Send": "Enviar",
     "AuthenticationFailed": "Autenticación fallida, el email de prueba no pudo ser enviado",
