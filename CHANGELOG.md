@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.41.1
+- Fixes the bug: when creating an 'internal note' the value of the "privateFor" key is incorrect
+
 ### 2.2.41
 - Deploys in production
 - Adds the ability to download images from the chat section of the conversation detail page
