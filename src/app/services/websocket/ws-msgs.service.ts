@@ -173,7 +173,7 @@ export class WsMsgsService {
 
 
 
-  public sendChatMessage(projectid: string, convid: string, chatmsg: string, replytypedid: number) {
+  public sendChatMessage(projectid: string, convid: string, chatmsg: string, replytypedid: number, requesterid: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -185,7 +185,7 @@ export class WsMsgsService {
     const body = { 'text': chatmsg };
     if (replytypedid === 2) {
       body['attributes'] = {
-        "privateFor": this.CURRENT_USER_ID,
+        "privateFor": requesterid,
         "subtype": 'private'
       }
 

@@ -3177,7 +3177,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
-    this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message, this.selectedResponseTypeID)
+    this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message, this.selectedResponseTypeID, this.requester_id)
       .subscribe((msg) => {
         this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
       }, (error) => {
