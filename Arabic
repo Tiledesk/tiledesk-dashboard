@@ -2109,6 +2109,7 @@
     "AddCondition": "أضف الشرط",
     "RemoveAction": "حذف هذا الإجراء",
     "AddAction": "اضافة إجراء",
+    "Location": "Location (click on the location icon to view it on the map)",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",
