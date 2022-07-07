@@ -2109,6 +2109,7 @@
     "AddCondition": "Додајте услов",
     "RemoveAction":"Уклони радњу",
     "AddAction":"Додај радњу",
+    "Location": "Локација (кликните на икону локације да бисте је видели на мапи)",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

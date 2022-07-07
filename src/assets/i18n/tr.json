@@ -2109,6 +2109,7 @@
     "AddCondition": "Koşul ekle",
     "RemoveAction":"Eylemi kaldır",
     "AddAction":"Eylem ekle",
+    "Location": "Konum (haritada görüntülemek için konum simgesine tıklayın)",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

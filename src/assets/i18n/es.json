@@ -2109,6 +2109,7 @@
     "AddCondition": "Agregar condición",
     "RemoveAction":"Quitar acción",
     "AddAction":"Añadir acción",
+    "Location": "Ubicación (haga clic en el icono de ubicación para verlo en el mapa)",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",
