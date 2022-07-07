@@ -23,7 +23,8 @@ export class BotTypeSelectComponent implements OnInit {
   projectId: string;
   dgfIsVisible: boolean;
   natIsVisible: boolean;
-
+  rasaIsVisible: boolean;
+  show3Card: boolean;
   // tparams = brand;
   tparams:any;
   isChromeVerGreaterThan100: boolean;
@@ -98,7 +99,23 @@ export class BotTypeSelectComponent implements OnInit {
           // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
         }
       }
+
+      if (key.includes("RAS")) {
+        // this.logger.log('PUBLIC-KEY (SIDEBAR) - key', key);
+        let rasa = key.split(":");
+        // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
+
+        if (rasa[1] === "F") {
+          this.rasaIsVisible = false;
+         console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
+        } else {
+          this.rasaIsVisible = true;
+          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
+        }
+      }
     });
+
+    
 
     if (!this.public_Key.includes("DGF")) {
       // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - key.includes("PAY")', this.public_Key.includes("DGF"));
@@ -109,6 +126,16 @@ export class BotTypeSelectComponent implements OnInit {
       // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - key.includes("PAY")', this.public_Key.includes("DGF"));
       this.natIsVisible = false;
     }
+
+    if (!this.public_Key.includes("RAS")) {
+      // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - key.includes("PAY")', this.public_Key.includes("DGF"));
+      this.rasaIsVisible = false;
+    }
+
+    if (this.dgfIsVisible === true && this.natIsVisible === true &&  this.rasaIsVisible === true ) {
+
+    }
+ 
   }
 
 

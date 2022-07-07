@@ -26,10 +26,11 @@
 
     <div class="row aligned-row">
       <!-- -------------------------------------------------------------- -->
-      <!-- @ Native bot -> then renamemed in Resolution bot -->
+      <!-- @ Native bot  aka  Resolution bot -->
       <!-- -------------------------------------------------------------- -->
-      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true,
-        'col-sm-12 col-md-4' : dgfIsVisible === false && natIsVisible === true, 
+      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
+        'col-sm-12 col-md-4' :  (natIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === true  && rasaIsVisible === false), 
+        'col-sm-6 col-md-6' :  (natIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
         'is_hidden' :  natIsVisible === false}">
 
         <div class="card bot-card" (click)="goToCreateBot('native')">
@@ -67,10 +68,10 @@
       <!-- -------------------------------------------------------------- -->
       <!-- @ Dialogflow bot -->
       <!-- -------------------------------------------------------------- -->
-      <!-- class="col-sm-12 col-md-4" -->
-      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true, 
-        'col-sm-12 col-md-4' : dgfIsVisible === true && natIsVisible === false, 
-        'is_hidden' : dgfIsVisible === false}">
+      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true  && rasaIsVisible === true,
+       'col-sm-12 col-md-4': (natIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === true  && rasaIsVisible === false),
+       'col-sm-6 col-md-6' :  (natIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
+       'is_hidden': dgfIsVisible === false}">
         <div class="card bot-card" (click)="goToCreateBot('dialogflow')">
           <div class="card---header card---header--dialogflow-bot"> </div>
           <div class="card-content" style="text-align: center">
@@ -132,9 +133,10 @@
 
 
       <!-- class="col-sm-12 col-md-4" -->
-      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true, 
-                        'col-sm-12 col-md-4' : (natIsVisible === false && dgfIsVisible === true) || (natIsVisible === true && dgfIsVisible === false),
-                        'col-sm-6 col-md-6' : dgfIsVisible === false && natIsVisible === false 
+      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true  && rasaIsVisible === true, 
+                        'col-sm-12 col-md-4' : (natIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === true  && rasaIsVisible === false),
+                        'col-sm-6 col-md-6' :  (natIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
+                        'is_hidden' : rasaIsVisible === false
                       }">
         <!-- --------------------------------------- -->
         <!-- RASA -->
@@ -176,9 +178,10 @@
       </div>
 
 
-      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true, 
-                        'col-sm-12 col-md-4' : (natIsVisible === false && dgfIsVisible === true) || (natIsVisible === true && dgfIsVisible === false),
-                        'col-sm-6 col-md-6' : dgfIsVisible === false && natIsVisible === false 
+      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
+                        'col-sm-12 col-md-4' : (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === true && rasaIsVisible === false),
+                        'col-sm-6 col-md-6' :  (natIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
+                        'col-sm-12 col-md-12' :   dgfIsVisible === false && natIsVisible === false && rasaIsVisible === false
                       }">
         <!-- -------------------------------------------------------------- -->
         <!-- @ External bot -->
@@ -234,10 +237,14 @@
       </div>
     </div>
     <div class="row  aligned-row">
-      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true, 
+      <!-- <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true, 
       'col-sm-12 col-md-4' : (natIsVisible === false && dgfIsVisible === true) || (natIsVisible === true && dgfIsVisible === false),
-      'col-sm-6 col-md-6' : dgfIsVisible === false && natIsVisible === false }">
-
+      'col-sm-6 col-md-6' : dgfIsVisible === false && natIsVisible === false }"> -->
+      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
+      'col-sm-12 col-md-4' : (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === true && rasaIsVisible === false),
+      'col-sm-6 col-md-6' :  (natIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
+      'col-sm-12 col-md-12' :   dgfIsVisible === false && natIsVisible === false && rasaIsVisible === false
+    }">
 
         <!-- -------------------------------------------------------------- -->
         <!-- @ Identity bot -->
