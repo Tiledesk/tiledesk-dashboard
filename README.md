@@ -58,11 +58,11 @@ And more.
 
 ## Prerequisites
 
-  
+- Install Node and NPM (https://nodejs.org/en). Suggested: node v10.15.1 (npm v6.4.1). 
+	
+- If you want to to manage multiple active Node.js versions, to install node use the tool Node Version Manager (NVM)
 
-- Install Node and NPM (https://nodejs.org/en). Suggested: 10.X or 11.X. Some issues are experienced with > 12.X
-
-- Install angular-cli v7.3.5 with `npm install -g @angular/cli@7.3.5`
+- Install angular-cli v7.3.10 with `npm install -g @angular/cli@7.3.10`
 
 - A Firebase project (https://firebase.google.com)
 
