@@ -6,7 +6,7 @@
 - Adds the "location" to the detail page of the conversation and the ability of displaying it on the map
 - Adds the "location" to the detail page of the conversation and the ability of displaying it on the map
 - Adds a condition on the card of the RASA bot
-
+- Updates the env.sample, dashboard-config-template.json and dashboard-config.json files with the key "RASA BOT CREDENTIAL URL"
 
 ### 2.2.41.1
 - Fixes the bug: when creating an 'internal note' the value of the "privateFor" key is incorrect
