@@ -22,7 +22,7 @@ export class MarkerService {
 
 
 
-  makeSegnalationsMarkers(map: L.map, requests): void {
+  makeSegnalationsMarkers(map: L.map, requests, calling_page ): void {
     for (let request of requests) {
       // Check if request have location field. Only new request have it.
       if (request.location) {
@@ -30,7 +30,7 @@ export class MarkerService {
         const lon = request.location.geometry.coordinates[1];
         const marker = L.marker([lat, lon]);
 
-        marker.bindPopup(this.popupService.makeSegnalationsServedPopup(request));
+        marker.bindPopup(this.popupService.makeSegnalationsServedPopup(request, calling_page));
         marker.addTo(map);
 
       } else {
@@ -40,10 +40,10 @@ export class MarkerService {
     }
   }
 
-  makeSegnalationsServedMarkers(map: L.map, requests): void {
+  makeSegnalationsServedMarkers(map: L.map, requests, calling_page): void {
     for (let request of requests) {
       if (request.status === 200) {
-        this.logger.log("[MARKER-SERV] make Segnalations Served Markers - add to served request");
+      //  console.log("[MARKER-SERV] make Segnalations Served Markers - add to served request" , request);
         if (request.location) {
           const lat = request.location.geometry.coordinates[0];
           const lon = request.location.geometry.coordinates[1];
@@ -59,14 +59,15 @@ export class MarkerService {
               popupAnchor: [-1, -34]
             })
           });
-          marker.bindPopup(this.popupService.makeSegnalationsServedPopup(request));
+          marker.bindPopup(this.popupService.makeSegnalationsServedPopup(request, calling_page));
           marker.addTo(map);
         }
       }
     }
+    // console.log("[MARKER-SERV] make Segnalations Served Markers - calling_page" , calling_page) 
   }
 
-  makeSegnalationsUnservedMarkers(map: L.map, requests): void {
+  makeSegnalationsUnservedMarkers(map: L.map, requests, calling_page): void {
     for (let request of requests) {
       if (request.status === 100) {
         this.logger.log("[MARKER-SERV] make Segnalations Unserved Markers - add to unserved requests");
@@ -85,11 +86,12 @@ export class MarkerService {
               popupAnchor: [-1, -34],
             })
           });
-          marker.bindPopup(this.popupService.makeSegnalationsUnservedPopup(request));
+          marker.bindPopup(this.popupService.makeSegnalationsUnservedPopup(request, calling_page));
           marker.addTo(map);
         }
       }
     }
+    // console.log("[MARKER-SERV] make Segnalations Unserved Markers - calling_page ", calling_page);
   }
 
   // makeSegnalationsMarkersFromOR(map: L.map): void {

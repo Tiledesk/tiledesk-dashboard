@@ -246,7 +246,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   displaysFooterPagination: boolean;
   // HAS_OPENED_APPS: boolean = false;
   selectedResponseTypeID: number = 1;
-  imageViewerModal: any
+  imageViewerModal: any;
+  locationCity: string;
+  locationCountry: string;
+
+  OPEN_MAP_RIGHT_SIDEBAR: boolean = false
+  conv_detail_map_sidebar_height: any;
+  wsRequestsUnserved: any;
+  wsRequestsServed: any;
+  imageStorage$: string;
+  calling_page: string = "conv_details"
   /**
    * Constructor
    * @param router 
@@ -383,17 +392,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openImageViewerModal(imageMetadata) {
     // console.log("[WS-REQUESTS-MSGS] downloadImage imageMetadata  ", imageMetadata);
-    this.imageViewerModal   = document.getElementById("image-viewer-modal");
+    this.imageViewerModal = document.getElementById("image-viewer-modal");
     this.imageViewerModal.style.display = "block";
     var modalImg = <HTMLImageElement>document.getElementById("image-viewer-img");
     var captionText = document.getElementById("caption");
     modalImg.src = imageMetadata.src
     if (captionText) {
-   
+
       captionText.innerHTML = imageMetadata.name ? imageMetadata.name : decodeURIComponent(decodeURIComponent(imageMetadata.name).split('/').pop());
       // console.log('XXXX ', decodeURIComponent(decodeURIComponent(url).split('/').pop()))
     }
-  } 
+  }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -514,6 +523,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   getProfileImageStorage() {
+
+    this.imageStorage$ = this.usersService.imageStorage$.value;
+    this.logger.log('[WS-REQUESTS-LIST] - IMAGE STORAGE usersService BS value', this.imageStorage$);
+
+
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
       const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -779,7 +793,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
+  openMapRightSideBar() {
+    this.OPEN_MAP_RIGHT_SIDEBAR = true;
+    this.logger.log('[WS-REQUESTS-LIST] »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR);
 
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.logger.log('[WS-REQUESTS-LIST] - REQUEST-MAP - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT (MAIN-CONTENT)', elemMainContent.clientHeight);
+    this.conv_detail_map_sidebar_height = elemMainContent.clientHeight + 60 + 'px';
+    this.logger.log('[WS-REQUESTS-LIST] - REQUEST-MAP - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.conv_detail_map_sidebar_height);
+   
+  }
+
+  handleCloseRightSidebar(event) {
+    this.logger.log('[WS-REQUESTS-LIST] »»»» CLOSE RIGHT SIDEBAR ', event);
+    this.OPEN_MAP_RIGHT_SIDEBAR = false;
+  }
   // -----------------------------------
   // @ Subscribe to bs request by id
   // -----------------------------------
@@ -795,10 +823,49 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
 
-          this.logger.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+          console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {
             this.getContactRequests(this.request.lead._id)
           }
+
+
+          // -------------------------------------------------------------------
+          // Locaction: country & city
+          // -------------------------------------------------------------------
+          if (this.request.location) {
+            this.request['dept'] =  this.request.department;
+
+            if (this.request.lead && this.request.lead.fullname) { 
+              this.request['requester_fullname'] = this.request.lead.fullname;
+            } else {
+              this.request['requester_fullname'] =  'N/A';
+            }
+
+            this.wsRequestsUnserved = []
+            this.wsRequestsServed = []
+            if (this.request.status === 200) {
+              this.wsRequestsServed.push(this.request)
+              this.request['participanting_Agents'] = this.doParticipatingAgentsArray(this.request.participants, this.request.first_text, this.imageStorage$, this.UPLOAD_ENGINE_IS_FIREBASE)
+            } else {
+              this.wsRequestsUnserved.push(this.request)
+            }
+
+
+            if (this.request.location.city) {
+
+              this.locationCity = this.request.location.city;
+              console.log('[WS-REQUESTS-MSGS] - this.request > locationCity: ', this.locationCity);
+            }
+
+            if (this.request.location.country) {
+
+              this.locationCountry = this.request.location.country
+              console.log('[WS-REQUESTS-MSGS] - this.request > locationCountry: ', this.locationCountry);
+            }
+          }
+
+
+
           // -------------------------------------------------------------------
           // User Agent
           // -------------------------------------------------------------------
@@ -2090,10 +2157,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     } else {
       this.appStoreService.hasOpenAppsSidebar(true);
       // _elemMainPanel.scrollIntoView();
-    
-      
-        _elemMainPanel.classList.add("main-panel-chat-appsidebar-open");
-         elemRightSidebar.classList.add("right-card-appsidebar-open");
+
+
+      _elemMainPanel.classList.add("main-panel-chat-appsidebar-open");
+      elemRightSidebar.classList.add("right-card-appsidebar-open");
     }
   }
 
@@ -2102,8 +2169,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.OPEN_APPS_RIGHT_SIDEBAR = event;
     this.usersLocalDbService.storeIsOpenAppSidebar(false)
 
-     const elemRightSidebar = <HTMLElement>document.querySelector('.right-card');
-    
+    const elemRightSidebar = <HTMLElement>document.querySelector('.right-card');
+
     if (this.CHAT_PANEL_MODE === true) {
       const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
       _elemMainPanel.classList.remove("main-panel-chat-appsidebar-open");

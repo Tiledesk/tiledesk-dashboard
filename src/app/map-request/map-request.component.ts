@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MarkerService } from './../services/marker.service';
 import { Component, AfterViewInit, OnInit, Input, Output, EventEmitter, HostListener, SimpleChanges } from '@angular/core';
 import * as L from 'leaflet';
-import { LoggerService } from './..//services/logger/logger.service';
+import { LoggerService } from './../services/logger/logger.service';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -32,6 +32,7 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
   //@Input() wsRequestsServed: Request[];
   @Input() wsRequestsServed: any[];
   @Input() wsRequestsUnserved: any[];
+  @Input() calling_page: string
   @Output() closeMapsView = new EventEmitter();
 
   requests: Request[];
@@ -47,8 +48,10 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.logger.log("[MAP-REQUESTS] - SERVED REQUEST: ", this.wsRequestsServed)
-    this.logger.log("[MAP-REQUESTS] - UNSERVED REQUEST: ", this.wsRequestsUnserved)
+    
+    // console.log("[MAP-REQUESTS] - CALLING PAGE: ", this.calling_page)
+    // console.log("[MAP-REQUESTS] - SERVED REQUEST: ", this.wsRequestsServed)
+    // console.log("[MAP-REQUESTS] - UNSERVED REQUEST: ", this.wsRequestsUnserved)
 
     if (this.wsRequestsServed[0]) {
       this.projectId = this.wsRequestsServed[0].id_project;
@@ -59,22 +62,22 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
     this.logger.log("[MAP-REQUESTS] - ONCHANGES: ", changes)
     if(this.map) {
       if (changes.wsRequestsServed.currentValue != changes.wsRequestsServed.previousValue) {
-        this.markerService.makeSegnalationsServedMarkers(this.map, this.wsRequestsServed)
+        this.markerService.makeSegnalationsServedMarkers(this.map, this.wsRequestsServed, this.calling_page)
       }
 
       if (changes.wsRequestsUnserved.currentValue != changes.wsRequestsUnserved.previousValue){
-        this.markerService.makeSegnalationsUnservedMarkers(this.map, this.wsRequestsUnserved)
+        this.markerService.makeSegnalationsUnservedMarkers(this.map, this.wsRequestsUnserved, this.calling_page)
       }
 
     }
   }
 
   ngAfterViewInit(): void {
-    this.logger.log("[MAP-REQUESTS] - AFTERVIEWINIT - REQUESTS TO SHOW ON MAP: ", this.wsRequestsServed);
+  //  console.log("[MAP-REQUESTS] - AFTERVIEWINIT - REQUESTS TO SHOW ON MAP: ", this.wsRequestsServed);
     this.afterViewFlag = true;
     this.initMap();
-    this.markerService.makeSegnalationsServedMarkers(this.map, this.wsRequestsServed)
-    this.markerService.makeSegnalationsUnservedMarkers(this.map, this.wsRequestsUnserved);
+    this.markerService.makeSegnalationsServedMarkers(this.map, this.wsRequestsServed, this.calling_page)
+    this.markerService.makeSegnalationsUnservedMarkers(this.map, this.wsRequestsUnserved, this.calling_page);
     //this.markerService.makeSegnalationsMarkers(this.map, this.wsRequestsServed);
   }
 

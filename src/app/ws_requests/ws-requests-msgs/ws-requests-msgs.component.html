@@ -1389,10 +1389,7 @@
                           language
                         </i>
                         <span style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ "Language" | translate }}
-                        </span> -->
+                        
 
                           <span *ngIf="request?.language" class="conv-details-sidebar-text"
                             style="text-transform: uppercase;">
@@ -1407,6 +1404,28 @@
                     </div>
                   </div>
 
+                   <!-- --------------------------------------------------------------------- -->
+                  <!-- Country and city -->
+                  <!-- --------------------------------------------------------------------- -->
+                  <div *ngIf="request?.location" class="row" style="margin-top:5px">
+                    <div class="col-sm-12">
+                      <p class="" style="margin-bottom: 0px; cursor: pointer;">
+                        <i class="material-icons conv-details-sidebar-icon location-icon" matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{ 'Location' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                          matTooltipHideDelay="100" (click)="openMapRightSideBar()">
+                          location_on
+                        </i>
+                        <span style="position: relative;top: 1px;">
+                        
+
+                          <span class="conv-details-sidebar-text">
+                            <span *ngIf="locationCity">{{ locationCity }} </span>   <span *ngIf="locationCountry">, {{ locationCountry }} </span> 
+                          </span>
+                       
+                        </span>
+                      </p>
+                    </div>
+                  </div>
 
                   <!-- ------------------------------------------------------ -->
                   <!-- Request ID -->
@@ -3717,4 +3736,10 @@
           (valueChange)='handleCloseAppsRightSidebar($event)' [request]="request"
           [apps_sidebar_height]="apps_sidebar_height">
         </appdashboard-ws-sidebar-apps>
+      </div>
+
+      <div *ngIf="OPEN_MAP_RIGHT_SIDEBAR === true" class="view-side">
+        <appdashboard-map-request [ngStyle]="{'height': conv_detail_map_sidebar_height }" [wsRequestsServed]="wsRequestsServed"
+          [wsRequestsUnserved]="wsRequestsUnserved" [calling_page]="calling_page" (closeMapsView)='handleCloseRightSidebar($event)'>
+        </appdashboard-map-request>
       </div>

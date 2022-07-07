@@ -177,6 +177,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   selectedPriority: string;
   current_selected_prjct:any;
   isChromeVerGreaterThan100:boolean;
+
+  calling_page: string = "conv_list"
   /**
    * 
    * @param wsRequestsService 
@@ -1410,9 +1412,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           if (request.lead && request.lead.fullname) {
             request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
             request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
+            request['requester_fullname'] = request.lead.fullname;
           } else {
             request['requester_fullname_initial'] = 'N/A';
             request['requester_fullname_fillColour'] = '#6264a7';
+            request['requester_fullname'] =  'N/A';
           }
           // } else {
           //   this.logger.log('WS-REQUEST-LIST LEAD ',request.lead);
