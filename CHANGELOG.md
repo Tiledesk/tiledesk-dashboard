@@ -1,6 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.2.42-rc1
+- Displays on the "Add trigger" and "Edit trigger" page the button to add a condition and to add an action only on the last row
+- Adds the "location" to the detail page of the conversation and the ability of displaying it on the map
+- Adds the "location" to the detail page of the conversation and the ability of displaying it on the map
+- Adds a condition on the card of the RASA bot
+
+
 ### 2.2.41.1
 - Fixes the bug: when creating an 'internal note' the value of the "privateFor" key is incorrect
 
