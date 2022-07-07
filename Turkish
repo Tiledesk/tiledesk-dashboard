@@ -2109,6 +2109,7 @@
     "AddCondition": "Add condition",
     "RemoveAction": "Remove action",
     "AddAction": "Add action",
+    "Location": "Location (click on the location icon to view it on the map)",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
