@@ -823,7 +823,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
 
-          console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+          // console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {
             this.getContactRequests(this.request.lead._id)
           }
@@ -854,13 +854,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             if (this.request.location.city) {
 
               this.locationCity = this.request.location.city;
-              console.log('[WS-REQUESTS-MSGS] - this.request > locationCity: ', this.locationCity);
+              // console.log('[WS-REQUESTS-MSGS] - this.request > locationCity: ', this.locationCity);
             }
 
             if (this.request.location.country) {
 
               this.locationCountry = this.request.location.country
-              console.log('[WS-REQUESTS-MSGS] - this.request > locationCountry: ', this.locationCountry);
+              // console.log('[WS-REQUESTS-MSGS] - this.request > locationCountry: ', this.locationCountry);
             }
           }
 
