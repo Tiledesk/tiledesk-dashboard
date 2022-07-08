@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.43-rc1
+- New languages available (in beta version): Swedish, Uzbek, Kazakh and Azerbaijani
+
 ### 2.2.42
 - Deploys in production
 - Adds the "location" to the detail page of the conversation and the ability of displaying it on the map
