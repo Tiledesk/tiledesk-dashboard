@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.42-rc2
+- Move the link to view the "location" on the map from the map pin to the city name on the conversation detail page
+
 ### 2.2.42-rc1
 - Displays on the "Add trigger" and "Edit trigger" page the button to add a condition and to add an action only on the last row
 - Adds the "location" to the detail page of the conversation and the ability of displaying it on the map
