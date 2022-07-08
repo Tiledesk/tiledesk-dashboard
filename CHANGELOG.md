@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.42
+- Deploys in production
+- Adds the "location" to the detail page of the conversation and the ability of displaying it on the map
+- Enhances the "Add Trigger" and "Edit Trigger" pages
+
 ### 2.2.42-rc2
 - Move the link to view the "location" on the map from the map pin to the city name on the conversation detail page
 
