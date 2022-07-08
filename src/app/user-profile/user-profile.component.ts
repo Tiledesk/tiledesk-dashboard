@@ -127,6 +127,26 @@ export class UserProfileComponent implements OnInit {
       id: 10,
       name: 'uk',
       avatar: 'assets/img/language_flag/uk.png'
+    },
+    {
+      id: 11,
+      name: 'sv',
+      avatar: 'assets/img/language_flag/sv.png'
+    },
+    {
+      id: 12,
+      name: 'az',
+      avatar: 'assets/img/language_flag/az.png'
+    },
+    {
+      id: 13,
+      name: 'kk',
+      avatar: 'assets/img/language_flag/kk.png'
+    },
+    {
+      id: 13,
+      name: 'uz',
+      avatar: 'assets/img/language_flag/uz.png'
     }
   ];
   isChromeVerGreaterThan100: boolean;
