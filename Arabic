@@ -2109,7 +2109,8 @@
     "AddCondition": "أضف الشرط",
     "RemoveAction": "حذف هذا الإجراء",
     "AddAction": "اضافة إجراء",
-    "Location": "الموقع (انقر على أيقونة الموقع لمشاهدته على الخريطة)",
+    "_Location": "Location (click on the location icon to view it on the map)",
+    "Location": "Location",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",
@@ -2296,7 +2297,7 @@
         "Available": "متوفرة",
         "Unavailable": "غير متوفره",
         "Busy": "مشغول",
-        "YouAreAboutToJoinThisChat": "أنت على وشك الانضمام إلى هذه الدردشة",
+        "YouAreAboutToJoinThisChat": "If you join this conversation, it will appear in the conversation list. You will then have to select it, after closing the unassigned conversations sidebar, to start chatting with the user",
         "Cancel": "يلغي",
         "AreYouSure": "هل أنت متأكد؟",
         "UnassignedConversations": "المحادثات غير المعينة",
