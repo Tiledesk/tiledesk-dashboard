@@ -2109,5 +2109,6 @@
 	"AddCondition": "Bedingung hinzufügen",
 	"RemoveAction": "Aktion entfernen",
 	"AddAction": "Aktion hinzufügen",
-	"Location": "Standort (klicken Sie auf das Standortsymbol, um es auf der Karte anzuzeigen)"
+	"_Location": "Standort (klicken Sie auf das Standortsymbol, um es auf der Karte anzuzeigen)",
+	"Location":"Standort"
 }

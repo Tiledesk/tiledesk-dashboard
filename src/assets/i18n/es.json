@@ -2109,7 +2109,8 @@
     "AddCondition": "Agregar condición",
     "RemoveAction":"Quitar acción",
     "AddAction":"Añadir acción",
-    "Location": "Ubicación (haga clic en el icono de ubicación para verlo en el mapa)",
+    "_Location": "Ubicación (haga clic en el icono de ubicación para verlo en el mapa)",
+    "Location":"Ubicación",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",
@@ -2295,7 +2296,7 @@
         "Available": "Disponible",
         "Unavailable": "Indisponible",
         "Busy": "Ocupado",
-        "YouAreAboutToJoinThisChat": "Estás a punto de unirte a este chat",
+        "YouAreAboutToJoinThisChat": "Si te unes a esta conversación, aparecerá en la lista de conversaciones. Luego deberá seleccionarlo, después de cerrar la barra lateral de conversaciones no asignadas, para comenzar a chatear con el usuario.",
         "Cancel": "Cancelar",
         "AreYouSure": "¿Estás seguro?",
         "UnassignedConversations": "Conversaciones sin asignar",

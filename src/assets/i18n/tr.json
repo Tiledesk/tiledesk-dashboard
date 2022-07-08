@@ -2109,7 +2109,8 @@
     "AddCondition": "Koşul ekle",
     "RemoveAction":"Eylemi kaldır",
     "AddAction":"Eylem ekle",
-    "Location": "Konum (haritada görüntülemek için konum simgesine tıklayın)",
+    "_Location": "Konum (haritada görüntülemek için konum simgesine tıklayın)",
+    "Location":"Konum",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
@@ -2296,7 +2297,7 @@
         "Available": "Mevcut",
         "Unavailable": "Kullanım dışı",
         "Busy": "Meşgul",
-        "YouAreAboutToJoinThisChat": "Bu sohbete katılmak üzeresiniz",
+        "YouAreAboutToJoinThisChat": "Bu sohbete katılırsanız, konuşma listesinde görünecektir. Daha sonra, kullanıcıyla sohbet etmeye başlamak için, atanmamış konuşmaların kenar çubuğunu kapattıktan sonra onu seçmeniz gerekecektir.",
         "Cancel": "İptal etmek",
         "AreYouSure": "Emin misin?",
         "UnassignedConversations": "Atanmamış Görüşmeler",

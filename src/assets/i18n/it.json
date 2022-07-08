@@ -2108,5 +2108,6 @@
     "AddCondition": "Aggiungi conditione",
     "RemoveAction":"Rimuovi azione",
     "AddAction":"Aggiungi azione",
-    "Location": "Posizione (clicca sull'icona della posizione per visualizzarla sulla mappa)"
+    "_Location": "Posizione (clicca sull'icona della posizione per visualizzarla sulla mappa)",
+    "Location":"Posizione"
 }
