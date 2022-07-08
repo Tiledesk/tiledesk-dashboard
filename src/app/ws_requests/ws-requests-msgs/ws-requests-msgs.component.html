@@ -1412,13 +1412,12 @@
                       <p class="" style="margin-bottom: 0px; cursor: pointer;">
                         <i class="material-icons conv-details-sidebar-icon location-icon" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'Location' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-                          matTooltipHideDelay="100" (click)="openMapRightSideBar()">
+                          matTooltipHideDelay="100">
                           location_on
                         </i>
-                        <span style="position: relative;top: 1px;">
-                        
-
-                          <span class="conv-details-sidebar-text">
+                        <span style="position: relative;top: 1px;"  (click)="openMapRightSideBar()">
+              
+                          <span class="conv-details-sidebar-text custom-link">
                             <span *ngIf="locationCity">{{ locationCity }} </span>   <span *ngIf="locationCountry">, {{ locationCountry }} </span> 
                           </span>
                        

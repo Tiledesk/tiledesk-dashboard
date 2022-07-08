@@ -128,6 +128,15 @@
   color: #4caf50;
 }
 
+.custom-link {
+  color: #0f62ff !important;
+  cursor: pointer;
+}
+
+.custom-link:hover {
+  text-decoration: underline;
+}
+
 /*****************CHAT BODY *******************/
 // .chat-body h6 {
 //   font-size: 20px;
@@ -3095,13 +3104,13 @@ span .conv-svg-icon {
   min-height: 1106px;
 }
 
-.location-icon {
-  cursor: pointer;
-}
+// .location-icon {
+//   cursor: pointer;
+// }
 
-.location-icon:hover {
-  color: #3ea9f5;
-}
+// .location-icon:hover {
+//   color: #3ea9f5;
+// }
 
 /* SWAL SM SIZE - moved in demo css to avoid the use of  encapsulation: ViewEncapsulation.None */
 // .swal-size-sm {
