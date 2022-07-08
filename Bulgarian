@@ -1,8 +1,8 @@
 {
-    "ChangeDashboardLanguage": "Change dashboard Language",
-    "ThisIsTheRealTimeConversationsMonitoringPanel": "This is the real time conversations monitoring panel. To manage your conversations use the",
-    "chatTool": "chat tool",
-    "UsersAndGroups": "Teammates & Groups",
+    "ChangeDashboardLanguage": "Промяна на езика на таблото",
+    "ThisIsTheRealTimeConversationsMonitoringPanel": "Това е панелът за наблюдение на разговори в реално време. За да управлявате разговорите си, използвайте",
+    "chatTool": "инструмент за чат",
+    "UsersAndGroups": "Съотборници и групи",
     "UsersAndGroupsInitials": "T&G",
     "RoutingAndDeptsInitials": "R&D",
     "RoutingAndDepts": "Routing & Depts",
