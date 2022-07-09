@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.43-rc2
+- Updates in the "pre" environment the value of the key "rasaBotCredentialsURL"
+
 ### 2.2.43-rc1
 - New languages available (in beta version): Swedish, Uzbek, Kazakh and Azerbaijani
 
