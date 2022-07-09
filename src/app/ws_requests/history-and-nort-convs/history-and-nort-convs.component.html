@@ -1797,32 +1797,8 @@
 
                 <td class="td-actions text-right" *ngIf="!IS_HERE_FOR_HISTORY">
 
-                  <!-- // ARCHIVE X ASSIGNED REQUEST IS ENABLED WHEN THE CONVERSATION IS ASSIGNED TO THE USER AND THE ROLE NOT IS AGENT -->
-                  <button *ngIf="request?.participants.length > 0" type="button" rel="tooltip"
-                    style="padding-top: 9px !important;" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                    class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
-                    [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
-                    <i class="material-icons">archive</i>
-                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
-                      <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve' | translate }} </span>
-                      <i></i>
-                    </span>
-                  </button>
 
-
-                  <!-- // ARCHIVE X UNASSIGNED REQUEST is ALLOWED TO USER WITH ADMIN AND OWNER ROLE SO IS DISABLED WHEN THE USER ROLE IS AGENT-->
-                  <button *ngIf="request?.participants.length === 0" type="button" rel="tooltip"
-                    style="padding-top: 9px !important;" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                    class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
-                    [disabled]="CURRENT_USER_ROLE === 'agent'">
-                    <i class="material-icons">archive</i>
-                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
-                      <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve' | translate }} </span>
-                      <i></i>
-                    </span>
-                  </button>
-
-                  <!-- ----------------------------------------------------------------------------- -->
+                   <!-- ----------------------------------------------------------------------------- -->
                   <!-- Action JOIN if IS HERE FOR NO REAL TIME REQUESTS (!IS_HERE_FOR_HISTORY) -->
                   <!-- ------------------------------------------------------------------------------ -->
                   <section *ngIf="!IS_HERE_FOR_HISTORY">
@@ -1878,6 +1854,34 @@
                     </button>
 
                   </section>
+
+
+                  <!-- // ARCHIVE X ASSIGNED REQUEST IS ENABLED WHEN THE CONVERSATION IS ASSIGNED TO THE USER AND THE ROLE NOT IS AGENT -->
+                  <button *ngIf="request?.participants.length > 0" type="button" rel="tooltip"
+                    style="padding-top: 9px !important;" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+                    class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
+                    [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true">
+                    <i class="material-icons">archive</i>
+                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                      <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve' | translate }} </span>
+                      <i></i>
+                    </span>
+                  </button>
+
+
+                  <!-- // ARCHIVE X UNASSIGNED REQUEST is ALLOWED TO USER WITH ADMIN AND OWNER ROLE SO IS DISABLED WHEN THE USER ROLE IS AGENT-->
+                  <button *ngIf="request?.participants.length === 0" type="button" rel="tooltip"
+                    style="padding-top: 9px !important;" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+                    class="btn btn-tdblu btn-simple btn-xs tool_tip" (click)='archiveRequest(request?.request_id)'
+                    [disabled]="CURRENT_USER_ROLE === 'agent'">
+                    <i class="material-icons">archive</i>
+                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                      <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve' | translate }} </span>
+                      <i></i>
+                    </span>
+                  </button>
+
+             
                 </td>
 
               </tr>

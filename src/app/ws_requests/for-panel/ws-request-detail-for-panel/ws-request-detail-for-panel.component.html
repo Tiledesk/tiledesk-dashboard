@@ -451,26 +451,7 @@ padding-right: 0px;
         <!-- ----------------------------------------------------- -->
 
         <div class="action-btns--wpr">
-            <!-- ----------------------- -->
-            <!-- Archive btn -->
-            <!-- ----------------------- -->
 
-            <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                class="btn btn-tdblu btn-simple btn-xs tool_tip archive-btn"
-                (click)='archiveRequest(request?.request_id)'
-                [disabled]="(request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || REQUEST_STATUS === 1000">
-
-                <i class="material-icons">archive</i>
-                <span
-                    style="min-width: fit-content; text-align: center; top: -8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;"
-                    class="top">
-                    <span *ngIf="ROLE_IS_AGENT !== true" style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve'
-                        | translate }} </span>
-                    <span *ngIf="ROLE_IS_AGENT === true" style="text-transform: capitalize;"> {{ 'ActionNotAllowed' |
-                        translate }} </span>
-                    <i></i>
-                </span>
-            </button>
             <!-- ----------------------- -->
             <!-- Join btn  -->
             <!-- ----------------------- -->
@@ -500,6 +481,26 @@ padding-right: 0px;
                     <i style="left: 70%;"></i>
                 </span>
 
+            </button>
+
+            <!-- ----------------------- -->
+            <!-- Archive btn -->
+            <!-- ----------------------- -->
+            <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+                class="btn btn-tdblu btn-simple btn-xs tool_tip archive-btn"
+                (click)='archiveRequest(request?.request_id)'
+                [disabled]="(request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || REQUEST_STATUS === 1000">
+
+                <i class="material-icons">archive</i>
+                <span
+                    style="min-width: fit-content; text-align: center; top: -8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;"
+                    class="top">
+                    <span *ngIf="ROLE_IS_AGENT !== true" style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve'
+                        | translate }} </span>
+                    <span *ngIf="ROLE_IS_AGENT === true" style="text-transform: capitalize;"> {{ 'ActionNotAllowed' |
+                        translate }} </span>
+                    <i></i>
+                </span>
             </button>
         </div>
     </div>
