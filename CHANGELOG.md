@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.43-rc3
+- Fixes the bug: in-app notifications of unserved conversations are displayed in the chat sidebar "conversation info"
+- Fixes the bug: Location map not displaying correctly in chat "conversation info" sidebar
+
 ### 2.2.43-rc2
 - Updates in the "pre" environment the value of the key "rasaBotCredentialsURL"
 
