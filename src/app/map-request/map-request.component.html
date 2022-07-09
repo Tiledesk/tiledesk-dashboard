@@ -1,5 +1,5 @@
 <!-- // spostare in css -->
-<div class="map-right-side-bar">
+<div class="map-right-side-bar" [ngClass]="{'map-right-side-bar-in-panel-mode': SIDEBAR_APPS_IN_CHAT_PANEL_MODE}">
 
   <div style="border-bottom: 1px solid #eeeeee; background-color: #3c4252!important;
     color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
@@ -11,7 +11,7 @@
     </h5>
   </div>
 
-  <div class="map-container">
+  <div class="map-container"  [ngClass]="{'map-container-in-panel-mode': SIDEBAR_APPS_IN_CHAT_PANEL_MODE}">
     <div class="map-frame">
       <div id="map"></div>
     </div>

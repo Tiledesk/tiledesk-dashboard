@@ -14,6 +14,18 @@
     padding-bottom: 15px;
 }
 
+.map-right-side-bar-in-panel-mode {
+    top: -60px !important;
+    height: calc(100% + 60px)  !important;
+}
+
+.map-container-in-panel-mode {
+    top: 60px  !important;
+    margin-right: 4px  !important;
+    margin-left: 4px  !important;
+    height: 73%  !important;
+}
+
 .map-container {
     position: absolute;
     top: 80px;
@@ -29,15 +41,15 @@
     border: 2px solid black;
     height: 100%;
 }
-  
+
 #map {
     height: 100%;
     margin-top: 0px;
 }
 
 .right-side-bar {
-  width: 100% !important;
-} 
+    width: 100% !important;
+}
 
 // @media (max-width: 723px) {
 //     .map-right-side-bar {
@@ -56,4 +68,3 @@
 //         padding-bottom: 15px;
 //     }
 // }
-

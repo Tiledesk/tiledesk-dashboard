@@ -798,15 +798,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-LIST] »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR);
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
     this.logger.log('[WS-REQUESTS-LIST] - REQUEST-MAP - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT (MAIN-CONTENT)', elemMainContent.clientHeight);
     this.conv_detail_map_sidebar_height = elemMainContent.clientHeight + 60 + 'px';
     this.logger.log('[WS-REQUESTS-LIST] - REQUEST-MAP - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.conv_detail_map_sidebar_height);
-   
+    // if (this.CHAT_PANEL_MODE === true) {
+    //   _elemMainPanel.classList.add("main-panel-map-open");
+    // }
   }
 
   handleCloseRightSidebar(event) {
     this.logger.log('[WS-REQUESTS-LIST] »»»» CLOSE RIGHT SIDEBAR ', event);
     this.OPEN_MAP_RIGHT_SIDEBAR = false;
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    // if (this.CHAT_PANEL_MODE === true) {
+    //   _elemMainPanel.classList.remove("main-panel-map-open");
+    // }
   }
   // -----------------------------------
   // @ Subscribe to bs request by id
@@ -833,12 +840,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // Locaction: country & city
           // -------------------------------------------------------------------
           if (this.request.location) {
-            this.request['dept'] =  this.request.department;
+            this.request['dept'] = this.request.department;
 
-            if (this.request.lead && this.request.lead.fullname) { 
+            if (this.request.lead && this.request.lead.fullname) {
               this.request['requester_fullname'] = this.request.lead.fullname;
             } else {
-              this.request['requester_fullname'] =  'N/A';
+              this.request['requester_fullname'] = 'N/A';
             }
 
             this.wsRequestsUnserved = []

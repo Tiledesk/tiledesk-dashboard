@@ -8,6 +8,7 @@ import { LoggerService } from './../services/logger/logger.service';
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
+
 const iconDefault = L.icon({
   iconRetinaUrl,
   iconUrl,
@@ -40,7 +41,7 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
   projectId: any;
   i = 1;
   afterViewFlag: boolean = false;
-
+  SIDEBAR_APPS_IN_CHAT_PANEL_MODE: boolean;
   constructor(
     private markerService: MarkerService,
     private router: Router,
@@ -48,13 +49,27 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    
+    this.getIfRouteUrlIsRequestForPanel();
     // console.log("[MAP-REQUESTS] - CALLING PAGE: ", this.calling_page)
     // console.log("[MAP-REQUESTS] - SERVED REQUEST: ", this.wsRequestsServed)
     // console.log("[MAP-REQUESTS] - UNSERVED REQUEST: ", this.wsRequestsUnserved)
 
     if (this.wsRequestsServed[0]) {
       this.projectId = this.wsRequestsServed[0].id_project;
+    }
+  }
+
+  getIfRouteUrlIsRequestForPanel() {
+    this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = false
+    if (this.router.url.indexOf('/request-for-panel') !== -1) {
+      this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = true;
+      this.logger.log('[MAP-REQUESTS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
+
+   
+    } else {
+      this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = false;
+      this.logger.log('[MAP-REQUESTS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
+
     }
   }
   
