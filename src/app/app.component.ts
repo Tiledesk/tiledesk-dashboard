@@ -94,12 +94,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {
 
         this.router.events.subscribe((event) => {
-         
+
             if (event instanceof NavigationEnd) {
-              gtag('config','G-BKHKLWGG6F', { 'page_path': event.urlAfterRedirects });
-            }   
-          
-          })
+                gtag('config', 'G-BKHKLWGG6F', { 'page_path': event.urlAfterRedirects });
+            }
+
+        })
         // console.log('HI! [APP-COMPONENT] ')
         // https://www.freecodecamp.org/news/how-to-check-internet-connection-status-with-javascript/
 
@@ -171,14 +171,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             // ----------------------------------------------------
             // Listen to FOREGROND MESSAGES
             // ----------------------------------------------------
-            const isSafari =  /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
             // console.log('[APP-COMPONENT] isSafari ', isSafari)
             if (isSafari === false) {
-
                 // console.log('[APP-COMPONENT] HERE YES ')
                 this.listenToFCMForegroundMsgs();
             }
-         
 
             localStorage.removeItem('firebase:previous_websocket_failure');
 
@@ -370,7 +368,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             isBlurred = true;
 
             this.setIntervalTime = window.setInterval(function () {
-               
+
                 // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW NOT HAS FOCUS  HERE YES  document.title ', document.title)
                 document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
 
@@ -390,7 +388,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     listenToFCMForegroundMsgs() {
         const messaging = firebase.messaging()
         messaging.onMessage((payload) => {
-           
+
             //  console.log(' listenToFCMForegroundMsgs Message received. ', payload);
             const recipient_fullname = payload.data.recipient_fullname
             const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
@@ -403,26 +401,26 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
 
 
-            this.showNotification(recipient_fullname,  payload.data.text, link)
+            this.showNotification(recipient_fullname, payload.data.text, link)
         });
     }
 
     showNotification(recipient_fullname, notificationBody, link) {
         if (Notification.permission !== 'granted') {
-          Notification.requestPermission();
+            Notification.requestPermission();
         } else {
-         
-          const notification = new Notification(recipient_fullname,{
-            body: notificationBody,
-            dir: 'ltr',
-            image: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png'
-          });
-    
-          notification.onclick = function () {
-            window.open(link);
-          };
+
+            const notification = new Notification(recipient_fullname, {
+                body: notificationBody,
+                dir: 'ltr',
+                image: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png'
+            });
+
+            notification.onclick = function () {
+                window.open(link);
+            };
         }
-      }
+    }
 
     doRecipient_fullname_initial(recipient_fullname) {
         const recipient_fullname_initial = avatarPlaceholder(recipient_fullname)
