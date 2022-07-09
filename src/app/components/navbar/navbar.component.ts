@@ -167,7 +167,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         public brandService: BrandService,
         public LocalDbService: LocalDbService,
         private logger: LoggerService,
-      
+
     ) {
 
 
@@ -1112,7 +1112,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
     displayUnservedInAppNotification(r) {
- 
+
         // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
         const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
         this.logger.log('[NAVBAR] unserved request url ', url);
@@ -1126,19 +1126,21 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             contact_fullname = ""
         }
 
-        this.notifyService.showUnservedNotication( contact_fullname, r.first_text, url )
+        if (this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
+            this.notifyService.showUnservedNotication(contact_fullname, r.first_text, url)
 
-        const count = +this.LocalDbService.getForegrondNotificationsCount();
-        this.wsRequestsService.publishAndStoreForegroundRequestCount(count)
+            const count = +this.LocalDbService.getForegrondNotificationsCount();
+            this.wsRequestsService.publishAndStoreForegroundRequestCount(count)
 
-        this.shown_requests[r.id] = true;
-    
+            this.shown_requests[r.id] = true;
 
-        // --------------------------------------------------------------------------
-        // @ set request to store (doUnservedDateDiffAndShowNotification)
-        // --------------------------------------------------------------------------
-        localStorage.setItem(r.id + '_' + r.status, 'true');
 
+            // --------------------------------------------------------------------------
+            // @ set request to store (doUnservedDateDiffAndShowNotification)
+            // --------------------------------------------------------------------------
+            localStorage.setItem(r.id + '_' + r.status, 'true');
+
+        }
 
     }
 
