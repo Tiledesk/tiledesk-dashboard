@@ -107,10 +107,10 @@ export class BotTypeSelectComponent implements OnInit {
 
         if (rasa[1] === "F") {
           this.rasaIsVisible = false;
-         console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
+        //  console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
         } else {
           this.rasaIsVisible = true;
-          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
+          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
         }
       }
     });
