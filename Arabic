@@ -311,7 +311,7 @@
     "EverythingIn": "كل شيء في",
     "Unlimited": "غير محدود",
     "AgentsGroups": "مجموعات الوكلاء",
-    "AnalyticsAndRealTimeMonitoring": "التحليلات والمراقبة في الوقت الحقيقي",
+    "AnalyticsAndRealTimeMonitoring": "Advanced analytics and real time monitoring",
     "PerAgent": "لكل مقعد",
     "PerMonth": "كل شهر",
     "PerYear": "كل سنة",
@@ -2115,6 +2115,7 @@
     "AddAction": "اضافة إجراء",
     "_Location": "Location (click on the location icon to view it on the map)",
     "Location": "Location",
+    "SmartAssignment": "Smart assignment",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",
