@@ -311,7 +311,7 @@
 	"EverythingIn": "alles in",
 	"Unlimited": "Unlimited",
 	"AgentsGroups": "Agenten Gruppen",
-	"AnalyticsAndRealTimeMonitoring": "Analytics und Real Time monitoring",
+	"AnalyticsAndRealTimeMonitoring": "Erweiterte Analysen und Echtzeitüberwachung",
 	"PerAgent": "pro sitz",
 	"PerMonth": "pro Monat",
 	"PerYear": "pro Jahr",
@@ -2114,5 +2114,6 @@
 	"RemoveAction": "Aktion entfernen",
 	"AddAction": "Aktion hinzufügen",
 	"_Location": "Standort (klicken Sie auf das Standortsymbol, um es auf der Karte anzuzeigen)",
-	"Location":"Standort"
+	"Location":"Standort",
+	"SmartAssignment": "Klug abtretung"
 }

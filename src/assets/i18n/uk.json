@@ -311,7 +311,7 @@
     "EverythingIn": "все в",
     "Unlimited": "Необмежений",
     "AgentsGroups": "Групи агентів",
-    "AnalyticsAndRealTimeMonitoring": "Аналітика та моніторинг у реальному часі",
+    "AnalyticsAndRealTimeMonitoring": "Розширена аналітика та моніторинг у реальному часі",
     "PerAgent": "За місце",
     "PerMonth": "На місяць",
     "PerYear": "На рік",
@@ -2115,6 +2115,7 @@
     "AddAction":"Додати дію",
     "_Location": "Розташування (натисніть на значок розташування, щоб переглянути його на карті)",
     "Location":"Місцезнаходження",
+    "SmartAssignment": "Розумне призначення",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

@@ -311,7 +311,7 @@
     "EverythingIn": "tudo em",
     "Unlimited": "Ilimitado",
     "AgentsGroups": "Grupos de agentes",
-    "AnalyticsAndRealTimeMonitoring": "Análise e monitoramento em tempo real",
+    "AnalyticsAndRealTimeMonitoring": "Análise avançada e monitoramento em tempo real",
     "PerAgent": "por assento",
     "PerMonth": "por mês",
     "PerYear": "por ano",
@@ -2115,6 +2115,7 @@
     "AddAction":"Adicionar ação",
     "_Location": "Localização (clique no ícone de localização para visualizá-lo no mapa)",
     "Location":"Localização",
+    "SmartAssignment": "Atribuição inteligente",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

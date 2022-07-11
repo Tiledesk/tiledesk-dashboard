@@ -311,7 +311,7 @@
     "EverythingIn": "içində hər şey",
     "Unlimited": "Limitsiz",
     "AgentsGroups": "Agent qrupları",
-    "AnalyticsAndRealTimeMonitoring": "Analitika və real vaxt monitorinqi",
+    "AnalyticsAndRealTimeMonitoring": "Qabaqcıl analitika və real vaxt monitorinqi",
     "PerAgent": "oturacaq başına",
     "PerMonth": "hər ay üçün",
     "PerYear": "ildə",
@@ -2115,6 +2115,7 @@
     "AddAction": "Fəaliyyət əlavə edin",
     "_Location": "Məkan (xəritədə baxmaq üçün yer nişanına klikləyin)",
     "Location": "Məkan",
+    "SmartAssignment": "Ağıllı tapşırıq",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

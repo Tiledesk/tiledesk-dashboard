@@ -311,7 +311,7 @@
     "EverythingIn": "allt i",
     "Unlimited": "Obegränsat",
     "AgentsGroups": "Agentgrupper",
-    "AnalyticsAndRealTimeMonitoring": "Analys och realtidsövervakning",
+    "AnalyticsAndRealTimeMonitoring": "Avancerad analys och realtidsövervakning",
     "PerAgent": "per sittplats",
     "PerMonth": "per månad",
     "PerYear": "per år",
@@ -2115,6 +2115,7 @@
     "AddAction": "Lägg till åtgärd",
     "_Location": "Plats (klicka på platsikonen för att se den på kartan)",
     "Location": "Plats",
+    "SmartAssignment": "Smart uppdrag",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",

@@ -311,7 +311,7 @@
     "EverythingIn": "hammasi ichida",
     "Unlimited": "Cheksiz",
     "AgentsGroups": "Agentlar guruhlari",
-    "AnalyticsAndRealTimeMonitoring": "Analitik va real vaqtda monitoring",
+    "AnalyticsAndRealTimeMonitoring": "Kengaytirilgan tahlil va real vaqtda monitoring",
     "PerAgent": "har bir o'rindiq uchun",
     "PerMonth": "oyiga",
     "PerYear": "yiliga",
@@ -2115,6 +2115,7 @@
     "AddAction": "Amal qo'shish",
     "_Location": "Joylashuv (xaritada ko'rish uchun joylashuv belgisini bosing)",
     "Location": "Manzil",
+    "SmartAssignment": "Aqlli topshiriq",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

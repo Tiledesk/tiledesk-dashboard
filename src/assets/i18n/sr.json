@@ -311,7 +311,7 @@
     "EverythingIn": "све унутра",
     "Unlimited": "Неограничено",
     "AgentsGroups": "Групе агената",
-    "AnalyticsAndRealTimeMonitoring": "Аналитика и праћење у реалном времену",
+    "AnalyticsAndRealTimeMonitoring": "Напредна аналитика и надгледање у реалном времену",
     "PerAgent": "по седишту",
     "PerMonth": "месечно",
     "PerYear": "годишње",
@@ -2115,6 +2115,7 @@
     "AddAction":"Додај радњу",
     "_Location": "Локација (кликните на икону локације да бисте је видели на мапи)",
     "Location":"Локација",
+    "SmartAssignment": "Smart uppdrag",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",
