@@ -795,7 +795,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openMapRightSideBar() {
     this.OPEN_MAP_RIGHT_SIDEBAR = true;
-    this.logger.log('[WS-REQUESTS-LIST] »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR);
+    this.logger.log('[WS-REQUESTS-LIST] »»»» OPEN RIGHT SIDEBAR ', this.OPEN_MAP_RIGHT_SIDEBAR);
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
@@ -807,7 +807,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // }
   }
 
-  handleCloseRightSidebar(event) {
+  handleCloseMapRightSidebar(event) {
     this.logger.log('[WS-REQUESTS-LIST] »»»» CLOSE RIGHT SIDEBAR ', event);
     this.OPEN_MAP_RIGHT_SIDEBAR = false;
     // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
@@ -2116,35 +2116,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
+  // train bot sidebar
   openRightSideBar(message: string) {
     this.OPEN_RIGHT_SIDEBAR = true;
     this.logger.log('[WS-REQUESTS-MSGS] »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR, ' MSG: ', message);
     this.selectedQuestion = message;
-
-
     // this not works if is commented BUG RESOLVE
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px';
 
 
     this.logger.log('[WS-REQUESTS-MSGS] - REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
-
-
-    // BUG RESOLVE inserisco questo visto che all'ampiezza in cui compare la sidebar sx non è comunque possibile scorrere
-    // la pagina
-    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;overflow-y: hidden !important;');
-
-    // const mainPanelScrollPosition = _elemMainPanel.scrollTop;
-    // this.logger.log('mainPanelScrollPosition ', mainPanelScrollPosition);
-    // this.train_bot_sidebar_top_pos = mainPanelScrollPosition + 'px'
   }
 
-  // handleCloseRightSidebar(event) {
-  //   console.log('[WS-REQUESTS-MSGS] - CLOSE RIGHT SIDEBAR ', event);
-  //   this.OPEN_RIGHT_SIDEBAR = event;
-  //   this.usersLocalDbService.storeIsOpenAppSidebar(false)
-  // }
+  handleCloseRightSidebar(event) {
+    // console.log('[WS-REQUESTS-MSGS] - CLOSE RIGHT SIDEBAR ', event);
+    this.OPEN_RIGHT_SIDEBAR = event;
+    this.usersLocalDbService.storeIsOpenAppSidebar(false)
+  }
 
   openAppsSidebar() {
     this.OPEN_APPS_RIGHT_SIDEBAR = true;

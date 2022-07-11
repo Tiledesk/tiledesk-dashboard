@@ -3739,6 +3739,6 @@
 
       <div *ngIf="OPEN_MAP_RIGHT_SIDEBAR === true" class="view-side">
         <appdashboard-map-request [ngStyle]="{'height': conv_detail_map_sidebar_height }" [wsRequestsServed]="wsRequestsServed"
-          [wsRequestsUnserved]="wsRequestsUnserved" [calling_page]="calling_page" (closeMapsView)='handleCloseRightSidebar($event)'>
+          [wsRequestsUnserved]="wsRequestsUnserved" [calling_page]="calling_page" (closeMapsView)='handleCloseMapRightSidebar($event)'>
         </appdashboard-map-request>
       </div>
