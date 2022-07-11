@@ -31,8 +31,10 @@
               'li-active' : selectedTranslationCode === lang.code}">
         <a style="height:52px"> {{ lang?.name  }} </a>
 
-        <!-- defaultLangName   {{defaultLangName }} -->
-        <span *ngIf="defaultLangName === lang?.name"> (default) </span>
+        <!-- defaultLangName   {{defaultLangName }} *ngIf="defaultLangName === lang?.code" -->
+        <span class="default-lang-badge" *ngIf="defaultLangName === lang?.name"> default </span>
+        <!-- <span  class="beta-lang-badge" *ngIf=" lang?.code === 'az' || lang?.code === 'kk' || lang?.code === 'sv' || lang?.code === 'uz'">beta</span> -->
+       
       </li>
     </span>
 
@@ -56,10 +58,10 @@
         <div class="card" style="padding-top:0px; padding-bottom:0px;">
           <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
 
-          <!--  
-          // --------------------------------------------------------------
-          // @ Skeleton
-          // -------------------------------------------------------------- -->
+            
+          <!-- -------------------------------------------------------------- -->
+          <!-- @ Skeleton -->
+          <!-- -------------------------------------------------------------- -->
           <div *ngIf="showSheleton" class="card-content skeleton">
 
             <div class="row">
@@ -89,10 +91,10 @@
             </div>
           </div>
 
-          <!--  
-          // --------------------------------------------------------------
-          // @ Real
-          // -------------------------------------------------------------- -->
+            
+          <!-- -------------------------------------------------------------- -->
+          <!-- @ Real -->
+          <!-- -------------------------------------------------------------- -->
           <div *ngIf="!showSheleton" class="card-content">
 
             <div class="row">
@@ -102,6 +104,7 @@
 
                   <span *ngIf="selectedTranslationCode !== 'add'" style="display:block; height: 27px;">
                     {{ selectedTranslationLabel }}
+                    <!-- <span class="card-beta-lang-badge" *ngIf="selectedTranslationLabel === 'Azerbaijani'">beta </span> -->
                   </span>
                   <span *ngIf="selectedTranslationCode === 'add'" style="display:block; height: 27px;">
                     {{ 'Add' | translate }}
@@ -149,17 +152,17 @@
               </div>
             </div>
 
-            <!-- 
-            // -----------------------------------------------------------------------------
-            // @ For
-            // ----------------------------------------------------------------------------- -->
+             
+            <!-- ----------------------------------------------------------------------------- -->
+            <!-- @ For -->
+            <!-- ----------------------------------------------------------------------------- -->
             <section *ngIf="selectedTranslationCode !== 'add' && selected_translation">
 
               <span *ngFor="let item of selected_translation">
                 <div class="row" style="padding-bottom: 16px;">
                   <div class="col-md-4">
                     <span class="ml__label_name">
-                      {{ item?.labelName }}
+                    {{ item?.labelName }}
                     </span>
                   </div>
 
