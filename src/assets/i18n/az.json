@@ -2116,6 +2116,12 @@
     "_Location": "Məkan (xəritədə baxmaq üçün yer nişanına klikləyin)",
     "Location": "Məkan",
     "SmartAssignment": "Ağıllı tapşırıq",
+    "TicketingSystem": "Ticketing sistemi",
+    "ActivityLog": "Fəaliyyət jurnalı",
+    "EmailTicketing": "E-poçt Ticketing",
+    "Triggers":"Tetikler",
+    "CustomizationOfEmailNotificationTemplates": "Elektron poçt bildiriş şablonlarının fərdiləşdirilməsi",
+    "SmtpSettings": "Smtp parametrləri", 
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

@@ -2116,6 +2116,12 @@
     "_Location": "Konum (haritada görüntülemek için konum simgesine tıklayın)",
     "Location":"Konum",
     "SmartAssignment": "Akıllı atama",
+    "TicketingSystem": "Ticketing sistemi",
+    "ActivityLog": "Faaliyet günlüğü",
+    "EmailTicketing": "E-posta ile ticket",
+    "Triggers": "Tetikler",
+    "CustomizationOfEmailNotificationTemplates": "E-posta bildirim şablonlarının kişiselleştirilmesi",
+    "SmtpSettings": "SMTP ayarları",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

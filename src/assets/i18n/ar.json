@@ -2116,6 +2116,12 @@
     "_Location":"الموقع (انقر على أيقونة الموقع للعرض على الخريطة)",
     "Location":"موقع",
     "SmartAssignment": "مهمة ذكية",
+    "TicketingSystem": "نظام إصدار التذاكر",
+    "ActivityLog": "سجل النشاط",
+    "EmailTicketing": "التذاكر بالبريد الإلكتروني",
+    "Triggers":"مشغلات",
+    "CustomizationOfEmailNotificationTemplates": "تخصيص قوالب إعلام البريد الإلكتروني",
+    "SmtpSettings": "إعدادات SMTP"
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",

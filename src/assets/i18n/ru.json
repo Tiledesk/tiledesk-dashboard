@@ -2116,6 +2116,12 @@
     "_Location": "Местоположение (нажмите на значок местоположения, чтобы просмотреть его на карте)",
     "Location":"Расположение",
     "SmartAssignment": "Интеллектуальное назначение",
+    "TicketingSystem": "Система продажи билетов",
+    "ActivityLog": "Журнал активности",
+    "EmailTicketing": "Билет по электронной почте",
+    "Triggers":"Триггеры",
+    "CustomizationOfEmailNotificationTemplates": "Кастомизация шаблонов уведомлений по электронной почте",
+    "SmtpSettings": "Настройки SMTP",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

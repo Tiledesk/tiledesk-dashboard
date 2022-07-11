@@ -2114,5 +2114,11 @@
     "AddAction":"Aggiungi azione",
     "_Location": "Posizione (clicca sull'icona della posizione per visualizzarla sulla mappa)",
     "Location":"Posizione",
-    "SmartAssignment": "Assegnazione intelligente"
+    "SmartAssignment": "Assegnazione intelligente",
+    "TicketingSystem": "Sistema di Ticketing",
+    "ActivityLog": "Registro delle attività",
+    "EmailTicketing": "E-mail Ticketing",
+    "Triggers":"Trigger",
+    "CustomizationOfEmailNotificationTemplates": "Personalizzazione dei modelli di notifica e-mail",
+    "SmtpSettings": "Impostazioni SMTP"
 }

@@ -2115,5 +2115,11 @@
 	"AddAction": "Aktion hinzufügen",
 	"_Location": "Standort (klicken Sie auf das Standortsymbol, um es auf der Karte anzuzeigen)",
 	"Location":"Standort",
-	"SmartAssignment": "Klug abtretung"
+	"SmartAssignment": "Klug abtretung",
+	"TicketingSystem": "Ticketing-System",
+	"ActivityLog": "Aktivitätsprotokoll",
+	"EmailTicketing": "E-Mail-Ticketing",
+	"Triggers":"Löst aus",
+	"CustomizationOfEmailNotificationTemplates": "Anpassung von E-Mail-Benachrichtigungsvorlagen",
+	"SmtpSettings": "SMTP-Einstellungen"
 }
