@@ -311,7 +311,7 @@
     "EverythingIn": "her şey içinde",
     "Unlimited": "Sınırsız",
     "AgentsGroups": "Temsilci grupları",
-    "AnalyticsAndRealTimeMonitoring": "Analitik ve Gerçek Zamanlı izleme",
+    "AnalyticsAndRealTimeMonitoring": "Advanced analytics and real time monitoring",
     "PerAgent": "koltuk başına",
     "PerMonth": "her ay",
     "PerYear": "yıl başına",
@@ -2115,6 +2115,7 @@
     "AddAction": "Add action",
     "_Location": "Location (click on the location icon to view it on the map)",
     "Location": "Location",
+    "SmartAssignment": "Smart assignment",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
