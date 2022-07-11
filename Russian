@@ -311,7 +311,7 @@
     "EverythingIn": "все в",
     "Unlimited": "Неограниченный",
     "AgentsGroups": "Группы агентов",
-    "AnalyticsAndRealTimeMonitoring": "Аналитика и мониторинг в реальном времени",
+    "AnalyticsAndRealTimeMonitoring": "Advanced analytics and real time monitoring",
     "PerAgent": "за место",
     "PerMonth": "в месяц",
     "PerYear": "в год",
@@ -2115,6 +2115,7 @@
     "AddAction": "Add action",
     "_Location": "Location (click on the location icon to view it on the map)",
     "Location": "Location",
+    "SmartAssignment": "Smart assignment",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",
