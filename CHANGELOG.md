@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.43-rc4
+- Fixes the bug: dashboard crashes on Firefox browser in Incognito mode
+
 ### 2.2.43-rc3
 - Fixes the bug: in-app notifications of unserved conversations are displayed in the chat sidebar "conversation info"
 - Fixes the bug: Location map not displaying correctly in chat "conversation info" sidebar
