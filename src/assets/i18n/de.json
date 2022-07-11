@@ -2121,5 +2121,6 @@
 	"EmailTicketing": "E-Mail-Ticketing",
 	"Triggers":"Löst aus",
 	"CustomizationOfEmailNotificationTemplates": "Anpassung von E-Mail-Benachrichtigungsvorlagen",
-	"SmtpSettings": "SMTP-Einstellungen"
+	"SmtpSettings": "SMTP-Einstellungen",
+	"AvailableAddOnsVoiceInteraction":"Verfügbare Add-ons: Sprachinteraktion"
 }

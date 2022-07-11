@@ -2122,6 +2122,7 @@
     "Triggers":"Triggers",
     "CustomizationOfEmailNotificationTemplates": "Personalização de modelos de notificação por e-mail",
     "SmtpSettings": "Configurações de SMTP",
+    "AvailableAddOnsVoiceInteraction":"Complementos disponíveis: interação por voz",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

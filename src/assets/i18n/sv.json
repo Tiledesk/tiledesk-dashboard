@@ -2122,6 +2122,7 @@
     "Triggers": "Triggers",
     "CustomizationOfEmailNotificationTemplates": "Anpassning av e-postaviseringsmallar",
     "SmtpSettings": "Smtp-inställningar",
+    "AvailableAddOnsVoiceInteraction":"Tillgängliga tillägg: Röstinteraktion",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",

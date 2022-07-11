@@ -2120,5 +2120,6 @@
     "EmailTicketing": "E-mail Ticketing",
     "Triggers":"Trigger",
     "CustomizationOfEmailNotificationTemplates": "Personalizzazione dei modelli di notifica e-mail",
-    "SmtpSettings": "Impostazioni SMTP"
+    "SmtpSettings": "Impostazioni SMTP",
+    "AvailableAddOnsVoiceInteraction":"Componenti aggiuntivi disponibili: interazione vocale"
 }

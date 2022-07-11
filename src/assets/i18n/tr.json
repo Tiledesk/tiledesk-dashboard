@@ -2122,6 +2122,7 @@
     "Triggers": "Tetikler",
     "CustomizationOfEmailNotificationTemplates": "E-posta bildirim şablonlarının kişiselleştirilmesi",
     "SmtpSettings": "SMTP ayarları",
+    "AvailableAddOnsVoiceInteraction":"Mevcut Eklentiler: Sesli etkileşim",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

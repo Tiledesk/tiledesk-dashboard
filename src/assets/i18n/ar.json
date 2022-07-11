@@ -2121,7 +2121,8 @@
     "EmailTicketing": "التذاكر بالبريد الإلكتروني",
     "Triggers":"مشغلات",
     "CustomizationOfEmailNotificationTemplates": "تخصيص قوالب إعلام البريد الإلكتروني",
-    "SmtpSettings": "إعدادات SMTP"
+    "SmtpSettings": "إعدادات SMTP",
+    "AvailableAddOnsVoiceInteraction": "الوظائف الإضافية المتاحة: التفاعل الصوتي",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",

@@ -2122,6 +2122,7 @@
     "Triggers": "Triggerlar",
     "CustomizationOfEmailNotificationTemplates": "Elektron pochta xabarnomalari shablonlarini sozlash",
     "SmtpSettings": "Smtp sozlamalari",
+    "AvailableAddOnsVoiceInteraction":"Mavjud qo'shimchalar: Ovozli o'zaro ta'sir",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",
