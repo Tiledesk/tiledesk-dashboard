@@ -88,14 +88,19 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
         <div class="row">
           <div class="col-md-12">
               <ul *ngIf="selectedPlanName === 'pro'" class="pro-plan-ul" >
+                <li>{{'WidgetUnbranding' | translate}}</li> 
+                <li>{{'SmartAssignment' | translate}}</li>
                 <li>{{ 'Hours'| translate}}</li> 
                 <li>{{'Unlimited'| translate}} {{'Departments' | translate}}</li> 
-                <li>{{'AgentsGroups'| translate}}</li>
-                <li>{{'AnalyticsAndRealTimeMonitoring' | translate}} </li>
+                <li>{{'Unlimited'| translate}} {{'AgentsGroups'| translate}}</li>
                 <li>{{'UnlimitedChatHistory' | translate}} </li>
+                <li>{{'AnalyticsAndRealTimeMonitoring' | translate}} </li>
+                <li>{{'TicketingSystem' | translate}}</li>
                 <li>{{'DataExport' | translate}}</li>
+                <li>{{'ActivityLog' | translate}}</li>
+                <li>{{'EmailTicketing' | translate}}</li>
                 <li>{{'PostChatSurveys' | translate}}</li>
-           
+                <li>{{'Triggers' | translate}}</li>
                 <!-- <li (click)="cancelSubcription()"> CANCEL SUBSCRIPTION</li> -->
 
 
@@ -121,14 +126,13 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
               </ul>
 
               <ul *ngIf="selectedPlanName === 'enterprise'" class="enterprise-plan-ul">
-                <li>{{'WidgetUnbranding' | translate}}</li> 
+               
                 <li>{{'DedicatedAccountManager' | translate}}</li> 
                 <li>Onboarding + {{'Training' | translate}}</li>
-                <li>
-                  <!-- Software engineer support -->
-                  {{'SoftwareEngineerSupport' | translate}}
-                </li>
-                <li>  {{'AdvancedAnalytics' | translate}}</li>
+                <li>{{'SoftwareEngineerSupport' | translate}} </li>
+                <li>{{'CustomizationOfEmailNotificationTemplates' | translate}}</li>
+                <li>{{'SmtpSettings' | translate}}</li>
+                
               </ul>
 
           </div>
