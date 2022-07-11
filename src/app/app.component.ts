@@ -386,23 +386,30 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     listenToFCMForegroundMsgs() {
-        const messaging = firebase.messaging()
-        messaging.onMessage((payload) => {
+        try {
+            const messaging = firebase.messaging()
+            messaging.onMessage((payload) => {
 
-            //  console.log(' listenToFCMForegroundMsgs Message received. ', payload);
-            const recipient_fullname = payload.data.recipient_fullname
-            const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
-            const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
-            const link = payload.notification.click_action + "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
-            // console.log('Message received link ', link);
-            this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link, requester_avatar_initial, requester_avatar_bckgrnd);
-            this.count = this.count + 1;
-            // console.log('snd test foreground notification count ', this.count);
-            this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
+                //  console.log(' listenToFCMForegroundMsgs Message received. ', payload);
+                const recipient_fullname = payload.data.recipient_fullname
+                const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
+                const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
+                const link = payload.notification.click_action + "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
+                // console.log('Message received link ', link);
+                this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link, requester_avatar_initial, requester_avatar_bckgrnd);
+                this.count = this.count + 1;
+                // console.log('snd test foreground notification count ', this.count);
+                this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
 
 
-            this.showNotification(recipient_fullname, payload.data.text, link)
-        });
+                this.showNotification(recipient_fullname, payload.data.text, link)
+            });
+        } catch (error) {
+            this.logger.error('FCM error',  error);
+            // expected output: ReferenceError: nonExistentFunction is not defined
+            // Note - error messages will vary depending on browser
+        }
+
     }
 
     showNotification(recipient_fullname, notificationBody, link) {
