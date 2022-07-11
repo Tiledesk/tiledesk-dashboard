@@ -6,7 +6,9 @@
 - Fixes the bug: Location map not displaying correctly in chat "conversation info" sidebar
 - Reverses the position of the "join" and "resolve" buttons
 - Fixes the bug: 'Train bot' sidebar cannot be closed
-- Update the features available with the "Pro" plan and the features available with the "Enterprise" plan on the pricing page
+- Updates the features available with the "Pro" plan and the features available with the "Enterprise" plan on the pricing page
+- Updates the "What are you missing" section in Project Settings> Subscriptions
+- Updates the "Latest Updates" section of the home page
 
 ### 2.2.43-rc2
 - Updates in the "pre" environment the value of the key "rasaBotCredentialsURL"
