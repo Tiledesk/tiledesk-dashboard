@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.43.1
+- Fixes the bug: foreground notification appears in the chat sidebar of unassigned conversations when a teammate joins the conversation
+- Fixes the bug: When the user clicks on a foreground notification in the chat, the project displayed in the item showing the unassigned conversation count is incorrect
+
 ### 2.2.43
 - Deploys in production
 - Decreases the zoom of the map available on the monitor page and on the conversation detail page
