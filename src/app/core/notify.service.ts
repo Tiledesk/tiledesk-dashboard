@@ -317,7 +317,7 @@ export class NotifyService {
       // '<span class="foreground-notification-img-circle pull-left  [ngStyle]="{"background": '+ requester_avatar_bckgrnd +' } ">' +
       // requester_avatar_initial 
       // +'</span>' +
-      template: '<div data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
+      template: '<div id="foreground-not" data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
         '<span data-notify="icon"></span>' +
         '<span data-notify="header">New message</span>' +
         '<span data-notify="title">{1}</span>' +

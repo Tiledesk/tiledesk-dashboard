@@ -34,6 +34,7 @@ import { LoggerService } from './services/logger/logger.service';
 import { NotifyService } from './core/notify.service';
 import { avatarPlaceholder, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
+import { ProjectService } from './services/project.service';
 
 declare const gtag: Function;
 
@@ -54,6 +55,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     userIsSignedIn: boolean;
     IS_REQUEST_X_PANEL_ROUTE: boolean;
     IS_PROJECTS_FOR_PANEL: boolean;
+    IS_UNSERVED_REQUEST_FOR_PANEL: boolean
+
     BRAND: any;
 
     @ViewChild(NavbarComponent) navbar: NavbarComponent;
@@ -73,6 +76,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     public setIntervalTime: any;
     public isTabVisible: boolean = true;
     public tabTitle: string;
+    current_selected_prjct: any;
     // private logger: LoggerService = LoggerInstance.getInstance();
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
@@ -89,7 +93,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         public script: ScriptService,
         private logger: LoggerService,
         private notify: NotifyService,
-        public usersLocalDbService: LocalDbService
+        public usersLocalDbService: LocalDbService,
+        private projectService: ProjectService,
         // private faqKbService: FaqKbService,
     ) {
 
@@ -98,7 +103,23 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (event instanceof NavigationEnd) {
                 gtag('config', 'G-BKHKLWGG6F', { 'page_path': event.urlAfterRedirects });
             }
+            // console.log('[APP-COMPONENT] NavigationEnd event url ', event['url'])
+            if ((event['url'] && event['url'].indexOf('/unserved-request-for-panel') !== -1)) {
+                this.IS_UNSERVED_REQUEST_FOR_PANEL = true
+                // console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
+            } else if ((event['url'] && event['url'].indexOf('/unserved-request-for-panel') === -1)) {
+                this.IS_UNSERVED_REQUEST_FOR_PANEL = false
+                // console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
+            }
+        })
 
+        this.auth.project_bs.subscribe((project) => {
+            this.projectService.getProjects().subscribe((projects: any) => {
+                if (project) {
+                    this.current_selected_prjct = projects.find(prj => prj.id_project.id === project._id);
+                    // console.log('[APP-COMPONENT] current_selected_prjct ', this.current_selected_prjct)
+                }
+            })
         })
         // console.log('HI! [APP-COMPONENT] ')
         // https://www.freecodecamp.org/news/how-to-check-internet-connection-status-with-javascript/
@@ -134,8 +155,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (brand) {
             this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
-            // this.tabTitle = document.title;
-            // console.log('[APP-COMPONENT] - GET BRAND brandService > brand  this.tabTitle ', this.tabTitle)
         }
         this.setFavicon(brand); // here used with "import brand from ..." now see in getBrand()
 
@@ -174,8 +193,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
             // console.log('[APP-COMPONENT] isSafari ', isSafari)
             if (isSafari === false) {
-                // console.log('[APP-COMPONENT] HERE YES ')
-                this.listenToFCMForegroundMsgs();
+                if (this.IS_UNSERVED_REQUEST_FOR_PANEL === false) {
+                    this.listenToFCMForegroundMsgs();
+                }
             }
 
             localStorage.removeItem('firebase:previous_websocket_failure');
@@ -401,11 +421,21 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 // console.log('snd test foreground notification count ', this.count);
                 this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
 
+                const elemNotification = document.getElementById('foreground-not');
+                // console.log('[APP-COMPONENT] !! elemNotification  ', elemNotification)
+                const self = this
+                elemNotification.addEventListener('click', function handleClick() {
+                    // console.log('element clicked');
+                    localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct))
+                });
+
+
+
 
                 this.showNotification(recipient_fullname, payload.data.text, link)
             });
         } catch (error) {
-            this.logger.error('FCM error',  error);
+            this.logger.error('FCM error', error);
             // expected output: ReferenceError: nonExistentFunction is not defined
             // Note - error messages will vary depending on browser
         }
@@ -420,11 +450,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const notification = new Notification(recipient_fullname, {
                 body: notificationBody,
                 dir: 'ltr',
-                image: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png'
+                icon: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png'
             });
-
+            const self = this
             notification.onclick = function () {
                 window.open(link);
+                localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct))
             };
         }
     }
@@ -451,6 +482,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const link = "https://console.tiledesk.com/v2/chat/#/conversation-detail/support-group-6228d9d792d1ed0019240d2b-7f4cc830069f48458b8fd7070f4a7f48/Bot/active"
         // console.log('snd test foreground notification link ', link);
         this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link, requester_avatar_initial, requester_avatar_bckgrnd);
+        const elemNotification = document.getElementById('foreground-not');
+        // console.log('[APP-COMPONENT] !! elemNotification  ', elemNotification)
+        const self = this
+        elemNotification.addEventListener('click', function handleClick() {
+            // console.log('element clicked');
+            localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct))
+        });
+
+
+
         this.count = this.count + 1;
         // console.log('snd test foreground notification count ', this.count);
         this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
