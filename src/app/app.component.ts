@@ -450,7 +450,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const notification = new Notification(recipient_fullname, {
                 body: notificationBody,
                 dir: 'ltr',
-                icon: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png'
+                image: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png'
             });
             const self = this
             notification.onclick = function () {
