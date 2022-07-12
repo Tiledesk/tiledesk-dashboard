@@ -1,6 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.2.43
+- Deploys in production
+- Decreases the zoom of the map available on the monitor page and on the conversation detail page
+- Center the map at the location coordinates on the conversation detail page and in the chat "conversation info" sidebar
+- Updates the features available with the "Pro" plan and the features available with the "Enterprise" plan on the pricing page
+- New languages available (in beta version): Swedish, Uzbek, Kazakh and Azerbaijani
+
 ### 2.2.43-rc5
 - Decreases the zoom of the map available on the monitor page and on the conversation detail page
 - Center the map at the location coordinates on the conversation detail page and in the chat "conversation info" sidebar
