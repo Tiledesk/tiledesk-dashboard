@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.43-rc5
+- Decreases the zoom of the map available on the monitor page and on the conversation detail page
+- Center the map at the location coordinates on the conversation detail page and in the chat "conversation info" sidebar
+
 ### 2.2.43-rc4
 - Fixes the bug: dashboard crashes on Firefox browser in Incognito mode
 
