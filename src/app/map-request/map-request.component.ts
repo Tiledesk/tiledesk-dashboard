@@ -42,6 +42,8 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
   i = 1;
   afterViewFlag: boolean = false;
   SIDEBAR_APPS_IN_CHAT_PANEL_MODE: boolean;
+  // lat: number;
+  // lon: number;
   constructor(
     private markerService: MarkerService,
     private router: Router,
@@ -50,9 +52,9 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.getIfRouteUrlIsRequestForPanel();
-    // console.log("[MAP-REQUESTS] - CALLING PAGE: ", this.calling_page)
-    // console.log("[MAP-REQUESTS] - SERVED REQUEST: ", this.wsRequestsServed)
-    // console.log("[MAP-REQUESTS] - UNSERVED REQUEST: ", this.wsRequestsUnserved)
+    // console.log("[MAP-REQUESTS] - ngOnInit CALLING PAGE: ", this.calling_page)
+    // console.log("[MAP-REQUESTS] - ngOnInit SERVED REQUEST: ", this.wsRequestsServed)
+    // console.log("[MAP-REQUESTS] - ngOnInit UNSERVED REQUEST: ", this.wsRequestsUnserved)
 
     if (this.wsRequestsServed[0]) {
       this.projectId = this.wsRequestsServed[0].id_project;
@@ -65,22 +67,22 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
       this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = true;
       this.logger.log('[MAP-REQUESTS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
 
-   
+
     } else {
       this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE = false;
       this.logger.log('[MAP-REQUESTS] - SIDEBAR_APPS_IN_CHAT_PANEL_MODE »»» ', this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE);
 
     }
   }
-  
+
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log("[MAP-REQUESTS] - ONCHANGES: ", changes)
-    if(this.map) {
+    if (this.map) {
       if (changes.wsRequestsServed.currentValue != changes.wsRequestsServed.previousValue) {
         this.markerService.makeSegnalationsServedMarkers(this.map, this.wsRequestsServed, this.calling_page)
       }
 
-      if (changes.wsRequestsUnserved.currentValue != changes.wsRequestsUnserved.previousValue){
+      if (changes.wsRequestsUnserved.currentValue != changes.wsRequestsUnserved.previousValue) {
         this.markerService.makeSegnalationsUnservedMarkers(this.map, this.wsRequestsUnserved, this.calling_page)
       }
 
@@ -88,19 +90,33 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-  //  console.log("[MAP-REQUESTS] - AFTERVIEWINIT - REQUESTS TO SHOW ON MAP: ", this.wsRequestsServed);
+    //  console.log("[MAP-REQUESTS] - AFTERVIEWINIT - REQUESTS TO SHOW ON MAP: ", this.wsRequestsServed);
     this.afterViewFlag = true;
     this.initMap();
     this.markerService.makeSegnalationsServedMarkers(this.map, this.wsRequestsServed, this.calling_page)
     this.markerService.makeSegnalationsUnservedMarkers(this.map, this.wsRequestsUnserved, this.calling_page);
-    //this.markerService.makeSegnalationsMarkers(this.map, this.wsRequestsServed);
   }
 
   private initMap(): void {
     this.map = L.map('map', {
       center: [41.8919300, 12.5113300],
-      zoom: 6
+      // zoom: 6
+      zoom: 3
     });
+    if (this.calling_page === 'conv_details') {
+      if (this.wsRequestsServed.length > 0 && this.wsRequestsServed[0]['location'] && this.wsRequestsServed[0]['location']['geometry']) {
+        // console.log('[MAP-REQUESTS] wsRequestsServed > location > geometry > coordinates' , this.wsRequestsServed[0]['location']['geometry']['coordinates'])
+        const Lat  =  this.wsRequestsServed[0]['location']['geometry']['coordinates'][0];
+        const Lng  =  this.wsRequestsServed[0]['location']['geometry']['coordinates'][1]
+        this.map.panTo(new L.LatLng(Lat, Lng));
+      }
+      if (this.wsRequestsUnserved.length > 0 && this.wsRequestsUnserved[0]['location'] && this.wsRequestsUnserved[0]['location']['geometry']) {
+        // console.log('[MAP-REQUESTS] wsRequestsServed > location > geometry > coordinates' , this.wsRequestsServed[0]['location']['geometry']['coordinates'])
+        const Lat  =  this.wsRequestsUnserved[0]['location']['geometry']['coordinates'][0];
+        const Lng  =  this.wsRequestsUnserved[0]['location']['geometry']['coordinates'][1]
+        this.map.panTo(new L.LatLng(Lat, Lng));
+      }
+    }
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
