@@ -104,13 +104,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 gtag('config', 'G-BKHKLWGG6F', { 'page_path': event.urlAfterRedirects });
             }
             // console.log('[APP-COMPONENT] NavigationEnd event url ', event['url'])
-            if ((event['url'] && event['url'].indexOf('/unserved-request-for-panel') !== -1)) {
-                this.IS_UNSERVED_REQUEST_FOR_PANEL = true
-                // console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
-            } else if ((event['url'] && event['url'].indexOf('/unserved-request-for-panel') === -1)) {
-                this.IS_UNSERVED_REQUEST_FOR_PANEL = false
-                // console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
-            }
+            // if ((event['url'] && event['url'].indexOf('/unserved-request-for-panel') !== -1)) {
+            //     this.IS_UNSERVED_REQUEST_FOR_PANEL = true
+            //     // console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
+            // } else if ((event['url'] && event['url'].indexOf('/unserved-request-for-panel') === -1)) {
+            //     this.IS_UNSERVED_REQUEST_FOR_PANEL = false
+            //     // console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
+            // }
         })
 
         this.auth.project_bs.subscribe((project) => {
@@ -193,9 +193,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
             // console.log('[APP-COMPONENT] isSafari ', isSafari)
             if (isSafari === false) {
-                if (this.IS_UNSERVED_REQUEST_FOR_PANEL === false) {
+                // if (this.IS_UNSERVED_REQUEST_FOR_PANEL === false) {
                     this.listenToFCMForegroundMsgs();
-                }
+                // }
             }
 
             localStorage.removeItem('firebase:previous_websocket_failure');
