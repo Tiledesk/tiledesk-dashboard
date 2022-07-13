@@ -55,7 +55,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     userIsSignedIn: boolean;
     IS_REQUEST_X_PANEL_ROUTE: boolean;
     IS_PROJECTS_FOR_PANEL: boolean;
-    IS_UNSERVED_REQUEST_FOR_PANEL: boolean
+    HIDE_FOREGROUND_NOTIFICATION: boolean
 
     BRAND: any;
 
@@ -103,14 +103,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (event instanceof NavigationEnd) {
                 gtag('config', 'G-BKHKLWGG6F', { 'page_path': event.urlAfterRedirects });
             }
-            // console.log('[APP-COMPONENT] NavigationEnd event url ', event['url'])
-            // if ((event['url'] && event['url'].indexOf('/unserved-request-for-panel') !== -1)) {
-            //     this.IS_UNSERVED_REQUEST_FOR_PANEL = true
-            //     // console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
-            // } else if ((event['url'] && event['url'].indexOf('/unserved-request-for-panel') === -1)) {
-            //     this.IS_UNSERVED_REQUEST_FOR_PANEL = false
-            //     // console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
-            // }
+   
         })
 
         this.auth.project_bs.subscribe((project) => {
@@ -193,9 +186,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
             // console.log('[APP-COMPONENT] isSafari ', isSafari)
             if (isSafari === false) {
-                // if (this.IS_UNSERVED_REQUEST_FOR_PANEL === false) {
                 this.listenToFCMForegroundMsgs();
-                // }
             }
 
             localStorage.removeItem('firebase:previous_websocket_failure');
@@ -416,7 +407,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
                 const link = payload.notification.click_action + "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
                 // console.log('Message received link ', link);
-                if (this.IS_UNSERVED_REQUEST_FOR_PANEL === false) {
+                if (this.HIDE_FOREGROUND_NOTIFICATION === false) {
                     this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link, requester_avatar_initial, requester_avatar_bckgrnd);
                 }
                 this.count = this.count + 1;
@@ -696,6 +687,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (e instanceof NavigationEnd) {
                 //    console.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
                 if ((e.url.indexOf('/unserved-request-for-panel') !== -1) || (e.url.indexOf('/projects-for-panel') !== -1) || (e.url.indexOf('/request-for-panel') !== -1)) {
+
+                    this.HIDE_FOREGROUND_NOTIFICATION = true
                     // window.addEventListener("load", () => {
                     this.logger.log('[APP-COMP] - HIDE WIDGET - PAGE LOAD')
                     try {
@@ -706,14 +699,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     } catch (e) {
                         this.logger.error('tiledesk_widget_hide ERROR', e)
                     }
-                }
-                if (e.url.indexOf('/unserved-request-for-panel') !== -1) {
-                    this.IS_UNSERVED_REQUEST_FOR_PANEL = true;
-                    console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
                 } else {
-                    this.IS_UNSERVED_REQUEST_FOR_PANEL = false;
-                    console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
+                    this.HIDE_FOREGROUND_NOTIFICATION = false
                 }
+                // if (e.url.indexOf('/unserved-request-for-panel') !== -1) {
+                //     this.IS_UNSERVED_REQUEST_FOR_PANEL = true;
+                //     console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
+                // } else {
+                //     this.IS_UNSERVED_REQUEST_FOR_PANEL = false;
+                //     console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
+                // }
             }
         });
 
