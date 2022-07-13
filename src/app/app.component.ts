@@ -194,7 +194,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             // console.log('[APP-COMPONENT] isSafari ', isSafari)
             if (isSafari === false) {
                 // if (this.IS_UNSERVED_REQUEST_FOR_PANEL === false) {
-                    this.listenToFCMForegroundMsgs();
+                this.listenToFCMForegroundMsgs();
                 // }
             }
 
@@ -305,7 +305,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
         this.unsetNavbarBoxShadow();
-        this.hideWidgetInComponentDisplayedInChat()
+        this.hideWidgetAndForegroundNotificationInComponentDisplayedInChat()
         // -----------------------------------------------------------------------------------------------------
         // Websocket connection
         // -----------------------------------------------------------------------------------------------------
@@ -410,13 +410,15 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const messaging = firebase.messaging()
             messaging.onMessage((payload) => {
 
-                //  console.log(' listenToFCMForegroundMsgs Message received. ', payload);
+                // console.log(' listenToFCMForegroundMsgs Message received. ', payload);
                 const recipient_fullname = payload.data.recipient_fullname
                 const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
                 const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
                 const link = payload.notification.click_action + "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
                 // console.log('Message received link ', link);
-                this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link, requester_avatar_initial, requester_avatar_bckgrnd);
+                if (this.IS_UNSERVED_REQUEST_FOR_PANEL === false) {
+                    this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link, requester_avatar_initial, requester_avatar_bckgrnd);
+                }
                 this.count = this.count + 1;
                 // console.log('snd test foreground notification count ', this.count);
                 this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
@@ -424,13 +426,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 const elemNotification = document.getElementById('foreground-not');
                 // console.log('[APP-COMPONENT] !! elemNotification  ', elemNotification)
                 const self = this
-                elemNotification.addEventListener('click', function handleClick() {
-                    // console.log('element clicked');
-                    localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct))
-                });
-
-
-
+                if (elemNotification) {
+                    elemNotification.addEventListener('click', function handleClick() {
+                        // console.log('element clicked');
+                        localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct))
+                    });
+                }
 
                 this.showNotification(recipient_fullname, payload.data.text, link)
             });
@@ -690,7 +691,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         })
     }
 
-    hideWidgetInComponentDisplayedInChat() {
+    hideWidgetAndForegroundNotificationInComponentDisplayedInChat() {
         this.subscription = this.router.events.subscribe((e) => {
             if (e instanceof NavigationEnd) {
                 //    console.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
@@ -706,7 +707,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.logger.error('tiledesk_widget_hide ERROR', e)
                     }
                 }
-                // )};
+                if (e.url.indexOf('/unserved-request-for-panel') !== -1) {
+                    this.IS_UNSERVED_REQUEST_FOR_PANEL = true;
+                    console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
+                } else {
+                    this.IS_UNSERVED_REQUEST_FOR_PANEL = false;
+                    console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
+                }
             }
         });
 
