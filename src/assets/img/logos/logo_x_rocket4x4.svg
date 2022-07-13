@@ -3,18 +3,23 @@
 <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 113.4 113.4" style="enable-background:new 0 0 113.4 113.4;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#D25E5F;}
-	.st1{fill:none;stroke:#F7F7F8;stroke-miterlimit:10;}
+	.st0{fill:#F28779;}
+	.st1{fill:#F6B0A1;}
+	.st2{fill:none;stroke:#F7F7F8;stroke-miterlimit:10;}
 </style>
 <g>
-	<polygon class="st0" points="56.4,57.4 56.4,18.4 16.9,18.4 16.9,97.4 95.9,97.4 95.9,57.4 	"/>
-	<g>
-		<rect x="1.3" y="2.3" class="st1" width="110.2" height="110.2"/>
-		<line class="st1" x1="1.3" y1="2.3" x2="111.5" y2="112.5"/>
-		<line class="st1" x1="111.5" y1="2.3" x2="1.3" y2="112.5"/>
-		<circle class="st1" cx="56.4" cy="57.4" r="24"/>
-		<rect x="16.9" y="17.9" class="st1" width="79" height="79"/>
-		<circle class="st1" cx="56.4" cy="57.4" r="53.8"/>
-	</g>
+	<path class="st0" d="M91.5,56.9h-30c-2.6,0-4.7-2.1-4.7-4.7v-30c0-2.6-2.1-4.7-4.7-4.7h-30c-2.6,0-4.7,2.1-4.7,4.7v34.7v34.7
+		c0,2.6,2.1,4.7,4.7,4.7h-2h5.4c1.1,0,2.1,0.4,2.9,1.2l3.5,3.5l3.2,3.2c1.1,1.1,2.8,1.1,3.8,0L42,101l3.5-3.5
+		c0.8-0.8,1.8-1.2,2.9-1.2h43c2.6,0,4.7-2.1,4.7-4.7v-30C96.2,59,94.1,56.9,91.5,56.9"/>
+	<path class="st1" d="M93.3,50.5H65.9c-1.6,0-2.9-1.3-2.9-2.9V20.3c0-1.6,1.3-2.9,2.9-2.9h27.4c1.6,0,2.9,1.3,2.9,2.9v27.4
+		C96.2,49.3,94.9,50.5,93.3,50.5"/>
+</g>
+<g>
+	<rect x="1.6" y="1.6" class="st2" width="110.2" height="110.2"/>
+	<line class="st2" x1="1.6" y1="1.6" x2="111.8" y2="111.8"/>
+	<line class="st2" x1="111.8" y1="1.6" x2="1.6" y2="111.8"/>
+	<circle class="st2" cx="56.7" cy="56.7" r="24"/>
+	<rect x="17.2" y="17.2" class="st2" width="79" height="79"/>
+	<circle class="st2" cx="56.7" cy="56.7" r="53.8"/>
 </g>
 </svg>
