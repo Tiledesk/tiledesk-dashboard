@@ -2094,7 +2094,7 @@
     "EnterpriseOnly": "Само Ентерприсе",
     "WidgetFooterBranding": "Брендирање подножја виџета",
     "UpgradePlanToGetTheFeature": "Надоградите план да бисте добили функцију",
-    "ToCustomizeTheWidgetFooterWithYourBrand": "Да бисте прилагодили подножје виџета са својим брендом, промените УРЛ слике у атрибут срц и УРЛ у хреф атрибут (потоњи је адреса на коју ће крајњи корисник бити преусмерен када кликне на лого). Ако не желите да се „ПОВЕРЕД БИ“ појави у подножју, уклоните овај низ из тексареа.",
+    "ToCustomizeTheWidgetFooterWithYourBrand": "To customize the widget footer with your brand, change the URL of the image to the src attribute and the URL to the href attribute (the latter is the address to which the end user will be redirected when they click on the logo). If you don't want 'Powered by' to appear in the footer, remove this string from the texarea.",
     "CustomLauncherButton": "Дугме за прилагођено покретање",
     "LauncherButtonURL": "УРЛ дугмета за покретање",
     "EnterTheURLOfTheLauncherButtonImage": "Унесите УРЛ слике дугмета покретача",
