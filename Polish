@@ -2094,7 +2094,7 @@
     "EnterpriseOnly": "Enterprise only",
     "WidgetFooterBranding": "Widget footer branding",
     "UpgradePlanToGetTheFeature": "Upgrade plan to get the feature",
-    "ToCustomizeTheWidgetFooterWithYourBrand": "To customize the widget footer with your brand, change the URL of the image to the src attribute and the URL to the href attribute (the latter is the address to which the end user will be redirected when they click on the logo). If you don't want 'POWERED BY' to appear in the footer, remove this string from the texarea.",
+    "ToCustomizeTheWidgetFooterWithYourBrand": "To customize the widget footer with your brand, change the URL of the image to the src attribute and the URL to the href attribute (the latter is the address to which the end user will be redirected when they click on the logo). If you don't want 'Powered by' to appear in the footer, remove this string from the texarea.",
     "CustomLauncherButton": "Custom launcher button",
     "LauncherButtonURL": "Launcher Button URL",
     "EnterTheURLOfTheLauncherButtonImage": "Enter the URL of the launcher button image",
