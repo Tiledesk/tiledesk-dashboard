@@ -2094,7 +2094,7 @@
     "EnterpriseOnly": "Yalnız müəssisə",
     "WidgetFooterBranding": "Vidcet altbilgisinin markalanması",
     "UpgradePlanToGetTheFeature": "Xüsusiyyəti əldə etmək üçün planı təkmilləşdirin",
-    "ToCustomizeTheWidgetFooterWithYourBrand": "Vidcetin altbilgisini brendinizlə fərdiləşdirmək üçün şəklin URL-ni src atributuna və URL-ni href atributuna dəyişdirin (sonuncu, son istifadəçinin loqo üzərinə kliklədiyi zaman yönləndiriləcəyi ünvandır). Altbilgidə \"POWERED BY\" ifadəsinin görünməsini istəmirsinizsə, bu sətri texareadan çıxarın.",
+    "ToCustomizeTheWidgetFooterWithYourBrand": "Vidcetin altbilgisini brendinizlə fərdiləşdirmək üçün şəklin URL-ni src atributuna və URL-ni href atributuna dəyişdirin (sonuncu, son istifadəçinin loqo üzərinə kliklədiyi zaman yönləndiriləcəyi ünvandır). Altbilgidə \"Powered by\" ifadəsinin görünməsini istəmirsinizsə, bu sətri texareadan çıxarın.",
     "CustomLauncherButton": "Fərdi başlatma düyməsi",
     "LauncherButtonURL": "Başlatıcı Düymə URL",
     "EnterTheURLOfTheLauncherButtonImage": "Başlatıcı düymə şəklinin URL-ni daxil edin",

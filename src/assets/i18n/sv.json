@@ -2094,7 +2094,7 @@
     "EnterpriseOnly": "Endast företag",
     "WidgetFooterBranding": "Varumärke för widgetsidfot",
     "UpgradePlanToGetTheFeature": "Uppgradera planen för att få funktionen",
-    "ToCustomizeTheWidgetFooterWithYourBrand": "För att anpassa sidfoten för widgeten med ditt varumärke, ändra webbadressen till bilden till src-attributet och URL-adressen till href-attributet (det senare är den adress som slutanvändaren kommer att omdirigeras till när de klickar på logotypen). Om du inte vill att 'POWERED BY' ska visas i sidfoten, ta bort den här strängen från texområdet.",
+    "ToCustomizeTheWidgetFooterWithYourBrand": "För att anpassa sidfoten för widgeten med ditt varumärke, ändra webbadressen till bilden till src-attributet och URL-adressen till href-attributet (det senare är den adress som slutanvändaren kommer att omdirigeras till när de klickar på logotypen). Om du inte vill att 'Powered by' ska visas i sidfoten, ta bort den här strängen från texområdet.",
     "CustomLauncherButton": "Anpassad startknapp",
     "LauncherButtonURL": "URL för startknapp",
     "EnterTheURLOfTheLauncherButtonImage": "Ange webbadressen till startknappens bild",

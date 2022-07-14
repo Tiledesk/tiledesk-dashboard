@@ -2094,7 +2094,7 @@
     "EnterpriseOnly": "Faqat korxona",
     "WidgetFooterBranding": "Vidjet altbilgisi brendingi",
     "UpgradePlanToGetTheFeature": "Funktsiyani olish uchun rejani yangilang",
-    "ToCustomizeTheWidgetFooterWithYourBrand": "Vidjet altbilgisini brendingiz bilan moslashtirish uchun rasmning URL manzilini src atributiga va URL manzilini href atributiga o‘zgartiring (oxirgisi oxirgi foydalanuvchi logotip ustiga bosganida yo‘naltiriladigan manzil). Agar siz altbilgida \"POWERED BY\" ko'rinishini xohlamasangiz, bu qatorni texareadan olib tashlang.",
+    "ToCustomizeTheWidgetFooterWithYourBrand": "Vidjet altbilgisini brendingiz bilan moslashtirish uchun rasmning URL manzilini src atributiga va URL manzilini href atributiga o‘zgartiring (oxirgisi oxirgi foydalanuvchi logotip ustiga bosganida yo‘naltiriladigan manzil). Agar siz altbilgida \"Powered by\" ko'rinishini xohlamasangiz, bu qatorni texareadan olib tashlang.",
     "CustomLauncherButton": "Maxsus ishga tushirish tugmasi",
     "LauncherButtonURL": "Ishga tushirish tugmasi URL manzili",
     "EnterTheURLOfTheLauncherButtonImage": "Ishga tushirish tugmasi tasvirining URL manzilini kiriting",

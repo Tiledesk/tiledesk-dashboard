@@ -2093,7 +2093,7 @@
     "EnterpriseOnly": "Solo Enterprise",
     "WidgetFooterBranding":"Personalizzazione del piè di pagina del widget",
     "UpgradePlanToGetTheFeature": "Aggiorna il piano per ottenere la funzione",
-    "ToCustomizeTheWidgetFooterWithYourBrand":"Per personalizzare il footer del widget con il tuo brand cambia l'URL dell'immagine all'attributo src e l'URL all'attributo href (quest'ultimo è l'indirizzo a cui sarà rendirizzato l'utente finale quando clicca sul logo) . Se vuoi che non compaia 'POWERED BY' nel footer rimuovi questa stringa dalla texarea.",
+    "ToCustomizeTheWidgetFooterWithYourBrand":"Per personalizzare il footer del widget con il tuo brand cambia l'URL dell'immagine all'attributo src e l'URL all'attributo href (quest'ultimo è l'indirizzo a cui sarà rendirizzato l'utente finale quando clicca sul logo) . Se vuoi che non compaia 'Powered by' nel footer rimuovi questa stringa dalla texarea.",
     "CustomLauncherButton": "Pulsante di avvio personalizzato",
     "LauncherButtonURL": "URL del pulsante di avvio",
     "EnterTheURLOfTheLauncherButtonImage":"Inserisci l'URL dell'immagine del pulsante di avvio",

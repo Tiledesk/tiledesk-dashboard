@@ -2094,7 +2094,7 @@
     "EnterpriseOnly": "Yalnızca Enterprise",
     "WidgetFooterBranding":"Widget altbilgisi markalama",
     "UpgradePlanToGetTheFeature": "Özelliği almak için planı yükseltin",
-    "ToCustomizeTheWidgetFooterWithYourBrand":"Widget alt bilgisini markanızla özelleştirmek için, resmin URL'sini src niteliğine ve URL'sini de href niteliğine değiştirin (ikincisi, logoya tıkladıklarında son kullanıcının yönlendirileceği adrestir). Altbilgide 'POWERED BY' görünmesini istemiyorsanız, bu dizeyi texarea'dan kaldırın.",
+    "ToCustomizeTheWidgetFooterWithYourBrand":"Widget alt bilgisini markanızla özelleştirmek için, resmin URL'sini src niteliğine ve URL'sini de href niteliğine değiştirin (ikincisi, logoya tıkladıklarında son kullanıcının yönlendirileceği adrestir). Altbilgide 'Powered by' görünmesini istemiyorsanız, bu dizeyi texarea'dan kaldırın.",
     "CustomLauncherButton": "Özel başlatıcı düğmesi",
     "LauncherButtonURL": "Başlatıcı Düğmesi URL'si",
     "EnterTheURLOfTheLauncherButtonImage":"Başlatıcı düğmesi görüntüsünün URL'sini girin",
