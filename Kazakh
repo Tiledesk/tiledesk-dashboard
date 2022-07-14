@@ -2094,7 +2094,7 @@
     "EnterpriseOnly": "Тек кәсіпорын",
     "WidgetFooterBranding": "Виджеттің төменгі деректемесінің брендингі",
     "UpgradePlanToGetTheFeature": "Мүмкіндік алу үшін жоспарды жаңартыңыз",
-    "ToCustomizeTheWidgetFooterWithYourBrand": "Брендіңізбен виджеттің төменгі деректемесін теңшеу үшін суреттің URL мекенжайын src төлсипатына және URL мекенжайын href төлсипатына өзгертіңіз (соңғысы - соңғы пайдаланушы логотипті басқан кезде қайта бағытталатын мекенжай). Төменгі деректемеде 'POWERED BY' пайда болуын қаламасаңыз, бұл жолды texarea ішінен алып тастаңыз.",
+    "ToCustomizeTheWidgetFooterWithYourBrand": "To customize the widget footer with your brand, change the URL of the image to the src attribute and the URL to the href attribute (the latter is the address to which the end user will be redirected when they click on the logo). If you don't want 'Powered by' to appear in the footer, remove this string from the texarea.",
     "CustomLauncherButton": "Арнаулы іске қосу түймесі",
     "LauncherButtonURL": "Іске қосу түймесі URL мекенжайы",
     "EnterTheURLOfTheLauncherButtonImage": "Іске қосу түймесі кескінінің URL мекенжайын енгізіңіз",
