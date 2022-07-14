@@ -1571,7 +1571,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // ------------------------------------------------------------------------
           this.logger.log('[WIDGET-SET-UP] - onInit WIDGET DEFINED BUT POWERED-BY IS: ', project.widget.poweredBy, ' > SET DEFAULT ')
           // this.calloutTimerSecondSelected = -1;
-          this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>POWERED BY</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>';
+          this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>Powered by</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>';
         }
 
         // -------------------------------------------
@@ -1840,7 +1840,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // @ POWERED-BY
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
-        this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>POWERED BY</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>';
+        this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>Powered by</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>';
 
         // -----------------------------------------------------------------------
         // @ preChatForm
