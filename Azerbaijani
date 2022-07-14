@@ -2094,7 +2094,7 @@
     "EnterpriseOnly": "Yalnız müəssisə",
     "WidgetFooterBranding": "Vidcet altbilgisinin markalanması",
     "UpgradePlanToGetTheFeature": "Xüsusiyyəti əldə etmək üçün planı təkmilləşdirin",
-    "ToCustomizeTheWidgetFooterWithYourBrand": "Vidcetin altbilgisini brendinizlə fərdiləşdirmək üçün şəklin URL-ni src atributuna və URL-ni href atributuna dəyişdirin (sonuncu, son istifadəçinin loqo üzərinə kliklədiyi zaman yönləndiriləcəyi ünvandır). Altbilgidə \"POWERED BY\" ifadəsinin görünməsini istəmirsinizsə, bu sətri texareadan çıxarın.",
+    "ToCustomizeTheWidgetFooterWithYourBrand": "To customize the widget footer with your brand, change the URL of the image to the src attribute and the URL to the href attribute (the latter is the address to which the end user will be redirected when they click on the logo). If you don't want 'Powered by' to appear in the footer, remove this string from the texarea.",
     "CustomLauncherButton": "Fərdi başlatma düyməsi",
     "LauncherButtonURL": "Başlatıcı Düymə URL",
     "EnterTheURLOfTheLauncherButtonImage": "Başlatıcı düymə şəklinin URL-ni daxil edin",
