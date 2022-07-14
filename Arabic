@@ -2094,7 +2094,7 @@
     "EnterpriseOnly": "للمؤسسات فقط",
     "WidgetFooterBranding": "القطعة العلامة التجارية تذييل",
     "UpgradePlanToGetTheFeature": "خطة الترقية للحصول على الميزة",
-    "ToCustomizeTheWidgetFooterWithYourBrand": "لتخصيص تذييل عنصر واجهة المستخدم بعلامتك التجارية ، قم بتغيير عنوان URL للصورة إلى سمة src وعنوان URL إلى سمة href (الأخير هو العنوان الذي سيتم إعادة توجيه المستخدم النهائي إليه عند النقر على الشعار). إذا كنت لا تريد ظهور \"POWERED BY\" في التذييل ، فقم بإزالة هذه السلسلة من texarea.",
+    "ToCustomizeTheWidgetFooterWithYourBrand": "To customize the widget footer with your brand, change the URL of the image to the src attribute and the URL to the href attribute (the latter is the address to which the end user will be redirected when they click on the logo). If you don't want 'Powered by' to appear in the footer, remove this string from the texarea.",
     "CustomLauncherButton": "زر قاذفة مخصص",
     "LauncherButtonURL": "المشغل URL زر",
     "EnterTheURLOfTheLauncherButtonImage": "أدخل عنوان URL لصورة زر المشغل",
