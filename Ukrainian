@@ -2094,7 +2094,7 @@
     "EnterpriseOnly": "Тільки підприємство",
     "WidgetFooterBranding": "Брендинг нижнього колонтитула віджетів",
     "UpgradePlanToGetTheFeature": "Оновіть план, щоб отримати цю функцію",
-    "ToCustomizeTheWidgetFooterWithYourBrand": "Щоб налаштувати нижній колонтитул віджета відповідно до свого бренду, змініть URL-адресу зображення на атрибут src, а URL-адресу — на атрибут href (останній — це адреса, на яку буде переспрямовано кінцевого користувача, натиснувши логотип). Якщо ви не хочете, щоб у нижньому колонтитулі з’являлося слово «POWERED BY», видаліть цей рядок із тексобласті.",
+    "ToCustomizeTheWidgetFooterWithYourBrand": "To customize the widget footer with your brand, change the URL of the image to the src attribute and the URL to the href attribute (the latter is the address to which the end user will be redirected when they click on the logo). If you don't want 'Powered by' to appear in the footer, remove this string from the texarea.",
     "CustomLauncherButton": "Спеціальна кнопка запуску",
     "LauncherButtonURL": "URL-адреса кнопки запуску",
     "EnterTheURLOfTheLauncherButtonImage": "Введіть URL-адресу зображення кнопки запуску",
