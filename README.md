@@ -64,8 +64,6 @@ And more.
 
 - Install angular-cli v7.3.10 with `npm install -g @angular/cli@7.3.10`
 
-- A Firebase project (https://firebase.google.com)
-
 - tiledesk-server installed and running (https://github.com/Tiledesk/tiledesk-server.git)
 
 # Run Tiledesk with Docker Compose
@@ -139,27 +137,7 @@ pushEngine:"none", // OR YOUR CUSTOM PUSH ENGINE
 
 logLevel: "<YOUR-PREFERRED-LOG-LEVEL>",
 
-wsUrl: 'ws://' + window.location.hostname + '/ws/',
-
-	firebase: {
-
-		apiKey: "123ABC...",
-
-		authDomain: "XYZ.firebaseapp.com",
-
-		databaseURL: "https://XYZ.firebaseio.com",
-
-		projectId: "XYZ",
-
-		storageBucket: "XYZ.appspot.com",
-
-		messagingSenderId: "123456123456",
-
-		appId: '123ABC...',
-
-      	vapidKey: '123ABC...'
-
-	}
+wsUrl: 'ws://' + window.location.hostname + '/ws/'
 
 };
 
@@ -192,9 +170,6 @@ export  const environment = {
 
 	...
 
-	// same as in the above "dashboard-config.json"
-	// note: for Firebase settings you can use a different firebase project to isolate environments
-}
 ```
  
 
