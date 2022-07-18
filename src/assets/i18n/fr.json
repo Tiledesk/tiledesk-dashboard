@@ -2123,6 +2123,7 @@
     "CustomizationOfEmailNotificationTemplates": "Personnalisation des modèles de notification par e-mail",
     "SmtpSettings": "Paramètres SMTP", 
     "AvailableAddOnsVoiceInteraction":"Modules complémentaires disponibles: interaction vocale",
+    "EmailAndLiveChatSupport": "Assistance par e-mail et chat en direct",
     "CHAT_IONIC": {
         "LABEL_TU": "vous: ",
         "LABEL_MSG_PUSH_START_CHAT": "Pas encore de conversation",

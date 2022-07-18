@@ -2123,6 +2123,7 @@
     "CustomizationOfEmailNotificationTemplates": "Налаштування шаблонів повідомлень електронною поштою",
     "SmtpSettings": "Налаштування Smtp",
     "AvailableAddOnsVoiceInteraction":"Доступні доповнення: Голосова взаємодія",
+    "EmailAndLiveChatSupport": "Підтримка електронною поштою та чатом",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

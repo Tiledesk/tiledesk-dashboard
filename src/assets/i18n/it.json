@@ -2121,5 +2121,6 @@
     "Triggers":"Trigger",
     "CustomizationOfEmailNotificationTemplates": "Personalizzazione dei modelli di notifica e-mail",
     "SmtpSettings": "Impostazioni SMTP",
-    "AvailableAddOnsVoiceInteraction":"Componenti aggiuntivi disponibili: interazione vocale"
+    "AvailableAddOnsVoiceInteraction":"Componenti aggiuntivi disponibili: interazione vocale",
+    "EmailAndLiveChatSupport": "Supporto tramite e-mail e chat dal vivo"
 }

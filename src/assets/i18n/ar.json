@@ -2123,6 +2123,7 @@
     "CustomizationOfEmailNotificationTemplates": "تخصيص قوالب إعلام البريد الإلكتروني",
     "SmtpSettings": "إعدادات SMTP",
     "AvailableAddOnsVoiceInteraction": "الوظائف الإضافية المتاحة: التفاعل الصوتي",
+    "EmailAndLiveChatSupport": "دعم البريد الإلكتروني والدردشة الحية",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",

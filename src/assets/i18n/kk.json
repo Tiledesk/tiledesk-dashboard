@@ -2123,6 +2123,7 @@
     "CustomizationOfEmailNotificationTemplates": "Электрондық пошта хабарландыру үлгілерін теңшеу",
     "SmtpSettings": "Smtp параметрлері",
     "AvailableAddOnsVoiceInteraction":"Қолжетімді қондырмалар: Дауыспен әрекеттесу",
+    "EmailAndLiveChatSupport": "Электрондық пошта және тікелей чатты қолдау",
     "CHAT_IONIC": {
         "LABEL_TU": "сен: ",
         "LABEL_MSG_PUSH_START_CHAT": "Әзірге әңгіме жоқ",

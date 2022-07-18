@@ -2123,6 +2123,7 @@
     "CustomizationOfEmailNotificationTemplates": "E-posta bildirim şablonlarının kişiselleştirilmesi",
     "SmtpSettings": "SMTP ayarları",
     "AvailableAddOnsVoiceInteraction":"Mevcut Eklentiler: Sesli etkileşim",
+    "EmailAndLiveChatSupport": "E-posta ve Canlı Sohbet Desteği",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

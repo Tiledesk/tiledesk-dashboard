@@ -2123,6 +2123,7 @@
     "CustomizationOfEmailNotificationTemplates": "Прилагођавање шаблона обавештења путем е-поште",
     "SmtpSettings": "Смтп подешавања",
     "AvailableAddOnsVoiceInteraction":"Доступни додаци: Гласовна интеракција",
+    "EmailAndLiveChatSupport": "Подршка путем е-поште и ћаскања уживо",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

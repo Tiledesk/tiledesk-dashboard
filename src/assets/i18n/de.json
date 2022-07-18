@@ -2122,5 +2122,6 @@
 	"Triggers":"Löst aus",
 	"CustomizationOfEmailNotificationTemplates": "Anpassung von E-Mail-Benachrichtigungsvorlagen",
 	"SmtpSettings": "SMTP-Einstellungen",
-	"AvailableAddOnsVoiceInteraction":"Verfügbare Add-ons: Sprachinteraktion"
+	"AvailableAddOnsVoiceInteraction":"Verfügbare Add-ons: Sprachinteraktion",
+	"EmailAndLiveChatSupport": "E-Mail- und Live-Chat-Support"
 }
