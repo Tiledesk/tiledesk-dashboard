@@ -12,13 +12,13 @@
 
 Tiledesk.com backoffice application is available on GitHub with the AGPL-3.0 licence.
 
+If you need help or just want to hang out, come, say hi on our [Discord](https://discord.gg/WQPfqShJ) server.
+
 Follow this instructions to setup the environment.
 
-  
 
 Consider that Tiledesk.com cloud service makes every module available with the same open source licence.
 
-  
 
 - Web Widget component
 
