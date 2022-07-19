@@ -34,8 +34,9 @@ Consider that Tiledesk.com cloud service makes every module available with the s
 - All the chat components are available thanks to the Chat21 open source project, also available on GitHub (https://github.com/chat21)
 
   
-
-Feel free to ask for support on https://tiledesk.com, using the live chat widget on the the website.
+# Community? Questions? Support?
+If you need help or just want to hang out, come, say hi on our <img width="15" alt="dialogo_widgetchat_2" src="https://seeklogo.com/images/D/discord-color-logo-E5E6DFEF80-seeklogo.com.png"> [Discord](https://discord.gg/WQPfqShJ) server.
+You can also to ask for support on https://tiledesk.com, using the live chat widget on the the website.
 
   
 ## Features
