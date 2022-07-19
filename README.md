@@ -4,8 +4,6 @@
 > 
 > ***Use [Docker Compose Tiledesk installation](https://github.com/Tiledesk/tiledesk-deployment/blob/master/docker-compose/README.md) guide***
 
-# Community? Questions? Support?
-If you need help or just want to hang out, come, say hi on our [Discord](https://discord.gg/WQPfqShJ) server.
 
 # Tiledesk-dashboard
 
@@ -35,13 +33,12 @@ Consider that Tiledesk.com cloud service makes every module available with the s
 
   
 # Community? Questions? Support?
-If you need help or just want to hang out, come, say hi on our <img width="15" alt="dialogo_widgetchat_2" src="https://seeklogo.com/images/D/discord-color-logo-E5E6DFEF80-seeklogo.com.png"> [Discord](https://discord.gg/WQPfqShJ) server.
-You can also to ask for support on https://tiledesk.com, using the live chat widget on the the website.
+
+- If you need help or just want to hang out, come, say hi on our <img width="15" alt="dialogo_widgetchat_2" src="https://seeklogo.com/images/D/discord-color-logo-E5E6DFEF80-seeklogo.com.png"> [Discord](https://discord.gg/WQPfqShJ) server.
+- You can also to ask for support on https://tiledesk.com, using the live chat widget on the the website.
 
   
 ## Features
-
-  
 
 - Unlimited chat conversations
 - Widget customization tools
