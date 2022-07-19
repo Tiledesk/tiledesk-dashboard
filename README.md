@@ -4,7 +4,8 @@
 > 
 > ***Use [Docker Compose Tiledesk installation](https://github.com/Tiledesk/tiledesk-deployment/blob/master/docker-compose/README.md) guide***
 
-
+# Community? Questions? Support ?
+If you need help or just want to hang out, come, say hi on our [Discord](https://discord.gg/WQPfqShJ) server.
 # Tiledesk-dashboard
 
 <img  width="1200"  alt="home_screenshot"  src="new_dashboard_homepage.png"  width="500">
@@ -12,7 +13,6 @@
 
 Tiledesk.com backoffice application is available on GitHub with the AGPL-3.0 licence.
 
-If you need help or just want to hang out, come, say hi on our [Discord](https://discord.gg/WQPfqShJ) server.
 
 Follow this instructions to setup the environment.
 
