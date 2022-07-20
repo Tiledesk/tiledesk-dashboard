@@ -280,7 +280,7 @@
 
   </div> <!-- chat21-container -->
   <!-- z-index:1029 -->
-  <ng-container *ngIf="hasOwnLauncherLogo === false || featureIsAvailable === false">
+  <ng-container *ngIf="hasOwnLauncherBtn === false || featureIsAvailable === false">
     <div *ngIf="DISPLAY_LAUNCER_BUTTON" id="chat21-launcher-button" 
     [ngClass]=" {'chat21-launcher-button--align-left' : hasSelectedLeftAlignment === true}"
       [ngStyle]="{'background-color': primaryColor}">
@@ -313,7 +313,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="hasOwnLauncherLogo === true && featureIsAvailable === true">
+  <ng-container *ngIf="hasOwnLauncherBtn === true && featureIsAvailable === true">
     <div *ngIf="DISPLAY_LAUNCER_BUTTON" id="chat21-launcher-button" 
     [ngClass]=" {'chat21-launcher-button--align-left' : hasSelectedLeftAlignment === true}">
       <div style="width:100%; height:100%; padding:0px; margin: 0px;">

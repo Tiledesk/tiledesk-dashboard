@@ -47,7 +47,7 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
   public footerImageWidth: string
   public footerPoweredByString: string
 
-  @Input() hasOwnLauncherLogo: boolean;
+  @Input() hasOwnLauncherBtn: boolean;
   @Input() customLauncherURL: string;
   @Input() featureIsAvailable: boolean
 

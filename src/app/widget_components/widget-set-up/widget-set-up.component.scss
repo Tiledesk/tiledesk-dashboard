@@ -2650,6 +2650,17 @@ pre {
   margin-right: 6px;
 }
 
+
+#custom-launcher-logo-placeholder {
+  width: 60px;
+  height: 60px;
+  margin-right: 6px;
+}
+
+#upload-launcher-button-logo {
+  cursor:pointer;
+}
+
 .section-offset-feature-not-available {
  height: 658px ;
 }
@@ -2659,4 +2670,33 @@ pre {
 
 .widget-section-container-feature-not-available {
   max-height:658px !important;
+}
+
+// Upload you logo button
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+
+.upload-launcher-btn {
+  padding-left: 15px;
+  padding-right: 15px;
+  text-transform: none;
+  color: #222;
+  background: #f1f1f1;
+  box-shadow: unset;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  cursor: pointer;
+  position: relative;
+ top: 4px;
+}
+
+.upload-launcher-btn:hover { 
+  background: #aaa;
 }

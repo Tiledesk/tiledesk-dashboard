@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <div *ngIf="hasOwnLauncherLogo === false || featureIsAvailable === false" id="chat21-launcher-button-in-callout" style="z-index:1029" [ngClass]="{'chat21-launcher-button-in-callout--left' : hasSelectedLeftAlignment === true ,
+  <div *ngIf="hasOwnLauncherBtn === false || featureIsAvailable === false" id="chat21-launcher-button-in-callout" style="z-index:1029" [ngClass]="{'chat21-launcher-button-in-callout--left' : hasSelectedLeftAlignment === true ,
   'chat21-launcher-button-in-callout--right' : hasSelectedRightAlignment === true }"
     [ngStyle]="{'background-color': primaryColor}">
     <div style="width:100%; height:100%; padding:0px; margin: 0px;">
@@ -68,7 +68,7 @@
     </div>
   </div>
 
-  <div *ngIf="hasOwnLauncherLogo === true && featureIsAvailable === true" id="chat21-launcher-button-in-callout" style="z-index:1029" [ngClass]="{'chat21-launcher-button-in-callout--left' : hasSelectedLeftAlignment === true ,
+  <div *ngIf="hasOwnLauncherBtn === true && featureIsAvailable === true" id="chat21-launcher-button-in-callout" style="z-index:1029" [ngClass]="{'chat21-launcher-button-in-callout--left' : hasSelectedLeftAlignment === true ,
   'chat21-launcher-button-in-callout--right' : hasSelectedRightAlignment === true }" >
     <div style="width:100%; height:100%; padding:0px; margin: 0px;">
 

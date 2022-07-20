@@ -25,6 +25,8 @@ import { URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/u
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { UploadImageService } from 'app/services/upload-image.service';
+import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -58,7 +60,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   public customLauncherURL: string;
   public hasOwnLauncherLogo: boolean = false;
-
+  public hasOwnLauncherBtn: boolean = false;
+  public launcherLogoUrl: string;
+  public timeStamp: any;
 
   public footerBrand: string
   public id_project: string;
@@ -164,7 +168,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   widget_home_has_conversation = false;
 
   C21_BODY_HOME = true
-  storageBucket: string;
+  imageStorage: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   imageUrl: string;
   currentUserId: string;
@@ -327,7 +331,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public onlyOwnerCanManageTheAccountPlanMsg: string;
   public learnMoreAboutDefaultRoles: string;
   public payIsVisible: boolean;
-  public featureIsAvailable:  boolean;
+  public featureIsAvailable: boolean;
+  @ViewChild('fileInputLauncherBtnlogo') fileInputLauncherBtnlogo: any;
+
+
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -344,7 +351,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     private analyticsService: AnalyticsService,
     private logger: LoggerService,
     private usersService: UsersService,
-    private prjctPlanService: ProjectPlanService
+    private prjctPlanService: ProjectPlanService,
+    private uploadImageService: UploadImageService,
+    private uploadImageNativeService: UploadImageNativeService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -359,7 +368,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.getProjectPlan()
     this.getProjectUserRole();
     // this.HAS_SELECT_INSTALL_WITH_CODE = false
-    this.getProfileImageStorage();
+    this.getImageStorage();
     this.getWidgetUrl();
     this.getLoggedUser();
     this.onInitWindowWidth();
@@ -393,7 +402,102 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.listenSidebarIsOpened();
     this.geti118nTranslations();
     this.getBrowserVersion();
-    
+    this.getImageStorage();
+  }
+
+  getImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.imageStorage = firebase_conf['storageBucket'];
+      this.setLauncherLogoUrl(this.imageStorage)
+      // console.log('[WIDGET-SET-UP] IMAGE STORAGE ', this.imageStorage, 'usecase firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.imageStorage = this.appConfigService.getConfig().SERVER_BASE_URL;
+      // console.log('[WIDGET-SET-UP] IMAGE STORAGE ', this.imageStorage, 'usecase native')
+
+    }
+  }
+
+  uploadLauncherButtonLogo(event) {
+    this.logger.log('[WIDGET-SET-UP] IMAGE upload')
+
+    const file = event.target.files[0]
+    // Firebase upload
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.uploadImageService.uploadLauncherLogoImage(file, this.id_project)
+
+      this.subscribeToLauncherLogoUrl()
+
+      this.setLauncherLogoUrl(this.imageStorage)
+    } else {
+      // Native upload
+      this.logger.log('[WIDGET-SET-UP] IMAGE upload with native service')
+      // const userImageExist = this.usersService.userProfileImageExist.getValue()
+      // this.logger.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service userImageExist ', userImageExist);
+
+      this.uploadImageNativeService.uploadLauncherLogoOnNative(file).subscribe((downoloadurl) => {
+        // console.log('[WIDGET-SET-UP] IMAGE upload with native service - RES downoloadurl', downoloadurl);
+        //  customLauncherURL
+        // this.userProfileImageurl = downoloadurl
+        // this.timeStamp = (new Date()).getTime();
+      }, (error) => {
+        // console.error('[WIDGET-SET-UP] IMAGE upload with native service - ERR ', error);
+      })
+    }
+    this.fileInputLauncherBtnlogo.nativeElement.value = '';
+  }
+
+  subscribeToLauncherLogoUrl() {
+    this.uploadImageService.launcherLogourl$.subscribe((downoloadurl) => {
+      // console.log('[WIDGET-SET-UP] IMAGE upload with fb service downoloadurl ', downoloadurl);
+
+      this.hasOwnLauncherLogo = true
+      // this.launcherLogoUrl = downoloadurl;
+    })
+  }
+
+  setLauncherLogoUrl(imageStorage) {
+    // console.log('[WIDGET-SET-UP] setLauncherLogoUrl storageBucket ', imageStorage)
+    this.launcherLogoUrl = ''
+    if (this.UPLOAD_ENGINE_IS_FIREBASE) {
+      this.launcherLogoUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/public%2Fimages%2F" + this.id_project + "%2Flauncher_logo.jpg?alt=media"
+    } else {
+
+    }
+    this.timeStamp = (new Date()).getTime();
+    this.verifyLauncherLogoURL(this.launcherLogoUrl, (imageExists) => {
+      if (imageExists === true) {
+        this.hasOwnLauncherLogo = true
+        // console.log('[USER-SERV] - PUBLISH - USER PROFILE IMAGE EXIST? ', imageExists)
+
+      } else {
+        this.hasOwnLauncherLogo = false
+        // alert('Image does not Exist');
+        // console.log('[USER-SERV] - PUBLISH - USER PROFILE IMAGE EXIST? ', imageExists)
+
+      }
+    });
+  }
+
+  verifyLauncherLogoURL(image_url, callBack) {
+    const img = new Image();
+    img.src = image_url;
+    img.onload = function () {
+      callBack(true);
+    };
+    img.onerror = function () {
+      callBack(false);
+    };
+  }
+
+
+  getLauncherLogoUrl() {
+    if (this.timeStamp) {
+      return this.launcherLogoUrl + '&' + this.timeStamp;
+    }
+    return this.launcherLogoUrl
   }
 
   getProjectPlan() {
@@ -637,21 +741,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   }
 
-  getProfileImageStorage() {
-    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-      this.UPLOAD_ENGINE_IS_FIREBASE = true;
-      const firebase_conf = this.appConfigService.getConfig().firebase;
-      this.imageUrl = firebase_conf['storageBucket'];
 
-      this.logger.log('[WIDGET-SET-UP] IMAGE STORAGE ', this.imageUrl, 'usecase firebase')
-    } else {
-      this.UPLOAD_ENGINE_IS_FIREBASE = false;
-      this.imageUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-      this.logger.log('[WIDGET-SET-UP] IMAGE STORAGE ', this.imageUrl, 'usecase native')
-
-    }
-
-  }
 
   getProjectUserRole() {
     // const user___role =  this.usersService.project_user_role_bs.value;
@@ -790,8 +880,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       setTimeout(() => {
         firstAccordion.classList.add("active");
         firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
-      },2000);
-    
+      }, 2000);
+
 
 
       var arrow_icon_div = firstAccordion.children[1];
@@ -1579,7 +1669,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -------------------------------------------
         if (project.widget.baloonImage) {
           this.customLauncherURL = project.widget.baloonImage;
-          this.hasOwnLauncherLogo = true;
+          this.hasOwnLauncherBtn = true;
 
           // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BALOON IMAGE : ', this.customLauncherURL);
 
@@ -1588,7 +1678,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // @ poweredBy
           // WIDGET DEFINED BUT NOT POWERED-BY - SET DEFAULT
           // ------------------------------------------------------------------------
-          this.hasOwnLauncherLogo = false;
+          this.hasOwnLauncherBtn = false;
         }
 
 
@@ -1810,7 +1900,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // @ LauncherLogo
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
-        this.hasOwnLauncherLogo = false;
+        this.hasOwnLauncherBtn = false;
 
         // -----------------------------------------------------------------------
         // @ themeColor
@@ -1885,7 +1975,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.showSpinner = false;
     });
   }
-
 
 
 
@@ -2363,9 +2452,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // console.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
 
     if (event.length === 0) {
-      
+
       this.customLauncherURL = null
-      this.hasOwnLauncherLogo = false;
+      this.hasOwnLauncherBtn = false;
       // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.customLauncherURL  ', this.customLauncherURL);
     } else {
 
@@ -2373,15 +2462,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // return imageExists
         if (imageExists === true) {
           // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
-          this.hasOwnLauncherLogo = true;
+          this.hasOwnLauncherBtn = true;
           this.CUSTOM_LAUNCHER_LOGO_EXIST = true;
-          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - hasOwnLauncherLogo: ', this.hasOwnLauncherLogo);
+          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - hasOwnLauncherBtn: ', this.hasOwnLauncherBtn);
           // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - launcherLogo: ', this.customLauncherURL);
 
 
         } else {
           // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
-          this.hasOwnLauncherLogo = false;
+          this.hasOwnLauncherBtn = false;
           this.CUSTOM_LAUNCHER_LOGO_EXIST = false;
         }
       });
@@ -2462,10 +2551,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
     // console.log('saveWidgetAppearance customLauncherURL ', this.customLauncherURL)
     // Custom launcher btn
-    if (this.hasOwnLauncherLogo === true) {
+    if (this.hasOwnLauncherBtn === true) {
       // console.log('saveWidgetAppearance customLauncherURL HERE 1')
       this.widgetObj['baloonImage'] = this.customLauncherURL
-    } else  if (this.hasOwnLauncherLogo === false) {
+    } else if (this.hasOwnLauncherBtn === false) {
       // console.log('saveWidgetAppearance customLauncherURL HERE 2')
       delete this.widgetObj['baloonImage']
     }

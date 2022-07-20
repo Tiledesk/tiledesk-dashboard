@@ -13,6 +13,7 @@ export class UploadImageService {
   public userImageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public botImageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public hasDeletedUserPhoto: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public launcherLogourl$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   // public imageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   public uploadImageErrorMsg: string;
@@ -268,6 +269,67 @@ export class UploadImageService {
     }).catch((error) => {
       this.logger.error('[UPLOAD-IMAGE-FB.SERV] - DELETE BOT THUMB-PHOTO - ERROR ', error)
     });
+  }
+
+
+  uploadLauncherLogoImage(file, projctid) {
+
+    // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] file ', file)
+    // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] projctid ', projctid)
+    const file_metadata = { contentType: file.type };
+    const file_name = 'launcher_logo.jpg';
+    // Create a root reference
+    const storageRef = firebase.storage().ref();
+    const uploadTask = storageRef.child('public/images//' + projctid + '/' + file_name).put(file, file_metadata);
+
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+      (snapshot) => {
+        // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] SNAPSHOT ', snapshot)
+        const progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
+
+        if (progress === 100) {
+          // const self = this
+          // this.imageExist.next(true);
+
+          // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO * COMPLETE *', true)
+        }
+        this.logger.log('Upload is ' + progress + '% done');
+        switch (uploadTask.snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+          // console.log('Upload is paused');
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            this.logger.log('Upload is running');
+            break;
+        }
+      }, (error: any) => {
+
+        //  this.userImageWasUploaded.next(false);
+        this.notify.showToast(this.uploadImageErrorMsg + error, 4, 'report_problem')
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        // console.error('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - ERROR ', error)
+        switch (error.code) {
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+          case 'storage/unknown':
+            // Unknown error occurred, inspect error.serverResponse
+            break;
+        }
+      }, () => {
+        // Upload completed successfully, now we can get the download URL
+        const self = this
+        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+          // self.logger.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
+        //  console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
+         self.launcherLogourl$.next(downloadURL);
+        });
+      }
+    );
   }
 
 }

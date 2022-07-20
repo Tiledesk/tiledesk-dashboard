@@ -74,7 +74,7 @@ export class UploadImageNativeService {
     return this.http
       .put<any>(BASE_URL_IMAGES + '/users/photo?force=true', formData, requestOptions)
       .pipe(map((res: any) => {
-        this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES ', res);
+        // console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES ', res);
         if (res && res.message) {
           this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES MSG ', res.message);
           
@@ -87,6 +87,7 @@ export class UploadImageNativeService {
         }
         const downloadURL = BASE_URL_IMAGES + '?path=' + res['filename'];
         // const downloadURL = BASE_URL_IMAGES + '?path=' + res['thumbnail'];
+        // console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - downloadURL ', downloadURL);
         this.userImageDownloadUrl_Native.next(downloadURL);
 
         return downloadURL
@@ -167,6 +168,46 @@ export class UploadImageNativeService {
           }
         }
       });
+  }
+
+
+  uploadLauncherLogoOnNative(file: File): Observable<any> {
+    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD USER PHOTO PROFILE - file ', file)
+    const headers = new HttpHeaders({
+      Authorization: this.TOKEN,
+      // 'Content-Type': 'multipart/form-data',
+    });
+    const requestOptions = { headers: headers };
+    const formData = new FormData();
+
+    // for (const file of this.files) {
+    formData.append('file', file);
+    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD LAUNCHER LOGO - formData ', formData);
+    // }
+    // formData.append('file', file, file.name);
+
+    // USE IMAGE API
+    const BASE_URL_IMAGES = this.BASE_URL + 'images'
+    return this.http
+      .put<any>(BASE_URL_IMAGES + '/users/photo?force=true', formData, requestOptions)
+      .pipe(map((res: any) => {
+        this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD LAUNCHER LOGO - RES ', res);
+        if (res && res.message) {
+          // console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD LAUNCHER LOGO - RES MSG ', res.message);
+          
+          if (res.message === 'Image uploded successfully') {
+            // this.userImageWasUploaded_Native.next(true);
+          } else {
+            // this.userImageWasUploaded_Native.next(false);
+            this.logger.error('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD LAUNCHER LOGO - ERROR RES MSG ', res.message);
+          }
+        }
+        const downloadURL = BASE_URL_IMAGES + '?path=' + res['filename'];
+        // const downloadURL = BASE_URL_IMAGES + '?path=' + res['thumbnail'];
+        // this.userImageDownloadUrl_Native.next(downloadURL);
+        // console.log('[UPLOAD-IMAGE-NATIVE.SERV] downloadURL ', downloadURL)
+        return downloadURL
+      }))
   }
 
 

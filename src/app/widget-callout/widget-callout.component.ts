@@ -16,7 +16,7 @@ export class WidgetCalloutComponent implements OnInit, OnChanges {
 
   @Input() hasSelectedLeftAlignment: boolean;
   @Input() hasSelectedRightAlignment: boolean;
-  @Input() hasOwnLauncherLogo: boolean;
+  @Input() hasOwnLauncherBtn: boolean;
   @Input() customLauncherURL: string;
   @Input() featureIsAvailable: boolean
 
@@ -25,7 +25,7 @@ export class WidgetCalloutComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
   ngOnChanges(){
-    // console.log('widget-callout hasOwnLauncherLogo ', this.hasOwnLauncherLogo) 
+    // console.log('widget-callout hasOwnLauncherBtn ', this.hasOwnLauncherBtn) 
     // console.log('widget-callout customLauncherURL ', this.customLauncherURL) 
     // console.log('widget-callout customLauncherURL ', this.featureIsAvailable) 
   }
