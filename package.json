@@ -38,7 +38,7 @@
     "@ng-select/ng-select": "^1.4.1",
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
-    "@syncfusion/ej2-angular-heatmap": "^17.4.51",
+    "@syncfusion/ej2-angular-heatmap": "^17.1.47",
     "@types/node": "^11.15.54",
     "@types/ua-parser-js": "^0.7.36",
     "amazing-time-picker": "^1.5.3",
