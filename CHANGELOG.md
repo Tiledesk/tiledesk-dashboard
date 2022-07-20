@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.43.3
+- Fixes the bug: in Analytic s> Overview the "Heatmap" chart is not populated
+
 ### 2.2.43.2
 - Fixes the bug: foreground notification appears in the left chat "conversation info" sidebar when a teammate joins a conversation
 
