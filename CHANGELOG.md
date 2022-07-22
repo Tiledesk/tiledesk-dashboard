@@ -1,6 +1,15 @@
 
 # tiledesk-dashboard
 
+### 2.2.44-rc1
+- Displays the "Configure" button in the app card on the App Store page if the "Configure URL" is available
+- Allows camera and microphone access within the context of the apps iframe
+- Adds the user token to the apps "post message" and send the request as object
+- Displays a modal confirmation window before deleting an app
+
+### 2.2.43.3
+- Fixes the bug: in Analytics > Overview the "Heatmap" chart is not populated
+
 ### 2.2.43.2
 - Fixes the bug: foreground notification appears in the left chat "conversation info" sidebar when a teammate joins a conversation
 
