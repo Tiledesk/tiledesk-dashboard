@@ -45,7 +45,7 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
   webchatIframeHeight: number;
   frameHeightDashbordHeight:number = 100
   frameHeightWebchatHeight:number = 100
-
+  TOKEN: string
 
   constructor(
     private logger: LoggerService,
@@ -60,13 +60,23 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
     this.getIfRouteUrlIsRequestForPanel();
     this.getCurrentProject();
     // this.getApps()
+    this.getCurrentUser();
     this.getInstallationsPopulateWithApp()
 
   }
 
+  getCurrentUser() {
+    this.auth.user_bs.subscribe((user) => {
+     console.log('[WS-SIDEBAR-APPS] - LoggedUser ', user);
+     
+      if (user && user.token) {
+        this.TOKEN = user.token
+      }
+    });
+  }
+
   ngAfterViewInit() {
     // this.subscribeToHasOpenAppsSidebar()
-
     this.getfromStorageAppsSidebarIsInWideMode()
   }
 
@@ -294,7 +304,8 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
         input !== null && input.tagName === 'IFRAME';
 
       if (isIFrame(iframe) && iframe.contentWindow) {
-        const msg = { appname: apptitle, request: JSON.stringify(this.request) }
+        // const msg = { appname: apptitle, request: JSON.stringify(this.request) }
+        const msg = { appname: apptitle, request: this.request, token: this.TOKEN  }
         iframe.contentWindow.postMessage(msg, '*');
 
         // if (this.REQUEST_HAS_CHANGED === true) {
@@ -312,7 +323,7 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
             // console.log('[WS-SIDEBAR-APPS] - +++++>  REQUEST HAS CHANGED ', haschanged)
             this.REQUEST_HAS_CHANGED = haschanged
             if (this.REQUEST_HAS_CHANGED !== null) {
-              const msg = { appname: apptitle, request: JSON.stringify(this.current_value) }
+              const msg = { appname: apptitle, request: this.current_value, token: this.TOKEN }
               iframe.contentWindow.postMessage(msg, '*');
             }
 

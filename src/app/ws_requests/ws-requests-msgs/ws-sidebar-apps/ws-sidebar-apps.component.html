@@ -39,13 +39,13 @@
       <!-- [ngStyle]="{'height.vh': frameHeightDashbordHeight}" -->
       <!-- min-height:390px -->
      
-      <iframe *ngIf="dashboardApps?.length === 1" [src]="app.iframeUrl | sanitizeHtml"
+      <iframe allow="camera; microphone" *ngIf="dashboardApps?.length === 1" [src]="app.iframeUrl | sanitizeHtml"
         style="width:100%; min-height:390px; height: calc(100vh + 100px)" id="{{app._id}}" frameBorder="0"
         allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"></iframe>
       <!-- <iframe  *ngIf="dashboardApps?.length > 1" [src]="app.iframeUrl | sanitizeHtml" style="width:100%; " id="{{app._id}}" frameBorder="0"
         allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)" 
         [ngStyle]="{'height': first ? 'calc(' +frameHeightDashbordHeight + 'vh - 110px)' :  'calc(' +frameHeightDashbordHeight + 'vh - 0px)'}" ></iframe> -->
-      <iframe *ngIf="dashboardApps?.length > 1" [src]="app.iframeUrl | sanitizeHtml" style="width:100%; "
+      <iframe allow="camera; microphone" *ngIf="dashboardApps?.length > 1" [src]="app.iframeUrl | sanitizeHtml" style="width:100%; "
         id="{{app._id}}" frameBorder="0" allowfullscreen (load)="getIframeHasLoaded(app?._id, app?.title)"
         [ngStyle]="{'height.px': dashboardIframeHeight}"></iframe>
     </div>

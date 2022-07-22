@@ -7,7 +7,7 @@ import { AppStoreService } from 'app/services/app-store.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 import { LoggerService } from '../../services/logger/logger.service';
-import { version } from 'process';
+
 
 @Component({
   selector: 'appdashboard-app-store-install',
@@ -29,6 +29,7 @@ export class AppStoreInstallComponent implements OnInit {
   project: any;
   projectId: string;
   isChromeVerGreaterThan100: boolean;
+  reason: string
   constructor(
     public route: ActivatedRoute,
     private sanitizer: DomSanitizer,
@@ -78,19 +79,26 @@ export class AppStoreInstallComponent implements OnInit {
     this.showSpinner = true;
     this.route.params.subscribe((params) => {
       this.projectId = params.projectid
-      this.logger.log('[APP-STORE-INSTALL] - GET ROUTE PARAMS ', params);
+    //  console.log('[APP-STORE-INSTALL] - GET ROUTE PARAMS ', params);
 
       this.appStoreService.getAppDetail(params.appid).subscribe((res) => {
         this.logger.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT: ", res);
         this.result = res;
-        //this.logger.log(this.result._body);
+      //  console.log(this.result._body);
         let parsed_json = JSON.parse(this.result._body);
-        this.logger.log("[APP-STORE-INSTALL] PARSED JSON: ", parsed_json);
+      //  console.log("[APP-STORE-INSTALL] PARSED JSON: ", parsed_json);
+       this.app_title = parsed_json.title
         let appurl = ''
         if (parsed_json.version === 'v1') {
           appurl = parsed_json.installActionURL
-        } else if (parsed_json.version === 'v2') {
+          this.reason = 'Manage'
+        } else if (parsed_json.version === 'v2' && params.reason === 'run' ) {
           appurl = parsed_json.runURL
+          this.reason = 'Run'
+        } else if (parsed_json.version === 'v2' && params.reason === 'configure' ) {
+          // console.log("[APP-STORE-INSTALL] USE CASE CONFIGURE: ");
+          appurl = parsed_json.installActionURL
+          this.reason = 'Configure'
         }
         this.auth.user_bs.subscribe((user) => {
           if (user) {
@@ -106,9 +114,7 @@ export class AppStoreInstallComponent implements OnInit {
             this.showSpinner = false;
           }
         });
-
       })
-
     })
   }
 
@@ -130,7 +136,7 @@ export class AppStoreInstallComponent implements OnInit {
             input !== null && input.tagName === 'IFRAME';
 
           if (isIFrame(iframe) && iframe.contentWindow) {
-            const msg = { appname: app.title, request: JSON.stringify(self.project) }
+            const msg = { appname: app.title, request: self.project, token: self.TOKEN}
             iframe.contentWindow.postMessage(msg, '*');
           }
         }
