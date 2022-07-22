@@ -2,7 +2,7 @@
 <div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-57px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
-  Install {{ app_title}}
+  {{ reason}} {{ app_title}}
 </div>
 
 
@@ -29,9 +29,8 @@
       <div class="rect5"></div>
     </div>
 
-    <iframe id="i_frame" [src]="URL" style="width:100%;" frameBorder="0" allowfullscreen
+    <iframe allow="camera; microphone" id="i_frame" [src]="URL" style="width:100%;" frameBorder="0" allowfullscreen
       [ngStyle]="{ 'height': iframeHeight }">
-
     </iframe>
 
     <!-- showSpinner = {{ showSpinner}} -->
