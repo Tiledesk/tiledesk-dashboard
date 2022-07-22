@@ -2124,6 +2124,9 @@
     "SmtpSettings": "Настройки SMTP",
     "AvailableAddOnsVoiceInteraction":"Доступные дополнения: Голосовое взаимодействие",
     "EmailAndLiveChatSupport": "Поддержка по электронной почте и в чате",
+    "TheAppWillBeDeleted": "Приложение будет удалено",
+    "TheAppHasBeenDeleted": "Приложение было удалено",
+    "AnErrorOccurreWhileDeletingTheApp":"При удалении приложения произошла ошибка",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

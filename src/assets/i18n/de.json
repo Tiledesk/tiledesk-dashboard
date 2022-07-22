@@ -2123,5 +2123,8 @@
 	"CustomizationOfEmailNotificationTemplates": "Anpassung von E-Mail-Benachrichtigungsvorlagen",
 	"SmtpSettings": "SMTP-Einstellungen",
 	"AvailableAddOnsVoiceInteraction":"Verfügbare Add-ons: Sprachinteraktion",
-	"EmailAndLiveChatSupport": "E-Mail- und Live-Chat-Support"
+	"EmailAndLiveChatSupport": "E-Mail- und Live-Chat-Support",
+	"TheAppWillBeDeleted": "Die App wird gelöscht",
+	"TheAppHasBeenDeleted": "Die App wurde gelöscht",
+	"AnErrorOccurreWhileDeletingTheApp":"Beim Löschen der App ist ein Fehler aufgetreten"
 }

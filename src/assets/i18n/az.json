@@ -2124,6 +2124,9 @@
     "SmtpSettings": "Smtp parametrləri", 
     "AvailableAddOnsVoiceInteraction":"Mövcud əlavələr: Səslə qarşılıqlı əlaqə",
     "EmailAndLiveChatSupport": "E-poçt və Canlı Söhbət Dəstəyi",
+    "TheAppWillBeDeleted": "Tətbiq silinəcəkdir",
+    "TheAppHasBeenDeleted": "Tətbiq silinib",
+    "AnErrorOccurreWhileDeletingTheApp":"Bir səhv baş verdi",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

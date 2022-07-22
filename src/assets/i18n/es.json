@@ -2124,6 +2124,9 @@
     "SmtpSettings": "Configuración SMTP", 
     "AvailableAddOnsVoiceInteraction":"Complementos disponibles: Interacción de voz",
     "EmailAndLiveChatSupport": "Soporte por correo electrónico y chat en vivo",
+    "TheAppWillBeDeleted": "La aplicación será eliminada",
+    "TheAppHasBeenDeleted": "La aplicación ha sido eliminada",
+    "AnErrorOccurreWhileDeletingTheApp":"Se produjo un error al eliminar la aplicación",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

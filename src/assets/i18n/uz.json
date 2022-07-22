@@ -2124,6 +2124,9 @@
     "SmtpSettings": "Smtp sozlamalari",
     "AvailableAddOnsVoiceInteraction":"Mavjud qo'shimchalar: Ovozli o'zaro ta'sir",
     "EmailAndLiveChatSupport": "Elektron pochta va jonli suhbatni qo'llab-quvvatlash",
+    "TheAppWillBeDeleted": "Ilova oʻchirib tashlanadi",
+    "TheAppHasBeenDeleted": "Ilova oʻchirildi",
+    "AnErrorOccurreWhileDeletingTheApp":"Xatolik yuz berdi",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

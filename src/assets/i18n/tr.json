@@ -2124,6 +2124,9 @@
     "SmtpSettings": "SMTP ayarları",
     "AvailableAddOnsVoiceInteraction":"Mevcut Eklentiler: Sesli etkileşim",
     "EmailAndLiveChatSupport": "E-posta ve Canlı Sohbet Desteği",
+    "TheAppWillBeDeleted": "Uygulama silinecek",
+    "TheAppHasBeenDeleted": "Uygulama silinmiş",
+    "AnErrorOccurreWhileDeletingTheApp":"Uygulama silinirken bir hata oluştu",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

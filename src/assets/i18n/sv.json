@@ -2124,6 +2124,9 @@
     "SmtpSettings": "Smtp-inställningar",
     "AvailableAddOnsVoiceInteraction":"Tillgängliga tillägg: Röstinteraktion",
     "EmailAndLiveChatSupport": "Support via e-post och livechatt",
+    "TheAppWillBeDeleted": "Appen kommer att raderas",
+    "TheAppHasBeenDeleted": "Appen har tagits bort",
+    "AnErrorOccurreWhileDeletingTheApp":"Ett fel uppstod när appen skulle raderas",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",

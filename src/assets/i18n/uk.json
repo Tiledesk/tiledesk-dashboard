@@ -1923,7 +1923,7 @@
     "ThisFeatureIsAvailableWithTheProPlan": "Ця функція доступна з планом Pro або Enterprise",
     "From": "Від",
     "To": "До",
-    "TheAnswerWillBeDeleted": "Намір {{ надмірне ім'я }} буде видалено",
+    "TheAnswerWillBeDeleted": "Намір {{ intent_name }} буде видалено",
     "NumberOfReplies": "Кількість відповідей",
     "YourProfilePhotoHasBeenUploadedSuccessfully!": "Вашу фотографію профілю було успішно завантажено!",
     "RemovePhoto": "Видалити зображення",
@@ -2124,6 +2124,9 @@
     "SmtpSettings": "Налаштування Smtp",
     "AvailableAddOnsVoiceInteraction":"Доступні доповнення: Голосова взаємодія",
     "EmailAndLiveChatSupport": "Підтримка електронною поштою та чатом",
+    "TheAppWillBeDeleted": "Додаток буде видалено",
+    "TheAppHasBeenDeleted": "Додаток видалено",
+    "AnErrorOccurreWhileDeletingTheApp":"Сталася помилка",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",
