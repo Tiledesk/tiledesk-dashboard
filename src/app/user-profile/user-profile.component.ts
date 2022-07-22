@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
 import { tranlatedLanguage, avatarPlaceholder, getColorBck } from 'app/utils/util';
 import { LocalDbService } from 'app/services/users-local-db.service';
-
+import { environment } from '../../environments/environment';
 const swal = require('sweetalert');
 
 
@@ -184,15 +184,15 @@ export class UserProfileComponent implements OnInit {
       this.fragment = fragment;
       this.logger.log('[USER-PROFILE] - FRAGMENT ', this.fragment)
     });
-    this.getBrowserVersion() 
+    this.getBrowserVersion()
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
   ngAfterViewInit(): void {
     try {
@@ -225,7 +225,7 @@ export class UserProfileComponent implements OnInit {
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - this.user ', this.user)
         this.showSpinner = false;
-        
+
         this.createUserAvatar(user);
 
         const stored_preferred_lang = localStorage.getItem(this.userId + '_lang')
@@ -251,7 +251,7 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-createUserAvatar(user) {
+  createUserAvatar(user) {
     this.logger.log('[USER-PROFILE] - createProjectUserAvatar ', user)
     let fullname = ''
     if (user && user.firstname && user.lastname) {
@@ -266,22 +266,22 @@ createUserAvatar(user) {
       user['fullname_initial'] = 'N/A'
       user['fillColour'] = 'rgb(98, 100, 167)'
     }
-}
+  }
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
     if (tranlatedLanguage.includes(this.browser_lang)) {
-      this.logger.log('[USER-PROFILE] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang)) 
+      this.logger.log('[USER-PROFILE] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang))
       this.i18n_for_this_brower_language_is_available = true;
-      this.logger.log('[USER-PROFILE] - browser_lang', this.browser_lang) 
-      this.logger.log('[USER-PROFILE] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available) 
-   
-    this.logger.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
-    this.flag_url = "assets/img/language_flag/" + this.browser_lang + ".png"
+      this.logger.log('[USER-PROFILE] - browser_lang', this.browser_lang)
+      this.logger.log('[USER-PROFILE] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available)
+
+      this.logger.log('[USER-PROFILE] - browser_lang ', this.browser_lang)
+      this.flag_url = "assets/img/language_flag/" + this.browser_lang + ".png"
     } else {
-      this.logger.log('[USER-PROFILE] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang)) 
+      this.logger.log('[USER-PROFILE] - browser_lang includes', tranlatedLanguage.includes(this.browser_lang))
       this.i18n_for_this_brower_language_is_available = false;
-      this.logger.log('[USER-PROFILE] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available) 
+      this.logger.log('[USER-PROFILE] - this.i18n_for_this_brower_language_is_available', this.i18n_for_this_brower_language_is_available)
       this.flag_url = "assets/img/language_flag/not_found_language.svg"
     }
   }
@@ -382,8 +382,7 @@ createUserAvatar(user) {
       this.logger.log('[USER-PROFILE] - IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
     } else {
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-
-      this.logger.log('[USER-PROFILE] - IMAGE STORAGE ', this.baseUrl, 'usecase Native')
+      // console.log('[USER-PROFILE] - IMAGE STORAGE ', this.baseUrl, 'usecase Native')
     }
   }
 
@@ -402,9 +401,16 @@ createUserAvatar(user) {
       // this.logger.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service userImageExist ', userImageExist);
 
       this.uploadImageNativeService.uploadUserPhotoProfile_Native(file).subscribe((downoloadurl) => {
-        this.logger.log('[USER-PROFILE] IMAGE upload with native service - RES downoloadurl', downoloadurl);
 
-        this.userProfileImageurl = downoloadurl
+        this.userProfileImageurl = ''
+        if (environment.production && environment.production === true) {
+          // console.log('upload env prod? ', environment.production)
+          this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId +"%2Fimages%2Fphoto.jpg"
+        } else if (!environment.production ) {
+          // console.log('upload env prod? ', environment.production)
+          this.userProfileImageurl = downoloadurl
+        }
+        // console.log('[USER-PROFILE] IMAGE upload with native service - RES downoloadurl', this.userProfileImageurl);
         this.timeStamp = (new Date()).getTime();
       }, (error) => {
 
@@ -428,9 +434,9 @@ createUserAvatar(user) {
 
           this.logger.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
           this.setImageProfileUrl(this.storageBucket)
-          
+
           const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
-          this.logger.log('[USER-PROFILE] stored_user', stored_user ) 
+          this.logger.log('[USER-PROFILE] stored_user', stored_user)
           stored_user['hasImage'] = true;
           this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
         }
@@ -443,7 +449,7 @@ createUserAvatar(user) {
         this.userImageHasBeenUploaded = image_exist;
         this.showSpinnerInUploadImageBtn = false;
         const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
-        this.logger.log('[USER-PROFILE] stored_user', stored_user ) 
+        this.logger.log('[USER-PROFILE] stored_user', stored_user)
         stored_user['hasImage'] = true;
         this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
         // here "setImageProfileUrl" is missing because in the "upload" method there is the subscription to the downoload 
@@ -459,19 +465,30 @@ createUserAvatar(user) {
 
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
         if (this.storageBucket && this.userProfileImageExist === true) {
-          this.logger.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
+        //  console.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
           this.setImageProfileUrl(this.storageBucket)
         }
       } else {
         if (this.baseUrl && this.userProfileImageExist === true) {
           this.setImageProfileUrl_Native(this.baseUrl)
+          // console.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST - NATIVE  - here yes ');
         }
       }
     });
   }
 
   setImageProfileUrl_Native(baseUrl) {
-    this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+
+    this.userProfileImageurl = ''
+    if (environment.production && environment.production === true) {
+      // console.log('setImageProfileUrl_Native env prod ', environment.production)
+      this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId +"%2Fimages%2Fphoto.jpg"
+   
+    } else if (!environment.production) {
+      this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    }
+
+    // console.log('setImageProfileUrl_Native userProfileImageurl ', this.userProfileImageurl)
     // this.logger.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }
@@ -484,7 +501,7 @@ createUserAvatar(user) {
 
   deleteUserProfileImage() {
     this.logger.log('[USER-PROFILE] - deleteUserProfileImage')
- 
+
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.logger.log('[USER-PROFILE] IMAGE deleteUserProfileImage with firebase service')
       this.uploadImageService.deleteUserProfileImage(this.userId);
@@ -497,7 +514,7 @@ createUserAvatar(user) {
     this.userImageHasBeenUploaded = false
 
     const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
-    this.logger.log('[USER-PROFILE] stored_user', stored_user ) 
+    this.logger.log('[USER-PROFILE] stored_user', stored_user)
     stored_user['hasImage'] = false;
     this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
 

@@ -2674,12 +2674,12 @@ pre {
 
 // Upload you logo button
 .inputfile {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
+  width: 0.1px  !important;
+  height: 0.1px  !important;
+  opacity: 0  !important;
+  overflow: hidden  !important;
+  position: absolute  !important;
+  z-index: -1  !important;
 }
 
 
@@ -2688,7 +2688,7 @@ pre {
   padding-right: 15px;
   text-transform: none;
   color: #222;
-  background: #f1f1f1;
+  background: #e4e6eb;
   box-shadow: unset;
   padding-top: 6px;
   padding-bottom: 6px;
@@ -2698,5 +2698,23 @@ pre {
 }
 
 .upload-launcher-btn:hover { 
-  background: #aaa;
+  background: #D3D5DA !important;
+  color: #222;
 }
+
+.delete-custom-launcher-logo {
+  margin-bottom: 3px;
+  padding-bottom: 3px;
+  padding-top: 3px;
+  padding-right: 9px;
+  padding-left: 9px;
+  box-shadow: unset;
+  // background: #f44336;
+}
+.delete-custom-launcher-logo > span {
+color: #f44336
+}
+
+// .delete-custom-launcher-logo:hover {
+//   background: #8d021f;
+// }

@@ -382,6 +382,11 @@ $col-msg-sent: #ffffff;
     overflow-y: hidden !important;
 }
 
+.wpr-custom-launcher-btn {
+    display: flex;
+    justify-content: center;
+}
+
 #chat21-launcher-button {
     border-radius: 50%;
     // position: fixed;
@@ -397,6 +402,20 @@ $col-msg-sent: #ffffff;
     top: 500px;
     float: right;
     // display: none;
+}
+#chat21-launcher-logo {
+    border-radius: 50%;
+    z-index: 999999000;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    position: relative;
+    top: 480px;
+    float: right;
+}
+
+.chat21-launcher-logo--align-left {
+    float: left !important;
 }
 
 .chat21-launcher-button--align-left {
@@ -593,7 +612,7 @@ div.clear {
     font-size: 13px;
     font-weight: 300;
     padding: 0 24px 10px;
-    font-family: Roboto,  Helvetica, Arial, sans-serif;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 #c21-app-list-conversations .c21-body .c21-item-conversation .c21-body-conv .c21-left-conv {
     width: auto;
@@ -645,7 +664,7 @@ div.clear {
 }
 
 .c21-last-time {
-    font-family:'Poppins','Roboto', 'Arial', sans-serif;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
     font-size: 9px;
     color: #aaa;
     float: right;
@@ -664,7 +683,7 @@ div.clear {
 }
 
 .c21-msg {
-    font-family:'Poppins','Roboto', 'Arial', sans-serif;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
     font-weight: 400;
     color: #3a3c4c;
     font-size: 12px;
@@ -767,7 +786,7 @@ div.clear {
 }
 .c21-header-container .c21-text .c21-text-wellcome {
     line-height: normal;
-    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
     max-height: 75px;
 }
 
@@ -840,12 +859,12 @@ div.clear {
     height: auto;
 }
 
-::ng-deep #c21-powered-by > div > a  {
+::ng-deep #c21-powered-by > div > a {
     position: relative;
     top: 7px;
 }
 
-::ng-deep #c21-powered-by > div > a >  span  {
+::ng-deep #c21-powered-by > div > a > span {
     color: #aaa;
     font-size: 12px;
     position: relative;

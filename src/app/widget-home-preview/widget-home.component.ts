@@ -48,9 +48,11 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
   public footerPoweredByString: string
 
   @Input() hasOwnLauncherBtn: boolean;
+  @Input() hasOwnLauncherLogo: boolean;
   @Input() customLauncherURL: string;
-  @Input() featureIsAvailable: boolean
-
+  @Input() featureIsAvailable: boolean;
+  @Input() id_project: string;
+  @Input() imageStorage: string;
   public defaultFooter = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>Powered by</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>'
 
   constructor() { }
@@ -60,14 +62,24 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
     // card-header-left
     // console.log('WIDGET HOME COMPONENT primaryColorGradiend', this.primaryColorGradiend)
 
-    if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
-      this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + this.imageUrl + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
-    } else {
-      this.userProfileImageurl = this.imageUrl + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    }
   }
 
   ngOnChanges() {
+  //  console.log('[WIDGET HOME COMP] - hasOwnLauncherBtn  ', this.hasOwnLauncherBtn)
+  //  console.log('[WIDGET HOME COMP] - hasOwnLauncherLogo  ', this.hasOwnLauncherLogo)
+  //  console.log('[WIDGET HOME COMP] - id_project  ', this.id_project)
+  //  console.log('[WIDGET HOME COMP] - imageStorage  ', this.imageStorage)
+
+  //  console.log('[WIDGET HOME COMP] - imageUrl  ', this.imageUrl)
+  //  console.log('[WIDGET HOME COMP] - currentUserId  ', this.currentUserId)
+
+
+   if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+    this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + this.imageStorage + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
+  } else {
+    this.userProfileImageurl = this.imageStorage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+  }
+
     // console.log('footerBrand  ', this.footerBrand)
     // console.log('prjct_profile_type  ', this.prjct_profile_type)
     // console.log('subscription_is_active  ', this.subscription_is_active)
