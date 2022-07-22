@@ -13,7 +13,8 @@ export class UploadImageService {
   public userImageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public botImageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public hasDeletedUserPhoto: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public launcherLogourl$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public hasUploadedLauncherLogo$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public hasdeletedLauncherLogo$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   // public imageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   public uploadImageErrorMsg: string;
@@ -273,15 +274,16 @@ export class UploadImageService {
 
 
   uploadLauncherLogoImage(file, projctid) {
-
     // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] file ', file)
     // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] projctid ', projctid)
     const file_metadata = { contentType: file.type };
-    const file_name = 'launcher_logo.jpg';
+    // const file_name = 'launcher_logo.jpg';
+    const file_name = 'launcher.jpg';
     // Create a root reference
     const storageRef = firebase.storage().ref();
-    const uploadTask = storageRef.child('public/images//' + projctid + '/' + file_name).put(file, file_metadata);
-
+  
+    // const uploadTask = storageRef.child('public/images/' + projctid + '/' + file_name).put(file, file_metadata);
+    const uploadTask = storageRef.child('profiles/' + projctid + '/' + file_name).put(file, file_metadata);
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       (snapshot) => {
         // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] SNAPSHOT ', snapshot)
@@ -325,11 +327,46 @@ export class UploadImageService {
         const self = this
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
           // self.logger.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
-        //  console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
-         self.launcherLogourl$.next(downloadURL);
+          // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
+         self.hasUploadedLauncherLogo$.next(downloadURL);
         });
       }
     );
+  }
+
+  deleteCustomLauncherLogo(projctid) {
+
+    const file_name = 'launcher.jpg';
+    const file_name_thumb = 'thumb_launcher.jpg';
+    // Create a root reference
+    const storageRef = firebase.storage().ref();
+  
+    // const deleteCustomLauncherLogo = storageRef.child('public/images/' + projctid + '/' + file_name)
+    // const deleteCustomLauncherLogoThumb = storageRef.child('public/images/' + projctid + '/' + file_name_thumb)
+
+    const deleteCustomLauncherLogo = storageRef.child('profiles/' + projctid + '/' + file_name)
+    const deleteCustomLauncherLogoThumb = storageRef.child('profiles/' + projctid + '/' + file_name_thumb)
+    // ------------------------------------
+    // Delete the file launcher Logo
+    // ------------------------------------
+    deleteCustomLauncherLogo.delete().then((res) => {
+    //  console.log('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO RES', res)
+
+     this.hasdeletedLauncherLogo$.next(true);
+    }).catch((error) => {
+      // console.error('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO - ERROR ', error)
+    });
+
+
+    // ------------------------------------
+    // Delete the file launcher Logo Thumb
+    // ------------------------------------
+    deleteCustomLauncherLogoThumb.delete().then((res) => {
+      // console.log('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO THUMB ', res)
+
+    }).catch((error) => {
+      // console.error('[UPLOAD-IMAGE-FB.SERV] -  DELETE CUSTOM LAUNCHER LOGO THUMB - ERROR ', error)
+    });
   }
 
 }
