@@ -39,16 +39,17 @@
                   <div class="row">
                     <div class="col-xs-4"> </div>
                     <div class="col-xs-4" style="padding-right: 2px; padding-left: 3px;" (click)="goToEditApp(app._id)">
-                      <div class="edit-app-btn" role="button"  matTooltipClass="custom-mat-tooltip"
-                      matTooltip="Edit App" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                      <div class="edit-app-btn" role="button" matTooltipClass="custom-mat-tooltip" matTooltip="Edit App"
+                        #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                         <span class="material-icons app-card-icon">
                           mode_edit
                         </span>
                       </div>
                     </div>
                     <div class="col-xs-4" style="padding-left: 2px;" (click)="deleteNewApp(app._id)">
-                      <div class="delete-app-btn" role="button"  matTooltipClass="custom-mat-tooltip"
-                      matTooltip="Delete App" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                      <div class="delete-app-btn" role="button" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="Delete App" #tooltip="matTooltip" matTooltipPosition='below'
+                        matTooltipHideDelay="100">
                         <span class="material-icons app-card-icon">
                           delete_forever
                         </span>
@@ -77,11 +78,11 @@
               <div *ngIf="app.version === 'v1'" class="col-xs-6 app-store-left-col-btn"
                 (click)="learnmore(app.learnMore)">
                 <a>
-                 {{'LearnMore' | translate}}
+                  {{'LearnMore' | translate}}
                 </a>
               </div>
 
-             
+
               <!-- app.installed {{app.installed }}  app.version {{app.version }} -->
               <!-- app.where.appsstore >  {{app.where.appsstore }}  -->
               <div *ngIf="!app.installed && app.version === 'v1'" class="col-xs-6 app-store-right-col-btn"
@@ -92,44 +93,99 @@
               </div>
 
               <div *ngIf="app.installed && app.version === 'v1'" class="col-xs-6 app-store-right-col-btn manage-btn"
-                
                 (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
                 <a style="color: white;">
                   {{'Manage' | translate}}
                 </a>
               </div>
-              <!-- col-xs-4  class="app-store-left-col-btn"-->
-              <div *ngIf="app.version === 'v2'" [ngClass]="{'col-xs-4': app.where.appsstore === true && app.installed, 'col-xs-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}"
-              class="app-store-left-col-btn" (click)="learnmore(app.learnMore)">
-                <a>
-                  {{'LearnMore' | translate}}
-                </a>
-              </div>
-              <div *ngIf="!app.installed && app.version === 'v2'" [ngClass]="{'col-xs-4': app.where.appsstore === true && app.installed, 'col-xs-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}" class="app-store-right-col-btn"
-                (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
-                <a>
-                  {{'Install' | translate}}
-                </a>
-              </div>
-              <!-- col-xs-4  -->
-              <div  *ngIf="app?.installed && (app.version === 'v2' ||  app.version === undefined)"
-              [ngClass]="{'col-xs-4': app.where.appsstore === true, 'col-xs-6': app.where.appsstore === false || !app.where.appsstore }"  class="app-store-right-col-btn uninstall-btn"
-                (click)="unistallApp(app._id)">
-                <a style="color: white;">
-                  {{'Uninstall' | translate}}
-                </a>
-              </div>
+              <!-- --------------------------------------------------- -->
+              <!-- App version v2 -->
+              <!-- --------------------------------------------------- -->
+              <ng-container *ngIf="app.version === 'v2'">
+                <div *ngIf="app.installActionURL === undefined"
+                  [ngClass]="{'col-xs-4': app.where.appsstore === true && app.installed, 'col-xs-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}"
+                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore)">
+                  <a>
+                    {{'LearnMore' | translate}}
+                  </a>
+                </div>
 
-              <div *ngIf="(app.version === 'v2' && app.where.appsstore === true && app?.installed )"
-                class="col-xs-4 app-store-right-col-btn" (click)="openInAppStoreInstall(app)"
-                [ngClass]="{'app-not-installed-wpr': !app?.installed, 'app-installed-wpr': app?.installed}">
-                <a [ngClass]="{'app-not-installed': !app?.installed, 'app-installed': app?.installed}">
-                  <span class="material-icons icon-start-app-in-app-store-istall">
-                    play_arrow
-                  </span>
-                  {{'Start' | translate}}
-                </a>
-              </div>
+
+                <div *ngIf="app.installActionURL !== undefined"
+                  [ngClass]="{'col-xs-3': app.where.appsstore === true && app.installed, 'col-xs-4': ((app.where.appsstore === false || !app.where.appsstore) && app.installed), 'col-xs-6': ((app.where.appsstore === false || !app.where.appsstore) && !app.installed) ||  (app.where.appsstore === true && !app.installed)}"
+                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore)">
+                  <a>
+                    {{'LearnMore' | translate}}
+                  </a>
+                </div>
+
+                <div *ngIf="!app.installed"
+                  [ngClass]="{'col-xs-4': app.where.appsstore === true && app.installed, 'col-xs-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}"
+                  class="app-store-right-col-btn"
+                  (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
+                  <a>
+                    {{'Install' | translate}}
+                  </a>
+                </div>
+
+                <div *ngIf="app?.installed && app.installActionURL === undefined"
+                  [ngClass]="{'col-xs-4': app.where.appsstore === true, 'col-xs-6': app.where.appsstore === false || !app.where.appsstore }"
+                  class="app-store-right-col-btn uninstall-btn" (click)="unistallApp(app._id)">
+                  <a style="color: white;">
+                    {{'Uninstall' | translate}}
+                  </a>
+                </div>
+                <div *ngIf="app?.installed && app.installActionURL !== undefined"
+                  [ngClass]="{'col-xs-3': app.where.appsstore === true , 'col-xs-4': app.where.appsstore === false || !app.where.appsstore }"
+                  class="app-store-right-col-btn uninstall-btn" (click)="unistallApp(app._id)">
+                  <a style="color: white;">
+                    {{'Uninstall' | translate}}
+                  </a>
+                </div>
+
+                <div *ngIf="app.where.appsstore === true && app?.installed &&  app.installActionURL === undefined"
+                  class="col-xs-4 app-store-right-col-btn" (click)="openInAppStoreInstall(app)"
+                  [ngClass]="{'app-not-installed-wpr': !app?.installed, 'app-installed-wpr': app?.installed}">
+                  <a [ngClass]="{'app-not-installed': !app?.installed, 'app-installed': app?.installed}">
+                    <span class="material-icons icon-start-app-in-app-store-istall">
+                      play_arrow
+                    </span>
+                    {{'Start' | translate}}
+                  </a>
+                </div>
+
+                <div *ngIf="app.where.appsstore === true && app?.installed &&  app.installActionURL !== undefined"
+                  class="col-xs-3 app-store-right-col-btn" (click)="openInAppStoreInstall(app)"
+                  [ngClass]="{'app-not-installed-wpr': !app?.installed, 'app-installed-wpr': app?.installed}">
+                  <a [ngClass]="{'app-not-installed': !app?.installed, 'app-installed': app?.installed}">
+                    <span class="material-icons icon-start-app-in-app-store-istall">
+                      play_arrow
+                    </span>
+                    {{'Start' | translate}}
+                  </a>
+                </div>
+
+
+
+                <div *ngIf="app.installed && app.where.appsstore === true &&  app.installActionURL !== undefined"
+                  class="col-xs-3 app-store-right-col-btn manage-btn"
+                  (click)="openConfigureUrlInAppStoreInstall(app, app.installActionType, app.installActionURL, app.title, app._id)">
+                  <a style="color: white;">
+                    <!-- {{'Manage' | translate}} -->
+                    Configure
+                  </a>
+                </div>
+
+                <div
+                  *ngIf="app.installed && (app.where.appsstore === false || !app.where.appsstore)  &&  app.installActionURL !== undefined"
+                  class="col-xs-4 app-store-right-col-btn manage-btn"
+                  (click)="openConfigureUrlInAppStoreInstall(app, app.installActionType, app.installActionURL, app.title, app._id)">
+                  <a style="color: white;">
+                    <!-- {{'Manage' | translate}} -->
+                    Configure
+                  </a>
+                </div>
+              </ng-container>
 
 
             </div>
