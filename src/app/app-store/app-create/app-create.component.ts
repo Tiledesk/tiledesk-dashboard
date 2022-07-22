@@ -34,8 +34,9 @@ export class AppCreateComponent implements OnInit {
   EDIT_VIEW = false;
   APP_ID: string;
   NO_CLIENTS_SELECTED: boolean;
-  diplayErrorRunUrlIsNoValid:boolean = false;
-  diplayErrorAppInstallationUrlIsNoValid:boolean = false;
+  diplayErrorRunUrlIsNoValid: boolean = false;
+  diplayErrorAppInstallationUrlIsNoValid: boolean = false;
+  currentApp: any;
   // no more used
   // where_items = [
   //   { id: 'dashboard', name: 'Dashboard' },
@@ -81,6 +82,7 @@ export class AppCreateComponent implements OnInit {
       this.appStoreService.getAppDetail(params.appid).subscribe((res) => {
         this.logger.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT - res: ", res);
         if (res) {
+          this.currentApp = JSON.parse(res['_body'])
           const resObjct = JSON.parse(res['_body']);
           this.logger.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT - resObjct: ", resObjct);
 
@@ -231,7 +233,7 @@ export class AppCreateComponent implements OnInit {
     // console.log('[APP-CREATE] UPDATE NEW APP app_status', this.app_status)
     // console.log('[APP-CREATE] UPDATE NEW APP user_id', this.user_id)
     // console.log('[APP-CREATE] UPDATE NEW APP APP ID', this.APP_ID)
-
+  
 
     this.appStoreService.updateNewApp(
       this.APP_ID,
@@ -246,7 +248,7 @@ export class AppCreateComponent implements OnInit {
       this.user_id,
       this.clients)
       .subscribe((res) => {
-        this.logger.log("[APP-CREATE] UPDATE NEW APP RESULT: ", res);
+      //  console.log("[APP-CREATE] UPDATE NEW APP RESULT: ", res);
 
       }, (error) => {
 
@@ -317,7 +319,7 @@ export class AppCreateComponent implements OnInit {
   onChangeRunUrl($event) {
     this.logger.log('onChangeRunUrl $event', $event)
     if ($event.length > 4) {
-    this.validateRunURL($event);
+      this.validateRunURL($event);
     }
   }
   validateRunURL(link) {
@@ -332,9 +334,12 @@ export class AppCreateComponent implements OnInit {
   }
 
   onChangeAppInstalaltionUrl($event) {
-    this.logger.log('onChangeRunUrl $event', $event)
+    // console.log('onChangeAppInstalaltionUrl $event', $event)
+    // console.log('onChangeAppInstalaltionUrl $event length', $event.length)
+    // console.log('onChangeAppInstalaltionUrl this.currentApp', this.currentApp)
+
     if ($event.length > 4) {
-    this.validateAppInstallationURL($event);
+      this.validateAppInstallationURL($event);
     }
   }
   validateAppInstallationURL(link) {
