@@ -5,7 +5,9 @@ import { AuthService } from '../core/auth.service';
 import { Subscription } from 'rxjs/Subscription';
 import { LoggerService } from '../services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
-
+import { ColorCollection } from '@syncfusion/ej2-angular-heatmap';
+import { TranslateService } from '@ngx-translate/core';
+const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-app-store',
   templateUrl: './app-store.component.html',
@@ -19,14 +21,19 @@ export class AppStoreComponent implements OnInit {
   showSpinner = true;
   TOKEN: string;
   isChromeVerGreaterThan100: boolean;
-
   userId: string;
+  areYouSureMsg: string;
+  appWillBeDeletedMsg: string;
+  appHasBeenDeletedMsg: string;
+  errorWhileDeletingApp: string;
+  done_msg: string;
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
     public auth: AuthService,
     private logger: LoggerService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -35,8 +42,47 @@ export class AppStoreComponent implements OnInit {
     this.getCurrentProject();
     this.getToken()
     this.getBrowserVersion()
-
+    this.translateLabels()
   }
+
+  translateLabels() {
+    this.translateAreYouSure();
+    this.translateAppWillBeDeleted();
+    this.translateAppHasBeenDeleted();
+    this.translateAnErrorOccurreWhileDeletingTheApp();
+    this.translateDone();
+  }
+
+  translateAreYouSure() {
+    this.translate.get('AreYouSure').subscribe((text: string) => {
+      this.areYouSureMsg = text;
+    });
+  }
+
+  translateAppWillBeDeleted() {
+    this.translate.get('TheAppWillBeDeleted').subscribe((text: string) => {
+      this.appWillBeDeletedMsg = text;
+    });
+  }
+
+
+  translateAppHasBeenDeleted() {
+    this.translate.get('TheAppHasBeenDeleted').subscribe((text: string) => {
+      this.appHasBeenDeletedMsg = text;
+    });
+  }
+  translateAnErrorOccurreWhileDeletingTheApp() {
+    this.translate.get('AnErrorOccurreWhileDeletingTheApp').subscribe((text: string) => {
+      this.errorWhileDeletingApp = text;
+    });
+  }
+
+  translateDone() {
+    this.translate.get('Done').subscribe((text: string) => {
+      this.done_msg = text;
+    });
+  }
+
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -73,11 +119,17 @@ export class AppStoreComponent implements OnInit {
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      this.logger.log('APP-STORE - getApps APPS ', this.apps);
+      //  console.log('APP-STORE - getApps APPS ', this.apps);
       this.apps.forEach(app => {
         if (app.description.length > 118) {
           app.description = app.description.slice(0, 118) + '...'
         }
+        // console.log('APP-STORE - getApps APPS app ', app )
+        if (app && app.version === "v2")
+          if (app.installActionURL === "") {
+            // console.log('APP-STORE - getApps APPS app installActionURL', app.installActionURL)
+            delete app.installActionURL
+          }
       });
 
 
@@ -89,7 +141,7 @@ export class AppStoreComponent implements OnInit {
       this.getInstallations().then((res: any) => {
 
         for (let installation of res) {
-          this.logger.log("[APP-STORE] getInstallations INSTALLATION - res", res)
+          // console.log("[APP-STORE] getInstallations INSTALLATION - res", res)
           // console.log("[APP-STORE] getInstallations INSTALLATION: ", this.apps.findIndex(x => x._id === installation.app_id))
           let index = this.apps.findIndex(x => x._id === installation.app_id);
           if (this.apps[index]) {
@@ -130,7 +182,7 @@ export class AppStoreComponent implements OnInit {
       if (installationType === 'internal') {
         this.logger.log("[APP-STORE] Navigation to: " + 'project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle)
         //this.router.navigate(['project/' + this.projectId + '/app-store-install', installationUrlWithQueryString, appTitle]);
-        this.router.navigate(['project/' + this.projectId + '/app-store-install/' + appId])
+        this.router.navigate(['project/' + this.projectId + '/app-store-install/' + appId + '/installation'])
       } else {
         const url = installationUrlWithQueryString;
         window.open(url, '_blank');
@@ -141,8 +193,12 @@ export class AppStoreComponent implements OnInit {
   }
 
   openInAppStoreInstall(app) {
-    this.logger.log('openInAppStoreInstall app ', app) 
-    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id])
+    this.logger.log('openInAppStoreInstall app ', app)
+    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/run'])
+  }
+
+  openConfigureUrlInAppStoreInstall(app) {
+    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/configure'])
   }
 
   installV2App(projectId, appId) {
@@ -188,7 +244,48 @@ export class AppStoreComponent implements OnInit {
     });
   }
 
+
   deleteNewApp(appId) {
+    swal({
+      title: this.areYouSureMsg,
+      text: this.appWillBeDeletedMsg,
+      icon: "warning",
+      buttons: ["Cancel", "Delete"],
+      dangerMode: true,
+    })
+      .then((WillDelete) => {
+        if (WillDelete) {
+          this.appStoreService.deleteNewApp(appId).subscribe((res: any) => {
+          //  console.log('[APP-STORE] DELETE V2 APP - app_id - RES', res);
+          }, (error) => {
+            swal(this.errorWhileDeletingApp, {
+              icon: "error",
+            });
+            this.logger.error('[FAQ-EDIT-ADD] DELETE FAQ ERROR ', error);
+          }, () => {
+            this.logger.log('[FAQ-EDIT-ADD] DELETE FAQ * COMPLETE *');
+
+            for (var i = 0; i < this.apps.length; i++) {
+
+              if (this.apps[i]._id === appId) {
+                this.apps.splice(i, 1);
+                i--;
+              }
+            }
+
+            swal(this.done_msg + "!", this.appHasBeenDeletedMsg, {
+              icon: "success",
+            }).then((okpressed) => {
+           
+            });
+          });
+        } else {
+          this.logger.log('[FAQ-EDIT-ADD] WS-REQUESTS-LIST swal WillDelete (else)')
+        }
+      });
+  }
+
+  _deleteNewApp(appId) {
     this.appStoreService.deleteNewApp(appId).subscribe((res: any) => {
       this.logger.log('[APP-STORE] DELETE V2 APP - app_id - RES', res);
 
