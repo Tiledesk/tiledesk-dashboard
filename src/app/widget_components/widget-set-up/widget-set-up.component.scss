@@ -1284,6 +1284,11 @@ input[type="text"]:disabled {
   .custom-prechat-form-help-icon {
     top: -6px !important;
   }
+
+  .launcher-button-label {
+    padding-bottom: 0px;
+    padding-top: 10px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -2714,6 +2719,17 @@ pre {
 .delete-custom-launcher-logo > span {
 color: #f44336
 }
+
+::ng-deep .custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins","Roboto", "Arial", sans-serif !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+
 
 // .delete-custom-launcher-logo:hover {
 //   background: #8d021f;

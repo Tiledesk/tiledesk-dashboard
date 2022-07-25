@@ -20,6 +20,10 @@ export class WidgetCalloutComponent implements OnInit, OnChanges {
   @Input() customLauncherURL: string;
   @Input() featureIsAvailable: boolean
 
+  @Input() hasOwnLauncherLogo: boolean;
+  @Input() id_project: string;
+  @Input() imageStorage: string;
+
   constructor() { }
 
   ngOnInit() {

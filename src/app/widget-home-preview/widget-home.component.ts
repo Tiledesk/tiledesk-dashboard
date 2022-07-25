@@ -53,7 +53,7 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
   @Input() featureIsAvailable: boolean;
   @Input() id_project: string;
   @Input() imageStorage: string;
-  public defaultFooter = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><span>Powered by</span> <img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>'
+  public defaultFooter = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><img src="https://support-pre.tiledesk.com/dashboard/assets/img/logos/tiledesk-logo.svg"/></a>'
 
   constructor() { }
 

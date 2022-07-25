@@ -40,16 +40,21 @@
   <div *ngIf="hasOwnLauncherBtn === false || featureIsAvailable === false" id="chat21-launcher-button-in-callout" style="z-index:1029" [ngClass]="{'chat21-launcher-button-in-callout--left' : hasSelectedLeftAlignment === true ,
   'chat21-launcher-button-in-callout--right' : hasSelectedRightAlignment === true }"
     [ngStyle]="{'background-color': primaryColor}">
-    <div style="width:100%; height:100%; padding:0px; margin: 0px;">
+    <div class="wpr-launcher-btn" style="width:100%; height:100%; padding:0px; margin: 0px;"  [ngClass]="{'wpr-custom-launcher-btn':hasOwnLauncherLogo}">
 
-      <!-- <svg class="ng-tns-c1-0" height="100%" role="img" viewBox="0 0 90 90" width="100%"
+      <svg  *ngIf="!hasOwnLauncherLogo" class="ng-tns-c1-0" height="100%" role="img" viewBox="0 0 90 90" width="100%"
         xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor}" style="border-radius: 50%;">
         <path class="ng-tns-c1-0" d="M0 0h24v24H0V0z" fill="none"></path>
         <path class="ng-tns-c1-0"
           d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z">
         </path>
-      </svg> -->
-      <svg version="1.1" id="Livello_1"  width="100%"  height="100%"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      </svg>
+
+      <!-- src="https://firebasestorage.googleapis.com/v0/b/{{imageStorage}}/o/public%2Fimages%2F{{id_project}}%2Flauncher_logo.jpg?alt=media" -->
+      <img *ngIf="hasOwnLauncherLogo" alt="custom-launcher-logo" 
+      src='https://firebasestorage.googleapis.com/v0/b/{{imageStorage}}/o/profiles%2F{{id_project}}%2Flauncher.jpg?alt=media'
+      style="height: auto; width:  26px; object-fit: contain; ">
+      <!-- <svg version="1.1" id="Livello_1"  width="100%"  height="100%"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
           viewBox="0 0 841.9 595.3" [ngStyle]="{'fill': secondaryColor}" style="border-radius: 50%;  width: 120px;
           height: 120px;
           position: relative;
@@ -64,7 +69,7 @@
           h100.7c6.1,0,11.1-4.7,11.1-10.4v-66.1C512,291.8,507,287.1,500.9,287.1"/>
         <path d="M505.3,273.1h-64.1c-3.7,0-6.7-2.8-6.7-6.3v-60.4c0-3.5,3-6.3,6.7-6.3h64.1c3.7,0,6.7,2.8,6.7,6.3v60.4
           C512,270.3,509,273.1,505.3,273.1"/>
-        </svg>
+        </svg> -->
     </div>
   </div>
 
