@@ -2127,6 +2127,8 @@
     "TheAppWillBeDeleted": "Апликација ће бити избрисана",
     "TheAppHasBeenDeleted": "Апликација је избрисана",
     "AnErrorOccurreWhileDeletingTheApp":"Дошло је до грешке приликом брисања апликације",
+    "Installation":"Installation",
+    "UploadYourLogo":"Учитајте свој лого",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

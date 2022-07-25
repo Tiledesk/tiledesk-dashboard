@@ -2127,6 +2127,8 @@
     "TheAppWillBeDeleted": "La aplicación será eliminada",
     "TheAppHasBeenDeleted": "La aplicación ha sido eliminada",
     "AnErrorOccurreWhileDeletingTheApp":"Se produjo un error al eliminar la aplicación",
+    "Installation":"Instalación",
+    "UploadYourLogo":"Sube tu logotipo",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

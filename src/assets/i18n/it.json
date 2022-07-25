@@ -2125,5 +2125,7 @@
     "EmailAndLiveChatSupport": "Supporto tramite e-mail e chat dal vivo",
     "TheAppWillBeDeleted": "L'app verrà eliminata",
     "TheAppHasBeenDeleted": "L'app è stata eliminata",
-    "AnErrorOccurreWhileDeletingTheApp":"Si è verificato un errore durante l'eliminazione dell'app"
+    "AnErrorOccurreWhileDeletingTheApp":"Si è verificato un errore durante l'eliminazione dell'app",
+    "Installation":"Installazione",
+    "UploadYourLogo":"Carica il tuo logo"
 }

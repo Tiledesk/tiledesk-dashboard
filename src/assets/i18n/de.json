@@ -2126,5 +2126,7 @@
 	"EmailAndLiveChatSupport": "E-Mail- und Live-Chat-Support",
 	"TheAppWillBeDeleted": "Die App wird gelöscht",
 	"TheAppHasBeenDeleted": "Die App wurde gelöscht",
-	"AnErrorOccurreWhileDeletingTheApp":"Beim Löschen der App ist ein Fehler aufgetreten"
+	"AnErrorOccurreWhileDeletingTheApp":"Beim Löschen der App ist ein Fehler aufgetreten",
+	"Installation":"Einbau",
+	"UploadYourLogo":"Laden Sie Ihr Logo hoch"
 }

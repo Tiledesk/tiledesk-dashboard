@@ -27,6 +27,7 @@ import * as moment from 'moment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
+import { threadId } from 'worker_threads';
 const swal = require('sweetalert');
 
 @Component({
@@ -421,55 +422,56 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   uploadLauncherButtonLogo(event) {
-    this.logger.log('[WIDGET-SET-UP] IMAGE upload')
+    if (this.hasOwnLauncherBtn) {
+      swal({
+        title: this.warningMsg,
+        text: this.noDefaultLanguageIsSetUpMsg + '. ' + this.setDefaultLangInMultilanguageSection,
+        // content: el,
+        icon: "warning",
+        buttons: {
+          cancel: `${this.cancelMsg}`,
+          catch: {
+            text: `${this.goToMultilanguageSectionMsg}`,
+            value: "catch",
+          },
+        },
 
-    const file = event.target.files[0]
-    // Firebase upload
-    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-      this.uploadImageService.uploadLauncherLogoImage(file, this.id_project)
-
-      this.subscribeToLauncherLogoUrl()
-
-     
-    } else {
-      // Native upload
-      this.logger.log('[WIDGET-SET-UP] IMAGE upload with native service')
-      // const userImageExist = this.usersService.userProfileImageExist.getValue()
-      // this.logger.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service userImageExist ', userImageExist);
-
-      this.uploadImageNativeService.uploadLauncherLogoOnNative(file).subscribe((downoloadurl) => {
-        // console.log('[WIDGET-SET-UP] IMAGE upload with native service - RES downoloadurl', downoloadurl);
-        //  customLauncherURL
-        // this.userProfileImageurl = downoloadurl
-        // this.timeStamp = (new Date()).getTime();
-      }, (error) => {
-        // console.error('[WIDGET-SET-UP] IMAGE upload with native service - ERR ', error);
+        // `"Cancel", ${this.goToMultilanguagePageMsg}`],
+        dangerMode: false,
       })
+        .then((value) => {
+         console.log('[WIDGET-SET-UP] - uploadLauncherButtonLogo value', value)
+
+          if (value === 'catch') {
+
+          }
+        })
     }
-    this.fileInputLauncherBtnlogo.nativeElement.value = '';
   }
 
+
+  
   deleteCustomLauncherLogo() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.logger.log('[USER-PROFILE] IMAGE deleteUserProfileImage with firebase service')
       this.uploadImageService.deleteCustomLauncherLogo(this.id_project);
       this.subscibeHasDeletedCustomLauncherLogo()
-     
+
     } else {
       this.logger.log('[USER-PROFILE] IMAGE deleteUserProfileImage with native service')
       this.uploadImageNativeService.deletePhotoProfile_Native(this.id_project, 'user');
     }
   }
 
- subscibeHasDeletedCustomLauncherLogo() {
-  this.uploadImageService.hasdeletedLauncherLogo$.subscribe((hasdeleted) => {
-    // console.log('[WIDGET-SET-UP] IMAGE upload with fb service downoloadurl ', hasdeleted);
-   
-    this.hasOwnLauncherLogo = false
-    // this.launcherLogoUrl = downoloadurl;
-  })
-}
- 
+  subscibeHasDeletedCustomLauncherLogo() {
+    this.uploadImageService.hasdeletedLauncherLogo$.subscribe((hasdeleted) => {
+      // console.log('[WIDGET-SET-UP] IMAGE upload with fb service downoloadurl ', hasdeleted);
+
+      this.hasOwnLauncherLogo = false
+      // this.launcherLogoUrl = downoloadurl;
+    })
+  }
+
 
   subscribeToLauncherLogoUrl() {
     this.uploadImageService.hasUploadedLauncherLogo$.subscribe((downoloadurl) => {
@@ -486,16 +488,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.launcherLogoUrl = ''
     if (this.UPLOAD_ENGINE_IS_FIREBASE) {
       // this.launcherLogoUrl = this.launcherLogoUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/public%2Fimages%2F" + this.id_project + "%2Flauncher_logo.jpg?alt=media"
-      this.launcherLogoUrl =  'https://firebasestorage.googleapis.com/v0/b/' + imageStorage + '/o/profiles%2F' + this.id_project + '%2Flauncher.jpg?alt=media';
+      this.launcherLogoUrl = 'https://firebasestorage.googleapis.com/v0/b/' + imageStorage + '/o/profiles%2F' + this.id_project + '%2Flauncher.jpg?alt=media';
       this.verifyLauncherLogoImgFireBase(this.launcherLogoUrl, (imageExists) => {
         if (imageExists === true) {
           this.hasOwnLauncherLogo = true
           this.hasOwnLauncherBtn = false
-          
-          // console.log('[USER-SERV] - LAUNCHER LOGO EXIST ON FB? ', imageExists)
-  
 
-  
+          // console.log('[USER-SERV] - LAUNCHER LOGO EXIST ON FB? ', imageExists)
+
+
+
         }
       });
     } else {
@@ -2591,7 +2593,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.widgetObj['baloonImage'] = this.customLauncherURL
     } else if (this.hasOwnLauncherBtn === false) {
       // console.log('saveWidgetAppearance customLauncherURL hasOwnLauncherBtn ',this.hasOwnLauncherBtn)
-    
+
       delete this.widgetObj['baloonImage']
     }
 
