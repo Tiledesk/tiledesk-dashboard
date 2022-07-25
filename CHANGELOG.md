@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.44-rc2
+- Adds the "Installation" menu item in the "Settings sidebar" which redirects to the Installation page where the code for installing the widget is available
+
 ### 2.2.44-rc1
 - Displays the "Configure" button in the app card on the App Store page if the "Configure URL" is available
 - Allows camera and microphone access within the context of the apps iframe
