@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.44
+- Deploys in production
+- Displays the "Configure" button in the app card on the App Store page if the "Configure URL" is available
+- Adds the "Installation" menu item in the "Settings sidebar" which redirects to the Installation page where the code for installing the widget is available
+
 ### 2.2.44-rc2
 - Adds the "Installation" menu item in the "Settings sidebar" which redirects to the Installation page where the code for installing the widget is available
 
