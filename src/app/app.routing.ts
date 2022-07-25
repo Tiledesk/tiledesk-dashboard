@@ -117,7 +117,7 @@ import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/nati
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
 import { AppCreateComponent } from './app-store/app-create/app-create.component';
-
+import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 
 // /Users/nicola/TILEDESK-DSHBRD-ENTP/src/app/analytics2/metriche/messages/messages.component.ts
 const routes: Routes = [
@@ -332,6 +332,8 @@ const routes: Routes = [
   // { path: 'project/:projectid/widget/appearance', component: WidgetSetUp, canActivate: [AuthGuard] }, // old
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
   { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
+  
 
   // CHANGE PSWRD if project is defined (use case: THE USER SELECTED A PROJECT)
   { path: 'project/:projectid/user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },

@@ -41,6 +41,7 @@ export class SettingsSidebarComponent implements OnInit {
   TEAMMATES_ROUTE_IS_ACTIVE: boolean;
   GROUPS_ROUTE_IS_ACTIVE: boolean;
   WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
+  WIDGET_INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   CHATBOT_ROUTE_IS_ACTIVE: boolean;
   PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean;
   OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
@@ -370,6 +371,10 @@ export class SettingsSidebarComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
   }
 
+  goToWidgetInstallation() {
+    this.router.navigate(['project/' + this.project._id + '/installation'])
+  }
+
   goToOperatingHours() {
     // routerLink="project/{{ project._id }}/hours"
     this.router.navigate(['project/' + this.project._id + '/hours'])
@@ -487,17 +492,25 @@ export class SettingsSidebarComponent implements OnInit {
 
     if (this.route.indexOf('/widget-set-up') !== -1) {
       this.WIDGET_SETUP_ROUTE_IS_ACTIVE = true
-      this.logger.log(
-        '[SETTING-SIDEBAR] - WIDGET_SETUP_ROUTE_IS_ACTIVE  ',
-        this.WIDGET_SETUP_ROUTE_IS_ACTIVE,
+      this.logger.log(  '[SETTING-SIDEBAR] - WIDGET_SETUP_ROUTE_IS_ACTIVE  ',   this.WIDGET_SETUP_ROUTE_IS_ACTIVE,
       )
     } else {
       this.WIDGET_SETUP_ROUTE_IS_ACTIVE = false
-      this.logger.log(
-        '[SETTING-SIDEBAR] - WIDGET_SETUP_ROUTE_IS_ACTIVE  ',
-        this.WIDGET_SETUP_ROUTE_IS_ACTIVE,
+      this.logger.log( '[SETTING-SIDEBAR] - WIDGET_SETUP_ROUTE_IS_ACTIVE  ',  this.WIDGET_SETUP_ROUTE_IS_ACTIVE,
       )
     }
+
+    if (this.route.indexOf('/installation') !== -1) {
+      this.WIDGET_INSTALLATION_ROUTE_IS_ACTIVE = true
+      this.logger.log('[SETTING-SIDEBAR] - WIDGET_INSTALLATION_ROUTE_IS_ACTIVE  ',   this.WIDGET_INSTALLATION_ROUTE_IS_ACTIVE,
+      )
+    } else {
+      this.WIDGET_INSTALLATION_ROUTE_IS_ACTIVE = false
+      this.logger.log('[SETTING-SIDEBAR] - WIDGET_INSTALLATION_ROUTE_IS_ACTIVE  ',  this.WIDGET_INSTALLATION_ROUTE_IS_ACTIVE,
+      )
+    }
+
+    
 
     if (this.route.indexOf('/bots') !== -1) {
       this.CHATBOT_ROUTE_IS_ACTIVE = true

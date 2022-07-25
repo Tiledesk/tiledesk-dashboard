@@ -31,6 +31,22 @@
       </li>
     </ng-container>
 
+    <!-- -------------------------------------------------------- -->
+    <!-- Widget installation -->
+    <!-- -------------------------------------------------------- -->
+    <ng-container *ngIf="USER_ROLE !== 'agent'">
+      <li [ngClass]="{'active-item': WIDGET_INSTALLATION_ROUTE_IS_ACTIVE}" (click)="goToWidgetInstallation()"
+        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Widget installation" #tooltip="matTooltip"
+        matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+        <a>
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">code</i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+            {{'Installation' | translate}}
+          </p>
+        </a>
+      </li>
+    </ng-container>
+
     <!-- ------------------------------------------------------- -->
     <!-- Routing & depts -->
     <!-- ------------------------------------------------------- -->

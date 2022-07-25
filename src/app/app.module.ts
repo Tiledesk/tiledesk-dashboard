@@ -234,6 +234,7 @@ import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 import { CutomTooltipOptions } from './utils/util';
 import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component';
 import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
+import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
 
@@ -438,7 +439,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WsSidebarAppsComponent,
     AppCreateComponent,
     RasaBotComponent,
-    ImageViewerComponent
+    ImageViewerComponent,
+    WidgetInstallationComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
