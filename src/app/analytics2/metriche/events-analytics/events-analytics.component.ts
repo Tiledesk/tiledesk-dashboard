@@ -27,10 +27,15 @@ export class EventsAnalyticsComponent implements OnInit {
   subscription: Subscription;
   eventsList = [];
   eventsNameList = [];
+  // staticEventsNameList = [
+  //   { name: 'Authentication Triggers', value: 'auth_state_changed' },
+  //   { name: 'New Conversation', value: 'new_conversation' },
+  // ]
   staticEventsNameList = [
-    { name: 'Authentication Triggers', value: 'auth_state_changed' },
-    { name: 'New Conversation', value: 'new_conversation' },
+    { name: 'Page loads', value: 'auth_state_changed' },
+    { name: 'New Conversations', value: 'new_conversation' },
   ]
+
   eventsCountLastMonth: any;
 
   constructor(
