@@ -321,7 +321,7 @@ export class TempirispostaComponent implements OnInit {
 
   avgTimeResponseCHART(lastdays, depID, participantID) {
     this.subscription = this.analyticsService.getavarageWaitingTimeDataCHART(lastdays, depID, participantID).subscribe((res: any) => {
-      this.logger.log('[ANALYTICS - RESPONSETIMES] avgTimeResponseCHART chart data:', res);
+      // console.log('[ANALYTICS - RESPONSETIMES] avgTimeResponseCHART chart data:', res);
       if (res) {
 
         //build a 30 days array of date with value 0--> is the init array
@@ -333,7 +333,7 @@ export class TempirispostaComponent implements OnInit {
 
         lastNdays_initarray.reverse()
         //this.dateRangeAvg= last30days_initarray[0].date.split(-4) +' - '+last30days_initarray[30].date;
-        this.logger.log('[ANALYTICS - RESPONSETIMES]- RESPONSE TIME REQUESTS BY DAY - MOMENT LAST n DATE (init array)', lastNdays_initarray);
+      //  console.log('[ANALYTICS - RESPONSETIMES]- RESPONSE TIME REQUESTS BY DAY - MOMENT LAST n DATE (init array)', lastNdays_initarray);
 
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
@@ -344,10 +344,11 @@ export class TempirispostaComponent implements OnInit {
             res[j].waiting_time_avg = 0;
           }
 
-          customDataLineChart.push({ date: new Date(res[j]._id.year, res[j]._id.month - 1, res[j]._id.day).toLocaleDateString(), value: res[j].waiting_time_avg });
+          // customDataLineChart.push({ date: new Date(res[j]._id.year, res[j]._id.month - 1, res[j]._id.day).toLocaleDateString(), value: res[j].waiting_time_avg });
+          customDataLineChart.push({ date: res[j]._id.day   + '/' + res[j]._id.month  + '/' +  res[j]._id.year , value: res[j].waiting_time_avg });
         }
 
-        this.logger.log('[ANALYTICS - RESPONSETIMES] Custom data LineChart):', customDataLineChart);
+      //  console.log('[ANALYTICS - RESPONSETIMES] Custom data LineChart):', customDataLineChart);
 
         //build a final array that compars value between the two arrray before builded with respect to date key value
         const requestByDays_final_array = lastNdays_initarray.map(obj => customDataLineChart.find(o => o.date === obj.date) || obj);
