@@ -233,7 +233,9 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
           if (satisfactionByDay[j].satisfaction_avg == null) {
             satisfactionByDay[j].satisfaction_avg = 0;
           }
-          customSatisfactionChart.push({ date: new Date(satisfactionByDay[j]._id.year, satisfactionByDay[j]._id.month - 1, satisfactionByDay[j]._id.day).toLocaleDateString(), value: satisfactionByDay[j].satisfaction_avg });
+          // customSatisfactionChart.push({ date: new Date(satisfactionByDay[j]._id.year, satisfactionByDay[j]._id.month - 1, satisfactionByDay[j]._id.day).toLocaleDateString(), value: satisfactionByDay[j].satisfaction_avg });
+          customSatisfactionChart.push({date: satisfactionByDay[j]._id.day   + '/' + satisfactionByDay[j]._id.month  + '/' +  satisfactionByDay[j]._id.year, value: satisfactionByDay[j].satisfaction_avg });
+            
         }
 
         this.logger.log('[ANALYTICS - SATISFACTION] Satisfaction data:', customSatisfactionChart);
