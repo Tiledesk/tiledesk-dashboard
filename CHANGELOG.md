@@ -5,6 +5,7 @@
 - Fixes the bug: in Analytics > Metrics > Response time the chart is not populated
 - Fixes the bug: in Analytics > Metrics > Conversation Length the chart is not populated
 - Fixes the bug: in Analytics > Metrics > Satisfaction the chart is not populated
+- Rename the options in the "Name" combo box in Analytics> Metrics> Events: "Authentication Triggers" to "Page Loads" and "New Conversation" to "New Conversations"
 
 ### 2.2.44
 - Deploys in production
