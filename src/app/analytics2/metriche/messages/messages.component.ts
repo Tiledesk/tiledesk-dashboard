@@ -180,7 +180,7 @@ export class MessagesComponent implements OnInit {
     this.logger.log("[ANALYTICS - MSGS] Lastdays: ", lastdays);
     
     this.subscription = this.analyticsService.getMessagesByDay(lastdays, senderID).subscribe((messagesByDay) => {
-      this.logger.log("[ANALYTICS - MSGS] »» MESSAGES BY DAY RESULT: ", messagesByDay)
+    //  console.log("[ANALYTICS - MSGS] »» MESSAGES BY DAY RESULT: ", messagesByDay)
 
       const lastdays_initarray = [];
       for (let i = 0; i < lastdays; i++) {
@@ -188,7 +188,7 @@ export class MessagesComponent implements OnInit {
       }
 
       lastdays_initarray.reverse();
-      this.logger.log("[ANALYTICS - MSGS] »» LASTDAYS MESSAGES - INIT ARRAY: ", lastdays_initarray)
+    //  console.log("[ANALYTICS - MSGS] »» LASTDAYS MESSAGES - INIT ARRAY: ", lastdays_initarray)
 
       const messagesByDay_series_array = [];
       const messagesByDay_labels_array = [];
@@ -200,7 +200,7 @@ export class MessagesComponent implements OnInit {
           messagesByDay_array.push({ 'count': messagesByDay[j]['count'], day: messagesByDay[j]['_id']['day'] + '/' + messagesByDay[j]['_id']['month'] + '/' + messagesByDay[j]['_id']['year'] })
         }
       }
-      this.logger.log('[ANALYTICS - MSGS] - MESSAGES BY DAY FORMATTED ', messagesByDay_array);
+      // console.log('[ANALYTICS - MSGS] - MESSAGES BY DAY FORMATTED ', messagesByDay_array);
 
       // MERGE lastdays_initarray & visitorsByDay_array
       const messagesByDay_final_array = lastdays_initarray.map(obj => messagesByDay_array.find(o => o.day === obj.day) || obj);
