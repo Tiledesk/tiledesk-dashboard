@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.44.1
+- Fixes the bug: in Analytics > Metrics > Response time the chart is not populated
+- Fixes the bug: in Analytics > Metrics > Conversation Length the chart is not populated
+- Fixes the bug: in Analytics > Metrics > Satisfaction the chart is not populated
+
 ### 2.2.44
 - Deploys in production
 - Displays the "Configure" button in the app card on the App Store page if the "Configure URL" is available
