@@ -361,7 +361,9 @@ export class DurataconvComponent implements OnInit {
           if (resp[j].duration_avg == null)
             resp[j].duration_avg = 0;
 
-          customDurationCOnversationChart.push({ date: new Date(resp[j]._id.year, resp[j]._id.month - 1, resp[j]._id.day).toLocaleDateString(), value: resp[j].duration_avg });
+          // customDurationCOnversationChart.push({ date: new Date(resp[j]._id.year, resp[j]._id.month - 1, resp[j]._id.day).toLocaleDateString(), value: resp[j].duration_avg });
+          customDurationCOnversationChart.push({ date:  resp[j]._id.day   + '/' + resp[j]._id.month  + '/' +  resp[j]._id.year, value: resp[j].duration_avg });
+        
         }
 
 
