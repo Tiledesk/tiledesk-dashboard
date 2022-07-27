@@ -34,7 +34,7 @@ Consider that Tiledesk.com cloud service makes every module available with the s
   
 # Community? Questions? Support?
 
-- If you need help or just want to hang out, come, say hi on our <img width="15" alt="dialogo_widgetchat_2" src="https://seeklogo.com/images/D/discord-color-logo-E5E6DFEF80-seeklogo.com.png"> [Discord](https://discord.gg/WQPfqShJ) server.
+- If you need help or just want to hang out, come, say hi on our [<img width="15" alt="Tiledesk discord" src="https://seeklogo.com/images/D/discord-color-logo-E5E6DFEF80-seeklogo.com.png"> Discord](https://discord.gg/nERZEZ7SmG) server.
 - You can also to ask for support on https://tiledesk.com, using the live chat widget on the the website.
 
   
