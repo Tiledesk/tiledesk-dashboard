@@ -262,7 +262,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   selected: any
   selectedFollowers: any
   followers: Array<any> = []
-  CURRENT_USER_IS_A_FOLLOWER:boolean = false
+  CURRENT_USER_IS_A_FOLLOWER:boolean = false;
+  displayModalTranscript: string = 'none' 
+  transcriptDwnldPreference: string
+
   /**
    * Constructor
    * @param router 
@@ -2977,10 +2980,32 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   openTranscript() {
-    const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html';
-    this.logger.log('[WS-REQUESTS-MSGS] openTranscript url ', url);
-    window.open(url, '_blank');
+    // const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html';
+    // this.logger.log('[WS-REQUESTS-MSGS] openTranscript url ', url);
+    // window.open(url, '_blank');
+
+    this.displayModalDownloadTranscript()
   }
+
+  displayModalDownloadTranscript() {
+    this.displayModalTranscript = 'block'
+  }
+
+  closeModalTranscript () {
+    this.displayModalTranscript = 'none'
+  }
+
+  onChangeTranscriptDownloadPreference(value){
+    console.log(" Value is : ", value );
+    this.transcriptDwnldPreference = value
+ }
+
+ downloadTranscript() {
+  console.log('transcriptDwnldPreference',  this.transcriptDwnldPreference )
+  if ( this.transcriptDwnldPreference === 'CSV') {
+    this.exportTranscriptToCSV()
+  }
+ }
 
   exportTranscriptToCSV() {
     this.wsRequestsService.exportTranscriptAsCSVFile(this.id_request).subscribe((res: any) => {
