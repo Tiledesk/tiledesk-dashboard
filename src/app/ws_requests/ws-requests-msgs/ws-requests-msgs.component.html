@@ -148,8 +148,10 @@
                         </p> -->
 
                         <p *ngIf="message?.type === 'text'" class="type-info-msg-text">
-                          {{ message?.text }} <span style=" color: rgba(43 ,43,43, .8);font-size: 11px;"> ({{
-                            message?.createdAt | amDateFormat: 'LL'}}) </span>
+                          {{ message?.text }} 
+                          <span style=" color: rgba(43 ,43,43, .8);font-size: 11px;"> 
+                            ({{   message?.createdAt | amDateFormat: 'LLL'}})
+                           </span>
                         </p>
 
                       </div>
@@ -216,7 +218,7 @@
                               </div>
                             </div>
                             <span class="timestamp">
-                              {{ message?.createdAt | amDateFormat: 'LL'}}
+                              {{ message?.createdAt | amDateFormat: 'LLL'}}
                               <!-- {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY (HH:mm:ss)') : (
                               message?.createdAt | amDateFormat:'DD MMM YYYY (HH:mm:ss)')}} -->
                             </span>
@@ -335,7 +337,7 @@
                             </div>
 
                             <span class="timestamp">
-                              {{ message?.createdAt | amDateFormat: 'LL'}}
+                              {{ message?.createdAt | amDateFormat: 'LLL'}}
                               <!-- {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}}
                               {{browserLang === 'en' ? (message?.createdAt | amDateFormat:'MMM DD YYYY (HH:mm:ss)') : (
                               message?.createdAt | amDateFormat:'DD MMM YYYY (HH:mm:ss)')}}-->
