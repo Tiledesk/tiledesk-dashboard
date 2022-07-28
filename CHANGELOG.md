@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.45-rc2
+- Adds the time to the message timestamp in the chat section on the conversation detail page
+
 ### 2.2.45-rc1
 - Adds the ability on the conversation detail page to add followers to the conversation
 
