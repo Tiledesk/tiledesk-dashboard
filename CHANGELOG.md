@@ -1,11 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.2.45-rc1
+- Adds the ability on the conversation detail page to add followers to the conversation
+
 ### 2.2.44.1
 - Fixes the bug: in Analytics > Metrics > Response time the chart is not populated
 - Fixes the bug: in Analytics > Metrics > Conversation Length the chart is not populated
 - Fixes the bug: in Analytics > Metrics > Satisfaction the chart is not populated
-- Rename the options in the "Name" combo box in Analytics> Metrics> Events: "Authentication Triggers" to "Page Loads" and "New Conversation" to "New Conversations"
+- Rename the options in the "Name" combo box in Analytics > Metrics > Events: "Authentication Triggers" to "Page Loads" and "New Conversation" to "New Conversations"
 
 ### 2.2.44
 - Deploys in production
