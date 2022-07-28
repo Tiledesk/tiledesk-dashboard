@@ -1830,6 +1830,22 @@ span .conv-svg-icon {
 .manage_tags:hover {
   text-decoration: underline;
 }
+.followers-label {
+  position: relative;
+  top: 6px;
+}
+.follow-btn {
+  float: right;
+  color: #03a5e8;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 7px;
+  cursor: pointer;
+}
+
+.follow-btn:hover {
+  text-decoration: underline;
+}
 
 // ------ Notes TEST
 

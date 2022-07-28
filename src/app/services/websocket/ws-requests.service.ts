@@ -867,6 +867,71 @@ export class WsRequestsService implements OnDestroy {
       .map((res) => res.json());
   }
 
+  // SEE DOC HERE ->  https://developer.tiledesk.com/apis/rest-api/requests#add-a-follower-to-a-request
+  // -----------------------------------------------------------------------------------------
+  // @ Add Follower
+  // -----------------------------------------------------------------------------------------
+  public addFollower(projectuserid: string, request_id: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // this.logger.log('JOIN FUNCT OPTIONS  ', options);
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/followers'
+    this.logger.log('[WS-REQUESTS-SERV] - ADD FOLLOWER URL ', url)
+
+    const body = { 'member': projectuserid };
+    this.logger.log('[WS-REQUESTS-SERV] - ADD FOLLOWER body ', body);
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
+  // SEE DOC HERE -> https://developer.tiledesk.com/apis/rest-api/requests#delete-a-follower-from-the-request
+  // /:project_id/requests/:request_id/followers/:followerid
+
+  // -----------------------------------------------------------------------------------------
+  // @ REMOVE Follower
+  // -----------------------------------------------------------------------------------------
+  public removeFollower(projectuserid: string, request_id: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/followers/' + projectuserid
+    // console.log('[WS-REQUESTS-SERV] - REMOVE FOLLOWER  URL ', url);
+
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
+  }
+
+  // https://developer.tiledesk.com/apis/rest-api/requests#set-the-request-followers
+  // /:project_id/requests/:request_id/followers
+  // -----------------------------------------------------------------------------------------
+  // @ REMOVE ALL Follower
+  // -----------------------------------------------------------------------------------------
+  public removeAllFollowers(request_id: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/followers';
+    this.logger.log('[WS-REQUESTS-SERV] - REMOVE ALL FOLLOWERS - URL ', url)
+    const body = []
+    return this.http
+      .put(url, body, options)
+      .map((res) => res.json());
+
+  }
+
+
   // -----------------------------------------------------------------------------------------
   // @ Export transcript to CSV
   // -----------------------------------------------------------------------------------------

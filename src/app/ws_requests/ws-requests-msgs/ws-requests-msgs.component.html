@@ -148,7 +148,8 @@
                         </p> -->
 
                         <p *ngIf="message?.type === 'text'" class="type-info-msg-text">
-                          {{ message?.text }} <span style=" color: rgba(43 ,43,43, .8);font-size: 11px;"> ({{ message?.createdAt | amDateFormat: 'LL'}}) </span>
+                          {{ message?.text }} <span style=" color: rgba(43 ,43,43, .8);font-size: 11px;"> ({{
+                            message?.createdAt | amDateFormat: 'LL'}}) </span>
                         </p>
 
                       </div>
@@ -209,7 +210,8 @@
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
                               <!-- style="height:200px; width:200px;" -->
-                              <div class="image-container" style="cursor:pointer"  (click)="openImageViewerModal(message?.metadata)">
+                              <div class="image-container" style="cursor:pointer"
+                                (click)="openImageViewerModal(message?.metadata)">
                                 <img src={{message.metadata.src}} class="message-img" />
                               </div>
                             </div>
@@ -295,7 +297,8 @@
 
                             <div *ngIf="message?.type === 'image'" class="message ow alt">
                               <!-- style="height:200px; width:200px;" -->
-                              <div class="image-container" style="cursor:pointer"  (click)="openImageViewerModal(message?.metadata)">
+                              <div class="image-container" style="cursor:pointer"
+                                (click)="openImageViewerModal(message?.metadata)">
                                 <img src={{message.metadata.src}} class="message-img" />
 
                                 <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
@@ -1389,7 +1392,7 @@
                           language
                         </i>
                         <span style="position: relative;top: 1px;">
-                        
+
 
                           <span *ngIf="request?.language" class="conv-details-sidebar-text"
                             style="text-transform: uppercase;">
@@ -1404,23 +1407,24 @@
                     </div>
                   </div>
 
-                   <!-- --------------------------------------------------------------------- -->
+                  <!-- --------------------------------------------------------------------- -->
                   <!-- Country and city -->
                   <!-- --------------------------------------------------------------------- -->
                   <div *ngIf="request?.location" class="row" style="margin-top:5px">
                     <div class="col-sm-12">
                       <p class="" style="margin-bottom: 0px; cursor: pointer;">
-                        <i class="material-icons conv-details-sidebar-icon location-icon" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'Location' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-                          matTooltipHideDelay="100">
+                        <i class="material-icons conv-details-sidebar-icon location-icon"
+                          matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Location' | translate }}"
+                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                           location_on
                         </i>
-                        <span style="position: relative;top: 1px;"  (click)="openMapRightSideBar()">
-              
+                        <span style="position: relative;top: 1px;" (click)="openMapRightSideBar()">
+
                           <span class="conv-details-sidebar-text custom-link">
-                            <span *ngIf="locationCity">{{ locationCity }}</span><span *ngIf="locationCity ">, </span><span *ngIf="locationCountry"> {{ locationCountry }} </span> 
+                            <span *ngIf="locationCity">{{ locationCity }}</span><span *ngIf="locationCity ">,
+                            </span><span *ngIf="locationCountry"> {{ locationCountry }} </span>
                           </span>
-                       
+
                         </span>
                       </p>
                     </div>
@@ -2481,23 +2485,86 @@
                           </span>
                         </div>
 
-                        <!-- <span *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false && !agent.hasImage">
-                          <span class="White__Tooltip">
-                            <i class="material-icons chat-with-agent-ws-request-detail"
-                              (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
-                              chat
-                            </i>
-                            <span class="White__Tooltiptext"
-                              style="font-size: 12px; white-space: nowrap;font-weight: 100;">
-                              {{"ChatWith" | translate }}:
-                              <span style="display:block"> {{agent?.firstname}} {{agent?.lastname }} </span>
-                            </span>
-                          </span>
-                        </span> -->
                       </div>
                     </div>
                   </div>
                 </div>
+
+
+                <div class="row">
+                  <div class="col-sm-12">
+                    <p class="row-header">
+                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle">
+                         <span class="followers-label"> Followers </span>      
+                         <span *ngIf="!CURRENT_USER_IS_A_FOLLOWER"  (click)="follow()" class="follow-btn">follow</span>
+                         <span *ngIf="CURRENT_USER_IS_A_FOLLOWER"  (click)="unfollow()" class="follow-btn">unfollow</span>
+                      </span>
+                    </p>
+                  </div>
+
+                  <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
+                    <div class="followers-container" style="padding-left: 15px;
+                    padding-right: 15px;margin-bottom: 6px;">
+                      <!-- *ngFor="let follower of followers" -->
+                      <div class="followers">
+                       
+                        <!-- {{ follower.fullname }} -->
+
+                        <!-- addTagText="Create New"  -->
+                        <!-- [addTag]="CreateNew" -->
+                        <!-- <ng-select
+                         [items]="projectTeammates"
+                        bindLabel="fullname"
+                        placeholder="Search teammate"
+                        appendTo="body"
+                        [clearable]="false"
+                        [multiple]="true" 
+                        (add)="addFollower($event)" >
+                       </ng-select> -->
+
+                       
+                       <ng-select 
+                        [items]="projectTeammates"
+                        bindLabel="label"                 
+                        [multiple]="true"
+                        placeholder="Search teammate"
+                        [(ngModel)]="selectedFollowers"
+                        (change)="getValues($event)"
+                        (add)="addFollower($event)"
+                        (remove)="removeFollower($event)"
+                        [hideSelected]="true"
+                        (clear)="removeAllFollowers($event)">
+                      </ng-select>
+                            
+
+                       <!-- <ng-select
+                       bindLabel="fullname"
+                       placeholder="Search teammate"
+                       appendTo="body"
+                       multiple="true"
+                       [searchable]="true" 
+                       [clearable]="true"
+                       [(ngModel)]="selected"
+                       (change)="getValues()">
+                       <ng-option [value]="item.id_user._id" *ngFor="let item of projectTeammates">
+                           <!- - <img src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{item.id_user._id}}%2Fphoto.jpg?alt=media" width="20px" height="20px"/> - ->
+                           <!- - <img src="https://www.gravatar.com/avatar/b0d8c6e5ea589e6fc3d3e08afb1873bb?d=retro&r=g&s=30%202x" width="20px" height="20px"/> - ->
+                           {{item.fullname}}
+                       </ng-option>
+                       <ng-option *ngIf="hasClickedFollow">
+{{ logged_user_fullname }}
+                       </ng-option> 
+                       
+           </ng-select> -->
+                 
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             
 
 
 
@@ -2507,7 +2574,7 @@
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
                 <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div *ngIf="isVisibleLBS === true" class="row">
-                  <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;  border-top: 1px solid #eeeeee;">
                     <p class="row-header">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
@@ -3738,7 +3805,8 @@
       </div>
 
       <div *ngIf="OPEN_MAP_RIGHT_SIDEBAR === true" class="view-side">
-        <appdashboard-map-request [ngStyle]="{'height': conv_detail_map_sidebar_height }" [wsRequestsServed]="wsRequestsServed"
-          [wsRequestsUnserved]="wsRequestsUnserved" [calling_page]="calling_page" (closeMapsView)='handleCloseMapRightSidebar($event)'>
+        <appdashboard-map-request [ngStyle]="{'height': conv_detail_map_sidebar_height }"
+          [wsRequestsServed]="wsRequestsServed" [wsRequestsUnserved]="wsRequestsUnserved" [calling_page]="calling_page"
+          (closeMapsView)='handleCloseMapRightSidebar($event)'>
         </appdashboard-map-request>
       </div>

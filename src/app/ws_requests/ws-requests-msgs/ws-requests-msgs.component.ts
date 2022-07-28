@@ -9,7 +9,6 @@ import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { WsSharedComponent } from '../ws-shared/ws-shared.component';
 import { NotifyService } from '../../core/notify.service';
 import { AuthService } from '../../core/auth.service';
-import { WsMessage } from '../../models/ws-message-model';
 import { AppConfigService } from '../../services/app-config.service';
 import { Subscription } from 'rxjs';
 import { Subject } from 'rxjs';
@@ -22,7 +21,7 @@ import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TagsService } from '../../services/tags.service';
-import PerfectScrollbar from 'perfect-scrollbar';
+
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util';
@@ -79,6 +78,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   requester_id: string;
   user_name: string;
   user_email: string;
+  logged_user_fullname: string;
   department_name: string;
   department_id: string;
 
@@ -256,6 +256,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   wsRequestsServed: any;
   imageStorage$: string;
   calling_page: string = "conv_details"
+
+  projectTeammates: any
+  hasClickedFollow: boolean = false;
+  selected: any
+  selectedFollowers: any
+  followers: Array<any> = []
+  CURRENT_USER_IS_A_FOLLOWER:boolean = false
   /**
    * Constructor
    * @param router 
@@ -306,6 +313,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       { id: 10004, name: 'Bug', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype' },
     ];
   }
+
+
 
   @ViewChild('cont') contEl: any;
 
@@ -368,9 +377,171 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getBrowserLang();
     this.getBrowserVersion()
     this.setMomentLocale()
+    this.getTeammates()
+    // this.sensorTypes = [
+    //   {label : "Current", value : "C"},
+    //   {label : "Voltage", value : "V"},
+    //   {label : "Nicola", value : "N"}
+    // ]
+
+  }
+  addFollower(event) {
+    // console.log('addFollower', event)
+    this.wsRequestsService.addFollower(event.value, this.request.request_id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((res) => {
+
+        // console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
+      }, (error) => {
+        console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - ERROR  ', error);
+
+      }, () => {
+        console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER * COMPLETE *');
+
+      });
+  }
+
+  removeFollower(event) {
+    // console.log('removeFollower', event)
+    const projectUserId = event.value.value;
+    // console.log('removeFollower projectUserId', projectUserId)
+    const userId = event.value.userid;
+    // console.log('removeFollower userId', userId)
+    if (userId === this.currentUserID) {
+      this.CURRENT_USER_IS_A_FOLLOWER = false;
+    }
+    this.wsRequestsService.removeFollower(projectUserId, this.request.request_id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((res) => {
+
+        this.logger.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - RES  ', res);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - ERROR  ', error);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER * COMPLETE *');
+
+      });
+  }
+
+  removeAllFollowers(event) {
+    this.logger.log('removeAllFollowers', event);
+    this.followers = [];
+    this.selectedFollowers= [];
+    this.CURRENT_USER_IS_A_FOLLOWER = false;
+    this.wsRequestsService.removeAllFollowers(this.request.request_id)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((res) => {
+
+      this.logger.log('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS  - RES  ', res);
+    }, (error) => {
+      this.logger.error('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS  - ERROR  ', error);
+
+    }, () => {
+      this.logger.log('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS * COMPLETE *');
+
+    });
   }
 
 
+  getValues(event) {
+    // console.log('getValues event', event)
+    this.followers = event
+    if (this.followers)
+      this.followers.forEach(follower => {
+        // console.log('getValues follower', follower)
+      });
+  }
+
+  follow() {
+    this.projectTeammates.forEach(teammate => {
+      // console.log('follow teammate', teammate)
+      // console.log('follow currentUserID', this.currentUserID)
+      if (teammate.userid === this.currentUserID) {
+        // this.projectTeammates.push({label:  teammate['fullname'], value: teammate._id })
+        this.followers.push({ label: teammate['label'], value: teammate['value'], userid: teammate['userid'] })
+         this.CURRENT_USER_IS_A_FOLLOWER = true;
+        const event = {}
+        event['label'] = teammate['label']
+        event['value'] = teammate['value']
+        event['userid'] = teammate['userid']
+        // console.log(' follow  event object  ', event)
+        // this.selected = followTeammate
+        this.addFollower(event)
+      }
+    });
+    // console.log('followers ', this.followers)
+    this.selectedFollowers = this.followers
+    this.selectedFollowers = this.selectedFollowers.slice(0)
+    // console.log('selectedFollowers ', this.selectedFollowers)
+  }
+
+  unfollow(){
+    for (var i = this.followers.length - 1; i >= 0; i--) {
+      if (this.followers[i]['userid'] === this.currentUserID) {
+        this.wsRequestsService.removeFollower(this.followers[i]['value'], this.request.request_id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((res) => {
+  
+          // console.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - RES  ', res);
+        }, (error) => {
+          this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - ERROR  ', error);
+  
+        }, () => {
+          // console.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER * COMPLETE *');
+  
+        });
+        this.followers.splice(i, 1);
+      }
+     }
+    //  console.log( 'unfollow  this.followers ' ,  this.followers)
+     this.selectedFollowers = this.followers
+     this.selectedFollowers = this.selectedFollowers.slice(0)
+     this.CURRENT_USER_IS_A_FOLLOWER = false
+  } 
+
+  getTeammates() {
+    this.usersService.getProjectUsersByProjectId()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((prjctteammates) => {
+        if (prjctteammates) {
+          // this.projectTeammates = prjctteammates
+          this.projectTeammates = []
+
+
+          prjctteammates.forEach(teammate => {
+            this.logger.log('[WS-REQUESTS-MSGS] teammate', teammate)
+            teammate['fullname'] = teammate['id_user']['firstname'] + ' ' + teammate['id_user']['lastname']
+            this.projectTeammates.push({ label: teammate['fullname'], value: teammate._id, userid: teammate['id_user']['_id'] })
+          });
+          this.logger.log('[WS-REQUESTS-MSGS] TEAMMATES ARRAY ', this.projectTeammates)
+        }
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] GET TEAMMATES - ERROR  ', error);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] GET TEAMMATES * COMPLETE *');
+
+      });
+  }
+
+  // -------------------------------------------------------------
+  // @ Subscribe to current USER
+  // -------------------------------------------------------------
+  getLoggedUser() {
+    this.auth.user_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        if (user) {
+          this.currentUserID = user._id
+          // console.log('[WS-REQUESTS-MSGS] - USER ', user);
+          this.logger.log('[WS-REQUESTS-MSGS] GET LOGGED USER currentUserID', this.currentUserID)
+          this.logged_user_fullname = user.firstname + ' ' + user.lastname
+        }
+      });
+  }
   setMomentLocale() {
     this.browserLang = this.translate.getBrowserLang();
     // console.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
@@ -689,22 +860,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
   }
 
-  // -------------------------------------------------------------
-  // @ Subscribe to current USER
-  // -------------------------------------------------------------
-  getLoggedUser() {
-    this.auth.user_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user) => {
-        if (user) {
-          this.currentUserID = user._id
-          // this.logger.log('%%% Ws-REQUESTS-Msgs - USER ID ', this.currentUserID);
-          this.logger.log('[WS-REQUESTS-MSGS] GET CURRENT PROJECT this.project_id (OLD)', this.id_project)
-        }
-      });
-  }
+
 
   // ----------------------------------------------------------------------------
   // Get the request id from url params and then with this
@@ -824,7 +980,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsrequest) => {
-        //  console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -833,6 +990,53 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {
             this.getContactRequests(this.request.lead._id)
+          }
+
+          // -------------------------------------------------------------------
+          // @ followers  && ( this.projectTeammates && this.projectTeammates.length > 0)
+          // -------------------------------------------------------------------
+          if ((this.request && this.request.followers && this.request.followers.length > 0)) {
+            // console.log('this.request.followers id', this.request.followers)
+            const storedProjectUsersArray = []
+            this.request.followers.forEach(requestfollowerid => {
+              // console.log('requestfollowerid ', requestfollowerid)
+              let storedProjectUser =  localStorage.getItem('dshbrd----' + requestfollowerid)
+              // console.log('follower from storage ', storedProjectUser)
+              // console.log('follower  parsed from storage ', storedProjectUser)
+              if (storedProjectUser) {
+                const parsedStoredProjectUser = JSON.parse(storedProjectUser)
+                // console.log('follower parsed from storage ', parsedStoredProjectUser)
+                let fullname  = parsedStoredProjectUser['firstname'] + ' ' +  parsedStoredProjectUser['lastname']
+                // console.log('follower fullname' ,fullname ) 
+                let id_user = parsedStoredProjectUser['_id']
+                if (id_user ===  this.currentUserID ) {
+                  // console.log('CURRENT USER IS A FOLLOWER')
+                  this.CURRENT_USER_IS_A_FOLLOWER = true
+                }
+                // console.log('follower id_user' ,id_user ) 
+                //  this.projectTeammates.push({ label: teammate['fullname'], value: teammate._id, userid: teammate['id_user']['_id'] })
+                storedProjectUsersArray.push({label: fullname, value: requestfollowerid, userid: id_user })
+              }
+            });
+            // console.log('follower storedProjectUsersArray' ,storedProjectUsersArray ) 
+             this.selectedFollowers = storedProjectUsersArray;
+             this.followers = storedProjectUsersArray
+            
+
+
+           
+           // Filter array of objects with another array of objects
+           // https://stackoverflow.com/questions/31005396/filter-array-of-objects-with-another-array-of-objects 
+            // const myArrayFiltered = this.projectTeammates.filter((el) => {
+            //   return this.request.followers.some((f) => {
+            //     return f === el.value
+            //   });
+            // });
+            // this.selectedFollowers = myArrayFiltered;
+            // this.followers = myArrayFiltered
+            // console.log('this.request. myArrayFiltered', myArrayFiltered)
+
+
           }
 
 
