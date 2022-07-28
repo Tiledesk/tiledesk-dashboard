@@ -378,12 +378,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
         const signin_errorbody = JSON.parse(error._body)
         self.signin_errormsg = signin_errorbody['msg']
         self.display = 'block';
-        // this.logger.log('SIGNIN USER - POST REQUEST ERROR ', error);
-        // this.logger.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
+ 
         self.logger.error('[SIGN-UP] SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
       }
-      // tslint:disable-next-line:no-debugger
-      // debugger
+   
     });
   }
 
