@@ -18,6 +18,7 @@ export class WidgetInstallationComponent implements OnInit {
   HAS_SELECT_INSTALL_WITH_GTM: boolean = false;
   tparams: any;
   company_name: any;
+  id_project: string
   constructor( 
      private auth: AuthService,
      public appConfigService: AppConfigService,
@@ -32,8 +33,17 @@ export class WidgetInstallationComponent implements OnInit {
   ngOnInit() {
     this.getBrowserVersion();
     this.listenSidebarIsOpened()
-    this. getWidgetUrl()
+    this.getWidgetUrl()
     this.getAndManageAccordionInstallWidget();
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+     this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.id_project = project._id
+      }
+    });
   }
 
   getWidgetUrl() {
