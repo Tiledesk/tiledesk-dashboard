@@ -67,7 +67,7 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
 
   getCurrentUser() {
     this.auth.user_bs.subscribe((user) => {
-     console.log('[WS-SIDEBAR-APPS] - LoggedUser ', user);
+    //  console.log('[WS-SIDEBAR-APPS] - LoggedUser ', user);
      
       if (user && user.token) {
         this.TOKEN = user.token
@@ -247,7 +247,8 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
        
         if (this.dashboardApps.length > 0) {
           // console.log("[WS-SIDEBAR-APPS] DASHBOARD APPS ARRAY LENGHT : ", this.dashboardApps.length)
-          this.frameHeightDashbordHeight =  (this.frameHeightDashbordHeight / this.dashboardApps.length)
+          // this.frameHeightDashbordHeight =  (this.frameHeightDashbordHeight / this.dashboardApps.length)
+        
           // console.log("[WS-SIDEBAR-APPS] DASHBOARD frameHeight : ", this.frameHeightDashbordHeight)
 
 
