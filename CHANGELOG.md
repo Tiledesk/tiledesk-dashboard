@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.2.44.2
-- Fixes the bug: Not all messages in the chat section of the conversation detail page are from the selected conversation
+- Fixes the bug: not all messages in the chat section of the conversation detail page are from the selected conversation
 
 ### 2.2.44.1
 - Fixes the bug: in Analytics > Metrics > Response time the chart is not populated
