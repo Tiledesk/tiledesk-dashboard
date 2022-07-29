@@ -173,7 +173,8 @@ export class WsMsgsService {
 
 
 
-  public sendChatMessage(projectid: string, convid: string, chatmsg: string, replytypedid: number, requesterid: string) {
+  public sendChatMessage(projectid: string, convid: string, chatmsg: string, replytypedid: number, requesterid: string ,iscurrentuserjoined:boolean) {
+    // console.log('[WS-MSGS-SERV] replytypedid ', replytypedid ) 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -183,12 +184,24 @@ export class WsMsgsService {
     const url = this.SERVER_BASE_PATH + projectid + '/requests/' + convid + '/messages'
     this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL', this.SERVER_BASE_PATH)
     const body = { 'text': chatmsg };
-    if (replytypedid === 2) {
+    if (replytypedid === 2 && iscurrentuserjoined === false) {
       body['attributes'] = {
         "privateFor": requesterid,
         "subtype": 'private'
       }
+    }
+    if (replytypedid === 2 && iscurrentuserjoined === true) {
+      body['attributes'] = {
+        "privateFor": requesterid,
+        "subtype": 'private',
+        "updateconversation":false,
+      }
+    }
 
+    if (replytypedid === 1 && iscurrentuserjoined === true) {
+      body['attributes'] = {
+        "updateconversation":false,
+      }
     }
 
     this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL BODY ', body);
