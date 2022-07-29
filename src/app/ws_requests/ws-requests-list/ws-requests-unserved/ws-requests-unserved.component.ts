@@ -127,50 +127,90 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   //   })
   // }
 
+  overfirstTextGetRequestMsg(request) {
+    this.logger.log('[WS-REQUESTS-LIST][UNSERVED]] overfirstText request_id', request);
+    this.getRequestMsg(request)
+  }
+
+  getRequestMsg(request) {
+    this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
+      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] -  GET REQUESTS MSGS - RES: ', msgs);
+      if (msgs) {
+        const parsedMsgs = JSON.parse(msgs)
+        const msgsArray = [];
+        parsedMsgs.forEach((msgs, index) => {
+          if ((msgs)) {
+            if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
+              // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+            } else {
+              msgsArray.push(msgs)
+            }
+          }
+          request['msgsArray'] = msgsArray.sort(function compare(a, b) {
+            if (a['createdAt'] > b['createdAt']) {
+              return -1;
+            }
+            if (a['createdAt'] < b['createdAt']) {
+              return 1;
+            }
+            return 0;
+          });
+        });
+      }
+      // console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
+    }, (err) => {
+      this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - GET REQUESTS MSGS - ERROR: ', err);
+
+    }, () => {
+      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] * COMPLETE *');
+
+    });
+  }
+
 
   ngOnChanges() {
     this.logger.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
-    if (this.wsRequestsUnserved && this.wsRequestsUnserved.length > 0) {
-      this.wsRequestsUnserved.forEach(request => {
+    // if (this.wsRequestsUnserved && this.wsRequestsUnserved.length > 0) {
+    //   this.wsRequestsUnserved.forEach(request => {
 
 
-        // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-        // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+    //     // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
+    //     // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
 
-        this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
-          //  console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - RES: ', msgs);
-          if (msgs) {
-            const parsedMsgs = JSON.parse(msgs)
-            const msgsArray = [];
-            parsedMsgs.forEach((msgs, index) => {
-              if ((msgs)) {
-                if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
-                  // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
-                } else {
-                  msgsArray.push(msgs)
-                }
-              }
-              request['msgsArray'] = msgsArray.sort(function compare(a, b) {
-                if (a['createdAt'] > b['createdAt']) {
-                  return -1;
-                }
-                if (a['createdAt'] < b['createdAt']) {
-                  return 1;
-                }
-                return 0;
-              });
-            });
-          }
-          // console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
-        }, (err) => {
-          this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - GET REQUESTS MSGS - ERROR: ', err);
+    //     this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
+    //       //  console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - RES: ', msgs);
+    //       if (msgs) {
+    //         const parsedMsgs = JSON.parse(msgs)
+    //         const msgsArray = [];
+    //         parsedMsgs.forEach((msgs, index) => {
+    //           if ((msgs)) {
+    //             if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
+    //               // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+    //             } else {
+    //               msgsArray.push(msgs)
+    //             }
+    //           }
+    //           request['msgsArray'] = msgsArray.sort(function compare(a, b) {
+    //             if (a['createdAt'] > b['createdAt']) {
+    //               return -1;
+    //             }
+    //             if (a['createdAt'] < b['createdAt']) {
+    //               return 1;
+    //             }
+    //             return 0;
+    //           });
+    //         });
+    //       }
+    //       // console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
+    //     }, (err) => {
+    //       this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - GET REQUESTS MSGS - ERROR: ', err);
 
-        }, () => {
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] * COMPLETE *');
+    //     }, () => {
+    //       this.logger.log('[WS-REQUESTS-LIST][UNSERVED] * COMPLETE *');
 
-        });
-      });
-    }
+    //     });
+    //   });
+    // }
 
  
   }

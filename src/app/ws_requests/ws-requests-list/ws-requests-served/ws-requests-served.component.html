@@ -245,7 +245,7 @@
           <!-- Message has-details -->
           <!-- ------------------------------------------------------------------------------------------------------ -->
           <td class="td-first-text " [ngClass]="{'padding_5' : request?.tags?.length > 0}"
-            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; width: 215px;">
+            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; width: 215px;"  >
             <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
               matTooltipClass="mat-white-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
               matTooltipPosition='right' matTooltipHideDelay="100">
@@ -253,7 +253,7 @@
             </span>
             <!-- *ngIf="request?.channel?.name !== 'email'" -->
             <p class="column-td" style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"
-              [tooltip]="HtmlContent" content-type="template">
+              [tooltip]="HtmlContent" content-type="template" (mouseover)='overfirstTextGetRequestMsg(request)'>
               {{ request?.first_text }}
 
             </p>

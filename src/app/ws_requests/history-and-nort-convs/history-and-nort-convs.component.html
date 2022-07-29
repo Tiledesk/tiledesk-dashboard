@@ -1023,7 +1023,7 @@
                     #{{request?.ticket_id }}
                   </span>
                   <p class="column-td" [innerHTML]="getRequestText(request?.first_text)" [tooltip]="HtmlContent"
-                    content-type="template"> </p>
+                    content-type="template"  (mouseover)='overfirstTextGetRequestMsg(request)'> </p>
 
                   <ng-template #HtmlContent>
                     <div class="ng2-tooltip-header">

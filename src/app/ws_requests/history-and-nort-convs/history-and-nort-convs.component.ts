@@ -742,6 +742,47 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   //     });
   // }
 
+  overfirstTextGetRequestMsg(request) {
+    this.logger.log('[HISTORY & NORT-CONVS] overfirstText request_id', request);
+    this.getRequestMsg(request)
+  }
+
+  getRequestMsg(request) {
+    this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
+      this.logger.log('[HISTORY & NORT-CONVS] -  GET REQUESTS MSGS - RES: ', msgs);
+      if (msgs) {
+        const parsedMsgs = JSON.parse(msgs)
+        const msgsArray = [];
+        parsedMsgs.forEach((msgs, index) => {
+          if ((msgs)) {
+            if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
+              // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+            } else {
+              msgsArray.push(msgs)
+            }
+          }
+          request['msgsArray'] = msgsArray.sort(function compare(a, b) {
+            if (a['createdAt'] > b['createdAt']) {
+              return -1;
+            }
+            if (a['createdAt'] < b['createdAt']) {
+              return 1;
+            }
+            return 0;
+          });
+        });
+      }
+      // console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
+    }, (err) => {
+      this.logger.error('[HISTORY & NORT-CONVS] - GET REQUESTS MSGS - ERROR: ', err);
+
+    }, () => {
+      this.logger.log('[HISTORY & NORT-CONVS] * COMPLETE *');
+
+    });
+  }
+
+
   // GET REQUEST COPY - START
   getRequests() {
     this.showSpinner = true;
@@ -772,29 +813,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             if (request) {
               // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-              this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
-                //  console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - RES: ', msgs);
-                if (msgs) {
-                  const parsedMsgs = JSON.parse(msgs)
-                  const msgsArray = [];
-                  parsedMsgs.forEach((msgs, index) => {
-                    if ((msgs)) {
-                      if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
-                        // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
-                      } else {
-                        msgsArray.push(msgs)
-                      }
-                    }
-                    request['msgsArray'] = msgsArray.reverse()
-                  });
-                }
-                this.logger.log('[HISTORY & NORT-CONVS] -  GET REQUESTS MSGS - request: ', request);
-              }, (err) => {
-                this.logger.error('[HISTORY & NORT-CONVS] - GET REQUESTS MSGS - ERROR: ', err);
-
-              }, () => {
-                this.logger.log('[HISTORY & NORT-CONVS] * COMPLETE *');
-              });
+       
 
               request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 

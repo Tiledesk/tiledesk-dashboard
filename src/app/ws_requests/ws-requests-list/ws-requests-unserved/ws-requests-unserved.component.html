@@ -369,7 +369,7 @@
 
             <p class="column-td" rel="tooltip" title="{{ request?._id }}"
               style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"
-              [tooltip]="HtmlContent" content-type="template">
+              [tooltip]="HtmlContent" content-type="template" (mouseover)='overfirstTextGetRequestMsg(request)'>
               {{ request?.first_text }}
             </p>
 
