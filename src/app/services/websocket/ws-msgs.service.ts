@@ -18,7 +18,7 @@ export class WsMsgsService {
   TOKEN: string
   public wsMsgsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
   public wsMsgsGotAllData$: BehaviorSubject<any> = new BehaviorSubject(null);
-  
+
   SERVER_BASE_PATH: string;
   // public _wsMsgsList = new Subject<any>();
   CURRENT_USER_ID: string;
@@ -198,6 +198,22 @@ export class WsMsgsService {
 
   }
 
+  // SEE DOCS -> https://developer.tiledesk.com/apis/rest-api/messages#get-the-messages-of-a-request-by-id
+  // /v2/:project_id/requests/:request_id/messages
+  public geRequestMsgs(request_id) {
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/messages/';
+    this.logger.log('[WS-MSGS-SERV] - GET REQUESTS MSGS ', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/csv');
+
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.text());
+  }
 
 
 }

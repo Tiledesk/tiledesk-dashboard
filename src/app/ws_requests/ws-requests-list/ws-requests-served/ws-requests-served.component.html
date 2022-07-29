@@ -299,7 +299,7 @@
               </p>
               <div class='ng2-tooltip-firt-text' [innerHTML]="request?.first_text  | htmlEntitiesEncode | marked">
               </div>
-              <span *ngIf="request?.msgsArray.length > 0">
+              <span *ngIf="request?.msgsArray?.length > 0">
                 <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>
                 <hr class='ng2-tooltip-divider-line'>
                 <div class='ng2-latest-comment-sender-and-date-wpr'>

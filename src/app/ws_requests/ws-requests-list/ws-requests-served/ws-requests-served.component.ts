@@ -97,7 +97,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     public translate: TranslateService,
     public logger: LoggerService,
     private projectService: ProjectService,
-    private wsMsgsService: WsMsgsService,
+    private wsMsgsService: WsMsgsService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
   }
@@ -120,12 +120,52 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   ngOnChanges() {
     // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
-    if (this.wsRequestsServed.length > 0) {
-      this.wsRequestsServed.forEach(request => {
-        // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-        this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-      });
-    }
+    // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+   
+
+      if (this.wsRequestsServed && this.wsRequestsServed.length > 0) {
+        this.wsRequestsServed.forEach(request => {
+  
+  
+          // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
+          // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+  
+          this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
+            //  console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - RES: ', msgs);
+            if (msgs) {
+              const parsedMsgs = JSON.parse(msgs)
+              const msgsArray = [];
+              parsedMsgs.forEach((msgs, index) => {
+                if ((msgs)) {
+                  if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
+                    // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+                  } else {
+                    msgsArray.push(msgs)
+                  }
+                }
+                request['msgsArray'] = msgsArray.sort(function compare(a, b) {
+                  if (a['createdAt'] > b['createdAt']) {
+                    return -1;
+                  }
+                  if (a['createdAt'] < b['createdAt']) {
+                    return 1;
+                  }
+                  return 0;
+                });
+              });
+            }
+            // console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
+          }, (err) => {
+            this.logger.error('[WS-REQUESTS-LIST][SERVED] - GET REQUESTS MSGS - ERROR: ', err);
+  
+          }, () => {
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] * COMPLETE *');
+  
+          });
+        });
+      }
+    
+    
   }
 
 
@@ -133,74 +173,74 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 
-    if (this.wsRequestsServed.length > 0) {
-      this.wsRequestsServed.forEach(request => {
-        // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-        this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-        this.unsuscribeRequestById(request.request_id);
-        this.unsuscribeMessages(request.request_id);
-      });
-    }
+    // if (this.wsRequestsServed.length > 0) {
+    //   this.wsRequestsServed.forEach(request => {
+    //     // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
+    //     this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+    //     this.unsuscribeRequestById(request.request_id);
+    //     this.unsuscribeMessages(request.request_id);
+    //   });
+    // }
   }
 
-  unsuscribeRequestById(idrequest) {
-    this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
-  }
+  // unsuscribeRequestById(idrequest) {
+  //   this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
+  // }
 
-  unsuscribeMessages(idrequest) {
-    this.wsMsgsService.unsubsToWS_MsgsByRequestId(idrequest);
-  }
+  // unsuscribeMessages(idrequest) {
+  //   this.wsMsgsService.unsubsToWS_MsgsByRequestId(idrequest);
+  // }
 
-  subscribeToWs_MsgsByRequestId(request, id_request: string) {
-    this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
-    this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
+  // subscribeToWs_MsgsByRequestId(request, id_request: string) {
+  //   this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
+  //   this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
 
-    this.getWsMsgs$(request, id_request);
-  }
+  //   this.getWsMsgs$(request, id_request);
+  // }
 
-  getWsMsgs$(request, id_request) {
-    this.wsMsgsService.wsMsgsList$
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((wsmsgs) => {
+  // getWsMsgs$(request, id_request) {
+  //   this.wsMsgsService.wsMsgsList$
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((wsmsgs) => {
 
-        if (wsmsgs) {
+  //       if (wsmsgs) {
 
-          const msgsArray = []
-          wsmsgs.forEach((msgs, index) => {
-            if ((id_request === msgs['recipient'])) {
-              if ((msgs)) {
-                if ( (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') ||  (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support') ){
-                  // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
-                } else {
-                  msgsArray.push(msgs)
-                }
-              }
+  //         const msgsArray = []
+  //         wsmsgs.forEach((msgs, index) => {
+  //           if ((id_request === msgs['recipient'])) {
+  //             if ((msgs)) {
+  //               if ( (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') ||  (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support') ){
+  //                 // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+  //               } else {
+  //                 msgsArray.push(msgs)
+  //               }
+  //             }
 
-            }
-          });
-          // console.log('[WS-REQUESTS-MSGS] msgsArray ', msgsArray)
+  //           }
+  //         });
+  //         // console.log('[WS-REQUESTS-MSGS] msgsArray ', msgsArray)
 
 
 
-          request['msgsArray'] = msgsArray.sort(function compare(a, b) {
-            if (a['createdAt'] > b['createdAt']) {
-              return -1;
-            }
-            if (a['createdAt'] < b['createdAt']) {
-              return 1;
-            }
-            return 0;
-          });
-        }
-      }, error => {
-        this.showSpinner = false;
-        this.logger.error('[WS-REQUESTS-MSGS] - getWsMsgs$ - ERROR ', error)
-      }, () => {
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsMsgs$ * COMPLETE * ')
-      });
-  }
+  //         request['msgsArray'] = msgsArray.sort(function compare(a, b) {
+  //           if (a['createdAt'] > b['createdAt']) {
+  //             return -1;
+  //           }
+  //           if (a['createdAt'] < b['createdAt']) {
+  //             return 1;
+  //           }
+  //           return 0;
+  //         });
+  //       }
+  //     }, error => {
+  //       this.showSpinner = false;
+  //       this.logger.error('[WS-REQUESTS-MSGS] - getWsMsgs$ - ERROR ', error)
+  //     }, () => {
+  //       this.logger.log('[WS-REQUESTS-MSGS] - getWsMsgs$ * COMPLETE * ')
+  //     });
+  // }
 
 
 

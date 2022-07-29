@@ -17,6 +17,7 @@ import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
+import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 
 const swal = require('sweetalert');
 
@@ -85,7 +86,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     private departmentService: DepartmentService,
     public notify: NotifyService,
     public translate: TranslateService,
-    public logger: LoggerService
+    public logger: LoggerService,
+    private wsMsgsService: WsMsgsService
   ) {
 
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
@@ -128,36 +130,49 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
   ngOnChanges() {
     this.logger.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
-    // this.wsRequestsService.wsOnDataUnservedConvs$
-    //   .subscribe((ondataUnserveConvs) => {
-    //     console.log("WS-REQUEST-UNSERVED ondataUnserveConvs ", ondataUnserveConvs);
+    if (this.wsRequestsUnserved && this.wsRequestsUnserved.length > 0) {
+      this.wsRequestsUnserved.forEach(request => {
 
-    //     if (this.wsRequestsUnserved.length > 0) {
-    //       if (ondataUnserveConvs.length === this.wsRequestsUnserved.length) {
-    //         console.log('WS-REQUEST-UNSERVED the arrays of unserved conversations have the same length')
-    //         console.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
-    //         console.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - ondataUnserveConvs', ondataUnserveConvs)
-    //       } else {
-    //         console.log('WS-REQUEST-UNSERVED the arrays of unserved conversations NOT have the same length')
-    //         console.log('WS-REQUEST-UNSERVED the arrays of unserved conversations wsRequestsUnserved', this.wsRequestsUnserved)
-    //         console.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - ondataUnserveConvs', ondataUnserveConvs)
-    //         for (let i = 0; i < this.wsRequestsUnserved.length; i++) {
-    //           for (let j = 0; j < ondataUnserveConvs.length; j++) {
-    //             if (this.wsRequestsUnserved[i]._id === ondataUnserveConvs[j]._id) {
-    //               console.log('WS-REQUEST-UNSERVED the conversation exists in both arrays - conv ', this.wsRequestsUnserved[i]._id)
-    //             } else {
-    //               console.log('WS-REQUEST-UNSERVED the conversation NOT exists in both arrays - conv ', this.wsRequestsUnserved[i]._id)
-    //             }
 
-    //             // if (this.wsRequestsUnserved[i]['archived'] === true) {
-    //             //   console.log('WS-REQUEST-UNSERVED  wsRequestsUnserved the object with archived ', this.wsRequestsUnserved[i])
-    //             //   this.wsRequestsUnserved.splice(i, 1);
-    //             // }
-    //           }
-    //         }
-    //       }
-    //     }
-    //   });
+        // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
+        // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+
+        this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
+          //  console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - RES: ', msgs);
+          if (msgs) {
+            const parsedMsgs = JSON.parse(msgs)
+            const msgsArray = [];
+            parsedMsgs.forEach((msgs, index) => {
+              if ((msgs)) {
+                if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
+                  // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+                } else {
+                  msgsArray.push(msgs)
+                }
+              }
+              request['msgsArray'] = msgsArray.sort(function compare(a, b) {
+                if (a['createdAt'] > b['createdAt']) {
+                  return -1;
+                }
+                if (a['createdAt'] < b['createdAt']) {
+                  return 1;
+                }
+                return 0;
+              });
+            });
+          }
+          // console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
+        }, (err) => {
+          this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - GET REQUESTS MSGS - ERROR: ', err);
+
+        }, () => {
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] * COMPLETE *');
+
+        });
+      });
+    }
+
+ 
   }
 
 
