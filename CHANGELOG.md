@@ -4,6 +4,7 @@
 ### 2.2.45-rc2
 - Adds the time to the message timestamp in the chat section on the conversation detail page
 - Improves the method to get the last message of a conversation displayed in the popover of the first message in the tables of the "Monitoring" page of the "Non-real-time conversations" page and in the "History" page
+-Adds "updateconversation: false" in the post request payload attributes if the teammate sending a message from the chat section on the conversation detail page is not joined to the chat
 
 ### 2.2.45-rc1
 - Adds the ability on the conversation detail page to add followers to the conversation
