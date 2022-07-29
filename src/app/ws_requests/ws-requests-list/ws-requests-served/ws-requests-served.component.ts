@@ -122,8 +122,43 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
     if (this.wsRequestsServed.length > 0) {
       this.wsRequestsServed.forEach(request => {
+
+
         // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-        this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+        // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+
+        this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
+          //  console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - RES: ', msgs);
+          if (msgs) {
+            const parsedMsgs = JSON.parse(msgs)
+            const msgsArray = [];
+            parsedMsgs.forEach((msgs, index) => {
+              if ((msgs)) {
+                if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
+                  // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+                } else {
+                  msgsArray.push(msgs)
+                }
+              }
+              request['msgsArray'] = msgsArray.sort(function compare(a, b) {
+                if (a['createdAt'] > b['createdAt']) {
+                  return -1;
+                }
+                if (a['createdAt'] < b['createdAt']) {
+                  return 1;
+                }
+                return 0;
+              });
+            });
+          }
+          // console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
+        }, (err) => {
+          this.logger.error('[WS-REQUESTS-MSGS] - GET REQUESTS MSGS - ERROR: ', err);
+
+        }, () => {
+          this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
+
+        });
       });
     }
   }
@@ -136,9 +171,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     if (this.wsRequestsServed.length > 0) {
       this.wsRequestsServed.forEach(request => {
         // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-        this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-        this.unsuscribeRequestById(request.request_id);
-        this.unsuscribeMessages(request.request_id);
+        // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+        // this.unsuscribeRequestById(request.request_id);
+        // this.unsuscribeMessages(request.request_id);
       });
     }
   }

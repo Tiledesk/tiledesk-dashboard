@@ -303,10 +303,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (this.requestList.length > 0) {
       this.requestList.forEach(request => {
+
         // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-        this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-        this.unsuscribeRequestById(request.request_id);
-        this.unsuscribeMessages(request.request_id);
+        // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+        // this.unsuscribeRequestById(request.request_id);
+        // this.unsuscribeMessages(request.request_id);
       });
     }
   }
@@ -745,16 +746,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // GET REQUEST COPY - START
   getRequests() {
     this.showSpinner = true;
-
     let promise = new Promise((resolve, reject) => {
-
-
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
         // console.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
         // console.log('[HISTORY & NORT-CONVS] - GET REQUESTS ', requests['requests']);
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS COUNT ', requests['count']);
-
-
         if (requests) {
           this.requestsCount = requests['count'];
           this.logger.log('[HISTORY & NORT-CONVS]- GET REQUESTS COUNT ', this.requestsCount);
@@ -771,8 +767,39 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           for (const request of this.requestList) {
 
             if (request) {
+              // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+              this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
+                //  console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - RES: ', msgs);
+                if (msgs) {
+                  const parsedMsgs = JSON.parse(msgs)
+                  const msgsArray = [];
+                  parsedMsgs.forEach((msgs, index) => {
+                    if ((msgs)) {
+                      if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
+                        // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+                      } else {
+                        msgsArray.push(msgs)
+                      }
+                    }
+                    request['msgsArray'] =  msgsArray.sort(function compare(a, b) {
+                      if (a['createdAt'] > b['createdAt']) {
+                        return -1;
+                      }
+                      if (a['createdAt'] < b['createdAt']) {
+                        return 1;
+                      }
+                      return 0;
+                    });
+                  });
+                }
+                this.logger.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
+              }, (err) => {
+                this.logger.error('[WS-REQUESTS-MSGS] - GET REQUESTS MSGS - ERROR: ', err);
 
-              this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+              }, () => {
+                this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
+
+              });
 
               request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
@@ -1247,7 +1274,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.conversationTypeValue = 'chat21'
     }
 
-    
+
     if (this.conversation_type === 'telegram') {
       this.conversationTypeValue = 'telegram'
     }
@@ -1260,7 +1287,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.conversationTypeValue = 'messenger'
     }
 
-   
+
 
     if (this.conversation_type === 'email') {
       this.conversationTypeValue = 'email'
