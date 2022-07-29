@@ -262,8 +262,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   selected: any
   selectedFollowers: any
   followers: Array<any> = []
-  CURRENT_USER_IS_A_FOLLOWER:boolean = false;
-  displayModalTranscript: string = 'none' 
+  CURRENT_USER_IS_A_FOLLOWER: boolean = false;
+  displayModalTranscript: string = 'none'
   transcriptDwnldPreference: string
 
   /**
@@ -430,20 +430,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   removeAllFollowers(event) {
     this.logger.log('removeAllFollowers', event);
     this.followers = [];
-    this.selectedFollowers= [];
+    this.selectedFollowers = [];
     this.CURRENT_USER_IS_A_FOLLOWER = false;
     this.wsRequestsService.removeAllFollowers(this.request.request_id)
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((res) => {
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((res) => {
 
-      this.logger.log('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS  - RES  ', res);
-    }, (error) => {
-      this.logger.error('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS  - ERROR  ', error);
+        this.logger.log('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS  - RES  ', res);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS  - ERROR  ', error);
 
-    }, () => {
-      this.logger.log('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS * COMPLETE *');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS * COMPLETE *');
 
-    });
+      });
   }
 
 
@@ -463,7 +463,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       if (teammate.userid === this.currentUserID) {
         // this.projectTeammates.push({label:  teammate['fullname'], value: teammate._id })
         this.followers.push({ label: teammate['label'], value: teammate['value'], userid: teammate['userid'] })
-         this.CURRENT_USER_IS_A_FOLLOWER = true;
+        this.CURRENT_USER_IS_A_FOLLOWER = true;
         const event = {}
         event['label'] = teammate['label']
         event['value'] = teammate['value']
@@ -479,29 +479,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // console.log('selectedFollowers ', this.selectedFollowers)
   }
 
-  unfollow(){
+  unfollow() {
     for (var i = this.followers.length - 1; i >= 0; i--) {
       if (this.followers[i]['userid'] === this.currentUserID) {
         this.wsRequestsService.removeFollower(this.followers[i]['value'], this.request.request_id)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((res) => {
-  
-          // console.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - RES  ', res);
-        }, (error) => {
-          this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - ERROR  ', error);
-  
-        }, () => {
-          // console.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER * COMPLETE *');
-  
-        });
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe((res) => {
+
+            // console.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - RES  ', res);
+          }, (error) => {
+            this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - ERROR  ', error);
+
+          }, () => {
+            // console.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER * COMPLETE *');
+
+          });
         this.followers.splice(i, 1);
       }
-     }
+    }
     //  console.log( 'unfollow  this.followers ' ,  this.followers)
-     this.selectedFollowers = this.followers
-     this.selectedFollowers = this.selectedFollowers.slice(0)
-     this.CURRENT_USER_IS_A_FOLLOWER = false
-  } 
+    this.selectedFollowers = this.followers
+    this.selectedFollowers = this.selectedFollowers.slice(0)
+    this.CURRENT_USER_IS_A_FOLLOWER = false
+  }
 
   getTeammates() {
     this.usersService.getProjectUsersByProjectId()
@@ -1003,33 +1003,33 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             const storedProjectUsersArray = []
             this.request.followers.forEach(requestfollowerid => {
               // console.log('requestfollowerid ', requestfollowerid)
-              let storedProjectUser =  localStorage.getItem('dshbrd----' + requestfollowerid)
+              let storedProjectUser = localStorage.getItem('dshbrd----' + requestfollowerid)
               // console.log('follower from storage ', storedProjectUser)
               // console.log('follower  parsed from storage ', storedProjectUser)
               if (storedProjectUser) {
                 const parsedStoredProjectUser = JSON.parse(storedProjectUser)
                 // console.log('follower parsed from storage ', parsedStoredProjectUser)
-                let fullname  = parsedStoredProjectUser['firstname'] + ' ' +  parsedStoredProjectUser['lastname']
+                let fullname = parsedStoredProjectUser['firstname'] + ' ' + parsedStoredProjectUser['lastname']
                 // console.log('follower fullname' ,fullname ) 
                 let id_user = parsedStoredProjectUser['_id']
-                if (id_user ===  this.currentUserID ) {
+                if (id_user === this.currentUserID) {
                   // console.log('CURRENT USER IS A FOLLOWER')
                   this.CURRENT_USER_IS_A_FOLLOWER = true
                 }
                 // console.log('follower id_user' ,id_user ) 
                 //  this.projectTeammates.push({ label: teammate['fullname'], value: teammate._id, userid: teammate['id_user']['_id'] })
-                storedProjectUsersArray.push({label: fullname, value: requestfollowerid, userid: id_user })
+                storedProjectUsersArray.push({ label: fullname, value: requestfollowerid, userid: id_user })
               }
             });
             // console.log('follower storedProjectUsersArray' ,storedProjectUsersArray ) 
-             this.selectedFollowers = storedProjectUsersArray;
-             this.followers = storedProjectUsersArray
-            
+            this.selectedFollowers = storedProjectUsersArray;
+            this.followers = storedProjectUsersArray
 
 
-           
-           // Filter array of objects with another array of objects
-           // https://stackoverflow.com/questions/31005396/filter-array-of-objects-with-another-array-of-objects 
+
+
+            // Filter array of objects with another array of objects
+            // https://stackoverflow.com/questions/31005396/filter-array-of-objects-with-another-array-of-objects 
             // const myArrayFiltered = this.projectTeammates.filter((el) => {
             //   return this.request.followers.some((f) => {
             //     return f === el.value
@@ -2979,43 +2979,75 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this._location.back();
   }
 
-  openTranscript() {
-    // const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html';
-    // this.logger.log('[WS-REQUESTS-MSGS] openTranscript url ', url);
-    // window.open(url, '_blank');
-
-    this.displayModalDownloadTranscript()
+  openTranscriptAsHtml() {
+    const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html';
+    this.logger.log('[WS-REQUESTS-MSGS] openTranscript url ', url);
+    window.open(url, '_blank');
   }
 
   displayModalDownloadTranscript() {
     this.displayModalTranscript = 'block'
   }
 
-  closeModalTranscript () {
+  closeModalTranscript() {
     this.displayModalTranscript = 'none'
   }
 
-  onChangeTranscriptDownloadPreference(value){
-    console.log(" Value is : ", value );
+  onChangeTranscriptDownloadPreference(value) {
+    console.log(" Value is : ", value);
     this.transcriptDwnldPreference = value
- }
-
- downloadTranscript() {
-  console.log('transcriptDwnldPreference',  this.transcriptDwnldPreference )
-  if ( this.transcriptDwnldPreference === 'CSV') {
-    this.exportTranscriptToCSV()
   }
- }
+
+  downloadTranscript() {
+    this.closeModalTranscript();
+    console.log('transcriptDwnldPreference', this.transcriptDwnldPreference)
+    if (this.transcriptDwnldPreference === 'CSV') {
+      this.exportTranscriptToCSV()
+    }
+
+    if (this.transcriptDwnldPreference === 'PDF') {
+      const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.pdf'
+      window.open(url, '_blank');
+    }
+
+
+    // if (this.transcriptDwnldPreference === 'TEXT') {
+    //   const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html'
+    //   window.open(url, '_blank');
+    // }
+  }
 
   exportTranscriptToCSV() {
     this.wsRequestsService.exportTranscriptAsCSVFile(this.id_request).subscribe((res: any) => {
-      // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV', res);
+      console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV', res);
+      if (res) {
+        this.downloadTranscriptAsCSVFile(res)
+      }
     }, (error) => {
       // console.error('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV - ERROR  ', error);
     }, () => {
       // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV * COMPLETE *');
     });
   }
+
+  downloadTranscriptAsCSVFile(data) {
+    const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
+    const dwldLink = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
+    if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
+      dwldLink.setAttribute('target', '_blank');
+    }
+    dwldLink.setAttribute('href', url);
+    dwldLink.setAttribute('download', 'message.csv');
+    dwldLink.style.visibility = 'hidden';
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
+
+
 
   goToTags() {
     this.router.navigate(['project/' + this.id_project + '/labels']);
@@ -3466,10 +3498,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   sendChatMessage() {
+    // console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
-    this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message, this.selectedResponseTypeID, this.requester_id)
+    this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED)
       .subscribe((msg) => {
         this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
       }, (error) => {

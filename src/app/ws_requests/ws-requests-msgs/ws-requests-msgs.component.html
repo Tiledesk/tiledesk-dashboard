@@ -230,7 +230,7 @@
                         <!-- The sender is the agent - Speech Bubble alternative -->
                         <!-- ------------------------------------------------------ -->
                         <div *ngIf="requester_id !== message.sender && message?.attributes?.subtype !== 'info'"
-                          class="bubble alt" [ngClass]="{'internal-note': message?.attributes?.subtype === 'private'}">
+                          class="bubble alt" [ngClass]="{'internal-note': message?.attributes?.subtype === 'private'}" >
                           <!-- left: 254px; -->
                           <div class="avatar"
                             style="width: 35px; height: 35px; position: absolute; left: 365px; bottom: 36px;">
@@ -286,7 +286,7 @@
                             </div>
                           </div>
                           <div class="txt">
-                            <p class="name alt">
+                            <p class="name alt"  [ngClass]="{'internal-note-': message?.attributes?.subtype === 'private'}">
                               {{ message?.senderFullname }}
                             </p>
                             <!-- -------------------------------------------------------------- -->
@@ -294,7 +294,7 @@
                             <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
                             <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
                             <!-- -------------------------------------------------------------- -->
-                            <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow alt"
+                            <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow alt"  [ngClass]="{'internal-note-text-color': message?.attributes?.subtype === 'private'}"
                               [innerHTML]="message?.text | htmlEntitiesEncode | marked">
 
                             <div *ngIf="message?.type === 'image'" class="message ow alt">
@@ -1104,11 +1104,12 @@
                             </li>
                             <li class="divider"></li>
                             <li>
-                              <a (click)='openTranscript()' style="padding-left: 15px; padding-right: 15px;">
-                                <i class="material-icons" style="padding-right: 5px;">open_in_new</i>
+                              <a (click)='displayModalDownloadTranscript()' style="padding-left: 15px; padding-right: 15px;">
+                                <!-- <i class="material-icons" style="padding-right: 5px;">open_in_new</i> -->
                                 <span style="position: relative; top: 1px; cursor:pointer">
 
-                                  {{ 'VisitorsPage.Open' | translate }} transcript
+                                  <!-- {{ 'VisitorsPage.Open' | translate }} -->
+                                  Transcript
                                 </span>
                               </a>
                             </li>
@@ -1329,7 +1330,7 @@
                           {{ "ContactEmail" | translate }}
                         </span> -->
 
-                          <a style="font-size: 13px;font-weight: 400; text-transform: lowercase;" target="_blank"
+                          <a class="custom-link" style="font-size: 13px;font-weight: 400; text-transform: lowercase;" target="_blank"
                             *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
                             {{request?.lead?.email}}
                           </a>
@@ -1527,11 +1528,11 @@
                               </span> -->
                                 <span style="font-weight: 400; font-size: 13px;">
                                   <span *ngIf="showAllSourcePageString" style="word-wrap: break-word;">
-                                    <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
+                                    <a class="custom-link" href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
                                   </span>
                                   <span *ngIf="!showAllSourcePageString">
                                     <!-- {{sourcePageCutted}} -->
-                                    <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
+                                    <a class="custom-link"  href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
                                   </span>
                                 </span>
                               </div>
@@ -3823,7 +3824,7 @@
           <div class="modal-body"
             style="padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px; line-height: 1;text-align: center;">
     
-            <h4> View the chat transcript in a new tab or download it as a:</h4>
+            <h4><span class="custom-link" (click)="openTranscriptAsHtml()">View the chat transcript in a new tab </span>  or download it as a:</h4>
             <div class="radio" >
               <label style="color: #222;">
                 <input type="radio" name="downloadType" value="PDF" 
@@ -3840,13 +3841,13 @@
               </label>
             </div>
 
-            <div class="radio" style="margin-left: 7px;" >
+            <!-- <div class="radio" style="margin-left: 7px;" >
               <label style="color: #222;">
                 <input type="radio" name="downloadType" value="TEXT"
                 (change)="onChangeTranscriptDownloadPreference($event.target.value)">
                 TEXT
               </label>
-            </div>
+            </div> -->
           </div>
     
           <div class="modal-footer custom__modal__footer">
@@ -3858,7 +3859,7 @@
             </button>
 
               <button style="padding-left: 24px; padding-right: 24px;" type="button" class="btn btn-primary"
-                (click)="downloadTranscript()">
+                (click)="downloadTranscript()" [disabled]="!transcriptDwnldPreference" >
                {{ "download"  | translate }} 
               </button>
     
