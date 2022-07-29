@@ -440,7 +440,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         dangerMode: false,
       })
         .then((value) => {
-         console.log('[WIDGET-SET-UP] - uploadLauncherButtonLogo value', value)
+        //  console.log('[WIDGET-SET-UP] - uploadLauncherButtonLogo value', value)
 
           if (value === 'catch') {
 
