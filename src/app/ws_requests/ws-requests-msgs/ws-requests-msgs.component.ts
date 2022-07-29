@@ -264,8 +264,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   followers: Array<any> = []
   CURRENT_USER_IS_A_FOLLOWER: boolean = false;
   displayModalTranscript: string = 'none'
-  transcriptDwnldPreference: string
+  transcriptDwnldPreference: string;
+  leaveChatTitle: string;
 
+  areYouSureLeftTheChatLabel: string;
   /**
    * Constructor
    * @param router 
@@ -396,10 +398,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         // console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
       }, (error) => {
-        console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - ERROR  ', error);
+        // console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - ERROR  ', error);
 
       }, () => {
-        console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER * COMPLETE *');
+        // console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER * COMPLETE *');
 
       });
   }
@@ -2842,10 +2844,84 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
 
   }
-
+  
+  
   openleaveChatModal() {
-    this.displayLeaveChatModal = 'block'
+   
+
+
+    if ( this.request.channel.name === 'email' ||  this.request.channel.name === 'form') { 
+     
+      if (this.agents_array.length === 1 ) {
+        this.presentModalYouCannotLeaveTheChat()
+      } else if (this.agents_array.length > 1) {
+        this.presentModalLeaveTheChat()
+      }
+
+    } else if (this.request.channel.name !== 'email' ||  this.request.channel.name !== 'form' ||   this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger'||  this.request.channel.name === 'chat21') {
+
+      this.presentModalLeaveTheChat()
+
+    }
+
+    // this.displayLeaveChatModal = 'block'
   }
+
+  presentModalYouCannotLeaveTheChat() {
+    swal({
+      title: this.leaveChatTitle,
+      text: 'Sorry but you can\'t leave the chat. There must be at least one agent for a ticket type chat',
+      icon: "info",
+      buttons: 'OK',
+      dangerMode: false,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    })
+  }
+
+  presentModalLeaveTheChat() {
+    swal({
+      title: this.leaveChatTitle,
+      text: this.areYouSureLeftTheChatLabel,
+      icon: "info",
+      buttons: true,
+      dangerMode: false,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    })
+      .then((willleave) => {
+        if (willleave) {
+          this.logger.log('[WS-REQUESTS-MSGS] LEAVE THE CHAT', willleave)
+          this.wsRequestsService.leaveTheGroup(this.id_request, this.currentUserID)
+          .subscribe((data: any) => {
+    
+            this.logger.log('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - RESPONSE ', data);
+          }, (err) => {
+            this.logger.error('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - ERROR ', err);
+       
+            swal(this.anErrorHasOccurredMsg, {
+              icon: "error",
+            });
+          }, () => {
+            swal({
+              title: this.done_msg + "!",
+              icon: "success",
+              button: "OK",
+              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+            }).then((okpressed) => {
+              this.logger.error('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - COMPLETE  okpressed ', okpressed);
+             
+            });
+          });
+          
+        } else {
+          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent  swal willRwillleaveeassign', willleave)
+          // swal("Your imaginary file is safe!");
+        }
+      });
+  }
+
+  
+
+
 
   leaveChat() {
     this.displayLeaveChatModal = 'none'
@@ -2994,13 +3070,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onChangeTranscriptDownloadPreference(value) {
-    console.log(" Value is : ", value);
+    // console.log(" Value is : ", value);
     this.transcriptDwnldPreference = value
   }
 
   downloadTranscript() {
     this.closeModalTranscript();
-    console.log('transcriptDwnldPreference', this.transcriptDwnldPreference)
+    // console.log('transcriptDwnldPreference', this.transcriptDwnldPreference)
     if (this.transcriptDwnldPreference === 'CSV') {
       this.exportTranscriptToCSV()
     }
@@ -3019,7 +3095,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   exportTranscriptToCSV() {
     this.wsRequestsService.exportTranscriptAsCSVFile(this.id_request).subscribe((res: any) => {
-      console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV', res);
+      // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV', res);
       if (res) {
         this.downloadTranscriptAsCSVFile(res)
       }
@@ -3381,8 +3457,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((text: string) => {
         this.priority_update_failed = text;
       });
-  }
+      this.translate.get('VisitorsPage.LeaveChat')
+      .subscribe((text: string) => {
+        this.leaveChatTitle = text;
+      });
 
+      this.translate.get('VisitorsPage.AreYouSureLeftTheChat')
+      .subscribe((text: string) => {
+        this.areYouSureLeftTheChatLabel = text;
+      });
+
+  }
 
 
   openDropDown() {
