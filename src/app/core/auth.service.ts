@@ -121,7 +121,7 @@ export class AuthService {
     this.checkIfExistStoredUserAndPublish()
     this.checkStoredProjectAndPublishIfPublishedProjectIsNull()
 
-    this.logger.log(  '[AUTH-SERV] appConfigService.getConfig().pushEngine 1 ', appConfigService.getConfig().pushEngine)
+    this.logger.log('[AUTH-SERV] appConfigService.getConfig().pushEngine 1 ', appConfigService.getConfig().pushEngine)
     if (appConfigService.getConfig().pushEngine === 'firebase') {
       this.logger.log('[AUTH-SERV] appConfigService.getConfig().pushEngine 2 ', appConfigService.getConfig().pushEngine)
       this.checkIfFCMIsSupported()
@@ -226,7 +226,7 @@ export class AuthService {
             window['tiledesk_widget_autologin']()
           }
         } catch (err) {
-          this.logger.error( '[AUTH-SERV] Calling tiledesk_widget_autologin err', err )
+          this.logger.error('[AUTH-SERV] Calling tiledesk_widget_autologin err', err)
         }
       })
     }
@@ -236,11 +236,11 @@ export class AuthService {
     if (firebase.messaging.isSupported()) {
       // Supported
       this.FCM_Supported = true
-      this.logger.log( '[AUTH-SERV] *** >>>> FCM is Supported: ',   this.FCM_Supported)
+      this.logger.log('[AUTH-SERV] *** >>>> FCM is Supported: ', this.FCM_Supported)
     } else {
       // NOT Supported
       this.FCM_Supported = false
-      this.logger.log( '[AUTH-SERV] *** >>>> FCM is Supported: ',  this.FCM_Supported )
+      this.logger.log('[AUTH-SERV] *** >>>> FCM is Supported: ', this.FCM_Supported)
     }
   }
 
@@ -254,17 +254,9 @@ export class AuthService {
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project) {
     // PUBLISH THE project
-    this.logger.log(
-      '[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED ',
-      project,
-    )
+    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED ', project)
 
-    // tslint:disable-next-line:no-debugger
-    // debugger
-    this.logger.log(
-      '[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ',
-      project._id,
-    )
+    this.logger.log( '[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id, )
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
   }

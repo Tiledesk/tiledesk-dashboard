@@ -39,7 +39,7 @@
 .onBlackBckgrnd {
   // color: rgba(255, 255, 255, 0.6);
   color: $brand-sidebar-inactive-item-text-color;
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
 /* SIDEBAR ACTIVE ITEMS TEXT */
@@ -218,7 +218,7 @@ button.close {
 }
 
 .username {
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 .avatar-container {
   text-align: center;
@@ -368,7 +368,7 @@ button.close {
 #sidebaravatar-altenative-user-avatar {
   // line-height: 2.9;
   font-weight: 400;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   left: 50%;
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
@@ -1321,7 +1321,7 @@ li:hover > a > .realtime-icon-wpr > svg > path {
   background-color: #2d323e !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
@@ -1341,7 +1341,6 @@ li:hover > a > .realtime-icon-wpr > svg > path {
 .hide-sidebar-menu-item {
   display: none;
 }
-
 
 .new-messages-count {
   display: flex;
