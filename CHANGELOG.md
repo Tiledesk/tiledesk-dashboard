@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.45-rc3
+- Fixes the bug: in the modal window Create ticket the options of the combo box "Requester" and of the combo box "Select assignee" are duplicated every time it is opened
+
 ### 2.2.45-rc2
 - Adds the time to the message timestamp in the chat section on the conversation detail page
 - Improves the method to get the last message of a conversation displayed in the popover of the first message in the tables of the "Monitoring" page of the "Non-real-time conversations" page and in the "History" page
