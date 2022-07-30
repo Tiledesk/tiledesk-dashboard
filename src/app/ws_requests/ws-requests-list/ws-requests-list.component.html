@@ -940,7 +940,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
 <!-- -------------------------------------------------------- -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInternalRequestModal}"
   style="background-color: rgba(90,90,90,0.5);">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="padding-bottom:15px">
         <!-- <button type="button" class="close" aria-label="Close" (click)="closeInternalRequestModal()">
@@ -958,7 +958,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
             </svg>
           </span>
         </button>
-        <h4 class="modal-title" style="">
+        <h4 class="modal-title">
           <!-- <i class="material-icons" style="vertical-align: middle">info</i> -->
           <span style="vertical-align: middle; padding-left:8px">
             {{ "CreateTicket" | translate }}
@@ -995,7 +995,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
             <!-- // with custom search -->
             <ng-select class="internal-request-custom-select" name="users_and_leads" [items]="projectUserAndLeadsArray"
               bindLabel="name" bindValue="id" [(ngModel)]="selectedRequester" [virtualScroll]="true"
-              [searchFn]="customSearchFn" (change)="selectRequester($event)" placeholder="{{'SelectRequester' | translate}}"
+              [searchFn]="customSearchFn" [clearable]="false" (change)="selectRequester($event)" placeholder="{{'SelectRequester' | translate}}"
               [loading]=loadingRequesters loadingText='Loading...'>
 
               <ng-template ng-label-tmp let-item="item">

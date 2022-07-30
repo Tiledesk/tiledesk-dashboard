@@ -1667,7 +1667,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.selectedPriority = this.priority[2].name;
     this.displayInternalRequestModal = 'block'
     this.hasClickedCreateNewInternalRequest = false;
-
+    this.projectUserBotsAndDeptsArray = [];
+    this.projectUserAndLeadsArray = [];
     this.getProjectUsersAndContacts();
     this.getProjectUserBotsAndDepts();
 
@@ -1683,6 +1684,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   createNewInternalRequest() {
     this.hasClickedCreateNewInternalRequest = true
     this.showSpinner_createInternalRequest = true
+
+
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - internalRequest_message ', this.internalRequest_message);
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - assignee_dept_id ', this.assignee_dept_id);
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - assignee_participants_id ', this.assignee_participants_id);
@@ -1749,6 +1752,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.assignee_id = undefined;
     this.selectedRequester = undefined;
     this.id_for_view_requeter_dtls = undefined;
+
   }
 
 
@@ -2030,10 +2034,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           });
         }
 
-        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS ARRAY: ', this.projectUserBotsAndDeptsArray);
-
         this.projectUserBotsAndDeptsArray = this.projectUserBotsAndDeptsArray.slice(0);
-
+        this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS ARRAY: ', this.projectUserBotsAndDeptsArray);
       }, error => {
         this.loadingAssignee = false;
         this.logger.error('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - ERROR: ', error);
