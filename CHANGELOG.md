@@ -3,6 +3,7 @@
 
 ### 2.2.45-rc3
 - Fixes the bug: in the modal window Create ticket the options of the combo box "Requester" and of the combo box "Select assignee" are duplicated every time it is opened
+- The "Home" sidebar menu item is not active when another project is selected from the navigation bar combo box
 
 ### 2.2.45-rc2
 - Adds the time to the message timestamp in the chat section on the conversation detail page
