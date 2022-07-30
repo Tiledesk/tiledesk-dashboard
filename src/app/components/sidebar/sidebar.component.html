@@ -172,7 +172,7 @@
       <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Home"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
         <a #homebtn class="customAncor" routerLink="project/{{ project._id }}/home">
-          <i class="material-icons sidebar-icons">
+          <i class="material-icons sidebar-icons" [ngStyle]="{'color':HOME_ROUTE_IS_ACTIVE === true ? '#fff' : '#647491' }">
             home
           </i>
 
