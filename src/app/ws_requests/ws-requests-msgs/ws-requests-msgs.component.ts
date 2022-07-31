@@ -391,23 +391,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
   addFollower(event) {
-    // console.log('addFollower', event)
+  this.logger.log('[WS-REQUESTS-MSGS]  ADD FOLLOWER event', event)
     this.wsRequestsService.addFollower(event.value, this.request.request_id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((res) => {
-
-        // console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
+        this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
+     
       }, (error) => {
-        // console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - ERROR  ', error);
+     
+        this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - ERROR  ', error);
 
       }, () => {
-        // console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER * COMPLETE *');
+      
+        this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  * COMPLETE *');
 
       });
   }
 
   removeFollower(event) {
-    // console.log('removeFollower', event)
+    this.logger.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - event  ', event);
     const projectUserId = event.value.value;
     // console.log('removeFollower projectUserId', projectUserId)
     const userId = event.value.userid;
@@ -430,7 +432,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   removeAllFollowers(event) {
-    this.logger.log('removeAllFollowers', event);
+    this.logger.log('[WS-REQUESTS-MSGS]  REMOVE ALL FOLLOWERS event', event);
     this.followers = [];
     this.selectedFollowers = [];
     this.CURRENT_USER_IS_A_FOLLOWER = false;
@@ -487,13 +489,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.wsRequestsService.removeFollower(this.followers[i]['value'], this.request.request_id)
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((res) => {
-
-            // console.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - RES  ', res);
+            this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - res  ', res);
+      
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - ERROR  ', error);
 
           }, () => {
-            // console.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER * COMPLETE *');
+            this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  * COMPLETE *');
 
           });
         this.followers.splice(i, 1);
@@ -986,7 +988,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -995,6 +997,38 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {
             this.getContactRequests(this.request.lead._id)
+          }
+
+          if (this.request['closed_by']) {
+            if (this.request['closed_by'] === "_bot_unresponsive") {
+              this.request['closed_by_label'] = "auto closing Bot"
+            } else if (this.request['closed_by'] === "_trigger") {
+              this.request['closed_by_label'] = this.translate.instant('By') + ' ' + "Trigger"
+            } else {
+              const storedTeammate = this.usersLocalDbService.getMemberFromStorage(this.request['closed_by']) //  localStorage.getItem('dshbrd----' + this.request['closed_by'] )
+
+              if (storedTeammate) {
+                this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammate ' , storedTeammate)
+                // const storedTeammateObjct = JSON.parse(storedTeammate)
+                this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammateObjct ', storedTeammate)
+                this.request['closed_by_label'] = this.translate.instant('By') + ' ' + storedTeammate['firstname'] + ' ' + storedTeammate['lastname']
+                this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by label ', this.request['closed_by_label'])
+              } else {
+                this.usersService.getProjectUserByUserId(this.request['closed_by'])
+                  .subscribe((projectUser: any) => {
+
+                    if (projectUser) {
+                      this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user);
+                      this.logger.log('WS-REQUESTS-MSGS] GET projectUser by USER-ID projectUser id', projectUser);
+                      this.request['closed_by_label'] = this.translate.instant('By') + ' ' + projectUser[0].id_user.firstname + ' ' + projectUser[0].id_user.lastname
+                    }
+                  }, (error) => {
+                    this.logger.error('[WS-REQUESTS-MSGS] GET projectUser by USER-ID - ERROR ', error);
+                  }, () => {
+                    this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID * COMPLETE *');
+                  });
+              }
+            }
           }
 
           // -------------------------------------------------------------------
@@ -2844,21 +2878,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
 
   }
-  
-  
+
+
   openleaveChatModal() {
-   
 
 
-    if ( this.request.channel.name === 'email' ||  this.request.channel.name === 'form') { 
-     
-      if (this.agents_array.length === 1 ) {
+
+    if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
+
+      if (this.agents_array.length === 1) {
         this.presentModalYouCannotLeaveTheChat()
       } else if (this.agents_array.length > 1) {
         this.presentModalLeaveTheChat()
       }
 
-    } else if (this.request.channel.name !== 'email' ||  this.request.channel.name !== 'form' ||   this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger'||  this.request.channel.name === 'chat21') {
+    } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
 
       this.presentModalLeaveTheChat()
 
@@ -2891,27 +2925,27 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (willleave) {
           this.logger.log('[WS-REQUESTS-MSGS] LEAVE THE CHAT', willleave)
           this.wsRequestsService.leaveTheGroup(this.id_request, this.currentUserID)
-          .subscribe((data: any) => {
-    
-            this.logger.log('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - RESPONSE ', data);
-          }, (err) => {
-            this.logger.error('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - ERROR ', err);
-       
-            swal(this.anErrorHasOccurredMsg, {
-              icon: "error",
+            .subscribe((data: any) => {
+
+              this.logger.log('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - RESPONSE ', data);
+            }, (err) => {
+              this.logger.error('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - ERROR ', err);
+
+              swal(this.anErrorHasOccurredMsg, {
+                icon: "error",
+              });
+            }, () => {
+              swal({
+                title: this.done_msg + "!",
+                icon: "success",
+                button: "OK",
+                className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              }).then((okpressed) => {
+                this.logger.error('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - COMPLETE  okpressed ', okpressed);
+
+              });
             });
-          }, () => {
-            swal({
-              title: this.done_msg + "!",
-              icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-            }).then((okpressed) => {
-              this.logger.error('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - COMPLETE  okpressed ', okpressed);
-             
-            });
-          });
-          
+
         } else {
           this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent  swal willRwillleaveeassign', willleave)
           // swal("Your imaginary file is safe!");
@@ -2919,7 +2953,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
-  
+
 
 
 
@@ -3457,12 +3491,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((text: string) => {
         this.priority_update_failed = text;
       });
-      this.translate.get('VisitorsPage.LeaveChat')
+    this.translate.get('VisitorsPage.LeaveChat')
       .subscribe((text: string) => {
         this.leaveChatTitle = text;
       });
 
-      this.translate.get('VisitorsPage.AreYouSureLeftTheChat')
+    this.translate.get('VisitorsPage.AreYouSureLeftTheChat')
       .subscribe((text: string) => {
         this.areYouSureLeftTheChatLabel = text;
       });

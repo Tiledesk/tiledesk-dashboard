@@ -773,6 +773,7 @@
                             matTooltipPosition='below' matTooltipHideDelay="100">
                             <!-- {{ "RequestMsgsPage.RequestClosed" | translate }} -->
                             {{ "RequestMsgsPage.Resolved_F" | translate }}
+                            <span *ngIf="request?.closed_by" style="font-size: 14px">({{request?.closed_by_label}})</span>
                           </span>
                         </span>
 
@@ -810,6 +811,7 @@
                             <!-- {{ "RequestMsgsPage.InternalRequestClosed" | translate }} -->
 
                             {{ "RequestMsgsPage.Resolved_M" | translate }}
+                            <span *ngIf="request?.closed_by" style="font-size: 14px">({{request?.closed_by_label}})</span>
                           </span>
                         </span>
 
