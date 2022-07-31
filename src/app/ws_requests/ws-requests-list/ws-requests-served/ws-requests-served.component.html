@@ -790,8 +790,15 @@
                     <!-- --------------------------------------- -->
                     <!-- Usecase  Firebase  (bot) -->
                     <!-- --------------------------------------- -->
-                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
+                    <!-- <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                      onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" /> -->
+
+                    <!-- ------------------------------------- -->
+                    <!-- thumb_photo -->
+                    <!-- ------------------------------------- -->
+                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
+                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                       onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                     <!-- --------------------------------------- -->
@@ -825,8 +832,15 @@
                     <!-- --------------------------------------- -->
                     <!-- Usecase  Firebase -->
                     <!-- --------------------------------------- -->
-                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
+                    <!-- <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                      onerror="this.src='assets/img/no_image_user.png'" /> -->
+
+                    <!-- ------------------------------------- -->
+                    <!-- thumb_photo -->
+                    <!-- ------------------------------------- -->
+                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
+                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                       onerror="this.src='assets/img/no_image_user.png'" />
                     <!-- --------------------------------------- -->
                     <!-- Usecase  Native -->
@@ -869,9 +883,17 @@
                         <!-- --------------------------------------- -->
                         <!-- Usecase  Firebase -->
                         <!-- --------------------------------------- -->
-                        <img *ngIf="agent?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
+                        <!-- <img *ngIf="agent?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                           [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                          alt="" onerror="this.src='assets/img/no_image_user.png'" (error)="updateUrl($event, agent)"> -->
+
+                          <!-- ------------------------------------- -->
+                          <!-- thumb_photo -->
+                          <!-- ------------------------------------- -->
+                          <img *ngIf="agent?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
+                          [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
+                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                           alt="" onerror="this.src='assets/img/no_image_user.png'" (error)="updateUrl($event, agent)">
 
                         <!-- --------------------------------------- -->
@@ -923,8 +945,15 @@
                     <!-- --------------------------------------- -->
                     <!-- Usecase  Firebase (bot) -->
                     <!-- --------------------------------------- -->
-                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
+                    <!-- <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                      onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" /> -->
+
+                    <!-- ------------------------------------- -->
+                    <!-- thumb_photo -->
+                    <!-- ------------------------------------- -->
+                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
+                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                       onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                     <!-- --------------------------------------- -->
