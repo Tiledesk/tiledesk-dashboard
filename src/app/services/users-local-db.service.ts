@@ -23,8 +23,13 @@ export class LocalDbService {
        * *** NEW 29JAN19 - GET FROM LOCAL STORAGE MEMBER ID WITH PREFIX ***
        */
       const prefixedMemberId = this.prefix + member_id;
+
+      const memberString = localStorage.getItem(prefixedMemberId)
       // this.logger.log('HEY MEMBER prefixedMemberId !!! ', prefixedMemberId);
-      const member = JSON.parse((localStorage.getItem(prefixedMemberId)));
+      let member = ''
+      if (memberString) {
+        member = JSON.parse(memberString);
+      }
 
 
       // this.logger.log('HEY MEMBER !!! ', member);
@@ -126,7 +131,7 @@ export class LocalDbService {
     return isWide
   }
 
-  storeForegrondNotificationsCount(count) : void {
+  storeForegrondNotificationsCount(count): void {
     localStorage.setItem(this.prefix + 'foregroundcount', count);
     // console.log('HEY - SAVE IN STORAGE !!! Foregrond Notifications Count ', count);
   }

@@ -440,7 +440,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                       this.logger.log('[ActivitiesComponent] participant - user', user);
 
                       if (user !== null) {
-                        activity.participant_fullname = user.firstname + ' ' + user.lastname
+                        activity.participant_fullname = user['firstname'] + ' ' + user['lastname']
                       } else {
                         activity.participant_fullname = 'n.d.'
                       }

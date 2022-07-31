@@ -180,7 +180,7 @@ export class WsSharedComponent implements OnInit {
             this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - STORED USER ', user)
             if (member_id === user['_id']) {
 
-              this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user.hasImage, 'userfillColour': user.fillColour, 'userFullname': user.fullname_initial })
+              this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user['hasImage'], 'userfillColour': user['fillColour'], 'userFullname': user['fullname_initial'] })
 
             }
           } else {
@@ -272,10 +272,10 @@ export class WsSharedComponent implements OnInit {
           }
           this.checkImageExists(imgUrl, (existsImage) => {
             if (existsImage == true) {
-              user.hasImage = true
+              user['hasImage'] = true
             }
             else {
-              user.hasImage = false
+              user['hasImage'] = false
             }
           });
 
@@ -458,10 +458,10 @@ export class WsSharedComponent implements OnInit {
           } else {
 
             const user = this.usersLocalDbService.getMemberFromStorage(participant);
-            // this.logger.log('% »»» WebSocketJs WF agentsArrayBuildFromRequests user', user);
+            this.logger.log('% »»» WebSocketJs WF agentsArrayBuildFromRequests user', user);
 
             if (user) {
-              this.participantsInRequests.push({ '_id': participant, 'firstname': user.firstname, 'lastname': user.lastname })
+              this.participantsInRequests.push({ '_id': participant, 'firstname': user['firstname'], 'lastname': user['lastname'] })
 
               // this.humanAgents.push({ '_id': participant, 'firstname': user.firstname, 'lastname': user.lastname });
 
@@ -647,6 +647,7 @@ export class WsSharedComponent implements OnInit {
     } else {
 
       const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+      this.logger.log('[WS-SHARED] members_replace user ', user)  
       if (user) {
         // this.logger.log('user ', user)
         if (user['lastname']) {
@@ -693,13 +694,13 @@ export class WsSharedComponent implements OnInit {
   // JOIN TO CHAT GROUP
   onJoinHandled(id_request: string, currentUserID: string, postmessage?: string) {
     // this.getFirebaseToken(() => {
-    // console.log('[WS-SHARED] - onJoinHandled postmessage ', postmessage)
+   
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED');
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED postmessage', postmessage);
 
     this.wsRequestsService.addParticipant(id_request, currentUserID)
       .subscribe((data: any) => {
-        // console.log('[WS-SHARED] - onJoinHandled data ', data)
+      
         this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP ', data);
       }, (err) => {
         this.logger.error('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP - ERROR ', err);
@@ -779,12 +780,12 @@ export class WsSharedComponent implements OnInit {
             this.logger.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray participants - user get from storage ', user);
 
             let lastnameInizial = ''
-            if (user.lastname) {
+            if (user['lastname']) {
               lastnameInizial = user['lastname'].charAt(0);
             }
 
             if (this.newParticipants.indexOf(participantid) === -1) {
-              this.newParticipants.push({ '_id': participantid, 'name': user.firstname, 'lastname': lastnameInizial, 'botType': '' })
+              this.newParticipants.push({ '_id': participantid, 'name': user['firstname'], 'lastname': lastnameInizial, 'botType': '' })
               request['test'] = this.newParticipants
             }
 
