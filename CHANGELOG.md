@@ -2,7 +2,8 @@
 # tiledesk-dashboard
 
 ### 2.2.45-rc4
-- Adds FEATUTES TOKEN for the project plan badge of the "Your projcts" page and for SMTP settings and Email template in Projecs settings > Notifications 
+- Adds "FEATURES TOKEN" for the project' plan badge available on the "Your Projects" page and for SMTP settings and Email templates available in Projects Settings> Notifications
+- Bugs fixing
 
 ### 2.2.45-rc3
 - Fixes the bug: in the modal window Create ticket the options of the combo box "Requester" and of the combo box "Select assignee" are duplicated every time it is opened
