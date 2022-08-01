@@ -888,7 +888,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (this.id_request !== undefined) { // this avoid to apply 'redirectTo' when the page is refreshed (indeed in this case this.id_request is undefined)
         if (this.id_request !== params.requestid) { // this occur when the user click on the in-app notification when is in the request' details page
-          this.redirectTo('project/' + params.projectid + '/wsrequest/' + params.requestid + 'showSpinner', params.projectid);
+         
+          this.redirectTo('project/' + params.projectid + '/wsrequest/' + params.requestid + '/messages', params.projectid);
         }
       }
 
@@ -988,7 +989,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+      //  console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {

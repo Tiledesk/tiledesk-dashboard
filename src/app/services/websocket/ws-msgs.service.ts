@@ -184,13 +184,13 @@ export class WsMsgsService {
     const url = this.SERVER_BASE_PATH + projectid + '/requests/' + convid + '/messages'
     this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL', this.SERVER_BASE_PATH)
     const body = { 'text': chatmsg };
-    if (replytypedid === 2 && iscurrentuserjoined === false) {
+    if (replytypedid === 2 && iscurrentuserjoined === true) {
       body['attributes'] = {
         "privateFor": requesterid,
         "subtype": 'private'
       }
     }
-    if (replytypedid === 2 && iscurrentuserjoined === true) {
+    if (replytypedid === 2 && iscurrentuserjoined === false) {
       body['attributes'] = {
         "privateFor": requesterid,
         "subtype": 'private',
@@ -198,7 +198,7 @@ export class WsMsgsService {
       }
     }
 
-    if (replytypedid === 1 && iscurrentuserjoined === true) {
+    if (replytypedid === 1 && iscurrentuserjoined === false) {
       body['attributes'] = {
         "updateconversation":false,
       }

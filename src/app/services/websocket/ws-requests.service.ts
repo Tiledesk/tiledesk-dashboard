@@ -940,7 +940,7 @@ export class WsRequestsService implements OnDestroy {
   // https://tiledesk-server-pre.herokuapp.com/public/requests/support-group-62e26b1324bc4200357b1a3c-0930f905800f4c62b6bac937d6beb568/messages.csv
   public exportTranscriptAsCSVFile(idrequest: string) {
     const url = this.SERVER_BASE_PATH + 'public/requests/' + idrequest + '/messages.csv';
-    console.log('DOWNLOAD TRANSCRIPT AS CSV URL ', url);
+    // console.log('DOWNLOAD TRANSCRIPT AS CSV URL ', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/csv');
