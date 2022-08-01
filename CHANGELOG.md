@@ -1,11 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.2.45-rc4
+- Adds FEATUTES TOKEN for the project plan badge of the "Your projcts" page and for SMTP settings and Email template in Projecs settings > Notifications 
+
 ### 2.2.45-rc3
 - Fixes the bug: in the modal window Create ticket the options of the combo box "Requester" and of the combo box "Select assignee" are duplicated every time it is opened
 - The "Home" sidebar menu item is not active when another project is selected from the navigation bar combo box
 - Indicates who resolved the conversation in the "conversation info" sidebar of the conversation detail page
-- Improves the load speed of teammates' profile photos displayed in the "Assigned to" column of the "Monitoring", "Non-Real Time Conversations" and "History" pages
+- Improves the load speed of teammates' profile photos displayed in the "Assigned to" column of the "Monitor", "Non-Real Time Conversations" and "History" pages
 
 ### 2.2.45-rc2
 - Adds the time to the message timestamp in the chat section on the conversation detail page
