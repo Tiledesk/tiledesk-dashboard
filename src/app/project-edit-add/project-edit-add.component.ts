@@ -113,6 +113,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isVisibleDeveloperTab: boolean;
   isVisibleNotificationTab: boolean;
   isVisibleSecurityTab: boolean;
+  isVisibleCustomizeEmailTemplate:boolean
+  isVisibleSMTPsettings:boolean
   max_agent_assigned_chat: number
   reassignment_delay: number
   automatic_idle_chats: number
@@ -545,6 +547,35 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
 
+      if (key.includes("PET")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let pet = key.split(":");
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (pet[1] === "F") {
+          this.isVisibleCustomizeEmailTemplate = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
+        } else {
+          this.isVisibleCustomizeEmailTemplate = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
+        }
+      }
+
+  
+      
+
+      if (key.includes("MTS")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let mts = key.split(":");
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (mts[1] === "F") {
+          this.isVisibleSMTPsettings = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSMTPsettings', this.isVisibleSMTPsettings);
+        } else {
+          this.isVisibleSMTPsettings = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSMTPsettings', this.isVisibleSMTPsettings);
+        }
+      }
+
     });
 
     if (!this.public_Key.includes("PAY")) {
@@ -571,6 +602,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("IPS")', this.public_Key.includes("IPS"));
       this.isVisibleSecurityTab = false;
     }
+
+    if (!this.public_Key.includes("PET")) {
+      //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PET")', this.public_Key.includes("PET"));
+      this.isVisibleCustomizeEmailTemplate = false;
+    }
+
+    if (!this.public_Key.includes("MTS")) {
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("MTS")', this.public_Key.includes("MTS"));
+     this.isVisibleSMTPsettings = false;
+   }
 
   }
 

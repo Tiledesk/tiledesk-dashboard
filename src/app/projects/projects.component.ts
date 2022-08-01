@@ -70,6 +70,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   currentUserId: string
   public_Key: string;
   MT: boolean;
+  project_plan_badge: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   flag_url: string;
   dsbrd_lang: string;
@@ -260,27 +261,76 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     this.logger.log('[PROJECTS] PUBLIC-KEY - public_Key Arry includes MTT', this.public_Key.includes("MTT"));
 
-    if (this.public_Key.includes("MTT") === true) {
+    // if (this.public_Key.includes("MTT") === true) {
 
-      keys.forEach(key => {
-        // this.logger.log('NavbarComponent public_Key key', key)
-        if (key.includes("MTT")) {
-          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
-          let mt = key.split(":");
-          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
-          if (mt[1] === "F") {
-            this.MT = false;
-            // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
-          } else {
-            this.MT = true;
-            // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
-          }
+    //   keys.forEach(key => {
+    //     // this.logger.log('NavbarComponent public_Key key', key)
+    //     if (key.includes("MTT")) {
+    //       // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+    //       let mt = key.split(":");
+    //       // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
+    //       if (mt[1] === "F") {
+    //         this.MT = false;
+    //         // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+    //       } else {
+    //         this.MT = true;
+    //         // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+    //       }
+    //     }
+    //   });
+    // } else {
+    //   this.MT = false;
+    //   // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+    // }
+
+    keys.forEach(key => {
+      // this.logger.log('NavbarComponent public_Key key', key)
+      if (key.includes("MTT")) {
+        // console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+        let mt = key.split(":");
+        // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
+
+        if (mt[1] === "F") {
+          this.MT = false;
+          // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+        } else {
+          this.MT = true;
+          // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
         }
-      });
-    } else {
-      this.MT = false;
-      // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
-    }
+      }
+
+
+      if (key.includes("PPB")) {
+        // console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+        let ppb = key.split(":");
+        // console.log('PUBLIC-KEY (PROJECTS-LIST) - ppb key&value', ppb);
+
+        if (ppb[1] === "F") {
+          this.project_plan_badge = false;
+          // console.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+        } else {
+          this.project_plan_badge = true;
+          // console.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+        }
+      }
+
+
+      if (!this.public_Key.includes("MTT")) {
+        // console.log('PUBLIC-KEY (PROJECTS-LIST - key.includes("MTT")', this.public_Key.includes("MTT"));
+        this.MT = false;
+      }
+
+      if (!this.public_Key.includes("PPB")) {
+        // console.log('PUBLIC-KEY (PROJECTS-LIST) - key.includes("PPB")', this.public_Key.includes("PPB"));
+        this.project_plan_badge = false;
+      }
+
+    });
+
+
+
+
+
   }
 
 
