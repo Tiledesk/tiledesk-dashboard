@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.45-rc5
+Displays the "train bot" button in the speech bubbles of the chat section of the conversation detail page only if the project has at least one a "Resolution bot"
+
 ### 2.2.45-rc4
 - Adds "FEATURES TOKEN" for the project' plan badge available on the "Your Projects" page and for SMTP settings and Email templates available in Projects Settings> Notifications
 - Bugs fixing
