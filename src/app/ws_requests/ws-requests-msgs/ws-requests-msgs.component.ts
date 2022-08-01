@@ -268,6 +268,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   leaveChatTitle: string;
 
   areYouSureLeftTheChatLabel: string;
+  resolutionBotCount: number;
   /**
    * Constructor
    * @param router 
@@ -383,6 +384,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getBrowserVersion()
     this.setMomentLocale()
     this.getTeammates()
+    this.getBots()
     // this.sensorTypes = [
     //   {label : "Current", value : "C"},
     //   {label : "Voltage", value : "V"},
@@ -390,19 +392,49 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // ]
 
   }
+  getBots() {
+    this.faqKbService.getFaqKbByProjectId()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((bots) => {
+        if (bots) {
+          this.logger.log('[WS-REQUESTS-MSGS] GET bots  ', bots);
+          let count = 0;
+          bots.forEach(bot => {
+            if (bot.type === 'internal') {
+              count = count + 1;
+            }
+          });
+          this.resolutionBotCount = count
+          this.logger.log('[WS-REQUESTS-MSGS] GET bots - count of resolution bot  ', this.resolutionBotCount);
+        } else {
+          this.resolutionBotCount = 0
+        }
+
+      }, (error) => {
+
+        this.logger.error('[WS-REQUESTS-MSGS] GET bots - ERROR  ', error);
+
+      }, () => {
+
+        this.logger.log('[WS-REQUESTS-MSGS] GET bots  * COMPLETE *');
+
+      });
+  }
+
+
   addFollower(event) {
-  this.logger.log('[WS-REQUESTS-MSGS]  ADD FOLLOWER event', event)
+    this.logger.log('[WS-REQUESTS-MSGS]  ADD FOLLOWER event', event)
     this.wsRequestsService.addFollower(event.value, this.request.request_id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((res) => {
         this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
-     
+
       }, (error) => {
-     
+
         this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - ERROR  ', error);
 
       }, () => {
-      
+
         this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  * COMPLETE *');
 
       });
@@ -490,7 +522,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((res) => {
             this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - res  ', res);
-      
+
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - ERROR  ', error);
 
@@ -888,7 +920,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (this.id_request !== undefined) { // this avoid to apply 'redirectTo' when the page is refreshed (indeed in this case this.id_request is undefined)
         if (this.id_request !== params.requestid) { // this occur when the user click on the in-app notification when is in the request' details page
-         
+
           this.redirectTo('project/' + params.projectid + '/wsrequest/' + params.requestid + '/messages', params.projectid);
         }
       }
@@ -989,7 +1021,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-      //  console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        //  console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1009,7 +1041,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               const storedTeammate = this.usersLocalDbService.getMemberFromStorage(this.request['closed_by']) //  localStorage.getItem('dshbrd----' + this.request['closed_by'] )
 
               if (storedTeammate) {
-                this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammate ' , storedTeammate)
+                this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammate ', storedTeammate)
                 // const storedTeammateObjct = JSON.parse(storedTeammate)
                 this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammateObjct ', storedTeammate)
                 this.request['closed_by_label'] = this.translate.instant('By') + ' ' + storedTeammate['firstname'] + ' ' + storedTeammate['lastname']
@@ -2883,8 +2915,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openleaveChatModal() {
 
-
-
     if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
 
       if (this.agents_array.length === 1) {
@@ -2953,10 +2983,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       });
   }
-
-
-
-
 
   leaveChat() {
     this.displayLeaveChatModal = 'none'

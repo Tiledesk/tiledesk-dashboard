@@ -3120,6 +3120,22 @@ span .conv-svg-icon {
   min-height: 1106px;
 }
 
+.train-btn-wpr {
+  text-align: right;
+  font-size: 12px;
+  margin-bottom: 0px;
+  font-weight: 400;
+  color: #00bcf8;
+}
+
+.train-btn {
+  cursor: pointer;
+}
+
+.train-btn:hover {
+  text-decoration: underline;
+}
+
 // .location-icon {
 //   cursor: pointer;
 // }

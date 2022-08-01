@@ -192,16 +192,11 @@
                               </span> -->
                             </p>
 
-                            <p class="train" *ngIf="message?.type === 'text' && !message?.metadata" style="
-                              text-align: right;
-                              font-size: 12px;
-                              cursor: pointer;
-                              color: #00bcf8;
-                              text-decoration: underline;
-                              margin-bottom: 0px;
-                              font-weight: 400;" (click)="openRightSideBar(message?.text)">
-                              {{ 'Train' | translate }}
+                            <ng-container *ngIf="resolutionBotCount > 0"> 
+                            <p  class="train-btn-wpr" *ngIf="message?.type === 'text' && !message?.metadata">
+                             <span class="train-btn" (click)="openRightSideBar(message?.text)"> {{ 'Train' | translate }} </span> 
                             </p>
+                          </ng-container>
                             <!-- -------------------------------------------------------------- -->
                             <!-- first combination: | marked | sanitizeHtml -->
                             <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
