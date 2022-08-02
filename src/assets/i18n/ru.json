@@ -2129,6 +2129,7 @@
     "AnErrorOccurreWhileDeletingTheApp":"При удалении приложения произошла ошибка",
     "Installation":"Installation",
     "UploadYourLogo":"Загрузите свой логотип",
+    "NewApp":"Новое приложение",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

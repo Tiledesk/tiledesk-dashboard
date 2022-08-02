@@ -2127,5 +2127,6 @@
     "TheAppHasBeenDeleted": "L'app è stata eliminata",
     "AnErrorOccurreWhileDeletingTheApp":"Si è verificato un errore durante l'eliminazione dell'app",
     "Installation":"Installazione",
-    "UploadYourLogo":"Carica il tuo logo"
+    "UploadYourLogo":"Carica il tuo logo",
+    "NewApp":"Nuova app"
 }

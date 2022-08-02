@@ -2129,6 +2129,7 @@
     "AnErrorOccurreWhileDeletingTheApp":"Bir səhv baş verdi",
     "Installation":"Quraşdırma",
     "UploadYourLogo":"Logonuzu yükləyin",
+    "NewApp":"Yeni tətbiq",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

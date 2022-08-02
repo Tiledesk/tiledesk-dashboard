@@ -2129,6 +2129,7 @@
     "AnErrorOccurreWhileDeletingTheApp":"Se produjo un error al eliminar la aplicación",
     "Installation":"Instalación",
     "UploadYourLogo":"Sube tu logotipo",
+    "NewApp":"Nueva aplicación",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

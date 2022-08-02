@@ -2129,6 +2129,7 @@
     "AnErrorOccurreWhileDeletingTheApp":"Uygulama silinirken bir hata oluştu",
     "Installation":"Installation",
     "UploadYourLogo":"Logonuzu yükleyin",
+    "NewApp":"Yeni uygulama",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",
