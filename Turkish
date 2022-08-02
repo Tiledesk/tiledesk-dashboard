@@ -1140,7 +1140,7 @@
         "TheRequestWillBeAssignedTo": "Konuşma atanacak",
         "LeaveChat": "Sohbetten ayrıl",
         "Leave": "Çıkmak",
-        "AreYouSureLeftTheChat": "Sohbetten çıkmak istediğinizden emin misiniz?",
+        "AreYouSureLeftTheChat": "Are you sure you want to leave the chat?",
         "ChatLeft": "Sohbetten ayrıldın",
         "AuthenticatedUser": "Doğrulanmış kullanıcı",
         "ViewRequestDetails": "Görüşme ayrıntılarını görüntüle",
