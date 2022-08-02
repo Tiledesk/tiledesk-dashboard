@@ -1140,7 +1140,7 @@
         "TheRequestWillBeAssignedTo": "Söhbət təyin olunacaq",
         "LeaveChat": "Söhbəti tərk edin",
         "Leave": "tərk et",
-        "AreYouSureLeftTheChat": "Çatı tərk etmək istədiyinizə əminsiniz?",
+        "AreYouSureLeftTheChat": "Are you sure you want to leave the chat?",
         "ChatLeft": "Çatı tərk etdiniz",
         "AuthenticatedUser": "Doğrulanmış İstifadəçi",
         "ViewRequestDetails": "Söhbət təfərrüatlarına baxın",
