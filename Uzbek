@@ -2129,7 +2129,10 @@
     "AnErrorOccurreWhileDeletingTheApp": "An error occurred while deleting the app",
     "Installation": "Installation",
     "UploadYourLogo": "Upload your logo",
+    "LearnHowBuildCustomApp": "Learn how build custom app",
     "NewApp": "New app",
+    "EditApp": "Edit app",
+    "NoAppLogo": "No app logo",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",
