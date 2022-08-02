@@ -1140,7 +1140,7 @@
         "TheRequestWillBeAssignedTo": "Конверзација ће бити додељена",
         "LeaveChat": "Напусти ћаскање",
         "Leave": "Остави",
-        "AreYouSureLeftTheChat": "Да ли сте сигурни да желите да напустите ћаскање?",
+        "AreYouSureLeftTheChat": "Are you sure you want to leave the chat?",
         "ChatLeft": "Напустили сте ћаскање",
         "AuthenticatedUser": "Аутентификовани корисник",
         "ViewRequestDetails": "Погледајте детаље разговора",
