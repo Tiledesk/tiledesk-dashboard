@@ -1023,7 +1023,7 @@
                     #{{request?.ticket_id }}
                   </span>
                   <p class="column-td" [innerHTML]="getRequestText(request?.first_text)" [tooltip]="HtmlContent"
-                    content-type="template"  (mouseover)='overfirstTextGetRequestMsg(request)'> </p>
+                    content-type="template" (mouseover)='overfirstTextGetRequestMsg(request)'> </p>
 
                   <ng-template #HtmlContent>
                     <div class="ng2-tooltip-header">
@@ -1550,13 +1550,13 @@
                           <!-- <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" /> -->
-                            <!-- --------------------------- -->
-                            <!-- thumb_photo -->
-                            <!-- --------------------------- -->
-                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
+                          <!-- --------------------------- -->
+                          <!-- thumb_photo -->
+                          <!-- --------------------------- -->
+                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
-                           
+
                           <!-- --------------------------------------------------- -->
                           <!-- USECASE uploadEngine Native -->
                           <!-- --------------------------------------------------- -->
@@ -1590,10 +1590,10 @@
                           <!-- <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'" /> -->
-                            <!-- --------------------------- -->
-                            <!-- thumb_photo -->
-                            <!-- --------------------------- -->
-                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
+                          <!-- --------------------------- -->
+                          <!-- thumb_photo -->
+                          <!-- --------------------------- -->
+                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'" />
 
@@ -1647,10 +1647,10 @@
                                 src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                                 alt="" onerror="this.src='assets/img/no_image_user.png'"
                                 (error)="updateUrl($event, agent)"> -->
-                                <!-- --------------------------- -->
-                                <!-- thumb_photo.jpg -->
-                                <!-- --------------------------- -->
-                                <img *ngIf="agent?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
+                              <!-- --------------------------- -->
+                              <!-- thumb_photo.jpg -->
+                              <!-- --------------------------- -->
+                              <img *ngIf="agent?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                                 [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
                                 src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                                 alt="" onerror="this.src='assets/img/no_image_user.png'"
@@ -1702,11 +1702,11 @@
                           <!-- <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" /> -->
-                           
-                            <!-- ------------------------------------- -->
-                            <!-- thumb_photo -->
-                            <!-- ------------------------------------- -->
-                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
+
+                          <!-- ------------------------------------- -->
+                          <!-- thumb_photo -->
+                          <!-- ------------------------------------- -->
+                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img ws-requests-list-servedby-avatar"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
@@ -1825,7 +1825,7 @@
                 <td class="td-actions text-right" *ngIf="!IS_HERE_FOR_HISTORY">
 
 
-                   <!-- ----------------------------------------------------------------------------- -->
+                  <!-- ----------------------------------------------------------------------------- -->
                   <!-- Action JOIN if IS HERE FOR NO REAL TIME REQUESTS (!IS_HERE_FOR_HISTORY) -->
                   <!-- ------------------------------------------------------------------------------ -->
                   <section *ngIf="!IS_HERE_FOR_HISTORY">
@@ -1908,7 +1908,7 @@
                     </span>
                   </button>
 
-             
+
                 </td>
 
               </tr>
