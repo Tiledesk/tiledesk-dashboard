@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.45-rc6
+- On the History page, are not allowed to open conversations that have been archived for more than ten days
+
 ### 2.2.45-rc5
 - Displays the "train bot" button in the speech bubbles of the chat section of the conversation detail page only if the project has at least one a "Resolution bot"
 - Fixes the bug: on the conversation details page, in the "Agents" section of the right sidebar, the link that redirects to the teammate's profile is not always present
