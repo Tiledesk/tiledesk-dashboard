@@ -1140,7 +1140,7 @@
         "TheRequestWillBeAssignedTo": "A conversa será atribuída a",
         "LeaveChat": "Sair do bate-papo",
         "Leave": "Sair",
-        "AreYouSureLeftTheChat": "Tem certeza de que deseja sair do bate-papo?",
+        "AreYouSureLeftTheChat": "Are you sure you want to leave the chat?",
         "ChatLeft": "You left the chat",
         "AuthenticatedUser": "Usuário autenticado",
         "ViewRequestDetails": "Ver detalhes da conversa",
