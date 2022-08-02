@@ -2129,7 +2129,10 @@
     "AnErrorOccurreWhileDeletingTheApp":"Дошло је до грешке приликом брисања апликације",
     "Installation":"Installation",
     "UploadYourLogo":"Учитајте свој лого",
+    "LearnHowBuildCustomApp": "Сазнајте како да направите прилагођену апликацију",
     "NewApp":"Нев апп",
+    "EditApp":"Уреди апликацију",
+    "NoAppLogo":"Нема логотипа апликације",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

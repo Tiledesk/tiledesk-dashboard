@@ -2129,7 +2129,10 @@
     "AnErrorOccurreWhileDeletingTheApp":"Xatolik yuz berdi",
     "Installation":"Installation",
     "UploadYourLogo":"Logotipingizni yuklang",
+    "LearnHowBuildCustomApp": "Shaxsiy ilovani qanday yaratishni bilib oling",
     "NewApp":"Yangi ilova",
+    "EditApp":"Ilovani tahrirlash",
+    "NoAppLogo":"Ilova logotipi yo'q",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

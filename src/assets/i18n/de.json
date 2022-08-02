@@ -2129,5 +2129,8 @@
 	"AnErrorOccurreWhileDeletingTheApp":"Beim Löschen der App ist ein Fehler aufgetreten",
 	"Installation":"Einbau",
 	"UploadYourLogo":"Laden Sie Ihr Logo hoch",
-	"NewApp":"Neue Anwendung"
+	"NewApp":"Neue Anwendung",
+	"LearnHowBuildCustomApp": "Erfahren Sie, wie Sie benutzerdefinierte Apps erstellen",
+	"EditApp":"App bearbeiten",
+	"NoAppLogo":"Kein App-Logo"
 }

@@ -4,7 +4,7 @@
     (click)="goBack()">keyboard_arrow_left</i>
 
   <span *ngIf="CREATE_VIEW">{{'NewApp' | translate}} </span>
-  <span *ngIf="EDIT_VIEW">Edit app </span>
+  <span *ngIf="EDIT_VIEW">{{'EditApp' | translate}} </span>
 </div>
 
 <div class="main-content">
@@ -23,7 +23,7 @@
             </svg>
           </span>
           <a class="custom-anchor-to-docs" (click)="goToCreateNewAppDocs()">
-            Learn how
+            {{'LearnHowBuildCustomApp' | translate}}
           </a>
         </div>
       </div>
@@ -41,8 +41,7 @@
 
                 <img *ngIf="!app_icon_url" src="assets/img/insert_photo.svg" />
                 <span style="color: rgb(157, 159, 162)" *ngIf="!app_icon_url || app_icon_url?.length === 0 ">
-                  No app logo
-                  
+                  {{'NoAppLogo' | translate}}
                 </span>
                 <!-- <span style="color: rgb(157, 159, 162)" *ngIf="app_icon_url || ( app_icon_url?.length > 0 && IMAGE_NOT_FOUND === true) "> App icon not found</span> -->
               </div>

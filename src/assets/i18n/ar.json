@@ -2129,7 +2129,10 @@
     "AnErrorOccurreWhileDeletingTheApp":"حدث خطأ أثناء حذف التطبيق",
     "Installation":"تركيب",
     "UploadYourLogo":"قم بتحميل شعارك",
+    "LearnHowBuildCustomApp": "تعرف على كيفية إنشاء تطبيق مخصص",
     "NewApp":"التطبيق الجديد",
+    "EditApp":"تحرير التطبيق",
+    "NoAppLogo":"ليس هناك شعار التطبيق",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",

@@ -2128,5 +2128,8 @@
     "AnErrorOccurreWhileDeletingTheApp":"Si è verificato un errore durante l'eliminazione dell'app",
     "Installation":"Installazione",
     "UploadYourLogo":"Carica il tuo logo",
-    "NewApp":"Nuova app"
+    "NewApp":"Nuova app",
+    "LearnHowBuildCustomApp": "Scopri come creare app personalizzate",
+    "EditApp":"Modifica app",
+    "NoAppLogo":"Nessun logo dell'app"
 }

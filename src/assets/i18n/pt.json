@@ -2129,7 +2129,10 @@
     "AnErrorOccurreWhileDeletingTheApp":"Ocorreu um erro durante a exclusão do aplicativo",
     "Installation":"Installation",
     "UploadYourLogo":"Carregue seu logotipo",
+    "LearnHowBuildCustomApp": "Saiba como criar um aplicativo personalizado",
     "NewApp":"Novo aplicativo",
+    "EditApp":"Editar aplicativo",
+    "NoAppLogo":"Sem logotipo do aplicativo",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

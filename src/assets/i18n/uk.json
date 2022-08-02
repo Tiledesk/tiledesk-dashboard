@@ -2129,7 +2129,10 @@
     "AnErrorOccurreWhileDeletingTheApp":"Сталася помилка",
     "Installation":"Installation",
     "UploadYourLogo":"Завантажте свій логотип",
+    "LearnHowBuildCustomApp": "Дізнайтеся, як створити спеціальний додаток",
     "NewApp":"Новий додаток",
+    "EditApp":"Редагувати додаток",
+    "NoAppLogo":"Немає логотипу програми",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

@@ -2129,7 +2129,10 @@
     "AnErrorOccurreWhileDeletingTheApp":"Ett fel uppstod när appen skulle raderas",
     "Installation":"Installation",
     "UploadYourLogo":"Ladda upp din logotyp",
+    "LearnHowBuildCustomApp": "Lär dig hur du bygger en anpassad app",
     "NewApp":"Ny app",
+    "EditApp":"Redigera app",
+    "NoAppLogo":"Ingen applogotyp",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",
