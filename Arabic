@@ -1140,7 +1140,7 @@
         "TheRequestWillBeAssignedTo": "سيتم تعيين المحادثة إلى",
         "LeaveChat": "اترك الدردشة",
         "Leave": "يترك",
-        "AreYouSureLeftTheChat": "هل أنت متأكد أنك تريد مغادرة الدردشة؟",
+        "AreYouSureLeftTheChat": "Are you sure you want to leave the chat?",
         "ChatLeft": "لقد غادرت الدردشة",
         "AuthenticatedUser": "مستخدم مصادق",
         "ViewRequestDetails": "عرض تفاصيل المحادثة",
