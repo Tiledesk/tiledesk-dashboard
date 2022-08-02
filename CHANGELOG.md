@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.2.45-rc6
-- On the History page, are not allowed to open conversations that have been archived for more than ten days
+- Removes the ability to reopen archived conversations for more than ten days
 
 ### 2.2.45-rc5
 - Displays the "train bot" button in the speech bubbles of the chat section of the conversation detail page only if the project has at least one a "Resolution bot"
