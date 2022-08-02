@@ -1140,7 +1140,7 @@
         "TheRequestWillBeAssignedTo": "Suhbat tayinlanadi",
         "LeaveChat": "Chatni tark eting",
         "Leave": "Ketish",
-        "AreYouSureLeftTheChat": "Haqiqatan ham chatni tark etmoqchimisiz?",
+        "AreYouSureLeftTheChat": "Are you sure you want to leave the chat?",
         "ChatLeft": "Siz chatni tark etdingiz",
         "AuthenticatedUser": "Tasdiqlangan foydalanuvchi",
         "ViewRequestDetails": "Suhbat tafsilotlarini ko'rish",
