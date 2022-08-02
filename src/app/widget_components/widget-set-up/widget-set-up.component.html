@@ -1205,10 +1205,10 @@
 													(ngModelChange)="onChangeFooterBrand($event)" rows="3"
 													class="widget-setup-texarea"
 													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">	</textarea>
-												<div *ngIf="footerBrand?.length <= 0"
+												<!-- <div *ngIf="footerBrand?.length <= 0"
 													style="font-size: 11px; color: #f44336;">
 													{{ 'RequiredField' | translate}}
-												</div>
+												</div> -->
 											</div>
 										</div>
 
@@ -1219,11 +1219,11 @@
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
 
 											<div class="col-sm-12">
-
+												<!-- (footerBrand?.length === 0 ||  !footerBrand) ||  -->
 												<button class="btn btn-success-no-boxshadow  footerbrand-save-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveFooterBrand()"
-													[disabled]="(footerBrand?.length === 0 ||  !footerBrand) || (prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true)">
+													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">
 													{{ 'UpdateWidget' | translate }}
 												</button>
 
