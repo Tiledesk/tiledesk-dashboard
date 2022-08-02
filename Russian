@@ -1140,7 +1140,7 @@
         "TheRequestWillBeAssignedTo": "Беседа будет назначена",
         "LeaveChat": "Выйти из чата",
         "Leave": "Уехать",
-        "AreYouSureLeftTheChat": "Вы уверены, что хотите покинуть чат?",
+        "AreYouSureLeftTheChat": "Are you sure you want to leave the chat?",
         "ChatLeft": "You left the chat",
         "AuthenticatedUser": "Авторизованный пользователь",
         "ViewRequestDetails": "Просмотр сведений о беседе",
