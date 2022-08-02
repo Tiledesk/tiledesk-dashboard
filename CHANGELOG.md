@@ -3,6 +3,7 @@
 
 ### 2.2.45-rc6
 - Removes the ability to reopen archived conversations for more than ten days
+- Change the default footer logo in the widget preview on the "Widget" page
 
 ### 2.2.45-rc5
 - Displays the "train bot" button in the speech bubbles of the chat section of the conversation detail page only if the project has at least one a "Resolution bot"
