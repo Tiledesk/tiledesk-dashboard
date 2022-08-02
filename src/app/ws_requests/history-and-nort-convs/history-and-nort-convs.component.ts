@@ -26,8 +26,8 @@ import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { TagsService } from '../../services/tags.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
-import { v } from '@angular/core/src/render3';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
+
 // import swal from 'sweetalert';
 // https://github.com/t4t5/sweetalert/issues/890 <- issue ERROR in node_modules/sweetalert/typings/sweetalert.d.ts(4,9): error TS2403
 
@@ -160,6 +160,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   joinToChatMsg: string;
   youAreAboutToJoinMsg: string;
   cancelMsg: string;
+  warningMsg: string;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -384,7 +385,18 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.translateYouAreAboutToJoin();
     this.translateCancel();
     this.translateJoinToChat();
+    this.translateWarningMsg();
   }
+
+ 
+    translateWarningMsg() {
+      this.translate.get('Warning').subscribe((text: string) => {
+        this.warningMsg = text;
+        // this.logger.log('+ + + warningMsg', text)
+      });
+    }
+  
+
 
   translateYouAreAboutToJoin() {
     this.translate.get('YouAreAboutToJoinThisChatAlreadyAssignedTo')
@@ -808,12 +820,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.logger.log('[HISTORY & NORT-CONVS] - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
           this.requestList = requests['requests'];
-          // console.log('requestList ', this.requestList) 
+          // console.log('requestList ', this.requestList)
           for (const request of this.requestList) {
 
             if (request) {
               // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-       
+
 
               request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
@@ -1288,7 +1300,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.conversationTypeValue = 'chat21'
     }
 
-    
+
     if (this.conversation_type === 'telegram') {
       this.conversationTypeValue = 'telegram'
     }
@@ -1301,7 +1313,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.conversationTypeValue = 'messenger'
     }
 
-   
+
 
     if (this.conversation_type === 'email') {
       this.conversationTypeValue = 'email'
@@ -2139,9 +2151,56 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       });
   }
 
-  reopenArchivedRequest(request_id) {
-    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
+  reopenArchivedRequest(request, request_id) {
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
+    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
+    // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
+    // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
+    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
+
+    // const closedAt = moment(new Date(request['closed_at'])).toDate()
+    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
+    // const createdAt = moment(new Date(request['createdAt'])).format("YYYY-MM-DD") // for test
+    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
+    // const today = moment(new Date()).format("YYYY-MM-DD")
+    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
     // unarchiveRequest
+
+
+    const requestclosedAt = moment(request['closed_at']);
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
+    const currentTime = moment();
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
+
+
+   const daysDiff = currentTime.diff(requestclosedAt, 'd');
+   this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+
+    
+    if (daysDiff > 10) {
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ') 
+      this.presentModalReopenConvIsNotPossible()
+    } else {
+      // console.log(moment(closedAtPlusTen).isSame(today))
+      this.reopenConversation(request_id)
+     
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
+    }
+  }
+
+  presentModalReopenConvIsNotPossible() {
+    swal({
+      title: this.warningMsg,
+      text: "Conversations archived for more than ten days cannot be reopened",
+      icon: "warning",
+      button: "OK",
+      dangerMode: false,
+    })
+  }
+
+
+  reopenConversation(request_id) {
     this.wsRequestsService.unarchiveRequest(request_id).subscribe((res: any) => {
       this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST ', res)
 
@@ -2161,6 +2220,5 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       }
     })
   }
-
 
 }
