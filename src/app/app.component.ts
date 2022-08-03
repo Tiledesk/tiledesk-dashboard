@@ -103,7 +103,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (event instanceof NavigationEnd) {
                 gtag('config', 'G-BKHKLWGG6F', { 'page_path': event.urlAfterRedirects });
             }
-   
+
         })
 
         this.auth.project_bs.subscribe((project) => {
@@ -301,6 +301,19 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // Websocket connection
         // -----------------------------------------------------------------------------------------------------
         this.getCurrentUserAndConnectToWs();
+
+        // this.listenToSwPostMessage()
+    }
+
+    listenToSwPostMessage() {
+        this.logger.log('[CONVS-LIST-PAGE] listenToNotificationCLick - CALLED: ')
+
+        if (navigator && navigator.serviceWorker) {
+            const that = this
+            navigator.serviceWorker.addEventListener('message', function (event) {
+                that.logger.log('[CONVS-LIST-PAGE] FIREBASE-NOTIFICATION  listenToNotificationCLick - Received a message from service worker event data: ', event.data)
+            })
+        }
     }
 
     ngOnDestroy() {
