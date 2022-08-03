@@ -1,6 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.2.45
+- Deploys in production
+- Removes the ability to reopen archived conversations for more than ten days
+- Indicates who resolved the conversation in the "conversation info" sidebar of the conversation detail page
+- Adds the time to the message timestamp in the chat section on the conversation detail page
+- Does not allow a teammate serving a ticket to leave the Chat if there is no other teammate to serve it
+- Adds the ability on the conversation detail page to add followers to the conversation
+
 ### 2.2.45-rc6
 - Removes the ability to reopen archived conversations for more than ten days
 - Change the default footer logo in the widget preview on the "Widget" page
