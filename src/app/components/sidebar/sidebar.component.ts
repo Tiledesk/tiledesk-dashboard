@@ -335,7 +335,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         this.audio = new Audio();
 
                         this.audio.src = 'assets/pling.mp3';
-
+                        // console.log('sidebar audio src ',  this.audio.src )
                         this.audio.load();
 
                         this.audio.play().then(() => {

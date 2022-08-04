@@ -311,7 +311,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         if (navigator && navigator.serviceWorker) {
             const that = this
             navigator.serviceWorker.addEventListener('message', function (event) {
-                that.logger.log('[CONVS-LIST-PAGE] FIREBASE-NOTIFICATION  listenToNotificationCLick - Received a message from service worker event data: ', event.data)
+                that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event : ', event)
+                const count = +that.usersLocalDbService.getForegrondNotificationsCount();
+                that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event count ', count) 
+                that.wsRequestsService.publishAndStoreForegroundRequestCount(count)
             })
         }
     }
@@ -366,7 +369,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     subscribeToStoredForegroundAndManageAppTab() {
         this.wsRequestsService.foregroundNotificationCount$
             .subscribe((foregroundNoticationCount) => {
-                // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
+                console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
                 // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION this.isTabVisible ', this.isTabVisible);
 
                 // && foregroundNoticationCount > 0

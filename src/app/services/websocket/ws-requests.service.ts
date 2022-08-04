@@ -134,6 +134,7 @@ export class WsRequestsService implements OnDestroy {
   }
   getStoredForegroungNotificationAndPublish() {
     const foregrondNotificationsCount = +this.usersLocalDbService.getForegrondNotificationsCount();
+    // console.log('foregrondNotificationsCount ', foregrondNotificationsCount) 
     this.foregroundNotificationCount$.next(foregrondNotificationsCount)
   }
 
@@ -1137,11 +1138,11 @@ export class WsRequestsService implements OnDestroy {
 
     let url = '';
     if (status !== 'all') {
-      url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber + '&no_populate=true';
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber + '&no_populate=true&no_textscore=true';
       // console.log('url status != all ' ,url )
 
     } else {
-      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber + '&no_populate=true';
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber + '&no_populate=true&no_textscore=true';
       // console.log('url status all ' ,url )
     }
 
