@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.46
+- Adds the "no_textscore" parameter to the query string that retrieves non-real time conversations and archived conversations
+
 ### 2.2.45
 - Deploys in production
 - Removes the ability to reopen archived conversations for more than ten days
