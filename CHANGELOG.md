@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.47-rc1
+- Adds the ability in the chat section on the conversation detail page to close the image preview by clicking the "esc" keyboard key
+
 ### 2.2.46
 - Adds the "no_textscore" parameter to the query string that retrieves non-real time conversations and archived conversations
 
