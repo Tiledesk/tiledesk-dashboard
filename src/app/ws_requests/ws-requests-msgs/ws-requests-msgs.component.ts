@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, ViewEncapsulation, ViewChildren } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { WsMsgsService } from '../../services/websocket/ws-msgs.service';
@@ -269,6 +269,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   areYouSureLeftTheChatLabel: string;
   resolutionBotCount: number;
+  previousUrl: string;
+  hasSearchedBy: string;
   /**
    * Constructor
    * @param router 
@@ -318,7 +320,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       { id: 10002, name: 'Task', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10318&avatarType=issuetype' },
       { id: 10004, name: 'Bug', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype' },
     ];
+
+    // this.router.events
+    //   .filter(e => e instanceof RoutesRecognized)
+    //   .pairwise()
+    //   .subscribe((event: any[]) => {
+    //     console.log('[WS-REQUESTS-MSGS] urlAfterRedirects' , event[0].urlAfterRedirects);
+    //   });
+
+
   }
+
+
 
 
 
@@ -390,8 +403,44 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     //   {label : "Voltage", value : "V"},
     //   {label : "Nicola", value : "N"}
     // ]
+    this.getRouteParams()
 
   }
+
+  getRouteParams() {
+    this.route.params.subscribe((params) => {
+      console.log('[WS-REQUESTS-MSGS] params', params)
+      if (params.calledby === '1') {
+        this.previousUrl = 'wsrequests'
+      }
+      if (params.calledby === '2') {
+        this.previousUrl = 'history',
+        this.hasSearchedBy = params.hassearchedby
+      }
+
+      if (params.calledby === '3') {
+        this.previousUrl = 'all-conversations',
+        this.hasSearchedBy = params.hassearchedby
+      }
+    })
+  }
+
+  goBack() {
+    if (this.previousUrl === 'wsrequests') {
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+    }
+
+    if (this.previousUrl === 'history') {
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' +  this.hasSearchedBy]);
+    }
+
+    if (this.previousUrl === 'all-conversations') {
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' +  this.hasSearchedBy]);
+    }
+
+  }
+
+
   getBots() {
     this.faqKbService.getFaqKbByProjectId()
       .pipe(takeUntil(this.unsubscribe$))
@@ -1021,7 +1070,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        //  console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1049,11 +1098,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               } else {
                 this.usersService.getProjectUserByUserId(this.request['closed_by'])
                   .subscribe((projectUser: any) => {
-
-                    if (projectUser) {
+                    // console.log('projectUser ', projectUser)
+                    if (projectUser && projectUser[0] && projectUser[0].id_user) {
                       this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user);
                       this.logger.log('WS-REQUESTS-MSGS] GET projectUser by USER-ID projectUser id', projectUser);
                       this.request['closed_by_label'] = this.translate.instant('By') + ' ' + projectUser[0].id_user.firstname + ' ' + projectUser[0].id_user.lastname
+                    } else {
+                      // console.log('[WS-REQUESTS-MSGS] THE REQUEST HAS NOT BEEN CLOSED BY A PROJECT USER');
+                      this.request['closed_by_label'] = this.translate.instant('By') + ' ' + this.request.requester_fullname
                     }
                   }, (error) => {
                     this.logger.error('[WS-REQUESTS-MSGS] GET projectUser by USER-ID - ERROR ', error);
@@ -3112,9 +3164,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
   // @ goTo & Navigate
   // -----------------------------------------------------------------------------------------------------
-  goBack() {
-    this._location.back();
-  }
+
 
   openTranscriptAsHtml() {
     const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html';

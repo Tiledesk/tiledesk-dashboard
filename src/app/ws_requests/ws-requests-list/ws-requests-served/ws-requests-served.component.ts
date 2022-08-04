@@ -501,7 +501,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   goToRequestMsgs(request_id: string) {
     this.logger.log("[WS-REQUESTS-LIST][SERVED] GO TO REQUEST MSGS ")
-    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
+    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages' ]);
   }
 
   // goToWsRequestsNoRealtimeServed() {

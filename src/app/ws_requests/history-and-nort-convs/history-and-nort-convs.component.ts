@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Request } from '../../models/request-model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import { DepartmentService } from '../../services/department.service';
@@ -269,6 +269,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public logger: LoggerService,
     private projectService: ProjectService,
     private wsMsgsService: WsMsgsService,
+    public route: ActivatedRoute
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
   }
@@ -297,6 +298,32 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.getTag();
     this.getFirebaseAuth();
     this.getBrowserVersion()
+    this.getRouteParams()
+  }
+
+  getRouteParams() {
+    this.route.params.subscribe((params) => {
+      console.log('[WS-REQUESTS-MSGS] params', params)
+
+    })
+  }
+
+  goToRequestMsgs(request_recipient: string) {
+    console.log('goToRequestMsgs full text ', this.fullText)
+
+    let searchkey = '';
+    if (this.fullText !== undefined) {
+      searchkey = this.fullText
+    } else if (this.fullText === undefined) {
+      searchkey = "ns";
+    }
+
+    // this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/messages']);
+    if (this.IS_HERE_FOR_HISTORY) {
+      this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + searchkey + '/messages']);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + searchkey + '/messages']);
+    }
   }
 
   ngOnDestroy() {
@@ -388,14 +415,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.translateWarningMsg();
   }
 
- 
-    translateWarningMsg() {
-      this.translate.get('Warning').subscribe((text: string) => {
-        this.warningMsg = text;
-        // this.logger.log('+ + + warningMsg', text)
-      });
-    }
-  
+
+  translateWarningMsg() {
+    this.translate.get('Warning').subscribe((text: string) => {
+      this.warningMsg = text;
+      // this.logger.log('+ + + warningMsg', text)
+    });
+  }
+
 
 
   translateYouAreAboutToJoin() {
@@ -798,16 +825,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // GET REQUEST COPY - START
   getRequests() {
     this.showSpinner = true;
-
     let promise = new Promise((resolve, reject) => {
-
-
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
         // console.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
         // console.log('[HISTORY & NORT-CONVS] - GET REQUESTS ', requests['requests']);
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS COUNT ', requests['count']);
-
-
         if (requests) {
           this.requestsCount = requests['count'];
           this.logger.log('[HISTORY & NORT-CONVS]- GET REQUESTS COUNT ', this.requestsCount);
@@ -1100,9 +1122,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   openModalSubsExpiredOrGoToPricing() {
     // console.log('[HISTORY & NORT-CONVS] this.profile_name ', this.profile_name)
     // console.log('[HISTORY & NORT-CONVS]  this.trial_expired ', this.trial_expired)
-
     // if (this.CURRENT_USER_ROLE === 'owner') {
-
     //   if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
     //     this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
     //   }
@@ -1110,7 +1130,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     //     this.router.navigate(['project/' + this.projectId + '/pricing']);
     //   }
     // } else {
-
     //   this.presentModalOnlyOwnerCanManageTheAccountPlan();
     // }
     // console.log('openModalSubsExpiredOrGoToPricing this.payIsVisible ', this.payIsVisible) 
@@ -1332,7 +1351,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   fulltextChange($event) {
-    this.logger.log('[HISTORY & NORT-CONVS] - fulltextChange ', $event);
+    //  console.log('[HISTORY & NORT-CONVS] - fulltextChange ', $event);
+    //  console.log('[HISTORY & NORT-CONVS] - fulltextChange length ', $event.length);
+    if ($event.length === 0) {
+      this.clearFullText()
+
+    }
     this.fullText_temp = $event
   }
 
@@ -1894,9 +1918,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  goToRequestMsgs(request_recipient: string) {
-    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/messages']);
-  }
+
 
 
   selectAll(e) {
@@ -2174,17 +2196,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
 
 
-   const daysDiff = currentTime.diff(requestclosedAt, 'd');
-   this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+    const daysDiff = currentTime.diff(requestclosedAt, 'd');
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
 
-    
+
     if (daysDiff > 10) {
-      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ') 
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
       this.presentModalReopenConvIsNotPossible()
     } else {
       // console.log(moment(closedAtPlusTen).isSame(today))
       this.reopenConversation(request_id)
-     
+
       this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
     }
   }

@@ -199,6 +199,8 @@ const routes: Routes = [
    * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages */
   { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/wsrequest/:requestid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/wsrequest/:requestid/:calledby/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/request-for-panel/:requestid', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
 
    { path: 'project/:projectid/unserved-request-for-panel', component: WsRequestsUnservedForPanelComponent, canActivate: [AuthGuard] },
@@ -316,6 +318,10 @@ const routes: Routes = [
   // { path: 'project/:projectid/historyrt', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/history', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/all-conversations', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
+
+
+  { path: 'project/:projectid/history/:hassearcedby', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/all-conversations/:hassearcedby', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
   
   // TRIGGER
   { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard, ProjectProfileGuard] },

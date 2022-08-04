@@ -545,7 +545,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
   goToRequestMsgs(request_id: string) {
-    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
+    // this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
+    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages' ]);
   }
 
 
