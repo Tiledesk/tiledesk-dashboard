@@ -47,7 +47,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Subscription;
     private lastPoppedUrl: string;
     private yScrollStack: number[] = [];
-    private unservedRequestCount: number;
+ 
 
     route: string;
     LOGIN_PAGE: boolean;
@@ -221,20 +221,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         }
 
-        // if (browserLang) {
-        //     // if (browserLang === 'it') {
-        //     //     this.translate.use('it');
-        //     //     moment.locale('it')
-
-        //     // } else if (browserLang === 'de') {
-        //     //     this.translate.use('de');
-        //     //     moment.locale('de')
-
-        //     // } else {
-        //     //     this.translate.use('en');
-        //     // }
-        // }
-        // this.unservedRequestCount = 0
+     
 
 
         this.subscription = router.events.subscribe((event) => {
