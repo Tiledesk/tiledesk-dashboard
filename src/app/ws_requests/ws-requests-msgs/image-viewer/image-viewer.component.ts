@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 @Component({
   selector: 'appdashboard-image-viewer',
@@ -10,6 +10,14 @@ export class ImageViewerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    // console.log('IMAGE VIEWER - handleKeyboardEvent event ', event)
+    if (event.key === 'Escape') {
+      this.closeImageViewerModal()
+    }
   }
 
 
