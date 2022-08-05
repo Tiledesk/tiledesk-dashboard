@@ -12,7 +12,7 @@
     "pwa": "ng build --prod && sw-precache --root=dist --config=precache-config.js"
   },
   "author": "Tiledesk SRL",
-  "license": "AGPL-3.0",
+  "license": "MIT License",
   "homepage": "https://www.tiledesk.com",
   "repository": {
     "type": "git",
