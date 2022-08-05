@@ -3,7 +3,8 @@
 
 ### 2.2.47-rc1
 - Adds the ability in the chat section on the conversation detail page to close the image preview by clicking the "esc" keyboard key
-- Add dynamic "goBack" from the conversation detail page
+- Adds a dynamic "go back" from the conversation detail page that allows you to view any searches made by full text or ticket ID on the "history" page and the "non-real-time requests" page
+- Adds to teammates with the admin role to reopen archived conversations
 
 ### 2.2.46
 - Adds the "no_textscore" parameter to the query string that retrieves non-real time conversations and archived conversations
