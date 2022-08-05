@@ -953,6 +953,19 @@ export class WsRequestsService implements OnDestroy {
       .map((response) => response.text());
   }
 
+  public exportTranscriptAsPDFFile(idrequest: string) {
+    const url = this.SERVER_BASE_PATH + 'public/requests/' + idrequest + '/messages.pdf';
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/pdf');
+
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.text());
+  }
+
 
   // -----------------------------------------------------------------------------------------
   // @ Create internal request
