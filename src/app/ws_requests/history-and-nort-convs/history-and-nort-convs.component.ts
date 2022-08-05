@@ -303,26 +303,43 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-      console.log('[WS-REQUESTS-MSGS] params', params)
+      // console.log('[HISTORY & NORT-CONVS] params', params)
+      if (params.hassearcedby) {
 
+        this.fullText = params.hassearcedby
+        // console.log('here yes    this.fullText', this.fullText)
+        this.fullText_temp =  this.fullText
+          // console.log('here yes')
+          // this.has_searched = true; 
+          this.search();
+        
+      }
     })
   }
 
   goToRequestMsgs(request_recipient: string) {
-    console.log('goToRequestMsgs full text ', this.fullText)
+    // console.log('goToRequestMsgs full text ', this.fullText)
 
-    let searchkey = '';
-    if (this.fullText !== undefined) {
-      searchkey = this.fullText
-    } else if (this.fullText === undefined) {
-      searchkey = "ns";
-    }
+    // let searchkey = '';
+    // if (this.fullText !== undefined) {
+    //   searchkey = this.fullText
+    // } else if (this.fullText === undefined) {
+    //   searchkey = "ns";
+    // }
 
-    // this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/messages']);
-    if (this.IS_HERE_FOR_HISTORY) {
-      this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + searchkey + '/messages']);
+    if (this.fullText) {
+
+      if (this.IS_HERE_FOR_HISTORY) {
+        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + this.fullText + '/messages']);
+      } else {
+        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + this.fullText + '/messages']);
+      }
     } else {
-      this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + searchkey + '/messages']);
+      if (this.IS_HERE_FOR_HISTORY) {
+        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages']);
+      } else {
+        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages']);
+      }
     }
   }
 
@@ -354,22 +371,22 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     keys.forEach(key => {
 
       if (key.includes("PAY")) {
-        this.logger.log('[CONTACTS-COMP] PUBLIC-KEY - key', key);
+        this.logger.log('[HISTORY & NORT-CONVS] PUBLIC-KEY - key', key);
         let pay = key.split(":");
 
         if (pay[1] === "F") {
           this.payIsVisible = false;
-          this.logger.log('[CONTACTS-COMP] - pay isVisible', this.payIsVisible);
+          this.logger.log('[HISTORY & NORT-CONVS] - pay isVisible', this.payIsVisible);
         } else {
           this.payIsVisible = true;
-          this.logger.log('[CONTACTS-COMP] - pay isVisible', this.payIsVisible);
+          this.logger.log('[HISTORY & NORT-CONVS] - pay isVisible', this.payIsVisible);
         }
       }
     });
 
     if (!this.public_Key.includes("PAY")) {
       this.payIsVisible = false;
-      this.logger.log('[CONTACTS-COMP] - pay isVisible', this.payIsVisible);
+      this.logger.log('[HISTORY & NORT-CONVS] - pay isVisible', this.payIsVisible);
     }
   }
 
@@ -1472,8 +1489,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (this.fullText) {
       // console.log('searchOnEnterPressed this.fullText ', this.fullText)
-
-
       if (this.fullText.indexOf('#') !== -1) {
         // console.log('String contains # ');
         const indexOfHash = this.fullText.indexOf("#");
@@ -1502,6 +1517,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       }
 
       this.fullText_applied_filter = this.fullText_temp;
+      // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR FULL TEXT fullText_applied_filter', this.fullText_applied_filter);
       // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR FULL TEXT ', this.fullTextValue);
     } else {
       // console.log('[HISTORY & NORT-CONVS] -  SEARCH FOR FULL TEXT (else) ', this.fullText);

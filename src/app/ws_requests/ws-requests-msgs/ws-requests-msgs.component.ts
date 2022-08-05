@@ -396,47 +396,54 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getBrowserLang();
     this.getBrowserVersion()
     this.setMomentLocale()
-    this.getTeammates()
-    this.getBots()
+    this.getTeammates();
+    this.getBots();
     // this.sensorTypes = [
     //   {label : "Current", value : "C"},
     //   {label : "Voltage", value : "V"},
     //   {label : "Nicola", value : "N"}
     // ]
-    this.getRouteParams()
+    this.getRouteParams();
 
   }
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-      console.log('[WS-REQUESTS-MSGS] params', params)
+      // console.log('[WS-REQUESTS-MSGS] params', params)
+
       if (params.calledby === '1') {
         this.previousUrl = 'wsrequests'
       }
       if (params.calledby === '2') {
         this.previousUrl = 'history',
-        this.hasSearchedBy = params.hassearchedby
+          this.hasSearchedBy = params.hassearchedby
+
       }
 
       if (params.calledby === '3') {
         this.previousUrl = 'all-conversations',
-        this.hasSearchedBy = params.hassearchedby
+          this.hasSearchedBy = params.hassearchedby
+
+        // console.log('called by all-conversations ', 'hasSearchedBy ', this.hasSearchedBy)
       }
+
     })
   }
 
   goBack() {
-    if (this.previousUrl === 'wsrequests') {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-    }
 
-    if (this.previousUrl === 'history') {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' +  this.hasSearchedBy]);
-    }
+      if (this.previousUrl === 'wsrequests') {
+        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+      } else if (this.previousUrl === 'history' && this.hasSearchedBy) {
+        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
+      } else if (this.previousUrl === 'all-conversations' && this.hasSearchedBy) {
+        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
+      } else if (this.previousUrl === 'history' && !this.hasSearchedBy) {
+        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+      } else if (this.previousUrl === 'all-conversations' && !this.hasSearchedBy) {
+        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+      }
 
-    if (this.previousUrl === 'all-conversations') {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' +  this.hasSearchedBy]);
-    }
 
   }
 
@@ -3193,6 +3200,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
 
     if (this.transcriptDwnldPreference === 'PDF') {
+      // console.log('[WS-REQUESTS-MSGS - HERE 1');
+      // this.exportTranscriptToPDF()
       const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.pdf'
       window.open(url, '_blank');
     }
@@ -3217,6 +3226,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
   }
 
+  exportTranscriptToPDF() {
+    // console.log('[WS-REQUESTS-MSGS - HERE 2');
+    this.wsRequestsService.exportTranscriptAsPDFFile(this.id_request).subscribe((res: any) => {
+      // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF', res);
+      if (res) {
+        this.downloadTranscriptAsPDFFile(res)
+      }
+    }, (error) => {
+    // console.error('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF - ERROR  ', error);
+    }, () => {
+      // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF * COMPLETE *');
+    });
+
+
+  }
+  
+
   downloadTranscriptAsCSVFile(data) {
     const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
     const dwldLink = document.createElement('a');
@@ -3226,14 +3252,30 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       dwldLink.setAttribute('target', '_blank');
     }
     dwldLink.setAttribute('href', url);
-    dwldLink.setAttribute('download', 'message.csv');
+    dwldLink.setAttribute('download', 'transcript.csv');
     dwldLink.style.visibility = 'hidden';
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
   }
 
+  downloadTranscriptAsPDFFile(data) {
 
+      const blob = new Blob([data], { type: 'application/pdf' });
+      const dwldLink = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
+      if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
+        dwldLink.setAttribute('target', '_blank');
+      }
+      dwldLink.setAttribute('href', url);
+      dwldLink.setAttribute('download', 'transcript.pdf');
+      dwldLink.style.visibility = 'hidden';
+      document.body.appendChild(dwldLink);
+      dwldLink.click();
+      document.body.removeChild(dwldLink);
+    
+  }
 
 
   goToTags() {
