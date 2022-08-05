@@ -1798,7 +1798,7 @@
                   </button>
 
                   <button type="button" class="btn btn-danger btn-simple btn-xs tool_tip"
-                    (click)='reopenArchivedRequest(request, request?.request_id)' [disabled]="CURRENT_USER_ROLE !== 'agent'">
+                    (click)='reopenArchivedRequest(request, request?.request_id)' [disabled]="CURRENT_USER_ROLE === 'agent'">
 
 
                     <i class="material-icons" style="color: #3ea9f5; transform: rotate(180deg);">archive</i>
