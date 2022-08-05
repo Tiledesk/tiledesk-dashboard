@@ -356,7 +356,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     subscribeToStoredForegroundAndManageAppTab() {
         this.wsRequestsService.foregroundNotificationCount$
             .subscribe((foregroundNoticationCount) => {
-                console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
+                // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
                 // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION this.isTabVisible ', this.isTabVisible);
 
                 // && foregroundNoticationCount > 0
