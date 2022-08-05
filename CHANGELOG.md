@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 2.2.47-rc2
-- Fixed bug: the ability to reopen archived conversations does not work for teammates with the admin role
+- Fixes the bug: the ability to reopen archived conversations does not work for teammates with the admin role
 
 ### 2.2.47-rc1
 - Adds the ability in the chat section on the conversation detail page to close the image preview by clicking the "esc" keyboard key
