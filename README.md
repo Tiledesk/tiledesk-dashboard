@@ -18,7 +18,7 @@ Tiledesk is multichannel in a totally new way. You can write your chatbot script
 
 # Tiledesk-dashboard
 
-<img  width="1200"  alt="home_screenshot"  src="new_dashboard_homepage.png"  width="500">
+<img  width="1200"  alt="home_screenshot"  src="https://i0.wp.com/tiledesk.com/wp-content/uploads/2022/08/Tiledesk_Dashboard.png?ssl=1&resize=438%2C438"  width="500">
 
 
 Tiledesk.com backoffice application is available on GitHub under MIT licence.
