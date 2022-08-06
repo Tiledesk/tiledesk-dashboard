@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.2.47
+- Deploys in production
+- Adds the ability in the chat section on the conversation detail page to close the image preview by clicking the "esc" keyboard key
+- Adds a dynamic "go back" from the conversation detail page that allows you to view any searches made by full text or ticket ID on the "history" page and the "non-real-time requests" page
+- Adds to teammates with the admin role the ability to reopen archived conversations
+
 ### 2.2.47-rc2
 - Fixes the bug: the ability to reopen archived conversations does not work for teammates with the admin role
 
