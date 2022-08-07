@@ -3,6 +3,7 @@
 
 ### 2.2.47.1
 - Fixes the bug: returning from the details page of the conversation not always in the "History" page or in the "Conversations not in real time" page, the previous search carried out for full text or ticket ID is displayed
+- Adds the string "Processing" to the "Most Recent Comments" section of the popover displayed when the mouse is over the message of the conversation (in the "History" page, "Conversation not real time" page and "Monitor" page)
 
 ### 2.2.47
 - Deploys in production
