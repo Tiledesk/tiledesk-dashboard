@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.47.1
+- Fixes the bug: returning from the details page of the conversation not always in the "History" page or in the "Conversations not in real time" page, the previous search carried out for full text or ticket ID is displayed
+
 ### 2.2.47
 - Deploys in production
 - Adds the ability in the chat section on the conversation detail page to close the image preview by clicking the "esc" keyboard key
