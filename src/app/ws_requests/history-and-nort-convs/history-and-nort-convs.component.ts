@@ -284,7 +284,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // selectedAgentId is assigned to empty so in the template will be selected the custom option ALL AGENTS
     this.selectedAgentId = '';
     this.getCurrentUser();
-    // this.getRequests();
+
     this.getCurrentProject();
     this.getDepartments();
     this.getAllProjectUsers();
@@ -308,13 +308,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
         this.fullText = params.hassearcedby
         // console.log('here yes    this.fullText', this.fullText)
-        this.fullText_temp =  this.fullText
-          // console.log('here yes')
-          // this.has_searched = true; 
-          this.search();
-        
+        this.fullText_temp = this.fullText
+        // console.log('here yes')
+        this.has_searched = true;
+        this.search();
+
       }
     })
+
   }
 
   goToRequestMsgs(request_recipient: string) {
@@ -534,7 +535,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     // this._onJoinHandled(request_id, this.currentUserID, request);
     this.logger.log('[HISTORY & NORT-CONVS] joinRequest request', request)
-    // this.getRequests();
+
 
     let chatAgent = '';
     if (request && request.participanting_Agents) {
@@ -616,7 +617,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         request['participanting_Agents'] = this.doParticipatingAgentsArray(request.participants, request.first_text, this.imageStorage, this.UPLOAD_ENGINE_IS_FIREBASE)
         this.logger.log('[HISTORY & NORT-CONVS] - JOIN PRESSED request ', request);
         this.notify.showWidgetStyleUpdateNotification(`You are successfully added to the chat`, 2, 'done');
-        // this.getRequests();
+
       });
     // });
   }
@@ -667,28 +668,30 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   //   }
   // }
 
-
-
-
-
-
-
   getCurrentUrlLoadRequests() {
-    const currentUrl = this.router.url;
-    this.logger.log('[HISTORY & NORT-CONVS] current_url ', currentUrl);
 
+    const currentUrl = this.router.url;
+    // console.log('[HISTORY & NORT-CONVS] current_url ', currentUrl);
+    const url_segments = currentUrl.split('/');
+    url_segments.shift(); // removes the first element of the array which is an empty string created due to the first slash present in the URL
+    // console.log('[HISTORY & NORT-CONVS] url_segments ', url_segments);
+    // console.log('[HISTORY & NORT-CONVS] url_segments lenght', url_segments.length);
     if (currentUrl.indexOf('/all-conversations') !== -1) {
       this.IS_HERE_FOR_HISTORY = false;
       this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.requests_status = 'all'
-      this.getRequests();
+      if (url_segments && url_segments.length === 3) {
+        this.getRequests();
+      }
 
     } else {
       this.IS_HERE_FOR_HISTORY = true;
       this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.operator = '='
       this.requests_status = '1000'
-      this.getRequests();
+      if (url_segments && url_segments.length === 3) {
+        this.getRequests();
+      }
     }
   }
 
@@ -722,6 +725,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   getAllRequests() {
+
     // this.operator = '<'
     this.requests_status = 'all'
     this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - getAllRequests', this.requests_status, 'operator ', this.operator);
@@ -841,6 +845,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   // GET REQUEST COPY - START
   getRequests() {
+
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
@@ -1473,6 +1478,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   search() {
     this.has_searched = true;
+    // console.log('search has_searched ' + this.has_searched)
     this.pageNo = 0
 
     // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED (doesn't works - so is used the below code)
@@ -1644,6 +1650,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   clearFullText() {
+    this.has_searched = false;
+    const currentUrl = this.router.url;
+    // console.log('[HISTORY & NORT-CONVS] clearFullText current_url ', currentUrl);
+    const url_segments = currentUrl.split('/');
+    url_segments.shift(); // removes the first element of the array which is an empty string created due to the first slash present in the URL
+    // console.log('[HISTORY & NORT-CONVS] clearFullText url_segments ', url_segments);
+    // console.log('[HISTORY & NORT-CONVS] clearFullText url_segments lenght', url_segments.length);
+
+    if (url_segments && url_segments.length > 3) {
+      const current_route = url_segments[2]
+      // console.log('[HISTORY & NORT-CONVS] clearFullText current_route ', current_route);
+      this.router.navigate(['project/' + this.projectId + '/' + current_route]);
+    }
+    
+    // console.log('clearFullText has_searched', this.has_searched)
     this.fullText = '';
     this.fullText_applied_filter = null;
 
@@ -1723,6 +1744,19 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   clearSearch() {
+    const currentUrl = this.router.url;
+    // console.log('[HISTORY & NORT-CONVS] clearSearch current_url ', currentUrl);
+    const url_segments = currentUrl.split('/');
+    url_segments.shift(); // removes the first element of the array which is an empty string created due to the first slash present in the URL
+    // console.log('[HISTORY & NORT-CONVS] clearSearch url_segments ', url_segments);
+    // console.log('[HISTORY & NORT-CONVS] clearSearch url_segments lenght', url_segments.length);
+
+    if (url_segments && url_segments.length > 3) {
+      const current_route = url_segments[2]
+      // console.log('[HISTORY & NORT-CONVS] clearSearch current_route ', current_route);
+      this.router.navigate(['project/' + this.projectId + '/' + current_route]);
+    }
+
     // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED
     const clearSearchBtn = <HTMLElement>document.querySelector('.clearsearchbtn');
     this.logger.log('[HISTORY & NORT-CONVS]- CLEAR SEARCH BTN', clearSearchBtn)
@@ -2126,8 +2160,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                 swal(this.done_msg, this.selectedRequestsWasSuccessfullyDeleted, {
                   icon: "warning",
                 }).then((okpressed) => {
-                  // do something?
-                  //this.getRequests();
+
                 })
 
               })
