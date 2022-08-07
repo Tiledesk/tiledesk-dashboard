@@ -1305,6 +1305,41 @@ span.navbar-brand-title {
   font-size: 14px;
 }
 
+
+
+// https://stackoverflow.com/questions/13014808/is-there-anyway-to-animate-an-ellipsis-with-css-animations
+/**
+// --------------------------------------------------
+// Animate ellipsis 
+/  --------------------------------------------------
+*/
+.ng2-latest-comment-loading {
+  color: #ddd
+}
+.ng2-latest-comment-loading:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 900ms infinite;      
+  animation: ellipsis steps(4,end) 900ms infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  width: 0px;
+  color: #ddd;
+  font-weight: 100 !important;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 20px;    
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 20px;    
+  }
+}
+
 footer ul {
   line-height: 0px;
 }
