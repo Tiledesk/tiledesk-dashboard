@@ -432,17 +432,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   goBack() {
 
-      if (this.previousUrl === 'wsrequests') {
-        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-      } else if (this.previousUrl === 'history' && this.hasSearchedBy) {
-        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
-      } else if (this.previousUrl === 'all-conversations' && this.hasSearchedBy) {
-        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
-      } else if (this.previousUrl === 'history' && !this.hasSearchedBy) {
-        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-      } else if (this.previousUrl === 'all-conversations' && !this.hasSearchedBy) {
-        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-      }
+    if (this.previousUrl === 'wsrequests') {
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+    } else if (this.previousUrl === 'history' && this.hasSearchedBy) {
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
+    } else if (this.previousUrl === 'all-conversations' && this.hasSearchedBy) {
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
+    } else if (this.previousUrl === 'history' && !this.hasSearchedBy) {
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+    } else if (this.previousUrl === 'all-conversations' && !this.hasSearchedBy) {
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+    }
 
 
   }
@@ -2532,10 +2532,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     // determine the height of the modal when the width of the window is <= of 991px when is opened the modal
     // RESOLVE THE BUG: @media screen and (max-width: 992px) THE THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
-    if (actualWidth <= 991) {
-      this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px'
-      // this.logger.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
-      this.logger.log('[WS-REQUESTS-MSGS] - USER LIST MODAL - ON OPEN  <=991 - users_list_modal_height', this.users_list_modal_height);
+    if (this.CHAT_PANEL_MODE === false) {
+      if (actualWidth <= 991) {
+        this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px'
+        // console.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
+        this.logger.log('[WS-REQUESTS-MSGS] - USER LIST MODAL - ON OPEN  <=991 - users_list_modal_height', this.users_list_modal_height);
+      }
     }
   }
 
@@ -3234,14 +3236,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.downloadTranscriptAsPDFFile(res)
       }
     }, (error) => {
-    // console.error('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF - ERROR  ', error);
+      // console.error('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF - ERROR  ', error);
     }, () => {
       // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF * COMPLETE *');
     });
 
 
   }
-  
+
 
   downloadTranscriptAsCSVFile(data) {
     const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
@@ -3261,20 +3263,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   downloadTranscriptAsPDFFile(data) {
 
-      const blob = new Blob([data], { type: 'application/pdf' });
-      const dwldLink = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
-      if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
-        dwldLink.setAttribute('target', '_blank');
-      }
-      dwldLink.setAttribute('href', url);
-      dwldLink.setAttribute('download', 'transcript.pdf');
-      dwldLink.style.visibility = 'hidden';
-      document.body.appendChild(dwldLink);
-      dwldLink.click();
-      document.body.removeChild(dwldLink);
-    
+    const blob = new Blob([data], { type: 'application/pdf' });
+    const dwldLink = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
+    if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
+      dwldLink.setAttribute('target', '_blank');
+    }
+    dwldLink.setAttribute('href', url);
+    dwldLink.setAttribute('download', 'transcript.pdf');
+    dwldLink.style.visibility = 'hidden';
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+
   }
 
 

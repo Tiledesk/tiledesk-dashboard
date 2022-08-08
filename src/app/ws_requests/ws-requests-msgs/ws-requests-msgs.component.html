@@ -194,8 +194,9 @@
 
                             <ng-container *ngIf="resolutionBotCount > 0">
                               <p class="train-btn-wpr" *ngIf="message?.type === 'text' && !message?.metadata">
-                                <span class="train-btn" (click)="openRightSideBar(message?.text)"> {{ 'Train' |
-                                  translate }} </span>
+                                <span class="train-btn" (click)="openRightSideBar(message?.text)">
+                                   {{ 'Train' |  translate }} 
+                                  </span>
                               </p>
                             </ng-container>
                             <!-- -------------------------------------------------------------- -->
@@ -211,6 +212,10 @@
                               <div class="image-container" style="cursor:pointer"
                                 (click)="openImageViewerModal(message?.metadata)">
                                 <img src={{message.metadata.src}} class="message-img" />
+                                <!-- message >   {{message | json}} -->
+                                <p *ngIf="message?.text"
+                                [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
+                            </p>
                               </div>
                             </div>
                             <span class="timestamp">
@@ -464,7 +469,7 @@
 
                     <div class="col-xs-12  w-100 plr-0">
                       <div class="row w-100">
-                        <div class="col-xs-5 h-100 plr-0" style="    margin-top: -4px;  ">
+                        <div class="col-xs-3 h-100 plr-0" style="    margin-top: -4px;  ">
                           <ng-select class="select-response-type" [clearable]="false" [searchable]="false"
                             [items]="responseType" bindLabel="name" bindValue="id" [(ngModel)]="selectedResponseTypeID"
                             (change)="onChangeReplyType(selectedResponseTypeID)">
@@ -478,7 +483,7 @@
                             </ng-template>
                           </ng-select>
                         </div>
-                        <div class="col-xs-12 h-100 plr-0" style="    margin-top: -4px;  ">
+                        <div class="col-xs-9 h-100 plr-0" style="    margin-top: -4px;  ">
 
                           <button class="btn btn-primary pull-right send-chat-msg-btn" (click)="sendChatMessage()"
                             [disabled]="!chat_message || chat_message?.length === 0 ">
@@ -3029,7 +3034,7 @@
         style="background-color: rgba(90,90,90,0.5);">
         <div class="modal-dialog modal-lg users-list-modal"
           [ngClass]="{'users-list-modal-dashboard-mode' : CHAT_PANEL_MODE === false, 'users-list-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-          role="document" style="width: 100%; height: 100%; margin:0; padding: 0;">
+          role="document" style="width: 100%; height: 100vh; margin:0; padding: 0;">
           <div class="modal-content" style="height: auto; min-height: 100%; border-radius: 0; border:none;">
 
             <div class="modal-header" [ngClass]="{'modal-header-chat-panel-mode' : CHAT_PANEL_MODE === true}">
