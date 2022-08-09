@@ -3086,7 +3086,7 @@
                     <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
 
                     <!-- table-responsive -->
-                    <div *ngIf="!showSpinner_inModalUserList" class="card-content"
+                    <div *ngIf="!showSpinner_inModalUserList" class="card-content table-responsive"
                       [ngClass]="{'card-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
 
                       <table class="table table-hover">
@@ -3132,7 +3132,7 @@
                             </th>
 
                             <th *ngIf="CHAT_PANEL_MODE === false">
-                              <span style="color: #566787">
+                              <span style="color: #566787; white-space: nowrap;">
                                 {{ "UserRole" | translate }}
                               </span>
                             </th>
@@ -3230,7 +3230,7 @@
                             <!-- ------------------------------------------------------ -->
                             <!-- column displayed on the over -->
                             <!-- ------------------------------------------------------ -->
-                            <td *ngIf="!isMobile && CHAT_PANEL_MODE === false" style="cursor:pointer"
+                            <td *ngIf="!isMobile && CHAT_PANEL_MODE === false" style="cursor:pointer;"
                               (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
                               <!-- <span class="tooltipx"> -->
                               <div class="assign-request">
