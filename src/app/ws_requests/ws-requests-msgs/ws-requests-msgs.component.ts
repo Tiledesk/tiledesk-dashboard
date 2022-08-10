@@ -271,6 +271,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   resolutionBotCount: number;
   previousUrl: string;
   hasSearchedBy: string;
+  isOpenedAdvancedSearch: string;
+  selectedDept: string;
+  queryParams: any;
   /**
    * Constructor
    * @param router 
@@ -327,12 +330,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     //   .subscribe((event: any[]) => {
     //     console.log('[WS-REQUESTS-MSGS] urlAfterRedirects' , event[0].urlAfterRedirects);
     //   });
-
-
   }
-
-
-
 
 
   @ViewChild('cont') contEl: any;
@@ -404,25 +402,42 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     //   {label : "Nicola", value : "N"}
     // ]
     this.getRouteParams();
+    this.getQueryParams();
+  }
 
+
+  getQueryParams() {
+    this.route.queryParams
+      .subscribe(params => {
+        console.log('[WS-REQUESTS-MSGS]  queryParams', params);
+        this.queryParams = params
+      });
   }
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-      // console.log('[WS-REQUESTS-MSGS] params', params)
+      console.log('[WS-REQUESTS-MSGS] params', params)
+
+      if (params.isopenadvancedsearch) {
+        this.isOpenedAdvancedSearch = params.isopenadvancedsearch
+      }
+
+      if (params.deptid) {
+        this.selectedDept = params.deptid
+      }
 
       if (params.calledby === '1') {
         this.previousUrl = 'wsrequests'
       }
+
       if (params.calledby === '2') {
         this.previousUrl = 'history',
-          this.hasSearchedBy = params.hassearchedby
-
+        this.hasSearchedBy = params.hassearchedby
       }
 
       if (params.calledby === '3') {
         this.previousUrl = 'all-conversations',
-          this.hasSearchedBy = params.hassearchedby
+        this.hasSearchedBy = params.hassearchedby
 
         // console.log('called by all-conversations ', 'hasSearchedBy ', this.hasSearchedBy)
       }
@@ -432,17 +447,62 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   goBack() {
 
+    // if (this.previousUrl === 'wsrequests') {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+    // } else if (this.previousUrl === 'history' && this.hasSearchedBy) {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
+    // } else if (this.previousUrl === 'all-conversations' && this.hasSearchedBy) {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
+    // } else if (this.previousUrl === 'history' && !this.hasSearchedBy) {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+    // } else if (this.previousUrl === 'all-conversations' && !this.hasSearchedBy) {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+    // }
+
+
     if (this.previousUrl === 'wsrequests') {
       this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-    } else if (this.previousUrl === 'history' && this.hasSearchedBy) {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
-    } else if (this.previousUrl === 'all-conversations' && this.hasSearchedBy) {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
-    } else if (this.previousUrl === 'history' && !this.hasSearchedBy) {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-    } else if (this.previousUrl === 'all-conversations' && !this.hasSearchedBy) {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+      // && this.hasSearchedBy
+    
+      // Called by history with advanced search options opened 
+    // } else if (this.previousUrl === 'history' && this.isOpenedAdvancedSearch) {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch]);
+
+    //   // Called by history with advanced search options closed 
+    // } else if (this.previousUrl === 'history' && !this.isOpenedAdvancedSearch) {
+
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
+    //   // && this.hasSearchedBy
+
+    // } else if (this.previousUrl === 'history' && this.isOpenedAdvancedSearch && this.selectedDept) {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch + '/' + this.selectedDept]);
+
+      // Called by all-conversations with advanced search options opened 
+    // } else if (this.previousUrl === 'all-conversations' && this.isOpenedAdvancedSearch) {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch]);
+
+    // } else if (this.previousUrl === 'all-conversations' && this.isOpenedAdvancedSearch && this.selectedDept) {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch + '/' + this.selectedDept]);
+
+    //   // Called by all-conversations with advanced search options closed
+    // } else if (this.previousUrl === 'all-conversations' && !this.isOpenedAdvancedSearch) {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
     }
+
+    if (this.previousUrl === 'all-conversations' && this.queryParams) {
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl ], {  queryParams: this.queryParams } )
+    }
+
+    if (this.previousUrl === 'history' && this.queryParams) {
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl ], {  queryParams: this.queryParams } )
+    }
+
+
+    // } else if (this.previousUrl === 'history' && !this.hasSearchedBy) {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+    // } else if (this.previousUrl === 'all-conversations' && !this.hasSearchedBy) {
+    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+    // }
 
 
   }
