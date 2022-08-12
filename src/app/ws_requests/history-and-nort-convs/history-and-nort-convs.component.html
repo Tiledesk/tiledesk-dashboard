@@ -176,7 +176,8 @@
                   <div class="col-sm-12">
                     <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false"
                       (change)="depSelected(selectedDeptId)">
-                      <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option>
+                      <!-- <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option> -->
+                      <ng-option  [value]="''">{{ allDeptsLabel }}</ng-option>
                       <ng-option *ngFor="let dept of departments" [value]="dept._id">
                         {{dept.name}}
                       </ng-option>
@@ -239,7 +240,7 @@
                   <div class="col-sm-12">
                     <ng-select [items]="tags_array" bindLabel="name" bindValue="name"
                       placeholder="{{'Tags.SelectTag' | translate}}" [(ngModel)]="selecteTagName"
-                      (change)="tagNameSelected()" [clearable]='false'>
+                      (change)="tagNameSelected()" [clearable]='false' [loading]=loadingTags loadingText='Loading...'>
                       <ng-template ng-label-tmp let-item="item">
                         <!-- <img height="15" width="15" [src]="item.avatar" /> -->
                         <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div>

@@ -113,6 +113,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   REQUESTER_IS_VERIFIED = false;
 
   tags_array = [];
+  loadingTags: boolean;
   selecteTagName: string;
   selecteTagNameValue: string;
   selecteTagColor: string; // used in applied filter
@@ -232,6 +233,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   isChromeVerGreaterThan100: boolean;
   SEARCH_FOR_TICKET_ID: boolean = false;
   queryParams: any;
+  allDeptsLabel: string;
+
   /**
    * 
    * @param router 
@@ -277,6 +280,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   ngOnInit() {
     this.getOSCODE();
+    this.getTag();
     this.getCurrentUrlLoadRequests();
     this.getImageStorageAndChatBaseUrl();
     // this.auth.checkRoleForCurrentProject();
@@ -296,7 +300,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.getTranslations();
     this.getProjectUserRole();
     this.detectMobile();
-    this.getTag();
+
     this.getFirebaseAuth();
     this.getBrowserVersion()
     // this.getRouteParams()
@@ -343,9 +347,81 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               if (dept_id_value) {
                 this.selectedDeptId = dept_id_value;
                 console.log('[HISTORY & NORT-CONVS]  queryParams qsString > dept_id_value:', this.selectedDeptId)
-                // this.fullText_temp = this.fullText;
+
               }
             }
+
+            if (paramArray[0] === 'start_date' && paramArray[1] !== '') {
+              const start_date_value = paramArray[1]
+              console.log('[HISTORY & NORT-CONVS] queryParams start_date_value ', start_date_value)
+              if (start_date_value) {
+                this.startDate = {}
+                this.startDate['formatted'] = start_date_value;
+                this.startDateFormatted_temp = this.startDate['formatted']
+                this.start_date_is_null = false;
+                console.log('[HISTORY & NORT-CONVS]  queryParams qsString > startDate:', this.startDate)
+
+              }
+            }
+
+
+
+            if (paramArray[0] === 'end_date' && paramArray[1] !== '') {
+              const end_date = paramArray[1]
+              console.log('[HISTORY & NORT-CONVS] queryParams start_end_date value', end_date)
+              if (end_date) {
+                this.endDate = {}
+                this.endDate['formatted'] = end_date;
+                this.endDateFormatted_temp = this.endDate['formatted']
+                console.log('[HISTORY & NORT-CONVS]  queryParams qsString > endDate:', this.endDate)
+
+              }
+            }
+
+            if (paramArray[0] === 'channel' && paramArray[1] !== '') {
+              const channel_value = paramArray[1]
+              console.log('[HISTORY & NORT-CONVS] queryParams channel value ', channel_value)
+              if (channel_value) {
+                this.conversation_type = channel_value
+                console.log('[HISTORY & NORT-CONVS]  queryParams qsString > conversation_type:', this.conversation_type)
+              }
+            }
+
+
+            if (paramArray[0] === 'participant' && paramArray[1] !== '') {
+              const participant_value = paramArray[1]
+              console.log('[HISTORY & NORT-CONVS] queryParams participant value ', participant_value)
+              if (participant_value) {
+                this.selectedAgentId = participant_value
+                console.log('[HISTORY & NORT-CONVS]  queryParams qsString > selectedAgentId:', this.selectedAgentId)
+              }
+            }
+
+            if (paramArray[0] === 'tags' && paramArray[1] !== '') {
+              const tags_value = paramArray[1]
+              console.log('[HISTORY & NORT-CONVS] queryParams tags_value ',tags_value)
+              console.log('[HISTORY & NORT-CONVS] queryParams this.tags_array ', this.tags_array)
+              // this.showAdvancedSearchOption = true;
+              this.selecteTagName =  tags_value;
+              this.selecteTagNameValue = this.selecteTagName
+              // console.log('[HISTORY & NORT-CONVS] queryParams this.showAdvancedSearchOption ', this.showAdvancedSearchOption)
+            
+              if (tags_value) {
+               
+                const selecteTag = this.tags_array.filter((tag: any) => {
+                  return tag.name === this.selecteTagName;
+                });
+               console.log('[HISTORY & NORT-CONVS] - selecteTag ', selecteTag);
+
+                if (selecteTag.length > 0) {
+                  this.selecteTagColor_temp = selecteTag[0]['color']
+                  console.log('[HISTORY & NORT-CONVS] - selecteTag ', selecteTag)
+                }
+              }
+              
+            }
+
+
 
 
 
@@ -356,7 +432,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
         }
         // setTimeout(() => {
-        if (this.fullText || this.selectedDeptId) {
+        if (this.fullText || this.selectedDeptId || this.startDate || this.endDate || this.conversation_type || this.selectedAgentId || this.selecteTagName) {
           this.search();
         }
         // }, 1500);
@@ -591,8 +667,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.translateCancel();
     this.translateJoinToChat();
     this.translateWarningMsg();
+    this.translaAllDepts();
   }
-
+  translaAllDepts() {
+    this.translate.get('HistoryPage.AllDepts').subscribe((text: string) => {
+      this.allDeptsLabel = text;
+      console.log('+ + + allDeptsLabel', this.allDeptsLabel)
+    });
+  }
 
   translateWarningMsg() {
     this.translate.get('Warning').subscribe((text: string) => {
@@ -1327,6 +1409,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       if (projectUsers) {
         this.projectUsersArray = projectUsers;
         projectUsers.forEach(user => {
+          console.log('getAllProjectUsers user ', user)
           this.user_and_bot_array.push({ '_id': user.id_user._id, 'firstname': user.id_user.firstname, 'lastname': user.id_user.lastname });
         });
 
@@ -1392,6 +1475,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // @ Tags - get tags
   // ------------------------------------------------------------------------------
   getTag() {
+    this.loadingTags = true;
     this.tagsService.getTags().subscribe((tags: any) => {
       this.logger.log('[HISTORY & NORT-CONVS] - GET TAGS - RES ', tags);
 
@@ -1400,12 +1484,28 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
         this.tags_array.push({ 'id': tag._id, 'name': tag.tag, 'color': tag.color })
       });
+      this.tags_array = this.tags_array.slice(0) 
 
-      this.logger.log('[HISTORY & NORT-CONVS] - TAG-ARRAY', this.tags_array);
+      console.log('[HISTORY & NORT-CONVS] - TAG-ARRAY', this.tags_array);
     }, error => {
+      this.loadingTags = false
       this.logger.error('[HISTORY & NORT-CONVS] - GET TAGS - ERROR: ', error);
     }, () => {
-      this.logger.log('[HISTORY & NORT-CONVS] - GET TAGS * COMPLETE *')
+      this.loadingTags = false
+      console.log('[HISTORY & NORT-CONVS] - GET TAGS * COMPLETE *')
+
+      // if (this.qs_tags_value)
+      //   console.log('[HISTORY & NORT-CONVS] - GET TAGS * COMPLETE > this.qs_tags_value ', this.qs_tags_value)
+
+      // const selecteTag = this.tags_array.filter((tag: any) => {
+      //   return tag.name === this.qs_tags_value;
+      // });
+
+      // if (selecteTag.length > 0) {
+      //   this.selecteTagName = selecteTag[0]['name']
+      //   this.selecteTagColor_temp = selecteTag[0]['color']
+      //   console.log('[HISTORY & NORT-CONVS] - selecteTag ', selecteTag)
+      // }
     });
   }
 
@@ -1452,13 +1552,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // @ Tags - on change tags get selected tag name
   // ------------------------------------------------------------------------------
   tagNameSelected() {
-    this.logger.log('[HISTORY & NORT-CONVS] - selecteTagName ', this.selecteTagName);
+    console.log('[HISTORY & NORT-CONVS] - selecteTagName ', this.selecteTagName);
     // this.selecteTagNameValue = this.selecteTagName
 
     const selecteTag = this.tags_array.filter((tag: any) => {
       return tag.name === this.selecteTagName;
     });
-    this.logger.log('[HISTORY & NORT-CONVS] - selecteTag ', selecteTag);
+    console.log('[HISTORY & NORT-CONVS] - selecteTag ', selecteTag);
 
     if (selecteTag.length > 0) {
       this.selecteTagColor_temp = selecteTag[0]['color']
@@ -1522,10 +1622,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // @ Date - on change start date get selected start date formatted
   // ------------------------------------------------------------------------------
   startDateSelected($event) {
-    this.logger.log('[HISTORY & NORT-CONVS] - startDateSelected ', $event);
+    console.log('[HISTORY & NORT-CONVS] - startDateSelected event', $event);
     this.startDateFormatted_temp = $event['formatted'];
 
-    this.logger.log('[HISTORY & NORT-CONVS] - startDateFormatted TEMP ', this.startDateFormatted_temp);
+    console.log('[HISTORY & NORT-CONVS] - startDateFormatted TEMP ', this.startDateFormatted_temp);
 
     // const startDateLessOneDay =  moment($event['jsdate']).subtract(1, 'days').format('DD/MM/YYYY'); 
     const startDateLessOneDay = moment($event['jsdate']).subtract(1, 'days').format('DD/MM/YYYY');
@@ -1566,7 +1666,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - endDateSelected ', $event);
 
     this.endDateFormatted_temp = $event['formatted'];
-    this.logger.log('[HISTORY & NORT-CONVS] - endDateFormatted TEMP', this.endDateFormatted_temp);
+    console.log('[HISTORY & NORT-CONVS] - endDateFormatted TEMP', this.endDateFormatted_temp);
 
     // this.endDatePickerOptions.disableUntil = this.disableUntilDate;
 
@@ -1613,6 +1713,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   search() {
     console.log('HERE IN SEARCH this.fullText', this.fullText)
+    console.log('HERE IN SEARCH this.startDate', this.startDate)
+    console.log('HERE IN SEARCH this.endDate', this.endDate)
     this.has_searched = true;
     // console.log('search has_searched ' + this.has_searched)
     this.pageNo = 0
@@ -1680,14 +1782,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (this.startDate) {
       this.logger.log('[HISTORY & NORT-CONVS] - START DATE ', this.startDate);
-      this.logger.log('[HISTORY & NORT-CONVS] - START DATE - FORMATTED ', this.startDate['formatted']);
-      this.logger.log('[HISTORY & NORT-CONVS] - START DATE - EPOC ', this.startDate['epoc']);
+      console.log('[HISTORY & NORT-CONVS] - START DATE - FORMATTED ', this.startDate['formatted']);
+      // this.logger.log('[HISTORY & NORT-CONVS] - START DATE - EPOC ', this.startDate['epoc']);
 
       this.startDateValue = this.startDate['formatted']
 
       this.startDateFormatted = this.startDateFormatted_temp;
 
-      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR START DATE ', this.startDateValue);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR START DATE ', this.startDateValue);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR START DATE FORMATTED', this.startDateFormatted);
     } else {
       this.startDateValue = '';
       this.startDateFormatted = null
@@ -1696,13 +1799,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (this.endDate) {
       this.logger.log('[HISTORY & NORT-CONVS] - END DATE ', this.endDate);
-      this.logger.log('[HISTORY & NORT-CONVS] - END DATE - FORMATTED ', this.endDate['formatted']);
-      this.logger.log('[HISTORY & NORT-CONVS] - END DATE - EPOC ', this.endDate['epoc']);
+      console.log('[HISTORY & NORT-CONVS] - END DATE - FORMATTED ', this.endDate['formatted']);
+      // this.logger.log('[HISTORY & NORT-CONVS] - END DATE - EPOC ', this.endDate['epoc']);
 
       this.endDateValue = this.endDate['formatted']
       this.endDateFormatted = this.endDateFormatted_temp;
-
-      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR END DATE ', this.endDateValue);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR END DATE FORMATTED', this.endDateFormatted);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR END DATE ', this.endDateValue);
     } else {
       this.endDateValue = '';
       this.endDateFormatted = null
@@ -1725,8 +1828,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
 
     if (this.selecteTagName) {
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR selecteTagName ', this.selecteTagName);
       this.selecteTagNameValue = this.selecteTagName
       this.selecteTagColor = this.selecteTagColor_temp
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR selecteTagNameValue ', this.selecteTagNameValue);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR selecteTagColor ', this.selecteTagColor);
     } else {
       this.selecteTagNameValue = '';
       this.selecteTagColor = null
@@ -1742,8 +1848,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.conversationTypeValue = '';
 
     }
-
-
 
 
     // !!!!! NOT USED ????
@@ -1777,9 +1881,24 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
     this.wsMsgsService.publishQueryString(this.queryString)
     // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 > showAdvancedSearchOption', this.showAdvancedSearchOption);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 selectedDeptId > ', this.selectedDeptId);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 startDate > ', this.startDate);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 endDate > ', this.endDate);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requester_email > ', this.requester_email);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 selecteTagName > ', this.selecteTagName);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 conversation_type > ', this.conversation_type);
+
+
     if (this.showAdvancedSearchOption === false) {
-      if (this.selectedDeptId || this.startDate || this.endDate || this.selectedAgentId || this.requester_email || this.selecteTagName) {
+
+      if (this.selectedDeptId || this.startDate || this.endDate || this.selectedAgentId || this.requester_email || this.selecteTagName || this.conversation_type !== 'all') {
+
         this.showAdvancedSearchOption = true;
+        console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 2 ', this.showAdvancedSearchOption);
+      } else {
+        this.showAdvancedSearchOption = false;
+        console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 3 ', this.showAdvancedSearchOption);
       }
     }
     this.getRequests();
@@ -1887,18 +2006,22 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   clearSearch() {
+    this.has_searched = false;
     const currentUrl = this.router.url;
-    // console.log('[HISTORY & NORT-CONVS] clearSearch current_url ', currentUrl);
+    console.log('[HISTORY & NORT-CONVS] clearSearch current_url ', currentUrl);
     const url_segments = currentUrl.split('/');
     url_segments.shift(); // removes the first element of the array which is an empty string created due to the first slash present in the URL
-    // console.log('[HISTORY & NORT-CONVS] clearSearch url_segments ', url_segments);
+    console.log('[HISTORY & NORT-CONVS] clearSearch url_segments ', url_segments);
     // console.log('[HISTORY & NORT-CONVS] clearSearch url_segments lenght', url_segments.length);
 
-    if (url_segments && url_segments.length > 3) {
-      const current_route = url_segments[2]
-      // console.log('[HISTORY & NORT-CONVS] clearSearch current_route ', current_route);
-      this.router.navigate(['project/' + this.projectId + '/' + current_route]);
+    let currentRoute = ""
+    if (url_segments[2].indexOf('/all-conversations') !== -1) {
+      currentRoute = 'all-conversations'
+    } else {
+      currentRoute = 'history'
     }
+
+    this.router.navigate(['project/' + this.projectId + '/' + currentRoute]);
 
     // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED
     const clearSearchBtn = <HTMLElement>document.querySelector('.clearsearchbtn');
