@@ -119,9 +119,8 @@ import { EmailTicketingComponent } from './email-ticketing/email-ticketing.compo
 import { AppCreateComponent } from './app-store/app-create/app-create.component';
 import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 
-// /Users/nicola/TILEDESK-DSHBRD-ENTP/src/app/analytics2/metriche/messages/messages.component.ts
-const routes: Routes = [
 
+const routes: Routes = [
 
   /* PRIVATE */
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
@@ -136,7 +135,7 @@ const routes: Routes = [
   // are used in the left panel of the chat
   { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] },
 
-  
+
   // **** NEW - WIZARD CREATE PROJECT ****
   // { path: 'project/create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
 
@@ -187,43 +186,30 @@ const routes: Routes = [
   { path: 'project/:projectid/unauthorized', component: UnauthorizedComponent },
   { path: 'project/:projectid/unauthorized-access', component: UnauthorizedForPricingComponent },
   { path: 'project/:projectid/unauthorized_access', component: UnauthorizedForProjectComponent },
-  
+
 
   { path: 'userprofile', component: UserProfileComponent },
   // , canActivate: [AuthGuard]
-  
+
 
   /*** WEBSOCKET ***/
   /**
    * if change wsrequest search for all occurrence - 
    * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages */
   { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/wsrequest/:requestid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/wsrequest/:requestid/:calledby/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+
   { path: 'project/:projectid/request-for-panel/:requestid', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
 
-   { path: 'project/:projectid/unserved-request-for-panel', component: WsRequestsUnservedForPanelComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/unserved-request-for-panel', component: WsRequestsUnservedForPanelComponent, canActivate: [AuthGuard] },
 
-
-
-  // is the dummy component used in ws-requests-msgs: when the user is in the request' details page and 
-  // click an in-app notification (of a request unserved or assigned to him) the navigation is redirect to the loading component 
-  // and then again to request' details page
-  { path: 'project/:projectid/wsrequest/loading', component: LoadingPageComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/chat', component: ChatComponent, canActivate: [AuthGuard] },
 
-  // MESSAGES OF A REQUEST (IT BEFORE WERE DISPLAYED IN A MODAL WINDOW)
-  // tslint:disable-next-line:max-line-length
-  
-  // tslint:disable-next-line:max-line-length
   // ARE ALL THE USER OF A PROJECT (e.g. THE USER THAT HAS CREATED THE PROJECT AND THE USERS THAT HE HAS INVITED (THE OTHER MEMBERS OF THE PROJECT))
   { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] },
 
-  
 
   // GROUPS
   // , ProjectProfileGuard
@@ -248,8 +234,8 @@ const routes: Routes = [
   // { path: 'project/:projectid/bots/createfaqkb', component: BotCreateComponent, canActivate: [AuthGuard] }, // replaced by the bottom path
   { path: 'project/:projectid/bots/create/:type', component: BotCreateComponent, canActivate: [AuthGuard] },
 
-   // rasa bot
-   { path: 'project/:projectid/bot/rasa/create', component: RasaBotComponent, canActivate: [AuthGuard] },
+  // rasa bot
+  { path: 'project/:projectid/bot/rasa/create', component: RasaBotComponent, canActivate: [AuthGuard] },
 
   // native bot (to create these is required to pass the template )
   { path: 'project/:projectid/bots/create/:type/:template', component: BotCreateComponent, canActivate: [AuthGuard] },
@@ -263,23 +249,18 @@ const routes: Routes = [
 
   // new component for native bot (i.e. resolution-bot)
   { path: 'project/:projectid/bots/general/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/bots/intents/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] }, 
-  { path: 'project/:projectid/bots/fulfillment/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] },  
-  { path: 'project/:projectid/bots/prebuilt', component: NativeBotSelectTypeComponent, canActivate: [AuthGuard] },  
-
- 
+  { path: 'project/:projectid/bots/intents/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/bots/fulfillment/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/bots/prebuilt', component: NativeBotSelectTypeComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
-
-
   { path: 'project/:projectid/createfaq/:faqkbid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
-
   { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
   // TEST-FAQ PAGE
   // { path: 'project/:projectid/faq/test/:remoteFaqKbKey/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
   // TEST-FAQ PAGE NEW URL
- 
+
   { path: 'project/:projectid/analytics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/analytics/metrics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/analytics/metrics/visitors', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
@@ -290,11 +271,10 @@ const routes: Routes = [
   { path: 'project/:projectid/analytics/metrics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/analytics/metrics/visitors-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/analytics/metrics/messages-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
- 
+
   { path: 'project/:projectid/messages-analytics', component: MessagesComponent, canActivate: [AuthGuard] }, // doesn't works
   { path: 'project/:projectid/conversation-analytics', component: RichiesteComponent, canActivate: [AuthGuard] }, // doesn't works
-  
-  
+
 
   // , ProjectProfileGuard
   { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
@@ -306,23 +286,38 @@ const routes: Routes = [
   // 
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
 
-  { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard]},
+  { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
 
 
   // new routing page is the edit department
   { path: 'project/:projectid/routing/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] }, // new
-
   { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
 
-  // HISTORY
-  // { path: 'project/:projectid/historyrt', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
+  // HISTORY & NORT
   { path: 'project/:projectid/history', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/all-conversations', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
 
-
   { path: 'project/:projectid/history/:hassearcedby', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/history/:hassearcedby/:isopenadvancedsearch', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/history/:hassearcedby/:isopenadvancedsearch/:deptid', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
+
   { path: 'project/:projectid/all-conversations/:hassearcedby', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
-  
+  { path: 'project/:projectid/all-conversations/:hassearcedby/:isopenadvancedsearch', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/all-conversations/:hassearcedby/:isopenadvancedsearch/:deptid', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
+
+  // Conversation details
+  { path: 'project/:projectid/wsrequest/:requestid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/wsrequest/:requestid/:calledby/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+
+  { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/:deptid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+
+  // is the dummy component used in ws-requests-msgs: when the user is in the request' details page and 
+  // click an in-app notification (of a request unserved or assigned to him) the navigation is redirect to the loading component 
+  // and then again to request' details page
+  { path: 'project/:projectid/wsrequest/loading', component: LoadingPageComponent, canActivate: [AuthGuard] },
+
   // TRIGGER
   { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/trigger-demo', component: TriggerStaticComponent, canActivate: [AuthGuard] },
@@ -339,7 +334,7 @@ const routes: Routes = [
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
   { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
   { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
-  
+
 
   // CHANGE PSWRD if project is defined (use case: THE USER SELECTED A PROJECT)
   { path: 'project/:projectid/user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
@@ -367,8 +362,8 @@ const routes: Routes = [
   { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/visitors', component: VisitorsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/events/:requesterid', component: EventsComponent, canActivate: [AuthGuard] },
-  
-  
+
+
   { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/_edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // called from the dropodown of the chat to change contact email , name amd lastname on fly (use to not display the goBack)
@@ -376,14 +371,14 @@ const routes: Routes = [
 
   { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] },
   //{ path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard]},
-  { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard]},
-  { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard]},
+  { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] },
   // Webhook
-  { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard]},
-  { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard]},
-  { path: 'project/:projectid/email', component:  EmailTicketingComponent, canActivate: [AuthGuard]},
- 
+  { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/email', component: EmailTicketingComponent, canActivate: [AuthGuard] },
+
 
 
 ];
