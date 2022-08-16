@@ -350,8 +350,19 @@
   <!--  ---------------------------------------------------------------- -->
   <!--  Applied filter -->
   <!--  ---------------------------------------------------------------- -->
+  <p style=" margin-top: 23px;"> fullText_applied_filter: {{ fullText_applied_filter }}</p>    
+  <p> startDateFormatted: {{ startDateFormatted }}   </p>  
+  
+  <p> selectedAgentFirstname: {{ selectedAgentFirstname }}   </p>   
+  <p> selectedDeptName: {{ selectedAgentFirstname }}   </p>  
+  <p> requests_status: {{ requests_status }}   </p>  
+  <p> selecteTagColor: {{ selecteTagColor }}   </p>  
+   
+  <p> conversation_type: {{ conversation_type }}   </p> 
+  <p> conversationTypeValue: {{ conversationTypeValue }}   </p> 
+  
   <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;"
-    *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || selecteTagColor 
+    *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || requests_status !== 'all' || selecteTagColor 
     || (conversation_type && conversation_type !== 'all') || (conversationTypeValue && conversationTypeValue !== 'all')  || conversationTypeValue !== undefined ">
 
     <!-- conversation_type {{ conversation_type }} - conversationTypeValue {{conversationTypeValue}} -->
