@@ -1324,7 +1324,7 @@
                           </span>
                           <span  *ngIf='!ticketSubjectEditMode' class="material-icons edit-in-place" (click)='ticketSubjectEditMode=true'
                           matTooltipClass="custom-mat-tooltip"
-                          matTooltip="Click to edit" #tooltip="matTooltip"
+                          matTooltip="{{ 'ClickToEdit' | translate }}" #tooltip="matTooltip"
                           matTooltipPosition='right' matTooltipHideDelay="100">
                             mode_edit
                           </span>

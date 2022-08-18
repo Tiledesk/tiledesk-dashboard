@@ -2133,6 +2133,8 @@
     "NewApp":"Нев апп",
     "EditApp":"Уреди апликацију",
     "NoAppLogo":"Нема логотипа апликације",
+    "ConversationsArchivedCannotBeReopened":"Разговори архивирани дуже од десет дана не могу се поново отворити",
+    "ClickToEdit":"Кликните да бисте уредили",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

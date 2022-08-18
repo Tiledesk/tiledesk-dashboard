@@ -2133,6 +2133,8 @@
     "NewApp":"التطبيق الجديد",
     "EditApp":"تحرير التطبيق",
     "NoAppLogo":"ليس هناك شعار التطبيق",
+    "ConversationsArchivedCannotBeReopened":"لا يمكن إعادة فتح المحادثات التي تم وضعها في الأرشيف لأكثر من عشرة أيام",
+    "ClickToEdit":"إضغط للتعديل",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",

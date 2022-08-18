@@ -2133,6 +2133,8 @@
     "NewApp":"Новий додаток",
     "EditApp":"Редагувати додаток",
     "NoAppLogo":"Немає логотипу програми",
+    "ConversationsArchivedCannotBeReopened":"Розмови, заархівовані більше десяти днів, не можна повторно відкрити",
+    "ClickToEdit":"Натисніть, щоб редагувати",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

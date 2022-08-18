@@ -163,7 +163,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   youAreAboutToJoinMsg: string;
   cancelMsg: string;
   warningMsg: string;
-
+  conversationsCannotBeReopened: string;
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd/mm/yyyy',
@@ -629,7 +629,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.translateCancel();
     this.translateJoinToChat();
     this.translateWarningMsg();
+    this.translateConversationsCannotBeReopened();
     this.translaAllDepts();
+
   }
   translaAllDepts() {
     this.translate.get('HistoryPage.AllDepts').subscribe((text: string) => {
@@ -644,6 +646,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // this.logger.log('+ + + warningMsg', text)
     });
   }
+  translateConversationsCannotBeReopened() {
+    this.translate.get('ConversationsArchivedCannotBeReopened').subscribe((text: string) => {
+      this.conversationsCannotBeReopened = text;
+      // this.logger.log('+ + + warningMsg', text)
+    });
+  } 
 
 
 
@@ -2602,7 +2610,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   presentModalReopenConvIsNotPossible() {
     swal({
       title: this.warningMsg,
-      text: "Conversations archived for more than ten days cannot be reopened",
+      text: this.conversationsCannotBeReopened,
       icon: "warning",
       button: "OK",
       dangerMode: false,

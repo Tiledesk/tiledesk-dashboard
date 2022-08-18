@@ -2133,6 +2133,8 @@
     "NewApp":"Novo aplicativo",
     "EditApp":"Editar aplicativo",
     "NoAppLogo":"Sem logotipo do aplicativo",
+    "ConversationsArchivedCannotBeReopened":"Conversas arquivadas por mais de dez dias não podem ser reabertas",
+    "ClickToEdit":"Clique para editar",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

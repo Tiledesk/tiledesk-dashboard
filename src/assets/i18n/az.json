@@ -2133,6 +2133,8 @@
     "NewApp":"Yeni tətbiq",
     "EditApp":"Tətbiqi redaktə edin",
     "NoAppLogo":"Tətbiq loqosu yoxdur",
+    "ConversationsArchivedCannotBeReopened":"On gündən artıq arxivləşdirilmiş söhbətlər yenidən açıla bilməz",
+    "ClickToEdit":"Redaktə etmək üçün klikləyin",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

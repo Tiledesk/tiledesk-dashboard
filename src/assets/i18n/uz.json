@@ -2133,6 +2133,8 @@
     "NewApp":"Yangi ilova",
     "EditApp":"Ilovani tahrirlash",
     "NoAppLogo":"Ilova logotipi yo'q",
+    "ConversationsArchivedCannotBeReopened":"O'n kundan ortiq arxivlangan suhbatlarni qayta ochib bo'lmaydi",
+    "ClickToEdit":"Tahrirlash uchun bosing",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

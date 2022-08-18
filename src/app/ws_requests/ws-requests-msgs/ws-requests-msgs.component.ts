@@ -278,6 +278,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   ticketSubject: string;
 
   warningMsg: string;
+  conversationsCannotBeReopened: string;
   /**
    * Constructor
    * @param router 
@@ -3068,7 +3069,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   presentModalReopenConvIsNotPossible() {
     swal({
       title: this.warningMsg,
-      text: "Conversations archived for more than ten days cannot be reopened",
+      text: this.conversationsCannotBeReopened,
       icon: "warning",
       button: "OK",
       dangerMode: false,
@@ -3768,6 +3769,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.warningMsg = text;
       // this.logger.log('+ + + warningMsg', text)
     });
+
+    this.translate.get('ConversationsArchivedCannotBeReopened').subscribe((text: string) => {
+      this.conversationsCannotBeReopened = text;
+      // this.logger.log('+ + + warningMsg', text)
+    });
+
+
+  
 
 
   }
