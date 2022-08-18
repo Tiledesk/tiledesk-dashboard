@@ -235,6 +235,7 @@ import { CutomTooltipOptions } from './utils/util';
 import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component';
 import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
 import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
+import { AutofocusDirective } from './_directives/autofocus.directive';
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
 
@@ -440,7 +441,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AppCreateComponent,
     RasaBotComponent,
     ImageViewerComponent,
-    WidgetInstallationComponent
+    WidgetInstallationComponent,
+    AutofocusDirective
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
