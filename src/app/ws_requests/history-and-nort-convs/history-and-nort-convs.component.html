@@ -7,7 +7,7 @@
 <div *ngIf="!IS_HERE_FOR_HISTORY" class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-    (click)="goBack()">keyboard_arrow_left</i>
+    (click)="goBackToMonitorPage()">keyboard_arrow_left</i>
 
   {{ "Requests" | translate }} ( {{'NotInRealTime' | translate }})
 </div>
@@ -101,7 +101,7 @@
               <!-- // SEARCH FULL-TEXT BTN -->
               <span class="input-group-btn" style="padding-right: 2px;">
                 <button class="custom-input-group---btn tool_tip" type="submit">
-                  <i class="fa fa-search fa-search-btn" (click)="search()" style="color:grey; font-size: 18px;"></i>
+                  <i class="fa fa-search fa-search-btn" (click)="search('filter_on_entral')" style="color:grey; font-size: 18px;"></i>
                   <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
                     {{ 'Search' | translate}}
                     <i></i>
@@ -350,23 +350,32 @@
   <!--  ---------------------------------------------------------------- -->
   <!--  Applied filter -->
   <!--  ---------------------------------------------------------------- -->
-  <p style=" margin-top: 23px;"> fullText_applied_filter: {{ fullText_applied_filter }}</p>    
+  <!-- <p style=" margin-top: 23px;"> fullText_applied_filter: {{ fullText_applied_filter }}</p>    
   <p> startDateFormatted: {{ startDateFormatted }}   </p>  
-  
   <p> selectedAgentFirstname: {{ selectedAgentFirstname }}   </p>   
   <p> selectedDeptName: {{ selectedAgentFirstname }}   </p>  
   <p> requests_status: {{ requests_status }}   </p>  
   <p> selecteTagColor: {{ selecteTagColor }}   </p>  
-   
   <p> conversation_type: {{ conversation_type }}   </p> 
-  <p> conversationTypeValue: {{ conversationTypeValue }}   </p> 
+  <p> conversationTypeValue: {{ conversationTypeValue }}   </p>  -->
   
-  <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;"
+  <!-- <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;"
     *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || requests_status !== 'all' || selecteTagColor 
-    || (conversation_type && conversation_type !== 'all') || (conversationTypeValue && conversationTypeValue !== 'all')  || conversationTypeValue !== undefined ">
+    || (conversation_type && conversation_type !== 'all') || (conversationTypeValue && conversationTypeValue !== 'all')  || conversationTypeValue !== undefined "> -->
 
+    <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;"
+    *ngIf="
+    fullText_applied_filter || 
+    startDateFormatted || 
+    selectedAgentFirstname || 
+    requests_status_temp === '200' || 
+    requests_status_temp === '100' || 
+    selecteTagColor  || 
+    conversationTypeValue || 
+    selectedDeptName">
+   
     <!-- conversation_type {{ conversation_type }} - conversationTypeValue {{conversationTypeValue}} -->
-    <div class="applied-filter-title">
+    <div  class="applied-filter-title">
       {{'AppliedFilters' | translate}}
     </div>
 
@@ -381,11 +390,11 @@
     </div> -->
 
 
-    <div *ngIf="fullText_applied_filter" class="applied-filter">
+    <div id="full-text" *ngIf="fullText_applied_filter" class="applied-filter">
       {{fullText_applied_filter}}
     </div>
 
-    <div *ngIf="startDateFormatted" class="applied-filter">
+    <div id="date-range" *ngIf="startDateFormatted" class="applied-filter">
       <span *ngIf="startDateFormatted && !endDateFormatted">
         after
       </span>
@@ -395,51 +404,59 @@
       </span>
     </div>
 
-    <div *ngIf="selectedAgentFirstname" class="applied-filter">
+    <div  id="teammate" *ngIf="selectedAgentFirstname" class="applied-filter">
       {{selectedAgentFirstname}} {{ selectedAgentLastname }}
     </div>
 
-    <div *ngIf="selectedDeptName" class="applied-filter">
+    <div id="dept" *ngIf="selectedDeptName" class="applied-filter">
       {{selectedDeptName}}
     </div>
 
-    <div *ngIf="requests_status === '200'" class="applied-filter">
+    <div id="served-200" *ngIf="requests_status === '200'" class="applied-filter">
       {{'Served' | translate}}
     </div>
 
-    <div *ngIf="requests_status === '100'" class="applied-filter">
+    <div id="served-100" *ngIf="requests_status === '100'" class="applied-filter">
       {{'Unserved' | translate}}
     </div>
 
-
-    <div *ngIf="selecteTagColor" class="applied-filter">
+    <div id="tag" *ngIf="selecteTagColor" class="applied-filter">
       <div class="tag--color" [ngStyle]="{'background-color': selecteTagColor }"> </div>
       {{selecteTagNameValue}}
     </div>
 
-
-    <div *ngIf="conversationTypeValue  !== 'all' && conversation_type !== 'all'" class="applied-filter">
-      <span *ngIf="conversationTypeValue === 'chat21' || conversation_type  === 'chat21'">
+    <!-- || conversation_type  === 'chat21'  && conversation_type !== 'all'-->
+    <div id="conversation-type" *ngIf="
+          conversationTypeValue  === 'chat21' ||
+          conversationTypeValue  === 'form' ||
+          conversationTypeValue  === 'messenger' ||
+          conversationTypeValue  === 'telegram' || 
+          conversationTypeValue  === 'whatsapp' || 
+          conversationTypeValue  === 'email'" 
+          class="applied-filter">
+      <span *ngIf="conversationTypeValue === 'chat21' ">
         Chat
       </span>
-
-      <span *ngIf="conversationTypeValue === 'form' || conversation_type  === 'form'">
+      <!-- || conversation_type  === 'form' -->
+      <span *ngIf="conversationTypeValue === 'form' ">
         Ticket
       </span>
-
-      <span *ngIf="conversationTypeValue === 'messenger' || conversation_type  === 'messenger'">
+      <!-- || conversation_type  === 'messenger' -->
+      <span *ngIf="conversationTypeValue === 'messenger'">
         Facebook messenger
       </span>
 
-      <span *ngIf="conversationTypeValue === 'telegram' || conversation_type  === 'telegram'">
+      <!-- || conversation_type  === 'telegram' -->
+      <span *ngIf="conversationTypeValue === 'telegram'">
         Telegram
       </span>
-
-      <span *ngIf="conversationTypeValue === 'whatsapp' || conversation_type  === 'whatsapp'">
+      <!-- || conversation_type  === 'whatsapp' -->
+      <span *ngIf="conversationTypeValue === 'whatsapp'">
         WhatsApp
       </span>
 
-      <span *ngIf="conversationTypeValue === 'email' || conversation_type  === 'email'">
+      <!-- || conversation_type  === 'email' -->
+      <span *ngIf="conversationTypeValue === 'email' ">
         Email
       </span>
 

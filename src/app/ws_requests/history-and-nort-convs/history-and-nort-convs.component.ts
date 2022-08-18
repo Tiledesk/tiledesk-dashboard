@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Request } from '../../models/request-model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
@@ -188,7 +188,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   operator: string;
   requests_status: any;
-
+  requests_status_temp: string;
   selectedDeptName: string;
   selectedDeptName_temp: string;
   selectedAgentFirstname: string;
@@ -236,8 +236,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   queryParams: any;
   allDeptsLabel: string;
   qs_tags_value: string;
-requests_status_selected_from_left_filter: string;
-
+  qs_teammate_id: string;
+  qs_dept_id: string;
+  requests_status_selected_from_left_filter: string;
+  requests_status_selected_from_advanced_option: string
   /**
    * 
    * @param router 
@@ -310,9 +312,9 @@ requests_status_selected_from_left_filter: string;
     // this.subscribeToQueryString()
     this.getQueryParams();
 
-  
-    
-    
+
+
+
     console.log('[HISTORY & NORT-CONVS]  ngOnInit  fullText_applied_filter', this.fullText_applied_filter);
     console.log('[HISTORY & NORT-CONVS]  ngOnInit  startDateFormatted', this.startDateFormatted);
     console.log('[HISTORY & NORT-CONVS]  ngOnInit  selectedAgentFirstname', this.selectedAgentFirstname);
@@ -322,7 +324,7 @@ requests_status_selected_from_left_filter: string;
     console.log('[HISTORY & NORT-CONVS]  ngOnInit  conversation_type', this.conversation_type);
     console.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     console.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
-   
+
   }
 
   getQueryParams() {
@@ -338,12 +340,12 @@ requests_status_selected_from_left_filter: string;
           if (this.queryParams.leftfilter === '100') {
             this.requests_status = '100'
             this.requestsStatusSelect(this.requests_status)
-          } 
+          }
 
           if (this.queryParams.leftfilter === '200') {
             this.requests_status = '200'
             this.requestsStatusSelect(this.requests_status)
-          } 
+          }
         }
 
         if (this.queryParams && this.queryParams.qs) {
@@ -354,6 +356,7 @@ requests_status_selected_from_left_filter: string;
           searchedForArray.forEach(param => {
             const paramArray = param.split('=');
             console.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
+
             if (paramArray[0] === 'ticket_id' && paramArray[1] !== '') {
               const ticket_id_value = paramArray[1]
               console.log('[HISTORY & NORT-CONVS]  queryParams ticket_id value', ticket_id_value)
@@ -375,11 +378,11 @@ requests_status_selected_from_left_filter: string;
             }
 
             if (paramArray[0] === 'dept_id' && paramArray[1] !== '') {
-              const dept_id_value = paramArray[1]
-              console.log('[HISTORY & NORT-CONVS]  queryParams dept_id_value ', dept_id_value)
-              if (dept_id_value) {
-                this.selectedDeptId = dept_id_value;
-                console.log('[HISTORY & NORT-CONVS]  queryParams qsString > dept_id_value:', this.selectedDeptId)
+              this.qs_dept_id = paramArray[1]
+              console.log('[HISTORY & NORT-CONVS]  queryParams qs_dept_id ', this.qs_dept_id)
+              if (this.qs_dept_id) {
+                this.selectedDeptId = this.qs_dept_id;
+                console.log('[HISTORY & NORT-CONVS]  queryParams qsString > selectedDeptId:', this.selectedDeptId)
 
               }
             }
@@ -422,115 +425,58 @@ requests_status_selected_from_left_filter: string;
 
 
             if (paramArray[0] === 'participant' && paramArray[1] !== '') {
-              const participant_value = paramArray[1]
-              console.log('[HISTORY & NORT-CONVS] queryParams participant value ', participant_value)
-              if (participant_value) {
-                this.selectedAgentId = participant_value
+              this.qs_teammate_id = paramArray[1]
+              console.log('[HISTORY & NORT-CONVS] queryParams qs_teammate_id  ', this.qs_teammate_id)
+              if (this.qs_teammate_id) {
+                this.selectedAgentId = this.qs_teammate_id
                 console.log('[HISTORY & NORT-CONVS]  queryParams qsString > selectedAgentId:', this.selectedAgentId)
+                console.log('[HISTORY & NORT-CONVS]  queryParams qsString > user_and_bot_array:', this.user_and_bot_array)
+                // this.agentSelected(this.selectedAgentId)
               }
             }
 
             if (paramArray[0] === 'tags' && paramArray[1] !== '') {
               this.qs_tags_value = paramArray[1]
-              console.log('[HISTORY & NORT-CONVS] queryParams qs_tags_value ',this.qs_tags_value)
+              console.log('[HISTORY & NORT-CONVS] queryParams qs_tags_value ', this.qs_tags_value)
               console.log('[HISTORY & NORT-CONVS] queryParams this.tags_array ', this.tags_array)
-              // this.showAdvancedSearchOption = true;
-              this.selecteTagName =  this.qs_tags_value;
+             
+              this.selecteTagName = this.qs_tags_value;
               this.selecteTagNameValue = this.selecteTagName
-              // console.log('[HISTORY & NORT-CONVS] queryParams this.showAdvancedSearchOption ', this.showAdvancedSearchOption)
-            
-              // if (tags_value) {
-               
-              //   const selecteTag = this.tags_array.filter((tag: any) => {
-              //     return tag.name === this.selecteTagName;
-              //   });
-              //  console.log('[HISTORY & NORT-CONVS] - queryParams selecteTag ', selecteTag);
-
-              //   if (selecteTag.length > 0) {
-              //     this.selecteTagColor_temp = selecteTag[0]['color']
-              //     console.log('[HISTORY & NORT-CONVS] - selecteTag ', selecteTag)
-              //   }
-              // }
-              
+             
             }
 
+            if (paramArray[0] === 'rstatus' && paramArray[1] !== '') {
+              const requetStatusValue = paramArray[1]
+              console.log('[HISTORY & NORT-CONVS] queryParams requetStatusValue ', requetStatusValue)
+              this.requestsStatusSelectFromAdvancedOption(requetStatusValue)
 
-
-
-
-
-
-
+            }
           });
 
         }
-        // setTimeout(() => {
-        if (this.fullText || this.selectedDeptId || this.startDate || this.endDate || (this.conversation_type &&  this.conversation_type !== 'all') || this.selectedAgentId || this.selecteTagName) {
-          console.log('[HISTORY & NORT-CONVS] queryParams call search fullText ', this.fullText   )
-          console.log('[HISTORY & NORT-CONVS] queryParams call search selectedDeptId ', this.selectedDeptId   )
-          console.log('[HISTORY & NORT-CONVS] queryParams call search startDate ', this.startDate   )
-          console.log('[HISTORY & NORT-CONVS] queryParams call search endDate ', this.endDate   )
-          console.log('[HISTORY & NORT-CONVS] queryParams call search conversation_type ', this.conversation_type   )
-          console.log('[HISTORY & NORT-CONVS] queryParams call search selectedAgentId ', this.selectedAgentId   )
-          console.log('[HISTORY & NORT-CONVS] queryParams call search selecteTagName ', this.selecteTagName   )
+      
+        if (this.fullText || this.selectedDeptId || this.startDate || this.endDate || (this.conversation_type && this.conversation_type !== 'all') || this.selectedAgentId || this.selecteTagName || this.requests_status) {
+          console.log('[HISTORY & NORT-CONVS] queryParams call search fullText ', this.fullText)
+          console.log('[HISTORY & NORT-CONVS] queryParams call search selectedDeptId ', this.selectedDeptId)
+          console.log('[HISTORY & NORT-CONVS] queryParams call search startDate ', this.startDate)
+          console.log('[HISTORY & NORT-CONVS] queryParams call search endDate ', this.endDate)
+          console.log('[HISTORY & NORT-CONVS] queryParams call search conversation_type ', this.conversation_type)
+          console.log('[HISTORY & NORT-CONVS] queryParams call search selectedAgentId ', this.selectedAgentId)
+          console.log('[HISTORY & NORT-CONVS] queryParams call search selecteTagName ', this.selecteTagName)
           this.search('getQueryParams');
         }
-        // }, 1500);
+       
       });
   }
 
 
-  subscribeToQueryString() {
-    this.wsMsgsService.historyAndNortQueryString$.subscribe((qs) => {
-      console.log('[HISTORY & NORT-CONVS] - QUERY STRING FROM SUBSCRIPTION: ', qs)
-      if (qs) {
-        const searchedForArray = qs.split('&');
 
-        console.log('[HISTORY & NORT-CONVS] - QUERY STRING FROM SUBSCRIPTION searchedForArray: ', searchedForArray)
-        searchedForArray.forEach(param => {
-          const paramArray = param.split('=');
-          console.log('paramArray ', paramArray)
-        });
-      }
-      // if (project) {
-      //   this.projectId = project._id;
-      //   this.findCurrentProjectAmongAll(this.projectId)
-      // }
-    });
-  }
-
-  // getRouteParams() {
-  //   this.route.params.subscribe((params) => {
-  //     console.log('[HISTORY & NORT-CONVS] params', params)
-
-  //     if (params.isopenadvancedsearch) {
-  //       this.showAdvancedSearchOption = params.isopenadvancedsearch;
-  //       console.log('showAdvancedSearchOption', this.showAdvancedSearchOption)
-  //     }
-  //     if (params.hassearcedby !== "undefined") {
-
-  //       this.fullText = params.hassearcedby
-  //       // console.log('here yes    this.fullText', this.fullText)
-  //       this.fullText_temp = this.fullText
-  //       // console.log('here yes')
-  //       this.has_searched = true;
-  //       this.search();
-
-  //     }
-  //   })
-  // }
 
   getCurrentUrlLoadRequests() {
 
     const currentUrl = this.router.url;
     console.log('[HISTORY & NORT-CONVS] current_url ', currentUrl);
-    // if (currentUrl.indexOf('?') !== -1) {
-    //   console.log('[HISTORY & NORT-CONVS] url contains qs', currentUrl.indexOf('?') !== -1);
-    // }
-    // const url_segments = currentUrl.split('/');
-    // url_segments.shift(); // removes the first element of the array which is an empty string created due to the first slash present in the URL
-    // console.log('[HISTORY & NORT-CONVS] url_segments ', url_segments);
-    // console.log('[HISTORY & NORT-CONVS] url_segments lenght', url_segments.length);
+
     if (currentUrl.indexOf('/all-conversations') !== -1) {
       this.IS_HERE_FOR_HISTORY = false;
       this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
@@ -545,7 +491,7 @@ requests_status_selected_from_left_filter: string;
       this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.operator = '='
       this.requests_status = '1000'
-      // if (url_segments && url_segments.length === 3) {
+     
       if (currentUrl.indexOf('?') === -1) {
         console.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
         this.getRequests();
@@ -556,45 +502,15 @@ requests_status_selected_from_left_filter: string;
 
   goToRequestMsgs(request_recipient: string) {
     console.log('HERE IN goToRequestMsgs this.requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter)
-   
-    // console.log('goToRequestMsgs full text ', this.fullText)
 
-    // let searchkey = '';
-    // if (this.fullText !== undefined) {
-    //   searchkey = this.fullText
-    // } else if (this.fullText === undefined) {
-    //   searchkey = "ns";
-    // }
 
-    // if (this.fullText) {
-
-    //   if (this.IS_HERE_FOR_HISTORY) {
-    //     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + this.fullText + '/messages']);
-    //   } else {
-    //     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + this.fullText + '/messages']);
-    //   }
-    // } else {
-    //   if (this.IS_HERE_FOR_HISTORY) {
-    //     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages']);
-    //   } else {
-    //     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages']);
-    //   }
-    // }
 
     console.log('goToRequestMsgs - has_searched', this.has_searched)
 
 
     if (this.IS_HERE_FOR_HISTORY) {
 
-      // if (this.showAdvancedSearchOption === true) {
-      //   this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + this.fullText + '/' + this.showAdvancedSearchOption + '/messages']);
-      // } else if (!this.showAdvancedSearchOption) {
-      //   this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + this.fullText + '/messages']);
-      // }
-
-      // if (this.has_searched === true && this.selectedDeptId) {
-      //   this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + this.fullText + '/' + this.showAdvancedSearchOption + '/' + this.selectedDeptId + '/messages']);
-      // }
+ 
       if (this.has_searched === true) {
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], { queryParams: { qs: JSON.stringify(this.queryString) } })
       } else if (this.has_searched === false) {
@@ -602,32 +518,29 @@ requests_status_selected_from_left_filter: string;
       }
     }
     else {
-      console.log('showAdvancedSearchOption', this.showAdvancedSearchOption)
-      // if (this.showAdvancedSearchOption === true) {
-      // if (this.has_searched === true) {
+      console.log('showAdvancedSearchOption goToRequestMsgs', this.showAdvancedSearchOption)
+
       if (this.has_searched === true) {
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams: { qs: JSON.stringify(this.queryString) } })
       } else if (this.has_searched === false) {
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'])
       }
 
-      if (this.requests_status_selected_from_left_filter === '100' || this.requests_status_selected_from_left_filter === '200') {
-    
-        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams: {leftfilter: this.requests_status_selected_from_left_filter } })
-      } 
-      // }
-      // }
+      if (this.showAdvancedSearchOption === false) {
+        if (this.requests_status_selected_from_left_filter === '100' || this.requests_status_selected_from_left_filter === '200') {
 
-      //   this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + this.fullText + '/' + this.showAdvancedSearchOption + '/messages']);
-      // } else if (!this.showAdvancedSearchOption) {
-      //   this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + this.fullText + '/messages']);
-      // }
+          this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams: { leftfilter: this.requests_status_selected_from_left_filter } })
+        }
+      }
 
-      // if (this.has_searched === true && this.selectedDeptId) {
-      //   this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + this.fullText + '/' + this.showAdvancedSearchOption + '/' + this.selectedDeptId + '/messages']);
-      // }
     }
   }
+
+  goBackToMonitorPage() {
+    // this.location.back();
+    this.router.navigate(['project/' + this.projectId + '/wsrequests'])
+  }
+
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -963,7 +876,7 @@ requests_status_selected_from_left_filter: string;
 
   requestsStatusSelect(request_status) {
 
-   console.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect', request_status);
+    console.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect', request_status);
     if (request_status === '200') {
       this.requests_status_selected_from_left_filter = '200'
       console.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
@@ -977,25 +890,34 @@ requests_status_selected_from_left_filter: string;
       console.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
       const currentUrl = this.router.url;
       console.log('[HISTORY & NORT-CONVS] requestsStatusSelect  currentUrl', currentUrl);
+
       if (currentUrl.indexOf('?') !== -1) {
         console.log('[HISTORY & NORT-CONVS] requestsStatusSelect  currentUrl has query string');
         this.router.navigate(['project/' + this.projectId + '/' + 'all-conversations']);
       }
-      
+
       this.getAllRequests();
     }
   }
 
   requestsStatusSelectFromAdvancedOption(request_status) {
+
+    // console.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelectFromAdvancedOption', this.showAdvancedSearchOption);
+    // if (this.showAdvancedSearchOption === false) {
+    //   this.showAdvancedSearchOption = true
+    // }
+
     if (request_status === 'all') {
 
       this.requests_status = 'all'
-
+      this.requests_status_selected_from_advanced_option = 'all'
     } else if (request_status === '100') {
       this.operator = '='
       this.requests_status = '100'
+      this.requests_status_selected_from_advanced_option = '100'
     } else if (request_status === '200') {
       this.operator = '='
+      this.requests_status_selected_from_advanced_option = '200'
       this.requests_status = '200'
     }
 
@@ -1477,11 +1399,33 @@ requests_status_selected_from_left_filter: string;
         });
 
         this.logger.log('[HISTORY & NORT-CONVS] - !!!! USERS ARRAY ', this.user_and_bot_array);
+        this.user_and_bot_array = this.user_and_bot_array.slice(0)
       }
     }, (error) => {
       this.logger.error('[HISTORY & NORT-CONVS] - GET PROJECT-USERS ', error);
     }, () => {
       this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECT-USERS * COMPLETE *');
+
+      // if (this.qs_teammate_id) {
+       
+      //     console.log('esist qs_teammate_id in getAllProjectUsers selectedAgent ', this.user_and_bot_array)
+      //     const selectedAgent = this.user_and_bot_array.filter((agent: any) => {
+      //       return agent._id === this.qs_teammate_id;
+      //     });
+      //     console.log('esist qs_teammate_id in getAllProjectUsers selectedAgent ', selectedAgent)
+
+      //     if (selectedAgent.length > 0) {
+      //       this.selectedAgentFirstname_temp = selectedAgent[0].firstname
+      //       this.selectedAgentLastname_temp = selectedAgent[0].lastname
+
+      //       this.selectedAgentFirstname = this.selectedAgentFirstname_temp;
+      //       this.selectedAgentLastname = this.selectedAgentLastname_temp;
+      //       console.log('[HISTORY & NORT-CONVS] - getAllProjectUsers selectedAgentFirstname  ', this.selectedAgentFirstname, ' selectedAgentLastname: ', this.selectedAgentLastname);
+      //     }
+       
+      // }
+
+
       this.getAllBot();
     });
   }
@@ -1499,6 +1443,26 @@ requests_status_selected_from_left_filter: string;
     }, (error) => {
       this.logger.error('[HISTORY & NORT-CONVS] - GET  BOT ', error);
     }, () => {
+
+      if (this.qs_teammate_id) {
+       
+        console.log('esist qs_teammate_id in getAllBot selectedAgent ', this.user_and_bot_array)
+        const selectedAgent = this.user_and_bot_array.filter((agent: any) => {
+          return agent._id === this.qs_teammate_id;
+        });
+        console.log('esist qs_teammate_id in getAllBot selectedAgent ', selectedAgent)
+
+        if (selectedAgent.length > 0) {
+          this.selectedAgentFirstname_temp = selectedAgent[0].firstname
+          this.selectedAgentLastname_temp = selectedAgent[0].lastname
+
+          this.selectedAgentFirstname = this.selectedAgentFirstname_temp;
+          this.selectedAgentLastname = this.selectedAgentLastname_temp;
+          console.log('[HISTORY & NORT-CONVS] - getAllBot selectedAgentFirstname  ', this.selectedAgentFirstname, ' selectedAgentLastname: ', this.selectedAgentLastname);
+        }
+     
+    }
+
       this.logger.log('[HISTORY & NORT-CONVS] - GET  BOT * COMPLETE *');
     });
   }
@@ -1530,6 +1494,17 @@ requests_status_selected_from_left_filter: string;
     }, error => {
       this.logger.error('[HISTORY & NORT-CONVS] - GET DEPTS - ERROR: ', error);
     }, () => {
+
+      if (this.qs_dept_id) {
+        const selectedDept = this.departments.filter((dept: any) => {
+          return dept._id === this.qs_dept_id;
+        });
+        console.log('[HISTORY & NORT-CONVS] - GET DEPTS - exist qs_dept_id: ', this.qs_dept_id);
+        console.log('[HISTORY & NORT-CONVS] - GET DEPTS - exist selectedDept: ', selectedDept);
+        this.selectedDeptName_temp = selectedDept[0].name
+        this.selectedDeptName = this.selectedDeptName_temp;
+      }
+
       this.logger.log('[HISTORY & NORT-CONVS] - GET DEPTS * COMPLETE *')
     });
   }
@@ -1547,7 +1522,7 @@ requests_status_selected_from_left_filter: string;
 
         this.tags_array.push({ 'id': tag._id, 'name': tag.tag, 'color': tag.color })
       });
-      this.tags_array = this.tags_array.slice(0) 
+      this.tags_array = this.tags_array.slice(0)
 
       console.log('[HISTORY & NORT-CONVS] - TAG-ARRAY', this.tags_array);
     }, error => {
@@ -1578,9 +1553,7 @@ requests_status_selected_from_left_filter: string;
   // ------------------------------------------------------------------------------
   depSelected(deptid) {
     console.log('[HISTORY & NORT-CONVS] - selectedDeptId ', this.selectedDeptId);
-
     const selectedDept = this.departments.filter((dept: any) => {
-
       return dept._id === deptid;
     });
     this.logger.log('[HISTORY & NORT-CONVS] - selectedDept ', selectedDept);
@@ -1598,15 +1571,17 @@ requests_status_selected_from_left_filter: string;
   // @ Agents (project-users + bots) - on change agent get selected agent name
   // ------------------------------------------------------------------------------
   agentSelected(selectedagentid) {
+    console.log('agentSelected selectedagentid selectedagentid', selectedagentid)
     const selectedAgent = this.user_and_bot_array.filter((agent: any) => {
       return agent._id === selectedagentid;
     });
 
-    this.logger.log('[HISTORY & NORT-CONVS] - selectedAgent ', selectedAgent);
+    console.log('[HISTORY & NORT-CONVS] - selectedAgent ', selectedAgent);
     if (selectedAgent.length > 0) {
+
       this.selectedAgentFirstname_temp = selectedAgent[0].firstname
       this.selectedAgentLastname_temp = selectedAgent[0].lastname
-      this.logger.log('[HISTORY & NORT-CONVS] - selectedAgentFirstname TEMP ', this.selectedAgentFirstname_temp, ' selectedAgentLastname TEMP: ', this.selectedAgentLastname_temp);
+      console.log('[HISTORY & NORT-CONVS] - selectedAgentFirstname TEMP ', this.selectedAgentFirstname_temp, ' selectedAgentLastname TEMP: ', this.selectedAgentLastname_temp);
     } else {
       this.selectedAgentId = ''
     }
@@ -1633,38 +1608,46 @@ requests_status_selected_from_left_filter: string;
     // console.log('this.conversationTypeValue: ', this.conversationTypeValue)
     // console.log('this.conversation_type: ', this.conversation_type)
     if (this.conversation_type === 'all') {
-      this.conversationTypeValue = 'all'
+      // this.conversationTypeValue = 'all'
+      this.conversation_type = 'all'
     }
 
     if (this.conversation_type === 'chat21') {
-      this.conversationTypeValue = 'chat21'
+      // this.conversationTypeValue = 'chat21'
+      this.conversation_type = 'chat21'
     }
 
 
     if (this.conversation_type === 'telegram') {
-      this.conversationTypeValue = 'telegram'
+      // this.conversationTypeValue = 'telegram'
+      this.conversation_type = 'telegram'
     }
 
     if (this.conversation_type === 'messenger') {
-      this.conversationTypeValue = 'messenger'
+      // this.conversationTypeValue = 'messenger'
+      this.conversation_type = 'messenger'
     }
 
     if (this.conversation_type === 'messenger') {
-      this.conversationTypeValue = 'messenger'
+      // this.conversationTypeValue = 'messenger'
+      this.conversation_type = 'messenger'
     }
 
 
 
     if (this.conversation_type === 'email') {
-      this.conversationTypeValue = 'email'
+      // this.conversationTypeValue = 'email'
+      this.conversation_type = 'email'
     }
 
     if (this.conversation_type === 'form') {
-      this.conversationTypeValue = 'form'
+      // this.conversationTypeValue = 'form'
+      this.conversation_type = 'form'
     }
 
     if (this.conversation_type === 'whatsapp') {
-      this.conversationTypeValue = 'whatsapp'
+      // this.conversationTypeValue = 'whatsapp'
+      this.conversation_type = 'whatsapp'
     }
 
 
@@ -1719,7 +1702,7 @@ requests_status_selected_from_left_filter: string;
       this.start_date_is_null = true;
       this.startDate = ''
       this.endDate = ''
-      
+
     }
   }
 
@@ -1780,6 +1763,11 @@ requests_status_selected_from_left_filter: string;
     console.log('HERE IN SEARCH this.fullText', this.fullText)
     console.log('HERE IN SEARCH this.startDate', this.startDate)
     console.log('HERE IN SEARCH this.endDate', this.endDate)
+    console.log('HERE IN SEARCH this.requests_status', this.requests_status)
+
+    this.requests_status_temp = this.requests_status
+
+    console.log('HERE IN SEARCH this.requests_status', this.requests_status_temp)
 
     this.has_searched = true;
     // console.log('search has_searched ' + this.has_searched)
@@ -1881,12 +1869,14 @@ requests_status_selected_from_left_filter: string;
 
     if (this.selectedAgentId) {
       this.selectedAgentValue = this.selectedAgentId;
-      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
 
       this.selectedAgentFirstname = this.selectedAgentFirstname_temp;
       this.selectedAgentLastname = this.selectedAgentLastname_temp;
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
     } else {
-      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR selectedAgentId ', this.selectedAgentId);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR selectedAgentFirstname ', this.selectedAgentFirstname);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR selectedAgentLastname ', this.selectedAgentLastname);
       this.selectedAgentValue = '';
 
       this.selectedAgentFirstname = null;
@@ -1908,7 +1898,7 @@ requests_status_selected_from_left_filter: string;
     if (this.conversation_type && this.conversation_type !== 'all') {
       this.conversationTypeValue = this.conversation_type
       this.logger.log('search this.conversation_type ', this.conversation_type)
-      this.logger.log('search this.conversationTypeValue ', this.conversationTypeValue)
+      console.log('search this.conversationTypeValue ', this.conversationTypeValue)
 
     } else {
       this.conversationTypeValue = '';
@@ -1942,8 +1932,9 @@ requests_status_selected_from_left_filter: string;
       + 'participant=' + this.selectedAgentValue + '&'
       + 'requester_email=' + this.emailValue + '&'
       + 'tags=' + this.selecteTagNameValue + '&'
-      + 'channel=' + this.conversationTypeValue
-      
+      + 'channel=' + this.conversationTypeValue + '&'
+      + 'rstatus=' + this.requests_status
+
 
     console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
     this.wsMsgsService.publishQueryString(this.queryString)
@@ -1955,11 +1946,26 @@ requests_status_selected_from_left_filter: string;
     console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requester_email > ', this.requester_email);
     console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 selecteTagName > ', this.selecteTagName);
     console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 conversation_type > ', this.conversation_type);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requests_status_selected_from_advanced_option > ', this.requests_status_selected_from_advanced_option);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requests_status_selected_from_left_filter > ', this.requests_status_selected_from_left_filter);
 
+    // ||
+    // this.requests_status_selected_from_left_filter !== undefined ||
+    // this.requests_status_selected_from_advanced_option  !== undefined
 
     if (this.showAdvancedSearchOption === false) {
 
-      if (this.selectedDeptId || this.startDate || this.endDate || this.selectedAgentId || this.requester_email || this.selecteTagName || this.conversation_type !== 'all') {
+      if (this.selectedDeptId || 
+        this.startDate || 
+        this.endDate || 
+        this.selectedAgentId || 
+        this.requester_email || 
+        this.selecteTagName || 
+        this.conversation_type !== 'all' ||
+        this.requests_status_selected_from_left_filter === '100' ||
+        this.requests_status_selected_from_left_filter === '200' ||
+        this.requests_status_selected_from_advanced_option !== 'all'
+        ) {
 
         this.showAdvancedSearchOption = true;
         console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 2 ', this.showAdvancedSearchOption);
@@ -1981,7 +1987,7 @@ requests_status_selected_from_left_filter: string;
     // console.log('[HISTORY & NORT-CONVS] clearFullText url_segments lenght', url_segments.length);
 
     let currentRoute = ""
-    if (url_segments[2].indexOf('/all-conversations') !== -1) {
+    if (url_segments[2].indexOf('all-conversations') !== -1) {
       currentRoute = 'all-conversations'
     } else {
       currentRoute = 'history'
@@ -2065,7 +2071,7 @@ requests_status_selected_from_left_filter: string;
       'tags=' + this.selecteTagNameValue
       + '&' +
       'channel=' + this.conversationTypeValue
-      
+
 
     // console.log('clearFullText queryString ' , this.queryString ) 
     this.pageNo = 0
@@ -2512,9 +2518,6 @@ requests_status_selected_from_left_filter: string;
     })
   }
 
-  goBack() {
-    this.location.back();
-  }
 
 
 
