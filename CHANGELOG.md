@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.48-rc1
+- Implements the "persistent search results" in the History page and in the Conversations page not in real time: after having performed a search and then gone to the detail of the conversation, going back the list of conversations is filtered for the previous search
+- Adds the ability to edit the ticket subject "in-place" on the conversation detail page
+- Adds to the conversation detail page the ability to reopen a conversation if it hasn't been archived for more than ten days
+
 ### 2.2.47.2
 - Fixes the bug: the text associated with the image sent by the requester is missing from the chat section of the conversation detail page
 - Fixes the bug: in the right sidebar of the chat "conversation information" the modal window "Add agent" and "Reassign request" do not scroll
