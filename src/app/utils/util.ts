@@ -9,6 +9,7 @@ export const CutomTooltipOptions: TooltipOptions = {
     'hideDelayAfterClick': 3000,
     'hide-delay': 0,
     'placement': 'top',
+    'autoPlacement': true,
   }
 
 
