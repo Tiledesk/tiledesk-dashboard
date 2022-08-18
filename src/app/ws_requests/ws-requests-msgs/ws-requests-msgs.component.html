@@ -1132,11 +1132,19 @@
                           </ul>
                         </div>
 
-                        <button *ngIf="CHAT_PANEL_MODE === false" class="btn btn-white btn-as-link pull-right"
+                        <button *ngIf="CHAT_PANEL_MODE === false && request?.status !== 1000" class="btn btn-white btn-as-link pull-right"
                           (click)='archiveRequest(request?.request_id)'
                           [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
                           <i class="material-icons">archive</i>
                           <span> {{ 'VisitorsPage.Resolve' | translate }} </span>
+                        </button>
+
+
+                        <button *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000" class="btn btn-white btn-as-link pull-right"
+                          (click)='reopenArchivedRequest(request, request?.request_id)'
+                          [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                          <i class="material-icons" style=" transform: rotate(180deg);">archive</i>
+                          <span> {{ 'Reopen' | translate }} </span>
                         </button>
 
 

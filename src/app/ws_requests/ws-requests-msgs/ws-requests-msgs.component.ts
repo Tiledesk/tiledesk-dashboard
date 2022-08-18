@@ -276,6 +276,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   queryParams: any;
   ticketSubjectEditMode: boolean = false;
   ticketSubject: string;
+
+  warningMsg: string;
   /**
    * Constructor
    * @param router 
@@ -434,12 +436,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '2') {
         this.previousUrl = 'history',
-        this.hasSearchedBy = params.hassearchedby
+          this.hasSearchedBy = params.hassearchedby
       }
 
       if (params.calledby === '3') {
         this.previousUrl = 'all-conversations',
-        this.hasSearchedBy = params.hassearchedby
+          this.hasSearchedBy = params.hassearchedby
 
         // console.log('called by all-conversations ', 'hasSearchedBy ', this.hasSearchedBy)
       }
@@ -465,38 +467,38 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (this.previousUrl === 'wsrequests') {
       this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
       // && this.hasSearchedBy
-    
+
       // Called by history with advanced search options opened 
-    // } else if (this.previousUrl === 'history' && this.isOpenedAdvancedSearch) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch]);
+      // } else if (this.previousUrl === 'history' && this.isOpenedAdvancedSearch) {
+      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch]);
 
-    //   // Called by history with advanced search options closed 
-    // } else if (this.previousUrl === 'history' && !this.isOpenedAdvancedSearch) {
+      //   // Called by history with advanced search options closed 
+      // } else if (this.previousUrl === 'history' && !this.isOpenedAdvancedSearch) {
 
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
-    //   // && this.hasSearchedBy
+      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
+      //   // && this.hasSearchedBy
 
-    // } else if (this.previousUrl === 'history' && this.isOpenedAdvancedSearch && this.selectedDept) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch + '/' + this.selectedDept]);
+      // } else if (this.previousUrl === 'history' && this.isOpenedAdvancedSearch && this.selectedDept) {
+      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch + '/' + this.selectedDept]);
 
       // Called by all-conversations with advanced search options opened 
-    // } else if (this.previousUrl === 'all-conversations' && this.isOpenedAdvancedSearch) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch]);
+      // } else if (this.previousUrl === 'all-conversations' && this.isOpenedAdvancedSearch) {
+      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch]);
 
-    // } else if (this.previousUrl === 'all-conversations' && this.isOpenedAdvancedSearch && this.selectedDept) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch + '/' + this.selectedDept]);
+      // } else if (this.previousUrl === 'all-conversations' && this.isOpenedAdvancedSearch && this.selectedDept) {
+      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy + '/' + this.isOpenedAdvancedSearch + '/' + this.selectedDept]);
 
-    //   // Called by all-conversations with advanced search options closed
-    // } else if (this.previousUrl === 'all-conversations' && !this.isOpenedAdvancedSearch) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
+      //   // Called by all-conversations with advanced search options closed
+      // } else if (this.previousUrl === 'all-conversations' && !this.isOpenedAdvancedSearch) {
+      //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
     }
 
     if (this.previousUrl === 'all-conversations' && this.queryParams) {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl ], {  queryParams: this.queryParams } )
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl], { queryParams: this.queryParams })
     }
 
     if (this.previousUrl === 'history' && this.queryParams) {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl ], {  queryParams: this.queryParams } )
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl], { queryParams: this.queryParams })
     }
 
 
@@ -1134,7 +1136,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // -----------------------------------
 
   editTicketSubjectFocusOut() {
-    this.ticketSubjectEditMode =false
+    this.ticketSubjectEditMode = false
     console.log('[WS-REQUESTS-MSGS] - editTicketSubjectFocusOut  ticketSubjectEditMode', this.ticketSubjectEditMode)
   }
 
@@ -1155,7 +1157,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
 
-          if(this.request.subject) {
+          if (this.request.subject) {
             this.ticketSubject = this.request.subject
           }
 
@@ -3025,6 +3027,69 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         });
   }
 
+  reopenArchivedRequest(request, request_id) {
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
+    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
+    // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
+    // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
+    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
+
+    // const closedAt = moment(new Date(request['closed_at'])).toDate()
+    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
+    // const createdAt = moment(new Date(request['createdAt'])).format("YYYY-MM-DD") // for test
+    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
+    // const today = moment(new Date()).format("YYYY-MM-DD")
+    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
+    // unarchiveRequest
+
+
+    const requestclosedAt = moment(request['closed_at']);
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
+    const currentTime = moment();
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
+
+
+    const daysDiff = currentTime.diff(requestclosedAt, 'd');
+    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+
+
+    if (daysDiff > 10) {
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
+      this.presentModalReopenConvIsNotPossible()
+    } else {
+      // console.log(moment(closedAtPlusTen).isSame(today))
+      this.reopenConversation(request_id)
+
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
+    }
+  }
+
+  presentModalReopenConvIsNotPossible() {
+    swal({
+      title: this.warningMsg,
+      text: "Conversations archived for more than ten days cannot be reopened",
+      icon: "warning",
+      button: "OK",
+      dangerMode: false,
+    })
+  }
+
+
+  reopenConversation(request_id) {
+    this.wsRequestsService.unarchiveRequest(request_id).subscribe((res: any) => {
+      this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST ', res)
+
+    }, (error) => {
+      this.logger.error('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST - ERROR ', error);
+
+
+    }, () => {
+      this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST * COMPLETE *');
+
+    })
+  }
+
   // JOIN TO CHAT GROUP
   onJoinHandled() {
     this.logger.log('[WS-REQUESTS-MSGS]- JOIN PRESSED');
@@ -3697,6 +3762,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((text: string) => {
         this.areYouSureLeftTheChatLabel = text;
       });
+
+
+    this.translate.get('Warning').subscribe((text: string) => {
+      this.warningMsg = text;
+      // this.logger.log('+ + + warningMsg', text)
+    });
+
 
   }
 
