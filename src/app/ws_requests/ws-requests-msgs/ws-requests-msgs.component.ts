@@ -274,6 +274,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   isOpenedAdvancedSearch: string;
   selectedDept: string;
   queryParams: any;
+  ticketSubjectEditMode: boolean = false;
+  ticketSubject: string;
   /**
    * Constructor
    * @param router 
@@ -1130,6 +1132,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // -----------------------------------
   // @ Subscribe to bs request by id
   // -----------------------------------
+
+  editTicketSubjectFocusOut() {
+    this.ticketSubjectEditMode =false
+    console.log('[WS-REQUESTS-MSGS] - editTicketSubjectFocusOut  ticketSubjectEditMode', this.ticketSubjectEditMode)
+  }
+
+  saveEditInPlaceSubject($event) {
+    console.log('[WS-REQUESTS-MSGS] - editTicketSubjectonFocusOut saveSubject ', this.ticketSubject)
+  }
+
   getWsRequestById$() {
     this.wsRequestsService.wsRequest$
       .pipe(
@@ -1137,11 +1149,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
+
+          if(this.request.subject) {
+            this.ticketSubject = this.request.subject
+          }
 
           // console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {

@@ -2913,6 +2913,7 @@ span .conv-svg-icon {
   color: #080f1a;
   font-weight: 400;
   font-size: 13px;
+  vertical-align: middle;
 }
 
 .request_details___ua_browser_icon {
@@ -3151,6 +3152,23 @@ span .conv-svg-icon {
 
 .train-btn:hover {
   text-decoration: underline;
+}
+
+.edit-in-place {
+    font-size: 16px;
+    vertical-align: middle;
+    margin-left: 6px;
+    color: #394f5a;
+    cursor:pointer;
+}
+
+.cellInput {
+  border: 2px solid transparent !important;
+  // padding: 11px 20px!important;
+  padding: 0px 0px!important;
+  width: 80% !important;
+  height: 20px !important;
+
 }
 
 // .location-icon {

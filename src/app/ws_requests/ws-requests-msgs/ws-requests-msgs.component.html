@@ -1299,9 +1299,10 @@
 
                     <div class="col-sm-12">
                       <p class="" style="margin-bottom: 0px">
-                        <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
+                        <i class="material-icons conv-details-sidebar-icon" 
+                          matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.Subject' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='right' matTooltipHideDelay="100">
+                          matTooltipPosition='right' matTooltipHideDelay="100" style="margin-bottom: 0px;">
                           subject
                         </i>
                         <span style="position: relative;top: 1px;">
@@ -1309,10 +1310,20 @@
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ "RequestMsgsPage.Subject" | translate }}
                         </span> -->
-                          <span class="conv-details-sidebar-text">
-                            {{ request?.subject}}
+                          <span *ngIf='!ticketSubjectEditMode' class="conv-details-sidebar-text">
+                          <!-- {{ request?.subject}} -->
+                          {{ticketSubject}}
+                          </span>
+                          <span  *ngIf='!ticketSubjectEditMode' class="material-icons edit-in-place" (click)='ticketSubjectEditMode=true'
+                          matTooltipClass="custom-mat-tooltip"
+                          matTooltip="Click to edit" #tooltip="matTooltip"
+                          matTooltipPosition='right' matTooltipHideDelay="100">
+                            mode_edit
                           </span>
                         </span>
+                        <!-- (blur)="editTicketSubjectFocusOut()" -->
+                        <input *ngIf='ticketSubjectEditMode' (blur)="editTicketSubjectFocusOut()" (keydown.enter)='saveEditInPlaceSubject($event)' [(ngModel)]='ticketSubject' class='cellInput'
+                            appdashboardAutofocus>
                       </p>
                     </div>
                   </div>
