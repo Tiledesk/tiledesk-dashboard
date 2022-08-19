@@ -52,14 +52,16 @@
             <input [(ngModel)]="app_icon_url" class="input" style="margin-bottom: 0px;" type="text"
               placeholder="Enter the url of the app icon">
               <span style="display: block;color: #f44336; font-weight: 400;font-size: 12px;"  *ngIf="!app_icon_url || app_icon_url?.length === 0">
-                 The app logo is required
+                 <!-- The app logo is required -->
+                 {{'TheAppIconIsRequired' | translate}
               </span>
           </div>
         </div>
         <!-- https://fakecrm.nicolan74.repl.co -->
         <div class="row">
           <label class="col-sm-12 app-create-label">
-            App name*
+            <!-- App name* -->
+             {{'AppName' | translate}*
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">

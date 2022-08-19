@@ -2132,7 +2132,9 @@
     "LearnHowBuildCustomApp": "Saiba como criar um aplicativo personalizado",
     "NewApp":"Novo aplicativo",
     "EditApp":"Editar aplicativo",
-    "NoAppLogo":"Sem logotipo do aplicativo",
+    "NoAppLogo":"Nenhum ícone de aplicativo disponível",
+    "TheAppIconIsRequired":"O ícone do app é necessário",
+    "AppName":"Nome do aplicativo",
     "ConversationsArchivedCannotBeReopened":"Conversas arquivadas por mais de dez dias não podem ser reabertas",
     "ClickToEdit":"Clique para editar",
     "CHAT_IONIC": {

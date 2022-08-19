@@ -2132,7 +2132,9 @@
     "LearnHowBuildCustomApp": "Fərdi proqram yaratmağı öyrənin",
     "NewApp":"Yeni tətbiq",
     "EditApp":"Tətbiqi redaktə edin",
-    "NoAppLogo":"Tətbiq loqosu yoxdur",
+    "NoAppLogo":"Tətbiq ikonası əlçatan deyil",
+    "TheAppIconIsRequired":"Tətbiq ikonası tələb olunur",
+    "AppName":"Tətbiqin adı",
     "ConversationsArchivedCannotBeReopened":"On gündən artıq arxivləşdirilmiş söhbətlər yenidən açıla bilməz",
     "ClickToEdit":"Redaktə etmək üçün klikləyin",
     "CHAT_IONIC": {

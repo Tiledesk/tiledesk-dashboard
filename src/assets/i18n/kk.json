@@ -2132,7 +2132,9 @@
     "LearnHowBuildCustomApp": "Арнаулы қолданбаны құру жолын біліңіз",
     "NewApp":"Жаңа қолданба",
     "EditApp":"Қолданбаны өңдеу",
-    "NoAppLogo":"Қолданба логотипі жоқ",
+    "NoAppLogo":"Қолданба белгішесі қолжетімді емес",
+    "AppName":"Қолданба атауы",
+    "TheAppIconIsRequired":"Қолданба белгішесі қажет",
     "ConversationsArchivedCannotBeReopened":"Он күннен астам мұрағатталған сөйлесулерді қайта ашу мүмкін емес",
     "ClickToEdit":"Өңдеу үшін басыңыз",
     "CHAT_IONIC": {

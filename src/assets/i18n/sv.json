@@ -2132,7 +2132,9 @@
     "LearnHowBuildCustomApp": "Lär dig hur du bygger en anpassad app",
     "NewApp":"Ny app",
     "EditApp":"Redigera app",
-    "NoAppLogo":"Ingen applogotyp",
+    "NoAppLogo":"Ingen appikon tillgänglig",
+    "TheAppIconIsRequired":"App-ikonen är obligatorisk",
+    "AppName":"App-namn",
     "ConversationsArchivedCannotBeReopened":"Konversationer som har arkiverats i mer än tio dagar kan inte öppnas igen",
     "ClickToEdit":"Klicka för att redigera",
     "CHAT_IONIC": {

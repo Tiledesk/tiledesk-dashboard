@@ -2131,7 +2131,9 @@
     "NewApp":"Nuova app",
     "LearnHowBuildCustomApp": "Scopri come creare app personalizzate",
     "EditApp":"Modifica app",
-    "NoAppLogo":"Nessun logo dell'app",
+    "NoAppLogo":"Nessuna icona dell'app disponibile",
+    "TheAppIconIsRequired":"L'icona dell'app è obbligatoria",
+    "AppName":"Nome dell'applicazione",
     "ConversationsArchivedCannotBeReopened":"Le conversazioni archiviate per più di dieci giorni non possono essere riaperte",
     "ClickToEdit":"Clicca per modificare"
 }

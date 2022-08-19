@@ -2132,7 +2132,10 @@
 	"NewApp":"Neue Anwendung",
 	"LearnHowBuildCustomApp": "Erfahren Sie, wie Sie benutzerdefinierte Apps erstellen",
 	"EditApp":"App bearbeiten",
-	"NoAppLogo":"Kein App-Logo",
+	"NoAppLogo":"Kein App-Symbol verfügbar",
+	"TheAppIconIsRequired":"Das App-Icon wird benötigt",
+	"AppName":"App-Name",
 	"ConversationsArchivedCannotBeReopened":"Konversationen, die länger als zehn Tage archiviert wurden, können nicht wieder geöffnet werden",
 	"ClickToEdit":"Zum Bearbeiten anklicken"
+	
 }

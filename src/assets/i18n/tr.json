@@ -2132,7 +2132,9 @@
     "LearnHowBuildCustomApp": "Özel uygulamanın nasıl oluşturulacağını öğrenin",
     "NewApp":"Yeni uygulama",
     "EditApp":"Uygulamayı düzenle",
-    "NoAppLogo":"Uygulama logosu yok",
+    "NoAppLogo":"Uygulama simgesi yok",
+    "TheAppIconIsRequired":"Uygulama simgesi gerekli",
+    "AppName":"Uygulama ismi",
     "ConversationsArchivedCannotBeReopened":"On günden fazla arşivlenen konuşmalar yeniden açılamaz",
     "ClickToEdit":"Düzenlemek için tıkla",
     "CHAT_IONIC": {

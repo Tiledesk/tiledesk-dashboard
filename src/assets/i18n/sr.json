@@ -2132,7 +2132,9 @@
     "LearnHowBuildCustomApp": "Сазнајте како да направите прилагођену апликацију",
     "NewApp":"Нев апп",
     "EditApp":"Уреди апликацију",
-    "NoAppLogo":"Нема логотипа апликације",
+    "NoAppLogo":"Није доступна икона апликације",
+    "TheAppIconIsRequired":"Икона апликације је обавезна",
+    "AppName":"Име апликације",
     "ConversationsArchivedCannotBeReopened":"Разговори архивирани дуже од десет дана не могу се поново отворити",
     "ClickToEdit":"Кликните да бисте уредили",
     "CHAT_IONIC": {

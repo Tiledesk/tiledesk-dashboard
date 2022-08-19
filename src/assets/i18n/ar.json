@@ -2132,7 +2132,9 @@
     "LearnHowBuildCustomApp": "تعرف على كيفية إنشاء تطبيق مخصص",
     "NewApp":"التطبيق الجديد",
     "EditApp":"تحرير التطبيق",
-    "NoAppLogo":"ليس هناك شعار التطبيق",
+    "NoAppLogo":"لا يوجد رمز تطبيق متاح",
+    "AppName":"اسم التطبيق",
+    "TheAppIconIsRequired":"رمز التطبيق مطلوب",
     "ConversationsArchivedCannotBeReopened":"لا يمكن إعادة فتح المحادثات التي تم وضعها في الأرشيف لأكثر من عشرة أيام",
     "ClickToEdit":"إضغط للتعديل",
     "CHAT_IONIC": {
