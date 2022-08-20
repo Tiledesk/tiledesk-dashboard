@@ -2133,7 +2133,12 @@
     "EditApp":"Modifica app",
     "NoAppLogo":"Nessuna icona dell'app disponibile",
     "TheAppIconIsRequired":"L'icona dell'app è obbligatoria",
+    "EnterTheURLOfTheAppIcon":"Inserisci l'URL dell'icona dell'app",
     "AppName":"Nome dell'applicazione",
+    "ConfigurationURL":"URL di configurazione (opzionale)",
+    "UsedToCreateCustomConfigurationPageForYourApp":"Utilizzato per creare una pagina di configurazione personalizzata per la tua app. La tua app può infatti includere una pagina per eseguire configurazioni avanzate es: 'https//myapp-for-tiledesk/configuration'. Per accedere alla pagina di configurazione, fare clic sul pulsante 'Configura' dopo aver installato l'app",
+    "ConfigurationURL_PH":"URL di configurazione",
+    "TheEndpointURLMustBeValidHTTPSURL":"L'URL dell'endpoint deve essere un URL HTTPS valido",
     "ConversationsArchivedCannotBeReopened":"Le conversazioni archiviate per più di dieci giorni non possono essere riaperte",
     "ClickToEdit":"Clicca per modificare"
 }

@@ -2134,7 +2134,12 @@
     "EditApp":"Ilovani tahrirlash",
     "NoAppLogo":"Hech qanday ilova belgisi mavjud emas",
     "TheAppIconIsRequired": "Ilova belgisi kerak",
+    "EnterTheURLOfTheAppIcon":"Ilova belgisining URL manzilini kiriting",
     "AppName":"Ilova nomi",
+    "ConfigurationURL":"Konfiguratsiya URL manzili (ixtiyoriy)",
+    "UsedToCreateCustomConfigurationPageForYourApp":"Ilovangiz uchun maxsus konfiguratsiya sahifasini yaratish uchun foydalaniladi. Ilovangiz aslida kengaytirilgan konfiguratsiyalarni bajarish uchun sahifani o'z ichiga olishi mumkin, masalan: 'https://myapp-for-tiledesk/configuration'. Konfiguratsiya sahifasiga kirish uchun dasturni o'rnatgandan so'ng 'Konfiguratsiya' tugmasini bosing",
+    "ConfigurationURL_PH":"Konfiguratsiya URL manzili",
+    "TheEndpointURLMustBeValidHTTPSURL":"Yakuniy nuqta URL manzili yaroqli HTTPS URL boʻlishi kerak",
     "ConversationsArchivedCannotBeReopened":"O'n kundan ortiq arxivlangan suhbatlarni qayta ochib bo'lmaydi",
     "ClickToEdit":"Tahrirlash uchun bosing",
     "CHAT_IONIC": {

@@ -2134,7 +2134,12 @@
     "EditApp":"Редагувати додаток",
     "NoAppLogo":"Немає доступного значка програми",
     "TheAppIconIsRequired": "Значок програми є обов’язковим",
+    "EnterTheURLOfTheAppIcon":"Введіть URL-адресу піктограми програми",
     "AppName":"Ім'я додатка",
+    "ConfigurationURL":"URL-адреса конфігурації (необов’язково)",
+    "UsedToCreateCustomConfigurationPageForYourApp":"Використовується для створення спеціальної сторінки конфігурації для вашої програми. Фактично ваша програма може містити сторінку для виконання розширених налаштувань, наприклад: 'https://myapp-for-tiledesk/configuration'. Щоб отримати доступ до сторінки конфігурації, натисніть кнопку «Налаштувати» після встановлення програми",
+    "ConfigurationURL_PH":"URL конфігурації",
+    "TheEndpointURLMustBeValidHTTPSURL":"URL-адреса кінцевої точки має бути дійсною URL-адресою HTTPS",
     "ConversationsArchivedCannotBeReopened":"Розмови, заархівовані більше десяти днів, не можна повторно відкрити",
     "ClickToEdit":"Натисніть, щоб редагувати",
     "CHAT_IONIC": {

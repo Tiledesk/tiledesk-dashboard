@@ -2134,7 +2134,12 @@
     "EditApp":"Uygulamayı düzenle",
     "NoAppLogo":"Uygulama simgesi yok",
     "TheAppIconIsRequired":"Uygulama simgesi gerekli",
+    "EnterTheURLOfTheAppIcon":"Uygulama simgesinin URL'sini girin",
     "AppName":"Uygulama ismi",
+    "ConfigurationURL":"Yapılandırma URL'si (isteğe bağlı)",
+    "UsedToCreateCustomConfigurationPageForYourApp":"Uygulamanız için özel bir yapılandırma sayfası oluşturmak için kullanılır. Uygulamanız aslında gelişmiş yapılandırmaları gerçekleştirmek için bir sayfa içerebilir, örneğin: 'https://myapp-for-tiledesk/configuration'. Yapılandırma sayfasına erişmek için uygulamayı yükledikten sonra 'Yapılandır' düğmesine tıklayın",
+    "ConfigurationURL_PH":"Yapılandırma URL'si",
+    "TheEndpointURLMustBeValidHTTPSURL":"Uç nokta URL'si geçerli bir HTTPS URL'si olmalıdır",
     "ConversationsArchivedCannotBeReopened":"On günden fazla arşivlenen konuşmalar yeniden açılamaz",
     "ClickToEdit":"Düzenlemek için tıkla",
     "CHAT_IONIC": {

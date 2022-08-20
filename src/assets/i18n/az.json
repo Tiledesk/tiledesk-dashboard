@@ -2134,7 +2134,12 @@
     "EditApp":"Tətbiqi redaktə edin",
     "NoAppLogo":"Tətbiq ikonası əlçatan deyil",
     "TheAppIconIsRequired":"Tətbiq ikonası tələb olunur",
+    "EnterTheURLOfTheAppIcon":"Proqram ikonasının URL-ni daxil edin",
     "AppName":"Tətbiqin adı",
+    "ConfigurationURL":"Konfiqurasiya URL (isteğe bağlı)",
+    "UsedToCreateCustomConfigurationPageForYourApp":"Tətbiqiniz üçün fərdi konfiqurasiya səhifəsi yaratmaq üçün istifadə olunur. Tətbiqinizə təkmil konfiqurasiyaları yerinə yetirmək üçün səhifə daxil ola bilər, məsələn: 'https://myapp-for-tiledesk/configuration'. Konfiqurasiya səhifəsinə daxil olmaq üçün proqramı quraşdırdıqdan sonra 'Konfiqurasiya' düyməsini klikləyin",
+    "ConfigurationURL_PH":"Konfiqurasiya URL",
+    "TheEndpointURLMustBeValidHTTPSURL":"Son nöqtə URL-i etibarlı HTTPS URL-i olmalıdır",
     "ConversationsArchivedCannotBeReopened":"On gündən artıq arxivləşdirilmiş söhbətlər yenidən açıla bilməz",
     "ClickToEdit":"Redaktə etmək üçün klikləyin",
     "CHAT_IONIC": {

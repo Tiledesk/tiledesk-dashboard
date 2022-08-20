@@ -2134,7 +2134,12 @@
 	"EditApp":"App bearbeiten",
 	"NoAppLogo":"Kein App-Symbol verfügbar",
 	"TheAppIconIsRequired":"Das App-Icon wird benötigt",
+	"EnterTheURLOfTheAppIcon":"Geben Sie die URL des App-Symbols ein",
 	"AppName":"App-Name",
+	"ConfigurationURL":"Konfigurations-URL (optional)",
+	"ConfigurationURL_PH":"Konfigurations-URL",
+	"TheEndpointURLMustBeValidHTTPSURL":"Die Endpunkt-URL muss eine gültige HTTPS-URL sein",
+	"UsedToCreateCustomConfigurationPageForYourApp":"Wird verwendet, um eine benutzerdefinierte Konfigurationsseite für Ihre App zu erstellen. Ihre App kann tatsächlich eine Seite enthalten, um erweiterte Konfigurationen durchzuführen, z. B.: 'https://myapp-for-tiledesk/configuration'. Um auf die Konfigurationsseite zuzugreifen, klicken Sie nach der Installation der App auf die Schaltfläche „Konfigurieren“.",
 	"ConversationsArchivedCannotBeReopened":"Konversationen, die länger als zehn Tage archiviert wurden, können nicht wieder geöffnet werden",
 	"ClickToEdit":"Zum Bearbeiten anklicken"
 	

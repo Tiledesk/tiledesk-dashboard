@@ -2134,7 +2134,12 @@
     "EditApp":"Modifier l'application",
     "NoAppLogo":"Aucune icône d'application disponible",
     "TheAppIconIsRequired":"L'icône de l'application est obligatoire",
+    "EnterTheURLOfTheAppIcon":"Entrez l'URL de l'icône de l'application",
     "AppName":"Nom de l'application",
+    "ConfigurationURL":"URL de configuration (facultatif)",
+    "UsedToCreateCustomConfigurationPageForYourApp":"Utilisé pour créer une page de configuration personnalisée pour votre application. Votre application peut en effet inclure une page pour effectuer des configurations avancées par exemple : 'https://myapp-for-tiledesk/configuration'. Pour accéder à la page de configuration, cliquez sur le bouton 'Configurer' après avoir installé l'application",
+    "ConfigurationURL_PH":"URL de configuration",
+    "TheEndpointURLMustBeValidHTTPSURL":"L'URL du point de terminaison doit être une URL HTTPS valide",
     "ConversationsArchivedCannotBeReopened":"Les conversations archivées depuis plus de dix jours ne peuvent pas être rouvertes",
     "ClickToEdit":"Cliquez pour modifier",
     "CHAT_IONIC": {
