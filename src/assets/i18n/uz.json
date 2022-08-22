@@ -2147,6 +2147,7 @@
     "EnableYourAppFor":"Ilovangizni yoqing",
     "ConversationsArchivedCannotBeReopened":"O'n kundan ortiq arxivlangan suhbatlarni qayta ochib bo'lmaydi",
     "ClickToEdit":"Tahrirlash uchun bosing",
+    "SubjectUpdatedSuccessfully":"Mavzu muvaffaqiyatli yangilandi",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

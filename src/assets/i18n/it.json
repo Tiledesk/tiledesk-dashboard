@@ -2049,6 +2049,7 @@
     "TheCustomPreChatFormIsEmptyAndWillBeDisabled":"Il modulo di pre-chat personalizzato è vuoto e verrà disabilitato",
     "EnableDisableCustomPreChatForm":"Abilita campi personalizzati",
     "SelectFields": "Seleziona i campi",
+    "PreChatFormTitle": "Titolo del modulo pre-chat",
     "PreChatForm": "Modulo pre-chat",
     "Mandatory":"Obbligatorio",
     "EnableDisablePreChatForm":"Abilita il modulo di pre-chat",
@@ -2145,5 +2146,6 @@
     "LearnMoreURL":"Ulteriori informazioni URL",
     "EnableYourAppFor":"Abilita la tua app per",
     "ConversationsArchivedCannotBeReopened":"Le conversazioni archiviate per più di dieci giorni non possono essere riaperte",
-    "ClickToEdit":"Clicca per modificare"
+    "ClickToEdit":"Clicca per modificare",
+    "SubjectUpdatedSuccessfully":"Oggetto aggiornato correttamente"
 }

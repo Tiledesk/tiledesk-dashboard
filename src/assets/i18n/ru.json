@@ -2147,6 +2147,7 @@
     "EnableYourAppFor":"Включите ваше приложение для",
     "ConversationsArchivedCannotBeReopened":"Разговоры, заархивированные более десяти дней, не могут быть повторно открыты",
     "ClickToEdit":"Нажмите, чтобы отредактировать",
+    "SubjectUpdatedSuccessfully":"Субъект успешно обновлена",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

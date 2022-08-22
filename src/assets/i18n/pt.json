@@ -2147,6 +2147,7 @@
     "EnableYourAppFor":"Habilite seu aplicativo para",
     "ConversationsArchivedCannotBeReopened":"Conversas arquivadas por mais de dez dias não podem ser reabertas",
     "ClickToEdit":"Clique para editar",
+    "SubjectUpdatedSuccessfully":"Assunto atualizado com sucesso",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

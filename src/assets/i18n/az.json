@@ -2147,6 +2147,7 @@
     "EnableYourAppFor":"Üçün tətbiqinizi aktivləşdirin",
     "ConversationsArchivedCannotBeReopened":"On gündən artıq arxivləşdirilmiş söhbətlər yenidən açıla bilməz",
     "ClickToEdit":"Redaktə etmək üçün klikləyin",
+    "SubjectUpdatedSuccessfully":"Mövzu uğurla yeniləndi",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",
