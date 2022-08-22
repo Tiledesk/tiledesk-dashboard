@@ -171,7 +171,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   create_note_error: string;
   delete_note_success: string;
   delete_note_error: string;
-  notifyProcessingMsg: string
+  notifyProcessingMsg: string;
+
+  subjectUpdatedSuccessfully: string;
+  anErrorHasOccurred: string;
 
   tagsList: Array<any>;
   typeALabelAndPressEnter: string;
@@ -1141,8 +1144,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     console.log('[WS-REQUESTS-MSGS] - editTicketSubjectFocusOut  ticketSubjectEditMode', this.ticketSubjectEditMode)
   }
 
-  saveEditInPlaceSubject($event) {
+  saveEditInPlaceSubject() {
     console.log('[WS-REQUESTS-MSGS] - editTicketSubjectonFocusOut saveSubject ', this.ticketSubject)
+    this.wsRequestsService.updateRequestsById_UpdateTicketSubject(this.id_request, this.ticketSubject)
+      .subscribe((data: any) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE TICKET SUBJECT - RES: ', data);
+      }, (err) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - UPDATE TICKET SUBJECT - ERROR: ', err);
+        this.notify.showWidgetStyleUpdateNotification(this.anErrorHasOccurred, 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE TICKET SUBJECT * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification(this.subjectUpdatedSuccessfully, 2, 'done');
+        this.ticketSubjectEditMode = false
+      });
   }
 
   getWsRequestById$() {
@@ -3776,7 +3790,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
 
 
-  
+    this.translate.get('SubjectUpdatedSuccessfully').subscribe((text: string) => {
+      this.subjectUpdatedSuccessfully = text;
+    });
+
+    this.translate.get('UserEditAddPage.AnErrorHasOccurred').subscribe((text: string) => {
+      this.anErrorHasOccurred = text;
+    });
+
+    
+
 
 
   }
