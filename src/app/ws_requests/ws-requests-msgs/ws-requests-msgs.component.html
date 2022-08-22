@@ -1330,7 +1330,7 @@
                           </span>
                         </span>
                         <!-- (blur)="editTicketSubjectFocusOut()" -->
-                        <input *ngIf='ticketSubjectEditMode' (blur)="editTicketSubjectFocusOut()" (keydown.enter)='saveEditInPlaceSubject($event)' [(ngModel)]='ticketSubject' class='cellInput'
+                        <input *ngIf='ticketSubjectEditMode' (blur)="editTicketSubjectFocusOut()" (keydown.enter)='saveEditInPlaceSubject()' [(ngModel)]='ticketSubject' class='cellInput'
                             appdashboardAutofocus>
                       </p>
                     </div>
