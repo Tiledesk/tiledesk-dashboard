@@ -2147,6 +2147,7 @@
     "EnableYourAppFor": "Enable your app for",
     "ConversationsArchivedCannotBeReopened": "Conversations archived for more than ten days cannot be reopened",
     "ClickToEdit": "Click to edit",
+    "SubjectUpdatedSuccessfully": "Subject updated successfully",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",
