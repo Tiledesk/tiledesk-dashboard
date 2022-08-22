@@ -1021,6 +1021,29 @@ export class WsRequestsService implements OnDestroy {
   // }
 
   // -----------------------------------------------------------------------------------------
+  // Update Ticket Subject
+  // -----------------------------------------------------------------------------------------
+  updateRequestsById_UpdateTicketSubject(request_id: string, subject: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // this.logger.log('JOIN FUNCT OPTIONS  ', options);
+
+    const body = { 'subject': subject };
+    // const body = { 'tags':  { tag: "kll", color: "#43B1F2" } };
+    this.logger.log('[WS-REQUESTS-SERV] UPDATE TICKET SUBJECT - BODY ', body);
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
+    this.logger.log('[WS-REQUESTS-SERV] UPDATE TICKET SUBJECT - URL ', url);
+
+    return this.http
+      .patch(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  // -----------------------------------------------------------------------------------------
   // Update request by id - (UPDATE TAG) Add / Remove tag
   // -----------------------------------------------------------------------------------------
   updateRequestsById_UpdateTag(request_id: string, tags: Array<string>) {
