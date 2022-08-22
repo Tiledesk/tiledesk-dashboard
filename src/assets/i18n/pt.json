@@ -2140,6 +2140,11 @@
     "UsedToCreateCustomConfigurationPageForYourApp":"Usado para criar uma página de configuração personalizada para seu aplicativo. Seu aplicativo pode de fato incluir uma página para realizar configurações avançadas, por exemplo: 'https://myapp-for-tiledesk/configuration'. Para acessar a página de configuração, clique no botão 'Configurar' após instalar o aplicativo",
     "ConfigurationURL_PH":"URL de configuração",
     "TheEndpointURLMustBeValidHTTPSURL":"O URL do endpoint deve ser um URL HTTPS válido",
+    "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp":"Este atributo especifica o endereço URL da página a ser incorporada ao aplicativo por meio de um iframe",
+    "AppRenderURL":"URL de renderização do aplicativo",
+    "ShortDescription":"Descrição resumida",
+    "LearnMoreURL":"Saiba mais URL",
+    "EnableYourAppFor":"Habilite seu aplicativo para",
     "ConversationsArchivedCannotBeReopened":"Conversas arquivadas por mais de dez dias não podem ser reabertas",
     "ClickToEdit":"Clique para editar",
     "CHAT_IONIC": {

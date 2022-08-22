@@ -94,46 +94,48 @@
 
         <div class="row">
           <label class="col-sm-12 app-create-label">
-            Render URL
+            <!-- Render URL -->
+            {{'AppRenderURL' | translate }}
             <span style="color: rgb(157, 159, 162); display: block;font-size: 12px;">
-              This attribute specifies the address of the page to embed in the app via an iframe
+              {{'ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp' | translate }}
             </span>
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <input (ngModelChange)="onChangeRunUrl($event)" [(ngModel)]="app_run_url" class="input" style="margin-bottom: 0px;" type="text"
-              placeholder="Render app url">
+              placeholder="{{'AppRenderURL' | translate }}">
               <div style="color: #f44336; font-weight: 400;font-size: 12px;" *ngIf="diplayErrorRunUrlIsNoValid === true"> 
-                Endpoint url must be a valid HTTPS URL 
+                <!-- Endpoint url must be a valid HTTPS URL  -->
+                {{ 'TheEndpointURLMustBeValidHTTPSURL' | translate}}
               </div>
           </div>
         </div>
 
         <div class="row">
           <label class="col-sm-12 app-create-label">
-            Short description*
+            {{ 'ShortDescription' | translate}}*  
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <input [(ngModel)]="app_description" class="input" style="margin-bottom: 0px;" type="text"
-              placeholder="Description">
+              placeholder="{{ 'ShortDescription' | translate}}">
           </div>
         </div>
 
         <div class="row">
           <label class="col-sm-12 app-create-label">
-            Learn more URL*
+            {{ 'LearnMoreURL' | translate}}*
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <input [(ngModel)]="app_learn_more_url" class="input" style="margin-bottom: 0px;" type="text"
-              placeholder="Learn more URL">
+              placeholder="{{ 'LearnMoreURL' | translate}}">
           </div>
         </div>
 
         <div class="row">
           <label class="col-sm-12 app-create-label">
-            Enable your app for
+            {{ 'EnableYourAppFor' | translate}}
           </label>
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <!-- <ng-select [items]="where_items" bindLabel="name" bindValue="id" [clearable]="false"
@@ -196,7 +198,8 @@
                   {{ 'ScriptPage.Save' | translate }}
                 </span>
                 <span *ngIf="EDIT_VIEW">
-                  Update
+                  <!-- Update -->
+                  {{ 'UserEditAddPage.Update' | translate }}
                 </span>
               </button>
             </div>

@@ -2140,6 +2140,11 @@
     "UsedToCreateCustomConfigurationPageForYourApp":"Uygulamanız için özel bir yapılandırma sayfası oluşturmak için kullanılır. Uygulamanız aslında gelişmiş yapılandırmaları gerçekleştirmek için bir sayfa içerebilir, örneğin: 'https://myapp-for-tiledesk/configuration'. Yapılandırma sayfasına erişmek için uygulamayı yükledikten sonra 'Yapılandır' düğmesine tıklayın",
     "ConfigurationURL_PH":"Yapılandırma URL'si",
     "TheEndpointURLMustBeValidHTTPSURL":"Uç nokta URL'si geçerli bir HTTPS URL'si olmalıdır",
+    "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp":"Bu özellik, bir iframe aracılığıyla uygulamaya yerleştirilecek sayfanın URL adresini belirtir",
+    "ShortDescription":"Kısa Açıklama",
+    "LearnMoreURL":"Daha fazla bilgi edinin URL",
+    "EnableYourAppFor":"Için uygulamanızı etkinleştirin",
+    "AppRenderURL":"Uygulama görüntüleme URL'si",
     "ConversationsArchivedCannotBeReopened":"On günden fazla arşivlenen konuşmalar yeniden açılamaz",
     "ClickToEdit":"Düzenlemek için tıkla",
     "CHAT_IONIC": {

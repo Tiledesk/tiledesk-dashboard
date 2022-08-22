@@ -2140,6 +2140,11 @@
     "UsedToCreateCustomConfigurationPageForYourApp":"Tətbiqiniz üçün fərdi konfiqurasiya səhifəsi yaratmaq üçün istifadə olunur. Tətbiqinizə təkmil konfiqurasiyaları yerinə yetirmək üçün səhifə daxil ola bilər, məsələn: 'https://myapp-for-tiledesk/configuration'. Konfiqurasiya səhifəsinə daxil olmaq üçün proqramı quraşdırdıqdan sonra 'Konfiqurasiya' düyməsini klikləyin",
     "ConfigurationURL_PH":"Konfiqurasiya URL",
     "TheEndpointURLMustBeValidHTTPSURL":"Son nöqtə URL-i etibarlı HTTPS URL-i olmalıdır",
+    "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp":"Bu atribut iframe vasitəsilə proqrama daxil ediləcək səhifənin URL ünvanını müəyyən edir",
+    "AppRenderURL":"Proqram göstərən URL",
+    "ShortDescription":"Qısa Təsvir",
+    "LearnMoreURL":"Ətraflı məlumat əldə edin URL",
+    "EnableYourAppFor":"Üçün tətbiqinizi aktivləşdirin",
     "ConversationsArchivedCannotBeReopened":"On gündən artıq arxivləşdirilmiş söhbətlər yenidən açıla bilməz",
     "ClickToEdit":"Redaktə etmək üçün klikləyin",
     "CHAT_IONIC": {

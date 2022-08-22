@@ -2140,6 +2140,11 @@
     "UsedToCreateCustomConfigurationPageForYourApp":"يُستخدم لإنشاء صفحة تكوين مخصصة لتطبيقك. يمكن أن يتضمن تطبيقك في الواقع صفحة لإجراء التكوينات المتقدمة ، مثل: 'https://myapp-for-tiledesk/config'. للوصول إلى صفحة التكوين ، انقر فوق الزر 'تكوين' بعد تثبيت التطبيق",
     "ConfigurationURL_PH":"تكوين URL",
     "TheEndpointURLMustBeValidHTTPSURL":"يجب أن يكون عنوان URL لنقطة النهاية عنوان HTTPS URL صالحًا",
+    "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp":"تحدد هذه السمة عنوان URL للصفحة المراد تضمينها في التطبيق عبر iframe",
+    "AppRenderURL":"عنوان URL لعرض التطبيق",
+    "ShortDescription":"وصف قصير",
+    "LearnMoreURL":"اعرف المزيد URL",
+    "EnableYourAppFor":"قم بتمكين تطبيقك لـ",
     "ConversationsArchivedCannotBeReopened":"لا يمكن إعادة فتح المحادثات التي تم وضعها في الأرشيف لأكثر من عشرة أيام",
     "ClickToEdit":"إضغط للتعديل",
     "CHAT_IONIC": {

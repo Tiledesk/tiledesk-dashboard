@@ -2139,6 +2139,11 @@
 	"ConfigurationURL":"Konfigurations-URL (optional)",
 	"ConfigurationURL_PH":"Konfigurations-URL",
 	"TheEndpointURLMustBeValidHTTPSURL":"Die Endpunkt-URL muss eine gültige HTTPS-URL sein",
+	"ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp":"Dieses Attribut gibt die URL-Adresse der Seite an, die über einen Iframe in die App eingebettet werden soll",
+	"AppRenderURL":"App-Rendering-URL",
+	"ShortDescription":"Kurze Beschreibung",
+	"LearnMoreURL":"Mehr erfahren URL",
+	"EnableYourAppFor":"Aktivieren Sie Ihre App für",
 	"UsedToCreateCustomConfigurationPageForYourApp":"Wird verwendet, um eine benutzerdefinierte Konfigurationsseite für Ihre App zu erstellen. Ihre App kann tatsächlich eine Seite enthalten, um erweiterte Konfigurationen durchzuführen, z. B.: 'https://myapp-for-tiledesk/configuration'. Um auf die Konfigurationsseite zuzugreifen, klicken Sie nach der Installation der App auf die Schaltfläche „Konfigurieren“.",
 	"ConversationsArchivedCannotBeReopened":"Konversationen, die länger als zehn Tage archiviert wurden, können nicht wieder geöffnet werden",
 	"ClickToEdit":"Zum Bearbeiten anklicken"

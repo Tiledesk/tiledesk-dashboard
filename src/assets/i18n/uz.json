@@ -2140,6 +2140,11 @@
     "UsedToCreateCustomConfigurationPageForYourApp":"Ilovangiz uchun maxsus konfiguratsiya sahifasini yaratish uchun foydalaniladi. Ilovangiz aslida kengaytirilgan konfiguratsiyalarni bajarish uchun sahifani o'z ichiga olishi mumkin, masalan: 'https://myapp-for-tiledesk/configuration'. Konfiguratsiya sahifasiga kirish uchun dasturni o'rnatgandan so'ng 'Konfiguratsiya' tugmasini bosing",
     "ConfigurationURL_PH":"Konfiguratsiya URL manzili",
     "TheEndpointURLMustBeValidHTTPSURL":"Yakuniy nuqta URL manzili yaroqli HTTPS URL boʻlishi kerak",
+    "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp":"Bu atribut iframe orqali ilovaga joylashtirish uchun sahifaning URL manzilini belgilaydi",
+    "AppRenderURL":"Ilova render URL",
+    "ShortDescription":"Qisqa Tasvir",
+    "LearnMoreURL":"Ko'proq ma'lumot olish URL",
+    "EnableYourAppFor":"Ilovangizni yoqing",
     "ConversationsArchivedCannotBeReopened":"O'n kundan ortiq arxivlangan suhbatlarni qayta ochib bo'lmaydi",
     "ClickToEdit":"Tahrirlash uchun bosing",
     "CHAT_IONIC": {

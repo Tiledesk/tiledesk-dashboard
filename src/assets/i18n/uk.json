@@ -2140,6 +2140,11 @@
     "UsedToCreateCustomConfigurationPageForYourApp":"Використовується для створення спеціальної сторінки конфігурації для вашої програми. Фактично ваша програма може містити сторінку для виконання розширених налаштувань, наприклад: 'https://myapp-for-tiledesk/configuration'. Щоб отримати доступ до сторінки конфігурації, натисніть кнопку «Налаштувати» після встановлення програми",
     "ConfigurationURL_PH":"URL конфігурації",
     "TheEndpointURLMustBeValidHTTPSURL":"URL-адреса кінцевої точки має бути дійсною URL-адресою HTTPS",
+    "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp":"Цей атрибут визначає URL-адресу сторінки, яку потрібно вставити в програму через iframe",
+    "AppRenderURL":"URL-адреса рендеринга програми",
+    "ShortDescription":"Короткий опис",
+    "LearnMoreURL":"URL-адреса докладнішої інформації",
+    "EnableYourAppFor":"Увімкніть свою програму для",
     "ConversationsArchivedCannotBeReopened":"Розмови, заархівовані більше десяти днів, не можна повторно відкрити",
     "ClickToEdit":"Натисніть, щоб редагувати",
     "CHAT_IONIC": {

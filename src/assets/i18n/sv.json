@@ -2140,6 +2140,11 @@
     "UsedToCreateCustomConfigurationPageForYourApp":"Används för att skapa en anpassad konfigurationssida för din app. Din app kan faktiskt innehålla en sida för att utföra avancerade konfigurationer, t.ex.: 'https://myapp-for-tiledesk/configuration'. För att komma till konfigurationssidan, klicka på knappen 'Konfigurera' efter att du har installerat appen",
     "ConfigurationURL_PH":"Konfigurations-URL",
     "TheEndpointURLMustBeValidHTTPSURL":"Endpoint URL måste vara en giltig HTTPS URL",
+    "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp":"Det här attributet anger URL-adressen till sidan som ska bäddas in i appen via en iframe",
+    "AppRenderURL":"App-renderings-URL",
+    "ShortDescription":"Kort beskrivning",
+    "LearnMoreURL":"Läs mer URL",
+    "EnableYourAppFor":"Aktivera din app för",
     "ConversationsArchivedCannotBeReopened":"Konversationer som har arkiverats i mer än tio dagar kan inte öppnas igen",
     "ClickToEdit":"Klicka för att redigera",
     "CHAT_IONIC": {

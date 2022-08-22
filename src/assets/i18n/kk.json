@@ -2140,6 +2140,11 @@
     "UsedToCreateCustomConfigurationPageForYourApp":"Қолданбаңыз үшін теңшелетін конфигурация бетін жасау үшін пайдаланылады. Қолданбаңыз кеңейтілген конфигурацияларды орындауға арналған бетті қамтуы мүмкін, мысалы: 'https://myapp-for-tiledesk/configuration'. Конфигурация бетіне кіру үшін қолданбаны орнатқаннан кейін «Конфигурациялау» түймесін басыңыз",
     "ConfigurationURL_PH":"Конфигурация URL",
     "TheEndpointURLMustBeValidHTTPSURL":"Соңғы нүкте URL мекенжайы жарамды HTTPS URL мекенжайы болуы керек",
+    "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp":"Бұл төлсипат iframe арқылы қолданбаға ендірілетін беттің URL мекенжайын көрсетеді",
+    "AppRenderURL":"Қолданбаны көрсету URL",
+    "ShortDescription":"Қысқаша сипаттама",
+    "LearnMoreURL":"Толығырақ URL мекенжайы",
+    "EnableYourAppFor":"Үшін қолданбаңызды қосыңыз",
     "ConversationsArchivedCannotBeReopened":"Он күннен астам мұрағатталған сөйлесулерді қайта ашу мүмкін емес",
     "ClickToEdit":"Өңдеу үшін басыңыз",
     "CHAT_IONIC": {
