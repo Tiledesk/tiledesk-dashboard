@@ -2147,6 +2147,7 @@
     "EnableYourAppFor": "قم بتمكين تطبيقك لـ",
     "ConversationsArchivedCannotBeReopened": "لا يمكن إعادة فتح المحادثات المؤرشفة لأكثر من عشرة أيام",
     "ClickToEdit": "إضغط للتعديل",
+    "SubjectUpdatedSuccessfully": "Subject updated successfully",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",
