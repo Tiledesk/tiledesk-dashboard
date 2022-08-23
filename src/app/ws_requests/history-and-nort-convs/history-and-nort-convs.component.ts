@@ -471,7 +471,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           // console.log('[HISTORY & NORT-CONVS] queryParams call search conversation_type ', this.conversation_type)
           // console.log('[HISTORY & NORT-CONVS] queryParams call search selectedAgentId ', this.selectedAgentId)
           // console.log('[HISTORY & NORT-CONVS] queryParams call search selecteTagName ', this.selecteTagName)
-          this.search('getQueryParams');
+          this.search();
         }
 
       });
@@ -1758,7 +1758,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
     if (event.key === "Enter") {
-      this.search('searchOnEnterPressed')
+      this.search()
     }
   }
 
@@ -1766,7 +1766,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     return /^[0-9]+$/.test(stringWithoutHash);
   }
 
-  search(calledBy) {
+  search() {
     // console.log('HERE IN SEARCH calledBy ', calledBy)
     // console.log('HERE IN SEARCH this.fullText', this.fullText)
     // console.log('HERE IN SEARCH this.startDate', this.startDate)
