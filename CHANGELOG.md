@@ -6,6 +6,7 @@
 - Adds the ability to edit the ticket subject "in-place" on the conversation detail page
 - Adds to the conversation detail page the ability to reopen a conversation if it hasn't been archived for more than ten days
 - Adds the ability in the "Monitoring" page > "Your Conversations" tab to view only teammates of the groups to which the current user belongs
+- Adds the ability to create a "tilebot" bot
 
 ### 2.2.47.2
 - Fixes the bug: the text associated with the image sent by the requester is missing from the chat section of the conversation detail page
