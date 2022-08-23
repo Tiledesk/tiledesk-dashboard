@@ -57,7 +57,7 @@
     "express": "^4.17.3",
     "file-saver": "^2.0.5",
     "firebase": "^7.24.0",
-    "googleapis": "19.0.0",
+    "googleapis": "107.0.0",
     "humanize-duration": "^3.27.1",
     "humanize-duration-ts": "^2.1.1",
     "jquery": "3.2.1",
