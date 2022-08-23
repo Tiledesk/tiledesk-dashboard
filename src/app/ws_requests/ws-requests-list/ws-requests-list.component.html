@@ -1,6 +1,6 @@
 <!-- margin-top:6px; -->
-<p style=" padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand" 
-[ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-19px' : '6px' }">
+<p style=" padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-19px' : '6px' }">
   {{ 'Requests' | translate }}
 </p>
 
@@ -73,8 +73,9 @@
   <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;"
     (click)='goToNoRealtimeConversations()'>
     <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
-      style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }"  matTooltipClass="mat-white-tooltip"
-      matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+      style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }"
+      matTooltipClass="mat-white-tooltip" matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}"
+      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
       <span aria-hidden="true" class="material-icons" style="margin-top: 3px; color:#3ea9f5; font-size: 27px;
       position: relative;
       top: -3px;">
@@ -98,7 +99,8 @@
   <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
       style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
-      matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+      matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+      matTooltipHideDelay="100">
       <span class="material-icons" style="margin-top: 3px; color:#3ea9f5">
         pin_drop
       </span>
@@ -146,10 +148,11 @@
     <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
       style="cursor: pointer; display: unset; color:#3ea9f5;"
       [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }" matTooltipClass="mat-white-tooltip"
-      matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+      matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+      matTooltipHideDelay="100">
       <span class="material-icons" style="font-size: 27px;
       position: relative;
-      top: -2px;"> 
+      top: -2px;">
         manage_search
       </span>
       <!-- <div class="bottom"
@@ -193,7 +196,8 @@
   <li class="see-no-realtime-request" style="float: right; padding-right: 5px; " (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
       style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
-      matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+      matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+      matTooltipHideDelay="100">
       <span class="material-icons" style="margin-top: 0px;color:#3ea9f5">
         pin_drop
       </span>
@@ -223,14 +227,14 @@
           <div class="open-chat-tool-text">
             {{'ThisIsTheRealTimeConversationsMonitoringPanel' | translate }}
             <!-- (click)="openChat()" -->
-            <span class="chat-tool-link" style="color:#03a5e8" >
+            <span class="chat-tool-link" style="color:#03a5e8">
               <!-- <span class="material-icons" style="vertical-align:middle; font-size: 16px;">
                 open_in_new
               </span> -->
               {{'chatTool' | translate}}
             </span>
             <!-- (click)="openChat()" -->
-            <span class="open-chat-tool-chat-logo-wpr" style="margin-left: 4px;" >
+            <span class="open-chat-tool-chat-logo-wpr" style="margin-left: 4px;">
               <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 175.7 175.7"
                 style="enable-background:new 0 0 175.7 175.7;" xml:space="preserve" style="width: 19px;
@@ -276,7 +280,7 @@
                   <div class="total-value"
                     style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 40px; color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 8px;">
 
-                    <span class="total-value-number-of-conversation" style="position: relative;top: 2px;"> 
+                    <span class="total-value-number-of-conversation" style="position: relative;top: 2px;">
                       {{ wsRequestsServed?.length + wsRequestsUnserved?.length }}
                     </span>
 
@@ -319,11 +323,11 @@
                                 font-weight: 400;
                                 color: rgba(0, 0, 0, 0.54);
                                 line-height: 2;">{{'Unserved' | translate}}</div>
-                    
+
                       </div>
                     </div>
                   </div>
-        
+
                 </div>
               </div>
             </div>
@@ -362,7 +366,7 @@
             <div class="row" style="margin-bottom: 16px;">
               <div class="col-sm-12 filter-convs-title-wpr">
                 <div class="filter-convs-title">
-                
+
                   {{ 'FilterConversations' | translate }}
                 </div>
               </div>
@@ -370,7 +374,7 @@
               <!-- @ Department filter -->
               <!-- -------------------------------------------------------- -->
               <div class="col-sm-4 select-dept-wpr">
-  
+
                 <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'Department' | translate }}" class="custom"
                   name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()" (clear)="clearDeptFilter()"
                   placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
@@ -384,12 +388,12 @@
               <!-- -------------------------------------------------------- -->
               <!-- @ Angent filter -->
               <!-- -------------------------------------------------------- -->
-              <div class="col-sm-4 select-agent-wpr" >
-       
+              <div class="col-sm-4 select-agent-wpr">
+
                 <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
                   name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
                   (clear)="clearAgentFilter()" (change)="onChangeAgent()">
-             
+
                   <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
                   <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
                   <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
@@ -398,15 +402,16 @@
                 </ng-select>
               </div>
 
-               <!-- -------------------------------------------------------- -->
+              <!-- -------------------------------------------------------- -->
               <!-- @ Conversation type filter -->
               <!-- -------------------------------------------------------- -->
               <div class="col-sm-4 select-convtype-wpr">
-                
+
                 <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'ConversationType' | translate }}"
-                  name="conversationtype" [(ngModel)]="selectedConversationTypeId" placeholder="{{ 'ConversationType' | translate }}"
-                  (clear)="clearConversationTypeFilter()" (change)="onChangeConversationType()">
-               
+                  name="conversationtype" [(ngModel)]="selectedConversationTypeId"
+                  placeholder="{{ 'ConversationType' | translate }}" (clear)="clearConversationTypeFilter()"
+                  (change)="onChangeConversationType()">
+
                   <ng-option *ngFor="let conversationType of conversationTypeInRequests" [value]="conversationType?.id">
                     {{ conversationType?.name }}
                   </ng-option>
@@ -424,8 +429,9 @@
           <!--  -------------------------------------------------------------------------------------- -->
           <!--  @ New TEAMMATES SCROLL DIV -->
           <!-- (ROLE_IS_AGENT === false) || (ROLE_IS_AGENT === true && DISPLAY_ALL_TEAMMATES_TO_AGENT) -->
+          <!-- the last: ngIf="ROLE_IS_AGENT === false" -->
           <!--  -------------------------------------------------------------------------------------- -->
-          <div class="col-xs-12" style="padding-right: 5px;" *ngIf="ROLE_IS_AGENT === false">
+          <div class="col-xs-12" style="padding-right: 5px;">
             <div class="card card--no-border" style="margin: 5px 0;margin-top: 8px;">
               <div class="card-content"
                 style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
@@ -436,80 +442,150 @@
 
                 <div #widgetsContent class="middle-nw">
                   <div class="served-by-conv-a" *ngIf="showRealTeammates === true">
-                    <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
+                    <ng-container class="all-teammates" *ngIf="ONLY_MY_REQUESTS === false">
+                      <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
 
-                      <div class="served-by-conv-c tool_tip">
-                        <div class="served-by-conv-d">
+                        <div class="served-by-conv-c tool_tip">
+                          <div class="served-by-conv-d">
 
-                          <!-- {{ agent?.id_user?.firstname }} hasImage {{agent.hasImage }} -->
-                          <div *ngIf="agent?.hasImage" size="42" class="served-by-conv-e">
+                            <!-- {{ agent?.id_user?.firstname }} hasImage {{agent.hasImage }} -->
+                            <div *ngIf="agent?.hasImage" size="42" class="served-by-conv-e">
 
-                            <!-- ---------------------------------------- -->
-                            <!-- Usecase Firebase -->
-                            <!-- ---------------------------------------- -->
-                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
-                              alt="" onerror="this.src='assets/img/no_image_user.png'">
+                              <!-- ---------------------------------------- -->
+                              <!-- Usecase Firebase -->
+                              <!-- ---------------------------------------- -->
+                              <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
+                                alt="" onerror="this.src='assets/img/no_image_user.png'">
 
-                            <!-- ---------------------------------------- -->
-                            <!-- Usecase Native -->
-                            <!-- ---------------------------------------- -->
-                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                              alt="" onerror="this.src='assets/img/no_image_user.png'">
+                              <!-- ---------------------------------------- -->
+                              <!-- Usecase Native -->
+                              <!-- ---------------------------------------- -->
+                              <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                alt="" onerror="this.src='assets/img/no_image_user.png'">
 
-
-                            <!-- <div class="teammates-with-picture-assigned-requests-count">
-                              {{agent?.number_assigned_requests_rt}}
-                            </div> -->
-                            <div class="teammates-with-picture-status-icon"
-                              [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
-                            </div>
-
-                          </div>
-
-                          <!-- ---------------------------------------- -->
-                          <!-- Usecase No profile image -->
-                          <!-- ---------------------------------------- -->
-                          <!-- [ngStyle]="{'background-color': agent?.id_user?.fillColour }"  -->
-                          <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
-                            <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
-                              [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
-
-                              <span class="altenative-conv-avatar" style="line-height: 40px;">
-                                {{ agent?.id_user?.fullname_initial }}
-                              </span>
-
-                              <!-- <div class="teammates-no-picture-assigned_requests_count">
-                                {{agent?.number_assigned_requests_rt}}
-                              </div> -->
-                              <div class="teammates-no-picture-status-icon"
+                              <div class="teammates-with-picture-status-icon"
                                 [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
                               </div>
+                            </div>
 
+                            <!-- ---------------------------------------- -->
+                            <!-- Usecase No profile image -->
+                            <!-- ---------------------------------------- -->
+                            <!-- [ngStyle]="{'background-color': agent?.id_user?.fillColour }"  -->
+                            <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
+                              <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
+                                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
+
+                                <span class="altenative-conv-avatar" style="line-height: 40px;">
+                                  {{ agent?.id_user?.fullname_initial }}
+                                </span>
+
+                                <!-- <div class="teammates-no-picture-assigned_requests_count">
+                                {{agent?.number_assigned_requests_rt}}
+                              </div> -->
+                                <div class="teammates-no-picture-status-icon"
+                                  [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
+                                </div>
+
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <span style="min-width: fit-content;
+                          <span style="min-width: fit-content;
                           white-space: nowrap;
                           top: 34px;
                           padding: 1px 4px;
                           box-shadow: unset;
                           border-radius: 4px;
                           font-size: 11px;" class="bottom">
-                          <span style="text-transform: capitalize;"> {{ agent?.id_user?.firstname }}
-                            <span *ngIf="agent?.id_user?.lastname">
-                              {{ agent?.id_user?.lastname | slice:0:1 }}.
+                            <span style="text-transform: capitalize;"> {{ agent?.id_user?.firstname }}
+                              <span *ngIf="agent?.id_user?.lastname">
+                                {{ agent?.id_user?.lastname | slice:0:1 }}.
+                              </span>
+
                             </span>
-
+                            <!-- <i></i> -->
                           </span>
-                          <!-- <i></i> -->
-                        </span>
 
+                        </div>
                       </div>
+                    </ng-container>
+                    <!-- ------------------------------------------------------------------ -->
+                    <!-- teammates of the groups to which the current user belongs -->
+                    <!-- ------------------------------------------------------------------ -->
+                    <ng-container class="curren-user-teammates" *ngIf="ONLY_MY_REQUESTS === true">
+                      <div class="served-by-conv-b" *ngFor="let agent of filteredProjectUsersArray">
 
-                    </div>
+                        <div class="served-by-conv-c tool_tip">
+                          <div class="served-by-conv-d">
+
+                            <!-- {{ agent?.id_user?.firstname }} hasImage {{agent.hasImage }} -->
+                            <div *ngIf="agent?.hasImage" size="42" class="served-by-conv-e">
+
+                              <!-- ---------------------------------------- -->
+                              <!-- Usecase Firebase -->
+                              <!-- ---------------------------------------- -->
+                              <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
+                                alt="" onerror="this.src='assets/img/no_image_user.png'">
+
+                              <!-- ---------------------------------------- -->
+                              <!-- Usecase Native -->
+                              <!-- ---------------------------------------- -->
+                              <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                alt="" onerror="this.src='assets/img/no_image_user.png'">
+
+                              <div class="teammates-with-picture-status-icon"
+                                [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
+                              </div>
+                            </div>
+
+                            <!-- ---------------------------------------- -->
+                            <!-- Usecase No profile image -->
+                            <!-- ---------------------------------------- -->
+                            <!-- [ngStyle]="{'background-color': agent?.id_user?.fillColour }"  -->
+                            <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
+                              <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
+                                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
+
+                                <span class="altenative-conv-avatar" style="line-height: 40px;">
+                                  {{ agent?.id_user?.fullname_initial }}
+                                </span>
+
+                                <!-- <div class="teammates-no-picture-assigned_requests_count">
+                                {{agent?.number_assigned_requests_rt}}
+                              </div> -->
+                                <div class="teammates-no-picture-status-icon"
+                                  [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+                          <span style="min-width: fit-content;
+                          white-space: nowrap;
+                          top: 34px;
+                          padding: 1px 4px;
+                          box-shadow: unset;
+                          border-radius: 4px;
+                          font-size: 11px;" class="bottom">
+                            <span style="text-transform: capitalize;"> {{ agent?.id_user?.firstname }}
+                              <span *ngIf="agent?.id_user?.lastname">
+                                {{ agent?.id_user?.lastname | slice:0:1 }}.
+                              </span>
+
+                            </span>
+                            <!-- <i></i> -->
+                          </span>
+
+                        </div>
+                      </div>
+                    </ng-container>
+
                   </div>
 
                   <!-- ---------------------------------------------- -->
@@ -533,6 +609,8 @@
                   </div>
                 </div>
 
+                <!-- Only My Requets -->
+
                 <div style="float: right" class="scroll-div-side-btn">
                   <!-- <button (click)="scrollRightTeammates()">right</button> -->
                   <i class="material-icons" (click)="scrollRightTeammates()">keyboard_arrow_right</i>
@@ -544,7 +622,7 @@
           <!-- /.new ********* -->
         </div>
       </div>
- 
+
       <!-- // REQUESTS FOR DEPARTMENTS style="padding-right: 10px !important;"-->
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
         <div class="card" style="margin: 5px 0; border: unset !important;">
@@ -571,7 +649,7 @@
                       </th>
                       <th style="padding-top: 4px;padding-bottom: 4px !important;">
                         <span class="table-head-span">
-                          # 
+                          #
                           <!-- {{ "Requests" | translate }} -->
                         </span>
 
@@ -833,7 +911,8 @@ l-4.9-13l18-14.8L22.1,34.4z" />
           </appdashboard-ws-requests-unserved>
           <!-- *ngIf="wsRequestsServed" -->
           <appdashboard-ws-requests-served *ngIf="wsRequestsServed && OPEN_RIGHT_SIDEBAR === false"
-            [wsRequestsServed]="wsRequestsServed" [current_selected_prjct]="current_selected_prjct" [ws_requests_length]="ws_requests?.length">
+            [wsRequestsServed]="wsRequestsServed" [current_selected_prjct]="current_selected_prjct"
+            [ws_requests_length]="ws_requests?.length">
           </appdashboard-ws-requests-served>
           <!-- Chiamare il componente qui -->
         </div>
@@ -981,7 +1060,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
             <span style="float: right; cursor: pointer;" (click)="openRequesterDetails()"
               [ngClass]="{'open-requester-details-disable': !selectedRequester}">
               <span style="color: #0f62ff;" [ngClass]="{'open-requester-details-disable': !selectedRequester}">
-                {{'ViewRequesterDetails' | translate }} 
+                {{'ViewRequesterDetails' | translate }}
               </span>
 
               <span class="material-icons" style="color: #0f62ff; vertical-align: middle;font-size: 16px;"
@@ -996,8 +1075,8 @@ l-4.9-13l18-14.8L22.1,34.4z" />
             <!-- // with custom search -->
             <ng-select class="internal-request-custom-select" name="users_and_leads" [items]="projectUserAndLeadsArray"
               bindLabel="name" bindValue="id" [(ngModel)]="selectedRequester" [virtualScroll]="true"
-              [searchFn]="customSearchFn" [clearable]="false" (change)="selectRequester($event)" placeholder="{{'SelectRequester' | translate}}"
-              [loading]=loadingRequesters loadingText='Loading...'>
+              [searchFn]="customSearchFn" [clearable]="false" (change)="selectRequester($event)"
+              placeholder="{{'SelectRequester' | translate}}" [loading]=loadingRequesters loadingText='Loading...'>
 
               <ng-template ng-label-tmp let-item="item">
                 <!-- ---------------------------------------- -->
@@ -1199,14 +1278,14 @@ l-4.9-13l18-14.8L22.1,34.4z" />
         </button>
         <!-- (click)="openTheChaForInternalRequest()" -->
         <button *ngIf="createNewInternalRequest_hasError === false" style="margin-top:0px" class="btn btn-white"
-        style="padding:12px 16px;" (click)="closeInternalRequestModal()">
-        <span style="vertical-align: middle"> {{ 'Cancel' | translate }} </span>
-      </button>
+          style="padding:12px 16px;" (click)="closeInternalRequestModal()">
+          <span style="vertical-align: middle"> {{ 'Cancel' | translate }} </span>
+        </button>
         <button *ngIf="createNewInternalRequest_hasError === false" style="margin-top:0px" class="btn btn-primary"
           style="padding:12px 16px;" (click)="goToInternalRequestDetails()">
           <span style="vertical-align: middle"> {{ 'ViewDetails' | translate }} </span>
         </button>
-      
+
 
       </div>
     </div>
@@ -1233,7 +1312,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
             </svg>
           </span>
         </button>
-        <h4 class="modal-title" style="">
+        <h4 class="modal-title">
           <!-- <i class="material-icons" style="vertical-align: middle">info</i> -->
           <span style="vertical-align: middle; padding-left:8px">
             {{'CreateNewRequester' | translate}}
@@ -1303,6 +1382,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
 
 <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
   <appdashboard-map-request [ngStyle]="{'height': map_sidebar_height }" [wsRequestsServed]="wsRequestsServed"
-    [wsRequestsUnserved]="wsRequestsUnserved" [calling_page]="calling_page" (closeMapsView)='handleCloseRightSidebar($event)'>
+    [wsRequestsUnserved]="wsRequestsUnserved" [calling_page]="calling_page"
+    (closeMapsView)='handleCloseRightSidebar($event)'>
   </appdashboard-map-request>
 </div>

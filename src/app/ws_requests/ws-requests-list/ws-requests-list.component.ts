@@ -150,6 +150,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   id_for_view_requeter_dtls: string
 
   project_users: ProjectUser[]
+  filteredProjectUsersArray: ProjectUser[]
   other_project_users_that_has_abandoned_array: Array<any>
 
   CHAT_REASSIGNMENT_IS_ENABLED: boolean // reassignment_on
@@ -251,105 +252,44 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // this.listenToParentPostMessage()
 
     // this.getGroupsByProjectId();
-    this.getDeptsByProjectId()
+    // this.getDeptsByProjectId()
   }
 
 
 
-  getDeptsByProjectId() {
-    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
-      console.log('[WS-REQUESTS-LIST] - GET ALL DEPTS (FILTERED FOR PROJECT ID)', departments);
-
-      const activeDepartments = departments.filter(dept => dept.status !== 0);
-      console.log('[WS-REQUESTS-LIST] - ONLY ACYIVE DEPTS ', activeDepartments);
-      if (activeDepartments) {
-        const departmentsCount = activeDepartments.length;
-
-        console.log('[WS-REQUESTS-LIST] - GET DEPTS active departmentsCount ', departmentsCount)
-        let count = 0
-        activeDepartments.forEach((dept: any) => {
-
-          if (departmentsCount > 1) {
 
 
-            // console.log('»»» »»» DEPTS PAGE - DEPT)', dept);
-            if (dept && dept.default !== true) {
-              console.log('[DEPTS] - GET DEPTS -  DEPT NAME: ', dept.name, 'dept object', dept);
-              //   dept['display_name'] = "Default Routing"
+  // getGroupById(id_group) {
+  //   this.groupService.getGroupById(id_group).subscribe((group: any) => {
 
+  //     if (group && group.trashed === false) {
+  //       console.log('[WS-REQUESTS-LIST] --> GROUP GET BY ID', group);
 
-              if (dept.routing === 'assigned' || dept.routing === 'pooled') {
+  //       // this.groupName = group.name
+  //       // this.groupIsTrashed = group.trashed
+  //       // this.logger.log('[DEPTS] --> GROUP NAME ', this.groupName, 'is TRASHED ', this.groupIsTrashed);
+  //       for (const dept of this.departments) {
 
-                if (dept.id_group !== null && dept.id_group !== undefined) {
-                  this.getGroupById(dept.id_group)
+  //         if (dept.id_group === group._id) {
 
-                } else if (!dept.id_group || dept.id_group === undefined) {
-                  count = count + 1;
-                  console.log('[WS-REQUESTS-LIST] display all teammates')
-                }
-              }
-            }
-          } else if (departmentsCount === 1) {
-            console.log('[WS-REQUESTS-LIST] USECASE: THERE IS ONLY A DEPT  -  DEPT NAME ', dept.name, 'dept object', dept);
-            if (dept.routing === 'assigned' || dept.routing === 'pooled') {
+  //           if (dept.routing === 'assigned' || dept.routing === 'pooled') {
 
-              if (dept.id_group !== null && dept.id_group !== undefined) {
-                this.getGroupById(dept.id_group)
-              } else if (!dept.id_group || dept.id_group === undefined) {
-                console.log('[WS-REQUESTS-LIST] (only default dept) ')
-                count = count + 1;
-              }
-            }
-          }
-        });
-        console.log('[DEPTS] - COUNT OF DEPT WITHOUT GROUP', count);
-        if (count > 0) {
-          this.DISPLAY_ALL_TEAMMATES_TO_AGENT = true;
+  //             // dept.hasGroupName = this.groupName
 
-        } else if (count === 0) {
-          this.DISPLAY_ALL_TEAMMATES_TO_AGENT = false;
-        }
-      }
-    }, error => {
+  //             if (group.trashed === true) {
 
-      this.logger.error('[WS-REQUESTS-LIST] (FILTERED FOR PROJECT ID) - ERROR', error);
-    }, () => {
-      this.logger.log('[WS-REQUESTS-LIST] (FILTERED FOR PROJECT ID) - COMPLETE')
-
-    });
-  }
-
-  getGroupById(id_group) {
-    this.groupService.getGroupById(id_group).subscribe((group: any) => {
-
-      if (group && group.trashed === false) {
-        console.log('[WS-REQUESTS-LIST] --> GROUP GET BY ID', group);
-
-        // this.groupName = group.name
-        // this.groupIsTrashed = group.trashed
-        // this.logger.log('[DEPTS] --> GROUP NAME ', this.groupName, 'is TRASHED ', this.groupIsTrashed);
-        for (const dept of this.departments) {
-
-          if (dept.id_group === group._id) {
-
-            if (dept.routing === 'assigned' || dept.routing === 'pooled') {
-
-              // dept.hasGroupName = this.groupName
-
-              if (group.trashed === true) {
-
-                dept.groupHasBeenTrashed = true
-              }
-            }
-          }
-        }
-      }
-    }, error => {
-      this.logger.error('[WS-REQUESTS-LIST] --> GROUP GET BY ID - ERROR', error);
-    }, () => {
-      this.logger.log('[WS-REQUESTS-LIST] --> GROUP GET BY ID - COMPLETE')
-    });
-  }
+  //               dept.groupHasBeenTrashed = true
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }, error => {
+  //     this.logger.error('[WS-REQUESTS-LIST] --> GROUP GET BY ID - ERROR', error);
+  //   }, () => {
+  //     this.logger.log('[WS-REQUESTS-LIST] --> GROUP GET BY ID - COMPLETE')
+  //   });
+  // }
 
 
 
@@ -580,8 +520,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.listenToRequestsLength();
     } else {
       this.wsRequestsService.wsRequestsList$.value
-
-
     }
   }
 
@@ -705,9 +643,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.tempProjectUserArray.sort(function (a, b) { return a.user_available_rt - b.user_available_rt });
         this.tempProjectUserArray.reverse();
         this.projectUserArray = this.tempProjectUserArray;
-        console.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
+        // console.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
 
-        this.getGroupsByProjectId(this.projectUserArray)
+        // this.getGroupsByProjectId(this.projectUserArray)
+        this.getDeptsByProjectId(this.projectUserArray)
+
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS - ERROR ', error);
       }, () => {
@@ -716,34 +656,90 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   }
 
+  getDeptsByProjectId(projectUserArray) {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+      // console.log('[WS-REQUESTS-LIST] - GET ALL DEPTS (FILTERED FOR PROJECT ID)', departments);
+
+      const activeDepartments = departments.filter(dept => dept.status !== 0);
+      // console.log('[WS-REQUESTS-LIST] - ONLY ACYIVE DEPTS ', activeDepartments);
+      if (activeDepartments) {
+        const departmentsCount = activeDepartments.length;
+
+        // console.log('[WS-REQUESTS-LIST] - GET DEPTS active departmentsCount ', departmentsCount)
+        let count = 0
+        activeDepartments.forEach((dept: any) => {
+
+          if (departmentsCount > 1) {
+            // console.log('»»» »»» DEPTS PAGE - DEPT)', dept);
+            if (dept && dept.default !== true) {
+              // console.log('[DEPTS] - GET DEPTS -  DEPT NAME: ', dept.name, 'dept object', dept);
+
+              if (!dept.id_group || dept.id_group === undefined) {
+                count = count + 1;
+                // console.log('[WS-REQUESTS-LIST] display all teammates')
+              } 
+            }
+          } else if (departmentsCount === 1) {
+            // console.log('[WS-REQUESTS-LIST] USECASE: THERE IS ONLY A DEPT  -  DEPT NAME ', dept.name, 'dept object', dept);
+
+
+            if (!dept.id_group || dept.id_group === undefined) {
+              // console.log('[WS-REQUESTS-LIST] (only default dept) ')
+              count = count + 1;
+            }
+          }
+        });
+        // console.log('[DEPTS] - COUNT OF DEPT WITHOUT GROUP', count);
+        if (count > 0) {
+          // this.DISPLAY_ALL_TEAMMATES_TO_AGENT = true;
+          this.filteredProjectUsersArray = projectUserArray
+
+        } else if (count === 0) {
+          // this.DISPLAY_ALL_TEAMMATES_TO_AGENT = false;
+          this.getGroupsByProjectId(projectUserArray)
+        }
+      }
+    }, error => {
+
+      this.logger.error('[WS-REQUESTS-LIST] (FILTERED FOR PROJECT ID) - ERROR', error);
+    }, () => {
+      this.logger.log('[WS-REQUESTS-LIST] (FILTERED FOR PROJECT ID) - COMPLETE')
+
+    });
+  }
+
   getGroupsByProjectId(projectUserArray) {
-    console.log('[WS-REQUESTS-LIST] - GROUPS - ALL PROJECT USERS ', projectUserArray)
+    // console.log('[WS-REQUESTS-LIST] - GROUPS - ALL PROJECT USERS ', projectUserArray)
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-      console.log('[WS-REQUESTS-LIST] - GROUPS GET BY PROJECT ID', groups);
+      // console.log('[WS-REQUESTS-LIST] - GROUPS GET BY PROJECT ID', groups);
       const memberOfAllGroups = []
       if (groups) {
         this.groupsList = groups;
 
         // this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
         this.groupsList.forEach(group => {
-          console.log('[WS-REQUESTS-LIST] - GROUP ', group);
+          // console.log('[WS-REQUESTS-LIST] - GROUP ', group);
 
           if (group.members.includes(this.currentUserID)) {
-            console.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS INCLUDES CURRENT USER');
+            // console.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS INCLUDES CURRENT USER');
             group.members.forEach(member => {
               memberOfAllGroups.indexOf(member) === -1 ? memberOfAllGroups.push(member) : this.logger.log("PUSH MEMBER ID IN memberOfAllGroups : This item already exists");
             });
 
-            console.log('[WS-REQUESTS-LIST] - ARRAY OF ALL MEMBERS OF GROUPS ', memberOfAllGroups);
-           
-            const filteredProjectUserArray  =  projectUserArray.filter(projectUser => memberOfAllGroups.includes(projectUser.id_user._id))
-            console.log('[WS-REQUESTS-LIST] - PROJECT USER FILTERED FOR MEMBERS OF THE FROUPS IN WICH IS PRESENT THE CURRENT USER ', filteredProjectUserArray);
+            // console.log('[WS-REQUESTS-LIST] - ARRAY OF ALL MEMBERS OF GROUPS ', memberOfAllGroups);
+
+            this.filteredProjectUsersArray = projectUserArray.filter(projectUser => memberOfAllGroups.includes(projectUser.id_user._id))
+            // console.log('[WS-REQUESTS-LIST] - PROJECT USER FILTERED FOR MEMBERS OF THE GROUPS IN WICH IS PRESENT THE CURRENT USER ', this.filteredProjectUsersArray);
           } else {
-            console.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS NOT INCLUDES CURRENT USER');
+            // console.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS NOT INCLUDES CURRENT USER  - SHOW ALL TEAMMATES');
+            this.filteredProjectUsersArray = projectUserArray
           }
 
         });
 
+      } else {
+        // console.log('[WS-REQUESTS-LIST] - THE PROJECT NOT HAS GROUPS - SHOW ALL TEAMMATES');
+        this.filteredProjectUsersArray = projectUserArray
       }
     }, (error) => {
       this.logger.error('[DEPT-EDIT-ADD] - GET GROUPS - ERROR ', error);
@@ -965,7 +961,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   seeIamAgentRequests(seeIamAgentReq) {
     this.ONLY_MY_REQUESTS = seeIamAgentReq
-    console.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - ONLY_MY_REQUESTS ', this.ONLY_MY_REQUESTS);
+    this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - ONLY_MY_REQUESTS ', this.ONLY_MY_REQUESTS);
     if (seeIamAgentReq === false) {
       this.displayBtnLabelSeeYourRequets = false;
     } else {
