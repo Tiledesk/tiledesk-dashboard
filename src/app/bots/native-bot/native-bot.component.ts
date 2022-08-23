@@ -1,14 +1,11 @@
 
 
-import { Component, OnInit, ElementRef, ViewChild, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { FaqService } from '../../services/faq.service';
 import { Faq } from '../../models/faq-model';
-import { Router, ActivatedRoute, NavigationEnd, RoutesRecognized } from '@angular/router';
-// import { ActivatedRoute } from '@angular/router';
-
+import { Router, ActivatedRoute } from '@angular/router';
 import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { NotifyService } from '../../core/notify.service';
 import { Location } from '@angular/common';
@@ -20,7 +17,6 @@ import { UploadImageService } from '../../services/upload-image.service';
 import { UploadImageNativeService } from '../../services/upload-image-native.service';
 import { UsersService } from '../../services/users.service';
 import { BotsBaseComponent } from '../bots-base/bots-base.component';
-// import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { DepartmentService } from '../../services/department.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util';
@@ -46,9 +42,6 @@ const swal = require('sweetalert');
 })
 export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   @ViewChild('editbotbtn') private elementRef: ElementRef;
-
-
-
 
   faq: Faq[];
   question: string;
@@ -122,10 +115,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   updateBotError: string;
   updateBotSuccess: string;
   notValidJson: string;
-
-  // tparams = brand;
   tparams: any;
-
   isVisibleAnalytics: boolean;
   public_Key: string;
   COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH: number;
@@ -213,11 +203,11 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
     const brand = brandService.getBrand();
     this.tparams = brand;
-   
-   
+
+
   }
 
- 
+
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
@@ -248,17 +238,17 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
     this.getDeptsByProjectId();
     this.listenSidebarIsOpened();
-    this.getBrowserVersion() 
+    this.getBrowserVersion()
   }
 
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }  
- 
+  }
+
 
 
   listenSidebarIsOpened() {
@@ -313,8 +303,6 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
       this.FULFILLMENT_ROUTE_IS_ACTIVE = false
       this.logger.log('[NATIVE-BOT] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
     }
-
-
   }
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
@@ -1030,10 +1018,10 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
       this.faq_kb_remoteKey = faqkb.kbkey_remote
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
-      
+
       this.faqKb_name = faqkb.name;
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB NAME', this.faqKb_name);
-    
+
       // this.faqKbService.publishFaqName(this.faqKb_name)
 
       this.faqKb_id = faqkb._id;
@@ -1065,16 +1053,6 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
         this.validateUrl(this.webhookUrl)
       }
 
-      // ---------------------------------------------------------------------------------------------------------------
-      // Bot internal ed external
-      // ---------------------------------------------------------------------------------------------------------------
-
-
-
-
-      /** IN PROD  */
-      // this.is_external_bot = faqkb.external;
-
 
       if (faqkb.url !== 'undefined') {
         this.faqKbUrlToUpdate = faqkb.url;
@@ -1097,9 +1075,9 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
 
 
-  /**
-   * *** EDIT BOT ***
-   * HAS BEEN MOVED in this COMPONENT FROM faq-kb-edit-add.component  */
+  // ----------------------------------------
+  // EDIT BOT 
+  // ----------------------------------------
   editBot() {
     // RESOLVE THE BUG 'edit button remains focused after clicking'
     this.elementRef.nativeElement.blur();

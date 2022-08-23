@@ -15,7 +15,7 @@ export class NativeBotSelectTypeComponent implements OnInit {
   constructor(
     public location: Location,
     private router: Router,
-    public auth: AuthService,
+    public auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -43,7 +43,7 @@ export class NativeBotSelectTypeComponent implements OnInit {
 
   goToCreateBot(template) {
     // console.log('[NATIVE-BOT-SELECT-TYPE] template ', template)
-    
+
      this.router.navigate(['project/' + this.projectId + '/bots/create/' + 'native/' + template]);
  
    }

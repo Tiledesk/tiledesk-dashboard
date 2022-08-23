@@ -3,7 +3,7 @@ import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges } from
 import { LoggerService } from './../../services/logger/logger.service'
 import { AppConfigService } from '../../services/app-config.service'
 import { AuthService } from '../../core/auth.service'
-import { NavigationEnd, Router } from '@angular/router'
+import { Router } from '@angular/router'
 import { Location } from '@angular/common'
 import { TranslateService } from '@ngx-translate/core'
 import { UsersService } from 'app/services/users.service'
