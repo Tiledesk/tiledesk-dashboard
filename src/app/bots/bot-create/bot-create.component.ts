@@ -192,7 +192,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
       this.logger.log('[BOT-CREATE] --->  PARAMS', params);
-      this.logger.log('[BOT-CREATE] --->  PARAMS botType', this.botType);
+    //  console.log('[BOT-CREATE] --->  PARAMS botType', this.botType);
 
       this.template = params.template;
       if (this.botType === 'native') {
@@ -354,6 +354,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       _botType = 'internal'
       this.language = this.botDefaultSelectedLangCode;
 
+    } else if (this.botType === 'tilebot')  {
+      _botType = 'tilebot'
+      this.language = this.botDefaultSelectedLangCode;
       // -------------------------------------------------------------------------------------------
       // Publish the bot name to be able to check in the native bot sidebar if the bot name changes,
       // to prevent the bot name from updating every time a bot sidebar menu item is clicked
@@ -487,11 +490,15 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   goTo_EditBot() {
+    // console.log('[BOT-CREATE] goTo_EditBot') 
     if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === false) {
       let bot_type = ''
       if (this.botType === 'resolution') {
         bot_type = 'native'
         this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.newBot_Id + "/" + bot_type]);
+      } else if (this.botType === 'tilebot') {
+        bot_type = 'tilebot'
+        this.router.navigate(['project/' + this.project._id + '/tilebot/intents/' + this.newBot_Id + "/" + bot_type]);
       } else {
         bot_type = this.botType;
         this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);
@@ -510,10 +517,14 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   onCloseModalAttacchBotToDept() {
+    // console.log('[BOT-CREATE] onCloseModalAttacchBotToDept')
     let bot_type = ''
     if (this.botType === 'resolution') {
       bot_type = 'native'
       this.router.navigate(['project/' + this.project._id + '/chatbots/' + this.newBot_Id + "/" + bot_type + "/intents"]);
+     } else if (this.botType === 'tilebot') {
+      bot_type = 'tilebot'
+      this.router.navigate(['project/' + this.project._id + '/tilebot/' + this.newBot_Id + "/" + bot_type + "/intents"]);
     } else {
       bot_type = this.botType
       this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);

@@ -1,0 +1,160 @@
+.select-bot-type-page-title {
+    font-size: 20px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.54);
+    margin-bottom: 0px;
+    font-weight: 400;
+}
+
+.select-bot-type-page-subtitle {
+    color: #222222;
+    font-weight: 400;
+    font-family:'Poppins','Roboto', 'Arial', sans-serif;
+    font-size: 21px;
+    line-height: 28px;
+    margin-top: 28px;
+}
+
+// ------------------------------------
+// Resolution bot temlate type cards
+// ------------------------------------
+.nb-card-wpr {
+    display: flex;
+}
+
+.nb-card-wpr.right {
+    justify-content: right;
+}
+
+.nb-card-wpr.center {
+    justify-content: center;
+}
+
+.nb-card-wpr.left {
+    justify-content: left;
+}
+
+@media (max-width: 768px) {
+    .nb-card-wpr.right {
+        justify-content: center;
+    }
+    .nb-card-wpr.center {
+        justify-content: center;
+    }
+    .nb-card-wpr.left {
+        justify-content: center;
+    }
+}
+
+.nb-card {
+    cursor: pointer;
+    float: left;
+    height: 310px;
+    margin-left: 12.5px;
+    margin-right: 12.5px;
+    min-width: 270px;
+    padding-bottom: 162px;
+    position: relative;
+    box-shadow: rgba(185, 199, 226, 0.72) 0px 29px 32px -25px;
+    background: 0% 0% / 270px 147px no-repeat rgb(255, 255, 255);
+    background-repeat: no-repeat;
+    border-radius: 8px;
+    overflow: visible;
+    transition: all 0.28s cubic-bezier(0.15, 0, 0.15, 1) 0s;
+}
+
+.nb-card::before {
+    content: "";
+    border-radius: 8px;
+    position: absolute;
+    bottom: 0px;
+    background: transparent;
+    z-index: 0;
+}
+
+.nb-card:hover {
+    transform: scale(1.1);
+}
+
+.nb-card-header {
+    // background-position: center center;
+    // background-size: cover;
+    // background-image: url(https://tiledesk.com/wp-content/uploads/2021/01/getting_stated_for_admin_dshbrd.png);
+    border-radius: 8px 8px 0px 0px;
+    height: 144px;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    font-size: 21px;
+}
+
+.nb-card-header-icon {
+    padding: 22px;
+    background: #fff;
+    border-radius: 50%;
+    font-size: 40px;
+    width: 84px;
+}
+
+.nb-card-content-wpr {
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: 100% 144px;
+    border-radius: 8px;
+    height: 310px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.nb-card-content {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0px 0px 8px 8px;
+    bottom: 0px;
+    cursor: pointer;
+    height: 166px;
+    position: absolute;
+    width: 100%;
+}
+
+.nb-card-content-text-wpr {
+    border-bottom: 1px solid rgba(108, 125, 159, 0.18);
+    color: rgb(0, 17, 44);
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0px;
+    // height: 150px;
+    height: 112px;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin: 0px auto;
+    text-align: center;
+    width: 240px;
+    font-weight: 400;
+}
+
+.nb-card-content-subtitle {
+    display: block;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.nb-card-footer {
+    background: transparent;
+    border: 0px;
+    color: rgb(15, 98, 255);
+    cursor: pointer;
+    display: block;
+    font-size: 16.1px;
+    height: 21px;
+    margin: 13px auto 16px;
+    outline: 0px;
+    text-align: center;
+    transition: color 0.1s ease-in-out 0s;
+}

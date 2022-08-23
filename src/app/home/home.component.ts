@@ -1127,11 +1127,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     let botType = ''
     if (bot_type === 'internal') {
       botType = 'native'
-
       if (this.USER_ROLE !== 'agent') {
-        this.router.navigate(['project/' + this.project._id + '/bots/intents/',  bot_id, botType]);
+        this.router.navigate(['project/' + this.project._id + '/bots/intents/', bot_id, botType]);
       }
-
+    } else if (bot_type === 'tilebot') {
+      botType = 'tilebot'
+      if (this.USER_ROLE !== 'agent') {
+        this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
+      }
     } else {
       botType = bot_type
 
@@ -1139,7 +1142,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
       }
     }
-   
+
   }
 
   goToAgentProfile(member_id) {

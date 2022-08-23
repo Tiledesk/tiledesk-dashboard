@@ -399,10 +399,10 @@ export class FaqService {
     const options = new RequestOptions({ headers });
 
     const url = this.SERVER_BASE_PATH + this.project._id + '/faq_kb/' + 'askbot';
-    this.logger.log('[FAQ-SERV] - SEARCH FAQ BY BOT ID - POST REQUEST URL ', url);
+    // console.log('[FAQ-SERV] - SEARCH FAQ BY BOT ID - POST REQUEST URL ', url);
     // const body = { 'question': question, 'doctype': 'normal', 'min_score': '0.0', 'remote_faqkb_key': remoteFaqKbKey };
     const body = { 'id_faq_kb': botId, 'question': question };
-    this.logger.log('[FAQ-SERV] - SEARCH FAQ BY BOT ID - POST REQUEST BODY ', body);
+    // console.log('[FAQ-SERV] - SEARCH FAQ BY BOT ID - POST REQUEST BODY ', body);
 
     // tslint:disable-next-line:max-line-length
     // const url = `http://ec2-52-47-168-118.eu-west-3.compute.amazonaws.com/qnamaker/v2.0/knowledgebases/` + remoteFaqKbKey + `/generateAnswer`;

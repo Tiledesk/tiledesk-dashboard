@@ -929,6 +929,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       if (this.USER_ROLE !== 'agent') {
         this.router.navigate(['project/' + this.project._id + '/bots/intents/', this.selectedId, botType]);
       }
+    }  else if (this.bot_type === 'tilebot')  {
+       botType = 'tilebot'
+       if (this.USER_ROLE !== 'agent') {
+        this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
+      }
     } else {
       botType = this.bot_type;
       if (this.USER_ROLE !== 'agent') {

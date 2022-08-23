@@ -463,6 +463,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot_id, botType]);
       }
 
+    } else if (bot_type === 'tilebot') {
+      botType = 'tilebot'
+      if (this.ROLE_IS_AGENT === false) {
+        this.router.navigate(['project/' + this.projectId + '/tilebot/intents/', bot_id, botType]);
+      }
     } else {
       botType = bot_type
 

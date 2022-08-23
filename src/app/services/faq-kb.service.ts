@@ -281,6 +281,8 @@ export class FaqKbService {
    * @returns 
    */
   public createFaqKb(name: string, urlfaqkb: string, bottype: string, description: string, resbotlanguage: string, resbottemplate: string) {
+  //  console.log('createFaqKb bottype ', bottype )
+  //  console.log('createFaqKb resbotlanguage ', resbotlanguage )
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -288,22 +290,17 @@ export class FaqKbService {
     const options = new RequestOptions({ headers });
 
     const url = this.FAQKB_URL;
-    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
+    // console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
     // const isPreDeploy = false
     let body = {}
     body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'type': bottype, 'description': description };
-    if (bottype === 'internal') {
+    if (bottype === 'internal' || bottype === 'tilebot') {
       body['language'] = resbotlanguage
       body['template'] = resbottemplate
     }
 
-    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
-
-
-
-    // let url = `http://localhost:3000/${project_id}/faq_kb/`;
-    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
+    // console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 
     return this.http
       .post(url, JSON.stringify(body), options)

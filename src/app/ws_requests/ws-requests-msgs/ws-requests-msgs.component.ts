@@ -417,14 +417,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getQueryParams() {
     this.route.queryParams
       .subscribe(params => {
-        console.log('[WS-REQUESTS-MSGS]  queryParams', params);
+        // console.log('[WS-REQUESTS-MSGS]  queryParams', params);
         this.queryParams = params
       });
   }
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-      console.log('[WS-REQUESTS-MSGS] params', params)
+      // console.log('[WS-REQUESTS-MSGS] params', params)
 
       if (params.isopenadvancedsearch) {
         this.isOpenedAdvancedSearch = params.isopenadvancedsearch
@@ -1141,11 +1141,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   editTicketSubjectFocusOut() {
     this.ticketSubjectEditMode = false
-    console.log('[WS-REQUESTS-MSGS] - editTicketSubjectFocusOut  ticketSubjectEditMode', this.ticketSubjectEditMode)
+    // console.log('[WS-REQUESTS-MSGS] - editTicketSubjectFocusOut  ticketSubjectEditMode', this.ticketSubjectEditMode)
   }
 
   saveEditInPlaceSubject() {
-    console.log('[WS-REQUESTS-MSGS] - editTicketSubjectonFocusOut saveSubject ', this.ticketSubject)
+    // console.log('[WS-REQUESTS-MSGS] - editTicketSubjectonFocusOut saveSubject ', this.ticketSubject)
     this.wsRequestsService.updateRequestsById_UpdateTicketSubject(this.id_request, this.ticketSubject)
       .subscribe((data: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - UPDATE TICKET SUBJECT - RES: ', data);
@@ -1166,7 +1166,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -3552,7 +3552,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         const id_bot = member_id.substring(4);
         // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
         const bot = this.botLocalDbService.getBotFromStorage(id_bot);
-        this.logger.log('[WS-REQUESTS-MSGS] - goToMemberProfile - BOT FROM STORAGE ', bot)
+        // console.log('[WS-REQUESTS-MSGS] - goToMemberProfile - BOT FROM STORAGE ', bot)
 
         let botType = ''
         if (bot.type === 'internal') {
@@ -3560,6 +3560,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           botType = 'native'
           if (this.CURRENT_USER_ROLE !== 'agent') {
             this.router.navigate(['project/' + this.id_project + '/bots/intents/', id_bot, botType]);
+          }
+
+        } else if (bot.type === 'tilebot') {
+          botType = 'tilebot'
+          if (this.CURRENT_USER_ROLE !== 'agent') {
+            this.router.navigate(['project/' + this.id_project + '/tilebot/intents/', id_bot, botType]);
           }
         } else {
           if (this.CURRENT_USER_ROLE !== 'agent') {
@@ -3798,7 +3804,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.anErrorHasOccurred = text;
     });
 
-    
+
 
 
 

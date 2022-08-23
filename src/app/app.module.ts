@@ -227,8 +227,14 @@ import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { OnlynumberDirective } from './_directives/onlynumber.directive';
 import { NativeBotSidebarComponent } from './bots/native-bot-sidebar/native-bot-sidebar.component';
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
-import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
+
+import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-select-type.component';
+import { TilebotSidebarComponent } from './bots/tilebot-sidebar/tilebot-sidebar.component';
+import { TilebotComponent } from './bots/tilebot/tilebot.component';
+
+import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
+
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
 import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 import { CutomTooltipOptions } from './utils/util';
@@ -236,6 +242,7 @@ import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sideba
 import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
 import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 import { AutofocusDirective } from './_directives/autofocus.directive';
+
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
 
@@ -442,7 +449,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     RasaBotComponent,
     ImageViewerComponent,
     WidgetInstallationComponent,
-    AutofocusDirective
+    AutofocusDirective,
+    TilebotSelectTypeComponent,
+    TilebotSidebarComponent,
+    TilebotComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

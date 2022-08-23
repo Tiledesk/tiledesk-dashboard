@@ -581,6 +581,10 @@ export class BotListComponent implements OnInit {
       // this.faqKbService.publishBotName(botname)
 
       this.router.navigate(['project/' + this.project._id + '/bots/intents/', idFaqKb, _botType]);
+
+    } else if (botType === 'tilebot') {
+      _botType = 'tilebot'
+      this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
     } else {
       _botType = botType
       this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);

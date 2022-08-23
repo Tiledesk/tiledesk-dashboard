@@ -8,7 +8,7 @@ import { AppConfigService } from '../../../services/app-config.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../../services/brand.service';
 import { LoggerService } from '../../../services/logger/logger.service';
-import {  URL_configure_your_first_chatbot, URL_connect_your_dialogflow_agent } from '../../../utils/util';
+import { URL_configure_your_first_chatbot, URL_connect_your_dialogflow_agent } from '../../../utils/util';
 
 @Component({
   selector: 'appdashboard-bot-type-select',
@@ -16,7 +16,7 @@ import {  URL_configure_your_first_chatbot, URL_connect_your_dialogflow_agent } 
   styleUrls: ['./bot-type-select.component.scss']
 })
 export class BotTypeSelectComponent implements OnInit {
-  
+
   // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
   public_Key: string;
 
@@ -26,7 +26,7 @@ export class BotTypeSelectComponent implements OnInit {
   rasaIsVisible: boolean;
   show3Card: boolean;
   // tparams = brand;
-  tparams:any;
+  tparams: any;
   isChromeVerGreaterThan100: boolean;
   constructor(
     private router: Router,
@@ -39,7 +39,7 @@ export class BotTypeSelectComponent implements OnInit {
 
     const brand = brandService.getBrand();
     this.tparams = brand;
-   }
+  }
 
   ngOnInit() {
     this.getBrowserVersion();
@@ -48,11 +48,11 @@ export class BotTypeSelectComponent implements OnInit {
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-TYPE-SELECT] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-TYPE-SELECT] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }  
+  }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -67,7 +67,7 @@ export class BotTypeSelectComponent implements OnInit {
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     this.logger.log('[BOT-TYPE-SELECT] AppConfigService getAppConfigpublic_Key', this.public_Key)
-    
+
     let keys = this.public_Key.split("-");
     // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - public_Key keys', keys)
 
@@ -107,7 +107,7 @@ export class BotTypeSelectComponent implements OnInit {
 
         if (rasa[1] === "F") {
           this.rasaIsVisible = false;
-        //  console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
+          //  console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
         } else {
           this.rasaIsVisible = true;
           // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
@@ -115,7 +115,7 @@ export class BotTypeSelectComponent implements OnInit {
       }
     });
 
-    
+
 
     if (!this.public_Key.includes("DGF")) {
       // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - key.includes("PAY")', this.public_Key.includes("DGF"));
@@ -132,23 +132,25 @@ export class BotTypeSelectComponent implements OnInit {
       this.rasaIsVisible = false;
     }
 
-    if (this.dgfIsVisible === true && this.natIsVisible === true &&  this.rasaIsVisible === true ) {
-
+    if (this.dgfIsVisible === true && this.natIsVisible === true && this.rasaIsVisible === true) {
     }
- 
   }
 
 
 
 
   goToCreateBot(type: string) {
-  //  console.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
-   if (type !== 'native') { 
-    this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
-   } else if (type === 'native') {
-    this.router.navigate(['project/' + this.projectId + '/bots/prebuilt']);
-    // this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
-   }
+    //  console.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
+    if (type !== 'native' && type !== 'tilebot') {
+      this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
+    } else if (type === 'native') {
+      this.router.navigate(['project/' + this.projectId + '/bots/prebuilt']);
+      // this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
+
+    } else if (type === 'tilebot') {
+      // console.log('[BOT-TYPE-SELECT] HERE Y ')
+      this.router.navigate(['project/' + this.projectId + '/tilebot/prebuilt']);
+    }
   }
 
   goToCreateRasaBot() {
@@ -161,12 +163,12 @@ export class BotTypeSelectComponent implements OnInit {
 
   openExternalBotIntegrationTutorial() {
     const url = 'https://developer.tiledesk.com/external-chatbot/connect-your-own-chatbot';
-    
+
     window.open(url, '_blank');
   }
 
   openDocsTiledeskCreateABot() {
-    
+
     // const url = 'https://gethelp.tiledesk.com/articles/configure-your-first-chatbot/';
     const url = URL_configure_your_first_chatbot;
     window.open(url, '_blank');

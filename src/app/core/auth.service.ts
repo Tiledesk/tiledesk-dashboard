@@ -74,6 +74,7 @@ export class AuthService {
   public project_bs: BehaviorSubject<Project> = new BehaviorSubject<Project>(null)
   public settingSidebarIsOpned: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
   public nativeBotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  public tilebotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public isChromeVerGreaterThan100: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   show_ExpiredSessionPopup: boolean
 
@@ -256,7 +257,7 @@ export class AuthService {
     // PUBLISH THE project
     this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED ', project)
 
-    this.logger.log( '[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id, )
+    this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
   }
@@ -271,6 +272,10 @@ export class AuthService {
     this.nativeBotSidebarIsOpened.next(isopened)
   }
 
+  toggletilebotSidebar(isopened) {
+    this.tilebotSidebarIsOpened.next(isopened)
+    // console.log('[AUTH-SERV] - TOGGLE NATIVE BOT SIDEBAR IS OPENED ', isopened)
+  }
   /**
    * // REPLACE getProjectFromLocalStorage()
    * IF THE PROJECT RETURNED FROM THE project_bs SUBSCRIPTION IS NULL
@@ -289,37 +294,28 @@ export class AuthService {
       if (prjct !== null && prjct._id !== undefined) {
         this.project_trial_expired = prjct.trial_expired
         // tslint:disable-next-line:max-line-length
-        this.logger.log(
-          '[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs > project_trial_expired',
+        this.logger.log( '[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs > project_trial_expired',
           this.project_trial_expired,
         )
       }
 
       if (prjct == null) {
-        this.logger.log(
-          '[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs IS NULL ', prjct)
+        this.logger.log( '[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs IS NULL ', prjct)
 
         this.subscription = this.router.events.subscribe((e) => {
           if (e instanceof NavigationEnd) {
             const current_url = e.url
-            this.logger.log(
-              '[AUTH-SERV] - NavigationEnd CURRENT-URL ',
-              current_url,
-            )
+            this.logger.log( '[AUTH-SERV] - NavigationEnd CURRENT-URL ', current_url,  )
 
             const url_segments = current_url.split('/')
             this.logger.log('[AUTH-SERV] - NavigationEnd CURRENT-URL SEGMENTS ', url_segments)
 
             this.nav_project_id = url_segments[2]
-            this.logger.log(
-              '[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION PROJECT ID: ',
-              this.nav_project_id,
-            )
+            this.logger.log( '[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id,)
 
             // USECASE: ROUTES /projects (i.e., Recent Projects) /create-new-project
             if (this.nav_project_id === undefined) {
-              this.logger.log(
-                '[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION-PROJECT-ID IS UNDEFINED 1', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
+              this.logger.log( '[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION-PROJECT-ID IS UNDEFINED 1', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
               this.subscription.unsubscribe()
             }
             /**

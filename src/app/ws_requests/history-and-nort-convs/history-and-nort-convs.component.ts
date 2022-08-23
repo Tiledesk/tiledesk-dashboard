@@ -439,7 +439,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             if (paramArray[0] === 'rstatus' && paramArray[1] !== '') {
               const requetStatusValue = paramArray[1]
-              console.log('[HISTORY & NORT-CONVS] queryParams requetStatusValue ', requetStatusValue)
+              // console.log('[HISTORY & NORT-CONVS] queryParams requetStatusValue ', requetStatusValue)
 
               this.requests_status_selected_from_advanced_option = null
               if (requetStatusValue === 'all') {
@@ -464,13 +464,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         }
         // || this.requests_status !== 'all'
         if (this.fullText || this.selectedDeptId || this.startDate || this.endDate || (this.conversation_type && this.conversation_type !== 'all') || this.selectedAgentId || this.selecteTagName || this.requests_status_selected_from_advanced_option) {
-          console.log('[HISTORY & NORT-CONVS] queryParams call search fullText ', this.fullText)
-          console.log('[HISTORY & NORT-CONVS] queryParams call search selectedDeptId ', this.selectedDeptId)
-          console.log('[HISTORY & NORT-CONVS] queryParams call search startDate ', this.startDate)
-          console.log('[HISTORY & NORT-CONVS] queryParams call search endDate ', this.endDate)
-          console.log('[HISTORY & NORT-CONVS] queryParams call search conversation_type ', this.conversation_type)
-          console.log('[HISTORY & NORT-CONVS] queryParams call search selectedAgentId ', this.selectedAgentId)
-          console.log('[HISTORY & NORT-CONVS] queryParams call search selecteTagName ', this.selecteTagName)
+          // console.log('[HISTORY & NORT-CONVS] queryParams call search fullText ', this.fullText)
+          // console.log('[HISTORY & NORT-CONVS] queryParams call search selectedDeptId ', this.selectedDeptId)
+          // console.log('[HISTORY & NORT-CONVS] queryParams call search startDate ', this.startDate)
+          // console.log('[HISTORY & NORT-CONVS] queryParams call search endDate ', this.endDate)
+          // console.log('[HISTORY & NORT-CONVS] queryParams call search conversation_type ', this.conversation_type)
+          // console.log('[HISTORY & NORT-CONVS] queryParams call search selectedAgentId ', this.selectedAgentId)
+          // console.log('[HISTORY & NORT-CONVS] queryParams call search selecteTagName ', this.selecteTagName)
           this.search('getQueryParams');
         }
 
@@ -486,21 +486,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (currentUrl.indexOf('/all-conversations') !== -1) {
       this.IS_HERE_FOR_HISTORY = false;
-      console.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
+      // console.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.requests_status = 'all'
       if (currentUrl.indexOf('?') === -1) {
-        console.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
+        // console.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
         this.getRequests();
       }
 
     } else {
       this.IS_HERE_FOR_HISTORY = true;
-      console.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
+      // console.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.operator = '='
       this.requests_status = '1000'
 
       if (currentUrl.indexOf('?') === -1) {
-        console.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
+        // console.log('[HISTORY & NORT-CONVS] - >>>>> getCurrentUrlLoadRequests ');
         this.getRequests();
 
       }
@@ -1935,7 +1935,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
 
     // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
-    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 > showAdvancedSearchOption', this.showAdvancedSearchOption);
+    // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 > showAdvancedSearchOption', this.showAdvancedSearchOption);
     // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 selectedDeptId > ', this.selectedDeptId);
     // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 startDate > ', this.startDate);
     // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 endDate > ', this.endDate);
@@ -2259,6 +2259,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot_id, botType]);
       }
 
+    } else if (bot_type === 'tilebot') {
+      botType = 'tilebot'
+      if (this.ROLE_IS_AGENT === false) {
+        this.router.navigate(['project/' + this.projectId + '/tilebot/intents/', bot_id, botType]);
+      }
     } else {
       botType = bot_type
       if (this.ROLE_IS_AGENT === false) {
