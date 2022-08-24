@@ -24,6 +24,7 @@ export class BotTypeSelectComponent implements OnInit {
   dgfIsVisible: boolean;
   natIsVisible: boolean;
   rasaIsVisible: boolean;
+  tilebotIsVisible: boolean;
   show3Card: boolean;
   // tparams = brand;
   tparams: any;
@@ -80,37 +81,49 @@ export class BotTypeSelectComponent implements OnInit {
 
         if (dgf[1] === "F") {
           this.dgfIsVisible = false;
-          // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
+         console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
         } else {
           this.dgfIsVisible = true;
-          // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
+          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
         }
       }
       if (key.includes("NAT")) {
         // this.logger.log('PUBLIC-KEY (SIDEBAR) - key', key);
         let nat = key.split(":");
-        // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
+        console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
 
         if (nat[1] === "F") {
           this.natIsVisible = false;
-          // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
+          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
         } else {
           this.natIsVisible = true;
-          // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
+          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
         }
       }
 
       if (key.includes("RAS")) {
         // this.logger.log('PUBLIC-KEY (SIDEBAR) - key', key);
         let rasa = key.split(":");
-        // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
-
+        console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa key&value',rasa);
         if (rasa[1] === "F") {
           this.rasaIsVisible = false;
           //  console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
         } else {
           this.rasaIsVisible = true;
           // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
+        }
+      }
+
+      if (key.includes("TIL")) {
+        // this.logger.log('PUBLIC-KEY (SIDEBAR) - key', key);
+        let tb = key.split(":");
+        // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
+        if (tb[1] === "F") {
+          this.tilebotIsVisible = false;
+          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa tilebotIsVisible', this.tilebotIsVisible);
+        } else {
+          this.tilebotIsVisible = true;
+          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa tilebotIsVisible', this.tilebotIsVisible);
         }
       }
     });
@@ -130,6 +143,11 @@ export class BotTypeSelectComponent implements OnInit {
     if (!this.public_Key.includes("RAS")) {
       // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - key.includes("PAY")', this.public_Key.includes("DGF"));
       this.rasaIsVisible = false;
+    }
+
+    if (!this.public_Key.includes("TIL")) {
+      // this.logger.log('PUBLIC-KEY (BOT-TYPE-SELECT) - key.includes("PAY")', this.public_Key.includes("DGF"));
+      this.tilebotIsVisible = false;
     }
 
     if (this.dgfIsVisible === true && this.natIsVisible === true && this.rasaIsVisible === true) {

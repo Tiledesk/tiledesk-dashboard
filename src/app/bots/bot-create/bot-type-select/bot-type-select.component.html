@@ -286,13 +286,13 @@
       <!-- ---------------------------- -->
       <!-- tilebot -->
       <!-- ---------------------------- -->
-      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
+      <div *ngIf="tilebotIsVisible" [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
       'col-sm-12 col-md-4' : (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === true && rasaIsVisible === false),
       'col-sm-6 col-md-6' :  (natIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
       'col-sm-12 col-md-12' :   dgfIsVisible === false && natIsVisible === false && rasaIsVisible === false}">
 
         <div class="card bot-card" (click)="goToCreateBot('tilebot')">
-          <div class="card---header card---header--identity-bot"> </div>
+          <div class="card---header card---header--tilebot-bot"> </div>
           <div class="card-content" style="text-align: center">
             <div class="bot-image">
 
