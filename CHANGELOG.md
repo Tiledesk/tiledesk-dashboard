@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.48-rc4
+- Adds the Tilebot logo to the top left of the "Tilebot" bot avatar
+- Adds the  features token "TIL"  and fixes responsiveness of cards on bot type selection page after adding Tilebot bot
+
 ### 2.2.48-rc3
 - Fixes the bug: missing desktop notification icon displayed when a message arrives and the browser tab of the dashboard is in foreground
 
