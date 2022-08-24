@@ -1,8 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.48-rc2
+- Improves the methods for getting the "persistent search results" on the History page and the Non-Real-time Conversations page
+
 ### 2.2.48-rc1
-- Implements the "persistent search results" in the History page and in the Conversations page not in real time: after having performed a search and then gone to the detail of the conversation, going back the list of conversations is filtered for the previous search
+- Implements the "persistent search results" on the History page and on the Non-Real-time Conversations page: after having performed a search and then gone to the detail of the conversation, going back the list of conversations is filtered for the previous search
 - Adds the ability to edit the ticket subject "in-place" on the conversation detail page
 - Adds to the conversation detail page the ability to reopen a conversation if it hasn't been archived for more than ten days
 - Adds the ability in the "Monitoring" page > "Your Conversations" tab to view only teammates of the groups to which the current user belongs
