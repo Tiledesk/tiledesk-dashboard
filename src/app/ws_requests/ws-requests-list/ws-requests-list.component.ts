@@ -547,8 +547,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       });
   }
 
+  // https://stackoverflow.com/questions/48955095/horizontal-scroll-using-buttons-on-angular2
   public scrollLeftTeammates(): void {
     this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
+  }
+
+  public scrollRightTeammates(){
+    this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
   }
 
   getAllProjectUsers(imagestorage: string, isfirebaseuploadengine: boolean) {
@@ -645,7 +650,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.projectUserArray = this.tempProjectUserArray;
         // console.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
 
-        // this.getGroupsByProjectId(this.projectUserArray)
+        
         this.getDeptsByProjectId(this.projectUserArray)
 
       }, (error) => {
