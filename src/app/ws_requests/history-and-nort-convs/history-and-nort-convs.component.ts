@@ -531,7 +531,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'])
       }
 
-      // if (this.showAdvancedSearchOption === false) {
+      // console.log('goToRequestMsgs requests_status_selected_from_left_filter ', this.requests_status_selected_from_left_filter)
+      // console.log('goToRequestMsgs requests_status_selected_from_advanced_option ', this.requests_status_selected_from_advanced_option)
       if (this.requests_status_selected_from_left_filter && !this.requests_status_selected_from_advanced_option) {
         if (this.requests_status_selected_from_left_filter === '100' || this.requests_status_selected_from_left_filter === '200') {
           this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams: { leftfilter: this.requests_status_selected_from_left_filter } })
@@ -887,20 +888,23 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   requestsStatusSelect(request_status) {
-
+    const currentUrl = this.router.url;
     // console.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect', request_status);
     if (request_status === '200') {
       this.requests_status_selected_from_left_filter = '200'
+      this.requests_status_selected_from_advanced_option = null
+    
       // console.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
       this.getServedRequests();
     } else if (request_status === '100') {
       this.requests_status_selected_from_left_filter = '100'
+      this.requests_status_selected_from_advanced_option = null
       // console.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
       this.getUnservedRequests();
     } else if (request_status === 'all') {
       this.requests_status_selected_from_left_filter = 'all'
       // console.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
-      const currentUrl = this.router.url;
+     
       // console.log('[HISTORY & NORT-CONVS] requestsStatusSelect  currentUrl', currentUrl);
 
       if (currentUrl.indexOf('?') !== -1) {
@@ -1748,6 +1752,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.showAdvancedSearchOption = !this.showAdvancedSearchOption;
     // console.log('[HISTORY & NORT-CONVS] - TOGGLE DIV ', this.showAdvancedSearchOption);
     this.displayHideFooterPagination();
+    // console.log('[HISTORY & NORT-CONVS] - TOGGLE DIV this.requests_status_selected_from_left_filter ', this.requests_status_selected_from_left_filter);
+
+    if (this.requests_status_selected_from_left_filter) {
+      this.requests_status_selected_from_advanced_option = this.requests_status_selected_from_left_filter
+      // console.log('[HISTORY & NORT-CONVS] - TOGGLE DIV this.requests_status_selected_from_advanced_option ', this.requests_status_selected_from_advanced_option);
+    }
+
+    // this.requests_status_selected_from_left_filter = '200'
+    // this.requests_status_selected_from_advanced_option = null
   }
 
   searchOnEnterPressed(event: any) {
@@ -1768,11 +1781,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   search() {
     // console.log('HERE IN SEARCH calledBy ', calledBy)
-    // console.log('HERE IN SEARCH this.fullText', this.fullText)
-    // console.log('HERE IN SEARCH this.startDate', this.startDate)
-    // console.log('HERE IN SEARCH this.endDate', this.endDate)
-    // console.log('HERE IN SEARCH this.requests_status', this.requests_status)
-    // console.log('HERE IN SEARCH this.requests_status_selected_from_advanced_option', this.requests_status_selected_from_advanced_option)
+    console.log('HERE IN SEARCH this.fullText', this.fullText)
+    console.log('HERE IN SEARCH this.startDate', this.startDate)
+    console.log('HERE IN SEARCH this.endDate', this.endDate)
+    console.log('HERE IN SEARCH this.requests_status', this.requests_status)
+    console.log('HERE IN SEARCH this.requests_status_selected_from_advanced_option', this.requests_status_selected_from_advanced_option)
 
 
     this.requests_status_temp = this.requests_status
@@ -1958,9 +1971,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         this.requester_email ||
         this.selecteTagName ||
         this.conversation_type !== 'all' ||
-        this.requests_status_selected_from_left_filter === '100' ||
-        this.requests_status_selected_from_left_filter === '200' ||
-        this.requests_status_selected_from_advanced_option !== 'all'
+        (this.requests_status_selected_from_left_filter && this.requests_status_selected_from_left_filter === '100') ||
+        (this.requests_status_selected_from_left_filter && this.requests_status_selected_from_left_filter === '200') ||
+        (this.requests_status_selected_from_advanced_option && this.requests_status_selected_from_advanced_option !== 'all')
+
       ) {
 
         this.showAdvancedSearchOption = true;
