@@ -2147,5 +2147,7 @@
     "EnableYourAppFor":"Abilita la tua app per",
     "ConversationsArchivedCannotBeReopened":"Le conversazioni archiviate per più di dieci giorni non possono essere riaperte",
     "ClickToEdit":"Clicca per modificare",
-    "SubjectUpdatedSuccessfully":"Oggetto aggiornato correttamente"
+    "SubjectUpdatedSuccessfully":"Oggetto aggiornato correttamente",
+    "PreBuiltTilebotBots":"Bot Tilebot predefiniti",
+    "TheseArePreBuiltCustomizableTilebot":"Questi sono chatbot di tipo Tilebot predefiniti e personalizzabili"
 }

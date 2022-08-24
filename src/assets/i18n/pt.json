@@ -2148,6 +2148,8 @@
     "ConversationsArchivedCannotBeReopened":"Conversas arquivadas por mais de dez dias não podem ser reabertas",
     "ClickToEdit":"Clique para editar",
     "SubjectUpdatedSuccessfully":"Assunto atualizado com sucesso",
+    "PreBuiltTilebotBots":"Chatbots Tilebot pré-criados", 
+    "TheseArePreBuiltCustomizableTilebot":"Estes são chatbots Tilebot personalizáveis e pré-construídos",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

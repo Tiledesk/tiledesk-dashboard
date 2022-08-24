@@ -2148,6 +2148,8 @@
     "ConversationsArchivedCannotBeReopened":"On günden fazla arşivlenen konuşmalar yeniden açılamaz",
     "ClickToEdit":"Düzenlemek için tıkla",
     "SubjectUpdatedSuccessfully":"Özne başarıyla güncellendi",
+    "PreBuiltTilebotBots":"Önceden oluşturulmuş Tilebot",
+    "TheseArePreBuiltCustomizableTilebot":"Bunlar önceden oluşturulmuş, özelleştirilebilir Tilebot sohbet robotlarıdır",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

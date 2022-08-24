@@ -2148,6 +2148,8 @@
     "ConversationsArchivedCannotBeReopened":"Konversationer som har arkiverats i mer än tio dagar kan inte öppnas igen",
     "ClickToEdit":"Klicka för att redigera",
     "SubjectUpdatedSuccessfully":"Subjekt har uppdaterats",
+    "PreBuiltTilebotBots":"Förbyggd Tilebot",
+    "TheseArePreBuiltCustomizableTilebot":"Dessa är förbyggda, anpassningsbara Tilebot-chatbotar", 
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",
