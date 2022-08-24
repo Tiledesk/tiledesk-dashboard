@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.48-rc3
+- Fixes the bug: missing desktop notification icon displayed when a message arrives and the browser tab of the dashboard is in foreground
+
 ### 2.2.48-rc2
 - Improves the methods for getting the "persistent search results" on the History page and the Non-Real-time Conversations page
 - Replaces the keys and values "faqBot.create" "faqBot.update" and "faqBot.delete" in "faqbot.create" , "faqbot.update"  and "faqbot.delete" in the Events combo box of the Create subscription modal window available in Project Settings > Developer > Webhook 
