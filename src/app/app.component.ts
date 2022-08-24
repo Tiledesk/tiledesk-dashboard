@@ -441,11 +441,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         if (Notification.permission !== 'granted') {
             Notification.requestPermission();
         } else {
-
             const notification = new Notification(recipient_fullname, {
                 body: notificationBody,
-                dir: 'ltr',
-                image: 'https://tiledesk.com/wp-content/uploads/2020/08/cropped-tiledesk-logo-512.png'
+                dir: 'auto',
+                icon: 'https://console.tiledesk.com/chat/assets/img/icon.png'
             });
             const self = this
             notification.onclick = function () {
