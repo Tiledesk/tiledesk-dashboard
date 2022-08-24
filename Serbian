@@ -2148,6 +2148,8 @@
     "ConversationsArchivedCannotBeReopened": "Conversations archived for more than ten days cannot be reopened",
     "ClickToEdit": "Click to edit",
     "SubjectUpdatedSuccessfully": "Subject updated successfully",
+    "PreBuiltTilebotBots": "Pre-built Tilebot bots",
+    "TheseArePreBuiltCustomizableTilebot": "These are pre-built, customizable Tilebot chatbots",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",
