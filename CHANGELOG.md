@@ -3,6 +3,7 @@
 
 ### 2.2.48-rc2
 - Improves the methods for getting the "persistent search results" on the History page and the Non-Real-time Conversations page
+- Replaces the keys and values "faqBot.create" "faqBot.update" and "faqBot.delete" in "faqbot.create" , "faqbot.update"  and "faqbot.delete" in the Events combo box of the Create subscription modal window available in Project Settings > Developer > Webhook 
 
 ### 2.2.48-rc1
 - Implements the "persistent search results" on the History page and on the Non-Real-time Conversations page: after having performed a search and then gone to the detail of the conversation, going back the list of conversations is filtered for the previous search
