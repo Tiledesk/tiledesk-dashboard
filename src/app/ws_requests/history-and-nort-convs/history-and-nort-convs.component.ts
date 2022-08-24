@@ -1781,11 +1781,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   search() {
     // console.log('HERE IN SEARCH calledBy ', calledBy)
-    console.log('HERE IN SEARCH this.fullText', this.fullText)
-    console.log('HERE IN SEARCH this.startDate', this.startDate)
-    console.log('HERE IN SEARCH this.endDate', this.endDate)
-    console.log('HERE IN SEARCH this.requests_status', this.requests_status)
-    console.log('HERE IN SEARCH this.requests_status_selected_from_advanced_option', this.requests_status_selected_from_advanced_option)
+    // console.log('HERE IN SEARCH this.fullText', this.fullText)
+    // console.log('HERE IN SEARCH this.startDate', this.startDate)
+    // console.log('HERE IN SEARCH this.endDate', this.endDate)
+    // console.log('HERE IN SEARCH this.requests_status', this.requests_status)
+    // console.log('HERE IN SEARCH this.requests_status_selected_from_advanced_option', this.requests_status_selected_from_advanced_option)
 
 
     this.requests_status_temp = this.requests_status
