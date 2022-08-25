@@ -2151,6 +2151,7 @@
     "PreBuiltTilebotBots": "Pre-built Tilebot bots",
     "TheseArePreBuiltCustomizableTilebot": "These are pre-built, customizable Tilebot chatbots",
     "BanVisitor": "Ban visitor",
+    "YesBanVisitor": "Yes, ban visitor",
     "CHAT_IONIC": {
         "LABEL_TU": "сен: ",
         "LABEL_MSG_PUSH_START_CHAT": "Әзірге әңгіме жоқ",
