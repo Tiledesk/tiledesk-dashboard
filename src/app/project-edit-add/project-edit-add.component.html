@@ -102,6 +102,11 @@
                 <a> Security <span class="security-beta-badge"> Beta</span> </a>
               </li>
 
+              <li (click)="goToProjectSettings_BannedVisitors()" class="btn-with-border-effect"
+                [ngClass]="{'li-active': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE, 'border-from-center': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE === false }">
+                <a> {{'BannedVisitors' | translate }} </a>
+              </li>
+
             </ul>
           </div>
         </div>
@@ -154,8 +159,6 @@
 
 
         </div>
-
-
 
         <div class="row">
           <div class="col-md-12">
@@ -357,10 +360,10 @@
 
                             <ul class="pro-plan-ul"
                               style="color: #566787; list-style-type: none;padding-left: 15px; padding-top: 16px;line-height: 1.6;font-weight: 400;">
-                              <li>{{'WidgetUnbranding' | translate}}</li> 
+                              <li>{{'WidgetUnbranding' | translate}}</li>
                               <li>{{'SmartAssignment' | translate}}</li>
-                              <li>{{ 'Hours'| translate}}</li> 
-                              <li>{{'Unlimited'| translate}} {{'Departments' | translate}}</li> 
+                              <li>{{ 'Hours'| translate}}</li>
+                              <li>{{'Unlimited'| translate}} {{'Departments' | translate}}</li>
                               <li>{{'Unlimited'| translate}} {{'AgentsGroups'| translate}}</li>
                               <li>{{'UnlimitedChatHistory' | translate}} </li>
                               <li>{{'AnalyticsAndRealTimeMonitoring' | translate}} </li>
@@ -1340,12 +1343,14 @@
                   <!-- TRANSCRIPT BY EMAIL ./END -->
 
                   <!-- CUSTOMIZE EMAILS SENT TO AGENTS  -->
-                  <div *ngIf="isVisibleCustomizeEmailTemplate" class="row customize-email-template" style="margin-top: 40px;">
+                  <div *ngIf="isVisibleCustomizeEmailTemplate" class="row customize-email-template"
+                    style="margin-top: 40px;">
                     <div class="col-md-6">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
-                          {{ "ProjectEditPage.CustomizeEmailTemplate" | translate }} <span class="enterprise-only-badge"> {{'EnterpriseOnly' | translate }}  </span>
-                        </span> 
+                          {{ "ProjectEditPage.CustomizeEmailTemplate" | translate }} <span
+                            class="enterprise-only-badge"> {{'EnterpriseOnly' | translate }} </span>
+                        </span>
                       </h3>
                     </div>
 
@@ -1370,7 +1375,8 @@
                     <div class="col-md-6">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
-                          {{ "ProjectEditPage.SMTPSettings" | translate }} <span class="enterprise-only-badge"> {{'EnterpriseOnly' | translate }}  </span>
+                          {{ "ProjectEditPage.SMTPSettings" | translate }} <span class="enterprise-only-badge">
+                            {{'EnterpriseOnly' | translate }} </span>
                         </span>
                       </h3>
                     </div>
@@ -1502,10 +1508,24 @@
                   </div>
                 </span> <!-- ./ security -->
 
-                <!-- <i class="material-icons"
-                style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
-                report_problem
-              </i> -->
+
+                <!-- -------------------------------------------------------- -->
+                <!-- Banned visitors -->
+                <!-- -------------------------------------------------------- -->
+                <span *ngIf="PROJECT_SETTINGS_BANNED_VISITORS_ROUTE">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card  card--no-border">
+                        <div class="card-content table-responsive" style="padding-bottom:5px">
+
+                          {{ projectObject | json }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+
+                <!-- ./ Banned visitors -->
 
               </div>
               <!-- ./ card-content -->

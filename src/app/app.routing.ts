@@ -163,6 +163,7 @@ const routes: Routes = [
   { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/project-settings/notification', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/project-settings/security', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/project-settings/banned', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/smtp-settings', component: SmtpSettingsComponent, canActivate: [AuthGuard] },
 
 

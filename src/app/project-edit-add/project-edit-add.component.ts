@@ -23,11 +23,10 @@ import { takeUntil } from 'rxjs/operators'
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
-import { URL_setting_up_automatic_assignment } from './../utils/util';
+import { avatarPlaceholder, getColorBck, URL_setting_up_automatic_assignment } from './../utils/util';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreditCardValidator } from 'angular-cc-library';
-
-
+import { ContactsService } from '../services/contacts.service';
 const swal = require('sweetalert');
 
 type UserFields = 'creditCard' | 'expirationDate' | 'cvc';
@@ -56,6 +55,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   PROJECT_SETTINGS_ADVANCED_ROUTE: boolean;
   PROJECT_SETTINGS_NOTIFICATION_ROUTE: boolean;
   PROJECT_SETTINGS_SECURITY_ROUTE: boolean;
+  PROJECT_SETTINGS_BANNED_VISITORS_ROUTE: boolean;
 
   showSpinner = true;
 
@@ -71,6 +71,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   DISABLE_UPDATE_BTN = true;
   DISABLE_DELETE_PROJECT_BTN = true;
   project: Project;
+
+  projectObject: Project;
 
   AUTO_SEND_TRANSCRIPT_IS_ON: boolean;
 
@@ -113,8 +115,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isVisibleDeveloperTab: boolean;
   isVisibleNotificationTab: boolean;
   isVisibleSecurityTab: boolean;
-  isVisibleCustomizeEmailTemplate:boolean
-  isVisibleSMTPsettings:boolean
+  isVisibleCustomizeEmailTemplate: boolean
+  isVisibleSMTPsettings: boolean
   max_agent_assigned_chat: number
   reassignment_delay: number
   automatic_idle_chats: number
@@ -235,6 +237,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     public brandService: BrandService,
     private logger: LoggerService,
     private _fb: FormBuilder,
+    private contactsService: ContactsService
     // private formGroup: FormGroup
 
   ) {
@@ -560,8 +563,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
 
-  
-      
+
+
 
       if (key.includes("MTS")) {
         // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
@@ -610,8 +613,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     if (!this.public_Key.includes("MTS")) {
       // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("MTS")', this.public_Key.includes("MTS"));
-     this.isVisibleSMTPsettings = false;
-   }
+      this.isVisibleSMTPsettings = false;
+    }
 
   }
 
@@ -655,8 +658,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
-      (currentUrl.indexOf('/project-settings/security') === -1)
-
+      (currentUrl.indexOf('/project-settings/security') === -1) &&
+      (currentUrl.indexOf('/project-settings/banned') === -1)
     ) {
       this.logger.log('%ProjectEditAddComponent router.url', this.router.url);
 
@@ -666,6 +669,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
+      this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
@@ -679,8 +683,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
-      (currentUrl.indexOf('/project-settings/security') === -1)
-
+      (currentUrl.indexOf('/project-settings/security') === -1) &&
+      (currentUrl.indexOf('/project-settings/banned') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = true;
@@ -688,6 +692,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
+      this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
 
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
@@ -701,7 +706,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/auth') !== -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
-      (currentUrl.indexOf('/project-settings/security') === -1)
+      (currentUrl.indexOf('/project-settings/security') === -1) &&
+      (currentUrl.indexOf('/project-settings/banned') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
@@ -709,6 +715,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
+      this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
@@ -721,7 +728,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') !== -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
-      (currentUrl.indexOf('/project-settings/security') === -1)
+      (currentUrl.indexOf('/project-settings/security') === -1) &&
+      (currentUrl.indexOf('/project-settings/banned') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
@@ -729,6 +737,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = true;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
+      this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
@@ -741,7 +750,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') !== -1) &&
-      (currentUrl.indexOf('/project-settings/security') === -1)
+      (currentUrl.indexOf('/project-settings/security') === -1) &&
+      (currentUrl.indexOf('/project-settings/banned') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
@@ -749,6 +759,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = true;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
+      this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
     }
 
     else if (
@@ -757,7 +768,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
       (currentUrl.indexOf('/project-settings/advanced') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
-      (currentUrl.indexOf('/project-settings/security') !== -1)
+      (currentUrl.indexOf('/project-settings/security') !== -1) &&
+      (currentUrl.indexOf('/project-settings/banned') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
@@ -765,12 +777,27 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = true;
+      this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
     }
 
+    else if (
+      (currentUrl.indexOf('/project-settings/general') === -1) &&
+      (currentUrl.indexOf('/project-settings/payments') === -1) &&
+      (currentUrl.indexOf('/project-settings/auth') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1) &&
+      (currentUrl.indexOf('/project-settings/banned') !== -1)
+    ) {
+      this.PROJECT_SETTINGS_ROUTE = false;
+      this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
+      this.PROJECT_SETTINGS_AUTH_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
+      this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = true;
+    }
   }
-
-
-
 
   goToProjectSettings_Payments() {
     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Payments USER_ROLE ', this.USER_ROLE);
@@ -835,40 +862,44 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.router.navigate(['project/' + this.id_project + '/project-settings/security'])
   }
 
+  goToProjectSettings_BannedVisitors() {
+    this.router.navigate(['project/' + this.id_project + '/project-settings/banned'])
+  }
+
   goToCustomizeNotificationEmailPage() {
     // this.router.navigate(['project/' + this.id_project + '/notification-email'])
     this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name)
-    
-      if (this.profile_name === 'enterprise' && this.subscription_is_active === true) {
-        if (this.USER_ROLE === 'owner') {
-          this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage ');
-          this.router.navigate(['project/' + this.id_project + '/notification-email'])
-        } else {
-          this.presentModalOnlyOwnerCanManageEmailTempalte()
-        }
-      } else if (this.profile_name === 'enterprise' && this.subscription_is_active === false) {
-        this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-      } else if (this.profile_name !== 'enterprise') {
-        this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+
+    if (this.profile_name === 'enterprise' && this.subscription_is_active === true) {
+      if (this.USER_ROLE === 'owner') {
+        this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage ');
+        this.router.navigate(['project/' + this.id_project + '/notification-email'])
+      } else {
+        this.presentModalOnlyOwnerCanManageEmailTempalte()
       }
-  
+    } else if (this.profile_name === 'enterprise' && this.subscription_is_active === false) {
+      this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    } else if (this.profile_name !== 'enterprise') {
+      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+    }
+
   }
 
   goToManageEmailSettings() {
     this.logger.log('goToManageEmailSettings profile_name ', this.profile_name)
-    
-      if (this.profile_name === 'enterprise' && this.subscription_is_active === true) {
-        if (this.USER_ROLE === 'owner') {
-          this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToManageEmailSettings');
-          this.router.navigate(['project/' + this.id_project + '/smtp-settings'])
-        } else {
-          this.presentModalOnlyOwnerCanManageEmailTempalte()
-        }
-      } else if (this.profile_name === 'enterprise' && this.subscription_is_active === false) {
-        this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-      } else if (this.profile_name !== 'enterprise') {
-        this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+
+    if (this.profile_name === 'enterprise' && this.subscription_is_active === true) {
+      if (this.USER_ROLE === 'owner') {
+        this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToManageEmailSettings');
+        this.router.navigate(['project/' + this.id_project + '/smtp-settings'])
+      } else {
+        this.presentModalOnlyOwnerCanManageEmailTempalte()
       }
+    } else if (this.profile_name === 'enterprise' && this.subscription_is_active === false) {
+      this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    } else if (this.profile_name !== 'enterprise') {
+      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+    }
   }
 
   // "SubscriptionSuccessfullyCanceled":"Abbonamento annullato correttamente",
@@ -1474,6 +1505,38 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   }
 
+
+  getContactById(bannedUserid, projectObject) {
+    const bannedVisitors = []
+    this.contactsService.getLeadById(bannedUserid)
+      .subscribe((lead: any) => {
+        let contact_fullname_initial = ''
+        let fillColour = ''
+        let leademail = ''
+        if (lead) {
+          console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
+          if (lead.fullname) {
+            contact_fullname_initial = avatarPlaceholder(lead.fullname);
+            fillColour = getColorBck(lead.fullname);
+          } else {
+            contact_fullname_initial = 'N/A';
+            fillColour = '#6264a7';
+          }
+
+          if (lead.email) {
+            leademail = lead.email;
+            fillColour = getColorBck(lead.fullname);
+          } else {
+            leademail = 'n/a';
+           
+          }
+
+        }
+        bannedVisitors.push({ fullname: lead.fullname, email: leademail, avatarinitials: contact_fullname_initial, avatarinitialsbackground: fillColour})
+        console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID bannedVisitors ', bannedVisitors);
+        projectObject['bannedVisitors'] = bannedVisitors
+      })
+  }
   /**
    * *** GET PROJECT OBJECT BY ID (EDIT VIEW) ***
    * THE ID USED TO RUN THIS getMongDbBotById IS PASSED FROM BOTS LIST (BOTS COMPONENT goToEditAddPage_EDIT))
@@ -1481,9 +1544,24 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
    */
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
-      // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+      console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+
 
       if (project) {
+        this.projectObject = project;
+
+        this.projectObject['bannedUsers'] = [
+          {
+            "_id": "6307a8170da8e80035865962",
+            "id": "4e664030-5c84-4fb0-8404-f79d18f062be",
+            "ip": "5.91.143.90"
+          }
+        ]
+
+        this.projectObject['bannedUsers'].forEach(bannedUser => {
+          console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - bannedUser: ', bannedUser);
+          this.getContactById(bannedUser._id, this.projectObject)
+        });
         this.projectName_toUpdate = project.name;
         this.logger.log('[PRJCT-EDIT-ADD] - PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
 
