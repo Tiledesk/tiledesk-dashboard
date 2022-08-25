@@ -2150,5 +2150,6 @@
 	"SubjectUpdatedSuccessfully":"Betreff erfolgreich aktualisiert",
 	"PreBuiltTilebotBots":"Vorgefertigte Tilebot-Chatbots",
 	"TheseArePreBuiltCustomizableTilebot":"Dies sind vorgefertigte, anpassbare Tilebot-Chatbots",
-	"BanVisitor":"Besucher verbieten"
+	"BanVisitor":"Besucher verbieten",
+	"YesBanVisitor":"Ja, Besucher verbieten"
 }

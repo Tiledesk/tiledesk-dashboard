@@ -2151,6 +2151,7 @@
     "PreBuiltTilebotBots":"Chatbots Tilebot pré-criados", 
     "TheseArePreBuiltCustomizableTilebot":"Estes são chatbots Tilebot personalizáveis e pré-construídos",
     "BanVisitor":"Proibir visitante",
+    "YesBanVisitor":"Sim, banir visitante",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

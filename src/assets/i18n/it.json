@@ -2150,5 +2150,6 @@
     "SubjectUpdatedSuccessfully":"Oggetto aggiornato correttamente",
     "PreBuiltTilebotBots":"Bot Tilebot predefiniti",
     "TheseArePreBuiltCustomizableTilebot":"Questi sono chatbot di tipo Tilebot predefiniti e personalizzabili",
-    "BanVisitor":"Blocca visitatore"
+    "BanVisitor":"Banna visitatore",
+    "YesBanVisitor":"Sì, banna visitatore"
 }

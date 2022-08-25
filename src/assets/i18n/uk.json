@@ -2151,6 +2151,7 @@
     "PreBuiltTilebotBots":"Готовий Tilebot",
     "TheseArePreBuiltCustomizableTilebot":"Це попередньо створені та настроювані чат-боти Tilebot",
     "BanVisitor":"Забанити відвідувача",
+    "YesBanVisitor":"Так, забанити відвідувача",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

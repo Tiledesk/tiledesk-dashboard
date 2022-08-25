@@ -2150,6 +2150,7 @@
     "PreBuiltTilebotBots":"Унапред изграђен Тилебот",
     "TheseArePreBuiltCustomizableTilebot":"Ово су унапред изграђени, прилагодљиви Tilebot цхат ботови", 
     "BanVisitor":"Забранити посетиоцу",
+    "YesBanVisitor":"Да, забраните посетиоцу",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

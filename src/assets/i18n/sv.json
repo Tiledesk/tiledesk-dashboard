@@ -2151,6 +2151,7 @@
     "PreBuiltTilebotBots":"Förbyggd Tilebot",
     "TheseArePreBuiltCustomizableTilebot":"Dessa är förbyggda, anpassningsbara Tilebot-chatbotar", 
     "BanVisitor":"Förbjud besökare",
+    "YesBanVisitor":"Ja, bannlys besökare",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",
