@@ -748,6 +748,30 @@ export class ProjectService {
   }
 
 
+  // -----------------------------------------------------------------------------------------
+  // @ Ban visitor 
+  // -----------------------------------------------------------------------------------------
+  public banVisitor(leadid: string, ipaddress: string) {
+  // public banVisitor(bannedArray) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // 
+    const url = this.PROJECTS_URL + this.projectID + '/ban';
+    console.log('[WS-REQUESTS-SERV] - BAN VISITOR - URL ', url)
+    // const body = {bannedUsers: [{id: leadid, ip: ipaddress}]}
+    // const body = {bannedUsers: bannedArray}
+    const body = {"id":leadid, "ip":ipaddress}
+    console.log('[WS-REQUESTS-SERV] - BAN VISITOR - body ', body)
+    return this.http
+      .post(url,  JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
+
+
   // ----------------------------------------------------------------------------
   // !!! not used -  UPDATE GETTING STARTED (IS THE MODAL WINDOW GETTING STARTED)
   // ----------------------------------------------------------------------------

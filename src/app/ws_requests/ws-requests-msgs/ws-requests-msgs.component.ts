@@ -217,6 +217,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   requestWillBeAssignedToMsg: string;
   anErrorHasOccurredMsg: string;
   done_msg: string;
+  areYouSureLbl: string;
+  cancelLbl: string;
+  yesBanVisitorLbl: string;
+
   COUNT_OF_VISIBLE_DEPT: number;
 
   ALL_MSG_LENGTH: number;
@@ -1166,7 +1170,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1897,7 +1901,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (wsmsgs) {
           this.logger.log('[WS-REQUESTS-MSGS] getWsMsgs$ WSMSGS lenght', wsmsgs.length)
           this.messagesList = wsmsgs;
-          this.logger.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
+          console.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
         }
 
         this.showSpinner = false;
@@ -3434,6 +3438,55 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     document.body.removeChild(dwldLink);
 
   }
+  // ---------------------------
+  // Ban Visitor
+  // ---------------------------
+  displayModalBanVisitor(leadid: string, ipaddress: string) {
+    // let bennedArray = []
+    console.log('displayModalBanVisitor leadid ', leadid) 
+    console.log('displayModalBanVisitor ipaddress ', ipaddress) 
+    // if (leadid && ipaddress) {
+    //   bennedArray.push({ id: leadid, ip: ipaddress })
+    // }
+    // console.log('displayModalBanVisitor bennedArray ', bennedArray) 
+    swal({
+      title: this.areYouSureLbl + '?',
+      icon: "info",
+      buttons: [this.cancelLbl, this.yesBanVisitorLbl],
+      dangerMode: true,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    })
+      .then((willBan) => {
+        if (willBan) {
+          console.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
+
+          this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
+           console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
+
+          }, (error) => {
+            console.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
+
+            swal(this.anErrorHasOccurredMsg, {
+              icon: "error",
+            });
+
+          }, () => {
+            console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
+
+            swal({
+              title: this.done_msg + "!",
+              icon: "success",
+              button: "OK",
+              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+            }).then((okpressed) => {  });
+
+          });
+        } else {
+          console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+          // swal("Your imaginary file is safe!");
+        }
+      });
+  }
 
 
   goToTags() {
@@ -3804,7 +3857,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.anErrorHasOccurred = text;
     });
 
+    this.translate.get('AreYouSure').subscribe((text: string) => {
+      this.areYouSureLbl = text;
+    });
 
+    this.translate.get('Cancel').subscribe((text: string) => {
+      this.cancelLbl = text;
+    });
+
+    this.translate.get('YesBanVisitor').subscribe((text: string) => {
+      this.yesBanVisitorLbl = text;
+    });
 
 
 
