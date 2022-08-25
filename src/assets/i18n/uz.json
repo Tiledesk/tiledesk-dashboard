@@ -2152,6 +2152,7 @@
     "TheseArePreBuiltCustomizableTilebot":"Bular oldindan tuzilgan, sozlanishi mumkin bo'lgan Tilebot chatbotlari",
     "BanVisitor":"Taqiqlash tashrif buyuruvchi",
     "YesBanVisitor":"Ha, tashrif buyuruvchini taqiqlang",
+    "BannedVisitors": "Taqiqlangan tashrif buyuruvchilar",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

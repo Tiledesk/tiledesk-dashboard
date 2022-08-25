@@ -2152,6 +2152,7 @@
     "TheseArePreBuiltCustomizableTilebot":"هذه روبوتات محادثة Tilebot مبنية مسبقًا وقابلة للتخصيص",
     "BanVisitor":"زائر حظر",
     "YesBanVisitor":"نعم احظروا الزائر",
+    "BannedVisitors": "الزوار المحظورون",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",
