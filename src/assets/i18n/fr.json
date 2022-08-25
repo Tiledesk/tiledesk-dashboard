@@ -2150,6 +2150,7 @@
     "SubjectUpdatedSuccessfully":"Sujet mis à jour avec succès",
     "PreBuiltTilebotBots":"Tilebot pré-construit",
     "TheseArePreBuiltCustomizableTilebot":"Ce sont des chatbots Tilebot prédéfinis et personnalisables",
+    "BanVisitor":"Interdire le visiteur",
     "CHAT_IONIC": {
         "LABEL_TU": "vous: ",
         "LABEL_MSG_PUSH_START_CHAT": "Pas encore de conversation",

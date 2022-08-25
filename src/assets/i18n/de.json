@@ -2149,5 +2149,6 @@
 	"ClickToEdit":"Zum Bearbeiten anklicken",
 	"SubjectUpdatedSuccessfully":"Betreff erfolgreich aktualisiert",
 	"PreBuiltTilebotBots":"Vorgefertigte Tilebot-Chatbots",
-	"TheseArePreBuiltCustomizableTilebot":"Dies sind vorgefertigte, anpassbare Tilebot-Chatbots"
+	"TheseArePreBuiltCustomizableTilebot":"Dies sind vorgefertigte, anpassbare Tilebot-Chatbots",
+	"BanVisitor":"Besucher verbieten"
 }

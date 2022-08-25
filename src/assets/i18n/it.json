@@ -2149,5 +2149,6 @@
     "ClickToEdit":"Clicca per modificare",
     "SubjectUpdatedSuccessfully":"Oggetto aggiornato correttamente",
     "PreBuiltTilebotBots":"Bot Tilebot predefiniti",
-    "TheseArePreBuiltCustomizableTilebot":"Questi sono chatbot di tipo Tilebot predefiniti e personalizzabili"
+    "TheseArePreBuiltCustomizableTilebot":"Questi sono chatbot di tipo Tilebot predefiniti e personalizzabili",
+    "BanVisitor":"Blocca visitatore"
 }

@@ -2150,6 +2150,7 @@
     "SubjectUpdatedSuccessfully":"Mövzu uğurla yeniləndi",
     "PreBuiltTilebotBots":"Əvvəlcədən qurulmuş Tilebot chatbotları",
     "TheseArePreBuiltCustomizableTilebot":"Bunlar əvvəlcədən qurulmuş, fərdiləşdirilə bilən Tilebot chatbotlarıdır",
+    "BanVisitor":"Ziyarətçini qadağan edin",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",
