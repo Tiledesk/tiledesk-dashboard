@@ -9,6 +9,7 @@
 - Adds the "Banned Visitors" tab in Project Settings which displays the list of all banned visitors and from which a visitor can be unbanned
 - Adds the ability, for all types of plans, to customize email templates (feature available in Project setting > Notifications) 
 - Adds the "View contact" button to the drop-down menu of the right sidebar "Conversation info" of the chat
+- Change the order of the bot type on the Choose Bot Type page
 
 ### 2.2.48-rc3
 - Fixes the bug: missing desktop notification icon displayed when a message arrives and the browser tab of the dashboard is in foreground
