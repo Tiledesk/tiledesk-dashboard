@@ -81,30 +81,30 @@ export class BotTypeSelectComponent implements OnInit {
 
         if (dgf[1] === "F") {
           this.dgfIsVisible = false;
-         console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
+        //  console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
         } else {
           this.dgfIsVisible = true;
-          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
+          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
         }
       }
       if (key.includes("NAT")) {
         // this.logger.log('PUBLIC-KEY (SIDEBAR) - key', key);
         let nat = key.split(":");
-        console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
+        // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
 
         if (nat[1] === "F") {
           this.natIsVisible = false;
-          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
+          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
         } else {
           this.natIsVisible = true;
-          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
+          // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
         }
       }
 
       if (key.includes("RAS")) {
         // this.logger.log('PUBLIC-KEY (SIDEBAR) - key', key);
         let rasa = key.split(":");
-        console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa key&value',rasa);
+        // console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa key&value',rasa);
         if (rasa[1] === "F") {
           this.rasaIsVisible = false;
           //  console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - rasa rasaIsVisible', this.rasaIsVisible);
