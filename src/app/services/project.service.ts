@@ -760,15 +760,33 @@ export class ProjectService {
     const options = new RequestOptions({ headers });
     // 
     const url = this.PROJECTS_URL + this.projectID + '/ban';
-    console.log('[WS-REQUESTS-SERV] - BAN VISITOR - URL ', url)
+    // console.log('[WS-REQUESTS-SERV] - BAN VISITOR - URL ', url)
     // const body = {bannedUsers: [{id: leadid, ip: ipaddress}]}
     // const body = {bannedUsers: bannedArray}
     const body = {"id":leadid, "ip":ipaddress}
-    console.log('[WS-REQUESTS-SERV] - BAN VISITOR - body ', body)
+    // console.log('[WS-REQUESTS-SERV] - BAN VISITOR - body ', body)
     return this.http
       .post(url,  JSON.stringify(body), options)
       .map((res) => res.json());
 
+  }
+
+
+  // -----------------------------------------------------------------------------------------
+  // @ Unban visitor  http://localhost:3000/projects/6307a210f6c98c2d6c9c74ef/ban/6307a22cf6c98c2d6c9c7525
+  // -----------------------------------------------------------------------------------------
+  public unbanVisitor(contactid: string) {
+    let url = this.PROJECTS_URL + this.projectID + '/unban/' + contactid;
+    // console.log('[PROJECT-SERV] - DELETE URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
   }
 
 

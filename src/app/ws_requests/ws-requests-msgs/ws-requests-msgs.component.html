@@ -1073,6 +1073,18 @@
                             </li>
                             <!-- <li class="divider"></li> -->
                             <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
+     
+                            <li *ngIf="CHAT_PANEL_MODE === true">
+
+                              <a (click)='openContactDetailsInNewWindow()' style="padding-left: 15px; padding-right: 15px;">
+                                <i class="material-icons" style="padding-right: 5px;">open_in_new</i>
+                                <span style="position: relative; top: 1px; cursor:pointer">
+                                  <!-- {{ 'VisitorsPage.LeaveChat' | translate }} -->
+                                  {{ 'ViewContact' | translate }}
+                                </span>
+                              </a>
+                            </li>
+
                             <li
                               [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
                               <a (click)='openSelectUsersModal(action = "reassign")'
@@ -1108,6 +1120,7 @@
                                 </span>
                               </a>
                             </li>
+                     
                             <li class="divider"></li>
                             <li>
                               <a (click)='displayModalDownloadTranscript()'

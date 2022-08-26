@@ -1342,14 +1342,14 @@
                   </div>
                   <!-- TRANSCRIPT BY EMAIL ./END -->
 
-                  <!-- CUSTOMIZE EMAILS SENT TO AGENTS  -->
-                  <div *ngIf="isVisibleCustomizeEmailTemplate" class="row customize-email-template"
+                  <!-- CUSTOMIZE EMAILS SENT TO AGENTS *ngIf="isVisibleCustomizeEmailTemplate" -->
+                  <div  class="row customize-email-template"
                     style="margin-top: 40px;">
                     <div class="col-md-6">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
-                          {{ "ProjectEditPage.CustomizeEmailTemplate" | translate }} <span
-                            class="enterprise-only-badge"> {{'EnterpriseOnly' | translate }} </span>
+                          {{ "ProjectEditPage.CustomizeEmailTemplate" | translate }} 
+                          <!-- <span class="enterprise-only-badge"> {{'EnterpriseOnly' | translate }} </span> -->
                         </span>
                       </h3>
                     </div>
@@ -1517,8 +1517,133 @@
                     <div class="col-md-12">
                       <div class="card  card--no-border">
                         <div class="card-content table-responsive" style="padding-bottom:5px">
+                          <table class="table table-hover">
+                            <thead class="text">
+                              <tr>
 
-                          {{ projectObject | json }}
+                                <!-- -------------------------------------- -->
+                                <!-- ------- User Avatar ------- -->
+                                <!-- -------------------------------------- -->
+                                <th>
+                                  <!-- <span class="column-th-span">
+                                    {{ 'Visitor' | translate }}
+                                  </span> -->
+                                  <span class="column-th-span">
+                                   Id
+                                  </span>
+                                </th>
+
+
+
+                                <!-- -------------------------------------- -->
+                                <!-- ------- User Email ------- -->
+                                <!-- -------------------------------------- -->
+
+                                <!-- <th>
+                                  <span class="column-th-span">
+                                    Email
+                                  </span>
+                                </th> -->
+
+
+
+                                <!-- -------------------------------------- -->
+                                <!-- ------- Actions ------- -->
+                                <!-- -------------------------------------- -->
+                                <th>
+                                  <span class="column-th-span">
+                                    {{ 'Actions' | translate }}
+                                  </span>
+                                </th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <!-- -------------------------------------- -->
+                              <!-- ------- IF THERE ISN'T CONTACTS ------- -->
+                              <!-- -------------------------------------- -->
+                              <tr *ngIf="projectObject['bannedUsers'] && projectObject['bannedUsers']?.length === 0">
+                                <td colspan="2" style="text-align: center; padding-top: 16px; cursor: pointer">
+
+                                  <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                                    {{ 'NoBannedVisitors' | translate }}
+                                  </p>
+                                </td>
+                              </tr>
+
+                              <!-- <tr *ngFor="let visitor of projectObject['bannedVisitors']"> -->
+                              <tr *ngFor="let visitor of projectObject['bannedUsers']">
+                                <!-- -------------------------------------- -->
+                                <!-- ------- User NAME ------- -->
+                                <!-- -------------------------------------- -->
+                                <!-- (click)='goToContactDetails(visitor?.id)' -->
+                                <td style="cursor:pointer">
+                                  <!-- <span class="avatar"
+                                    [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + visitor?.avatarinitialsbackground + ')'}">
+                                    <span style="color: #ffffff"> {{ visitor?.avatarinitials }} </span>
+                                  </span>
+
+
+                                  <span class="column-td" style="margin-left: 10px;">
+                                    {{ visitor?.fullname }}
+                                  </span> -->
+                                  <!-- style="margin-left: 10px;" -->
+                                  <span class="column-td" >
+                                    {{ visitor?.id }}
+                                  </span> 
+
+                                </td>
+
+
+
+                                <!-- ========== CONTACT EMAIL ========== -->
+                                <!-- <td (click)='goToContactDetails(visitor?.id)' style="cursor:pointer">
+
+                                  <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
+                                    {{ visitor?.email }}
+                                  </p>
+                                </td> -->
+
+                                <td class="td-actions text-right"
+                                  style="padding-left: 0px;padding-top: 17px!important;">
+
+                                  <!-- UNBAN CONTACT -->
+                                  <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
+                                    [disabled]="IS_CURRENT_USER_AGENT === true" (click)='unbanVisitor(visitor?._id)'>
+
+                                    <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+                                      style="enable-background:new 0 0 24 24; width: 18px; height: auto; vertical-align: middle;position: relative; top: -2px;"
+                                      xml:space="preserve">
+                                      <style type="text/css">
+                                        .unlock-st0 {
+                                          fill: none;
+                                        }
+
+                                        .unlock-st1 {
+                                          fill: #3EA9F5;
+                                        }
+                                      </style>
+                                      <path class="unlock-st0"
+                                        d="M0,0v24h24V0H0z M6,8c1,0,3,0,4,0C9,8,7,8,6,8z M6,4c2,0,3,0,5,0C9,4,8,4,6,4z" />
+                                      <path class="unlock-st1" d="M18,8h-1V6c0-2.8-2.2-5-5-5c-2,0-3.8,1.2-4.6,3c0.8,0,1.4,0,2.2,0c0.6-0.7,1.4-1.1,2.3-1.1
+                                          c1.7,0,3.1,1.4,3.1,3.1v2H10H8.9C8.3,8,7.6,8,7,8H6c-1.1,0-2,0.9-2,2v10c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V10C20,8.9,19.1,8,18,8z
+                                          M12,17c-1.1,0-2-0.9-2-2c0-1.1,0.9-2,2-2s2,0.9,2,2C14,16.1,13.1,17,12,17z" />
+                                    </svg>
+
+                                    <span class="tooltiptext-custom" style="text-transform:none">
+
+                                      {{ 'Unban' | translate }}
+                                    </span>
+                                  </button>
+                                </td>
+
+
+
+                              </tr>
+                            </tbody>
+                          </table>
+                          <!-- {{ projectObject | json }} -->
                         </div>
                       </div>
                     </div>

@@ -870,18 +870,23 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     // this.router.navigate(['project/' + this.id_project + '/notification-email'])
     this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name)
 
-    if (this.profile_name === 'enterprise' && this.subscription_is_active === true) {
-      if (this.USER_ROLE === 'owner') {
-        this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage ');
-        this.router.navigate(['project/' + this.id_project + '/notification-email'])
-      } else {
-        this.presentModalOnlyOwnerCanManageEmailTempalte()
-      }
-    } else if (this.profile_name === 'enterprise' && this.subscription_is_active === false) {
-      this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    } else if (this.profile_name !== 'enterprise') {
-      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+    if (this.USER_ROLE === 'owner') {
+      this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage ');
+      this.router.navigate(['project/' + this.id_project + '/notification-email'])
     }
+
+    // if (this.profile_name === 'enterprise' && this.subscription_is_active === true) {
+    //   if (this.USER_ROLE === 'owner') {
+    //     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage ');
+    //     this.router.navigate(['project/' + this.id_project + '/notification-email'])
+    //   } else {
+    //     this.presentModalOnlyOwnerCanManageEmailTempalte()
+    //   }
+    // } else if (this.profile_name === 'enterprise' && this.subscription_is_active === false) {
+    //   this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    // } else if (this.profile_name !== 'enterprise') {
+    //   this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+    // }
 
   }
 
@@ -1505,6 +1510,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   }
 
+  goToContactDetails(requester_id) {
+    this.router.navigate(['project/' + this.projectId + '/contact', requester_id]);
+  }
 
   getContactById(bannedUserid, projectObject) {
     const bannedVisitors = []
@@ -1514,7 +1522,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         let fillColour = ''
         let leademail = ''
         if (lead) {
-          console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
+          // console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
           if (lead.fullname) {
             contact_fullname_initial = avatarPlaceholder(lead.fullname);
             fillColour = getColorBck(lead.fullname);
@@ -1532,10 +1540,37 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
 
         }
-        bannedVisitors.push({ fullname: lead.fullname, email: leademail, avatarinitials: contact_fullname_initial, avatarinitialsbackground: fillColour})
-        console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID bannedVisitors ', bannedVisitors);
+        bannedVisitors.push({id:lead._id, fullname: lead.fullname, email: leademail, avatarinitials: contact_fullname_initial, avatarinitialsbackground: fillColour})
+        // console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID bannedVisitors ', bannedVisitors);
         projectObject['bannedVisitors'] = bannedVisitors
       })
+  }
+
+
+
+
+  unbanVisitor(contact_id) {
+    // console.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR contact_id ', contact_id)
+    this.projectService.unbanVisitor(contact_id).subscribe((res: any) => {
+      // console.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR  - RES ', res)
+
+     }, (error) => {
+      //  console.error('[PRJCT-EDIT-ADD] UNBAN VISITOR   - ERROR ', error);
+
+    
+     }, () => {
+      //  console.log('[PRJCT-EDIT-ADD] UNBAN VISITOR  * COMPLETE *');
+
+       for (var i = 0; i < this.projectObject['bannedVisitors'].length; i++) {
+
+        if (this.projectObject['bannedVisitors'][i].id === contact_id) {
+          // console.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED  id of the REQUEST  REOPENED ', this.requestList[i].request_id);
+          this.projectObject['bannedVisitors'].splice(i, 1);
+        }
+
+      }
+
+     });
   }
   /**
    * *** GET PROJECT OBJECT BY ID (EDIT VIEW) ***
@@ -1550,17 +1585,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       if (project) {
         this.projectObject = project;
 
-        this.projectObject['bannedUsers'] = [
-          {
-            "_id": "6307a8170da8e80035865962",
-            "id": "4e664030-5c84-4fb0-8404-f79d18f062be",
-            "ip": "5.91.143.90"
-          }
-        ]
 
         this.projectObject['bannedUsers'].forEach(bannedUser => {
-          console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - bannedUser: ', bannedUser);
-          this.getContactById(bannedUser._id, this.projectObject)
+          // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - bannedUser: ', bannedUser);
+          // this.getContactById(bannedUser._id, this.projectObject)
+        
         });
         this.projectName_toUpdate = project.name;
         this.logger.log('[PRJCT-EDIT-ADD] - PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);

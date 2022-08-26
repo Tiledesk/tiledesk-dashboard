@@ -1170,7 +1170,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1901,7 +1901,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (wsmsgs) {
           this.logger.log('[WS-REQUESTS-MSGS] getWsMsgs$ WSMSGS lenght', wsmsgs.length)
           this.messagesList = wsmsgs;
-          console.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
+          // console.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
         }
 
         this.showSpinner = false;
@@ -3443,8 +3443,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ---------------------------
   displayModalBanVisitor(leadid: string, ipaddress: string) {
     // let bennedArray = []
-    console.log('displayModalBanVisitor leadid ', leadid) 
-    console.log('displayModalBanVisitor ipaddress ', ipaddress) 
+    // console.log('displayModalBanVisitor leadid ', leadid) 
+    // console.log('displayModalBanVisitor ipaddress ', ipaddress) 
     // if (leadid && ipaddress) {
     //   bennedArray.push({ id: leadid, ip: ipaddress })
     // }
@@ -3458,20 +3458,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     })
       .then((willBan) => {
         if (willBan) {
-          console.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
+          // console.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
 
           this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
-           console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
+          //  console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
 
           }, (error) => {
-            console.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
+            // console.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
 
             swal(this.anErrorHasOccurredMsg, {
               icon: "error",
             });
 
           }, () => {
-            console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
+            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
 
             swal({
               title: this.done_msg + "!",
@@ -3482,7 +3482,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           });
         } else {
-          console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+          // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -3593,6 +3593,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   goToContactDetails() {
     this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);
+  }
+
+  openContactDetailsInNewWindow() {
+    const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/' + this.contact_id;
+    window.open(url, '_blank');
   }
 
   goToMemberProfile(member_id: any) {
