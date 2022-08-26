@@ -776,7 +776,7 @@ export class ProjectService {
   // @ Unban visitor  http://localhost:3000/projects/6307a210f6c98c2d6c9c74ef/ban/6307a22cf6c98c2d6c9c7525
   // -----------------------------------------------------------------------------------------
   public unbanVisitor(contactid: string) {
-    let url = this.PROJECTS_URL + this.projectID + '/unban/' + contactid;
+    let url = this.PROJECTS_URL + this.projectID + '/ban/' + contactid;
     // console.log('[PROJECT-SERV] - DELETE URL ', url);
 
     const headers = new Headers();
