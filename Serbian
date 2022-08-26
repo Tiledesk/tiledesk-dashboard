@@ -2153,6 +2153,10 @@
     "BanVisitor": "Ban visitor",
     "YesBanVisitor": "Yes, ban visitor",
     "BannedVisitors": "Banned visitors",
+    "Visitor": "Visitor",
+    "Unban": "Unban",
+    "NoBannedVisitors": "No banned visitors",
+    "ViewContact": "View contact",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",
@@ -2443,6 +2447,7 @@
         "YOUR_OPINION_ON_OUR_CUSTOMER_SERVICE": "Ваше мишљење о нашој служби за кориснике",
         "DOWNLOAD_TRANSCRIPT": "Преузмите транскрипт",
         "BACK": "Назад",
+        "CONTINUE": "Continue",
         "YOUR_RATING": "ваша оцена",
         "WRITE_YOUR_OPINION": "Напишите своје мишљење ... (опционо)",
         "SUBMIT": "прихвати",
