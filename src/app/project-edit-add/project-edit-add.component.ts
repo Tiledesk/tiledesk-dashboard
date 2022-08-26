@@ -187,6 +187,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   no_default_payment_method_id_array: Array<string>
   isActiveSubscription: boolean = false;
   isChromeVerGreaterThan100: boolean
+
+ thereHasBeenAnErrorProcessing: string;
+
   formErrors: FormErrors = {
     'creditCard': '',
     'expirationDate': '',
@@ -389,8 +392,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.translateMsgSubscriptionCanceledError();
     this.translateModalOnlyOwnerCanManageProjectAccount();
     this.translateOnlyATeammateWithTheOwnerRoleCanDeleteAProject();
+    this.translateThereHasBeenAnErrorProcessing();
   }
 
+  translateThereHasBeenAnErrorProcessing() {
+    this.translate.get('ThereHasBeenAnErrorProcessing')
+      .subscribe((translation: any) => {
+        this.thereHasBeenAnErrorProcessing = translation;
+      });
+  }
 
   translateNotificationMsgs() {
     this.translate.get('ProjectEditPage.NotificationMsgs')
@@ -1555,8 +1565,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       // console.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR  - RES ', res)
 
      }, (error) => {
-      //  console.error('[PRJCT-EDIT-ADD] UNBAN VISITOR   - ERROR ', error);
-
+      this.logger.error('[PRJCT-EDIT-ADD] UNBAN VISITOR   - ERROR ', error);
+      this.notify.showWidgetStyleUpdateNotification(this.thereHasBeenAnErrorProcessing, 4, 'report_problem');
     
      }, () => {
       //  console.log('[PRJCT-EDIT-ADD] UNBAN VISITOR  * COMPLETE *');
@@ -1579,7 +1589,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
    */
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
-      console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+      // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
 
 
       if (project) {
