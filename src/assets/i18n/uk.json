@@ -2153,6 +2153,9 @@
     "BanVisitor":"Забанити відвідувача",
     "YesBanVisitor":"Так, забанити відвідувача",
     "BannedVisitors": "Заблоковані відвідувачі",
+    "Visitor": "Відвідувач",
+    "Unban":"Зняти заборону",
+    "NoBannedVisitors":"Немає заборонених відвідувачів",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

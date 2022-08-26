@@ -2152,7 +2152,10 @@
     "TheseArePreBuiltCustomizableTilebot":"Bunlar önceden oluşturulmuş, özelleştirilebilir Tilebot sohbet robotlarıdır",
     "BanVisitor":"Ziyaretçiyi yasakla",
     "YesBanVisitor":"Evet, ziyaretçiyi yasakla",
+    "Visitor": "Ziyaretçi",
     "BannedVisitors": "Yasaklı ziyaretçiler",
+    "Unban":"Yasağı kaldır",
+    "NoBannedVisitors":"Yasaklı ziyaretçi yok",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

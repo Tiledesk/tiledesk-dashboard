@@ -2153,6 +2153,9 @@
     "BanVisitor":"Ziyarətçini qadağan edin",
     "YesBanVisitor":"Bəli, ziyarətçini qadağan edin",
     "BannedVisitors": "Qadağan edilmiş ziyarətçilər",
+    "Visitor": "Ziyarətçi",
+    "Unban":"Qadağanı aradan qaldırın",
+    "NoBannedVisitors":"Qadağan edilmiş ziyarətçi yoxdur",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

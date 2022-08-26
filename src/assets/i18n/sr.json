@@ -2152,6 +2152,9 @@
     "BanVisitor":"Забранити посетиоцу",
     "YesBanVisitor":"Да, забраните посетиоцу",
     "BannedVisitors": "Забранили посетиоце",
+    "Visitor": "Посетилац",
+    "Unban":"Унбан",
+    "NoBannedVisitors":"Без забрањених посетилаца",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

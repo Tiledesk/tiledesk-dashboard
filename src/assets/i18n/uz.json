@@ -2153,6 +2153,9 @@
     "BanVisitor":"Taqiqlash tashrif buyuruvchi",
     "YesBanVisitor":"Ha, tashrif buyuruvchini taqiqlang",
     "BannedVisitors": "Taqiqlangan tashrif buyuruvchilar",
+    "Visitor": "Tashrifchi",
+    "Unban":"Taqiqni olib tashlang",
+    "NoBannedVisitors":"Taqiqlangan tashrif buyuruvchilar yo'q",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

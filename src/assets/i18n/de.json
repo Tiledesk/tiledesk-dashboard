@@ -2152,5 +2152,8 @@
 	"TheseArePreBuiltCustomizableTilebot":"Dies sind vorgefertigte, anpassbare Tilebot-Chatbots",
 	"BanVisitor":"Besucher verbieten",
 	"YesBanVisitor":"Ja, Besucher verbieten",
-	"BannedVisitors": "Besucher verboten"
+	"BannedVisitors": "Besucher verboten",
+	"Visitor": "Besucher",
+	"Unban":"Entbannen",
+	"NoBannedVisitors":"Keine verbotenen Besucher"
 }

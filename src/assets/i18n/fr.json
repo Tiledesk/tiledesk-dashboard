@@ -2153,6 +2153,9 @@
     "BanVisitor":"Interdire le visiteur",
     "YesBanVisitor":"Oui, interdire le visiteur",
     "BannedVisitors": "Visiteurs interdits",
+    "Visitor": "Visiteur",
+    "Unban":"Débannir",
+    "NoBannedVisitors":"Pas de visiteurs bannis",
     "CHAT_IONIC": {
         "LABEL_TU": "vous: ",
         "LABEL_MSG_PUSH_START_CHAT": "Pas encore de conversation",

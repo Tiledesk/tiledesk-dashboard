@@ -2153,6 +2153,9 @@
     "BanVisitor":"Заблокировать посетителя",
     "YesBanVisitor":"Да, забанить посетителя",
     "BannedVisitors": "Заблокированные посетители",
+    "Visitor": "Посетитель",
+    "Unban":"Разблокировать",
+    "NoBannedVisitors":"Нет запрещенных посетителей",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",
