@@ -2156,6 +2156,7 @@
     "Visitor": "Відвідувач",
     "Unban":"Зняти заборону",
     "NoBannedVisitors":"Немає заборонених відвідувачів",
+    "ViewContact":"Переглянути контакт",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

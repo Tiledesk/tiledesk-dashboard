@@ -2156,6 +2156,7 @@
     "Visitor": "Besökare",
     "Unban":"Ta bort förbud",
     "NoBannedVisitors":"Inga förbjudna besökare",
+    "ViewContact":"Se kontakten",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",

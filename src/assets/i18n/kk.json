@@ -2156,6 +2156,7 @@
     "Visitor": "Келуші",
     "Unban":"Тыйым салуды алып тастаңыз",
     "NoBannedVisitors":"Ешқандай тыйым салынған келушілер",
+    "ViewContact":"Контактіні көру",
     "CHAT_IONIC": {
         "LABEL_TU": "сен: ",
         "LABEL_MSG_PUSH_START_CHAT": "Әзірге әңгіме жоқ",

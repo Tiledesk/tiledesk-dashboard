@@ -2156,6 +2156,7 @@
     "BannedVisitors": "Yasaklı ziyaretçiler",
     "Unban":"Yasağı kaldır",
     "NoBannedVisitors":"Yasaklı ziyaretçi yok",
+    "ViewContact":"Kişiyi görüntüle",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

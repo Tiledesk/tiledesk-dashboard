@@ -2156,6 +2156,7 @@
     "Visitor": "زائر",
     "Unban":"إلغاء الحظر",
     "NoBannedVisitors":"لا زوار محظورون",
+    "ViewContact":"عرض جهة الاتصال",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",

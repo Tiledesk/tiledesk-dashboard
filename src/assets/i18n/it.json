@@ -2155,5 +2155,6 @@
     "BannedVisitors": "Visitatori bannati",
     "Visitor": "Visitatore",
     "Unban":"Annulla il divieto",
-    "NoBannedVisitors":"Nessun visitatore bannato"
+    "NoBannedVisitors":"Nessun visitatore bannato",
+    "ViewContact":"Vedi contatto"
 }
