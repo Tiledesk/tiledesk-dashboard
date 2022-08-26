@@ -586,7 +586,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   generateAvatarFromNameAndGetIfContactIsAuthenticated(contacts_list) {
     contacts_list.forEach(contact => {
-
+console.log('[CONTACTS-COMP] contact', contact)
       if (contact) {
         // const id_contact = contact._id
         const leadid = contact.lead_id
