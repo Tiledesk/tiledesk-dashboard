@@ -1524,40 +1524,65 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.router.navigate(['project/' + this.projectId + '/contact', requester_id]);
   }
 
-  getContactById(bannedUserid, projectObject) {
+  getAllLeads(projectObject) {
     const bannedVisitors = []
-    this.contactsService.getLeadById(bannedUserid)
-      .subscribe((lead: any) => {
-        let contact_fullname_initial = ''
-        let fillColour = ''
-        let leademail = ''
-        if (lead) {
-          // console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
-          if (lead.fullname) {
-            contact_fullname_initial = avatarPlaceholder(lead.fullname);
-            fillColour = getColorBck(lead.fullname);
-          } else {
-            contact_fullname_initial = 'N/A';
-            fillColour = '#6264a7';
+    this.contactsService.getLeadsActive()
+      .subscribe((leads: any) => {
+
+        const contacts = leads.leads
+        console.log('[PRJCT-EDIT-ADD] GET ALL LEADS ' , contacts)
+        console.log('[PRJCT-EDIT-ADD] PROJECT bannedUsers ' , projectObject.bannedUsers)
+
+        for (var i = 0; i < contacts.length; i++) {
+          if(contacts[i] && contacts[i].fullname){
+            contacts[i]['leadInitials'] = avatarPlaceholder( contacts[i].fullname);
+            contacts[i].fillColour = getColorBck(contacts.fullname);
+          }  else {
+            contacts[i]['leadInitials'] = 'N/A';
+            contacts[i].fillColour = '#6264a7';
           }
 
-          if (lead.email) {
-            leademail = lead.email;
-            fillColour = getColorBck(lead.fullname);
-          } else {
-            leademail = 'n/a';
+          if(contacts[i] && contacts[i].email){
+            contacts[i]['leademail'] = contacts[i].email;
+          }  else {
+            leads.leads[i]['leademail'] = 'n/a'
+          }
+          for (var j = 0; j < projectObject.bannedUsers.length; j++) {
+              if (leads.leads[i].lead_id ===  projectObject.bannedUsers[j].id ) {
+                bannedVisitors.push(leads.leads[i]);
+              }
+          }
+      }
+
+      console.log('[PRJCT-EDIT-ADD] PROJECT bannedVisitors ' , bannedVisitors)
+      projectObject['bannedVisitors'] = bannedVisitors
+        // let contact_fullname_initial = ''
+        // let fillColour = ''
+        // let leademail = ''
+        // if (lead) {
+        //   // console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
+        //   if (lead.fullname) {
+        //     contact_fullname_initial = avatarPlaceholder(lead.fullname);
+        //     fillColour = getColorBck(lead.fullname);
+        //   } else {
+        //     contact_fullname_initial = 'N/A';
+        //     fillColour = '#6264a7';
+        //   }
+
+        //   if (lead.email) {
+        //     leademail = lead.email;
+        //     fillColour = getColorBck(lead.fullname);
+        //   } else {
+        //     leademail = 'n/a';
            
-          }
+        //   }
 
-        }
-        bannedVisitors.push({id:lead._id, fullname: lead.fullname, email: leademail, avatarinitials: contact_fullname_initial, avatarinitialsbackground: fillColour})
-        // console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID bannedVisitors ', bannedVisitors);
-        projectObject['bannedVisitors'] = bannedVisitors
+        // }
+        // bannedVisitors.push({id:lead._id, fullname: lead.fullname, email: leademail, avatarinitials: contact_fullname_initial, avatarinitialsbackground: fillColour})
+        // // console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID bannedVisitors ', bannedVisitors);
+        // projectObject['bannedVisitors'] = bannedVisitors
       })
   }
-
-
-
 
   unbanVisitor(contact_id) {
     // console.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR contact_id ', contact_id)
@@ -1572,14 +1597,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       //  console.log('[PRJCT-EDIT-ADD] UNBAN VISITOR  * COMPLETE *');
 
        for (var i = 0; i < this.projectObject['bannedVisitors'].length; i++) {
-
         if (this.projectObject['bannedVisitors'][i].id === contact_id) {
           // console.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED  id of the REQUEST  REOPENED ', this.requestList[i].request_id);
           this.projectObject['bannedVisitors'].splice(i, 1);
         }
-
       }
-
      });
   }
   /**
@@ -1598,7 +1620,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         this.projectObject['bannedUsers'].forEach(bannedUser => {
           // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - bannedUser: ', bannedUser);
-          // this.getContactById(bannedUser._id, this.projectObject)
+          this.getAllLeads(this.projectObject)
         
         });
         this.projectName_toUpdate = project.name;
