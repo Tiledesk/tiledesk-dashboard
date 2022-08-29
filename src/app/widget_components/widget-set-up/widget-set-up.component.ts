@@ -12,7 +12,7 @@ import { DepartmentService } from '../../services/department.service';
 import { NotifyService } from '../../core/notify.service';
 import { WidgetSetUpBaseComponent } from './widget-set-up-base/widget-set-up-base.component';
 import { AppConfigService } from '../../services/app-config.service';
-import { AnalyticsService } from '../../services/analytics.service';
+
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
@@ -28,6 +28,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { threadId } from 'worker_threads';
+import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 const swal = require('sweetalert');
 
 @Component({

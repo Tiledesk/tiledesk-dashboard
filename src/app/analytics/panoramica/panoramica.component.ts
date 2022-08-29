@@ -1,5 +1,4 @@
 import { Subscription } from 'rxjs/Subscription';
-import { AnalyticsService } from '../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import * as moment_tz from 'moment-timezone'
@@ -9,6 +8,7 @@ import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';
 import { Chart } from 'chart.js';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { AnalyticsService } from '../analytics-service/analytics.service';
 
 @Component({
   selector: 'appdashboard-panoramica',

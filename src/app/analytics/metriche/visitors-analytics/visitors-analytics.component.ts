@@ -1,10 +1,11 @@
 import { Subscription } from 'rxjs/Subscription';
 import { Chart } from 'chart.js';
-import { AnalyticsService } from 'app/services/analytics.service';
+
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { LoggerService } from '../../../services/logger/logger.service';
+import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 @Component({
   selector: 'appdashboard-visitors-analytics',
   templateUrl: './visitors-analytics.component.html',

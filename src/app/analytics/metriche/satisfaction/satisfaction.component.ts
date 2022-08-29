@@ -4,13 +4,13 @@ import { DepartmentService } from '../../../services/department.service';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { AnalyticsService } from '../../../services/analytics.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import * as moment from 'moment';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 @Component({
   selector: 'appdashboard-satisfaction',
   templateUrl: './satisfaction.component.html',

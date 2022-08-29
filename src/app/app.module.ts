@@ -116,7 +116,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { HeatMapModule, TooltipService, LegendService, AdaptorService } from '@syncfusion/ej2-angular-heatmap'
-import { AnalyticsService } from './services/analytics.service';
+
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
 import { RealtimeComponent } from './analytics/realtime/realtime.component';
@@ -244,6 +244,7 @@ import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sideba
 import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
 import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 import { AutofocusDirective } from './_directives/autofocus.directive';
+import { AnalyticsService } from './analytics/analytics-service/analytics.service';
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -530,7 +531,11 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WidgetService,
     WebhookService,
     ProjectPlanService,
-    LegendService, TooltipService, AdaptorService, AnalyticsService, HttpClientModule,
+    LegendService,
+    TooltipService, 
+    AdaptorService,
+    AnalyticsService,
+    HttpClientModule,
     TriggerService,
     SelectOptionsTranslatePipe,
     FilterArrayPipe,

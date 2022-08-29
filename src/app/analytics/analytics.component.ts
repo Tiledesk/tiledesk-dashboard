@@ -6,13 +6,15 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import * as Chartist from 'chartist';
 import * as moment from 'moment';
-import { AnalyticsService } from 'app/services/analytics.service';
+
 import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { Chart } from 'chart.js';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { AnalyticsService } from './analytics-service/analytics.service';
+
 @Component({
   selector: 'appdashboard-analytics2',
   templateUrl: './analytics.component.html',

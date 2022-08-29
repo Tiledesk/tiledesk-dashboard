@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AnalyticsService } from 'app/services/analytics.service';
 import { Subscription } from 'rxjs';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { Chart } from 'chart.js';
@@ -7,6 +6,7 @@ import * as moment from 'moment';
 import { DepartmentService } from 'app/services/department.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../../services/logger/logger.service';
+import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 @Component({
   selector: 'appdashboard-sentiment',
   templateUrl: './sentiment.component.html',

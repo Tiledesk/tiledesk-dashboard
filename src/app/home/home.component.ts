@@ -7,7 +7,6 @@ import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { LocalDbService } from '../services/users-local-db.service';
-import { DepartmentService } from '../services/department.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
@@ -20,7 +19,6 @@ import { AppConfigService } from '../services/app-config.service';
 import { BrandService } from '../services/brand.service';
 
 import { Chart } from 'chart.js'; /// VISITOR GRAPH FOR THE NEW NOME
-import { AnalyticsService } from 'app/services/analytics.service'; /// VISITOR GRAPH FOR THE NEW NOME
 import * as moment from 'moment'; /// VISITOR GRAPH FOR THE NEW NOME
 import { ContactsService } from '../services/contacts.service'; // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
@@ -34,6 +32,7 @@ import {
   URL_getting_started_for_agents,
   URL_google_tag_manager_add_tiledesk_to_your_sites
 } from '../utils/util';
+import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 
 const swal = require('sweetalert');
 @Component({
@@ -118,7 +117,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private usersService: UsersService,
     private usersLocalDbService: LocalDbService,
-    private departmentService: DepartmentService,
     private notify: NotifyService,
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,

@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
-import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { URLSearchParams } from 'url';
-import { AppConfigService } from '../services/app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { AppConfigService } from '../../services/app-config.service';
+import { LoggerService } from '../../services/logger/logger.service';
 
 import { Http, Headers, RequestOptions } from '@angular/http';
 

@@ -6,8 +6,8 @@ import { DepartmentService } from 'app/services/department.service';
 import { Router } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { AppConfigService } from '../../services/app-config.service';
-import { AnalyticsService } from '../../services/analytics.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { AnalyticsService } from '../analytics-service/analytics.service';
 
 @Component({
   selector: 'appdashboard-realtime',
