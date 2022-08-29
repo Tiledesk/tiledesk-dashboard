@@ -12,7 +12,7 @@ import 'moment/locale/it.js';
 import 'moment/locale/en-gb.js';
 import { Subscription } from 'rxjs/Subscription';
 import { LoggerService } from '../services/logger/logger.service';
-
+import { ActivitiesService } from './activities-service/activities.service';
 @Component({
   selector: 'appdashboard-activities',
   templateUrl: './activities.component.html',
@@ -74,7 +74,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     private router: Router,
     private usersLocalDbService: LocalDbService,
     private botLocalDbService: BotLocalDbService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private activitiesService: ActivitiesService
   ) { }
 
   ngOnInit() {
@@ -87,7 +88,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.getCurrentUser();
     this.getAllProjectUsers();
     this.buildActivitiesOptions();
-    // this.getProjectUsers();
     this.getBrowserVersion();
   }
 
@@ -133,7 +133,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     // createBotsAndUsersArray() {
     this.usersService.getProjectUsersByProjectId()
       .subscribe((projectUsers: any) => {
-        this.logger.log('[ActivitiesComponent] - GET PROJECT-USERS ', projectUsers);
+       console.log('[ActivitiesComponent] - GET PROJECT-USERS ', projectUsers);
 
         if (projectUsers) {
           this.projectUsersArray = projectUsers;
@@ -328,7 +328,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   getActivities() {
     this.showSpinner = true;
-    this.usersService.getUsersActivities(this.queryString, this.pageNo)
+    this.activitiesService.getUsersActivities(this.queryString, this.pageNo)
       .subscribe((res: any) => {
         this.logger.log('[ActivitiesComponent] - getActivities - **** RESPONSE **** ', res);
         if (res) {

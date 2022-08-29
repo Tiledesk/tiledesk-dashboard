@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user-model';
-import { Activity } from '../models/activity-model';
+
 import { PendingInvitation } from '../models/pending-invitation-model';
 import { ProjectUser } from '../models/project-user';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../core/auth.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LocalDbService } from '../services/users-local-db.service';
 import { Router } from '@angular/router';
@@ -73,7 +74,8 @@ export class UsersService {
     private botLocalDbService: BotLocalDbService,
     public appConfigService: AppConfigService,
     public webSocketJs: WebSocketJs,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private _httpClient: HttpClient
   ) {
 
     this.http = http;
@@ -206,28 +208,7 @@ export class UsersService {
   }
 
 
-  /**
-   * GET USER ACTIVITIES
-   * @param querystring 
-   * @param pagenumber 
-   * @returns 
-   */
-  public getUsersActivities(querystring: string, pagenumber: number): Observable<Activity[]> {
-    let _querystring = '&' + querystring
-    if (querystring === undefined || !querystring) {
-      _querystring = ''
-    }
 
-    const url = this.USERS_ACTIVITIES_URL + '?page=' + pagenumber + _querystring;
-
-    this.logger.log('[USER-SERV] - GET USER ACTIVITIES - URL ', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
 
   /**
    * GET - DOWNLOAD ACTIVITIES CSV
@@ -330,7 +311,7 @@ export class UsersService {
   // -------------------------------------------------------------
   // GET PROJECT'S PROJECT-USERS BY PROJECT ID
   // -------------------------------------------------------------
-  public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
+  public x_getProjectUsersByProjectId(): Observable<ProjectUser[]> {
     const url = this.PROJECT_USER_URL;
 
     this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
@@ -341,6 +322,21 @@ export class UsersService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+
+
+  public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
+    const url = this.PROJECT_USER_URL;
+
+    this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    return this._httpClient.get<ProjectUser[]>(url, httpOptions);
+  }
+
 
 
   // -------------------------------------------------------------

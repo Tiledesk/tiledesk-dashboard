@@ -2,6 +2,8 @@ import { NotificationService } from './services/notification.service';
 import { PopupService } from './services/popup.service';
 import { MarkerService } from './services/marker.service';
 import { LoggerService } from './services/logger/logger.service';
+import { ActivitiesService } from './activities/activities-service/activities.service';
+
 // import { LoggerInstance } from './services/logger/LoggerInstance';
 import { MapRequestComponent } from './map-request/map-request.component';
 import { MetricheComponent } from './analytics2/metriche/metriche.component';
@@ -19,7 +21,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 
 import { UiModule } from './ui/shared/ui.module';
 
-///// Start FireStarter
+
 // Core
 import { CoreModule } from './core/core.module';
 
@@ -504,6 +506,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     //   multi: true,
     //   deps: [BrandService]
     // },
+    ActivitiesService,
     ScriptService,
     WsRequestsService,
     WsMsgsService,
