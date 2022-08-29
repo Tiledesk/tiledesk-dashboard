@@ -5,12 +5,9 @@ import { AuthService } from 'app/core/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AppConfigService } from '../../services/app-config.service';
 import { LoggerService } from '../../services/logger/logger.service';
-
-import { Http, Headers, RequestOptions } from '@angular/http';
-
 @Injectable()
 export class AnalyticsService {
-  http: Http;
+ 
 
   // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
   // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
@@ -24,13 +21,13 @@ export class AnalyticsService {
   public richieste_bs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(
-    http: Http,
+   
     private httpClient: HttpClient,
     public auth: AuthService,
     public appConfigService: AppConfigService,
     private logger: LoggerService
   ) {
-    this.http = http;
+   
     this.user = auth.user_bs.value
     this.checkUser()
 
@@ -188,39 +185,6 @@ export class AnalyticsService {
   }
 
 
-  // HTTP SERVICE VERSION
-  public _getDurationConversationTimeDataCLOCK(): Observable<[]> {
-    let url = this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/duration';
-
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
-
-
-  // HTTP SERVICE VERSION
-  public _getDurationConversationTimeDataCHART(lastdays, department_id?, participant_id?): Observable<[]> {
-    if (!department_id) {
-      department_id = ''
-    }
-    if (!participant_id) {
-      participant_id = ''
-    }
-
-    let url = this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/duration/day?lastdays= ' + lastdays + '&department_id=' + department_id + '&participant=' + participant_id;
-    this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART DEP-ID", department_id);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
-
-  // HTTP SERVICE CLIENT VERSION
   getDurationConversationTimeDataCHART(lastdays, department_id?, participant_id?): Observable<[]> {
     this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART PARAM", lastdays, department_id, participant_id);
     if (!department_id) {
