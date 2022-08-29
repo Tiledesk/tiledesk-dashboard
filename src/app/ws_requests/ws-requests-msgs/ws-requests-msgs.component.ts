@@ -32,6 +32,7 @@ import { ProjectService } from 'app/services/project.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { AppStoreService } from 'app/services/app-store.service';
 import * as moment from 'moment';
+import { threadId } from 'worker_threads';
 const swal = require('sweetalert');
 
 @Component({
@@ -286,6 +287,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   warningMsg: string;
   conversationsCannotBeReopened: string;
+  bannedVisitorsArray: Array<any>;
+  visitorIsBanned: boolean = false
   /**
    * Constructor
    * @param router 
@@ -1012,12 +1015,38 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   findCurrentProjectAmongAll(projectId: string) {
+    this.bannedVisitorsArray = []
     this.projectService.getProjects().subscribe((projects: any) => {
       // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
       // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.bannedUsers) {
+        this.bannedVisitorsArray = this.current_selected_prjct.id_project.bannedUsers;
+        console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
+        
+        this.wsRequestsService.requestIsReady$
+        .pipe(
+          takeUntil(this.unsubscribe$)
+        )
+        .subscribe((isready) => {
+          console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > request is ready ', isready );
+          if (this.request && this.request.lead && this.request.lead.lead_id) {
+            console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > request.lead.lead_id ', this.request.lead.lead_id);
+            this.bannedVisitorsArray.forEach(bannedVisitor => {
+              if (bannedVisitor.id === this.request.lead.lead_id) {
+                this.visitorIsBanned = true;
+                console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > visitorIsBanned ', this.visitorIsBanned);
+              } else {
+                this.visitorIsBanned = false
+                console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > visitorIsBanned ', this.visitorIsBanned);
+              }
+            });
+          }
+        });
+   
+      }
 
       this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
     }, error => {
@@ -1175,15 +1204,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
-
+            this.wsRequestsService.requestIsReady(true)
           if (this.request.subject) {
             this.ticketSubject = this.request.subject
           }
 
-          // console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+          console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {
             this.getContactRequests(this.request.lead._id)
           }
+
 
           if (this.request['closed_by']) {
             if (this.request['closed_by'] === "_bot_unresponsive") {
@@ -3449,43 +3479,59 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     //   bennedArray.push({ id: leadid, ip: ipaddress })
     // }
     // console.log('displayModalBanVisitor bennedArray ', bennedArray) 
-    swal({
-      title: this.areYouSureLbl + '?',
-      icon: "info",
-      buttons: [this.cancelLbl, this.yesBanVisitorLbl],
-      dangerMode: true,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-    })
-      .then((willBan) => {
-        if (willBan) {
-          // console.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
+    if (this.visitorIsBanned === false) {
+      swal({
+        title: this.areYouSureLbl + '?',
+        icon: "info",
+        buttons: [this.cancelLbl, this.yesBanVisitorLbl],
+        dangerMode: true,
+        className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      })
+        .then((willBan) => {
+          if (willBan) {
+            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
 
-          this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
-          //  console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
+            this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
+              console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
 
-          }, (error) => {
-            // console.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
+            }, (error) => {
+              // console.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
 
-            swal(this.anErrorHasOccurredMsg, {
-              icon: "error",
+              swal(this.anErrorHasOccurredMsg, {
+                icon: "error",
+              });
+
+            }, () => {
+              // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
+
+              swal({
+                title: this.done_msg + "!",
+                icon: "success",
+                button: "OK",
+                className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              }).then((okpressed) => {
+                this.findCurrentProjectAmongAll(this.id_project)
+              });
+
             });
+          } else {
+            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+            // swal("Your imaginary file is safe!");
+          }
+        });
+    } else {
+      this.presentModalVisitorAlreadyBanned()
+    }
+  }
 
-          }, () => {
-            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
-
-            swal({
-              title: this.done_msg + "!",
-              icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-            }).then((okpressed) => {  });
-
-          });
-        } else {
-          // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
-          // swal("Your imaginary file is safe!");
-        }
-      });
+  presentModalVisitorAlreadyBanned() {
+    swal({
+      title: this.warningMsg,
+      text: 'Visitor already banned',
+      icon: "warning",
+      button: "OK",
+      dangerMode: false,
+    })
   }
 
 
