@@ -78,10 +78,10 @@ import { ActivitiesStaticComponent } from './static-pages/activities-static/acti
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
 
-import { Analytics2Component } from './analytics2/analytics2.component';
-import { PanoramicaComponent } from './analytics2/panoramica/panoramica.component';
-import { MetricheComponent } from './analytics2/metriche/metriche.component';
-import { RealtimeComponent } from './analytics2/realtime/realtime.component';
+import { Analytics2Component } from './analytics/analytics2.component';
+import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
+import { MetricheComponent } from './analytics/metriche/metriche.component';
+import { RealtimeComponent } from './analytics/realtime/realtime.component';
 
 import { TriggerComponent } from './trigger/trigger.component';
 import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.component';
@@ -110,8 +110,8 @@ import { AppStoreInstallComponent } from './app-store/app-store-install/app-stor
 
 import { WebhookComponent } from './webhook/webhook.component';
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
-import { MessagesComponent } from './analytics2/metriche/messages/messages.component';
-import { RichiesteComponent } from './analytics2/metriche/richieste/richieste.component';
+import { MessagesComponent } from './analytics/metriche/messages/messages.component';
+import { RichiesteComponent } from './analytics/metriche/richieste/richieste.component';
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';

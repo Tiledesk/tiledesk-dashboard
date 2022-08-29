@@ -1,7 +1,7 @@
-import { FaqKbService } from './../../../services/faq-kb.service';
-import { UsersService } from './../../../services/users.service';
+import { FaqKbService } from '../../../services/faq-kb.service';
+import { UsersService } from '../../../services/users.service';
 import { DepartmentService } from '../../../services/department.service';
-import { AnalyticsService } from './../../../services/analytics.service';
+import { AnalyticsService } from '../../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { Chart } from 'chart.js';
@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
-import { LoggerService } from './../../..//services/logger/logger.service';
+import { LoggerService } from '../../../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
 
 @Component({

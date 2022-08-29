@@ -1,5 +1,5 @@
-import { FaqKbService } from './../../../services/faq-kb.service';
-import { AnalyticsService } from './../../../services/analytics.service';
+import { FaqKbService } from '../../../services/faq-kb.service';
+import { AnalyticsService } from '../../../services/analytics.service';
 import { DepartmentService } from '../../../services/department.service';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment'
@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { UsersService } from 'app/services/users.service';
 import { Observable } from 'rxjs';
-import { LoggerService } from '../../..//services/logger/logger.service';
+import { LoggerService } from '../../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-richieste',
   templateUrl: './richieste.component.html',

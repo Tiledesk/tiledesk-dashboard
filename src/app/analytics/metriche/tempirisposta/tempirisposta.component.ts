@@ -1,8 +1,8 @@
-import { FaqKbService } from './../../../services/faq-kb.service';
-import { UsersService } from './../../../services/users.service';
+import { FaqKbService } from '../../../services/faq-kb.service';
+import { UsersService } from '../../../services/users.service';
 import { DepartmentService } from '../../../services/department.service';
 
-import { AnalyticsService } from './../../../services/analytics.service';
+import { AnalyticsService } from '../../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { Chart } from 'chart.js';

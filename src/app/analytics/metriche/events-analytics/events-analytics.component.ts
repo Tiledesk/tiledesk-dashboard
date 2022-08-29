@@ -1,10 +1,10 @@
 import { Subscription } from 'rxjs';
-import { AnalyticsService } from './../../../services/analytics.service';
+import { AnalyticsService } from '../../../services/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment'
 import { Chart } from 'chart.js';
-import { LoggerService } from './../../../services/logger/logger.service';
+import { LoggerService } from '../../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-events-analytics',
   templateUrl: './events-analytics.component.html',

@@ -8,18 +8,18 @@ import { NO_ERRORS_SCHEMA } from '@angular/core'; // suppress the error msg Can'
 import { AnalyticsService } from 'app/services/analytics.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Error: StaticInjectorError(DynamicTestModule)[AnalyticsService -> HttpClient]:
 import { HttpModule } from '@angular/http'; 
-import { AuthService } from './../../../core/auth.service';
+import { AuthService } from '../../../core/auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NotifyService } from 'app/core/notify.service';
-import { LoggerService } from './../../../services/logger/logger.service';
-import { AppConfigService } from './../../../services/app-config.service';
-import { LocalDbService } from './../../../services/users-local-db.service';
-import { WebSocketJs } from "./../../../services/websocket/websocket-js"; 
-import { UsersService } from './../../../services/users.service';
+import { LoggerService } from '../../../services/logger/logger.service';
+import { AppConfigService } from '../../../services/app-config.service';
+import { LocalDbService } from '../../../services/users-local-db.service';
+import { WebSocketJs } from "../../../services/websocket/websocket-js"; 
+import { UsersService } from '../../../services/users.service';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { FaqKbService } from './../../../services/faq-kb.service';
-import { BotLocalDbService } from './../../../services/bot-local-db.service';
+import { FaqKbService } from '../../../services/faq-kb.service';
+import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { HttpClientTestingModule, HttpTestingController, RequestMatch, TestRequest } from '@angular/common/http/testing';
 
 

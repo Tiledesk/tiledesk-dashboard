@@ -10,21 +10,21 @@ import { HttpClient, HttpClientModule } from '@angular/common/http'; // Error: S
 
 import { HttpClientTestingModule, HttpTestingController, RequestMatch, TestRequest } from '@angular/common/http/testing';
 
-import { AppConfigService } from './../../../services/app-config.service'; // ERRORStaticInjectorError(DynamicTestModule)[AnalyticsService -> AppConfigService]:
+import { AppConfigService } from '../../../services/app-config.service'; // ERRORStaticInjectorError(DynamicTestModule)[AnalyticsService -> AppConfigService]:
 
-import { AuthService } from './../../../core/auth.service';
+import { AuthService } from '../../../core/auth.service';
 import { HttpModule } from '@angular/http'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> Http]:
-import { NotifyService } from './../../../core/notify.service';  // Error: StaticInjectorError(DynamicTestModule)[AuthService -> NotifyService]:
-import { LocalDbService } from './../../../services/users-local-db.service'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> LocalDbService]: 
-import { WebSocketJs } from "./../../../services/websocket/websocket-js"; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> WebSocketJs]: 
+import { NotifyService } from '../../../core/notify.service';  // Error: StaticInjectorError(DynamicTestModule)[AuthService -> NotifyService]:
+import { LocalDbService } from '../../../services/users-local-db.service'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> LocalDbService]: 
+import { WebSocketJs } from "../../../services/websocket/websocket-js"; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> WebSocketJs]: 
 import { RouterTestingModule } from '@angular/router/testing'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> Router]: 
-import { LoggerService } from './../../../services/logger/logger.service';
+import { LoggerService } from '../../../services/logger/logger.service';
 
-import { FaqKbService } from './../../../services/faq-kb.service';
+import { FaqKbService } from '../../../services/faq-kb.service';
 import { DepartmentService } from '../../../services/department.service';
 
-import { UsersService } from './../../../services/users.service';
-import { BotLocalDbService } from './../../../services/bot-local-db.service'; // Error: StaticInjectorError(DynamicTestModule)[UsersService -> BotLocalDbService]
+import { UsersService } from '../../../services/users.service';
+import { BotLocalDbService } from '../../../services/bot-local-db.service'; // Error: StaticInjectorError(DynamicTestModule)[UsersService -> BotLocalDbService]
 import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';

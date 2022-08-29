@@ -1,43 +1,43 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RichiesteComponent } from './richieste.component';
+import { EventsAnalyticsComponent } from './events-analytics.component';
 
 import { TranslateModule } from '@ngx-translate/core';
-import { NO_ERRORS_SCHEMA } from '@angular/core'; // suppress the error msg "Can't bind to 'ngModel' + 'clearable' since it isn't a known property of 'ng-select'.""
+import { NO_ERRORS_SCHEMA } from '@angular/core'; // suppress the error msg Can't bind to 'ngModel' + 'clearable' .... since it isn't a known property of 'ng-select'.
 
 import { AnalyticsService } from 'app/services/analytics.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Error: StaticInjectorError(DynamicTestModule)[AnalyticsService -> HttpClient]:
-import { HttpModule } from '@angular/http'; 
+import { AppConfigService } from '../../../services/app-config.service'; // ERRORStaticInjectorError(DynamicTestModule)[AnalyticsService -> AppConfigService]:
 
 import { AuthService } from '../../../core/auth.service';
+import { HttpModule } from '@angular/http'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> Http]:
 import { NotifyService } from '../../../core/notify.service';  // Error: StaticInjectorError(DynamicTestModule)[AuthService -> NotifyService]:
 import { LocalDbService } from '../../../services/users-local-db.service'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> LocalDbService]: 
 import { WebSocketJs } from "../../../services/websocket/websocket-js"; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> WebSocketJs]: 
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterTestingModule } from '@angular/router/testing'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> Router]: 
+
 import { LoggerService } from '../../../services/logger/logger.service';
-
-import { AppConfigService } from './../../../services/app-config.service'; 
-import { DepartmentService } from './../../../services/department.service';
-import { UsersService } from './../../../services/users.service';
-import { FaqKbService } from './../../../services/faq-kb.service';
-import { BotLocalDbService } from './../../../services/bot-local-db.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
+// to suppress the Error  TypeError: Cannot read property 'length' of undefined  added in the method getEventsByLastNDays() wrapped  "for (let j = 0; j < eventsByDay.length; j++) {.." in  if (eventsByDay) { ...
 
-
-describe('RichiesteComponent', () => {
-  let component: RichiesteComponent;
-  let fixture: ComponentFixture<RichiesteComponent>;
+describe('EventsAnalyticsComponent', () => {
+  let component: EventsAnalyticsComponent;
+  let fixture: ComponentFixture<EventsAnalyticsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RichiesteComponent ],
-      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [ EventsAnalyticsComponent ],
+      // schemas: [NO_ERRORS_SCHEMA],
       imports: [
         TranslateModule.forRoot(),
         HttpClientModule,
         HttpModule,
         RouterTestingModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        NgSelectModule,
+        FormsModule,
       ],
       providers: [
         AnalyticsService,
@@ -47,18 +47,15 @@ describe('RichiesteComponent', () => {
         LocalDbService,
         WebSocketJs,
         LoggerService,
-        AppConfigService,
-        DepartmentService,
-        UsersService,
-        FaqKbService,
-        BotLocalDbService
+        AppConfigService
        ],
+
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RichiesteComponent);
+    fixture = TestBed.createComponent(EventsAnalyticsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
