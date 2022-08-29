@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Analytics2Component } from './analytics2.component';
+import { AnalyticsComponent } from './analytics.component';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core'; // suppress the error msgs "If 'appdashboard-panoramica' -  'appdashboard-metriche' - 'appdashboard-realtime'  is an Angular component, then verify that it is part of this module" + Can't bind to 'ngModel' since it isn't a known property of 'ng-select'.
@@ -36,14 +36,14 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule, HttpTestingController, RequestMatch, TestRequest } from '@angular/common/http/testing';
 
-describe('Analytics2Component', () => {
-  let component: Analytics2Component;
-  let fixture: ComponentFixture<Analytics2Component>;
+describe('AnalyticsComponent', () => {
+  let component: AnalyticsComponent;
+  let fixture: ComponentFixture<AnalyticsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        Analytics2Component,
+        AnalyticsComponent,
         PanoramicaComponent,
         MetricheComponent,
         RealtimeComponent,
@@ -85,7 +85,7 @@ describe('Analytics2Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Analytics2Component);
+    fixture = TestBed.createComponent(AnalyticsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

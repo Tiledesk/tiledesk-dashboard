@@ -78,7 +78,7 @@ import { ActivitiesStaticComponent } from './static-pages/activities-static/acti
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
 
-import { Analytics2Component } from './analytics/analytics2.component';
+import { AnalyticsComponent } from './analytics/analytics.component';
 import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
 import { MetricheComponent } from './analytics/metriche/metriche.component';
 import { RealtimeComponent } from './analytics/realtime/realtime.component';
@@ -269,10 +269,10 @@ const routes: Routes = [
   // { path: 'project/:projectid/faq/test/:remoteFaqKbKey/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
   // TEST-FAQ PAGE NEW URL
 
-  { path: 'project/:projectid/analytics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/analytics/metrics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/analytics/metrics/visitors', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/analytics/metrics/messages', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/analytics/metrics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/analytics/metrics/visitors', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/analytics/metrics/messages', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
 
 
   { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },

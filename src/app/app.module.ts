@@ -117,7 +117,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HeatMapModule, TooltipService, LegendService, AdaptorService } from '@syncfusion/ej2-angular-heatmap'
 import { AnalyticsService } from './services/analytics.service';
-import { Analytics2Component } from './analytics/analytics2.component';
+import { AnalyticsComponent } from './analytics/analytics.component';
 import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
 import { RealtimeComponent } from './analytics/realtime/realtime.component';
 import { RichiesteComponent } from './analytics/metriche/richieste/richieste.component';
@@ -363,7 +363,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AnalyticsStaticComponent,
     ActivitiesStaticComponent,
     FaqTestTrainBotComponent,
-    Analytics2Component,
+    AnalyticsComponent,
     PanoramicaComponent,
     MetricheComponent,
     RealtimeComponent,

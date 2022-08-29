@@ -15,11 +15,11 @@ import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-analytics2',
-  templateUrl: './analytics2.component.html',
-  styleUrls: ['./analytics2.component.scss'],
+  templateUrl: './analytics.component.html',
+  styleUrls: ['./analytics.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class Analytics2Component implements OnInit, OnDestroy {
+export class AnalyticsComponent implements OnInit, OnDestroy {
 
   selected: any;
 
