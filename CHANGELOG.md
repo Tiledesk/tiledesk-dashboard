@@ -1,7 +1,6 @@
 
 # tiledesk-dashboard
 
-
 ### 2.2.48-rc4
 - Adds the Tilebot logo to the top left of the "Tilebot" bot avatar
 - Adds the features token "TIL" and fixes responsiveness of cards on bot type selection page after adding Tilebot bot
@@ -10,6 +9,7 @@
 - Adds the ability, for all types of plans, to customize email templates (feature available in Project setting > Notifications) 
 - Adds the "View contact" button to the drop-down menu of the right sidebar "Conversation info" of the chat
 - Change the order of the bot type on the Choose Bot Type page
+- Disables the ability to ban a visitor if they have already been banned
 
 ### 2.2.48-rc3
 - Fixes the bug: missing desktop notification icon displayed when a message arrives and the browser tab of the dashboard is in foreground
