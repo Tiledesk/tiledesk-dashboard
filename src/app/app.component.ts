@@ -298,6 +298,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         if (navigator && navigator.serviceWorker) {
             const that = this
             navigator.serviceWorker.addEventListener('message', function (event) {
+                // event.preventDefault(); 
                 that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event : ', event)
                 const count = +that.usersLocalDbService.getForegrondNotificationsCount();
                 that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event count ', count) 
