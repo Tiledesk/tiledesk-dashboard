@@ -707,7 +707,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((user) => {
         if (user) {
           this.currentUserID = user._id
-          console.log('[WS-REQUESTS-MSGS] - USER ', user);
+          // console.log('[WS-REQUESTS-MSGS] - USER ', user);
           this.logger.log('[WS-REQUESTS-MSGS] GET LOGGED USER currentUserID', this.currentUserID)
           this.logged_user_fullname = user.firstname + ' ' + user.lastname
         }
