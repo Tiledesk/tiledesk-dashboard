@@ -624,6 +624,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   follow() {
+    // console.log('follow HERE Y ')
     this.projectTeammates.forEach(teammate => {
       // console.log('follow teammate', teammate)
       // console.log('follow currentUserID', this.currentUserID)
@@ -652,13 +653,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.wsRequestsService.removeFollower(this.followers[i]['value'], this.request.request_id)
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe((res) => {
-            this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - res  ', res);
+            this.logger.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - res  ', res);
 
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - ERROR  ', error);
 
           }, () => {
-            this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  * COMPLETE *');
+            this.logger.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  * COMPLETE *');
 
           });
         this.followers.splice(i, 1);
@@ -706,7 +707,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((user) => {
         if (user) {
           this.currentUserID = user._id
-          // console.log('[WS-REQUESTS-MSGS] - USER ', user);
+          console.log('[WS-REQUESTS-MSGS] - USER ', user);
           this.logger.log('[WS-REQUESTS-MSGS] GET LOGGED USER currentUserID', this.currentUserID)
           this.logged_user_fullname = user.firstname + ' ' + user.lastname
         }
