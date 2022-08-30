@@ -66,7 +66,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   projectUsersArray: any;
   objectKeys = Object.keys;
-  isChromeVerGreaterThan100:boolean;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private usersService: UsersService,
     public auth: AuthService,
@@ -92,11 +92,11 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
   ngOnDestroy() {
     this.logger.log('[ActivitiesComponent] % »»» WebSocketJs WF +++++ ws-requests--- activities ngOnDestroy')
@@ -133,7 +133,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     // createBotsAndUsersArray() {
     this.usersService.getProjectUsersByProjectId()
       .subscribe((projectUsers: any) => {
-       console.log('[ActivitiesComponent] - GET PROJECT-USERS ', projectUsers);
+        this.logger.log('[ActivitiesComponent] - GET PROJECT-USERS ', projectUsers);
 
         if (projectUsers) {
           this.projectUsersArray = projectUsers;
@@ -371,12 +371,12 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
               if (this.auth.user_bs && this.auth.user_bs.value) {
                 stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
               }
-         
+
               let dshbrd_lang = ''
               if (this.browser_lang && !stored_preferred_lang) {
-                  dshbrd_lang = this.browser_lang
+                dshbrd_lang = this.browser_lang
               } else if (this.browser_lang && stored_preferred_lang) {
-                  dshbrd_lang = stored_preferred_lang
+                dshbrd_lang = stored_preferred_lang
               }
 
               if (dshbrd_lang === 'en') {
@@ -433,7 +433,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                           this.logger.log('[ActivitiesComponent] participant bot name', activity.participant_fullname);
                         }
                       }, 50);
-                   
+
                     } else {
 
                       const user = this.usersLocalDbService.getMemberFromStorage(participantId);
@@ -490,13 +490,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
       }
 
-     
+
 
     } else {
 
       this.logger.log('[ActivitiesComponent] has clicked GO To MEMBER ', participantId);
       // this.router.navigate(['project/' + this.projectId + '/member/' + participantId]);
-  
+
       const filteredProjectUser = this.projectUsersArray.filter((obj: any) => {
         return obj.id_user._id === participantId;
       });

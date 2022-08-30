@@ -1530,8 +1530,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       .subscribe((leads: any) => {
 
         const contacts = leads.leads
-        console.log('[PRJCT-EDIT-ADD] GET ALL LEADS ' , contacts)
-        console.log('[PRJCT-EDIT-ADD] PROJECT bannedUsers ' , projectObject.bannedUsers)
+        // console.log('[PRJCT-EDIT-ADD] GET ALL LEADS ' , contacts)
+  
 
         for (var i = 0; i < contacts.length; i++) {
           if(contacts[i] && contacts[i].fullname){
@@ -1554,33 +1554,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
       }
 
-      console.log('[PRJCT-EDIT-ADD] PROJECT bannedVisitors ' , bannedVisitors)
+      this.logger.log('[PRJCT-EDIT-ADD] PROJECT bannedVisitors ' , bannedVisitors)
       projectObject['bannedVisitors'] = bannedVisitors
-        // let contact_fullname_initial = ''
-        // let fillColour = ''
-        // let leademail = ''
-        // if (lead) {
-        //   // console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
-        //   if (lead.fullname) {
-        //     contact_fullname_initial = avatarPlaceholder(lead.fullname);
-        //     fillColour = getColorBck(lead.fullname);
-        //   } else {
-        //     contact_fullname_initial = 'N/A';
-        //     fillColour = '#6264a7';
-        //   }
 
-        //   if (lead.email) {
-        //     leademail = lead.email;
-        //     fillColour = getColorBck(lead.fullname);
-        //   } else {
-        //     leademail = 'n/a';
-           
-        //   }
-
-        // }
-        // bannedVisitors.push({id:lead._id, fullname: lead.fullname, email: leademail, avatarinitials: contact_fullname_initial, avatarinitialsbackground: fillColour})
-        // // console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID bannedVisitors ', bannedVisitors);
-        // projectObject['bannedVisitors'] = bannedVisitors
       })
   }
 
@@ -1616,13 +1592,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
       if (project) {
         this.projectObject = project;
+        this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', this.projectObject);
 
+        // * the good one *
+        // this.getAllLeads(this.projectObject)
 
-        this.projectObject['bannedUsers'].forEach(bannedUser => {
-          // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - bannedUser: ', bannedUser);
-          this.getAllLeads(this.projectObject)
+        // this.projectObject['bannedUsers'].forEach(bannedUser => {
+        //   // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - bannedUser: ', bannedUser);
+        //   this.getAllLeads(this.projectObject)
         
-        });
+        // });
         this.projectName_toUpdate = project.name;
         this.logger.log('[PRJCT-EDIT-ADD] - PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
 

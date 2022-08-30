@@ -1021,26 +1021,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.bannedUsers) {
         this.bannedVisitorsArray = this.current_selected_prjct.id_project.bannedUsers;
-        console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
+        // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
         
         this.wsRequestsService.requestIsReady$
         .pipe(
           takeUntil(this.unsubscribe$)
         )
         .subscribe((isready) => {
-          console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > request is ready ', isready );
+          // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > request is ready ', isready );
           if (this.request && this.request.lead && this.request.lead.lead_id) {
-            console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > request.lead.lead_id ', this.request.lead.lead_id);
+            // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > request.lead.lead_id ', this.request.lead.lead_id);
             this.bannedVisitorsArray.forEach(bannedVisitor => {
               if (bannedVisitor.id === this.request.lead.lead_id) {
                 this.visitorIsBanned = true;
-                console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > visitorIsBanned ', this.visitorIsBanned);
+                // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > visitorIsBanned ', this.visitorIsBanned);
               } else {
                 this.visitorIsBanned = false
-                console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > visitorIsBanned ', this.visitorIsBanned);
+                // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > visitorIsBanned ', this.visitorIsBanned);
               }
             });
           }
@@ -1209,7 +1209,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.ticketSubject = this.request.subject
           }
 
-          console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+          // console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {
             this.getContactRequests(this.request.lead._id)
           }
@@ -3492,7 +3492,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             // console.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
 
             this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
-              console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
+              // console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
 
             }, (error) => {
               // console.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
