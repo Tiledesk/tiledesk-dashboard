@@ -6,7 +6,7 @@ import { ActivitiesService } from './activities/activities-service/activities.se
 
 // import { LoggerInstance } from './services/logger/LoggerInstance';
 import { MapRequestComponent } from './map-request/map-request.component';
-import { MetricheComponent } from './analytics/metriche/metriche.component';
+import { MetricheComponent } from './analytics/metrics/metriche.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -120,10 +120,10 @@ import { HeatMapModule, TooltipService, LegendService, AdaptorService } from '@s
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
 import { RealtimeComponent } from './analytics/realtime/realtime.component';
-import { RichiesteComponent } from './analytics/metriche/richieste/richieste.component';
-import { SentimentComponent } from './analytics/metriche/sentiment/sentiment.component';
-import { TempirispostaComponent } from './analytics/metriche/tempirisposta/tempirisposta.component';
-import { DurataconvComponent } from './analytics/metriche/durataconv/durataconv.component';
+import { RichiesteComponent } from './analytics/metrics/richieste/richieste.component';
+import { SentimentComponent } from './analytics/metrics/sentiment/sentiment.component';
+import { TempirispostaComponent } from './analytics/metrics/tempirisposta/tempirisposta.component';
+import { DurataconvComponent } from './analytics/metrics/durataconv/durataconv.component';
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
 import { ProjectPlanService } from './services/project-plan.service';
@@ -204,16 +204,16 @@ import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-
 import { WebhookService } from './services/webhook.service';
 
 
-import { VisitorsAnalyticsComponent } from './analytics/metriche/visitors-analytics/visitors-analytics.component';
-import { MessagesComponent } from './analytics/metriche/messages/messages.component';
+import { VisitorsAnalyticsComponent } from './analytics/metrics/visitors-analytics/visitors-analytics.component';
+import { MessagesComponent } from './analytics/metrics/messages/messages.component';
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 
 import { CreateGroupComponent } from './department-edit-add/create-group/create-group.component';
 import { CreateBotComponent } from './department-edit-add/create-bot/create-bot.component';
 
-import { SatisfactionComponent } from './analytics/metriche/satisfaction/satisfaction.component';
+import { SatisfactionComponent } from './analytics/metrics/satisfaction/satisfaction.component';
 import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing/unauthorized-for-pricing.component';
-import { EventsAnalyticsComponent } from './analytics/metriche/events-analytics/events-analytics.component';
+import { EventsAnalyticsComponent } from './analytics/metrics/events-analytics/events-analytics.component';
 import { SanitizeHtmlPipe } from './sanitize-html.pipe'; // used for iframe to bypass security 
 import { SafeHtmlPipe } from './safe-html.pipe'; // used to sanitize email 
 import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';

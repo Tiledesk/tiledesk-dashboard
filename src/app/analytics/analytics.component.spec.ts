@@ -20,16 +20,16 @@ import { HttpClient, HttpClientModule } from '@angular/common/http'; // Error: S
 
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { PanoramicaComponent } from './panoramica/panoramica.component';
-import { MetricheComponent } from './metriche/metriche.component';
+import { MetricheComponent } from './metrics/metriche.component';
 import { RealtimeComponent } from './realtime/realtime.component';
 import { HeatMapModule } from '@syncfusion/ej2-angular-heatmap';
-import { RichiesteComponent } from './metriche/richieste/richieste.component';
-import { VisitorsAnalyticsComponent } from './metriche/visitors-analytics/visitors-analytics.component';
-import { MessagesComponent } from './metriche/messages/messages.component';
-import { TempirispostaComponent } from './metriche/tempirisposta/tempirisposta.component';
-import { DurataconvComponent } from './metriche/durataconv/durataconv.component';
-import { EventsAnalyticsComponent } from './metriche/events-analytics/events-analytics.component';
-import { SatisfactionComponent } from './metriche/satisfaction/satisfaction.component';
+import { RichiesteComponent } from './metrics/richieste/richieste.component';
+import { VisitorsAnalyticsComponent } from './metrics/visitors-analytics/visitors-analytics.component';
+import { MessagesComponent } from './metrics/messages/messages.component';
+import { TempirispostaComponent } from './metrics/tempirisposta/tempirisposta.component';
+import { DurataconvComponent } from './metrics/durataconv/durataconv.component';
+import { EventsAnalyticsComponent } from './metrics/events-analytics/events-analytics.component';
+import { SatisfactionComponent } from './metrics/satisfaction/satisfaction.component';
 import { MomentModule } from 'angular2-moment';
 import { LoadingSpinnerComponent } from 'app/ui/loading-spinner/loading-spinner.component';
 import { NgSelectModule } from '@ng-select/ng-select';

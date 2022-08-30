@@ -80,7 +80,7 @@ import { DepartmentsStaticComponent } from './static-pages/departments-static/de
 
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
-import { MetricheComponent } from './analytics/metriche/metriche.component';
+import { MetricheComponent } from './analytics/metrics/metriche.component';
 import { RealtimeComponent } from './analytics/realtime/realtime.component';
 
 import { TriggerComponent } from './trigger/trigger.component';
@@ -110,8 +110,8 @@ import { AppStoreInstallComponent } from './app-store/app-store-install/app-stor
 
 import { WebhookComponent } from './webhook/webhook.component';
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
-import { MessagesComponent } from './analytics/metriche/messages/messages.component';
-import { RichiesteComponent } from './analytics/metriche/richieste/richieste.component';
+import { MessagesComponent } from './analytics/metrics/messages/messages.component';
+import { RichiesteComponent } from './analytics/metrics/richieste/richieste.component';
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
