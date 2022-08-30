@@ -1572,10 +1572,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
      }, () => {
       //  console.log('[PRJCT-EDIT-ADD] UNBAN VISITOR  * COMPLETE *');
 
-       for (var i = 0; i < this.projectObject['bannedVisitors'].length; i++) {
-        if (this.projectObject['bannedVisitors'][i].id === contact_id) {
-          // console.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED  id of the REQUEST  REOPENED ', this.requestList[i].request_id);
-          this.projectObject['bannedVisitors'].splice(i, 1);
+      //  for (var i = 0; i < this.projectObject['bannedVisitors'].length; i++) {
+      //   if (this.projectObject['bannedVisitors'][i].id === contact_id) {
+      //     this.projectObject['bannedVisitors'].splice(i, 1);
+      //   }
+      // }
+
+      for (var i = 0; i < this.projectObject['bannedUsers'].length; i++) {
+        // console.log('this.projectObject[bannedUsers]', this.projectObject['bannedUsers'])
+        // console.log('this.projectObject[bannedUsers][i].id', this.projectObject['bannedUsers'][i]._id) 
+        // console.log('contact_id', contact_id) 
+        if (this.projectObject['bannedUsers'][i]._id === contact_id) {
+          this.projectObject['bannedUsers'].splice(i, 1);
         }
       }
      });
