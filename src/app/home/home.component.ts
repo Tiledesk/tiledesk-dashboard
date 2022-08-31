@@ -1278,7 +1278,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToChangelogBlog() {
-    const url = 'https://tiledesk.com/tiledesk-changelog'
+    // const url = 'https://tiledesk.com/tiledesk-changelog'
+    // const url = 'https://tiledesk.com/2022/08/09/tiledesk-product-update-july-2022/'
+    const url = 'https://tiledesk.com/category/changelog/'
     window.open(url, '_blank');
     this.usersLocalDbService.savChangelogDate()
     this.hidechangelogrocket = true;
