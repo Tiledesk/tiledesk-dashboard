@@ -2158,6 +2158,7 @@
     "NoBannedVisitors":"Sin visitantes prohibidos",
     "ViewContact":"Ver contacto",
     "ReadMoreOnOurWebsite":"Lea más en nuestro sitio web",
+    "AddTeammatesAsFollowers": "Agregue compañeros de equipo como seguidores para mantenerlos informados sobre el progreso de la conversación",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

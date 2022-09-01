@@ -2158,6 +2158,7 @@
     "NoBannedVisitors":"Inga förbjudna besökare",
     "ViewContact":"Se kontakten",
     "ReadMoreOnOurWebsite":"Läs mer på vår hemsida",
+    "AddTeammatesAsFollowers": "Lägg till lagkamrater som följare för att hålla dem informerade om konversationens framsteg",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",

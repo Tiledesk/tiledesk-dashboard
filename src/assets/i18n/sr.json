@@ -2157,6 +2157,7 @@
     "NoBannedVisitors":"Без забрањених посетилаца",
     "ViewContact":"Погледајте контакт",
     "ReadMoreOnOurWebsite":"Прочитајте више на нашој веб страници",
+    "AddTeammatesAsFollowers": "Додајте саиграче као пратиоце да бисте их обавестили о напретку разговора",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

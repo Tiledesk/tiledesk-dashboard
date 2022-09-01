@@ -2158,6 +2158,7 @@
     "NoBannedVisitors":"Yasaklı ziyaretçi yok",
     "ViewContact":"Kişiyi görüntüle",
     "ReadMoreOnOurWebsite":"Web sitemizde daha fazlasını okuyun",
+    "AddTeammatesAsFollowers": "Görüşmenin ilerleyişi hakkında onları bilgilendirmek için takım arkadaşlarını takipçi olarak ekleyin",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

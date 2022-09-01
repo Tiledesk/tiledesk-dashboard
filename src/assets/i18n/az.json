@@ -2158,6 +2158,7 @@
     "NoBannedVisitors":"Qadağan edilmiş ziyarətçi yoxdur",
     "ViewContact":"Əlaqə baxın",
     "ReadMoreOnOurWebsite":"Ətraflı vebsaytımızda oxuyun",
+    "AddTeammatesAsFollowers": "Söhbətin gedişatından xəbərdar olmaq üçün komanda yoldaşlarını izləyicilər kimi əlavə edin",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

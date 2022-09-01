@@ -2589,7 +2589,14 @@
                     <p class="row-header">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
-                        <span class="followers-label"> Followers </span>
+                        <span class="followers-label"> Followers  </span>
+                        <span matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{ 'AddTeammatesAsFollowers' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='right' matTooltipHideDelay="100">
+                          <i class="material-icons" style="position: relative;top: 6px; font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer">
+                            help_outline
+                          </i>
+                        </span>
                         <span *ngIf="!CURRENT_USER_IS_A_FOLLOWER" (click)="follow()" class="follow-btn">follow</span>
                         <span *ngIf="CURRENT_USER_IS_A_FOLLOWER" (click)="unfollow()" class="follow-btn">unfollow</span>
                       </span>
