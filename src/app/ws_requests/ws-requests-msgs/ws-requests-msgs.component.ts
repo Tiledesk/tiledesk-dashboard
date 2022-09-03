@@ -531,7 +531,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] GET bots  ', bots);
           let count = 0;
           bots.forEach(bot => {
-            if (bot.type === 'internal') {
+            if (bot.type === 'internal' || bot.type === 'tilebot') {
               count = count + 1;
             }
           });
