@@ -138,7 +138,7 @@ color: #fff!important; -->
             <div class="col-xs-8" style="padding-left:4px; padding-right:4px; margin-bottom: 8px;"> 
 
               <span style="font-size: 12px;font-weight: 400;"> {{ 'FoundIn' | translate }}: 
-                <span style="color:#03a5e8; cursor:pointer" (click)="goToBot(faq?.faq_kb[0]?._id)"> 
+                <span style="color:#03a5e8; cursor:pointer" (click)="goToBot(faq?.faq_kb[0]?._id, faq?.faq_kb[0]?.type)"> 
                   {{ faq?.faq_kb[0]?.name }} 
                 </span> 
               </span> 

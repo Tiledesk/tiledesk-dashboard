@@ -238,9 +238,14 @@ export class WsTrainBotComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
-  goToBot(idFaqKb: string) {
+  goToBot(idFaqKb: string, bottype: string) {
     this.logger.log('[WS-TRAIN-BOT] goToBot id_bot', idFaqKb);
-    this.router.navigate(['project/' + this.project_id + '/bots', idFaqKb, 'native']);
+    // this.router.navigate(['project/' + this.project_id + '/bots', idFaqKb, 'native']);
+    if (bottype === 'tilebot') {
+      this.router.navigate(['project/' + this.project_id + '/bots/intents/' + idFaqKb+ "/" + "tilebot"]);
+    } else if (bottype === 'internal')  {
+      this.router.navigate(['project/' + this.project_id + '/bots/intents/' + idFaqKb+ "/" + "internal"]);
+    }
   }
 
 
