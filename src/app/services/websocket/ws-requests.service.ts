@@ -39,8 +39,6 @@ export class WsRequestsService implements OnDestroy {
   public foregroundNotificationCount$: BehaviorSubject<number> = new BehaviorSubject(null);
   public hasChangedSoundPreference$: BehaviorSubject<string> = new BehaviorSubject(null);
 
-  public requestIsReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); 
-  
   public ws__RequestsList$: any;
 
   public wsRequest$ = new Subject()
@@ -516,10 +514,6 @@ export class WsRequestsService implements OnDestroy {
   updateWsRequest(request) {
     this.logger.log("[WS-REQUESTS-SERV] - UPDATE WS REQUEST-BY-ID (PUBLISH) request ", request);
     this.wsRequest$.next(request);
-  }
-
-  requestIsReady(ready) {
-    this.requestIsReady$.next(true)
   }
 
 
