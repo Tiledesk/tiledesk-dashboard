@@ -1026,27 +1026,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.bannedUsers) {
         this.bannedVisitorsArray = this.current_selected_prjct.id_project.bannedUsers;
         // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
-        
-        this.wsRequestsService.requestIsReady$
-        .pipe(
-          takeUntil(this.unsubscribe$)
-        )
-        .subscribe((isready) => {
-          // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > request is ready ', isready );
-          if (this.request && this.request.lead && this.request.lead.lead_id) {
-            // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > request.lead.lead_id ', this.request.lead.lead_id);
-            this.bannedVisitorsArray.forEach(bannedVisitor => {
-              if (bannedVisitor.id === this.request.lead.lead_id) {
-                this.visitorIsBanned = true;
-                // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > visitorIsBanned ', this.visitorIsBanned);
-              } else {
-                this.visitorIsBanned = false
-                // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > visitorIsBanned ', this.visitorIsBanned);
-              }
-            });
-          }
-        });
-   
       }
 
       this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
@@ -1205,7 +1184,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
-            this.wsRequestsService.requestIsReady(true)
+         
           if (this.request.subject) {
             this.ticketSubject = this.request.subject
           }
@@ -3473,14 +3452,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // Ban Visitor
   // ---------------------------
   displayModalBanVisitor(leadid: string, ipaddress: string) {
-    // let bennedArray = []
-    // console.log('displayModalBanVisitor leadid ', leadid) 
-    // console.log('displayModalBanVisitor ipaddress ', ipaddress) 
-    // if (leadid && ipaddress) {
-    //   bennedArray.push({ id: leadid, ip: ipaddress })
-    // }
-    // console.log('displayModalBanVisitor bennedArray ', bennedArray) 
-    if (this.visitorIsBanned === false) {
+    
+    this.logger.log('displayModalBanVisitor leadid ', leadid)
+    this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
+    const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
+    this.logger.log("displayModalBanVisitor bannedVisitorsArray", index)
+    // if (this.visitorIsBanned === false) {
+    if (index === -1) {
       swal({
         title: this.areYouSureLbl + '?',
         icon: "info",
