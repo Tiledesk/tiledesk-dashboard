@@ -1,24 +1,26 @@
 
 # tiledesk-dashboard
 
+
 ### 2.2.48
 - Deploys in production
 - Implements the "persistent search results" on the History page and on the Non-Real-time Conversations page
 - Adds the ability to edit the ticket subject "in-place" on the conversation detail page
 - Adds the ability to the currently logged in teammate (regardless of role) in the "Monitoring" page > "Your Conversations" tab to view the teammates of the groups to which he belongs
-- Adds the ability to create "Tilebot" type chatbots (this type of chatbot replaces the Resolution bot)
 - Adds the ability to ban a visitor
 - Adds the "Banned Visitors" tab in Project Settings which displays the list of all banned visitors and from which a visitor can be unbanned
 - Adds the ability, for all types of plans, to customize email templates (feature available in Project setting > Notifications) 
 - Adds to the conversation detail page the ability to reopen a conversation if it hasn't been archived for more than ten days
 
+### 2.2.48-rc5
+- Improves the "Banned Visitors" tab in Project Settings
+- Fixes the method of preventing a visitor from being banned if they are already banned
+
 ### 2.2.48-rc4
-- Adds the Tilebot logo to the top left of the "Tilebot" bot avatar
 - Adds the ability to ban a visitor
 - Adds the "Banned Visitors" tab in Project Settings which displays the list of all banned visitors and from which a visitor can be unbanned
 - Adds the ability, for all types of plans, to customize email templates (feature available in Project setting > Notifications) 
 - Adds the "View contact" button to the drop-down menu of the right sidebar "Conversation info" of the chat
-- Change the order of the bot type on the Choose Bot Type page
 - Disables the ability to ban a visitor if they have already been banned
 
 ### 2.2.48-rc3
