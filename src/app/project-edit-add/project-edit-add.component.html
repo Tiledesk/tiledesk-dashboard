@@ -1525,12 +1525,12 @@
                                 <!-- ------- User Avatar ------- -->
                                 <!-- -------------------------------------- -->
                                 <th>
-                                  <!-- <span class="column-th-span">
-                                    {{ 'Visitor' | translate }}
-                                  </span> -->
                                   <span class="column-th-span">
-                                   Id
+                                    {{ 'Visitor' | translate }}
                                   </span>
+                                  <!-- <span class="column-th-span">
+                                   Id
+                                  </span> -->
                                 </th>
 
 
@@ -1539,11 +1539,11 @@
                                 <!-- ------- User Email ------- -->
                                 <!-- -------------------------------------- -->
 
-                               <!-- <th>
+                               <th>
                                   <span class="column-th-span">
                                     Email
                                   </span>
-                                </th>  -->
+                                </th> 
 
 
 
@@ -1562,8 +1562,8 @@
                               <!-- -------------------------------------- -->
                               <!-- ------- IF THERE ISN'T CONTACTS ------- -->
                               <!-- -------------------------------------- -->
-                              <tr *ngIf="projectObject?.bannedUsers && projectObject?.bannedUsers?.length === 0">
-                                <td colspan="2" style="text-align: center; padding-top: 16px; cursor: pointer">
+                              <tr *ngIf="projectObject?.bannedVisitors && projectObject?.bannedVisitors?.length === 0">
+                                <td colspan="3" style="text-align: center; padding-top: 16px; cursor: pointer">
 
                                   <p style="font-size:1em; color:#7695a5; font-weight: 400">
                                     {{ 'NoBannedVisitors' | translate }}
@@ -1571,44 +1571,44 @@
                                 </td>
                               </tr>
 
-                              <!-- <tr *ngFor="let visitor of projectObject?.bannedVisitors"> -->
-                              <tr *ngFor="let visitor of projectObject?.bannedUsers">
+                              <tr *ngFor="let visitor of projectObject?.bannedVisitors">
+                              <!-- <tr *ngFor="let visitor of projectObject?.bannedUsers"> -->
                                 <!-- -------------------------------------- -->
                                 <!-- ------- User NAME ------- -->
                                 <!-- -------------------------------------- -->
                                 <!-- (click)='goToContactDetails(visitor?.id)' -->
-                                <td style="cursor:pointer">
-                                  <!-- <span class="avatar"
+                                <td style="cursor:pointer" (click)='goToContactDetails(visitor?.requesterId)'>
+                                   <span class="avatar"
                                     [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + visitor?.fillColour + ')'}">
                                     <span style="color: #ffffff"> {{ visitor?.leadInitials }} </span>
                                   </span>
                                   <span class="column-td" style="margin-left: 10px;">
                                     {{ visitor?.fullname }}
-                                  </span> -->
-                                 
-                                 
-                                  <span class="column-td" >
-                                    {{ visitor?.id }}
                                   </span> 
+                                 
+                                 
+                                  <!-- <span class="column-td" >
+                                    {{ visitor?.id }}
+                                  </span>  -->
 
                                 </td>
 
 
 
                                 <!-- ========== CONTACT EMAIL ========== -->
-                                <!-- <td style="cursor:pointer">
+                                <td>
 
                                   <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
                                     {{ visitor?.leademail }}
                                   </p>
-                                </td> -->
+                                </td>
 
                                 <td class="td-actions text-right"
                                   style="padding-left: 0px;padding-top: 17px!important;">
 
-                                  <!-- UNBAN CONTACT -->
+                                  <!-- UNBAN CONTACT click)='unbanVisitor(visitor?._id)'-->
                                   <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
-                                    [disabled]="IS_CURRENT_USER_AGENT === true" (click)='unbanVisitor(visitor?._id)'>
+                                    [disabled]="IS_CURRENT_USER_AGENT === true" (click)='unbanVisitor(visitor?.bannedUsers_Id)'>
 
                                     <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                                       xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"

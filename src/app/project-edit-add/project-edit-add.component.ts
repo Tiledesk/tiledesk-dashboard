@@ -188,7 +188,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isActiveSubscription: boolean = false;
   isChromeVerGreaterThan100: boolean
 
- thereHasBeenAnErrorProcessing: string;
+  thereHasBeenAnErrorProcessing: string;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -1526,67 +1526,77 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getAllLeads(projectObject) {
     const bannedVisitors = []
-    this.contactsService.getLeadsActive()
+    this.contactsService.getAllLeadsActiveWithLimit(10000)
       .subscribe((leads: any) => {
 
         const contacts = leads.leads
-        // console.log('[PRJCT-EDIT-ADD] GET ALL LEADS ' , contacts)
-  
+        this.logger.log('[PRJCT-EDIT-ADD] GET ALL LEADS ', contacts)
+
 
         for (var i = 0; i < contacts.length; i++) {
-          if(contacts[i] && contacts[i].fullname){
-            contacts[i]['leadInitials'] = avatarPlaceholder( contacts[i].fullname);
+          if (contacts[i] && contacts[i].fullname) {
+            contacts[i]['leadInitials'] = avatarPlaceholder(contacts[i].fullname);
             contacts[i].fillColour = getColorBck(contacts.fullname);
-          }  else {
+          } else {
             contacts[i]['leadInitials'] = 'N/A';
             contacts[i].fillColour = '#6264a7';
           }
 
-          if(contacts[i] && contacts[i].email){
+          if (contacts[i] && contacts[i].email) {
             contacts[i]['leademail'] = contacts[i].email;
-          }  else {
+          } else {
             leads.leads[i]['leademail'] = 'n/a'
           }
           for (var j = 0; j < projectObject.bannedUsers.length; j++) {
-              if (leads.leads[i].lead_id ===  projectObject.bannedUsers[j].id ) {
-                bannedVisitors.push(leads.leads[i]);
-              }
-          }
-      }
+            if (leads.leads[i].lead_id === projectObject.bannedUsers[j].id) {
 
-      this.logger.log('[PRJCT-EDIT-ADD] PROJECT bannedVisitors ' , bannedVisitors)
-      projectObject['bannedVisitors'] = bannedVisitors
+              bannedVisitors.push({
+                bannedUsers_Id: projectObject.bannedUsers[j]._id,
+                bannedUsersId: projectObject.bannedUsers[j].id,
+                leademail: leads.leads[i].leademail,
+                leadInitials: leads.leads[i].leadInitials,
+                fullname: leads.leads[i].fullname,
+                fillColour: leads.leads[i].fillColour,
+                requesterId: leads.leads[i]._id,
+              });
+            }
+          }
+        }
+
+        this.logger.log('[PRJCT-EDIT-ADD] PROJECT bannedVisitors ', bannedVisitors)
+        projectObject['bannedVisitors'] = bannedVisitors
 
       })
   }
 
-  unbanVisitor(contact_id) {
-    // console.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR contact_id ', contact_id)
-    this.projectService.unbanVisitor(contact_id).subscribe((res: any) => {
-      // console.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR  - RES ', res)
-
-     }, (error) => {
+  unbanVisitor(bannedUserId: string) {
+    this.logger.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR contact_id ', bannedUserId)
+    this.projectService.unbanVisitor(bannedUserId).subscribe((res: any) => {
+      this.logger.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR  - RES ', res)
+      // this.projectObject = res
+    }, (error) => {
       this.logger.error('[PRJCT-EDIT-ADD] UNBAN VISITOR   - ERROR ', error);
       this.notify.showWidgetStyleUpdateNotification(this.thereHasBeenAnErrorProcessing, 4, 'report_problem');
-    
-     }, () => {
-      //  console.log('[PRJCT-EDIT-ADD] UNBAN VISITOR  * COMPLETE *');
 
-      //  for (var i = 0; i < this.projectObject['bannedVisitors'].length; i++) {
-      //   if (this.projectObject['bannedVisitors'][i].id === contact_id) {
-      //     this.projectObject['bannedVisitors'].splice(i, 1);
-      //   }
-      // }
-
-      for (var i = 0; i < this.projectObject['bannedUsers'].length; i++) {
-        // console.log('this.projectObject[bannedUsers]', this.projectObject['bannedUsers'])
-        // console.log('this.projectObject[bannedUsers][i].id', this.projectObject['bannedUsers'][i]._id) 
-        // console.log('contact_id', contact_id) 
-        if (this.projectObject['bannedUsers'][i]._id === contact_id) {
-          this.projectObject['bannedUsers'].splice(i, 1);
+    }, () => {
+      this.logger.log('[PRJCT-EDIT-ADD] UNBAN VISITOR  * COMPLETE *');
+      if (this.projectObject['bannedVisitors']) {
+        for (var i = 0; i < this.projectObject['bannedVisitors'].length; i++) {
+          if (this.projectObject['bannedVisitors'][i].bannedUsers_Id === bannedUserId) {
+            this.projectObject['bannedVisitors'].splice(i, 1);
+          }
         }
       }
-     });
+
+      // for (var i = 0; i < this.projectObject['bannedUsers'].length; i++) {
+      //   // console.log('this.projectObject[bannedUsers]', this.projectObject['bannedUsers'])
+      //   // console.log('this.projectObject[bannedUsers][i].id', this.projectObject['bannedUsers'][i]._id) 
+      //   // console.log('contact_id', contact_id) 
+      //   if (this.projectObject['bannedUsers'][i]._id === contact_id) {
+      //     this.projectObject['bannedUsers'].splice(i, 1);
+      //   }
+      // }
+    });
   }
   /**
    * *** GET PROJECT OBJECT BY ID (EDIT VIEW) ***
@@ -1603,13 +1613,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', this.projectObject);
 
         // * the good one *
-        // this.getAllLeads(this.projectObject)
+        this.getAllLeads(this.projectObject)
 
-        // this.projectObject['bannedUsers'].forEach(bannedUser => {
-        //   // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - bannedUser: ', bannedUser);
-        //   this.getAllLeads(this.projectObject)
-        
-        // });
+     
         this.projectName_toUpdate = project.name;
         this.logger.log('[PRJCT-EDIT-ADD] - PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
 
