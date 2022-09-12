@@ -62,6 +62,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   agentDeletion: string;
   agentInvitation: string;
   newRequest: string;
+  requestResolved: string;
   asc: any;
   subscription: Subscription;
   projectUsersArray: any;
@@ -94,7 +95,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -111,6 +111,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         this.agentDeletion = text.AgentDeletion;
         this.agentInvitation = text.AgentInvitation;
         this.newRequest = text.NewRequest;
+        this.requestResolved = text.RequestResolved;
         // this.logger.log('translateActivities AgentAvailabilityOrRoleChange ', text.AgentAvailabilityOrRoleChange)
         // this.logger.log('translateActivities AgentDeletion ', text.AgentDeletion)
         // this.logger.log('translateActivities AgentDeletion ', text.AgentInvitation)
@@ -125,6 +126,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
           { id: 'PROJECT_USER_DELETE', name: this.agentDeletion },
           { id: 'PROJECT_USER_INVITE', name: this.agentInvitation },
           { id: 'REQUEST_CREATE', name: this.newRequest },
+          { id: 'REQUEST_CLOSE', name: this.requestResolved },
         ];
       });
   }
@@ -153,13 +155,10 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         this.logger.log('[ActivitiesComponent] - GET PROJECT-USERS * COMPLETE *');
 
       });
-
   }
-
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-    // console.log('[ActivitiesComponent] - browser_lang ', this.browser_lang)
   }
 
   getCurrentProject() {
@@ -364,6 +363,40 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                   } else {
                     activity.targetOfActionIsYourself = false;
                   }
+                }
+              }
+
+              if (activity && activity.verb && activity.verb === 'REQUEST_CLOSE') {
+                if (activity.actor && activity.actor.id) {
+
+                  if (activity.actor.id === "_bot_unresponsive") {
+                    activity['closed_by_label'] = "auto closing Bot"
+                  } else if (activity.actor.id === "_trigger") {
+                    activity['closed_by_label'] = "Trigger"
+                  } else {
+                    const storedTeammate = this.usersLocalDbService.getMemberFromStorage(activity.actor.id)
+                    if (storedTeammate) {
+                      activity['closed_by_label'] = storedTeammate['firstname'] + ' ' + storedTeammate['lastname']
+                    } else {
+                      this.usersService.getProjectUserByUserId(activity.actor.id)
+                        .subscribe((projectUser: any) => {
+                      
+                          if (projectUser && projectUser[0] && projectUser[0].id_user) {
+                            this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user);
+                            this.logger.log('ActivitiesComponent] GET projectUser by USER-ID projectUser id', projectUser);
+                            activity['closed_by_label'] = projectUser[0].id_user.firstname + ' ' + projectUser[0].id_user.lastname
+                          } else {
+                        
+                            activity['closed_by_label'] = activity.target.object.userFullname
+                          }
+                        }, (error) => {
+                          this.logger.error('[ActivitiesComponent] GET projectUser by USER-ID - ERROR ', error);
+                        }, () => {
+                          this.logger.log('[ActivitiesComponent] GET projectUser by USER-ID * COMPLETE *');
+                        });
+                    }
+                  }
+
                 }
               }
 

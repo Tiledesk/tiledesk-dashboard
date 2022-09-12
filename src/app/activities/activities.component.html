@@ -1,5 +1,6 @@
 <!-- margin-top:6px; -->
-<p style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+<p style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   {{ "Activities" | translate }}
 </p>
 <div class="main-content" style="padding-top:0px">
@@ -21,11 +22,13 @@
                 <div class="row">
                   <div class="col-xs-12 col-sm-12">
                     <div class="col-xs-6 col-sm-6" style="padding-right:2px;">
-                      <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="startDate"  placeholder="{{ 'From' | translate }}">
+                      <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="startDate"
+                        placeholder="{{ 'From' | translate }}">
                       </my-date-picker>
                     </div>
                     <div class="col-xs-6 col-sm-6" style="padding-left:2px;">
-                      <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="endDate" placeholder="{{ 'To' | translate }}"  [disabled]="!startDate">
+                      <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="endDate"
+                        placeholder="{{ 'To' | translate }}" [disabled]="!startDate">
                       </my-date-picker>
                     </div>
                   </div>
@@ -156,20 +159,24 @@
                     <span *ngIf="activity?.verb === 'REQUEST_CREATE'">
                       <img class="fontawesome-icon" src="assets/img/comment-medical-solid.svg" alt="user-plus" />
                     </span>
+                    <span *ngIf="activity?.verb === 'REQUEST_CLOSE'">
+                      <img class="fontawesome-icon" src="assets/img/comment-resolved.svg" alt="user-plus" />
+                    </span>
                   </td>
 
-                
-                  
-                  <!-- 
-                  // ----------------------------------------------------------------------------
-                  // If there isn't actor name and the activity verc is not REQUEST_CREATE
-                  // ---------------------------------------------------------------------------- -->
-                  <td *ngIf="!activity?.actor?.name && activity?.verb !== 'REQUEST_CREATE'">
 
-                    <!-- 
-                    // ----------------------------------------------------------------------------
-                    // If the first key of actionObj is attributes
-                    // ---------------------------------------------------------------------------- -->
+
+
+                  <!-- ---------------------------------------------------------------------------------------------- -->
+                  <!-- If there isn't actor name and the activity verb  is not REQUEST_CREATE neither REQUEST_CLOSE -->
+                  <!-- ---------------------------------------------------------------------------------------------- -->
+                  <td
+                    *ngIf="(!activity?.actor?.name && activity?.verb !== 'REQUEST_CREATE') && (!activity?.actor?.name && activity?.verb !== 'REQUEST_CLOSE') ">
+
+
+                    <!-- ---------------------------------------------------------------------------- -->
+                    <!-- If the first key of actionObj is attributes -->
+                    <!-- ---------------------------------------------------------------------------- -->
                     <span *ngIf="objectKeys(activity?.actionObj)[0] === 'attributes'; else attributes_is_not_first_key">
 
                       <!-- == EN -->
@@ -183,25 +190,27 @@
                         's
                         <span *ngFor="let key of objectKeys(activity?.actionObj?.attributes)">
                           <code>{{key}}</code>
-                          attribute has been updated with <var>value:</var> <code>{{activity?.actionObj?.attributes[key]}}</code>
+                          attribute has been updated with <var>value:</var>
+                          <code>{{activity?.actionObj?.attributes[key]}}</code>
                         </span>
                       </p>
 
                       <!-- != EN -->
                       <p *ngIf="browser_lang !== 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px ">
-                        L'attributo 
+                        L'attributo
                         <span *ngFor="let key of objectKeys(activity?.actionObj?.attributes)">
                           <code>{{key}}</code>
- 
-                          di 
-                          <span class="link-to-user-profile"
-                          (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
-                          [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
-                          {{ activity?.target?.object?.id_user?.firstname}}
-                          {{ activity?.target?.object?.id_user?.lastname}}
-                        </span>
 
-                          è stato aggiornato con <var>valore:</var> <code>{{activity?.actionObj?.attributes[key]}}</code>
+                          di
+                          <span class="link-to-user-profile"
+                            (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
+                            [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
+                            {{ activity?.target?.object?.id_user?.firstname}}
+                            {{ activity?.target?.object?.id_user?.lastname}}
+                          </span>
+
+                          è stato aggiornato con <var>valore:</var>
+                          <code>{{activity?.actionObj?.attributes[key]}}</code>
                         </span>
                       </p>
 
@@ -213,56 +222,14 @@
                     <!-- {{ __key[0]}} -->
                     <ng-template #attributes_is_not_first_key>
 
-                    <!-- 
-                    // ----------------------------------------------------------------------------
-                    // If the first key of actionObj is not attributes but is user_available
-                    // ---------------------------------------------------------------------------- -->
-                      <span *ngIf="objectKeys(activity?.actionObj)[0] === 'user_available'; else user_available_is_not_first_key"> 
+
+                      <!-- ---------------------------------------------------------------------------- -->
+                      <!-- If the first key of actionObj is not attributes but is user_available -->
+                      <!-- ---------------------------------------------------------------------------- -->
+                      <span
+                        *ngIf="objectKeys(activity?.actionObj)[0] === 'user_available'; else user_available_is_not_first_key">
                         <!-- == EN -->
                         <p *ngIf="browser_lang === 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px">
-                          <span class="link-to-user-profile"
-                          (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
-                          [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
-                          {{ activity?.target?.object?.id_user?.firstname}}
-                          {{ activity?.target?.object?.id_user?.lastname}}
-                        </span>
-                        's
-                        availability status has been changed into
-                        <span *ngIf="activity?.actionObj?.user_available === false" > 
-                          {{ 'Unavailable' | translate }}
-                        </span>
-                        <span *ngIf="activity?.actionObj?.user_available === true" > 
-                          {{ 'Available' | translate }}
-                        </span>
-                        </p>
-
-                        <!-- != EN -->
-                        <p *ngIf="browser_lang !== 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px">
-                          Lo stato di disponibilità di 
-                          <span class="link-to-user-profile"
-                          (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
-                          [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
-                          {{ activity?.target?.object?.id_user?.firstname}}
-                          {{ activity?.target?.object?.id_user?.lastname}}
-                        </span>
-                        
-                        è stato cambiato in
-                        <span *ngIf="activity?.actionObj?.user_available === false" > 
-                          {{ 'Unavailable' | translate }}
-                        </span>
-                        <span *ngIf="activity?.actionObj?.user_available === true" > 
-                          {{ 'Available' | translate }}
-                        </span>
-                        </p>
-                      </span>
-         
-                    <!-- 
-                    // ----------------------------------------------------------------------------
-                    // If other cases
-                    // ---------------------------------------------------------------------------- -->
-                      <ng-template #user_available_is_not_first_key>
-                        <!-- == EN -->
-                        <p *ngIf="browser_lang === 'en'"  style="margin-bottom:0px; font-weight:500; font-size:13px ">
                           <span class="link-to-user-profile"
                             (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
                             [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
@@ -270,15 +237,58 @@
                             {{ activity?.target?.object?.id_user?.lastname}}
                           </span>
                           's
-                      
-                          <span *ngFor="let _key of objectKeys(activity?.actionObj)">
-                            <code>{{_key}}</code>
-                             has been updated with <var>value: {{ activity?.actionObj[_key]}}</var>
+                          availability status has been changed into
+                          <span *ngIf="activity?.actionObj?.user_available === false">
+                            {{ 'Unavailable' | translate }}
+                          </span>
+                          <span *ngIf="activity?.actionObj?.user_available === true">
+                            {{ 'Available' | translate }}
                           </span>
                         </p>
 
-                         <!-- != EN -->
-                        <p *ngIf="browser_lang !== 'en'"  style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                        <!-- != EN -->
+                        <p *ngIf="browser_lang !== 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px">
+                          Lo stato di disponibilità di
+                          <span class="link-to-user-profile"
+                            (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
+                            [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
+                            {{ activity?.target?.object?.id_user?.firstname}}
+                            {{ activity?.target?.object?.id_user?.lastname}}
+                          </span>
+
+                          è stato cambiato in
+                          <span *ngIf="activity?.actionObj?.user_available === false">
+                            {{ 'Unavailable' | translate }}
+                          </span>
+                          <span *ngIf="activity?.actionObj?.user_available === true">
+                            {{ 'Available' | translate }}
+                          </span>
+                        </p>
+                      </span>
+
+
+                      <!-- ---------------------------------------------------------------------------- -->
+                      <!-- If other cases -->
+                      <!-- ---------------------------------------------------------------------------- -->
+                      <ng-template #user_available_is_not_first_key>
+                        <!-- == EN -->
+                        <p *ngIf="browser_lang === 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                          <span class="link-to-user-profile"
+                            (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
+                            [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
+                            {{ activity?.target?.object?.id_user?.firstname}}
+                            {{ activity?.target?.object?.id_user?.lastname}}
+                          </span>
+                          's
+
+                          <span *ngFor="let _key of objectKeys(activity?.actionObj)">
+                            <code>{{_key}}</code>
+                            has been updated with <var>value: {{ activity?.actionObj[_key]}}</var>
+                          </span>
+                        </p>
+
+                        <!-- != EN -->
+                        <p *ngIf="browser_lang !== 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px ">
                           <code>{{_key}}</code> di
                           <span class="link-to-user-profile"
                             (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
@@ -286,9 +296,9 @@
                             {{ activity?.target?.object?.id_user?.firstname}}
                             {{ activity?.target?.object?.id_user?.lastname}}
                           </span>
-                        
+
                           <span *ngFor="let _key of objectKeys(activity?.actionObj)">
-                             è stato aggiornato con  <var>valore: {{ activity?.actionObj[_key]}}</var>
+                            è stato aggiornato con <var>valore: {{ activity?.actionObj[_key]}}</var>
                           </span>
                         </p>
 
@@ -302,11 +312,10 @@
                     </span>
                   </td>
 
-                  <!-- 
-                  // ----------------------------------------------------------------------------
-                  // If there is actor name
-                  // ---------------------------------------------------------------------------- -->
 
+                  <!-- ---------------------------------------------------------------------------- -->
+                  <!-- If there is actor name -->
+                  <!-- ---------------------------------------------------------------------------- -->
                   <td *ngIf="activity?.actor?.name">
                     <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
                       <span *ngIf="activity?.actor?.id !== currentUserId">
@@ -323,10 +332,10 @@
                         {{ activity?.actor?.name }}
                       </span>
 
-                      <!-- *** ACTION TYPE:
-                      //////////////////////////////////////////////////////////////////////
-                      ////////////// PROJECT-USER UPDATE (AVAILABILITY STATUS) /////////////
-                      ////////////////////////////////////////////////////////////////////// -->
+
+                      <!-- ---------------------------------------------------------------------------- -->
+                      <!-- If activity verb is  PROJECT_USER_UPDATE -->
+                      <!-- ---------------------------------------------------------------------------- -->
                       <span *ngIf="activity?.verb === 'PROJECT_USER_UPDATE'">
                         <!-- ha cambiato -->
                         {{ 'HasChanged' | translate}}
@@ -376,10 +385,9 @@
                         </span>
                       </span>
 
-                      <!-- *** ACTION TYPE:
-                      /////////////////////////////////////////////////////////////////////
-                      ///////////////////////// PROJECT-USER DELETE ///////////////////////
-                      ///////////////////////////////////////////////////////////////////// -->
+                      <!-- ---------------------------------------------------------------------------- -->
+                      <!-- If activity verb is  PROJECT_USER_DELETE -->
+                      <!-- ---------------------------------------------------------------------------- -->
                       <span *ngIf="activity?.verb === 'PROJECT_USER_DELETE'">
                         <!-- ha rimosso  -->
                         {{ 'HasRemoved' | translate}}
@@ -391,10 +399,10 @@
                         {{ 'FromTheProject' | translate}}
                       </span>
 
-                      <!-- *** ACTION TYPE:
-                      /////////////////////////////////////////////////////////////////////
-                      ///////////////////////// PROJECT-USER INVITE ///////////////////////
-                      ///////////////////////////////////////////////////////////////////// -->
+
+                      <!-- ---------------------------------------------------------------------------- -->
+                      <!-- If activity verb is  PROJECT_USER_INVITE -->
+                      <!-- ---------------------------------------------------------------------------- -->
                       <span *ngIf="activity?.verb === 'PROJECT_USER_INVITE'">
                         <!-- ha invitato -->
                         {{ 'HasInvited' | translate}}
@@ -433,6 +441,9 @@
                     </span>
                   </td>
 
+                  <!-- ---------------------------------------------------------------------------- -->
+                  <!-- If activity verb is  REQUEST_CREATE -->
+                  <!-- ---------------------------------------------------------------------------- -->
                   <td *ngIf="activity?.verb === 'REQUEST_CREATE'">
                     <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
 
@@ -450,14 +461,10 @@
                             {{ activity?.participant_fullname }}
                           </span>:
                         </span>
-
-
                       </span>
 
                       <span *ngIf="activity?.target?.object?.status === 100">
                         {{ '_unserved' | translate }}:
-
-
                       </span>
                       <span *ngIf="activity?.activity_request_text"
                         (click)="goToRequestDetails(activity?.target?.object?.request_id)" class="link-to-user-profile"
@@ -470,7 +477,33 @@
                       {{ 'AssignedTo' | translate }}
                       {{activity?.target?.object?.status }}
                     </span> -->
+                    </p>
+                    <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px">
+                      <!-- {{ activity?.updatedAt | date: 'E/MM/yyyy HH:mm:ss' }}  -->
+                      <span style="text-transform:capitalize"> {{ activity?.date }} </span>
+                    </span>
+                  </td>
 
+                  <!-- ---------------------------------------------------------------------------- -->
+                  <!-- If activity verb is  REQUEST_CLOSE -->
+                  <!-- ---------------------------------------------------------------------------- -->
+                  <td *ngIf="activity?.verb === 'REQUEST_CLOSE'">
+                    <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
+
+                      {{ 'TheConversation' | translate }}
+
+                
+                      <span *ngIf="activity?.activity_request_text"
+                        (click)="goToRequestDetails(activity?.target?.object?.request_id)" class="link-to-user-profile"
+                        style="cursor:pointer">
+                        <em> {{ activity?.activity_request_text }}</em>
+                      </span>
+
+                      <span> 
+
+                       {{ 'WasResolvedBy' | translate }}: {{activity?.closed_by_label}}
+                      
+                     </span>
                     </p>
                     <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px">
                       <!-- {{ activity?.updatedAt | date: 'E/MM/yyyy HH:mm:ss' }}  -->
