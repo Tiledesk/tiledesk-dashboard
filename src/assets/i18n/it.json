@@ -586,7 +586,8 @@
         "AgentAvailabilityOrRoleChange": "Aggiornamento collaboratore",
         "AgentDeletion": "Cancellazione collaboratore",
         "AgentInvitation": "Invito collaboratore",
-        "NewRequest": "Nuova conversazione"
+        "NewRequest": "Nuova conversazione",
+        "RequestResolved": "Conversazione risolta"
     },
     "UserProfile": {
         "Profile": "Profilo",
@@ -2158,5 +2159,7 @@
     "NoBannedVisitors":"Nessun visitatore bannato",
     "ViewContact":"Vedi contatto",
     "ReadMoreOnOurWebsite":"Leggi di più sul nostro sito web",
-    "AddTeammatesAsFollowers": "Aggiungi compagni di squadra come follower per tenerli informati sull'andamento della conversazione"
+    "AddTeammatesAsFollowers": "Aggiungi compagni di squadra come follower per tenerli informati sull'andamento della conversazione",
+    "TheConversation": "La conversazione",
+    "WasResolvedBy": "è stata risolta da"
 }

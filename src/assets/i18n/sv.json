@@ -586,7 +586,8 @@
         "AgentAvailabilityOrRoleChange": "Lagkamratuppdatering",
         "AgentDeletion": "Borttagning av lagkamrat",
         "AgentInvitation": "Lagkamrat inbjudan",
-        "NewRequest": "Ny konversation"
+        "NewRequest": "Ny konversation",
+        "RequestResolved": "Konversationen löstes"
     },
     "UserProfile": {
         "Profile": "Profil",
@@ -2159,6 +2160,8 @@
     "ViewContact":"Se kontakten",
     "ReadMoreOnOurWebsite":"Läs mer på vår hemsida",
     "AddTeammatesAsFollowers": "Lägg till lagkamrater som följare för att hålla dem informerade om konversationens framsteg",
+    "TheConversation": "Konversationen",
+    "WasResolvedBy": "löstes av",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",

@@ -586,7 +586,8 @@
         "AgentAvailabilityOrRoleChange": "Takım arkadaşı güncellemesi",
         "AgentDeletion": "Takım arkadaşı silme",
         "AgentInvitation": "Takım arkadaşı davetiye",
-        "NewRequest": "Yeni görüşme"
+        "NewRequest": "Yeni görüşme",
+        "RequestResolved": "Görüşme çözüldü"
     },
     "UserProfile": {
         "Profile": "Profil",
@@ -2159,6 +2160,8 @@
     "ViewContact":"Kişiyi görüntüle",
     "ReadMoreOnOurWebsite":"Web sitemizde daha fazlasını okuyun",
     "AddTeammatesAsFollowers": "Görüşmenin ilerleyişi hakkında onları bilgilendirmek için takım arkadaşlarını takipçi olarak ekleyin",
+    "TheConversation": "Konuşma",
+    "WasResolvedBy": "oldu tarafından çözüldü",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

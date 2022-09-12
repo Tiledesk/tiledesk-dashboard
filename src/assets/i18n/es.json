@@ -586,7 +586,8 @@
         "AgentAvailabilityOrRoleChange": "Actualización de compañero",
         "AgentDeletion": "Eliminación de compañeros",
         "AgentInvitation": "Invitación de compañero",
-        "NewRequest": "Nueva conversación"
+        "NewRequest": "Nueva conversación",
+        "RequestResolved": "Conversación resuelta"
     },
     "UserProfile": {
         "Profile": "Perfil",
@@ -2159,6 +2160,8 @@
     "ViewContact":"Ver contacto",
     "ReadMoreOnOurWebsite":"Lea más en nuestro sitio web",
     "AddTeammatesAsFollowers": "Agregue compañeros de equipo como seguidores para mantenerlos informados sobre el progreso de la conversación",
+    "TheConversation": "La conversación",
+    "WasResolvedBy": "fue resuelta por",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

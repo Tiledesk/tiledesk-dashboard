@@ -586,7 +586,8 @@
         "AgentAvailabilityOrRoleChange": "Jamoadosh yangilanishi",
         "AgentDeletion": "Jamoadoshni o'chirish",
         "AgentInvitation": "Jamoadosh taklifi",
-        "NewRequest": "Yangi suhbat"
+        "NewRequest": "Yangi suhbat",
+        "RequestResolved": "Suhbat hal qilindi"
     },
     "UserProfile": {
         "Profile": "Profil",
@@ -2159,6 +2160,8 @@
     "ViewContact":"Kontaktni ko'rish",
     "ReadMoreOnOurWebsite":"Batafsil veb-saytimizda o'qing",
     "AddTeammatesAsFollowers": "Suhbatning borishi haqida xabardor bo'lish uchun jamoadoshlaringizni izdosh sifatida qo'shing",
+    "TheConversation": "Suhbat",
+    "WasResolvedBy": "edi tomonidan hal qilindi",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

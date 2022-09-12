@@ -586,7 +586,8 @@
         "AgentAvailabilityOrRoleChange": "Обновление товарища по команде",
         "AgentDeletion": "Удаление товарища по команде",
         "AgentInvitation": "Приглашение товарища по команде",
-        "NewRequest": "Новый разговор"
+        "NewRequest": "Новый разговор",
+        "RequestResolved": "Разговор решен"
     },
     "UserProfile": {
         "Profile": "Профиль",
@@ -2159,6 +2160,8 @@
     "ViewContact":"Посмотреть контакт",
     "ReadMoreOnOurWebsite":"Подробнее читайте на нашем сайте",
     "AddTeammatesAsFollowers": "Добавьте товарищей по команде в качестве подписчиков, чтобы информировать их о ходе разговора",
+    "TheConversation": "Разговор",
+    "WasResolvedBy": "был решен",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",
