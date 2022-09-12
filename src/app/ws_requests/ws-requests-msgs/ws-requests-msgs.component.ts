@@ -453,26 +453,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       if (params.calledby === '3') {
         this.previousUrl = 'all-conversations',
           this.hasSearchedBy = params.hassearchedby
+      }
 
-        // console.log('called by all-conversations ', 'hasSearchedBy ', this.hasSearchedBy)
+      if (!params.calledby) {
+        this.previousUrl = undefined
       }
 
     })
   }
 
   goBack() {
-
-    // if (this.previousUrl === 'wsrequests') {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-    // } else if (this.previousUrl === 'history' && this.hasSearchedBy) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
-    // } else if (this.previousUrl === 'all-conversations' && this.hasSearchedBy) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.hasSearchedBy]);
-    // } else if (this.previousUrl === 'history' && !this.hasSearchedBy) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-    // } else if (this.previousUrl === 'all-conversations' && !this.hasSearchedBy) {
-    //   this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-    // }
 
 
     if (this.previousUrl === 'wsrequests') {
@@ -510,6 +500,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     if (this.previousUrl === 'history' && this.queryParams) {
       this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl], { queryParams: this.queryParams })
+    }
+
+    if (this.previousUrl === undefined ) {
+      this._location.back();
     }
 
 
