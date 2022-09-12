@@ -586,7 +586,8 @@
         "AgentAvailabilityOrRoleChange": "Ажурирање саиграча",
         "AgentDeletion": "Брисање саиграча",
         "AgentInvitation": "Позив за саиграча",
-        "NewRequest": "Нови разговор"
+        "NewRequest": "Нови разговор",
+        "RequestResolved": "Conversation resolved"
     },
     "UserProfile": {
         "Profile": "Профил",
@@ -2159,6 +2160,8 @@
     "ViewContact": "View contact",
     "ReadMoreOnOurWebsite": "Read more on our website",
     "AddTeammatesAsFollowers": "Add teammates as followers to keep them informed of the progress of the conversation",
+    "TheConversation": "Conversation",
+    "WasResolvedBy": "was resolved by",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",
