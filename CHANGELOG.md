@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.49
+- Deploys in production
+- Adds the ability on the Activities page to filter activities for resolved conversations
+
 ### 2.2.49-rc1
 - Adds the ability on the Activities page to filter activities for resolved conversations
 
