@@ -586,7 +586,8 @@
         "AgentAvailabilityOrRoleChange": "Teammate update",
         "AgentDeletion": "Teammate deletion",
         "AgentInvitation": "Teammate invitation",
-        "NewRequest": "New conversation"
+        "NewRequest": "New conversation",
+        "RequestResolved": "Conversation resolved"
     },
     "UserProfile": {
         "Profile": "Profile",
@@ -2159,6 +2160,8 @@
     "ViewContact": "View contact",
     "ReadMoreOnOurWebsite": "Read more on our website",
     "AddTeammatesAsFollowers": "Add teammates as followers to keep them informed of the progress of the conversation",
+    "TheConversation": "Conversation",
+    "WasResolvedBy": "was resolved by",
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",
         "LABEL_MSG_PUSH_START_CHAT": "No conversation yet",
