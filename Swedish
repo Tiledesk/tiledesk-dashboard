@@ -586,7 +586,8 @@
         "AgentAvailabilityOrRoleChange": "Lagkamratuppdatering",
         "AgentDeletion": "Borttagning av lagkamrat",
         "AgentInvitation": "Lagkamrat inbjudan",
-        "NewRequest": "Ny konversation"
+        "NewRequest": "Ny konversation",
+        "RequestResolved": "Conversation resolved"
     },
     "UserProfile": {
         "Profile": "Profil",
@@ -2159,6 +2160,8 @@
     "ViewContact": "View contact",
     "ReadMoreOnOurWebsite": "Read more on our website",
     "AddTeammatesAsFollowers": "Add teammates as followers to keep them informed of the progress of the conversation",
+    "TheConversation": "Conversation",
+    "WasResolvedBy": "was resolved by",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",
