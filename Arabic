@@ -586,7 +586,8 @@
         "AgentAvailabilityOrRoleChange": "تحديث زميله",
         "AgentDeletion": "حذف عضو الفريق",
         "AgentInvitation": "دعوة الفريق",
-        "NewRequest": "محادثة جديدة"
+        "NewRequest": "محادثة جديدة",
+        "RequestResolved": "Conversation resolved"
     },
     "UserProfile": {
         "Profile": "الملف الشخصي",
@@ -2159,6 +2160,8 @@
     "ViewContact": "عرض الاتصال",
     "ReadMoreOnOurWebsite": "اقرأ المزيد على موقعنا",
     "AddTeammatesAsFollowers": "أضف زملائك في الفريق كمتابعين لإبقائهم على اطلاع بتقدم المحادثة",
+    "TheConversation": "Conversation",
+    "WasResolvedBy": "was resolved by",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",
