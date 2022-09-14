@@ -288,7 +288,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   warningMsg: string;
   conversationsCannotBeReopened: string;
   bannedVisitorsArray: Array<any>;
-  visitorIsBanned: boolean = false
+  visitorIsBanned: boolean = false;
+  messageCouldNotBeSent: string;
   /**
    * Constructor
    * @param router 
@@ -3894,6 +3895,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
 
 
+    this.translate.get('TheMessageCouldNotBeSent').subscribe((text: string) => {
+      this.messageCouldNotBeSent = text;
+    });
 
   }
 
@@ -4012,10 +4016,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   sendChatMessage() {
     // console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
-    this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED)
+    
+    const requestclosedAt = moment(this.request['closed_at']);
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
+    const currentTime = moment();
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - currentTime ', currentTime)
+
+
+    const daysDiff = currentTime.diff(requestclosedAt, 'd');
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - daysDiff ', daysDiff)
+    if (this.request.status === 1000 && daysDiff > 10) {
+       this.presenModalMessageCouldNotBeSent();
+    } else {
+      this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED)
       .subscribe((msg) => {
         this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
       }, (error) => {
@@ -4026,6 +4043,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.chat_message = undefined;
         this.sendMessageTexarea.nativeElement.style.height = null
       });
+    }
+  }
+
+
+  presenModalMessageCouldNotBeSent() {
+    swal({
+      title: this.warningMsg,
+      text: this.messageCouldNotBeSent,
+      icon: "warning",
+      button: "OK",
+      dangerMode: false,
+    })
   }
 
   onKeydownEnter(e: any) {
