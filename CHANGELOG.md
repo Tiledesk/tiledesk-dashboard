@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.50-rc1
+- Disallows the ability to message for resolved conversations for more than 10 days on the conversation detail page
+
 ### 2.2.49
 - Deploys in production
 - Adds the ability on the Activities page to filter activities for resolved conversations
