@@ -2161,5 +2161,6 @@
 	"ReadMoreOnOurWebsite":"Lesen Sie mehr auf unserer Website",
 	"AddTeammatesAsFollowers": "Fügen Sie Teamkollegen als Follower hinzu, um sie über den Fortschritt der Unterhaltung auf dem Laufenden zu halten",
 	"TheConversation": "Konversation",
-	"WasResolvedBy": "wurde gelöst von"
+	"WasResolvedBy": "wurde gelöst von",
+	"TheMessageCouldNotBeSent":"Es ist nicht möglich, Nachrichten für Konversationen zu senden, die vor mehr als zehn Tagen aufgelöst wurden"
 }

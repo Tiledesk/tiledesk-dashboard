@@ -2161,5 +2161,6 @@
     "ReadMoreOnOurWebsite":"Leggi di più sul nostro sito web",
     "AddTeammatesAsFollowers": "Aggiungi compagni di squadra come follower per tenerli informati sull'andamento della conversazione",
     "TheConversation": "La conversazione",
-    "WasResolvedBy": "è stata risolta da"
+    "WasResolvedBy": "è stata risolta da",
+    "TheMessageCouldNotBeSent":"Non è possibile inviare messaggi per conversazioni che sono state risolte più di dieci giorni fa"
 }

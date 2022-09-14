@@ -2162,6 +2162,7 @@
     "AddTeammatesAsFollowers": "Додайте товаришів по команді як підписників, щоб інформувати їх про хід розмови",
     "TheConversation": "Розмову",
     "WasResolvedBy": "було вирішено",
+    "TheMessageCouldNotBeSent":"Неможливо надсилати повідомлення для розмов, які були вирішені більше десяти днів тому",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

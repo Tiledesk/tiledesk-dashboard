@@ -2162,6 +2162,7 @@
     "AddTeammatesAsFollowers": "Lägg till lagkamrater som följare för att hålla dem informerade om konversationens framsteg",
     "TheConversation": "Konversationen",
     "WasResolvedBy": "löstes av",
+    "TheMessageCouldNotBeSent":"Det är inte möjligt att skicka meddelanden för konversationer som löstes för mer än tio dagar sedan",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",
