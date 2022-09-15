@@ -195,8 +195,8 @@
                             <ng-container *ngIf="resolutionBotCount > 0">
                               <p class="train-btn-wpr" *ngIf="message?.type === 'text' && !message?.metadata">
                                 <span class="train-btn" (click)="openRightSideBar(message?.text)">
-                                   {{ 'Train' |  translate }} 
-                                  </span>
+                                  {{ 'Train' | translate }}
+                                </span>
                               </p>
                             </ng-container>
                             <!-- -------------------------------------------------------------- -->
@@ -213,9 +213,8 @@
                                 (click)="openImageViewerModal(message?.metadata)">
                                 <img src={{message.metadata.src}} class="message-img" />
                                 <!-- message >   {{message | json}} -->
-                                <p *ngIf="message?.text"
-                                [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
-                            </p>
+                                <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
+                                </p>
                               </div>
                             </div>
                             <span class="timestamp">
@@ -460,8 +459,14 @@
                           [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
                           <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message" rows="1"
                             placeholder="Write your message" (keydown.enter)="onKeydownEnter($event)"
-                            (paste)="onPasteInSendMsg($event)"
-                            (ngModelChange)="onChangeTextInSendMsg($event)"></textarea>
+                            (paste)="onPasteInSendMsg($event)" (ngModelChange)="onChangeTextInSendMsg($event)">
+
+
+
+                          </textarea>
+                          <span *ngIf="uploadedFiles">
+                            {{uploadedFiles?.name }}
+                          </span>
 
                         </div>
                       </div>
@@ -485,20 +490,34 @@
                         </div>
                         <div class="col-xs-9 h-100 plr-0" style="    margin-top: -4px;  ">
 
+
                           <button class="btn btn-primary pull-right send-chat-msg-btn" (click)="sendChatMessage()"
-                            [disabled]="!chat_message || chat_message?.length === 0 ">
+                            [disabled]="!chat_message || chat_message?.length === 0 " style="position: relative;top:12px;margin-left: 6px;">
                             {{'Send' | translate}}
                           </button>
+
+
+                          <!-- File upload -->
+                          <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload
+                            style="display: none;">
+
+                          <div class="file-upload">
+
+                            <!-- {{fileName || "No file uploaded yet."}} -->
+
+                            <button class="btn btn-primary pull-right upload-btn" (click)="fileUpload.click()" style="    padding-left: 12px;
+                            padding-right: 12px; border-radius: 50%">
+                              <span class="material-icons">
+                                attach_file
+                              </span>
+                            </button>
+                          </div>
+
+
                         </div>
                       </div>
                     </div>
                     <!-- </div> -->
-
-
-
-
-
-
                     <!-- ./ texarea send message  -->
 
                   </div>
@@ -1073,10 +1092,11 @@
                             </li>
                             <!-- <li class="divider"></li> -->
                             <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
-     
+
                             <li *ngIf="CHAT_PANEL_MODE === true">
 
-                              <a (click)='openContactDetailsInNewWindow()' style="padding-left: 15px; padding-right: 15px;">
+                              <a (click)='openContactDetailsInNewWindow()'
+                                style="padding-left: 15px; padding-right: 15px;">
                                 <i class="material-icons" style="padding-right: 5px;">open_in_new</i>
                                 <span style="position: relative; top: 1px; cursor:pointer">
                                   <!-- {{ 'VisitorsPage.LeaveChat' | translate }} -->
@@ -1120,7 +1140,7 @@
                                 </span>
                               </a>
                             </li>
-                     
+
                             <li class="divider"></li>
                             <li>
                               <a (click)='displayModalDownloadTranscript()'
@@ -1141,7 +1161,7 @@
                                 <span style="position: relative; top: 1px; cursor:pointer">
 
                                   {{ 'BanVisitor' | translate }}
-                                  
+
                                 </span>
                               </a>
                             </li>
@@ -1157,15 +1177,16 @@
                           </ul>
                         </div>
 
-                        <button *ngIf="CHAT_PANEL_MODE === false && request?.status !== 1000" class="btn btn-white btn-as-link pull-right"
-                          (click)='archiveRequest(request?.request_id)'
+                        <button *ngIf="CHAT_PANEL_MODE === false && request?.status !== 1000"
+                          class="btn btn-white btn-as-link pull-right" (click)='archiveRequest(request?.request_id)'
                           [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
                           <i class="material-icons">archive</i>
                           <span> {{ 'VisitorsPage.Resolve' | translate }} </span>
                         </button>
 
 
-                        <button *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000" class="btn btn-white btn-as-link pull-right"
+                        <button *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000"
+                          class="btn btn-white btn-as-link pull-right"
                           (click)='reopenArchivedRequest(request, request?.request_id)'
                           [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
                           <i class="material-icons" style=" transform: rotate(180deg);">archive</i>
@@ -1332,8 +1353,7 @@
 
                     <div class="col-sm-12">
                       <p class="" style="margin-bottom: 0px">
-                        <i class="material-icons conv-details-sidebar-icon" 
-                          matTooltipClass="custom-mat-tooltip"
+                        <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.Subject' | translate }}" #tooltip="matTooltip"
                           matTooltipPosition='right' matTooltipHideDelay="100" style="margin-bottom: 0px;">
                           subject
@@ -1344,19 +1364,20 @@
                           {{ "RequestMsgsPage.Subject" | translate }}
                         </span> -->
                           <span *ngIf='!ticketSubjectEditMode' class="conv-details-sidebar-text">
-                          <!-- {{ request?.subject}} -->
-                          {{ticketSubject}}
+                            <!-- {{ request?.subject}} -->
+                            {{ticketSubject}}
                           </span>
-                          <span  *ngIf='!ticketSubjectEditMode' class="material-icons edit-in-place" (click)='ticketSubjectEditMode=true'
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'ClickToEdit' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='right' matTooltipHideDelay="100">
+                          <span *ngIf='!ticketSubjectEditMode' class="material-icons edit-in-place"
+                            (click)='ticketSubjectEditMode=true' matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'ClickToEdit' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='right' matTooltipHideDelay="100">
                             mode_edit
                           </span>
                         </span>
                         <!-- (blur)="editTicketSubjectFocusOut()" -->
-                        <input *ngIf='ticketSubjectEditMode' (blur)="editTicketSubjectFocusOut()" (keydown.enter)='saveEditInPlaceSubject()' [(ngModel)]='ticketSubject' class='cellInput'
-                            appdashboardAutofocus>
+                        <input *ngIf='ticketSubjectEditMode' (blur)="editTicketSubjectFocusOut()"
+                          (keydown.enter)='saveEditInPlaceSubject()' [(ngModel)]='ticketSubject' class='cellInput'
+                          appdashboardAutofocus>
                       </p>
                     </div>
                   </div>
@@ -1487,7 +1508,7 @@
                   <!-- ------------------------------------------------------ -->
                   <!-- Request ID -->
                   <!-- ------------------------------------------------------ -->
-                  <div class="row" style="margin-top:5px">
+                  <div class="row" style="margin-top:5px; display: none;">
                     <div class="col-sm-12">
 
 
@@ -2468,7 +2489,8 @@
                           <img *ngIf="agent.isBot === false && agent.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                             class="teammate-img-conv-detail"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
-                            onerror="this.src='assets/img/no_image_user.png'"  matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
+                            onerror="this.src='assets/img/no_image_user.png'"
+                            matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
                             matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
                             matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )" />
 
@@ -2478,9 +2500,10 @@
                           <img *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                             class="teammate-img-conv-detail"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                            onerror="this.src='assets/img/no_image_user.png'"  matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
+                            onerror="this.src='assets/img/no_image_user.png'"
+                            matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
                             matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
-                            matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )"/>
+                            matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )" />
 
 
 
@@ -2498,9 +2521,10 @@
                           <img *ngIf="agent.isBot === true && UPLOAD_ENGINE_IS_FIREBASE"
                             class="teammate-img-conv-detail"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4}}%2Fthumb_photo.jpg?alt=media"
-                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"  matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
+                            matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
                             matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
-                            matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )"/>
+                            matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )" />
 
                           <!-- --------------------------------------- -->
                           <!-- Usecase  Native (bot) -->
@@ -2508,9 +2532,10 @@
                           <img *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE"
                             class="teammate-img-conv-detail"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
+                            matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
                             matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
-                            matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )"/>
+                            matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )" />
 
                           <!-- --------------------------------------- -->
                           <!-- Name of the bot -->
@@ -2532,7 +2557,8 @@
                             style="font-size:12px; font-weight: 400">
                             <span matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
                               matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip"
-                              matTooltipPosition='above' matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )">
+                              matTooltipPosition='above' matTooltipHideDelay="100"
+                              (click)="goToMemberProfile( agent?._id )">
                               {{agent?.firstname}} {{agent?.lastname}}
                             </span>
 
@@ -2555,8 +2581,9 @@
                         <div *ngIf="agent.isBot === false && !agent.hasImage" class="altenative-avatar-conv-detail-wpr"
                           [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}">
                           <div matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
-                          matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='above' matTooltipHideDelay="100" class="altenative-avatar-conv-detail" (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
+                            matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
+                            matTooltipHideDelay="100" class="altenative-avatar-conv-detail"
+                            (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
                             {{ agent?.userFullname }}
                           </div>
                           <span class="agent-fullname-not-has-image-and-chat-with"
@@ -2564,7 +2591,8 @@
                             style="font-size:12px; font-weight: 400">
                             <span matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
                               matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip"
-                              matTooltipPosition='above' matTooltipHideDelay="100" style="cursor:pointer" (click)="goToMemberProfile( agent?._id )">
+                              matTooltipPosition='above' matTooltipHideDelay="100" style="cursor:pointer"
+                              (click)="goToMemberProfile( agent?._id )">
                               {{agent?.firstname}} {{agent?.lastname}}
                             </span>
                             <i class="material-icons chat-with-agent-ws-request-detail"
@@ -2589,11 +2617,12 @@
                     <p class="row-header">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
-                        <span class="followers-label"> Followers  </span>
+                        <span class="followers-label"> Followers </span>
                         <span matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'AddTeammatesAsFollowers' | translate }}" #tooltip="matTooltip"
                           matTooltipPosition='right' matTooltipHideDelay="100">
-                          <i class="material-icons" style="position: relative;top: 6px; font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer">
+                          <i class="material-icons"
+                            style="position: relative;top: 6px; font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer">
                             help_outline
                           </i>
                         </span>
@@ -2668,7 +2697,7 @@
                 <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div *ngIf="isVisibleLBS === true" class="row">
                   <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;  border-top: 1px solid #eeeeee;">
-                    <p class="row-header">
+                    <p class="row-header" style="margin-bottom: 0px">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
                         {{ "Tags.Tags" | translate }}
@@ -2915,7 +2944,9 @@
                       </span>
                     </p>
                     <p class="row-body" style="margin-bottom:0px">
-                      <span style="color: #7695a5;display: block; font-weight: 400;"> {{ rating }}</span>
+
+                      <!-- display: block; -->
+                      <span style="color: #7695a5; font-weight: 400;"> {{ rating }} - </span>
                       <span class="ws_requets_msgs__attributes">
                         {{ "RequestMsgsPage.RatingMessage" | translate }}:
                       </span>
@@ -2966,6 +2997,28 @@
                   </div>
                 </div>
 
+                <!-- ------------------------------------------------------ -->
+                <!-- Smart Assignment  -->
+                <!-- ------------------------------------------------------ -->
+                <div id="rating" class="row">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;">
+                    <p class="row-header">
+                      <span style="vertical-align: middle">
+                        Enable smart assignment
+                      </span>
+                    </p>
+
+                    <div class="nw-onoffswitch-wrapper" style="clear: both;">
+                      <div class="nw-onoffswitch">
+                        <input (change)="onSmartAssignmentOnOff($event)" type="checkbox" name="nw-logo-switch"
+                          class="nw-onoffswitch-checkbox" id="smart-assignment-switch-btn" tabindex="0"
+                          [checked]="smartAssignmentEnabled === true">
+                        <label class="nw-onoffswitch-label" for="smart-assignment-switch-btn"></label>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
 
                 <!--  ---------------------------------------------------------------- -->
                 <!--  @ Attributes accordion -->
@@ -3355,7 +3408,7 @@
                                     src="assets/img/rasa_bot_logo.png" />
                                 </span>
 
-                            
+
                                 <span *ngIf="bot.type === 'tilebot'">
                                   <img class="ws-request-msgs-bot-type-logo"
                                     [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"

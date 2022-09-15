@@ -173,8 +173,10 @@ export class WsMsgsService {
 
 
 
-  public sendChatMessage(projectid: string, convid: string, chatmsg: string, replytypedid: number, requesterid: string ,iscurrentuserjoined:boolean) {
+  public sendChatMessage(projectid: string, convid: string, chatmsg: string, replytypedid: number, requesterid: string, iscurrentuserjoined: boolean, msgmetadata: any, msgTipe: string) {
     // console.log('[WS-MSGS-SERV] replytypedid ', replytypedid ) 
+    console.log('[WS-MSGS-SERV] msgmetadata ', msgmetadata)
+    console.log('[WS-MSGS-SERV] msgTipe ', msgTipe)
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -183,7 +185,16 @@ export class WsMsgsService {
     // const url = "https://api.tiledesk.com/v2/5b55e806c93dde00143163dd/requests/support-group-1234/messages;" 
     const url = this.SERVER_BASE_PATH + projectid + '/requests/' + convid + '/messages'
     this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL', this.SERVER_BASE_PATH)
-    const body = { 'text': chatmsg };
+  let body = {}
+  
+  if (!msgmetadata) {
+    body = { 'text': chatmsg }
+  } else  if (msgmetadata)  {
+    body = { 'text': chatmsg, 'metadata': msgmetadata, 'type':msgTipe }
+  }
+
+ 
+
     if (replytypedid === 2 && iscurrentuserjoined === true) {
       body['attributes'] = {
         "privateFor": requesterid,
@@ -194,22 +205,40 @@ export class WsMsgsService {
       body['attributes'] = {
         "privateFor": requesterid,
         "subtype": 'private',
-        "updateconversation":false,
+        "updateconversation": false,
       }
     }
 
     if (replytypedid === 1 && iscurrentuserjoined === false) {
       body['attributes'] = {
-        "updateconversation":false,
+        "updateconversation": false,
       }
     }
 
-    this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL BODY ', body);
+    console.log('[WS-MSGS-SERV] SEND CHAT MSG URL BODY ', body);
     return this.http
       .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
 
   }
+
+  // uploadFileToChat(projectid: string, convid: string,formData: any) {
+  //   const headers = new Headers();
+
+  //   // headers.append('Accept', 'text/csv');
+  //   // headers.append('Accept', 'application/json');
+  //   // headers.append('Content-type', 'multipart/form-data');
+  //   headers.append('Authorization', this.TOKEN);
+  //   console.log('[WS-MSGS-SERV] - uploadFileToChat formData ', formData)
+
+  //   // const url =  "http://dialogflow-proxy-tiledesk.herokuapp.com/uploadgooglecredendials/" + botid
+  //   const url = this.SERVER_BASE_PATH + projectid + '/requests/' + convid + '/messages'
+  //   this.logger.log('[WS-MSGS-SERV] - uploadFileToChat POST URL ', url)
+  //   const options = new RequestOptions({ headers: headers });
+  //   return this.http
+  //     .post(url, formData, options)
+  //     .map(res => res.json())
+  // }
 
   // SEE DOCS -> https://developer.tiledesk.com/apis/rest-api/messages#get-the-messages-of-a-request-by-id
   // /v2/:project_id/requests/:request_id/messages
@@ -226,6 +255,29 @@ export class WsMsgsService {
     return this.http
       .get(url, { headers })
       .map((response) => response.text());
+  }
+
+
+  public updateConversationSmartAssigment(request_id: string, smartassigment: boolean) {
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
+
+    console.log('[WS-MSGS-SERV] - UPDATE CONV SMART ASSIGMENT - URL', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    // const body = {'smartAssignmentEnabled': smartassigment };
+    const body = { 'smartAssignment': smartassigment };
+
+    console.log('[WS-MSGS-SERV] - UPDATE CONV SMART ASSIGMENT - BODY', body);
+
+    return this.http
+      .patch(url, JSON.stringify(body), options)
+      .map((res) => res.json());
   }
 
 

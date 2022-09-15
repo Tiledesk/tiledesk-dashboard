@@ -33,6 +33,9 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { AppStoreService } from 'app/services/app-store.service';
 import * as moment from 'moment';
 import { threadId } from 'worker_threads';
+import { UploadImageService } from 'app/services/upload-image.service';
+import { UploadImageNativeService } from 'app/services/upload-image-native.service';
+import { DomSanitizer } from '@angular/platform-browser';
 const swal = require('sweetalert');
 
 @Component({
@@ -290,6 +293,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   bannedVisitorsArray: Array<any>;
   visitorIsBanned: boolean = false;
   messageCouldNotBeSent: string;
+  uploadedFiles: File;
+  smartAssignmentEnabled: boolean
+  
+  metadata: any;
+  imgWidth: number;
+  imgHeight: number;
+  type: string
   /**
    * Constructor
    * @param router 
@@ -332,6 +342,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public logger: LoggerService,
     private projectService: ProjectService,
     public appStoreService: AppStoreService,
+    private uploadImageService: UploadImageService,
+    private uploadImageNativeService: UploadImageNativeService,
+    private sanitizer: DomSanitizer,
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
@@ -503,7 +516,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl], { queryParams: this.queryParams })
     }
 
-    if (this.previousUrl === undefined ) {
+    if (this.previousUrl === undefined) {
       this._location.back();
     }
 
@@ -1174,12 +1187,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
-         
+
+          if (this.request.smartAssignmentEnabled) {
+            this.smartAssignmentEnabled = this.request.smartAssignmentEnabled
+          }
+
           if (this.request.subject) {
             this.ticketSubject = this.request.subject
           }
@@ -3447,7 +3464,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // Ban Visitor
   // ---------------------------
   displayModalBanVisitor(leadid: string, ipaddress: string) {
-    
+
     this.logger.log('displayModalBanVisitor leadid ', leadid)
     this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
     const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
@@ -4014,37 +4031,160 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
+  onFileSelected($event) {
+    console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED - event ', $event);
+    console.log('[WS-REQUESTS-MSGS] ON FILE SELECTEDl change e.target ', $event.target);
+    console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files', $event.target.files);
+    this.uploadedFiles = $event.target.files[0];
+    console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
+    if (this.uploadedFiles) {
+      // const formData = new FormData();
+      // console.log( '[WS-REQUESTS-MSGS] uploadedFiles' ,  this.uploadedFiles)
+      // console.log( '[WS-REQUESTS-MSGS] uploadedFiles name ' ,  this.uploadedFiles.name)
+      // formData.append('file', this.uploadedFiles, this.uploadedFiles.name);
+
+      // console.log( '[WS-REQUESTS-MSGS] formData' ,  formData)
+      if (this.uploadedFiles.type.startsWith('image') && !this.uploadedFiles.type.includes('svg')) {
+        console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
+        this.type = 'image'
+        const reader = new FileReader()
+  
+        reader.onload = () => { // file is loaded
+          var img = new Image;
+          img.onload = () => { // image is loaded; sizes are available
+            console.log('img.width ', img.width, 'img.height ', img.height)
+            this.imgWidth = img.width;
+            this.imgHeight = img.height;
+          };
+          img.src = reader.result.toString(); // is the data URL because called with readAsDataURL
+          const uid = img.src.substring(img.src.length - 16)
+          console.log(`[WS-REQUESTS-MSGS] - upload uid `, uid);
+         
+          this.metadata = {
+            name: this.uploadedFiles.name,
+            type: this.uploadedFiles.type,
+            uid: uid,
+          }
+        };
+
+        reader.readAsDataURL($event.target.files[0])
+      }  else if (this.uploadedFiles.type.startsWith('image') && this.uploadedFiles.type.includes('svg')) {
+        this.type = 'image'
+  
+        console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file TYPE',this.uploadedFiles.type)
+        console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file ', this.uploadedFiles)
+   
+  
+        const reader = new FileReader()
+        const that = this
+        reader.addEventListener('load', () => {
+          var img = new Image;
+          img.onload = () => { // image is loaded; sizes are available
+            console.log('img.width ', img.width, 'img.height ', img.height)
+            this.imgWidth = img.width;
+            this.imgHeight = img.height;
+          };
+      
+           img.src = reader.result.toString()
+          //  console.log('FIREBASE-UPLOAD USE CASE SVG LoaderPreviewPage readAsDataURL img ',this.sanitizer.bypassSecurityTrustResourceUrl(img.src))
+          const uid = img.src.substring(img.src.length - 16)
+          console.log(`[WS-REQUESTS-MSGS] - upload uid `, uid);
+          this.metadata = {
+            name: this.uploadedFiles.name,
+            type: this.uploadedFiles.type,
+            uid: uid,
+          }
+  
+        },false)
+  
+      
+        reader.readAsDataURL($event.target.files[0])
+        
+      } else {
+        this.type = 'file'
+
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          const file = reader.result.toString()
+         console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success file',  file )
+         const uid = file.substring(file.length - 16)
+         console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success uid',  uid )
+         this.imgWidth = 0;
+         this.imgHeight = 0;
+         this.metadata = {
+          name: this.uploadedFiles.name,
+          type: this.uploadedFiles.type,
+          uid: uid,
+        }
+        }
+  
+        reader.readAsDataURL($event.target.files[0])
+
+
+
+
+      }
+      this.uploadImageService.uploadAttachment(this.currentUserID, this.uploadedFiles).then(downloadURL => {
+        console.log(`[WS-REQUESTS-MSGS] - upload downloadURL `, downloadURL);
+
+        this.metadata.src = downloadURL
+        this.metadata.width =  this.imgWidth,
+        this.metadata.height = this.imgHeight,
+        console.log(`[WS-REQUESTS-MSGS] - upload metadata `, this.metadata);
+
+      }).catch(error => {
+
+        console.error(`[WS-REQUESTS-MSGS] - upload Failed to upload file and get link `, error);
+
+
+      });
+    }
+  }
+
+
+
   sendChatMessage() {
     // console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
-    
+
     const requestclosedAt = moment(this.request['closed_at']);
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
     const currentTime = moment();
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - currentTime ', currentTime)
 
+  
 
     const daysDiff = currentTime.diff(requestclosedAt, 'd');
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - daysDiff ', daysDiff)
     if (this.request.status === 1000 && daysDiff > 10) {
-       this.presenModalMessageCouldNotBeSent();
+      this.presenModalMessageCouldNotBeSent();
     } else {
-      this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED)
-      .subscribe((msg) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
-      }, (error) => {
-        this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
 
-      }, () => {
-        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE * COMPLETE *');
-        this.chat_message = undefined;
-        this.sendMessageTexarea.nativeElement.style.height = null
-      });
+     
+
+      this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, this.chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata,  this.type )
+        .subscribe((msg) => {
+        
+          this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+        }, (error) => {
+          this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
+
+        }, () => {
+          this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE * COMPLETE *');
+          this.chat_message = undefined;
+          this.uploadedFiles = undefined;
+          this.metadata = undefined
+          this.type = undefined
+          this.sendMessageTexarea.nativeElement.style.height = null
+        });
     }
+
   }
+
+
 
 
   presenModalMessageCouldNotBeSent() {
@@ -4109,6 +4249,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     selectResponseTypeElem.blur();
   }
 
+
+  onSmartAssignmentOnOff($event) {
+    console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF REQUEST ', this.request)
+    console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF  $event.target ', $event.target.checked)
+
+    this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, $event.target.checked).subscribe((res) => {
+      console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF - RES ', res);
+    }, (error) => {
+      console.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF - ERROR ', error);
+
+    }, () => {
+      console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF - COMPLETE ');
+    });
+  }
 
 
 
