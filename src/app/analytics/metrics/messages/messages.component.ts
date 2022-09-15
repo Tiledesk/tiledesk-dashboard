@@ -120,7 +120,13 @@ export class MessagesComponent implements OnInit {
             })
 
           this.bots.forEach(bot => {
-            this.projectUserAndBotsArray.push({ id: 'bot_' + bot._id, name: bot.name + ' (bot)' })
+            this.logger.log('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - bot : ', bot);
+            let botprefix = ''
+            if (bot.type === "internal" ) {
+              botprefix = "bot_"
+            }
+
+            this.projectUserAndBotsArray.push({ id: botprefix + bot._id, name: bot.name + ' (bot)' })
           });
         }
 
@@ -178,7 +184,7 @@ export class MessagesComponent implements OnInit {
   }
 
   getMessagesByLastNDays(lastdays, senderID) {
-    this.logger.log("[ANALYTICS - MSGS] Lastdays: ", lastdays);
+  //  console.log("[ANALYTICS - MSGS] Lastdays: ", lastdays);
     
     this.subscription = this.analyticsService.getMessagesByDay(lastdays, senderID).subscribe((messagesByDay) => {
     //  console.log("[ANALYTICS - MSGS] »» MESSAGES BY DAY RESULT: ", messagesByDay)
@@ -189,7 +195,7 @@ export class MessagesComponent implements OnInit {
       }
 
       lastdays_initarray.reverse();
-    //  console.log("[ANALYTICS - MSGS] »» LASTDAYS MESSAGES - INIT ARRAY: ", lastdays_initarray)
+   
 
       const messagesByDay_series_array = [];
       const messagesByDay_labels_array = [];
@@ -201,7 +207,7 @@ export class MessagesComponent implements OnInit {
           messagesByDay_array.push({ 'count': messagesByDay[j]['count'], day: messagesByDay[j]['_id']['day'] + '/' + messagesByDay[j]['_id']['month'] + '/' + messagesByDay[j]['_id']['year'] })
         }
       }
-      // console.log('[ANALYTICS - MSGS] - MESSAGES BY DAY FORMATTED ', messagesByDay_array);
+      this.logger.log('[ANALYTICS - MSGS] - MESSAGES BY DAY FORMATTED ', messagesByDay_array);
 
       // MERGE lastdays_initarray & visitorsByDay_array
       const messagesByDay_final_array = lastdays_initarray.map(obj => messagesByDay_array.find(o => o.day === obj.day) || obj);
