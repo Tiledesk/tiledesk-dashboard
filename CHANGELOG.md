@@ -3,6 +3,9 @@
 
 ### 2.2.50-rc1
 - Disallows the ability to message for resolved conversations for more than 10 days on the conversation detail page
+- Add in the right sidebar on the conversation details page the ability to disable smart assignment (Convert to offline)
+- Fixes the bug: in Analytics> Metrics> Messages the graph is not populated when selecting a bot from the "Agent" combo box
+- Adds, on the conversation details page> chat section, the ability to upload files
 
 ### 2.2.49
 - Deploys in production
