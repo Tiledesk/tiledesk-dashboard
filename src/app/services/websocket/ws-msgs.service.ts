@@ -194,13 +194,14 @@ export class WsMsgsService {
   }
 
  
-
+    // replytypedid === 2 'Internal note'
     if (replytypedid === 2 && iscurrentuserjoined === true) {
       body['attributes'] = {
         "privateFor": requesterid,
         "subtype": 'private'
       }
     }
+    // replytypedid === 2 'Internal note'
     if (replytypedid === 2 && iscurrentuserjoined === false) {
       body['attributes'] = {
         "privateFor": requesterid,
@@ -208,7 +209,8 @@ export class WsMsgsService {
         "updateconversation": false,
       }
     }
-
+    
+   // replytypedid === 1 ->   'Public answer',
     if (replytypedid === 1 && iscurrentuserjoined === false) {
       body['attributes'] = {
         "updateconversation": false,

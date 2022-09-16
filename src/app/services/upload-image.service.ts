@@ -15,6 +15,8 @@ export class UploadImageService {
   public hasDeletedUserPhoto: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public hasUploadedLauncherLogo$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public hasdeletedLauncherLogo$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public uploadAttachment$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public attachmentDeleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public imageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   public uploadImageErrorMsg: string;
@@ -281,7 +283,7 @@ export class UploadImageService {
     const file_name = 'launcher.jpg';
     // Create a root reference
     const storageRef = firebase.storage().ref();
-  
+
     // const uploadTask = storageRef.child('public/images/' + projctid + '/' + file_name).put(file, file_metadata);
     const uploadTask = storageRef.child('profiles/' + projctid + '/' + file_name).put(file, file_metadata);
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
@@ -298,7 +300,7 @@ export class UploadImageService {
         this.logger.log('Upload is ' + progress + '% done');
         switch (uploadTask.snapshot.state) {
           case firebase.storage.TaskState.PAUSED: // or 'paused'
-          // console.log('Upload is paused');
+            // console.log('Upload is paused');
             break;
           case firebase.storage.TaskState.RUNNING: // or 'running'
             this.logger.log('Upload is running');
@@ -328,7 +330,7 @@ export class UploadImageService {
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
           // self.logger.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
           // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
-         self.hasUploadedLauncherLogo$.next(downloadURL);
+          self.hasUploadedLauncherLogo$.next(downloadURL);
         });
       }
     );
@@ -340,7 +342,7 @@ export class UploadImageService {
     const file_name_thumb = 'thumb_launcher.jpg';
     // Create a root reference
     const storageRef = firebase.storage().ref();
-  
+
     // const deleteCustomLauncherLogo = storageRef.child('public/images/' + projctid + '/' + file_name)
     // const deleteCustomLauncherLogoThumb = storageRef.child('public/images/' + projctid + '/' + file_name_thumb)
 
@@ -350,9 +352,9 @@ export class UploadImageService {
     // Delete the file launcher Logo
     // ------------------------------------
     deleteCustomLauncherLogo.delete().then((res) => {
-    //  console.log('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO RES', res)
+      //  console.log('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO RES', res)
 
-     this.hasdeletedLauncherLogo$.next(true);
+      this.hasdeletedLauncherLogo$.next(true);
     }).catch((error) => {
       // console.error('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO - ERROR ', error)
     });
@@ -386,42 +388,42 @@ export class UploadImageService {
     const that = this;
     const uid = this.createGuid();
     const urlImagesNodeFirebase = '/public/images/' + userId + '/' + uid + '/' + upload.name;
-    console.log('[FIREBASEUploadSERVICE] pushUpload ', urlImagesNodeFirebase, upload);
+    console.log('[FIREBASEUploadSERVICE] pushUpload ', urlImagesNodeFirebase, 'file ', upload);
 
     // Create a root reference
     const storageRef = firebase.storage().ref();
     console.log('[FIREBASEUploadSERVICE] storageRef', storageRef);
-    
+
     // Create a reference to 'mountains.jpg'
     const mountainsRef = storageRef.child(urlImagesNodeFirebase);
     console.log('[FIREBASEUploadSERVICE] mountainsRef ', mountainsRef);
- 
+
     // const metadata = {};
     const metadata = { name: upload.name, contentType: upload.type, contentDisposition: 'attachment; filename=' + upload.name };
     console.log('[FIREBASEUploadSERVICE] metadata ', metadata);
     let uploadTask = mountainsRef.put(upload, metadata);
-   
+
     return new Promise((resolve, reject) => {
       uploadTask.on('state_changed', function progress(snapshot) {
         // Observe state change events such as progress, pause, and resume
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log('[FIREBASEUploadSERVICE] Upload is ' + progress + '% done');
-        
+
         // ----------------------------------------------------------------------------------------------------------------------------------------------
         // BehaviorSubject publish the upload progress state - the subscriber is in ion-conversastion-detail.component.ts > listenToUploadFileProgress()
         // ----------------------------------------------------------------------------------------------------------------------------------------------
-      
-        // that.BSStateUpload.next({ upload: progress, type: upload.file.type });
-        
+
+        that.uploadAttachment$.next(progress);
+
         switch (snapshot.state) {
           case firebase.storage.TaskState.PAUSED: // or 'paused'
-          console.log('[FIREBASEUploadSERVICE] Upload is paused');
-            
+            console.log('[FIREBASEUploadSERVICE] Upload is paused');
+
             break;
           case firebase.storage.TaskState.RUNNING: // or 'running'
-          console.log('[FIREBASEUploadSERVICE] Upload is running');
-            
+            console.log('[FIREBASEUploadSERVICE] Upload is running');
+
             break;
         }
       }, function error(error) {
@@ -430,12 +432,28 @@ export class UploadImageService {
       }, function complete() {
         // Handle successful uploads on complete
         console.log('[FIREBASEUploadSERVICE] Upload is complete', upload);
-       
+
         resolve(uploadTask.snapshot.ref.getDownloadURL())
         // that.BSStateUpload.next({upload: upload});
 
       });
     })
+  }
+  // /public/images/608ad02d3a4dc000344ade17/3ea5c718-3b1c-4be9-b8f9-2daf19aeeb9a/gundam.png
+  removeUpladedAttachment(currentUserID, fileUID, filename) {
+
+    const storageRef = firebase.storage().ref();
+    var ref = storageRef.child('/public/images/' + currentUserID + '/' + fileUID + '/' + filename);
+
+    ref.delete().then(() => {
+      // File deleted successfully
+      console.log('[FIREBASEUploadSERVICE]  File deleted successfully ');
+      this.attachmentDeleted$.next(true)
+    }).catch((error) => {
+      // Uh-oh, an error occurred!
+      console.log('[FIREBASEUploadSERVICE]  Uh-oh, an error occurred! ', error);
+      this.attachmentDeleted$.next(false)
+    });
   }
 
 }

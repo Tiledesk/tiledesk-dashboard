@@ -459,14 +459,21 @@
                           [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
                           <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message" rows="1"
                             placeholder="Write your message" (keydown.enter)="onKeydownEnter($event)"
-                            (paste)="onPasteInSendMsg($event)" (ngModelChange)="onChangeTextInSendMsg($event)">
+                            (paste)="onPasteInSendMsg($event)"
+                            (ngModelChange)="onChangeTextInSendMsg($event)">  </textarea>
 
 
-
-                          </textarea>
-                          <span *ngIf="uploadedFiles">
-                            {{uploadedFiles?.name }}
-                          </span>
+                          <div class="chat-msg-attachement" *ngIf="uploadedFiles">
+                            <span *ngIf="showSpinnerAttachmentUplolad === true"> <i
+                                class="fa fa-spinner fa-spin"></i></span>
+                            {{uploadedFiles?.name }} ({{uploadedFiles?.formattedBytes }})
+                            <span *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="remove-attachment"
+                              (click)="removeAttachment(uploadedFiles?.downloadURL, uploadedFiles?.name)">
+                              <span class="material-icons">
+                                clear
+                              </span>
+                            </span>
+                          </div>
 
                         </div>
                       </div>
@@ -488,12 +495,15 @@
                             </ng-template>
                           </ng-select>
                         </div>
-                        <div class="col-xs-9 h-100 plr-0" style="    margin-top: -4px;  ">
+                        <div class="col-xs-9 h-100 plr-0" style="margin-top: -4px;">
 
 
                           <button class="btn btn-primary pull-right send-chat-msg-btn" (click)="sendChatMessage()"
-                            [disabled]="!chat_message || chat_message?.length === 0 " style="position: relative;top:12px;margin-left: 6px;">
-                            {{'Send' | translate}}
+                            [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
+                            <!-- {{'Send' | translate}} -->
+                            <span class="material-icons">
+                              send
+                            </span>
                           </button>
 
 
@@ -502,11 +512,7 @@
                             style="display: none;">
 
                           <div class="file-upload">
-
-                            <!-- {{fileName || "No file uploaded yet."}} -->
-
-                            <button class="btn btn-primary pull-right upload-btn" (click)="fileUpload.click()" style="    padding-left: 12px;
-                            padding-right: 12px; border-radius: 50%">
+                            <button class="btn btn-primary pull-right upload-btn" (click)="fileUpload.click()">
                               <span class="material-icons">
                                 attach_file
                               </span>
@@ -2635,23 +2641,8 @@
                   <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
                     <div class="followers-container" style="padding-left: 15px;
                     padding-right: 15px;margin-bottom: 6px;">
-                      <!-- *ngFor="let follower of followers" -->
+
                       <div class="followers">
-
-                        <!-- {{ follower.fullname }} -->
-
-                        <!-- addTagText="Create New"  -->
-                        <!-- [addTag]="CreateNew" -->
-                        <!-- <ng-select
-                         [items]="projectTeammates"
-                        bindLabel="fullname"
-                        placeholder="Search teammate"
-                        appendTo="body"
-                        [clearable]="false"
-                        [multiple]="true" 
-                        (add)="addFollower($event)" >
-                       </ng-select> -->
-
 
                         <ng-select [items]="projectTeammates" bindLabel="label" [multiple]="true"
                           placeholder="Search teammate" [(ngModel)]="selectedFollowers" (change)="getValues($event)"
@@ -2659,29 +2650,22 @@
                           (clear)="removeAllFollowers($event)">
                         </ng-select>
 
-
-                        <!-- <ng-select
-                       bindLabel="fullname"
-                       placeholder="Search teammate"
-                       appendTo="body"
-                       multiple="true"
-                       [searchable]="true" 
-                       [clearable]="true"
-                       [(ngModel)]="selected"
-                       (change)="getValues()">
-                       <ng-option [value]="item.id_user._id" *ngFor="let item of projectTeammates">
-                           <!- - <img src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{item.id_user._id}}%2Fphoto.jpg?alt=media" width="20px" height="20px"/> - ->
-                           <!- - <img src="https://www.gravatar.com/avatar/b0d8c6e5ea589e6fc3d3e08afb1873bb?d=retro&r=g&s=30%202x" width="20px" height="20px"/> - ->
-                           {{item.fullname}}
-                       </ng-option>
-                       <ng-option *ngIf="hasClickedFollow">
-{{ logged_user_fullname }}
-                       </ng-option> 
-                       
-           </ng-select> -->
-
-
-
+                        <div class="convert-to-offline-btn-wpr" style="margin-top:8px">
+                          <span *ngIf="smartAssignmentEnabled === true" class="convert-to-offline-btn" (click)="smartAssignmentOff()">
+                            Convert to offline
+                          </span>
+                          <span *ngIf="smartAssignmentEnabled === false" class="convert-to-offline-btn-disabled">
+                            Convert to offline
+                          </span>
+                          <span matTooltipClass="custom-mat-tooltip"
+                            matTooltip="Select this option to disable automatic reassignment for this conversation. It will be treated like a ticket that will allow you to take his time to reply" #tooltip="matTooltip"
+                            matTooltipPosition='right' matTooltipHideDelay="100">
+                            <i class="material-icons"
+                              style=" font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer">
+                              help_outline
+                            </i>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -3000,7 +2984,7 @@
                 <!-- ------------------------------------------------------ -->
                 <!-- Smart Assignment  -->
                 <!-- ------------------------------------------------------ -->
-                <div id="rating" class="row">
+                <!-- <div id="enable-smart-assignment" class="row">
                   <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;">
                     <p class="row-header">
                       <span style="vertical-align: middle">
@@ -3018,7 +3002,7 @@
                     </div>
 
                   </div>
-                </div>
+                </div> -->
 
                 <!--  ---------------------------------------------------------------- -->
                 <!--  @ Attributes accordion -->

@@ -15,6 +15,7 @@ export class UploadImageNativeService {
   public botImageWasUploaded_Native: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public botImageDownloadUrl_Native: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public hasDeletedUserPhoto: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public uploadAttachment$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   BASE_URL: string
   TOKEN: string;
@@ -53,7 +54,7 @@ export class UploadImageNativeService {
 
   // https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fthumbnails_200_200-photo.jpg
   // : Promise<any>
-  
+
   uploadUserPhotoProfile_Native(file: File): Observable<any> {
     this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD USER PHOTO PROFILE - file ', file)
     const headers = new HttpHeaders({
@@ -77,7 +78,7 @@ export class UploadImageNativeService {
         // console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES ', res);
         if (res && res.message) {
           this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES MSG ', res.message);
-          
+
           if (res.message === 'Image uploded successfully') {
             this.userImageWasUploaded_Native.next(true);
           } else {
@@ -153,7 +154,7 @@ export class UploadImageNativeService {
     // const url = "https://tiledesk-server-pre.herokuapp.com/images/users/?path=uploads%2Fusers%2F" + id + "%2Fimages%2Fphoto.jpg"
     const BASE_URL_IMAGES = this.BASE_URL + 'images'
     return this.http
-      .delete(BASE_URL_IMAGES +"/users/?path=uploads/users/"+ id + "/images/photo.jpg" , requestOptions)
+      .delete(BASE_URL_IMAGES + "/users/?path=uploads/users/" + id + "/images/photo.jpg", requestOptions)
       .subscribe((res: any) => {
         this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] DELETE PHOTO PROFILE - RES ', res);
 
@@ -194,7 +195,7 @@ export class UploadImageNativeService {
         this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD LAUNCHER LOGO - RES ', res);
         if (res && res.message) {
           // console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD LAUNCHER LOGO - RES MSG ', res.message);
-          
+
           if (res.message === 'Image uploded successfully') {
             // this.userImageWasUploaded_Native.next(true);
           } else {
@@ -209,6 +210,54 @@ export class UploadImageNativeService {
         return downloadURL
       }))
   }
+
+  uploadAttachment_Native(upload): Promise<any> {
+  //  console.log('[NATIVE UPLOAD] - upload new image/file ... upload', upload)
+    const headers = new HttpHeaders({
+      Authorization: this.TOKEN,
+      //'Content-Type': 'multipart/form-data',
+    });
+    const requestOptions = { headers: headers };
+    const formData = new FormData();
+    formData.append('file', upload);
+
+    const that = this;
+    if ((upload.type.startsWith('image') && (!upload.type.includes('svg')))) {
+      // console.log('[NATIVE UPLOAD] - upload new image')
+      //USE IMAGE API
+      const url = this.BASE_URL + 'images' + '/users'
+      return new Promise((resolve, reject) => {
+        that.uploadAttachment$.next(0);
+        that.http.post(url, formData, requestOptions).subscribe(data => {
+          const downloadURL = this.BASE_URL + 'images' + '?path=' + data['filename'];
+          resolve(downloadURL)
+          that.uploadAttachment$.next(100);
+        }, (error) => {
+          reject(error)
+        });
+      });
+    } else {
+      // console.log('[NATIVE UPLOAD] - upload new file')
+      //USE FILE API
+      const url = this.BASE_URL + 'files' + '/users'
+      return new Promise((resolve, reject) => {
+        that.uploadAttachment$.next(0);
+        that.http.post(url, formData, requestOptions).subscribe(data => {
+          const downloadURL = this.BASE_URL + 'files' + '?path=' + encodeURI(data['filename']);
+          resolve(downloadURL)
+          that.uploadAttachment$.next(100);
+          // that.BSStateUpload.next({upload: upload});
+        }, (error) => {
+          this.logger.error('[NATIVE UPLOAD] - ERROR upload new file ', error)
+          reject(error)
+        });
+      });
+    }
+
+  }
+
+
+
 
 
 }
