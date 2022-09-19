@@ -2163,6 +2163,7 @@
     "TheConversation": "Әңгіме",
     "WasResolvedBy": "арқылы шешілді болды",
     "TheMessageCouldNotBeSent":"Он күннен астам уақыт бұрын шешілген сөйлесулер үшін хабар жіберу мүмкін емес",
+    "ClickToViewTheDetailsOfTheContact": "Контакт мәліметтерін көру үшін басыңыз",
     "CHAT_IONIC": {
         "LABEL_TU": "сен: ",
         "LABEL_MSG_PUSH_START_CHAT": "Әзірге әңгіме жоқ",

@@ -2163,6 +2163,7 @@
     "TheConversation": "Розмову",
     "WasResolvedBy": "було вирішено",
     "TheMessageCouldNotBeSent":"Неможливо надсилати повідомлення для розмов, які були вирішені більше десяти днів тому",
+    "ClickToViewTheDetailsOfTheContact": "Натисніть, щоб переглянути деталі контакту",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

@@ -2163,6 +2163,7 @@
     "TheConversation": "La conversación",
     "WasResolvedBy": "fue resuelta por",
     "TheMessageCouldNotBeSent":"No es posible enviar mensajes para conversaciones que se resolvieron hace más de diez días.",
+    "ClickToViewTheDetailsOfTheContact": "Haga clic para ver los detalles del contacto",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

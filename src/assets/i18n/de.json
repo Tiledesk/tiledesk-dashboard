@@ -2162,5 +2162,6 @@
 	"AddTeammatesAsFollowers": "Fügen Sie Teamkollegen als Follower hinzu, um sie über den Fortschritt der Unterhaltung auf dem Laufenden zu halten",
 	"TheConversation": "Konversation",
 	"WasResolvedBy": "wurde gelöst von",
-	"TheMessageCouldNotBeSent":"Es ist nicht möglich, Nachrichten für Konversationen zu senden, die vor mehr als zehn Tagen aufgelöst wurden"
+	"TheMessageCouldNotBeSent":"Es ist nicht möglich, Nachrichten für Konversationen zu senden, die vor mehr als zehn Tagen aufgelöst wurden",
+	"ClickToViewTheDetailsOfTheContact": "Klicken Sie hier, um die Details des Kontakts anzuzeigen"
 }

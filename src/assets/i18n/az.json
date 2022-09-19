@@ -2163,6 +2163,7 @@
     "TheConversation": "Söhbət",
 	"WasResolvedBy": "tərəfindən həll edildi",
     "TheMessageCouldNotBeSent":"On gündən çox əvvəl həll edilmiş söhbətlər üçün mesaj göndərmək mümkün deyil",
+    "ClickToViewTheDetailsOfTheContact": "Əlaqə təfərrüatlarına baxmaq üçün klikləyin",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",
