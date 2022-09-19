@@ -1200,8 +1200,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
 
-          if (this.request.smartAssignmentEnabled) {
-            this.smartAssignmentEnabled = this.request.smartAssignmentEnabled
+          if (this.request.smartAssignment) {
+            this.smartAssignmentEnabled = this.request.smartAssignment
           }
 
           if (this.request.subject) {
@@ -4373,7 +4373,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   //   });
   // }
   smartAssignmentOff() {
-    this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF REQUEST ', this.request)
+    // console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF REQUEST - RES', this.request)
 
 
     this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {

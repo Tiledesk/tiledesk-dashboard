@@ -271,7 +271,7 @@ export class WsMsgsService {
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
-
+                  
     // const body = {'smartAssignmentEnabled': smartassigment };
     const body = { 'smartAssignment': smartassigment };
 
