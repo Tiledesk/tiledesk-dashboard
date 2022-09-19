@@ -470,11 +470,9 @@
 
 
             <div class="row">
-              <!-- || botType !== 'native' -->
+            
               <label *ngIf="botType !== 'dialogflow'" class="col-xs-2"></label>
-              <!-- [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" -->
-              <!-- [ngClass]="{'col-xs-8':botType !== 'native',  'col-xs-12': botType === 'native' , 'col-sm-10': botType === 'native', 'col-md-10': botType === 'native', 'col-lg-10': botType === 'native'}" -->
-              <!-- [ngStyle]="{'padding-right':botType === 'dialogflow' ? '27px' : '15px' }" -->
+     
               <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                 <button id="update-bot-btn" style="margin-top: 12px;margin-bottom: 5px;" #editbotbtn
                   class="btn btn-primary  pull-right" (click)="editBot()"
