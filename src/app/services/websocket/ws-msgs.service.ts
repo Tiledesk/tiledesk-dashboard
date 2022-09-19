@@ -175,8 +175,8 @@ export class WsMsgsService {
 
   public sendChatMessage(projectid: string, convid: string, chatmsg: string, replytypedid: number, requesterid: string, iscurrentuserjoined: boolean, msgmetadata: any, msgTipe: string) {
     // console.log('[WS-MSGS-SERV] replytypedid ', replytypedid ) 
-    console.log('[WS-MSGS-SERV] msgmetadata ', msgmetadata)
-    console.log('[WS-MSGS-SERV] msgTipe ', msgTipe)
+    this.logger.log('[WS-MSGS-SERV] msgmetadata ', msgmetadata)
+    this.logger.log('[WS-MSGS-SERV] msgTipe ', msgTipe)
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -185,15 +185,15 @@ export class WsMsgsService {
     // const url = "https://api.tiledesk.com/v2/5b55e806c93dde00143163dd/requests/support-group-1234/messages;" 
     const url = this.SERVER_BASE_PATH + projectid + '/requests/' + convid + '/messages'
     this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL', this.SERVER_BASE_PATH)
-  let body = {}
-  
-  if (!msgmetadata) {
-    body = { 'text': chatmsg }
-  } else  if (msgmetadata)  {
-    body = { 'text': chatmsg, 'metadata': msgmetadata, 'type':msgTipe }
-  }
+    let body = {}
 
- 
+    if (!msgmetadata) {
+      body = { 'text': chatmsg }
+    } else if (msgmetadata) {
+      body = { 'text': chatmsg, 'metadata': msgmetadata, 'type': msgTipe }
+    }
+
+
     // replytypedid === 2 'Internal note'
     if (replytypedid === 2 && iscurrentuserjoined === true) {
       body['attributes'] = {
@@ -209,15 +209,15 @@ export class WsMsgsService {
         "updateconversation": false,
       }
     }
-    
-   // replytypedid === 1 ->   'Public answer',
+
+    // replytypedid === 1 ->   'Public answer',
     if (replytypedid === 1 && iscurrentuserjoined === false) {
       body['attributes'] = {
         "updateconversation": false,
       }
     }
 
-    console.log('[WS-MSGS-SERV] SEND CHAT MSG URL BODY ', body);
+    this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL BODY ', body);
     return this.http
       .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
@@ -264,7 +264,7 @@ export class WsMsgsService {
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
 
-    console.log('[WS-MSGS-SERV] - UPDATE CONV SMART ASSIGMENT - URL', url);
+    this.logger.log('[WS-MSGS-SERV] - UPDATE CONV SMART ASSIGMENT - URL', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -275,7 +275,7 @@ export class WsMsgsService {
     // const body = {'smartAssignmentEnabled': smartassigment };
     const body = { 'smartAssignment': smartassigment };
 
-    console.log('[WS-MSGS-SERV] - UPDATE CONV SMART ASSIGMENT - BODY', body);
+    this.logger.log('[WS-MSGS-SERV] - UPDATE CONV SMART ASSIGMENT - BODY', body);
 
     return this.http
       .patch(url, JSON.stringify(body), options)

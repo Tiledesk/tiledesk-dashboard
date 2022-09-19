@@ -464,8 +464,15 @@
 
 
                           <div class="chat-msg-attachement" *ngIf="uploadedFiles">
-                            <span *ngIf="showSpinnerAttachmentUplolad === true"> <i
-                                class="fa fa-spinner fa-spin"></i></span>
+                            <span *ngIf="showSpinnerAttachmentUplolad === true">
+                              <i class="fa fa-spinner fa-spin"></i>
+                            </span>
+                            <span *ngIf="uploadedFiles?.type.startsWith('image')">
+                              <i class="fa fa-file-image-o" aria-hidden="true"></i>
+                            </span>
+                            <span *ngIf="!uploadedFiles?.type.startsWith('image')">
+                              <i class="fa fa-file-o" aria-hidden="true"></i>
+                            </span>
                             {{uploadedFiles?.name }} ({{uploadedFiles?.formattedBytes }})
                             <span *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="remove-attachment"
                               (click)="removeAttachment(uploadedFiles?.downloadURL, uploadedFiles?.name)">
@@ -518,8 +525,6 @@
                               </span>
                             </button>
                           </div>
-
-
                         </div>
                       </div>
                     </div>
@@ -2650,16 +2655,18 @@
                           (clear)="removeAllFollowers($event)">
                         </ng-select>
 
-                        <div class="convert-to-offline-btn-wpr" style="margin-top:8px">
-                          <span *ngIf="smartAssignmentEnabled === true" class="convert-to-offline-btn" (click)="smartAssignmentOff()">
+                        <div *ngIf="request?.channel?.name === 'chat21'" class="convert-to-offline-btn-wpr"
+                          style="margin-top:8px">
+                          <span *ngIf="smartAssignmentEnabled === true" class="convert-to-offline-btn"
+                            (click)="smartAssignmentOff()">
                             Convert to offline
                           </span>
                           <span *ngIf="smartAssignmentEnabled === false" class="convert-to-offline-btn-disabled">
                             Convert to offline
                           </span>
                           <span matTooltipClass="custom-mat-tooltip"
-                            matTooltip="Select this option to disable automatic reassignment for this conversation. It will be treated like a ticket that will allow you to take his time to reply" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
+                            matTooltip="Select this option to disable automatic reassignment for this conversation. It will be treated like a ticket that will allow you to take his time to reply"
+                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                             <i class="material-icons"
                               style=" font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer">
                               help_outline

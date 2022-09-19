@@ -1194,7 +1194,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -4052,41 +4052,36 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const upload_btn = <HTMLElement>document.querySelector('.upload-btn');
     upload_btn.blur();
 
-    console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED - event ', $event);
-    console.log('[WS-REQUESTS-MSGS] ON FILE SELECTEDl change e.target ', $event.target);
-    console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files', $event.target.files);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED - event ', $event);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTEDl change e.target ', $event.target);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files', $event.target.files);
     this.uploadedFiles = $event.target.files[0];
-    console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
     if (this.uploadedFiles) {
 
       const uploadedFilesSize = this.uploadedFiles.size
 
       const formattedBytes = this.formatBytes(uploadedFilesSize, 2)
       this.uploadedFiles['formattedBytes'] = formattedBytes
-      console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED formattedBytes', formattedBytes);
+      this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED formattedBytes', formattedBytes);
 
-      console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFilesSize', uploadedFilesSize);
-      // const formData = new FormData();
-      // console.log( '[WS-REQUESTS-MSGS] uploadedFiles' ,  this.uploadedFiles)
-      // console.log( '[WS-REQUESTS-MSGS] uploadedFiles name ' ,  this.uploadedFiles.name)
-      // formData.append('file', this.uploadedFiles, this.uploadedFiles.name);
+      this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFilesSize', uploadedFilesSize);
 
-      // console.log( '[WS-REQUESTS-MSGS] formData' ,  formData)
       if (this.uploadedFiles.type.startsWith('image') && !this.uploadedFiles.type.includes('svg')) {
-        console.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
+        this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
         this.type = 'image'
         const reader = new FileReader()
 
         reader.onload = () => { // file is loaded
           var img = new Image;
           img.onload = () => { // image is loaded; sizes are available
-            console.log('img.width ', img.width, 'img.height ', img.height)
+            this.logger.log('img.width ', img.width, 'img.height ', img.height)
             this.imgWidth = img.width;
             this.imgHeight = img.height;
           };
           img.src = reader.result.toString(); // is the data URL because called with readAsDataURL
           const uid = img.src.substring(img.src.length - 16)
-          console.log(`[WS-REQUESTS-MSGS] - upload uid `, uid);
+          this.logger.log(`[WS-REQUESTS-MSGS] - upload uid `, uid);
 
           this.metadata = {
             name: this.uploadedFiles.name,
@@ -4099,8 +4094,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       } else if (this.uploadedFiles.type.startsWith('image') && this.uploadedFiles.type.includes('svg')) {
         this.type = 'image'
 
-        console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file TYPE', this.uploadedFiles.type)
-        console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file ', this.uploadedFiles)
+        this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file TYPE', this.uploadedFiles.type)
+        this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file ', this.uploadedFiles)
 
 
         const reader = new FileReader()
@@ -4108,15 +4103,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         reader.addEventListener('load', () => {
           var img = new Image;
           img.onload = () => { // image is loaded; sizes are available
-            console.log('img.width ', img.width, 'img.height ', img.height)
+            this.logger.log('img.width ', img.width, 'img.height ', img.height)
             this.imgWidth = img.width;
             this.imgHeight = img.height;
           };
 
-          img.src = reader.result.toString()
-          //  console.log('FIREBASE-UPLOAD USE CASE SVG LoaderPreviewPage readAsDataURL img ',this.sanitizer.bypassSecurityTrustResourceUrl(img.src))
+          img.src = reader.result.toString();
           const uid = img.src.substring(img.src.length - 16)
-          console.log(`[WS-REQUESTS-MSGS] - upload uid `, uid);
+          this.logger.log(`[WS-REQUESTS-MSGS] - upload uid `, uid);
           this.metadata = {
             name: this.uploadedFiles.name,
             type: this.uploadedFiles.type,
@@ -4130,13 +4124,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       } else {
         this.type = 'file'
-        // console.log('xxxxxxx' , $event.target.files[0]) 
         const reader = new FileReader()
         reader.onloadend = () => {
           const file = reader.result.toString()
-          console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success file', file)
+          this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success file', file)
           const uid = file.substring(file.length - 16)
-          console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success uid', uid)
+          this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success uid', uid)
           this.imgWidth = 110;
           this.imgHeight = 110;
           this.metadata = {
@@ -4150,7 +4143,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
         this.uploadImageService.uploadAttachment(this.currentUserID, this.uploadedFiles).then(downloadURL => {
-          console.log(`[WS-REQUESTS-MSGS] - upload downloadURL `, downloadURL);
+          this.logger.log(`[WS-REQUESTS-MSGS] - upload downloadURL `, downloadURL);
 
           if (downloadURL) {
             this.existAnAttacment = true
@@ -4166,12 +4159,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         }).catch(error => {
 
-          console.error(`[WS-REQUESTS-MSGS] - upload Failed to upload file and get link `, error);
+          this.logger.error(`[WS-REQUESTS-MSGS] - upload Failed to upload file and get link `, error);
         });
       }
       else {
         this.uploadImageNativeService.uploadAttachment_Native(this.uploadedFiles).then(downloadURL => {
-          console.log(`[WS-REQUESTS-MSGS] - upload native downloadURL `, downloadURL);
+          this.logger.log(`[WS-REQUESTS-MSGS] - upload native downloadURL `, downloadURL);
 
           if (downloadURL) {
             this.existAnAttacment = true
@@ -4181,13 +4174,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.metadata.src = downloadURL
           this.metadata.width = this.imgWidth,
             this.metadata.height = this.imgHeight,
-            console.log(`[WS-REQUESTS-MSGS] - upload native metadata `, this.metadata);
+            this.logger.log(`[WS-REQUESTS-MSGS] - upload native metadata `, this.metadata);
 
           this.fileUpload.nativeElement.value = '';
 
         }).catch(error => {
 
-          console.error(`[WS-REQUESTS-MSGS] - upload native Failed to upload file and get link `, error);
+          this.logger.error(`[WS-REQUESTS-MSGS] - upload native Failed to upload file and get link `, error);
         });
 
       }
@@ -4195,14 +4188,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   removeAttachment(downloadURL: string, filename: string) {
-    console.log(`[WS-REQUESTS-MSGS] - Remove Attachment filename`, filename);
-    console.log(`[WS-REQUESTS-MSGS] - Remove Attachment downloadURL`, downloadURL);
+    this.logger.log(`[WS-REQUESTS-MSGS] - Remove Attachment filename`, filename);
+    this.logger.log(`[WS-REQUESTS-MSGS] - Remove Attachment downloadURL`, downloadURL);
     const downloadURLSegment = downloadURL.split('/');
-    console.log(`[WS-REQUESTS-MSGS] - Remove Attachment downloadURLSegment`, downloadURLSegment);
+    this.logger.log(`[WS-REQUESTS-MSGS] - Remove Attachment downloadURLSegment`, downloadURLSegment);
     const pushUpload = downloadURLSegment[7]
-    console.log(`[WS-REQUESTS-MSGS] - Remove Attachment pushUpload`, pushUpload);
+    this.logger.log(`[WS-REQUESTS-MSGS] - Remove Attachment pushUpload`, pushUpload);
     const pushUploadSegment = pushUpload.split('%2F');
-    console.log(`[WS-REQUESTS-MSGS] - Remove Attachment pushUploadSegment`, pushUploadSegment);
+    this.logger.log(`[WS-REQUESTS-MSGS] - Remove Attachment pushUploadSegment`, pushUploadSegment);
     const fileUID = pushUploadSegment[3];
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.removeUpladedAttachment(this.currentUserID, fileUID, filename)
@@ -4213,7 +4206,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   listenToUpladAttachmentRemoved() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.attachmentDeleted$.subscribe((attachementDeleted) => {
-        console.log(`[WS-REQUESTS-MSGS] - Remove Attachment attachementDeleted`, attachementDeleted);
+        this.logger.log(`[WS-REQUESTS-MSGS] - Remove Attachment attachementDeleted`, attachementDeleted);
         if (attachementDeleted === true) {
           this.uploadedFiles = undefined;
           this.metadata = undefined
@@ -4228,7 +4221,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   listenToUpladAttachmentProgress() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.uploadAttachment$.subscribe((progress) => {
-        console.log('[WS-REQUESTS-MSGS UPLOADING ATTACMENT %  ', progress, '(usecase Firebase)');
+        this.logger.log('[WS-REQUESTS-MSGS UPLOADING ATTACMENT %  ', progress, '(usecase Firebase)');
         if (progress !== null && progress !== 100) {
           this.showSpinnerAttachmentUplolad = true
         }
@@ -4238,7 +4231,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
     } else {
       this.uploadImageNativeService.uploadAttachment$.subscribe((progress) => {
-        console.log('[WS-REQUESTS-MSGS UPLOADING ATTACMENT %  ', progress, '(usecase native)');
+        this.logger.log('[WS-REQUESTS-MSGS UPLOADING ATTACMENT %  ', progress, '(usecase native)');
         if (progress !== null && progress !== 100) {
           this.showSpinnerAttachmentUplolad = true
         }
@@ -4260,16 +4253,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const requestclosedAt = moment(this.request['closed_at']);
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
     const currentTime = moment();
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - currentTime ', currentTime)
-
-
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - currentTime ', currentTime);
 
     const daysDiff = currentTime.diff(requestclosedAt, 'd');
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - daysDiff ', daysDiff)
     if (this.request.status === 1000 && daysDiff > 10) {
       this.presenModalMessageCouldNotBeSent();
     } else {
-      console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
       let _chat_message = ''
       if (this.type !== 'file') {
         _chat_message = this.chat_message
@@ -4381,19 +4372,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   //     console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF - COMPLETE ');
   //   });
   // }
-  smartAssignmentOff(){
-      console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF REQUEST ', this.request)
-     
-  
-      this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
-        console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
-      }, (error) => {
-        console.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF - ERROR ', error);
-  
-      }, () => {
-        console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF - COMPLETE ');
-      });
-    }
+  smartAssignmentOff() {
+    this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF REQUEST ', this.request)
+
+
+    this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
+      this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
+    }, (error) => {
+      this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
+
+    }, () => {
+      this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
+    });
+  }
 
 
 
