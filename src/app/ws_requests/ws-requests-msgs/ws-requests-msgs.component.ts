@@ -4153,7 +4153,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.metadata.src = downloadURL
           this.metadata.width = this.imgWidth,
             this.metadata.height = this.imgHeight,
-            console.log(`[WS-REQUESTS-MSGS] - upload metadata `, this.metadata);
+            // console.log(`[WS-REQUESTS-MSGS] - upload metadata `, this.metadata);
 
           this.fileUpload.nativeElement.value = '';
 

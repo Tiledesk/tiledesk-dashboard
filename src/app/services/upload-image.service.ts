@@ -384,23 +384,23 @@ export class UploadImageService {
   }
 
   public uploadAttachment(userId: string, upload): Promise<any> {
-    console.log('[FIREBASEUploadSERVICE] upload ', upload);
+    // console.log('[FIREBASEUploadSERVICE] upload ', upload);
     const that = this;
     const uid = this.createGuid();
     const urlImagesNodeFirebase = '/public/images/' + userId + '/' + uid + '/' + upload.name;
-    console.log('[FIREBASEUploadSERVICE] pushUpload ', urlImagesNodeFirebase, 'file ', upload);
+    // console.log('[FIREBASEUploadSERVICE] pushUpload ', urlImagesNodeFirebase, 'file ', upload);
 
     // Create a root reference
     const storageRef = firebase.storage().ref();
-    console.log('[FIREBASEUploadSERVICE] storageRef', storageRef);
+    // console.log('[FIREBASEUploadSERVICE] storageRef', storageRef);
 
     // Create a reference to 'mountains.jpg'
     const mountainsRef = storageRef.child(urlImagesNodeFirebase);
-    console.log('[FIREBASEUploadSERVICE] mountainsRef ', mountainsRef);
+    // console.log('[FIREBASEUploadSERVICE] mountainsRef ', mountainsRef);
 
     // const metadata = {};
     const metadata = { name: upload.name, contentType: upload.type, contentDisposition: 'attachment; filename=' + upload.name };
-    console.log('[FIREBASEUploadSERVICE] metadata ', metadata);
+    // console.log('[FIREBASEUploadSERVICE] metadata ', metadata);
     let uploadTask = mountainsRef.put(upload, metadata);
 
     return new Promise((resolve, reject) => {
@@ -408,21 +408,20 @@ export class UploadImageService {
         // Observe state change events such as progress, pause, and resume
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('[FIREBASEUploadSERVICE] Upload is ' + progress + '% done');
+        // console.log('[FIREBASEUploadSERVICE] Upload is ' + progress + '% done');
 
         // ----------------------------------------------------------------------------------------------------------------------------------------------
         // BehaviorSubject publish the upload progress state - the subscriber is in ion-conversastion-detail.component.ts > listenToUploadFileProgress()
         // ----------------------------------------------------------------------------------------------------------------------------------------------
-
         that.uploadAttachment$.next(progress);
 
         switch (snapshot.state) {
           case firebase.storage.TaskState.PAUSED: // or 'paused'
-            console.log('[FIREBASEUploadSERVICE] Upload is paused');
+            // console.log('[FIREBASEUploadSERVICE] Upload is paused');
 
             break;
           case firebase.storage.TaskState.RUNNING: // or 'running'
-            console.log('[FIREBASEUploadSERVICE] Upload is running');
+            // console.log('[FIREBASEUploadSERVICE] Upload is running');
 
             break;
         }
@@ -431,7 +430,7 @@ export class UploadImageService {
         reject(error)
       }, function complete() {
         // Handle successful uploads on complete
-        console.log('[FIREBASEUploadSERVICE] Upload is complete', upload);
+        // console.log('[FIREBASEUploadSERVICE] Upload is complete', upload);
 
         resolve(uploadTask.snapshot.ref.getDownloadURL())
         // that.BSStateUpload.next({upload: upload});
@@ -441,17 +440,16 @@ export class UploadImageService {
   }
   // /public/images/608ad02d3a4dc000344ade17/3ea5c718-3b1c-4be9-b8f9-2daf19aeeb9a/gundam.png
   removeUpladedAttachment(currentUserID, fileUID, filename) {
-
     const storageRef = firebase.storage().ref();
     var ref = storageRef.child('/public/images/' + currentUserID + '/' + fileUID + '/' + filename);
 
     ref.delete().then(() => {
       // File deleted successfully
-      console.log('[FIREBASEUploadSERVICE]  File deleted successfully ');
+      // console.log('[FIREBASEUploadSERVICE]  File deleted successfully ');
       this.attachmentDeleted$.next(true)
     }).catch((error) => {
       // Uh-oh, an error occurred!
-      console.log('[FIREBASEUploadSERVICE]  Uh-oh, an error occurred! ', error);
+      // console.log('[FIREBASEUploadSERVICE]  Uh-oh, an error occurred! ', error);
       this.attachmentDeleted$.next(false)
     });
   }
