@@ -28,6 +28,7 @@ export class UsersService {
 
   wsService: WebSocketJs;
   public user_is_available_bs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public projectUser_bs: BehaviorSubject<any> = new BehaviorSubject<any>('');
   public user_is_busy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public project_user_id_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public project_user_role_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
@@ -535,7 +536,7 @@ export class UsersService {
     this.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
       // this.logger.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID ', this.project_id);
       this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - CURRENT USE ID ', this.currentUserId);
-      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ', projectUser);
+      console.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ', projectUser);
       this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER LENGTH', projectUser.length);
       if ((projectUser) && (projectUser.length !== 0)) {
         this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ID ', projectUser[0]._id)
@@ -543,7 +544,7 @@ export class UsersService {
         // this.user_is_available_bs = projectUser.user_available;
 
         if (projectUser[0].user_available !== undefined) {
-          this.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
+          this.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
         }
 
         // ADDED 21 AGO
@@ -681,13 +682,15 @@ export class UsersService {
    * @param user_available 
    * @param user_isbusy 
    */
-  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean) {
-    this.logger.log('[USER-SERV] - PUBLISH PROJECT-USER-ID ', projectUser_id);
-    this.logger.log('[USER-SERV] - PUBLISH USER AVAILABLE ', user_available);
-    this.logger.log('[USER-SERV] - PUBLISH USER IS BUSY ', user_isbusy);
+  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean, projctuser: any) {
+    console.log('[USER-SERV] - PUBLISH PROJECT-USER-ID ', projectUser_id);
+    console.log('[USER-SERV] - PUBLISH USER AVAILABLE ', user_available);
+    console.log('[USER-SERV] - PUBLISH USER IS BUSY ', user_isbusy);
+    console.log('[USER-SERV] - PUBLISH P-U', projctuser);
 
     this.project_user_id_bs.next(projectUser_id);
     this.user_is_available_bs.next(user_available);
+    this.projectUser_bs.next(projctuser);
     this.user_is_busy$.next(user_isbusy);
   }
 
@@ -877,7 +880,7 @@ export class UsersService {
    * @param user_is_available 
    * @returns 
    */
-  public updateCurrentUserAvailability(projectId: string, user_is_available: boolean) {
+  public updateCurrentUserAvailability(projectId: string, user_is_available: boolean, profilestatus: any) {
 
     let url = this.SERVER_BASE_PATH + projectId + '/project_users/';
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY (PUT) URL ', url);
@@ -888,8 +891,12 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'user_available': user_is_available };
-    this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY - BODY ', body);
+    // let body = {}
+    // if (user_is_available === true || user_is_available === false ) {
+    const  body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
+    // }
+
+    console.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY - BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
@@ -1011,7 +1018,7 @@ export class UsersService {
           this.logger.log('[USER-SERV] - UPDATED USER + token (before to set in storage) ', user)
 
           this.createUserAvatarAndPublishUpdatedUser(user)
-    
+
 
         } else {
           callback('error');
@@ -1040,9 +1047,9 @@ export class UsersService {
       user['fullname_initial'] = 'N/A'
       user['fillColour'] = 'rgb(98, 100, 167)'
     }
-      /* PUBLISH THE UPDATED USER CURRENT USER */
-      this.auth.publishUpdatedUser(user)
-}
+    /* PUBLISH THE UPDATED USER CURRENT USER */
+    this.auth.publishUpdatedUser(user)
+  }
 
   /**
    * CHANGE PSW

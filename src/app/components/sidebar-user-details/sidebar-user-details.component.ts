@@ -45,6 +45,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   imageUrl: any;
 
   IS_AVAILABLE: boolean;
+  PROFILE_STATUS: string;
   IS_BUSY: boolean;
   USER_ROLE: string;
   userProfileImageExist: boolean;
@@ -57,6 +58,12 @@ export class SidebarUserDetailsComponent implements OnInit {
   current_selected_prjct: any;
   public_Key: any;
   currentUserId: string;
+  selectedStatus: any;
+  teammateStatus = [
+    { id: 1, name: 'Available',   avatar: 'assets/img/teammate-status/avaible.svg'  },
+    { id: 2, name: 'Unavailable' , avatar: 'assets/img/teammate-status/unavaible.svg'},
+    { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg'},
+];
 
   constructor(
     public auth: AuthService,
@@ -81,7 +88,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getLoggedUserAndCurrentDshbrdLang();
     this.getCurrentProject();
     this.getProfileImageStorage();
-    this.getUserAvailability();
+    this.getTeammateStatus();
     this.getUserUserIsBusy();
     this.checkUserImageExist();
     this.hasChangedAvailabilityStatusInUsersComp();
@@ -89,6 +96,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.listenHasDeleteUserProfileImage();
     this.getUserRole();
     this.getTranslations();
+    // this.getProjectUser()
   }
 
 
@@ -216,8 +224,9 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-    this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target.id)
+    console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+   console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
+   console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
     const clicked_element_id = event.target.id
     if (this.eRef.nativeElement.contains(event.target)) {
       this.logger.log('[SIDEBAR-USER-DETAILS] clicked inside')
@@ -227,7 +236,8 @@ export class SidebarUserDetailsComponent implements OnInit {
       
       this.logger.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
       // if (this.HAS_CLICKED_OPEN_USER_DETAIL === true) {
-        if (!clicked_element_id.startsWith("sidebaravatar")) {
+        
+        if (!clicked_element_id.startsWith("sidebaravatar") && (!event.target.classList.contains('ng-option'))) {
           this.closeUserDetailSidePanel();
         // }
         this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside')
@@ -236,32 +246,61 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
 
-
-  // @HostListener('click')
-  // clickInside() {
-  //   console.log('[SIDEBAR-USER-DETAILS] clicked inside')
-  //   this.wasInside = true;
-  // }
-
-  // @HostListener('document:click')
-  // clickout() {
-  //   if (!this.wasInside) {
-  //     console.log('[SIDEBAR-USER-DETAILS] clicked outside')
-  //     // this.closeUserDetailSidePanel();
-  //   }
-  //   this.wasInside = false;
-  // }
-
-
   hasChangedAvailabilityStatusInUsersComp() {
     this.usersService.has_changed_availability_in_users.subscribe((has_changed_availability) => {
-      this.logger.log('[SIDEBAR] SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
+      this.logger.log('[SIDEBAR-USER-DETAILS] SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
 
       if (this.project) {
         this.getProjectUser()
       }
       // this.getWsCurrentUserAvailability$()
     })
+  }
+
+  getTeammateStatus() {
+    this.usersService.user_is_available_bs.subscribe((user_available) => {
+      this.IS_AVAILABLE = user_available;
+     console.log('[SIDEBAR-USER-DETAILS] - USER IS AVAILABLE ', this.IS_AVAILABLE);
+    });
+    this.usersService.projectUser_bs.subscribe((projectUser_bs) => {
+      // this.PROFILE_STATUS = projectUser_bs;
+     console.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
+
+     if (projectUser_bs) {
+      if (projectUser_bs.user_available === false && projectUser_bs.profileStatus === 'inactive') {
+        console.log('teammateStatus ', this.teammateStatus) 
+        this.selectedStatus = this.teammateStatus[2].id
+        console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].id);
+      }
+      if (this.IS_AVAILABLE === false &&  !this.PROFILE_STATUS ) {
+        this.teammateStatus[1].name
+      }
+      if (this.IS_AVAILABLE === true &&  !this.PROFILE_STATUS ) {
+        this.teammateStatus[0].name
+      }
+     }
+
+    });
+
+    if (this.IS_AVAILABLE === false &&  this.PROFILE_STATUS === 'inactive') {
+      this.teammateStatus[3].name
+      console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[3].name);
+    }
+    if (this.IS_AVAILABLE === false &&  !this.PROFILE_STATUS ) {
+      this.teammateStatus[2].name
+    }
+    if (this.IS_AVAILABLE === true &&  !this.PROFILE_STATUS ) {
+      this.teammateStatus[1].name
+    }
+  }
+
+  getUserUserIsBusy() {
+    this.usersService.user_is_busy$.subscribe((user_isbusy) => {
+      this.IS_BUSY = user_isbusy;
+      // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
+      // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
+      this.logger.log('[SIDEBAR-USER-DETAILS] - USER IS BUSY (from db)', this.IS_BUSY);
+    });
   }
 
   getProjectUser() {
@@ -282,7 +321,7 @@ export class SidebarUserDetailsComponent implements OnInit {
         this.subsTo_WsCurrentUser(projectUser[0]._id)
 
         if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy,  projectUser[0].profileStatus)
         }
 
         // ADDED 21 AGO
@@ -309,6 +348,56 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
 
+
+
+
+  changeAvailabilityState(selecedstatusID) {
+    console.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
+
+   let IS_AVAILABLE = null
+   let profilestatus = ''
+   if (selecedstatusID === 1) {
+    IS_AVAILABLE = true
+   } else if (selecedstatusID === 2) {
+    IS_AVAILABLE = false
+   } else if (selecedstatusID === 3) {
+    IS_AVAILABLE = false
+    profilestatus = 'inactive'
+   }
+
+    this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => { // non 
+
+      console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
+
+      if (projectUser.user_available === false) {
+        // this.openSnackBar()
+      }
+
+      // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+      this.usersService.availability_btn_clicked(true)
+
+    }, (error) => {
+      this.logger.error('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ERR  ', error);
+      // =========== NOTIFY ERROR ===========
+      // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
+      // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
+
+    }, () => {
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED  * COMPLETE *');
+
+      // =========== NOTIFY SUCCESS===========
+      // this.notify.showNotification('status successfully updated', 2, 'done');
+      // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
+
+
+      
+      // this.getProjectUser();
+    });
+  }
+
+
+
+
   subsTo_WsCurrentUser(currentuserprjctuserid) {
     this.logger.log('[SIDEBAR-USER-DETAILS] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
     // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
@@ -318,6 +407,8 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getWsCurrentUserIsBusy$();
   }
 
+
+
   getWsCurrentUserAvailability$() {
     // this.usersService.currentUserWsAvailability$
     this.wsRequestsService.currentUserWsAvailability$
@@ -325,7 +416,7 @@ export class SidebarUserDetailsComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((currentuser_availability) => {
-        this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
+        console.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
         if (currentuser_availability !== null) {
           this.IS_AVAILABLE = currentuser_availability;
 
@@ -567,54 +658,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
 
-  getUserAvailability() {
-    this.usersService.user_is_available_bs.subscribe((user_available) => {
-      this.IS_AVAILABLE = user_available;
-      this.logger.log('[SIDEBAR-USER-DETAILS] - USER IS AVAILABLE ', this.IS_AVAILABLE);
-    });
-  }
 
-  getUserUserIsBusy() {
-    this.usersService.user_is_busy$.subscribe((user_isbusy) => {
-      this.IS_BUSY = user_isbusy;
-      // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
-      // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-      this.logger.log('[SIDEBAR-USER-DETAILS] - USER IS BUSY (from db)', this.IS_BUSY);
-    });
-  }
-
-  changeAvailabilityState(IS_AVAILABLE) {
-    this.logger.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
-
-    this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
-
-      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ', projectUser)
-
-      if (projectUser.user_available === false) {
-        // this.openSnackBar()
-      }
-
-      // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
-      this.usersService.availability_btn_clicked(true)
-
-    }, (error) => {
-      this.logger.error('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ERR  ', error);
-      // =========== NOTIFY ERROR ===========
-      // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
-      // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
-
-    }, () => {
-      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED  * COMPLETE *');
-
-      // =========== NOTIFY SUCCESS===========
-      // this.notify.showNotification('status successfully updated', 2, 'done');
-      // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
-
-
-      // this.getUserAvailability()
-      // this.getProjectUser();
-    });
-  }
   openSnackBar() {
     let snackBarRef = this.snackBar.open(this.youAreCurrentlySetToUnavailable, 'x', {
       duration: 9000,

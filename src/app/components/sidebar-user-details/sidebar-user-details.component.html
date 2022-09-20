@@ -81,7 +81,7 @@
     </div>
 
     <section class="availability-section">
-        <mat-slide-toggle (change)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)"
+        <!-- <mat-slide-toggle (change)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)"
             class="custom-mat-slide-toggle" [checked]="IS_AVAILABLE" labelPosition="before">
 
             <span *ngIf="IS_AVAILABLE"
@@ -92,7 +92,21 @@
                 style="font-weight: 400 !important;text-transform: capitalize;font-size:14px;color:#a9afbb;  -webkit-font-smoothing: antialiased;">
                 {{ 'Unavailable' | translate }}
             </span>
-        </mat-slide-toggle>
+        </mat-slide-toggle> -->
+
+
+        <!-- (change)="onChangeSelectedPriority(selectedPriority)" [(ngModel)]="selectedStatus" bindValue="name"-->
+        <ng-select style="text-align: left;" (change)="changeAvailabilityState(selectedStatus)" [(ngModel)]="selectedStatus" class="teammate-status-in-drawer" [items]="teammateStatus" bindLabel="name" bindValue="id"
+            [clearable]="false">
+            <ng-template ng-label-tmp let-item="item">
+                <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+               <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">  {{item.name | translate}} </span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+                <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">  {{item.name | translate }} </span>
+            </ng-template>
+        </ng-select>
     </section>
 
     <hr class="first-divider">

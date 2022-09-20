@@ -12,8 +12,9 @@ import { NavbarForPanelService } from './navbar-for-panel/navbar-for-panel.servi
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { SidebarUserDetailsComponent } from './sidebar-user-details/sidebar-user-details.component';
-
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -22,8 +23,9 @@ import { SidebarUserDetailsComponent } from './sidebar-user-details/sidebar-user
     TranslateModule,
     MatTooltipModule,
     MatSlideToggleModule,
-    MatSnackBarModule
-
+    MatSnackBarModule,
+    NgSelectModule,
+    FormsModule
   ],
   declarations: [
     FooterComponent,

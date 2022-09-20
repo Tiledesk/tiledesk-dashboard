@@ -112,6 +112,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // IS_UNAVAILABLE = false;
     IS_AVAILABLE: boolean;
     IS_BUSY: boolean;
+    IS_INACTIVE: boolean;
     SIDEBAR_IS_SMALL: boolean = true;
     projectUser_id: string;
 
@@ -1048,7 +1049,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
 
-    changeAvailabilityState(IS_AVAILABLE) {
+    changeAvailabilityState(IS_AVAILABLE,profilestatus) {
         this.logger.log('[SIDEBAR] - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
         this.logger.log('[SIDEBAR]- CHANGE STATUS - PROJECT USER ID: ', this.projectUser_id);
 
@@ -1056,7 +1057,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
         // DONE - WORKS NK-TO-TEST - da implementare quando viene implementato il servizio - serve per cambiare lo stato di disponibilità dell'utente corrente
         // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
-        this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
+        this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => { // non 
 
             this.logger.log('[SIDEBAR] PROJECT-USER UPDATED ', projectUser)
 
@@ -1105,7 +1106,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-            this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+            console.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
             if ((projectUser) && (projectUser.length !== 0)) {
                 // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
@@ -1117,7 +1118,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.subsTo_WsCurrentUser(projectUser[0]._id)
 
                 if (projectUser[0].user_available !== undefined) {
-                    this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
+                    this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy,  projectUser[0])
                 }
 
                 // ADDED 21 AGO
@@ -1159,16 +1160,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             .pipe(
                 takeUntil(this.unsubscribe$)
             )
-            .subscribe((currentuser_availability) => {
-                this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
-                if (currentuser_availability !== null) {
-                    this.IS_AVAILABLE = currentuser_availability;
+            .subscribe((data) => {
+                console.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
+                if (data !== null) {
+                    if (data['user_available'] === false && data['profileStatus'] === "inactive") {
+                    this.IS_INACTIVE = true;
+                }
 
-                    if (this.IS_AVAILABLE === true) {
-                        this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
-                    } else {
-                        this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
-                    }
+                    // if (this.IS_AVAILABLE === true) {
+                    //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
+                    // } else {
+                    //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
+                    // }
                 }
             }, error => {
                 this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
