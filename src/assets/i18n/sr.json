@@ -2163,6 +2163,7 @@
     "WasResolvedBy": "је разрешен од стране",
     "TheMessageCouldNotBeSent":"Није могуће слати поруке за разговоре који су решени пре више од десет дана",
     "ClickToViewTheDetailsOfTheContact": "Кликните да бисте видели детаље о контакту",
+    "Inactive":"Неактиван",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

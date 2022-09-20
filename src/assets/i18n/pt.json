@@ -2164,6 +2164,7 @@
     "WasResolvedBy": "foi resolvida por",
     "TheMessageCouldNotBeSent":"Não é possível enviar mensagens para conversas resolvidas há mais de dez dias",
     "ClickToViewTheDetailsOfTheContact": "Clique para visualizar os dados do contato",
+    "Inactive":"Inativo",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

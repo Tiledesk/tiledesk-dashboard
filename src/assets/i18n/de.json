@@ -2163,5 +2163,6 @@
 	"TheConversation": "Konversation",
 	"WasResolvedBy": "wurde gelöst von",
 	"TheMessageCouldNotBeSent":"Es ist nicht möglich, Nachrichten für Konversationen zu senden, die vor mehr als zehn Tagen aufgelöst wurden",
-	"ClickToViewTheDetailsOfTheContact": "Klicken Sie hier, um die Details des Kontakts anzuzeigen"
+	"ClickToViewTheDetailsOfTheContact": "Klicken Sie hier, um die Details des Kontakts anzuzeigen",
+	"Inactive":"Inaktiv"
 }

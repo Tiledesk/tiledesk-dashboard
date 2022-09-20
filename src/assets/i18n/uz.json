@@ -2164,6 +2164,7 @@
     "WasResolvedBy": "edi tomonidan hal qilindi",
     "TheMessageCouldNotBeSent":"O'n kundan ko'proq vaqt oldin hal qilingan suhbatlar uchun xabarlarni yuborish mumkin emas",
     "ClickToViewTheDetailsOfTheContact": "Kontakt ma'lumotlarini ko'rish uchun bosing",
+    "Inactive":"Nofaol",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

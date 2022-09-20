@@ -2163,5 +2163,6 @@
     "TheConversation": "La conversazione",
     "WasResolvedBy": "è stata risolta da",
     "TheMessageCouldNotBeSent":"Non è possibile inviare messaggi per conversazioni che sono state risolte più di dieci giorni fa",
-    "ClickToViewTheDetailsOfTheContact": "Clicca per visualizzare i dettagli del contatto"
+    "ClickToViewTheDetailsOfTheContact": "Clicca per visualizzare i dettagli del contatto",
+    "Inactive":"Non attivo"
 }

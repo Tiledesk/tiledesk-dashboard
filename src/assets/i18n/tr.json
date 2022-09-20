@@ -2164,6 +2164,7 @@
     "WasResolvedBy": "oldu tarafından çözüldü",
     "TheMessageCouldNotBeSent":"On günden daha önce çözülen konuşmalar için mesaj göndermek mümkün değil",
     "ClickToViewTheDetailsOfTheContact": "Kişinin ayrıntılarını görüntülemek için tıklayın",
+    "Inactive":"Etkin değil",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

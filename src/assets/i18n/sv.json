@@ -2164,6 +2164,7 @@
     "WasResolvedBy": "löstes av",
     "TheMessageCouldNotBeSent":"Det är inte möjligt att skicka meddelanden för konversationer som löstes för mer än tio dagar sedan",
     "ClickToViewTheDetailsOfTheContact": "Klicka för att se kontaktens detaljer",
+    "Inactive":"Inaktiv",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",
