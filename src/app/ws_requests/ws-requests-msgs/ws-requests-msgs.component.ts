@@ -294,7 +294,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   visitorIsBanned: boolean = false;
   messageCouldNotBeSent: string;
   uploadedFiles: File;
-  smartAssignmentEnabled: boolean
+ 
 
   metadata: any;
   imgWidth: number;
@@ -1200,9 +1200,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
 
-          if (this.request.smartAssignment) {
-            this.smartAssignmentEnabled = this.request.smartAssignment
-          }
+
 
           if (this.request.subject) {
             this.ticketSubject = this.request.subject
@@ -2270,7 +2268,30 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   // ---------------------------------------------------------------------------------------
-  // @ Notes
+  // @ Ticket Accordion
+  // ---------------------------------------------------------------------------------------
+  openTicketAccordion() {
+    var acc = <HTMLElement>document.querySelector('.ticket-accordion');
+    this.logger.log('[WS-REQUESTS-MSGS] - openTicketAccordion -  accordion elem ', acc);
+    acc.classList.toggle("active");
+    // var panel = acc.nextElementSibling ;
+    var panel = <HTMLElement>document.querySelector('.ticket-panel')
+    this.logger.log('[WS-REQUESTS-MSGS] - openTicketAccordion -  panel ', panel);
+
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+     
+      panel.style.maxHeight = "300px";
+     
+      panel.scrollTop = 0;
+
+    }
+  }
+
+  
+  // ---------------------------------------------------------------------------------------
+  // @ Notes Accordion
   // ---------------------------------------------------------------------------------------
   openNotesAccordion() {
     var acc = <HTMLElement>document.querySelector('.accordion');
@@ -4358,34 +4379,90 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     selectResponseTypeElem.blur();
   }
 
-
-  // onSmartAssignmentOnOff($event) {
-  //   console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF REQUEST ', this.request)
-  //   console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF  $event.target ', $event.target.checked)
-
-  //   this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, $event.target.checked).subscribe((res) => {
-  //     console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF - RES ', res);
-  //   }, (error) => {
-  //     console.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF - ERROR ', error);
-
-  //   }, () => {
-  //     console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON/OFF - COMPLETE ');
-  //   });
-  // }
   smartAssignmentOff() {
-    // console.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF REQUEST - RES', this.request)
+      swal({
+        title: this.areYouSureLbl + '?',
+        text: "By clicking the Convert to offline button, smart reassignment for this conversation will be disabled",
+        icon: "info",
+        buttons: [this.cancelLbl, 'Convert to offline'],
+        dangerMode: true,
+        className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      })
+        .then((willDisableSmartAssignment) => {
+          if (willDisableSmartAssignment) {
+          
+            this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
+              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
 
+            }, (error) => {
+              this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
 
-    this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
-      this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
-    }, (error) => {
-      this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
+              swal(this.anErrorHasOccurredMsg, {
+                icon: "error",
+              });
 
-    }, () => {
-      this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
-    });
+            }, () => {
+              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
+
+              swal({
+                title: this.done_msg + "!",
+                icon: "success",
+                button: "OK",
+                className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              }).then((okpressed) => {
+                
+              });
+
+            });
+          } else {
+            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+            // swal("Your imaginary file is safe!");
+          }
+        });
   }
 
+  smartAssignmentOn() {
+    swal({
+      title: this.areYouSureLbl + '?',
+      text: "By clicking the Convert to online button, smart reassignment for this conversation will be enabled",
+      icon: "info",
+      buttons: [this.cancelLbl, 'Convert to online'],
+      dangerMode: true,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    })
+      .then((willEnableSmartAssignment) => {
+        if (willEnableSmartAssignment) {
+        
+          this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, true).subscribe((res) => {
+            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - RES ', res);
+
+          }, (error) => {
+            this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - ERROR ', error);
+
+            swal(this.anErrorHasOccurredMsg, {
+              icon: "error",
+            });
+
+          }, () => {
+            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - COMPLETE ');
+
+            swal({
+              title: this.done_msg + "!",
+              icon: "success",
+              button: "OK",
+              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+            }).then((okpressed) => {
+              
+            });
+
+          });
+        } else {
+          // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+          // swal("Your imaginary file is safe!");
+        }
+      });
+ 
+}
 
 
   // NO MORE USED - REPLACED BY getProjectUsersAndBots
