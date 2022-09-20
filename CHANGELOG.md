@@ -7,6 +7,7 @@
 - Fixes the bug: in Analytics > Metrics > Messages the graph is not populated when selecting a bot from the "Agent" combo box
 - Adds the ability to attach files to sent messages in the chat section on the conversation detail page
 - Refactors the "send message" section on the conversation details page
+- Move the Priority combo box, Follower combo box and Convert Online / Offline buttons under the "Ticket" accordion to the right sidebar of the conversation detail page
 
 ### 2.2.49
 - Deploys in production
