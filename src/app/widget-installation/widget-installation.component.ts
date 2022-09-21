@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BrandService } from 'app/services/brand.service';
+import { URL_google_tag_manager_add_tiledesk_to_your_sites } from '../utils/util';
 
 @Component({
   selector: 'appdashboard-widget-installation',
@@ -147,6 +148,11 @@ export class WidgetInstallationComponent implements OnInit {
     }
 
     // console.log('[WIDGET-INSTALLATION] installWithCode HAS_SELECT_INSTALL_WITH_GTM', this.HAS_SELECT_INSTALL_WITH_GTM)
+  }
+
+  goToInstallWithTagManagerDocs() {
+    const url = URL_google_tag_manager_add_tiledesk_to_your_sites;
+    window.open(url, '_blank');
   }
 
 }
