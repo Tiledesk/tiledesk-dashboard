@@ -335,7 +335,7 @@
       <!-- ---------------------------- -->
       <!-- tilebot -->
       <!-- ---------------------------- -->
-      <!-- <div *ngIf="tilebotIsVisible" [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
+      <div *ngIf="tilebotIsVisible" [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
       'col-sm-12 col-md-4' : (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === true && rasaIsVisible === false),
       'col-sm-6 col-md-6' :  (natIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
       'col-sm-12 col-md-12' :   dgfIsVisible === false && natIsVisible === false && rasaIsVisible === false}">
@@ -371,17 +371,16 @@
               Tilebot
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
-              <!- - {{'AnIdentityBotRepresents' | translate}} - ->
+              <!-- {{'AnIdentityBotRepresents' | translate}} -->
             </h5>
           </div>
         </div>
 
-      </div> -->
-
+      </div> 
       <!-- ---------------------------- -->
       <!-- Resolution bot -->
       <!-- ---------------------------- -->
-      <div *ngIf="tilebotIsVisible" [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && tilebotIsVisible === true && rasaIsVisible === true, 
+      <!-- <div *ngIf="tilebotIsVisible" [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && tilebotIsVisible === true && rasaIsVisible === true, 
       'col-sm-12 col-md-4' : (tilebotIsVisible === false && dgfIsVisible === true && rasaIsVisible === true) || (tilebotIsVisible === true && dgfIsVisible === false && rasaIsVisible === true) || (tilebotIsVisible === true && dgfIsVisible === true && rasaIsVisible === false),
       'col-sm-6 col-md-6' :  (tilebotIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (tilebotIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (tilebotIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
       'col-sm-12 col-md-12' :   dgfIsVisible === false && tilebotIsVisible === false && rasaIsVisible === false}">
@@ -390,7 +389,7 @@
           <div class="card---header card---header--resolution-bot"> </div>
           <div class="card-content" style="text-align: center">
             <div class="bot-image">
-              <!-- <img style="width: 140px; height: auto" src="assets/img/bot_tiledesk.svg" class="img-fluid" /> -->
+            
               <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 189.9 189.9"
                 style="enable-background:new 0 0 189.9 189.9;width: 100px;" xml:space="preserve">
@@ -408,7 +407,7 @@
 
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
-              <!-- Our native, easy and powerful NPL (Natural Language Processing) chatbot -->
+           
               {{ 'ResolutionBotDescription' | translate}}.
               <span class="link-in-select-bot-card" (click)="$event.stopPropagation();openDocsTiledeskCreateABot()">
                 {{'HereHowCreateABot' | translate}}
@@ -416,7 +415,7 @@
             </h5>
           </div>
         </div>
-      </div>
+      </div> -->
 
 
 
