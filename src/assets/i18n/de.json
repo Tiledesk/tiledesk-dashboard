@@ -2164,5 +2164,9 @@
 	"WasResolvedBy": "wurde gelöst von",
 	"TheMessageCouldNotBeSent":"Es ist nicht möglich, Nachrichten für Konversationen zu senden, die vor mehr als zehn Tagen aufgelöst wurden",
 	"ClickToViewTheDetailsOfTheContact": "Klicken Sie hier, um die Details des Kontakts anzuzeigen",
-	"Inactive":"Inaktiv"
+	"Inactive":"Inaktiv",
+	"SendAs":"Senden Als",
+	"Open":"Offen",
+    "Pending":"Ausstehend",
+    "Resolved":"Aufgelöst"
 }

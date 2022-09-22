@@ -2165,6 +2165,10 @@
     "TheMessageCouldNotBeSent":"On gündən çox əvvəl həll edilmiş söhbətlər üçün mesaj göndərmək mümkün deyil",
     "ClickToViewTheDetailsOfTheContact": "Əlaqə təfərrüatlarına baxmaq üçün klikləyin",
     "Inactive":"Qeyri-aktiv",
+    "SendAs":"Kimi göndər",
+    "Open":"Açıq",
+    "Pending":"Gözləyən",
+    "Resolved":"Əzmli",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

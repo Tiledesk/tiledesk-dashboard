@@ -2165,6 +2165,10 @@
     "TheMessageCouldNotBeSent":"On günden daha önce çözülen konuşmalar için mesaj göndermek mümkün değil",
     "ClickToViewTheDetailsOfTheContact": "Kişinin ayrıntılarını görüntülemek için tıklayın",
     "Inactive":"Etkin değil",
+    "SendAs":"Olarak gönder",
+    "Open":"Açık",
+    "Pending":"Askıda olan",
+    "Resolved":"Çözümlendi",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

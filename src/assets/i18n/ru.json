@@ -2165,6 +2165,10 @@
     "TheMessageCouldNotBeSent":"Невозможно отправлять сообщения для разговоров, которые были решены более десяти дней назад",
     "ClickToViewTheDetailsOfTheContact": "Нажмите, чтобы просмотреть сведения о контакте",
     "Inactive":"Неактивный",
+    "SendAs":"Отправить как",
+    "Open":"Открыть",
+    "Pending":"В ожидании",
+    "Resolved":"Решено",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",
