@@ -2165,6 +2165,10 @@
     "TheMessageCouldNotBeSent": "لا يمكن إرسال رسائل للمحادثات التي تم حلها منذ أكثر من عشرة أيام",
     "ClickToViewTheDetailsOfTheContact": "انقر لعرض تفاصيل جهة الاتصال",
     "Inactive": "غير ناشطة",
+    "SendAs": "Send as",
+    "Open": "Open",
+    "Pending": "Pending",
+    "Resolved": "Resolved",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",
