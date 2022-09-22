@@ -2165,6 +2165,10 @@
     "TheMessageCouldNotBeSent": "It is not possible to send messages for conversations that were resolved more than ten days ago",
     "ClickToViewTheDetailsOfTheContact": "Click to view the contact's details",
     "Inactive": "Inactive",
+    "SendAs": "Send as",
+    "Open": "Open",
+    "Pending": "Pending",
+    "Resolved": "Resolved",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",
