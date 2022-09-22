@@ -599,13 +599,51 @@
                           </ng-select>
                         </div> -->
                         <div class="col-xs-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">
-                          <button class="btn pull-right send-chat-msg-btn" (click)="sendChatMessage()"
+                          <!-- <button class="btn pull-right send-chat-msg-btn" (click)="sendChatMessage()"
                             [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
-                            <!-- {{'Send' | translate}} -->
+                            <!- - {{'Send' | translate}} - ->
                             <span class="material-icons">
                               send
                             </span>
-                          </button>
+                          </button> -->
+
+                          <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-white">Default</button>
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                              <span class="caret"></span>
+                              <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                              <li>
+                                
+                                <a (click)="sendAsOpen()" style="padding-left: 15px; padding-right: 15px;">
+                                  <i class="material-icons" style="padding-right: 5px;">stop</i>
+                                  <span style="position: relative; top: 1px; cursor:pointer">
+                                    Invia come Aperto
+                                  </span>
+                                </a>
+                              </li>
+                              <li>
+                                
+                                <a (click)="sendAsPending()" style="padding-left: 15px; padding-right: 15px;">
+                                  <i class="material-icons" style="padding-right: 5px;">stop</i>
+                                  <span style="position: relative; top: 1px; cursor:pointer">
+                                    Invia come In Attesa
+                                  </span>
+                                </a>
+                              </li>
+                              <li>
+                                
+                                <a (click)="sendAsSolved()" style="padding-left: 15px; padding-right: 15px;">
+                                  <i class="material-icons" style="padding-right: 5px;">stop</i>
+                                  <span style="position: relative; top: 1px; cursor:pointer">
+                                    Invia come Risolto
+                                  </span>
+                                </a>
+                              </li>
+
+                            </ul>
+                          </div>
 
 
 
@@ -2523,7 +2561,7 @@
                       style="padding-left:13px; padding-right:15px; font-size: 14px;">
                       <i class="fa fa-ticket" aria-hidden="true" style="vertical-align: middle; color: #2C3E48; font-size: 21px;
                       margin-left: 2px;"></i>
-                     
+
                       <span style="vertical-align: middle">
                         {{ "ticket" | translate }}
                       </span>

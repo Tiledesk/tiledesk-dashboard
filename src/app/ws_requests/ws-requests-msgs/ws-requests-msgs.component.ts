@@ -294,7 +294,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   visitorIsBanned: boolean = false;
   messageCouldNotBeSent: string;
   uploadedFiles: File;
- 
+
 
   metadata: any;
   imgWidth: number;
@@ -303,8 +303,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   showSpinnerAttachmentUplolad: boolean = false
   @ViewChild('fileUpload') fileUpload: any;
   existAnAttacment: boolean = false;
-
-
+  HAS_SELECTED_SEND_AS_OPENED: boolean = true;
+  HAS_SELECTED_SEND_AS_PENDING: boolean = false;
+  HAS_SELECTED_SEND_AS_SOLVED: boolean = false;
   /**
    * Constructor
    * @param router 
@@ -2281,15 +2282,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (panel.style.maxHeight) {
       panel.style.maxHeight = null;
     } else {
-     
+
       panel.style.maxHeight = "300px";
-     
+
       panel.scrollTop = 0;
 
     }
   }
 
-  
+
   // ---------------------------------------------------------------------------------------
   // @ Notes Accordion
   // ---------------------------------------------------------------------------------------
@@ -4176,7 +4177,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.metadata.height = this.imgHeight,
             // console.log(`[WS-REQUESTS-MSGS] - upload metadata `, this.metadata);
 
-          this.fileUpload.nativeElement.value = '';
+            this.fileUpload.nativeElement.value = '';
 
         }).catch(error => {
 
@@ -4314,7 +4315,32 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
+  sendAsOpen() {
+    this.HAS_SELECTED_SEND_AS_OPENED = true;
+    this.HAS_SELECTED_SEND_AS_PENDING = false;
+    this.HAS_SELECTED_SEND_AS_SOLVED = false;
+    console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
+    console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
+    console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
+  }
 
+  sendAsPending() {
+    this.HAS_SELECTED_SEND_AS_OPENED = false;
+    this.HAS_SELECTED_SEND_AS_PENDING = true;
+    this.HAS_SELECTED_SEND_AS_SOLVED = false;
+    console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
+    console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
+    console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
+  }
+
+  sendAsSolved() {
+    this.HAS_SELECTED_SEND_AS_OPENED = false;
+    this.HAS_SELECTED_SEND_AS_PENDING = false;
+    this.HAS_SELECTED_SEND_AS_SOLVED = true;
+    console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
+    console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
+    console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
+  }
 
 
   presenModalMessageCouldNotBeSent() {
@@ -4380,45 +4406,45 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   smartAssignmentOff() {
-      swal({
-        title: this.areYouSureLbl + '?',
-        text: "By clicking the Convert to offline button, smart reassignment for this conversation will be disabled",
-        icon: "info",
-        buttons: [this.cancelLbl, 'Convert to offline'],
-        dangerMode: true,
-        className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-      })
-        .then((willDisableSmartAssignment) => {
-          if (willDisableSmartAssignment) {
-          
-            this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
-              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
+    swal({
+      title: this.areYouSureLbl + '?',
+      text: "By clicking the Convert to offline button, smart reassignment for this conversation will be disabled",
+      icon: "info",
+      buttons: [this.cancelLbl, 'Convert to offline'],
+      dangerMode: true,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    })
+      .then((willDisableSmartAssignment) => {
+        if (willDisableSmartAssignment) {
 
-            }, (error) => {
-              this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
+          this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
+            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
 
-              swal(this.anErrorHasOccurredMsg, {
-                icon: "error",
-              });
+          }, (error) => {
+            this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
 
-            }, () => {
-              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
+            swal(this.anErrorHasOccurredMsg, {
+              icon: "error",
+            });
 
-              swal({
-                title: this.done_msg + "!",
-                icon: "success",
-                button: "OK",
-                className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-              }).then((okpressed) => {
-                
-              });
+          }, () => {
+            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
+
+            swal({
+              title: this.done_msg + "!",
+              icon: "success",
+              button: "OK",
+              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+            }).then((okpressed) => {
 
             });
-          } else {
-            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
-            // swal("Your imaginary file is safe!");
-          }
-        });
+
+          });
+        } else {
+          // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+          // swal("Your imaginary file is safe!");
+        }
+      });
   }
 
   smartAssignmentOn() {
@@ -4432,7 +4458,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     })
       .then((willEnableSmartAssignment) => {
         if (willEnableSmartAssignment) {
-        
+
           this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, true).subscribe((res) => {
             this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - RES ', res);
 
@@ -4452,7 +4478,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               button: "OK",
               className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
-              
+
             });
 
           });
@@ -4461,8 +4487,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // swal("Your imaginary file is safe!");
         }
       });
- 
-}
+
+  }
 
 
   // NO MORE USED - REPLACED BY getProjectUsersAndBots
