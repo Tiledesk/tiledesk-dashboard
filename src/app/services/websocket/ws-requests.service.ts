@@ -28,7 +28,7 @@ export class WsRequestsService implements OnDestroy {
   public wsRequesterStatus$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved here from user.service 
   public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved here from user.service 
-
+  public wsProjectUsersStatus$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   http: Http;
   public messages: Subject<Message>;
 
@@ -578,13 +578,13 @@ export class WsRequestsService implements OnDestroy {
 
     var self = this;
 
-    self.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO CURRENT-USER AVAILABILITY (REF) - prjctuserid", prjctuserid);
+    // console.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO CURRENT-USER AVAILABILITY (REF) - prjctuserid", prjctuserid);
     const path = '/' + this.project_id + '/project_users/' + prjctuserid
 
     this.webSocketJs.ref(path, 'subscriptionToWsCurrentUser',
       function (data, notification) {
 
-        self.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO CURRENT-USER AVAILABILITY - CREATE data", data);
+        // console.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO CURRENT-USER AVAILABILITY - CREATE data", data);
 
         self.currentUserWsAvailability$.next(data);
         if (data.isBusy) {
@@ -596,7 +596,8 @@ export class WsRequestsService implements OnDestroy {
       }, function (data, notification) {
 
         self.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO CURRENT-USER AVAILABILITY - UPDATE data", data);
-        self.currentUserWsAvailability$.next(data.user_available);
+        // self.currentUserWsAvailability$.next(data.user_available);
+        self.currentUserWsAvailability$.next(data);
         if (data.isBusy) {
           self.currentUserWsIsBusy$.next(data.isBusy)
         } else {
@@ -609,6 +610,36 @@ export class WsRequestsService implements OnDestroy {
         }
       }
     );
+  }
+
+  subscriptionToWsProjectUsers(prjctuserid) {
+
+    var self = this;
+    const path = '/' + this.project_id + '/project_users/' + prjctuserid
+    // console.log('[WS-REQUESTS-SERV] - SUBSCR (REF) TO WS P-USERS PATH: ', path);
+
+    return new Promise(function (resolve, reject) {
+
+      self.webSocketJs.ref(path, 'subscriptionToWsProjectUsers',
+        function (data, notification) {
+          // console.log("[WS-REQUESTS-SERV] SUBSCR TO WS P-USER  - CREATE - data ", data);
+          resolve(data)
+        
+          self.wsProjectUsersStatus$.next(data)
+
+        }, function (data, notification) {
+          resolve(data)
+          self.logger.log("[WS-REQUESTS-SERV] SUBSCR TO WS P-USER - UPDATE - data ", data);
+          self.wsProjectUsersStatus$.next(data)
+
+        }, function (data, notification) {
+          resolve(data)
+          if (data) {
+            // console.log("[WS-REQUESTS-SERV] SUBSCR TO WS P-USER - ON-DATA - data", data);
+          }
+        });
+
+    })
   }
 
   // -----------------------------------------------------------------------------------------------------

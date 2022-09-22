@@ -327,7 +327,7 @@
 
                       <!-- SWITCH AVAILABLE / UNAILABLE  -->
                       <td>
-                        <label class="switch" style="margin-bottom: -6px;">
+                        <label *ngIf="CURRENT_USER_ID !== projectUser?.id_user?._id" class="switch" style="margin-bottom: -6px;">
                           <input type="checkbox"
                             (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)"
                             [checked]="projectUser?.user_available === true">

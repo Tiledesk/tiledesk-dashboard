@@ -847,7 +847,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     this.usersService
-      .updateProjectUser(projectUser_id, this.IS_AVAILABLE)
+      ._updateProjectUser(projectUser_id, this.IS_AVAILABLE)
       .subscribe(
         (projectUser: any) => {
           this.logger.log(

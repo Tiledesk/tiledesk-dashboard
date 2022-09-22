@@ -224,9 +224,9 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-   console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
-   console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
+  //   console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+  //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
+  //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
     const clicked_element_id = event.target.id
     if (this.eRef.nativeElement.contains(event.target)) {
       this.logger.log('[SIDEBAR-USER-DETAILS] clicked inside')
@@ -235,9 +235,9 @@ export class SidebarUserDetailsComponent implements OnInit {
       this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
       
       this.logger.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
-      // if (this.HAS_CLICKED_OPEN_USER_DETAIL === true) {
-        
-        if (!clicked_element_id.startsWith("sidebaravatar") && (!event.target.classList.contains('ng-option'))) {
+      // && (!event.target.classList.contains('ng-option'))
+      // clicked_element_id !== 'a0da04ac7772' && 
+        if (!clicked_element_id.startsWith("sidebaravatar") && (!event.target.classList.contains('ng-option')) ) {
           this.closeUserDetailSidePanel();
         // }
         this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside')
@@ -260,38 +260,28 @@ export class SidebarUserDetailsComponent implements OnInit {
   getTeammateStatus() {
     this.usersService.user_is_available_bs.subscribe((user_available) => {
       this.IS_AVAILABLE = user_available;
-     console.log('[SIDEBAR-USER-DETAILS] - USER IS AVAILABLE ', this.IS_AVAILABLE);
+    //  console.log('[SIDEBAR-USER-DETAILS] - USER IS AVAILABLE ', this.IS_AVAILABLE);
     });
     this.usersService.projectUser_bs.subscribe((projectUser_bs) => {
       // this.PROFILE_STATUS = projectUser_bs;
-     console.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
+    //  console.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
 
      if (projectUser_bs) {
       if (projectUser_bs.user_available === false && projectUser_bs.profileStatus === 'inactive') {
-        console.log('teammateStatus ', this.teammateStatus) 
-        this.selectedStatus = this.teammateStatus[2].id
-        console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].id);
-      }
-      if (this.IS_AVAILABLE === false &&  !this.PROFILE_STATUS ) {
-        this.teammateStatus[1].name
-      }
-      if (this.IS_AVAILABLE === true &&  !this.PROFILE_STATUS ) {
-        this.teammateStatus[0].name
+        // console.log('teammateStatus ', this.teammateStatus) 
+        this.selectedStatus = this.teammateStatus[2].id;
+        // console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
+      } else if (projectUser_bs.user_available === false && projectUser_bs.profileStatus === '') {
+        this.selectedStatus = this.teammateStatus[1].id;
+        // console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
+      } else if (projectUser_bs.user_available === true && projectUser_bs.profileStatus === '') {
+        this.selectedStatus = this.teammateStatus[0].id
+        // console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
       }
      }
 
     });
 
-    if (this.IS_AVAILABLE === false &&  this.PROFILE_STATUS === 'inactive') {
-      this.teammateStatus[3].name
-      console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[3].name);
-    }
-    if (this.IS_AVAILABLE === false &&  !this.PROFILE_STATUS ) {
-      this.teammateStatus[2].name
-    }
-    if (this.IS_AVAILABLE === true &&  !this.PROFILE_STATUS ) {
-      this.teammateStatus[1].name
-    }
   }
 
   getUserUserIsBusy() {
@@ -348,11 +338,8 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
 
-
-
-
   changeAvailabilityState(selecedstatusID) {
-    console.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
+    // console.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
 
    let IS_AVAILABLE = null
    let profilestatus = ''
@@ -367,11 +354,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
     this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => { // non 
 
-      console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
-
-      if (projectUser.user_available === false) {
-        // this.openSnackBar()
-      }
+      // console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
 
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
       this.usersService.availability_btn_clicked(true)
@@ -416,7 +399,7 @@ export class SidebarUserDetailsComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((currentuser_availability) => {
-        console.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
+        // console.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER AVAILABILITY - data? ', currentuser_availability);
         if (currentuser_availability !== null) {
           this.IS_AVAILABLE = currentuser_availability;
 

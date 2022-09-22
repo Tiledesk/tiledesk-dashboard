@@ -941,7 +941,7 @@ my-app .main-panel .main-content .card {
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 16px;
   display: block;
 }
@@ -1042,7 +1042,7 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
   margin-bottom: 0px;
   height: 40px !important;
   position: relative;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   height: 30px;
   font-size: 16px;
   margin-top: 10px;
@@ -1213,7 +1213,7 @@ span.navbar-brand-title {
 }
 .ng2-tooltip-badge--assigned {
   text-transform: uppercase;
-  background: #05BDD4;
+  background: #05bdd4;
   color: #fff;
   padding: 3px 6px;
   border-radius: 3px;
@@ -1224,7 +1224,7 @@ span.navbar-brand-title {
 
 .ng2-tooltip-badge--unassigned {
   text-transform: uppercase;
-  background: #ED4537;
+  background: #ed4537;
   color: #fff;
   padding: 3px 6px;
   border-radius: 3px;
@@ -1243,10 +1243,6 @@ span.navbar-brand-title {
   font-weight: 400;
   margin-right: 12px;
 }
-
-
-
-
 
 .ng2-tooltip-ticket-id {
   vertical-align: middle;
@@ -1311,8 +1307,6 @@ span.navbar-brand-title {
   font-size: 14px;
 }
 
-
-
 // https://stackoverflow.com/questions/13014808/is-there-anyway-to-animate-an-ellipsis-with-css-animations
 /**
 // --------------------------------------------------
@@ -1320,14 +1314,14 @@ span.navbar-brand-title {
 /  --------------------------------------------------
 */
 .ng2-latest-comment-loading {
-  color: #ddd
+  color: #ddd;
 }
 .ng2-latest-comment-loading:after {
   overflow: hidden;
   display: inline-block;
   vertical-align: bottom;
-  -webkit-animation: ellipsis steps(4,end) 900ms infinite;      
-  animation: ellipsis steps(4,end) 900ms infinite;
+  -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+  animation: ellipsis steps(4, end) 900ms infinite;
   content: "\2026"; /* ascii code for the ellipsis character */
   width: 0px;
   color: #ddd;
@@ -1336,13 +1330,13 @@ span.navbar-brand-title {
 
 @keyframes ellipsis {
   to {
-    width: 20px;    
+    width: 20px;
   }
 }
 
 @-webkit-keyframes ellipsis {
   to {
-    width: 20px;    
+    width: 20px;
   }
 }
 
@@ -1354,7 +1348,8 @@ footer ul {
 .ng-select.select-response-type {
   text-align: initial !important;
   margin-left: 12px !important;
-  max-width: 250px;
+  max-width: 147px;
+  margin-top: 3px;
 }
 
 .ng-select.select-response-type:focus {
@@ -1367,54 +1362,51 @@ footer ul {
   border: unset !important;
 }
 
-
 // FOREGROUND NOTIFICATION
 .alert-minimalist {
-	// background-color: rgb(241, 242, 240);
+  // background-color: rgb(241, 242, 240);
   // background-color: #f1f0f0;
   background-color: #cce5ff;
-	border-color: rgba(149, 149, 149, 0.3);
-	border-radius: 3px;
-	color: rgb(149, 149, 149);
-	padding: 0px;
+  border-color: rgba(149, 149, 149, 0.3);
+  border-radius: 3px;
+  color: rgb(149, 149, 149);
+  padding: 0px;
   cursor: pointer;
-  min-width:300px
+  min-width: 300px;
 }
 .alert-minimalist > [data-notify="header"] {
-	height: 25px;
+  height: 25px;
   // background-color: rgb(235, 235, 235 );
-  background-color: #0d6efd!important;
+  background-color: #0d6efd !important;
   color: #fff;
-  font-weight:400;
+  font-weight: 400;
   border-top-right-radius: 3px;
-  border-top-left-radius: 3px; 
+  border-top-left-radius: 3px;
   padding: 3px 16px;
 }
 
-
 .alert-minimalist > [data-notify="icon"] {
-	height: 50px;
-	margin-right: 12px;
+  height: 50px;
+  margin-right: 12px;
 }
-
 
 .alert-minimalist > .foreground-notification-img-circle {
   height: 50px;
-	margin-right: 12px;
+  margin-right: 12px;
   width: 50px;
   text-align: center;
 }
 .alert-minimalist > [data-notify="title"] {
-	color: rgb(51, 51, 51);
-	display: block;
-	font-weight: bold;
+  color: rgb(51, 51, 51);
+  display: block;
+  font-weight: bold;
   margin-left: 6px;
-	margin-bottom: 5px;
+  margin-bottom: 5px;
   padding: 0px 10px;
   margin-top: 5px;
 }
 .alert-minimalist > [data-notify="message"] {
-	font-size: 14px;
+  font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1429,52 +1421,50 @@ footer ul {
 
 // UNASSIGNED NOTIFICATION
 .alert-minimalist-pooled {
-	// background-color: rgb(241, 242, 240);
+  // background-color: rgb(241, 242, 240);
   // background-color: #fff;
   background-color: #fff3cd;
-	border-color: rgba(149, 149, 149, 0.3);
-  
-	border-radius: 3px;
-	color: rgb(149, 149, 149);
-	padding: 0px;
+  border-color: rgba(149, 149, 149, 0.3);
+
+  border-radius: 3px;
+  color: rgb(149, 149, 149);
+  padding: 0px;
   cursor: pointer;
-  min-width:300px
+  min-width: 300px;
 }
 .alert-minimalist-pooled > [data-notify="header"] {
-	height: 25px;
+  height: 25px;
   // background-color: rgb(235, 235, 235 );
-  background-color:  #ffc107;
-  color:#fff;
-  font-weight:400;
+  background-color: #ffc107;
+  color: #fff;
+  font-weight: 400;
   border-top-right-radius: 3px;
-  border-top-left-radius: 3px; 
+  border-top-left-radius: 3px;
   padding: 3px 16px;
 }
 
-
 .alert-minimalist-pooled > [data-notify="icon"] {
-	height: 50px;
-	margin-right: 12px;
+  height: 50px;
+  margin-right: 12px;
 }
-
 
 .alert-minimalist-pooled > .foreground-notification-img-circle {
   height: 50px;
-	margin-right: 12px;
+  margin-right: 12px;
   width: 50px;
   text-align: center;
 }
 .alert-minimalist-pooled > [data-notify="title"] {
-	color: rgb(51, 51, 51);
-	display: block;
-	font-weight: bold;
+  color: rgb(51, 51, 51);
+  display: block;
+  font-weight: bold;
   margin-left: 6px;
-	margin-bottom: 5px;
+  margin-bottom: 5px;
   padding: 0px 10px;
   margin-top: 5px;
 }
 .alert-minimalist-pooled > [data-notify="message"] {
-	font-size: 14px;
+  font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1492,22 +1482,49 @@ footer ul {
 .main-panel-chat-appsidebar-open {
   height: 500% !important;
   // overflow-y: hidden;
-} 
-
-
-
-.app-sidebar-iframe::-webkit-scrollbar {
-  // display: none;
-  // width: 0px;
 }
+
+// .app-sidebar-iframe::-webkit-scrollbar {
+//   // display: none;
+//   // width: 0px;
+// }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-.app-sidebar-iframe {
-  // -ms-overflow-style: none;  /* IE and Edge */
-  // scrollbar-width: none;  /* Firefox */
-}
+// .app-sidebar-iframe {
+//   // -ms-overflow-style: none;  /* IE and Edge */
+//   // scrollbar-width: none;  /* Firefox */
+// }
 
 .right-card-appsidebar-open {
-//  height: 10px !important;
-display: none;
+  //  height: 10px !important;
+  display: none;
+}
+
+// select teammate status in user detail drawer
+.ng-select.teammate-status-in-drawer .ng-select-container {
+  background-color: #2d323e;
+  color: #fff;
+}
+
+.ng-select.teammate-status-in-drawer.ng-select-opened>.ng-select-container {
+  background-color: #2d323e;
+}
+
+.ng-dropdown-panel.teammate-status-in-drawer {
+  background-color: #2d323e;
+}
+
+.ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items  .ng-option {
+  background-color: #2d323e;
+  color: #fff;
+}
+
+.ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items  .ng-option.ng-option-marked {
+  background-color: #2d323e;
+  color: #fff;
+}
+
+.ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items .ng-option.ng-option-selected {
+  background-color: #2d323e;
+  color: #fff;
 }

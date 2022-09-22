@@ -329,12 +329,7 @@ button.close {
   background-color: #f44336;
 }
 .is-user-inactive {
-  border-style: solid;
-  border-width: 2px;
-  line-height: 50px;
-  border-color: blue;
-  padding: 10px 18px;
-  background-color: rgba(0, 0, 0, 0)
+  background-color: #697482;
 }
 
 .is-desktop-menu {
@@ -774,9 +769,9 @@ li:hover > a > .realtime-icon-wpr > svg > path {
   height: 100%;
   font-weight: 300;
 }
-.progress .progress-value div {
-  /* margin-top: 10px; */
-}
+// .progress .progress-value div {
+//   /* margin-top: 10px; */
+// }
 .progress .progress-value span {
   font-size: 12px;
   text-transform: uppercase;

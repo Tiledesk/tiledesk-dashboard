@@ -1341,7 +1341,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectUser() {
     this.logger.log('[HOME] CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
-      this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
+      // console.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
         this.logger.log('[HOME] PROJECT-USER ID ', projectUser[0]._id)
         this.logger.log('[HOME] USER IS AVAILABLE ', projectUser[0].user_available)
@@ -1349,7 +1349,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         // this.user_is_available_bs = projectUser.user_available;
 
         if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy);
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0]);
         }
         if (projectUser[0].role !== undefined) {
           this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);

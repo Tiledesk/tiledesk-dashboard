@@ -14,7 +14,7 @@ import { SatisfactionComponent } from './satisfaction.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core'; // suppress the error msg "Can't bind to 'ngModel' + 'clearable' since it isn't a known property of 'ng-select'.""
 
-import { AnalyticsService } from 'app/services/analytics.service';
+
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Error: StaticInjectorError(DynamicTestModule)[AnalyticsService -> HttpClient]:
 
 
@@ -32,6 +32,7 @@ import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { Observable } from 'rxjs/Observable';
 
 import { Department } from '../../../models/department-model';
+import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 let service;
 
 describe('SatisfactionComponent', () => {

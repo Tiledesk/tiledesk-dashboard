@@ -494,7 +494,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
     this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS- CHANGE STATUS - WHEN CLICK USER PROJECT-USER ID ', projectUser_id);
 
-    this.usersService.updateProjectUser(projectUser_id, this.IS_AVAILABLE).subscribe((projectUser: any) => {
+    this.usersService._updateProjectUser(projectUser_id, this.IS_AVAILABLE).subscribe((projectUser: any) => {
       this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS - PROJECT-USER UPDATED ', projectUser)
 
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
