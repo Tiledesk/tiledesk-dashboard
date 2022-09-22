@@ -8,6 +8,8 @@
 - Adds the ability to attach files to sent messages in the chat section on the conversation detail page
 - Refactors the "send message" section on the conversation details page
 - Move the Priority combo box, Follower combo box and Convert Online / Offline buttons under the "Ticket" accordion to the right sidebar of the conversation detail page
+- Fixes the bug: the link to the documentation on how to install the widget with Google Tag Manager is missing from the "Installation" page
+- Adds the ability for the logged in teammate to set his status to "Inactive"
 
 ### 2.2.49
 - Deploys in production
