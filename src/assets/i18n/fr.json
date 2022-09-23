@@ -2169,6 +2169,9 @@
     "Open":"Ouvert",
     "Pending":"En attente",
     "Resolved":"Résolu",
+    "YouCannotLeaveTheChat": "Désolé mais vous ne pouvez pas quitter le chat. Il doit y avoir au moins un agent pour un chat de type ticket",
+    "YouCannotAddAgents": "Désolé, mais il n'est pas possible d'ajouter des agents au chat. Il ne peut y avoir qu'un seul agent pour un chat de type ticket",
+    "YouCannotJoinChat": "Désolé, les chats de type ticket ne peuvent être servis que par un agent",
     "CHAT_IONIC": {
         "LABEL_TU": "vous: ",
         "LABEL_MSG_PUSH_START_CHAT": "Pas encore de conversation",

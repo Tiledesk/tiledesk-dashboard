@@ -2169,6 +2169,9 @@
     "Open":"Açık",
     "Pending":"Askıda olan",
     "Resolved":"Çözümlendi",
+    "YouCannotLeaveTheChat": "Üzgünüm ama sohbetten çıkamazsınız. Bilet tipi sohbet için en az bir temsilci bulunmalıdır",
+    "YouCannotAddAgents": "Üzgünüz, ancak sohbete takım arkadaşları eklemek mümkün değil. Bilet tipi sohbet için yalnızca bir takım arkadaşı olabilir",
+    "YouCannotJoinChat": "Üzgünüz, bilet türü sohbetler yalnızca bir temsilci tarafından sunulabilir",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

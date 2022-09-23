@@ -2169,6 +2169,9 @@
     "Open":"Öppna",
     "Pending":"I väntan på",
     "Resolved":"Löstes",
+    "YouCannotLeaveTheChat": "Ledsen men du kan inte lämna chatten. Det måste finnas minst en agent för en chatt av typen biljetttyp",
+    "YouCannotAddAgents": "Tyvärr, men det är inte möjligt att lägga till agenter i chatten. Det kan bara finnas en agent för en chatt av biljetttyp",
+    "YouCannotJoinChat": "Tyvärr, chattar av biljetttyp kan endast betjänas av en agent",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",
