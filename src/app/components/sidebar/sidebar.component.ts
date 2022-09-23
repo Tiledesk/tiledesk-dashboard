@@ -1035,7 +1035,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getUserAvailability() {
         this.usersService.user_is_available_bs.subscribe((user_available) => {
             this.IS_AVAILABLE = user_available;
-            this.logger.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
+            // console.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
         });
     }
 
@@ -1049,45 +1049,45 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
 
-    // changeAvailabilityState(IS_AVAILABLE, profilestatus) {
-    //     this.logger.log('[SIDEBAR] - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
-    //     this.logger.log('[SIDEBAR]- CHANGE STATUS - PROJECT USER ID: ', this.projectUser_id);
+    changeAvailabilityState(IS_AVAILABLE, profilestatus) {
+        this.logger.log('[SIDEBAR] - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
+        this.logger.log('[SIDEBAR]- CHANGE STATUS - PROJECT USER ID: ', this.projectUser_id);
 
 
-    //     // this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
-    //     // DONE - WORKS NK-TO-TEST - da implementare quando viene implementato il servizio - serve per cambiare lo stato di disponibilità dell'utente corrente
-    //     // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
-    //     this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => { // non 
+        // this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
+        // DONE - WORKS NK-TO-TEST - da implementare quando viene implementato il servizio - serve per cambiare lo stato di disponibilità dell'utente corrente
+        // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
+        this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
 
-    //         this.logger.log('[SIDEBAR] PROJECT-USER UPDATED ', projectUser)
+            this.logger.log('[SIDEBAR] PROJECT-USER UPDATED ', projectUser)
 
-    //         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
-    //         this.usersService.availability_btn_clicked(true)
+            // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+            this.usersService.availability_btn_clicked(true)
 
-    //     }, (error) => {
-    //         this.logger.error('[SIDEBAR] PROJECT-USER UPDATED ERR  ', error);
-    //         // =========== NOTIFY ERROR ===========
-    //         // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
-    //         this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
+        }, (error) => {
+            this.logger.error('[SIDEBAR] PROJECT-USER UPDATED ERR  ', error);
+            // =========== NOTIFY ERROR ===========
+            // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
+            this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
 
-    //     }, () => {
-    //         this.logger.log('[SIDEBAR] PROJECT-USER UPDATED  * COMPLETE *');
+        }, () => {
+            this.logger.log('[SIDEBAR] PROJECT-USER UPDATED  * COMPLETE *');
 
-    //         // =========== NOTIFY SUCCESS===========
-    //         // this.notify.showNotification('status successfully updated', 2, 'done');
-    //         this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
+            // =========== NOTIFY SUCCESS===========
+            // this.notify.showNotification('status successfully updated', 2, 'done');
+            this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
 
 
-    //         // this.getUserAvailability()
-    //         this.getProjectUser();
-    //     });
-    // }
+            // this.getUserAvailability()
+            this.getProjectUser();
+        });
+    }
 
     // IF THE AVAILABILITY STATUS IS CHANGED from THE USER.COMP AVAILABLE / UNAVAILABLE TOGGLE BTN
     // RE-RUN getAllUsersOfCurrentProject TO UPDATE AVAILABLE / UNAVAILABLE BTN ON THE TOP OF THE SIDEBAR
     hasChangedAvailabilityStatusInUsersComp() {
         this.usersService.has_changed_availability_in_users.subscribe((has_changed_availability) => {
-            this.logger.log('[SIDEBAR] SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
+        //    console.log('[SIDEBAR] SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
 
             if (this.project) {
                 this.getProjectUser()
@@ -1118,7 +1118,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.subsTo_WsCurrentUser(projectUser[0]._id)
 
                 if (projectUser[0].user_available !== undefined) {
-                    this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
+                    this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
                 }
 
                 // ADDED 21 AGO
@@ -1155,6 +1155,30 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     getWsCurrentUserAvailability$() {
+        // this.usersService.currentUserWsAvailability$
+        this.wsRequestsService.currentUserWsAvailability$
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((currentuser_availability) => {
+                // console.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
+                if (currentuser_availability !== null) {
+                    this.IS_AVAILABLE = currentuser_availability;
+
+                    if (this.IS_AVAILABLE === true) {
+                        this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
+                    } else {
+                        this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
+                    }
+                }
+            }, error => {
+                this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
+            }, () => {
+                this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
+            });
+    }
+
+    _getWsCurrentUserAvailability$() {
         // this.usersService.currentUserWsAvailability$
         this.wsRequestsService.currentUserWsAvailability$
             .pipe(

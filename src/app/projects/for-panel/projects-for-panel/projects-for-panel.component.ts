@@ -371,7 +371,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     available = !available
     this.logger.log('[PROJECTS-X-PANEL] - changeAvailabilityState projectid', projectid, ' available: ', available);
 
-    this.usersService.updateCurrentUserAvailability(projectid, available, profilestatus).subscribe((projectUser: any) => { // non 
+    this.usersService.updateCurrentUserAvailability(projectid, available).subscribe((projectUser: any) => { // non 
 
       this.logger.log('[PROJECTS-X-PANEL] - PROJECT-USER UPDATED ', projectUser)
 

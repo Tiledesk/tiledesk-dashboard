@@ -88,7 +88,8 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getLoggedUserAndCurrentDshbrdLang();
     this.getCurrentProject();
     this.getProfileImageStorage();
-    this.getTeammateStatus();
+    // this.getTeammateStatus();
+    this.getUserAvailability();
     this.getUserUserIsBusy();
     this.checkUserImageExist();
     this.hasChangedAvailabilityStatusInUsersComp();
@@ -257,11 +258,15 @@ export class SidebarUserDetailsComponent implements OnInit {
     })
   }
 
-  getTeammateStatus() {
+  getUserAvailability() {
     this.usersService.user_is_available_bs.subscribe((user_available) => {
       this.IS_AVAILABLE = user_available;
     //  console.log('[SIDEBAR-USER-DETAILS] - USER IS AVAILABLE ', this.IS_AVAILABLE);
     });
+  }
+
+  getTeammateStatus() {
+
     this.usersService.projectUser_bs.subscribe((projectUser_bs) => {
       // this.PROFILE_STATUS = projectUser_bs;
     //  console.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
@@ -299,7 +304,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+      // console.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
       if ((projectUser) && (projectUser.length !== 0)) {
         // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
@@ -311,7 +316,7 @@ export class SidebarUserDetailsComponent implements OnInit {
         this.subsTo_WsCurrentUser(projectUser[0]._id)
 
         if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy,  projectUser[0].profileStatus)
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
         }
 
         // ADDED 21 AGO
@@ -338,7 +343,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
 
-  changeAvailabilityState(selecedstatusID) {
+  _changeAvailabilityState(selecedstatusID) {
     // console.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
 
    let IS_AVAILABLE = null
@@ -352,7 +357,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     profilestatus = 'inactive'
    }
 
-    this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => { // non 
+    this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
 
       // console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
 
@@ -374,6 +379,39 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
       
+      // this.getProjectUser();
+    });
+  }
+
+  changeAvailabilityState(IS_AVAILABLE) {
+    this.logger.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
+
+    this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
+
+    //  console.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ', projectUser)
+
+      if (projectUser.user_available === false) {
+        // this.openSnackBar()
+      }
+
+      // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+      this.usersService.availability_btn_clicked(true)
+
+    }, (error) => {
+      this.logger.error('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ERR  ', error);
+      // =========== NOTIFY ERROR ===========
+      // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
+      // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
+
+    }, () => {
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED  * COMPLETE *');
+
+      // =========== NOTIFY SUCCESS===========
+      // this.notify.showNotification('status successfully updated', 2, 'done');
+      // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
+
+
+      // this.getUserAvailability()
       // this.getProjectUser();
     });
   }

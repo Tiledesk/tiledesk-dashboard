@@ -544,7 +544,7 @@ export class UsersService {
         // this.user_is_available_bs = projectUser.user_available;
 
         if (projectUser[0].user_available !== undefined) {
-          this.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
+          this.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
         }
 
         // ADDED 21 AGO
@@ -682,7 +682,7 @@ export class UsersService {
    * @param user_available 
    * @param user_isbusy 
    */
-  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean, projctuser: any) {
+  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean) {
     // console.log('[USER-SERV] - PUBLISH PROJECT-USER-ID ', projectUser_id);
     // console.log('[USER-SERV] - PUBLISH USER AVAILABLE ', user_available);
     // console.log('[USER-SERV] - PUBLISH USER IS BUSY ', user_isbusy);
@@ -690,7 +690,7 @@ export class UsersService {
 
     this.project_user_id_bs.next(projectUser_id);
     this.user_is_available_bs.next(user_available);
-    this.projectUser_bs.next(projctuser);
+    // this.projectUser_bs.next(projctuser);
     this.user_is_busy$.next(user_isbusy);
   }
 
@@ -701,7 +701,7 @@ export class UsersService {
   // -----------------------------------------------------------------------------------------------------
   public availability_btn_clicked(clicked: boolean) {
     this.has_changed_availability_in_sidebar.next(clicked)
-    this.logger.log('[USER-SERV] - CURRENT-USER AVAILABILITY  availability_btn_clicked ', clicked)
+    // console.log('[USER-SERV] - CURRENT-USER AVAILABILITY  availability_btn_clicked ', clicked)
   }
 
 
@@ -894,12 +894,12 @@ export class UsersService {
   // must be implemented for to change the availability status (available / unavailable) of the current user
 
   /**
-   * UPDATE CURRENT USER AVAILABILITY
+   * NEW UPDATE CURRENT USER AVAILABILITY
    * @param projectId 
    * @param user_is_available 
    * @returns 
    */
-  public updateCurrentUserAvailability(projectId: string, user_is_available: boolean, profilestatus: any) {
+  public _updateCurrentUserAvailability(projectId: string, user_is_available: boolean, profilestatus: any) {
 
     let url = this.SERVER_BASE_PATH + projectId + '/project_users/';
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY (PUT) URL ', url);
@@ -920,6 +920,27 @@ export class UsersService {
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
+  }
+
+  /* old UPDATE CURRENT USER AVAILABILITY */
+  public updateCurrentUserAvailability(projectId: string, user_is_available: boolean) {
+
+    let url = this.SERVER_BASE_PATH + projectId + '/project_users/';
+    this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY (PUT) URL ', url);
+    
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const body = { 'user_available': user_is_available };
+    this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY - BODY ', body);
+
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
 

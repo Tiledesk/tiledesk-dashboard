@@ -26,15 +26,13 @@
 
   
 
-    <!-- <img id="sidebaravatar-no-img" class="avatar"
-    *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
-    src="assets/img/no_image_user.png" /> -->
-
-    <!-- (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" -->
-    <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{ tooltip_text_for_availability_status}}"  #tooltip="matTooltip"   matTooltipPosition='right' matTooltipHideDelay="100" -->
-    <div id="sidebaravatar-status-icon" *ngIf="project" class="status-icon"
+   
+    <!-- <div id="sidebaravatar-status-icon" *ngIf="project" class="status-icon"
       [ngClass]="{'is-user-online' : IS_AVAILABLE === true && IS_INACTIVE === false, 'is-user-offline' : IS_AVAILABLE === false && IS_INACTIVE === false, 'is-user-inactive': IS_AVAILABLE === false && IS_INACTIVE === true, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
-    </div>
+    </div> -->
+    <div id="sidebaravatar-status-icon" *ngIf="project" class="status-icon"
+    [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
+  </div>
 
     <div id="sidebaravatar-isbusy" class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer">
       <span class="material-icons sidebar-is-busy-icon">

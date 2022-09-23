@@ -101,7 +101,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject()
@@ -122,11 +122,11 @@ export class UsersComponent implements OnInit, OnDestroy {
 
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   } 
+  }
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
@@ -490,10 +490,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   getAllUsersOfCurrentProject(storage) {
     this.usersService.getProjectUsersByProjectId().subscribe(
       (projectUsers: any) => {
-        this.logger.log(
-          '[USERS] - GET PROJECT USERS (FILTERED FOR PROJECT ID) - PROJECT-USERS ',
-          projectUsers,
-        )
+        //  console.log( '[USERS] - GET PROJECT USERS (FILTERED FOR PROJECT ID) - PROJECT-USERS ', projectUsers)
         if (projectUsers) {
           this.projectUsersList = projectUsers
 
@@ -502,19 +499,19 @@ export class UsersComponent implements OnInit, OnDestroy {
 
             let imgUrl = ''
             if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-              imgUrl = 'https://firebasestorage.googleapis.com/v0/b/' +  storage +   '/o/profiles%2F' + projectuser['id_user']['_id'] +  '%2Fphoto.jpg?alt=media'
+              imgUrl = 'https://firebasestorage.googleapis.com/v0/b/' + storage + '/o/profiles%2F' + projectuser['id_user']['_id'] + '%2Fphoto.jpg?alt=media'
               // this.logger.log('[USERS] - PROJECT USERS imgUrl (usecase firebase)', imgUrl);
             } else {
-              imgUrl =  storage + 'images?path=uploads%2Fusers%2F' + projectuser['id_user']['_id'] + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+              imgUrl = storage + 'images?path=uploads%2Fusers%2F' + projectuser['id_user']['_id'] + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
               // this.logger.log('[USERS] - PROJECT USERS imgUrl (usecase native)', imgUrl);
             }
 
             this.checkImageExists(imgUrl, (existsImage) => {
               if (existsImage == true) {
-                this.logger.log( '[USERS] - IMAGE EXIST X PROJECT USERS',projectuser)
+                this.logger.log('[USERS] - IMAGE EXIST X PROJECT USERS', projectuser)
                 projectuser.hasImage = true
               } else {
-                this.logger.log( '[USERS] - IMAGE NOT EXIST X PROJECT USERS', projectuser )
+                this.logger.log('[USERS] - IMAGE NOT EXIST X PROJECT USERS', projectuser)
                 projectuser.hasImage = false
               }
             })
@@ -846,42 +843,24 @@ export class UsersComponent implements OnInit, OnDestroy {
       )
     }
 
-    this.usersService
-      ._updateProjectUser(projectUser_id, this.IS_AVAILABLE)
-      .subscribe(
-        (projectUser: any) => {
-          this.logger.log(
-            '[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER RES',
-            projectUser,
-          )
+    this.usersService._updateProjectUser(projectUser_id, this.IS_AVAILABLE)
+      .subscribe((projectUser: any) => {
+        this.logger.log('[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER RES', projectUser)
 
-          // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
-          this.usersService.availability_switch_clicked(true)
-        },
+        // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+        this.usersService.availability_switch_clicked(true)
+      },
         (error) => {
-          this.logger.error(
-            '[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER - ERROR ',
-            error,
-          )
+          this.logger.error('[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER - ERROR ', error)
 
           //  NOTIFY ERROR
-          this.notify.showWidgetStyleUpdateNotification(
-            this.changeAvailabilityErrorNoticationMsg,
-            4,
-            'report_problem',
-          )
+          this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem')
         },
         () => {
-          this.logger.log(
-            '[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER * COMPLETE *',
-          )
+          this.logger.log('[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER * COMPLETE *')
 
           //  NOTIFY SUCCESS
-          this.notify.showWidgetStyleUpdateNotification(
-            this.changeAvailabilitySuccessNoticationMsg,
-            2,
-            'done',
-          )
+          this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
 
           this.getUploadEgine()
         },
@@ -893,10 +872,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   hasChangedAvailabilityStatusInSidebar() {
     this.usersService.has_changed_availability_in_sidebar.subscribe(
       (has_changed_availability) => {
-        this.logger.log(
-          '[USERS] - SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR',
-          has_changed_availability,
-        )
+        // console.log('[USERS] - SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
         if (has_changed_availability === true) {
           this.getAllUsersOfCurrentProject(this.storageBucket)
         }
