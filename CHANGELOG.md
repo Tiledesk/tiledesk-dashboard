@@ -1,6 +1,14 @@
 
 # tiledesk-dashboard
 
+### 2.2.50
+- Deploys in production
+- Allows ticket-type chats to be served only by an agent
+- Fixes the bug: on the image preview page, the image does not fit the window height 
+- Disallows the ability to message for resolved conversations for more than 10 days on the conversation detail page
+- Adds in the right sidebar on the conversation details page the ability to disable Smart Assignment (Convert to offline) for chat type conversations
+- Adds the ability to attach files to sent messages in the chat section on the conversation detail page
+
 ### 2.2.50-rc2
 - Removes the ability for the logged in teammate to set his status to "Inactive" (incomplete implementation)
 - Allows ticket-type chats to be served only by an agent
@@ -8,7 +16,7 @@
 
 ### 2.2.50-rc1
 - Disallows the ability to message for resolved conversations for more than 10 days on the conversation detail page
-- Adds in the right sidebar on the conversation details page the ability to disable intelligent assignment (Convert to offline) for chat type conversations
+- Adds in the right sidebar on the conversation details page the ability to disable Smart Assignment (Convert to offline) for chat type conversations
 - Fixes the bug: in Analytics > Metrics > Messages the graph is not populated when selecting a bot from the "Agent" combo box
 - Adds the ability to attach files to sent messages in the chat section on the conversation detail page
 - Refactors the "send message" section on the conversation details page
