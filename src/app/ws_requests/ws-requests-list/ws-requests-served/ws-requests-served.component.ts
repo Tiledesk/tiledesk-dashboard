@@ -68,6 +68,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   requests_selected = [];
   allChecked = false;
   allConversationsaveBeenArchivedMsg: string;
+
+  youCannotJoinChat: string;
+  joinChatTitle: string;
   /**
    * Constructor
    * @param botLocalDbService 
@@ -308,7 +311,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.translateCancel();
     this.translateJoinToChat();
     this.translateAreYouSure();
-    this.translateAllConversationsHaveBeenArchived()
+    this.translateAllConversationsHaveBeenArchived();
+    this.translateModalYouCannotJoinChat();
   }
 
 
@@ -557,10 +561,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // ------------------------------------------
   // Join request
   // ------------------------------------------
-  joinRequest(currentuserisjoined, participantingagents, request_id: string) {
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
-
+  joinRequest(currentuserisjoined, participantingagents, request_id: string, channel) {
+  //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
+  //  console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
+  //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
+    
     const participantingagentslength = participantingagents.length
     this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents length', participantingagentslength);
 
@@ -608,7 +613,15 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest chatAgent', chatAgent);
 
     if (currentuserisjoined === false) {
-      this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
+      if (channel.name === 'email' || channel.name === 'form') { 
+       if (participantingagents.length === 1) {
+        this.presentModalYouCannotJoinChat()
+       } else if (participantingagents.length === 0) {
+        this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
+       }
+      } else if (channel.name !== 'email' || channel.name !== 'form' || channel.name === 'telegram' || channel.name === 'whatsapp' || channel.name === 'messenger' || channel.name === 'chat21') {
+        this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
+      }
     }
   }
 
@@ -636,6 +649,16 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           this.onJoinHandled(request_id, this.currentUserID);
         }
       })
+  }
+
+  presentModalYouCannotJoinChat() {
+    swal({
+      title: this.joinChatTitle,
+      text: this.youCannotJoinChat,
+      icon: "info",
+      buttons: 'OK',
+      dangerMode: false,
+    })
   }
 
   openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
@@ -812,7 +835,17 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       .subscribe((text: string) => {
         this.allConversationsaveBeenArchivedMsg = text
       })
+  }
 
+  translateModalYouCannotJoinChat() {
+    this.translate.get('YouCannotJoinChat')
+    .subscribe((text: string) => {
+      this.youCannotJoinChat = text
+    })
+
+    this.translate.get('RequestMsgsPage.Enter').subscribe((text: string) => {
+      this.joinChatTitle = text;
+    });
   }
 
   _getProjectUserByUserId(member_id) {

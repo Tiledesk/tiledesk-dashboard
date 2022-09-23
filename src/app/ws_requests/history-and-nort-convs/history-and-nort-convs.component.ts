@@ -239,7 +239,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   qs_teammate_id: string;
   qs_dept_id: string;
   requests_status_selected_from_left_filter: string;
-  requests_status_selected_from_advanced_option: string
+  requests_status_selected_from_advanced_option: string;
+  youCannotJoinChat: string;
+  joinChatTitle: string;
   /**
    * 
    * @param router 
@@ -636,6 +638,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.translateWarningMsg();
     this.translateConversationsCannotBeReopened();
     this.translaAllDepts();
+    this.translateModalYouCannotJoinChat();
 
   }
   translaAllDepts() {
@@ -744,6 +747,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       });
   }
 
+  translateModalYouCannotJoinChat() {
+    this.translate.get('YouCannotJoinChat')
+    .subscribe((text: string) => {
+      this.youCannotJoinChat = text
+    })
+
+    this.translate.get('RequestMsgsPage.Enter').subscribe((text: string) => {
+      this.joinChatTitle = text;
+    });
+  }
+
 
   // ------------------------------------------
   // Join request
@@ -751,8 +765,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   joinRequest(request, request_id: string) {
 
     // this._onJoinHandled(request_id, this.currentUserID, request);
-    this.logger.log('[HISTORY & NORT-CONVS] joinRequest request', request)
-
+  //  console.log('[HISTORY & NORT-CONVS] joinRequest request', request)
+  //  console.log('[HISTORY & NORT-CONVS] joinRequest request.participanting_Agents', request.participanting_Agents)
 
     let chatAgent = '';
     if (request && request.participanting_Agents) {
@@ -783,9 +797,27 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('[HISTORY & NORT-CONVS] - joinRequest chatAgent', chatAgent);
 
       if (request && request.currentUserIsJoined === false) {
-        this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request);
+        if (request.channel.name === 'email' || request.channel.name === 'form') { 
+          if (request.participanting_Agents.length === 1) {
+            this.presentModalYouCannotJoinChat()
+          } else if (request.participanting_Agents.length === 0)  {
+            this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request);
+          }
+        } else if (request.channel.name !== 'email' || request.channel.name !== 'form' || request.channel.name === 'telegram' || request.channel.name === 'whatsapp' || request.channel.name === 'messenger' || request.channel.name === 'chat21') { 
+          this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request);
+        }
       }
     }
+  }
+
+  presentModalYouCannotJoinChat() {
+    swal({
+      title: this.joinChatTitle,
+      text: this.youCannotJoinChat,
+      icon: "info",
+      buttons: 'OK',
+      dangerMode: false,
+    })
   }
 
   displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request) {

@@ -1029,7 +1029,7 @@
             <!-- -------------------------- -->
             <button *ngIf="request?.currentUserIsJoined === false" type="button" rel="tooltip"
               title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs tool_tip"
-              (click)='joinRequest(request?.currentUserIsJoined, request?.participanting_Agents, request?.request_id)'
+              (click)='joinRequest(request?.currentUserIsJoined, request?.participanting_Agents, request?.request_id, request?.channel )'
               [disabled]="request?.currentUserIsJoined === true">
               <!-- --------------------------------- -->
               <!-- SVG font-awesome link icon -->

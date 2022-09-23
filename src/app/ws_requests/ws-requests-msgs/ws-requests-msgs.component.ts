@@ -35,7 +35,7 @@ import * as moment from 'moment';
 import { threadId } from 'worker_threads';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
-import { DomSanitizer } from '@angular/platform-browser';
+
 const swal = require('sweetalert');
 
 @Component({
@@ -306,6 +306,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   HAS_SELECTED_SEND_AS_OPENED: boolean = true;
   HAS_SELECTED_SEND_AS_PENDING: boolean = false;
   HAS_SELECTED_SEND_AS_SOLVED: boolean = false;
+
+  youCannotLeaveTheChat: string;
+  youCannotAddAgents: string;
+ 
+  addAgentTitle: string;
+  
+  youCannotJoinChat: string;
+  joinChatTitle: string;
   /**
    * Constructor
    * @param router 
@@ -349,8 +357,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private projectService: ProjectService,
     public appStoreService: AppStoreService,
     private uploadImageService: UploadImageService,
-    private uploadImageNativeService: UploadImageNativeService,
-    private sanitizer: DomSanitizer,
+    private uploadImageNativeService: UploadImageNativeService
+
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
@@ -2660,10 +2668,27 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openSelectUsersModal(actionSelected) {
     this.actionInModal = actionSelected
-    this.logger.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
-    // this.getAllUsersOfCurrentProject();
-    this.getProjectUsersAndBots();
+    console.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
 
+    if (this.actionInModal === 'invite') {
+      if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
+        if (this.agents_array.length === 1) {
+          this.presentModalYouCannotAddAgents()
+        } else if (this.agents_array.length === 0) {
+          this.presentModalAddAgent()
+        }
+      } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
+        this.presentModalAddAgent()
+      }
+    } else {
+      this.presentModalAddAgent()
+    }
+    // this.getAllUsersOfCurrentProject();
+
+  }
+
+  presentModalAddAgent() {
+    this.getProjectUsersAndBots();
     this.getDepartments();
     this.displayUsersListModal = 'block'
     this.logger.log('[WS-REQUESTS-MSGS] - DISPLAY USERS LIST MODAL ', this.displayUsersListModal);
@@ -2687,6 +2712,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - USER LIST MODAL - ON OPEN  <=991 - users_list_modal_height', this.users_list_modal_height);
       }
     }
+  }
+
+  presentModalYouCannotAddAgents() {
+    swal({
+      title: this.addAgentTitle,
+      text: this.youCannotAddAgents,
+      icon: "info",
+      buttons: 'OK',
+      dangerMode: false,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    })
   }
 
   closeSelectUsersModal() {
@@ -3162,6 +3198,31 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   // JOIN TO CHAT GROUP
   onJoinHandled() {
+    if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
+      if (this.agents_array.length === 1) {
+        this.presentModalYouCannotJoinChat()
+      } else if (this.agents_array.length === 0) {
+        this.joinChat()
+      }
+    } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
+      this.joinChat()
+    }
+  }
+
+
+  presentModalYouCannotJoinChat() {
+    swal({
+      title: this.joinChatTitle,
+      text: this.youCannotJoinChat,
+      icon: "info",
+      buttons: 'OK',
+      dangerMode: false,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    })
+  }
+
+
+  joinChat() {
     this.logger.log('[WS-REQUESTS-MSGS]- JOIN PRESSED');
     this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = true;
 
@@ -3181,12 +3242,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
         this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
       });
-
   }
 
 
   openleaveChatModal() {
-
     if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
 
       if (this.agents_array.length === 1) {
@@ -3207,7 +3266,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   presentModalYouCannotLeaveTheChat() {
     swal({
       title: this.leaveChatTitle,
-      text: 'Sorry but you can\'t leave the chat. There must be at least one agent for a ticket type chat',
+      text: this.youCannotLeaveTheChat,
       icon: "info",
       buttons: 'OK',
       dangerMode: false,
@@ -3244,8 +3303,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 button: "OK",
                 className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               }).then((okpressed) => {
-                this.logger.error('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - COMPLETE  okpressed ', okpressed);
-
+                this.logger.log('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - COMPLETE  okpressed ', okpressed);
+                this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
               });
             });
 
@@ -3945,6 +4004,27 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.messageCouldNotBeSent = text;
     });
 
+    this.translate.get('YouCannotLeaveTheChat').subscribe((text: string) => {
+      this.youCannotLeaveTheChat = text;
+    });
+
+    this.translate.get('YouCannotAddAgents').subscribe((text: string) => {
+      this.youCannotAddAgents = text;
+    });
+
+    this.translate.get('VisitorsPage.AddAgent').subscribe((text: string) => {
+      this.addAgentTitle = text;
+    });
+
+    this.translate.get('YouCannotJoinChat').subscribe((text: string) => {
+      this.youCannotJoinChat = text;
+    });
+
+    this.translate.get('RequestMsgsPage.Enter').subscribe((text: string) => {
+      this.joinChatTitle = text;
+    });
+    
+    
   }
 
 
