@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.50-rc2
+- Removes the ability for the logged in teammate to set his status to "Inactive" (incomplete implementation)
+
 ### 2.2.50-rc1
 - Disallows the ability to message for resolved conversations for more than 10 days on the conversation detail page
 - Adds in the right sidebar on the conversation details page the ability to disable intelligent assignment (Convert to offline) for chat type conversations
