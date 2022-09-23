@@ -818,11 +818,11 @@ button.close {
 }
 
 // USER LIST MODAL: REMOVE THE SCROLL WHEN SCREEN WIDTH IS > 991
-@media (max-width: 992px) {
-  .users-list-modal-dashboard-mode {
-    // overflow-y: hidden !important;
-  }
-}
+// @media (max-width: 992px) {
+//   .users-list-modal-dashboard-mode {
+//     // overflow-y: hidden !important;
+//   }
+// }
 
 /* RESPONSIVE TABLE
 Max width before this PARTICULAR table gets nasty

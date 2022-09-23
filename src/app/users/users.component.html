@@ -231,7 +231,7 @@
                           <!-- --------------------------------------------------- -->
                           <!-- USECASE uploadEngine Firebase -->
                           <!-- --------------------------------------------------- -->
-                          <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE" style=""
+                          <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE" 
                             class="user-img-in-teammates-list"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'" />
