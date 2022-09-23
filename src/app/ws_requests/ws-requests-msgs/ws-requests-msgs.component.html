@@ -599,15 +599,15 @@
                           </ng-select>
                         </div> -->
                         <div class="col-xs-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">
-                          <!-- <button class="btn pull-right send-chat-msg-btn" (click)="sendChatMessage()"
+                          <button class="btn pull-right send-chat-msg-btn" (click)="sendChatMessage()"
                             [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
-                            <!- - {{'Send' | translate}} - ->
+                            <!-- {{'Send' | translate}} -->
                             <span class="material-icons">
                               send
                             </span>
-                          </button> -->
+                          </button> 
 
-                          <div class="btn-group pull-right">
+                          <!-- <div class="btn-group pull-right">
                             <button type="button" class="btn btn-white">Default</button>
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                               <span class="caret"></span>
@@ -619,7 +619,9 @@
                                 <a (click)="sendAsOpen()" style="padding-left: 15px; padding-right: 15px;">
                                   <i class="material-icons" style="padding-right: 5px;">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
-                                    Invia come Aperto
+                                   
+                                    {{'SendAs' | translate }}
+                                     <span style="font-weight:500;"> {{'Open' | translate }} </span> 
                                   </span>
                                 </a>
                               </li>
@@ -628,7 +630,9 @@
                                 <a (click)="sendAsPending()" style="padding-left: 15px; padding-right: 15px;">
                                   <i class="material-icons" style="padding-right: 5px;">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
-                                    Invia come In Attesa
+                               
+                                    {{'SendAs' | translate }} 
+                                    <span style="font-weight:500;"> {{'Pending' | translate }}</span>
                                   </span>
                                 </a>
                               </li>
@@ -637,13 +641,15 @@
                                 <a (click)="sendAsSolved()" style="padding-left: 15px; padding-right: 15px;">
                                   <i class="material-icons" style="padding-right: 5px;">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
-                                    Invia come Risolto
+                                  
+                                    {{'SendAs' | translate }}  
+                                    <span style="font-weight:500;"> {{'Resolved' | translate }} </span>
                                   </span>
                                 </a>
                               </li>
 
                             </ul>
-                          </div>
+                          </div> -->
 
 
 
@@ -2858,490 +2864,392 @@
                   </div>
                 </div>
 
+             
 
-
-                <!-- <div class="col-sm-12">
-                  <p class="row-header">
-                    <span style="vertical-align: middle">
-                      <span class="followers-label"> Followers </span>
-                      <span matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'AddTeammatesAsFollowers' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='right' matTooltipHideDelay="100">
-                        <i class="material-icons"
-                          style="position: relative;top: 6px; font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer">
-                          help_outline
-                        </i>
+                <!--  ----------------------------------------------------------------------------- -->
+                <!--  Tags -->
+                <!--  ----------------------------------------------------------------------------- -->
+                <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
+                  <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
+                <div *ngIf="isVisibleLBS === true" class="row">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;  border-top: 1px solid #eeeeee;">
+                    <p class="row-header" style="margin-bottom: 0px">
+                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle">
+                        {{ "Tags.Tags" | translate }}
                       </span>
-                      <span *ngIf="!CURRENT_USER_IS_A_FOLLOWER" (click)="follow()" class="follow-btn">follow</span>
-                      <span *ngIf="CURRENT_USER_IS_A_FOLLOWER" (click)="unfollow()" class="follow-btn">unfollow</span>
-                    </span>
-                  </p>
-                </div> -->
-
-                <!-- <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
-                  <div class="followers-container" style="padding-left: 15px;
-                    padding-right: 15px;margin-bottom: 6px;">
-
-                    <div class="followers">
-
-                      <ng-select [items]="projectTeammates" bindLabel="label" [multiple]="true"
-                        placeholder="Search teammate" [(ngModel)]="selectedFollowers" (change)="getValues($event)"
-                        (add)="addFollower($event)" (remove)="removeFollower($event)" [hideSelected]="true"
-                        (clear)="removeAllFollowers($event)">
-                      </ng-select>
-
-                      <div *ngIf="request?.channel?.name === 'chat21'" class="convert-to-offline-btn-wpr"
-                        style="margin-top:8px">
-                        <span *ngIf="smartAssignmentEnabled === true" class="convert-to-offline-btn"
-                          (click)="smartAssignmentOff()">
-                          Convert to offline
-                        </span>
-                        <span *ngIf="smartAssignmentEnabled === false" class="convert-to-offline-btn-disabled">
-                          Convert to offline
-                        </span>
-                        <span matTooltipClass="custom-mat-tooltip"
-                          matTooltip="Select this option to disable automatic reassignment for this conversation. It will be treated like a ticket that will allow you to take his time to reply"
-                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
-                          <i class="material-icons"
-                            style=" font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer">
-                            help_outline
-                          </i>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
-              </div>
+                    </p>
+                    <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
+                      <div class="tags-container">
+                        <div class="tag" *ngFor="let tag of request?.tags" role="button">
 
 
+                          <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
+                          <!-- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
+                          <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
+                          <div (click)="removeTag(tag)">
+                            <div class="icon-container" style="display: inline-block;">
+                              <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;" aria-hidden="true"
+                                focusable="false" data-prefix="fas" data-icon="tag"
+                                class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 
-
-              <!--  ----------------------------------------------------------------------------- -->
-              <!--  Tags -->
-              <!--  ----------------------------------------------------------------------------- -->
-              <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
-                <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
-              <div *ngIf="isVisibleLBS === true" class="row">
-                <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;  border-top: 1px solid #eeeeee;">
-                  <p class="row-header" style="margin-bottom: 0px">
-                    <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                    <span style="vertical-align: middle">
-                      {{ "Tags.Tags" | translate }}
-                    </span>
-                  </p>
-                  <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
-                    <div class="tags-container">
-                      <div class="tag" *ngFor="let tag of request?.tags" role="button">
-
-
-                        <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
-                        <!-- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
-                        <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
-                        <div (click)="removeTag(tag)">
-                          <div class="icon-container" style="display: inline-block;">
-                            <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;" aria-hidden="true"
-                              focusable="false" data-prefix="fas" data-icon="tag"
-                              class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
-                              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-
-                              <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
-                                d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                              </path>
-                            </svg>
-                            <span class="tag-delete">
-                              <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
-                            </span>
+                                <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                                  d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                </path>
+                              </svg>
+                              <span class="tag-delete">
+                                <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
+                              </span>
+                            </div>
+                            {{ tag.tag}}
                           </div>
-                          {{ tag.tag}}
+
                         </div>
+                      </div>
 
+
+                      <!--  ------------------------------------------------------------------------------------------------------------ -->
+                      <!--  Btn Add Labels (note: is disabled if the current user has agent role and is not among the participants) -->
+                      <!--  ------------------------------------------------------------------------------------------------------------ -->
+                      <button class="btn btn-xs btn-primary ws_msgs_small_btn add_tag_btn"
+                        style="margin-top: 4px;  margin-bottom: 6px;" (click)="toggleAddTagInputAndGetTags()"
+                        [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true">
+
+                        <i *ngIf="diplayAddTagInput === false" class="material-icons"
+                          style="font-size: 15px;">add_circle</i>
+                        <i *ngIf="diplayAddTagInput === true" class="material-icons"
+                          style="font-size: 15px;">remove_circle</i>
+
+                        {{ 'Tags.AddTags' | translate}}
+
+                      </button>
+                      <!-- btn-white-no-border -->
+                      <!-- <button class="btn btn-xs btn-white-custom-round" style="margin-left:8px;margin-top: 4px;"
+                        (click)="goToTags()">
+                        <i class="material-icons">edit</i>
+                        {{ 'Tags.ManageTags' | translate}}
+                      </button> -->
+
+                      <div *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false" (click)="goToTags()"
+                        class="manage_tags">
+                        {{ 'Tags.ManageTags' | translate}}
                       </div>
                     </div>
 
+                    <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
+                      <div *ngIf="diplayAddTagInput === true" class="tag-input-wrap" style="margin-bottom: 6px;">
 
-                    <!--  ------------------------------------------------------------------------------------------------------------ -->
-                    <!--  Btn Add Labels (note: is disabled if the current user has agent role and is not among the participants) -->
-                    <!--  ------------------------------------------------------------------------------------------------------------ -->
-                    <button class="btn btn-xs btn-primary ws_msgs_small_btn add_tag_btn"
-                      style="margin-top: 4px;  margin-bottom: 6px;" (click)="toggleAddTagInputAndGetTags()"
-                      [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true">
+                        <!-- // ------------------------------------------------------ -->
+                        <ng-select #Selecter (change)="addTag()" [items]="tagsList" bindLabel="tag" bindValue="_id"
+                          [clearable]="false" [clearSearchOnAdd]="true" placeholder="{{ typeALabelAndPressEnter}}"
+                          [(ngModel)]="tag" [loading]=loadingTags loadingText='Loading...'>
 
-                      <i *ngIf="diplayAddTagInput === false" class="material-icons"
-                        style="font-size: 15px;">add_circle</i>
-                      <i *ngIf="diplayAddTagInput === true" class="material-icons"
-                        style="font-size: 15px;">remove_circle</i>
+                          <ng-template ng-label-tmp let-item="item">
+                            <!-- <img height="15" width="15" [src]="item.avatar"/> -->
+                            <i [style.color]="item.color" class="fa fa-tag"
+                              style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
 
-                      {{ 'Tags.AddTags' | translate}}
+                            {{item.tag}}
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item" let-index="index">
+                            <i [style.color]="item.color" class="fa fa-tag"
+                              style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
+                            {{item.tag}}
+                          </ng-template>
+                          <!-- (ngModelChange)="onChangeTagnameInConvDetail($event)" -->
+                          <ng-template ng-footer-tmp>
+                            <!-- position:relative -->
+                            <div class="input-group create-new-tag">
+                              <input id="tag_name_in_conv_detail" (keyup.enter)="onPressEnterInIputTypeNewTag()"
+                                (focus)="onFocusInIputTypeNewTag()" (blur)="onBlurIputTypeNewTag()"
+                                class="tag-name-in-conv-detail" name="tag_name_in_conv_detail" [(ngModel)]="tag_name"
+                                type="text" placeholder="{{ 'TypeNewTagHere' | translate }}" style="padding-left: 27px;">
+                              <i class="fa fa-circle" style="font-size: 18px; position: absolute;
+                                  left: 7px;
+                                  top: 13px;" [ngStyle]="{'color':tag_selected_color}"></i>
+                              <span class="input-group-btn">
+                                <button class="btn btn-xs btn-primary add-tag-btn-cov-detail" (click)="createTag()"
+                                  [disabled]="tag_name?.length === 0 || !tag_name">
+                                  {{'Add' | translate}}
+                                </button>
+                              </span>
+                            </div>
+                            <div class="tag--colors" style="padding-top:4px; padding-left: 7px;">
+                              <i class="fa fa-circle" style="font-size: 18px; color:#43B1F2; cursor: pointer;"
+                                (click)="tagSelectedColor('#43B1F2')">
+                              </i>
+                              <i class="fa fa-circle" style="font-size: 18px; color:#CB80DD; cursor: pointer;"
+                                (click)="tagSelectedColor('#CB80DD')">
+                              </i>
+                              <i class="fa fa-circle" style="font-size: 18px; color:#66C549; cursor: pointer;"
+                                (click)="tagSelectedColor('#66C549')">
+                              </i>
+                              <i class="fa fa-circle" style="font-size: 18px; color:#F3C835; cursor: pointer;"
+                                (click)="tagSelectedColor('#F3C835')">
+                              </i>
+                              <i class="fa fa-circle" style="font-size: 18px; color:#F89D34; cursor: pointer;"
+                                (click)="tagSelectedColor('#F89D34')">
+                              </i>
+                              <i class="fa fa-circle" style="font-size: 18px; color:#FF5C55; cursor: pointer;"
+                                (click)="tagSelectedColor('#FF5C55')">
+                              </i>
+                            </div>
+                            <!-- tag_name: string;
+                            tag_selected_color = '#43B1F2';
+                            tag_new_selected_color: string; -->
+                          </ng-template>
 
-                    </button>
-                    <!-- btn-white-no-border -->
-                    <!-- <button class="btn btn-xs btn-white-custom-round" style="margin-left:8px;margin-top: 4px;"
-                      (click)="goToTags()">
-                      <i class="material-icons">edit</i>
-                      {{ 'Tags.ManageTags' | translate}}
-                    </button> -->
-
-                    <div *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false" (click)="goToTags()"
-                      class="manage_tags">
-                      {{ 'Tags.ManageTags' | translate}}
-                    </div>
-                  </div>
-
-                  <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
-                    <div *ngIf="diplayAddTagInput === true" class="tag-input-wrap" style="margin-bottom: 6px;">
-
-                      <!-- // ------------------------------------------------------ -->
-                      <ng-select #Selecter (change)="addTag()" [items]="tagsList" bindLabel="tag" bindValue="_id"
-                        [clearable]="false" [clearSearchOnAdd]="true" placeholder="{{ typeALabelAndPressEnter}}"
-                        [(ngModel)]="tag" [loading]=loadingTags loadingText='Loading...'>
-
-                        <ng-template ng-label-tmp let-item="item">
-                          <!-- <img height="15" width="15" [src]="item.avatar"/> -->
-                          <i [style.color]="item.color" class="fa fa-tag"
-                            style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
-
-                          {{item.tag}}
-                        </ng-template>
-                        <ng-template ng-option-tmp let-item="item" let-index="index">
-                          <i [style.color]="item.color" class="fa fa-tag"
-                            style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
-                          {{item.tag}}
-                        </ng-template>
-                        <!-- (ngModelChange)="onChangeTagnameInConvDetail($event)" -->
-                        <ng-template ng-footer-tmp>
-                          <!-- position:relative -->
-                          <div class="input-group create-new-tag">
-                            <input id="tag_name_in_conv_detail" (keyup.enter)="onPressEnterInIputTypeNewTag()"
-                              (focus)="onFocusInIputTypeNewTag()" (blur)="onBlurIputTypeNewTag()"
-                              class="tag-name-in-conv-detail" name="tag_name_in_conv_detail" [(ngModel)]="tag_name"
-                              type="text" placeholder="{{ 'TypeNewTagHere' | translate }}" style="padding-left: 27px;">
-                            <i class="fa fa-circle" style="font-size: 18px; position: absolute;
-                                left: 7px;
-                                top: 13px;" [ngStyle]="{'color':tag_selected_color}"></i>
-                            <span class="input-group-btn">
-                              <button class="btn btn-xs btn-primary add-tag-btn-cov-detail" (click)="createTag()"
-                                [disabled]="tag_name?.length === 0 || !tag_name">
-                                {{'Add' | translate}}
-                              </button>
-                            </span>
-                          </div>
-                          <div class="tag--colors" style="padding-top:4px; padding-left: 7px;">
-                            <i class="fa fa-circle" style="font-size: 18px; color:#43B1F2; cursor: pointer;"
-                              (click)="tagSelectedColor('#43B1F2')">
-                            </i>
-                            <i class="fa fa-circle" style="font-size: 18px; color:#CB80DD; cursor: pointer;"
-                              (click)="tagSelectedColor('#CB80DD')">
-                            </i>
-                            <i class="fa fa-circle" style="font-size: 18px; color:#66C549; cursor: pointer;"
-                              (click)="tagSelectedColor('#66C549')">
-                            </i>
-                            <i class="fa fa-circle" style="font-size: 18px; color:#F3C835; cursor: pointer;"
-                              (click)="tagSelectedColor('#F3C835')">
-                            </i>
-                            <i class="fa fa-circle" style="font-size: 18px; color:#F89D34; cursor: pointer;"
-                              (click)="tagSelectedColor('#F89D34')">
-                            </i>
-                            <i class="fa fa-circle" style="font-size: 18px; color:#FF5C55; cursor: pointer;"
-                              (click)="tagSelectedColor('#FF5C55')">
-                            </i>
-                          </div>
-                          <!-- tag_name: string;
-                          tag_selected_color = '#43B1F2';
-                          tag_new_selected_color: string; -->
-                        </ng-template>
-
-                      </ng-select>
+                        </ng-select>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- ----------------------------------------------------------------------------- -->
-              <!-- @ Notes accordion -->
-              <!-- ----------------------------------------------------------------------------- -->
-              <div class="row">
-                <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;">
-                  <p class="row-header accordion" (click)="openNotesAccordion()"
-                    style="padding-left:13px; padding-right:15px; font-size: 14px;">
-                    <i class="material-icons" style="vertical-align: middle; color: #2C3E48"> note_alt </i>
-                    <span style="vertical-align: middle">
-                      {{ "Notes.Notes" | translate }} ({{ notesArray?.length }})
-                    </span>
-                  </p>
-                  <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
-
-
-                    <div class="note-container">
-                      <div class="note-panel" (scroll)="onScrollx($event)">
-                        <div class="ws_msgs_note__textarea">
-                          <textarea [(ngModel)]="new_note" placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2"
-                            style="width: 100%;
-                              display: block;
-                              border: 1px solid #dee2e7;
-                              padding: 12px;
-                              border-radius: 3px;
-                              resize: none;
-                              margin-bottom: 8px;"> </textarea>
+                <!-- ----------------------------------------------------------------------------- -->
+                <!-- @ Notes accordion -->
+                <!-- ----------------------------------------------------------------------------- -->
+                <div class="row">
+                  <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;">
+                    <p class="row-header accordion" (click)="openNotesAccordion()"
+                      style="padding-left:13px; padding-right:15px; font-size: 14px;">
+                      <i class="material-icons" style="vertical-align: middle; color: #2C3E48"> note_alt </i>
+                      <span style="vertical-align: middle">
+                        {{ "Notes.Notes" | translate }} ({{ notesArray?.length }})
+                      </span>
+                    </p>
+                    <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
 
 
-
-                          <!--  ------------------------------------------------------------------------------------------------------------ -->
-                          <!--  Btn Add Notes (note: is disabled if if the current user has agent role and is not among the participants) -->
-                          <!--  ------------------------------------------------------------------------------------------------------------ -->
-                          <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
-                            (click)="addNote()"
-                            [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
-
-
-                            <span *ngIf="showSpinnerInAddNoteBtn !== true">
-                              <i class="material-icons" style="font-size: 15px;">add_circle</i>
-                            </span>
-
-                            <span *ngIf="showSpinnerInAddNoteBtn === true">
-                              <i class="fa fa-spinner fa-spin" style="font-size: 15px;"></i>
-                            </span>
-
-                            {{ 'Notes.AddNote' | translate }}
-                          </button>
-                        </div>
-
-                        <div *ngIf="notesArray?.length > 0" class="ws_request_notes__container">
-
-
-                          <!--  ------------------------------------------------------ -->
-                          <!--  @ Notes' cards -->
-                          <!--  ------------------------------------------------------ -->
-                          <div *ngFor="let note of notesArray;" class="ws_request_note">
-                            <div class="ws_request_note__content">
-                              {{ note?.text }}
-                            </div>
-                            <!-- HH:mm:ss -->
-                            <div class="ws_request_note__footer">
-                              {{ 'Created' | translate}} {{ note.createdAt| date: 'd/M/y'}} {{ 'By' | translate}}
-                              {{ note?.createdBy_user?.firstname}} {{ note?.createdBy_user?.lastname}}
-                            </div>
+                      <div class="note-container">
+                        <div class="note-panel" (scroll)="onScrollx($event)">
+                          <div class="ws_msgs_note__textarea">
+                            <textarea [(ngModel)]="new_note" placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2"
+                              style="width: 100%;
+                                display: block;
+                                border: 1px solid #dee2e7;
+                                padding: 12px;
+                                border-radius: 3px;
+                                resize: none;
+                                margin-bottom: 8px;"> </textarea>
 
 
 
-                            <!-- ------------------------------------------------------------ -->
-                            <!-- @ Remove note btn (click)="presentModalDeleteNote(note._id)" -->
-                            <!-- ------------------------------------------------------------ -->
-                            <button *ngIf="currentUserID === note.createdBy " (click)="deleteNote(note._id)"
-                              type="button" class="note__delete">
-                              <i class="material-icons delete_note_icon" style="font-size:16px">close</i>
+                            <!--  ------------------------------------------------------------------------------------------------------------ -->
+                            <!--  Btn Add Notes (note: is disabled if if the current user has agent role and is not among the participants) -->
+                            <!--  ------------------------------------------------------------------------------------------------------------ -->
+                            <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
+                              (click)="addNote()"
+                              [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
+
+
+                              <span *ngIf="showSpinnerInAddNoteBtn !== true">
+                                <i class="material-icons" style="font-size: 15px;">add_circle</i>
+                              </span>
+
+                              <span *ngIf="showSpinnerInAddNoteBtn === true">
+                                <i class="fa fa-spinner fa-spin" style="font-size: 15px;"></i>
+                              </span>
+
+                              {{ 'Notes.AddNote' | translate }}
                             </button>
                           </div>
 
+                          <div *ngIf="notesArray?.length > 0" class="ws_request_notes__container">
+
+
+                            <!--  ------------------------------------------------------ -->
+                            <!--  @ Notes' cards -->
+                            <!--  ------------------------------------------------------ -->
+                            <div *ngFor="let note of notesArray;" class="ws_request_note">
+                              <div class="ws_request_note__content">
+                                {{ note?.text }}
+                              </div>
+                              <!-- HH:mm:ss -->
+                              <div class="ws_request_note__footer">
+                                {{ 'Created' | translate}} {{ note.createdAt| date: 'd/M/y'}} {{ 'By' | translate}}
+                                {{ note?.createdBy_user?.firstname}} {{ note?.createdBy_user?.lastname}}
+                              </div>
+
+
+
+                              <!-- ------------------------------------------------------------ -->
+                              <!-- @ Remove note btn (click)="presentModalDeleteNote(note._id)" -->
+                              <!-- ------------------------------------------------------------ -->
+                              <button *ngIf="currentUserID === note.createdBy " (click)="deleteNote(note._id)"
+                                type="button" class="note__delete">
+                                <i class="material-icons delete_note_icon" style="font-size:16px">close</i>
+                              </button>
+                            </div>
+
+                          </div>
+
+                          <!-- <div class="ws_msgs_note__textarea">
+                            <textarea [(ngModel)]="new_note" placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2"
+                              style="width: 100%;
+                                display: block;
+                                border: 1px solid #dee2e7;
+                                padding: 12px;
+                                border-radius: 3px;
+                                resize: none;
+                                margin-bottom: 8px;">
+
+                            </textarea>
+                            <button type="button" class="btn btn-primary ws_msgs_small_btn" #cont (click)="addNote()"
+                              [disabled]="!new_note || new_note?.length === 0">
+                              {{ 'Notes.AddNote' | translate }}
+                            </button>
+                          </div> -->
                         </div>
-
-                        <!-- <div class="ws_msgs_note__textarea">
-                          <textarea [(ngModel)]="new_note" placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2"
-                            style="width: 100%;
-                              display: block;
-                              border: 1px solid #dee2e7;
-                              padding: 12px;
-                              border-radius: 3px;
-                              resize: none;
-                              margin-bottom: 8px;">
-
-                          </textarea>
-                          <button type="button" class="btn btn-primary ws_msgs_small_btn" #cont (click)="addNote()"
-                            [disabled]="!new_note || new_note?.length === 0">
-                            {{ 'Notes.AddNote' | translate }}
-                          </button>
-                        </div> -->
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- ------------------------------------------------------ -->
-              <!-- Rating  -->
-              <!-- ------------------------------------------------------ -->
-              <div id="rating" class="row">
-                <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;">
-                  <p class="row-header">
-                    <span style="vertical-align: middle">
-                      {{ "RequestMsgsPage.Rating" | translate }}
-                    </span>
-                  </p>
-                  <p class="row-body" style="margin-bottom:0px">
-
-                    <!-- display: block; -->
-                    <span style="color: #7695a5; font-weight: 400;"> {{ rating }} - </span>
-                    <span class="ws_requets_msgs__attributes">
-                      {{ "RequestMsgsPage.RatingMessage" | translate }}:
-                    </span>
-                    <span style="font-weight: 400;"> {{ rating_message }}</span>
-                  </p>
-                </div>
-              </div>
-
-
-              <!--  ---------------------------------------------------------------- -->
-              <!--  @ Create Jira issue -->
-              <!--  ---------------------------------------------------------------- -->
-              <div *ngIf="DISPLAY_BTN_CREATE_JIRA_ISSUE" class="row">
-                <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee; min-height: 148px;">
-                  <p class="row-header">
-
-                    <span style="vertical-align: middle">
-                      {{'CreateTicketOnJira' | translate }}
-                    </span>
-
-                  </p>
-
-                  <p class="row-body" style="margin-bottom:0px">
-
-                    <label class="col-sm-12"
-                      style="text-align: left;color: #222222; padding-left: 0px;font-size: 12px; font-weight: 400;margin-top: 8px;margin-bottom: 1px;">
-                      {{ 'TicketType' | translate }} <span style="color:rgb(195,46,42)"> *</span>
-                    </label>
-                    <ng-select style="max-width: 180px;" [items]="jira_issue_types" bindLabel="name" bindValue="id"
-                      placeholder="{{'SelectTicketType' | translate}}" [(ngModel)]="selectedJiraType"
-                      (change)="selectJiraType()">
-                      <ng-template ng-label-tmp let-item="item">
-                        <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                        <b>{{item.name}}</b>
-                      </ng-template>
-                      <ng-template ng-option-tmp let-item="item" let-index="index">
-                        <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                        <b>{{item.name}}</b>
-                      </ng-template>
-                    </ng-select>
-
-                    <button class="btn btn-tdblu-no-boxshadow pull-left" (click)="createJiraTicket()"
-                      style="padding:9px 30px;" [disabled]="!selectedJiraType">
-                      {{'CreateJiraTicket' | translate}}
-                    </button>
-
-                  </p>
-                </div>
-              </div>
-
-              <!-- ------------------------------------------------------ -->
-              <!-- Smart Assignment  -->
-              <!-- ------------------------------------------------------ -->
-              <!-- <div id="enable-smart-assignment" class="row">
+                <!-- ------------------------------------------------------ -->
+                <!-- Rating  -->
+                <!-- ------------------------------------------------------ -->
+                <div id="rating" class="row">
                   <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee;">
                     <p class="row-header">
                       <span style="vertical-align: middle">
-                        Enable smart assignment
+                        {{ "RequestMsgsPage.Rating" | translate }}
                       </span>
                     </p>
+                    <p class="row-body" style="margin-bottom:0px">
 
-                    <div class="nw-onoffswitch-wrapper" style="clear: both;">
-                      <div class="nw-onoffswitch">
-                        <input (change)="onSmartAssignmentOnOff($event)" type="checkbox" name="nw-logo-switch"
-                          class="nw-onoffswitch-checkbox" id="smart-assignment-switch-btn" tabindex="0"
-                          [checked]="smartAssignmentEnabled === true">
-                        <label class="nw-onoffswitch-label" for="smart-assignment-switch-btn"></label>
-                      </div>
-                    </div>
-
-                  </div>
-                </div> -->
-
-              <!--  ---------------------------------------------------------------- -->
-              <!--  @ Attributes accordion -->
-              <!--  ---------------------------------------------------------------- -->
-              <div id="attributes-accordion" *ngIf="request?.attributes" class="row">
-                <div class="col-sm-12 attributes-accordion-wpr">
-                  <p class="row-header  attributes-accordion" (click)="openAttributesAccordion()"
-                    style="padding-left: 13px; padding-right: 15px;font-size: 14px;">
-
-                    <span>
-                      <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18"
-                        style="enable-background:new 0 0 18 18; width: 24px; height: 24px;" xml:space="preserve">
-                        <style type="text/css">
-                          .st0_attributes_icon {
-                            fill: none;
-                          }
-
-                          .st1_attributes_icon {
-                            fill: #2C3E48;
-                          }
-                        </style>
-                        <g>
-                          <path class="st0_attributes_icon" d="M0,0h18v18H0V0z" />
-                        </g>
-                        <polygon points="31.3,2.1 29.7,2.1 29.7,0.5 34.2,-4 35.8,-2.4 " />
-                        <path
-                          d="M28.6-3.9l-0.8,0.8l-1.6-1.6L27-5.5c0.2-0.2,0.4-0.2,0.5,0l1.1,1.1C28.8-4.3,28.8-4.1,28.6-3.9z" />
-                        <g>
-                          <path class="st1_attributes_icon" d="M14.2,3H11C10.8,2.2,10,1.5,9,1.5S7.2,2.2,6.9,3H3.8C3,3,2.2,3.7,2.2,4.5V15c0,0.8,0.7,1.5,1.5,1.5h10.5
-		c0.8,0,1.5-0.7,1.5-1.5V4.5C15.8,3.7,15,3,14.2,3z M9,2.8c0.3,0,0.6,0.3,0.6,0.6S9.2,4,9,4S8.4,3.7,8.4,3.3C8.4,3,8.7,2.8,9,2.8z
-		 M12,9.8c0,0.1,0,0.1,0,0.2l0.9,0.7l-1.2,2.1l-1.1-0.5c-0.1,0.1-0.2,0.1-0.3,0.2l-0.1,1.2H7.8l-0.1-1.2c-0.1-0.1-0.2-0.1-0.3-0.2
-		l-1.1,0.5l-1.2-2.1L6,10C6,10,6,9.9,6,9.8c0-0.1,0-0.1,0-0.2L5.1,9l1.2-2.1l1.1,0.5c0.1-0.1,0.2-0.1,0.3-0.2L7.8,6h2.4l0.1,1.2
-		c0.1,0.1,0.2,0.1,0.3,0.2l1.1-0.5L12.9,9L12,9.7C12,9.7,12,9.8,12,9.8z" />
-                          <circle class="st1_attributes_icon" cx="9" cy="9.8" r="1.6" />
-                        </g>
-                      </svg>
-                    </span>
-                    <span style="position: relative;top: -6px;">
-                      {{ "Attributes" | translate }}
-                    </span>
-                  </p>
-                  <!-- ------------------------------------------------------ -->
-                  <!-- new attributes panel -->
-                  <!-- ------------------------------------------------------ -->
-                  <div class="attributes-panel">
-                    <div *ngFor="let attribute of attributesArray; let i = index">
-                      <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-
-                        <div class="row">
-                          <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
-                            <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
-                              {{attribute?.attributeName }}:
-                            </div>
-
-                            <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
-                              class="attribute attribute_cutted_text">
-                              {{attribute?.attributeValue }}
-                            </div>
-
-                          </div>
-
-                          <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
-                            style="text-align: right;">
-                            <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
-                              style="cursor: pointer; color: #039be5; font-size:18px;"
-                              (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
-                              keyboard_arrow_down
-                            </i>
-
-                          </div>
-                        </div>
-
-
-                      </div>
-                    </div>
+                      <!-- display: block; -->
+                      <span style="color: #7695a5; font-weight: 400;"> {{ rating }} - </span>
+                      <span class="ws_requets_msgs__attributes">
+                        {{ "RequestMsgsPage.RatingMessage" | translate }}:
+                      </span>
+                      <span style="font-weight: 400;"> {{ rating_message }}</span>
+                    </p>
                   </div>
                 </div>
-              </div> <!-- ./ end new attributes accordion -->
 
-              <!--  ---------------------------------------------------------------- -->
-              <!--  @ Apps row - Moved up -->
-              <!--  ---------------------------------------------------------------- -->
-              <!-- <div class="row" *ngIf="isVisibleAPP === true">
-                  <div class="col-sm-12 app-row-wpr">
-                    <p class="row-header  app-row" (click)="openAppsSidebar()"
+
+                <!--  ---------------------------------------------------------------- -->
+                <!--  @ Create Jira issue -->
+                <!--  ---------------------------------------------------------------- -->
+                <div *ngIf="DISPLAY_BTN_CREATE_JIRA_ISSUE" class="row">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #eeeeee; min-height: 148px;">
+                    <p class="row-header">
+
+                      <span style="vertical-align: middle">
+                        {{'CreateTicketOnJira' | translate }}
+                      </span>
+
+                    </p>
+
+                    <p class="row-body" style="margin-bottom:0px">
+
+                      <label class="col-sm-12"
+                        style="text-align: left;color: #222222; padding-left: 0px;font-size: 12px; font-weight: 400;margin-top: 8px;margin-bottom: 1px;">
+                        {{ 'TicketType' | translate }} <span style="color:rgb(195,46,42)"> *</span>
+                      </label>
+                      <ng-select style="max-width: 180px;" [items]="jira_issue_types" bindLabel="name" bindValue="id"
+                        placeholder="{{'SelectTicketType' | translate}}" [(ngModel)]="selectedJiraType"
+                        (change)="selectJiraType()">
+                        <ng-template ng-label-tmp let-item="item">
+                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                          <b>{{item.name}}</b>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                          <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                          <b>{{item.name}}</b>
+                        </ng-template>
+                      </ng-select>
+
+                      <button class="btn btn-tdblu-no-boxshadow pull-left" (click)="createJiraTicket()"
+                        style="padding:9px 30px;" [disabled]="!selectedJiraType">
+                        {{'CreateJiraTicket' | translate}}
+                      </button>
+
+                    </p>
+                  </div>
+                </div>
+
+                <!--  ---------------------------------------------------------------- -->
+                <!--  @ Attributes accordion -->
+                <!--  ---------------------------------------------------------------- -->
+                <div id="attributes-accordion" *ngIf="request?.attributes" class="row">
+                  <div class="col-sm-12 attributes-accordion-wpr">
+                    <p class="row-header  attributes-accordion" (click)="openAttributesAccordion()"
                       style="padding-left: 13px; padding-right: 15px;font-size: 14px;">
 
                       <span>
-                        <span class="material-icons">
-                          apps
-                        </span>
+                        <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18"
+                          style="enable-background:new 0 0 18 18; width: 24px; height: 24px;" xml:space="preserve">
+                          <style type="text/css">
+                            .st0_attributes_icon {
+                              fill: none;
+                            }
+
+                            .st1_attributes_icon {
+                              fill: #2C3E48;
+                            }
+                          </style>
+                          <g>
+                            <path class="st0_attributes_icon" d="M0,0h18v18H0V0z" />
+                          </g>
+                          <polygon points="31.3,2.1 29.7,2.1 29.7,0.5 34.2,-4 35.8,-2.4 " />
+                          <path
+                            d="M28.6-3.9l-0.8,0.8l-1.6-1.6L27-5.5c0.2-0.2,0.4-0.2,0.5,0l1.1,1.1C28.8-4.3,28.8-4.1,28.6-3.9z" />
+                          <g>
+                            <path class="st1_attributes_icon" d="M14.2,3H11C10.8,2.2,10,1.5,9,1.5S7.2,2.2,6.9,3H3.8C3,3,2.2,3.7,2.2,4.5V15c0,0.8,0.7,1.5,1.5,1.5h10.5
+                            c0.8,0,1.5-0.7,1.5-1.5V4.5C15.8,3.7,15,3,14.2,3z M9,2.8c0.3,0,0.6,0.3,0.6,0.6S9.2,4,9,4S8.4,3.7,8.4,3.3C8.4,3,8.7,2.8,9,2.8z
+                            M12,9.8c0,0.1,0,0.1,0,0.2l0.9,0.7l-1.2,2.1l-1.1-0.5c-0.1,0.1-0.2,0.1-0.3,0.2l-0.1,1.2H7.8l-0.1-1.2c-0.1-0.1-0.2-0.1-0.3-0.2
+                            l-1.1,0.5l-1.2-2.1L6,10C6,10,6,9.9,6,9.8c0-0.1,0-0.1,0-0.2L5.1,9l1.2-2.1l1.1,0.5c0.1-0.1,0.2-0.1,0.3-0.2L7.8,6h2.4l0.1,1.2
+                            c0.1,0.1,0.2,0.1,0.3,0.2l1.1-0.5L12.9,9L12,9.7C12,9.7,12,9.8,12,9.8z" />
+                            <circle class="st1_attributes_icon" cx="9" cy="9.8" r="1.6" />
+                          </g>
+                        </svg>
                       </span>
                       <span style="position: relative;top: -6px;">
-                        {{ "Apps" | translate }}
+                        {{ "Attributes" | translate }}
                       </span>
                     </p>
-                  </div>
-                </div> -->
+                    <!-- ------------------------------------------------------ -->
+                    <!-- new attributes panel -->
+                    <!-- ------------------------------------------------------ -->
+                    <div class="attributes-panel">
+                      <div *ngFor="let attribute of attributesArray; let i = index">
+                        <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
+                          <div class="row">
+                            <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                              <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
+                                {{attribute?.attributeName }}:
+                              </div>
+
+                              <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
+                                class="attribute attribute_cutted_text">
+                                {{attribute?.attributeValue }}
+                              </div>
+
+                            </div>
+
+                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                              style="text-align: right;">
+                              <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
+                                style="cursor: pointer; color: #039be5; font-size:18px;"
+                                (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
+                                keyboard_arrow_down
+                              </i>
+
+                            </div>
+                          </div>
+
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> <!-- ./ end new attributes accordion -->
+
+              </div>
             </div>
           </div>
         </div>
