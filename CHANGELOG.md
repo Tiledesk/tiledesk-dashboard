@@ -3,6 +3,7 @@
 
 ### 2.2.50-rc2
 - Removes the ability for the logged in teammate to set his status to "Inactive" (incomplete implementation)
+- Allows ticket-type chats to be served only by an agent
 
 ### 2.2.50-rc1
 - Disallows the ability to message for resolved conversations for more than 10 days on the conversation detail page
