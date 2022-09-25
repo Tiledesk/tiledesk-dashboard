@@ -175,9 +175,10 @@ input[type="text"] {
 .project-for-panel--isBusy-icon-wpr{
   width: 16px;
   height: 16px;
-  display: inline-block;
+  // display: inline-block;
   position: relative;
-  top:2px;
+  top:4px;
+  margin-left: 20px;
 }
 
 .project-for-panel--isBusy-busy-text {
@@ -185,7 +186,7 @@ input[type="text"] {
     font-size: 11px;
     margin-left: 0px;
     position: relative;
-    top: -3px;
+    top: -5px;
     color: #FEB92C
 }
 
@@ -777,4 +778,31 @@ background-color: #3ea9f5;
   text-transform: capitalize;
   font-size: 11px;
   font-weight: 400;
+}
+
+
+.is-user-online {
+  background-color: #4caf50;
+}
+.is-user-offline {
+  background-color: #f44336;
+}
+.is-user-inactive {
+  background-color: #697482;
+}
+
+.pu-status-icon{
+  position: absolute;
+  // border: 2px solid #fff;
+  border-radius: 50%;
+  // left: 69px;
+  bottom: 80px;
+  width: 12px;
+  height: 12px;
+  margin-left: 3px;
+}
+
+.pu-status-icon--is-busy {
+  bottom: 79px !important;
+  margin-left: 0px !important;
 }
