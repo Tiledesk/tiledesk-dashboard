@@ -2,7 +2,8 @@
   {{ 'Settings' | translate }}
 </p> -->
 
-<span class="navbar-brand navbar-brand-sidebar-settings" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
   <i class="material-icons">settings</i>
 
@@ -26,7 +27,7 @@
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
-    
+
     <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
     <div class="row"></div>
 
@@ -60,10 +61,10 @@
               </span>
               <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;
             cursor: pointer; margin-left: 8px; text-decoration: underline;" (click)="goToTeammatesRolesDoc()">
-              
-                  {{ 'LearnMoreAboutDefaultRoles' | translate }}
-               
-      
+
+                {{ 'LearnMoreAboutDefaultRoles' | translate }}
+
+
               </a>
             </div>
           </div>
@@ -191,21 +192,7 @@
                   // ---------------------------------
                   // IS BUSY
                   // --------------------------------- -->
-                      <!-- <th>  </th> -->
-
-
-                      <!-- 
-                  // ---------------------------------
-                  // FOR DEBUG: USER ID  
-                  // --------------------------------- -->
-                      <!-- 
-                    <th>
-                    <span style="color: #566787">
-                      <strong>
-                        {{ "UsersPage.UserId" | translate }}
-                      </strong>
-                    </span>
-                  </th> -->
+        
                       <th>
                         <span class="column-th-span">
                           <!-- {{ "UsersPage.Actions" | translate }} -->
@@ -218,11 +205,7 @@
                   <tbody>
                     <!-- trackBy: trackByFn  -- trackBy: trackImageId-->
                     <tr #divItem *ngFor="let projectUser of projectUsersList;let i = index;">
-                      <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
-                      <!-- <td>
-                    {{ projectUser?._id }}
-                  </td> -->
-                      <!-- goToMemberProfile(projectUser?.id_user?._id) -->
+   
                       <td (click)="goToEditUser(projectUser?._id)"
                         style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
 
@@ -231,7 +214,7 @@
                           <!-- --------------------------------------------------- -->
                           <!-- USECASE uploadEngine Firebase -->
                           <!-- --------------------------------------------------- -->
-                          <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE" style=""
+                          <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                             class="user-img-in-teammates-list"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'" />
@@ -255,6 +238,13 @@
                               {{ projectUser?.id_user?.fullname_initial }}
                             </span>
                           </div>
+
+                        <div id="sidebaravatar-status-icon" class="teammate-status-icon"
+                          [ngClass]="{
+                            'is-user-online' : projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
+                            'is-user-offline' : projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
+                            'is-user-inactive': projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'}">
+                        </div>
 
                           <div *ngIf="projectUser?.isBusy" class="user-is-busy">
                             <span class="tool__tip">
@@ -282,10 +272,7 @@
                           <span style="text-transform: uppercase; font-weight:400; font-size: 13px ">
                             {{ projectUser?.id_user?.lastname }} </span>
 
-                          <!-- <span class="White__Tooltiptext">
-                        {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
-                          {{projectUser?.id_user?._id}}</span>
-                      </span> -->
+                    
 
                           <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
                             {{ projectUser?.id_user?.email }}
@@ -326,32 +313,38 @@
 
 
                       <!-- SWITCH AVAILABLE / UNAILABLE  -->
+                      <!-- *ngIf="CURRENT_USER_ID !== projectUser?.id_user?._id" -->
                       <td>
-                        <label *ngIf="CURRENT_USER_ID !== projectUser?.id_user?._id" class="switch" style="margin-bottom: -6px;">
+                        <!-- <label class="switch"
+                          style="margin-bottom: -6px;">
                           <input type="checkbox"
                             (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)"
                             [checked]="projectUser?.user_available === true">
                           <span class="slider round"></span>
-                        </label>
+                        </label> -->
+
+
+                        <select class="select-teammate-status" #selectStatus name="status_{{projectUser?._id}}" id="{{projectUser?._id}}"
+                          (change)="changeAvailabilityStatus(selectStatus.value, projectUser?._id)">
+                          
+                          <option value="available" 
+                           [selected]="projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)"> 
+                             {{'Available' | translate}} 
+                          </option>
+
+                          <option value="unavailable"
+                           [selected]="projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
+                            {{'Unavailable' | translate}} 
+                          </option>
+
+                          <option value="inactive" 
+                           [selected]="projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'">
+                            {{'Inactive' | translate}}  
+                          </option>
+                        </select>
                       </td>
 
-                      <!-- <td>
-                    <span *ngIf="projectUser?.isBusy === true">
-                    <span class="material-icons" style="font-size: 16px; color:#fedd00;">
-                      access_time
-                      </span>
-                     <span class="isBusyTest"  style="position: relative; top: -25px;left: 18px;font-size: 11px;"> 
-                      {{ 'Busy' | translate }} 
-                    </span> 
-                  </span>
-
-                  </td> -->
-
-
-                      <!-- FOR DEBUG: USER ID -->
-                      <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)">
-                    {{ projectUser?.id_user?._id }}
-                  </td> -->
+            
 
                       <!-- ACTIONS -->
                       <td class="td-actions text-right">
@@ -378,10 +371,10 @@
                     </tr>
 
 
-                    <!-- 
-                // --------------------------------------------------------------
-                // @ Pending invitation
-                // -------------------------------------------------------------- -->
+                     
+                <!-- -------------------------------------------------------------- -->
+                <!-- @ Pending invitation -->
+                <!-- -------------------------------------------------------------- -->
                     <tr *ngFor="let invites of pendingInvitationList">
                       <td style="text-align: center; width:1%; white-space:nowrap; ">
                         <i class="material-icons" style="color: rgba(0,0,0,0.54); vertical-align: middle">
