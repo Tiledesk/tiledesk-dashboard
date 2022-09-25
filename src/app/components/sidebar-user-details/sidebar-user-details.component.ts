@@ -258,10 +258,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   getTeammateStatus() {
-    this.usersService.user_is_available_bs.subscribe((user_available) => {
-      this.IS_AVAILABLE = user_available;
-    //  console.log('[SIDEBAR-USER-DETAILS] - USER IS AVAILABLE ', this.IS_AVAILABLE);
-    });
+ 
     this.usersService.projectUser_bs.subscribe((projectUser_bs) => {
       // this.PROFILE_STATUS = projectUser_bs;
     //  console.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
@@ -279,7 +276,7 @@ export class SidebarUserDetailsComponent implements OnInit {
         // console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
       }
      }
-
+     this.teammateStatus = this.teammateStatus.slice(0)
     });
 
   }

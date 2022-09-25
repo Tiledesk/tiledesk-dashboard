@@ -881,7 +881,7 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'user_available': user_is_available,  'profileStatus': profilestatus  };
+    const body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
     // console.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY - PUT REQUEST BODY ', body);
 
     return this.http
@@ -912,7 +912,7 @@ export class UsersService {
 
     // let body = {}
     // if (user_is_available === true || user_is_available === false ) {
-    const  body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
+    const body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
     // }
 
     // console.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY - BODY ', body);

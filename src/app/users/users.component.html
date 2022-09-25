@@ -134,10 +134,10 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <!-- 
-                  // ---------------------------------
-                  // FOR DEBUG: ID OF THE PROJECT-USER  
-                  // --------------------------------- -->
+
+                      <!-- ------------------------------------- -->
+                      <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
+                      <!-- ------------------------------------- -->
                       <!-- <th>
                     <span style="color: #566787">
                       <strong>
@@ -146,56 +146,54 @@
                     </span>
                   </th> -->
 
-                      <!-- 
-                  // ---------------------------------
-                  // User Avatar
-                  // --------------------------------- -->
+
+                      <!-- --------------------------------- -->
+                      <!-- User Avatar -->
+                      <!-- --------------------------------- -->
                       <th>
                         <span class="column-th-span" style="white-space: nowrap">
                           {{ "UsersPage.User" | translate }}
                         </span>
                       </th>
 
-                      <!-- 
-                  // ---------------------------------
-                  // User Fullname
-                  // --------------------------------- -->
+
+                      <!-- --------------------------------- -->
+                      <!-- User Fullname -->
+                      <!-- --------------------------------- -->
                       <th> </th>
 
-                      <!-- 
-                  // ---------------------------------
-                  // Chat with
-                  // --------------------------------- -->
+
+                      <!-- --------------------------------- -->
+                      <!-- Chat with -->
+                      <!-- --------------------------------- -->
                       <th> </th>
 
-                      <!-- 
-                  // ---------------------------------
-                  // Role
-                  // --------------------------------- -->
+
+                      <!-- --------------------------------- -->
+                      <!-- Role -->
+                      <!-- --------------------------------- -->
                       <th>
                         <span class="column-th-span">
                           {{ "UsersPage.Role" | translate }}
                         </span>
                       </th>
 
-                      <!-- 
-                  // ---------------------------------
-                  // SWITCH BTN AVAILABLE / UNAVAILABLE
-                  // --------------------------------- -->
+
+                      <!-- ------------------------------------------- -->
+                      <!-- Select  AVAILABLE / UNAVAILABLE / INACTIVE -->
+                      <!-- ------------------------------------------- -->
                       <th>
                         <span class="column-th-span">
-                          {{ "UsersPage.Available" | translate }}
+                          {{ "Status" | translate }}
                         </span>
                       </th>
 
-                      <!-- 
-                  // ---------------------------------
-                  // IS BUSY
-                  // --------------------------------- -->
-        
+
+                      <!-- --------------------------------- -->
+                      <!-- IS BUSY -->
+                      <!-- --------------------------------- -->
                       <th>
                         <span class="column-th-span">
-                          <!-- {{ "UsersPage.Actions" | translate }} -->
                           {{ "Actions" | translate }}
                         </span>
                       </th>
@@ -205,7 +203,7 @@
                   <tbody>
                     <!-- trackBy: trackByFn  -- trackBy: trackImageId-->
                     <tr #divItem *ngFor="let projectUser of projectUsersList;let i = index;">
-   
+
                       <td (click)="goToEditUser(projectUser?._id)"
                         style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
 
@@ -239,12 +237,12 @@
                             </span>
                           </div>
 
-                        <div id="sidebaravatar-status-icon" class="teammate-status-icon"
-                          [ngClass]="{
+                          <div id="teammate-status-icon" class="teammate-status-icon"
+                            [ngClass]="{
                             'is-user-online' : projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
                             'is-user-offline' : projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
                             'is-user-inactive': projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'}">
-                        </div>
+                          </div>
 
                           <div *ngIf="projectUser?.isBusy" class="user-is-busy">
                             <span class="tool__tip">
@@ -271,8 +269,6 @@
                           <span style="font-weight:400; font-size: 13px"> {{ projectUser?.id_user?.firstname }} </span>
                           <span style="text-transform: uppercase; font-weight:400; font-size: 13px ">
                             {{ projectUser?.id_user?.lastname }} </span>
-
-                    
 
                           <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
                             {{ projectUser?.id_user?.email }}
@@ -312,7 +308,9 @@
                       </td>
 
 
-                      <!-- SWITCH AVAILABLE / UNAILABLE  -->
+                        <!-- ------------------------------------------- -->
+                      <!-- Select  AVAILABLE / UNAVAILABLE / INACTIVE -->
+                      <!-- ------------------------------------------- -->
                       <!-- *ngIf="CURRENT_USER_ID !== projectUser?.id_user?._id" -->
                       <td>
                         <!-- <label class="switch"
@@ -324,27 +322,28 @@
                         </label> -->
 
 
-                        <select class="select-teammate-status" #selectStatus name="status_{{projectUser?._id}}" id="{{projectUser?._id}}"
+                        <select class="select-teammate-status" #selectStatus name="status_{{projectUser?._id}}"
+                          id="{{projectUser?._id}}"
                           (change)="changeAvailabilityStatus(selectStatus.value, projectUser?._id)">
-                          
-                          <option value="available" 
-                           [selected]="projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)"> 
-                             {{'Available' | translate}} 
+
+                          <option value="available"
+                            [selected]="projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
+                            {{'Available' | translate}}
                           </option>
 
                           <option value="unavailable"
-                           [selected]="projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
-                            {{'Unavailable' | translate}} 
+                            [selected]="projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus)">
+                            {{'Unavailable' | translate}}
                           </option>
 
-                          <option value="inactive" 
-                           [selected]="projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'">
-                            {{'Inactive' | translate}}  
+                          <option value="inactive"
+                            [selected]="projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'">
+                            {{'Inactive' | translate}}
                           </option>
                         </select>
                       </td>
 
-            
+
 
                       <!-- ACTIONS -->
                       <td class="td-actions text-right">
@@ -371,10 +370,10 @@
                     </tr>
 
 
-                     
-                <!-- -------------------------------------------------------------- -->
-                <!-- @ Pending invitation -->
-                <!-- -------------------------------------------------------------- -->
+
+                    <!-- -------------------------------------------------------------- -->
+                    <!-- @ Pending invitation -->
+                    <!-- -------------------------------------------------------------- -->
                     <tr *ngFor="let invites of pendingInvitationList">
                       <td style="text-align: center; width:1%; white-space:nowrap; ">
                         <i class="material-icons" style="color: rgba(0,0,0,0.54); vertical-align: middle">
