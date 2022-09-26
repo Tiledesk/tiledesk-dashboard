@@ -215,7 +215,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       )
       .subscribe((userRole) => {
 
-        console.log('[SIDEBAR-USER-DETAILS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        // console.log('[SIDEBAR-USER-DETAILS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
         this.USER_ROLE = userRole;
       })
