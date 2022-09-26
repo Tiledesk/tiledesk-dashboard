@@ -2706,7 +2706,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     Observable
       .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
-       console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+      //  console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
         // this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
