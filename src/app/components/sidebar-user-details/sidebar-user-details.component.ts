@@ -60,10 +60,10 @@ export class SidebarUserDetailsComponent implements OnInit {
   currentUserId: string;
   selectedStatus: any;
   teammateStatus = [
-    { id: 1, name: 'Available',   avatar: 'assets/img/teammate-status/avaible.svg'  },
-    { id: 2, name: 'Unavailable' , avatar: 'assets/img/teammate-status/unavaible.svg'},
-    { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg'},
-];
+    { id: 1, name: 'Available', avatar: 'assets/img/teammate-status/avaible.svg' },
+    { id: 2, name: 'Unavailable', avatar: 'assets/img/teammate-status/unavaible.svg' },
+    { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg' },
+  ];
 
   constructor(
     public auth: AuthService,
@@ -215,7 +215,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       )
       .subscribe((userRole) => {
 
-        this.logger.log('[SIDEBAR-USER-DETAILS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        console.log('[SIDEBAR-USER-DETAILS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
         this.USER_ROLE = userRole;
       })
@@ -224,21 +224,21 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-  //   console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-  //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
-  //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
+    //   console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
+    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
     const clicked_element_id = event.target.id
     if (this.eRef.nativeElement.contains(event.target)) {
       this.logger.log('[SIDEBAR-USER-DETAILS] clicked inside')
     } else {
       const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
       this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
-      
+
       this.logger.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
       // && (!event.target.classList.contains('ng-option'))
       // clicked_element_id !== 'a0da04ac7772' && 
-        if (!clicked_element_id.startsWith("sidebaravatar") && (!event.target.classList.contains('ng-option')) ) {
-          this.closeUserDetailSidePanel();
+      if (!clicked_element_id.startsWith("sidebaravatar") && (!event.target.classList.contains('ng-option'))) {
+        this.closeUserDetailSidePanel();
         // }
         this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside')
       }
@@ -258,25 +258,28 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   getTeammateStatus() {
- 
+
     this.usersService.projectUser_bs.subscribe((projectUser_bs) => {
       // this.PROFILE_STATUS = projectUser_bs;
-    //  console.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
+      //  console.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
 
-     if (projectUser_bs) {
-      if (projectUser_bs.user_available === false && projectUser_bs.profileStatus === 'inactive') {
-        // console.log('teammateStatus ', this.teammateStatus) 
-        this.selectedStatus = this.teammateStatus[2].id;
-        // console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
-      } else if (projectUser_bs.user_available === false && projectUser_bs.profileStatus === '') {
-        this.selectedStatus = this.teammateStatus[1].id;
-        // console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
-      } else if (projectUser_bs.user_available === true && projectUser_bs.profileStatus === '') {
-        this.selectedStatus = this.teammateStatus[0].id
-        // console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+      if (projectUser_bs) {
+        if (projectUser_bs.user_available === false && projectUser_bs.profileStatus === 'inactive') {
+          // console.log('teammateStatus ', this.teammateStatus) 
+          this.selectedStatus = this.teammateStatus[2].id;
+          //  console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
+          this.teammateStatus = this.teammateStatus.slice(0)
+        } else if (projectUser_bs.user_available === false && (projectUser_bs.profileStatus === '' || !projectUser_bs.profileStatus)) {
+          this.selectedStatus = this.teammateStatus[1].id;
+          //  console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
+          this.teammateStatus = this.teammateStatus.slice(0)
+        } else if (projectUser_bs.user_available === true && (projectUser_bs.profileStatus === '' || !projectUser_bs.profileStatus)) {
+          this.selectedStatus = this.teammateStatus[0].id
+          this.teammateStatus = this.teammateStatus.slice(0)
+          // console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+        }
       }
-     }
-     this.teammateStatus = this.teammateStatus.slice(0)
+      //  this.teammateStatus = this.teammateStatus.slice(0)
     });
 
   }
@@ -308,7 +311,7 @@ export class SidebarUserDetailsComponent implements OnInit {
         this.subsTo_WsCurrentUser(projectUser[0]._id)
 
         if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy,  projectUser[0].profileStatus)
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
         }
 
         // ADDED 21 AGO
@@ -338,42 +341,42 @@ export class SidebarUserDetailsComponent implements OnInit {
   changeAvailabilityState(selecedstatusID) {
     // console.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
 
-   let IS_AVAILABLE = null
-   let profilestatus = ''
-   if (selecedstatusID === 1) {
-    IS_AVAILABLE = true
-   } else if (selecedstatusID === 2) {
-    IS_AVAILABLE = false
-   } else if (selecedstatusID === 3) {
-    IS_AVAILABLE = false
-    profilestatus = 'inactive'
-   }
+    let IS_AVAILABLE = null
+    let profilestatus = ''
+    if (selecedstatusID === 1) {
+      IS_AVAILABLE = true
+    } else if (selecedstatusID === 2) {
+      IS_AVAILABLE = false
+    } else if (selecedstatusID === 3) {
+      IS_AVAILABLE = false
+      profilestatus = 'inactive'
+    }
 
     this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE, profilestatus)
-      .subscribe((projectUser: any) => { 
+      .subscribe((projectUser: any) => {
 
-      // console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
+        // console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
 
-      // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
-      this.usersService.availability_btn_clicked(true)
+        // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+        this.usersService.availability_btn_clicked(true)
 
-    }, (error) => {
-      this.logger.error('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ERR  ', error);
-      // =========== NOTIFY ERROR ===========
-      // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
-      // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
+      }, (error) => {
+        this.logger.error('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ERR  ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
+        // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
 
-    }, () => {
-      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED  * COMPLETE *');
+      }, () => {
+        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED  * COMPLETE *');
 
-      // =========== NOTIFY SUCCESS===========
-      // this.notify.showNotification('status successfully updated', 2, 'done');
-      // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('status successfully updated', 2, 'done');
+        // this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
 
 
-      
-      // this.getProjectUser();
-    });
+
+        // this.getProjectUser();
+      });
   }
 
 
@@ -548,12 +551,12 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   getLoggedUserAndCurrentDshbrdLang() {
-  //  console.log('[SIDEBAR-USER-DETAILS] BrowserLang ', this.translate.getBrowserLang())
+    //  console.log('[SIDEBAR-USER-DETAILS] BrowserLang ', this.translate.getBrowserLang())
     this.auth.user_bs.subscribe((user) => {
       this.logger.log('[SIDEBAR-USER-DETAILS] »»» »»» USER GET IN SIDEBAR-USER-DETAILS', user)
       // tslint:disable-next-line:no-debugger
       // debugger
-      
+
       // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
       if (user) {
         this.user = user;
@@ -577,14 +580,14 @@ export class SidebarUserDetailsComponent implements OnInit {
           this.dsbrd_lang = this.browserLang;
           this.getLangTranslation(this.dsbrd_lang)
           this.logger.log('[SIDEBAR-USER-DETAILS] - dsbrd_lang ', this.dsbrd_lang)
-          this.flag_url = "assets/img/language_flag/" + this.dsbrd_lang  + ".png"
+          this.flag_url = "assets/img/language_flag/" + this.dsbrd_lang + ".png"
           this.logger.log('[SIDEBAR-USER-DETAILS] flag_url (from browser_lang) ', this.flag_url)
         }
 
-      
+
         if (tranlatedLanguage.includes(this.dsbrd_lang)) {
           this.logger.log('[SIDEBAR-USER-DETAILS] tranlatedLanguage includes', this.dsbrd_lang, ': ', tranlatedLanguage.includes(this.dsbrd_lang))
-        
+
           this.flag_url = "assets/img/language_flag/" + this.dsbrd_lang + ".png"
         } else {
           this.logger.log('[SIDEBAR-USER-DETAILS] tranlatedLanguage includes', this.dsbrd_lang, ': ', tranlatedLanguage.includes(this.dsbrd_lang))
@@ -611,7 +614,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       user['fullname_initial'] = 'N/A'
       user['fillColour'] = 'rgb(98, 100, 167)'
     }
- }
+  }
 
   getLangTranslation(dsbrd_lang_code) {
     this.translate.get(dsbrd_lang_code)

@@ -144,7 +144,7 @@ export class NavbarForPanelComponent implements OnInit {
         this.subsTo_WsCurrentUser(projectUser[0]._id)
 
         if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy,  projectUser[0].profileStatus )
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy,  projectUser[0] )
         }
 
         // ADDED 21 AGO
