@@ -854,10 +854,9 @@
                           </div>
                         </div>
 
-
+                        <!-- href="mailto:{{request?.lead?.email}}" -->
                         <div class="chat-panel-mode-contact-email" (click)="openDropDownEditEmail()">
-                          <a class="lead-email-anchor" target="_blank" *ngIf="request?.lead?.email"
-                            href="mailto:{{request?.lead?.email}}">
+                          <a class="lead-email-anchor" target="_blank" *ngIf="request?.lead?.email">
                             {{request?.lead?.email}}
                           </a>
                           <a *ngIf="!request?.lead?.email"
