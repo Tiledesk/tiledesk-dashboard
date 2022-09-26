@@ -885,7 +885,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         });
 
         this.projectUsersList = this.projectUsersList.slice(0)
-
+        this.logger.log('[USERS] - UPDATE PROJECT USER STATUS projectUsersList after update', this.projectUsersList)
         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
         this.usersService.availability_switch_clicked(true)
       },
