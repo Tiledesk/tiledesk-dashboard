@@ -1159,6 +1159,29 @@ export class WsRequestsService implements OnDestroy {
       .map((res) => res.json());
   }
 
+  // -----------------------------------------------------------------------------------------
+  // Update Working Status
+  // -----------------------------------------------------------------------------------------
+  updateRequestWorkingStatus(request_id: string, workingstatus: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // this.logger.log('JOIN FUNCT OPTIONS  ', options);
+
+    const body = { 'workingStatus': workingstatus };
+    // const body = { 'tags':  { tag: "kll", color: "#43B1F2" } };
+    this.logger.log('[WS-REQUESTS-SERV] UPDATE PRIORITY - BODY ', body);
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
+    this.logger.log('[WS-REQUESTS-SERV] UPDATE PRIORITY - URL ', body);
+
+    return this.http
+      .patch(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
 
   // ------------------------------------------------------
   // @ Download history request as CSV
