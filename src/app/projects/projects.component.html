@@ -10,7 +10,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button> -->
-       
+
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -24,25 +24,26 @@
             </li> -->
             <!-- // ======= ./END - TEST - LOGOUT FROM FIREBASE ======= // -->
 
-                  <!--  ------------------------------------------------ -->
-        <!--  Dashboard language -->
-        <!--  ------------------------------------------------ -->
-        <li>
-          <a routerLink="/user-profile" fragment="language" style="cursor: pointer;">
-            <span class="tooltip-language-in-your-prjcts">
-            <img [src]="flag_url"  style="width: auto;height: 19px; position: relative;top: -1px;">
-           
-            <span class="tooltip-language-in-your-prjcts__tooltiptext"  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
-              <span *ngIf="!languageNotSupported"> 
-              {{'TheDashboardIsTranslatedInto' | translate: tlangparams }}
-            </span>
-            <span *ngIf="languageNotSupported"> 
-              {{'TheDashboardIsTranslatedIntoEnglish'  | translate }}
-            </span>
-            </span>
-          </span>
-          </a>
-        </li>
+            <!--  ------------------------------------------------ -->
+            <!--  Dashboard language -->
+            <!--  ------------------------------------------------ -->
+            <li>
+              <a routerLink="/user-profile" fragment="language" style="cursor: pointer;">
+                <span class="tooltip-language-in-your-prjcts">
+                  <img [src]="flag_url" style="width: auto;height: 19px; position: relative;top: -1px;">
+
+                  <span class="tooltip-language-in-your-prjcts__tooltiptext"
+                    style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
+                    <span *ngIf="!languageNotSupported">
+                      {{'TheDashboardIsTranslatedInto' | translate: tlangparams }}
+                    </span>
+                    <span *ngIf="languageNotSupported">
+                      {{'TheDashboardIsTranslatedIntoEnglish' | translate }}
+                    </span>
+                  </span>
+                </span>
+              </a>
+            </li>
 
 
             <li class="dropdown">
@@ -302,23 +303,52 @@
                   [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                   {{ project?.id_project?._id }}
                 </p>
-            
-                <div *ngIf="project_plan_badge" class="project-plan-badge" 
-                [ngClass]="{'pro-badge':  project?.plan_badge_background_type === 'pro_badge',
+
+                <div *ngIf="project_plan_badge" class="project-plan-badge" [ngClass]="{'pro-badge':  project?.plan_badge_background_type === 'pro_badge',
                  'enterprise-badge': project?.plan_badge_background_type === 'enterprise_badge', 
                  'free-badge': project?.plan_badge_background_type === 'free_badge' }">
-                  {{  project?.prjct_profile_name }}
+                  {{ project?.prjct_profile_name }}
                 </div>
 
-                <h4 class="category project-user-role"
+                <h4 class="category project-user-role" style="margin-top:5px"
                   [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                   {{ project?.role | translate}}
-                </h4>
-                <!-- ----- new -->
-                <div class="availabily-and-busy-wpr--prjcts-for-panel">
 
-                  <div class="availabily---wpr--prjct-for-panel">
-                    <div class="onoffswitch--prjct-for-panel"
+                  <span id="pu-status-icon" class="pu-status-icon"
+                  [ngClass]="{
+                  'is-user-online' : project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
+                  'is-user-offline' : project?.ws_projct_user_available === false && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
+                  'is-user-inactive': project?.ws_projct_user_available === false && project?.ws_projct_user_profileStatus=== 'inactive',
+                  'pu-status-icon--is-busy': project?.ws_projct_user_isBusy === true}">
+                  </span>
+
+                  <span class="project-for-panel--isBusy-icon-wpr" *ngIf="project?.ws_projct_user_isBusy === true">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px"
+                      viewBox="0 0 24 24" width="16px" fill="#FEB92C">
+                      <g>
+                        <path d="M0,0h24v24H0V0z" fill="none" />
+                      </g>
+                      <g>
+                        <path
+                          d="M11.99,2C6.47,2,2,6.48,2,12s4.47,10,9.99,10C17.52,22,22,17.52,22,12S17.52,2,11.99,2z M15.29,16.71L11,12.41V7h2v4.59 l3.71,3.71L15.29,16.71z" />
+                      </g>
+                    </svg>
+
+                    <span *ngIf="project?.ws_projct_user_isBusy === true"
+                    class="project-for-panel--isBusy-busy-text project-for-panel--text-pulse-animation">
+                    {{'Busy' | translate}}   </span>
+                  </span>
+                 
+            
+                </h4>
+
+                <div class="availabily-and-busy-wpr--prjcts-for-panel"  style="display: inline-block;">
+
+
+                  <div class="availabily---wpr--prjct-for-panel"
+                  (click)="$event.stopPropagation(); $event.stopImmediatePropagation(); $event.preventDefault();">
+                    <!-- <div class="onoffswitch--prjct-for-panel"
                       (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
                       <input type="checkbox" name="onoffswitch_{{project?.id_project?._id}}"
                         class="onoffswitch-checkbox--prjct-for-panel"
@@ -327,10 +357,40 @@
                       <label class="onoffswitch-label--prjct-for-panel"
                         for="availabilityswitch_{{project?.id_project?._id}}">
                       </label>
-                    </div>
+                    </div> -->
+
+                    <select class="select-pu-status" #selectStatus name="status_{{project?.id_project?._id}}" id="{{project?.id_project?._id}}"
+                    (change)=" changeAvailabilityState(project?.id_project?._id, selectStatus.value)" style="border-color: #d9d9d9;
+                    border-radius: 4px;
+                    text-transform: capitalize;">
+                    
+                    <option value="available" 
+                     [selected]="project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus)"> 
+                       {{'Available' | translate}} 
+                    </option>
+
+                    <option value="unavailable"
+                     [selected]="project?.ws_projct_user_available === false && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus)">
+                      {{'Unavailable' | translate}} 
+                    </option>
+
+                    <option value="inactive" 
+                     [selected]="project?.ws_projct_user_available === false && project?.ws_projct_user_profileStatus === 'inactive'">
+                      {{'Inactive' | translate}}  
+                    </option>
+                  </select>
+
                   </div>
 
-                  <span *ngIf="project?.ws_projct_user_available === true"
+
+                  <!-- <div id="pu-status-icon" class="pu-status-icon"
+                  [ngClass]="{
+                  'is-user-online' : project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
+                  'is-user-offline' : project?.ws_projct_user_available === false && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
+                  'is-user-inactive': project?.ws_projct_user_available === false && project?.ws_projct_user_profileStatus=== 'inactive'}">
+                  </div> -->
+
+                  <!-- <span *ngIf="project?.ws_projct_user_available === true"
                     class="availibility-status-text--prjct-for-panel"
                     [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
                     {{'Available' | translate}}
@@ -340,9 +400,9 @@
                     class="availibility-status-text--prjct-for-panel"
                     [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
                     {{'Unavailable' | translate}}
-                  </span>
+                  </span> -->
 
-                  <div class="project-for-panel--isBusy-icon-wpr" *ngIf="project?.ws_projct_user_isBusy === true">
+                  <!-- <div class="project-for-panel--isBusy-icon-wpr" *ngIf="project?.ws_projct_user_isBusy === true">
 
                     <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px"
                       viewBox="0 0 24 24" width="16px" fill="#FEB92C">
@@ -358,11 +418,12 @@
                   <span *ngIf="project?.ws_projct_user_isBusy === true"
                     class="project-for-panel--isBusy-busy-text project-for-panel--text-pulse-animation">
                     {{'Busy' | translate}}
-                  </span>
+                  </span> -->
 
-                </div> 
+                </div>
 
-      
+
+
                 <div id="{{'loading_'+ project?.id_project?._id}}" *ngIf="project?.is_selected === true">
                   <div class="spinner">
                     <div class="bounce1"></div>

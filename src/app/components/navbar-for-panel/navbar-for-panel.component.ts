@@ -144,7 +144,9 @@ export class NavbarForPanelComponent implements OnInit {
         this.subsTo_WsCurrentUser(projectUser[0]._id)
 
         if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
+
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy,  projectUser[0] )
+
         }
 
         // ADDED 21 AGO
@@ -270,7 +272,7 @@ export class NavbarForPanelComponent implements OnInit {
     // this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
     // DONE - WORKS NK-TO-TEST - da implementare quando viene implementato il servizio - serve per cambiare lo stato di disponibilità dell'utente corrente
     // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
-    this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
+    this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => { // non 
 
       this.logger.log('PROJECT-USER UPDATED ', projectUser)
 

@@ -1090,6 +1090,10 @@ span .conv-svg-icon {
   background-color: #f44336;
 }
 
+.is-user-inactive {
+  background-color: #697482;
+}
+
 .checkbox-no-notallowedcursor.disabled label {
   cursor: pointer !important;
 }
@@ -2372,15 +2376,16 @@ span .conv-svg-icon {
 .lead-email-anchor {
   margin-top: 8px;
   text-transform: lowercase;
-  cursor: pointer;
+  // cursor: pointer;
   font-size: 14px;
   font-weight: 400;
-  color: #3880ff;
+  // color: #3880ff;
+  color: rgba(0, 0, 0, 0.87)
 }
 
-.lead-email-anchor:hover {
-  text-decoration: underline;
-}
+// .lead-email-anchor:hover {
+//   text-decoration: underline;
+// }
 
 .view-all-lead-properties {
   font-weight: 400;
@@ -3250,7 +3255,7 @@ span .conv-svg-icon {
   min-width: 41px;
   width: 41px;
   margin-bottom: 3px;
-  margin-top: 3px;
+  margin-top: 11px;
 }
 
 .upload-btn > span {
@@ -3384,6 +3389,9 @@ span .conv-svg-icon {
   padding-right: 0px;
 }
 
+.caret-rotate-180 {
+  transform: rotate(180deg);
+}
 
 // .location-icon {
 //   cursor: pointer;

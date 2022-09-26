@@ -741,3 +741,43 @@ $f21blue: #039be5;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 /* ./end tootip top  */
+
+.select-teammate-status {
+  height: 30px;
+  background: #fff;
+  border-radius: 5px;
+  border-color: #d9d9d9;
+  width: 130px;
+  text-transform: capitalize;
+  
+}
+
+.is-user-online {
+  background-color: #4caf50;
+}
+.is-user-offline {
+  background-color: #f44336;
+}
+.is-user-inactive {
+  background-color: #697482;
+}
+
+.teammate-status-icon {
+  position: absolute;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  left: 54px;
+  bottom: 4px;
+  width: 12px;
+  height: 12px;
+}
+
+// .fa:before {
+//     content: "\f2da";
+//     display: inline-block;
+//     font-family: FontAwesome;
+//     position: absolute;
+//     right: -1.5em;
+//   }
+
+

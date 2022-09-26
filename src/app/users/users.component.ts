@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChildren,
-  QueryList,
-  ElementRef,
-} from '@angular/core'
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ElementRef } from '@angular/core'
 import { Router } from '@angular/router'
 import { AuthService } from '../core/auth.service'
 import { Project } from '../models/project-model'
@@ -18,6 +11,7 @@ import { AppConfigService } from '../services/app-config.service'
 import { avatarPlaceholder, getColorBck } from '../utils/util'
 import { URL_understanding_default_roles } from '../utils/util'
 import { LoggerService } from '../services/logger/logger.service'
+
 const swal = require('sweetalert')
 
 @Component({
@@ -490,9 +484,12 @@ export class UsersComponent implements OnInit, OnDestroy {
   getAllUsersOfCurrentProject(storage) {
     this.usersService.getProjectUsersByProjectId().subscribe(
       (projectUsers: any) => {
-        //  console.log( '[USERS] - GET PROJECT USERS (FILTERED FOR PROJECT ID) - PROJECT-USERS ', projectUsers)
+
+        this.logger.log('[USERS] - GET PROJECT USERS (FILTERED FOR PROJECT ID) - PROJECT-USERS ', projectUsers)
+
         if (projectUsers) {
           this.projectUsersList = projectUsers
+          // console.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - PROJECT USERS LIST ', this.projectUsersList);
 
           this.projectUsersList.forEach((projectuser) => {
             // this.logger.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - check if PROJECT USER IMG EXIST', projectuser);
@@ -819,50 +816,61 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.display = 'none'
   }
 
-  changeAvailabilityStatus(IS_AVAILABLE: boolean, projectUser_id: string) {
-    this.logger.log(
-      '[USERS] - CHANGE AVAILABILITY STATUS - WHEN CLICK USER IS AVAILABLE ? ',
-      IS_AVAILABLE,
-    )
-    this.logger.log(
-      '[USERS] - CHANGE AVAILABILITY STATUS - WHEN CLICK USER PROJECT-USER ID ',
-      projectUser_id,
-    )
-    if (IS_AVAILABLE === true) {
-      this.IS_AVAILABLE = false
-      this.logger.log(
-        '[USERS] - CHANGE AVAILABILITY STATUS - NEW USER AVAILABLITY  ',
-        this.IS_AVAILABLE,
-      )
-    }
-    if (IS_AVAILABLE === false) {
-      this.IS_AVAILABLE = true
-      this.logger.log(
-        '[USERS] - CHANGE AVAILABILITY STATUS - NEW USER AVAILABLITY  ',
-        this.IS_AVAILABLE,
-      )
+
+
+
+  // New changeAvailabilityStatus(selecedstatusID: number, projectUser_id: string, ngselectid: number, $event: any) {
+  changeAvailabilityStatus(selectedStatusValue: any, projectUser_id: string) {
+
+    // console.log('[USERS] - UPDATE PROJECT USER STATUS - selectedStatusValue ', selectedStatusValue, 'projectUser_id ', projectUser_id)
+    // console.log('[USERS] - UPDATE PROJECT USER STATUS - PROJECT-USER ID ', projectUser_id)
+
+    let IS_AVAILABLE = null
+    let profilestatus = ''
+    if (selectedStatusValue === 'available') {
+      IS_AVAILABLE = true
+    } else if (selectedStatusValue === 'unavailable') {
+      IS_AVAILABLE = false
+    } else if (selectedStatusValue === 'inactive') {
+      IS_AVAILABLE = false
+      profilestatus = 'inactive'
     }
 
-    this.usersService._updateProjectUser(projectUser_id, this.IS_AVAILABLE)
-      .subscribe((projectUser: any) => {
-        this.logger.log('[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER RES', projectUser)
+    this.usersService.updateProjectUser(projectUser_id, IS_AVAILABLE, profilestatus)
 
+      .subscribe((updatedProjectUser: any) => {
+        this.logger.log('[USERS] - UPDATE PROJECT USER STATUS RES', updatedProjectUser)
+
+        this.projectUsersList.forEach(projectUser => {
+          if (projectUser._id === updatedProjectUser._id) {
+            projectUser.user_available = updatedProjectUser.user_available
+            if (updatedProjectUser.profileStatus) {
+              projectUser.profileStatus = updatedProjectUser.profileStatus
+            }
+          }
+        });
+
+        this.projectUsersList = this.projectUsersList.slice(0)
+        this.logger.log('[USERS] - UPDATE PROJECT USER STATUS projectUsersList after update', this.projectUsersList)
         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
         this.usersService.availability_switch_clicked(true)
       },
         (error) => {
-          this.logger.error('[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER - ERROR ', error)
+          this.logger.error('[USERS] - UPDATE PROJECT USER STATUS - ERROR ', error)
 
           //  NOTIFY ERROR
-          this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem')
+          this.notify.showWidgetStyleUpdateNotification(
+            this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem')
         },
         () => {
-          this.logger.log('[USERS] - CHANGE AVAILABILITY STATUS - UPDATED PROJECT-USER * COMPLETE *')
+          this.logger.log('[USERS] - UPDATE PROJECT USER STATUS * COMPLETE *')
 
           //  NOTIFY SUCCESS
-          this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
+          this.notify.showWidgetStyleUpdateNotification(
+            this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
 
-          this.getUploadEgine()
+
+          // this.getUploadEgine()
         },
       )
   }
@@ -895,4 +903,5 @@ export class UsersComponent implements OnInit, OnDestroy {
   //   this.logger.log('trackByIds', item)
   //   return this.useTrackById ? item.id : item;
   // }
+
 }

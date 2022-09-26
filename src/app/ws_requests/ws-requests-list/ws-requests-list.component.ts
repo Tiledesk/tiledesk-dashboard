@@ -185,6 +185,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   calling_page: string = "conv_list"
   groupsList: Group[];
   DISPLAY_ALL_TEAMMATES_TO_AGENT: boolean
+  newTicketRequestId: string;
   /**
    * 
    * @param wsRequestsService 
@@ -552,7 +553,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
   }
 
-  public scrollRightTeammates(){
+  public scrollRightTeammates() {
     this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
   }
 
@@ -628,7 +629,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser_from_ws_subscription) => {
-        // this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+        // console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
         // this.logger.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
 
         if (projectuser['_id'] === projectUser_from_ws_subscription['_id']) {
@@ -640,6 +641,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           projectuser['user_available_rt'] = projectUser_from_ws_subscription['user_available'];
           projectuser['isBusy_rt'] = projectUser_from_ws_subscription['isBusy'];
           projectuser['updatedAt_rt'] = projectUser_from_ws_subscription['updatedAt'];
+          if (projectUser_from_ws_subscription['profileStatus']) {
+            projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
+          }
 
         }
 
@@ -650,7 +654,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.projectUserArray = this.tempProjectUserArray;
         // console.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
 
-        
+
         this.getDeptsByProjectId(this.projectUserArray)
 
       }, (error) => {
@@ -682,7 +686,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               if (!dept.id_group || dept.id_group === undefined) {
                 count = count + 1;
                 // console.log('[WS-REQUESTS-LIST] display all teammates')
-              } 
+              }
             }
           } else if (departmentsCount === 1) {
             // console.log('[WS-REQUESTS-LIST] USECASE: THERE IS ONLY A DEPT  -  DEPT NAME ', dept.name, 'dept object', dept);
@@ -1817,6 +1821,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.displayInternalRequestModal = 'block'
     this.hasClickedCreateNewInternalRequest = false;
     this.projectUserBotsAndDeptsArray = [];
+    this.newTicketRequestId = null;
     this.projectUserAndLeadsArray = [];
     this.getProjectUsersAndContacts();
     this.getProjectUserBotsAndDepts();
@@ -1859,7 +1864,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.selectedPriority
     ).subscribe((newticket: any) => {
       this.logger.log('[WS-REQUESTS-LIST] create internalRequest - RES ', newticket);
-
+      this.newTicketRequestId = newticket.recipient
+      this.logger.log('[WS-REQUESTS-LIST] create newTicketRequestId  ', this.newTicketRequestId);
 
     }, error => {
       this.showSpinner_createInternalRequest = false;
@@ -1869,6 +1875,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.logger.log('[WS-REQUESTS-LIST] create internalRequest * COMPLETE *')
       this.showSpinner_createInternalRequest = false;
       this.createNewInternalRequest_hasError = false;
+      this.wsRequestsService.updateRequestWorkingStatus( this.newTicketRequestId, 'new')
+        .subscribe((request) => {
+
+          this.logger.log('[WS-REQUESTS-MSGS] - create internalRequest WORKING STATUS ', request);
+        }, (error) => {
+          this.logger.error('[WS-REQUESTS-MSGS] - create internalRequest WORKING STATUS - ERROR ', error);
+
+        }, () => {
+          this.logger.log('[WS-REQUESTS-MSGS] - create internalRequestT WORKING STATUS  * COMPLETE');
+        });
     });
   }
 

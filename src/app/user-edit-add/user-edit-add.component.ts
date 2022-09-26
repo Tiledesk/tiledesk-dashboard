@@ -112,6 +112,13 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   deleteLabelSuccess_mgs: string;
   deleteLabelError_mgs: string;
   isChromeVerGreaterThan100: boolean;
+
+  selectedStatus: any;
+  teammateStatus = [
+    { id: 1, name: 'Available', avatar: 'assets/img/teammate-status/avaible.svg' },
+    { id: 2, name: 'Unavailable', avatar: 'assets/img/teammate-status/unavaible.svg' },
+    { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg' },
+  ];
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -164,11 +171,11 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   } 
+  }
 
 
   translateTagNotificationMsgs() {
@@ -180,7 +187,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.deleteLabelSuccess_mgs = translation.DeleteLabelSuccess;
         this.deleteLabelError_mgs = translation.DeleteLabelError;
       });
-    }
+  }
 
 
   getCurrentUrl() {
@@ -461,24 +468,39 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   getProjectUsersById() {
     this.usersService.getProjectUsersById(this.project_user_id).subscribe((projectUser: any) => {
 
-      this.projectUser = projectUser;
+      // console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
+      if (projectUser) {
+        this.projectUser = projectUser;
+        if (projectUser.user_available === false && projectUser.profileStatus === 'inactive') {
 
-      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
-      this.tagsArray = projectUser.tags
-      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) projectUser > tags ', this.tagsArray);
-      this.user_id = projectUser.id_user._id;
-      this.user_fullname = projectUser.id_user.firstname + ' ' + projectUser.id_user.lastname
+          this.selectedStatus = this.teammateStatus[2].id;
+          // console.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
+        } else if (projectUser.user_available === false && (projectUser.profileStatus === '' || !projectUser.profileStatus)) {
+          this.selectedStatus = this.teammateStatus[1].id;
+          // console.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
+        } else if (projectUser.user_available === true && (projectUser.profileStatus === '' || !projectUser.profileStatus)) {
+          this.selectedStatus = this.teammateStatus[0].id
+          // console.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+        }
 
-      this.user_email = projectUser.id_user.email;
-      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - EMAIL: ', this.user_email);
+        this.teammateStatus = this.teammateStatus.slice(0)
 
-      this.user_role = projectUser.role;
-      this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - ROLE: ', this.user_role);
 
-      if (projectUser && projectUser.max_assigned_chat) {
-        this.max_assigned_chat = projectUser.max_assigned_chat;
+        this.tagsArray = projectUser.tags
+        this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) projectUser > tags ', this.tagsArray);
+        this.user_id = projectUser.id_user._id;
+        this.user_fullname = projectUser.id_user.firstname + ' ' + projectUser.id_user.lastname
+
+        this.user_email = projectUser.id_user.email;
+        this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - EMAIL: ', this.user_email);
+
+        this.user_role = projectUser.role;
+        this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - ROLE: ', this.user_role);
+
+        if (projectUser && projectUser.max_assigned_chat) {
+          this.max_assigned_chat = projectUser.max_assigned_chat;
+        }
       }
-
     }, (error) => {
       this.logger.error('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - ERR  ', error);
       this.showSpinner = false;
@@ -488,13 +510,21 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     });
   }
 
-  changeAvailabilityStatus(event, projectUser_id: string) {
-    this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS - CHANGE STATUS - WHEN CLICK USER IS AVAILABLE event.target.checked ', event.target.checked);
-    this.IS_AVAILABLE = event.target.checked
+  changeAvailabilityStatus(selecedstatusID: number, projectUser_id: string) {
+    // console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS - CHANGE STATUS -  selecedstatusID ', selecedstatusID , 'PROJECT-USER ID ', projectUser_id);
+  
+    let IS_AVAILABLE = null
+    let profilestatus = ''
+    if (selecedstatusID === 1) {
+      IS_AVAILABLE = true
+    } else if (selecedstatusID === 2) {
+      IS_AVAILABLE = false
+    } else if (selecedstatusID === 3) {
+      IS_AVAILABLE = false
+      profilestatus = 'inactive'
+    }
 
-    this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS- CHANGE STATUS - WHEN CLICK USER PROJECT-USER ID ', projectUser_id);
-
-    this.usersService._updateProjectUser(projectUser_id, this.IS_AVAILABLE).subscribe((projectUser: any) => {
+    this.usersService.updateProjectUser(projectUser_id, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => {
       this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS - PROJECT-USER UPDATED ', projectUser)
 
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
@@ -521,7 +551,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   onPressEnterInIputTypeNewTag() {
     this.logger.log('[USER-EDIT-ADD] - has press ENTER key tagname ', this.tagname);
-  
+
     if (this.tagname === undefined || (this.tagname !== undefined && this.tagname.length === 0)) {
       this.logger.log('[USER-EDIT-ADD] - Display tag name is required ');
       this.display_tag_name_required = true
@@ -539,7 +569,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     }
   }
 
- 
+
   addTagToProjectUser() {
     const add_tag_to_pu_btn = <HTMLElement>document.querySelector('.add-tag-to-pu-btn');
     this.logger.log('[USER-EDIT-ADD] - ADD TAG - add_tag_to_pu_btn: ', add_tag_to_pu_btn);
@@ -562,7 +592,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.tagname = undefined;
     this.tag_selected_color = '#43B1F2';
   }
- 
+
 
   removeTagFromProjectUser(tag: string) {
     var index = this.tagsArray.indexOf(tag);
@@ -570,7 +600,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.tagsArray.splice(index, 1);
     }
     this.logger.log('[USER-EDIT-ADD] - this.tagsArray After REMOVE: ', this.tagsArray);
-    this.upadateProjectUserTag(this.tagsArray, 'remove' )
+    this.upadateProjectUserTag(this.tagsArray, 'remove')
   }
 
   updateUserRoleAndMaxchat() {
@@ -624,7 +654,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
       });
   }
- 
+
   upadateProjectUserTag(tagsArray: any, action: string) {
     this.usersService.updateProjectUserTags(this.project_user_id, tagsArray)
       .subscribe((projectUser: any) => {
@@ -643,11 +673,11 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         if (action === 'add') {
           this.notify.showWidgetStyleUpdateNotification(this.createLabelSuccess_mgs, 2, 'done');
         } else if (action === 'remove') {
-          this.notify.showWidgetStyleUpdateNotification(this.deleteLabelSuccess_mgs,2, 'done');
+          this.notify.showWidgetStyleUpdateNotification(this.deleteLabelSuccess_mgs, 2, 'done');
         }
 
         this.logger.log('[USER-EDIT-ADD] - updateUserRoleAndMaxchat - PROJECT-USER DETAILS - PROJECT-USER UPDATED  * COMPLETE *');
-      
+
       });
 
   }

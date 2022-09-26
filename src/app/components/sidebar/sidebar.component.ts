@@ -264,18 +264,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getUserAvailability();
         this.getUserUserIsBusy();
         this.getProjectUserId();
-
-
-
         this.hasChangedAvailabilityStatusInUsersComp();
-
         this.checkUserImageUploadIsComplete();
         // used when the page is refreshed
         this.checkUserImageExist();
-
         this.subscribeToMyAvailibilityCount();
         this.getCurrentRoute();
-
         this.getOSCODE();
 
         this.brandLog();

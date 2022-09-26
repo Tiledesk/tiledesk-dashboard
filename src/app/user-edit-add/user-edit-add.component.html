@@ -225,15 +225,9 @@
 
 
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                  <!-- <label class="switch" style="margin-bottom: 0px;margin-top: 7px;">
-                    <input type="checkbox"
-                      (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)"
-                      [checked]="projectUser?.user_available === true">
-                    <span class="slider round"></span>
-                  </label> -->
 
                   <!-- currentUser_projectUserID !== projectUser?._id && -->
-                  <div class="onoffswitch__availability_status">
+                  <!-- <div class="onoffswitch__availability_status">
                     <input (change)="changeAvailabilityStatus($event, projectUser?._id)"
                       [checked]="projectUser?.user_available === true" type="checkbox" name="onoffswitch"
                       class="onoffswitch-checkbox__availability_status" id="roleonoffswitch"
@@ -243,7 +237,26 @@
                       <span class="onoffswitch-inner__availability_status"></span>
                       <span class="onoffswitch-switch__availability_status"></span>
                     </label>
-                  </div>
+                  </div> -->
+
+
+                  <ng-select style="text-align: left;" 
+                  (change)="changeAvailabilityStatus(selectedStatus, projectUser?._id)" 
+                  [(ngModel)]="selectedStatus" 
+                  class="teammate-status-in-pu-details" 
+                  [items]="teammateStatus" 
+                  bindLabel="name" bindValue="id"
+                  [clearable]="false"
+                  [searchable]="false">
+                  <ng-template ng-label-tmp let-item="item">
+                      <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                     <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">  {{item.name | translate}} </span>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-index="index">
+                      <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
+                      <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">  {{item.name | translate }} </span>
+                  </ng-template>
+              </ng-select>
                 </div>
               </div>
 

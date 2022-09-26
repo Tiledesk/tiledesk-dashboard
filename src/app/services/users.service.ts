@@ -544,7 +544,7 @@ export class UsersService {
         // this.user_is_available_bs = projectUser.user_available;
 
         if (projectUser[0].user_available !== undefined) {
-          this.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
+          this.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
         }
 
         // ADDED 21 AGO
@@ -682,7 +682,7 @@ export class UsersService {
    * @param user_available 
    * @param user_isbusy 
    */
-  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean) {
+  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean, projctuser) {
     // console.log('[USER-SERV] - PUBLISH PROJECT-USER-ID ', projectUser_id);
     // console.log('[USER-SERV] - PUBLISH USER AVAILABLE ', user_available);
     // console.log('[USER-SERV] - PUBLISH USER IS BUSY ', user_isbusy);
@@ -690,7 +690,7 @@ export class UsersService {
 
     this.project_user_id_bs.next(projectUser_id);
     this.user_is_available_bs.next(user_available);
-    // this.projectUser_bs.next(projctuser);
+    this.projectUser_bs.next(projctuser);
     this.user_is_busy$.next(user_isbusy);
   }
 
@@ -851,7 +851,7 @@ export class UsersService {
    * @param user_is_available 
    * @returns 
    */
-  public _updateProjectUser(projectUser_id: string, user_is_available: boolean) {
+  public _updateProjectUser(projectUser_id: string, user_is_available: boolean, profilestatus) {
 
     let url = this.SERVER_BASE_PATH + this.project._id + '/project_users/' + projectUser_id;
     this.logger.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY (PUT) URL ', url);
@@ -881,7 +881,7 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'user_available': user_is_available,  'profileStatus': profilestatus  };
+    const body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
     // console.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY - PUT REQUEST BODY ', body);
 
     return this.http
@@ -899,7 +899,7 @@ export class UsersService {
    * @param user_is_available 
    * @returns 
    */
-  public _updateCurrentUserAvailability(projectId: string, user_is_available: boolean, profilestatus: any) {
+  public updateCurrentUserAvailability(projectId: string, user_is_available: boolean, profilestatus: any) {
 
     let url = this.SERVER_BASE_PATH + projectId + '/project_users/';
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY (PUT) URL ', url);
@@ -912,7 +912,7 @@ export class UsersService {
 
     // let body = {}
     // if (user_is_available === true || user_is_available === false ) {
-    const  body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
+    const body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
     // }
 
     // console.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY - BODY ', body);
@@ -923,7 +923,7 @@ export class UsersService {
   }
 
   /* old UPDATE CURRENT USER AVAILABILITY */
-  public updateCurrentUserAvailability(projectId: string, user_is_available: boolean) {
+  public _updateCurrentUserAvailability(projectId: string, user_is_available: boolean) {
 
     let url = this.SERVER_BASE_PATH + projectId + '/project_users/';
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY (PUT) URL ', url);

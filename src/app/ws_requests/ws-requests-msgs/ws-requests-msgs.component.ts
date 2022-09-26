@@ -307,6 +307,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   HAS_SELECTED_SEND_AS_PENDING: boolean = false;
   HAS_SELECTED_SEND_AS_SOLVED: boolean = false;
 
+
   youCannotLeaveTheChat: string;
   youCannotAddAgents: string;
  
@@ -314,6 +315,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   
   youCannotJoinChat: string;
   joinChatTitle: string;
+
+  is0penDropDown = false
+
   /**
    * Constructor
    * @param router 
@@ -1208,8 +1212,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
-
-
 
           if (this.request.subject) {
             this.ticketSubject = this.request.subject
@@ -2742,7 +2744,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     Observable
       .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
-        // this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        //  console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
         // this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
@@ -4375,6 +4377,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       }
 
+      // console.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
+      // console.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
+      // console.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
 
       this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, _chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
         .subscribe((msg) => {
@@ -4387,15 +4392,38 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE * COMPLETE *');
           this.chat_message = undefined;
           this.uploadedFiles = undefined;
-          this.metadata = undefined
-          this.type = undefined
-          this.existAnAttacment = false
-          this.sendMessageTexarea.nativeElement.style.height = null
+          this.metadata = undefined;
+          this.type = undefined;
+          this.existAnAttacment = false;
+          this.sendMessageTexarea.nativeElement.style.height = null;
+        
+          let convWokingStatus = ""
+          if (this.HAS_SELECTED_SEND_AS_OPENED === true && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
+            convWokingStatus = 'open'
+          } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === true && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
+            convWokingStatus = 'pending'
+          } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
+            convWokingStatus = ''
+          }
+
+          this.wsRequestsService.updateRequestWorkingStatus(this.id_request, convWokingStatus)
+            .subscribe((request) => {
+
+              this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
+            }, (error) => {
+              this.logger.error('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS - ERROR ', error);
+
+            }, () => {
+              this.logger.log('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS  * COMPLETE');
+              if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
+                this.archiveRequest(this.id_request)
+              }
+            })
         });
     }
   }
 
-  sendAsOpen() {
+  hasSelectedSendAsOpen() {
     this.HAS_SELECTED_SEND_AS_OPENED = true;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
@@ -4404,7 +4432,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
   }
 
-  sendAsPending() {
+  hasSelectedSendAsPending() {
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = true;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
@@ -4413,7 +4441,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
   }
 
-  sendAsSolved() {
+  hasSelectedSendAsSolved() {
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = true;
@@ -4422,6 +4450,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
   }
 
+  isOpenDropdown(_is0penDropDown) {
+    this.is0penDropDown = _is0penDropDown
+    // console.log('[WS-REQUESTS-MSGS] this.is0penDropDown ',this.is0penDropDown)  
+  }
 
   presenModalMessageCouldNotBeSent() {
     swal({

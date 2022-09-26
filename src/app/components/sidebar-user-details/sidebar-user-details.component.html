@@ -102,7 +102,8 @@
             class="teammate-status-in-drawer" 
             [items]="teammateStatus" 
             bindLabel="name" bindValue="id"
-            [clearable]="false">
+            [clearable]="false"
+            [searchable]="false">
             <ng-template ng-label-tmp let-item="item">
                 <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
                <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">  {{item.name | translate}} </span>

@@ -579,16 +579,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
             if (project.id_project.status !== 0) {
               this.usersService.subscriptionToWsCurrentUser_allProject(project.id_project._id, project._id);
             }
-            this.listenTocurrentUserWSAvailabilityAndBusyStatustForProject$()
+            this.listenTocurrentUserWSAvailabilityAndBusyStatusForProject$()
 
-            // .then((data) => {
-
-            //     this.logger.log("PROJECT COMP SUBSCR TO WS CURRENT USERS - RES ", data);
-            //     project['ws_projct_user_available'] = data['user_available']
-            //     project['ws_projct_user_isBusy'] = data['isBusy']
-            //   })
-
-
+          
             /***  ADDED TO KNOW IF THE CURRENT USER IS AVAILABLE IN SOME PROJECT
              *    ID USED TO DISPLAY OR NOT THE MSG 'Attention, if you don't want to receive requests...' IN THE LOGOUT MODAL  ***/
             if (project.user_available === true) {
@@ -612,19 +605,26 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
   }
 
-  changeAvailabilityState(projectid, available, profilestatus) {
-    this.logger.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' available: ', available);
+  changeAvailabilityState(projectid, selectedStatusValue) {
+    // console.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
 
-    available = !available
-    this.logger.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' available: ', available);
+    // available = !available
+    let IS_AVAILABLE = null
+    let profilestatus = ''
+    if (selectedStatusValue === 'available') {
+      IS_AVAILABLE = true
+    } else if (selectedStatusValue === 'unavailable') {
+      IS_AVAILABLE = false
+    } else if (selectedStatusValue === 'inactive') {
+      IS_AVAILABLE = false
+      profilestatus = 'inactive'
+    }
+    // console.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
+    this.usersService.updateCurrentUserAvailability(projectid, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => { // non 
 
-    this.usersService.updateCurrentUserAvailability(projectid, available).subscribe((projectUser: any) => { // non 
-
-      this.logger.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
-
+    //  console.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
       // this.usersService.availability_btn_clicked(true)
-
       this.projects.forEach(project => {
         if (project.id_project._id === projectUser.id_project) {
           project['ws_projct_user_available'] = projectUser.user_available;
@@ -641,17 +641,21 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
   }
 
-  listenTocurrentUserWSAvailabilityAndBusyStatustForProject$() {
+  listenTocurrentUserWSAvailabilityAndBusyStatusForProject$() {
     this.usersService.currentUserWsBusyAndAvailabilityForProject$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser) => {
-        // this.logger.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
+        // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
         this.projects.forEach(project => {
           if (project.id_project._id === projectUser['id_project']) {
             project['ws_projct_user_available'] = projectUser['user_available'];
             project['ws_projct_user_isBusy'] = projectUser['isBusy']
+            if (projectUser['profileStatus']) {
+              // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
+              project['ws_projct_user_profileStatus'] = projectUser['profileStatus']
+            } 
           }
         });
 
