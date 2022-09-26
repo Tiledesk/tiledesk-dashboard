@@ -841,16 +841,17 @@ export class UsersComponent implements OnInit, OnDestroy {
       .subscribe((updatedProjectUser: any) => {
         this.logger.log('[USERS] - UPDATE PROJECT USER STATUS RES', updatedProjectUser)
 
-        this.projectUsersList.forEach(projectUser => {
-          if (projectUser._id === updatedProjectUser._id) {
-            projectUser.user_available = updatedProjectUser.user_available
-            if (updatedProjectUser.profileStatus) {
-              projectUser.profileStatus = updatedProjectUser.profileStatus
-            }
-          }
-        });
+        // this.projectUsersList.forEach(projectUser => {
+        //   if (projectUser._id === updatedProjectUser._id) {
+        //     projectUser.user_available = updatedProjectUser.user_available
+        //     if (updatedProjectUser.profileStatus) {
+        //       projectUser.profileStatus = updatedProjectUser.profileStatus
+        //     }
+        //   }
+        // });
 
-        this.projectUsersList = this.projectUsersList.slice(0)
+       
+        // this.projectUsersList = this.projectUsersList.slice(0)
         this.logger.log('[USERS] - UPDATE PROJECT USER STATUS projectUsersList after update', this.projectUsersList)
         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
         this.usersService.availability_switch_clicked(true)
@@ -869,8 +870,8 @@ export class UsersComponent implements OnInit, OnDestroy {
           this.notify.showWidgetStyleUpdateNotification(
             this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
 
-
-          // this.getUploadEgine()
+       
+          this.getUploadEgine()
         },
       )
   }

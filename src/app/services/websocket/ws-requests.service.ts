@@ -586,7 +586,7 @@ export class WsRequestsService implements OnDestroy {
 
         // console.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO CURRENT-USER AVAILABILITY - CREATE data", data);
 
-        self.currentUserWsAvailability$.next(data.user_available);
+        self.currentUserWsAvailability$.next(data);
         if (data.isBusy) {
           self.currentUserWsIsBusy$.next(data.isBusy)
         } else {
@@ -597,7 +597,7 @@ export class WsRequestsService implements OnDestroy {
 
         self.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO CURRENT-USER AVAILABILITY - UPDATE data", data);
         // self.currentUserWsAvailability$.next(data.user_available);
-        self.currentUserWsAvailability$.next(data.user_available);
+        self.currentUserWsAvailability$.next(data);
         if (data.isBusy) {
           self.currentUserWsIsBusy$.next(data.isBusy)
         } else {
