@@ -358,8 +358,10 @@
                       </label>
                     </div> -->
 
-                    <select class="select-teammate-status" #selectStatus name="status_{{projectUser?._id}}" id="{{projectUser?._id}}"
-                    (change)=" changeAvailabilityState(project?.id_project?._id, selectStatus.value)">
+                    <select class="select-pu-status" #selectStatus name="status_{{project?.id_project?._id}}" id="{{project?.id_project?._id}}"
+                    (change)=" changeAvailabilityState(project?.id_project?._id, selectStatus.value)" style="border-color: #d9d9d9;
+                    border-radius: 4px;
+                    text-transform: capitalize;">
                     
                     <option value="available" 
                      [selected]="project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus)"> 
