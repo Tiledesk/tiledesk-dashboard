@@ -465,8 +465,10 @@
                                 src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                 alt="" onerror="this.src='assets/img/no_image_user.png'">
 
-                              <div class="teammates-with-picture-status-icon"
-                                [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
+                              <div class="teammates-with-picture-status-icon" [ngClass]="{
+                                'is-user-online': agent?.user_available_rt === true && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
+                                'is-user-offline': agent?.user_available_rt === false && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
+                                'is-user-inactive' : agent?.user_available_rt === false && agent?.profileStatus_rt === 'inactive'}">
                               </div>
                             </div>
 
@@ -609,7 +611,7 @@
                   </div>
                 </div>
 
-               
+
 
                 <div style="float: right" class="scroll-div-side-btn">
                   <!-- <button (click)="scrollRightTeammates()">right</button> -->
