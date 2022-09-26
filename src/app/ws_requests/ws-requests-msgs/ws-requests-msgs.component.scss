@@ -2376,15 +2376,16 @@ span .conv-svg-icon {
 .lead-email-anchor {
   margin-top: 8px;
   text-transform: lowercase;
-  cursor: pointer;
+  // cursor: pointer;
   font-size: 14px;
   font-weight: 400;
-  color: #3880ff;
+  // color: #3880ff;
+  color: rgba(0, 0, 0, 0.87)
 }
 
-.lead-email-anchor:hover {
-  text-decoration: underline;
-}
+// .lead-email-anchor:hover {
+//   text-decoration: underline;
+// }
 
 .view-all-lead-properties {
   font-weight: 400;
