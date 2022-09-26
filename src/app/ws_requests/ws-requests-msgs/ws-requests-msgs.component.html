@@ -3402,8 +3402,10 @@
                               onerror="this.src='assets/img/no_image_user.png'" />
 
 
-                            <div class="ws_request_msgs__status-icon" [ngClass]="{'is-user-online' : projectUser?.user_available === true, 
-                                      'is-user-offline' : projectUser?.user_available === false,
+                            <div class="ws_request_msgs__status-icon" [ngClass]="{
+                                      'is-user-online' : projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
+                                      'is-user-offline' : projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus),
+                                      'is-user-inactive': projectUser?.user_available === false && projectUser?.profileStatus === 'inactive',
                                       'ws_request_msgs__status-icon-chat-panel-mode' : CHAT_PANEL_MODE === true
                                      }">
                             </div>
