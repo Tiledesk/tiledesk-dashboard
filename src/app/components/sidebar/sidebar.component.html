@@ -26,7 +26,11 @@
 
 
     <div id="teammate-status-icon" *ngIf="project" class="status-icon"
-      [ngClass]="{'is-user-online' : IS_AVAILABLE === true && IS_INACTIVE === false, 'is-user-offline' : IS_AVAILABLE === false && IS_INACTIVE === false, 'is-user-inactive': IS_AVAILABLE === false && IS_INACTIVE === true, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
+      [ngClass]="{
+        'is-user-online' : IS_AVAILABLE === true && IS_INACTIVE === false, 
+        'is-user-offline' : IS_AVAILABLE === false && IS_INACTIVE === false, 
+        'is-user-inactive': IS_AVAILABLE === false && IS_INACTIVE === true, 
+        'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
     </div>
 
     <div id="sidebaravatar-isbusy" class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer">
