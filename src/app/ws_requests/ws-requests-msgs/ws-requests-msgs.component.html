@@ -584,62 +584,64 @@
 
                     <div class="col-xs-12  w-100 plr-0">
                       <div class="row w-100">
-                        <!-- <div class="col-xs-3 h-100 plr-0" style="    margin-top: -4px;  ">
-                          <ng-select class="select-response-type" [clearable]="false" [searchable]="false"
-                            [items]="responseType" bindLabel="name" bindValue="id" [(ngModel)]="selectedResponseTypeID"
-                            (change)="onChangeReplyType(selectedResponseTypeID)">
-                            <ng-template ng-label-tmp let-item="item">
-                              <img height="15" width="15" style="width: 15px; height: auto" [src]="item.icon" />
-                              <b>{{item.name}}</b>
-                            </ng-template>
-                            <ng-template ng-option-tmp let-item="item" let-index="index">
-                              <img height="15" width="15" style="width: 15px; height: auto" [src]="item.icon" />
-                              <b>{{item.name}}</b>
-                            </ng-template>
-                          </ng-select>
-                        </div> -->
+                     
                         <div class="col-xs-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">
-                          <button class="btn pull-right send-chat-msg-btn" (click)="sendChatMessage()"
+                          <!-- <button class="btn pull-right send-chat-msg-btn" (click)="sendChatMessage()"
                             [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
-                            <!-- {{'Send' | translate}} -->
                             <span class="material-icons">
                               send
                             </span>
-                          </button> 
+                          </button>  -->
 
-                          <!-- <div class="btn-group pull-right">
-                            <button type="button" class="btn btn-white">Default</button>
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                              <span class="caret"></span>
+                           <div class="btn-group dropup pull-right">
+                          
+                            <button type="button" class="btn btn-primary" style="border-right: 1px solid #fff;" (click)="sendChatMessage()"
+                            [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
+                             <span style="font-weight:300;"> {{'SendAs' | translate }}  </span> 
+                              <span *ngIf="HAS_SELECTED_SEND_AS_OPENED === true && HAS_SELECTED_SEND_AS_PENDING === false && HAS_SELECTED_SEND_AS_SOLVED === false" 
+                              style="font-weight:500;"> 
+                              {{'Open' | translate }} 
+                            </span> 
+                              <span *ngIf="HAS_SELECTED_SEND_AS_OPENED === false && HAS_SELECTED_SEND_AS_PENDING === true && HAS_SELECTED_SEND_AS_SOLVED === false" 
+                              style="font-weight:500;"> 
+                              {{'Pending' | translate }} 
+                            </span> 
+                              <span *ngIf="HAS_SELECTED_SEND_AS_OPENED === false && HAS_SELECTED_SEND_AS_PENDING === false && HAS_SELECTED_SEND_AS_SOLVED === true" 
+                              style="font-weight:500;"> {{'Resolved' | translate }} </span> 
+                            </button>
+                           
+        
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" (click)="isOpenDropdown(isOpen = !isOpen)">
+                              <span class="caret" [ngClass]="{'caret-rotate-0': is0penDropDown === true, 'caret-rotate-180': is0penDropDown === false}"></span>
                               <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
                               <li>
                                 
-                                <a (click)="sendAsOpen()" style="padding-left: 15px; padding-right: 15px;">
-                                  <i class="material-icons" style="padding-right: 5px;">stop</i>
+                                <a (click)="hasSelectedSendAsOpen()" style="padding-left: 15px; padding-right: 15px;">
+                                  <i class="material-icons" style="padding-right: 5px;color: rgb(197, 44, 36);">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
                                    
                                     {{'SendAs' | translate }}
-                                     <span style="font-weight:500;"> {{'Open' | translate }} </span> 
+                                     <span style="font-weight:500; "> {{'Open' | translate }} </span> 
                                   </span>
                                 </a>
                               </li>
                               <li>
                                 
-                                <a (click)="sendAsPending()" style="padding-left: 15px; padding-right: 15px;">
-                                  <i class="material-icons" style="padding-right: 5px;">stop</i>
+                                <a (click)="hasSelectedSendAsPending()" style="padding-left: 15px; padding-right: 15px;">
+                                  <i class="material-icons" style="padding-right: 5px;color: rgb(55,147,233);">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
                                
                                     {{'SendAs' | translate }} 
-                                    <span style="font-weight:500;"> {{'Pending' | translate }}</span>
+                                    <span style="font-weight:500; "> {{'Pending' | translate }}</span>
                                   </span>
                                 </a>
                               </li>
                               <li>
                                 
-                                <a (click)="sendAsSolved()" style="padding-left: 15px; padding-right: 15px;">
-                                  <i class="material-icons" style="padding-right: 5px;">stop</i>
+                                <a (click)="hasSelectedSendAsSolved()" style="padding-left: 15px; padding-right: 15px;">
+                                  <i class="material-icons" style="padding-right: 5px; color: rgb(136, 146,156);">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
                                   
                                     {{'SendAs' | translate }}  
@@ -649,7 +651,7 @@
                               </li>
 
                             </ul>
-                          </div> -->
+                          </div> 
 
 
 

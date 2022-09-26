@@ -3254,7 +3254,7 @@ span .conv-svg-icon {
   min-width: 41px;
   width: 41px;
   margin-bottom: 3px;
-  margin-top: 3px;
+  margin-top: 11px;
 }
 
 .upload-btn > span {
@@ -3388,6 +3388,9 @@ span .conv-svg-icon {
   padding-right: 0px;
 }
 
+.caret-rotate-180 {
+  transform: rotate(180deg);
+}
 
 // .location-icon {
 //   cursor: pointer;
