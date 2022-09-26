@@ -349,7 +349,8 @@ export class SidebarUserDetailsComponent implements OnInit {
     profilestatus = 'inactive'
    }
 
-    this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => { // non 
+    this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE, profilestatus)
+      .subscribe((projectUser: any) => { 
 
       // console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
 
