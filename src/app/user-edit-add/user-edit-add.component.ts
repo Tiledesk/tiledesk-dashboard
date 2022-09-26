@@ -475,10 +475,10 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
           this.selectedStatus = this.teammateStatus[2].id;
           // console.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
-        } else if (projectUser.user_available === false && projectUser.profileStatus === '') {
+        } else if (projectUser.user_available === false && (projectUser.profileStatus === '' || !projectUser.profileStatus)) {
           this.selectedStatus = this.teammateStatus[1].id;
           // console.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
-        } else if (projectUser.user_available === true && projectUser.profileStatus === '') {
+        } else if (projectUser.user_available === true && (projectUser.profileStatus === '' || !projectUser.profileStatus)) {
           this.selectedStatus = this.teammateStatus[0].id
           // console.log('[USER-EDIT-ADD] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
         }
