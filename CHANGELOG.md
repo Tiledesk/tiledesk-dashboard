@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.51-rc2
+- Removes the white borders from the "select teammate status" combo box in the teammate details drawer panel
+
 ### 2.2.51-rc1
 - Adds the ability for the logged in teammate to set his status to "Inactive"
 - Adds the ability to select / view "Inactive" status for each teammate on the teammate list page
