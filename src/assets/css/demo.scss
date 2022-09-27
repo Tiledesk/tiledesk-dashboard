@@ -1504,22 +1504,32 @@ footer ul {
 .ng-select.teammate-status-in-drawer .ng-select-container {
   background-color: #2d323e;
   color: #fff;
+  border: 1px solid #2d323e;
 }
 
-.ng-select.teammate-status-in-drawer.ng-select-opened>.ng-select-container {
+.ng-select.teammate-status-in-drawer.ng-select-opened > .ng-select-container {
   background-color: #2d323e;
+  border: 1px solid #2d323e;
 }
 
 .ng-dropdown-panel.teammate-status-in-drawer {
   background-color: #2d323e;
+  border: 1px solid #2d323e;
 }
 
-.ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items  .ng-option {
+.ng-dropdown-panel.teammate-status-in-drawer.ng-select-bottom {
+  border: 1px solid #2d323e;
+  margin-top: 8px;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+}
+
+.ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items .ng-option {
   background-color: #2d323e;
   color: #fff;
 }
 
-.ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items  .ng-option.ng-option-marked {
+.ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items .ng-option.ng-option-marked {
   background-color: #2d323e;
   color: #fff;
 }
