@@ -1207,7 +1207,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -2670,7 +2670,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openSelectUsersModal(actionSelected) {
     this.actionInModal = actionSelected
-    console.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
+    // console.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
 
     if (this.actionInModal === 'invite') {
       if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
