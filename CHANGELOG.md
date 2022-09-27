@@ -1,6 +1,16 @@
 
 # tiledesk-dashboard
 
+### 2.2.51-rc1
+- Adds the ability for the logged in teammate to set his status to "Inactive"
+- Adds the ability to select / view "Inactive" status for each teammate on the teammate list page
+- Adds the ability to select / view "Inactive" status for each teammate on the "Your project" page
+- Adds the ability to select / view "Inactive" status for the teammate on the "Teammate details" page
+- Adds the "Inactive" status display to the teammate list on the "Monitor" page.
+- Adds the "Inactive" status display to the teammate list in the "Add Teammate" and "Reassign Conversation" modal windows
+- Adds the ability to send a message as Open, Pending or Resolved on the conversation detail page
+- Adds for a new ticket created the property "workingStatus" with value "new"
+
 ### 2.2.50
 - Deploys in production
 - Allows ticket-type chats to be served only by an agent
