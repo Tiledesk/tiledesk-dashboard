@@ -317,7 +317,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   joinChatTitle: string;
 
   is0penDropDown = false
-
+  isOpen: boolean;
   /**
    * Constructor
    * @param router 
