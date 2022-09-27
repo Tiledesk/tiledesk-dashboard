@@ -29,7 +29,8 @@ export class AppStoreInstallComponent implements OnInit {
   project: any;
   projectId: string;
   isChromeVerGreaterThan100: boolean;
-  reason: string
+  reason: string;
+  appurl: string;
   constructor(
     public route: ActivatedRoute,
     private sanitizer: DomSanitizer,
@@ -86,18 +87,21 @@ export class AppStoreInstallComponent implements OnInit {
         this.result = res;
       //  console.log(this.result._body);
         let parsed_json = JSON.parse(this.result._body);
-      //  console.log("[APP-STORE-INSTALL] PARSED JSON: ", parsed_json);
+       console.log("[APP-STORE-INSTALL] PARSED JSON: ", parsed_json);
        this.app_title = parsed_json.title
-        let appurl = ''
+   
         if (parsed_json.version === 'v1') {
-          appurl = parsed_json.installActionURL
+          this.appurl = parsed_json.installActionURL
           this.reason = 'Manage'
+          console.log("[APP-STORE-INSTALL] USE CASE MANAGE - appurl ", this.appurl);
         } else if (parsed_json.version === 'v2' && params.reason === 'run' ) {
-          appurl = parsed_json.runURL
+          this.appurl = parsed_json.runURL
           this.reason = 'Run'
+          console.log("[APP-STORE-INSTALL] USE CASE RUN - appurl ", this.appurl);
         } else if (parsed_json.version === 'v2' && params.reason === 'configure' ) {
-          // console.log("[APP-STORE-INSTALL] USE CASE CONFIGURE: ");
-          appurl = parsed_json.installActionURL
+          
+          this.appurl = parsed_json.installActionURL
+          console.log("[APP-STORE-INSTALL] USE CASE CONFIGURE - appurl ", this.appurl);
           this.reason = 'Configure'
         }
         this.auth.user_bs.subscribe((user) => {
@@ -105,8 +109,8 @@ export class AppStoreInstallComponent implements OnInit {
             this.TOKEN = user.token
 
             // this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
-            this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(appurl + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
-            this.logger.log("[APP-STORE-INSTALL] - URL IFRAME: ", this.URL)
+            this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(this.appurl + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
+            console.log("[APP-STORE-INSTALL] - URL IFRAME: ", this.URL)
             this.getIframeHasLoaded(parsed_json)
 
           } else {
