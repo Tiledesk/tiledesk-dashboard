@@ -28,7 +28,7 @@
       <!-- -------------------------------------------------------------- -->
       <!-- @ Native bot  aka  Resolution bot -->
       <!-- -------------------------------------------------------------- -->
-      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
+      <!-- <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
         'col-sm-12 col-md-4' :  (natIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === true  && rasaIsVisible === false), 
         'col-sm-6 col-md-6' :  (natIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
         'is_hidden' :  natIsVisible === false}">
@@ -63,15 +63,15 @@
             </h5>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- ---------------------------- -->
       <!-- tilebot -->
       <!-- ---------------------------- -->
-      <!-- <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && tilebotIsVisible === true && rasaIsVisible === true, 
-      'col-sm-12 col-md-4' :  (tilebotIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (tilebotIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (tilebotIsVisible === true && dgfIsVisible === true  && rasaIsVisible === false), 
-      'col-sm-6 col-md-6' :  (tilebotIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (tilebotIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (tilebotIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
-      'is_hidden' :  tilebotIsVisible === false}">
+      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && tilebotIsVisible === true && rasaIsVisible === true, 
+        'col-sm-12 col-md-4' :  (tilebotIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (tilebotIsVisible === true && dgfIsVisible === false  && rasaIsVisible === true) || (tilebotIsVisible === true && dgfIsVisible === true  && rasaIsVisible === false), 
+        'col-sm-6 col-md-6' :  (tilebotIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (tilebotIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (tilebotIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
+        'is_hidden' :  tilebotIsVisible === false}">
 
         <div class="card bot-card" (click)="goToCreateBot('tilebot')">
           <div class="card---header card---header--tilebot-bot"> </div>
@@ -112,7 +112,7 @@
             </h5>
           </div>
         </div>
-      </div> -->
+      </div> 
 
       <!-- -------------------------------------------------------------- -->
       <!-- @ Dialogflow bot -->
@@ -335,7 +335,7 @@
       <!-- ---------------------------- -->
       <!-- tilebot -->
       <!-- ---------------------------- -->
-      <div *ngIf="tilebotIsVisible" [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
+      <!-- <div *ngIf="tilebotIsVisible" [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
       'col-sm-12 col-md-4' : (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === true && dgfIsVisible === true && rasaIsVisible === false),
       'col-sm-6 col-md-6' :  (natIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (natIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (natIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
       'col-sm-12 col-md-12' :   dgfIsVisible === false && natIsVisible === false && rasaIsVisible === false}">
@@ -371,12 +371,12 @@
               Tilebot
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
-              <!-- {{'AnIdentityBotRepresents' | translate}} -->
+              <!- - {{'AnIdentityBotRepresents' | translate}} - ->
             </h5>
           </div>
         </div>
 
-      </div> 
+      </div>  -->
       <!-- ---------------------------- -->
       <!-- Resolution bot -->
       <!-- ---------------------------- -->
