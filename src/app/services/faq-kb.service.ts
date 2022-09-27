@@ -421,8 +421,8 @@ export class FaqKbService {
 
     let url = this.FAQKB_URL + id;
     // url = url += `${id}`;
-    this.logger.log('update BOT - URL ', url);
-
+    // console.log('update BOT - URL ', url);
+    // console.log('update BOT - bottype ', bottype);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -431,7 +431,7 @@ export class FaqKbService {
 
     let body = {}
     body = { 'name': name, 'url': urlfaqkb, 'type': bottype, 'description': faqKb_description };
-    if (bottype === 'internal') {
+    if (bottype === 'internal' || bottype === 'tilebot' ) {
       body['webhook_enabled'] = webkookisenalbled;
       body['webhook_url'] = webhookurl
       body['language'] = resbotlanguage
