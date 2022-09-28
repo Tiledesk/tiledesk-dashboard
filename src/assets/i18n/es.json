@@ -2164,6 +2164,7 @@
     "WasResolvedBy": "fue resuelta por",
     "TheMessageCouldNotBeSent":"No es posible enviar mensajes para conversaciones que se resolvieron hace más de diez días.",
     "ClickToViewTheDetailsOfTheContact": "Haga clic para ver los detalles del contacto",
+    "Inactive":"Inactivo",
     "SendAs":"Enviar como",
     "Open":"Abierto",
     "Pending":"Pendiente",
