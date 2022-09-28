@@ -1,9 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.2.51-rc4
+- Changes the Tiledesk default logo in the widget settings page
+
 ### 2.2.51-rc3
 - Replaces the "Resolution" bot type with the "Tilebot" bot type
 - Fixes the bug: the "Put" request to update "Tilebot" type bot is incorrect
+- Fixes the bug: Error 404 is displayed on the "app-store" page while loading the iframe
 
 ### 2.2.51-rc2
 - Removes the white borders from the "select teammate status" combo box in the teammate details drawer panel
