@@ -112,7 +112,12 @@ export class AppStoreInstallComponent implements OnInit {
             // this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
             this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(this.appurl + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
             // console.log("[APP-STORE-INSTALL] - URL IFRAME: ", this.URL)
-            this.getIframeHasLoaded(parsed_json)
+            if  (this.URL) {
+              setTimeout(() => {
+                this.getIframeHasLoaded(parsed_json)
+              }, 0);
+            
+            }
 
           } else {
             this.logger.log("[APP-STORE-INSTALL] - GET USER TOKEN: FAILED");
@@ -124,6 +129,7 @@ export class AppStoreInstallComponent implements OnInit {
   }
 
   getIframeHasLoaded(app) {
+    // console.log("[APP-STORE-INSTALL] -  getIframeHasLoaded ")
     var self = this;
     var iframe = document.getElementById('i_frame') as HTMLIFrameElement;;
     this.logger.log('[APP-STORE-INSTALL] GET iframe ', iframe)
@@ -132,7 +138,8 @@ export class AppStoreInstallComponent implements OnInit {
         self.logger.log("[APP-STORE-INSTALL] GET - Finish");
         let spinnerElem = <HTMLElement>document.querySelector('.stretchspinner_in_app_install')
         // let spinnerElem = document.getElementsByClassName("stretchspinner_in_app_install")  as HTMLCollectionOf<HTMLElement>;
-        self.logger.log('[APP-STORE-INSTALL] GET iframeDoc readyState spinnerElem', spinnerElem)
+        // self.logger.log('[APP-STORE-INSTALL] GET iframeDoc readyState spinnerElem', spinnerElem)
+        // console.log('[APP-STORE-INSTALL] GET iframeDoc readyState spinnerElem', spinnerElem)
         spinnerElem.classList.add("hide-stretchspinner")
 
         // console.log("[APP-STORE-INSTALL]  - app", app)

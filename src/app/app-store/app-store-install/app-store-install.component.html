@@ -29,7 +29,7 @@
       <div class="rect5"></div>
     </div>
 
-    <iframe allow="camera; microphone" id="i_frame" [src]="URL" style="width:100%;" frameBorder="0" allowfullscreen
+    <iframe *ngIf="URL" allow="camera; microphone" id="i_frame" [src]="URL" style="width:100%;" frameBorder="0" allowfullscreen
       [ngStyle]="{ 'height': iframeHeight }">
     </iframe>
 
