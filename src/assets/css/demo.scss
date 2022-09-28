@@ -1541,3 +1541,9 @@ footer ul {
 .ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items .ng-option.ng-option-marked {
   background-color: rgba(30, 33, 41, 0.3)
 }
+
+// removes the blu google blue border 
+.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+     background-color: #2d323e;
+     box-shadow: unset;
+}
