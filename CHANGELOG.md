@@ -1,6 +1,13 @@
 
 # tiledesk-dashboard
 
+### 2.2.51
+- Deploys in production
+- Replaces the "Resolution" bot type with the "Tilebot" bot type
+- Adds the ability for the logged in teammate to set his status to "Inactive"
+- Adds the ability to select / view "Inactive" status for each teammate
+- Adds the ability to send a message as Open, Pending or Resolved on the conversation detail page
+
 ### 2.2.51-rc4
 - Changes the Tiledesk default logo in the widget settings page
 
