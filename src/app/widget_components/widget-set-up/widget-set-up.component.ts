@@ -1719,7 +1719,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SETTED HIS LOGO)
         // ------------------------------------------------------------------------
         // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg') {
           this.logoUrl = project.widget.logoChat;
           this.hasOwnLogo = true;
           this.LOGO_IS_ON = true;
@@ -1732,7 +1732,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO')
           // ------------------------------------------------------------------------
           // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg') {
           this.logoUrl = 'No Logo';
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = false;
@@ -1747,7 +1747,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // ------------------------------------------------------------------------
         } else {
           // this.logoUrl = 'tiledesklogo'
-          this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+          this.logoUrl = 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg'
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = true
 
@@ -1920,7 +1920,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         // this.logoUrl = 'tiledesklogo'
-        this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+        this.logoUrl = 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg'
         this.hasOwnLogo = false;
         this.LOGO_IS_ON = true
 
@@ -2545,7 +2545,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     } else if ($event.target.checked === true) {
 
       // this.logoUrl = 'tiledesklogo'
-      this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+      this.logoUrl = 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg'
       this.LOGO_IS_ON = true;
       this.logger.log('[WIDGET-SET-UP] LOGO_IS_ON ', this.LOGO_IS_ON)
       this.hasOwnLogo = false;
@@ -2601,7 +2601,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     /// LOGO
     if (this.logoUrl && this.LOGO_IS_ON === true) {
       // if (this.logoUrl !== 'tiledesklogo') {
-      if (this.logoUrl !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+      if (this.logoUrl !== 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg') {
         this.hasOwnLogo = true;
         this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
       } else {
@@ -2624,7 +2624,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       delete this.widgetObj['logoChat'];
 
       // this.logoUrl = 'tiledesklogo'
-      this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+      this.logoUrl = 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg'
       this.hasOwnLogo = false;
       this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
     }
