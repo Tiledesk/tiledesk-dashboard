@@ -227,7 +227,7 @@
       </div>
 
 
-      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && natIsVisible === true && rasaIsVisible === true, 
+      <div [ngClass]="{'col-sm-12 col-md-3' : dgfIsVisible === true && tilebotIsVisible === true && rasaIsVisible === true, 
                         'col-sm-12 col-md-4' : (tilebotIsVisible === false && dgfIsVisible === true && rasaIsVisible === true) || (tilebotIsVisible === true && dgfIsVisible === false && rasaIsVisible === true) || (tilebotIsVisible === true && dgfIsVisible === true && rasaIsVisible === false),
                         'col-sm-6 col-md-6' :  (tilebotIsVisible === false && dgfIsVisible === false && rasaIsVisible === true) || (tilebotIsVisible === false && dgfIsVisible === true && rasaIsVisible === false) ||  (tilebotIsVisible === true && dgfIsVisible === false && rasaIsVisible === false),
                         'col-sm-12 col-md-12' :   dgfIsVisible === false && tilebotIsVisible === false && rasaIsVisible === false
