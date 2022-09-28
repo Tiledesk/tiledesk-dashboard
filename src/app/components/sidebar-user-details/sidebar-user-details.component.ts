@@ -43,7 +43,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   storageBucket: string;
   baseUrl: string;
   imageUrl: any;
-
+  IS_INACTIVE: boolean;
   IS_AVAILABLE: boolean;
   PROFILE_STATUS: string;
   IS_BUSY: boolean;
@@ -89,7 +89,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getCurrentProject();
     this.getProfileImageStorage();
     this.getTeammateStatus();
-    // this.getUserAvailability();
+    
     this.getUserUserIsBusy();
     this.checkUserImageExist();
     this.hasChangedAvailabilityStatusInUsersComp();
@@ -98,7 +98,11 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getUserRole();
     this.getTranslations();
     // this.getProjectUser()
+    // this.listenTocurrentProjectUserUserAvailability$();
+    this.getWsCurrentUserAvailability$()
   }
+
+
 
 
 
@@ -436,26 +440,34 @@ export class SidebarUserDetailsComponent implements OnInit {
   getWsCurrentUserAvailability$() {
     // this.usersService.currentUserWsAvailability$
     this.wsRequestsService.currentUserWsAvailability$
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((currentuser_availability) => {
-        // console.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER AVAILABILITY - data? ', currentuser_availability);
-        if (currentuser_availability !== null) {
-          this.IS_AVAILABLE = currentuser_availability;
-
-          // if (this.IS_AVAILABLE === true) {
-          //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
-          // } else {
-          //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
-          // }
-        }
-      }, error => {
-        this.logger.error('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
-      }, () => {
-        this.logger.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
-      });
-  }
+        .pipe(
+            takeUntil(this.unsubscribe$)
+        )
+        .subscribe((projectUser) => {
+            // console.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
+            if (projectUser) {
+              if (projectUser['user_available'] === false && projectUser['profileStatus'] === 'inactive') {
+                // console.log('teammateStatus ', this.teammateStatus) 
+                this.selectedStatus = this.teammateStatus[2].id;
+                //  console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
+                this.teammateStatus = this.teammateStatus.slice(0)
+              } else if (projectUser['user_available'] === false && (projectUser['profileStatus'] === '' || !projectUser['profileStatus'])) {
+                this.selectedStatus = this.teammateStatus[1].id;
+                //  console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
+                this.teammateStatus = this.teammateStatus.slice(0)
+              } else if (projectUser['user_available'] === true && (projectUser['profileStatus'] === '' || !projectUser['profileStatus'])) {
+                this.selectedStatus = this.teammateStatus[0].id
+                this.teammateStatus = this.teammateStatus.slice(0)
+                // console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+              }
+    
+            }
+        }, error => {
+            this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
+        }, () => {
+            this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
+        });
+}
 
   getWsCurrentUserIsBusy$() {
     // this.usersService.currentUserWsIsBusy$
