@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.52.rc3
+- Corrects the endpoint of the "dialogflow connector"
+
 ### 2.2.52.rc2
 - Corrects the endpoint of the "dialogflow connector"
 
