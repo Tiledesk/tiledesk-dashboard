@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.52.rc1
+Changes dialogflow connector endpoint
+
 ### 2.2.51
 - Deploys in production
 - Replaces the "Resolution" bot type with the "Tilebot" bot type
