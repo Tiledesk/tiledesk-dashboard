@@ -7,6 +7,7 @@ import { LoggerService } from '../services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ColorCollection } from '@syncfusion/ej2-angular-heatmap';
 import { TranslateService } from '@ngx-translate/core';
+import { k } from '@angular/core/src/render3';
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-app-store',
@@ -256,7 +257,7 @@ export class AppStoreComponent implements OnInit {
       .then((WillDelete) => {
         if (WillDelete) {
           this.appStoreService.deleteNewApp(appId).subscribe((res: any) => {
-          //  console.log('[APP-STORE] DELETE V2 APP - app_id - RES', res);
+            //  console.log('[APP-STORE] DELETE V2 APP - app_id - RES', res);
           }, (error) => {
             swal(this.errorWhileDeletingApp, {
               icon: "error",
@@ -276,7 +277,7 @@ export class AppStoreComponent implements OnInit {
             swal(this.done_msg + "!", this.appHasBeenDeletedMsg, {
               icon: "success",
             }).then((okpressed) => {
-           
+
             });
           });
         } else {
@@ -309,14 +310,29 @@ export class AppStoreComponent implements OnInit {
     });
   }
 
-
-
-
-  learnmore(learnmoreUrl: string) {
-    this.logger.log('[APP-STORE] installationUrl ', learnmoreUrl);
-    const url = learnmoreUrl;
-
-    window.open(url, '_blank');
+  learnmore(learnmoreUrl: string, app_id) {
+    // console.log('[APP-STORE] learnmoreUrl ', learnmoreUrl);
+    if (learnmoreUrl.startsWith('{')) {
+      // console.log('[APP-STORE] installationUrl start with curly bracket ');
+      const learnmoreUrlString = learnmoreUrl.replace(/&quot;/ig, '"');
+      const learnMoreObjct = JSON.parse(learnmoreUrlString)
+      // console.log('[APP-STORE] learnmoreUrl start with curly bracket - learnMoreObjct, ', learnMoreObjct);
+      // URL = learnMoreObjct.url
+      const target = learnMoreObjct.target;
+    
+      if (target === '_self') {
+        this.openAppDetails(URL, app_id)
+      }
+    } else if (learnmoreUrl.startsWith('http')) {
+      // console.log('[APP-STORE] learnmoreUrl NOT start with curly bracket ');
+      const URL = learnmoreUrl
+      window.open(URL, '_blank')
+    }
+    //   // const url = learnmoreUrl;
+  }
+  openAppDetails(URL, app_id) {
+    // console.log('HERE Y')
+    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app_id + '/detail'])
   }
 
   detectQueryString(url) {

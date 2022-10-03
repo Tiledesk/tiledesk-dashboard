@@ -71,12 +71,12 @@
             </p>
           </div>
 
-          <div class="card-footer card-footer-app-store" style="">
+          <div class="card-footer card-footer-app-store">
 
             <div class="row" style="display: block;">
 
               <div *ngIf="app.version === 'v1'" class="col-xs-6 app-store-left-col-btn"
-                (click)="learnmore(app.learnMore)">
+                (click)="learnmore(app.learnMore, app._id)">
                 <a>
                   {{'LearnMore' | translate}}
                 </a>
@@ -104,7 +104,7 @@
               <ng-container *ngIf="app.version === 'v2'">
                 <div *ngIf="app.installActionURL === undefined"
                   [ngClass]="{'col-xs-4': app.where.appsstore === true && app.installed, 'col-xs-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}"
-                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore)">
+                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id)">
                   <a>
                     {{'LearnMore' | translate}}
                   </a>
@@ -113,7 +113,7 @@
 
                 <div *ngIf="app.installActionURL !== undefined"
                   [ngClass]="{'col-xs-3': app.where.appsstore === true && app.installed, 'col-xs-4': ((app.where.appsstore === false || !app.where.appsstore) && app.installed), 'col-xs-6': ((app.where.appsstore === false || !app.where.appsstore) && !app.installed) ||  (app.where.appsstore === true && !app.installed)}"
-                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore)">
+                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id)">
                   <a>
                     {{'LearnMore' | translate}}
                   </a>

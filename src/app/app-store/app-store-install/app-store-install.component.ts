@@ -41,7 +41,7 @@ export class AppStoreInstallComponent implements OnInit {
     private router: Router,
     private logger: LoggerService
   ) {
-
+    // console.log('Here app-store-install!!!')
     this.getRouteParams();
 
   }
@@ -81,42 +81,52 @@ export class AppStoreInstallComponent implements OnInit {
     this.showSpinner = true;
     this.route.params.subscribe((params) => {
       this.projectId = params.projectid
-    //  console.log('[APP-STORE-INSTALL] - GET ROUTE PARAMS ', params);
+      //  console.log('[APP-STORE-INSTALL] - GET ROUTE PARAMS ', params);
 
       this.appStoreService.getAppDetail(params.appid).subscribe((res) => {
-        this.logger.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT: ", res);
+        // console.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT: ", res);
         this.result = res;
-      //  console.log(this.result._body);
+        // console.log(this.result._body);
         let parsed_json = JSON.parse(this.result._body);
-      //  console.log("[APP-STORE-INSTALL] PARSED JSON: ", parsed_json);
-       this.app_title = parsed_json.title
-   
+        // console.log("[APP-STORE-INSTALL] PARSED JSON: ", parsed_json);
+        this.app_title = parsed_json.title
+
         if (parsed_json.version === 'v1') {
           this.appurl = parsed_json.installActionURL
           this.reason = 'Manage'
           // console.log("[APP-STORE-INSTALL] USE CASE MANAGE - appurl ", this.appurl);
-        } else if (parsed_json.version === 'v2' && params.reason === 'run' ) {
+        } else if (parsed_json.version === 'v2' && params.reason === 'run') {
           this.appurl = parsed_json.runURL
           this.reason = 'Run'
           // console.log("[APP-STORE-INSTALL] USE CASE RUN - appurl ", this.appurl);
-        } else if (parsed_json.version === 'v2' && params.reason === 'configure' ) {
-          
+        } else if (parsed_json.version === 'v2' && params.reason === 'configure') {
+
           this.appurl = parsed_json.installActionURL
           // console.log("[APP-STORE-INSTALL] USE CASE CONFIGURE - appurl ", this.appurl);
           this.reason = 'Configure'
+        } else if ((parsed_json.version === 'v2' || parsed_json.version === 'v1') && params.reason === 'detail') {
+          // console.log("[APP-STORE-INSTALL] HERE FOR DETAILS  ");
+          if (parsed_json.learnMore) {
+            const learnMoreParsed = JSON.parse(parsed_json.learnMore)
+            // console.log("[APP-STORE-INSTALL] HERE FOR DETAILS learnMoreParsed ", learnMoreParsed);
+            this.appurl = learnMoreParsed.url;
+            // console.log("[APP-STORE-INSTALL] HERE FOR DETAILS PARSED LEARN URL ", this.appurl);
+
+            this.reason = 'Detail'
+          }
         }
         this.auth.user_bs.subscribe((user) => {
-          if (user &&  this.appurl !== undefined) {
+          if (user && this.appurl !== undefined) {
             this.TOKEN = user.token
 
             // this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
             this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(this.appurl + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
             // console.log("[APP-STORE-INSTALL] - URL IFRAME: ", this.URL)
-            if  (this.URL) {
+            if (this.URL) {
               setTimeout(() => {
                 this.getIframeHasLoaded(parsed_json)
               }, 0);
-            
+
             }
 
           } else {
@@ -148,7 +158,7 @@ export class AppStoreInstallComponent implements OnInit {
             input !== null && input.tagName === 'IFRAME';
 
           if (isIFrame(iframe) && iframe.contentWindow) {
-            const msg = { appname: app.title, request: self.project, token: self.TOKEN}
+            const msg = { appname: app.title, request: self.project, token: self.TOKEN }
             iframe.contentWindow.postMessage(msg, '*');
           }
         }
