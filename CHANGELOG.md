@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.52.rc4
+- Adds the ability, based on the type of URL passed in the "learn more" field, to view app details when clicking the "Learn more" button on the app store page
+
 ### 2.2.52.rc3
 - Corrects the endpoint of the "dialogflow connector"
 
