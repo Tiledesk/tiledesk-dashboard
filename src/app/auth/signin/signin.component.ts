@@ -23,9 +23,9 @@ export class SigninComponent implements OnInit {
   // companyLogoAllWithe_Url = brand.company_logo_allwhite__url;
   // company_name = brand.company_name;
   // company_site_url = brand.company_site_url;
-  companyLogoBlack_Url:string;
+  companyLogoBlack_Url: string;
   companyLogoAllWithe_Url: string;
-  company_name:string;
+  company_name: string;
   company_site_url: string;
 
 
@@ -40,7 +40,7 @@ export class SigninComponent implements OnInit {
 
   userForm: FormGroup;
 
-  
+
   public_Key: string;
   SUP: boolean = true;
   isVisibleV1L: boolean = true;
@@ -72,7 +72,7 @@ export class SigninComponent implements OnInit {
     private notify: NotifyService,
     public brandService: BrandService,
     private logger: LoggerService
-  ) { 
+  ) {
     const brand = brandService.getBrand();
 
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
@@ -94,7 +94,7 @@ export class SigninComponent implements OnInit {
     this.buildForm();
     this.getWindowWidthAndHeight();
 
-  
+
   }
 
   redirectIfLogged() {
@@ -275,7 +275,27 @@ export class SigninComponent implements OnInit {
       // debugger
       if (!error) {
 
-        self.logger.log('[SIGN-IN] SSO (Signin) - user', user)
+        console.log('[SIGN-IN] SSO (Signin) - user', user)
+
+        window['analytics'].identify(user._id, {
+          name: user.firstname + ' ' + user.lastname,
+          email: user.email,
+          logins: 5,
+          
+        });
+        // Segments
+        try {
+          window['analytics'].track('Signed In', {
+            "properties": {
+              "username": user.firstname + ' ' + user.lastname,
+              "userId": user._id
+            }
+          });
+        } catch (err) {
+          this.logger.error('track signin event error', err);
+        }
+
+
         self.router.navigate(['/projects']);
 
         // self.widgetReInit();
@@ -301,7 +321,7 @@ export class SigninComponent implements OnInit {
         // --------------------------------------------
         if (window && window['tiledesk_widget_login']) {
           window['tiledesk_widget_login']();
-        } 
+        }
 
 
       } else {

@@ -294,28 +294,28 @@ export class AuthService {
       if (prjct !== null && prjct._id !== undefined) {
         this.project_trial_expired = prjct.trial_expired
         // tslint:disable-next-line:max-line-length
-        this.logger.log( '[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs > project_trial_expired',
+        this.logger.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs > project_trial_expired',
           this.project_trial_expired,
         )
       }
 
       if (prjct == null) {
-        this.logger.log( '[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs IS NULL ', prjct)
+        this.logger.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs IS NULL ', prjct)
 
         this.subscription = this.router.events.subscribe((e) => {
           if (e instanceof NavigationEnd) {
             const current_url = e.url
-            this.logger.log( '[AUTH-SERV] - NavigationEnd CURRENT-URL ', current_url,  )
+            this.logger.log('[AUTH-SERV] - NavigationEnd CURRENT-URL ', current_url,)
 
             const url_segments = current_url.split('/')
             this.logger.log('[AUTH-SERV] - NavigationEnd CURRENT-URL SEGMENTS ', url_segments)
 
             this.nav_project_id = url_segments[2]
-            this.logger.log( '[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id,)
+            this.logger.log('[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id,)
 
             // USECASE: ROUTES /projects (i.e., Recent Projects) /create-new-project
             if (this.nav_project_id === undefined) {
-              this.logger.log( '[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION-PROJECT-ID IS UNDEFINED 1', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
+              this.logger.log('[AUTH-SERV] - CURRENT-URL SEGMENTS > NAVIGATION-PROJECT-ID IS UNDEFINED 1', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
               this.subscription.unsubscribe()
             }
             /**
@@ -600,6 +600,7 @@ export class AuthService {
         if (user) {
           // used in signOut > removeInstanceId
           this.userId = user._id
+
         }
 
         // ASSIGN THE RETURNED TOKEN TO THE USER OBJECT
@@ -922,6 +923,26 @@ export class AuthService {
   }
 
   signOut(calledby: string) {
+
+    try {
+      const storedUser = localStorage.getItem('user')
+      let storedUserParsed = null
+      if (storedUser) {
+         storedUserParsed = JSON.parse(storedUser)
+      }
+      window['analytics'].track('Signed Out', {
+        "properties": {
+          "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+          "userId": storedUserParsed._id
+        }
+      });
+    } catch (err) {
+      this.logger.error('track Signed Out event error', err);
+    }
+
+
+
+
     this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {
       try {

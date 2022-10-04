@@ -762,8 +762,17 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     }
 
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
-      this.logger.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES ', project_user);
-
+    //  console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES ', project_user);
+     try {
+      window['analytics'].track('Invite Sent', {
+        "properties": {
+          "invitee_email": this.user_email,
+          "invitee_role": project_user.role
+        }
+      });
+    } catch (err) {
+      this.logger.error('track signin event error', err);
+    }
       // HANDLE THE ERROR "Pending Invitation already exist"
       if (project_user.success === false && project_user.msg === 'Pending Invitation already exist.') {
 

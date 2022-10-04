@@ -268,9 +268,49 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIGN-UP] POST DATA ', signupResponse);
         if (signupResponse['success'] === true) {
           // this.router.navigate(['/welcome']);
-          this.logger.log('[SIGN-UP] RES ', signupResponse);
+          console.log('[SIGN-UP] RES ', signupResponse);
           const userEmail = signupResponse.user.email
           this.logger.log('[SIGN-UP] RES USER EMAIL ', userEmail);
+        
+         console.log('[SIGN-UP] window analytics ', window['analytics']);
+
+          // Segments
+          // try {
+           
+          //   window['analytics'].track(signupResponse._id, {
+          //     "event": "Signed Up",
+          //     "properties": {
+          //       "type": "organic",
+          //       "first_name": signupResponse.firstname,
+          //       "last_name": signupResponse.lastname,
+          //       "email": signupResponse.email,
+          //       "username": signupResponse.firstname + ' ' + signupResponse.lastname
+          //     }
+          //   });
+          // } catch (err) {
+          //   this.logger.error('track signup event error', err);
+          // }
+          window['analytics'].identify(signupResponse.user._id, {
+            name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+            email: signupResponse.user.email,
+            logins: 5,
+          });
+
+          try {
+            window['analytics'].track('Signed Up', {
+              "properties": {
+                "type": "organic",
+                "first_name": signupResponse.user.firstname,
+                "last_name": signupResponse.user.lastname,
+                "email": signupResponse.user.email,
+                "username": signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                'userId':signupResponse.user._id
+              }
+            });
+          } catch (err) {
+            this.logger.error('track signup event error', err);
+          }
+
           this.autoSignin(userEmail);
 
         } else {
@@ -304,7 +344,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.display = 'block';
         // const errorObj = JSON.parse(error);
         this.logger.error('[SIGN-UP] CREATE NEW USER - POST REQUEST ERROR STATUS', error.status);
-        
+
         if (error.status === 422) {
           this.signin_errormsg = 'Form validation error. Please fill in every fields.';
           this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
@@ -338,14 +378,14 @@ export class SignupComponent implements OnInit, AfterViewInit {
         // --------------------------------------------
         if (window && window['tiledesk_widget_login']) {
           window['tiledesk_widget_login']();
-        } 
+        }
         // self.widgetReInit();
         // --------------------------------------------
         // Run widget login
         // --------------------------------------------
         if (window && window['tiledesk_widget_login']) {
           window['tiledesk_widget_login']();
-        } 
+        }
         /**
          * *** WIDGET - pass data to the widget method setTiledeskWidgetUser in index.html ***
          */
@@ -378,10 +418,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
         const signin_errorbody = JSON.parse(error._body)
         self.signin_errormsg = signin_errorbody['msg']
         self.display = 'block';
- 
+
         self.logger.error('[SIGN-UP] SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
       }
-   
+
     });
   }
 

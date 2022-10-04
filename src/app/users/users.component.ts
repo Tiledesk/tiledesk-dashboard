@@ -767,15 +767,21 @@ export class UsersComponent implements OnInit, OnDestroy {
     // this.logger.log('Confirm Delete Project-User');
     this.usersService.deleteProjectUser(this.id_projectUser).subscribe(
       (projectUsers: any) => {
-        this.logger.log(
-          '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ',
-          projectUsers,
-        )
-        this.logger.log(
-          '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ',
-          this.id_projectUser,
-        )
+       console.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ', projectUsers,  )
+        this.logger.log(    '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ',  this.id_projectUser, )
         // this.ngOnInit();
+
+        try {
+          window['analytics'].track('Account Removed User', {
+            "userId": projectUsers.id_user,
+            "properties": {},
+            "context": {
+              "groupId": this.id_project
+            }
+          });
+        } catch (err) {
+          this.logger.error('track signin event error', err);
+        }
       },
       (error) => {
         this.showSpinner = false
