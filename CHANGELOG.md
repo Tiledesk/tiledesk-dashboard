@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.52.rc5
+- Implements the analitcs "Segment"
+
 ### 2.2.52.rc4
 - Adds the ability, based on the type of URL passed in the "learn more" field, to view app details when clicking the "Learn more" button on the app store page
 
