@@ -84,7 +84,7 @@ export class AppCreateComponent implements OnInit {
         if (res) {
           this.currentApp = JSON.parse(res['_body'])
           const resObjct = JSON.parse(res['_body']);
-          this.logger.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT - resObjct: ", resObjct);
+          // console.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT - resObjct: ", resObjct);
 
           if (resObjct && resObjct.logo) {
             this.app_icon_url = resObjct.logo
@@ -108,6 +108,10 @@ export class AppCreateComponent implements OnInit {
 
           if (resObjct && resObjct.learnMore) {
             this.app_learn_more_url = resObjct.learnMore
+          }
+
+          if (resObjct && resObjct.status === 'public') {
+            this.app_status = 'public'
           }
 
           if (resObjct && resObjct.where) {
