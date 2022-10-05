@@ -17,6 +17,7 @@ import { LoggerService } from '../services/logger/logger.service';
 import { tranlatedLanguage, avatarPlaceholder, getColorBck } from 'app/utils/util';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { environment } from '../../environments/environment';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 const swal = require('sweetalert');
 
 
@@ -67,7 +68,8 @@ export class UserProfileComponent implements OnInit {
 
   HAS_SELECTED_PREFERRED_LANG: boolean = false;
   private fragment: string;
-  i18n_for_this_brower_language_is_available = false
+  i18n_for_this_brower_language_is_available = false;
+  prjct_profile_name: string;
 
   @ViewChild('fileInputUserProfileImage') fileInputUserProfileImage: any;
 
@@ -163,7 +165,8 @@ export class UserProfileComponent implements OnInit {
     private translate: TranslateService,
     private logger: LoggerService,
     private route: ActivatedRoute,
-    private usersLocalDbService: LocalDbService
+    private usersLocalDbService: LocalDbService,
+    private prjctPlanService: ProjectPlanService
   ) { }
 
   ngOnInit() {
@@ -179,12 +182,44 @@ export class UserProfileComponent implements OnInit {
 
     this.translateStrings();
     this.getBrowserLanguage();
+    this.getProjectPlan();
 
     this.route.fragment.subscribe(fragment => {
       this.fragment = fragment;
       this.logger.log('[USER-PROFILE] - FRAGMENT ', this.fragment)
     });
     this.getBrowserVersion()
+  }
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      // console.log('[USER-PROFILE] - getProjectPlan project Profile Data', projectProfileData)
+      if (projectProfileData) {
+        if (projectProfileData.profile_type === 'free') {
+          if (projectProfileData.trial_expired === false) {
+            this.prjct_profile_name = "Pro plan (trial)"
+          } else {
+
+            this.prjct_profile_name = "Free"
+
+          }
+        } else if (projectProfileData.profile_type === 'payment') {
+
+          if (projectProfileData.profile_name === 'pro') {
+            this.prjct_profile_name = "Pro"
+          } else if (projectProfileData.profile_name === 'enterprise') {
+            this.prjct_profile_name = "Enterprise"
+          }
+
+        }
+      }
+    }, error => {
+      this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
+    }, () => {
+
+      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan * COMPLETE *')
+
+    });
   }
 
   getBrowserVersion() {
@@ -405,8 +440,8 @@ export class UserProfileComponent implements OnInit {
         this.userProfileImageurl = ''
         if (environment.production && environment.production === true) {
           // console.log('upload env prod? ', environment.production)
-          this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId +"%2Fimages%2Fphoto.jpg"
-        } else if (!environment.production ) {
+          this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
+        } else if (!environment.production) {
           // console.log('upload env prod? ', environment.production)
           this.userProfileImageurl = downoloadurl
         }
@@ -465,7 +500,7 @@ export class UserProfileComponent implements OnInit {
 
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
         if (this.storageBucket && this.userProfileImageExist === true) {
-        //  console.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
+          //  console.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
           this.setImageProfileUrl(this.storageBucket)
         }
       } else {
@@ -482,8 +517,8 @@ export class UserProfileComponent implements OnInit {
     this.userProfileImageurl = ''
     if (environment.production && environment.production === true) {
       // console.log('setImageProfileUrl_Native env prod ', environment.production)
-      this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId +"%2Fimages%2Fphoto.jpg"
-   
+      this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
+
     } else if (!environment.production) {
       this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     }
@@ -590,6 +625,32 @@ export class UserProfileComponent implements OnInit {
     this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER FIRST NAME ', this.userFirstname);
     this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, (response) => {
+
+      // console.log('[USER-PROFILE] - UPDATE CURRENT USER RES ', response)
+      try {
+        window['analytics'].page("User Profile Page, Profile", {
+          "properties": {
+            "title": 'Profile'
+          }
+        });
+      } catch (err) {
+        this.logger.error('User Profile page error', err);
+      }
+
+      // console.log('[USER-PROFILE] this.user ', this.user)
+      // console.log('[USER-PROFILE] this.userFirstname ', this.userFirstname)
+      // console.log('[USER-PROFILE] this.userLastname ', this.userLastname)
+      // console.log('[USER-PROFILE] this.prjct_profile_name ', this.prjct_profile_name)
+      try {
+        window['analytics'].identify(this.user._id, {
+          name: this.userFirstname + ' ' + this.userLastname,
+          email: this.user.email,
+          plan: this.prjct_profile_name
+
+        });
+      } catch (err) {
+        this.logger.error('identify in User Profile error', err);
+      }
 
       this.logger.log('[USER-PROFILE] - CALLBACK RESPONSE ', response)
       if (response === 'success') {

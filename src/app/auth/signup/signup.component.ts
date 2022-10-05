@@ -268,33 +268,31 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIGN-UP] POST DATA ', signupResponse);
         if (signupResponse['success'] === true) {
           // this.router.navigate(['/welcome']);
-          console.log('[SIGN-UP] RES ', signupResponse);
+          // console.log('[SIGN-UP] RES ', signupResponse);
           const userEmail = signupResponse.user.email
           this.logger.log('[SIGN-UP] RES USER EMAIL ', userEmail);
-        
-         console.log('[SIGN-UP] window analytics ', window['analytics']);
 
-          // Segments
-          // try {
-           
-          //   window['analytics'].track(signupResponse._id, {
-          //     "event": "Signed Up",
-          //     "properties": {
-          //       "type": "organic",
-          //       "first_name": signupResponse.firstname,
-          //       "last_name": signupResponse.lastname,
-          //       "email": signupResponse.email,
-          //       "username": signupResponse.firstname + ' ' + signupResponse.lastname
-          //     }
-          //   });
-          // } catch (err) {
-          //   this.logger.error('track signup event error', err);
-          // }
-          window['analytics'].identify(signupResponse.user._id, {
-            name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
-            email: signupResponse.user.email,
-            logins: 5,
-          });
+          // console.log('[SIGN-UP] window analytics ', window['analytics']);
+
+          try {
+            window['analytics'].page("Auth Page, Signup", {
+              "properties": {
+                "title": 'Signup'
+              }
+            });
+          } catch (err) {
+            this.logger.error('Signin page error', err);
+          }
+
+          try {
+            window['analytics'].identify(signupResponse.user._id, {
+              name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+              email: signupResponse.user.email,
+              logins: 5,
+            });
+          } catch (err) {
+            this.logger.error('identify signup event error', err);
+          }
 
           try {
             window['analytics'].track('Signed Up', {
@@ -304,7 +302,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
                 "last_name": signupResponse.user.lastname,
                 "email": signupResponse.user.email,
                 "username": signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
-                'userId':signupResponse.user._id
+                'userId': signupResponse.user._id
               }
             });
           } catch (err) {

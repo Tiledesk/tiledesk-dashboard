@@ -8,6 +8,7 @@ import { slideInAnimation } from '../../_animations/index';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'appdashboard-create-project',
@@ -29,7 +30,8 @@ export class CreateProjectComponent implements OnInit {
   DISPLAY_SPINNER_SECTION = false;
   DISPLAY_SPINNER = false;
   previousUrl: string;
-  CLOSE_BTN_IS_HIDDEN = true
+  CLOSE_BTN_IS_HIDDEN = true;
+  user: any
   constructor(
     private projectService: ProjectService,
     private auth: AuthService,
@@ -48,6 +50,17 @@ export class CreateProjectComponent implements OnInit {
 
 
     this.checkCurrentUrlAndHideCloseBtn();
+    this.getLoggedUser()
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs
+      .subscribe((user) => {
+        // console.log('[WIZARD - CREATE-PRJCT] - USER ', user)
+        if (user) {
+          this.user = user;
+        }
+      });
   }
 
   checkCurrentUrlAndHideCloseBtn() {
@@ -84,7 +97,37 @@ export class CreateProjectComponent implements OnInit {
 
     this.projectService.createProject(this.project_name)
       .subscribe((project) => {
-        this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
+        // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
+        const trialStarDate = moment(new Date(project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
+        // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
+
+        const trialEndDate =  moment(new Date(project.createdAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
+        // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
+
+        try {
+          window['analytics'].page("Wizard, Create project", {
+            "properties": {
+              "title": 'Create project'
+            }
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create project page error', err);
+        }
+
+        try {
+          window['analytics'].track('Trial Started', {
+              "userId": this.user._id,
+              "properties": {
+                "trial_start_date": trialStarDate,
+                "trial_end_date": trialEndDate,
+                "trial_plan_name": "Pro (trial) "
+              }, "context": {
+                "groupId": project._id
+              }
+          });
+        } catch (err) {
+          this.logger.error('track Trial Started event error', err);
+        }
 
         // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
         // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION

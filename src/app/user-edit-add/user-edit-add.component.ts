@@ -119,6 +119,9 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     { id: 2, name: 'Unavailable', avatar: 'assets/img/teammate-status/unavaible.svg' },
     { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg' },
   ];
+
+  currentUser: any;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -130,7 +133,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     public appConfigService: AppConfigService,
     public location: Location,
     public brandService: BrandService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
@@ -166,7 +170,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.getOSCODE();
     this.getCurrentUrl();
     this.translateTagNotificationMsgs();
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+  
   }
 
 
@@ -239,7 +244,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[USER-EDIT-ADD] - LOGGED USER ', user)
+    //  console.log('[USER-EDIT-ADD] - LOGGED USER ', user)
       if (user) {
         this.CURRENT_USER_ID = user._id;
         this.logger.log('[USER-EDIT-ADD] - CURRENT USER ID ', this.CURRENT_USER_ID)

@@ -105,12 +105,13 @@ export class ProjectPlanService {
 
   getProjectByIdAndPublish(nav_project_id: string) {
     this.projectService.getProjectById(nav_project_id).subscribe((project: any) => {
-      this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - project ', project);
+    //  console.log('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - project ', project);
 
       const projectPlanData: Project = {
 
         _id: project._id,
         name: project.name,
+        createdAt: project.createdAt,
         profile_name: project.profile['name'],
         profile_agents: project.profile['agents'],
         trial_days: project.profile['trialDays'],

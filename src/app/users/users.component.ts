@@ -767,7 +767,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     // this.logger.log('Confirm Delete Project-User');
     this.usersService.deleteProjectUser(this.id_projectUser).subscribe(
       (projectUsers: any) => {
-       console.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ', projectUsers,  )
+      //  console.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ', projectUsers,  )
         this.logger.log(    '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ',  this.id_projectUser, )
         // this.ngOnInit();
 

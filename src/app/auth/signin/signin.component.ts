@@ -274,15 +274,28 @@ export class SigninComponent implements OnInit {
       // tslint:disable-next-line:no-debugger
       // debugger
       if (!error) {
+        // console.log('[SIGN-IN] SSO (Signin) - user', user)
+        // window['analytics'].page("Auth Page, Signin");
+        try {
+          window['analytics'].page("Auth Page, Signin", {
+            "properties": {
+              "title": 'Signin'
+            }
+          });
+        } catch (err) {
+          this.logger.error('Signin page error', err);
+        }
 
-        console.log('[SIGN-IN] SSO (Signin) - user', user)
+        try {
+          window['analytics'].identify(user._id, {
+            name: user.firstname + ' ' + user.lastname,
+            email: user.email,
+            logins: 5,
 
-        window['analytics'].identify(user._id, {
-          name: user.firstname + ' ' + user.lastname,
-          email: user.email,
-          logins: 5,
-          
-        });
+          });
+        } catch (err) {
+          this.logger.error('track signin event error', err);
+        }
         // Segments
         try {
           window['analytics'].track('Signed In', {

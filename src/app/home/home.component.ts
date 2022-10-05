@@ -71,6 +71,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   prjct_name: string;
   prjct_profile_name: string;
   profile_name: string;
+  profile_name_for_segment: string;
   prjct_profile_type: string;
   prjct_trial_expired: boolean;
   subscription_is_active: boolean;
@@ -162,7 +163,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.diplayPopup();
     // this.startChabgelogAnimation()
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
+
   }
+
+
+
 
   diplayPopup() {
     const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
@@ -875,10 +880,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectProfileData: any) => {
-        this.logger.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
+        // console.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
         if (projectProfileData) {
-
-
           this.prjct_name = projectProfileData.name;
           this.prjct_profile_name = projectProfileData.profile_name;
           this.profile_name = projectProfileData.profile_name;
@@ -899,42 +902,84 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           if (this.prjct_profile_type === 'free') {
             if (this.prjct_trial_expired === false) {
               this.logger.log('[HOME] getProjectPlan BRS-LANG 2 ', this.browserLang);
-
+              this.profile_name_for_segment = "Pro plan (trial)"
               this.getProPlanTrialTranslation();
-              // if (this.browserLang === 'it') {
 
-              //   this.prjct_profile_name = 'Piano Pro (trial)'
-
-              // } else if (this.browserLang !== 'it') {
-              //   this.prjct_profile_name = 'Pro (trial) Plan'
-
-              // }
             } else {
-
+              this.profile_name_for_segment = "Free"
               this.getPaidPlanTranslation(projectProfileData.profile_name);
               this.logger.log('[HOME] getProjectPlan BRS-LANG 3 ', this.browserLang);
-              // if (this.browserLang === 'it') {
 
-              //   this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
-
-              // } else if (this.browserLang !== 'it') {
-
-              //   this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
-
-              // }
             }
           } else if (this.prjct_profile_type === 'payment') {
             this.getPaidPlanTranslation(projectProfileData.profile_name);
-
             this.logger.log('[HOME] getProjectPlan BRS-LANG 4 ', this.browserLang);
-            // if (this.browserLang === 'it') {
 
-            //   this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
+            if (projectProfileData.profile_name === 'pro') {
+              this.profile_name_for_segment = "Pro"
+            } else if (projectProfileData.profile_name === 'enterprise') {
+              this.profile_name_for_segment = "Enterprise"
+            }
+          }
+          const projectCreatedAt = projectProfileData.createdAt
+          // console.log('[HOME] - getProjectPlan project CreatedAt', projectCreatedAt)
+          const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
+          // console.log('[HOME] - getProjectPlan project trialEndDate', trialStarDate)
 
-            // } else if (this.browserLang !== 'it') {
+          try {
+            window['analytics'].page("Home Page, Home", {
+              "properties": {
+                "title": 'Home'
+              }
+            });
+          } catch (err) {
+            this.logger.error('Home page error', err);
+          }
 
-            //   this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
-            // }
+          try {
+            window['analytics'].identify(this.user._id, {
+              name: this.user.firstname + ' ' + this.user.lastname,
+              email: this.user.email,
+              logins: 5,
+              plan: this.profile_name_for_segment,
+            });
+          } catch (err) {
+            this.logger.error('track signin event error', err);
+          }
+
+          const trialEndDate = moment(new Date(projectCreatedAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
+          // console.log('[HOME] - getProjectPlan project trialEndDate', trialEndDate)
+
+          const currentTime = moment();
+
+          const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
+          // console.log('[HOME] - getProjectPlan project daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
+
+          const storedProject = localStorage.getItem(projectProfileData._id);
+          // console.log('[HOME] - getProjectPlan storedProject  ', storedProject)
+          if (storedProject) {
+            const storedProjectObjct = JSON.parse(storedProject)
+            // console.log('[HOME] - getProjectPlan storedProject  ', storedProjectObjct)
+
+            if (daysDiffNowFromProjctCreated >= 30 && !storedProjectObjct.hasTrackTrialEnded) {
+
+              try {
+                window['analytics'].track('Trial Ended', {
+                  "userId": this.user._id,
+                  "properties": {
+                    "trial_start_date": trialStarDate,
+                    "trial_end_date": trialEndDate,
+                    "trial_plan_name": "Pro (trial) "
+                  }, "context": {
+                    "groupId": projectProfileData._id
+                  }
+                });
+
+                storedProjectObjct['hasTrackTrialEnded'] = true
+              } catch (err) {
+                this.logger.error('track Trial Started event error', err);
+              }
+            }
           }
         }
       }, error => {
@@ -943,6 +988,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, () => {
         this.logger.log('[HOME] - getProjectPlan * COMPLETE *')
       });
+
+
   }
 
   getProPlanTrialTranslation() {
@@ -1321,18 +1368,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.logger.log('[HOME] - USER GET IN HOME ', user)
         // tslint:disable-next-line:no-debugger
         // debugger
-        this.user = user;
 
-        if (this.user) {
 
+        if (user) {
+          this.user = user;
           // !!!! NO MORE USED - MOVED IN USER SERVICE
           // this.getAllUsersOfCurrentProject();
           this.logger.log('[HOME] CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
           this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
+
         }
       });
   }
+
+
+
 
   // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE/UNAVAILABLE WHEN THE USER ENTER IN HOME
   // (GET THE PROJECT-USER CAN NOT BE DONE IN THE SIDEBAR BECAUSE WHEN THE PROJECT

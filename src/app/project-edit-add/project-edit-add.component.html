@@ -190,8 +190,8 @@
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <div class="input-group">
-                          <input [(ngModel)]="projectName_toUpdate" (ngModelChange)="onProjectNameChange($event)"
-                            class="input" type="text" placeholder="Nome Progetto"
+                          <input id="update-project-name" [(ngModel)]="projectName_toUpdate" (ngModelChange)="onProjectNameChange($event)"
+                            class="input" type="text" placeholder="{{ 'ProjectEditPage.ProjectName' | translate }}"
                             style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
                           <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
                             <button id="update-project-name" class="btn btn-primary" (click)="edit()"

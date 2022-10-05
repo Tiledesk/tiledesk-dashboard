@@ -93,7 +93,7 @@ export class AuthService {
 
   URL_last_fragment: string
   HAS_JWT: boolean
-
+  selected_project: any
   selected_project_id: string
   public_Key: string
 
@@ -255,9 +255,9 @@ export class AuthService {
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project) {
     // PUBLISH THE project
-    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED ', project)
-
+    // console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED ', project)
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
+    this.selected_project = project
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
   }
@@ -923,21 +923,50 @@ export class AuthService {
   }
 
   signOut(calledby: string) {
-
-    try {
-      const storedUser = localStorage.getItem('user')
-      let storedUserParsed = null
-      if (storedUser) {
-         storedUserParsed = JSON.parse(storedUser)
-      }
-      window['analytics'].track('Signed Out', {
-        "properties": {
-          "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
-          "userId": storedUserParsed._id
+    // console.log('[AUTH-SERV] signOut calledby ', calledby)
+    if (calledby !== 'account-settings') {
+      try {
+        const storedUser = localStorage.getItem('user')
+        let storedUserParsed = null
+        if (storedUser) {
+          storedUserParsed = JSON.parse(storedUser)
         }
-      });
-    } catch (err) {
-      this.logger.error('track Signed Out event error', err);
+
+        if (this.selected_project) {
+          try {
+            window['analytics'].identify(storedUserParsed._id, {
+              name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+              email: storedUserParsed.email,
+              logins: 5,
+              plan: this.selected_project.profile_name
+            });
+          } catch (err) {
+            this.logger.error('identify signout error', err);
+          }
+        }
+
+        if (!this.selected_project) {
+          try {
+            window['analytics'].identify(storedUserParsed._id, {
+              name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+              email: storedUserParsed.email,
+              logins: 5,
+              plan: 'not available'
+            });
+          } catch (err) {
+            this.logger.error('identify signout error', err);
+          }
+        }
+
+        window['analytics'].track('Signed Out', {
+          "properties": {
+            "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+            "userId": storedUserParsed._id
+          }
+        });
+      } catch (err) {
+        this.logger.error('track Signed Out event error', err);
+      }
     }
 
 

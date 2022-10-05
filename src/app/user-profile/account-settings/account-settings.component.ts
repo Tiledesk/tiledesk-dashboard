@@ -38,8 +38,10 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   USER_ROLE: string; ù
   subscription: Subscription;
   prjct_profile_type: string;
+  prjct_profile_name: string
   isActiveSubscription: boolean;
   isChromeVerGreaterThan100: boolean;
+  currentUser: any;
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
@@ -49,7 +51,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private logger: LoggerService,
     private translate: TranslateService,
-    private prjctPlanService: ProjectPlanService,
+    private prjctPlanService: ProjectPlanService
   ) { }
 
   ngOnInit() {
@@ -59,15 +61,27 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     this.translateStrings();
     this.getProjectPlan();
     this.getProjectUserRole();
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    this.auth.user_bs.subscribe((user) => {
+
+      if (user) {
+        this.currentUser = user;
+        // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - LoggedUser', this.currentUser)
+      }
+    });
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -77,12 +91,29 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan project Profile Data', projectProfileData)
+      // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
-
+        // this.prjct_profile_name = projectProfileData.profile_name
         this.prjct_profile_type = projectProfileData.profile_type;
         this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
 
+        if (this.prjct_profile_type === 'free') {
+          if (projectProfileData.trial_expired === false) {
+            this.prjct_profile_name = "Pro plan (trial)"
+          } else {
+
+            this.prjct_profile_name = "Free"
+
+          }
+        } else if (this.prjct_profile_type === 'payment') {
+         
+          if (projectProfileData.profile_name === 'pro') {
+            this.prjct_profile_name = "Pro"
+          } else if (projectProfileData.profile_name === 'enterprise'){
+            this.prjct_profile_name = "Enterprise"
+          }
+
+        }
       }
     }, error => {
       this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
@@ -92,6 +123,8 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
     });
   }
+
+
 
 
   getProjectUserRole() {
@@ -224,7 +257,41 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     this.deleteAccount_hasError = false;
 
     this.usersService.deleteUserAccount().subscribe((res: any) => {
-      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - DELETE-USER-ACCOUNT RES ', res);
+      // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - DELETE-USER-ACCOUNT RES ', res);
+
+      try {
+        window['analytics'].page("User Profile Page, Settings", {
+          "properties": {
+            "title": 'Settings'
+          }
+        });
+      } catch (err) {
+        this.logger.error('Account Deleted page error', err);
+      }
+
+      try {
+        window['analytics'].identify(this.currentUser._id, {
+          name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
+          email: this.currentUser.email,
+          plan: this.prjct_profile_name
+
+        });
+      } catch (err) {
+        this.logger.error('identify in Account Deleted  error', err);
+      }
+
+      try {
+        window['analytics'].track('Account Deleted', {
+          "properties": {
+            "account_name": this.prjct_profile_name
+          },
+          "context": {
+            "groupId": this.projectId
+          }
+        });
+      } catch (err) {
+        this.logger.error('track Account Deleted event error', err);
+      }
 
     }, (error) => {
       this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS] - DELETE-USER-ACCOUNT ', error);
@@ -240,6 +307,9 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
       this.auth.signOut('account-settings');
       this.auth.showExpiredSessionPopup(false);
+
+
+
 
     });
   }
