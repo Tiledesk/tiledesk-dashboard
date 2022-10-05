@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.52.rc6
+- Bug fixed: in App-Store > Update app, the app is always updated as private
+
 ### 2.2.52.rc5
 - Implements the analytics "Segments"
 - Hides the configuration URL in the App-store > Create app page and in the Edit app if the configuration URL has not been set
