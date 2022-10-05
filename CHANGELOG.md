@@ -3,6 +3,7 @@
 
 ### 2.2.52.rc5
 - Implements the analytics "Segments"
+- Hides the configuration URL in the App-store > Create app page and in the Edit app if the configuration URL has not been set
 
 ### 2.2.52.rc4
 - Adds the ability, based on the type of URL passed in the "learn more" field, to view app details when clicking the "Learn more" button on the app store page
