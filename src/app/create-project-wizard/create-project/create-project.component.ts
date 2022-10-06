@@ -39,7 +39,7 @@ export class CreateProjectComponent implements OnInit {
     public location: Location,
     public brandService: BrandService,
     private logger: LoggerService
-  ) { 
+  ) {
     const brand = brandService.getBrand();
     this.logo_x_rocket = brand['wizard_create_project_page']['logo_x_rocket']
   }
@@ -79,7 +79,7 @@ export class CreateProjectComponent implements OnInit {
     this.location.back();
   }
 
- 
+
   /**
    *  to test the wizard  without crete a project
    */
@@ -101,7 +101,7 @@ export class CreateProjectComponent implements OnInit {
         const trialStarDate = moment(new Date(project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
         // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
 
-        const trialEndDate =  moment(new Date(project.createdAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
+        const trialEndDate = moment(new Date(project.createdAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
         // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
 
         try {
@@ -115,18 +115,38 @@ export class CreateProjectComponent implements OnInit {
         }
 
         try {
-          window['analytics'].track('Trial Started', {
-              "userId": this.user._id,
-              "properties": {
-                "trial_start_date": trialStarDate,
-                "trial_end_date": trialEndDate,
-                "trial_plan_name": "Pro (trial) "
-              }, "context": {
-                "groupId": project._id
-              }
+          window['analytics'].identify(this.user._id, {
+            name: this.user.firstname + ' ' + this.user.lastname,
+            email: this.user.email,
+            logins: 5,
+            plan: "Pro (trial)"
           });
         } catch (err) {
-          this.logger.error('track Trial Started event error', err);
+          this.logger.error('Wizard Create project identify error', err);
+        }
+
+        try {
+          window['analytics'].group(project._id, {
+            name: project.name,
+            plan: "Pro (trial)",
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create project group error', err);
+        }
+
+        try {
+          window['analytics'].track('Trial Started', {
+            "userId": this.user._id,
+            "properties": {
+              "trial_start_date": trialStarDate,
+              "trial_end_date": trialEndDate,
+              "trial_plan_name": "Pro (trial) "
+            }, "context": {
+              "groupId": project._id
+            }
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create track Trial Started event error', err);
         }
 
         // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
@@ -140,7 +160,7 @@ export class CreateProjectComponent implements OnInit {
           trial_expired: project.trialExpired
         }
 
-        
+
 
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
         this.auth.projectSelected(newproject)

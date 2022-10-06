@@ -37,7 +37,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   id_project: string
   USER_ROLE: string
   CURRENT_USER_ID: string
-
+  CURRENT_USER: any
   IS_AVAILABLE: boolean
   countOfPendingInvites: number
 
@@ -86,6 +86,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   profile_name: string
   IS_OPEN_SETTINGS_SIDEBAR: boolean
   isChromeVerGreaterThan100: boolean
+  prjct_id: string;
+  prjct_name: string;
+
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -300,7 +303,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.auth.user_bs.subscribe((user) => {
       this.logger.log('[USERS] LOGGED USER GET IN USERS-COMP - USER', user)
       if (user) {
-        this.CURRENT_USER_ID = user._id
+        this.CURRENT_USER = user;
+        this.CURRENT_USER_ID = user._id;
         this.logger.log(
           '[USERS] LOGGED USER GET IN USERS-COMP - Current USER ID ',
           this.CURRENT_USER_ID,
@@ -321,10 +325,11 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      this.project = project
+      
       // this.logger.log('[USERS] - GET CURRENT PROJECT -> project', this.project)
-      if (this.project) {
-        this.id_project = project._id
+      if (project) {
+        this.project = project;
+        this.id_project = project._id;
         this.logger.log(
           '[USERS] - GET CURRENT PROJECT -> project ID',
           this.id_project,
@@ -362,8 +367,28 @@ export class UsersComponent implements OnInit, OnDestroy {
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe(
       (projectProfileData: any) => {
-        this.logger.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
+      //  console.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
         if (projectProfileData) {
+          this.prjct_id = projectProfileData._id
+          this.prjct_name = projectProfileData.name
+          if (projectProfileData.profile_type === 'free') {
+            if (projectProfileData.trial_expired === false) {
+              this.prjct_profile_name = "Pro plan (trial)"
+            } else {
+  
+              this.prjct_profile_name = "Free"
+  
+            }
+          } else if (projectProfileData.profile_type === 'payment') {
+  
+            if (projectProfileData.profile_name === 'pro') {
+              this.prjct_profile_name = "Pro"
+            } else if (projectProfileData.profile_name === 'enterprise') {
+              this.prjct_profile_name = "Enterprise"
+            }
+  
+          }
+
           this.projectPlanAgentsNo = projectProfileData.profile_agents
           this.subscription_is_active =
             projectProfileData.subscription_is_active
@@ -779,6 +804,26 @@ export class UsersComponent implements OnInit, OnDestroy {
           });
         } catch (err) {
           this.logger.error('Account Deleted page error', err);
+        }
+
+        try {
+          window['analytics'].identify(this.CURRENT_USER._id, {
+            name: this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname,
+            email: this.CURRENT_USER.email,
+            plan: this.prjct_profile_name
+  
+          });
+        } catch (err) {
+          this.logger.error('identify in Account Removed  error', err);
+        }
+
+        try {
+          window['analytics'].group(this.project._id, {
+            name: this.project.name,
+            plan: this.prjct_profile_name,
+          });
+        } catch (err) {
+          this.logger.error('group Signed Out error', err);
         }
 
         try {

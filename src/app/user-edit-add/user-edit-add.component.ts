@@ -75,6 +75,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   projectUser: any;
   IS_AVAILABLE: boolean;
   CURRENT_USER_ID: string;
+  CURRENT_USER: any;
   changeAvailabilitySuccessNoticationMsg: string;
   changeAvailabilityErrorNoticationMsg: string;
   CURRENT_USER_ROLE: string;
@@ -122,6 +123,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   currentUser: any;
   invitedProjectUser: any
+  profile_name_for_segment: string;
 
   constructor(
     private router: Router,
@@ -256,6 +258,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.auth.user_bs.subscribe((user) => {
       //  console.log('[USER-EDIT-ADD] - LOGGED USER ', user)
       if (user) {
+        this.CURRENT_USER = user
         this.CURRENT_USER_ID = user._id;
         this.logger.log('[USER-EDIT-ADD] - CURRENT USER ID ', this.CURRENT_USER_ID)
       }
@@ -369,8 +372,22 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectProfileData: any) => {
-        this.logger.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - RES', projectProfileData)
+      //  console.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - RES', projectProfileData)
         if (projectProfileData) {
+
+          if (projectProfileData.profile_type === 'free') {
+            if (projectProfileData.trial_expired === false) {
+              this.profile_name_for_segment = "Pro plan (trial)"
+            } else {
+              this.profile_name_for_segment = "Free"
+            }
+          } else if (projectProfileData.profile_type === 'payment') {
+            if (projectProfileData.profile_name === 'pro') {
+              this.profile_name_for_segment = "Pro"
+            } else if (projectProfileData.profile_name === 'enterprise') {
+              this.profile_name_for_segment = "Enterprise"
+            }
+          }
 
           this.projectPlanAgentsNo = projectProfileData.profile_agents;
           this.logger.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - projectPlanAgentsNo ', this.projectPlanAgentsNo);
@@ -844,6 +861,25 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.getAllUsersOfCurrentProject();
       this.getPendingInvitation();
 
+      try {
+        window['analytics'].identify(this.CURRENT_USER._id, {
+          name: this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname,
+          email: this.CURRENT_USER.email,
+          plan: this.profile_name_for_segment
+
+        });
+      } catch (err) {
+        this.logger.error('identify Invite Sent Profile error', err);
+      }
+
+      try {
+        window['analytics'].group(this.invitedProjectUser.id_project, {
+          name: this.project_name,
+          plan: this.profile_name_for_segment,
+        });
+      } catch (err) {
+        this.logger.error('group Invite Sent error', err);
+      }
    
 
       try {
@@ -856,7 +892,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
           }
         });
       } catch (err) {
-        this.logger.error('track signin event error', err);
+        this.logger.error('track Invite Sent event error', err);
       }
     });
 

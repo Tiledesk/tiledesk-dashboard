@@ -981,9 +981,17 @@ export class AuthService {
             plan: projectProfileName
           });
         } catch (err) {
-          this.logger.error('identify signout error', err);
+          this.logger.error('identify Signed Out error', err);
         }
 
+        try {
+          window['analytics'].group(projectId, {
+            name: storedPrjctParsed.name,
+            plan: projectProfileName,
+          });
+        } catch (err) {
+          this.logger.error('group Signed Out error', err);
+        }
 
 
         try {
@@ -1010,7 +1018,7 @@ export class AuthService {
             plan: 'not project selected'
           });
         } catch (err) {
-          this.logger.error('identify signout error', err);
+          this.logger.error('identify Signed Out error', err);
         }
         // }
 

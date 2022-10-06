@@ -42,6 +42,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   isActiveSubscription: boolean;
   isChromeVerGreaterThan100: boolean;
   currentUser: any;
+  project:any;
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
@@ -195,8 +196,8 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     this.auth.project_bs.subscribe((project) => {
 
       if (project) {
-
-        this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET CURRENT PROJECT - project ', project)
+        this.project = project
+        // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET CURRENT PROJECT - project ', project)
         this.projectId = project._id;
         this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET CURRENT PROJECT - project ID', this.projectId)
 
@@ -279,6 +280,16 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       } catch (err) {
         this.logger.error('identify in Account Deleted  error', err);
       }
+
+      try {
+        window['analytics'].group(this.project._id, {
+          name: this.project.name,
+          plan: this.prjct_profile_name,
+        });
+      } catch (err) {
+        this.logger.error('group Signed Out error', err);
+      }
+
 
       try {
         window['analytics'].track('Account Deleted', {

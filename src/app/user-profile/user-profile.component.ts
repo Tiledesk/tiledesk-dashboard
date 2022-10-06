@@ -70,7 +70,8 @@ export class UserProfileComponent implements OnInit {
   private fragment: string;
   i18n_for_this_brower_language_is_available = false;
   prjct_profile_name: string;
-
+  prjct_id: string;
+  prjct_name: string;
   @ViewChild('fileInputUserProfileImage') fileInputUserProfileImage: any;
 
 
@@ -190,11 +191,13 @@ export class UserProfileComponent implements OnInit {
     });
     this.getBrowserVersion()
   }
-
+  
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       // console.log('[USER-PROFILE] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
+        this.prjct_id = projectProfileData._id
+        this.prjct_name = projectProfileData.name
         if (projectProfileData.profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
             this.prjct_profile_name = "Pro plan (trial)"
@@ -650,6 +653,15 @@ export class UserProfileComponent implements OnInit {
         });
       } catch (err) {
         this.logger.error('identify in User Profile error', err);
+      }
+       
+      try {
+        window['analytics'].group(this.prjct_id, {
+          name: this.prjct_name,
+          plan: this.prjct_profile_name,
+        });
+      } catch (err) {
+        this.logger.error('group Signed Out error', err);
       }
 
       this.logger.log('[USER-PROFILE] - CALLBACK RESPONSE ', response)

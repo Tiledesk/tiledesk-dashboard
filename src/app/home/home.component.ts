@@ -933,7 +933,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               }
             });
           } catch (err) {
-            this.logger.error('Home page error', err);
+            this.logger.error('page Home error', err);
           }
 
           try {
@@ -944,7 +944,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               plan: this.profile_name_for_segment,
             });
           } catch (err) {
-            this.logger.error('track signin event error', err);
+            this.logger.error('identify Home error', err);
+          }
+
+          try {
+            window['analytics'].group(projectProfileData._id, {
+              name: projectProfileData.name,
+              plan: this.profile_name_for_segment,
+            });
+          } catch (err) {
+            this.logger.error('group Home error', err);
           }
 
           const trialEndDate = moment(new Date(projectCreatedAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
@@ -960,25 +969,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           //   const storedProjectObjct = JSON.parse(storedProject)
           //   console.log('[HOME] - getProjectPlan storedProject  ', storedProjectObjct)
 
-            if (daysDiffNowFromProjctCreated >= 30) {
+          if (daysDiffNowFromProjctCreated >= 30) {
 
-              try {
-                window['analytics'].track('Trial Ended', {
-                  "userId": this.user._id,
-                  "properties": {
-                    "trial_start_date": trialStarDate,
-                    "trial_end_date": trialEndDate,
-                    "trial_plan_name": "Pro (trial) "
-                  }, "context": {
-                    "groupId": projectProfileData._id
-                  }
-                });
-                
-          
-              } catch (err) {
-                this.logger.error('track Trial Started event error', err);
-              }
+            try {
+              window['analytics'].track('Trial Ended', {
+                "userId": this.user._id,
+                "properties": {
+                  "trial_start_date": trialStarDate,
+                  "trial_end_date": trialEndDate,
+                  "trial_plan_name": "Pro (trial) "
+                }, "context": {
+                  "groupId": projectProfileData._id
+                }
+              });
+
+
+            } catch (err) {
+              this.logger.error('track Trial Started event error', err);
             }
+          }
           // }
         }
       }, error => {

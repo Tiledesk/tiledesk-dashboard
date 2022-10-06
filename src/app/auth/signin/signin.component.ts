@@ -275,7 +275,7 @@ export class SigninComponent implements OnInit {
       // debugger
       if (!error) {
         // console.log('[SIGN-IN] SSO (Signin) - user', user)
-        // window['analytics'].page("Auth Page, Signin");
+        
         try {
           window['analytics'].page("Auth Page, Signin", {
             "properties": {
