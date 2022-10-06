@@ -134,8 +134,13 @@ export class CreateProjectComponent implements OnInit {
         const newproject: Project = {
           _id: project._id,
           name: project.name,
-          operatingHours: project.activeOperatingHours
+          operatingHours: project.activeOperatingHours,
+          profile_type: project.profile.type,
+          profile_name: project.profile.name,
+          trial_expired: project.trialExpired
         }
+
+        
 
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
         this.auth.projectSelected(newproject)
@@ -174,7 +179,7 @@ export class CreateProjectComponent implements OnInit {
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+      // console.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
 
       if (projects) {
         this.projects = projects;
@@ -189,7 +194,10 @@ export class CreateProjectComponent implements OnInit {
               _id: project.id_project._id,
               name: project.id_project.name,
               role: project.role,
-              operatingHours: project.id_project.activeOperatingHours
+              operatingHours: project.id_project.activeOperatingHours,
+              profile_type: project.id_project.profile.type,
+              profile_name: project.id_project.profile.name,
+              trial_expired: project.id_project.trialExpired
             }
 
             localStorage.setItem(project.id_project._id, JSON.stringify(prjct));

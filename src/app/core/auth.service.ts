@@ -932,35 +932,76 @@ export class AuthService {
         storedUserParsed = JSON.parse(storedUser)
       }
 
-      if (this.selected_project) {
+      const currentUrl = this.router.url;
+      // console.log('[AUTH-SERV] currentUrl ', currentUrl)
+      const currentUrlSegment = currentUrl.split('/')
+      // console.log('[AUTH-SERV] currentUrlSegment ', currentUrlSegment)
+
+      let projectId = null;
+      let storedPrjctParsed = null;
+      let projectProfileName = null;
+
+      if (currentUrlSegment[2] && currentUrlSegment[2].match(/^\d+/)[0]) { // regex exp to Check if String starts with Number -> .match(/^\d+/)[0]
+        projectId = currentUrlSegment[2]
+      }
+      // console.log('[AUTH-SERV] projectId ', projectId)
+
+      if (projectId) {
+        const storedProject = localStorage.getItem(projectId)
+        if (storedProject) {
+          storedPrjctParsed = JSON.parse(storedProject)
+          // console.log('[AUTH-SERV] storedPrjctParsed ', storedPrjctParsed)
+        }
+
+
+        if (storedPrjctParsed.profile_type === 'free') {
+          if (storedPrjctParsed.trial_expired === false) {
+            projectProfileName = "Pro plan (trial)"
+          } else {
+
+            projectProfileName = "Free"
+
+          }
+        } else if (storedPrjctParsed.profile_type === 'payment') {
+
+          if (storedPrjctParsed.profile_name === 'pro') {
+            projectProfileName = "Pro"
+          } else if (storedPrjctParsed.profile_name === 'enterprise') {
+            projectProfileName = "Enterprise"
+          }
+
+        }
+        // console.log('[AUTH-SERV] projectProfileName ', projectProfileName)
+
         try {
           window['analytics'].identify(storedUserParsed._id, {
             name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
             email: storedUserParsed.email,
             logins: 5,
-            plan: this.selected_project.profile_name
+            plan: projectProfileName
           });
         } catch (err) {
           this.logger.error('identify signout error', err);
         }
-      }
 
-      if (this.selected_project) {
+
+
         try {
           window['analytics'].track('Signed Out', {
             "properties": {
               "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
               "userId": storedUserParsed._id
             }, "context": {
-              "groupId": this.selected_project
+              "groupId": projectId
             }
           });
         } catch (err) {
           this.logger.error('track Signed Out event error', err);
         }
+
       }
 
-      if (!this.selected_project) {
+      if (!projectId) {
         try {
           window['analytics'].identify(storedUserParsed._id, {
             name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
@@ -971,9 +1012,9 @@ export class AuthService {
         } catch (err) {
           this.logger.error('identify signout error', err);
         }
-      }
+        // }
 
-      if (!this.selected_project) {
+        // if (!this.selected_project) {
         try {
           window['analytics'].track('Signed Out', {
             "properties": {
@@ -984,11 +1025,17 @@ export class AuthService {
         } catch (err) {
           this.logger.error('track Signed Out event error', err);
         }
+        try {
+          // setTimeout(() => {
+          window['analytics'].reset()
+          // }, 0);
+        } catch (err) {
+          this.logger.error('analytics reset', err);
+        }
+
       }
 
     }
-
-
 
     this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {

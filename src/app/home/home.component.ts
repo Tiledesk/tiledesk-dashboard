@@ -955,13 +955,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
           // console.log('[HOME] - getProjectPlan project daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
 
-          const storedProject = localStorage.getItem(projectProfileData._id);
-          // console.log('[HOME] - getProjectPlan storedProject  ', storedProject)
-          if (storedProject) {
-            const storedProjectObjct = JSON.parse(storedProject)
-            // console.log('[HOME] - getProjectPlan storedProject  ', storedProjectObjct)
+          // const storedProject = localStorage.getItem(projectProfileData._id);
+          // if (storedProject) {
+          //   const storedProjectObjct = JSON.parse(storedProject)
+          //   console.log('[HOME] - getProjectPlan storedProject  ', storedProjectObjct)
 
-            if (daysDiffNowFromProjctCreated >= 30 && !storedProjectObjct.hasTrackTrialEnded) {
+            if (daysDiffNowFromProjctCreated >= 30) {
 
               try {
                 window['analytics'].track('Trial Ended', {
@@ -974,13 +973,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
                     "groupId": projectProfileData._id
                   }
                 });
-
-                storedProjectObjct['hasTrackTrialEnded'] = true
+                
+          
               } catch (err) {
                 this.logger.error('track Trial Started event error', err);
               }
             }
-          }
+          // }
         }
       }, error => {
 

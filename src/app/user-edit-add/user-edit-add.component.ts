@@ -121,6 +121,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   ];
 
   currentUser: any;
+  invitedProjectUser: any
 
   constructor(
     private router: Router,
@@ -134,7 +135,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     public location: Location,
     public brandService: BrandService,
     private logger: LoggerService,
-    
+
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
@@ -171,7 +172,16 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.getCurrentUrl();
     this.translateTagNotificationMsgs();
     this.getBrowserVersion();
-  
+
+    try {
+      window['analytics'].page("Invite Temmates Page , Invite temmate", {
+        "properties": {
+          "title": 'Invite temmate'
+        }
+      });
+    } catch (err) {
+      this.logger.error('Signin page error', err);
+    }
   }
 
 
@@ -244,7 +254,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-    //  console.log('[USER-EDIT-ADD] - LOGGED USER ', user)
+      //  console.log('[USER-EDIT-ADD] - LOGGED USER ', user)
       if (user) {
         this.CURRENT_USER_ID = user._id;
         this.logger.log('[USER-EDIT-ADD] - CURRENT USER ID ', this.CURRENT_USER_ID)
@@ -517,7 +527,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   changeAvailabilityStatus(selecedstatusID: number, projectUser_id: string) {
     // console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS - CHANGE STATUS -  selecedstatusID ', selecedstatusID , 'PROJECT-USER ID ', projectUser_id);
-  
+
     let IS_AVAILABLE = null
     let profilestatus = ''
     if (selecedstatusID === 1) {
@@ -767,30 +777,15 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     }
 
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
-    //  console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES ', project_user);
+      // console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user)', project_user);
+      // console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.id_project', project_user.id_project);
+      // console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.role', project_user.role);
 
-     try {
-      window['analytics'].page("Invite Temmates Page , Invite temmate", {
-        "properties": {
-          "title": 'Invite temmate'
-        }
-      });
-    } catch (err) {
-      this.logger.error('Signin page error', err);
-    }
+      if (project_user) {
+        this.invitedProjectUser = project_user
+      }
 
-     try {
-      window['analytics'].track('Invite Sent', {
-        "properties": {
-          "invitee_email": this.user_email,
-          "invitee_role": project_user.role
-        }, "context": {
-          "groupId": project_user.id_project
-        }
-      });
-    } catch (err) {
-      this.logger.error('track signin event error', err);
-    }
+    
       // HANDLE THE ERROR "Pending Invitation already exist"
       if (project_user.success === false && project_user.msg === 'Pending Invitation already exist.') {
 
@@ -849,8 +844,20 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.getAllUsersOfCurrentProject();
       this.getPendingInvitation();
 
-      // WHEN AN USER CLICK ON INVITE DISABLE THE BTN INVITE
-      // this.ROLE_NOT_SELECTED = true;
+   
+
+      try {
+        window['analytics'].track('Invite Sent', {
+          "properties": {
+            "invitee_email": this.user_email,
+            "invitee_role": this.invitedProjectUser.role
+          }, "context": {
+            "groupId": this.invitedProjectUser.id_project
+          }
+        });
+      } catch (err) {
+        this.logger.error('track signin event error', err);
+      }
     });
 
   }

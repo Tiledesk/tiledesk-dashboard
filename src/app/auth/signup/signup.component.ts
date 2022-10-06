@@ -10,7 +10,7 @@ import { AppConfigService } from '../../services/app-config.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
-
+import * as moment from 'moment';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -118,8 +118,23 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.redirectIfLogged();
     this.buildForm();
     this.getBrowserLang();
-
     this.getOSCODE();
+    try {
+      window['analytics'].page("Auth Page, Signup", {
+        "properties": {
+          "title": 'Signup'
+        }
+      });
+    } catch (err) {
+      this.logger.error('Signin page error', err);
+    }
+    try {
+      window['analytics'].identify({
+        createdAt: moment().format("YYYY-MM-DD hh:mm:ss")
+      });
+    } catch (err) {
+      this.logger.error('Signin identify error', err);
+    }
   }
 
   getOSCODE() {
@@ -274,15 +289,15 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
           // console.log('[SIGN-UP] window analytics ', window['analytics']);
 
-          try {
-            window['analytics'].page("Auth Page, Signup", {
-              "properties": {
-                "title": 'Signup'
-              }
-            });
-          } catch (err) {
-            this.logger.error('Signin page error', err);
-          }
+          // try {
+          //   window['analytics'].page("Auth Page, Signup", {
+          //     "properties": {
+          //       "title": 'Signup'
+          //     }
+          //   });
+          // } catch (err) {
+          //   this.logger.error('Signin page error', err);
+          // }
 
           try {
             window['analytics'].identify(signupResponse.user._id, {
