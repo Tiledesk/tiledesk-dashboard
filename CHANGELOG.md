@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.52.rc8
+- Improves implementation of Analytics.js segments
+
 ### 2.2.52.rc7
 - Improves implementation of Analytics.js segments
 
