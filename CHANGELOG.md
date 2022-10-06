@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.52.rc7
+- Improve implementation of Analytics.js segments
+
 ### 2.2.52.rc6
 - Bug fixed: in App-Store > Update app, the app is always updated as private
 
