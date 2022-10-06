@@ -924,51 +924,69 @@ export class AuthService {
 
   signOut(calledby: string) {
     // console.log('[AUTH-SERV] signOut calledby ', calledby)
-    if (calledby !== 'account-settings') {
-      try {
-        const storedUser = localStorage.getItem('user')
-        let storedUserParsed = null
-        if (storedUser) {
-          storedUserParsed = JSON.parse(storedUser)
-        }
 
-        if (this.selected_project) {
-          try {
-            window['analytics'].identify(storedUserParsed._id, {
-              name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
-              email: storedUserParsed.email,
-              logins: 5,
-              plan: this.selected_project.profile_name
-            });
-          } catch (err) {
-            this.logger.error('identify signout error', err);
-          }
-        }
-
-        if (!this.selected_project) {
-          try {
-            window['analytics'].identify(storedUserParsed._id, {
-              name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
-              email: storedUserParsed.email,
-              logins: 5,
-              plan: 'not available'
-            });
-          } catch (err) {
-            this.logger.error('identify signout error', err);
-          }
-        }
-
-        window['analytics'].track('Signed Out', {
-          "properties": {
-            "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
-            "userId": storedUserParsed._id
-          }
-        });
-      } catch (err) {
-        this.logger.error('track Signed Out event error', err);
+    if (calledby !== 'account-settings') { // in account-settings in tracked the acccont deleted event 
+      const storedUser = localStorage.getItem('user')
+      let storedUserParsed = null
+      if (storedUser) {
+        storedUserParsed = JSON.parse(storedUser)
       }
-    }
 
+      if (this.selected_project) {
+        try {
+          window['analytics'].identify(storedUserParsed._id, {
+            name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+            email: storedUserParsed.email,
+            logins: 5,
+            plan: this.selected_project.profile_name
+          });
+        } catch (err) {
+          this.logger.error('identify signout error', err);
+        }
+      }
+
+      if (this.selected_project) {
+        try {
+          window['analytics'].track('Signed Out', {
+            "properties": {
+              "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+              "userId": storedUserParsed._id
+            }, "context": {
+              "groupId": this.selected_project
+            }
+          });
+        } catch (err) {
+          this.logger.error('track Signed Out event error', err);
+        }
+      }
+
+      if (!this.selected_project) {
+        try {
+          window['analytics'].identify(storedUserParsed._id, {
+            name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+            email: storedUserParsed.email,
+            logins: 5,
+            plan: 'not project selected'
+          });
+        } catch (err) {
+          this.logger.error('identify signout error', err);
+        }
+      }
+
+      if (!this.selected_project) {
+        try {
+          window['analytics'].track('Signed Out', {
+            "properties": {
+              "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+              "userId": storedUserParsed._id
+            }
+          });
+        } catch (err) {
+          this.logger.error('track Signed Out event error', err);
+        }
+      }
+
+    }
 
 
 

@@ -768,11 +768,24 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
     //  console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES ', project_user);
+
+     try {
+      window['analytics'].page("Invite Temmates Page , Invite temmate", {
+        "properties": {
+          "title": 'Invite temmate'
+        }
+      });
+    } catch (err) {
+      this.logger.error('Signin page error', err);
+    }
+
      try {
       window['analytics'].track('Invite Sent', {
         "properties": {
           "invitee_email": this.user_email,
           "invitee_role": project_user.role
+        }, "context": {
+          "groupId": project_user.id_project
         }
       });
     } catch (err) {

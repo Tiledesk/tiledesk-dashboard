@@ -881,7 +881,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe((projectProfileData: any) => {
         // console.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
-        if (projectProfileData) {
+        if (projectProfileData && projectProfileData !== null) {
           this.prjct_name = projectProfileData.name;
           this.prjct_profile_name = projectProfileData.profile_name;
           this.profile_name = projectProfileData.profile_name;

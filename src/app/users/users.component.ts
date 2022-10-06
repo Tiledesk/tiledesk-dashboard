@@ -772,6 +772,16 @@ export class UsersComponent implements OnInit, OnDestroy {
         // this.ngOnInit();
 
         try {
+          window['analytics'].page("Temmates list Page, Temmates", {
+            "properties": {
+              "title": 'Temmates list Page, Temmates'
+            }
+          });
+        } catch (err) {
+          this.logger.error('Account Deleted page error', err);
+        }
+
+        try {
           window['analytics'].track('Account Removed User', {
             "userId": projectUsers.id_user,
             "properties": {},
