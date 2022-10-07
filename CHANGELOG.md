@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.52.rc10
+- Improves Analytics.js 'group'
+
 ### 2.2.52.rc9
 - Adds 'group' to the implementation of Analytics.js segments
 
