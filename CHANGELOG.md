@@ -4,7 +4,7 @@
 ### 2.2.52
 - Deploys in production
 - Implements Analytics.js "Segments"
-- Changes the endpoint of the "dialogflow connector"
+- Fixes the bug: in App-Store > Update app, the app is always updated as private
 
 ### 2.2.52.rc10
 - Improves Analytics.js 'group'
@@ -19,7 +19,7 @@
 - Improves implementation of Analytics.js segments
 
 ### 2.2.52.rc6
-- Bug fixed: in App-Store > Update app, the app is always updated as private
+- Fixes the bug: in App-Store > Update app, the app is always updated as private
 
 ### 2.2.52.rc5
 - Implements the analytics "Segments"
