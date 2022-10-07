@@ -947,14 +947,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.logger.error('identify Home error', err);
           }
 
-          try {
-            window['analytics'].group(projectProfileData._id, {
-              name: projectProfileData.name,
-              plan: this.profile_name_for_segment,
-            });
-          } catch (err) {
-            this.logger.error('group Home error', err);
-          }
+      
 
           const trialEndDate = moment(new Date(projectCreatedAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
           // console.log('[HOME] - getProjectPlan project trialEndDate', trialEndDate)
@@ -988,7 +981,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               this.logger.error('track Trial Started event error', err);
             }
           }
-          // }
+          
+          
+          try {
+            window['analytics'].group(projectProfileData._id, {
+              name: projectProfileData.name,
+              plan: this.profile_name_for_segment,
+            });
+          } catch (err) {
+            this.logger.error('group Home error', err);
+          }
         }
       }, error => {
 

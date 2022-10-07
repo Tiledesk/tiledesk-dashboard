@@ -817,15 +817,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           this.logger.error('identify in Account Removed  error', err);
         }
 
-        try {
-          window['analytics'].group(this.project._id, {
-            name: this.project.name,
-            plan: this.prjct_profile_name,
-          });
-        } catch (err) {
-          this.logger.error('group Signed Out error', err);
-        }
-
+  
         try {
           window['analytics'].track('Account Removed User', {
             "userId": projectUsers.id_user,
@@ -836,6 +828,15 @@ export class UsersComponent implements OnInit, OnDestroy {
           });
         } catch (err) {
           this.logger.error('track signin event error', err);
+        }
+
+        try {
+          window['analytics'].group(this.project._id, {
+            name: this.project.name,
+            plan: this.prjct_profile_name,
+          });
+        } catch (err) {
+          this.logger.error('group Signed Out error', err);
         }
       },
       (error) => {

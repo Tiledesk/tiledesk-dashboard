@@ -125,15 +125,7 @@ export class CreateProjectComponent implements OnInit {
           this.logger.error('Wizard Create project identify error', err);
         }
 
-        try {
-          window['analytics'].group(project._id, {
-            name: project.name,
-            plan: "Pro (trial)",
-          });
-        } catch (err) {
-          this.logger.error('Wizard Create project group error', err);
-        }
-
+  
         try {
           window['analytics'].track('Trial Started', {
             "userId": this.user._id,
@@ -148,6 +140,17 @@ export class CreateProjectComponent implements OnInit {
         } catch (err) {
           this.logger.error('Wizard Create track Trial Started event error', err);
         }
+
+
+        try {
+          window['analytics'].group(project._id, {
+            name: project.name,
+            plan: "Pro (trial)",
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create project group error', err);
+        }
+
 
         // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
         // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION

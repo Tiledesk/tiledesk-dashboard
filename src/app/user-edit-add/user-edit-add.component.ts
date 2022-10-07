@@ -372,7 +372,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectProfileData: any) => {
-      //  console.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - RES', projectProfileData)
+        //  console.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - RES', projectProfileData)
         if (projectProfileData) {
 
           if (projectProfileData.profile_type === 'free') {
@@ -802,7 +802,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.invitedProjectUser = project_user
       }
 
-    
+
       // HANDLE THE ERROR "Pending Invitation already exist"
       if (project_user.success === false && project_user.msg === 'Pending Invitation already exist.') {
 
@@ -872,15 +872,6 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.logger.error('identify Invite Sent Profile error', err);
       }
 
-      try {
-        window['analytics'].group(this.invitedProjectUser.id_project, {
-          name: this.project_name,
-          plan: this.profile_name_for_segment,
-        });
-      } catch (err) {
-        this.logger.error('group Invite Sent error', err);
-      }
-   
 
       try {
         window['analytics'].track('Invite Sent', {
@@ -895,6 +886,15 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.logger.error('track Invite Sent event error', err);
       }
     });
+
+    try {
+      window['analytics'].group(this.invitedProjectUser.id_project, {
+        name: this.project_name,
+        plan: this.profile_name_for_segment,
+      });
+    } catch (err) {
+      this.logger.error('group Invite Sent error', err);
+    }
 
   }
 

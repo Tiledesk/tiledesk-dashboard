@@ -281,16 +281,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
         this.logger.error('identify in Account Deleted  error', err);
       }
 
-      try {
-        window['analytics'].group(this.project._id, {
-          name: this.project.name,
-          plan: this.prjct_profile_name,
-        });
-      } catch (err) {
-        this.logger.error('group Signed Out error', err);
-      }
-
-
+ 
       try {
         window['analytics'].track('Account Deleted', {
           "properties": {
@@ -302,6 +293,15 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
         });
       } catch (err) {
         this.logger.error('track Account Deleted event error', err);
+      }
+
+      try {
+        window['analytics'].group(this.project._id, {
+          name: this.project.name,
+          plan: this.prjct_profile_name,
+        });
+      } catch (err) {
+        this.logger.error('group Signed Out error', err);
       }
 
     }, (error) => {

@@ -984,15 +984,6 @@ export class AuthService {
           this.logger.error('identify Signed Out error', err);
         }
 
-        try {
-          window['analytics'].group(projectId, {
-            name: storedPrjctParsed.name,
-            plan: projectProfileName,
-          });
-        } catch (err) {
-          this.logger.error('group Signed Out error', err);
-        }
-
 
         try {
           window['analytics'].track('Signed Out', {
@@ -1005,6 +996,15 @@ export class AuthService {
           });
         } catch (err) {
           this.logger.error('track Signed Out event error', err);
+        }
+
+        try {
+          window['analytics'].group(projectId, {
+            name: storedPrjctParsed.name,
+            plan: projectProfileName,
+          });
+        } catch (err) {
+          this.logger.error('group Signed Out error', err);
         }
 
       }
@@ -1033,14 +1033,15 @@ export class AuthService {
         } catch (err) {
           this.logger.error('track Signed Out event error', err);
         }
-        try {
-          // setTimeout(() => {
-          window['analytics'].reset()
-          // }, 0);
-        } catch (err) {
-          this.logger.error('analytics reset', err);
-        }
 
+      }
+
+      try {
+        // setTimeout(() => {
+        window['analytics'].reset()
+        // }, 0);
+      } catch (err) {
+        this.logger.error('analytics reset', err);
       }
 
     }
