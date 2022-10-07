@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 2.2.52
+- Deploys in production
+- Implements Analytics.js "Segments"
+- Changes the endpoint of the "dialogflow connector"
+
 ### 2.2.52.rc10
 - Improves Analytics.js 'group'
 
