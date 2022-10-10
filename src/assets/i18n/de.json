@@ -2171,5 +2171,6 @@
     "Resolved":"Aufgelöst",
 	"YouCannotLeaveTheChat": "Entschuldigung, aber Sie können den Chat nicht verlassen. Für einen Chat vom Typ Ticket muss es mindestens einen Agenten geben",
 	"YouCannotAddAgents": "Entschuldigung, aber es ist nicht möglich Agenten zum Chat hinzuzufügen. Für einen Ticket-Chat kann es nur einen Agenten geben",
-	"YouCannotJoinChat": "Entschuldigung, Chats vom Typ Ticket können nur von einem Agenten bedient werden"
+	"YouCannotJoinChat": "Entschuldigung, Chats vom Typ Ticket können nur von einem Agenten bedient werden",
+	"VisitorAlreadyBanned": "Besucher bereits gesperrt"
 }

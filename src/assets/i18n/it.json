@@ -2171,5 +2171,6 @@
     "Resolved":"Risolto",
     "YouCannotLeaveTheChat": "Scusa ma non puoi uscire dalla chat. Deve esserci almeno un agente per una chat di tipo ticket",
     "YouCannotAddAgents": "Siamo spiacenti, ma non è possibile aggiungere agenti alla chat. Può esserci un solo agente per una chat di tipo ticket",
-    "YouCannotJoinChat": "Spiacenti, le chat di tipo ticket possono essere servite solo da un agente"
+    "YouCannotJoinChat": "Spiacenti, le chat di tipo ticket possono essere servite solo da un agente",
+    "VisitorAlreadyBanned": "Visitatore già bannato"
 }

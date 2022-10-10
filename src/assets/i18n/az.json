@@ -2172,6 +2172,7 @@
     "YouCannotLeaveTheChat": "Üzr istəyirik, ancaq söhbəti tərk edə bilməzsiniz. Bilet tipli söhbət üçün ən azı bir agent olmalıdır",
     "YouCannotAddAgents": "Üzr istəyirik, lakin söhbətə agentlər əlavə etmək mümkün deyil. Bilet tipli söhbət üçün yalnız bir agent ola bilər",
     "YouCannotJoinChat": "Bağışlayın, bilet tipli söhbətlərə yalnız agent xidmət göstərə bilər",
+    "VisitorAlreadyBanned": "Ziyarətçi artıq qadağandır",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

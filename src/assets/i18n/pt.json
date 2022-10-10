@@ -2172,6 +2172,7 @@
     "YouCannotLeaveTheChat": "Desculpe, mas você não pode sair do chat. Deve haver pelo menos um agente para um chat do tipo ticket",
     "YouCannotAddAgents": "Desculpe, mas não é possível adicionar agentes ao chat. Só pode haver um agente para um chat do tipo ticket",
     "YouCannotJoinChat": "Desculpe, chats do tipo ticket só podem ser atendidos por um agente",
+    "VisitorAlreadyBanned": "Visitante já banido",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

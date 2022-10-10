@@ -2172,6 +2172,7 @@
     "YouCannotLeaveTheChat": "Kechirasiz, lekin siz chatni tark eta olmaysiz. Chipta turi chat uchun kamida bitta agent bo'lishi kerak",
     "YouCannotAddAgents": "Kechirasiz, lekin chatga jamoadoshlarni qo'shish mumkin emas. Chipta turidagi suhbat uchun faqat bitta jamoadosh bo'lishi mumkin",
     "YouCannotJoinChat": "Kechirasiz, chipta turidagi chatlar faqat agent tomonidan xizmat qilishi mumkin",
+    "VisitorAlreadyBanned": "Tashrifchi allaqachon taqiqlangan",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",
