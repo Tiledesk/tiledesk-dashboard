@@ -280,7 +280,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.listenToForegroundNotificationCount();
         this.listenSoundPreference();
         this.getNotificationSoundPreferences();
+        this.getWsCurrentUserAvailability$();
+        this.getWsCurrentUserAvailability$();
     }
+
+
 
 
 
