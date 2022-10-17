@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.52.2
+- Bug Fixing
+
 ### 2.2.52.1
 - Fixed bug: in the sidebar the availability status of the currently logged in teammate is not always updated
 

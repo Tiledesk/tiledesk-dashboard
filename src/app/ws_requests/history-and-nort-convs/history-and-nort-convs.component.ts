@@ -2243,7 +2243,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       }
     } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      // this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 

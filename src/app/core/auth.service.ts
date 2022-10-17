@@ -925,7 +925,7 @@ export class AuthService {
   signOut(calledby: string) {
     // console.log('[AUTH-SERV] signOut calledby ', calledby)
 
-    if (calledby !== 'account-settings') { // in account-settings in tracked the acccont deleted event 
+    if (calledby !== 'account-settings' && calledby !== 'autologin') { // in account-settings in tracked the acccont deleted event 
       const storedUser = localStorage.getItem('user')
       let storedUserParsed = null
       if (storedUser) {

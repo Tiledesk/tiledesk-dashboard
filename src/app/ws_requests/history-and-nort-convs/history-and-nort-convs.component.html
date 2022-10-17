@@ -177,7 +177,7 @@
                     <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false"
                       (change)="depSelected(selectedDeptId)">
                       <!-- <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option> -->
-                      <ng-option  [value]="''">{{ allDeptsLabel }}</ng-option>
+                      <ng-option [value]="''">{{ allDeptsLabel }}</ng-option>
                       <ng-option *ngFor="let dept of departments" [value]="dept._id">
                         {{dept.name}}
                       </ng-option>
@@ -332,11 +332,13 @@
             <span class="msg-alert">
               <!-- History is only available for the past 14 days. Renew your subscription for unlimited chat history -->
               {{ 'HistoryPage.HistoryIsOnlyAvailableForThePast14Days' | translate }}.
-              <span class="upgrade-plan-for-unlimited-history" style="color: #039be5; cursor:pointer"
-                (click)="openModalSubsExpiredOrGoToPricing()">
-                {{ "Pricing.UpgradeYourPlan" | translate }}
+              <span *ngIf="payIsVisible">
+                <span class="upgrade-plan-for-unlimited-history" style="color: #039be5; cursor:pointer"
+                  (click)="openModalSubsExpiredOrGoToPricing()">
+                  {{ "Pricing.UpgradeYourPlan" | translate }}
+                </span>
+                {{ 'HistoryPage.ForUnlimitedChatHistory' | translate }}
               </span>
-              {{ 'HistoryPage.ForUnlimitedChatHistory' | translate }}
             </span>
 
           </div>
@@ -358,13 +360,12 @@
   <p> selecteTagColor: {{ selecteTagColor }}   </p>  
   <p> conversation_type: {{ conversation_type }}   </p> 
   <p> conversationTypeValue: {{ conversationTypeValue }}   </p>  -->
-  
+
   <!-- <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;"
     *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || requests_status !== 'all' || selecteTagColor 
     || (conversation_type && conversation_type !== 'all') || (conversationTypeValue && conversationTypeValue !== 'all')  || conversationTypeValue !== undefined "> -->
 
-    <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;"
-    *ngIf="
+  <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;" *ngIf="
     fullText_applied_filter || 
     startDateFormatted || 
     selectedAgentFirstname || 
@@ -373,9 +374,9 @@
     selecteTagColor  || 
     conversationTypeValue || 
     selectedDeptName">
-   
+
     <!-- conversation_type {{ conversation_type }} - conversationTypeValue {{conversationTypeValue}} -->
-    <div  class="applied-filter-title">
+    <div class="applied-filter-title">
       {{'AppliedFilters' | translate}}
     </div>
 
@@ -404,7 +405,7 @@
       </span>
     </div>
 
-    <div  id="teammate" *ngIf="selectedAgentFirstname" class="applied-filter">
+    <div id="teammate" *ngIf="selectedAgentFirstname" class="applied-filter">
       {{selectedAgentFirstname}} {{ selectedAgentLastname }}
     </div>
 
@@ -432,8 +433,7 @@
           conversationTypeValue  === 'messenger' ||
           conversationTypeValue  === 'telegram' || 
           conversationTypeValue  === 'whatsapp' || 
-          conversationTypeValue  === 'email'" 
-          class="applied-filter">
+          conversationTypeValue  === 'email'" class="applied-filter">
       <span *ngIf="conversationTypeValue === 'chat21' ">
         Chat
       </span>
