@@ -2214,11 +2214,11 @@
         "PrestashopStep3": "Disable the HTML purifier form.",
         "PrestashopStep4": "Select “Add new module“.",
         "PrestashopStep5": "Download the HTMLbox module",
-        "PrestashopStep6": "Vai su “Moduli > Gestione Moduli”, clicca su “Carica un modulo”, poi premi su seleziona un file” e seleziona il modulo HTMLbox scaricato al punto precedente.",
-        "PrestashopStep7": "Al termine dell'installazione del modulo, clicca su “configura”, nell'area di testo seleziona “Tools > Source code“ e incolla il codice JavaScript copiato al punto uno.",
-        "JoomlaStep2": "Accedi al pannello di controllo di Joomla.",
-        "JoomlaStep3": "Vai in “Sistema > Modelli > Modelli di sito“ e fai clic sul modello del tema predefinito.",
-        "JoomlaStep4": "Apri il file index.php dal menu sul lato sinistro e incolla nell'editor il codice JavaScript che hai copiato al punto uno, prima del tag di chiusura"
+        "PrestashopStep6": "Go to “Modules > Modules Management”, click on “Upload a module”, then click on ”select a file” and select the HTMLbox module downloaded in the previous point.",
+        "PrestashopStep7": "At the end of the installation of the module, click on “configure“, in the text area select “Tools > Source code“ and paste the JavaScript code copied in point one.",
+        "JoomlaStep2": "Log in to the Joomla control panel.",
+        "JoomlaStep3": "Go to “System > Templates > Site Templates“ and click on the default theme template.",
+        "JoomlaStep4": "Open the index.php file from the menu on the left side and paste in the editor the JavaScript code you copied in step one, before the closing tag"
     },
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
