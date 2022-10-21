@@ -2217,34 +2217,51 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   exportRequestsToCSV() {
-    // tslint:disable-next-line:max-line-length
-    // console.log('exportRequestsToCSV this.payIsVisible ', this.payIsVisible) 
-    if (this.payIsVisible) {
-      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
-        this.notify.openDataExportNotAvailable()
-      } else {
-        const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
-        this.logger.log('[HISTORY & NORT-CONVS] - EXPORT TO CSV BTN', exportToCsvBtn)
-        exportToCsvBtn.blur()
+    const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
+    this.logger.log('[HISTORY & NORT-CONVS] - EXPORT TO CSV BTN', exportToCsvBtn)
+    exportToCsvBtn.blur()
 
-        this.wsRequestsService.downloadHistoryRequestsAsCsv(this.queryString, 0).subscribe((requests: any) => {
-          if (requests) {
-            this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);
+    this.wsRequestsService.downloadHistoryRequestsAsCsv(this.queryString, 0).subscribe((requests: any) => {
+      if (requests) {
+        this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);
 
-            // const reqNoLineBreaks = requests.replace(/(\r\n\t|\n|\r\t)/gm, ' ');
-            // this.logger.log('!!! DOWNLOAD REQUESTS AS CSV - REQUESTS NO NEW LINE ', reqNoLineBreaks);
-            this.downloadFile(requests)
-          }
-        }, error => {
-          this.logger.error('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - ERROR: ', error);
-        }, () => {
-          this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV * COMPLETE *')
-        });
-
+        // const reqNoLineBreaks = requests.replace(/(\r\n\t|\n|\r\t)/gm, ' ');
+        // this.logger.log('!!! DOWNLOAD REQUESTS AS CSV - REQUESTS NO NEW LINE ', reqNoLineBreaks);
+        this.downloadFile(requests)
       }
-    } else {
-      // this.notify._displayContactUsModal(true, 'upgrade_plan');
-    }
+    }, error => {
+      this.logger.error('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - ERROR: ', error);
+    }, () => {
+      this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV * COMPLETE *')
+    });
+
+  
+    // if (this.payIsVisible) {
+    //   if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
+    //     this.notify.openDataExportNotAvailable()
+    //   } else {
+    //     const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
+    //     this.logger.log('[HISTORY & NORT-CONVS] - EXPORT TO CSV BTN', exportToCsvBtn)
+    //     exportToCsvBtn.blur()
+
+    //     this.wsRequestsService.downloadHistoryRequestsAsCsv(this.queryString, 0).subscribe((requests: any) => {
+    //       if (requests) {
+    //         this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);
+
+    //         // const reqNoLineBreaks = requests.replace(/(\r\n\t|\n|\r\t)/gm, ' ');
+    //         // this.logger.log('!!! DOWNLOAD REQUESTS AS CSV - REQUESTS NO NEW LINE ', reqNoLineBreaks);
+    //         this.downloadFile(requests)
+    //       }
+    //     }, error => {
+    //       this.logger.error('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - ERROR: ', error);
+    //     }, () => {
+    //       this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV * COMPLETE *')
+    //     });
+
+    //   }
+    // } else {
+    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
+    // }
   }
 
 

@@ -1407,26 +1407,37 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
 
   exportFaqsToCsv() {
-    // tslint:disable-next-line:max-line-length
-    if (this.payIsVisible) {
-      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
-        this.notify.openDataExportNotAvailable()
-      } else {
-        this.faqService.exsportFaqsToCsv(this.id_faq_kb).subscribe((faq: any) => {
-          this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - FAQS', faq)
+    this.faqService.exsportFaqsToCsv(this.id_faq_kb).subscribe((faq: any) => {
+      this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - FAQS', faq)
 
-          if (faq) {
-            this.downloadFile(faq, 'faqs.csv');
-          }
-        }, (error) => {
-          this.logger.error('[FAQ-COMP] - EXPORT FAQ TO CSV - ERROR', error);
-        }, () => {
-          this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - COMPLETE');
-        });
+      if (faq) {
+        this.downloadFile(faq, 'faqs.csv');
       }
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
-    }
+    }, (error) => {
+      this.logger.error('[FAQ-COMP] - EXPORT FAQ TO CSV - ERROR', error);
+    }, () => {
+      this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - COMPLETE');
+    });
+
+    // if (this.payIsVisible) {
+    //   if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
+    //     this.notify.openDataExportNotAvailable()
+    //   } else {
+    //     this.faqService.exsportFaqsToCsv(this.id_faq_kb).subscribe((faq: any) => {
+    //       this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - FAQS', faq)
+
+    //       if (faq) {
+    //         this.downloadFile(faq, 'faqs.csv');
+    //       }
+    //     }, (error) => {
+    //       this.logger.error('[FAQ-COMP] - EXPORT FAQ TO CSV - ERROR', error);
+    //     }, () => {
+    //       this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - COMPLETE');
+    //     });
+    //   }
+    // } else {
+    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
+    // }
   }
 
   //   var link = document.createElement("a");

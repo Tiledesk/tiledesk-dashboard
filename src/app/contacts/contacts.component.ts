@@ -884,31 +884,45 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   exportContactsToCsv() {
-    if (this.payIsVisible) {
-      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
-        this.notify.openDataExportNotAvailable()
-      } else {
-        const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
-        this.logger.log('[CONTACTS-COMP] - EXPORT TO CSV BTN', exportToCsvBtn)
-        exportToCsvBtn.blur()
+    this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
+      // this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
 
-        this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
-          // this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
-
-          // this.logger.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
-          if (leads_object) {
-            this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
-            this.downloadFile(leads_object);
-          }
-        }, (error) => {
-          this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
-        }, () => {
-          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
-        });
+      // this.logger.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
+      if (leads_object) {
+        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
+        this.downloadFile(leads_object);
       }
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
-    }
+    }, (error) => {
+      this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
+    }, () => {
+      this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
+    });
+
+    // if (this.payIsVisible) {
+    //   if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
+    //     this.notify.openDataExportNotAvailable()
+    //   } else {
+    //     const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
+    //     this.logger.log('[CONTACTS-COMP] - EXPORT TO CSV BTN', exportToCsvBtn)
+    //     exportToCsvBtn.blur()
+
+    //     this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
+    //       // this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
+
+    //       // this.logger.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
+    //       if (leads_object) {
+    //         this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
+    //         this.downloadFile(leads_object);
+    //       }
+    //     }, (error) => {
+    //       this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
+    //     }, () => {
+    //       this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
+    //     });
+    //   }
+    // } else {
+    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
+    // }
   }
 
   downloadFile(data) {
