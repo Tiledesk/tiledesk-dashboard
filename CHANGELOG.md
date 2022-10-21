@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.2.53
+- Deploys in production
+- Enable the "Export to CSV" features for all plan types
+
 ### 2.2.52.2
 - Bug Fixing
 
