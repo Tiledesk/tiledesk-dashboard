@@ -662,7 +662,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // this.logger.log('[WIDGET-SET-UP] ACCORDION', acc);
     var i;
     for (i = 0; i < acc.length; i++) {
-      var lastAccordion = acc[5];
+      var lastAccordion = acc[6];
       var lastPanel = <HTMLElement>lastAccordion.nextElementSibling;
       lastAccordion.classList.add("active");
       lastPanel.style.maxHeight = lastPanel.scrollHeight + "px";
