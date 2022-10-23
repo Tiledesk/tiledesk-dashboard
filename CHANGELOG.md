@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.53.1
+- Add a note on the widget settings page to better explain how the multilanguage widget works
+
 ### 2.2.53
 - Deploys in production
 - Enable the "Export to CSV" features for all plan types
