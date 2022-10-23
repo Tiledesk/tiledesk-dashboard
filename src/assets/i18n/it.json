@@ -2219,5 +2219,6 @@
         "JoomlaStep2": "Accedi al pannello di controllo di Joomla.",
         "JoomlaStep3": "Vai in “Sistema > Modelli > Modelli di sito“ e fai clic sul modello del tema predefinito.",
         "JoomlaStep4": "Apri il file index.php dal menu sul lato sinistro e incolla nell'editor il codice JavaScript che hai copiato al punto uno, prima del tag di chiusura"
-    }
+    },
+    "NoteThatTheWidgetLabelsOnAwebsite": "Si noti che le frasi del widget su un sito web (e sulla pagina di test live) verranno visualizzate nella lingua del browser se la stessa è presente tra le lingue della pagina Multilingua, altrimenti verranno visualizzate nella lingua che è stata impostata come lingua di default."
 }

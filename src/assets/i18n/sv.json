@@ -2220,6 +2220,7 @@
         "JoomlaStep3": "Gå till “System > Mallar > Webbplatsmallar“ och klicka på standardtemamallen.",
         "JoomlaStep4": "Öppna filen index.php från menyn på vänster sida och klistra in JavaScript-koden du kopierade i steg ett i editorn före den avslutande taggen"
     },
+    "NoteThatTheWidgetLabelsOnAwebsite": "Observera att widgetfraserna på en webbplats (och på livetestsidan) kommer att visas på webbläsarspråket om detsamma finns bland språken på sidan för flerspråkig sida, annars kommer de att visas på det språk som har ställts in som standardspråk.",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",

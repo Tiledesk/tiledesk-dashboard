@@ -2220,6 +2220,7 @@
         "JoomlaStep3": "“Sistem > Şablonlar > Sayt Şablonları“ na gedin və standart tema şablonuna klikləyin.",
         "JoomlaStep4": "Sol tərəfdəki menyudan index.php faylını açın və birinci addımda kopyaladığınız JavaScript kodunu redaktorda bağlanma teqindən əvvəl yapışdırın."
     },
+    "NoteThatTheWidgetLabelsOnAwebsite":"Nəzərə alın ki, vebsaytdakı (və canlı sınaq səhifəsində) vidcet ifadələri çoxdilli səhifənin dilləri arasında mövcuddursa, brauzer dilində göstəriləcək, əks halda onlar dildə göstərilən dildə göstəriləcək. defolt dil.",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

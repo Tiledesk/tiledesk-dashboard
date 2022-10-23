@@ -2219,5 +2219,6 @@
 		"JoomlaStep2": "Melden Sie sich in der Joomla-Systemsteuerung an.",
 		"JoomlaStep3": "Gehen Sie zu „System > Templates > Site Templates“ und klicken Sie auf die Standard-Theme-Vorlage.",
 		"JoomlaStep4": "Öffnen Sie die Datei index.php aus dem Menü auf der linken Seite und fügen Sie den JavaScript-Code, den Sie in Schritt eins kopiert haben, vor dem schließenden tag in den Editor ein"
-	}
+	},
+	"NoteThatTheWidgetLabelsOnAwebsite":"Beachten Sie, dass die Widget-Phrasen auf einer Website (und auf der Live-Testseite) in der Browsersprache angezeigt werden, wenn dieselbe unter den Sprachen der mehrsprachigen Seite vorhanden ist, andernfalls werden sie in der Sprache angezeigt, die als festgelegt wurde Standardsprache."
 }

@@ -2220,6 +2220,7 @@
         "JoomlaStep3": "Vá em “Sistema > Modelos > Modelos de Site” e clique no modelo de tema padrão.",
         "JoomlaStep4": "Abra o arquivo index.php no menu do lado esquerdo e cole no editor o código JavaScript que você copiou na etapa um, antes da tag de fechamento"
     },
+    "NoteThatTheWidgetLabelsOnAwebsite": "Observe que as frases do widget em um site (e na página de teste ao vivo) serão exibidas no idioma do navegador se o mesmo estiver presente entre os idiomas da página Multilíngue, caso contrário, serão exibidos no idioma definido como o idioma padrão.",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

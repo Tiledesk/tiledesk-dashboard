@@ -2220,6 +2220,7 @@
         "JoomlaStep3": "Vaya a “Sistema > Plantillas > Plantillas de sitio“ y haga clic en la plantilla de tema predeterminada.",
         "JoomlaStep4": "Abra el archivo index.php desde el menú del lado izquierdo y pegue en el editor el código JavaScript que copió en el paso uno, antes de la etiqueta de cierre."
     },
+    "NoteThatTheWidgetLabelsOnAwebsite":"Tenga en cuenta que las frases del widget en un sitio web (y en la página de prueba en vivo) se mostrarán en el idioma del navegador si el mismo está presente entre los idiomas de la página multilingüe; de lo contrario, se mostrarán en el idioma que se ha establecido como el idioma predeterminado.",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

@@ -2220,6 +2220,7 @@
         "JoomlaStep3": "“Sistem > Şablonlar > Site Şablonları” na gidin ve varsayılan tema şablonuna tıklayın.",
         "JoomlaStep4": "Sol taraftaki menüden index.php dosyasını açın ve birinci adımda kopyaladığınız JavaScript kodunu kapanış etiketinden önce düzenleyiciye yapıştırın."
     },
+    "NoteThatTheWidgetLabelsOnAwebsite": "Bir web sitesindeki (ve canlı test sayfasındaki) widget ifadelerinin, Çoklu Dil sayfasının dilleri arasında mevcutsa tarayıcı dilinde görüntüleneceğini unutmayın, aksi takdirde bunlar, varsayılan dil.",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

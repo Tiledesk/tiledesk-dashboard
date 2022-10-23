@@ -2220,6 +2220,7 @@
         "JoomlaStep3": "“Tizim > Shablonlar > Sayt shablonlari“ ga o'ting va standart mavzu shablonini bosing.",
         "JoomlaStep4": "Chap tarafdagi menyudan index.php faylini oching va yopilish yorlig'i oldiga birinchi bosqichda ko'chirilgan JavaScript kodini muharrirga joylashtiring."
     },
+    "NoteThatTheWidgetLabelsOnAwebsite": "E'tibor bering, veb-saytdagi (va jonli test sahifasida) vidjet iboralari, agar ko'p tilli sahifa tillari orasida bir xil bo'lsa, brauzer tilida ko'rsatiladi, aks holda ular o'rnatilgan tilda ko'rsatiladi. standart til.",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",
