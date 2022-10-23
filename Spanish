@@ -2220,6 +2220,7 @@
         "JoomlaStep3": "Go to “System > Templates > Site Templates“ and click on the default theme template.",
         "JoomlaStep4": "Open the index.php file from the menu on the left side and paste in the editor the JavaScript code you copied in step one, before the closing tag"
     },
+    "NoteThatTheWidgetLabelsOnAwebsite": "Note that the widget phrases on a website (and on the live test page) will be displayed in the browser language if the same is present among the languages of the Multilinguage page, otherwise they will be displayed in the language that has been set as the default language.",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",
