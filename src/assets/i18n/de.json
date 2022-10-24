@@ -2178,7 +2178,7 @@
 		"TitleWelcomeMessage": "Wie möchten Sie Besucher begrüßen, wenn sie auf Ihrer Website ankommen?",
 		"LabelWelcomeMessage": "Willkommensnachricht",
 		"WelcomeMessage": "Hallo 👋. Ich bin Ty, der virtuelle Assistent von Tiledesk 🤖. Wie kann ich helfen? Geben Sie Ihre Frage ein oder wählen Sie unten einen Vorschlag aus",
-		"DefaultFallback": "Ich kann keine angemessene Antwort geben. Schreiben Sie eine neue Frage oder sprechen Sie mit einem menschlichen Agenten. * Zurück nach oben tdAction:start * Siehe Dokumente https://docs.tiledesk.com/ * 👨 Ich möchte einen Agenten",
+		"DefaultFallback": "Ich kann keine angemessene Antwort geben. Schreiben Sie eine neue Frage oder sprechen Sie mit einem menschlichen Agenten. \n* Zurück nach oben tdAction:start \n* Siehe Dokumente https://docs.tiledesk.com/",
 		"Question": "Frage",
 		"Answer": "Antwort",
 		"TitleStep1ChatbotConfiguration": "Richten Sie einen Chatbot für Ihre Website ein",

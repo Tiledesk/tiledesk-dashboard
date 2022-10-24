@@ -2178,7 +2178,7 @@
         "TitleWelcomeMessage": "Ziyaretçileri web sitenize geldiklerinde nasıl karşılamak istersiniz?",
         "LabelWelcomeMessage": "Karşılama mesajı",
         "WelcomeMessage": "Merhaba 👋. Ben Ty, Tiledesk'in sanal asistanı 🤖. Nasıl yardımcı olabilirim? Sorunuzu yazın veya aşağıdan bir öneri seçin",
-        "DefaultFallback": "Yeterli bir cevap veremem. Yeni bir soru yazın veya bir insan aracıyla konuşun. * Başa dön tdAction:start * Belgelere bakın https://docs.tiledesk.com/ * 👨 Temsilci istiyorum",
+        "DefaultFallback": "Yeterli bir cevap veremem. Yeni bir soru yazın veya bir insan aracıyla konuşun. \n* Başa dön tdAction:start \n* Belgelere bakın https://docs.tiledesk.com/",
         "Question": "Soru",
         "Answer": "Cevap",
         "TitleStep1ChatbotConfiguration": "Siteniz için bir sohbet robotu kurun",

@@ -2178,7 +2178,7 @@
         "TitleWelcomeMessage": "Ziyarətçiləri veb saytınıza gələndə necə salamlamaq istərdiniz?",
         "LabelWelcomeMessage": "Xoş gəlmisiniz mesajı",
         "WelcomeMessage": "Salam 👋. Mən Ty, Tiledesk-in virtual köməkçisi 🤖. Mən necə kömək edə bilərəm? Sualınızı yazın və ya aşağıda təklif seçin",
-        "DefaultFallback": "Mən adekvat cavab verə bilmərəm. Yeni sual yazın və ya insan agenti ilə danışın. * Başa qayıt tdAction:start * Sənədlərə baxın https://docs.tiledesk.com/ * 👨 Mən agent istəyirəm",
+        "DefaultFallback": "Mən adekvat cavab verə bilmərəm. Yeni sual yazın və ya insan agenti ilə danışın. \n* Başa qayıt tdAction:start \n* Sənədlərə baxın https://docs.tiledesk.com/",
         "Question": "Sual",
         "Answer": "Cavab",
         "TitleStep1ChatbotConfiguration": "Saytınız üçün chatbot qurun",

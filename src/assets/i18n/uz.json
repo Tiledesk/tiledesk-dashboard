@@ -2178,7 +2178,7 @@
         "TitleWelcomeMessage": "Saytingizga tashrif buyuruvchilarni qanday kutib olishni xohlaysiz?",
         "LabelWelcomeMessage": "Xush kelibsiz",
         "WelcomeMessage": "Salom 👋. Men Tyman, Tiledeskning virtual yordamchisi 🤖. Qanday yordam bera olaman? Savolingizni yozing yoki quyida taklifni tanlang",
-        "DefaultFallback": "Men adekvat javob bera olmayman. Yangi savol yozing yoki inson agenti bilan gaplashing. * Yuqoriga qaytish tdAction:start * Hujjatlarga qarang https://docs.tiledesk.com/ * 👨  Menga agent kerak",
+        "DefaultFallback": "Men adekvat javob bera olmayman. Yangi savol yozing yoki inson agenti bilan gaplashing. \n* Yuqoriga qaytish tdAction:start \n* Hujjatlarga qarang https://docs.tiledesk.com/",
         "Question": "Savol",
         "Answer": "Javob",
         "TitleStep1ChatbotConfiguration": "Saytingiz uchun chatbot sozlang",

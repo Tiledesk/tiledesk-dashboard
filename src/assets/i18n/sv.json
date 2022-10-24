@@ -2178,7 +2178,7 @@
         "TitleWelcomeMessage": "Hur skulle du vilja hälsa besökare när de kommer till din webbplats?",
         "LabelWelcomeMessage": "Välkomstmeddelande",
         "WelcomeMessage": "Hej 👋. Jag är Ty, Tiledesks virtuella assistent 🤖. Hur kan jag hjälpa? Skriv din fråga eller välj ett förslag nedan",
-        "DefaultFallback": "Jag kan inte ge ett adekvat svar. Skriv en ny fråga eller prata med en mänsklig agent. * Tillbaka till toppen tdAction:start * Se dokument https://docs.tiledesk.com/ * 👨 Jag vill ha en agent",
+        "DefaultFallback": "Jag kan inte ge ett adekvat svar. Skriv en ny fråga eller prata med en mänsklig agent. \n* Tillbaka till toppen tdAction:start \n* Se dokument https://docs.tiledesk.com/",
         "Question": "Fråga",
         "Answer": "Svar",
         "TitleStep1ChatbotConfiguration": "Skapa en chatbot för din webbplats",
