@@ -52,12 +52,12 @@ Consider that Tiledesk.com cloud service makes every module available with the s
 ## Features
 
 - Unlimited chat conversations
+- Unlimited chatbot messages
 - Widget customization tools
 - Conversation labels and notes 
 - Apps marketplace
 - CRM
 - Operating hours
-- Up to 200,000 messages from bot/month
 - Departments and agents groups
 - Chat history
 - Ticketing System
