@@ -4,7 +4,7 @@
 ### 2.2.54
 - Deploys in production
 - Outsources the apps base URL in the environment files
-- Manages the activity: "change the availability status to inactive"
+- Manages on the activities page the activity: "change the availability status to inactive"
 
 ### 2.2.53.1
 - Add a note on the widget settings page to better explain how the multilanguage widget works
