@@ -5,6 +5,7 @@ import { AuthService } from '../core/auth.service';
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
 import { BehaviorSubject } from 'rxjs';
+import { AppConfigService } from './app-config.service';
 @Injectable()
 
 export class AppStoreService {
@@ -14,17 +15,23 @@ export class AppStoreService {
   TOKEN: string;
   TOKEN_NO_JWT_SUBSTRING: string;
   userID: string;
-  APPS_URL = "https://tiledesk-apps.herokuapp.com/api/apps?sort=score";
-  APPS_BASE_URL = "https://tiledesk-apps.herokuapp.com/"
+  // APPS_URL = "https://tiledesk-apps.herokuapp.com/api/apps?sort=score";
+  // APPS_BASE_URL = "https://tiledesk-apps.herokuapp.com/"
+
+  APPS_URL: string ;
+  APPS_BASE_URL: string;
   constructor(
     http: Http,
     private httpClient: HttpClient,
     public auth: AuthService,
-    private logger: LoggerService
-    
+    private logger: LoggerService,
+    public appConfigService: AppConfigService,
   ) {
     this.http = http;
-
+    this.APPS_BASE_URL = this.appConfigService.getConfig().appsUrl;
+    this.APPS_URL = this.APPS_BASE_URL + "api/apps?sort=score"
+    // console.log('[APP-STORE-SERVICE] APPS_BASE_URL ',  this.APPS_BASE_URL)
+    // console.log('[APP-STORE-SERVICE] APPS_URL ',  this.APPS_URL)
     this.getToken();
   }
 
