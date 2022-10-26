@@ -238,11 +238,14 @@
                           </span>
                           's
                           availability status has been changed into
-                          <span *ngIf="activity?.actionObj?.user_available === false">
+                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === ''">
                             {{ 'Unavailable' | translate }}
                           </span>
-                          <span *ngIf="activity?.actionObj?.user_available === true">
-                            {{ 'Available' | translate }}
+                          <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.profileStatus === ''">
+                           {{ 'Available' | translate }}
+                          </span>
+                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === 'inactive'">
+                           {{ 'Inactive' | translate }}
                           </span>
                         </p>
 
@@ -257,11 +260,14 @@
                           </span>
 
                           è stato cambiato in
-                          <span *ngIf="activity?.actionObj?.user_available === false">
+                          <span *ngIf="activity?.actionObj?.user_available === false  && activity?.actionObj?.profileStatus === ''">
                             {{ 'Unavailable' | translate }}
                           </span>
-                          <span *ngIf="activity?.actionObj?.user_available === true">
+                          <span *ngIf="activity?.actionObj?.user_available === true  && activity?.actionObj?.profileStatus === ''">
                             {{ 'Available' | translate }}
+                          </span>
+                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === 'inactive'">
+                            {{ 'Unavailable' | translate }}
                           </span>
                         </p>
                       </span>
@@ -366,14 +372,16 @@
                           </span>
                         </span>
                         {{ 'Into' | translate }}
-                        <span *ngIf="activity?.actionObj?.user_available === false">
-                          <!-- non disponibile -->
+                        <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === ''">
                           {{ 'Unavailable' | translate }}
                         </span>
 
-                        <span *ngIf="activity?.actionObj?.user_available === true">
-                          <!-- disponibile -->
+                        <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.profileStatus === ''">
                           {{ 'Available' | translate }}
+                        </span>
+
+                        <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === 'inactive'">
+                          {{ 'Inactive' | translate }}
                         </span>
 
                         <span *ngIf="activity?.actionObj?.role === 'admin'">
