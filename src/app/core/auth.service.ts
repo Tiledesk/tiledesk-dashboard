@@ -972,76 +972,76 @@ export class AuthService {
 
         }
         // console.log('[AUTH-SERV] projectProfileName ', projectProfileName)
+        if (!isDevMode()) {
+          try {
+            window['analytics'].identify(storedUserParsed._id, {
+              name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+              email: storedUserParsed.email,
+              logins: 5,
+              plan: projectProfileName
+            });
+          } catch (err) {
+            this.logger.error('identify Signed Out error', err);
+          }
 
-        try {
-          window['analytics'].identify(storedUserParsed._id, {
-            name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
-            email: storedUserParsed.email,
-            logins: 5,
-            plan: projectProfileName
-          });
-        } catch (err) {
-          this.logger.error('identify Signed Out error', err);
-        }
 
+          try {
+            window['analytics'].track('Signed Out', {
+              "properties": {
+                "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+                "userId": storedUserParsed._id
+              }, "context": {
+                "groupId": projectId
+              }
+            });
+          } catch (err) {
+            this.logger.error('track Signed Out event error', err);
+          }
 
-        try {
-          window['analytics'].track('Signed Out', {
-            "properties": {
-              "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
-              "userId": storedUserParsed._id
-            }, "context": {
-              "groupId": projectId
-            }
-          });
-        } catch (err) {
-          this.logger.error('track Signed Out event error', err);
-        }
+          try {
+            window['analytics'].group(projectId, {
+              name: storedPrjctParsed.name,
+              plan: projectProfileName,
+            });
+          } catch (err) {
+            this.logger.error('group Signed Out error', err);
+          }
 
-        try {
-          window['analytics'].group(projectId, {
-            name: storedPrjctParsed.name,
-            plan: projectProfileName,
-          });
-        } catch (err) {
-          this.logger.error('group Signed Out error', err);
         }
 
       }
 
       if (!projectId) {
-        try {
-          window['analytics'].identify(storedUserParsed._id, {
-            name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
-            email: storedUserParsed.email,
-            logins: 5,
-            plan: 'not project selected'
-          });
-        } catch (err) {
-          this.logger.error('identify Signed Out error', err);
+
+        if (!isDevMode()) {
+          try {
+            window['analytics'].identify(storedUserParsed._id, {
+              name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+              email: storedUserParsed.email,
+              logins: 5,
+              plan: 'not project selected'
+            });
+          } catch (err) {
+            this.logger.error('identify Signed Out error', err);
+          }
+
+          try {
+            window['analytics'].track('Signed Out', {
+              "properties": {
+                "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+                "userId": storedUserParsed._id
+              }
+            });
+          } catch (err) {
+            this.logger.error('track Signed Out event error', err);
+          }
+
+          try {
+            window['analytics'].reset()
+          } catch (err) {
+            this.logger.error('analytics reset', err);
+          }
         }
-        // }
-
-        // if (!this.selected_project) {
-        try {
-          window['analytics'].track('Signed Out', {
-            "properties": {
-              "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
-              "userId": storedUserParsed._id
-            }
-          });
-        } catch (err) {
-          this.logger.error('track Signed Out event error', err);
-        }
-
-      }
-
-      try {
-        // setTimeout(() => {
-        window['analytics'].reset()
-        // }, 0);
-      } catch (err) {
-        this.logger.error('analytics reset', err);
       }
 
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, isDevMode } from '@angular/core';
 import { AuthService, SuperUser } from '../core/auth.service';
 
 import { ActivatedRoute } from '@angular/router';
@@ -925,29 +925,30 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // console.log('[HOME] - getProjectPlan project CreatedAt', projectCreatedAt)
           const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
           // console.log('[HOME] - getProjectPlan project trialEndDate', trialStarDate)
+          if (!isDevMode()) {
+            try {
+              window['analytics'].page("Home Page, Home", {
+                "properties": {
+                  "title": 'Home'
+                }
+              });
+            } catch (err) {
+              this.logger.error('page Home error', err);
+            }
 
-          try {
-            window['analytics'].page("Home Page, Home", {
-              "properties": {
-                "title": 'Home'
-              }
-            });
-          } catch (err) {
-            this.logger.error('page Home error', err);
+            try {
+              window['analytics'].identify(this.user._id, {
+                name: this.user.firstname + ' ' + this.user.lastname,
+                email: this.user.email,
+                logins: 5,
+                plan: this.profile_name_for_segment,
+              });
+            } catch (err) {
+              this.logger.error('identify Home error', err);
+            }
           }
 
-          try {
-            window['analytics'].identify(this.user._id, {
-              name: this.user.firstname + ' ' + this.user.lastname,
-              email: this.user.email,
-              logins: 5,
-              plan: this.profile_name_for_segment,
-            });
-          } catch (err) {
-            this.logger.error('identify Home error', err);
-          }
 
-      
 
           const trialEndDate = moment(new Date(projectCreatedAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
           // console.log('[HOME] - getProjectPlan project trialEndDate', trialEndDate)
@@ -963,33 +964,35 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           //   console.log('[HOME] - getProjectPlan storedProject  ', storedProjectObjct)
 
           if (daysDiffNowFromProjctCreated >= 30) {
+            if (!isDevMode()) {
+              try {
+                window['analytics'].track('Trial Ended', {
+                  "userId": this.user._id,
+                  "properties": {
+                    "trial_start_date": trialStarDate,
+                    "trial_end_date": trialEndDate,
+                    "trial_plan_name": "Pro (trial) "
+                  }, "context": {
+                    "groupId": projectProfileData._id
+                  }
+                });
 
-            try {
-              window['analytics'].track('Trial Ended', {
-                "userId": this.user._id,
-                "properties": {
-                  "trial_start_date": trialStarDate,
-                  "trial_end_date": trialEndDate,
-                  "trial_plan_name": "Pro (trial) "
-                }, "context": {
-                  "groupId": projectProfileData._id
-                }
-              });
 
-
-            } catch (err) {
-              this.logger.error('track Trial Started event error', err);
+              } catch (err) {
+                this.logger.error('track Trial Started event error', err);
+              }
             }
           }
-          
-          
-          try {
-            window['analytics'].group(projectProfileData._id, {
-              name: projectProfileData.name,
-              plan: this.profile_name_for_segment,
-            });
-          } catch (err) {
-            this.logger.error('group Home error', err);
+
+          if (!isDevMode()) {
+            try {
+              window['analytics'].group(projectProfileData._id, {
+                name: projectProfileData.name,
+                plan: this.profile_name_for_segment,
+              });
+            } catch (err) {
+              this.logger.error('group Home error', err);
+            }
           }
         }
       }, error => {

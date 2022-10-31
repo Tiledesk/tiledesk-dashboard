@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
@@ -104,51 +104,52 @@ export class CreateProjectComponent implements OnInit {
         const trialEndDate = moment(new Date(project.createdAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
         // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
 
-        try {
-          window['analytics'].page("Wizard, Create project", {
-            "properties": {
-              "title": 'Create project'
-            }
-          });
-        } catch (err) {
-          this.logger.error('Wizard Create project page error', err);
-        }
+        if (!isDevMode()) {
+          try {
+            window['analytics'].page("Wizard, Create project", {
+              "properties": {
+                "title": 'Create project'
+              }
+            });
+          } catch (err) {
+            this.logger.error('Wizard Create project page error', err);
+          }
 
-        try {
-          window['analytics'].identify(this.user._id, {
-            name: this.user.firstname + ' ' + this.user.lastname,
-            email: this.user.email,
-            logins: 5,
-            plan: "Pro (trial)"
-          });
-        } catch (err) {
-          this.logger.error('Wizard Create project identify error', err);
-        }
+          try {
+            window['analytics'].identify(this.user._id, {
+              name: this.user.firstname + ' ' + this.user.lastname,
+              email: this.user.email,
+              logins: 5,
+              plan: "Pro (trial)"
+            });
+          } catch (err) {
+            this.logger.error('Wizard Create project identify error', err);
+          }
 
-  
-        try {
-          window['analytics'].track('Trial Started', {
-            "userId": this.user._id,
-            "properties": {
-              "trial_start_date": trialStarDate,
-              "trial_end_date": trialEndDate,
-              "trial_plan_name": "Pro (trial) "
-            }, "context": {
-              "groupId": project._id
-            }
-          });
-        } catch (err) {
-          this.logger.error('Wizard Create track Trial Started event error', err);
-        }
+          try {
+            window['analytics'].track('Trial Started', {
+              "userId": this.user._id,
+              "properties": {
+                "trial_start_date": trialStarDate,
+                "trial_end_date": trialEndDate,
+                "trial_plan_name": "Pro (trial) "
+              }, "context": {
+                "groupId": project._id
+              }
+            });
+          } catch (err) {
+            this.logger.error('Wizard Create track Trial Started event error', err);
+          }
 
 
-        try {
-          window['analytics'].group(project._id, {
-            name: project.name,
-            plan: "Pro (trial)",
-          });
-        } catch (err) {
-          this.logger.error('Wizard Create project group error', err);
+          try {
+            window['analytics'].group(project._id, {
+              name: project.name,
+              plan: "Pro (trial)",
+            });
+          } catch (err) {
+            this.logger.error('Wizard Create project group error', err);
+          }
         }
 
 

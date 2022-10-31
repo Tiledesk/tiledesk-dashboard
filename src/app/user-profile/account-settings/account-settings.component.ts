@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../../services/users.service';
@@ -42,7 +42,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   isActiveSubscription: boolean;
   isChromeVerGreaterThan100: boolean;
   currentUser: any;
-  project:any;
+  project: any;
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
@@ -107,10 +107,10 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
           }
         } else if (this.prjct_profile_type === 'payment') {
-         
+
           if (projectProfileData.profile_name === 'pro') {
             this.prjct_profile_name = "Pro"
-          } else if (projectProfileData.profile_name === 'enterprise'){
+          } else if (projectProfileData.profile_name === 'enterprise') {
             this.prjct_profile_name = "Enterprise"
           }
 
@@ -259,51 +259,51 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
     this.usersService.deleteUserAccount().subscribe((res: any) => {
       // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - DELETE-USER-ACCOUNT RES ', res);
+      if (!isDevMode()) {
+        try {
+          window['analytics'].page("User Profile Page, Settings", {
+            "properties": {
+              "title": 'Settings'
+            }
+          });
+        } catch (err) {
+          this.logger.error('Account Deleted page error', err);
+        }
 
-      try {
-        window['analytics'].page("User Profile Page, Settings", {
-          "properties": {
-            "title": 'Settings'
-          }
-        });
-      } catch (err) {
-        this.logger.error('Account Deleted page error', err);
+        try {
+          window['analytics'].identify(this.currentUser._id, {
+            name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
+            email: this.currentUser.email,
+            plan: this.prjct_profile_name
+
+          });
+        } catch (err) {
+          this.logger.error('identify in Account Deleted  error', err);
+        }
+
+
+        try {
+          window['analytics'].track('Account Deleted', {
+            "properties": {
+              "account_name": this.prjct_profile_name
+            },
+            "context": {
+              "groupId": this.projectId
+            }
+          });
+        } catch (err) {
+          this.logger.error('track Account Deleted event error', err);
+        }
+
+        try {
+          window['analytics'].group(this.project._id, {
+            name: this.project.name,
+            plan: this.prjct_profile_name,
+          });
+        } catch (err) {
+          this.logger.error('group Signed Out error', err);
+        }
       }
-
-      try {
-        window['analytics'].identify(this.currentUser._id, {
-          name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
-          email: this.currentUser.email,
-          plan: this.prjct_profile_name
-
-        });
-      } catch (err) {
-        this.logger.error('identify in Account Deleted  error', err);
-      }
-
- 
-      try {
-        window['analytics'].track('Account Deleted', {
-          "properties": {
-            "account_name": this.prjct_profile_name
-          },
-          "context": {
-            "groupId": this.projectId
-          }
-        });
-      } catch (err) {
-        this.logger.error('track Account Deleted event error', err);
-      }
-
-      try {
-        window['analytics'].group(this.project._id, {
-          name: this.project.name,
-          plan: this.prjct_profile_name,
-        });
-      } catch (err) {
-        this.logger.error('group Signed Out error', err);
-      }
-
     }, (error) => {
       this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS] - DELETE-USER-ACCOUNT ', error);
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, isDevMode } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppConfigService } from '../../services/app-config.service';
 import { AuthService } from '../../core/auth.service';
@@ -8,6 +8,7 @@ import { NotifyService } from '../../core/notify.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
+
 
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
@@ -275,37 +276,40 @@ export class SigninComponent implements OnInit {
       // debugger
       if (!error) {
         // console.log('[SIGN-IN] SSO (Signin) - user', user)
-        
-        try {
-          window['analytics'].page("Auth Page, Signin", {
-            "properties": {
-              "title": 'Signin'
-            }
-          });
-        } catch (err) {
-          this.logger.error('Signin page error', err);
-        }
+        if (!isDevMode()) {
+          console.log("created new HomePageComponent");
 
-        try {
-          window['analytics'].identify(user._id, {
-            name: user.firstname + ' ' + user.lastname,
-            email: user.email,
-            logins: 5,
+          try {
+            window['analytics'].page("Auth Page, Signin", {
+              "properties": {
+                "title": 'Signin'
+              }
+            });
+          } catch (err) {
+            this.logger.error('Signin page error', err);
+          }
 
-          });
-        } catch (err) {
-          this.logger.error('track signin event error', err);
-        }
-        // Segments
-        try {
-          window['analytics'].track('Signed In', {
-            "properties": {
-              "username": user.firstname + ' ' + user.lastname,
-              "userId": user._id
-            }
-          });
-        } catch (err) {
-          this.logger.error('track signin event error', err);
+          try {
+            window['analytics'].identify(user._id, {
+              name: user.firstname + ' ' + user.lastname,
+              email: user.email,
+              logins: 5,
+
+            });
+          } catch (err) {
+            this.logger.error('track signin event error', err);
+          }
+          // Segments
+          try {
+            window['analytics'].track('Signed In', {
+              "properties": {
+                "username": user.firstname + ' ' + user.lastname,
+                "userId": user._id
+              }
+            });
+          } catch (err) {
+            this.logger.error('track signin event error', err);
+          }
         }
 
 

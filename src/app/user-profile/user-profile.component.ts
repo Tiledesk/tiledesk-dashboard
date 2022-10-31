@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, isDevMode, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 
 // USED FOR go back last page
@@ -191,7 +191,7 @@ export class UserProfileComponent implements OnInit {
     });
     this.getBrowserVersion()
   }
-  
+
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       // console.log('[USER-PROFILE] - getProjectPlan project Profile Data', projectProfileData)
@@ -630,38 +630,37 @@ export class UserProfileComponent implements OnInit {
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, (response) => {
 
       // console.log('[USER-PROFILE] - UPDATE CURRENT USER RES ', response)
-      try {
-        window['analytics'].page("User Profile Page, Profile", {
-          "properties": {
-            "title": 'Profile'
-          }
-        });
-      } catch (err) {
-        this.logger.error('User Profile page error', err);
-      }
+      if (!isDevMode()) {
+        try {
+          window['analytics'].page("User Profile Page, Profile", {
+            "properties": {
+              "title": 'Profile'
+            }
+          });
+        } catch (err) {
+          this.logger.error('User Profile page error', err);
+        }
 
-      // console.log('[USER-PROFILE] this.user ', this.user)
-      // console.log('[USER-PROFILE] this.userFirstname ', this.userFirstname)
-      // console.log('[USER-PROFILE] this.userLastname ', this.userLastname)
-      // console.log('[USER-PROFILE] this.prjct_profile_name ', this.prjct_profile_name)
-      try {
-        window['analytics'].identify(this.user._id, {
-          name: this.userFirstname + ' ' + this.userLastname,
-          email: this.user.email,
-          plan: this.prjct_profile_name
 
-        });
-      } catch (err) {
-        this.logger.error('identify in User Profile error', err);
-      }
-       
-      try {
-        window['analytics'].group(this.prjct_id, {
-          name: this.prjct_name,
-          plan: this.prjct_profile_name,
-        });
-      } catch (err) {
-        this.logger.error('group Signed Out error', err);
+        try {
+          window['analytics'].identify(this.user._id, {
+            name: this.userFirstname + ' ' + this.userLastname,
+            email: this.user.email,
+            plan: this.prjct_profile_name
+
+          });
+        } catch (err) {
+          this.logger.error('identify in User Profile error', err);
+        }
+
+        try {
+          window['analytics'].group(this.prjct_id, {
+            name: this.prjct_name,
+            plan: this.prjct_profile_name,
+          });
+        } catch (err) {
+          this.logger.error('group Signed Out error', err);
+        }
       }
 
       this.logger.log('[USER-PROFILE] - CALLBACK RESPONSE ', response)

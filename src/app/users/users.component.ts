@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ElementRef } from '@angular/core'
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ElementRef, isDevMode } from '@angular/core'
 import { Router } from '@angular/router'
 import { AuthService } from '../core/auth.service'
 import { Project } from '../models/project-model'
@@ -325,7 +325,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      
+
       // this.logger.log('[USERS] - GET CURRENT PROJECT -> project', this.project)
       if (project) {
         this.project = project;
@@ -367,7 +367,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe(
       (projectProfileData: any) => {
-      //  console.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
+        //  console.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
         if (projectProfileData) {
           this.prjct_id = projectProfileData._id
           this.prjct_name = projectProfileData.name
@@ -375,18 +375,18 @@ export class UsersComponent implements OnInit, OnDestroy {
             if (projectProfileData.trial_expired === false) {
               this.prjct_profile_name = "Pro plan (trial)"
             } else {
-  
+
               this.prjct_profile_name = "Free"
-  
+
             }
           } else if (projectProfileData.profile_type === 'payment') {
-  
+
             if (projectProfileData.profile_name === 'pro') {
               this.prjct_profile_name = "Pro"
             } else if (projectProfileData.profile_name === 'enterprise') {
               this.prjct_profile_name = "Enterprise"
             }
-  
+
           }
 
           this.projectPlanAgentsNo = projectProfileData.profile_agents
@@ -792,51 +792,50 @@ export class UsersComponent implements OnInit, OnDestroy {
     // this.logger.log('Confirm Delete Project-User');
     this.usersService.deleteProjectUser(this.id_projectUser).subscribe(
       (projectUsers: any) => {
-      //  console.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ', projectUsers,  )
-        this.logger.log(    '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ',  this.id_projectUser, )
+        //  console.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ', projectUsers,  )
+        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser,)
         // this.ngOnInit();
+        if (!isDevMode()) {
+          try {
+            window['analytics'].page("Temmates list Page, Temmates", {
+              "properties": {
+                "title": 'Temmates list Page, Temmates'
+              }
+            });
+          } catch (err) {
+            this.logger.error('Account Deleted page error', err);
+          }
 
-        try {
-          window['analytics'].page("Temmates list Page, Temmates", {
-            "properties": {
-              "title": 'Temmates list Page, Temmates'
-            }
-          });
-        } catch (err) {
-          this.logger.error('Account Deleted page error', err);
-        }
+          try {
+            window['analytics'].identify(this.CURRENT_USER._id, {
+              name: this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname,
+              email: this.CURRENT_USER.email,
+              plan: this.prjct_profile_name
 
-        try {
-          window['analytics'].identify(this.CURRENT_USER._id, {
-            name: this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname,
-            email: this.CURRENT_USER.email,
-            plan: this.prjct_profile_name
-  
-          });
-        } catch (err) {
-          this.logger.error('identify in Account Removed  error', err);
-        }
+            });
+          } catch (err) {
+            this.logger.error('identify in Account Removed  error', err);
+          }
+          try {
+            window['analytics'].track('Account Removed User', {
+              "userId": projectUsers.id_user,
+              "properties": {},
+              "context": {
+                "groupId": this.id_project
+              }
+            });
+          } catch (err) {
+            this.logger.error('track signin event error', err);
+          }
 
-  
-        try {
-          window['analytics'].track('Account Removed User', {
-            "userId": projectUsers.id_user,
-            "properties": {},
-            "context": {
-              "groupId": this.id_project
-            }
-          });
-        } catch (err) {
-          this.logger.error('track signin event error', err);
-        }
-
-        try {
-          window['analytics'].group(this.project._id, {
-            name: this.project.name,
-            plan: this.prjct_profile_name,
-          });
-        } catch (err) {
-          this.logger.error('group Signed Out error', err);
+          try {
+            window['analytics'].group(this.project._id, {
+              name: this.project.name,
+              plan: this.prjct_profile_name,
+            });
+          } catch (err) {
+            this.logger.error('group Signed Out error', err);
+          }
         }
       },
       (error) => {
@@ -912,7 +911,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         //   }
         // });
 
-       
+
         // this.projectUsersList = this.projectUsersList.slice(0)
         this.logger.log('[USERS] - UPDATE PROJECT USER STATUS projectUsersList after update', this.projectUsersList)
         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
@@ -932,7 +931,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           this.notify.showWidgetStyleUpdateNotification(
             this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
 
-       
+
           this.getUploadEgine()
         },
       )

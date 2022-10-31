@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, isDevMode } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
@@ -119,21 +119,25 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.buildForm();
     this.getBrowserLang();
     this.getOSCODE();
-    try {
-      window['analytics'].page("Auth Page, Signup", {
-        "properties": {
-          "title": 'Signup'
-        }
-      });
-    } catch (err) {
-      this.logger.error('Signin page error', err);
-    }
-    try {
-      window['analytics'].identify({
-        createdAt: moment().format("YYYY-MM-DD hh:mm:ss")
-      });
-    } catch (err) {
-      this.logger.error('Signin identify error', err);
+
+    if (!isDevMode()) {
+      try {
+        window['analytics'].page("Auth Page, Signup", {
+          "properties": {
+            "title": 'Signup'
+          }
+        });
+      } catch (err) {
+        this.logger.error('Signin page error', err);
+      }
+      try {
+        window['analytics'].identify({
+          createdAt: moment().format("YYYY-MM-DD hh:mm:ss")
+        });
+      } catch (err) {
+        this.logger.error('Signin identify error', err);
+      }
+
     }
   }
 
@@ -287,41 +291,31 @@ export class SignupComponent implements OnInit, AfterViewInit {
           const userEmail = signupResponse.user.email
           this.logger.log('[SIGN-UP] RES USER EMAIL ', userEmail);
 
-          // console.log('[SIGN-UP] window analytics ', window['analytics']);
+          if (!isDevMode()) {
+            try {
+              window['analytics'].identify(signupResponse.user._id, {
+                name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                email: signupResponse.user.email,
+                logins: 5,
+              });
+            } catch (err) {
+              this.logger.error('identify signup event error', err);
+            }
 
-          // try {
-          //   window['analytics'].page("Auth Page, Signup", {
-          //     "properties": {
-          //       "title": 'Signup'
-          //     }
-          //   });
-          // } catch (err) {
-          //   this.logger.error('Signin page error', err);
-          // }
-
-          try {
-            window['analytics'].identify(signupResponse.user._id, {
-              name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
-              email: signupResponse.user.email,
-              logins: 5,
-            });
-          } catch (err) {
-            this.logger.error('identify signup event error', err);
-          }
-
-          try {
-            window['analytics'].track('Signed Up', {
-              "properties": {
-                "type": "organic",
-                "first_name": signupResponse.user.firstname,
-                "last_name": signupResponse.user.lastname,
-                "email": signupResponse.user.email,
-                "username": signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
-                'userId': signupResponse.user._id
-              }
-            });
-          } catch (err) {
-            this.logger.error('track signup event error', err);
+            try {
+              window['analytics'].track('Signed Up', {
+                "properties": {
+                  "type": "organic",
+                  "first_name": signupResponse.user.firstname,
+                  "last_name": signupResponse.user.lastname,
+                  "email": signupResponse.user.email,
+                  "username": signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                  'userId': signupResponse.user._id
+                }
+              });
+            } catch (err) {
+              this.logger.error('track signup event error', err);
+            }
           }
 
           this.autoSignin(userEmail);
