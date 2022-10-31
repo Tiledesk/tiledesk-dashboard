@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.54.1
+- Minor improvements
+
 ### 2.2.54
 - Deploys in production
 - Outsources the apps base URL in the environment files
