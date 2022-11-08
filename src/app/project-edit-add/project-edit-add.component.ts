@@ -883,6 +883,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (this.USER_ROLE === 'owner') {
       this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage ');
       this.router.navigate(['project/' + this.id_project + '/notification-email'])
+    } else {
+      this.presentModalOnlyOwnerCanManageEmailTempalte()
     }
 
     // if (this.profile_name === 'enterprise' && this.subscription_is_active === true) {
