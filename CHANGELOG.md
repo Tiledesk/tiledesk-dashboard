@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.2.54.2
+- Displays the modal window "Only team members with the owner role can manage email templates" when the teammate that click on the button  "Customize emails" not has owner role
+
 ### 2.2.54.1
 - Minor improvements
 
