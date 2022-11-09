@@ -24,32 +24,32 @@ export class ProjectProfileGuard implements CanActivate {
     // this.logger.log('[PROJECT-PROFILE-GUARD] GUARD canActivate next > ****** PRJCT ID ****** ', prjct_id)
 
     const url = state.url;
-    this.logger.log('[PROJECT-PROFILE-GUARD] canActivate state > ****** URL ****** ', url);
+    console.log('[PROJECT-PROFILE-GUARD] canActivate state > ****** URL ****** ', url);
 
 
     const project = await this.prjctPlanService._getProjectById(prjct_id);
-    this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** userIsAuthorized ****** ', project)
+    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** userIsAuthorized ****** ', project)
 
     const type = project['profile'].type;
     const isActiveSubscription = project['isActiveSubscription'];
     const trialExpired = project['trialExpired'];
 
-    this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * type * ', type);
-    this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * isActiveSubscription * ', isActiveSubscription);
-    this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * trialExpired * ', trialExpired);
+    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * type * ', type);
+    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * isActiveSubscription * ', isActiveSubscription);
+    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * trialExpired * ', trialExpired);
 
     if (type === 'free') {
       if (trialExpired === true) {
 
         this.userIsAuthorized = false
 
-        this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
+        console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
 
       } else if (trialExpired === false) {
 
         this.userIsAuthorized = true
 
-        this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
+        console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
       }
     }
 
@@ -58,13 +58,13 @@ export class ProjectProfileGuard implements CanActivate {
 
         this.userIsAuthorized = true;
 
-        this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
+        console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
 
       } else if (isActiveSubscription === false) {
 
         this.userIsAuthorized = false;
 
-        this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
+        console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
       }
     }
 
@@ -72,7 +72,7 @@ export class ProjectProfileGuard implements CanActivate {
     if (this.userIsAuthorized === true) {
       return true
     } else {
-      this.logger.log('[PROJECT-PROFILE-GUARD] USER NOT AUTHORIZED - URL ', url);
+      console.log('[PROJECT-PROFILE-GUARD] USER NOT AUTHORIZED - URL ', url);
       this.router.navigate([url + '-demo']);
       return false
     }

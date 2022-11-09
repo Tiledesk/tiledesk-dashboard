@@ -548,22 +548,13 @@ export class UsersComponent implements OnInit, OnDestroy {
             this.projectUsersLength,
           )
         }
-      },
-      (error) => {
+      }, (error) => {
         this.showSpinner = false
-        this.logger.error(
-          '[USERS] - GET PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR',
-          error,
-        )
-      },
-      () => {
+        this.logger.error('[USERS] - GET PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error)
+      }, () => {
         this.HAS_FINISHED_GET_PROJECT_USERS = true
         this.showSpinner = false
-        this.logger.log(
-          '[USERS] - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE',
-        )
-
-        // this.getPendingInvitation();
+        this.logger.log('[USERS] - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE')
       },
     )
   }
@@ -612,12 +603,10 @@ export class UsersComponent implements OnInit, OnDestroy {
             this.countOfPendingInvites,
           )
         }
-      },
-      (error) => {
+      }, (error) => {
         this.showSpinner = false
         this.logger.error('[USERS] - GET PENDING INVITATION - ERROR', error)
-      },
-      () => {
+      }, () => {
         this.logger.log('[USERS] - GET PENDING INVITATION * COMPLETE * ')
         this.HAS_FINISHED_GET_PENDING_USERS = true
         this.showSpinner = false
@@ -645,45 +634,21 @@ export class UsersComponent implements OnInit, OnDestroy {
             '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES  email',
             this.pendingInvitationEmail,
           )
-        },
-        (error) => {
-          this.logger.error(
-            '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - ERROR',
-            error,
-          )
-          // this.notify.showNotification('An error occurred sending the email', 4, 'report_problem')
-          this.notify.showNotification(
-            this.resendInviteErrorNoticationMsg,
-            4,
-            'report_problem',
-          )
-        },
-        () => {
-          this.logger.log(
-            '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - COMPLETE',
-          )
+        }, (error) => {
+          this.logger.error('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - ERROR', error)
+
+          this.notify.showWidgetStyleUpdateNotification(this.resendInviteErrorNoticationMsg, 4, 'report_problem')
+        }, () => {
+          this.logger.log('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - COMPLETE')
           // =========== NOTIFY SUCCESS===========
-          //  this.notify.showNotification('Invitation email has been sent to ' + this.pendingInvitationEmail, 2, 'done');
-          this.notify.showNotification(
-            this.resendInviteSuccessNoticationMsg + this.pendingInvitationEmail,
-            2,
-            'done',
-          )
+          this.notify.showWidgetStyleUpdateNotification(this.resendInviteSuccessNoticationMsg + this.pendingInvitationEmail, 2, 'done')
         },
       )
   }
 
-  openCancelInvitationModal(
-    pendingInvitationId: string,
-    pendingInvitationEmail: string,
-  ) {
+  openCancelInvitationModal(pendingInvitationId: string, pendingInvitationEmail: string) {
     this.displayCancelInvitationModal = 'block'
-    this.logger.log(
-      '[USERS] openCancelInvitationModal pendingInvitationId: ',
-      pendingInvitationId,
-      ' pendingInvitationEmail: ',
-      pendingInvitationEmail,
-    )
+    this.logger.log('[USERS] openCancelInvitationModal pendingInvitationId: ', pendingInvitationId, ' pendingInvitationEmail: ', pendingInvitationEmail)
 
     this.pendingInvitationIdToCancel = pendingInvitationId
     this.pendingInvitationEmailToCancel = pendingInvitationEmail
@@ -707,22 +672,12 @@ export class UsersComponent implements OnInit, OnDestroy {
             '[USERS] DELETE PENDING INVITATION  RES ',
             pendingInvitation,
           )
-        },
-        (error) => {
+        }, (error) => {
           this.logger.error('[USERS] DELETE PENDING INVITATION - ERROR', error)
-          this.notify.showNotification(
-            this.canceledInviteErrorMsg,
-            4,
-            'report_problem',
-          )
-        },
-        () => {
+          this.notify.showWidgetStyleUpdateNotification(this.canceledInviteErrorMsg, 4, 'report_problem')
+        }, () => {
           this.logger.log('[USERS] DELETE PENDING INVITATION * COMPLETE *')
-          this.notify.showNotification(
-            this.canceledInviteSuccessMsg + this.pendingInvitationEmailToCancel,
-            2,
-            'done',
-          )
+          this.notify.showWidgetStyleUpdateNotification(this.canceledInviteSuccessMsg + this.pendingInvitationEmailToCancel, 2, 'done')
           this.getPendingInvitation()
         },
       )
@@ -751,10 +706,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.router.navigate(['project/' + this.id_project + '/user/add'])
       } else {
         if (this.USER_ROLE === 'owner') {
-          this.notify._displayContactUsModal(
-            true,
-            'operators_seats_unavailable',
-          )
+          this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
         } else {
           this.presentModalOnlyOwnerCanManageTheAccountPlan()
         }
@@ -798,9 +750,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         if (!isDevMode()) {
           try {
             window['analytics'].page("Temmates list Page, Temmates", {
-              "properties": {
-                "title": 'Temmates list Page, Temmates'
-              }
+      
             });
           } catch (err) {
             this.logger.error('Account Deleted page error', err);
@@ -816,14 +766,16 @@ export class UsersComponent implements OnInit, OnDestroy {
           } catch (err) {
             this.logger.error('identify in Account Removed  error', err);
           }
+
           try {
             window['analytics'].track('Account Removed User', {
-              "userId": projectUsers.id_user,
-              "properties": {},
-              "context": {
-                "groupId": this.id_project
-              }
-            });
+              "userId": projectUsers.id_user
+            },
+              {
+                "context": {
+                  "groupId": this.id_project
+                }
+              });
           } catch (err) {
             this.logger.error('track signin event error', err);
           }
@@ -837,31 +789,16 @@ export class UsersComponent implements OnInit, OnDestroy {
             this.logger.error('group Signed Out error', err);
           }
         }
-      },
-      (error) => {
+      }, (error) => {
         this.showSpinner = false
-        this.logger.error(
-          '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - ERROR ',
-          error,
-        )
+        this.logger.error('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - ERROR ', error)
 
         // NOTIFY ERROR
-        this.notify.showNotification(
-          this.deleteProjectUserErrorNoticationMsg,
-          4,
-          'report_problem',
-        )
-      },
-      () => {
-        this.logger.log(
-          '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS * COMPLETE *',
-        )
+        this.notify.showWidgetStyleUpdateNotification(this.deleteProjectUserErrorNoticationMsg, 4, 'report_problem')
+      }, () => {
+        this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS * COMPLETE *')
         // NOTIFY SUCCESS
-        this.notify.showNotification(
-          this.deleteProjectUserSuccessNoticationMsg,
-          2,
-          'done',
-        )
+        this.notify.showWidgetStyleUpdateNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done')
 
         for (let i = 0; i < this.projectUsersList.length; i++) {
           if (this.id_projectUser === this.projectUsersList[i]._id) {
@@ -916,24 +853,20 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.logger.log('[USERS] - UPDATE PROJECT USER STATUS projectUsersList after update', this.projectUsersList)
         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
         this.usersService.availability_switch_clicked(true)
+      }, (error) => {
+        this.logger.error('[USERS] - UPDATE PROJECT USER STATUS - ERROR ', error)
+
+        //  NOTIFY ERROR
+        this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem')
+      }, () => {
+        this.logger.log('[USERS] - UPDATE PROJECT USER STATUS * COMPLETE *')
+
+        //  NOTIFY SUCCESS
+        this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
+
+
+        this.getUploadEgine()
       },
-        (error) => {
-          this.logger.error('[USERS] - UPDATE PROJECT USER STATUS - ERROR ', error)
-
-          //  NOTIFY ERROR
-          this.notify.showWidgetStyleUpdateNotification(
-            this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem')
-        },
-        () => {
-          this.logger.log('[USERS] - UPDATE PROJECT USER STATUS * COMPLETE *')
-
-          //  NOTIFY SUCCESS
-          this.notify.showWidgetStyleUpdateNotification(
-            this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
-
-
-          this.getUploadEgine()
-        },
       )
   }
 

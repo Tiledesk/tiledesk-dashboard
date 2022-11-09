@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
 import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { slideInAnimation } from '../../_animations/index';
@@ -31,11 +31,11 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
   projectId: string;
   sub: Subscription;
   has_copied = false;
-  continue_btn_disabled: boolean = true; 
+  continue_btn_disabled: boolean = true;
 
   // WIDGET_URL = environment.widgetUrl; // now get from appconfig
   WIDGET_URL: string;
-  
+
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -45,20 +45,20 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
     private route: ActivatedRoute,
     private widgetService: WidgetService,
     public translate: TranslateService,
-  ) { 
+  ) {
     super(translate);
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.logo_on_rocket = brand['wizard_install_widget_page']['logo_on_rocket'];
     const selectLangCode = this.route.snapshot.params['langcode'];
-    const selectLangName = this.route.snapshot.params['langname'];  
+    const selectLangName = this.route.snapshot.params['langname'];
     this.logger.log('[WIZARD - INSTALL-WIDGET] selectLangCode in the previous step ', selectLangCode)
     this.logger.log('[WIZARD - INSTALL-WIDGET] selectLangName in the previous step ', selectLangName)
     this.addNewLanguage(selectLangCode, selectLangName)
   }
 
   addNewLanguage(selectLangCode: string, selectLangName: string) {
-  
+
     // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
     this.widgetService.cloneLabel(selectLangCode.toUpperCase())
       .subscribe((res: any) => {
@@ -71,7 +71,9 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
         this.logger.error('[WIZARD - INSTALL-WIDGET] ADD-NEW-LANG (clone-label) - ERROR ', error)
       }, () => {
         this.logger.log('[WIZARD - INSTALL-WIDGET] ADD-NEW-LANG (clone-label) * COMPLETE *')
-        this.continue_btn_disabled = false;
+        setTimeout(() => {
+          this.continue_btn_disabled = false;
+        }, 500);
       });
 
     // // ADD THE NEW LANGUAGE TO BOTTOM NAV

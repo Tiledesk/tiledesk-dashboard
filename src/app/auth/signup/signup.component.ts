@@ -10,7 +10,7 @@ import { AppConfigService } from '../../services/app-config.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import * as moment from 'moment';
+import moment from 'moment';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -123,9 +123,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
     if (!isDevMode()) {
       try {
         window['analytics'].page("Auth Page, Signup", {
-          "properties": {
-            "title": 'Signup'
-          }
+          // "properties": {
+          //   "title": 'Signup'
+          // }
         });
       } catch (err) {
         this.logger.error('Signin page error', err);
@@ -137,7 +137,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
       } catch (err) {
         this.logger.error('Signin identify error', err);
       }
-
     }
   }
 
@@ -287,35 +286,34 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIGN-UP] POST DATA ', signupResponse);
         if (signupResponse['success'] === true) {
           // this.router.navigate(['/welcome']);
-          // console.log('[SIGN-UP] RES ', signupResponse);
+          this.logger.log('[SIGN-UP] RES ', signupResponse);
           const userEmail = signupResponse.user.email
           this.logger.log('[SIGN-UP] RES USER EMAIL ', userEmail);
 
-          if (!isDevMode()) {
-            try {
-              window['analytics'].identify(signupResponse.user._id, {
-                name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
-                email: signupResponse.user.email,
-                logins: 5,
-              });
-            } catch (err) {
-              this.logger.error('identify signup event error', err);
-            }
+          try {
+            window['analytics'].identify(signupResponse.user._id, {
+              name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+              email: signupResponse.user.email,
+              logins: 5,
+            });
+          } catch (err) {
+            this.logger.error('identify signup event error', err);
+          }
 
-            try {
-              window['analytics'].track('Signed Up', {
-                "properties": {
-                  "type": "organic",
-                  "first_name": signupResponse.user.firstname,
-                  "last_name": signupResponse.user.lastname,
-                  "email": signupResponse.user.email,
-                  "username": signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
-                  'userId': signupResponse.user._id
-                }
-              });
-            } catch (err) {
-              this.logger.error('track signup event error', err);
-            }
+          try {
+            window['analytics'].track('Signed Up', {
+              "type": "organic",
+              "first_name": signupResponse.user.firstname,
+              "last_name": signupResponse.user.lastname,
+              "email": signupResponse.user.email,
+              "username": signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+              'userId': signupResponse.user._id
+              // "properties": {
+
+              // }
+            });
+          } catch (err) {
+            this.logger.error('track signup event error', err);
           }
 
           this.autoSignin(userEmail);
@@ -349,7 +347,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.logger.error('[SIGN-UP] CREATE NEW USER - POST REQUEST ERROR ', error);
         this.showSpinnerInLoginBtn = false;
         this.display = 'block';
-        // const errorObj = JSON.parse(error);
         this.logger.error('[SIGN-UP] CREATE NEW USER - POST REQUEST ERROR STATUS', error.status);
 
         if (error.status === 422) {
@@ -369,17 +366,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
   autoSignin(userEmail: string) {
     // this.auth.emailLogin(
     const self = this;
-    // this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
-    //   .subscribe((error) => {
+
     this.auth.signin(userEmail, this.userForm.value['password'], function (error) {
       self.logger.log('[SIGN-UP] autoSignin 1. POST DATA ', error);
-      // this.auth.user = signinResponse.user;
-      // this.auth.user.token = signinResponse.token
-      // this.logger.log('SIGNIN TOKEN ', this.auth.user.token)
-      // tslint:disable-next-line:no-debugger
-      // debugger
-      if (!error) {
 
+      if (!error) {
         // --------------------------------------------
         // Run widget login
         // --------------------------------------------
@@ -393,25 +384,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
         if (window && window['tiledesk_widget_login']) {
           window['tiledesk_widget_login']();
         }
-        /**
-         * *** WIDGET - pass data to the widget method setTiledeskWidgetUser in index.html ***
-         */
-        // const storedUser = localStorage.getItem('user')
-        // self.logger.log('Signup - STORED USER  ', storedUser)
-        // if (storedUser !== null) {
-        //   const _storedUser = JSON.parse(storedUser);
-        //   self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userFullname', _storedUser.firstname + _storedUser.lastname)
-        //   self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userEmail', _storedUser.email);
-        //   self.logger.log('[SIGN-UP] autoSignin SetTiledeskWidgetUserSignin (Signup) - userId', _storedUser._id);
-
-        //   setTimeout(() => {
-        //     try {
-        //       window['[SIGN-UP] setTiledeskWidgetUser'](_storedUser.firstname + ' ' + _storedUser.lastname, _storedUser.email, _storedUser._id);
-        //     } catch (err) {
-        //       self.logger.error('[SIGN-UP] SetTiledeskWidgetUser (Signup) - error', err);
-        //     }
-        //   }, 2000);
-        // }
 
         if (self.SKIP_WIZARD === false) {
           self.router.navigate(['/create-project']);
@@ -422,10 +394,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
       } else {
         self.showSpinnerInLoginBtn = false;
 
-        const signin_errorbody = JSON.parse(error._body)
+        const signin_errorbody = error['error']
         self.signin_errormsg = signin_errorbody['msg']
         self.display = 'block';
-
         self.logger.error('[SIGN-UP] SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
       }
 

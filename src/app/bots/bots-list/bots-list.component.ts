@@ -100,17 +100,17 @@ export class BotListComponent implements OnInit {
     this.getCurrentProject();
     this.getOSCODE();
     // this.getFaqKb();
-    this.getFaqKbByProjectId();
+    this.getAllFaqKbByProjectId();
     this.getTranslations();
     this.listenSidebarIsOpened();
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }  
+  }
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
@@ -185,8 +185,7 @@ export class BotListComponent implements OnInit {
    * GETS ONLY THE FAQ-KB WITH THE CURRENT PROJECT ID
    * NOTE: THE CURRENT PROJECT-ID IS OBTAINED IN THE FAQ-KB SERVICE
    */
-  getFaqKbByProjectId() {
-    // this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+  getAllFaqKbByProjectId() {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
       this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       this.faqkbList = faqKb;
@@ -195,7 +194,6 @@ export class BotListComponent implements OnInit {
         if (this.faqkbList.length === 0) {
           this.showSpinner = false;
         }
-
 
         // ------------------------------------------------------------------------------------
         // FOR PRE
@@ -234,16 +232,14 @@ export class BotListComponent implements OnInit {
        * in this callback stop the spinner only if there isn't faq-kb and
        * if there is an error */
       // this.showSpinner = false;
-    },
-      (error) => {
-        this.logger.error('[BOTS-LIST] GET BOTS ERROR ', error);
-        this.showSpinner = false;
-      },
-      () => {
-        this.logger.log('[BOTS-LIST] GET BOTS COMPLETE');
-        // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-        this.getAllFaqByFaqKbId();
-      });
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] GET BOTS ERROR ', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[BOTS-LIST] GET BOTS COMPLETE');
+      // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
+      this.getAllFaqByFaqKbId();
+    });
 
   }
 
@@ -444,9 +440,9 @@ export class BotListComponent implements OnInit {
     if (this._botType !== 'dialogflow' && this._botType !== 'rasa') {
 
       this.updateBotAsTrashed();
-    } else if (this._botType === 'dialogflow')  {
+    } else if (this._botType === 'dialogflow') {
       this.deleteDlflwBotCredentialAndUpdateBotAsTrashed();
-    } else if (this._botType === 'rasa')  {
+    } else if (this._botType === 'rasa') {
       this.deleteRasaBotDataAndUpdateBotAsTrashed();
     }
   }
@@ -513,7 +509,7 @@ export class BotListComponent implements OnInit {
       // this.notify.showNotification('bot successfully deleted', 2, 'done');
       this.notify.showWidgetStyleUpdateNotification(this.trashBotSuccessNoticationMsg, 2, 'done');
 
-      this.getFaqKbByProjectId();
+      this.getAllFaqKbByProjectId();
 
       this.displayDeleteBotModal = 'none';
       setTimeout(() => {
@@ -522,23 +518,6 @@ export class BotListComponent implements OnInit {
     });
   }
 
-  deleteFaqKb() {
-    this.faqKbService.deleteFaqKb(this.id_toDelete)
-      .subscribe((data) => {
-        this.logger.log('[BOTS-LIST] DELETE FAQ-KB ', data);
-      }, (error) => {
-        this.logger.error('[BOTS-LIST] DELETE FAQ-KB (BOT) REQUEST ERROR ', error);
-        this.SHOW_CIRCULAR_SPINNER = false;
-        this.DELETE_BOT_ERROR = true;
-      },
-        () => {
-          this.logger.log('[BOTS-LIST] DELETE FAQ-KB (BOT) REQUEST * COMPLETE *');
-          // RE-RUN ngOnInit() TO UPDATE THE TABLE
-          // this.ngOnInit()
-          this.DELETE_BOT_ERROR = false;
-        });
-
-  }
 
   onCloseInfoModalHandled() {
     this.displayDeleteInfoModal = 'none';

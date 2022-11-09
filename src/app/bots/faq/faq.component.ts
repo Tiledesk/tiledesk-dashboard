@@ -6,7 +6,6 @@ import { Router, ActivatedRoute, NavigationEnd, RoutesRecognized } from '@angula
 
 import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { NotifyService } from '../../core/notify.service';
 import { Location } from '@angular/common';
@@ -43,7 +42,7 @@ const swal = require('sweetalert');
   styleUrls: ['./faq.component.scss'],
 })
 export class FaqComponent extends BotsBaseComponent implements OnInit {
-  @ViewChild('editbotbtn') private elementRef: ElementRef;
+  @ViewChild('editbotbtn', { static: false }) elementRef: ElementRef;
 
   faq: Faq[];
   question: string;
@@ -75,6 +74,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   modalChoosefileDisabled: boolean;
 
   faqKb_name: string;
+  faqkb_language: string;
   faqKbUrlToUpdate: string;
   rasaServerURL: string;
   rasaBotServerURL: string;
@@ -179,7 +179,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   queryString: string;
   paginated_answers_count: number;
 
-  @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
+  @ViewChild('fileInputBotProfileImage', { static: false }) fileInputBotProfileImage: any;
   isChromeVerGreaterThan100: boolean;
   constructor(
     private faqService: FaqService,
@@ -234,7 +234,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
     this.getTranslations();
 
-    this.getDeptsByProjectId();
+    // this.getDeptsByProjectId();
     this.getBrowserVersion();
   }
 
@@ -409,17 +409,17 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.faqKbService.getDialogflowBotCredetial(dlgflwbotid).subscribe((res) => {
       this.logger.log('[FAQ-COMP] getDialogFlowBotData - RES ', res);
 
-      this.uploadedFileName = res.credentials;
+      this.uploadedFileName = res['credentials'];
       this.logger.log('[FAQ-COMP] getDialogFlowBotData (FaqComponent) - RES > uploadedFileName ', this.uploadedFileName);
 
-      this.dlgflwSelectedLangCode = res.language;
+      this.dlgflwSelectedLangCode = res['language'];
       this.logger.log('[FAQ-COMP] getDialogFlowBotData (FaqComponent) - RES > dlgflwSelectedLangCode ', this.dlgflwSelectedLangCode);
 
-      this.dlgflwSelectedLang = this.dialogflowLanguage[this.getIndexOfdialogflowLanguage(res.language)]
+      this.dlgflwSelectedLang = this.dialogflowLanguage[this.getIndexOfdialogflowLanguage(res['language'])]
       this.logger.log('getDialogFlowBotData (FaqComponent) - RES > dlgflwSelectedLang ', this.dlgflwSelectedLang);
 
-      if (res.kbs && res.kbs !== 'undefined' && res.kbs !== 'null' && res.kbs !== null) {
-        this.dlgflwKnowledgeBaseID = res.kbs.trim();
+      if (res['kbs'] && res['kbs'] !== 'undefined' && res['kbs'] !== 'null' && res['kbs'] !== null) {
+        this.dlgflwKnowledgeBaseID = res['kbs'].trim();
         this.logger.log('[FAQ-COMP] getDialogFlowBotData - RES > dlgflwKnowledgeBaseID (kbs) ', this.dlgflwKnowledgeBaseID);
       } else {
         this.dlgflwKnowledgeBaseID = ''
@@ -478,8 +478,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         this.checkBotImageExistOnNative();
       }
       this.getFaqKbById();
-      this.getAllFaqByFaqKbId();
-      this.getPaginatedFaqByFaqKbIdAndRepliesCount()
+      // this.getAllFaqByFaqKbId();
+      // this.getPaginatedFaqByFaqKbIdAndRepliesCount()
       this.getDeptsByProjectId();
     }
   }
@@ -976,7 +976,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
    */
   getFaqKbById() {
     this.showSpinnerInUpdateBotCard = true
-    // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
+
     this.faqKbService.getFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
@@ -1011,6 +1011,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       // this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)]
       // this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       if (faqkb && faqkb.language) {
+        this.faqkb_language = faqkb.language;
         this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)].name
         this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       }
@@ -1042,24 +1043,24 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         this.logger.log('[FAQ-COMP]GET FAQ-KB (DETAILS) BY ID - BOT URL is undefined ', faqkb.url);
       }
 
-    },
-      (error) => {
-        this.logger.error('[FAQ-COMP] GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
-        this.showSpinnerInUpdateBotCard = false
-      },
-      () => {
-        this.logger.log('[FAQ-COMP] GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
-        this.showSpinnerInUpdateBotCard = false
-      });
+    }, (error) => {
+      this.logger.error('[FAQ-COMP] GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
+      this.showSpinnerInUpdateBotCard = false
+    }, () => {
+      this.logger.log('[FAQ-COMP] GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
+      this.showSpinnerInUpdateBotCard = false
+    });
   }
 
   getRasaBotServer() {
     this.faqKbService.getRasaBotServer(this.id_faq_kb)
       .subscribe((rasabotdata) => {
         this.logger.log('[FAQ-COMP] - GET RASA BOT DATA ', rasabotdata);
-        if (rasabotdata) {
-          this.logger.log('[FAQ-COMP] - GET RASA BOT DATA value ', rasabotdata.value);
-          this.rasaServerURL = rasabotdata.value.serverUrl
+        if (rasabotdata['success'] !== false) {
+          this.logger.log('[FAQ-COMP] - GET RASA BOT DATA value ', rasabotdata['value']);
+          this.rasaServerURL = rasabotdata['value'].serverUrl
+        } else {
+          this.logger.error('[FAQ-COMP] - The bot was not configured correctly')
         }
       }, (error) => {
         this.logger.error('[FAQ-COMP] -  ERROR ', error);
@@ -1183,8 +1184,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     }, (error) => {
       this.logger.error('[FAQ-COMP] - uploadDialogflowBotCredetial - ERROR ', error);
       // =========== NOTIFY ERROR ===========
-      const objctErrorBody = JSON.parse(error._body)
-      if (objctErrorBody && objctErrorBody.msg === 'Not a valid JSON file.') {
+      const errorMsg = error['error']['msg']
+      if (errorMsg && errorMsg === 'Not a valid JSON file.') {
         this.notify.showWidgetStyleUpdateNotification(this.updateBotError + ': ' + this.notValidJson, 4, 'report_problem');
       } else {
         this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
@@ -1220,7 +1221,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_CREATE() {
     this.logger.log('[FAQ-COMP] ID OF FAQKB ', this.id_faq_kb);
-    this.router.navigate(['project/' + this.project._id + '/createfaq', this.id_faq_kb, this.botType]);
+    // console.log('2 goToEditAddPage_CREATE:   ', this.faqkb_language);
+    this.router.navigate(['project/' + this.project._id + '/createfaq', this.id_faq_kb, this.botType, this.faqkb_language]);
   }
 
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ ID (RECEIVED FROM THE VIEW) AND
@@ -1433,7 +1435,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     }, () => {
       this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - COMPLETE');
     });
-
 
     // if (this.payIsVisible) {
     //   if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {

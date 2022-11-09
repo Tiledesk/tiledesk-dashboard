@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { slideInAnimation } from '../../_animations/index';
@@ -154,7 +154,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
         // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SETTED HIS LOGO)
         // ------------------------------------------------------------------------
         // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg') {
+        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
           this.logoUrl = project.widget.logoChat;
           this.hasOwnLogo = true;
           this.LOGO_IS_ON = true;
@@ -169,7 +169,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
           // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO')
           // ------------------------------------------------------------------------
           // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg') {
+        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
           this.logoUrl = 'No Logo';
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = false;
@@ -186,7 +186,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
           // ------------------------------------------------------------------------
         } else {
           // this.logoUrl = 'tiledesklogo'
-          this.logoUrl = 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg'
+          this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = true
 
@@ -251,7 +251,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         // this.logoUrl = 'tiledesklogo'
-        this.logoUrl = 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg'
+        this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
         this.hasOwnLogo = false;
         this.LOGO_IS_ON = true
 
@@ -473,7 +473,14 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     }
   }
 
-
+  continueToNextStep() {
+    // this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
+    this.router.navigate([`/project/${this.projectId}/onboarding/` + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
+    console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
+    console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
+    // this.addNewLanguage();
+    this.saveWidgetApparance()
+  }
 
 
 

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
+// import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
@@ -36,11 +36,9 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
 
-  public myDatePickerOptions: IMyDpOptions = {
-    // other options...
-    dateFormat: 'dd/mm/yyyy',
-    // dateFormat: 'yyyy, mm , dd',
-  };
+  // public myDatePickerOptions: IMyDpOptions = {
+  //   dateFormat: 'dd/mm/yyyy',
+  // };
   profile_name: string;
   isChromeVerGreaterThan100:boolean;
   constructor(

@@ -3,7 +3,7 @@ import { BasetriggerComponent } from './../basetrigger/basetrigger.component';
 import { NotifyService } from 'app/core/notify.service';
 import { DepartmentService } from '../../services/department.service';
 import { TriggerService } from 'app/services/trigger.service';
-import { Component, OnInit, trigger, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 
 // USED FOR go back last page
@@ -22,7 +22,7 @@ import { AuthService } from 'app/core/auth.service';
   styleUrls: ['./trigger-add.component.scss']
 })
 export class TriggerAddComponent extends BasetriggerComponent implements OnInit {
-  @ViewChild('myselect') myselect; // !! Not used
+  @ViewChild('myselect', { static: false }) myselect; // !! Not used
 
   // trigger: Trigger;
   // condition: any;        --> get from BaseTriggerComponent

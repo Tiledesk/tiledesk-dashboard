@@ -1,17 +1,15 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { FaqKb } from '../models/faq_kb-model';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import 'rxjs/add/operator/map';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 @Injectable()
 export class FaqKbService {
 
-  http: Http;
   SERVER_BASE_PATH: string;
   DLGFLW_BOT_CREDENTIAL_BASE_URL: string;
   RASA_BOT_CREDENTIAL_BASE_URL: string;
@@ -21,14 +19,11 @@ export class FaqKbService {
   project: any;
   public $nativeBotName: BehaviorSubject<string> = new BehaviorSubject<string>('')
   constructor(
-    http: Http,
     private auth: AuthService,
     public appConfigService: AppConfigService,
-    private httpClient: HttpClient,
+    private _httpClient: HttpClient,
     private logger: LoggerService
   ) {
-
-    this.http = http;
 
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value
@@ -85,195 +80,170 @@ export class FaqKbService {
   }
 
 
-  // publishBotName(faqKb_name) {
-  //   console.log('[FAQ-KB.SERV] publishFaqName faqKb_name ', faqKb_name);
-  //   this.$nativeBotName.next(faqKb_name) 
-  // }
-
-  /**
-   * READ (GET) !!! NO MORE USED
-  public getMongDbFaqKb(): Observable<FaqKb[]> {
-    const url = this.FAQKB_URL;
-    this.logger.log('[FAQ-KB.SERV] MONGO DB FAQ-KB URL', url);
-
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
-  */
-
   /**
    * READ (GET ALL FAQKB WITH THE CURRENT PROJECT ID)
    * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IT SO NO LONGER NECESSARY TO PASS THE PROJECT 
    * ID AS PARAMETER
    */
   public getFaqKbByProjectId(): Observable<FaqKb[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     const url = this.FAQKB_URL;
-    // url += '?id_project=' + `${id_project}`;
-    // const url = `http://localhost:3000/${id_project}/faq_kb/`;
     this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY PROJECT ID - URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map(
-        (response) => {
-          const data = response.json();
-          // Does something on data.data
-          this.logger.log('[FAQ-KB.SERV] GET FAQ-KB BY PROJECT ID - data', data);
+    return this._httpClient
+      .get<FaqKb[]>(url, httpOptions)
+      .pipe(
+        map(
+          (response) => {
+            const data = response;
+            // Does something on data.data
+            this.logger.log('[FAQ-KB.SERV] GET FAQ-KB BY PROJECT ID - data', data);
 
-          data.forEach(d => {
-            this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY PROJECT ID URL data d', d);
-            if (d.description) {
-              let stripHere = 20;
-              d['truncated_desc'] = d.description.substring(0, stripHere) + '...';
-            }
-          });
-          // return the modified data:
-          return data;
-        })
+            data.forEach(d => {
+              this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY PROJECT ID URL data d', d);
+              if (d.description) {
+                let stripHere = 20;
+                d['truncated_desc'] = d.description.substring(0, stripHere) + '...';
+              }
+            });
+            // return the modified data:
+            return data;
+          })
+      );
   }
 
-  // -----------------------------------------------------------------------------------------------------------
-  // with all=true the response return also the identity bot (used in bot-list.comp and and in basetrigger.comp)
-  // -----------------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------
+  // with all=true the response return also the identity bot 
+  // ------------------------------------------------------------
   public getAllBotByProjectId(): Observable<FaqKb[]> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     const url = this.FAQKB_URL + '?all=true';
-    // url += '?id_project=' + `${id_project}`;
-    // const url = `http://localhost:3000/${id_project}/faq_kb/`;
     this.logger.log('[FAQ-KB.SERV] - GET *ALL* FAQ-KB BY PROJECT ID - URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map(
-        (response) => {
-          const data = response.json();
-          // Does something on data.data
-          this.logger.log('[FAQ-KB.SERV] GET *ALL* FAQ-KB BY PROJECT ID - data', data);
+    return this._httpClient
+      .get<FaqKb[]>(url, httpOptions)
+      .pipe(
+        map(
+          (response) => {
+            const data = response;
+            // Does something on data.data
+            this.logger.log('[FAQ-KB.SERV] GET *ALL* FAQ-KB BY PROJECT ID - data', data);
 
-          data.forEach(d => {
-            this.logger.log('[FAQ-KB.SERV] - GET *ALL* FAQ-KB BY PROJECT ID URL data d', d);
-            if (d.description) {
-              let stripHere = 20;
-              d['truncated_desc'] = d.description.substring(0, stripHere) + '...';
-            }
-          });
-
-
-          // return the modified data:
-          return data;
-        })
+            data.forEach(d => {
+              this.logger.log('[FAQ-KB.SERV] - GET *ALL* FAQ-KB BY PROJECT ID URL data d', d);
+              if (d.description) {
+                let stripHere = 20;
+                d['truncated_desc'] = d.description.substring(0, stripHere) + '...';
+              }
+            });
+            // return the modified data:
+            return data;
+          })
+      );
   }
 
   /**
    * READ DETAIL (GET BY ID)
-   * 
    * @param id 
    * @returns 
    */
   public getFaqKbById(id: string): Observable<FaqKb[]> {
-    let url = this.FAQKB_URL;
-    url += `${id}`;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.FAQKB_URL + id;
     this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID - URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this._httpClient
+      .get<FaqKb[]>(url, httpOptions)
   }
 
 
   public createRasaBot(name: string, bottype: string, description: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.FAQKB_URL;
     this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
-    // const isPreDeploy = false
-
     const body = { 'name': name, 'type': bottype, 'description': description, 'id_project': this.project._id, };
-
-
     this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
-    // let url = `http://localhost:3000/${project_id}/faq_kb/`;
-    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
-
-
   public connectBotToRasaServer(botid: string, serverurl: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.RASA_BOT_CREDENTIAL_BASE_URL + botid;
     this.logger.log('[FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
 
-    // const isPreDeploy = false
-
     const body = { 'serverUrl': serverurl };
-
-
     this.logger.log('[FAQ-KB.SERV] - connectBotToRasaServer - BODY ', body);
-    // let url = `http://localhost:3000/${project_id}/faq_kb/`;
-    this.logger.log('[FAQ-KB.SERV] - connectBotToRasaServer - URL ', url);
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
   public getRasaBotServer(botid: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.RASA_BOT_CREDENTIAL_BASE_URL + botid;
-    // console.log('[FAQ-KB.SERV] - getRasaBotServer - URL ', url);
-    return this.http
-      .get(url, options)
-      .map((res) => res.json());
+    this.logger.log('[FAQ-KB.SERV] - getRasaBotServer - URL ', url);
+
+    return this._httpClient
+      .get(url, httpOptions)
   }
 
   public deleteRasaBotData(botid: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.RASA_BOT_CREDENTIAL_BASE_URL + botid;
-    // console.log('[FAQ-KB.SERV] - getRasaBotServer - URL ', url);
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    this.logger.log('[FAQ-KB.SERV] - getRasaBotServer - URL ', url);
+
+    return this._httpClient
+      .delete(url, httpOptions)
   }
 
   /**
-   * CREATE BOT external or dialogflow (POST)
-   * 
    * @param name 
    * @param urlfaqkb 
    * @param bottype 
@@ -281,31 +251,26 @@ export class FaqKbService {
    * @returns 
    */
   public createFaqKb(name: string, urlfaqkb: string, bottype: string, description: string, resbotlanguage: string, resbottemplate: string) {
-  //  console.log('createFaqKb bottype ', bottype )
-  //  console.log('createFaqKb resbotlanguage ', resbotlanguage )
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.FAQKB_URL;
-    // console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
-    // const isPreDeploy = false
     let body = {}
     body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'type': bottype, 'description': description };
     if (bottype === 'internal' || bottype === 'tilebot') {
       body['language'] = resbotlanguage
       body['template'] = resbottemplate
     }
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 
-    // console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
-
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
   // ------------------------------------------------------------------------------------------------
@@ -319,131 +284,57 @@ export class FaqKbService {
    * @returns 
    */
   uploadDialogflowBotCredetial(botid: string, formData: any) {
-    const headers = new Headers();
+    // const headers = new Headers();
+    // headers.append('Authorization', this.TOKEN);
+    // const options = new RequestOptions({ headers: headers });
 
-    // headers.append('Accept', 'text/csv');
-    // headers.append('Accept', 'application/json');
-    // headers.append('Content-type', 'multipart/form-data');
-    headers.append('Authorization', this.TOKEN);
-    this.logger.log('[FAQ-KB.SERV] - uploadDialogflowBotCredetial formData ', formData)
-
-    // const url =  "http://dialogflow-proxy-tiledesk.herokuapp.com/uploadgooglecredendials/" + botid
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': this.TOKEN
+      })
+    };
     const url = this.DLGFLW_BOT_CREDENTIAL_BASE_URL + botid
     this.logger.log('[FAQ-KB.SERV] - uploadDialogflowBotCredetial POST URL ', url)
-    const options = new RequestOptions({ headers: headers });
-    return this.http
-      .post(url, formData, options)
-      .map(res => res.json())
+    this.logger.log('[FAQ-KB.SERV] - uploadDialogflowBotCredetial formData ', formData)
+
+    return this._httpClient
+      .post(url, formData, httpOptions)
   }
 
   getDialogflowBotCredetial(botid: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     let url = this.DLGFLW_BOT_CREDENTIAL_BASE_URL + botid;
     this.logger.log('[FAQ-KB.SERV] - getDialogflowBotCredetial GET URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+
+    return this._httpClient
+      .get(url, httpOptions)
   }
 
 
   public deleteDialogflowBotCredetial(id: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     let url = this.DLGFLW_BOT_CREDENTIAL_BASE_URL + id;
     this.logger.log('[FAQ-KB.SERV] - deleteDialogflowBotCredetial DELETE URL ', url);
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
 
+    return this._httpClient
+      .delete(url, httpOptions)
   }
 
-  /**
-   * CREATE KBKEY
-   * AFTER THAT A NEW FAQKB WAS CREATED RUN A CALLBACK VS qna_kbmanagement/create
-   * THAT RETURN THE kbkey THEN USED TO RUN ANOTHER CALLBACK WHEN A NEW FAQ WAS CREATED
-   */
-
-  // {
-  //   "username": "frontiere21",
-  //   "password": "password",
-  //   "language": "italian"
-  // }
-  // public createFaqKbKey() {
-  //   const headers = new Headers();
-  //   headers.append('Accept', 'application/json');
-  //   headers.append('Content-type', 'application/json');
-  //   headers.append('Authorization', 'Basic YWRtaW46YWRtaW5wNHNzdzByZA==');
-  //   const options = new RequestOptions({ headers });
-
-  //   const body = { 'username': 'frontiere21', 'password': 'password', 'language': 'italian' };
-
-  //   this.logger.log('CREATE FAQKB KEY - POST REQUEST BODY ', body);
-
-  //   const url = 'http://ec2-52-47-168-118.eu-west-3.compute.amazonaws.com/qna_kbmanagement/create';
-
-  //   return this.http
-  //     .post(url, JSON.stringify(body), options)
-  //     .map((res) => res.json());
-
-  // }
-
-  /**
-   * DELETE (DELETE)
-   * @param id
-   */
-  public deleteFaqKb(id: string) {
-    let url = this.FAQKB_URL;
-    url += `${id}# chat21-api-nodejs`;
-    this.logger.log('[FAQ-KB.SERV] - deleteFaqKb - DELETE URL ', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
-
-  }
-
-  /**
-   * UPDATE (PUT)
-   * @param id
-   * @param fullName
-   */
-  public updateFaqKb(id: string, name: string, urlfaqkb: string, bottype: string, faqKb_description: string, webkookisenalbled: any, webhookurl, resbotlanguage: string) {
-
-    let url = this.FAQKB_URL + id;
-    // url = url += `${id}`;
-    // console.log('update BOT - URL ', url);
-    // console.log('update BOT - bottype ', bottype);
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-    let body = {}
-    body = { 'name': name, 'url': urlfaqkb, 'type': bottype, 'description': faqKb_description };
-    if (bottype === 'internal' || bottype === 'tilebot' ) {
-      body['webhook_enabled'] = webkookisenalbled;
-      body['webhook_url'] = webhookurl
-      body['language'] = resbotlanguage
-    }
-    this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
 
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-
-  }
 
   /**
    * UPDATE (PUT) the BOT WITH trashed = true WHEN THE USER CLICKED THE BTN 'DELETE BOT' 
@@ -453,24 +344,55 @@ export class FaqKbService {
    * @returns 
    */
   public updateFaqKbAsTrashed(id: string, _trashed: boolean) {
-    let url = this.FAQKB_URL;
-    url = url += `${id}`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.FAQKB_URL + id
     this.logger.log('[FAQ-KB.SERV] updateFaqKbAsTrashed - PUT URL ', url);
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
 
     const body = { 'trashed': _trashed };
-
     this.logger.log('[FAQ-KB.SERV] updateFaqKbAsTrashed - PUT BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
   }
+
+  /**
+   * UPDATE (PUT)
+   * @param id
+   * @param fullName
+   */
+  public updateFaqKb(id: string, name: string, urlfaqkb: string, bottype: string, faqKb_description: string, webkookisenalbled: any, webhookurl, resbotlanguage: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.FAQKB_URL + id;
+    this.logger.log('update BOT - URL ', url);
+
+    let body = {}
+    body = { 'name': name, 'url': urlfaqkb, 'type': bottype, 'description': faqKb_description };
+    if (bottype === 'internal' || bottype === 'tilebot') {
+      body['webhook_enabled'] = webkookisenalbled;
+      body['webhook_url'] = webhookurl
+      body['language'] = resbotlanguage
+    }
+    this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
+
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+  }
+
+
 
   getNumberOfMessages(idBot, bottype) {
     this.logger.log('[FAQ-KB.SERV] - getNumberOfMessages idBot ', idBot)
@@ -491,7 +413,7 @@ export class FaqKbService {
     // let params = new HttpParams().set('sender', 'bot_' + idBot)
     // this.logger.log('BOT LIST (bot-service) - getNumberOfMessages params', params) 
 
-    return this.httpClient.get(this.SERVER_BASE_PATH + this.project._id + "/analytics/messages/count", { headers: headers, params: params })
+    return this._httpClient.get(this.SERVER_BASE_PATH + this.project._id + "/analytics/messages/count", { headers: headers, params: params })
 
   }
 

@@ -30,6 +30,7 @@ export class HandleInvitationComponent implements OnInit {
   company_logo_45x45: any;
 
   constructor(
+    
     private route: ActivatedRoute,
     public usersService: UsersService,
     public projectService: ProjectService,
@@ -38,7 +39,6 @@ export class HandleInvitationComponent implements OnInit {
     public brandService: BrandService,
     private logger: LoggerService
   ) { 
-
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.company_logo_45x45 = brand['handle_invitation_page']['company_logo_45x45'];
@@ -60,11 +60,15 @@ export class HandleInvitationComponent implements OnInit {
     this.projectName = this.route.snapshot.params['projectname'];
     this.user_firstname = this.route.snapshot.params['adminfirstname'];
     this.user_lastname = this.route.snapshot.params['adminsurname'];
+    this.logger.log('[HandleInvitationComponent] GET URL PARAMS - projectName: ', this.projectName); 
+    this.logger.log('[HandleInvitationComponent] GET URL PARAMS - user_firstname: ', this.user_firstname); 
+    this.logger.log('[HandleInvitationComponent] GET URL PARAMS - user_lastname: ', this.user_lastname); 
   }
 
   get_PendingUserById() {
     this.showSpinner = true;
     const pendingInvitationId = this.route.snapshot.params['pendinginvitationid'];
+    this.logger.log('[HandleInvitationComponent] GET PENDING INVITATION BY ID - pendingInvitationId: ', pendingInvitationId); 
 
     this.usersService.getPendingUsersById(pendingInvitationId).subscribe((pendinginvitation: any) => {
       this.logger.log('[HandleInvitationComponent] GET PENDING INVITATION BY ID - RES: ', pendinginvitation);
@@ -76,6 +80,7 @@ export class HandleInvitationComponent implements OnInit {
 
       }
     }, (error) => {
+      this.logger.error('[HandleInvitationComponent] GET PENDING INVITATION BY ID * ERROR * ')
       this.showSpinner = false;
       if (error && error.status === 404) {
         this.PENDING_INVITATION_NOT_FOUND = true;

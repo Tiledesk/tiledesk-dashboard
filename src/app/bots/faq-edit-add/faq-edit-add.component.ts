@@ -244,7 +244,7 @@ export class FaqEditAddComponent implements OnInit {
         if (WillDelete) {
           this.logger.log('[FAQ-EDIT-ADD] presentSwalModalDeleteFaq swal WillDelete', WillDelete)
           this.faqService.deleteFaq(this.id_faq).subscribe((data) => {
-
+            this.logger.log('[FAQ-EDIT-ADD] presentSwalModalDeleteFaq swal DELETE FAQ RES ', data)
           }, (error) => {
             swal(this.errorDeletingAnswerMsg, {
               icon: "error",

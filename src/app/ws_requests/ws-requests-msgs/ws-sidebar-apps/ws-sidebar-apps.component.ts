@@ -20,7 +20,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
-  @ViewChild('navbarBrand')
+  @ViewChild('navbarBrand', { static: false })
   private appsSidebar: ElementRef;
 
   @Output() valueChange = new EventEmitter();

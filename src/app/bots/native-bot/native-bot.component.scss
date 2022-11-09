@@ -560,16 +560,7 @@ input[type="text"]:disabled::placeholder {
 }
 
 .webhook-url-errors {
-    // font-family: "Google Sans", sans-serif;
-    // color: #566787 !important;
-    // text-align: left;
-    // padding: 6px 12px;
-    // background: #e7f3ff;
-    // font-weight: 400 !important;
-    // line-height: 20px !important;
-    // font-size: 12px !important;
-    // margin-bottom: 12px !important;
-    // display: block;
+
     color: #fff !important;
     text-align: left;
     padding: 6px 12px;
@@ -594,33 +585,6 @@ input[type="text"]:disabled::placeholder {
     border-color: transparent transparent #f76949 transparent;
 }
 
-// .card_title__underlined {
-//   text-transform: none;
-//   color: #566787;
-//   margin-bottom: 0px;
-//   height: 40px !important;
-//   position: relative;
-//   font-family: Google Sans, sans-serif;
-//   height: 30px;
-//   font-size: 16px;
-//   margin-top: 10px;
-//   z-index: 0;
-// }
-
-// .card_title__underline {
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   bottom: -1px;
-//   border-bottom: 2px solid $brand-primary;
-//   z-index: 1;
-// }
-
-// .section-subtitle {
-//   height: 20px;
-//   border-top: 1px solid #ddd;
-//   // width: calc((100% / 3) + 372px);
-// }
 
 .onoffswitch-wrapper {
     float: right;

@@ -1,6 +1,5 @@
 import { async, ComponentFixture, getTestBed, TestBed, inject } from '@angular/core/testing';
-// import { HttpModule, Http, Response, ResponseOptions, XHRBackend, } from '@angular/http';
-import { BaseRequestOptions, ConnectionBackend, Http, ResponseOptions, Response, HttpModule } from '@angular/http';
+
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 // import {
@@ -13,11 +12,7 @@ import { SatisfactionComponent } from './satisfaction.component';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core'; // suppress the error msg "Can't bind to 'ngModel' + 'clearable' since it isn't a known property of 'ng-select'.""
-
-
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Error: StaticInjectorError(DynamicTestModule)[AnalyticsService -> HttpClient]:
-
-
 import { AuthService } from '../../../core/auth.service';
 import { NotifyService } from '../../../core/notify.service';  // Error: StaticInjectorError(DynamicTestModule)[AuthService -> NotifyService]:
 import { LocalDbService } from '../../../services/users-local-db.service'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> LocalDbService]: 
@@ -54,7 +49,6 @@ describe('SatisfactionComponent', () => {
       imports: [
         TranslateModule.forRoot(),
         HttpClientModule,
-        HttpModule,
         RouterTestingModule,
         HttpClientTestingModule
       ],
@@ -75,10 +69,9 @@ describe('SatisfactionComponent', () => {
           provide: Http, useFactory: (backend: MockBackend, defaultOptions: BaseRequestOptions) => {
             return new Http(backend, defaultOptions);
           },
-          deps: [MockBackend, BaseRequestOptions],
+          deps: [MockBackend],
         },
-        MockBackend,
-        BaseRequestOptions,
+        MockBackend
       ],
     })
       .compileComponents();

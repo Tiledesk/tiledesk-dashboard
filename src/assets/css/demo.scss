@@ -1192,9 +1192,10 @@ span.navbar-brand-title {
   font-variant: normal;
   font-weight: 400;
   text-align: left !important;
-  min-width: 600px;
+  min-width: 470px;
   padding: 16px !important;
-  margin-left: 65px;
+  // margin-left: 60px;
+  z-index: 1052 !important;
 }
 
 .ng2-tooltip-header {
@@ -1207,7 +1208,7 @@ span.navbar-brand-title {
   color: #fff;
   padding: 3px 6px;
   border-radius: 3px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 400;
   margin-right: 12px;
 }
@@ -1217,7 +1218,7 @@ span.navbar-brand-title {
   color: #fff;
   padding: 3px 6px;
   border-radius: 3px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 400;
   margin-right: 12px;
 }
@@ -1228,7 +1229,7 @@ span.navbar-brand-title {
   color: #fff;
   padding: 3px 6px;
   border-radius: 3px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 400;
   margin-right: 12px;
 }
@@ -1239,7 +1240,7 @@ span.navbar-brand-title {
   color: #fff;
   padding: 3px 6px;
   border-radius: 3px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 400;
   margin-right: 12px;
 }
@@ -1247,31 +1248,38 @@ span.navbar-brand-title {
 .ng2-tooltip-ticket-id {
   vertical-align: middle;
   margin-right: 12px;
+  font-size: 12px;
+}
+
+.ng2-tooltip-priority {
+  font-size: 12px;
 }
 
 .ng2-tooltip-channel {
   margin-left: 12px;
+  font-size: 12px;
 }
 
 .ng2-tooltip-subject {
   font-weight: 500;
   font-size: 13px;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-size: 12px;
 }
 
 .ng2-tooltip-firt-text {
   font-weight: 400;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .ng2-most-recent-comment-section-title {
   font-weight: 400;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   color: rgb(104, 115, 125);
   margin-bottom: 0px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .ng2-tooltip-divider-line {
@@ -1287,7 +1295,7 @@ span.navbar-brand-title {
 
 .ng2-comment-sender {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 12px;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   // float: left;
   flex: 1;
@@ -1295,8 +1303,8 @@ span.navbar-brand-title {
 
 .ng2-comment-date {
   color: rgb(104, 115, 125);
-  font-weight: 400;
-  font-size: 12px;
+  font-weight: 500;
+  font-size: 10px;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   // float: right;
 }
@@ -1304,7 +1312,11 @@ span.navbar-brand-title {
 .ng2-latest-comment {
   font-weight: 400;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
-  font-size: 14px;
+  font-size: 10px;
+  margin-bottom: 0px;
+}
+.ng2-latest-comment > p {
+  margin-bottom: 0px;
 }
 
 // https://stackoverflow.com/questions/13014808/is-there-anyway-to-animate-an-ellipsis-with-css-animations
@@ -1315,6 +1327,7 @@ span.navbar-brand-title {
 */
 .ng2-latest-comment-loading {
   color: #ddd;
+  font-size: 10px;
 }
 .ng2-latest-comment-loading:after {
   overflow: hidden;
@@ -1348,8 +1361,7 @@ footer ul {
 .ng-select.select-response-type {
   text-align: initial !important;
   margin-left: 12px !important;
-  max-width: 147px;
-  margin-top: 3px;
+  max-width: 250px;
 }
 
 .ng-select.select-response-type:focus {
@@ -1484,23 +1496,98 @@ footer ul {
   // overflow-y: hidden;
 }
 
-// .app-sidebar-iframe::-webkit-scrollbar {
-//   // display: none;
-//   // width: 0px;
-// }
-
-/* Hide scrollbar for IE, Edge and Firefox */
-// .app-sidebar-iframe {
-//   // -ms-overflow-style: none;  /* IE and Edge */
-//   // scrollbar-width: none;  /* Firefox */
-// }
-
 .right-card-appsidebar-open {
   //  height: 10px !important;
   display: none;
 }
 
-// select teammate status in user detail drawer
+/* Mat Date picker in history & Not-real-time conversations */
+.custom-date-range-picker .mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+}
+
+.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-underline {
+  display: none !important;
+}
+
+.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex {
+  padding-top: 0px !important;
+}
+
+.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
+  padding: 0px !important;
+  border-top: 0px !important;
+}
+
+.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix .mat-datepicker-toggle {
+  position: relative !important;
+  top: 2px !important;
+}
+
+.custom-date-range-picker
+  .mat-form-field-wrapper
+  .mat-form-field-flex
+  .mat-form-field-infix
+  .mat-date-range-input
+  .mat-date-range-input-container
+  .mat-date-range-input-start-wrapper
+  .mat-date-range-input-inner {
+  position: relative !important ;
+  vertical-align: middle !important ;
+}
+.custom-date-range-picker
+  .mat-form-field-wrapper
+  .mat-form-field-flex
+  .mat-form-field-infix
+  .mat-date-range-input
+  .mat-date-range-input-container
+  .mat-date-range-input-separator {
+  margin-bottom: 6px !important;
+}
+
+.custom-date-range-picker
+  .mat-form-field-wrapper
+  .mat-form-field-flex
+  .mat-form-field-infix
+  .mat-date-range-input
+  .mat-date-range-input-container
+  .mat-date-range-input-start-wrapper
+  .mat-date-range-input-mirror {
+  display: none !important ;
+}
+
+/* Mat Date picker in Activities */
+.activity-date-range-picker .mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+}
+
+.activity-date-range-picker .mat-form-field-wrapper .mat-form-field-underline {
+  display: none !important;
+}
+
+.activity-date-range-picker .mat-form-field-wrapper .mat-form-field-flex {
+  padding-top: 0px !important;
+}
+
+.activity-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
+  border: 1px solid #ccc !important;
+  padding: 9px 8px;
+  height: 36px;
+  border-radius: 4px;
+  // position: relative;
+  // top: -1px;
+}
+
+.activity-date-range-picker
+  .mat-form-field-wrapper
+  .mat-form-field-flex
+  .mat-form-field-suffix
+  .mat-datepicker-toggle
+  .mat-focus-indicator {
+  vertical-align: middle !important;
+}
+
+/* select teammate status in user detail drawer */
 .ng-select.teammate-status-in-drawer .ng-select-container {
   background-color: #2d323e;
   color: #fff;
@@ -1517,33 +1604,56 @@ footer ul {
   border: 1px solid #2d323e;
 }
 
-.ng-dropdown-panel.teammate-status-in-drawer.ng-select-bottom {
-  border: 1px solid #2d323e;
-  margin-top: 8px;
-  border-top-right-radius: 4px;
-  border-top-left-radius: 4px;
-}
-
-.ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items .ng-option {
+.teammate-status-in-drawer .ng-dropdown-panel {
   background-color: #2d323e;
-  color: #fff;
 }
 
-.ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items .ng-option.ng-option-marked {
+.teammate-status-in-drawer .ng-dropdown-panel.ng-select-bottom {
+  border: 1px solid #2d323e !important;
+  margin-top: 11px !important;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items {
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: #2d323e !important;
+  color: #fff !important;
+}
+
+.teammate-status-in-drawer .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: rgba(30, 33, 41, 0.8) !important;
+}
+
+// removes the blu google blue border
+.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
   background-color: #2d323e;
-  color: #fff;
+  box-shadow: unset;
 }
 
-.ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items .ng-option.ng-option-selected {
-  background-color: #2d323e;
-  color: #fff;
-}
-.ng-dropdown-panel.teammate-status-in-drawer .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  background-color: rgba(30, 33, 41, 0.3)
+// ng-select add tags
+.ng-select.ng-select-tags {
+  border: 0px;
+  min-height: 0px;
+  border-radius: 0;
+  position: relative;
+  top: -6px;
 }
 
-// removes the blu google blue border 
-.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
-     background-color: #2d323e;
-     box-shadow: unset;
+.ng-select.ng-select-tags .ng-select-container {
+  border-radius: 0;
+  border: unset;
+  // width: 503px;
+}
+
+.ng-select.ng-select-tags .ng-dropdown-panel.ng-select-bottom {
+  margin-top: 0px !important;
+  margin-left: 0px !important;
+}
+.ng-select.ng-select-tags .ng-select-container:hover {
+  box-shadow: unset !important;
 }

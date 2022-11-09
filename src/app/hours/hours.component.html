@@ -6,9 +6,10 @@
   {{ 'Settings' | translate }}
 </p> -->
 
-<span class="navbar-brand navbar-brand-sidebar-settings" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-  
+
   <i class="material-icons">settings</i>
 
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
@@ -53,7 +54,8 @@
 
                     <div class="oaerror info" style="margin-bottom: 16px;">
                       <!-- color: #566787; font-weight:500; font-size: 14px; -->
-                      <p style=" font-size: 16px; font-family: 'Poppins','Roboto', 'Arial', sans-serif; color: #394f5a;">
+                      <p
+                        style=" font-size: 16px; font-family: 'Poppins','Roboto', 'Arial', sans-serif; color: #394f5a;">
                         {{ "HoursPage.ActivateTimetables" | translate }}
                       </p>
 
@@ -103,7 +105,7 @@
                       <div class="row">
 
                         <div class="col-sm-12">
-                          <p style=" font-size: 16px; font-family: 'Google Sans', sans-serif !important; color: #394f5a;"
+                          <p style=" font-size: 16px; font-family: 'Poppins', sans-serif !important; color: #394f5a;"
                             [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
                             Time zone
                           </p>
@@ -254,12 +256,15 @@
                             </tr>
                           </td> -->
 
-                              <!-- ===================================================================================================
-                          ========================================== AM HOUR ================================================
-                          =================================================================================================== -->
+                              <!-- ----------------------------------------------- -->
+                              <!-- AM HOUR -->
+                              <!-- ----------------------------------------------- -->
                               <td style="padding-top: 6px; padding-bottom: 6px;">
 
-                                <!-- =================================== AM START HOUR ========================================== -->
+          
+                              <!-- ----------------------------------------------- -->
+                              <!-- AM START HOUR -->
+                              <!-- ----------------------------------------------- -->
                                 <!-- AM START HOUR - ONLY THE LABEL-BTN 'FROM' -->
                                 <button [disabled]="d.isOpen != true || !isActiveOperatingHours"
                                   [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button"
@@ -268,7 +273,7 @@
                                   <span class="edithours_btnlabel">
                                     {{ "HoursPage.From" | translate }}
                                   </span>
-                                  <!-- <i class="material-icons">schedule</i> -->
+                                
                                 </button>
 
                                 <!-- AM START HOUR - THE INPUT/VISUALIZATION FIELD -->
@@ -278,17 +283,13 @@
                                   value="{{ d.operatingHoursAmStart }}">
 
                                 <!-- AM START HOUR - ONLY THE ICON-BTN FOR 'FROM' -->
-                                <button [disabled]="d.isOpen != true || !isActiveOperatingHours"
+                                <!-- <button [disabled]="d.isOpen != true || !isActiveOperatingHours"
                                   [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button"
                                   rel="tooltip" title="edit hour"
                                   class="btn btn-primary btn-simple btn-xs custom_schedule_btn"
                                   (click)='openAmStart(d?._id)' style="padding-right: 7px; padding-left: 1px;">
-
-                                  <!-- <span class="edithours_btnlabel">
-                                {{ "HoursPage.From" | translate }} 
-                              </span>  -->
                                   <i class="material-icons">schedule</i>
-                                </button>
+                                </button> -->
 
                                 <br class="newline">
 
@@ -301,7 +302,6 @@
                                   <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
                                     {{ "HoursPage.To" | translate }}
                                   </span>
-                                  <!-- <i class="material-icons">schedule</i> -->
                                 </button>
 
                                 <!-- AM END HOUR - THE INPUT/VISUALIZATION FIELD -->
@@ -311,16 +311,12 @@
                                   value="{{ d.operatingHoursAmEnd }}">
 
                                 <!-- AM END HOUR - ONLY THE ICON-BTN FOR 'TO' -->
-                                <button [disabled]="d.isOpen != true || !isActiveOperatingHours"
+                                <!-- <button [disabled]="d.isOpen != true || !isActiveOperatingHours"
                                   [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button"
                                   rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
                                   (click)='openAmEnd(d?._id)' style="padding-right: 7px; padding-left: 1px;">
-                                  <!-- AM END HOUR - LABEL 'TO' -->
-                                  <!-- <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
-                                {{ "HoursPage.To" | translate }} 
-                              </span> -->
                                   <i class="material-icons">schedule</i>
-                                </button>
+                                </button> -->
 
                               </td>
 
@@ -375,7 +371,6 @@
                                   <span class="edithours_btnlabel">
                                     {{ "HoursPage.From" | translate }}
                                   </span>
-                                  <!-- <i class="material-icons">schedule</i> -->
                                 </button>
 
                                 <!-- PM START HOUR - THE INPUT/VISUALIZATION FIELD -->
@@ -385,14 +380,13 @@
                                   type="time" value="{{ d.operatingHoursPmStart }}">
 
                                 <!-- PM START HOUR - ONLY THE ICON-BTN FOR 'FROM' -->
-                                <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
+                                <!-- <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
                                   type="button" rel="tooltip" title="edit hour"
                                   class="btn btn-primary btn-simple btn-xs"
                                   [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}"
                                   (click)='openPmStart(d?._id)' style="padding-right: 7px; padding-left: 1px;">
-                                  <!-- <span class="edithours_btnlabel">{{ "HoursPage.From" | translate }}</span> -->
                                   <i class="material-icons">schedule</i>
-                                </button>
+                                </button> -->
 
                                 <br class="newline">
 
@@ -406,7 +400,6 @@
                                   <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
                                     {{ "HoursPage.To" | translate }}
                                   </span>
-                                  <!-- <i class="material-icons">schedule</i> -->
                                 </button>
 
                                 <!-- PM END HOUR - THE INPUT/VISUALIZATION FIELD -->
@@ -416,16 +409,13 @@
                                   type="time" value="{{ d.operatingHoursPmEnd }}">
 
                                 <!-- PM END HOUR - ONLY THE ICON-BTN FOR 'TO' -->
-                                <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
+                                <!-- <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
                                   type="button" rel="tooltip" title="edit hour"
                                   class="btn btn-primary btn-simple btn-xs"
                                   [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}"
                                   (click)='openPmEnd(d?._id)' style="padding-right: 7px;padding-left: 1px;">
-                                  <!-- <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
-                                {{ "HoursPage.To" | translate }} 
-                              </span> -->
                                   <i class="material-icons">schedule</i>
-                                </button>
+                                </button> -->
 
                               </td>
 

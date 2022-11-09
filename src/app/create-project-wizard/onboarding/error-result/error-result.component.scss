@@ -1,0 +1,134 @@
+@import "./src/assets/sass/md/_variables.scss";
+@import "./src/assets/sass/_spinner-section.scss";
+@import "./src/assets/sass/_animations.scss";
+
+.images-wrapper {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background-color: #fff;
+    height: 112px;
+    overflow: hidden;
+    width: 112px;
+    margin-top: -55px;
+    margin-left: 0px;
+  }
+  
+  .wizard-success-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 90px;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    margin-left: 0px;
+  }
+  
+  .success-label {
+    color:#70b665;
+  }
+  
+  .error-label{
+    color: #f27474;
+  }
+
+  .wizard-span-success-msg {
+    top: 30px;
+  }
+
+  
+  .rotate-in-2-fwd-cw {
+    -webkit-animation: rotate-in-2-fwd-cw 0.5s ease-out 1s both;
+            animation: rotate-in-2-fwd-cw 0.5s ease-out 1s both;
+  }
+
+// ------------------------------------------------
+/** START ERROR **/
+// ------------------------------------------------
+.swal2-icon {
+    width: 2em;
+    min-width: 2em;
+    height: 2em;
+    margin: 0;
+  }
+  .swal2-icon {
+    position: relative;
+    justify-content: center;
+    width: 5em;
+    height: 5em;
+    margin: 1.25em auto 1.875em;
+    border: 0.25em solid transparent;
+    border-radius: 50%;
+    line-height: 5em;
+    cursor: default;
+    box-sizing: content-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    zoom: normal;
+  }
+  
+  .swal2-error {
+    border-color: #f27474;
+    position: relative;
+    flex-grow: 1;
+  }
+  
+  .swal2-animate-error-icon {
+    -webkit-animation: swal2-animate-error-icon 0.5s;
+    animation: swal2-animate-error-icon 0.5s;
+  }
+  @-webkit-keyframes swal2-animate-error-icon {
+    0% {
+      -webkit-transform: rotateX(100deg);
+      transform: rotateX(100deg);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: rotateX(0);
+      transform: rotateX(0);
+      opacity: 1;
+    }
+  }
+  @keyframes swal2-animate-error-icon {
+    0% {
+      -webkit-transform: rotateX(100deg);
+      transform: rotateX(100deg);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: rotateX(0);
+      transform: rotateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .swal2-x-mark {
+    position: relative;
+    flex-grow: 1;
+  }
+  .swal2-icon.swal2-error [class^="swal2-x-mark-line"] {
+    display: block;
+    position: absolute;
+    top: 2.3125em;
+    width: 2.9375em;
+    height: 0.3125em;
+    border-radius: 0.125em;
+    background-color: #f27474;
+  }
+  .swal2-icon.swal2-error [class^="swal2-x-mark-line"][class$="left"] {
+    left: 1.0625em;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  .swal2-icon.swal2-error [class^="swal2-x-mark-line"][class$="right"] {
+    right: 1em;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+  // ------------------------------------------------
+  /** END ERROR **/
+  // ------------------------------------------------

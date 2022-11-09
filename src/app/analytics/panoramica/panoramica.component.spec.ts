@@ -5,9 +5,8 @@ import { PanoramicaComponent } from './panoramica.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core'; // Can't bind to 'yAxis' since it isn't a known property of 'ejs-heatmap'..... 
 
-import { AnalyticsService } from 'app/services/analytics.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Error: StaticInjectorError(DynamicTestModule)[AnalyticsService -> HttpClient]:
-import { HttpModule } from '@angular/http';
+
 
 import { AuthService } from '../../core/auth.service';
 import { NotifyService } from '../../core/notify.service';  // Error: StaticInjectorError(DynamicTestModule)[AuthService -> NotifyService]:
@@ -17,6 +16,7 @@ import { RouterTestingModule } from '@angular/router/testing'; // Error: StaticI
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from '../../services/app-config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AnalyticsService } from '../analytics-service/analytics.service';
 
 describe('PanoramicaComponent', () => {
   let component: PanoramicaComponent;
@@ -29,7 +29,6 @@ describe('PanoramicaComponent', () => {
       imports: [
         TranslateModule.forRoot(),
         HttpClientModule,
-        HttpModule,
         RouterTestingModule,
         HttpClientTestingModule
       ],

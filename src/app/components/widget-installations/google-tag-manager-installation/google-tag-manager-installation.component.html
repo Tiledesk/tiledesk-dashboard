@@ -1,0 +1,53 @@
+<div class="master card-widget-installation card--no-border">
+  <div class="card-content">
+    <div class="install-widget-instructions">
+      
+      <div class="install-widget-steps">
+        <span class="install-widget-step-number-wrapper">
+          <span class="install-widget-step-number">
+            1
+          </span>
+        </span>
+        <span class="install-widget-step-text">
+          {{'GoogleTagManagerIsTheEasiestWayToInstallTheWidget' |
+          translate}}
+          <span style="color:#cf2e2e;font-style: italic;">
+            {{'ButNoteThatAdBlockerCanBlockGoogleTagManger' |
+            translate}}.
+          </span>
+          <br> {{'StartByCopyingTheFollowingScript' | translate}}.
+        </span>
+      </div>
+
+      <appdashboard-code-installation></appdashboard-code-installation>
+
+      <div class="install-widget-steps">
+        <span class="install-widget-step-number-wrapper">
+          <span class="install-widget-step-number">
+            2
+          </span>
+        </span>
+        <span class="install-widget-step-text">
+          {{'GoToGoogleTagManagerAnd' | translate}}
+          <span class="install-widget-with-tag-manager-link"
+            (click)="goToInstallWithTagManagerDocs()">
+            {{'FollowTheseInstructions' | translate}}
+          </span>
+        </span>
+      </div>
+
+      <div class="install-widget-steps">
+        <span class="install-widget-step-number-wrapper">
+          <span class="install-widget-step-number">
+            3
+          </span>
+        </span>
+        <span class="install-widget-step-text">
+          {{'OpenYourWebsite'| translate}}.
+          {{'YourWidgetShouldAppearInTheBottomRightCorner' | translate}}.
+        </span>
+      </div>
+
+    </div> <!-- /. install-with-code -->
+  </div> <!-- /. card content -->
+</div> <!-- /. card -->

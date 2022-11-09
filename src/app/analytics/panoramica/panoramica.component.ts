@@ -1,14 +1,41 @@
-import { Subscription } from 'rxjs/Subscription';
-import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
+// import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
+import { Component, OnInit, ViewChild } from '@angular/core';
+// import * as moment from 'moment';
+import moment from "moment";
 import * as moment_tz from 'moment-timezone'
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { TranslateService } from '@ngx-translate/core';
-import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';
+
 import { Chart } from 'chart.js';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AnalyticsService } from '../analytics-service/analytics.service';
+
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexTitleSubtitle,
+  ApexDataLabels,
+  ApexChart,
+  ApexPlotOptions,
+  ApexXAxis,
+  ApexGrid, 
+  ApexStroke
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  fill: any;
+  colors: any;
+  title: ApexTitleSubtitle;
+  xaxis: ApexXAxis;
+  grid: ApexGrid;
+  plotOptions: ApexPlotOptions;
+  stroke: ApexStroke
+};
 
 @Component({
   selector: 'appdashboard-panoramica',
@@ -16,6 +43,8 @@ import { AnalyticsService } from '../analytics-service/analytics.service';
   styleUrls: ['./panoramica.component.scss']
 })
 export class PanoramicaComponent implements OnInit {
+  @ViewChild("chart", { static: false }) chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
 
   monthNames: any;
   lang: string;
@@ -56,7 +85,8 @@ export class PanoramicaComponent implements OnInit {
 
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
-
+  formattedHeatMapRes: any;
+  
   constructor(
     private translate: TranslateService,
     private analyticsService: AnalyticsService,
@@ -79,9 +109,10 @@ export class PanoramicaComponent implements OnInit {
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.getRequestByLast7Day();
-    this.heatMap();
+
     this.avarageWaitingTimeCLOCK();
     this.durationConvTimeCLOCK();
+    this.getHeatMapDataAndBuildGraph()
   }
 
   async showHideSpinner() {
@@ -192,6 +223,7 @@ export class PanoramicaComponent implements OnInit {
     const arrayDay = moment.weekdaysShort()
     arrayDay.push(arrayDay.shift())
     this.xAxis = { labels: arrayDay };
+    // console.log('this.xAxis ', this.xAxis)
 
     this.titleSettings = {
       text: 'Requests per hour of day',
@@ -467,87 +499,196 @@ export class PanoramicaComponent implements OnInit {
   //     });
   // }
 
+  getHeatMapDataAndBuildGraph() {
 
+      this.analyticsService.getDataHeatMap().subscribe(res => {
+        let data: object = res;
+        this.logger.log('[ANALYTICS - OVERVIEW] GET HEAT MAP DATA -> RES ', res);
+  
+        let heatmapInitData = []
 
-  //-----------REQUEST PER HOUR OF DAY-----------------------
-  heatMap() {
-
-    this.cellSettings = {
-      border: {
-        radius: 4,
-        width: 1,
-        color: 'white'
-      },
-      // tileType:'Bubble',
-      // bubbleType: 'Size',
-      showLabel: false, // set to true to show value over each block
-      // format: '{value} M',
-    };
-
-    this.paletteSettings = {
-      palette: [
-        { color: '#a0d4e9' },
-        { color: '#5fa3f1' },
-        { color: '#5187ed' },
-        { color: '#254594' }
-      ],
-    };
-
-
-    this.analyticsService.getDataHeatMap().subscribe(res => {
-      let data: object = res;
-      this.logger.log('[ANALYTICS - OVERVIEW] data from service ->', res);
-      // let init_array=[];
-      // if(res.length==0){
-
-      //   for(let i=1;i<8;i++) {
-      //     init_array.push({ '_id': { "hour": this.xlabel_ita[i], "weekday": this.ylabel_ita[i] }, 'count': 0 })
-      //   }
-      // data=init_array;
-      // this.logger.log("init_array",init_array)
-
-      // }
-
-
-      const initialArray = [];
-      for (let i = 1; i <= 24; i++) {
-
-        for (let j = 1; j <= 7; j++) {
-          initialArray.push({ '_id': { 'hour': this.hour[i], 'weekday': this.weekday[j] }, 'count': null })
+        for (let i = 1; i <= 24; i++) {
+          for (let j = 1; j <= 7; j++) {
+            heatmapInitData.push({ 'hour': this.hour[i], 'weekday': this.weekday[j] , 'count': 0 })
+          }
         }
-      }
 
-      this.logger.log("[ANALYTICS - OVERVIEW] getDataHeatMap  INITIALLLL", initialArray);
+        this.formattedHeatMapRes = []
+        for (let z in data) {
+          // this.logger.log("[ANALYTICS - OVERVIEW] getDataHeatMap DATA", this.getOffset(data[z]._id.hour, data[z]._id.weekday))
+          this.formattedHeatMapRes.push({ "hour": this.hour[this.getOffset(data[z]._id.hour, data[z]._id.weekday).hours], "weekday": this.weekday[this.getOffset(data[z]._id.hour, data[z]._id.weekday).weekday], 'count': data[z].count });
+        }
+  
+        this.logger.log("[ANALYTICS - OVERVIEW] GET HEAT MAP DATA -> RES FORMATTED (formattedHeatMapRes)", this.formattedHeatMapRes);
 
-      for (let z in data) {
-        this.logger.log("[ANALYTICS - OVERVIEW] getDataHeatMap DATA", this.getOffset(data[z]._id.hour, data[z]._id.weekday))
-        this.customData.push({ '_id': { "hour": this.hour[this.getOffset(data[z]._id.hour, data[z]._id.weekday).hours], "weekday": this.weekday[this.getOffset(data[z]._id.hour, data[z]._id.weekday).weekday] }, 'count': data[z].count });
-        //this.customData.push({ '_id': { "hour": this.hour[data[z]._id.hour ], "weekday": this.weekday[data[z]._id.weekday] }, 'count': data[z].count });
-      }
-
-      this.logger.log('[ANALYTICS - OVERVIEW] getDataHeatMap CUSTOM', this.customData)
-
-      //map customdata to initial array to create filanArray by _id.hour & _id.weekday values
-      const finalArray = initialArray.map(obj => this.customData.find(o => (o._id.hour === obj._id.hour) && (o._id.weekday === obj._id.weekday)) || obj);
-      this.logger.log("[ANALYTICS - OVERVIEW] getDataHeatMap  FINAL ARRAY", finalArray)
-
-      this.dataSource = {
-        data: finalArray,
-        isJsonData: true,
-        adaptorType: 'Cell',
-        yDataMapping: '_id.hour',
-        xDataMapping: '_id.weekday',
-        valueMapping: 'count'
-      }
-
-    }, (error) => {
-      this.logger.error('[ANALYTICS - OVERVIEW] - REQUESTS HEATMAP - ERROR ', error);
-    }, () => {
-      this.logger.log('[ANALYTICS - OVERVIEW] - REQUESTS HEATMAP * COMPLETE *');
-
-    })
-
+        const finalApxArray = heatmapInitData.map(obj => this.formattedHeatMapRes.find(o => (o.hour === obj.hour) && (o.weekday === obj.weekday)) || obj);
+        this.logger.log("[ANALYTICS - OVERVIEW] GET HEAT MAP DATA - FINAL ARRAY (finalApxArray)", finalApxArray)
+     
+        if ( finalApxArray) {
+          this.buildApxHeatMap(finalApxArray)
+        }
+    
+      }, error => {
+        this.logger.error('[ANALYTICS - OVERVIEW] - GET P-USERS-&-BOTS - ERROR: ', error);
+      }, () => {
+        this.logger.log('[ANALYTICS - OVERVIEW] - GET P-USERS-&-BOTS - COMPLETE');
+      });
   }
+
+  buildApxHeatMap(finalApxArray: any) {
+    this.chartOptions = {
+      series: [
+        {
+          name: "12:00 AM",
+          data: this.generateData("12:00 AM",finalApxArray)
+        },
+        {
+          name: "11:00 PM",
+          data: this.generateData("11:00 PM",finalApxArray)
+        },
+        {
+          name: "10:00 PM",
+          data: this.generateData("10:00 PM",finalApxArray)
+        },
+        {
+          name: "9:00 PM",
+          data: this.generateData("9:00 PM",finalApxArray)
+        },
+        {
+          name: "8:00 PM",
+          data: this.generateData("8:00 PM",finalApxArray)
+        },
+        {
+          name: "7:00 PM",
+          data: this.generateData("7:00 PM",finalApxArray)
+        },
+        {
+          name: "6:00 PM",
+          data: this.generateData("6:00 PM",finalApxArray)
+        },
+        {
+          name: "5:00 PM",
+          data: this.generateData("5:00 PM",finalApxArray)
+        },
+        {
+          name: "4:00 PM",
+          data: this.generateData("4:00 PM",finalApxArray)
+        },
+        {
+          name: "3:00 PM",
+          data: this.generateData("3:00 PM",finalApxArray)
+        },
+        {
+          name: "2:00 PM",
+          data: this.generateData("2:00 PM",finalApxArray)
+        },
+        {
+          name: "1:00 PM",
+          data: this.generateData("1:00 PM",finalApxArray)
+        },
+        {
+          name: "12:00 PM",
+          data: this.generateData("12:00 PM",finalApxArray)
+        },
+        {
+          name: "11:00 AM",
+          data: this.generateData("11:00 AM",finalApxArray)
+        },
+        {
+          name: "10:00 AM",
+          data: this.generateData("10:00 AM",finalApxArray)
+        },
+        {
+          name: "9:00 AM",
+          data: this.generateData("9:00 AM",finalApxArray)
+        },
+        {
+          name: "8:00 AM",
+          data: this.generateData("8:00 AM",finalApxArray)
+        },
+        {
+          name: "7:00 AM",
+          data: this.generateData("7:00 AM",finalApxArray)
+        },
+        {
+          name: "6:00 AM",
+          data: this.generateData("6:00 AM",finalApxArray)
+        },
+        {
+          name: "5:00 AM",
+          data: this.generateData("5:00 AM",finalApxArray)
+        },
+        {
+          name: "4:00 AM",
+          data: this.generateData("4:00 AM", finalApxArray)
+        },
+        {
+          name: "3:00 AM",
+          data: this.generateData("3:00 AM", finalApxArray)
+        },
+        {
+          name: "2:00 AM",
+          data: this.generateData("2:00 AM",finalApxArray)
+        },
+        {
+          name: "1:00 AM",
+          data: this.generateData("1:00 AM", finalApxArray)
+        }
+      ],
+      chart: {
+        height: 500,
+        type: "heatmap"
+      },
+      dataLabels: {
+        enabled: true
+      },
+      stroke: {
+        colors: ["#90A4AE"],
+      },
+      colors: ["#008FFB"],
+      xaxis: {
+        type: "category",
+        categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+      },
+      grid: {
+        padding: {
+          right: 20
+        }
+      },
+    };
+  }
+
+  public generateData(hour, finalApxArray) {
+    // console.log('APX CHART generateData - hour ', hour)
+    // console.log('APX CHART generateData - finalApxArray ', finalApxArray)
+    var series = [];
+   
+    const result = finalApxArray.filter(item => item.hour === hour);
+    // console.log('APX CHART generateData FINAL ARRAY FILTER FOR HOUR  ', result) 
+    result.forEach(element => {
+      series.push(element.count) 
+      // console.log('> series ',series )
+    });
+
+    // console.log('xxx series', series)
+    return series;
+  }
+
+  // public _generateData(count, yrange) {
+  //   var i = 0;
+  //   var series = [];
+  //   while (i < count) {
+  //     var y =
+  //       Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+
+  //     series.push(y);
+  //     i++;
+  //   }
+  //   console.log('series', series)
+  //   return series;
+
+  // }
+
 
   getOffset(hours, weekday) {
 
@@ -600,11 +741,7 @@ export class PanoramicaComponent implements OnInit {
 
 
 
-  public tooltipRender(args: ITooltipEventArgs): void {
-    args.content = [args.xLabel + ' | ' + args.yLabel + ' : ' + args.value];
-  };
-
-  public showTooltip: Boolean = true;
+ 
 
   // -----------MEDIAN RESPONS TIME-----------------------
   avarageWaitingTimeCLOCK() {
@@ -761,7 +898,7 @@ export class PanoramicaComponent implements OnInit {
       } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
         result = result === 1 ? result + " " + this.translate.instant('Analytics.Day') : result + " " + this.translate.instant('Analytics.Days');
       } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
-        result = result === 1 ? result + " " + this.translate.instant('Analytics.Hour'): result + " " + this.translate.instant('Analytics.Hours');
+        result = result === 1 ? result + " " + this.translate.instant('Analytics.Hour') : result + " " + this.translate.instant('Analytics.Hours');
       } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
         result = result === 1 ? result + " " + this.translate.instant('Analytics.Minute') : result + " " + this.translate.instant('Analytics.Minutes');
       } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second

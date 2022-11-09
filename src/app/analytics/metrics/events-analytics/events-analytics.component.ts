@@ -1,7 +1,8 @@
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment'
+// import * as moment from 'moment'
+import moment from "moment";
 import { Chart } from 'chart.js';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
@@ -126,7 +127,7 @@ export class EventsAnalyticsComponent implements OnInit {
   }
 
   getEventsName() {
-    this.analyticsService.getEventsList().subscribe((res: []) => {
+    this.analyticsService.getEventsList().subscribe((res: any) => {
       this.logger.log("[ANALYTICS - EVENTS] GET EVENTS LIST RESPONSE: ", res);
       this.eventsList = res;
       for (let event of this.eventsList) {

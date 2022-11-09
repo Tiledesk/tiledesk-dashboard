@@ -277,6 +277,7 @@
             <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" -->
             <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
               <a (click)="goToHome(
+              prjct,
               prjct?.id_project?._id, prjct?.id_project?.name,
               prjct?.id_project?.profile?.name, 
               prjct?.id_project?.trialExpired, 
@@ -434,7 +435,7 @@
     <span data-notify="icon" class="notifications">
       <i class="fa fa-exclamation-circle" style="font-size: 13px; position: relative;top: -1px;"></i>
       <span
-        style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 11px; padding-left: 5px;">
+        style="font-family: 'Poppins', sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 11px; padding-left: 5px;">
         {{"NavBar.PendingVerification" | translate }}
 
         <span class="tooltipx" style="float: right;">
@@ -458,21 +459,7 @@
 
 <!-- ------------============= PENDING OPEN CHAT ALERT =============------------ -->
 
-<!-- <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
-      <div (click)="openChat()" *ngIf="HAS_OPENED_THE_CHAT === false" data-notify="container" 
-        class="alert alert-danger animated fadeInDown alert-open-chat" role="alert" data-notify-position="top-center" 
-        [ngClass]="{'alert-open-chat-when-is-open-email-alert' : user?.emailverified == false, 'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true  }" >
-        <span data-notify="icon" class="notifications" style="max-width: 100%;">
-          <img style="width: 12px;position: relative;top: -1px;" src="assets/img/chatlogowhite.png"/>
-          <span style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -1px; font-size: 11px; padding-left: 4px;">
-            {{"NavBar.OpenTheChat" | translate }} <span style="display: inline-block; text-decoration: underline;">  {{ "NavBar.ClickHere" | translate }} </span>
-          </span> 
-        </span> 
-      </div>
-    </span> -->
 
-
-<!-- </div> -->
 
 <!-- MODAL - LOGOUT WINDOWS -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLogoutModal}"

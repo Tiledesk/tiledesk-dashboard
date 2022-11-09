@@ -91,21 +91,6 @@ export class MarkerService {
         }
       }
     }
-    // console.log("[MARKER-SERV] make Segnalations Unserved Markers - calling_page ", calling_page);
   }
-
-  // makeSegnalationsMarkersFromOR(map: L.map): void {
-  //   this.http.get(this.urlOR).subscribe((res: any) => {
-  //     this.logger.log("RESPONSE OPENRECORDZ: ", res)
-  //     for (let record of res) {
-  //       const lat = record._latitude;
-  //       const lon = record._longitude;
-  //       const marker = L.marker([lat, lon]);
-
-  //       marker.bindPopup(this.popupService.makeSegnalationsPopup(record));
-  //       marker.addTo(map);
-  //     }
-  //   })
-  //}
 
 }

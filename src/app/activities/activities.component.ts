@@ -3,16 +3,19 @@ import { UsersService } from '../services/users.service';
 import { AuthService } from '../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
-import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
+// import * as moment from 'moment';
+import moment from "moment";
+
+// import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 import { LocalDbService } from '../services/users-local-db.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 
 import 'moment/locale/it.js';
 import 'moment/locale/en-gb.js';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
 import { LoggerService } from '../services/logger/logger.service';
 import { ActivitiesService } from './activities-service/activities.service';
+import { FormGroup, FormControl } from '@angular/forms';
 @Component({
   selector: 'appdashboard-activities',
   templateUrl: './activities.component.html',
@@ -20,10 +23,14 @@ import { ActivitiesService } from './activities-service/activities.service';
 })
 
 export class ActivitiesComponent implements OnInit, OnDestroy {
-  @ViewChild('searchbtn') private searchbtnRef: ElementRef;
-  @ViewChild('clearsearchbtn') private clearsearchbtnRef: ElementRef;
-  @ViewChild('exportcsvbtn') private exportcsvbtnRef: ElementRef;
+  @ViewChild('searchbtn', { static: false }) searchbtnRef: ElementRef;
+  @ViewChild('clearsearchbtn', { static: false }) clearsearchbtnRef: ElementRef;
+  @ViewChild('exportcsvbtn', { static: false }) exportcsvbtnRef: ElementRef;
 
+  // range = new FormGroup({
+  //   start: new FormControl(),
+  //   end: new FormControl(),
+  // });
 
   projectId: string;
   projectUserIdOfcurrentUser: string;
@@ -37,9 +44,11 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   queryString: string;
   startDate: any;
+  startDateTemp: any;
   startDateValue: any;
 
   endDate: any;
+  endDateTemp: any;
   endDateValue: any;
 
   selectedAgentId: string;
@@ -48,11 +57,11 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   agentsList = [];
   direction = -1;
 
-  public myDatePickerOptions: IMyDpOptions = {
-    // other options...
-    dateFormat: 'dd/mm/yyyy',
-    // dateFormat: 'yyyy, mm , dd',
-  };
+  // public myDatePickerOptions: IMyDpOptions = {
+  //   // other options...
+  //   dateFormat: 'dd/mm/yyyy',
+  //   // dateFormat: 'yyyy, mm , dd',
+  // };
 
   selectedActivities: any;
   arrayOfSelectedActivity: any;
@@ -92,15 +101,142 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.getBrowserVersion();
   }
 
-  getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    })
-  }
-
   ngOnDestroy() {
     this.logger.log('[ActivitiesComponent] % »»» WebSocketJs WF +++++ ws-requests--- activities ngOnDestroy')
     this.subscription.unsubscribe();
+  }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+  }
+
+  getAllProjectUsers() {
+    // createBotsAndUsersArray() {
+    this.usersService.getProjectUsersByProjectId()
+      .subscribe((projectUsers: any) => {
+        this.logger.log('[ActivitiesComponent] - GET PROJECT-USERS ', projectUsers);
+
+        if (projectUsers) {
+          this.projectUsersArray = projectUsers;
+
+          projectUsers.forEach(user => {
+            this.logger.log('[ActivitiesComponent] - PROJECT-USER ', user);
+            // tslint:disable-next-line:max-line-length
+            this.agentsList.push({ '_id': user.id_user._id, 'firstname': user.id_user.firstname, 'lastname': user.id_user.lastname });
+          });
+
+          // this.logger.log('!!! NEW REQUESTS HISTORY  - !!!! USERS ARRAY ', this.user_and_bot_array);
+
+        }
+      }, (error) => {
+        this.logger.error('[ActivitiesComponent] - GET PROJECT-USERS ', error);
+      }, () => {
+        this.logger.log('[ActivitiesComponent] - GET PROJECT-USERS * COMPLETE *');
+
+      });
+
+  }
+
+
+  getBrowserLanguage() {
+    this.browser_lang = this.translate.getBrowserLang();
+    // console.log('[ActivitiesComponent] - browser_lang ', this.browser_lang)
+  }
+
+  getCurrentProject() {
+    this.subscription = this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.projectId = project._id
+        this.logger.log('[ActivitiesComponent] - projectId ', this.projectId)
+      }
+    });
+  }
+
+  getCurrentUser() {
+    this.auth.user_bs.subscribe((user) => {
+      this.logger.log('[ActivitiesComponent] - LoggedUser ', user);
+
+      if (user && user._id) {
+        this.currentUserId = user._id;
+      }
+    });
+  }
+
+ 
+
+  addEventStartDate(value) {
+    this.logger.log('[ActivitiesComponent] - addEventEndDate value', value);
+    this.startDateTemp = moment(value).format('DD/MM/YYYY');
+    this.logger.log('[ActivitiesComponent] - startDateTemp ', this.startDateTemp);
+  }
+
+  addEventEndDate(value) {
+    this.logger.log('[ActivitiesComponent] - addEventEndDate value', value);
+    this.endDateTemp = moment(value).format('DD/MM/YYYY')
+    this.logger.log('[ActivitiesComponent] - endDateTemp ', this.endDateTemp);
+  }
+
+  clearDateRange() {
+    this.logger.log('[ActivitiesComponent] - CLEAR DATE RANGE');
+    this.startDateTemp = null
+    this.startDateTemp = null
+    this.startDate  = null
+    this.endDate = null
+  }
+
+  getQueryStringValues() {
+    if (this.startDate) {
+      this.logger.log('[ActivitiesComponent] - search START DATE ', this.startDate);
+
+      // this.startDate = this.startDateTemp
+      this.startDateValue = this.startDateTemp
+      this.logger.log('[ActivitiesComponent] - search START DATE - startDateValue ', this.startDateValue);
+    } else {
+      this.startDateValue = '';
+      this.logger.log('[ActivitiesComponent] - search START DATE ', this.startDate);
+      this.logger.log('[ActivitiesComponent] - search START DATE - startDateValue ', this.startDateValue);
+    }
+
+    if (this.endDate) {
+      this.logger.log('[ActivitiesComponent] - END DATE ', this.endDate);
+      this.logger.log('[ActivitiesComponent] - SEARCH FOR END DATE ', this.endDate);
+      // this.endDate = this.endDateTemp
+      this.endDateValue = this.endDateTemp
+      this.logger.log('[ActivitiesComponent] - END DATE - endDateValue ', this.endDateValue);
+
+    } else {
+      this.endDateValue = '';
+      this.logger.log('[ActivitiesComponent] - SEARCH FOR END DATE ', this.endDate)
+      this.logger.log('[ActivitiesComponent] - END DATE - endDateValue ', this.endDateValue);
+    }
+
+    if (this.selectedAgentId) {
+
+      this.selectedAgentValue = this.selectedAgentId;
+      this.logger.log('[ActivitiesComponent] - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
+    } else {
+      this.logger.log('[ActivitiesComponent] - SEARCH FOR selectedAgentId ', this.selectedAgentId);
+      this.selectedAgentValue = '';
+    }
+
+    if (this.selectedActivities) {
+      this.logger.log('[ActivitiesComponent] - search ***** selectedActivities *****', this.selectedActivities);
+      this.arrayOfSelectedActivity = this.selectedActivities;
+      this.logger.log('[ActivitiesComponent] - search ***** arrayOfSelectedActivity *****', this.arrayOfSelectedActivity);
+    } else {
+      this.arrayOfSelectedActivity = '';
+    }
+
+    this.logger.log('[ActivitiesComponent] - hasAscDirection ', this.hasAscDirection);
+    if (this.hasAscDirection === true) {
+      this.direction = 1
+    } else {
+      this.direction = -1
+    }
+
   }
 
   buildActivitiesOptions() {
@@ -131,54 +267,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       });
   }
 
-  getAllProjectUsers() {
-    // createBotsAndUsersArray() {
-    this.usersService.getProjectUsersByProjectId()
-      .subscribe((projectUsers: any) => {
-        this.logger.log('[ActivitiesComponent] - GET PROJECT-USERS ', projectUsers);
-
-        if (projectUsers) {
-          this.projectUsersArray = projectUsers;
-
-          projectUsers.forEach(user => {
-            this.logger.log('[ActivitiesComponent] - PROJECT-USER ', user);
-            // tslint:disable-next-line:max-line-length
-            this.agentsList.push({ '_id': user.id_user._id, 'firstname': user.id_user.firstname, 'lastname': user.id_user.lastname });
-          });
-
-          // this.logger.log('!!! NEW REQUESTS HISTORY  - !!!! USERS ARRAY ', this.user_and_bot_array);
-
-        }
-      }, (error) => {
-        this.logger.error('[ActivitiesComponent] - GET PROJECT-USERS ', error);
-      }, () => {
-        this.logger.log('[ActivitiesComponent] - GET PROJECT-USERS * COMPLETE *');
-
-      });
-  }
-
-  getBrowserLanguage() {
-    this.browser_lang = this.translate.getBrowserLang();
-  }
-
-  getCurrentProject() {
-    this.subscription = this.auth.project_bs.subscribe((project) => {
-      if (project) {
-        this.projectId = project._id
-        this.logger.log('[ActivitiesComponent] - projectId ', this.projectId)
-      }
-    });
-  }
-
-  getCurrentUser() {
-    this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[ActivitiesComponent] - LoggedUser ', user);
-
-      if (user && user._id) {
-        this.currentUserId = user._id;
-      }
-    });
-  }
+ 
 
   search() {
     // RESOLVE THE BUG: THE BUTTON SEARCH REMAIN FOCUSED AFTER PRESSED
@@ -208,6 +297,9 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.endDate = '';
     this.selectedActivities = '';
     this.selectedAgentId = '';
+    this.startDateTemp = null
+    this.endDateTemp = null
+
 
     this.queryString =
       'start_date=' + '&' +
@@ -237,94 +329,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }
 
 
-  exportActivitiesAsCSV() {
-    // RESOLVE THE BUG: THE BUTTON REMAIN FOCUSED AFTER PRESSED
-    this.exportcsvbtnRef.nativeElement.blur();
-
-    this.usersService.downloadActivitiesAsCsv(this.queryString, 0, this.browser_lang)
-      .subscribe((res: any) => {
-        this.logger.log('[ActivitiesComponent] - downloadActivitiesAsCsv - res ', res);
-
-        if (res) {
-          this.downloadFile(res)
-        }
-
-      }, (error) => {
-
-        this.logger.error('[ActivitiesComponent] - downloadActivitiesAsCsv - ERROR ', error);
-      }, () => {
-        this.logger.log('[ActivitiesComponent] - downloadActivitiesAsCsv * COMPLETE *');
-
-      });
-  }
-
-  downloadFile(data) {
-    const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
-    const dwldLink = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
-    if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
-      dwldLink.setAttribute('target', '_blank');
-    }
-    dwldLink.setAttribute('href', url);
-    dwldLink.setAttribute('download', 'activities.csv');
-    dwldLink.style.visibility = 'hidden';
-    document.body.appendChild(dwldLink);
-    dwldLink.click();
-    document.body.removeChild(dwldLink);
-  }
-
-  getQueryStringValues() {
-    if (this.startDate) {
-      this.logger.log('[ActivitiesComponent] - search START DATE ', this.startDate);
-      this.logger.log('[ActivitiesComponent] - search START DATE - FORMATTED ', this.startDate['formatted']);
-
-      this.startDateValue = this.startDate['formatted']
-    } else {
-      this.startDateValue = '';
-      this.logger.log('[ActivitiesComponent] - search START DATE ', this.startDate);
-    }
-
-    if (this.endDate) {
-      this.logger.log('[ActivitiesComponent] - END DATE ', this.endDate);
-      this.logger.log('[ActivitiesComponent] - END DATE - FORMATTED ', this.endDate['formatted']);
-
-
-      this.endDateValue = this.endDate['formatted']
-
-      this.logger.log('[ActivitiesComponent] - SEARCH FOR END DATE ', this.endDateValue);
-    } else {
-      this.endDateValue = '';
-      this.logger.log('[ActivitiesComponent] - SEARCH FOR END DATE ', this.endDate)
-    }
-
-    if (this.selectedAgentId) {
-
-      this.selectedAgentValue = this.selectedAgentId;
-      this.logger.log('[ActivitiesComponent] - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
-    } else {
-      this.logger.log('[ActivitiesComponent] - SEARCH FOR selectedAgentId ', this.selectedAgentId);
-      this.selectedAgentValue = '';
-    }
-
-    if (this.selectedActivities) {
-      this.logger.log('[ActivitiesComponent] - search ***** selectedActivities *****', this.selectedActivities);
-      this.arrayOfSelectedActivity = this.selectedActivities;
-      this.logger.log('[ActivitiesComponent] - search ***** arrayOfSelectedActivity *****', this.arrayOfSelectedActivity);
-    } else {
-      this.arrayOfSelectedActivity = '';
-    }
-
-    this.logger.log('[ActivitiesComponent] - hasAscDirection ', this.hasAscDirection);
-    if (this.hasAscDirection === true) {
-      this.direction = 1
-    } else {
-      this.direction = -1
-    }
-
-  }
-
-
+ 
   getActivities() {
     this.showSpinner = true;
     this.activitiesService.getUsersActivities(this.queryString, this.pageNo)
@@ -382,7 +387,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                         .subscribe((projectUser: any) => {
                       
                           if (projectUser && projectUser[0] && projectUser[0].id_user) {
-                            this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user);
+                            this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user, 'activities');
                             this.logger.log('ActivitiesComponent] GET projectUser by USER-ID projectUser id', projectUser);
                             activity['closed_by_label'] = projectUser[0].id_user.firstname + ' ' + projectUser[0].id_user.lastname
                           } else {
@@ -509,6 +514,46 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.getActivities();
   }
 
+  exportActivitiesAsCSV() {
+    // RESOLVE THE BUG: THE BUTTON REMAIN FOCUSED AFTER PRESSED
+    this.exportcsvbtnRef.nativeElement.blur();
+
+    this.usersService.downloadActivitiesAsCsv(this.queryString, 0, this.browser_lang)
+      .subscribe((res: any) => {
+        this.logger.log('[ActivitiesComponent] - downloadActivitiesAsCsv - res ', res);
+
+        if (res) {
+          this.downloadFile(res)
+        }
+
+      }, (error) => {
+
+        this.logger.error('[ActivitiesComponent] - downloadActivitiesAsCsv - ERROR ', error);
+      }, () => {
+        this.logger.log('[ActivitiesComponent] - downloadActivitiesAsCsv * COMPLETE *');
+
+      });
+  }
+
+  downloadFile(data) {
+    const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
+    const dwldLink = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
+    if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
+      dwldLink.setAttribute('target', '_blank');
+    }
+    dwldLink.setAttribute('href', url);
+    dwldLink.setAttribute('download', 'activities.csv');
+    dwldLink.style.visibility = 'hidden';
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
+  // --------------------------------------------
+  // Navigation
+  // --------------------------------------------
   goToMemberProfile(participantId: any) {
     if (participantId.includes('bot_')) {
       const bot_id = participantId.slice(4);
@@ -522,9 +567,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         botType = bot.type
         this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
       }
-
-
-
     } else {
 
       this.logger.log('[ActivitiesComponent] has clicked GO To MEMBER ', participantId);
@@ -543,6 +585,5 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   goToRequestDetails(request_id) {
     this.logger.log('[ActivitiesComponent] has clicked GO To REQUEST DETAILS ', request_id);
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
-
   }
 }

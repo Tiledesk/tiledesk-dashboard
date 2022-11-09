@@ -41,7 +41,7 @@ const swal = require('sweetalert');
   styleUrls: ['./native-bot.component.scss']
 })
 export class NativeBotComponent extends BotsBaseComponent implements OnInit {
-  @ViewChild('editbotbtn') private elementRef: ElementRef;
+  @ViewChild('editbotbtn', { static: false }) elementRef: ElementRef;
 
   faq: Faq[];
   question: string;
@@ -73,6 +73,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   modalChoosefileDisabled: boolean;
 
   faqKb_name: string;
+  faqkb_language: string;
   faqKbUrlToUpdate: string;
   faqKb_id: string;
   faqKb_created_at: any;
@@ -178,7 +179,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   public FULFILLMENT_ROUTE_IS_ACTIVE: boolean = false
   public TRAINING_ROUTE_IS_ACTIVE: boolean = false
   isChromeVerGreaterThan100: boolean;
-  @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
+  @ViewChild('fileInputBotProfileImage', { static: false }) fileInputBotProfileImage: any;
 
   constructor(
     private faqService: FaqService,
@@ -212,31 +213,19 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.getCurrentRoute();
-
-
     this.clearSearchedQuestionStored();
-
-    // ------------------------------------------------------------------------------------------------------------------------
-    // GET ID_FAQ_KB FROM THE URL PARAMS (IS PASSED FROM THE FAQ-KB-COMPONENT WHEN THE USER CLICK ON EDIT FAQ IN THE TABLE )
-    // and then call getStorageBucket() - getFaqKbById() - getFaqByFaqKbIdAndRepliesCount() - getDeptsByProjectId()
-    // ------------------------------------------------------------------------------------------------------------------------
-
     this.getParamsBotIdAndThenInit();
 
-    // GET ALL FAQ
-    // this.getFaq();
+    // this.getFaq();  // GET ALL FAQ
     this.getCurrentProject();
     this.getWindowWidth();
     this.getProjectPlan();
     this.getBrowserLang();
     this.getOSCODE();
-
     this.checkBotImageUploadIsComplete();
     this.getParamsBotType();
-
     this.getTranslations();
-
-    this.getDeptsByProjectId();
+    // this.getDeptsByProjectId();
     this.listenSidebarIsOpened();
     this.getBrowserVersion()
   }
@@ -357,21 +346,21 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
         this.botTypeForInput = 'Resolution'
       }
 
-      this.logger.log('[FAQ-COMP] --->  PARAMS', params);
-      this.logger.log('[FAQ-COMP] ***** PARAMS botType', this.botType);
+      this.logger.log('[NATIVE-BOT] --->  PARAMS', params);
+      this.logger.log('[NATIVE-BOT] ***** PARAMS botType', this.botType);
     });
 
   }
 
   toggleWebhook($event) {
-    this.logger.log('[FAQ-COMP] toggleWebhook ', $event.target.checked);
+    this.logger.log('[NATIVE-BOT] toggleWebhook ', $event.target.checked);
     this.webhook_is_enabled = $event.target.checked
 
     this.validateUrl(this.webhookUrl)
 
-    this.logger.log('[FAQ-COMP] validateUrl URL WEBHOOK_URL_IS_EMPTY (toggleWebhook) ', this.WEBHOOK_URL_IS_EMPTY);
-    this.logger.log('[FAQ-COMP] validateUrl URL WEBHOOK_URL_IS_HTTPS (toggleWebhook) ', this.WEBHOOK_URL_IS_HTTPS);
-    this.logger.log('[FAQ-COMP] validateUrl URL WEBHOOK_URL_IS_VALID (toggleWebhook) ', this.WEBHOOK_URL_IS_VALID);
+    this.logger.log('[NATIVE-BOT] validateUrl URL WEBHOOK_URL_IS_EMPTY (toggleWebhook) ', this.WEBHOOK_URL_IS_EMPTY);
+    this.logger.log('[NATIVE-BOT] validateUrl URL WEBHOOK_URL_IS_HTTPS (toggleWebhook) ', this.WEBHOOK_URL_IS_HTTPS);
+    this.logger.log('[NATIVE-BOT] validateUrl URL WEBHOOK_URL_IS_VALID (toggleWebhook) ', this.WEBHOOK_URL_IS_VALID);
     if (this.webhook_is_enabled === false && this.WEBHOOK_URL_IS_EMPTY === false) {
 
       if (this.WEBHOOK_URL_HAS_ERROR === true) {
@@ -381,17 +370,17 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   }
 
   validateUrl(str) {
-    this.logger.log('[FAQ-COMP] validateUrl WEBHOOK URL ', str)
+    this.logger.log('[NATIVE-BOT] validateUrl WEBHOOK URL ', str)
     if (str && str.length > 0) {
       this.WEBHOOK_URL_IS_EMPTY = false;
-      this.logger.log('[FAQ-COMP] validateUrl WEBHOOK URL is EMPTY ', this.WEBHOOK_URL_IS_EMPTY)
+      this.logger.log('[NATIVE-BOT] validateUrl WEBHOOK URL is EMPTY ', this.WEBHOOK_URL_IS_EMPTY)
       var url = str;
 
       if (url.indexOf("http://") == 0 || (url.indexOf("https://") == 0)) {
         this.WEBHOOK_URL_IS_HTTP_or_HTTPS = true
         this.WEBHOOK_URL_IS_HTTPS = false
         this.WEBHOOK_URL_HAS_ERROR = false;
-        this.logger.log('[FAQ-COMP] validateUrl URL START WITH HTTP ', this.WEBHOOK_URL_IS_HTTPS)
+        this.logger.log('[NATIVE-BOT] validateUrl URL START WITH HTTP ', this.WEBHOOK_URL_IS_HTTPS)
         this.checkIfIsValidUrl(str)
 
       } else {
@@ -407,115 +396,53 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   checkIfIsValidUrl(str) {
     var pattern = /^(http|https):\/\/(([a-zA-Z0-9$\-_.+!*'(),;:&=]|%[0-9a-fA-F]{2})+@)?(((25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])){3})|localhost|([a-zA-Z0-9\-\u00C0-\u017F]+\.)+([a-zA-Z]{2,}))(:[0-9]+)?(\/(([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*(\/([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*)*)?(\?([a-zA-Z0-9$\-_.+!*'(),;:@&=\/?]|%[0-9a-fA-F]{2})*)?(\#([a-zA-Z0-9$\-_.+!*'(),;:@&=\/?]|%[0-9a-fA-F]{2})*)?)?$/; // fragment locator
 
-    this.logger.log('[FAQ-COMP] validateUrl URL - URL IS VALID (pattern.test)', pattern.test(str));
+    this.logger.log('[NATIVE-BOT] validateUrl URL - URL IS VALID (pattern.test)', pattern.test(str));
 
     if (pattern.test(str) === true) {
       this.WEBHOOK_URL_IS_VALID = true;
       this.WEBHOOK_URL_HAS_ERROR = false;
-      this.logger.log('[FAQ-COMP] validateUrl URL - URL IS VALID ', this.WEBHOOK_URL_IS_VALID);
+      this.logger.log('[NATIVE-BOT] validateUrl URL - URL IS VALID ', this.WEBHOOK_URL_IS_VALID);
     } else {
       this.WEBHOOK_URL_IS_VALID = false;
       this.WEBHOOK_URL_HAS_ERROR = true;
-      this.logger.log('[FAQ-COMP] validateUrl URL - URL IS VALID ', this.WEBHOOK_URL_IS_VALID);
+      this.logger.log('[NATIVE-BOT] validateUrl URL - URL IS VALID ', this.WEBHOOK_URL_IS_VALID);
     }
 
     // return !!pattern.test(str);
   }
 
   onChangeWebhookUrl($event) {
-    this.logger.log('[FAQ-COMP] validateUrl URL - onChangeWebhookUrl ', $event);
+    this.logger.log('[NATIVE-BOT] validateUrl URL - onChangeWebhookUrl ', $event);
     this.validateUrl($event)
   }
 
   checkValueIntentName(event: any) {
     // this.logger.log('Faqcomponent check value display_intent_name_in_table event' , event) 
-    this.logger.log('[FAQ-COMP] check value display_intent_name_in_table', this.display_intent_name_in_table)
+    this.logger.log('[NATIVE-BOT] check value display_intent_name_in_table', this.display_intent_name_in_table)
   }
 
   checkValueMessage($event) {
-    this.logger.log('[FAQ-COMP] check value display_message_in_table', this.display_message_in_table)
+    this.logger.log('[NATIVE-BOT] check value display_message_in_table', this.display_message_in_table)
   }
   checkQuestions($event) {
-    this.logger.log('[FAQ-COMP] check value display_questions_in_table', this.display_questions_in_table)
+    this.logger.log('[NATIVE-BOT] check value display_questions_in_table', this.display_questions_in_table)
   }
 
   checkAnswer($event) {
-    this.logger.log('[FAQ-COMP] check value display_answer_in_table', this.display_answer_in_table)
+    this.logger.log('[NATIVE-BOT] check value display_answer_in_table', this.display_answer_in_table)
   }
 
 
   checkValueTopic(event: any) {
-    this.logger.log('[FAQ-COMP] check value display_topic_in_table', this.display_topic_in_table)
+    this.logger.log('[NATIVE-BOT] check value display_topic_in_table', this.display_topic_in_table)
   }
-
-
-  getDialogFlowBotData(dlgflwbotid: string) {
-    this.faqKbService.getDialogflowBotCredetial(dlgflwbotid).subscribe((res) => {
-      this.logger.log('[FAQ-COMP] getDialogFlowBotData - RES ', res);
-
-      this.uploadedFileName = res.credentials;
-      this.logger.log('[FAQ-COMP] getDialogFlowBotData (FaqComponent) - RES > uploadedFileName ', this.uploadedFileName);
-
-      this.dlgflwSelectedLangCode = res.language;
-      this.logger.log('[FAQ-COMP] getDialogFlowBotData (FaqComponent) - RES > dlgflwSelectedLangCode ', this.dlgflwSelectedLangCode);
-
-      this.dlgflwSelectedLang = this.dialogflowLanguage[this.getIndexOfdialogflowLanguage(res.language)]
-      this.logger.log('getDialogFlowBotData (FaqComponent) - RES > dlgflwSelectedLang ', this.dlgflwSelectedLang);
-
-      if (res.kbs && res.kbs !== 'undefined' && res.kbs !== 'null' && res.kbs !== null) {
-        this.dlgflwKnowledgeBaseID = res.kbs.trim();
-        this.logger.log('[FAQ-COMP] getDialogFlowBotData - RES > dlgflwKnowledgeBaseID (kbs) ', this.dlgflwKnowledgeBaseID);
-      } else {
-        this.dlgflwKnowledgeBaseID = ''
-      }
-
-    }, (error) => {
-      this.logger.error('[FAQ-COMP] getDialogFlowBotData - ERROR ', error);
-
-    }, () => {
-
-      this.logger.log('[FAQ-COMP] getDialogFlowBotData * COMPLETE *');
-
-    });
-  }
-
-
-  onFileChange(event: any) {
-    this.logger.log('[FAQ-COMP] onFileChange - event.target.files ', event.target.files);
-    this.logger.log('[FAQ-COMP] onFileChange - event.target.files.length ', event.target.files.length);
-    if (event.target.files && event.target.files.length) {
-      const fileList = event.target.files;
-      this.logger.log('[FAQ-COMP] onFileChange - fileList ', fileList);
-
-      if (fileList.length > 0) { }
-      const file: File = fileList[0];
-      this.logger.log('[FAQ-COMP] onFileChange - file ', file);
-
-      this.uploadedFile = file;
-      this.logger.log('[FAQ-COMP] onFileChange - onFileChange this.uploadedFile ', this.uploadedFile);
-      this.uploadedFileName = this.uploadedFile.name
-      this.logger.log('[FAQ-COMP] onFileChange - onFileChange uploadedFileName ', this.uploadedFileName);
-
-      // this.handleFileUploading(file);
-
-    }
-  }
-
-
-  onSelectDialogFlowBotLang(selectedLangCode: string) {
-    if (selectedLangCode) {
-      this.logger.log('[FAQ-COMP] onSelectDialogFlowBotLang - Bot Type: ', this.botType, ' - selectedLang CODE : ', selectedLangCode);
-      this.dlgflwSelectedLangCode = selectedLangCode
-    }
-  }
-
 
 
 
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
-      this.logger.log('[FAQ-COMP] - DEPT GET DEPTS ', departments);
-      this.logger.log('[FAQ-COMP] - DEPT BOT ID ', this.id_faq_kb);
+      this.logger.log('[NATIVE-BOT] - DEPT GET DEPTS ', departments);
+      this.logger.log('[NATIVE-BOT] - DEPT BOT ID ', this.id_faq_kb);
 
       if (departments) {
         this.all_depts = departments;
@@ -528,11 +455,9 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
           if (dept.hasBot === true) {
             if (this.id_faq_kb === dept.id_bot) {
-              this.logger.log('[FAQ-COMP] - DEPT DEPT WITH CURRENT BOT ', dept);
+              this.logger.log('[NATIVE-BOT]] - DEPT DEPT WITH CURRENT BOT ', dept);
 
               count = count + 1;
-
-
               // -------------------------------------------------------------------
               // Dept's avatar
               // -------------------------------------------------------------------
@@ -575,7 +500,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
             }
           } else if (dept.hasBot === false) {
             // this.depts_length = departments.length
-            this.logger.log('[FAQ-COMP] --->  DEPT botType ', this.botType);
+            this.logger.log('[NATIVE-BOT] --->  DEPT botType ', this.botType);
 
             if (this.botType !== 'identity') {
               const index = this.depts_without_bot_array.findIndex((d) => d._id === dept._id);
@@ -587,12 +512,11 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
               if (dept.default === false && dept.status === 1) {
                 countOfVisibleDepts = countOfVisibleDepts + 1;
               }
-
             }
           }
         });
 
-        this.logger.log('[FAQ-COMP] ---> Current bot is found in DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY);
+        this.logger.log('[NATIVE-BOT] ---> Current bot is found in DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY);
 
         const hasFoundBotIn = this.DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY.filter((obj: any) => {
           return obj.id_bot === this.id_faq_kb;
@@ -600,40 +524,40 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
         if (hasFoundBotIn.length > 0) {
           this.DEPTS_HAVE_BOT_BUT_NOT_THIS = false
-          this.logger.log('[FAQ-COMP] ---> Current bot is found in DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_HAVE_BOT_BUT_NOT_THIS);
+          this.logger.log('[NATIVE-BOT] ---> Current bot is found in DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_HAVE_BOT_BUT_NOT_THIS);
         } else {
           this.DEPTS_HAVE_BOT_BUT_NOT_THIS = true
-          this.logger.log('[FAQ-COMP] ---> Current bot is NOT found in DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_HAVE_BOT_BUT_NOT_THIS);
+          this.logger.log('[NATIVE-BOT] ---> Current bot is NOT found in DEPTS_BOT_IS_ASSOCIATED_WITH_ARRAY', this.DEPTS_HAVE_BOT_BUT_NOT_THIS);
         }
 
-        this.logger.log('[FAQ-COMP] - DEPT - DEPTS WITHOUT BOT', this.depts_without_bot_array);
+        this.logger.log('[NATIVE-BOT] - DEPT - DEPTS WITHOUT BOT', this.depts_without_bot_array);
 
         this.COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH = count;
-        this.logger.log('[FAQ-COMP] - DEPT - COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH', this.COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH);
+        this.logger.log('[NATIVE-BOT] - DEPT - COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH', this.COUNT_DEPTS_BOT_IS_ASSOCIATED_WITH);
 
         this.COUNT_OF_VISIBLE_DEPT = countOfVisibleDepts;
-        this.logger.log('[FAQ-COMP] - DEPT - COUNT_OF_VISIBLE_DEPT', this.COUNT_OF_VISIBLE_DEPT);
+        this.logger.log('[NATIVE-BOT]] - DEPT - COUNT_OF_VISIBLE_DEPT', this.COUNT_OF_VISIBLE_DEPT);
       }
     }, error => {
 
-      this.logger.error('[FAQ-COMP] - DEPT - GET DEPTS  - ERROR', error);
+      this.logger.error('[NATIVE-BOT] - DEPT - GET DEPTS  - ERROR', error);
     }, () => {
-      this.logger.log('[FAQ-COMP] - DEPT - GET DEPTS - COMPLETE')
+      this.logger.log('[NATIVE-BOT] - DEPT - GET DEPTS - COMPLETE')
 
     });
   }
 
   onSelectDept() {
-    this.logger.log('[FAQ-COMP] --->  onSelectDept dept_id', this.dept_id);
-    this.logger.log('[FAQ-COMP] --->  onSelectDept selected_dept_id', this.selected_dept_id);
-    this.logger.log('[FAQ-COMP] --->  onSelectDept id_faq_kb', this.id_faq_kb);
+    this.logger.log('[NATIVE-BOT] --->  onSelectDept dept_id', this.dept_id);
+    this.logger.log('[NATIVE-BOT] --->  onSelectDept selected_dept_id', this.selected_dept_id);
+    this.logger.log('[NATIVE-BOT] --->  onSelectDept id_faq_kb', this.id_faq_kb);
     this.dept_id = this.selected_dept_id
 
 
     const hasFound = this.depts_without_bot_array.filter((obj: any) => {
       return obj.id === this.selected_dept_id;
     });
-    this.logger.log('[FAQ-COMP] --->  onSelectBotId dept found', hasFound);
+    this.logger.log('[NATIVE-BOT] --->  onSelectBotId dept found', hasFound);
 
     if (hasFound.length > 0) {
       this.selected_dept_name = hasFound[0]['name']
@@ -643,11 +567,11 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
   hookBotToDept() {
     this.departmentService.updateExistingDeptWithSelectedBot(this.dept_id, this.id_faq_kb).subscribe((res) => {
-      this.logger.log('[FAQ-COMP] - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+      this.logger.log('[NATIVE-BOT] - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
     }, (error) => {
-      this.logger.error('[FAQ-COMP] - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
+      this.logger.error('[NATIVE-BOT] - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
     }, () => {
-      this.logger.log('[FAQ-COMP] - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
+      this.logger.log('[NATIVE-BOT] - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
       this.translateAndPresentModalBotAssociatedWithDepartment();
     });
   }
@@ -676,7 +600,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   // Upload bot photo
   // ---------------------------------------------------
   upload(event) {
-    this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload')
+    this.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE (FAQ-COMP) upload')
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
 
@@ -685,17 +609,17 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     } else {
 
       // Native upload
-      this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service')
+      this.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE (FAQ-COMP) upload with native service')
 
       this.uploadImageNativeService.uploadBotPhotoProfile_Native(file, this.id_faq_kb).subscribe((downoloadurl) => {
-        this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - RES downoloadurl', downoloadurl);
+        this.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - RES downoloadurl', downoloadurl);
 
         this.botProfileImageurl = downoloadurl
 
         this.timeStamp = (new Date()).getTime();
       }, (error) => {
 
-        this.logger.error('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - ERR ', error);
+        this.logger.error('[NATIVE-BOT] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - ERR ', error);
       })
 
     }
@@ -707,12 +631,12 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   // ---------------------------------------------------
   deleteBotProfileImage() {
     // const file = event.target.files[0]
-    this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) deleteBotProfileImage')
+    this.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE (FAQ-COMP) deleteBotProfileImage')
 
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.deleteBotProfileImage(this.id_faq_kb);
     } else {
-      this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) deleteUserProfileImage with native service')
+      this.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE (FAQ-COMP) deleteUserProfileImage with native service')
       this.uploadImageNativeService.deletePhotoProfile_Native(this.id_faq_kb, 'bot')
     }
     this.botProfileImageExist = false;
@@ -724,13 +648,13 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
 
   checkBotImageExistOnFirebase() {
-    this.logger.log('[FAQ-COMP] checkBotImageExistOnFirebase (FAQ-COMP) ')
-    this.logger.log('[FAQ-COMP] STORAGE-BUCKET (FAQ-COMP) firebase_conf ', this.appConfigService.getConfig().firebase)
+    this.logger.log('[NATIVE-BOT] checkBotImageExistOnFirebase (FAQ-COMP) ')
+    this.logger.log('[NATIVE-BOT] STORAGE-BUCKET (FAQ-COMP) firebase_conf ', this.appConfigService.getConfig().firebase)
 
     const firebase_conf = this.appConfigService.getConfig().firebase;
     if (firebase_conf) {
       this.storageBucket = firebase_conf['storageBucket'];
-      this.logger.log('[FAQ-COMP] STORAGE-BUCKET (FAQ-COMP) ', this.storageBucket)
+      this.logger.log('[NATIVE-BOT] STORAGE-BUCKET (FAQ-COMP) ', this.storageBucket)
     }
 
     const imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + this.id_faq_kb + '%2Fphoto.jpg?alt=media';
@@ -741,12 +665,12 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
 
-        self.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebase')
+        self.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebase')
         self.setImageProfileUrl(self.storageBucket);
       } else {
         self.botProfileImageExist = imageExists
 
-        self.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebase')
+        self.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebase')
       }
     })
   }
@@ -760,14 +684,14 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
 
-        self.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+        self.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
 
         self.setImageProfileUrl_Native(baseUrl)
 
       } else {
         self.botProfileImageExist = imageExists
 
-        self.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+        self.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
       }
     })
   }
@@ -785,18 +709,18 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
 
   checkBotImageUploadIsComplete() {
-    this.logger.log('[FAQ-COMP] checkBotImageUploadIsComplete')
+    this.logger.log('[NATIVE-BOT] checkBotImageUploadIsComplete')
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
       this.uploadImageService.botImageWasUploaded.subscribe((imageuploaded) => {
-        this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Firebase)');
+        this.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Firebase)');
         this.botImageHasBeenUploaded = imageuploaded;
 
         if (this.storageBucket && this.botImageHasBeenUploaded === true) {
 
           this.showSpinnerInUploadImageBtn = false;
 
-          this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD botProfileImageurl ');
+          this.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD botProfileImageurl ');
 
           this.setImageProfileUrl(this.storageBucket)
         }
@@ -804,7 +728,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     } else {
       // Native
       this.uploadImageNativeService.botImageWasUploaded_Native.subscribe((imageuploaded) => {
-        this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Native)');
+        this.logger.log('[NATIVE-BOT] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Native)');
 
         this.botImageHasBeenUploaded = imageuploaded;
 
@@ -857,15 +781,15 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
         }
       }
       if (key.includes("PAY")) {
-        this.logger.log('[FAQ-COMP] PUBLIC-KEY - key', key);
+        this.logger.log('[NATIVE-BOT] PUBLIC-KEY - key', key);
         let pay = key.split(":");
         // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
-          this.logger.log('[FAQ-COMP] - pay isVisible', this.payIsVisible);
+          this.logger.log('[NATIVE-BOT] - pay isVisible', this.payIsVisible);
         } else {
           this.payIsVisible = true;
-          this.logger.log('[FAQ-COMP] - pay isVisible', this.payIsVisible);
+          this.logger.log('[NATIVE-BOT] - pay isVisible', this.payIsVisible);
         }
       }
       if (key.includes("ANA")) {
@@ -899,7 +823,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[FAQ-COMP] -getProjectPlan - project Profile Data', projectProfileData)
+      this.logger.log('[NATIVE-BOT] -getProjectPlan - project Profile Data', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_profile_type = projectProfileData.profile_type;
@@ -912,10 +836,10 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
       }
     }, error => {
 
-      this.logger.error('[FAQ-COMP] - getProjectPlan - ERROR', error);
+      this.logger.error('[NATIVE-BOT] - getProjectPlan - ERROR', error);
     }, () => {
 
-      this.logger.log('[FAQ-COMP] - getProjectPlan - COMPLETE')
+      this.logger.log('[NATIVE-BOT] - getProjectPlan - COMPLETE')
 
     });
   }
@@ -935,7 +859,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
 
   getPaidPlanTranslation(project_profile_name) {
-    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+    this.translate.get('[NATIVE-BOT] PaydPlanName', { projectprofile: project_profile_name })
       .subscribe((text: string) => {
         this.prjct_profile_name = text;
         // this.logger.log('+ + + PaydPlanName ', text)
@@ -944,7 +868,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
   getWindowWidth() {
     const actualWidth = window.innerWidth;
-    this.logger.log('[FAQ-COMP] - ACTUAL WIDTH ', actualWidth);
+    this.logger.log('[NATIVE-BOT] - ACTUAL WIDTH ', actualWidth);
 
     if (actualWidth > 764) {
       this.windowWidthMore764 = true;
@@ -963,7 +887,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     const newInnerWidth = event.target.innerWidth;
-    this.logger.log('[FAQ-COMP] - NEW INNER WIDTH ', newInnerWidth);
+    this.logger.log('[NATIVE-BOT] - NEW INNER WIDTH ', newInnerWidth);
     if (newInnerWidth > 764) {
       this.windowWidthMore764 = true;
     } else {
@@ -972,10 +896,10 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
     if (newInnerWidth > 991) {
       this.windowWidthMore991 = true;
-      this.logger.log('[FAQ-COMP] - windowWidthMore991 ', this.windowWidthMore991);
+      this.logger.log('[NATIVE-BOT] - windowWidthMore991 ', this.windowWidthMore991);
     } else {
       this.windowWidthMore991 = false;
-      this.logger.log('[FAQ-COMP] - windowWidthMore991 ', this.windowWidthMore991);
+      this.logger.log('[NATIVE-BOT] - windowWidthMore991 ', this.windowWidthMore991);
     }
   }
 
@@ -994,7 +918,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      this.logger.log('[FAQ-COMP] project from AUTH service subscription  ', this.project)
+      this.logger.log('[NATIVE-BOT] project from AUTH service subscription  ', this.project)
     });
   }
 
@@ -1012,41 +936,42 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
    */
   getFaqKbById() {
     this.showSpinnerInUpdateBotCard = true
-    // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
+
     this.faqKbService.getFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
-      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
       this.faq_kb_remoteKey = faqkb.kbkey_remote
-      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
+      this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
 
       this.faqKb_name = faqkb.name;
-      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB NAME', this.faqKb_name);
+      this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID - FAQKB NAME', this.faqKb_name);
 
       // this.faqKbService.publishFaqName(this.faqKb_name)
 
       this.faqKb_id = faqkb._id;
-      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB ID', this.faqKb_id);
+      this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID - FAQKB ID', this.faqKb_id);
 
       this.faqKb_created_at = faqkb.createdAt;
-      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - CREATED AT ', this.faqKb_created_at);
+      this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID - CREATED AT ', this.faqKb_created_at);
 
       this.faqKb_description = faqkb.description;
-      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - Description ', this.faqKb_description);
+      this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID - Description ', this.faqKb_description);
 
       this.webhook_is_enabled = faqkb.webhook_enabled
-      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - webhook_is_enabled ', this.webhook_is_enabled);
+      this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID - webhook_is_enabled ', this.webhook_is_enabled);
 
       this.webhookUrl = faqkb.webhook_url
-      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - webhookUrl ', this.webhookUrl);
+      this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID - webhookUrl ', this.webhookUrl);
 
-      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - LANGUAGE ', faqkb.language);
+      this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID - LANGUAGE ', faqkb.language);
 
       // for the comnobobox "select bot language" -now not used because the user cannot change the language of the bot he chose during creation
       // this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)]
       // this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       if (faqkb && faqkb.language) {
+        this.faqkb_language = faqkb.language;
         this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)].name
-        this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
+        this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       }
 
       if (faqkb.webhook_enabled) {
@@ -1056,18 +981,18 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
       if (faqkb.url !== 'undefined') {
         this.faqKbUrlToUpdate = faqkb.url;
-        this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - BOT URL ', this.faqKbUrlToUpdate);
+        this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID - BOT URL ', this.faqKbUrlToUpdate);
       } else {
-        this.logger.log('[FAQ-COMP]GET FAQ-KB (DETAILS) BY ID - BOT URL is undefined ', faqkb.url);
+        this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID - BOT URL is undefined ', faqkb.url);
       }
 
     },
       (error) => {
-        this.logger.error('[FAQ-COMP] GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
+        this.logger.error('[NATIVE-BOT] GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
         this.showSpinnerInUpdateBotCard = false
       },
       () => {
-        this.logger.log('[FAQ-COMP] GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
+        this.logger.log('[NATIVE-BOT] GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
         this.showSpinnerInUpdateBotCard = false
       });
 
@@ -1082,7 +1007,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     // RESOLVE THE BUG 'edit button remains focused after clicking'
     this.elementRef.nativeElement.blur();
 
-    this.logger.log('[FAQ-COMP] FAQ KB NAME TO UPDATE ', this.faqKb_name);
+    this.logger.log('[NATIVE-BOT] FAQ KB NAME TO UPDATE ', this.faqKb_name);
 
     let _botType = ''
     if (this.botType === 'native') {
@@ -1096,98 +1021,28 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
     this.faqKbService.updateFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, _botType, this.faqKb_description, this.webhook_is_enabled, this.webhookUrl, this.language)
       .subscribe((faqKb) => {
-        this.logger.log('[FAQ-COMP] EDIT BOT - FAQ KB UPDATED ', faqKb);
+        this.logger.log('[NATIVE-BOT] EDIT BOT - FAQ KB UPDATED ', faqKb);
       }, (error) => {
-        this.logger.error('[FAQ-COMP] EDIT BOT -  ERROR ', error);
+        this.logger.error('[NATIVE-BOT] EDIT BOT -  ERROR ', error);
 
         if (this.botType !== 'dialogflow') {
           // =========== NOTIFY ERROR ===========
           this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
         }
       }, () => {
-        this.logger.log('[FAQ-COMP] EDIT BOT - * COMPLETE *');
-        if (this.botType !== 'dialogflow') {
-          // =========== NOTIFY SUCCESS===========
-          this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
-        }
+        this.logger.log('[NATIVE-BOT] EDIT BOT - * COMPLETE *');
 
-        if (this.botType === 'dialogflow') {
-
-          // --------------------------------------------------------------------------------
-          // Update dialogflow bot
-          // --------------------------------------------------------------------------------
-          this.logger.log(
-            '[FAQ-COMP] Update BOT dialogflow »»»»»»»»»»» Bot Type: ', this.botType,
-            ' - uploadedFile: ', this.uploadedFile,
-            ' - lang Code ', this.dlgflwSelectedLangCode,
-            ' - kbs (knowledgeBaseID) ', this.dlgflwKnowledgeBaseID);
+        this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
 
 
-          const formData = new FormData();
 
-          // --------------------------------------------------------------------------
-          // formData.append language
-          // --------------------------------------------------------------------------
-          formData.append('language', this.dlgflwSelectedLangCode);
-
-          // --------------------------------------------------------------------------
-          // formData.append Knowledge Base ID
-          // --------------------------------------------------------------------------
-          if (this.dlgflwKnowledgeBaseID !== undefined) {
-            if (this.dlgflwKnowledgeBaseID.length > 0) {
-              this.logger.log('[FAQ-COMP] Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
-              formData.append('kbs', this.dlgflwKnowledgeBaseID.trim());
-            } else {
-              this.logger.log('[FAQ-COMP] Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
-              formData.append('kbs', "");
-            }
-
-          } else if (this.dlgflwKnowledgeBaseID === undefined || this.dlgflwKnowledgeBaseID === 'undefined' || this.dlgflwKnowledgeBaseID === null || this.dlgflwKnowledgeBaseID === 'null') {
-            this.logger.log('[FAQ-COMP] Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID ', this.dlgflwKnowledgeBaseID);
-            formData.append('kbs', "");
-          }
-
-          // --------------------------------------------------------------------------
-          // formData.append file
-          // --------------------------------------------------------------------------
-          if (this.uploadedFile !== undefined) {
-            formData.append('file', this.uploadedFile, this.uploadedFile.name);
-          }
-          this.logger.log('[FAQ-COMP] Create dialogflow BOT FORM DATA ', formData)
-          this.uploaddialogflowBotCredential(this.id_faq_kb, formData);
-
-        }
       });
   }
 
-  uploaddialogflowBotCredential(bot_Id, formData) {
-    this.faqKbService.uploadDialogflowBotCredetial(bot_Id, formData).subscribe((res) => {
-
-      this.logger.log('[FAQ-COMP] - uploadDialogflowBotCredetial - RES ', res);
-
-    }, (error) => {
-      this.logger.error('[FAQ-COMP] - uploadDialogflowBotCredetial - ERROR ', error);
-      // =========== NOTIFY ERROR ===========
-      const objctErrorBody = JSON.parse(error._body)
-      if (objctErrorBody && objctErrorBody.msg === 'Not a valid JSON file.') {
-        this.notify.showWidgetStyleUpdateNotification(this.updateBotError + ': ' + this.notValidJson, 4, 'report_problem');
-      } else {
-        this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
-      }
-
-    }, () => {
-
-      this.logger.log('[FAQ-COMP]- uploadDialogflowBotCredetial * COMPLETE *');
-      // =========== NOTIFY SUCCESS===========
-      this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
-
-    });
-
-  }
 
   goToTestFaqPage() {
     // - REMOTE FAQKB KEY ', this.faq_kb_remoteKey
-    this.logger.log('[FAQ-COMP] GO TO TEST FAQ PAGE ');
+    this.logger.log('[NATIVE-BOT] GO TO TEST FAQ PAGE ');
     // if (this.faq_kb_remoteKey) {
     this.router.navigate(['project/' + this.project._id + '/faq/test', this.id_faq_kb]);
     // }
@@ -1204,37 +1059,33 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_CREATE() {
-    this.logger.log('[FAQ-COMP] ID OF FAQKB ', this.id_faq_kb);
-    this.router.navigate(['project/' + this.project._id + '/createfaq', this.id_faq_kb, this.botType]);
+    this.logger.log('[NATIVE-BOT] ID OF FAQKB ', this.id_faq_kb);
+    // console.log('3 goToEditAddPage_CREATE:   ', this.faqkb_language);
+    this.router.navigate(['project/' + this.project._id + '/createfaq', this.id_faq_kb, this.botType, this.faqkb_language]);
   }
 
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ ID (RECEIVED FROM THE VIEW) AND
   // THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_EDIT(faq_id: string) {
-    this.logger.log('[FAQ-COMP] ID OF FAQ ', faq_id);
+    this.logger.log('[NATIVE-BOT] ID OF FAQ ', faq_id);
     this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id, this.botType]);
   }
 
   goBack() {
     // this.logger.log('FaqComponent NAVIGATION - urlAfterRedirects PREVIOUS PAGE IS CREATE BOT (goBack) ', this.previousPageIsCreateBot);
     this.router.navigate(['project/' + this.project._id + '/bots']);
-    // this.location.back();
-    // if (this.previousPageIsCreateBot === true) {
-    //   this.router.navigate(['project/' + this.project._id + '/bots']);
-    // } else {
-    //   this.location.back();
-    // }
+
 
   }
 
 
 
-  // -----------------------------------------------------------------------------------------
-  // GET ONLY THE FAQ WITH THE FAQ-KB ID PASSED FROM FAQ-KB COMPONENT & THEN GET REPLIES COUNT
-  // -----------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------
+  // GET ONLY THE FAQ WITH THE FAQ-KB ID PASSED FROM FAQ-KB COMPONENT 
+  // -----------------------------------------------------------------
   getAllFaqByFaqKbId() {
     this.faqService.getAllFaqByFaqKbId(this.id_faq_kb).subscribe((faq: any) => {
-      this.logger.log('[FAQ-COMP] - GET FAQS', faq);
+      this.logger.log('[NATIVE-BOT] -  GET ALL FAQ BY BOT ID', faq);
       // this.faq = faq;
 
       if (faq) {
@@ -1262,16 +1113,16 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
         // })
       }
     }, (error) => {
-      this.logger.error('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - ERR ', error);
+      this.logger.error('[NATIVE-BOT] >> FAQs GOT BY FAQ-KB ID - ERR ', error);
     }, () => {
-      this.logger.log('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
+      this.logger.log('[NATIVE-BOT] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }
 
   fulltextChange($event) {
-    this.logger.log('[FAQ-COMP] - fulltextChange ', $event);
+    this.logger.log('[NATIVE-BOT] - fulltextChange ', $event);
     this.fullText = $event
-    this.logger.log('[FAQ-COMP] - fulltextChange  $event length', $event.length);
+    this.logger.log('[NATIVE-BOT] - fulltextChange  $event length', $event.length);
     if ($event.length === 0) {
       this.queryString = undefined;
       this.has_searched = false;
@@ -1301,13 +1152,8 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
       this.has_searched = true;
       this.queryString = this.fullText;
     }
-    // else {
-    //   console.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.fullText);
-    //   this.fullText_temp = '';
-    // }
-
     // this.queryString = this.fullText_temp
-    this.logger.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.queryString)
+    this.logger.log('[NATIVE-BOT] - FULL TEXT SEARCH ', this.queryString)
     this.getPaginatedFaqByFaqKbIdAndRepliesCount();
     this.getAllSearcedFaq()
   }
@@ -1318,13 +1164,13 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   // ------------------------------------------------------------------------------
   decreasePageNumber() {
     this.pageNo -= 1;
-    this.logger.log('[FAQ-COMP] - DECREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[NATIVE-BOT] - DECREASE PAGE NUMBER ', this.pageNo);
     this.getPaginatedFaqByFaqKbIdAndRepliesCount()
   }
 
   increasePageNumber() {
     this.pageNo += 1;
-    this.logger.log('[FAQ-COMP] - INCREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[NATIVE-BOT] - INCREASE PAGE NUMBER ', this.pageNo);
     this.getPaginatedFaqByFaqKbIdAndRepliesCount()
   }
 
@@ -1334,7 +1180,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   getPaginatedFaqByFaqKbIdAndRepliesCount() {
     this.showSpinner = true;
     this.faqService.getPaginatedFaqByFaqKbId(this.id_faq_kb, this.pageNo, this.faqPerPageLimit, this.queryString).subscribe((faq: any) => {
-      this.logger.log('[FAQ-COMP] - GET Paginated FAQS', faq);
+      this.logger.log('[NATIVE-BOT] - GET Paginated FAQS', faq);
 
 
       if (faq) {
@@ -1348,17 +1194,17 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
         // this.faq_lenght = faq.length
         // in aggiornamento
         this.faqService.getCountOfFaqReplies(this.id_faq_kb).subscribe((res: any) => {
-          this.logger.log("[FAQ-COMP] REPLIES COUNT RESPONSE: ", res);
+          this.logger.log("[NATIVE-BOT] REPLIES COUNT RESPONSE: ", res);
 
           for (let fq of this.faq) {
-            this.logger.log("[FAQ-COMP] FQ id: ", fq._id)
+            this.logger.log("[NATIVE-BOT] FQ id: ", fq._id)
             let reply: any;
             for (reply of res) {
               // this.logger.log("REPLY id: ", reply._id._answerid)
               if (fq._id == reply._id._answerid) {
-                this.logger.log("[FAQ-COMP] RES count: ", reply.count);
+                this.logger.log("[NATIVE-BOT] RES count: ", reply.count);
                 fq['message_count'] = reply.count;
-                this.logger.log("[FAQ-COMP] MESSAGE COUNT: ", fq['message_count'])
+                this.logger.log("[NATIVE-BOT] MESSAGE COUNT: ", fq['message_count'])
               }
             }
           }
@@ -1366,12 +1212,12 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
       }
     }, (error) => {
       this.showSpinner = false;
-      this.logger.error('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - ERROR', error);
+      this.logger.error('[NATIVE-BOT] >> FAQs GOT BY FAQ-KB ID - ERROR', error);
     }, () => {
       setTimeout(() => {
         this.showSpinner = false;
       }, 800);
-      this.logger.log('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
+      this.logger.log('[NATIVE-BOT] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }
 
@@ -1381,7 +1227,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   getAllSearcedFaq() {
 
     this.faqService.getCountOfAllSearcedFaq(this.id_faq_kb, this.queryString).subscribe((faq: any) => {
-      this.logger.log('[FAQ-COMP] - GET ALL SEARCHED FAQS', faq);
+      this.logger.log('[NATIVE-BOT] - GET ALL SEARCHED FAQS', faq);
       // this.faq = faq;
 
       if (faq) {
@@ -1396,27 +1242,24 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
       }
     }, (error) => {
 
-      this.logger.error('[FAQ-COMP] >> GET ALL SEARCHED FAQS - ERROR', error);
+      this.logger.error('[NATIVE-BOT] >> GET ALL SEARCHED FAQS - ERROR', error);
     }, () => {
 
-      this.logger.log('[FAQ-COMP] >> GET ALL SEARCHED FAQS - COMPLETE');
+      this.logger.log('[NATIVE-BOT] >> GET ALL SEARCHED FAQS - COMPLETE');
     });
 
   }
 
-
-
   exportFaqsToCsv() {
     this.faqService.exsportFaqsToCsv(this.id_faq_kb).subscribe((faq: any) => {
-      this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - FAQS', faq)
-
+      this.logger.log('[NATIVE-BOT]] - EXPORT FAQ TO CSV - FAQS', faq)
       if (faq) {
         this.downloadFile(faq, 'faqs.csv');
       }
     }, (error) => {
-      this.logger.error('[FAQ-COMP] - EXPORT FAQ TO CSV - ERROR', error);
+      this.logger.error('[NATIVE-BOT] - EXPORT FAQ TO CSV - ERROR', error);
     }, () => {
-      this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - COMPLETE');
+      this.logger.log('[NATIVE-BOT] - EXPORT FAQ TO CSV - COMPLETE');
     });
 
     // if (this.payIsVisible) {
@@ -1424,15 +1267,15 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     //     this.notify.openDataExportNotAvailable()
     //   } else {
     //     this.faqService.exsportFaqsToCsv(this.id_faq_kb).subscribe((faq: any) => {
-    //       this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - FAQS', faq)
+    //       this.logger.log('[NATIVE-BOT]] - EXPORT FAQ TO CSV - FAQS', faq)
 
     //       if (faq) {
     //         this.downloadFile(faq, 'faqs.csv');
     //       }
     //     }, (error) => {
-    //       this.logger.error('[FAQ-COMP] - EXPORT FAQ TO CSV - ERROR', error);
+    //       this.logger.error('[NATIVE-BOT] - EXPORT FAQ TO CSV - ERROR', error);
     //     }, () => {
-    //       this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - COMPLETE');
+    //       this.logger.log('[NATIVE-BOT] - EXPORT FAQ TO CSV - COMPLETE');
     //     });
     //   }
     // } else {
@@ -1498,7 +1341,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
    */
   // deptName: string,
   openDeleteModal(id: string) {
-    this.logger.log('[FAQ-COMP] ON OPEN MODAL TO DELETE FAQ -> FAQ ID ', id);
+    this.logger.log('[NATIVE-BOT] ON OPEN MODAL TO DELETE FAQ -> FAQ ID ', id);
     this.displayDeleteFaqModal = 'block';
     this.id_toDelete = id;
     // this.faq_toDelete = deptName;
@@ -1510,7 +1353,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     this.displayDeleteFaqModal = 'none';
 
     this.faqService.deleteFaq(this.id_toDelete).subscribe((data) => {
-      this.logger.log('[FAQ-COMP] DELETE FAQ ', data);
+      this.logger.log('[NATIVE-BOT] DELETE FAQ ', data);
 
 
       this.ngOnInit();
@@ -1530,11 +1373,11 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
       // });
     }, (error) => {
-      this.logger.error('[FAQ-COMP] DELETE FAQ ERROR ', error);
+      this.logger.error('[NATIVE-BOT] DELETE FAQ ERROR ', error);
       // =========== NOTIFY ERROR ===========
       this.notify.showNotification(this.errorDeletingAnswerMsg, 4, 'report_problem');
     }, () => {
-      this.logger.log('[FAQ-COMP] DELETE FAQ * COMPLETE *');
+      this.logger.log('[NATIVE-BOT] DELETE FAQ * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
       this.notify.showNotification(this.answerSuccessfullyDeleted, 2, 'done');
     });
@@ -1553,19 +1396,19 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   }
 
   onCloseInfoModalHandledSuccess() {
-    this.logger.log('[FAQ-COMP] onCloseInfoModalHandledSuccess')
+    this.logger.log('[NATIVE-BOT] onCloseInfoModalHandledSuccess')
     this.displayInfoModal = 'none';
     this.ngOnInit();
   }
   onCloseInfoModalHandledError() {
-    this.logger.log('[FAQ-COMP] onCloseInfoModalHandledError')
+    this.logger.log('[NATIVE-BOT] onCloseInfoModalHandledError')
     this.displayInfoModal = 'none';
     // this.router.navigate(['project/' + this.project._id + '/faqkb']);
     this.ngOnInit();
   }
 
   countDelimiterDigit(event) {
-    this.logger.log('[FAQ-COMP] # OF DIGIT ', this.csvColumnsDelimiter.length)
+    this.logger.log('[NATIVE-BOT] # OF DIGIT ', this.csvColumnsDelimiter.length)
     if (this.csvColumnsDelimiter.length !== 1) {
       (<HTMLInputElement>document.getElementById('file')).disabled = true;
       this.modalChoosefileDisabled = true;
@@ -1581,7 +1424,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
     this.SHOW_CIRCULAR_SPINNER = true;
 
-    this.logger.log('[FAQ-COMP] CSV COLUMNS DELIMITER ', this.csvColumnsDelimiter)
+    this.logger.log('[NATIVE-BOT] CSV COLUMNS DELIMITER ', this.csvColumnsDelimiter)
     const fileList: FileList = event.target.files;
     if (fileList.length > 0) {
       const file: File = fileList[0];
@@ -1593,7 +1436,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
       this.faqService.uploadFaqCsv(formData)
         .subscribe(data => {
-          this.logger.log('[FAQ-COMP] UPLOAD CSV DATA ', data);
+          this.logger.log('[NATIVE-BOT] UPLOAD CSV DATA ', data);
           if (data['success'] === true) {
             this.parse_done = true;
             this.parse_err = false;
@@ -1602,10 +1445,10 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
             this.parse_err = true;
           }
         }, (error) => {
-          this.logger.error('[FAQ-COMP] UPLOAD CSV - ERROR ', error);
+          this.logger.error('[NATIVE-BOT] UPLOAD CSV - ERROR ', error);
           this.SHOW_CIRCULAR_SPINNER = false;
         }, () => {
-          this.logger.log('[FAQ-COMP] UPLOAD CSV * COMPLETE *');
+          this.logger.log('[NATIVE-BOT] UPLOAD CSV * COMPLETE *');
           setTimeout(() => {
             this.SHOW_CIRCULAR_SPINNER = false
           }, 300);
@@ -1618,11 +1461,11 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     this.OPEN_RIGHT_SIDEBAR = true;
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
-    this.logger.log('[FAQ-COMP] - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+    this.logger.log('[NATIVE-BOT] - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
   }
 
   closeRightSidebar(event) {
-    this.logger.log('[FAQ-COMP] »»»» CLOSE RIGHT SIDEBAR ', event);
+    this.logger.log('[NATIVE-BOT] »»»» CLOSE RIGHT SIDEBAR ', event);
     this.OPEN_RIGHT_SIDEBAR = event;
 
   }
@@ -1702,11 +1545,6 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     const url = 'https://developer.tiledesk.com/resolution-bot-programming/webhook-data-model';
     window.open(url, '_blank');
   }
-
-
-
-
-
 
 
 }

@@ -27,13 +27,15 @@
 
   <div class="container-fluid" style="padding-right: 0px;  padding-left: 0px;">
 
-    <div *ngIf="showSpinner" class="stretchspinner_in_app_install">
+    <!-- <div *ngIf="showSpinner" class="stretchspinner_in_app_install">
       <div class="rect1"></div>
       <div class="rect2"></div>
       <div class="rect3"></div>
       <div class="rect4"></div>
       <div class="rect5"></div>
-    </div>
+    </div> -->
+
+    <loading-spinner class="stretchspinner_in_app_install" *ngIf="showSpinner"></loading-spinner>
 
     <iframe *ngIf="URL" allow="camera; microphone" id="i_frame" [src]="URL" style="width:100%;" frameBorder="0"
       allowfullscreen [ngStyle]="{ 'height': iframeHeight }">

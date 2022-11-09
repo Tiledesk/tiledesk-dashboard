@@ -1,0 +1,98 @@
+<div class="loading-section" style="display: flex;flex-flow: column;">
+
+    <img decoding="async" 
+    class="rotate-in-2-fwd-cw" 
+    src="https://tiledesk.com/wp-content/uploads/2022/11/Customer-Service.png" 
+    alt="" 
+    width="50%" 
+    height="50%" 
+    style="margin-top: 10vh;">
+
+    <div class="images-wrapper">
+
+        <div *ngIf="DISPLAY_SPINNER" class="svg-wrapper">
+            <div class="dot-spinner">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+            </div>
+        </div>
+
+        <div *ngIf="!DISPLAY_SPINNER">
+
+            <div *ngIf="!CREATE_BOT_ERROR" class="success-checkmark-project">
+            <div class="check-icon-project">
+                <span class="icon-line line-tip"></span>
+                <span class="icon-line line-long"></span>
+                <div class="icon-circle"></div>
+                <div class="icon-fix"></div>
+            </div>
+            </div>
+
+            <div *ngIf="CREATE_BOT_ERROR" class="swal2-icon swal2-error swal2-animate-error-icon" style="display: flex;">
+                <span class="swal2-x-mark">
+                    <span class="swal2-x-mark-line-left"></span>
+                    <span class="swal2-x-mark-line-right"></span>
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="wizard-success-container">
+
+        <div *ngIf="DISPLAY_SPINNER" class="success-label">
+            <span class="wizard-span-processing-msg">{{ "Processing" | translate }}</span>
+        </div>
+
+        <div *ngIf="!DISPLAY_SPINNER">
+        
+            <div *ngIf="DISPLAY_BOT && !DISPLAY_FAQ">
+                <div *ngIf="!CREATE_BOT_ERROR" class="success-label">
+                    <p class="wizard-span-success-msg">
+                        {{ "BotsAddEditPage.TheBot" | translate }} 
+                        {{ "BotsAddEditPage.HasBeenCreated" | translate }}
+                    </p>
+                </div>
+
+                <div *ngIf="CREATE_BOT_ERROR" class="error-label">
+                    <p class="wizard-span-success-msg">
+                        {{ "BotsAddEditPage.AnErrorHasOccurred" | translate }}
+                    </p>
+                </div>
+
+                <button style="margin-top: 76px;" *ngIf="!CREATE_BOT_ERROR" class="btn btn-lg btn-primary create-bot-continue-to-next-step" (click)="goToContinueToNextStep()" >
+                    {{ "ProjectsPage.Continue" | translate }}
+                </button>
+                <button *ngIf="CREATE_BOT_ERROR" class="btn btn-lg btn-primary" (click)="goToCancel('step1')" >
+                    {{ "Close" | translate }}
+                </button>
+            </div>
+
+            <div *ngIf="DISPLAY_FAQ && !DISPLAY_BOT">
+
+                <div *ngIf="!CREATE_FAQ_ERROR" class="success-label">
+                    <p class="wizard-span-success-msg">
+                        {{ "FaqPage.FaqsSuccessfullyUploaded" | translate }} 
+                    </p>
+                </div>
+
+                <div *ngIf="CREATE_FAQ_ERROR" class="error-label">
+                    <p class="wizard-span-success-msg">
+                        {{ "FaqPage.AnErrorOccurredDuringTheUpload" | translate }}
+                    </p>
+                </div>
+
+                <button style="margin-top: 76px;" *ngIf="!CREATE_FAQ_ERROR" class="btn btn-lg btn-primary create-faqs-continue-to-next-step" (click)="goToContinueToNextStep()" >
+                    {{ "ProjectsPage.Continue" | translate }}
+                </button>
+                <button *ngIf="CREATE_FAQ_ERROR" class="btn btn-lg btn-primary" (click)="goToCancel('step1')" >
+                    {{ "Close" | translate }}
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+        
+</div>

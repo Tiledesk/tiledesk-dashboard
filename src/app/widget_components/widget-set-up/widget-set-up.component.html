@@ -638,11 +638,7 @@
 																	style="display: flex;flex-direction: row;">
 																	<div class="primary-color-selection"
 																		style="position: absolute;">
-																		<!-- [cpOutputFormat]="'hex'" -->
-																		<!-- (colorPickerChange)="onChangePrimaryColor($event)" -->
-																		<!-- [cpOKButton]="true" -->
-																		<!-- (colorPickerSelect)="onSelectPrimaryColor($event)" -->
-																		<!-- [cpOKButtonClass]= "'btn btn-primary btn-xs'" -->
+																
 																		<div class="widget-settings-palette"
 																			(colorPickerChange)="onChangePrimaryColor($event)"
 																			[style.background-color]="primaryColor"
@@ -652,8 +648,13 @@
 																			(colorPickerOpen)="onOpenPrimaryColorDialog($event)">
 																		</div>
 
-																		<!-- <div> {{ primaryColor }} </div>	 -->
-																		<!-- padding-left: 30px; -->
+																		<!-- <mat-form-field>
+																			<input matInput [ngxMatColorPicker]="picker" [formControl]="colorCtr">
+																			<ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+																			<ngx-mat-color-picker #picker></ngx-mat-color-picker>
+																		  </mat-form-field> -->
+
+																	
 
 																	</div>
 
@@ -696,11 +697,7 @@
 
 																	<div class="primary-secondary-selection"
 																		style="position: absolute;">
-																		<!-- [cpOutputFormat]="'hex'" -->
-																		<!-- (colorPickerChange)="onChangeSecondaryColor($event)" -->
-																		<!-- [cpOKButton]="true" -->
-																		<!-- [cpOKButtonClass]= "'btn btn-primary btn-xs'" -->
-																		<!-- (colorPickerSelect)="onSelectSecondaryColor($event)" -->
+															
 																		<div class="widget-settings-palette"
 																			[style.background-color]="secondaryColor"
 																			[cpAlphaChannel]="'disabled'"
@@ -709,7 +706,11 @@
 																			(colorPickerOpen)="onOpenSecondaryColorDialog($event)">
 																		</div>
 
-																		<!-- <div> {{secondaryColor}} </div> -->
+																		<!-- <mat-form-field>
+																			<input matInput [ngxMatColorPicker]="picker" [formControl]="colorCtr">
+																			<ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+																			<ngx-mat-color-picker #picker></ngx-mat-color-picker>
+																		  </mat-form-field> -->
 
 																	</div>
 																	<input class="custom-input" id="secondary-color"
@@ -1550,7 +1551,7 @@
 									</div>
 
 									<div class="widget-section-arrow">
-										<i class="material-icons widget-section-arrow-icon">
+										<i class="material-icons widget-section-arrow-icon" style="">
 											keyboard_arrow_down
 										</i>
 									</div>
@@ -1847,7 +1848,8 @@
 														</i>
 													</span>
 													<span class="widget_design__Tooltiptext">
-														{{ 'Resourcepage.CustomizeTheCalloutTitle' | translate }}
+														{{ 'Resourcepage.CustomizeTheCalloutTitle' | translate
+														}}
 													</span>
 												</span>
 											</label>
@@ -2697,7 +2699,7 @@
 												</span>
 												<span
 												style="display: block;color: #7695a5;font-size: 12px;line-height: 16px;margin-top: 6px;font-weight: 400;">
-												{{ "NoteThatTheWidgetLabelsOnAwebsite" | translate }}
+												{{ 'NoteThatTheWidgetLabelsOnAwebsite' | translate }}.
 											</span>
 											</div>
 										</div>

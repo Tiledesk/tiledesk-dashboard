@@ -255,13 +255,13 @@ input.secure {
 }
 
 .brand-background-image {
-  background-image: url(assets/img/rocket-login-page_without_version.svg);
+  background-image: url('/assets/img/rocket-login-page_without_version.svg');
   background-repeat: no-repeat;
   background-position: center bottom;
 }
 
 .no_brand-background-image {
-  background-image: url(assets/img/rocket-login-page_no_brand.svg);
+  background-image: url('/assets/img/rocket-login-page_no_brand.svg');
   background-repeat: no-repeat;
   background-position: center bottom;
 }

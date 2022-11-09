@@ -1,20 +1,17 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { ProjectService } from '../services/project.service';
-
 import { Project } from '../models/project-model';
-import { Observable } from 'rxjs/Observable';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 
 export class ProjectPlanService {
-  http: Http;
+  
   public projectPlan$: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
 
   projectID: string;
@@ -22,7 +19,6 @@ export class ProjectPlanService {
   project_deleted_notification: string
   progetIdGetFromParams: string
   constructor(
-    http: Http,
     private router: Router,
     private auth: AuthService,
     private projectService: ProjectService,
@@ -30,9 +26,7 @@ export class ProjectPlanService {
     private translate: TranslateService,
     private logger: LoggerService
   ) {
-    this.http = http;
-    // this.getCurrentProject();
-    this.getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish();
+    this.getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish('costructor');
     this.getUserToken();
     this.translateNotificationMsgs();
   }
@@ -56,17 +50,15 @@ export class ProjectPlanService {
     });
   }
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+  planUpdated(projectId: string ){
+    this.logger.log('[PROJECT-PLAN-SERV] - planUpdated (called by payment success page)');
 
-      if (project) {
-        this.projectID = project._id;
-        this.logger.log('[PROJECT-PLAN-SERV] project ID ', this.projectID)
-      }
-    });
+    // this.getProjectByIdAndPublish(projectId, 'planUpdated');
   }
 
-  getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish() {
+
+  getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish(calledBy) {
+    this.logger.log('[PROJECT-PLAN-SERV] - getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish (called', calledBy );
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
 
@@ -91,7 +83,8 @@ export class ProjectPlanService {
           url_segments[1] !== 'autologin' &&
           current_url !== '/projects'
         ) {
-          this.getProjectByIdAndPublish(nav_project_id)
+          // this.getProjectByIdAndPublish(nav_project_id, calledBy)
+          this.findCurrentProjectAmongAll(nav_project_id)
         }
 
         // nav_project_id IS UNDEFINED IN THE LOGIN PAGE - IN THE PROJECT LIST PAGE
@@ -103,9 +96,64 @@ export class ProjectPlanService {
     });
   }
 
-  getProjectByIdAndPublish(nav_project_id: string) {
-    this.projectService.getProjectById(nav_project_id).subscribe((project: any) => {
-    //  console.log('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - project ', project);
+
+  findCurrentProjectAmongAll(projectId: string) { 
+    this.projectService.getProjects().subscribe((projects: any) => {
+   
+      const current_prjct = projects.find(prj => prj.id_project.id === projectId);
+      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
+      const projectPlanData: Project = {
+
+        _id: current_prjct.id_project._id,
+        name: current_prjct.id_project.name,
+        createdAt: current_prjct.id_project.createdAt,
+        profile_name: current_prjct.id_project.profile['name'],
+        profile_agents: current_prjct.id_project.profile['agents'],
+        trial_days: current_prjct.id_project.profile['trialDays'],
+        trial_days_left: current_prjct.id_project.trialDaysLeft,
+        trial_expired: current_prjct.id_project.trialExpired,
+        subscription_is_active: current_prjct.id_project.isActiveSubscription,
+        profile_type: current_prjct.id_project.profile['type'],
+        subscription_start_date: current_prjct.id_project.profile['subStart'],
+        subscription_end_date: current_prjct.id_project.profile['subEnd'],
+        subscription_id: current_prjct.id_project.profile['subscriptionId'],
+        subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date']
+      }
+
+      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
+
+      this.projectPlan$.next(projectPlanData);
+
+    }, error => {
+      this.logger.error('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - ERROR ', error);
+
+      if (error.status === 404) {
+        this.router.navigate(['/projects']);
+        this.notify.showNotificationChangeProject(this.project_deleted_notification, 2, 'report_problem');
+        this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - hey i redirect to projects');
+      }
+
+      if (error.status === 401) {
+        this.router.navigate(['/login']);
+        this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - hey i redirect to login');
+      }
+
+      if (error.status === 403) {
+
+        this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - hey i redirect to unauthorized_access progetIdGetFromParams', this.progetIdGetFromParams);
+        this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - hey i redirect to unauthorized_access projectID', this.projectID);
+        this.router.navigate([`project/${this.progetIdGetFromParams}/unauthorized_access`]);
+      }
+    }, () => {
+      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL -  * complete ');
+    
+    })
+  }
+
+  getProjectByIdAndPublish(project_id: string, calledBy: string) {
+    // console.log('[PROJECT-PLAN-SERV] - getProjectByIdAndPublish (called', calledBy );
+    this.projectService.getProjectById(project_id).subscribe((project: any) => {
+      this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - project ', project,  '(called', calledBy ,')');
 
       const projectPlanData: Project = {
 

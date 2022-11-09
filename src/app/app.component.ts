@@ -1,14 +1,14 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Self, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Self, OnDestroy, HostListener, isDevMode } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
-import 'rxjs/add/operator/filter';
+
+import { filter } from 'rxjs/operators';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { Router, NavigationEnd, NavigationStart } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Router, NavigationEnd, NavigationStart, Event as NavigationEvent } from '@angular/router';
+import { Subscription } from 'rxjs'
 import PerfectScrollbar from 'perfect-scrollbar'; // https://github.com/mdbootstrap/perfect-scrollbar
 
 import { AuthService } from './core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
-
 declare const $: any;
 
 import { environment } from '../environments/environment';
@@ -36,6 +36,7 @@ import { avatarPlaceholder, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
 
+
 declare const gtag: Function;
 
 @Component({
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Subscription;
     private lastPoppedUrl: string;
     private yScrollStack: number[] = [];
- 
+
 
     route: string;
     LOGIN_PAGE: boolean;
@@ -59,9 +60,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     BRAND: any;
 
-    @ViewChild(NavbarComponent) navbar: NavbarComponent;
-
-    @ViewChild('myModal') myModal: ElementRef;
+    @ViewChild(NavbarComponent, { static: false }) navbar: NavbarComponent;
+    @ViewChild('myModal', { static: false }) myModal: ElementRef;
     isPageWithNav: boolean;
 
     // wsbasepath = environment.websocket.wsUrl; // moved
@@ -99,20 +99,21 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {
 
         this.router.events.subscribe((event) => {
-
             if (event instanceof NavigationEnd) {
                 gtag('config', 'G-BKHKLWGG6F', { 'page_path': event.urlAfterRedirects });
             }
-
         })
 
         this.auth.project_bs.subscribe((project) => {
-            this.projectService.getProjects().subscribe((projects: any) => {
-                if (project) {
-                    this.current_selected_prjct = projects.find(prj => prj.id_project.id === project._id);
-                    // console.log('[APP-COMPONENT] current_selected_prjct ', this.current_selected_prjct)
-                }
-            })
+            if (project) {
+                this.logger.log('[APP-COMPONENT] project from project_bs subscription ', project)
+                this.projectService.getProjects().subscribe((projects: any) => {
+                    if (projects) {
+                        this.current_selected_prjct = projects.find(prj => prj.id_project.id === project._id);
+                        this.logger.log('[APP-COMPONENT] current_selected_prjct ', this.current_selected_prjct)
+                    }
+                })
+            }
         })
         // console.log('HI! [APP-COMPONENT] ')
         // https://www.freecodecamp.org/news/how-to-check-internet-connection-status-with-javascript/
@@ -133,7 +134,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // console.log('[APP-COMPONENT] - browserName  ',  this.browserName)
         // console.log('[APP-COMPONENT] - browserVersion  ',  this.browserVersion)
         this.auth.browserNameAndVersion(this.browserName, this.browserVersion)
-        // this.getBrand();
+
 
         // script.load('dummy').then(data => {
         // script.load().then(data => {
@@ -144,7 +145,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const brand = brandService.getBrand();
 
-        this.logger.log('[APP-COMPONENT] - GET BRAND brandService > brand ', brand)
+        // console.log('[APP-COMPONENT] - GET BRAND brandService > brand ', brand)
 
         if (brand) {
             this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
@@ -174,8 +175,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 throw new Error('firebase config is not defined. Please create your dashboard-config.json. See the Dashboard Installation Page');
             }
 
-
-            // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
             const firebase_conf = appConfigService.getConfig().firebase;
             this.logger.log('[APP-COMPONENT] AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
             firebase.initializeApp(firebase_conf);
@@ -218,17 +217,23 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             moment.locale(dshbrd_lang)
         } else {
             this.logger.log('[APP-COMPONENT] There is no logged in user')
-
         }
-
-     
-
-
         this.subscription = router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
                 browserRefresh = !router.navigated;
             }
         });
+
+        // if (!isDevMode()) { 
+        //     let head = document.getElementsByTagName('head')[0];
+        //     let script = document.createElement('script')
+        //     script.type = "text/javascript"
+        //     script.text = `!function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="Urz01Jdxg6o8wuyzhanlnOy0iwPqK26I";;analytics.SNIPPET_VERSION="4.15.3";
+        //     analytics.load("Urz01Jdxg6o8wuyzhanlnOy0iwPqK26I");
+        //     analytics.page();
+        //     }}();` 
+        //     head.appendChild(script)
+        // }
     }
 
 
@@ -271,11 +276,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
+        this._router = this.router.events
+            .pipe(
+                filter(event => event instanceof NavigationEnd)
+            )
+            .subscribe((event: NavigationEvent) => {
+                    // console.log('[APP-COMPONENT] NavigationEvent ', event);
+                    elemMainPanel.scrollTop = 0;
+                    elemSidebar.scrollTop = 0;
+                }
+            )
 
-        this._router = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event: NavigationEnd) => {
-            elemMainPanel.scrollTop = 0;
-            elemSidebar.scrollTop = 0;
-        });
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
             let ps = new PerfectScrollbar(elemMainPanel);
             ps = new PerfectScrollbar(elemSidebar);
@@ -301,7 +312,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 // event.preventDefault(); 
                 that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event : ', event)
                 const count = +that.usersLocalDbService.getForegrondNotificationsCount();
-                that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event count ', count) 
+                that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event count ', count)
                 that.wsRequestsService.publishAndStoreForegroundRequestCount(count)
             })
         }
@@ -439,7 +450,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     showNotification(recipient_fullname, notificationBody, link) {
-        if (Notification.permission !== 'granted') {
+        // if (Notification.permission !== 'granted') {
+        if ((Notification as any).permission !== 'granted') {
             Notification.requestPermission();
         } else {
             const notification = new Notification(recipient_fullname, {
@@ -544,35 +556,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
-
-
-    // ---------------------------
-    // GET BRAND
-    // ---------------------------
-    // getBrand() {
-    //     this.brandService.getBrand().subscribe((_brand: any) => {
-
-    //         this.BRAND = _brand;
-    //         this.logger.log('APP-COMPONENT - GET BRAND ', this.BRAND);
-
-    //         if (this.BRAND) {
-    //             this.metaTitle.setTitle(this.BRAND.metaTitle);
-    //             this.setFavicon();
-    //         }
-
-    //     }, (error) => {
-    //         this.logger.log('APP-COMPONENT GET BRAND - ERROR  ', error);
-
-    //     }, () => {
-    //         this.logger.log('APP-COMPONENT GET BRAND * COMPLETE *');
-
-    //     });
-    // }
-
-
-
     getCurrentUserAndConnectToWs() {
-
         this.auth.user_bs.subscribe((user) => {
             // this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
             // this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
@@ -789,6 +773,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/create-project') !== -1) ||
                     (this.route.indexOf('/create-new-project') !== -1) ||
                     (this.route.indexOf('/configure-widget') !== -1) ||
+                    (this.route.indexOf('/onboarding') !== -1) ||
                     (this.route.indexOf('/install-widget') !== -1) ||
                     (this.route.indexOf('/handle-invitation') !== -1) ||
                     (this.route.indexOf('/request-for-panel') !== -1) ||
@@ -907,6 +892,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/create-project') !== -1) ||
                     (this.route.indexOf('/create-new-project') !== -1) ||
                     (this.route.indexOf('/configure-widget') !== -1) ||
+                    (this.route.indexOf('/onboarding') !== -1) ||
                     (this.route.indexOf('/install-widget') !== -1) ||
                     (this.route.indexOf('/handle-invitation') !== -1) ||
                     (this.route.indexOf('/chat') !== -1) ||

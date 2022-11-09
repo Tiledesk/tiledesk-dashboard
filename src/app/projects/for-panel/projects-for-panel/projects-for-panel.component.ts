@@ -7,7 +7,7 @@ import { AuthService } from '../../../core/auth.service';
 import { isDevMode } from '@angular/core';
 import { UsersService } from '../../../services/users.service';
 import { UploadImageService } from '../../../services/upload-image.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
 import { AppConfigService } from '../../../services/app-config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -365,7 +365,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     });
   }
 
-  changeAvailabilityState(projectid, available, profilestatus)  {
+  changeAvailabilityState(projectid, available, profilestatus) {
     this.logger.log('[PROJECTS-X-PANEL] - changeAvailabilityState projectid', projectid, ' available: ', available);
 
     available = !available

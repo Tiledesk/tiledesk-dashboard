@@ -8,7 +8,9 @@ describe('WidgetInstallationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WidgetInstallationComponent ]
+      declarations: [ 
+        WidgetInstallationComponent
+       ]
     })
     .compileComponents();
   }));

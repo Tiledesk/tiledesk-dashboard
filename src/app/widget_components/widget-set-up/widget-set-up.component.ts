@@ -1,12 +1,12 @@
 import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { ColorPickerService, Cmyk } from 'ngx-color-picker';
+import { ColorPickerService } from 'ngx-color-picker';
 import { WidgetService } from '../../services/widget.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
 import { Department } from '../../models/department-model';
 import { DepartmentService } from '../../services/department.service';
 import { NotifyService } from '../../core/notify.service';
@@ -27,9 +27,11 @@ import * as moment from 'moment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
-import { threadId } from 'worker_threads';
+
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 const swal = require('sweetalert');
+import { AbstractControl, FormControl } from '@angular/forms';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -40,11 +42,24 @@ const swal = require('sweetalert');
 
 export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  public disabled = false;
+  public color: ThemePalette = 'primary';
+  public touchUi = false;
+
+  colorCtr: AbstractControl = new FormControl(null);
+
+  public options = [
+    { value: true, label: 'True' },
+    { value: false, label: 'False' }
+  ];
+
+  public listColors = ['primary', 'accent', 'warn'];
+
   private unsubscribe$: Subject<any> = new Subject<any>();
 
-  @ViewChild('testwidgetbtn') private elementRef: ElementRef;
-  @ViewChild("multilanguage") private multilanguageRef: ElementRef;
-  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+  @ViewChild('testwidgetbtn', { static: false })  elementRef: ElementRef;
+  @ViewChild("multilanguage", { static: false })  multilanguageRef: ElementRef;
+  @ViewChild(NgSelectComponent, { static: false }) ngSelectComponent: NgSelectComponent;
   tparams: any;
   company_name: any;
   company_site_url: any;
@@ -259,7 +274,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //   "errorLabel": "",
   // }
 
-  @ViewChild('Selecter') ngselect: NgSelectComponent;
+  @ViewChild('Selecter', { static: false }) ngselect: NgSelectComponent;
 
 
 
@@ -334,7 +349,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public learnMoreAboutDefaultRoles: string;
   public payIsVisible: boolean;
   public featureIsAvailable: boolean;
-  @ViewChild('fileInputLauncherBtnlogo') fileInputLauncherBtnlogo: any;
+  @ViewChild('fileInputLauncherBtnlogo', { static: false }) fileInputLauncherBtnlogo: any;
 
 
   constructor(
@@ -662,7 +677,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // this.logger.log('[WIDGET-SET-UP] ACCORDION', acc);
     var i;
     for (i = 0; i < acc.length; i++) {
-      var lastAccordion = acc[6];
+      var lastAccordion = acc[5];
       var lastPanel = <HTMLElement>lastAccordion.nextElementSibling;
       lastAccordion.classList.add("active");
       lastPanel.style.maxHeight = lastPanel.scrollHeight + "px";
@@ -1122,7 +1137,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // this.logger.log('WIDGET DESIGN ACCORDION', acc);
     var i: number;
     for (i = 0; i < acc.length; i++) {
-      var lastAccordion = acc[5];
+      var lastAccordion = acc[6];
       var lastPanel = <HTMLElement>lastAccordion.nextElementSibling;
       lastAccordion.classList.add("active");
       lastPanel.style.maxHeight = lastPanel.scrollHeight + "px";
@@ -1719,7 +1734,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SETTED HIS LOGO)
         // ------------------------------------------------------------------------
         // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg') {
+        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
           this.logoUrl = project.widget.logoChat;
           this.hasOwnLogo = true;
           this.LOGO_IS_ON = true;
@@ -1732,7 +1747,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO')
           // ------------------------------------------------------------------------
           // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg') {
+        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
           this.logoUrl = 'No Logo';
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = false;
@@ -1747,7 +1762,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // ------------------------------------------------------------------------
         } else {
           // this.logoUrl = 'tiledesklogo'
-          this.logoUrl = 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg'
+          this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = true
 
@@ -1920,7 +1935,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         // this.logoUrl = 'tiledesklogo'
-        this.logoUrl = 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg'
+        this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
         this.hasOwnLogo = false;
         this.LOGO_IS_ON = true
 
@@ -2545,7 +2560,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     } else if ($event.target.checked === true) {
 
       // this.logoUrl = 'tiledesklogo'
-      this.logoUrl = 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg'
+      this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
       this.LOGO_IS_ON = true;
       this.logger.log('[WIDGET-SET-UP] LOGO_IS_ON ', this.LOGO_IS_ON)
       this.hasOwnLogo = false;
@@ -2601,7 +2616,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     /// LOGO
     if (this.logoUrl && this.LOGO_IS_ON === true) {
       // if (this.logoUrl !== 'tiledesklogo') {
-      if (this.logoUrl !== 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg') {
+      if (this.logoUrl !== 'https://tiledesk.com/tiledesk-logo-white.png') {
         this.hasOwnLogo = true;
         this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
       } else {
@@ -2624,7 +2639,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       delete this.widgetObj['logoChat'];
 
       // this.logoUrl = 'tiledesklogo'
-      this.logoUrl = 'https://widget.tiledesk.com/v2/assets/images/tiledesk_logo_white_small.svg'
+      this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
       this.hasOwnLogo = false;
       this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
     }

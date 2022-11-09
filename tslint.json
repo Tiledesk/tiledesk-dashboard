@@ -94,6 +94,12 @@
       "check-separator",
       "check-type"
     ],
+    "no-import-side-effect": [
+      true,
+      {
+        "ignore-module": "(core-js/.*|zone\\.js/.*|@angular/localize/init)$"
+      }
+    ],
 
     "directive-selector": [true, "attribute", "appdashboard", "camelCase"],
     "component-selector": [true, "element", "appdashboard", "kebab-case"],

@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/co
 import { Request } from '../../models/request-model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
+// import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import { DepartmentService } from '../../services/department.service';
 import { trigger, state, style, animate, transition, query, animateChild } from '@angular/animations';
 import { LocalDbService } from '../../services/users-local-db.service';
@@ -15,7 +15,8 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../core/notify.service';
 import { AppConfigService } from '../../services/app-config.service';
-import * as moment from 'moment';
+// import * as moment from 'moment';
+import moment from "moment";
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { UAParser } from 'ua-parser-js';
 import { WsSharedComponent } from '../../ws_requests/ws-shared/ws-shared.component';
@@ -27,7 +28,20 @@ import { TagsService } from '../../services/tags.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
+import { FormGroup, FormControl } from '@angular/forms';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
 
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 // import swal from 'sweetalert';
 // https://github.com/t4t5/sweetalert/issues/890 <- issue ERROR in node_modules/sweetalert/typings/sweetalert.d.ts(4,9): error TS2403
 
@@ -62,6 +76,9 @@ const swal = require('sweetalert');
         }))
       ])
     ])
+  ],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
   ]
 })
 
@@ -72,18 +89,27 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   // @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
   // @ViewChild('searchbtn') private searchbtnRef: ElementRef;
-  @ViewChild('searchbtnbottom') private searchbtnbottomRef?: ElementRef;
+  @ViewChild('searchbtnbottom', { static: false }) private searchbtnbottomRef?: ElementRef;
+
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
 
   requestList: Request[];
   projectId: string;
   showSpinner: boolean;
   startDate: any;
+  startDateDefaultValue: any;
+
   startDateFormatted: string;
   startDateFormatted_temp: string;
 
   endDate: any;
+  endDateDefaultValue: any;
   endDateFormatted: string;
   endDateFormatted_temp: string;
+
   deptName: string;
   fullText: string;
   fullText_applied_filter: string
@@ -164,19 +190,19 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   cancelMsg: string;
   warningMsg: string;
   conversationsCannotBeReopened: string;
-  public myDatePickerOptions: IMyDpOptions = {
-    // other options...
-    dateFormat: 'dd/mm/yyyy',
-    // dateFormat: 'yyyy, mm , dd',
-  };
+  // public myDatePickerOptions: IMyDpOptions = {
+  //   // other options...
+  //   dateFormat: 'dd/mm/yyyy',
+  //   // dateFormat: 'yyyy, mm , dd',
+  // };
 
 
-  public endDatePickerOptions: IMyDpOptions = {
-    // other options...
-    dateFormat: 'dd/mm/yyyy',
-    disableUntil: { year: 0, month: 0, day: 0 },
-    // dateFormat: 'yyyy, mm , dd',
-  };
+  // public endDatePickerOptions: IMyDpOptions = {
+  //   // other options...
+  //   dateFormat: 'dd/mm/yyyy',
+  //   disableUntil: { year: 0, month: 0, day: 0 },
+  //   // dateFormat: 'yyyy, mm , dd',
+  // };
 
 
   storageBucket: string;
@@ -242,6 +268,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   requests_status_selected_from_advanced_option: string;
   youCannotJoinChat: string;
   joinChatTitle: string;
+  
   /**
    * 
    * @param router 
@@ -387,25 +414,34 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             if (paramArray[0] === 'start_date' && paramArray[1] !== '') {
               const start_date_value = paramArray[1]
-              // console.log('[HISTORY & NORT-CONVS] queryParams start_date_value ', start_date_value)
+              this.logger.log('[HISTORY & NORT-CONVS] queryParams start_date_value ', start_date_value)
               if (start_date_value) {
-                this.startDate = {}
-                this.startDate['formatted'] = start_date_value;
-                this.startDateFormatted_temp = this.startDate['formatted']
+                // this.startDate = {}
+                this.startDate = start_date_value;
+                this.startDateFormatted_temp = this.startDate
                 this.start_date_is_null = false;
-                // console.log('[HISTORY & NORT-CONVS]  queryParams qsString > startDate:', this.startDate)
+
+                const start_date_value_segment = start_date_value.split('/')
+                this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > start_date_value_segment:', start_date_value_segment)
+
+                this.startDateDefaultValue = new Date(start_date_value_segment[1] + '/' + start_date_value_segment[0] + '/' + start_date_value_segment[2])
+                this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > startDateDefaultValue:', this.startDateDefaultValue)
               }
             }
 
 
             if (paramArray[0] === 'end_date' && paramArray[1] !== '') {
               const end_date = paramArray[1]
-              // console.log('[HISTORY & NORT-CONVS] queryParams start_end_date value', end_date)
+              this.logger.log('[HISTORY & NORT-CONVS] queryParams end_date', end_date)
               if (end_date) {
-                this.endDate = {}
-                this.endDate['formatted'] = end_date;
-                this.endDateFormatted_temp = this.endDate['formatted']
-                // console.log('[HISTORY & NORT-CONVS]  queryParams qsString > endDate:', this.endDate)
+                // this.endDate = {}
+                this.endDate = end_date;
+                this.endDateFormatted_temp = this.endDate
+                this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > endDate:', this.endDate)
+                const end_date_segment = end_date.split('/')
+                this.logger.log('[HISTORY & NORT-CONVS] queryParams qsString > _enddate', end_date_segment)
+                this.endDateDefaultValue = new Date(end_date_segment[1] + '/' + end_date_segment[0] + '/' + end_date_segment[2])
+                this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > endDateDefaultValue:', this.endDateDefaultValue)
               }
             }
 
@@ -639,7 +675,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.translateConversationsCannotBeReopened();
     this.translaAllDepts();
     this.translateModalYouCannotJoinChat();
-
   }
   translaAllDepts() {
     this.translate.get('HistoryPage.AllDepts').subscribe((text: string) => {
@@ -925,7 +960,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     if (request_status === '200') {
       this.requests_status_selected_from_left_filter = '200'
       this.requests_status_selected_from_advanced_option = null
-    
+
       // console.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
       this.getServedRequests();
     } else if (request_status === '100') {
@@ -936,7 +971,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     } else if (request_status === 'all') {
       this.requests_status_selected_from_left_filter = 'all'
       // console.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
-     
+
       // console.log('[HISTORY & NORT-CONVS] requestsStatusSelect  currentUrl', currentUrl);
 
       if (currentUrl.indexOf('?') !== -1) {
@@ -1060,9 +1095,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
       this.logger.log('[HISTORY & NORT-CONVS] -  GET REQUESTS MSGS - RES: ', msgs);
       if (msgs) {
-        const parsedMsgs = JSON.parse(msgs)
         const msgsArray = [];
-        parsedMsgs.forEach((msgs, index) => {
+        msgs.forEach((msgs, index) => {
           if ((msgs)) {
             if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
               // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
@@ -1087,14 +1121,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     }, () => {
       this.logger.log('[HISTORY & NORT-CONVS] * COMPLETE *');
-
     });
   }
 
-
   // GET REQUEST COPY - START
   getRequests() {
-
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.queryString, this.pageNo).subscribe((requests: any) => {
@@ -1117,8 +1148,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           for (const request of this.requestList) {
 
             if (request) {
-              // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-
 
               request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
@@ -1165,20 +1194,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                 this.logger.log('[HISTORY & NORT-CONVS] participants length', request.participants.length);
                 request['participanting_Agents'] = [{ _id: 'no_agent', email: 'NoAgent', firstname: 'NoAgent', lastname: 'NoAgent' }]
               }
-
-              // ------------------------------------------------------------------------------------------------------------
-              //  OLD !!! to get if the requester is authenticated the 'isAuthenticated' property is obtained from snapshot.requester
-              // ------------------------------------------------------------------------------------------------------------
-              // if (request.snapshot && request.snapshot.requester && request.snapshot.requester.isAuthenticated) {
-              //   if (request.snapshot.requester.isAuthenticated === true) {
-              //     request['requester_is_verified'] = true;
-              //   } else {
-              //     request['requester_is_verified'] = false;
-              //   }
-              // } else {
-              //   request['requester_is_verified'] = false;
-              // }
-
 
               // ------------------------------------------------------------------------------------------------------------
               //  to get if the requester is authenticated the 'isAuthenticated' property is obtained directly from requester
@@ -1709,6 +1724,49 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
+  addEventStartDate(value) {
+    this.logger.log('[HISTORY & NORT-CONVS] - startDateSelected value', value);
+    this.startDateFormatted_temp = moment(value).format('DD/MM/YYYY')
+    this.logger.log('[HISTORY & NORT-CONVS] - startDateFormatted_temp', this.startDateFormatted_temp);
+
+    if (this.startDateFormatted_temp) {
+      this.start_date_is_null = false;
+      this.startDate = this.startDateFormatted_temp;
+      this.logger.log('[HISTORY & NORT-CONVS] - startDate', this.startDate);
+    } else {
+      this.start_date_is_null = true;
+      this.startDate = ''
+      this.endDate = ''
+
+    }
+  }
+
+  addEventEndDate(value) {
+    this.logger.log('[HISTORY & NORT-CONVS] - endDateSelected value', value);
+    this.endDateFormatted_temp = moment(value).format('DD/MM/YYYY')
+
+    this.logger.log('[HISTORY & NORT-CONVS] - endDateFormatted_temp', this.endDateFormatted_temp);
+    if (!this.endDateFormatted_temp) {
+      this.endDate = ''
+    } else {
+      this.endDate = this.endDateFormatted_temp
+      this.logger.log('[HISTORY & NORT-CONVS] - endDate', this.endDate);
+    }
+  }
+  onChangeStartDate($event) {
+    this.logger.log('[HISTORY & NORT-CONVS] - onChangeStartDate event', $event);
+    this.startDateDefaultValue = moment($event).format('DD/MM/YYYY')
+    this.logger.log('[HISTORY & NORT-CONVS] - onChangeStartDate this.startDateDefaultValue',this.startDateDefaultValue);
+  }
+
+  clearDateRange() {
+    this.logger.log('[HISTORY & NORT-CONVS] - CLEAR DATE RANGE');
+    this.startDateDefaultValue = null
+    this.endDateDefaultValue = null
+    this.startDate  = null
+    this.endDate = null
+  }
+
   // ------------------------------------------------------------------------------
   // @ Date - on change start date get selected start date formatted
   // ------------------------------------------------------------------------------
@@ -1732,13 +1790,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.logger.log('[HISTORY & NORT-CONVS] - disableUntilDate ', this.disableUntilDate);
 
-    let copy = this.getCopyOfOptions();
+    // let copy = this.getCopyOfOptions();
 
-    copy.disableUntil = this.disableUntilDate;
+    // copy.disableUntil = this.disableUntilDate;
 
-    this.endDatePickerOptions = copy;
+    // this.endDatePickerOptions = copy;
 
-    this.logger.log('[HISTORY & NORT-CONVS] - endDatePickerOptions ', this.endDatePickerOptions);
+    // this.logger.log('[HISTORY & NORT-CONVS] - endDatePickerOptions ', this.endDatePickerOptions);
 
     if (this.startDateFormatted_temp) {
       this.start_date_is_null = false;
@@ -1771,9 +1829,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  getCopyOfOptions(): IMyDpOptions {
-    return JSON.parse(JSON.stringify(this.endDatePickerOptions));
-  }
+ 
 
 
   // ------------------------------------------------------------------------------
@@ -1810,8 +1866,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   onlyNumbers(stringWithoutHash) {
     return /^[0-9]+$/.test(stringWithoutHash);
   }
-
-  search() {
+  
+  search() { 
     // console.log('HERE IN SEARCH calledBy ', calledBy)
     // console.log('HERE IN SEARCH this.fullText', this.fullText)
     // console.log('HERE IN SEARCH this.startDate', this.startDate)
@@ -1883,12 +1939,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('[HISTORY & NORT-CONVS] - START DATE - FORMATTED ', this.startDate['formatted']);
       // this.logger.log('[HISTORY & NORT-CONVS] - START DATE - EPOC ', this.startDate['epoc']);
 
-      this.startDateValue = this.startDate['formatted']
+      // this.startDateValue = this.startDate['formatted'] moment(value).format('DD/MM/YYYY')
+      this.startDateValue = this.startDate;
 
       this.startDateFormatted = this.startDateFormatted_temp;
 
-      // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR START DATE ', this.startDateValue);
-      // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR START DATE FORMATTED', this.startDateFormatted);
+      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR START DATE ', this.startDateValue);
+      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR START DATE FORMATTED', this.startDateFormatted);
     } else {
       this.startDateValue = '';
       this.startDateFormatted = null
@@ -1900,10 +1957,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // console.log('[HISTORY & NORT-CONVS] - END DATE - FORMATTED ', this.endDate['formatted']);
       // this.logger.log('[HISTORY & NORT-CONVS] - END DATE - EPOC ', this.endDate['epoc']);
 
-      this.endDateValue = this.endDate['formatted']
+      // this.endDateValue = this.endDate['formatted'];
+      this.endDateValue = this.endDate;
+
+
+
       this.endDateFormatted = this.endDateFormatted_temp;
-      // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR END DATE FORMATTED', this.endDateFormatted);
-      // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR END DATE ', this.endDateValue);
+      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR END DATE FORMATTED', this.endDateFormatted);
+      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR END DATE ', this.endDateValue);
     } else {
       this.endDateValue = '';
       this.endDateFormatted = null
@@ -2145,7 +2206,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     const clearSearchBtn = <HTMLElement>document.querySelector('.clearsearchbtn');
     this.logger.log('[HISTORY & NORT-CONVS]- CLEAR SEARCH BTN', clearSearchBtn)
     clearSearchBtn.blur()
-
+    this.startDateDefaultValue = null
+    this.endDateDefaultValue = null
     this.fullText = '';
     this.selectedDeptId = '';
     this.startDate = '';
@@ -2217,10 +2279,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   exportRequestsToCSV() {
-    const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
-    this.logger.log('[HISTORY & NORT-CONVS] - EXPORT TO CSV BTN', exportToCsvBtn)
-    exportToCsvBtn.blur()
-
     this.wsRequestsService.downloadHistoryRequestsAsCsv(this.queryString, 0).subscribe((requests: any) => {
       if (requests) {
         this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);
@@ -2235,7 +2293,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV * COMPLETE *')
     });
 
-  
+
     // if (this.payIsVisible) {
     //   if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
     //     this.notify.openDataExportNotAvailable()
@@ -2476,7 +2534,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
           this.logger.log("[HISTORY & NORT-CONVS] - then res : ", res);
 
-          this.logger.log("[HISTORY & NORT-CONVS] - then res _body : ", JSON.parse(res['_body']));
+
 
           count = index + 1;
           this.logger.log("[HISTORY & NORT-CONVS] - count Of ARCHIVE SELECTED : ", count)
@@ -2633,8 +2691,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
     // const today = moment(new Date()).format("YYYY-MM-DD")
     // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
-    // unarchiveRequest
-
 
     const requestclosedAt = moment(request['closed_at']);
     this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)

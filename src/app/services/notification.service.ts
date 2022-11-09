@@ -13,7 +13,8 @@ export class NotificationService {
   user: any;
   TOKEN: string;
 
-  constructor(private http: HttpClient,
+  constructor(
+    private _httpClient: HttpClient,
     private auth: AuthService,
     private appConfigService: AppConfigService,
     public usersService: UsersService,
@@ -65,7 +66,7 @@ export class NotificationService {
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
     })
-    return this.http.get(this.SERVER_BASE_PATH + this.projectID + "/project_users/" + project_user_id, { headers: headers })
+    return this._httpClient.get(this.SERVER_BASE_PATH + this.projectID + "/project_users/" + project_user_id, { headers: headers })
 
   }
 
@@ -81,7 +82,7 @@ export class NotificationService {
         'Authorization': this.TOKEN,
       })
 
-      this.http.put(this.SERVER_BASE_PATH + this.projectID + "/project_users/", { "settings.email.notification.conversation.assigned.toyou": status }, { headers: headers })
+      this._httpClient.put(this.SERVER_BASE_PATH + this.projectID + "/project_users/", { "settings.email.notification.conversation.assigned.toyou": status }, { headers: headers })
         .toPromise().then((res) => {
           resolve(res)
         }).catch((err) => {
@@ -101,7 +102,7 @@ export class NotificationService {
         'Authorization': this.TOKEN
       })
 
-      this.http.put(this.SERVER_BASE_PATH + this.projectID + "/project_users/", { "settings.email.notification.conversation.pooled": status }, { headers: headers })
+      this._httpClient.put(this.SERVER_BASE_PATH + this.projectID + "/project_users/", { "settings.email.notification.conversation.pooled": status }, { headers: headers })
         .toPromise().then((res) => {
           resolve(res)
         }).catch((err) => {

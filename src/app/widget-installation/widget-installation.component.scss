@@ -1,108 +1,260 @@
 .widget-all-settings-wrap {
-  position: relative;
-  background-color: #fff;
-  /* padding: 20px; */
-  border-left: none;
-  flex: 1;
+    position: relative;
+    background-color: #fff;
+    /* padding: 20px; */
+    border-left: none;
+    flex: 1;
+    margin-left: 20px;
+    /* background-color: #f7f8fc; */
+    // border: 1px solid #e5effe;
+    // box-shadow: 0 2px 6px 0 #e6e9ed;
+    max-width: 1200px;
+  }
+
+  .accordion-install-widget {
+    background-color: #ffffff;
+    color: #444;
+    cursor: pointer;
+    // padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+    // margin-bottom: 16px;
+    // padding-left: 42px;
+    // padding-right: 42px;
+    font-size: 18px;
+    font-weight: 600;
+    font-family:'Poppins','Roboto', 'Arial', sans-serif;
+    padding-left: 0px;
+    border-bottom-color: #ececec;
+    // padding-top: 30px;
+    // padding-bottom: 21px;
+  }
+
+  .active-install-widget {
+    border-bottom: 1px solid #ececec;
+  }
+
+  
+  .widget-section-header__title-underlined {
+    text-transform: none;
+    color: #566787;
+    margin-bottom: 0px;
+    height: 40px !important;
+    position: relative;
+    font-family:'Poppins','Roboto', 'Arial', sans-serif;
+    // font-size: 18px;
+    font-size: 18px;
+    margin-top: 10px;
+    // border-bottom: 2px solid #3ea9f5; // decommenta queto se usi senza icona
+    margin-left: 45px; // commenta queto se usi senza icona
+  }
+
+
+  .widget-setting-icon-wrap {
+    position: absolute;
+    margin-top: 12px;
+    margin-left: 5px;
+    width: 22px;
+    height: auto;
+  }
+
+  .widget-section-arrow-icon {
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+    font-size: 30px;
+    color: #d2d3da;
+  }
+
+  .widget-section-arrow-icon {
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+    font-size: 30px;
+    color: #d2d3da;
+  }
+
+  .panel-install-widget {
+    // padding: 0 35px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+  }
+  
+  // install widget
+  .panel-install-widget-whith-code-height {
+    max-height: 870px !important;
+  }
+  
+  .panel-install-widget-whith-gtm-height {
+    max-height: 950px !important;
+  }
+
+  .arrow-up-install-widget {
+    transform: rotate(180deg);
+    transition: all 0.3s ease-in-out;
+  }
+
+
+/************/
+.row-title-installation {
+  margin: 0;
   margin-left: 20px;
-  /* background-color: #f7f8fc; */
-  border: 1px solid #e5effe;
-  // box-shadow: 0 2px 6px 0 #e6e9ed;
-  max-width: 1200px;
-}
-
-.accordion-install-widget {
-  background-color: #ffffff;
-  color: #444;
-  cursor: pointer;
-  // padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  transition: 0.4s;
-  // margin-bottom: 16px;
-  // padding-left: 42px;
-  // padding-right: 42px;
-  font-size: 18px;
-  font-weight: 600;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
-  padding-left: 0px;
-  border-bottom-color: #ececec;
-  // padding-top: 30px;
-  // padding-bottom: 21px;
-}
-
-.active-install-widget {
-  border-bottom: 1px solid #ececec;
-}
-
-.widget-section-header__title-underlined {
-  text-transform: none;
-  color: #566787;
   margin-bottom: 0px;
-  height: 40px !important;
-  position: relative;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
-  // font-size: 18px;
-  font-size: 18px;
-  margin-top: 10px;
-  // border-bottom: 2px solid #3ea9f5; // decommenta queto se usi senza icona
-  margin-left: 45px; // commenta queto se usi senza icona
+  .title-installation {
+    margin: 0 5px; 
+    font-size: 18px; 
+    font-weight: 600; 
+    margin-bottom: 6px;
+    line-height: 28px;
+  }
+}
+
+.widget-all-settings-wrap {
+  .code-help {
+    align-self: stretch;
+    color: #1c2b45;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    padding-top: 16px;
+    svg {
+      fill: #3ea9f5;
+      height: 20px;
+      margin-right: 5px;
+      width: 20px;
+    }
+    button {
+      background-color: transparent;
+      border: none;
+      color: #3ea9f5;
+      margin: 0 0 0 4px;
+      min-width: auto;
+      outline: 0;
+      padding: 0;
+      box-shadow: none;
+      &:hover{
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+
+
+
+.main-content {
+
+  .collapsible-body {
+    border: 0px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    &.active {
+      border: 1px solid #3ea9f5;
+      .collapsible-header {
+        border: 0px;
+      }
+      .collapsible-content {
+        border: 0px;
+      }
+    }
+  }
+
+  .collapsible-header {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    background-color: transparent;
+    padding: 0px;
+    outline: 0px;
+    position: relative;
+    width: 100%;
+    height: auto;
+    text-align: left;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+  }
+
+  .collapsible-content {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    // background-color: #f1f1f1;
+  }
+  hr{
+    margin-top: 0px;
+  }
+  
+  .widget-section-header-title {
+    text-transform: none;
+    color: #566787;
+    padding: 0 50px;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    font-size: 18px;
+  }
+
+ .widget-section-header-icon {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  left: 10px;
+  svg {
+    height: 100%;
+    width: 100%;
+  }
+ }
+
+  
+  .rowcollapsible {
+    margin-left: 0;
+    min-height: 56px;
+    margin-top: 12px;
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px 0 #ccc;
+    // margin: 0 auto;
+    // max-width: 605px;
+    position: relative;
 }
 
 .widget-setting-icon-wrap {
+  width: 20px;
+  height: 20px;
   position: absolute;
-  margin-top: 12px;
-  margin-left: 5px;
-  width: 22px;
-  height: auto;
+  margin: 50% 10px;
+}
+  
+
+
+
+  .dx-collapsible-row {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    margin-inline: 8px;
+    margin-top: 4px;
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    z-index: 1;
+  }
+
+  .master {
+    background: transparent;
+  }
 }
 
-.widget-section-arrow-icon {
-  position: absolute;
-  right: 0;
-  bottom: 10px;
-  font-size: 30px;
-  color: #d2d3da;
-}
-
-.widget-section-arrow-icon {
-  position: absolute;
-  right: 0;
-  bottom: 10px;
-  font-size: 30px;
-  color: #d2d3da;
-}
-
-.panel-install-widget {
-  // padding: 0 35px;
-  background-color: white;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-}
-
-// install widget
-.panel-install-widget-whith-code-height {
-  max-height: 870px !important;
-}
-
-.panel-install-widget-whith-gtm-height {
-  max-height: 950px !important;
-}
-
-.arrow-up-install-widget {
-  transform: rotate(180deg);
-  transition: all 0.3s ease-in-out;
-}
-
-.install-widget-with-tag-manager-link {
-  color: #0f62ff;
-  font-weight: 400;
-  cursor: pointer;
-}
-.install-widget-with-tag-manager-link:hover {
-text-decoration: underline;
-}

@@ -136,9 +136,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
       this.logger.log('[WS-REQUESTS-LIST][UNSERVED] -  GET REQUESTS MSGS - RES: ', msgs);
       if (msgs) {
-        const parsedMsgs = JSON.parse(msgs)
         const msgsArray = [];
-        parsedMsgs.forEach((msgs, index) => {
+        msgs.forEach((msgs, index) => {
           if ((msgs)) {
             if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
               // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])

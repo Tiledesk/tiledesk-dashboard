@@ -1,37 +1,31 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Department } from '../models/department-model';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import 'rxjs/add/operator/map';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { map } from 'rxjs/operators';
 @Injectable()
 
 export class DepartmentService {
 
   public myDepts_bs: BehaviorSubject<Department[]> = new BehaviorSubject<Department[]>([]);
 
-  http: Http;
-
   SERVER_BASE_PATH: string;
   DEPTS_URL: string;
-
   TOKEN: string
   user: any;
   project: any;
 
   constructor(
-    http: Http,
+    private httpClient: HttpClient,
     private auth: AuthService,
     public appConfigService: AppConfigService,
     private logger: LoggerService
   ) {
-
-    this.http = http;
-
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value
     this.checkIfUserExistAndGetToken()
@@ -59,10 +53,8 @@ export class DepartmentService {
         this.logger.log('[DEPTS-SERV] - SUBSCRIBE TO CURRENT PROJ this.project._id ', this.project._id);
         this.DEPTS_URL = this.SERVER_BASE_PATH + this.project._id + '/departments/';
         this.logger.log('[DEPTS-SERV] - DEPTS_URL (built with SERVER_BASE_PATH) ', this.DEPTS_URL);
-
         // FOR TEST - CAUSES ERROR WITH A NO VALID PROJECT ID
         // this.MONGODB_BASE_URL = this.BASE_URL + '5b3fa93a6f0537d8b01968fX' + '/departments/'
-
       }
     });
   }
@@ -82,50 +74,59 @@ export class DepartmentService {
   // GET DEPTS AS THE OLD WIDGET VERSION (USED YET BY SOME PROJECTS)
   // ---------------------------------------------------------------
   public getDeptsAsOldWidget(): Observable<Department[]> {
-    const url = this.DEPTS_URL;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
     // const url = `http://localhost:3000/app1/departments/`;
     // const url = `http://api.chat21.org/app1/departments/;
+    const url = this.DEPTS_URL;
     this.logger.log('[DEPTS-SERV] - GET DEPTS AS OLD WIDGET VERSION', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+
+    return this.httpClient
+      .get<Department[]>(url, httpOptions)
   }
-
-
 
   // ------------------------------------
   // Method used for test
   // GET DEPTS AS THE NEW WIDGET VERSION
   // ------------------------------------
   public getDeptsAsNewWidget(): Observable<Department[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     const url = this.SERVER_BASE_PATH + this.project._id + '/widgets'
     this.logger.log('[DEPTS-SERV] - GET DEPTS AS THE NEW WIDGET VERSION URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
 
+    return this.httpClient
+      .get<Department[]>(url, httpOptions)
+  }
 
   // ------------------------------------
   //  GET VISITOR COUNTER - !!!! NOT USED
   // ------------------------------------
-  public getVisitorCounter(): Observable<[]> {
+  public getVisitorCounter(): Observable<[any]> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     const url = this.SERVER_BASE_PATH + this.project._id + '/visitorcounter'
     this.logger.log('[DEPTS-SERV] - GET DEPTS AS THE NEW WIDGET VERSION URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
 
+    return this.httpClient
+      .get<[any]>(url, httpOptions)
+  }
 
   /**
    * GET ALL DEPTS WITH THE CURRENT PROJECT ID AND WITHOUT FILTER FOR STATUS
@@ -135,65 +136,83 @@ export class DepartmentService {
    * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IS NO LONGER NECESSARY TO PASS THE PROJECT ID AS PARAMETER
    */
   public getDeptsByProjectId(): Observable<Department[]> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     const url = this.DEPTS_URL + 'allstatus';
-
-    // const url = 'https://api.tiledesk.com/v1/5c28b587348b680015feecca/departments/'+'allstatus'
     this.logger.log('[DEPTS-SERV] GET DEPTS ALL STATUS - DEPTS URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-
-
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this.httpClient
+      .get<Department[]>(url, httpOptions)
   }
 
   public getDeptsByProjectIdToPromise(): any {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     const url = this.DEPTS_URL + 'allstatus';
     this.logger.log('[DEPTS-SERV] GET DEPTS TO PROMISE - DEPTS URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => {
 
-        return response.json()
-      })
+    return this.httpClient
+      .get(url, httpOptions)
+      .pipe(
+        map((response) => {
+          return response
+        })
+      )
       .toPromise();
   }
-
-
-
 
   /**
    * READ DETAIL (GET BOT BY BOT ID)
    * @param id
    */
   public getDeptById(id: string): Observable<Department[]> {
-    let url = this.DEPTS_URL;
-    url += `${id}`;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.DEPTS_URL + id;
+    // url += `${id}`;
     this.logger.log('[DEPTS-SERV] GET DEPT BY ID - URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this.httpClient
+      .get<Department[]>(url, httpOptions)
   }
 
+
   /**
-   * CREATE (POST)
-   * @param fullName
+   * Create a dept
+   * @param deptName 
+   * @param deptDescription 
+   * @param id_bot 
+   * @param bot_only 
+   * @param id_group 
+   * @param routing 
+   * @returns 
    */
   public addDept(deptName: string, deptDescription: string, id_bot: string, bot_only: boolean, id_group: string, routing: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.DEPTS_URL;
 
     const body = {
       'name': deptName,
@@ -213,12 +232,8 @@ export class DepartmentService {
 
     this.logger.log('[DEPTS-SERV] ADD-DEPT BODY ', body);
 
-    const url = this.DEPTS_URL;
-
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-
+    return this.httpClient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
   /**
@@ -228,18 +243,17 @@ export class DepartmentService {
   public deleteDeparment(id: string) {
 
     const url = this.DEPTS_URL + id;
-    // url += `${id}# chat21-api-nodejs`; 
     this.logger.log('[DEPTS-SERV] DELETE DEPT URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    return this.httpClient
+      .delete(url, httpOptions)
   }
 
   /**
@@ -249,15 +263,16 @@ export class DepartmentService {
    */
   public updateDept(id: string, deptName: string, deptDescription: string, id_bot: string, bot_only: boolean, id_group: string, routing: string) {
 
-    let url = this.DEPTS_URL;
-    url += id;
-    this.logger.log('[DEPTS-SERV] UPDATE DEPT - URL ', url);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    let url = this.DEPTS_URL + id;
+    // url += id;
+    this.logger.log('[DEPTS-SERV] UPDATE DEPT - URL ', url);
 
     const body = { 'name': deptName, 'description': deptDescription, 'id_group': id_group, 'routing': routing };
     if (id_bot) {
@@ -270,30 +285,29 @@ export class DepartmentService {
 
     this.logger.log('[DEPTS-SERV] UPDATE DEPT - BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-
+    return this.httpClient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
 
   public updateExistingDeptWithSelectedBot(deptid: string, id_bot: string) {
-    let url = this.DEPTS_URL + deptid;
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.DEPTS_URL + deptid
     this.logger.log('[DEPTS-SERV] - UPDATE EXISTING DEPT WITH SELECED BOT - URL', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
 
     const body = { 'id_bot': id_bot };
     this.logger.log('[DEPTS-SERV] - UPDATE EXISTING DEPT WITH SELECED BOT - BODY', body);
 
-    return this.http
-      .patch(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this.httpClient
+      .patch(url, JSON.stringify(body), httpOptions)
+
   }
 
   /**
@@ -302,65 +316,68 @@ export class DepartmentService {
    * @param status
    */
   public updateDeptStatus(dept_id: string, status: number) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     const url = this.DEPTS_URL + dept_id;
     this.logger.log('UPDATE DEPT STATUS - URL ', url);
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
 
     const body = { 'status': status };
     this.logger.log('[DEPTS-SERV] UPDATE DEPT STATUS - BODY ', body);
 
-    return this.http
-      .patch(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this.httpClient
+      .patch(url, JSON.stringify(body), httpOptions)
   }
 
   // --------------------------------------------------------------
   // !!! NOT USED 
   // --------------------------------------------------------------
   public updateDefaultDeptOnlineMsg(id: string, onlineMsg: string) {
-    const url = this.DEPTS_URL + id;
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.DEPTS_URL + id;
     this.logger.log('[DEPTS-SERV] UPDATE DEFAULT DEPARTMENT ONLINE MSG URL  ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
 
     const body = { 'online_msg': onlineMsg };
 
     this.logger.log('[DEPTS-SERV] - UPDATE DEFAULT DEPARTMENT ONLINE MSG - BODY  ', body);
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this.httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+    // .map((res) => res.json());
   }
 
   // --------------------------------------------------------------
   // !!! NOT USED 
   // --------------------------------------------------------------
   public updateDefaultDeptOfflineMsg(id: string, offlineMsg: string) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     const url = this.DEPTS_URL + id;
-
     this.logger.log('[DEPTS-SERV] - UPDATE DEFAULT DEPARTMENT OFFLINE MSG - URL ', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
 
     const body = { 'offline_msg': offlineMsg };
 
     this.logger.log('[DEPTS-SERV] - UPDATE DEFAULT DEPARTMENT OFFLINE MSG - BODY ', body);
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-
+    return this.httpClient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
   /**
@@ -371,6 +388,14 @@ export class DepartmentService {
   // Method used for test
   // ------------------------------------
   public testChat21AssignesFunction(id: string): Observable<Department[]> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     let url = this.DEPTS_URL;
     // + '?nobot=' + true
     url += id + '/operators';
@@ -380,9 +405,9 @@ export class DepartmentService {
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     // this.logger.log('TOKEN TO COPY ', this.TOKEN)
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this.httpClient
+      .get<Department[]>(url, httpOptions)
+
   }
 
 }

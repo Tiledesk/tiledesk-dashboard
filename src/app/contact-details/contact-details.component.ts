@@ -123,11 +123,10 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
     })
-   }
+  }
 
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
@@ -135,7 +134,6 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   getTranslation() {
-
     this.translateDeleteLeadSuccessMsg();
     this.translateDeleteLeadErrorMsg();
 
@@ -281,7 +279,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
     } else {
       this.logger.log('[CONTACTS-DTLS] - No user is signed in ');
-      
+
     }
   }
 
@@ -312,7 +310,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   getRequests() {
     this.contactsService.getRequestsByRequesterId(this.requester_id, this.pageNo)
-    
+
       .subscribe((requests_object: any) => {
 
         if (requests_object) {
@@ -484,7 +482,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           }
 
           if (this.contact_details.fullname) {
-       
+
             this.contact_fullname_initial = avatarPlaceholder(this.contact_details.fullname);
             this.fillColour = getColorBck(this.contact_details.fullname);
           } else {
@@ -541,9 +539,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
               for (let letter of letters) {
                 let span = document.createElement('span');
-                span.append(document.createTextNode(letter));
+                (<any>span).append(document.createTextNode(letter));
                 span.style.display = "inline-block";
-                document.body.append(span);
+                (<any>document.body).append(span);
                 letterLength[letter] = span.offsetWidth;
                 span.remove();
               }
@@ -598,9 +596,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
                   for (let letter of letters) {
                     let span = document.createElement('span');
-                    span.append(document.createTextNode(letter));
+                    (<any>span).append(document.createTextNode(letter));
                     span.style.display = "inline-block";
-                    document.body.append(span);
+                    (<any>document.body).append(span);
                     letterLength[letter] = span.offsetWidth;
                     span.remove();
                   }
@@ -664,9 +662,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
                   for (let letter of letters) {
                     let span = document.createElement('span');
-                    span.append(document.createTextNode(letter));
+                    (<any>span).append(document.createTextNode(letter));
                     span.style.display = "inline-block";
-                    document.body.append(span);
+                    (<any>document.body).append(span);
                     letterLength[letter] = span.offsetWidth;
                     span.remove();
                   }

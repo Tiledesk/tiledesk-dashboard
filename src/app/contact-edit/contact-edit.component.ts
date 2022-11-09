@@ -13,7 +13,7 @@ import { AuthService } from 'app/core/auth.service';
   styleUrls: ['./contact-edit.component.scss']
 })
 export class ContactEditComponent implements OnInit {
-  @ViewChild('editleadbtn') private edit_lead_btn_ref: ElementRef;
+  @ViewChild('editleadbtn', { static: false })  edit_lead_btn_ref: ElementRef;
   lead_id: string;
   lead_fullname: string;
   lead_email: string;
@@ -52,7 +52,6 @@ export class ContactEditComponent implements OnInit {
   ngOnInit() {
     this.translateEditContactSuccessMsg();
     this.translateEditContactErrorMsg();
-
     this.getRequesterIdParamAndThenGetContactById();
     this.getBrowserVersion()
     this.getCurrentRouteUrlToHideDisplayGoToBackBtn()
@@ -61,9 +60,8 @@ export class ContactEditComponent implements OnInit {
 
   getCurrentRouteUrlToHideDisplayGoToBackBtn() {
     const currentUrl = this.router.url;
-    // console.log('currentUrl ', currentUrl)
-    if ((currentUrl.indexOf('/_edit') !== -1)) {
 
+    if ((currentUrl.indexOf('/_edit') !== -1)) {
       // console.log('Hide go back btn')
       this.HIDE_GO_BACK_BTN = true
     } else if ((currentUrl.indexOf('/edit') !== -1)) {

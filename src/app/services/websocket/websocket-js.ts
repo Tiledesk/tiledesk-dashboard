@@ -1,9 +1,9 @@
 
-//import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { forwardRef, Inject } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { LoggerService } from './../../services/logger/logger.service';
-//@Injectable()
+@Injectable()
 export class WebSocketJs {
 
   public url;

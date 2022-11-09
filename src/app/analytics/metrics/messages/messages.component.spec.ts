@@ -5,9 +5,9 @@ import { MessagesComponent } from './messages.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core'; // suppress the error msg Can't bind to 'ngModel' + 'clearable' .... since it isn't a known property of 'ng-select'.
 
-import { AnalyticsService } from 'app/services/analytics.service';
+
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Error: StaticInjectorError(DynamicTestModule)[AnalyticsService -> HttpClient]:
-import { HttpModule } from '@angular/http'; 
+
 import { AuthService } from '../../../core/auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NotifyService } from 'app/core/notify.service';
@@ -21,6 +21,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { HttpClientTestingModule, HttpTestingController, RequestMatch, TestRequest } from '@angular/common/http/testing';
+import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 
 
 describe('MessagesComponent', () => {
@@ -34,7 +35,6 @@ describe('MessagesComponent', () => {
       imports: [
         TranslateModule.forRoot(),
         HttpClientModule,
-        HttpModule,
         RouterTestingModule,
         FormsModule,
         NgSelectModule,

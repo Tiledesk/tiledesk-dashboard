@@ -3,11 +3,12 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
 import * as Chartist from 'chartist';
-import * as moment from 'moment';
+// import * as moment from 'moment';
+import moment from "moment"
 
-import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';
+
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { Chart } from 'chart.js';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
@@ -459,9 +460,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   }
 
-  public tooltipRender(args: ITooltipEventArgs): void {
-    args.content = [args.xLabel + ' | ' + args.yLabel + ' : ' + args.value];
-  };
+
 
   public showTooltip: Boolean = true;
 

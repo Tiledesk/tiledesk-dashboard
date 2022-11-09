@@ -1,24 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 export class CannedResponsesService {
 
-  http: Http;
   projectId: string;
   TOKEN: any;
   SERVER_BASE_PATH: string;
 
   constructor(
-    http: Http,
+    private httpClient: HttpClient,
     public auth: AuthService,
     public appConfigService: AppConfigService,
     private logger: LoggerService
   ) {
-    this.http = http;
     this.getAppConfig();
     this.getCurrentProject();
     this.getToken()
@@ -55,14 +53,15 @@ export class CannedResponsesService {
     const url = this.SERVER_BASE_PATH + this.projectId + '/canned/'
     this.logger.log('[CANNED-RES.SERV] - GET CANNED-RES URL', url);
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this.httpClient
+      .get<[any]>(url, httpOptions)
   }
 
   // -------------------------------------------------------------------------------------
@@ -72,14 +71,15 @@ export class CannedResponsesService {
     const url = this.SERVER_BASE_PATH + this.projectId + '/canned/' + cannedResponseId
     this.logger.log('[CANNED-RES.SERV] - GET CANNED-RES URL', url);
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this.httpClient
+      .get<[any]>(url, httpOptions)
   }
 
 
@@ -87,22 +87,24 @@ export class CannedResponsesService {
   // @ Create - Save (POST) new canned response
   // -------------------------------------------------------------------------------------
   public createCannedResponse(message: string, title?: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + this.projectId + '/canned/'
 
     const body = { 'text': message, 'title': title };
 
     this.logger.log('[CANNED-RES.SERV] CREATE CANNED-RES BODY ', body);
-
-    const url = this.SERVER_BASE_PATH + this.projectId + '/canned/'
     this.logger.log('[CANNED-RES.SERV] - CREATE CANNED-RES URL', url);
     this.logger.log('[CANNED-RES.SERV] - CREATE CANNED-RES TOKEN', this.TOKEN);
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this.httpClient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
   // -------------------------------------------------------------------------------------
@@ -110,40 +112,41 @@ export class CannedResponsesService {
   // -------------------------------------------------------------------------------------
   public updateCannedResponse(message: string, cannedresid: string, title?: string) {
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'text': message, 'title': title };
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/canned/' + cannedresid;
+
     this.logger.log('[CANNED-RES.SERV] UPDATE CANNED-RES URL ', url);
-
     this.logger.log('[CANNED-RES.SERV] UPDATE CANNED-RES REQUEST BODY ', body);
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-
+    return this.httpClient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
   // -------------------------------------------------------------------------------------
   // @ Delete - delete (DELETE) canned response
   // -------------------------------------------------------------------------------------
-  public deleteCannedResponse(cannedresid: string, ) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+  public deleteCannedResponse(cannedresid: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/canned/' + cannedresid;
     this.logger.log('[CANNED-RES.SERV] DELETE CANNED-RES URL ', url);
-   
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+
+    return this.httpClient
+      .delete(url, httpOptions)
   }
 
 }

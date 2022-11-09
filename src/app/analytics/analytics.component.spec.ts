@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core'; // suppress the error msgs "If 'appdashboard-panoramica' -  'appdashboard-metriche' - 'appdashboard-realtime'  is an Angular component, then verify that it is part of this module" + Can't bind to 'ngModel' since it isn't a known property of 'ng-select'.
 
 import { AuthService } from '../core/auth.service';
-import { HttpModule } from '@angular/http'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> Http]:
+
 import { NotifyService } from '../core/notify.service';  // Error: StaticInjectorError(DynamicTestModule)[AuthService -> NotifyService]:
 import { LocalDbService } from '../services/users-local-db.service'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> LocalDbService]: 
 import { WebSocketJs } from "../services/websocket/websocket-js"; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> WebSocketJs]: 
@@ -15,19 +15,17 @@ import { RouterTestingModule } from '@angular/router/testing'; // Error: StaticI
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
 
-import { AnalyticsService } from 'app/services/analytics.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Error: StaticInjectorError(DynamicTestModule)[AnalyticsService -> HttpClient]:
 
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { PanoramicaComponent } from './panoramica/panoramica.component';
-import { MetricheComponent } from './metrics/metriche.component';
+import { MetricsComponent } from './metrics/metrics.component';
 import { RealtimeComponent } from './realtime/realtime.component';
 import { HeatMapModule } from '@syncfusion/ej2-angular-heatmap';
-import { RichiesteComponent } from './metrics/richieste/richieste.component';
+import { RequestsComponent } from './metrics/requests/requests.component';
 import { VisitorsAnalyticsComponent } from './metrics/visitors-analytics/visitors-analytics.component';
 import { MessagesComponent } from './metrics/messages/messages.component';
-import { TempirispostaComponent } from './metrics/tempirisposta/tempirisposta.component';
-import { DurataconvComponent } from './metrics/durataconv/durataconv.component';
+import { ConvsDurationComponent } from './metrics/convsduration/convsduration.component';
 import { EventsAnalyticsComponent } from './metrics/events-analytics/events-analytics.component';
 import { SatisfactionComponent } from './metrics/satisfaction/satisfaction.component';
 import { MomentModule } from 'angular2-moment';
@@ -35,6 +33,8 @@ import { LoadingSpinnerComponent } from 'app/ui/loading-spinner/loading-spinner.
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule, HttpTestingController, RequestMatch, TestRequest } from '@angular/common/http/testing';
+import { AnalyticsService } from './analytics-service/analytics.service';
+import { ResponseTimesComponent } from './metrics/responsetimes/responsetimes.component';
 
 describe('AnalyticsComponent', () => {
   let component: AnalyticsComponent;
@@ -45,13 +45,13 @@ describe('AnalyticsComponent', () => {
       declarations: [
         AnalyticsComponent,
         PanoramicaComponent,
-        MetricheComponent,
+        MetricsComponent,
         RealtimeComponent,
-        RichiesteComponent,
+        RequestsComponent,
         VisitorsAnalyticsComponent,
         MessagesComponent,
-        TempirispostaComponent,
-        DurataconvComponent,
+        ResponseTimesComponent,
+        ConvsDurationComponent,
         EventsAnalyticsComponent,
         SatisfactionComponent,
         LoadingSpinnerComponent
@@ -60,7 +60,6 @@ describe('AnalyticsComponent', () => {
       // schemas: [NO_ERRORS_SCHEMA],
       imports: [
         TranslateModule.forRoot(),
-        HttpModule,
         RouterTestingModule,
         HttpClientModule,
         HeatMapModule,

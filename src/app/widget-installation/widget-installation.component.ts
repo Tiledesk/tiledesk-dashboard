@@ -2,7 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BrandService } from 'app/services/brand.service';
-import { URL_google_tag_manager_add_tiledesk_to_your_sites } from '../utils/util';
+import { URL_web_integrations } from 'app/utils/util';
+
+// function _window() : any {
+//   // return the global native browser window object
+//   return window;
+// }
+
+// @Injectable()
+
 
 @Component({
   selector: 'appdashboard-widget-installation',
@@ -10,16 +18,22 @@ import { URL_google_tag_manager_add_tiledesk_to_your_sites } from '../utils/util
   styleUrls: ['./widget-installation.component.scss']
 })
 export class WidgetInstallationComponent implements OnInit {
-
+  URL_web_integrations = URL_web_integrations;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   has_copied = false;
   WIDGET_URL: string;
   HAS_SELECT_INSTALL_WITH_CODE: boolean = false;
-  HAS_SELECT_INSTALL_WITH_GTM: boolean = false;
+  HAS_SELECT_INSTALL_WITH_GTM: boolean = true;
   tparams: any;
   company_name: any;
   id_project: string;
+
+  elActive: any;
+  // get nativeWindow() : any {
+  //   return _window();
+  // }
+
   constructor( 
      private auth: AuthService,
      public appConfigService: AppConfigService,
@@ -35,7 +49,8 @@ export class WidgetInstallationComponent implements OnInit {
     this.getBrowserVersion();
     this.listenSidebarIsOpened()
     this. getWidgetUrl()
-    this.getAndManageAccordionInstallWidget();
+    // this.getAndManageAccordionInstallWidget();
+    this.getAndManageAccordionInstallWidget2();
     this.getCurrentProject()
   }
 
@@ -65,6 +80,29 @@ export class WidgetInstallationComponent implements OnInit {
       this.IS_OPEN_SETTINGS_SIDEBAR = isopened
     });
   }
+
+
+
+  getAndManageAccordionInstallWidget2(){
+  
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        // console.log(this.parentElement);
+        this.elActive = this.parentElement.querySelector('.collapsible-content');
+        this.parentElement.classList.toggle("active");
+        if (this.elActive.style.maxHeight){
+          this.elActive.style.maxHeight = null;
+        } else {
+          this.elActive.style.maxHeight = this.elActive.scrollHeight + "px";
+        } 
+      });
+
+    }
+  }
+
+
 
 
   getAndManageAccordionInstallWidget() {
@@ -98,7 +136,6 @@ export class WidgetInstallationComponent implements OnInit {
 
         if (panel.style.maxHeight) {
           panel.style.maxHeight = null;
-
         } else {
           panel.style.maxHeight = panel.scrollHeight + "px";
         }
@@ -125,34 +162,47 @@ export class WidgetInstallationComponent implements OnInit {
 
 
   installWithCode() {
-    // this.HAS_SELECT_INSTALL_WITH_CODE = true;
-    // this.HAS_SELECT_INSTALL_WITH_GTM = false;
+    // var prevStop = el.closest(".collapsible-content"); 
+    
+    // if (prevStop.hasClass("active")){
+    //   prevStop.style.maxHeight = prevStop.scrollHeight + "px";
+    // } 
+    this.HAS_SELECT_INSTALL_WITH_CODE = true;
     this.HAS_SELECT_INSTALL_WITH_GTM = false;
-    if (this.HAS_SELECT_INSTALL_WITH_CODE === false) {
-      this.HAS_SELECT_INSTALL_WITH_CODE = true;
-    } else if (this.HAS_SELECT_INSTALL_WITH_CODE === true) {
-      this.HAS_SELECT_INSTALL_WITH_CODE = false;
-    }
+    
+    // this.HAS_SELECT_INSTALL_WITH_GTM = false;
+    // if (this.HAS_SELECT_INSTALL_WITH_CODE === false) {
+    //   this.HAS_SELECT_INSTALL_WITH_CODE = true;
+    // } else if (this.HAS_SELECT_INSTALL_WITH_CODE === true) {
+    //   this.HAS_SELECT_INSTALL_WITH_CODE = false;
+    // }
 
     // console.log('[WIDGET-INSTALLATION] installWithCode HAS_SELECT_INSTALL_WITH_CODE', this.HAS_SELECT_INSTALL_WITH_CODE)
   }
 
   installWithGTM() {
-    // this.HAS_SELECT_INSTALL_WITH_CODE = false;
-    // this.HAS_SELECT_INSTALL_WITH_GTM = true;
     this.HAS_SELECT_INSTALL_WITH_CODE = false;
-    if (this.HAS_SELECT_INSTALL_WITH_GTM === false) {
-      this.HAS_SELECT_INSTALL_WITH_GTM = true;
-    } else if (this.HAS_SELECT_INSTALL_WITH_GTM === true) {
-      this.HAS_SELECT_INSTALL_WITH_GTM = false;
-    }
+    this.HAS_SELECT_INSTALL_WITH_GTM = true;
+
+    // this.HAS_SELECT_INSTALL_WITH_CODE = false;
+    // if (this.HAS_SELECT_INSTALL_WITH_GTM === false) {
+    //   this.HAS_SELECT_INSTALL_WITH_GTM = true;
+    // } else if (this.HAS_SELECT_INSTALL_WITH_GTM === true) {
+    //   this.HAS_SELECT_INSTALL_WITH_GTM = false;
+    // }
 
     // console.log('[WIDGET-INSTALLATION] installWithCode HAS_SELECT_INSTALL_WITH_GTM', this.HAS_SELECT_INSTALL_WITH_GTM)
   }
 
-  goToInstallWithTagManagerDocs() {
-    const url = URL_google_tag_manager_add_tiledesk_to_your_sites;
-    window.open(url, '_blank');
-  }
 
+
+ 
+  openChatWidget(){
+    if (window && window['tiledesk']) {
+      window['tiledesk'].setParameter({ key: 'startFromHome', value: false });
+      window['tiledesk'].open();
+    }
+    
+    
+  }
 }

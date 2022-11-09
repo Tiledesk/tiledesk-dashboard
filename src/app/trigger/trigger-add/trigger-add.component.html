@@ -379,7 +379,7 @@
                             <ng-select #myselect class="custom-select" formControlName="key"
                               (change)="onSelectedAction($event, action)"
                               placeholder='{{ "Trigger.Add_Edit.ActionPlaceholder" | translate }}' [searchable]="false"
-                              [clearable]="false" [loading]=loadingActions loadingText='Loading...' #myselect>
+                              [clearable]="false" [loading]=loadingActions loadingText='Loading...' >
 
                               <ng-option *ngFor="let act of temp_act" [value]="act.key">{{act.label_key}}</ng-option>
                             </ng-select>

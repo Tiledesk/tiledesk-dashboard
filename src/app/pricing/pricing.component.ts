@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router'
 import { UsersService } from '../services/users.service';
 import { ProjectService } from '../services/project.service';
 import { ProjectPlanService } from '../services/project-plan.service';
-import { Observable } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
@@ -68,7 +68,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
 
   contactUsEmail: string;
-  
+
   constructor(
     public location: Location,
     public auth: AuthService,
@@ -79,7 +79,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     public brandService: BrandService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-  ) { 
+  ) {
 
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
@@ -127,16 +127,16 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.logger.log('[PRICING] - GET ROUTE-PARAMS & APPID - params: ', params)
       if (params.nk) {
         this.logger.log('[PRICING] -  GET ROUTE-PARAMS & APPID - params.nk: ', params.nk)
-        if(params.nk === 'y' && appID === "1:92907897826:web:f255664014a7cc14ee2fbb") {
+        if (params.nk === 'y' && appID === "1:92907897826:web:f255664014a7cc14ee2fbb") {
           this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD = true;
           this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD', this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD)
         }
-        if(params.nk === 'y' && appID === "1:269505353043:web:b82af070572669e3707da6") {
+        if (params.nk === 'y' && appID === "1:269505353043:web:b82af070572669e3707da6") {
           this.DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE = true;
           this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE', this.DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE)
         }
 
-        
+
       }
     });
   }
@@ -172,10 +172,10 @@ export class PricingComponent implements OnInit, OnDestroy {
 
       }
     }, error => {
-    
+
       this.logger.error('[PRICING] - getProjectPlan - ERROR', error);
     }, () => {
-     
+
       this.logger.log('[PRICING] - getProjectPlan * COMPLETE *')
 
     });
@@ -186,16 +186,13 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   getNoOfProjectUsersAndPendingInvitations() {
-
     // https://stackoverflow.com/questions/44004144/how-to-wait-for-two-observables-in-rxjs
     const projectUsers = this.usersService.getProjectUsersByProjectId();
     const pendingInvitation = this.usersService.getPendingUsers();
-
-    Observable
-      .zip(projectUsers, pendingInvitation, (_projectUsers: any, _pendingInvitation: any) => ({ _projectUsers, _pendingInvitation }))
+    zip(projectUsers, pendingInvitation, (_projectUsers: any, _pendingInvitation: any) => ({ _projectUsers, _pendingInvitation }))
       .subscribe(pair => {
-        this.logger.log('[PRICING]  - PAIR _projectUsers: ', pair._projectUsers);
-        this.logger.log('[PRICING]  - PAIR _pendingInvitation: ', pair._pendingInvitation);
+        // console.log('[PRICING]  - PAIR _projectUsers: ', pair._projectUsers);
+        // console.log('[PRICING]  - PAIR _pendingInvitation: ', pair._pendingInvitation);
 
         if (pair) {
           const NoOfProjectUsers = pair._projectUsers.length
@@ -205,7 +202,7 @@ export class PricingComponent implements OnInit, OnDestroy {
           this.operatorNo = NoOfProjectUsers + NoOfPendingInvitians;
           this.logger.log('[PRICING] - PAIR operatorNo (sum of NoOfProjectUsers + NoOfPendingInvitians): ', this.operatorNo);
           this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
-          this.logger.log('[PRICING] - PAIR numberOfAgentPerPrice: ', this.operatorNo);
+          // console.log('[PRICING] - PAIR numberOfAgentPerPrice: ', this.operatorNo);
         }
       }, error => {
         this.showSpinnerInTotalPrice = false;
@@ -561,7 +558,9 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.displayPaymentReport = 'none'
   }
 
-
+  // -------------------------------------------------------------
+  // Used for test (uncomment the button in the teplate to use it) 
+  // -------------------------------------------------------------
   cancelSubcription() {
     this.projectService.cancelSubscription().subscribe((confirmation: any) => {
       this.logger.log('[PRICING] - cancelSubscription RES ', confirmation);
@@ -574,6 +573,9 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   }
 
+  // -------------------------------------------------------------
+  // Used for test (uncomment the button in the teplate to use it) 
+  // -------------------------------------------------------------
   updatesubscription() {
     this.projectService.updatesubscription().subscribe((updatesubscription: any) => {
       this.logger.log('[PRICING] - updatesubscription RES ', updatesubscription);

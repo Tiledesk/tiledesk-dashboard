@@ -177,14 +177,61 @@ export class WsSharedComponent implements OnInit {
           const user = this.usersLocalDbService.getMemberFromStorage(member_id);
 
           if (user) {
-            this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - STORED USER ', user)
+            this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - STORED USER user', user)
+            this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - STORED USER user id', user['_id'])
+            this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - member_id ', member_id)
             if (member_id === user['_id']) {
 
               this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user['hasImage'], 'userfillColour': user['fillColour'], 'userFullname': user['fullname_initial'] })
 
+            } else {
+              this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - member_id =! from ', user['_id'])
             }
           } else {
-            this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
+            this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - there is not stored user with id ', member_id)
+           
+            this.usersService.getProjectUserById(member_id)
+            .subscribe((projectuser) => {
+             
+              this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES', projectuser);
+              const user: any = projectuser[0].id_user;
+           
+
+              let imgUrl = ''
+              if (isFirebaseUploadEngine === true) {
+                // ------------------------------------------------------------------------------
+                // Usecase uploadEngine Firebase 
+                // ------------------------------------------------------------------------------
+                imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/profiles%2F" + member_id + "%2Fphoto.jpg?alt=media"
+
+              } else {
+                // ------------------------------------------------------------------------------
+                // Usecase uploadEngine Native 
+                // ------------------------------------------------------------------------------
+                imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + member_id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+              }
+
+              this.checkImageExists(imgUrl, (existsImage) => {
+                if (existsImage == true) {
+                  user.hasImage = true
+                }
+                else {
+                  user.hasImage = false
+                }
+              });
+
+              user['is_bot'] = false
+              console.log('WS-SHARED][WS-REQUESTS-MSGS]',  user)
+
+              // this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
+              this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user['hasImage'], 'userfillColour': user['fillColour'], 'userFullname': user['fullname_initial'] })
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], user, 'ws-shared (createAgentsArrayFromParticipantsId)');
+
+            }, (error) => {
+              this.logger.error('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID - ERROR ', error);
+            }, () => {
+              this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID * COMPLETE *');
+            });
           }
         }
       }
@@ -317,7 +364,7 @@ export class WsSharedComponent implements OnInit {
               user['is_bot'] = false
               this.createAgentAvatar(user)
               newpartarray.push(user)
-              this.usersLocalDbService.saveMembersInStorage(user['_id'], user);
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], user, 'ws-shared (doParticipatingAgentsArray)');
 
             }, (error) => {
               this.logger.error('[WS-SHARED][WS-REQUESTS-UNSERVED-X-PANEL][HISTORY & NORT-CONVS][WS-REQUESTS-LIST][WS-SHARED] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID - ERROR ', error);
@@ -491,7 +538,7 @@ export class WsSharedComponent implements OnInit {
         if (projectUser) {
           this.logger.log('[WS-SHARED][WS-REQUESTS-LIST][SERVED] - GET projectUser id', projectUser);
 
-          this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
+          this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user, 'ws-shared _getProjectUserByUserId');
         }
       }, (error) => {
         this.logger.error('[WS-SHARED][WS-REQUESTS-LIST][SERVED] projectUser by USER-ID - ERROR ', error);
@@ -741,17 +788,17 @@ export class WsSharedComponent implements OnInit {
   // -------------------------------------------------------------------------------------------------------------
   // @ SEEMS NOT-USED 
   // -------------------------------------------------------------------------------------------------------------
-  joinDeptAndLeaveCurrentAgents(deptid_selected, requestid) {
-    this.logger.log('REQUEST-MSGS - JOIN DEPT AND LEAVE CURRENT AGENTS - DEPT ID ', deptid_selected);
-    this.wsRequestsService.joinDept(deptid_selected, requestid)
-      .subscribe((res: any) => {
-        this.logger.log('REQUEST-MSGS - JOIN DEPT - RES ', res);
-      }, (error) => {
-        this.logger.error('REQUEST-MSGS - JOIN DEPT - RES - ERROR ', error);
-      }, () => {
-        this.logger.log('REQUEST-MSGS - JOIN DEPT - RES * COMPLETE *');
-      });
-  }
+  // joinDeptAndLeaveCurrentAgents(deptid_selected, requestid) {
+  //   this.logger.log('REQUEST-MSGS - JOIN DEPT AND LEAVE CURRENT AGENTS - DEPT ID ', deptid_selected);
+  //   this.wsRequestsService.joinDept(deptid_selected, requestid)
+  //     .subscribe((res: any) => {
+  //       this.logger.log('REQUEST-MSGS - JOIN DEPT - RES ', res);
+  //     }, (error) => {
+  //       this.logger.error('REQUEST-MSGS - JOIN DEPT - RES - ERROR ', error);
+  //     }, () => {
+  //       this.logger.log('REQUEST-MSGS - JOIN DEPT - RES * COMPLETE *');
+  //     });
+  // }
 
   // -------------------------------------------------------------------------------------------------------------
   // @ SEEMS NOT-USED 
@@ -836,7 +883,7 @@ export class WsSharedComponent implements OnInit {
             this.logger.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray   this.newParticipants  QUI SI', this.newParticipants);
           }
           // this.logger.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray   this.newParticipants  subito dopo', this.newParticipants);
-          this.usersLocalDbService.saveMembersInStorage(userid, this.user);
+          this.usersLocalDbService.saveMembersInStorage(userid, this.user, 'ws-shared getProjectuserByIdAndSaveInStorage');
 
           // const obj = { '_id': userid, 'name': this.user.firstname, 'lastname': lastnameInizial, 'botType': '' }
           // this.logger.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray getProjectuserByIdAndSaveInStorage obj ', obj)

@@ -11,6 +11,22 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "rxjs-compat",
+              "moment",
+              "firebase",
+              "@firebase/auth",
+              "@firebase/messaging",
+              "@firebase/util",
+              "@firebase/storage",
+              "@firebase/component",
+              "@firebase/database",
+              "@firebase/app",
+              "firebase/app",
+              "idb"
+            ],
+            "aot": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -20,7 +36,7 @@
               "src/assets",
               "src/firebase-config.json",
               "src/dashboard-config-template.json",
-	            "src/dashboard-config.json",
+              "src/dashboard-config.json",
               "src/dashboard-pre-config.json",
               "src/dashboard-prod-config.json",
               "src/dashboard-pre-config-nofb.json",
@@ -29,7 +45,8 @@
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images/",
-                "output": "./assets"
+                "output": "./assets",
+                "ignore": ["**/*.scss"]
               }
             ],
             "styles": [
@@ -52,15 +69,22 @@
               "node_modules/moment/moment.js",
               "node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",
               "node_modules/bootstrap-notify/bootstrap-notify.js",
-              "node_modules/chartist/dist/chartist.js"
+              "node_modules/chartist/dist/chartist.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },
           "configurations": {
-            "production": {
-              "optimization": true,
+            "production": {    
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": false,
+                  "inlineCritical": true
+                },
+                "fonts": true
+              },
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -74,10 +98,16 @@
               ]
             },
             "pre": {
-              "optimization": true,
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": false,
+                  "inlineCritical": true
+                },
+                "fonts": true
+              },
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -142,7 +172,8 @@
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images/",
-                "output": "./assets"
+                "output": "./assets",
+                "ignore": ["**/*.scss"]
               }
             ]
           }
@@ -187,7 +218,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "appdashboard",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "appdashboard"

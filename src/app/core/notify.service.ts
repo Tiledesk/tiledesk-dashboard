@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { Location } from '@angular/common';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LoggerService } from '../services/logger/logger.service';
 import { URL_understanding_default_roles } from './../utils/util';
 const swal = require('sweetalert');
@@ -328,7 +327,7 @@ export class NotifyService {
   }
 
 
-  showUnservedNotication( sender,msg, link)  {
+  showUnservedNotication(sender, msg, link) {
     // console.log('[NOTIFY-SERVICE] showUnservedNotication link', link)
     // console.log('[NOTIFY-SERVICE] showUnservedNotication requester_avatar_initial', requester_avatar_initial)
     // console.log('[NOTIFY-SERVICE] showUnservedNotication requester_avatar_bckgrnd', requester_avatar_bckgrnd)
@@ -355,14 +354,14 @@ export class NotifyService {
       // requester_avatar_initial 
       // +'</span>' +
       template: '<div data-notify="container" class="col-xs-3 col-sm-3 alert alert-{0}" role="alert" style="box-shadow:0 5px 15px -5px rgb(0 0 0 / 40%)" ' +
-      
+
         '<span data-notify="icon"></span>' +
         '<span data-notify="header">New unassigned chat</span>' +
         '<span data-notify="title">{1}</span>' +
         '<span data-notify="message">{2}</span>' +
         `<a href="{3}" data-notify="url"></a>` +
-        '</div>' 
-       
+        '</div>'
+
     });
   }
 

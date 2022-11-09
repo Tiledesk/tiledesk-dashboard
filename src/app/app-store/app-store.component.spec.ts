@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpModule } from '@angular/http';
+
 import { LoadingSpinnerComponent } from 'app/ui/loading-spinner/loading-spinner.component';
 import { AppStoreService } from '../services/app-store.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -25,7 +25,6 @@ describe('AppStoreComponent', () => {
         LoadingSpinnerComponent
       ],
       imports: [ 
-        HttpModule,
         HttpClientModule,
         RouterTestingModule
       ],

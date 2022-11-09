@@ -7,16 +7,14 @@ import {
   NavigationStart,
 } from '@angular/router'
 import { NotifyService } from './notify.service'
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
 import { environment } from '../../environments/environment'
-import { Http, Headers, RequestOptions } from '@angular/http'
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User } from '../models/user-model'
 import { Project } from '../models/project-model'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-import 'rxjs/add/operator/toPromise'
 import { LocalDbService } from '../services/users-local-db.service'
 import { Location } from '@angular/common'
-import { Subscription } from 'rxjs/Subscription'
+import { Subscription, BehaviorSubject } from 'rxjs'
 import { isDevMode } from '@angular/core'
 import * as firebase from 'firebase/app'
 import 'firebase/messaging'
@@ -42,19 +40,6 @@ const superusers = [
 
 @Injectable()
 export class AuthService {
-  http: Http
-
-  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
-
-  // SIGNUP_BASE_URL = environment.mongoDbConfig.SIGNUP_BASE_URL;
-  // SIGNIN_BASE_URL = environment.mongoDbConfig.SIGNIN_BASE_URL;
-  // VERIFY_EMAIL_BASE_URL = environment.mongoDbConfig.VERIFY_EMAIL_BASE_URL;
-  // FIREBASE_SIGNIN_BASE_URL = environment.mongoDbConfig.FIREBASE_SIGNIN_BASE_URL; // deprecated - now used CREATE_CUSTOM_TOKEN
-
-  // SIGNUP_BASE_URL = this.SERVER_BASE_PATH + 'auth/signup'; // now built after get SERVER_BASE_PATH from appconfig
-  // SIGNIN_BASE_URL = this.SERVER_BASE_PATH + 'auth/signin'; // now built after get SERVER_BASE_PATH from appconfig
-  // VERIFY_EMAIL_URL = this.SERVER_BASE_PATH + 'auth/verifyemail/'; // now build after get SERVER_BASE_PATH from appconfig
-  // CREATE_CUSTOM_TOKEN_URL = this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken'; // now build after get SERVER_BASE_PATH from appconfig
 
   SERVER_BASE_PATH: string
   SIGNUP_BASE_URL: string
@@ -68,8 +53,6 @@ export class AuthService {
   displayName?: string
   FCMcurrentToken: string
 
-  // user: Observable<User | null>;
-  // user: User
   public user_bs: BehaviorSubject<User> = new BehaviorSubject<User>(null)
   public project_bs: BehaviorSubject<Project> = new BehaviorSubject<Project>(null)
   public settingSidebarIsOpned: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
@@ -93,13 +76,12 @@ export class AuthService {
 
   URL_last_fragment: string
   HAS_JWT: boolean
-  selected_project: any
+
   selected_project_id: string
   public_Key: string
 
   constructor(
-    http: Http,
-    // private afAuth: AngularFireAuth,
+    private _httpClient: HttpClient,
     private router: Router,
     private notify: NotifyService,
     private usersLocalDbService: LocalDbService,
@@ -111,7 +93,6 @@ export class AuthService {
     private scriptService: ScriptService,
   ) // public ssoService: SsoService
   {
-    this.http = http
     this.logger.log(
       '[AUTH-SERV] !!! ====== HELLO AUTH SERVICE ====== DASHBOARD version ',
       this.version,
@@ -255,9 +236,9 @@ export class AuthService {
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project) {
     // PUBLISH THE project
-    // console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED ', project)
+    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED ', project)
+
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
-    this.selected_project = project
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
   }
@@ -288,8 +269,7 @@ export class AuthService {
   // getAndPublish_NavProjectIdAndProjectName() {
   checkStoredProjectAndPublishIfPublishedProjectIsNull() {
     this.project_bs.subscribe((prjct) => {
-      this.logger.log(
-        '[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
+      this.logger.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
 
       if (prjct !== null && prjct._id !== undefined) {
         this.project_trial_expired = prjct.trial_expired
@@ -540,17 +520,14 @@ export class AuthService {
    * @param first_name
    * @param last_name
    */
-  public signup(
-    email: string,
-    password: string,
-    first_name: string,
-    last_name: string,
-  ): Observable<any> {
-    const headers = new Headers()
-    headers.append('Accept', 'application/json')
-    headers.append('Content-type', 'application/json')
-    // headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers })
+  public signup(email: string, password: string, first_name: string, last_name: string): Observable<any> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      })
+    };
 
     const body = {
       email: email,
@@ -563,10 +540,9 @@ export class AuthService {
     const url = this.SIGNUP_BASE_URL
     this.logger.log('[AUTH-SERV] - SIGNUP URL ', url)
 
-    return this.http.post(url, JSON.stringify(body), options).map((res) => {
-      this.logger.log('res: ', res.json())
-      return res.json()
-    })
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
+
   }
 
   /**
@@ -578,10 +554,13 @@ export class AuthService {
    */
   signin(email: string, password: string, callback) {
     const self = this
-    const headers = new Headers()
-    headers.append('Accept', 'application/json')
-    headers.append('Content-type', 'application/json')
-    const options = new RequestOptions({ headers })
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      })
+    };
 
     const body = { email: email, password: password }
     this.logger.log('[AUTH-SERV] - SIGNIN POST REQUEST BODY ', body)
@@ -589,22 +568,21 @@ export class AuthService {
     const url = this.SIGNIN_BASE_URL
     this.logger.log('[AUTH-SERV] - SIGNIN URL ', url)
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
       .toPromise()
       .then((res) => {
-        this.logger.log('[AUTH-SERV] SIGNIN RES: ', res.json())
-        const jsonRes = res.json()
-        const user: User = jsonRes.user
+        this.logger.log('[AUTH-SERV] SIGNIN RES: ', res)
+        const jsonRes = res
+        const user: User = jsonRes['user']
 
         if (user) {
           // used in signOut > removeInstanceId
           this.userId = user._id
-
         }
 
         // ASSIGN THE RETURNED TOKEN TO THE USER OBJECT
-        user.token = jsonRes.token
+        user.token = jsonRes['token']
 
         // PUBLISH THE USER OBJECT
         this.user_bs.next(user)
@@ -627,7 +605,7 @@ export class AuthService {
             this.logger.log('[AUTH-SERV] SSO - LOGIN - WORKS WITH FIREBASE ')
 
             this.chat21CreateFirebaseCustomToken(jsonRes['token']).subscribe(
-              (fbtoken) => {
+              (fbtoken: string) => {
                 // this.firebaseSignin(email, password).subscribe(fbtoken => {
                 this.logger.log('[AUTH-SERV] SSO - LOGIN 2. FIREBASE SIGNIN RESPO ', fbtoken)
 
@@ -653,12 +631,12 @@ export class AuthService {
 
                       callback(null, user)
                     })
-                    .catch(function (error) {
+                    .catch((error) => {
                       // return error;
                       callback(error)
                       // Handle Errors here.
                       // const errorCode = error.code;
-                      self.logger.error('[AUTH-SERV] SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
+                      this.logger.error('[AUTH-SERV] SSO - LOGIN - FIREBASE CUSTOM AUTH ERROR CODE ', error)
                     })
                 } else {
                   callback({
@@ -679,11 +657,11 @@ export class AuthService {
           } // ./end condition for X FIREBASE- AUTH
         } else {
           this.logger.error('[AUTH-SERV] SSO - LOGIN - POST REQUEST ERROR jsonRes[success] NOT IS === true')
-          callback({ code: jsonRes.code, message: jsonRes.message })
+          callback({ code: jsonRes['code'], message: jsonRes['message'] })
         }
       })
-      .catch(function (error) {
-        self.logger.error('[AUTH-SERV] SSO - LOGIN - SIGNIN POST REQUEST ERROR', error)
+      .catch((error) => {
+        this.logger.error('[AUTH-SERV] SSO - LOGIN - SIGNIN POST REQUEST ERROR', error)
         callback(error)
       })
   }
@@ -746,43 +724,40 @@ export class AuthService {
   }
 
   chat21CreateFirebaseCustomToken(JWT_token: any) {
-    const headers = new Headers()
-    headers.append('Accept', 'application/json')
-    headers.append('Content-type', 'application/json')
-    headers.append('Authorization', JWT_token)
-    const options = new RequestOptions({ headers })
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': JWT_token
+      }),
+      responseType: 'text' as 'json'
+    };
 
     const url = this.CREATE_CUSTOM_TOKEN_URL
 
     this.logger.log('[AUTH-SERV] chat21CreateFirebaseCustomToken  URL', url)
 
-    return this.http.post(url, null, options).map((res) => {
-      // tslint:disable-next-line:no-debugger
-      // debugger
-      this.logger.log('[AUTH-SERV] SSO - chat21CreateFirebaseCustomToken RES: ', res)
-      // const firebaseToken = res.text()
-      return res.text()
-    })
+    return this._httpClient
+      .post(url, null, httpOptions)
   }
 
   // ------------------------------------------------------------
   // VERIFY EMAIL
   // ------------------------------------------------------------
   emailVerify(user_id: string): Observable<User[]> {
-    const headers = new Headers()
-    headers.append('Accept', 'application/json')
-    headers.append('Content-type', 'application/json')
-    const options = new RequestOptions({ headers })
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      })
+    };
 
     const url = this.VERIFY_EMAIL_URL + user_id
     this.logger.log('[AUTH-SERV] VERIFY EMAIL URL ', url)
     const body = { emailverified: true }
-    return (
-      this.http
-        // .get(url, { headers })
-        .put(url, JSON.stringify(body), options)
-        .map((res) => res.json())
-    )
+    return this._httpClient
+      .put<User[]>(url, JSON.stringify(body), httpOptions)
   }
 
   // --------------------------------------------------
@@ -923,7 +898,17 @@ export class AuthService {
   }
 
   signOut(calledby: string) {
-    // console.log('[AUTH-SERV] signOut calledby ', calledby)
+    this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
+    if (calledby !== 'autologin') {
+      try {
+        if (window && window['tiledesk_widget_logout']) {
+          // console.log('window', window)
+          window['tiledesk_widget_logout']()
+        }
+      } catch (err) {
+        this.logger.error('[AUTH-SERV] tiledesk_widget_logout err ', err)
+      }
+    }
 
     if (calledby !== 'account-settings' && calledby !== 'autologin') { // in account-settings in tracked the acccont deleted event 
       const storedUser = localStorage.getItem('user')
@@ -984,13 +969,12 @@ export class AuthService {
             this.logger.error('identify Signed Out error', err);
           }
 
-
           try {
             window['analytics'].track('Signed Out', {
-              "properties": {
-                "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
-                "userId": storedUserParsed._id
-              }, "context": {
+              "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+              "userId": storedUserParsed._id,
+            }, {
+              "context": {
                 "groupId": projectId
               }
             });
@@ -1006,13 +990,10 @@ export class AuthService {
           } catch (err) {
             this.logger.error('group Signed Out error', err);
           }
-
         }
-
       }
 
       if (!projectId) {
-
         if (!isDevMode()) {
           try {
             window['analytics'].identify(storedUserParsed._id, {
@@ -1027,51 +1008,24 @@ export class AuthService {
 
           try {
             window['analytics'].track('Signed Out', {
-              "properties": {
-                "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
-                "userId": storedUserParsed._id
-              }
+              "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+              "userId": storedUserParsed._id
             });
           } catch (err) {
             this.logger.error('track Signed Out event error', err);
           }
+        }
+      }
 
-          try {
-            window['analytics'].reset()
-          } catch (err) {
-            this.logger.error('analytics reset', err);
-          }
+      if (!isDevMode()) {
+        try {
+          window['analytics'].reset()
+        } catch (err) {
+          this.logger.error('analytics reset', err);
         }
       }
 
     }
-
-    this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
-    if (calledby !== 'autologin') {
-      try {
-        if (window && window['tiledesk_widget_logout']) {
-          // console.log('window', window)
-          window['tiledesk_widget_logout']()
-        }
-      } catch (err) {
-        this.logger.error('[AUTH-SERV] tiledesk_widget_logout err ', err)
-      }
-    }
-
-    // setTimeout(() => {
-    //   var tiledeskiframe = document.getElementById('tiledeskiframe') as HTMLIFrameElement;
-    //   console.log('[APP-COMPONENT] tiledeskiframe', tiledeskiframe)
-    //   if (tiledeskiframe) {
-    //     if (window &&window['tiledesk_widget_login']) {
-    //       console.log('window', window)
-    //       window['tiledesk_widget_login']();
-    //     }
-    //   }
-    // }, 5000);
-
-    // if (this.router.url.indexOf("request-for-panel") > -1) {
-    //   this.logger.log('[AUTH-SERV] Signout current url contains request-for-panel ')
-    // }
 
     this.user_bs.next(null)
     this.project_bs.next(null)

@@ -13,16 +13,11 @@ import { Request } from '../../models/request-model';
 import { UsersService } from '../../services/users.service';
 import { UAParser } from 'ua-parser-js'
 import { FaqKbService } from '../../services/faq-kb.service';
-
-import 'rxjs/add/observable/of';
 import { AppConfigService } from '../../services/app-config.service';
-import { Subscription } from 'rxjs/Subscription';
-
+import { Subscription, zip } from 'rxjs'
 import { DepartmentService } from '../../services/department.service';
-
 import { Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators'
-
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
 import { Chart } from 'chart.js';
@@ -36,7 +31,7 @@ import { GroupService } from '../../services/group.service';
 import { Group } from 'app/models/group-model';
 
 const swal = require('sweetalert');
-// import {Observable,of, empty} from 'rxjs'
+
 
 @Component({
   selector: 'appdashboard-ws-requests-list',
@@ -52,9 +47,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
 
-  @ViewChild('teamContent') private teamContent: ElementRef;
-  @ViewChild('testwidgetbtn') private testwidgetbtnRef: ElementRef;
-  @ViewChild('widgetsContent') public widgetsContent: ElementRef;
+  @ViewChild('teamContent', { static: false }) private teamContent: ElementRef;
+  @ViewChild('testwidgetbtn', { static: false }) private testwidgetbtnRef: ElementRef;
+  @ViewChild('widgetsContent', { static: false }) public widgetsContent: ElementRef;
 
   wsRequestsUnserved: any;
   wsRequestsServed: any;
@@ -184,7 +179,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   calling_page: string = "conv_list"
   groupsList: Group[];
-  DISPLAY_ALL_TEAMMATES_TO_AGENT: boolean
+  DISPLAY_ALL_TEAMMATES_TO_AGENT: boolean;
   newTicketRequestId: string;
   /**
    * 
@@ -253,44 +248,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // this.listenToParentPostMessage()
 
     // this.getGroupsByProjectId();
-    // this.getDeptsByProjectId()
+   
   }
 
 
-
-
-
-  // getGroupById(id_group) {
-  //   this.groupService.getGroupById(id_group).subscribe((group: any) => {
-
-  //     if (group && group.trashed === false) {
-  //       console.log('[WS-REQUESTS-LIST] --> GROUP GET BY ID', group);
-
-  //       // this.groupName = group.name
-  //       // this.groupIsTrashed = group.trashed
-  //       // this.logger.log('[DEPTS] --> GROUP NAME ', this.groupName, 'is TRASHED ', this.groupIsTrashed);
-  //       for (const dept of this.departments) {
-
-  //         if (dept.id_group === group._id) {
-
-  //           if (dept.routing === 'assigned' || dept.routing === 'pooled') {
-
-  //             // dept.hasGroupName = this.groupName
-
-  //             if (group.trashed === true) {
-
-  //               dept.groupHasBeenTrashed = true
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }, error => {
-  //     this.logger.error('[WS-REQUESTS-LIST] --> GROUP GET BY ID - ERROR', error);
-  //   }, () => {
-  //     this.logger.log('[WS-REQUESTS-LIST] --> GROUP GET BY ID - COMPLETE')
-  //   });
-  // }
 
 
 
@@ -743,7 +704,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             // console.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS NOT INCLUDES CURRENT USER  - SHOW ALL TEAMMATES');
             this.filteredProjectUsersArray = projectUserArray
           }
-
         });
 
       } else {
@@ -754,34 +714,33 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.logger.error('[DEPT-EDIT-ADD] - GET GROUPS - ERROR ', error);
       // this.HAS_COMPLETED_GET_GROUPS = false
       // this.showSpinner = false;
-    },
-      () => {
-        this.logger.log('[DEPT-EDIT-ADD] - GET GROUPS * COMPLETE');
-      });
-  }
-
-  getAllBot() {
-    this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
-      this.logger.log('[WS-REQUESTS-LIST] - GET BOT ', bots);
-
-      if (bots) {
-        bots.forEach(bot => {
-          if (bot) {
-            this.user_and_bot_array.push({ '_id': 'bot_' + bot._id, 'firstname': bot.name + ' (bot)' });
-            this.team_ids_array.push('bot_' + bot._id);
-          }
-        });
-      }
-
-      this.logger.log('[WS-REQUESTS-LIST] -  GET BOT - TEAM ARRAY (user_and_bot_array) ', this.user_and_bot_array);
-
-
-    }, (error) => {
-      this.logger.error('[WS-REQUESTS-LIST] - GET BOT - ERROR ', error);
     }, () => {
-      this.logger.log('[WS-REQUESTS-LIST] - GET BOT * COMPLETE *');
+      this.logger.log('[DEPT-EDIT-ADD] - GET GROUPS * COMPLETE');
     });
   }
+
+  // getAllBot() {
+  //   this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
+  //     this.logger.log('[WS-REQUESTS-LIST] - GET BOT ', bots);
+
+  //     if (bots) {
+  //       bots.forEach(bot => {
+  //         if (bot) {
+  //           this.user_and_bot_array.push({ '_id': 'bot_' + bot._id, 'firstname': bot.name + ' (bot)' });
+  //           this.team_ids_array.push('bot_' + bot._id);
+  //         }
+  //       });
+  //     }
+
+  //     this.logger.log('[WS-REQUESTS-LIST] -  GET BOT - TEAM ARRAY (user_and_bot_array) ', this.user_and_bot_array);
+
+
+  //   }, (error) => {
+  //     this.logger.error('[WS-REQUESTS-LIST] - GET BOT - ERROR ', error);
+  //   }, () => {
+  //     this.logger.log('[WS-REQUESTS-LIST] - GET BOT * COMPLETE *');
+  //   });
+  // }
 
 
   listenToRequestsLength() {
@@ -1186,10 +1145,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
           }
 
-          // DEPTS_LAZY: comment this 2 lines
-          // var ws_requests_clone = JSON.parse(JSON.stringify(this.ws_requests));
-          // this.getDeptsAndCountOfDeptsInRequests(ws_requests_clone);
-
 
           this.getParticipantsInRequests(this.ws_requests);
           this.getConversationTypeInRequests(this.ws_requests);
@@ -1466,7 +1421,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                       this.createAgentAvatarInitialsAnfBckgrnd(projectuser['id_user'])
                     }
 
-                    this.usersLocalDbService.saveMembersInStorage(projectuser['id_user']._id, projectuser['id_user']);
+                    this.usersLocalDbService.saveMembersInStorage(projectuser['id_user']._id, projectuser['id_user'], 'ws-requests-list');
                     this.usersLocalDbService.saveUserInStorageWithProjectUserId(projectuser['_id'], projectuser['id_user']);
 
                     this.createArrayLast_abandoned_by_project_user(projectuser['id_user'], request);
@@ -1520,7 +1475,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                           this.createAgentAvatarInitialsAnfBckgrnd(projectuser['id_user'])
                         }
 
-                        this.usersLocalDbService.saveMembersInStorage(projectuser['id_user']._id, projectuser['id_user']);
+                        this.usersLocalDbService.saveMembersInStorage(projectuser['id_user']._id, projectuser['id_user'], 'ws-requests-list');
                         this.usersLocalDbService.saveUserInStorageWithProjectUserId(projectuser['_id'], projectuser['id_user']);
                       })
 
@@ -1821,8 +1776,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.displayInternalRequestModal = 'block'
     this.hasClickedCreateNewInternalRequest = false;
     this.projectUserBotsAndDeptsArray = [];
-    this.newTicketRequestId = null;
     this.projectUserAndLeadsArray = [];
+    this.newTicketRequestId = null;
     this.getProjectUsersAndContacts();
     this.getProjectUserBotsAndDepts();
 
@@ -2044,10 +1999,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     this.contactsService.createNewProjectUserToGetNewLeadID().subscribe(res => {
       this.logger.log('[WS-REQUESTS-LIST] - CREATE-NEW-USER - CREATE-PROJECT-USER ', res);
-      this.logger.log('[WS-REQUESTS-LIST] - CREATE-NEW-USER - CREATE-PROJECT-USER UUID ', res.uuid_user);
+      this.logger.log('[WS-REQUESTS-LIST] - CREATE-NEW-USER - CREATE-PROJECT-USER UUID ', res['uuid_user']);
       if (res) {
-        if (res.uuid_user) {
-          let new_lead_id = res.uuid_user
+        if (res['uuid_user']) {
+          let new_lead_id = res['uuid_user']
           this.createNewContact(new_lead_id, this.new_user_name, this.new_user_email)
         }
       }
@@ -2064,18 +2019,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   createNewContact(lead_id: string, lead_name: string, lead_email: string) {
     this.contactsService.createNewLead(lead_id, lead_name, lead_email).subscribe(lead => {
       this.logger.log('[WS-REQUESTS-LIST] - CREATE-NEW-USER - CREATE-NEW-LEAD -  RES ', lead);
-      this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname, role: 'lead', email: lead_email, requestertype: 'lead', requester_id: lead._id });
+      this.projectUserAndLeadsArray.push({ id: lead['lead_id'], name: lead['fullname'], role: 'lead', email: lead_email, requestertype: 'lead', requester_id: lead['_id'] });
       // this.projectUserAndLeadsArray.push({ id: lead.lead_id, name: lead.fullname + ' (lead)' });
+
       this.projectUserAndLeadsArray = this.projectUserAndLeadsArray.slice(0);
-      this.id_for_view_requeter_dtls = lead._id;
+      this.logger.log('[WS-REQUESTS-LIST] - CREATE-NEW-USER - CREATE-NEW-LEAD projectUserAndLeadsArray after PUSH', this.projectUserAndLeadsArray)
+      this.id_for_view_requeter_dtls = lead['_id'];
       this.requester_type = "lead";
-
     }, error => {
-
       this.logger.error('[WS-REQUESTS-LIST] - CREATE-NEW-USER - CREATE-NEW-LEAD - ERROR: ', error);
     }, () => {
       this.HAS_COMPLETED_CREATE_NEW_LEAD = true;
-
       // -------------------------------------------------
       // When is cmpleted the creation of the new reqester
       // -------------------------------------------------
@@ -2125,8 +2079,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     const projectUsers = this.usersService.getProjectUsersByProjectId();
     const leads = this.contactsService.getAllLeadsActiveWithLimit(10000);
 
-    Observable
-      .zip(projectUsers, leads, (_projectUsers: any, _leads: any) => ({ _projectUsers, _leads }))
+    
+       zip(projectUsers, leads, (_projectUsers: any, _leads: any) => ({ _projectUsers, _leads }))
       .subscribe(pair => {
         this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - PROJECT USERS : ', pair._projectUsers);
         this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - LEADS RES: ', pair._leads);
@@ -2170,8 +2124,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     const depts = this.departmentService.getDeptsByProjectId();
 
 
-    Observable
-      .zip(projectUsers, bots, depts, (_projectUsers: any, _bots: any, _depts: any) => ({ _projectUsers, _bots, _depts }))
+      zip(projectUsers, bots, depts, (_projectUsers: any, _bots: any, _depts: any) => ({ _projectUsers, _bots, _depts }))
       .subscribe(pair => {
         this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - PROJECT USERS : ', pair._projectUsers);
         this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - BOTS : ', pair._bots);
@@ -2193,7 +2146,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           });
         }
 
-        if (pair && pair._bots) {
+        if (pair && pair._depts) {
           pair._depts.forEach(dept => {
             this.projectUserBotsAndDeptsArray.push({ id: dept._id, name: dept.name + ' (dept)' })
           });

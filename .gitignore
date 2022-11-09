@@ -10,16 +10,7 @@ functions/*
 /out-tsc
 
 # dependencies
-/node_modules
-
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+node_modules
 
 # IDE - VSCode
 .vscode/*
@@ -36,15 +27,25 @@ functions/*
 npm-debug.log
 testem.log
 /typings
+.angular/cache/
 
-# e2e
-/e2e/*.js
-/e2e/*.map
+# Firebase
+.firebaserc
 
 # System Files
 .DS_Store
 Thumbs.db
 
-# Firebase
-.firebaserc
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 

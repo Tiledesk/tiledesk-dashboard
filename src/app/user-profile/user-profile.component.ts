@@ -72,7 +72,8 @@ export class UserProfileComponent implements OnInit {
   prjct_profile_name: string;
   prjct_id: string;
   prjct_name: string;
-  @ViewChild('fileInputUserProfileImage') fileInputUserProfileImage: any;
+
+  @ViewChild('fileInputUserProfileImage', { static: false }) fileInputUserProfileImage: any;
 
 
   dashboard_languages = [
@@ -183,13 +184,13 @@ export class UserProfileComponent implements OnInit {
 
     this.translateStrings();
     this.getBrowserLanguage();
-    this.getProjectPlan();
 
     this.route.fragment.subscribe(fragment => {
       this.fragment = fragment;
       this.logger.log('[USER-PROFILE] - FRAGMENT ', this.fragment)
     });
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+    this.getProjectPlan();
   }
 
   getProjectPlan() {
@@ -476,7 +477,7 @@ export class UserProfileComponent implements OnInit {
           const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
           this.logger.log('[USER-PROFILE] stored_user', stored_user)
           stored_user['hasImage'] = true;
-          this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
+          this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
         }
       });
     } else {
@@ -489,7 +490,7 @@ export class UserProfileComponent implements OnInit {
         const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
         this.logger.log('[USER-PROFILE] stored_user', stored_user)
         stored_user['hasImage'] = true;
-        this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
+        this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
         // here "setImageProfileUrl" is missing because in the "upload" method there is the subscription to the downoload 
         // url published by the BehaviourSubject in the service "upload-image-native"
       })
@@ -554,7 +555,7 @@ export class UserProfileComponent implements OnInit {
     const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
     this.logger.log('[USER-PROFILE] stored_user', stored_user)
     stored_user['hasImage'] = false;
-    this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user);
+    this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
 
     const delete_user_image_btn = <HTMLElement>document.querySelector('.delete-user-image');
     delete_user_image_btn.blur();
@@ -629,42 +630,37 @@ export class UserProfileComponent implements OnInit {
     this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, (response) => {
 
-      // console.log('[USER-PROFILE] - UPDATE CURRENT USER RES ', response)
-      if (!isDevMode()) {
-        try {
-          window['analytics'].page("User Profile Page, Profile", {
-            "properties": {
-              "title": 'Profile'
-            }
-          });
-        } catch (err) {
-          this.logger.error('User Profile page error', err);
-        }
-
-
-        try {
-          window['analytics'].identify(this.user._id, {
-            name: this.userFirstname + ' ' + this.userLastname,
-            email: this.user.email,
-            plan: this.prjct_profile_name
-
-          });
-        } catch (err) {
-          this.logger.error('identify in User Profile error', err);
-        }
-
-        try {
-          window['analytics'].group(this.prjct_id, {
-            name: this.prjct_name,
-            plan: this.prjct_profile_name,
-          });
-        } catch (err) {
-          this.logger.error('group Signed Out error', err);
-        }
-      }
-
       this.logger.log('[USER-PROFILE] - CALLBACK RESPONSE ', response)
       if (response === 'success') {
+        if (!isDevMode()) {
+          try {
+            window['analytics'].page("User Profile Page, Profile", {
+
+            });
+          } catch (err) {
+            this.logger.error('User Profile page error', err);
+          }
+
+          try {
+            window['analytics'].identify(this.user._id, {
+              name: this.userFirstname + ' ' + this.userLastname,
+              email: this.user.email,
+              plan: this.prjct_profile_name
+
+            });
+          } catch (err) {
+            this.logger.error('identify in User Profile error', err);
+          }
+
+          try {
+            window['analytics'].group(this.prjct_id, {
+              name: this.prjct_name,
+              plan: this.prjct_profile_name,
+            });
+          } catch (err) {
+            this.logger.error('group Signed Out error', err);
+          }
+        }
 
         this.SHOW_CIRCULAR_SPINNER = false;
         this.UPDATE_USER_ERROR = false;

@@ -1,0 +1,59 @@
+<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+<!-- REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG -->
+<!-- !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA -->
+<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+<div class="script-wrap" style="padding-left: 46px;padding-right: 20px;">
+  <pre class="widget-design-pre"
+  style="padding-left:0px; margin-bottom: 0px;font-size: 12px !important;">
+  <span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
+  <span>   window.tiledeskSettings=</span>
+  <span>   {{'{'}}</span>
+  <span>	 projectid: &quot;{{ id_project }}&quot;</span>
+  <span>   {{'};'}}</span>
+  <span>   (function(d, s, id) {{'{'}}</span>
+  <span>      var w=window; var d=document; var i=function(){{'{'}}i.c(arguments);{{'};'}}  </span>
+  <span>      i.q=[]; i.c=function(args){{'{'}}i.q.push(args);{{'};'}} w.Tiledesk=i; </span>
+  <span>      var js, fjs=d.getElementsByTagName(s)[0];  </span>
+  <span>      if (d.getElementById(id)) return;    </span>
+  <span>      js=d.createElement(s); </span>
+  <span>      js.id=id; js.async=true; js.src=&quot;{{WIDGET_URL}}&quot;;</span>
+  <span>      fjs.parentNode.insertBefore(js, fjs);</span>
+  <span>   {{'}'}}(document,&#39;script&#39;,&#39;tiledesk-jssdk&#39;));</span>
+  <span>&lt;/script&gt;</span>	
+  </pre>
+
+
+  <button style="margin-top:0px; color: #039be5; margin: 0px; border-radius: 0em 0em 0.25px 0.25px;box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);" (click)="copyToClipboard()" class="btn btn-white btn-block">
+    <span> <i class="material-icons"
+      style="vertical-align: middle; color: #039be5">file_copy</i>
+    </span>
+    {{ 'Resourcepage.CopyScript' | translate }}
+  </button>
+
+  <div class="copied-to-clipboard-tooltip" style="opacity: 0; text-align: center;	position: relative;top: -78px; max-width: 360px;left: 50%;transform: translateX(-50%);padding: 5px" [ngClass]="{'has-copied-text' : has_copied}" class="control-label">
+  {{ 'Copied' | translate }}
+  </div>
+
+</div>
+
+<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+<!-- REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG -->
+<!-- !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE -->
+<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+<textarea name="exampleClipboard" class="textarea" readonly id="hidden-texarea" rows="20" value="" type="text" style="opacity: .01;height:0; position:absolute; z-index: -1;">
+  &lt;script type=&quot;application/javascript&quot;&gt;
+      window.tiledeskSettings= 
+      {
+          projectid: &quot;{{ id_project }}&quot;
+      };
+      (function(d, s, id) { 
+          var w=window; var d=document; var i=function(){i.c(arguments);};
+          i.q=[]; i.c=function(args){i.q.push(args);}; w.Tiledesk=i;                    
+          var js, fjs=d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js=d.createElement(s); 
+          js.id=id; js.async=true; js.src=&quot;{{WIDGET_URL}}&quot;;
+          fjs.parentNode.insertBefore(js, fjs);
+      }(document,&#39;script&#39;,&#39;tiledesk-jssdk&#39;));
+  &lt;/script&gt;
+</textarea>

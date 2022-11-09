@@ -6,12 +6,11 @@ import { ActivitiesService } from './activities/activities-service/activities.se
 
 // import { LoggerInstance } from './services/logger/LoggerInstance';
 import { MapRequestComponent } from './map-request/map-request.component';
-import { MetricheComponent } from './analytics/metrics/metriche.component';
+import { MetricsComponent } from './analytics/metrics/metrics.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
-import { HttpModule } from '@angular/http';
+
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
@@ -38,7 +37,7 @@ import { DepartmentService } from './services/department.service';
 import { DepartmentsComponent } from './departments/departments.component';
 
 import { FaqService } from './services/faq.service';
-import { BotService } from './services/bot.service';
+
 import { ProjectsComponent } from './projects/projects.component';
 import { UsersComponent } from './users/users.component';
 
@@ -63,14 +62,13 @@ import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.com
 
 import { ProjectService } from './services/project.service';
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
-import { MomentModule } from 'angular2-moment';
+
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
-
 import { LocalDbService } from './services/users-local-db.service';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { GroupService } from './services/group.service';
@@ -91,7 +89,7 @@ import { MarkedPipe } from './marked.pipe';
 
 import { HoursComponent } from './hours/hours.component';
 
-import { AmazingTimePickerModule } from 'amazing-time-picker';
+
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
@@ -102,9 +100,9 @@ import { UploadImageNativeService } from './services/upload-image-native.service
 
 
 import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-convs/history-and-nort-convs.component';
-import { MyDatePickerModule } from 'mydatepicker';
+
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
-import { ColorPickerModule } from 'ngx-color-picker';
+
 import { WidgetService } from './services/widget.service';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
 import { ActivitiesComponent } from './activities/activities.component';
@@ -114,16 +112,13 @@ import { ActivitiesStaticComponent } from './static-pages/activities-static/acti
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
-import { HeatMapModule, TooltipService, LegendService, AdaptorService } from '@syncfusion/ej2-angular-heatmap'
-
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
 import { RealtimeComponent } from './analytics/realtime/realtime.component';
-import { RichiesteComponent } from './analytics/metrics/richieste/richieste.component';
+import { RequestsComponent } from './analytics/metrics/requests/requests.component';
 import { SentimentComponent } from './analytics/metrics/sentiment/sentiment.component';
-import { TempirispostaComponent } from './analytics/metrics/tempirisposta/tempirisposta.component';
-import { DurataconvComponent } from './analytics/metrics/durataconv/durataconv.component';
+import { ResponseTimesComponent } from './analytics/metrics/responsetimes/responsetimes.component';
+import { ConvsDurationComponent } from './analytics/metrics/convsduration/convsduration.component';
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
 import { ProjectPlanService } from './services/project-plan.service';
@@ -138,14 +133,19 @@ import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.compon
 import { PricingModule } from './pricing/pricing.module';
 import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
 
-import { SlideshowModule } from 'ng-simple-slideshow';
+
 import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
 
 import { CreateProjectComponent } from './create-project-wizard/create-project/create-project.component';
 import { InstallWidgetComponent } from './create-project-wizard/install-widget/install-widget.component';
 import { ConfigureWidgetComponent } from './create-project-wizard/configure-widget/configure-widget.component';
-import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
+import { OnboardingComponent } from './create-project-wizard/onboarding/onboarding.component';
+import { WelcomeMessageConfigurationComponent } from './create-project-wizard/onboarding/welcome-message-configuration/welcome-message-configuration.component';
+import { ChatbotConfigurationComponent } from './create-project-wizard/onboarding/chatbot-configuration/chatbot-configuration.component';
+import { HumanConfigurationComponent } from './create-project-wizard/onboarding/human-configuration/human-configuration.component';
+import { ErrorResultComponent } from './create-project-wizard/onboarding/error-result/error-result.component';
 
+import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
 import { environment } from '../environments/environment';
 import { AppConfigService } from './services/app-config.service';
 import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component';
@@ -217,15 +217,16 @@ import { EventsAnalyticsComponent } from './analytics/metrics/events-analytics/e
 import { SanitizeHtmlPipe } from './sanitize-html.pipe'; // used for iframe to bypass security 
 import { SafeHtmlPipe } from './safe-html.pipe'; // used to sanitize email 
 import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';
-import { Autolinkerjs } from './autolinkerjs.pipe';
+
 import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';
 import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component';
 import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component';
 import { SettingsSidebarComponent } from './components/settings-sidebar/settings-sidebar.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
+
+
 import { WidgetPrechatFormComponent } from './widget-prechat-form/widget-prechat-form.component';
 
-import { CreditCardDirectivesModule } from 'angular-cc-library';
+
 import { OnlynumberDirective } from './_directives/onlynumber.directive';
 import { NativeBotSidebarComponent } from './bots/native-bot-sidebar/native-bot-sidebar.component';
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
@@ -238,13 +239,62 @@ import { TilebotComponent } from './bots/tilebot/tilebot.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
 
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
-import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
+
 import { CutomTooltipOptions } from './utils/util';
 import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component';
 import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
 import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 import { AutofocusDirective } from './_directives/autofocus.directive';
 import { AnalyticsService } from './analytics/analytics-service/analytics.service';
+import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
+
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MomentModule } from 'ngx-moment';
+import { NgImageSliderModule } from 'ng-image-slider';
+import { CreditCardDirectivesModule } from 'angular-cc-library';
+import { NgApexchartsModule } from "ng-apexcharts";
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
+// Removed libraries
+// import { ColorPickerModule } from 'ngx-color-picker'; -- ColorPickerModule v12.0.1 (was v6.7.0) -| widget-set-up.component.ts |--|
+// import { MyDatePickerModule } from 'mydatepicker'; -- replaced with MatDatepickerModule -| activities.componet.ts |--| history-and-nort-convs.component.ts |--| activities-static.component.ts
+// import { SlideshowModule } from 'ng-simple-slideshow'; --  replaced with npm i ng-image-slider -| analytics-static.component |--| departments-static |--|  groups-static
+
+// import { AmazingTimePickerModule } from 'amazing-time-picker'; -- ngx-mat-timepicker -| hours.component.ts |--| // see https://stackblitz.com/edit/ngx-mat-timepicker?file=src%2Fapp%2Fapp.component.ts
+// import { MomentModule } from 'angular2-moment';
+
+// Custom component widget installation //
+import { CodeInstallationComponent } from './components/widget-installations/code-installation/code-installation.component';
+import { JsInstallationComponent } from './components/widget-installations/js-installation/js-installation.component';
+import { GoogleTagManagerInstallationComponent } from './components/widget-installations/google-tag-manager-installation/google-tag-manager-installation.component'
+import { ShopifyInstallationComponent } from './components/widget-installations/shopify-installation/shopify-installation.component';
+import { WordpressInstallationComponent } from './components/widget-installations/wordpress-installation/wordpress-installation.component';
+import { PrestashopInstallationComponent } from './components/widget-installations/prestashop-installation/prestashop-installation.component';
+import { JoomlaInstallationComponent } from './components/widget-installations/joomla-installation/joomla-installation.component';
+import { SatPopoverModule } from '@ncstate/sat-popover';
+import { TilebotFormComponent } from './bots/tilebot/tilebot-form/tilebot-form.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+
+// MODALS 
+import { ModalDeleteComponent } from './components/modals/modal-delete/modal-delete.component';
+import { TilebotAddEditFormComponent } from './bots/tilebot/tilebot-add-edit-form/tilebot-add-edit-form.component';
+import { TilebotListFieldsFormComponent } from './bots/tilebot/tilebot-list-fields-form/tilebot-list-fields-form.component';
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -366,12 +416,12 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     FaqTestTrainBotComponent,
     AnalyticsComponent,
     PanoramicaComponent,
-    MetricheComponent,
+    MetricsComponent,
     RealtimeComponent,
-    RichiesteComponent,
+    RequestsComponent,
     SentimentComponent,
-    TempirispostaComponent,
-    DurataconvComponent,
+    ResponseTimesComponent,
+    ConvsDurationComponent,
     HoursStaticComponent,
     DepartmentsStaticComponent,
     StaticPageBaseComponent,
@@ -437,7 +487,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SanitizeHtmlPipe,
     SafeHtmlPipe,
     UnauthorizedForProjectComponent,
-    Autolinkerjs,
     HtmlEntitiesEncodePipe,
     NotificationEmailComponent,
     SmtpSettingsComponent,
@@ -455,12 +504,43 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AutofocusDirective,
     TilebotSelectTypeComponent,
     TilebotSidebarComponent,
-    TilebotComponent
+    TilebotComponent,
+    OnboardingComponent,
+    WelcomeMessageConfigurationComponent,
+    ChatbotConfigurationComponent,
+    HumanConfigurationComponent,
+    ErrorResultComponent,
+    CodeInstallationComponent,
+    JsInstallationComponent,
+    GoogleTagManagerInstallationComponent,
+    ShopifyInstallationComponent,
+    WordpressInstallationComponent,
+    PrestashopInstallationComponent,
+    JoomlaInstallationComponent,
+    TilebotFormComponent, 
+    ModalDeleteComponent, TilebotAddEditFormComponent, TilebotListFieldsFormComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
+    NgApexchartsModule,
+    DragDropModule,
     CreditCardDirectivesModule,
+    NgImageSliderModule,
+    MomentModule,
+    NgxMatTimepickerModule,
+    ColorPickerModule,
     MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatToolbarModule,
+    MatTabsModule,
     /* PRIVATE */
     PricingModule,
     /* PRIVATE */
@@ -471,18 +551,19 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CoreModule,
     SharedModule,
     UiModule,
-    HttpModule,
     ComponentsModule,
     RouterModule,
-    HeatMapModule,
     HttpClientModule,
-    MomentModule,
-    AmazingTimePickerModule,
+    SatPopoverModule,
+    NgxSkeletonLoaderModule,
+    // CreditCardDirectivesModule,
+    // MomentModule,
+    // AmazingTimePickerModule,
+    // ColorPickerModule,
+    // MyDatePickerModule,
+    // SlideshowModule,
     NgSelectModule,
-    MyDatePickerModule,
-    ColorPickerModule,
     BrowserAnimationsModule,
-    SlideshowModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -492,6 +573,13 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     }),
   ],
   providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     AppConfigService, // https://juristr.com/blog/2018/01/ng-app-runtime-config/
     BrandService,
     LoggerService,
@@ -519,7 +607,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     TagsService,
     DepartmentService,
     FaqService,
-    BotService,
     FaqKbService,
     ProjectService,
     LocalDbService,
@@ -531,9 +618,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WidgetService,
     WebhookService,
     ProjectPlanService,
-    LegendService,
-    TooltipService, 
-    AdaptorService,
     AnalyticsService,
     HttpClientModule,
     TriggerService,

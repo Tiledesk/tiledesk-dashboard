@@ -1,10 +1,8 @@
 import { AppConfigService } from './../services/app-config.service';
 // tslint:disable:max-line-length
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { Http, Headers, RequestOptions} from '@angular/http';
 import { ContactsService } from '../services/contacts.service';
-import { Http, Headers, RequestOptions } from '@angular/http';
+
 import { Contact } from '../models/contact-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
@@ -102,7 +100,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   public_Key: any;
   isChromeVerGreaterThan100: boolean;
   constructor(
-    private http: Http,
     private contactsService: ContactsService,
     private router: Router,
     private auth: AuthService,
@@ -141,15 +138,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
     })
-   }
+  }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-  
+
     let keys = this.public_Key.split("-");
 
     keys.forEach(key => {
@@ -544,7 +540,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * GET CONTACTS  */
   getContacts() {
-
     this.getTrashedContactsCount();
     this.getActiveContactsCount();
 
@@ -554,11 +549,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.contacts = leads_object['leads'];
       this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
-
-
-
-      /* to test pagination */
-      // const contactsCount = 0;
 
       const contactsCount = leads_object['count'];
       this.logger.log('[CONTACTS-COMP] - CONTACTS COUNT ', contactsCount);
@@ -586,7 +576,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   generateAvatarFromNameAndGetIfContactIsAuthenticated(contacts_list) {
     contacts_list.forEach(contact => {
-    // console.log('[CONTACTS-COMP] contact', contact)
       if (contact) {
         // const id_contact = contact._id
         const leadid = contact.lead_id
@@ -681,8 +670,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedContactEmail = '';
     this.queryString = '';
     this.hasClickedTrashed = false;
-    this.getContacts()
-
+    this.getContacts();
   }
 
   getTrashedContactsCount() {
@@ -691,6 +679,10 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       if (trashedleads) {
         this.trashedContanctCount = trashedleads.count
       }
+    }, (error) => {
+      this.logger.error('[CONTACTS-COMP] - GET TRASHED LEADS - ERROR ', error);
+    }, () => {
+      this.logger.log('[CONTACTS-COMP] - GET TRASHED LEADS * COMPLETE *');
     });
   }
 
@@ -698,13 +690,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
       this.logger.log('[CONTACTS-COMP] - GET ACTIVE LEADS RESPONSE ', activeleads)
       if (activeleads) {
-
         this.countOfActiveContacts = activeleads['count'];
       }
+    }, (error) => {
+      this.logger.error('[CONTACTS-COMP] - GET ACTIVE LEADS - ERROR ', error);
+    }, () => {
+      this.logger.log('[CONTACTS-COMP] - GET ACTIVE LEADS * COMPLETE *');
     });
   }
-
-
 
   deleteContactForever(contactid: string) {
     this.contactsService.getRequestsByRequesterId(contactid, 0)
@@ -833,12 +826,9 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((lead: any) => {
         this.logger.log('[CONTACTS-COMP] - RESTORE CONTACT RES ', lead);
 
-        // RE-RUN GET CONTACT TO UPDATE THE TABLE
-
       }, (error) => {
         this.logger.error('[CONTACTS-COMP] - RESTORE CONTACT - ERROR ', error);
         // =========== NOTIFY ERROR ===========
-
         // this.notify.showNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
       }, () => {
         this.logger.log('[CONTACTS-COMP] - RESTORE CONTACT * COMPLETE *');
@@ -885,7 +875,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   exportContactsToCsv() {
     this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
-      // this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
+      this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
 
       // this.logger.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
       if (leads_object) {
@@ -907,7 +897,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     //     exportToCsvBtn.blur()
 
     //     this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
-    //       // this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
+    //       this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
 
     //       // this.logger.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
     //       if (leads_object) {

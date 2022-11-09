@@ -47,7 +47,7 @@ export class WebhookAddEditComponent implements OnInit {
 
     if (this.modalMode === 'edit') {
       this.showSkeleton = true;
-      this.getSubscriptionById();
+      this.getWebhookSubscriptionById();
     
     }
     this.translateNotificationMsgs();
@@ -78,8 +78,8 @@ export class WebhookAddEditComponent implements OnInit {
     }
   }
 
-  getSubscriptionById() {
-    this.webhookService.getSubscritionById(this.selectWebhookId).subscribe((response: any) => {
+  getWebhookSubscriptionById() {
+    this.webhookService.getWHSubscritionById(this.selectWebhookId).subscribe((response: any) => {
       this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - GET SUBSCRIPTION BY ID - RES ', response);
       
       if(response) {

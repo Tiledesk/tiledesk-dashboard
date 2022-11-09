@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user-model';
-
 import { PendingInvitation } from '../models/pending-invitation-model';
 import { ProjectUser } from '../models/project-user';
-import { Observable } from 'rxjs/Observable';
+import { Observable , BehaviorSubject} from 'rxjs';
 import { AuthService } from '../core/auth.service';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LocalDbService } from '../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { Project } from '../models/project-model';
@@ -37,13 +34,11 @@ export class UsersService {
   public userProfileImageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   // public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved to ws-requests.sercice
   // public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved to ws-requests.sercice
-  public currentUserWsBusyAndAvailabilityForProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
-  public contactsEvents$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
+  public currentUserWsBusyAndAvailabilityForProject$: BehaviorSubject<Array<[any]>> = new BehaviorSubject<Array<[any]>>([]);
+  public contactsEvents$: BehaviorSubject<Array<[any]>> = new BehaviorSubject<Array<[any]>>([]);
   public imageStorage$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   // public has_clicked_logoutfrom_mobile_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public has_clicked_logoutfrom_mobile_sidebar_project_undefined: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
-  http: Http;
 
   SERVER_BASE_PATH: string;
   PROJECTS_URL: string;
@@ -67,7 +62,7 @@ export class UsersService {
   baseUrl: string;
   eventlist: any;
   constructor(
-    http: Http,
+
     private auth: AuthService,
     private usersLocalDbService: LocalDbService,
     private router: Router,
@@ -79,7 +74,6 @@ export class UsersService {
     private _httpClient: HttpClient
   ) {
 
-    this.http = http;
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value
     // this.logger.log('[USER-SERV] 1 User', this.user)
@@ -110,7 +104,6 @@ export class UsersService {
   }
 
   getCurrentProject() {
-
     // tslint:disable-next-line:no-debugger
     // debugger
     this.auth.project_bs.subscribe((project) => {
@@ -208,9 +201,6 @@ export class UsersService {
     };
   }
 
-
-
-
   /**
    * GET - DOWNLOAD ACTIVITIES CSV
    * @param querystring 
@@ -227,13 +217,16 @@ export class UsersService {
     const url = this.USERS_ACTIVITIES_URL + '/csv' + '?page=' + pagenumber + _querystring + '&lang=' + language;
     this.logger.log('[USER-SERV] - DOWNLOAD ACTIVITIES CSV - URL ', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/csv');
-    headers.append('Authorization', this.TOKEN);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      }),
+      responseType: 'text' as 'json'
+    };
 
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.text());
+    return this._httpClient
+      .get(url, httpOptions)
   }
 
   /**
@@ -241,17 +234,19 @@ export class UsersService {
    * Get Name Surname and id of the logged user
    */
   public getCurrentUserProfile(): Observable<User[]> {
-    // const url = this.BASE_URL + 'users/' + user_id;
-    const url = this.SERVER_BASE_PATH + 'users';
-    // const url = this.BASE_URL + 'project_users/users/' + user_id;
 
+    const url = this.SERVER_BASE_PATH + 'users';
     this.logger.log('[USER-SERV] - GET CURRENT USER PROFILE - URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient
+      .get<User[]>(url, httpOptions)
   }
 
   // ---------------------------------------------------------
@@ -260,14 +255,17 @@ export class UsersService {
   public deleteUserAccount() {
     const url = this.SERVER_BASE_PATH + 'users';
     this.logger.log('[USER-SERV] - DELETE USER ACCOUNT - URL ', url);
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient
+      .delete(url, httpOptions)
   }
 
 
@@ -281,15 +279,17 @@ export class UsersService {
     const url = this.SERVER_BASE_PATH + this.project._id + '/project_users/' + project_user_id;;
     this.logger.log('[USER-SERV] - GET PROJECT USER BY PROJECT USER ID - URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient
+      .get<ProjectUser[]>(url, httpOptions)
   }
-
-
 
   /**
    * GET PROJECT-USERS BY USER ID
@@ -301,58 +301,50 @@ export class UsersService {
     const url = this.SERVER_BASE_PATH + this.project._id + '/project_users/users/' + user_id;;
 
     this.logger.log('[USER-SERV] - GET PROJECT-USERS BY USER ID - URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
 
-  // -------------------------------------------------------------
-  // GET PROJECT'S PROJECT-USERS BY PROJECT ID
-  // -------------------------------------------------------------
-  public x_getProjectUsersByProjectId(): Observable<ProjectUser[]> {
-    const url = this.PROJECT_USER_URL;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this._httpClient
+      .get<User[]>(url, httpOptions)
   }
 
 
   public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
     const url = this.PROJECT_USER_URL;
-
     this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     };
-    return this._httpClient.get<ProjectUser[]>(url, httpOptions);
+    return this._httpClient
+      .get<ProjectUser[]>(url, httpOptions);
   }
-
-
 
   // -------------------------------------------------------------
   // GET VISITORS WITH ROLE GUEST & ONLINE
   // -------------------------------------------------------------
   public getProjectUsersByProjectId_GuestRole(): Observable<ProjectUser[]> {
     const url = this.PROJECT_USER_URL + '?role=guest&presencestatus=online';
-
     this.logger.log('[USER-SERV] - GET VISITORS WITH ROLE GUEST & ONLINE - URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient
+      .get<ProjectUser[]>(url, httpOptions)
   }
 
 
@@ -360,15 +352,19 @@ export class UsersService {
   // TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT)
   // ----------------------------------------------------------------
   public getAvailableProjectUsersByProjectId(): Observable<ProjectUser[]> {
-    // const url = this.MONGODB_BASE_URL + 'availables';
+
     const url = this.AVAILABLE_USERS_URL;
     this.logger.log('[USER-SERV] - PROJECT USERS AVAILABLE URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient
+      .get<ProjectUser[]>(url, httpOptions)
   }
 
 
@@ -376,15 +372,18 @@ export class UsersService {
   // TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT) ALSO CONSIDERING OPERATING HOURS
   // -------------------------------------------------------------------------------------------------
   public getAvailableProjectUsersConsideringOperatingHours(): Observable<ProjectUser[]> {
-    // const url = this.MONGODB_BASE_URL + 'availables';
     const url = this.AVAILABLE_USERS_URL;
     this.logger.log('[USER-SERV] - PROJECT USERS AVAILABLE ALSO CONSIDERING OPERATING HOURS - URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient
+      .get<ProjectUser[]>(url, httpOptions)
   }
 
 
@@ -395,11 +394,14 @@ export class UsersService {
    * @returns 
    */
   public inviteUser(email: string, role: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.INVITE_USER_URL;
     this.logger.log('[USER-SERV] INVITE PROJECT-USER - URL ', url);
@@ -407,10 +409,8 @@ export class UsersService {
     const body = { 'email': email, 'role': role, 'user_available': false };
     this.logger.log('[USER-SERV] INVITE PROJECT-USER - POST REQUEST BODY ', body);
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
   // -------------------------------------------------------
@@ -418,18 +418,19 @@ export class UsersService {
   // --------------------------------------------------------
   public getPendingUsers(): Observable<PendingInvitation[]> {
     const url = this.PENDING_INVITATION_URL;
-
     this.logger.log('[USER-SERV] - GET PENDING USERS - URL ', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    // this.logger.log('TOKEN TO COPY ', this.TOKEN)
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient
+      .get<PendingInvitation[]>(url, httpOptions)
   }
-
-
 
   /**
    * DELTE PENDING INVITATION
@@ -439,14 +440,17 @@ export class UsersService {
   public deletePendingInvitation(pendingInvitationId): Observable<PendingInvitation[]> {
     const url = this.PENDING_INVITATION_URL + '/' + pendingInvitationId;
     this.logger.log('[USER-SERV] - DELETE PENDING INVITATION - URL ', url);
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+   
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient
+      .delete<PendingInvitation[]>(url, httpOptions)
   }
 
 
@@ -457,15 +461,19 @@ export class UsersService {
    */
   public getPendingUsersByIdAndResendEmail(pendingInvitationId): Observable<PendingInvitation[]> {
     const url = this.PENDING_INVITATION_URL + '/resendinvite/' + pendingInvitationId;
-
     this.logger.log('[USER-SERV] - RESEND EMAIL TO PENDING PROJECT-USERS - URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    // this.logger.log('TOKEN TO COPY ', this.TOKEN)
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+ 
+    return this._httpClient
+      .get<PendingInvitation[]>(url, httpOptions)
+
   }
 
 
@@ -474,20 +482,23 @@ export class UsersService {
    * @param pendingInvitationId 
    * @returns 
    */
+  // 'Authorization': this.TOKEN
   public getPendingUsersById(pendingInvitationId): Observable<PendingInvitation[]> {
-    // const url = this.PENDING_INVITATION_URL + '/' + pendingInvitationId;
+  
     const url = this.SERVER_BASE_PATH + 'auth/pendinginvitationsnoauth/' + pendingInvitationId;
     this.logger.log('[USER-SERV] - GET PENDING INVITATION BY PENDING INVITATION ID ', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    // this.logger.log('TOKEN TO COPY ', this.TOKEN)
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+       
+      })
+    };
+    
+    return this._httpClient
+      .get<PendingInvitation[]>(url, httpOptions)
   }
-
-
 
   /**
    * GET PROJECT-USER BY USER-ID
@@ -499,13 +510,17 @@ export class UsersService {
     const url = this.PROJECT_USER_URL + 'users/' + user_id;
     this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    // this.logger.log('TOKEN TO COPY ', this.TOKEN)
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+  
+
+    return this._httpClient
+      .get<ProjectUser[]>(url, httpOptions)
   }
 
 
@@ -519,13 +534,16 @@ export class UsersService {
     const url = this.PROJECT_USER_URL + projectuser_id;
     this.logger.log('[USER-SERV] - GET PROJECT USERS BY ID - URL ', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this._httpClient
+      .get<ProjectUser[]>(url, httpOptions)
   }
 
 
@@ -536,7 +554,7 @@ export class UsersService {
     this.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
       // this.logger.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID ', this.project_id);
       this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - CURRENT USE ID ', this.currentUserId);
-      // console.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ', projectUser);
+      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ', projectUser);
       this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER LENGTH', projectUser.length);
       if ((projectUser) && (projectUser.length !== 0)) {
         this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ID ', projectUser[0]._id)
@@ -603,7 +621,7 @@ export class UsersService {
                   this.createAvatarInitialsAndBckgrnd(projectUser.id_user)
                 }
 
-                this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
+                this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user, 'user-service');
                 this.usersLocalDbService.saveUserInStorageWithProjectUserId(projectUser._id, projectUser.id_user);
               });
             }
@@ -650,7 +668,7 @@ export class UsersService {
   // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
   getBotsByProjectIdAndSaveInStorage() {
     this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
-
+      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - bots ', bots);
       if (bots && bots !== null) {
 
         bots.forEach(bot => {
@@ -682,16 +700,15 @@ export class UsersService {
    * @param user_available 
    * @param user_isbusy 
    */
-  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean, projctuser) {
-    // console.log('[USER-SERV] - PUBLISH PROJECT-USER-ID ', projectUser_id);
-    // console.log('[USER-SERV] - PUBLISH USER AVAILABLE ', user_available);
-    // console.log('[USER-SERV] - PUBLISH USER IS BUSY ', user_isbusy);
-    // console.log('[USER-SERV] - PUBLISH P-U', projctuser);
+  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean, projctuser:any) {
+    this.logger.log('[USER-SERV] - PUBLISH PROJECT-USER-ID ', projectUser_id);
+    this.logger.log('[USER-SERV] - PUBLISH USER AVAILABLE ', user_available);
+    this.logger.log('[USER-SERV] - PUBLISH USER IS BUSY ', user_isbusy);
 
     this.project_user_id_bs.next(projectUser_id);
     this.user_is_available_bs.next(user_available);
-    this.projectUser_bs.next(projctuser);
     this.user_is_busy$.next(user_isbusy);
+    this.projectUser_bs.next(projctuser);
   }
 
 
@@ -701,7 +718,7 @@ export class UsersService {
   // -----------------------------------------------------------------------------------------------------
   public availability_btn_clicked(clicked: boolean) {
     this.has_changed_availability_in_sidebar.next(clicked)
-    // console.log('[USER-SERV] - CURRENT-USER AVAILABILITY  availability_btn_clicked ', clicked)
+    this.logger.log('[USER-SERV] - CURRENT-USER AVAILABILITY  availability_btn_clicked ', clicked)
   }
 
 
@@ -725,7 +742,7 @@ export class UsersService {
 
     var self = this;
     const path = '/' + projectid + '/project_users/' + prjctuserid
-    // console.log('[USER-SERV] - SUBSCR (REF) TO WS CURRENT USERS PATH: ', path);
+    this.logger.log('[USER-SERV] - SUBSCR (REF) TO WS CURRENT USERS PATH: ', path);
 
     return new Promise(function (resolve, reject) {
 
@@ -851,42 +868,24 @@ export class UsersService {
    * @param user_is_available 
    * @returns 
    */
-  public _updateProjectUser(projectUser_id: string, user_is_available: boolean, profilestatus) {
+  public updateProjectUser(projectUser_id: string, user_is_available: boolean, profilestatus: string) {
 
     let url = this.SERVER_BASE_PATH + this.project._id + '/project_users/' + projectUser_id;
     this.logger.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY (PUT) URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    const body = { 'user_available': user_is_available };
+    const body = { 'user_available': user_is_available,  'profileStatus': profilestatus };
     this.logger.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY - PUT REQUEST BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-  }
-
-  public updateProjectUser(projectUser_id: string, user_is_available: boolean, profilestatus: string) {
-
-    let url = this.SERVER_BASE_PATH + this.project._id + '/project_users/' + projectUser_id;
-    // console.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY (PUT) URL ', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-    const body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
-    // console.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY - PUT REQUEST BODY ', body);
-
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
   // DONE - WORKS NK-TO-TEST - da fare e da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
@@ -894,36 +893,12 @@ export class UsersService {
   // must be implemented for to change the availability status (available / unavailable) of the current user
 
   /**
-   * NEW UPDATE CURRENT USER AVAILABILITY
+   * UPDATE CURRENT USER AVAILABILITY
    * @param projectId 
    * @param user_is_available 
    * @returns 
    */
   public updateCurrentUserAvailability(projectId: string, user_is_available: boolean, profilestatus: any) {
-
-    let url = this.SERVER_BASE_PATH + projectId + '/project_users/';
-    this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY (PUT) URL ', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-    // let body = {}
-    // if (user_is_available === true || user_is_available === false ) {
-    const body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
-    // }
-
-    // console.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY - BODY ', body);
-
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-  }
-
-  /* old UPDATE CURRENT USER AVAILABILITY */
-  public _updateCurrentUserAvailability(projectId: string, user_is_available: boolean) {
 
     let url = this.SERVER_BASE_PATH + projectId + '/project_users/';
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY (PUT) URL ', url);
@@ -936,14 +911,12 @@ export class UsersService {
       })
     };
 
-    const body = { 'user_available': user_is_available };
+    const body = { 'user_available': user_is_available, 'profileStatus': profilestatus };
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER AVAILABILITY - BODY ', body);
 
     return this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
   }
-
-
 
   /**
    * UPDATE PROJECT-USER ROLE & MAX-CHAT 
@@ -957,38 +930,41 @@ export class UsersService {
     let url = this.PROJECT_USER_URL + projectUser_id;
     this.logger.log('[USER-SERV] - UPDATE PROJECT-USER ROLE & MAX-CHAT (PUT) URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    // const body = { 'role': user_role, 'max_served_chat': max_served_chat };
     const body = { 'role': user_role, 'max_assigned_chat': max_assigned_chat };
     this.logger.log('[USER-SERV] - UPDATE PROJECT-USER ROLE & MAX-CHAT  BODY ', body);
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
-  // / curl -v -X PUT -H 'Content-Type:application/json' -u andrea.leo@f21.it:123456 -d '{"tags":[{"tag": "inprogress", "color": "#66C549"}]}'
+ 
   // //  http://localhost:3001/6256ac8c729977ad37f0aee6/project_users/ID_PROJECT_USER
   public updateProjectUserTags(projectUser_id: string, tagarray: any) {
     let url = this.PROJECT_USER_URL + projectUser_id;
     this.logger.log('[USER-SERV] - UPDATE PROJECT-USER TAG URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    // const body = { 'role': user_role, 'max_served_chat': max_served_chat };
     const body = { 'tags': tagarray };
     this.logger.log('[USER-SERV] - UPDATE PROJECT-USER TAG  BODY ', body);
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+ 
   }
 
 
@@ -1003,15 +979,16 @@ export class UsersService {
     let url = this.PROJECT_USER_URL + projectUser_id;
     this.logger.log('[USER-SERV] - DELETE PROJECT-USER - DELETE URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    return this._httpClient
+      .delete(url, httpOptions)
   }
 
 
@@ -1027,11 +1004,13 @@ export class UsersService {
     const url = this.UPDATE_USER_URL;
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME (PUT) URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+   const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER-LASTNAME ', user_lastname, 'USER-FIRSTNAME', user_firstname);
 
@@ -1039,20 +1018,20 @@ export class UsersService {
 
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
       .toPromise()
       .then(res => {
 
-        this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - RESPONSE: ', res.json())
+        this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - RESPONSE: ', res)
 
-        const jsonRes = res.json()
+        const jsonRes = res
 
         if (jsonRes['success'] === true) {
 
           callback('success');
 
-          const user: User = jsonRes.updatedUser;
+          const user: User = jsonRes['updatedUser'];
 
           user.token = this.TOKEN;
           this.logger.log('[USER-SERV] - UPDATED USER + token (before to set in storage) ', user)
@@ -1103,18 +1082,19 @@ export class UsersService {
     const url = this.CHANGE_PSW_URL;
     this.logger.log('[USER-SERV] - CHANGE PSW (PUT) URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'oldpsw': old_psw, 'newpsw': new_psw };
     this.logger.log('[USER-SERV] - PUT REQUEST BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
   /**
@@ -1126,15 +1106,17 @@ export class UsersService {
     const url = this.RESEND_VERIFY_EMAIL;
     this.logger.log('[USER-SERV] - RESEND VERIFY EMAIL URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    return this.http
-      .get(url, options)
-      .map((res) => res.json());
+    return this._httpClient
+      .get(url, httpOptions)
+
   }
 
 

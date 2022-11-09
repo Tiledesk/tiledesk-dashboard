@@ -52,12 +52,12 @@ Consider that Tiledesk.com cloud service makes every module available with the s
 ## Features
 
 - Unlimited chat conversations
-- Unlimited chatbot messages
 - Widget customization tools
 - Conversation labels and notes 
 - Apps marketplace
 - CRM
 - Operating hours
+- Up to 200,000 messages from bot/month
 - Departments and agents groups
 - Chat history
 - Ticketing System
@@ -68,7 +68,7 @@ And more.
 
 ## Prerequisites
 
-- Install Node and NPM (https://nodejs.org/en). Suggested: node v10.15.1 (npm v6.4.1). 
+- Install Node and NPM (https://nodejs.org/en). Suggested: node v14.15.5 (npm v6.14.11). 
 	
 - If you want to to manage multiple active Node.js versions, to install node use the tool Node Version Manager (NVM)
 

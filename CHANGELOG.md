@@ -1,5 +1,8 @@
-
 # tiledesk-dashboard
+
+
+### 2.3.0
+- Migrates from Angular v5 to Angular v14
 
 ### 2.2.54.2
 - Displays the modal window "Only team members with the owner role can manage email templates" when the teammate that click on the button  "Customize emails" not has owner role
@@ -19,11 +22,8 @@
 - Deploys in production
 - Enable the "Export to CSV" features for all plan types
 
-### 2.2.52.2
-- Bug Fixing
-
 ### 2.2.52.1
-- Fixed bug: in the sidebar the availability status of the currently logged in teammate is not always updated
+- Fixes the bug: in the sidebar the availability status of the currently logged in teammate is not always updated
 
 ### 2.2.52
 - Deploys in production
@@ -129,6 +129,7 @@
 - Adds the ability, for all types of plans, to customize email templates (feature available in Project setting > Notifications) 
 - Adds to the conversation detail page the ability to reopen a conversation if it hasn't been archived for more than ten days
 
+
 ### 2.2.48-rc5
 - Improves the "Banned Visitors" tab in Project Settings
 - Fixes the method of preventing a visitor from being banned if they are already banned
@@ -151,7 +152,7 @@
 - Implements the "persistent search results" on the History page and on the Non-Real-time Conversations page: after having performed a search and then gone to the detail of the conversation, going back the list of conversations is filtered for the previous search
 - Adds the ability to edit the ticket subject "in-place" on the conversation detail page
 - Adds to the conversation detail page the ability to reopen a conversation if it hasn't been archived for more than ten days
-- Adds the ability in the "Monitor" page > "Your Conversations" tab to view only teammates of the groups to which the current user belongs
+- Adds the ability in the "Monitoring" page > "Your Conversations" tab to view only teammates of the groups to which the current user belongs
 - Adds the ability to create a "tilebot" bot
 
 ### 2.2.47.2

@@ -55,7 +55,7 @@ export class FaqTestTrainBotComponent implements OnInit {
       .subscribe((remoteFaq) => {
         this.logger.log('[FAQ-TEST-TRAIN-BOT] - REMOTE FAQ FOUND - POST DATA ', remoteFaq);
         if (remoteFaq) {
-          this.hits = remoteFaq.hits
+          this.hits = remoteFaq['hits']
         }
       }, (error) => {
         this.logger.error('[FAQ-TEST-TRAIN-BOT] - REMOTE FAQ - POST REQUEST ERROR ', error);

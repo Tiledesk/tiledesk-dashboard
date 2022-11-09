@@ -9,7 +9,6 @@ import { NotifyService } from '../../core/notify.service';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 
-
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
 
@@ -263,27 +262,18 @@ export class SigninComponent implements OnInit {
     this.auth.showExpiredSessionPopup(true);
     // this.auth.emailLogin(
     const self = this;
-    // this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
-    //   .subscribe((error) => {
+
     this.logger.log('[SIGN-IN] email ', this.userForm.value['email'])
-    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], function (error, user) {
-
-
-      // this.auth.user = signinResponse.user;
-      // this.auth.user.token = signinResponse.token
-      // this.logger.log('SIGNIN TOKEN ', this.auth.user.token)
-      // tslint:disable-next-line:no-debugger
-      // debugger
+    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'],  (error, user) => {
       if (!error) {
-        // console.log('[SIGN-IN] SSO (Signin) - user', user)
-        if (!isDevMode()) {
-          console.log("created new HomePageComponent");
+        this.logger.log('[SIGN-IN] SSO (Signin) - user', user);
 
+        if (!isDevMode()) {
           try {
             window['analytics'].page("Auth Page, Signin", {
-              "properties": {
-                "title": 'Signin'
-              }
+              // "properties": {
+              //   "title": 'Signin'
+              // }
             });
           } catch (err) {
             this.logger.error('Signin page error', err);
@@ -302,10 +292,8 @@ export class SigninComponent implements OnInit {
           // Segments
           try {
             window['analytics'].track('Signed In', {
-              "properties": {
-                "username": user.firstname + ' ' + user.lastname,
-                "userId": user._id
-              }
+              "username": user.firstname + ' ' + user.lastname,
+              "userId": user._id
             });
           } catch (err) {
             this.logger.error('track signin event error', err);
@@ -313,7 +301,7 @@ export class SigninComponent implements OnInit {
         }
 
 
-        self.router.navigate(['/projects']);
+        this.router.navigate(['/projects']);
 
         // self.widgetReInit();
 
@@ -342,27 +330,25 @@ export class SigninComponent implements OnInit {
 
 
       } else {
-        self.showSpinnerInLoginBtn = false;
-        self.logger.error('[SIGN-IN] 1. POST DATA ERROR', error);
-        self.logger.error('[SIGN-IN] 2. POST DATA ERROR status', error.status);
-
+        this.showSpinnerInLoginBtn = false;
+        this.logger.error('[SIGN-IN] 1. POST DATA ERROR', error);
+        // self.logger.error('[SIGN-IN] 2. POST DATA ERROR status', error.status);
+      
         if (error.status === 0) {
-
-          self.display = 'block';
-          self.signin_errormsg = 'Sorry, there was an error connecting to the server'
-          self.notify.showToast(self.signin_errormsg, 4, 'report_problem')
+          
+          this.display = 'block';
+          this.signin_errormsg = 'Sorry, there was an error connecting to the server'
+          this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
         } else {
-          self.display = 'block';
-          // if ( )
-          const signin_errorbody = JSON.parse(error._body)
-          self.logger.error('[SIGN-IN] SIGNIN ERROR BODY ', signin_errorbody)
-          self.signin_errormsg = signin_errorbody['msg']
+          this.display = 'block';
+
+          this.signin_errormsg = error['error']['msg']
 
           // this.logger.log('SIGNIN USER - POST REQUEST ERROR ', error);
           // this.logger.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
-          self.logger.error('[SIGN-IN] SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
+          this.logger.error('[SIGN-IN] SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
 
-          self.notify.showToast(self.signin_errormsg, 4, 'report_problem')
+          this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
         }
       }
       // tslint:disable-next-line:no-debugger

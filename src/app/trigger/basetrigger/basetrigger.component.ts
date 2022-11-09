@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 import { DepartmentService } from 'app/services/department.service'
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
@@ -59,8 +59,8 @@ export class BasetriggerComponent implements OnInit {
     const projectUsers = this.usersService.getProjectUsersByProjectId();
     const botsWithoutIdentityBot = this.faqKbService.getFaqKbByProjectId();
 
-    Observable
-      .zip(projectUsers, botsWithoutIdentityBot, (_projectUsers: any, _botsWithoutIdentity: any) => ({ _projectUsers, _botsWithoutIdentity }))
+  
+      zip(projectUsers, botsWithoutIdentityBot, (_projectUsers: any, _botsWithoutIdentity: any) => ({ _projectUsers, _botsWithoutIdentity }))
       .subscribe(pair => {
         this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
         this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - BOTS WITHOUT IDENTITY BOT: ', pair._botsWithoutIdentity);
@@ -97,13 +97,13 @@ export class BasetriggerComponent implements OnInit {
         }
 
         this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY WITHOUT IDENTITY BOT : ', this.projectUserAndBotsWithoutIdentityBotArray);
-       
+
         // this.botsWithoutIdentityBotArray = this.projectUserAndBotsWithoutIdentityBotArray.filter((item) => {
         //   // this.logger.log('[TRIGGER][BASE-TRIGGER] - FILTER ARRAY P-USERS-&-BOTS  WITHOUT IDENTITY BOT - item: ', item);
         //   return item.label_key.includes('bot');
         // });
         // this.logger.log('[TRIGGER][BASE-TRIGGER] -  P-USERS-&-BOTS  WITHOUT IDENTITY BOT - ARRAY: ',  this.botsWithoutIdentityBotArray);
-       
+
 
       }, error => {
         this.logger.error('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS WITHOUT IDENTITY BOT - ERROR: ', error);
@@ -121,8 +121,8 @@ export class BasetriggerComponent implements OnInit {
     const projectUsers = this.usersService.getProjectUsersByProjectId();
     const bots = this.faqKbService.getAllBotByProjectId();
 
-    Observable
-      .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
+
+    zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
         this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
         this.logger.log('[TRIGGER][BASE-TRIGGER] - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
@@ -981,7 +981,7 @@ export class BasetriggerComponent implements OnInit {
     const _departments = this.departmentService.getDeptsByProjectId();
 
 
-    Observable.zip(translateArray, _departments, (translateArray: any, _departments: any) => ({ translateArray, _departments }))
+    zip(translateArray, _departments, (translateArray: any, _departments: any) => ({ translateArray, _departments }))
       .subscribe((pair) => {
         this.logger.log('[TRIGGER][BASE-TRIGGER] ***** pair IS USED ?', pair)
 

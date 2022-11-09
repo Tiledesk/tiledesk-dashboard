@@ -1,0 +1,35 @@
+.form-group {
+    padding-bottom: 7px;
+    margin: 0;
+    label {
+        font-size: 12px;
+        line-height: normal;
+        color: #3c4858;
+        font-weight: 400;
+    }
+}
+
+.form-field {
+    background-color: #e3e6e820;
+    padding: 20px;
+    width: 100%;
+    margin: 0px auto;
+    border-radius: 4px;
+}
+
+.form-footer {
+    text-align: right; 
+    padding-top: 0px; 
+    margin-top: 10px;
+    .btn {
+        margin: 10px 4px;
+    }
+}
+
+.form-group.is-error .form-control {
+    outline: none;
+    background-image: linear-gradient(#ed2e19,#ed2e19),linear-gradient(#D2D2D2,#D2D2D2);
+    background-size: 100% 2px,100% 1px;
+    box-shadow: none;
+    transition-duration: .3s;
+}

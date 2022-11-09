@@ -1,0 +1,59 @@
+<div *ngIf="fields.length > 0" class="card-content table-responsive">
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr>
+                <th class="col-sm-4">
+                    <span class="column-th-span">
+                        {{ "Name" | translate }}
+                    </span>
+                </th>
+                <th class="col-sm-6">
+                    <span class="column-th-span ">
+                        {{ "AddIntentPage.Label" | translate }}
+                    </span>
+                </th>
+                <th class="col-sm-2">
+                    <span class="column-th-span">
+                        {{ "Actions" | translate }}
+                    </span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody cdkDropList class="fields-list2" (cdkDropListDropped)="drop($event)">
+            
+            <tr *ngFor="let field of fields; let i = index;" style="cursor:pointer;" class="field-box2 trigger" cdkDrag>
+                
+                <!-- // NAME -->
+                <td class="col-sm-4" (click)='goToEditField(field?._id)'>
+                    <span class="label-field">
+                    {{ field.name }}
+                    </span>
+                </td>
+                <!-- // LABEL -->
+                <td class="col-sm-6 " (click)='goToEditField(field?._id)'>
+                    <span class="label-field"> {{ field?.label }}</span>
+                </td>
+                <!-- // ACTIONS -->
+                <td class="td-actions col-sm-2">
+                    <!-- EDIT - BRAND VERSION-->
+                    <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx" (click)='editField(i)'>
+                    <i class="material-icons">edit</i>
+                    <span class="tooltiptext-custom" style="text-transform:none"></span>
+                    </button>
+                    <!-- DELETE - BRAND VERSION -->
+                    <button type="button" class="btn btn-danger btn-simple btn-xs tooltipx" (click)='deleteFieldModal(i)'>
+                    <i class="material-icons">close</i>
+                    <span class="tooltiptext-custom" style="text-transform:none"></span>
+                    </button>
+                        <!-- // DRAG -->
+                        <div class="td-order">
+                        <i class="material-icons">drag_indicator</i>
+                        <span class="tooltiptext-custom" style="text-transform:none"></span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

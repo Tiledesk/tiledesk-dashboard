@@ -1,8 +1,9 @@
-<div class="widget-container" style="">
+<div class="widget-container">
   <!-- [ngStyle]="{'background-color': primaryColor}"  -->
   <div class="card td-widget-preview-card"
     style="box-shadow: rgba(0, 0, 0, 0.18) 0 0 38px!important; border: unset; min-height: 547px;">
-    <div class="card-content td-widget-preview-card-content" [ngStyle]="{'color': secondaryColor, 'background-image': linearGradient }">
+    <div class="card-content td-widget-preview-card-content"
+      [ngStyle]="{'color': secondaryColor, 'background-image': linearGradient }">
 
       <!-- <span class="card-header-center">
         {{company_name}} {{ selected_translation?.AGENT_AVAILABLE }}
@@ -70,15 +71,17 @@
         <p [innerHTML]="officeClosedMsg" class="td-widget-preview-msg_receive-p"></p>
       </div>
 
-      <div style="position: relative;">
+      <div *ngIf="!IS_ONBOARDING_PAGE" style="position: relative;">
         <div style="text-align: right;
-      padding: 6px 12px;
-      background-color: #62a8ea;
-      color: #fff;
-      margin-right: 0;
-      margin-left: 114px;
-      margin-top: 10px;
-      border-radius: 8px;"> Hi, i'm having trouble logging in.</div>
+          padding: 6px 12px;
+          background-color: #62a8ea;
+          color: #fff;
+          margin-right: 0;
+          margin-left: 114px;
+          margin-top: 10px;
+          border-radius: 8px;">
+          Hi, i'm having trouble logging in.
+        </div>
 
 
         <div class="td-widget-preview-slide-in-left" role="messaggio">{{current_user_name}}</div>
@@ -88,7 +91,7 @@
           <!-- --------------------------------------------------- -->
           <!-- Usecase Firebase -->
           <!-- --------------------------------------------------- -->
-          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" 
+          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
             src="https://firebasestorage.googleapis.com/v0/b/{{imageUrl}}/o/profiles%2F{{currentUserId}}%2Fphoto.jpg?alt=media"
             onerror="this.src='assets/img/no_image_user.png'" />
 
@@ -103,6 +106,30 @@
           <div
             style="text-align: right; padding: 6px 12px;  background-color: #f7f7f7; color: #1a1a1a; margin-left: 66px; margin-top: 0px; border-radius: 8px;">
             Can you tell me more?
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="IS_ONBOARDING_PAGE" style="position: relative;">
+        <div id="buttons-in-message">
+          <div class="buttons-wrapper">
+            
+            <span *ngFor="let question of questions; index as i" class="div-button ng-star-inserted">
+              <div class="div-button ng-star-inserted">
+                <div class="button-in-msg text" 
+                title="{{question}}" 
+                style="--buttonFontSize:15px; --textColor:rgba(42,106,193,1); --backgroundColor:rgba(255,255,255,1); --hoverBackgroundColor:rgba(42,106,193,1); --hoverTextColor:rgba(255,255,255,1);"
+                [ngStyle]="{
+                  'color':activeQuestion === i ? 'rgba(255,255,255,1)' : 'rgba(42,106,193,1)',
+                  'background-color':activeQuestion === i ? 'rgba(42,106,193,1)' : 'rgba(255,255,255,1)',
+                  'border-color':'rgba(42,106,193,1)'
+                }"
+                > 
+                  {{question}}
+                </div>
+              </div>
+            </span>
+
           </div>
         </div>
       </div>

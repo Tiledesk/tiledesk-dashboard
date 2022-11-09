@@ -76,58 +76,54 @@ export class AppCreateComponent implements OnInit {
 
   getRouteParamsAndPopulateField() {
     this.route.params.subscribe((params) => {
-
       this.logger.log('[APP-CREATE] - is EDIT_VIEW GET ROUTE PARAMS ', params);
       this.APP_ID = params.appid
       this.appStoreService.getAppDetail(params.appid).subscribe((res) => {
         this.logger.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT - res: ", res);
         if (res) {
-          this.currentApp = JSON.parse(res['_body'])
-          const resObjct = JSON.parse(res['_body']);
-          // console.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT - resObjct: ", resObjct);
-
-          if (resObjct && resObjct.logo) {
-            this.app_icon_url = resObjct.logo
+          this.currentApp = res;
+          if (this.currentApp && this.currentApp.logo) {
+            this.app_icon_url = this.currentApp.logo
           }
 
-          if (resObjct && resObjct.installActionURL) {
-            this.app_installation_url = resObjct.installActionURL
+          if (this.currentApp && this.currentApp.installActionURL) {
+            this.app_installation_url = this.currentApp.installActionURL
           }
 
-          if (resObjct && resObjct.runURL) {
-            this.app_run_url = resObjct.runURL
+          if (this.currentApp && this.currentApp.runURL) {
+            this.app_run_url = this.currentApp.runURL
           }
 
-          if (resObjct && resObjct.title) {
-            this.app_name = resObjct.title
+          if (this.currentApp && this.currentApp.title) {
+            this.app_name = this.currentApp.title
           }
 
-          if (resObjct && resObjct.description) {
-            this.app_description = resObjct.description
+          if (this.currentApp && this.currentApp.description) {
+            this.app_description = this.currentApp.description
           }
 
-          if (resObjct && resObjct.learnMore) {
-            this.app_learn_more_url = resObjct.learnMore
+          if (this.currentApp && this.currentApp.learnMore) {
+            this.app_learn_more_url = this.currentApp.learnMore
           }
 
-          if (resObjct && resObjct.status === 'public') {
+          if (this.currentApp && this.currentApp.status === 'public') {
             this.app_status = 'public'
           }
 
-          if (resObjct && resObjct.where) {
+          if (this.currentApp && this.currentApp.where) {
 
-            if (resObjct.where.dashboard === true) {
+            if (this.currentApp.where.dashboard === true) {
               this.clients.dashboard = true
             }
-            if (resObjct.where.webchat === true) {
+            if (this.currentApp.where.webchat === true) {
               this.clients.webchat = true
             }
 
-            if (resObjct.where.widget === true) {
+            if (this.currentApp.where.widget === true) {
               this.clients.widget = true
             }
 
-            if (resObjct.where.appsstore === true) {
+            if (this.currentApp.where.appsstore === true) {
               this.clients.appsstore = true
             }
           }

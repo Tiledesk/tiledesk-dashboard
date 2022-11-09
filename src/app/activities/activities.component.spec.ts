@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MyDatePickerModule } from 'mydatepicker';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UsersService } from '../services/users.service';
-import { HttpModule } from '@angular/http';
 import { AuthService } from '../core/auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NotifyService } from '../core/notify.service';
@@ -33,7 +32,6 @@ describe('ActivitiesComponent', () => {
       imports: [
         TranslateModule.forRoot(),
         MyDatePickerModule,
-        HttpModule,
         RouterTestingModule,
         HttpClientModule,
         FormsModule,

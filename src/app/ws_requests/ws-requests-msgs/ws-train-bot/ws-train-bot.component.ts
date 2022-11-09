@@ -19,8 +19,8 @@ import { Subject } from 'rxjs';
 })
 export class WsTrainBotComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('searchbtn') private searchbtnRef: ElementRef;
-  @ViewChild('searchbox') private searchboxRef: ElementRef;
+  @ViewChild('searchbtn', { static: false }) private searchbtnRef: ElementRef;
+  @ViewChild('searchbox', { static: false }) private searchboxRef: ElementRef;
 
   @Output() valueChange = new EventEmitter();
   @Input() selectedQuestion: string;
@@ -239,7 +239,7 @@ export class WsTrainBotComponent implements OnInit, OnChanges, OnDestroy {
 
 
   goToBot(idFaqKb: string, bottype: string) {
-    this.logger.log('[WS-TRAIN-BOT] goToBot id_bot', idFaqKb);
+    this.logger.log('[WS-TRAIN-BOT] goToBot id_bot', idFaqKb, 'bottype ', bottype);
     // this.router.navigate(['project/' + this.project_id + '/bots', idFaqKb, 'native']);
     if (bottype === 'tilebot') {
       this.router.navigate(['project/' + this.project_id + '/bots/intents/' + idFaqKb+ "/" + "tilebot"]);

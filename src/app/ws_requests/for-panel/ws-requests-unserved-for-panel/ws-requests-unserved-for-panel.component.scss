@@ -1,4 +1,4 @@
-// @import url(https://fonts.googleapis.com/css?family=Google+Sans);
+
 @import "./src/assets/sass/md/_variables.scss";
 
 button span {
@@ -980,7 +980,7 @@ $f21blue: #039be5;
     //  display: none;
     $size: 16px;
     $width: 2px;
-    width: $size * 1.414;
+    width: calc($size * 1.414);
 }
 
 .selected-project-bar {
@@ -1030,7 +1030,7 @@ $f21blue: #039be5;
 
 .arrow-container .arrow-wrapper .arrow span:hover {
     $size: 16px;
-    width: $size * 1.414 !important;
+    width: calc($size * 1.414) !important;
 }
 
 #arrow_3 .arrow {
@@ -1039,8 +1039,8 @@ $f21blue: #039be5;
 
     cursor: pointer;
     display: block;
-    width: $size / 1.414;
-    height: $size / 1.414 * 2;
+    width: calc($size / 1.414);
+    height: calc($size / 1.414) * 2;
     position: relative;
 
     & span,
@@ -1066,7 +1066,7 @@ $f21blue: #039be5;
         width: 0;
     }
     &:hover span {
-        width: $size * 1.414;
+        width: calc($size * 1.414);
     }
 
     @each $direction in "left" "right" {

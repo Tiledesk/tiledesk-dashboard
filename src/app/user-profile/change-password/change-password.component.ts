@@ -47,24 +47,24 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     this.getUserIdFromRouteParams();
     this.getCurrentProject();
     this.translateStrings();
-    this.getBrowserVersion() 
+    this.getBrowserVersion()
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
   translateStrings() {
-      this.translate.get('Warning')
+    this.translate.get('Warning')
       .subscribe((text: string) => {
 
         this.warning = text;
       });
 
-      this.translate.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails')
+    this.translate.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails')
       .subscribe((text: string) => {
 
         this.selectAProjectToManageNotificationEmails = text;
@@ -154,9 +154,9 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
         this.SHOW_CIRCULAR_SPINNER = false;
         this.CHANGE_PSW_NO_ERROR = false;
 
-        const error_body = JSON.parse(error._body);
+        const errorMsg = error['error']['msg'];
 
-        if (error_body.msg === 'Current password is invalid.') {
+        if (errorMsg === 'Current password is invalid.') {
           this.CURRENT_PSW_INVALID_ERROR = true;
           this.CHANGE_PSW_OTHER_ERROR = false;
 

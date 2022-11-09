@@ -25,9 +25,17 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
   prjct_profile_name: string;
   subscription_end_date: Date;
 
-  imageUrlArray = [
-    { url: 'assets/img/static_group.png', backgroundSize: 'contain' },
-    { url: 'assets/img/groups_static_2_v2.png', backgroundSize: 'contain' }
+
+
+  imageObject = [
+    {
+      image: 'assets/img/static_group.png',
+      thumbImage: 'assets/img/static_group.png'
+    },
+    {
+      image: 'assets/img/groups_static_2_v2.png',
+      thumbImage: 'assets/img/groups_static_2_v2.png'
+    }
   ];
 
   subscription: Subscription;
@@ -62,11 +70,11 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;

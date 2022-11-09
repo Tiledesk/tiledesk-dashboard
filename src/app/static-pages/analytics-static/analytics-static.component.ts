@@ -9,7 +9,7 @@ import { StaticPageBaseComponent } from './../static-page-base/static-page-base.
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { registerModuleFactory } from '@angular/core/src/linker/ng_module_factory_loader';
+
 const swal = require('sweetalert');
 
 @Component({
@@ -35,10 +35,28 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
     { url: 'assets/img/new_analitycs_6.png', backgroundSize: 'contain' },
   ];
 
+  imageObject = [
+    {
+      image: 'assets/img/new_analitycs_1_v6.png',
+      thumbImage: 'assets/img/new_analitycs_1_v6.png',
+      alt: 'analitycs demo image'
+    },
+    {
+      image: 'assets/img/new_anlitycs_2.png',
+      thumbImage: 'assets/img/new_anlitycs_2.png',
+      alt: 'analitycs demo image'
+    },
+    {
+      image: 'assets/img/new_analitycs_6.png',
+      thumbImage: 'assets/img/new_analitycs_6.png',
+      alt: 'analitycs demo image '
+    },
+  ];
+
   USER_ROLE: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
-  isChromeVerGreaterThan100:boolean;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -62,11 +80,11 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -193,7 +211,7 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg,this.learnMoreAboutDefaultRoles )
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
 

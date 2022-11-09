@@ -1,12 +1,11 @@
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { UsersService } from '../../../services/users.service';
 import { DepartmentService } from '../../../services/department.service';
-import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs';
+import { Subscription, zip } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
-import * as moment from 'moment';
+import moment from "moment";
 import { LoggerService } from '../../../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
@@ -163,8 +162,8 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
     const projectUsers = this.usersService.getProjectUsersByProjectId();
     const bots = this.faqKbService.getAllBotByProjectId();
 
-    Observable
-      .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
+
+    zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
         this.logger.log('[ANALYTICS - SATISFACTION] - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
         this.logger.log('[ANALYTICS - SATISFACTION] - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
@@ -234,8 +233,8 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
             satisfactionByDay[j].satisfaction_avg = 0;
           }
           // customSatisfactionChart.push({ date: new Date(satisfactionByDay[j]._id.year, satisfactionByDay[j]._id.month - 1, satisfactionByDay[j]._id.day).toLocaleDateString(), value: satisfactionByDay[j].satisfaction_avg });
-          customSatisfactionChart.push({date: satisfactionByDay[j]._id.day   + '/' + satisfactionByDay[j]._id.month  + '/' +  satisfactionByDay[j]._id.year, value: satisfactionByDay[j].satisfaction_avg });
-            
+          customSatisfactionChart.push({ date: satisfactionByDay[j]._id.day + '/' + satisfactionByDay[j]._id.month + '/' + satisfactionByDay[j]._id.year, value: satisfactionByDay[j].satisfaction_avg });
+
         }
 
         this.logger.log('[ANALYTICS - SATISFACTION] Satisfaction data:', customSatisfactionChart);
@@ -344,7 +343,7 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
           },
           tooltips: {
             callbacks: {
-              label:  (tooltipItem, data) => {
+              label: (tooltipItem, data) => {
                 const currentItemValue = tooltipItem.yLabel;
                 return this.translate.instant('DailyAverage') + ": " + currentItemValue;
                 // if (lang == 'it') {
@@ -365,7 +364,7 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
     return Math.max.apply(null, requestsByDay_series_array);
   }
 
- 
+
 
   // TO CHECK !!!!!!!!
   stepSize(milliseconds) {

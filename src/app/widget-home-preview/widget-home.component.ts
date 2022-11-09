@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { threadId } from 'worker_threads';
+
 
 @Component({
   selector: 'appdashboard-widget-home',

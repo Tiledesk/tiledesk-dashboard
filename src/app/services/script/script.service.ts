@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 // import { ScriptStore } from "./script.store";
 // import { ScriptStoreT } from "./script.store";
 import { environment } from '../../../environments/environment';
-import { Http, Headers } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { LoggerService } from '../../services/logger/logger.service';
 declare var document: any;
 
@@ -15,15 +15,10 @@ export class ScriptService {
 
   private scripts: any = {};
 
-
-  http: Http;
   constructor(
-    http: Http,
+    private _httpClient: HttpClient,
     private logger: LoggerService
   ) {
-
-    this.http = http;
-
     this.logger.log('[SCRIPT-SERV] Hello !!!')
 
     if (environment.remoteConfig === false) {
@@ -54,13 +49,16 @@ export class ScriptService {
 
 
   async loadRemoteConfig(remoteConfigUrl) {
-    const res = await this.http.get(remoteConfigUrl).toPromise();
+    const res = await this._httpClient.get(remoteConfigUrl).toPromise();
     this.logger.log('[SCRIPT-SERV] REMOTE CONFIG TRUE - GET RES', res);
+   
+    // ----------------------------------------------------
+    // Used with the angular http service
+    // ----------------------------------------------------
+    // const remoteCONFIG = JSON.parse(res['_body'])
+    // this.logger.log('[SCRIPT-SERV] REMOTE CONFIG TRUE - remoteCONFIG', remoteCONFIG);
 
-    const remoteCONFIG = JSON.parse(res['_body'])
-    this.logger.log('[SCRIPT-SERV] REMOTE CONFIG TRUE - remoteCONFIG', remoteCONFIG);
-
-
+    const remoteCONFIG = res
     if (remoteCONFIG.hasOwnProperty("globalRemoteJSSrc")) {
 
       const isEmptyGlobalRemoteJSSrc = this.isEmpty(remoteCONFIG['globalRemoteJSSrc'])

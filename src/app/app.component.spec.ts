@@ -8,12 +8,10 @@ import { NotificationMessageComponent } from './ui/notification-message/notifica
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { LoadingSpinnerComponent } from './ui/loading-spinner/loading-spinner.component';
-
 import { AuthService } from './core/auth.service';
 import { NotifyService } from './core/notify.service';  // Error: StaticInjectorError(DynamicTestModule)[AuthService -> NotifyService]:
 import { LocalDbService } from './services/users-local-db.service'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> LocalDbService]: 
 import { WebSocketJs } from "./services/websocket/websocket-js"; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> WebSocketJs]: 
-import { HttpModule } from '@angular/http';
 import { LoggerService } from './services/logger/logger.service';
 import { AppConfigService } from './services/app-config.service';
 import { WsRequestsService } from './services/websocket/ws-requests.service';
@@ -47,7 +45,6 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule,
         TranslateModule.forRoot(),
-        HttpModule,
         HttpClientModule,
         HttpClientTestingModule
       ],

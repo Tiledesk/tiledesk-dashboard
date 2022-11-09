@@ -94,19 +94,19 @@
             </span>
         </mat-slide-toggle> -->
 
-
-
         <ng-select style="text-align: left;" (change)="changeAvailabilityState(selectedStatus)"
             [(ngModel)]="selectedStatus" class="teammate-status-in-drawer" [items]="teammateStatus" bindLabel="name"
             bindValue="id" [clearable]="false" [searchable]="false">
             <ng-template ng-label-tmp let-item="item">
-                <img style="width: 15px;height: 15px; position: relative; top: -1px;" height="15" width="15" [src]="item.avatar" />
+                <img style="width: 15px;height: 15px; position: relative; top: -1px;" height="15" width="15"
+                    [src]="item.avatar" />
                 <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;margin-left: 8px;">
                     {{item.name | translate}}
                 </span>
             </ng-template>
             <ng-template ng-option-tmp let-item="item" let-index="index">
-                <img style="width: 15px;height: 15px; position: relative; top: -2px;" height="15" width="15" [src]="item.avatar" />
+                <img style="width: 15px;height: 15px; position: relative; top: -2px;" height="15" width="15"
+                    [src]="item.avatar" />
                 <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;margin-left: 8px;">
                     {{item.name | translate }}
                 </span>

@@ -36,12 +36,12 @@
     <div class="panel-left-sidebar-actions">
       <div class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <span class="material-icons dark-style-icon">
+          <span class="material-icons dark-style-icon" style="">
             arrow_drop_down
           </span>
         </a>
         <!-- (click)="$event.stopPropagation()" -->
-        <ul class="dropdown-menu dark-style-dropdown-menu" style="left: -125px;" >
+        <ul class="dropdown-menu dark-style-dropdown-menu" style=" left: -125px;" >
           <li (click)="selectAppearance('true')">
             <a>
               <span class="material-icons dark-style-icon icon-in-dropdown"  [ngClass]="{'dark-style-icon-selected' : dkmode === 'true'}">

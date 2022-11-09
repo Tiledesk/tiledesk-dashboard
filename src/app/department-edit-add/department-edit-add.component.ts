@@ -16,9 +16,8 @@ import { UsersService } from '../services/users.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ComponentCanDeactivate } from '../core/pending-changes.guard';
-import { Observable } from 'rxjs/Observable';
 import { LoggerService } from '../services/logger/logger.service';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 declare const $: any;
 const swal = require('sweetalert');
@@ -38,7 +37,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   @Input() ws_requestslist_deptIdSelected: string;
   @Input() display_dept_sidebar: boolean;
 
-  @ViewChild("navbarbrand") private navbarbrandRef: ElementRef;
+  @ViewChild("navbarbrand", { static: false }) navbarbrandRef: ElementRef;
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
@@ -929,9 +928,9 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       if (this.USER_ROLE !== 'agent') {
         this.router.navigate(['project/' + this.project._id + '/bots/intents/', this.selectedId, botType]);
       }
-    }  else if (this.bot_type === 'tilebot')  {
-       botType = 'tilebot'
-       if (this.USER_ROLE !== 'agent') {
+    } else if (this.bot_type === 'tilebot') {
+      botType = 'tilebot'
+      if (this.USER_ROLE !== 'agent') {
         this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
       }
     } else {
@@ -1012,21 +1011,13 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
-
-    // selectedFaqKbId
-    // 'FIXED' (NOW, IN THE HTML, RENAMED IN 'BOT') OPTION WORK-FLOW:
-    // IF THE USER, WHEN EDIT THE DEPT (AND HAS SELECTED FIXED), DOESN'T SELECT ANY NEW BOT this.selectedBotId IS UNDEFINED
-    // SO SET this.botIdEdit EQUAL TO THE BOT ID RETURNED BY getBotById
-    // if (this.ROUTING_SELECTED === 'fixed') {
-
-    // if (this.dept_routing === 'fixed') {
+    
     if (this.selectedBotId === undefined) {
       this.botIdEdit = this.botId
     } else {
       this.botIdEdit = this.selectedBotId
     }
 
-    // this.ROUTING_SELECTED
     this.deptService.updateDept(this.id_dept,
       this.deptName_toUpdate,
       this.dept_description_toUpdate,
@@ -1036,19 +1027,13 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       this.dept_routing).subscribe((data) => {
         this.logger.log('[DEPT-EDIT-ADD] - EDIT DEPT - RES ', data);
 
-        // RE-RUN GET CONTACT TO UPDATE THE TABLE
-        // this.getDepartments();
-        // this.ngOnInit();
       }, (error) => {
         this.logger.error('[DEPT-EDIT-ADD] - EDIT DEPT - ERROR ', error);
-
         this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
 
       }, () => {
         this.logger.log('[DEPT-EDIT-ADD] - EDIT * COMPLETE *');
         this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
-
-        // this.router.navigate(['project/' + this.project._id + '/departments']);
       });
 
   }

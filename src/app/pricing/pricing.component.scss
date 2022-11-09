@@ -1,21 +1,4 @@
-// .container {
-//     width: 70%;
-//     margin: 0 auto;
-//     background: white;
-//     min-height: calc(100vh - 100px);
-// }
 
-// .quantity-counter input {
-//     border: none;
-//     color: #5292e9;
-//     font-size: 52px;
-//     font-weight: 700;
-//     width: 180px;
-//     text-align: center;
-//     margin-top: -7px;
-//     margin-bottom: 10px;
-//     height: 68px;
-// }
 @import url("https://fonts.googleapis.com/css?family=Lato&display=swap");
 $color-pro-plan: #3ea9f5;
 
@@ -113,13 +96,13 @@ button.close {
   }
 
   .pro-plan-bckgrnd {
-    background-image: url(assets/img/background-card-vertical_2.svg),
+    background-image: url('/assets/img/background-card-vertical_2.svg'),
       linear-gradient(to bottom, $color-pro-plan 0%, $color-pro-plan 100%),
       linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
 
   .enterprise-plan-bckgrnd {
-    background-image: url(assets/img/background-card-vertical_2.svg),
+    background-image: url('/assets/img/background-card-vertical_2.svg'),
       linear-gradient(to bottom, $color-enterprise-plan 0%, $color-enterprise-plan 100%),
       linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }

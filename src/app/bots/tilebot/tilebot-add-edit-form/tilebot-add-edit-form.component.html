@@ -1,0 +1,78 @@
+<div class="form-field container">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'is-error':nameResult === false}">
+                <input type="text" class="form-control" [(ngModel)]="field.name" (focus)="displayMessage('field_name')" placeholder="{{ 'AddIntentPage.FieldName' | translate }}"/>
+            </div> 
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <!-- <label>{{ 'AddIntentPage.FieldTypeText' | translate }}</label> -->
+                <select class="form-control" [(ngModel)]="field.type" (focus)="displayMessage('field_type')" (change)="onChange($event.target.value)">
+                    <option value="text" selected>{{ 'Text' | translate }}</option>
+                    <option value="email">{{ 'userEmail' | translate }}</option>
+                    <option value="number">{{ 'userPhone' | translate }}</option>
+                    <option value="custom">{{ 'AddIntentPage.Other' | translate }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="showRegexField" class="col-md-12">
+            <div class="form-group" [ngClass]="{'is-error':regexResult === false}">
+                <label>{{ 'AddIntentPage.AddCustomRegex' | translate }}</label>
+                <input type="text" class="form-control" [(ngModel)]="field.regex" (focus)="displayMessage('field_regex')" placeholder="ex: {{nameRGEX}}"/>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group" [ngClass]="{'is-error':labelResult === false}">
+                <input type="text" class="form-control" [(ngModel)]="field.label" (focus)="displayMessage('field_label')" placeholder="{{ 'AddIntentPage.Label' | translate }}"/>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group" [ngClass]="{'is-error':errorLabelResult === false}">
+                <input type="text" class="form-control" [(ngModel)]="field.errorLabel" (focus)="displayMessage('field_error')" placeholder="{{ 'AddIntentPage.ErrorMessage' | translate }}"/>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="displayInfoMessage" class="input-wrapper">
+        <div class="row">
+          <div class="col-sm-12">
+            <div style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+              <span style="display: flex;">
+                <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5; margin-right: 3px;" class="material-icons">info</i>
+                <span style="vertical-align: middle; display: inline-flex;">
+                  {{ infoMessage }}
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="form-group form-footer">
+    <button class="btn btn-light" type="button" (click)="close()">
+        {{ 'Cancel' | translate }}
+    </button>
+    <button class="btn btn-primary" type="submit" (click)="save()">
+        {{ 'Save' | translate}}
+    </button>
+</div>
+    
+
+
+
+
+
+    
+
+    

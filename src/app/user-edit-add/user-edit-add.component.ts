@@ -174,13 +174,10 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.getCurrentUrl();
     this.translateTagNotificationMsgs();
     this.getBrowserVersion();
-
     if (!isDevMode()) {
       try {
         window['analytics'].page("Invite Temmates Page , Invite temmate", {
-          "properties": {
-            "title": 'Invite temmate'
-          }
+
         });
       } catch (err) {
         this.logger.error('Signin page error', err);
@@ -817,10 +814,10 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     }, (error) => {
       this.logger.error('[USER-EDIT-ADD] - INVITE USER  ERROR ', error);
 
-      const invite_errorbody = JSON.parse(error._body)
-      this.logger.error('[USER-EDIT-ADD] - INVITE USER  ERROR BODY ', invite_errorbody);
+      const invite_error = error['error']
+      console.error('[USER-EDIT-ADD] - INVITE USER  ERROR BODY ', invite_error);
 
-      if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4000)) {
+      if ((invite_error['success'] === false) && (invite_error['code'] === 4000)) {
         this.logger.error('[USER-EDIT-ADD] !!! Forbidden, you can not invite yourself')
 
         this.INVITE_YOURSELF_ERROR = true;
@@ -828,7 +825,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.INVITE_USER_NOT_FOUND = false;
         this.PENDING_INVITATION_ALREADY_EXIST = false;
 
-      } else if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4001)) {
+      } else if ((invite_error['success'] === false) && (invite_error['code'] === 4001)) {
         this.logger.error('[USER-EDIT-ADD] !!! Forbidden, user is already a member')
 
         this.INVITE_YOURSELF_ERROR = false;
@@ -836,14 +833,14 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.INVITE_USER_NOT_FOUND = false;
         this.PENDING_INVITATION_ALREADY_EXIST = false;
 
-      } else if ((invite_errorbody['success'] === false) && (error['status'] === 404)) {
+      } else if ((invite_error['success'] === false) && (error['status'] === 404)) {
         this.logger.error('[USER-EDIT-ADD] !!! USER NOT FOUND ')
         this.INVITE_YOURSELF_ERROR = false;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
         this.INVITE_USER_NOT_FOUND = true;
         this.PENDING_INVITATION_ALREADY_EXIST = false;
 
-      } else if (invite_errorbody['success'] === false) {
+      } else if (invite_error['success'] === false) {
 
         this.INVITE_YOURSELF_ERROR = false;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
@@ -862,7 +859,6 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
       this.getAllUsersOfCurrentProject();
       this.getPendingInvitation();
-
       if (!isDevMode()) {
         try {
           window['analytics'].identify(this.CURRENT_USER._id, {
@@ -877,17 +873,16 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
         try {
           window['analytics'].track('Invite Sent', {
-            "properties": {
-              "invitee_email": this.user_email,
-              "invitee_role": this.invitedProjectUser.role
-            }, "context": {
+            "invitee_email": this.user_email,
+            "invitee_role": this.invitedProjectUser.role
+          }, {
+            "context": {
               "groupId": this.invitedProjectUser.id_project
             }
           });
         } catch (err) {
           this.logger.error('track Invite Sent event error', err);
         }
-
 
         try {
           window['analytics'].group(this.invitedProjectUser.id_project, {

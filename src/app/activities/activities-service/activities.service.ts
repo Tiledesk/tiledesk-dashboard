@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { LoggerService } from '../../services/logger/logger.service';
 import { Activity } from '../../models/activity-model';
 @Injectable()

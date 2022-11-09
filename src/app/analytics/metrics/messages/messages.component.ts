@@ -3,11 +3,10 @@ import { UsersService } from '../../../services/users.service';
 import { Chart } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
-// import moment from 'moment';
-import * as moment from 'moment';
 
-import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs';
+// import * as moment from 'moment';
+import moment from "moment"
+import { Subscription, zip } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 @Component({
@@ -94,12 +93,10 @@ export class MessagesComponent implements OnInit {
 
     const projectUsers = this.usersService.getProjectUsersByProjectId();
     const bots = this.faqKbService.getAllBotByProjectId();
-
-    Observable
-      .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
+      zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
         this.logger.log('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
-        this.logger.log('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+        // console.log('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
@@ -119,15 +116,15 @@ export class MessagesComponent implements OnInit {
               }
             })
 
-          this.bots.forEach(bot => {
-            this.logger.log('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - bot : ', bot);
-            let botprefix = ''
-            if (bot.type === "internal" ) {
-              botprefix = "bot_"
-            }
-
-            this.projectUserAndBotsArray.push({ id: botprefix + bot._id, name: bot.name + ' (bot)' })
-          });
+            this.bots.forEach(bot => {
+              // console.log('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - bot : ', bot);
+              let botprefix = ''
+              if (bot.type === "internal") {
+                botprefix = "bot_"
+              }
+  
+              this.projectUserAndBotsArray.push({ id: botprefix + bot._id, name: bot.name + ' (bot)' })
+            });
         }
 
         this.logger.log('[ANALYTICS - MSGS] - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
@@ -184,7 +181,7 @@ export class MessagesComponent implements OnInit {
   }
 
   getMessagesByLastNDays(lastdays, senderID) {
-  //  console.log("[ANALYTICS - MSGS] Lastdays: ", lastdays);
+    this.logger.log("[ANALYTICS - MSGS] Lastdays: ", lastdays);
     
     this.subscription = this.analyticsService.getMessagesByDay(lastdays, senderID).subscribe((messagesByDay) => {
     //  console.log("[ANALYTICS - MSGS] »» MESSAGES BY DAY RESULT: ", messagesByDay)
@@ -195,7 +192,7 @@ export class MessagesComponent implements OnInit {
       }
 
       lastdays_initarray.reverse();
-   
+    //  console.log("[ANALYTICS - MSGS] »» LASTDAYS MESSAGES - INIT ARRAY: ", lastdays_initarray)
 
       const messagesByDay_series_array = [];
       const messagesByDay_labels_array = [];
@@ -207,7 +204,7 @@ export class MessagesComponent implements OnInit {
           messagesByDay_array.push({ 'count': messagesByDay[j]['count'], day: messagesByDay[j]['_id']['day'] + '/' + messagesByDay[j]['_id']['month'] + '/' + messagesByDay[j]['_id']['year'] })
         }
       }
-      this.logger.log('[ANALYTICS - MSGS] - MESSAGES BY DAY FORMATTED ', messagesByDay_array);
+      // console.log('[ANALYTICS - MSGS] - MESSAGES BY DAY FORMATTED ', messagesByDay_array);
 
       // MERGE lastdays_initarray & visitorsByDay_array
       const messagesByDay_final_array = lastdays_initarray.map(obj => messagesByDay_array.find(o => o.day === obj.day) || obj);

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, ViewEncapsulation, ViewChildren } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
@@ -16,7 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { DepartmentService } from '../../services/department.service';
 import { GroupService } from '../../services/group.service';
-import { Observable } from 'rxjs';
+import { zip } from 'rxjs';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,32 +31,42 @@ import 'firebase/database';
 import { ProjectService } from 'app/services/project.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { AppStoreService } from 'app/services/app-store.service';
-import * as moment from 'moment';
-import { threadId } from 'worker_threads';
+import moment from 'moment';
+
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
+import { TooltipOptions } from 'ng2-tooltip-directive';
 
 const swal = require('sweetalert');
-
+// './ws-requests-msgs.component.html',
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
-  templateUrl: './ws-requests-msgs.component.html',
+  templateUrl: './ws-requests-msgs-new.component.html',
   styleUrls: ['./ws-requests-msgs.component.scss']
   // ,
   // encapsulation: ViewEncapsulation.None
 })
 export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
   objectKeys = Object.keys;
-  @ViewChild('scrollMe')
+  @ViewChild('scrollMe', { static: false })
   private myScrollContainer: ElementRef;
 
-  @ViewChild('navbarBrand')
+  @ViewChild('navbarBrand', { static: false })
   private navbarBrand: ElementRef;
 
-  @ViewChild('openChatBtn')
+  @ViewChild('openChatBtn', { static: false })
   private openChatBtn: ElementRef;
 
-  @ViewChild('sendMessageTexarea') sendMessageTexarea: ElementRef;
+  @ViewChild('sendMessageTexarea', { static: false }) sendMessageTexarea: ElementRef;
+
+  @ViewChild('Selecter', { static: false }) ngselect: NgSelectComponent;
+  @ViewChild('selecttagcombobox', { static: false }) selecttagcombobox: NgSelectComponent;
+  @ViewChild(NgSelectComponent, { static: false }) ngSelect: NgSelectComponent
+
+
+  @ViewChild('fileUpload', { static: false }) fileUpload: any;
+
+  @ViewChild('editFullnameDropdown', { static: false }) editFullnameDropdown: ElementRef;
 
   SERVER_BASE_PATH: string;
   CHAT_BASE_URL: string;
@@ -249,7 +259,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   contactNewEmail: string;
   EMAIL_IS_VALID: boolean = true
   chat_message: string;
-  @ViewChild('Selecter') ngselect: NgSelectComponent;
+
   // for accordion Contact conversations
   contact_requests: any
   pageNo = 0;
@@ -301,7 +311,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   imgHeight: number;
   type: string;
   showSpinnerAttachmentUplolad: boolean = false
-  @ViewChild('fileUpload') fileUpload: any;
+
   existAnAttacment: boolean = false;
   HAS_SELECTED_SEND_AS_OPENED: boolean = true;
   HAS_SELECTED_SEND_AS_PENDING: boolean = false;
@@ -310,14 +320,39 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   youCannotLeaveTheChat: string;
   youCannotAddAgents: string;
- 
+
   addAgentTitle: string;
-  
+
   youCannotJoinChat: string;
   joinChatTitle: string;
+  visitorAlreadyBanned: string;
 
   is0penDropDown = false
   isOpen: boolean;
+
+  selected_sidebar_tab: boolean;
+  tab0: boolean = true;
+  tab1: boolean = false;
+  tab2: boolean = false;
+  tab3: boolean = false;
+  tab4: boolean = false;
+
+  otherTabs: boolean = false
+  mainTabs: boolean = true
+
+  tagContainerElementHeight: any;
+  requestInfoListElementHeight: any;
+
+  serveByTooltipOption: TooltipOptions = {
+    'show-delay': 0,
+    'tooltip-class': 'served-by-ng2-tooltip',
+    'theme': 'light',
+    'shadow': true,
+    'hide-delay-mobile': 0,
+    'hideDelayAfterClick': 3000,
+    'hide-delay': 22222222220,
+    'placement': 'left',
+  }
   /**
    * Constructor
    * @param router 
@@ -361,7 +396,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private projectService: ProjectService,
     public appStoreService: AppStoreService,
     private uploadImageService: UploadImageService,
-    private uploadImageNativeService: UploadImageNativeService
+    private uploadImageNativeService: UploadImageNativeService,
 
 
   ) {
@@ -370,17 +405,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       { id: 10002, name: 'Task', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10318&avatarType=issuetype' },
       { id: 10004, name: 'Bug', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype' },
     ];
-
-    // this.router.events
-    //   .filter(e => e instanceof RoutesRecognized)
-    //   .pairwise()
-    //   .subscribe((event: any[]) => {
-    //     console.log('[WS-REQUESTS-MSGS] urlAfterRedirects' , event[0].urlAfterRedirects);
-    //   });
   }
 
 
-  @ViewChild('cont') contEl: any;
+  @ViewChild('cont', { static: false }) contEl: any;
 
 
   // -----------------------------------------------------------------------------------------------------
@@ -397,19 +425,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.logger.log('%%% Ws-REQUESTS-Msgs - ON RESIZE -> WINDOW HEIGHT ', this.newInnerHeight);
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
-    this.main_content_height = elemMainContent.clientHeight
-    this.logger.log('[WS-REQUESTS-MSGS] - USER LIST MODAL - ON RESIZE -> ACTUAL MAIN CONTENT HEIGHT', elemMainContent.clientHeight);
+    if (elemMainContent) {
+      this.main_content_height = elemMainContent.clientHeight
+      this.logger.log('[WS-REQUESTS-MSGS]  - ON RESIZE ->  MAIN CONTENT HEIGHT', elemMainContent.clientHeight);
+    } else {
+      this.logger.log('[WS-REQUESTS-MSGS] - ON RESIZE ->  MAIN CONTENT HEIGHT  (else)', elemMainContent.clientHeight);
+    }
 
     // determine the height of the modal when the width of the window is <= of 991px when the window is resized
     // RESOLVE THE BUG: @media screen and (max-width: 992px) THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
     if (this.newInnerWidth <= 991) {
-      this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px';
-      this.logger.log('[WS-REQUESTS-MSGS] - USER LIST MODAL - ON RESIZE -> users_list_modal_height', this.users_list_modal_height);
-      this.train_bot_sidebar_height = elemMainContent.clientHeight + 'px';
+      if (elemMainContent) {
+        this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px';
+        this.logger.log('[WS-REQUESTS-MSGS] - USER LIST MODAL - ON RESIZE -> users_list_modal_height', this.users_list_modal_height);
+        this.train_bot_sidebar_height = elemMainContent.clientHeight + 'px';
 
-      this.apps_sidebar_height = elemMainContent.clientHeight + 60 + 'px';
-
-      this.logger.log('[WS-REQUESTS-MSGS] - MODAL HEIGHT ', this.users_list_modal_height);
+        this.apps_sidebar_height = elemMainContent.clientHeight + 60 + 'px';
+        this.logger.log('[WS-REQUESTS-MSGS] - MODAL HEIGHT ', this.users_list_modal_height);
+      } else {
+        this.logger.log('[WS-REQUESTS-MSGS] - ON RESIZE @media <= 991  ->  MAIN CONTENT HEIGHT  (else)', elemMainContent.clientHeight);
+      }
     }
 
     // ------------------------------
@@ -418,6 +453,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
     if (rightSidebar) {
       this.rightSidebarWidth = rightSidebar.offsetWidth
+    }
+
+    this.getTagContainerElementHeight()
+  }
+
+  getTagContainerElementHeight() {
+    const requestInfoListElement = <HTMLElement>document.querySelector('.request-info-list');
+    this.logger.log('requestInfoListElement ', requestInfoListElement);
+    if (requestInfoListElement) {
+      this.logger.log('requestInfoListElement.offsetHeight ', requestInfoListElement.offsetHeight)
+      this.requestInfoListElementHeight = requestInfoListElement.offsetHeight + 59
+    }
+
+    const tagContainerElement = <HTMLElement>document.querySelector('.tags--container');
+    this.logger.log('tagContainerElement ', tagContainerElement)
+    if (tagContainerElement) {
+      this.logger.log('tagContainerElement.offsetHeight ', tagContainerElement.offsetHeight)
+
+      this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
+      this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
     }
   }
 
@@ -443,15 +498,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.setMomentLocale()
     this.getTeammates();
     this.getBots();
-    // this.sensorTypes = [
-    //   {label : "Current", value : "C"},
-    //   {label : "Voltage", value : "V"},
-    //   {label : "Nicola", value : "N"}
-    // ]
     this.listenToUpladAttachmentProgress();
     this.listenToUpladAttachmentRemoved();
     this.getRouteParams();
     this.getQueryParams();
+
+    // this.getClickOutEditContactFullname()
   }
 
 
@@ -497,8 +549,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   goBack() {
-
-
     if (this.previousUrl === 'wsrequests') {
       this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
       // && this.hasSearchedBy
@@ -786,6 +836,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // Right sidebar width after view init
     // -----------------------------------
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+    this.logger.log('rightSidebar.offsetWidth ', rightSidebar.offsetWidth)
     if (rightSidebar) {
       this.rightSidebarWidth = rightSidebar.offsetWidth;
     }
@@ -793,7 +844,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (this.request) {
       this.getfromStorageIsOpenAppSidebar()
     }
+
   }
+
+
 
   getfromStorageIsOpenAppSidebar() {
     const isOpenAppSidebar = this.usersLocalDbService.getStoredIsOpenAppSidebar();
@@ -1200,6 +1254,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
+  removeTicket() {
+    this.ticketSubject = ''
+  } 
+
+  getTagContainerElementHeightAfterViewInit() {
+    setTimeout(() => {
+      const tagContainerElement = <HTMLElement>document.querySelector('.tags--container');
+      this.logger.log('tagContainerElement.offsetHeight ', tagContainerElement)
+      if (tagContainerElement) {
+        this.logger.log('tagContainerElement.offsetHeight ', tagContainerElement.offsetHeight)
+        // this.tagContainerElementHeight = tagContainerElement.offsetHeight
+        this.tagContainerElementHeight = (292 + tagContainerElement.offsetHeight) + 'px';
+        this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
+      }
+    }, 1500);
+  }
+
   getWsRequestById$() {
     this.wsRequestsService.wsRequest$
       .pipe(
@@ -1207,7 +1278,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1220,6 +1291,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {
             this.getContactRequests(this.request.lead._id)
+            this.request.lead.email
+
           }
 
 
@@ -1233,7 +1306,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
               if (storedTeammate) {
                 this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammate ', storedTeammate)
-                // const storedTeammateObjct = JSON.parse(storedTeammate)
                 this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammateObjct ', storedTeammate)
                 this.request['closed_by_label'] = this.translate.instant('By') + ' ' + storedTeammate['firstname'] + ' ' + storedTeammate['lastname']
                 this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by label ', this.request['closed_by_label'])
@@ -1242,7 +1314,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                   .subscribe((projectUser: any) => {
                     // console.log('projectUser ', projectUser)
                     if (projectUser && projectUser[0] && projectUser[0].id_user) {
-                      this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user);
+                      this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user, 'ws-requests-msgs');
                       this.logger.log('WS-REQUESTS-MSGS] GET projectUser by USER-ID projectUser id', projectUser);
                       this.request['closed_by_label'] = this.translate.instant('By') + ' ' + projectUser[0].id_user.firstname + ' ' + projectUser[0].id_user.lastname
                     } else {
@@ -1419,6 +1491,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.tags) {
             this.tagsArray = this.request.tags // initialize the tagsArray with the existing tags
             this.logger.log('[WS-REQUESTS-MSGS] - onInit TAGS ARRAY: ', this.tagsArray);
+            if (this.tagsArray) {
+              setTimeout(() => {
+                this.getTagContainerElementHeight()
+              }, 100);
+            }
+
+            this.getTag();
+
+
           }
 
           // ---------------------------------------------------------
@@ -1500,7 +1581,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             if (this.request.lead && this.request.lead.email) {
               this.logger.log('this.request.lead email ', this.request.lead.email)
 
-              // used to set as initial value the existing emauk in the input displayed in the chat used to change the email on flyt
+              // used to set as initial value the existing emai in the input displayed in the chat used to change the email on flyt
               this.contactNewEmail = this.request.lead.email
               this.logger.log('contactNewEmail ', this.contactNewEmail)
             }
@@ -1514,6 +1595,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // ---------------------------------------------------------
           if (this.request.rating) {
             this.rating = this.request.rating + '/5'
+            this.logger.log('<<<<  this.rating ', this.rating)
           } else {
             this.rating = 'n.a./5'
           }
@@ -1838,7 +1920,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((requests_object: any) => {
 
         if (requests_object) {
-          // console.log('[WS-REQUESTS-MSGS]] - get CONTACT REQUESTS OBJECTS ', requests_object);
+          this.logger.log('[WS-REQUESTS-MSGS]] - get CONTACT REQUESTS OBJECTS ', requests_object);
           this.contact_requests = requests_object['requests'];
           this.logger.log('[WS-REQUESTS-MSGS] - get CONTACT REQUESTS LIST (got by requester_id) ', this.contact_requests);
 
@@ -1874,10 +1956,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         }
       }, (error) => {
-        this.showSpinner = false;
+        // this.showSpinner = false;
         this.logger.error('[WS-REQUESTS-MSGS] - GET REQUEST BY REQUESTER ID - ERROR ', error);
       }, () => {
-        this.showSpinner = false;
+        // this.showSpinner = false;
         this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY REQUESTER ID * COMPLETE *');
       });
   }
@@ -1896,14 +1978,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  goToRequestMsgs(request_recipient: string) {
-    if (this.CHAT_PANEL_MODE === false) {
-      this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
-    } else if (this.CHAT_PANEL_MODE === true) {
-      const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
-      window.open(url, '_blank');
-    }
-  }
+
 
   // -----------------------------------------------------------------------------------------------------
   // @ Messages ws-subscription and get msgs from BS subscription
@@ -2079,7 +2154,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
     if (tagObjectsize > 0) {
       this.tagsArray.push(tagObject);
-      this.getTag()
+      // this.getTag()
     }
 
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
@@ -2089,16 +2164,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (tagObjectsize > 0) {
       this.updateRequestTags(this.id_request, this.tagsArray, 'add')
     }
-    // this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
-    //   .subscribe((data: any) => {
-    //     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
-    //   }, (err) => {
-    //     this.logger.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
-    //     this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
-    //   }, () => {
-    //     this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
-    //     this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
-    //   });
+
   }
 
   updateRequestTags(id_request, tagsArray, fromaction) {
@@ -2113,6 +2179,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
         this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+        this.getTagContainerElementHeight()
       });
   }
 
@@ -2123,7 +2190,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // tagsList are the available tags that the administrator has set on the tag management page
         // and that are displayed in the combo box 'Add tag' of this template
         this.tagsList = tags
-        this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tag of tagsList ', tags);
+        this.tagsList = this.tagsList.slice(0)
+        this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tag of tagsList  this.tagsList ', this.tagsList);
 
         // "tagArray" are the tags present in the "this.request" object
         this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS - tagsArray', this.tagsArray);
@@ -2137,12 +2205,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // -----------------------------------------------------------------------------------
         // Splice tags from the tagslist the tags already present in the "this.request" object
         // ------------------------------------------------------------------------------------
-        this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+        // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
       }
     }, (error) => {
       this.logger.error('[WS-REQUESTS-MSGS] - GET TAGS - ERROR  ', error);
       this.loadingTags = false
     }, () => {
+      this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray)
       this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS * COMPLETE *');
       this.loadingTags = false
     });
@@ -2157,44 +2226,143 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.tag_selected_color = hex;
   }
 
-  createTag() {
-    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - TAG-NAME: ', this.tag_name, ' TAG-COLOR: ', this.tag_selected_color)
-    this.ngselect.close()
+  createNewTag = (newTag: string) => {
+    this.logger.log("Create New TAG Clicked : " + newTag)
 
-    if (this.tag_name && this.tag_name.length > 0) {
-      // this.hasError = false;
+    var self = this;
+    this.logger.log(' this.ngSelect', this.ngSelect)
+    this.ngSelect.close()
+    this.ngSelect.blur()
+    this.getTagContainerElementHeight()
 
-      this.tagsService.createTag(this.tag_name, this.tag_selected_color)
-        .subscribe((tag: any) => {
-          this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
+    self.tag_selected_color = '#f0806f'
 
-          const tagObject = { tag: tag.tag, color: tag.color }
-          this.tagsArray.push(tagObject);
+    self.tagsService.createTag(newTag, this.tag_selected_color)
+      .subscribe((tag: any) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
 
-          this.updateRequestTags(this.id_request, this.tagsArray, 'create')
+        const tagObject = { tag: tag.tag, color: tag.color }
+        self.tagsArray.push(tagObject);
 
-        }, (error) => {
-          this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
-          this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+        self.updateRequestTags(this.id_request, this.tagsArray, 'create')
+
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
+        self.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
+
+      });
+
+  }
+
+  removeTag(tag: string) {
+    if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
+      this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag TO REMOVE: ', tag);
+      var index = this.tagsArray.indexOf(tag);
+      if (index !== -1) {
+        this.tagsArray.splice(index, 1);
+      }
+      this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+      setTimeout(() => {
+        this.getTagContainerElementHeight()
+      }, 0);
+      // this.getTag();
+
+      this.logger.log('[WS-REQUESTS-MSGS] -  REMOVE TAG - TAGS ARRAY AFTER SPLICE: ', this.tagsArray);
+      this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
+        .subscribe((data: any) => {
+
+          this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - RES: ', data);
+        }, (err) => {
+          this.logger.error('[WS-REQUESTS-MSGS] - REMOVE TAG - ERROR: ', err);
+          this.notify.showWidgetStyleUpdateNotification(this.delete_label_error, 4, 'report_problem');
+
         }, () => {
-          this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
-          // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+          this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG * COMPLETE *');
+          this.notify.showWidgetStyleUpdateNotification(this.delete_label_success, 2, 'done');
 
-          this.tag_name = '';
-          this.tag_selected_color = '#43B1F2';
-
-          this.getTag();
         });
-
-    } else {
-      // this.hasError = true;
     }
+  }
+
+
+  removeTagFromTaglistIfAlreadyAssigned(tagsList: any, tagsArray: any) {
+    // remove from the taglist (tags that the administrator has set on the tag management page and that are displayed in the combo box 'Add tag' of this template)
+    // the tag that are already in the tagArray (the tags present in the "this.request" object)
+    if (tagsList) {
+      for (var i = tagsList.length - 1; i >= 0; i--) {
+        for (var j = 0; j < tagsArray.length; j++) {
+          if (tagsList[i] && (tagsList[i].tag === tagsArray[j].tag)) {
+            this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAGS FROM TAG LIST WHEN IS SELECTED-  tagsList - tagsList[i] ', tagsList[i]);
+            tagsList.splice(i, 1);
+          }
+        }
+      }
+    } else {
+      this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAGS FROM TAG LIST WHEN IS SELECTED -  tagsList undefined ', this.tagsList);
+    }
+    this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS -  tagsList - AFTER SPLICE ', this.tagsList);
+    this.tagsList = this.tagsList.slice(0);
+
+  }
+
+
+
+  // closeSelect(selecttagcombobox: NgSelectComponent) { 
+  //   selecttagcombobox.close(); 
+  // }
+
+  closeSelectTagDropdown() {
+    this.logger.log('closeSelectTagDropdown')
+    this.ngSelect.close()
+    this.ngSelect.blur()
+  }
+
+  createTag(newTag) {
+    this.tag_selected_color = '#43B1F2'
+    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.TAG: ', this.tag)
+    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - TAG-NAME: ', this.tag, ' TAG-COLOR: ', this.tag_selected_color)
+    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.ngselect: ', this.ngselect)
+    // this.ngselect.close()
+
+
+
+    // if (this.tag_name && this.tag_name.length > 0) {
+    // this.hasError = false;
+
+    // this.tagsService.createTag(this.tag_name, this.tag_selected_color)
+    this.tagsService.createTag(newTag, this.tag_selected_color)
+      .subscribe((tag: any) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
+
+        const tagObject = { tag: tag.tag, color: tag.color }
+        this.tagsArray.push(tagObject);
+
+        this.updateRequestTags(this.id_request, this.tagsArray, 'create')
+
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
+        this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
+        // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+
+        this.tag_name = '';
+        this.tag_selected_color = '#43B1F2';
+
+        this.getTag();
+      });
+
+    // } else {
+    //   // this.hasError = true;
+    // }
   }
 
   onPressEnterInIputTypeNewTag() {
     this.logger.log('[WS-REQUESTS-MSGS] - ON PRESS ENTER IN INPUT TYPE NEW TAG');
     if (this.tag_name.length > 0) {
-      this.createTag();
+      // this.createTag();
       const inputElm = <HTMLElement>document.querySelector('.tag-name-in-conv-detail');
       inputElm.blur();
       this.ngselect.close()
@@ -2237,46 +2405,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------
   // Splice tags from the tagslist the tags already present in the "this.request" object
   // ------------------------------------------------------------------------------------
-  removeTagFromTaglistIfAlreadyAssigned(tagsList: any, tagsArray: any) {
-    // remove from the taglist (tags that the administrator has set on the tag management page and that are displayed in the combo box 'Add tag' of this template)
-    // the tag that are already in the tagArray (the tags present in the "this.request" object)
-    for (var i = tagsList.length - 1; i >= 0; i--) {
-      for (var j = 0; j < tagsArray.length; j++) {
-        if (tagsList[i] && (tagsList[i].tag === tagsArray[j].tag)) {
-          this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS -  tagsList - tagsList[i] ', tagsList[i]);
-          tagsList.splice(i, 1);
-        }
-      }
-    }
-    this.logger.log('[WS-REQUESTS-MSGS] - GET TAGS -  tagsList - AFTER SPLICE ', this.tagsList);
-  }
 
-
-  removeTag(tag: string) {
-    if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
-      this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag TO REMOVE: ', tag);
-      var index = this.tagsArray.indexOf(tag);
-      if (index !== -1) {
-        this.tagsArray.splice(index, 1);
-      }
-      // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
-      this.getTag();
-
-      this.logger.log('[WS-REQUESTS-MSGS] -  REMOVE TAG - TAGS ARRAY AFTER SPLICE: ', this.tagsArray);
-      this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
-        .subscribe((data: any) => {
-
-          this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - RES: ', data);
-        }, (err) => {
-          this.logger.error('[WS-REQUESTS-MSGS] - REMOVE TAG - ERROR: ', err);
-          this.notify.showWidgetStyleUpdateNotification(this.delete_label_error, 4, 'report_problem');
-
-        }, () => {
-          this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG * COMPLETE *');
-          this.notify.showWidgetStyleUpdateNotification(this.delete_label_success, 2, 'done');
-        });
-    }
-  }
 
   // ---------------------------------------------------------------------------------------
   // @ Ticket Accordion
@@ -2668,9 +2797,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
+  closeMoreOptionDropdown() {
+    const elemDropdownMoreOption = <HTMLElement>document.querySelector('.dropdown__menu-more-options');
+    this.logger.log('[WS-REQUESTS-MSGS] - elemDropdownMoreOption', elemDropdownMoreOption) 
+    if (elemDropdownMoreOption && elemDropdownMoreOption.classList.contains("dropdown__menu-more-options--active")) {
+      elemDropdownMoreOption.classList.remove("dropdown__menu-more-options--active");
+    }
+  }
+
   openSelectUsersModal(actionSelected) {
     this.actionInModal = actionSelected
     // console.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
+    this.closeMoreOptionDropdown();
+
 
     if (this.actionInModal === 'invite') {
       if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
@@ -2741,8 +2880,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const projectUsers = this.usersService.getProjectUsersByProjectId();
     const bots = this.faqKbService.getFaqKbByProjectId();
 
-    Observable
-      .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
+
+    zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
         //  console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
         // this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
@@ -2875,11 +3014,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }, error => {
       this.logger.error('[WS-REQUESTS-MSGS] - BOT GET BY ID - ERROR', error);
 
-      const errorBody = JSON.parse(error._body)
-      this.logger.error('[WS-REQUESTS-MSGS] - BOT GET BY ID - ERROR BODY', errorBody);
+      const errorMsg = error['error']['msg']
+      this.logger.error('[WS-REQUESTS-MSGS] - BOT GET BY ID - ERROR MSG', errorMsg);
 
-      if (errorBody.msg === 'Object not found.') {
-        this.logger.error('[WS-REQUESTS-MSGS] - BOT GET BY ID - ERROR BODY MSG', errorBody.msg);
+      if (errorMsg === 'Object not found.') {
+        this.logger.error('[WS-REQUESTS-MSGS] - BOT GET BY ID - ERROR BODY MSG', errorMsg);
         this.logger.error('[WS-REQUESTS-MSGS] - BOT GET BY ID - ERROR url', error.url);
 
         const IdOfBotNotFound = error.url.split('/').pop();
@@ -3608,7 +3747,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   presentModalVisitorAlreadyBanned() {
     swal({
       title: this.warningMsg,
-      text: 'Visitor already banned',
+      text: this.visitorAlreadyBanned,
       icon: "warning",
       button: "OK",
       dangerMode: false,
@@ -3728,7 +3867,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   goToMemberProfile(member_id: any) {
-    this.logger.log('[WS-REQUESTS-MSGS] - goToMemberProfile -has clicked GO To MEMBER ', member_id);
+    this.logger.log('[WS-REQUESTS-MSGS] - goToMemberProfile - has clicked GO To MEMBER ', member_id);
 
     if (this.CHAT_PANEL_MODE === false) {
       if (member_id.indexOf('bot_') !== -1) {
@@ -4025,8 +4164,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.translate.get('RequestMsgsPage.Enter').subscribe((text: string) => {
       this.joinChatTitle = text;
     });
-    
-    
+
+
+    this.translate.get('VisitorAlreadyBanned').subscribe((text: string) => {
+      this.visitorAlreadyBanned = text;
+    });
+
+
   }
 
 
@@ -4065,82 +4209,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.updateContactemail(this.request.lead._id, this.contactNewEmail);
   }
 
-  emailChange(event) {
-    this.EMAIL_IS_VALID = this.validateEmail(event)
-  }
-
-
-  validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    return re.test(String(email).toLowerCase());
-  }
-
-  updateContactFullName() {
-    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
-    elemDropDown.classList.remove("dropdown__menu--active");
-    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewFirstName', this.contactNewFirstName)
-    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewLastName', this.contactNewLastName)
-    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  request', this.request)
-    // request?.lead?.fullname
-    if (this.contactNewFirstName && !this.contactNewLastName) {
-
-      const lead_fullname = this.contactNewFirstName
-      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase only contactNewFirstName - lead_fullname', lead_fullname)
-      this._createRequesterAvatar(lead_fullname)
-
-      this.request.lead.fullname = lead_fullname
-      this.updateContactName(this.request.lead._id, lead_fullname);
-    } else if (this.contactNewFirstName && this.contactNewLastName) {
-
-      const lead_fullname = this.contactNewFirstName + ' ' + this.contactNewLastName
-      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase  contactNewFirstName & contactNewLastName - lead_fullname', lead_fullname)
-      this.request.lead.fullname = lead_fullname
-      this._createRequesterAvatar(lead_fullname)
-      this.updateContactName(this.request.lead._id, lead_fullname);
-    }
-  }
-  _createRequesterAvatar(lead_fullname) {
-    if (lead_fullname) {
-      this.requester_fullname_initial = avatarPlaceholder(lead_fullname);
-      this.fillColour = getColorBck(lead_fullname)
-    } else {
-
-      this.requester_fullname_initial = 'N/A';
-      this.fillColour = 'rgb(98, 100, 167)';
-    }
-
-  }
-
-  updateContactName(lead_id, lead_fullname) {
-    this.contactsService.updateLeadFullname(lead_id, lead_fullname)
-      .subscribe((contact) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - UPDATED CONTACT ', contact);
-      }, (error) => {
-        this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
-      }, () => {
-        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification('Contact successfully updated', 2, 'done')
-      });
-  }
-
-  updateContactemail(lead_id, lead_email) {
-    this.contactsService.updateLeadEmail(lead_id, lead_email)
-      .subscribe((contact) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - UPDATED CONTACT ', contact);
-      }, (error) => {
-        this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
-      }, () => {
-        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification('Contact successfully updated', 2, 'done')
-      });
-  }
 
   formatBytes(bytes, decimals) {
     if (bytes == 0) return '0 Bytes';
@@ -4396,7 +4464,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.type = undefined;
           this.existAnAttacment = false;
           this.sendMessageTexarea.nativeElement.style.height = null;
-        
+
           let convWokingStatus = ""
           if (this.HAS_SELECTED_SEND_AS_OPENED === true && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
             convWokingStatus = 'open'
@@ -4600,6 +4668,244 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       });
 
+  }
+
+  // --------------------------------------------------
+  // New sidebar method
+  // --------------------------------------------------
+
+  openAddContactNameForm() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
+    this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
+    elemDropDown.classList.add("dropdown__menu-form--active");
+    this.contactNewFirstName = undefined;
+    this.contactNewLastName = undefined;
+  }
+
+
+
+  openTabMoreOption(isOpen) {
+    this.logger.log('openTabMoreOption isOpen', isOpen)
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-more-options');
+    if (isOpen === true) {
+      this.logger.log('elemDropDown tab more options ', elemDropDown)
+      elemDropDown.classList.add("dropdown__menu-more-options--active");
+    } else if (isOpen === false) {
+      elemDropDown.classList.remove("dropdown__menu-more-options--active");
+    }
+  }
+
+  openViewOtherServedByDropdown(isOpen) {
+    this.logger.log('openViewOtherServedByDropdown isOpen', isOpen)
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown--menu-others-agents-dropdow');
+    if (isOpen === true) {
+      this.logger.log('elemDropDown tab more options ', elemDropDown)
+      elemDropDown.classList.add("dropdown--menu-others-agents-dropdow--active");
+    } else if (isOpen === false) {
+      elemDropDown.classList.remove("dropdown--menu-others-agents-dropdow--active");
+    }
+
+  }
+
+
+  updateContactFullName() {
+    // const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
+    // elemDropDown.classList.remove("dropdown__menu--active");
+
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
+    elemDropDown.classList.remove("dropdown__menu-form--active");
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewFirstName', this.contactNewFirstName)
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewLastName', this.contactNewLastName)
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  request', this.request)
+    // request?.lead?.fullname
+    if (this.contactNewFirstName && !this.contactNewLastName) {
+
+      const lead_fullname = this.contactNewFirstName
+      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase only contactNewFirstName - lead_fullname', lead_fullname)
+      this._createRequesterAvatar(lead_fullname)
+
+      this.request.lead.fullname = lead_fullname
+      this.updateContactName(this.request.lead._id, lead_fullname);
+    } else if (this.contactNewFirstName && this.contactNewLastName) {
+
+      const lead_fullname = this.contactNewFirstName + ' ' + this.contactNewLastName
+      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase  contactNewFirstName & contactNewLastName - lead_fullname', lead_fullname)
+      this.request.lead.fullname = lead_fullname
+      this._createRequesterAvatar(lead_fullname)
+      this.updateContactName(this.request.lead._id, lead_fullname);
+    }
+  }
+  _createRequesterAvatar(lead_fullname) {
+    if (lead_fullname) {
+      this.requester_fullname_initial = avatarPlaceholder(lead_fullname);
+      this.fillColour = getColorBck(lead_fullname)
+    } else {
+
+      this.requester_fullname_initial = 'N/A';
+      this.fillColour = 'rgb(98, 100, 167)';
+    }
+
+  }
+
+  updateContactName(lead_id, lead_fullname) {
+    this.contactsService.updateLeadFullname(lead_id, lead_fullname)
+      .subscribe((contact) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATED CONTACT ', contact);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('Contact successfully updated', 2, 'done')
+      });
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    // console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+    // console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
+
+    const clicked_element_id = event.target.id
+
+
+    if (clicked_element_id.startsWith("edit-fullname")) {
+      // console.log('>>> click inside')
+    } else {
+      // console.log('>>> click outside')
+      this.closeEditContactFullnameDropdown()
+    }
+  }
+
+  closeEditContactFullnameDropdown() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
+    if (elemDropDown && elemDropDown.classList.contains("dropdown__menu-form--active")) {
+      elemDropDown.classList.remove("dropdown__menu-form--active");
+    }
+  }
+
+  hasSelectedTab0() {
+    this.tab0 = true;
+    this.tab1 = false
+    this.tab2 = false
+    this.tab3 = false;
+    this.tab4 = false;
+    this.logger.log('haSelectedTab0 ', this.tab0)
+  }
+  hasSelectedTab1() {
+    this.tab0 = false;
+    this.tab1 = true;
+    this.tab2 = false;
+    this.tab3 = false;
+    this.tab4 = false;
+    this.logger.log('haSelectedTab1 ', this.tab1)
+  }
+
+  hasSelectedTab2() {
+    this.tab0 = false;
+    this.tab1 = false;
+    this.tab2 = true;
+    this.tab3 = false;
+    this.tab4 = false;
+    this.logger.log('haSelectedTab2 ', this.tab2)
+  }
+
+  hasSelectedTab3() {
+    this.tab0 = false;
+    this.tab1 = false;
+    this.tab2 = false;
+    this.tab3 = true;
+    this.tab4 = false;
+  }
+  hasSelectedTab4() {
+    this.tab0 = false;
+    this.tab1 = false;
+    this.tab2 = false;
+    this.tab3 = false;
+    this.tab4 = true;
+  }
+
+  hasSelectMainTabs() {
+    this.mainTabs = true;
+    this.otherTabs = false;
+    this.logger.log('hasSelectMainTabs otherTabs', this.otherTabs)
+    this.logger.log('hasSelectMainTabs mainTabs', this.mainTabs)
+    this.tab0 = true;
+    this.tab1 = false;
+    this.tab2 = false;
+    this.tab3 = false;
+    this.tab4 = false;
+  }
+
+  hasSelectedMoreTabs() {
+    this.otherTabs = true;
+    this.mainTabs = false;
+    this.logger.log('hasSelectedMoreTabs otherTabs', this.otherTabs)
+    this.logger.log('hasSelectedMoreTabs mainTabs', this.mainTabs)
+    this.tab0 = false;
+    this.tab1 = false;
+    this.tab2 = false;
+    this.tab3 = true;
+    this.tab4 = false;
+  }
+
+  goToRequestMsgs(request_recipient: string) {
+    if (this.CHAT_PANEL_MODE === false) {
+      this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
+    } else if (this.CHAT_PANEL_MODE === true) {
+      const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
+      window.open(url, '_blank');
+    }
+  }
+
+  emailChange(event) {
+    this.EMAIL_IS_VALID = this.validateEmail(event)
+    this.logger.log('ON EMAIL CHANGE EMAIL_IS_VALID ', this.EMAIL_IS_VALID)
+  }
+
+
+  validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    return re.test(String(email).toLowerCase());
+  }
+
+  editContactEmail() {
+    this.logger.log('editContactEmail contactNewEmail', this.contactNewEmail)
+    if (this.EMAIL_IS_VALID && this.contactNewEmail !== undefined) {
+      this.updateContactemail(this.request.lead._id, this.contactNewEmail);
+    }
+  }
+
+  updateContactemail(lead_id, lead_email) {
+    this.contactsService.updateLeadEmail(lead_id, lead_email)
+      .subscribe((contact) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATED CONTACT ', contact);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showWidgetStyleUpdateNotification('Contact successfully updated', 2, 'done')
+      });
+  }
+
+  removeEmailAnUpdateContact() {
+    this.contactNewEmail = ''
+    this.logger.log('removeEmailAnUpdateContact contactNewEmail', this.contactNewEmail)
+    this.updateContactemail(this.request.lead._id, this.contactNewEmail);
+  }
+
+  openSourcePage(sorurcePageURL) {
+    this.logger.log('openSourcePage sorurcePageURL ', sorurcePageURL)
+    window.open(sorurcePageURL, '_blank');
+  }
+
+  hasClikedImage() {
+    this.logger.log('hasClikedImage ')
   }
 
 

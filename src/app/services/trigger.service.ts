@@ -16,7 +16,7 @@ export class TriggerService {
   TOKEN: string;
 
   constructor(
-    private http: HttpClient,
+    private _httpClient: HttpClient,
     public auth: AuthService,
     public departmentService: DepartmentService,
     public appConfigService: AppConfigService,
@@ -65,7 +65,7 @@ export class TriggerService {
   // --------------------------------------------------------------
   // @ GET ALL TRIGGERS
   // --------------------------------------------------------------
-  getAllTrigger(): Observable<[]> {
+  getAllTrigger(): Observable<[any]> {
 
     const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers'
     this.logger.log('[TRIGGER-SERV] - GET ALL TRIGGERS - URL ', url);
@@ -75,7 +75,8 @@ export class TriggerService {
       'Authorization': this.TOKEN,
     });
 
-    return this.http.get<[]>(url, { headers: headers })
+    return this._httpClient
+      .get<[any]>(url, { headers: headers })
   }
 
   /**
@@ -93,7 +94,7 @@ export class TriggerService {
       'Authorization': this.TOKEN,
     });
 
-    return this.http.get<[Trigger]>(url, { headers: headers })
+    return this._httpClient.get<[Trigger]>(url, { headers: headers })
 
 
   }
@@ -103,7 +104,7 @@ export class TriggerService {
    * @param trigger 
    * @returns 
    */
-  postTrigger(trigger: Trigger): Observable<[]> {
+  postTrigger(trigger: Trigger): Observable<[any]> {
     const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers';
     this.logger.log('[TRIGGER-SERV] - POST TRIGGER - URL ', url);
 
@@ -115,7 +116,8 @@ export class TriggerService {
       'Authorization': this.TOKEN,
     });
 
-    return this.http.post<[]>(url, JSON.stringify(body), { headers: headers });
+    return this._httpClient
+      .post<[any]>(url, JSON.stringify(body), { headers: headers });
 
   }
 
@@ -124,7 +126,7 @@ export class TriggerService {
    * @param trigger 
    * @returns 
    */
-  updateTrigger(trigger: Trigger): Observable<[]> {
+  updateTrigger(trigger: Trigger): Observable<[any]> {
     const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + trigger._id
     this.logger.log('[TRIGGER-SERV] - UPDATE TRIGGER - PUT URL ', url);
 
@@ -136,7 +138,8 @@ export class TriggerService {
       'Authorization': this.TOKEN,
     });
 
-    return this.http.put<[]>(url, JSON.stringify(body), { headers: headers });
+    return this._httpClient
+      .put<[any]>(url, JSON.stringify(body), { headers: headers });
 
   }
 
@@ -146,7 +149,7 @@ export class TriggerService {
    * @param triggerID 
    * @returns 
    */
-  deleteTrigger(triggerID: string): Observable<[]> {
+  deleteTrigger(triggerID: string): Observable<[any]> {
     const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggerID
     this.logger.log('[TRIGGER-SERV] - DELETE TRIGGER - DELETE URL ', url);
 
@@ -155,7 +158,8 @@ export class TriggerService {
       'Authorization': this.TOKEN,
     });
 
-    return this.http.delete<[]>(url, { headers: headers });
+    return this._httpClient
+      .delete<[any]>(url, { headers: headers });
   }
 
   /**
@@ -163,7 +167,7 @@ export class TriggerService {
    * @param triggercode 
    * @returns 
    */
-  resetPreBuiltTriggerToDefault(triggercode: any): Observable<[]> {
+  resetPreBuiltTriggerToDefault(triggercode: any): Observable<[any]> {
     const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggercode + '/reset'
     this.logger.log('[TRIGGER-SERV] - RESET PRE BUILT TRIGGER TO DEFAULT - PUT URL: ', url)
 
@@ -172,7 +176,8 @@ export class TriggerService {
       'Authorization': this.TOKEN,
     });
 
-    return this.http.put<[]>(url, null, { headers: headers });
+    return this._httpClient
+      .put<[any]>(url, null, { headers: headers });
   }
 
 }

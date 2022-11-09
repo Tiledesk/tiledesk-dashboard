@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, isDevMode } from '@angular/core';
-import { AuthService, SuperUser } from '../core/auth.service';
+import { AuthService } from '../core/auth.service';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -19,13 +19,14 @@ import { AppConfigService } from '../services/app-config.service';
 import { BrandService } from '../services/brand.service';
 
 import { Chart } from 'chart.js'; /// VISITOR GRAPH FOR THE NEW NOME
-import * as moment from 'moment'; /// VISITOR GRAPH FOR THE NEW NOME
+// import * as moment from 'moment';
+import moment from "moment";
 import { ContactsService } from '../services/contacts.service'; // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
+import { skip, takeUntil } from 'rxjs/operators'
 import { ProjectService } from 'app/services/project.service';
 import {
   URL_getting_started_for_admins,
@@ -43,7 +44,7 @@ const swal = require('sweetalert');
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private unsubscribe$: Subject<any> = new Subject<any>();
-  @ViewChild('widgetsContent', { read: ElementRef }) public widgetsContent;
+  @ViewChild('widgetsContent', { static: false, read: ElementRef }) public widgetsContent;
   // company_name = brand.company_name;
   // tparams = brand;
   company_name: string;
@@ -136,13 +137,21 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    if (!isDevMode()) {
+      try {
+        window['analytics'].page("Home Page, Home", {});
+      } catch (err) {
+        this.logger.error('page Home error', err);
+      }
+    }
+    this.getLoggedUser()
     this.getCurrentProjectAndInit();
     // this.getStorageBucket(); // moved in getCurrentProject()
     this.logger.log('[HOME] !!! Hello HomeComponent! ');
 
     this.getBrowserLanguage();
     this.translateString();
-    this.getLoggedUser()
+
 
     // get the PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
@@ -155,7 +164,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.getAvailableProjectUsersByProjectId();
 
     this.getUserRole();
-    this.getProjectPlan();
+    // this.getProjectPlan(); // nk 
     // this.getVisitorCounter();
     this.getOSCODE();
     this.getChatUrl();
@@ -163,11 +172,214 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.diplayPopup();
     // this.startChabgelogAnimation()
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
-
   }
 
+  ngAfterViewInit() { }
+
+  ngOnDestroy() {
+    // console.log('HOME COMP - CALLING ON DESTROY')
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[HOME] - USER GET IN HOME ', user)
+        // tslint:disable-next-line:no-debugger
+        // debugger
+        this.user = user;
+
+        if (this.user) {
+          if (!isDevMode()) {
+            try {
+              window['analytics'].identify(this.user._id, {
+                name: this.user.firstname + ' ' + this.user.lastname,
+                email: this.user.email,
+                logins: 5,
+                plan: this.profile_name_for_segment,
+
+              });
+            } catch (err) {
+              this.logger.error('identify Home error', err);
+            }
+          }
+
+          // !!!! NO MORE USED - MOVED IN USER SERVICE
+          // this.getAllUsersOfCurrentProject();
+          this.logger.log('[HOME] CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
+          this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
+
+        }
+      });
+  }
+
+  getCurrentProjectAndInit() {
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
+
+        if (project) {
+          this.project = project
+          this.projectId = this.project._id
+
+          const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
+          this.logger.log('[HOME] - getCurrentProjectAndInit  ', hasEmittedTrialEnded, '  for project id', this.project._id)
+
+          this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
+          this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
+
+          this.findCurrentProjectAmongAll(this.projectId)
+          this.init()
+        }
+      }, (error) => {
+        this.logger.error('[HOME] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
+      });
+  }
+
+  findCurrentProjectAmongAll(projectId: string) {
+
+    this.projectService.getProjects().subscribe((projects: any) => {
+
+      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      this.logger.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
+      const projectProfileData = this.current_selected_prjct.id_project.profile
+
+      this.prjct_name = this.current_selected_prjct.id_project.name;
+      this.prjct_profile_name = projectProfileData.name;
+      this.profile_name = projectProfileData.name;
+      this.prjct_trial_expired = this.current_selected_prjct.id_project.trialExpired;
+      this.prjct_profile_type = projectProfileData.type;
+      this.subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription;
+      this.subscription_end_date = projectProfileData.subEnd;
+
+      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_name ', this.prjct_name);
+      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_name ', this.prjct_profile_name);
+      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - profile_name ', this.profile_name);
+      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_trial_expired ', this.prjct_trial_expired);
+      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_type ', this.prjct_profile_type);
+      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - subscription_is_active ', this.subscription_is_active);
+      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - subscription_end_date ', this.subscription_end_date);
+
+      this.showSpinner = false;
+
+      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+        this.DISPLAY_OPH_AS_DISABLED = true;
+      } else {
+        this.DISPLAY_OPH_AS_DISABLED = false;
+      }
+
+      if (this.prjct_profile_type === 'free') {
+        if (this.prjct_trial_expired === false) {
+          this.logger.log('[HOME] Find Current Project Among All BRS-LANG 2 ', this.browserLang);
+          this.profile_name_for_segment = "Pro plan (trial)"
+          this.getProPlanTrialTranslation();
+
+        } else {
+          this.profile_name_for_segment = "Free"
+          this.getPaidPlanTranslation(this.prjct_profile_name);
+          this.logger.log('[HOME] Find Current Project Among All BRS-LANG 3 ', this.browserLang);
+
+        }
+      } else if (this.prjct_profile_type === 'payment') {
+        this.getPaidPlanTranslation(this.prjct_profile_name);
+
+        this.logger.log('[HOME] Find Current Project Among All BRS-LANG 4 ', this.browserLang);
+        if (this.prjct_profile_name === 'pro') {
+          this.profile_name_for_segment = "Pro"
+        } else if (this.prjct_profile_name === 'enterprise') {
+          this.profile_name_for_segment = "Enterprise"
+        }
+      }
+      const projectCreatedAt = this.current_selected_prjct.id_project.createdAt
+      this.logger.log('[HOME] - Find Current Project Among All project CreatedAt', projectCreatedAt)
+      const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
+      this.logger.log('[HOME] - Find Current Project Among All project trialEndDate', trialStarDate)
+
+      const trialEndDate = moment(new Date(projectCreatedAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
+      this.logger.log('[HOME] - Find Current Project Among All project trialEndDate', trialEndDate)
+
+      const currentTime = moment();
+
+      const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
+      this.logger.log('[HOME] - Find Current Project Among All project daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
+
+      const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.current_selected_prjct.id_project._id)
+      this.logger.log('[HOME] - Find Current Project Among All hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', this.current_selected_prjct.id_project._id)
+      this.logger.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_type 2', this.prjct_profile_type);
+      if ((this.prjct_profile_type === 'free' && daysDiffNowFromProjctCreated >= 30) || (this.prjct_profile_type === 'payment' && daysDiffNowFromProjctCreated < 30)) {
+        this.logger.log('[HOME] - Find Current Project Among All - BEFORE  Emittting TRIAL ENDED')
+        if (hasEmittedTrialEnded === null) {
+          this.logger.log('[HOME] - Find Current Project Among All - Emittting TRIAL ENDED')
+          // ------------------------------------
+          // @ Segment: emit Trial Ended
+          // ------------------------------------
+          if (!isDevMode()) {
+            try {
+              window['analytics'].track('Trial Ended', {
+                "userId": this.user._id,
+                "trial_start_date": trialStarDate,
+                "trial_end_date": trialEndDate,
+                "trial_plan_name": "Pro (trial) "
+              }, {
+                "context": {
+                  "groupId": this.current_selected_prjct.id_project._id
+                }
+              });
+              localStorage.setItem('dshbrd----' + this.current_selected_prjct.id_project._id, 'hasEmittedTrialEnded')
+            } catch (err) {
+              this.logger.error('track Trial Started event error', err);
+            }
+          }
+        }
+      }
+
+      if (!isDevMode()) {
+        try {
+          window['analytics'].group(projectProfileData._id, {
+            name: projectProfileData.name,
+            plan: this.profile_name_for_segment,
+          });
+        } catch (err) {
+          this.logger.error('group Home error', err);
+        }
+      }
 
 
+      this.logger.log('[HOME] - Find Current Project Among All - projects ', projects);
+    }, error => {
+      this.logger.error('[HOME] - Find Current Project Among All: ', error);
+    }, () => {
+      this.logger.log('[HOME] - Find Current Project Among All * COMPLETE * ');
+    });
+  }
+
+  init() {
+    // console.log("[HOME] > CALLING INIT")
+    // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
+    this.getImageStorageThenUserAndBots();
+    this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
+    this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
+    this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
+    this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
+    this.getCountAndPercentageOfRequestsHandledByBotsLastMonth() /// 
+    // this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME
+    // this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    // this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    // this.logger.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
+
+    this.getRequestByLast7Day()
+
+  }
 
   diplayPopup() {
     const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
@@ -189,13 +401,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-  ngAfterViewInit() { }
 
-  ngOnDestroy() {
-    // console.log('HOME COMP - CALLING ON DESTROY')
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
   // pauseResumeLastUpdateSlider() {
   //   // var slide = document.querySelectorAll('.slide');
@@ -317,67 +523,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  getCurrentProjectAndInit() {
-    this.auth.project_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((project) => {
-        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
-        if (project) {
-          this.project = project
-          this.projectId = this.project._id
-
-          this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
-          this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
-
-          this.findCurrentProjectAmongAll(this.projectId)
-          this.init()
-        }
-      }, (error) => {
-        this.logger.error('[HOME] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
-
-      }, () => {
-        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
-      });
-  }
-
-  findCurrentProjectAmongAll(projectId: string) {
-
-    this.projectService.getProjects().subscribe((projects: any) => {
-      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
-      // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
-
-      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[HOME] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
-
-      this.logger.log('[HOME] - GET PROJECTS - projects ', projects);
-    }, error => {
-      this.logger.error('[HOME] - GET PROJECTS - ERROR: ', error);
-    }, () => {
-      this.logger.log('[HOME] - GET PROJECTS * COMPLETE * ');
-    });
-  }
-
-
-  init() {
-    // console.log("[HOME] > CALLING INIT")
-    // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
-    this.getImageStorageThenUserAndBots();
-    this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
-    this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
-    this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
-    this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
-    this.getCountAndPercentageOfRequestsHandledByBotsLastMonth() /// 
-    // this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME
-    // this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-    // this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-    // this.logger.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
-
-    this.getRequestByLast7Day()
-
-  }
-
   toggleDisplayTeammates() {
     this.DISPLAY_TEAMMATES = !this.DISPLAY_TEAMMATES;
     // console.log('DISPLAY_TEAMMATES ',   this.DISPLAY_TEAMMATES)
@@ -412,7 +557,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
 
       this.getAllUsersOfCurrentProject(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
-      this.getFaqKbByProjectId(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME
+      this.getAllFaqKbByProjectId(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME
 
     } else {
 
@@ -420,7 +565,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
       this.logger.log('[HOME] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
       this.getAllUsersOfCurrentProject(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
-      this.getFaqKbByProjectId(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME
+      this.getAllFaqKbByProjectId(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME
     }
 
   }
@@ -610,7 +755,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // USED FOR COUNT OF BOTS FOR THE NEW HOME !!! *** Not used - replaced with GET LAST 30 DAYS MESSAGE COUNT ***
-  getFaqKbByProjectId(storage, uploadEngineIsFirebase) {
+  getAllFaqKbByProjectId(storage, uploadEngineIsFirebase) {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
       this.logger.log('[HOME] - GET FAQKB RES', faqKb);
       if (faqKb) {
@@ -687,34 +832,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log('[HOME] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
-  // TRANSLATION
-  translateString() {
-    this.translateInstallWidget();
 
-    this.translateModalOnlyOwnerCanManageProjectAccount()
-  }
-
-  translateInstallWidget() {
-    this.translate.get('InstallTiledeskNowAndStartChatting', this.tparams)
-      .subscribe((text: string) => {
-
-        this.installWidgetText = text;
-        // this.logger.log('[HOME] + + + translateInstallWidget', text)
-      });
-  }
-
-
-  translateModalOnlyOwnerCanManageProjectAccount() {
-    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
-      });
-
-    this.translate.get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-        this.learnMoreAboutDefaultRoles = translation;
-      });
-  }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -874,150 +992,45 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-  getProjectPlan() {
-    this.prjctPlanService.projectPlan$
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((projectProfileData: any) => {
-        // console.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
-        if (projectProfileData && projectProfileData !== null) {
-          this.prjct_name = projectProfileData.name;
-          this.prjct_profile_name = projectProfileData.profile_name;
-          this.profile_name = projectProfileData.profile_name;
-          this.prjct_trial_expired = projectProfileData.trial_expired;
-          this.prjct_profile_type = projectProfileData.profile_type;
-          this.subscription_is_active = projectProfileData.subscription_is_active;
-          this.subscription_end_date = projectProfileData.subscription_end_date;
 
+  // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE/UNAVAILABLE WHEN THE USER ENTER IN HOME
+  // (GET THE PROJECT-USER CAN NOT BE DONE IN THE SIDEBAR BECAUSE WHEN THE PROJECT
+  // IS SELECTED THE SIDEBAR HAS BEEN ALREADY CALLED)
+  // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
+  getProjectUser() {
+    this.logger.log('[HOME] CALL GET-PROJECT-USER')
+    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+      this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
+      if (projectUser) {
+        this.logger.log('[HOME] PROJECT-USER ID ', projectUser[0]._id)
+        this.logger.log('[HOME] USER IS AVAILABLE ', projectUser[0].user_available)
+        this.logger.log('[HOME] USER IS BUSY ', projectUser[0].isBusy)
+        // this.user_is_available_bs = projectUser.user_available;
 
-          this.showSpinner = false;
-
-          if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-            this.DISPLAY_OPH_AS_DISABLED = true;
-          } else {
-            this.DISPLAY_OPH_AS_DISABLED = false;
-          }
-
-          if (this.prjct_profile_type === 'free') {
-            if (this.prjct_trial_expired === false) {
-              this.logger.log('[HOME] getProjectPlan BRS-LANG 2 ', this.browserLang);
-              this.profile_name_for_segment = "Pro plan (trial)"
-              this.getProPlanTrialTranslation();
-
-            } else {
-              this.profile_name_for_segment = "Free"
-              this.getPaidPlanTranslation(projectProfileData.profile_name);
-              this.logger.log('[HOME] getProjectPlan BRS-LANG 3 ', this.browserLang);
-
-            }
-          } else if (this.prjct_profile_type === 'payment') {
-            this.getPaidPlanTranslation(projectProfileData.profile_name);
-            this.logger.log('[HOME] getProjectPlan BRS-LANG 4 ', this.browserLang);
-
-            if (projectProfileData.profile_name === 'pro') {
-              this.profile_name_for_segment = "Pro"
-            } else if (projectProfileData.profile_name === 'enterprise') {
-              this.profile_name_for_segment = "Enterprise"
-            }
-          }
-          const projectCreatedAt = projectProfileData.createdAt
-          // console.log('[HOME] - getProjectPlan project CreatedAt', projectCreatedAt)
-          const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
-          // console.log('[HOME] - getProjectPlan project trialEndDate', trialStarDate)
-          if (!isDevMode()) {
-            try {
-              window['analytics'].page("Home Page, Home", {
-                "properties": {
-                  "title": 'Home'
-                }
-              });
-            } catch (err) {
-              this.logger.error('page Home error', err);
-            }
-
-            try {
-              window['analytics'].identify(this.user._id, {
-                name: this.user.firstname + ' ' + this.user.lastname,
-                email: this.user.email,
-                logins: 5,
-                plan: this.profile_name_for_segment,
-              });
-            } catch (err) {
-              this.logger.error('identify Home error', err);
-            }
-          }
-
-
-
-          const trialEndDate = moment(new Date(projectCreatedAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
-          // console.log('[HOME] - getProjectPlan project trialEndDate', trialEndDate)
-
-          const currentTime = moment();
-
-          const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
-          // console.log('[HOME] - getProjectPlan project daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
-
-          // const storedProject = localStorage.getItem(projectProfileData._id);
-          // if (storedProject) {
-          //   const storedProjectObjct = JSON.parse(storedProject)
-          //   console.log('[HOME] - getProjectPlan storedProject  ', storedProjectObjct)
-
-          if (daysDiffNowFromProjctCreated >= 30) {
-            if (!isDevMode()) {
-              try {
-                window['analytics'].track('Trial Ended', {
-                  "userId": this.user._id,
-                  "properties": {
-                    "trial_start_date": trialStarDate,
-                    "trial_end_date": trialEndDate,
-                    "trial_plan_name": "Pro (trial) "
-                  }, "context": {
-                    "groupId": projectProfileData._id
-                  }
-                });
-
-
-              } catch (err) {
-                this.logger.error('track Trial Started event error', err);
-              }
-            }
-          }
-
-          if (!isDevMode()) {
-            try {
-              window['analytics'].group(projectProfileData._id, {
-                name: projectProfileData.name,
-                plan: this.profile_name_for_segment,
-              });
-            } catch (err) {
-              this.logger.error('group Home error', err);
-            }
-          }
+        if (projectUser[0].user_available !== undefined) {
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0]);
         }
-      }, error => {
+        if (projectUser[0].role !== undefined) {
+          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
 
-        this.logger.error('[HOME] - getProjectPlan - ERROR', error);
-      }, () => {
-        this.logger.log('[HOME] - getProjectPlan * COMPLETE *')
-      });
+          // SEND THE ROLE TO USER SERVICE THAT PUBLISH
+          this.usersService.user_role(projectUser[0].role);
 
+          // save the user role in storage - then the value is get by auth.service:
+          // the user with agent role can not access to the pages under the settings sub-menu
+          // this.auth.user_role(projectUser[0].role);
+          // this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
 
-  }
+          // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+          this.USER_ROLE = projectUser[0].role;
+        }
 
-  getProPlanTrialTranslation() {
-    this.translate.get('ProPlanTrial')
-      .subscribe((translation: any) => {
-        this.prjct_profile_name = translation;
-      });
-  }
-
-  getPaidPlanTranslation(project_profile_name) {
-    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-      .subscribe((text: string) => {
-        this.prjct_profile_name = text;
-        this.logger.log('+ + + PaydPlanName ', text)
-      });
+      }
+    }, (error) => {
+      this.logger.error('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ERROR ', error);
+    }, () => {
+      this.logger.log('[HOME] PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+    });
   }
 
   goToPayment() {
@@ -1302,7 +1315,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // }
 
   goToTiledeskMobileAppPage() {
-
     let url = ''
     if (this.browserLang === 'it') {
       url = 'https://tiledesk.com/mobile-live-chat-android-e-iphone-apps/';
@@ -1313,7 +1325,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToAdminDocs() {
-
     const url = URL_getting_started_for_admins
     window.open(url, '_blank');
   }
@@ -1327,7 +1338,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   goToDeveloperDocs() {
     // const url = 'https://docs.tiledesk.com/';
     const url = 'https://developer.tiledesk.com';
-
     window.open(url, '_blank');
   }
 
@@ -1339,7 +1349,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goToChangelogBlog() {
     // const url = 'https://tiledesk.com/tiledesk-changelog'
-    // const url = 'https://tiledesk.com/2022/08/09/tiledesk-product-update-july-2022/'
     const url = 'https://tiledesk.com/category/changelog/'
     window.open(url, '_blank');
     this.usersLocalDbService.savChangelogDate()
@@ -1372,72 +1381,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  getLoggedUser() {
-    this.auth.user_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user) => {
-        this.logger.log('[HOME] - USER GET IN HOME ', user)
-        // tslint:disable-next-line:no-debugger
-        // debugger
-
-
-        if (user) {
-          this.user = user;
-          // !!!! NO MORE USED - MOVED IN USER SERVICE
-          // this.getAllUsersOfCurrentProject();
-          this.logger.log('[HOME] CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
-          this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
-
-
-        }
-      });
-  }
-
-
-
-
-  // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE/UNAVAILABLE WHEN THE USER ENTER IN HOME
-  // (GET THE PROJECT-USER CAN NOT BE DONE IN THE SIDEBAR BECAUSE WHEN THE PROJECT
-  // IS SELECTED THE SIDEBAR HAS BEEN ALREADY CALLED)
-  // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
-  getProjectUser() {
-    this.logger.log('[HOME] CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
-      // console.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
-      if (projectUser) {
-        this.logger.log('[HOME] PROJECT-USER ID ', projectUser[0]._id)
-        this.logger.log('[HOME] USER IS AVAILABLE ', projectUser[0].user_available)
-        this.logger.log('[HOME] USER IS BUSY ', projectUser[0].isBusy)
-        // this.user_is_available_bs = projectUser.user_available;
-
-        if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0]);
-        }
-        if (projectUser[0].role !== undefined) {
-          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
-
-          // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-          this.usersService.user_role(projectUser[0].role);
-
-          // save the user role in storage - then the value is get by auth.service:
-          // the user with agent role can not access to the pages under the settings sub-menu
-          // this.auth.user_role(projectUser[0].role);
-          // this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
-
-          // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-          this.USER_ROLE = projectUser[0].role;
-        }
-
-      }
-    }, (error) => {
-      this.logger.error('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ERROR ', error);
-    }, () => {
-      this.logger.log('[HOME] PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
-    });
-  }
-
 
   // NOT YET USED
   superUserAuth() {
@@ -1458,8 +1401,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   goToUserActivitiesLog() {
     this.router.navigate(['project/' + this.projectId + '/activities']);
   }
-
-
 
   // ------------------------------------------------------------------
   // LAST 7 DAYS CONVERSATIONS GRAPH
@@ -1775,6 +1716,48 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getMaxOfArray(requestsByDay_series_array) {
     return Math.max.apply(null, requestsByDay_series_array);
+  }
+
+  // TRANSLATION
+  translateString() {
+    this.translateInstallWidget();
+    this.translateModalOnlyOwnerCanManageProjectAccount();
+  }
+
+  translateInstallWidget() {
+    this.translate.get('InstallTiledeskNowAndStartChatting', this.tparams)
+      .subscribe((text: string) => {
+        this.installWidgetText = text;
+        // this.logger.log('[HOME] + + + translateInstallWidget', text)
+      });
+  }
+
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+  }
+
+  getProPlanTrialTranslation() {
+    this.translate.get('ProPlanTrial')
+      .subscribe((translation: any) => {
+        this.prjct_profile_name = translation;
+      });
+  }
+
+  getPaidPlanTranslation(project_profile_name) {
+    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+      .subscribe((text: string) => {
+        this.prjct_profile_name = text;
+        this.logger.log('+ + + PaydPlanName ', text)
+      });
   }
 
 }

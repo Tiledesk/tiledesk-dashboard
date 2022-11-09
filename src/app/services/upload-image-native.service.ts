@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { AppConfigService } from '../services/app-config.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LoggerService } from '../services/logger/logger.service';
 
 @Injectable()
@@ -24,11 +23,11 @@ export class UploadImageNativeService {
   constructor(
     public appConfigService: AppConfigService,
     public auth: AuthService,
-    public http: HttpClient,
+    public _httpClient: HttpClient,
     private logger: LoggerService
   ) {
     this.getToken()
-    // this.http = http;
+
     this.files = [];
     this.BASE_URL = this.appConfigService.getConfig().SERVER_BASE_URL
     this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - BASE URL ', this.BASE_URL)
@@ -54,7 +53,7 @@ export class UploadImageNativeService {
 
   // https://tiledesk-server-pre.herokuapp.com/images?path=uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fthumbnails_200_200-photo.jpg
   // : Promise<any>
-
+  
   uploadUserPhotoProfile_Native(file: File): Observable<any> {
     this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD USER PHOTO PROFILE - file ', file)
     const headers = new HttpHeaders({
@@ -72,13 +71,13 @@ export class UploadImageNativeService {
 
     // USE IMAGE API
     const BASE_URL_IMAGES = this.BASE_URL + 'images'
-    return this.http
+    return this._httpClient
       .put<any>(BASE_URL_IMAGES + '/users/photo?force=true', formData, requestOptions)
       .pipe(map((res: any) => {
         // console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES ', res);
         if (res && res.message) {
           this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD USER PHOTO PROFILE - RES MSG ', res.message);
-
+          
           if (res.message === 'Image uploded successfully') {
             this.userImageWasUploaded_Native.next(true);
           } else {
@@ -118,7 +117,7 @@ export class UploadImageNativeService {
 
     // USE IMAGE API
     const BASE_URL_IMAGES = this.BASE_URL + 'images'
-    return this.http
+    return this._httpClient
       .put<any>(BASE_URL_IMAGES + `/users/photo?force=true&user_id=${id}`, formData, requestOptions)
       .pipe(map((res: any) => {
         this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PHOTO PROFILE - RES ', res);
@@ -153,8 +152,8 @@ export class UploadImageNativeService {
     const requestOptions = { headers: headers };
     // const url = "https://tiledesk-server-pre.herokuapp.com/images/users/?path=uploads%2Fusers%2F" + id + "%2Fimages%2Fphoto.jpg"
     const BASE_URL_IMAGES = this.BASE_URL + 'images'
-    return this.http
-      .delete(BASE_URL_IMAGES + "/users/?path=uploads/users/" + id + "/images/photo.jpg", requestOptions)
+    return this._httpClient
+      .delete(BASE_URL_IMAGES +"/users/?path=uploads/users/"+ id + "/images/photo.jpg" , requestOptions)
       .subscribe((res: any) => {
         this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] DELETE PHOTO PROFILE - RES ', res);
 
@@ -189,13 +188,13 @@ export class UploadImageNativeService {
 
     // USE IMAGE API
     const BASE_URL_IMAGES = this.BASE_URL + 'images'
-    return this.http
+    return this._httpClient
       .put<any>(BASE_URL_IMAGES + '/users/photo?force=true', formData, requestOptions)
       .pipe(map((res: any) => {
         this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD LAUNCHER LOGO - RES ', res);
         if (res && res.message) {
           // console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD LAUNCHER LOGO - RES MSG ', res.message);
-
+          
           if (res.message === 'Image uploded successfully') {
             // this.userImageWasUploaded_Native.next(true);
           } else {
@@ -211,53 +210,51 @@ export class UploadImageNativeService {
       }))
   }
 
+
   uploadAttachment_Native(upload): Promise<any> {
-  //  console.log('[NATIVE UPLOAD] - upload new image/file ... upload', upload)
-    const headers = new HttpHeaders({
-      Authorization: this.TOKEN,
-      //'Content-Type': 'multipart/form-data',
-    });
-    const requestOptions = { headers: headers };
-    const formData = new FormData();
-    formData.append('file', upload);
-
-    const that = this;
-    if ((upload.type.startsWith('image') && (!upload.type.includes('svg')))) {
-      // console.log('[NATIVE UPLOAD] - upload new image')
-      //USE IMAGE API
-      const url = this.BASE_URL + 'images' + '/users'
-      return new Promise((resolve, reject) => {
-        that.uploadAttachment$.next(0);
-        that.http.post(url, formData, requestOptions).subscribe(data => {
-          const downloadURL = this.BASE_URL + 'images' + '?path=' + data['filename'];
-          resolve(downloadURL)
-          that.uploadAttachment$.next(100);
-        }, (error) => {
-          reject(error)
-        });
+    //  console.log('[NATIVE UPLOAD] - upload new image/file ... upload', upload)
+      const headers = new HttpHeaders({
+        Authorization: this.TOKEN,
+        //'Content-Type': 'multipart/form-data',
       });
-    } else {
-      // console.log('[NATIVE UPLOAD] - upload new file')
-      //USE FILE API
-      const url = this.BASE_URL + 'files' + '/users'
-      return new Promise((resolve, reject) => {
-        that.uploadAttachment$.next(0);
-        that.http.post(url, formData, requestOptions).subscribe(data => {
-          const downloadURL = this.BASE_URL + 'files' + '?path=' + encodeURI(data['filename']);
-          resolve(downloadURL)
-          that.uploadAttachment$.next(100);
-          // that.BSStateUpload.next({upload: upload});
-        }, (error) => {
-          this.logger.error('[NATIVE UPLOAD] - ERROR upload new file ', error)
-          reject(error)
+      const requestOptions = { headers: headers };
+      const formData = new FormData();
+      formData.append('file', upload);
+  
+      const that = this;
+      if ((upload.type.startsWith('image') && (!upload.type.includes('svg')))) {
+        // console.log('[NATIVE UPLOAD] - upload new image')
+        //USE IMAGE API
+        const url = this.BASE_URL + 'images' + '/users'
+        return new Promise((resolve, reject) => {
+          that.uploadAttachment$.next(0);
+          that._httpClient.post(url, formData, requestOptions).subscribe(data => {
+            const downloadURL = this.BASE_URL + 'images' + '?path=' + data['filename'];
+            resolve(downloadURL)
+            that.uploadAttachment$.next(100);
+          }, (error) => {
+            reject(error)
+          });
         });
-      });
+      } else {
+        // console.log('[NATIVE UPLOAD] - upload new file')
+        //USE FILE API
+        const url = this.BASE_URL + 'files' + '/users'
+        return new Promise((resolve, reject) => {
+          that.uploadAttachment$.next(0);
+          that._httpClient.post(url, formData, requestOptions).subscribe(data => {
+            const downloadURL = this.BASE_URL + 'files' + '?path=' + encodeURI(data['filename']);
+            resolve(downloadURL)
+            that.uploadAttachment$.next(100);
+            // that.BSStateUpload.next({upload: upload});
+          }, (error) => {
+            this.logger.error('[NATIVE UPLOAD] - ERROR upload new file ', error)
+            reject(error)
+          });
+        });
+      }
+  
     }
-
-  }
-
-
-
 
 
 }

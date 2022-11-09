@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
@@ -8,18 +8,16 @@ import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 export class TagsService {
 
-  http: Http;
   projectId: string;
   TOKEN: any;
   SERVER_BASE_PATH: string;
 
   constructor(
-    http: Http,
     public auth: AuthService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public _httpclient: HttpClient
   ) {
-    this.http = http;
     this.getAppConfigAndBuildUrl();
     this.getCurrentProject();
     this.getToken();
@@ -57,14 +55,15 @@ export class TagsService {
     const url = this.SERVER_BASE_PATH + this.projectId + '/tags/'
     this.logger.log('[TAGS-SERV] - GET TAGS - URL', url);
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this._httpclient
+      .get<[any]>(url, httpOptions)
   }
 
 
@@ -76,17 +75,17 @@ export class TagsService {
   public getTagById(tagid: string): Observable<[any]> {
     const url = this.SERVER_BASE_PATH + this.projectId + '/tags/' + tagid
     this.logger.log('[TAGS-SERV] - GET TAGS BY ID - URL', url);
+   
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this._httpclient
+      .get<[any]>(url, httpOptions)
   }
-
 
   /**
    * Create - Save new tag
@@ -96,22 +95,22 @@ export class TagsService {
    */
   public createTag(tagname: string, tagcolor: string) {
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'tag': tagname, 'color': tagcolor };
-
     this.logger.log('[TAGS-SERV] - CREATE TAGS POST BODY ', body);
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/tags/'
     this.logger.log('[TAGS-SERV] - CREATE TAGS POST URL', url);
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
   
@@ -123,11 +122,13 @@ export class TagsService {
    * @returns 
    */
   public updateTag(tagname: string, newtagcolor: string,  tagid: string ) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'tag': tagname, 'color': newtagcolor };
     this.logger.log('[TAGS-SERV] - UPDATE TAGS PUT BODY ', body);
@@ -135,10 +136,8 @@ export class TagsService {
     const url = this.SERVER_BASE_PATH + this.projectId + '/tags/' + tagid;
     this.logger.log('[TAGS-SERV] - UPDATE TAGS PUT URL ', url);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
 
@@ -148,21 +147,19 @@ export class TagsService {
    * @returns 
    */
   public deleteTag(tagid: string, ) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/tags/' + tagid;
     this.logger.log('[TAGS-SERV] - DELETE TAGS - DELETE URL ', url);
 
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    return this._httpclient
+      .delete(url, httpOptions)
+
   }
-
-
-
-
 }

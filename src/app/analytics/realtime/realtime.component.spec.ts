@@ -8,8 +8,6 @@ import { MomentModule } from 'angular2-moment';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
-import { HttpModule } from '@angular/http';
-
 import { AuthService } from '../../core/auth.service';
 import { NotifyService } from '../../core/notify.service';  // Error: StaticInjectorError(DynamicTestModule)[AuthService -> NotifyService]:
 import { LocalDbService } from '../../services/users-local-db.service'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> LocalDbService]: 
@@ -20,7 +18,8 @@ import { AppConfigService } from '../../services/app-config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DepartmentService } from '../../services/department.service';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
-import { AnalyticsService } from '../../services/analytics.service';
+import { AnalyticsService } from '../analytics-service/analytics.service';
+
 
 describe('RealtimeComponent', () => {
   let component: RealtimeComponent;
@@ -33,7 +32,6 @@ describe('RealtimeComponent', () => {
       imports: [
         TranslateModule.forRoot(),
         MomentModule,
-        HttpModule,
         RouterTestingModule,
         HttpClientTestingModule
       ],

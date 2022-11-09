@@ -53,7 +53,7 @@ export class WebhookService {
   // --------------------------------------------
   // GET ALL VEBHOOK SUBSCRIPTIONS FOR PROJECT ID
   // --------------------------------------------
-  getAllSubscriptions(): Observable<[]> {
+  getAllSubscriptions(): Observable<[any]> {
     this.logger.log('[WEBHOOK-SERV] - GET ALL SUBSCRIPTION FOR PROJECT ID: ', this.projectID);
 
     const url = this.SERVER_BASE_PATH + this.projectID + '/subscriptions';
@@ -63,7 +63,8 @@ export class WebhookService {
       'Authorization': this.TOKEN
     })
 
-    return this.http.get<[]>(url, { headers: headers });
+    return this.http
+      .get<[any]>(url, { headers: headers });
   }
 
 
@@ -72,17 +73,18 @@ export class WebhookService {
    * @param subscriptionID 
    * @returns 
    */
-  getSubscritionById(subscriptionID): Observable<[]> {
+  getWHSubscritionById(subscriptionID): Observable<[any]> {
     this.logger.log('[WEBHOOK-SERV] - GET SUBSCRIPTION BY ID - subscriptionID: ', subscriptionID, ' - PROJECT ID: ', this.projectID);
-    
+
     const url = this.SERVER_BASE_PATH + this.projectID + '/subscriptions/' + subscriptionID;
     this.logger.log('[WEBHOOK-SERV] - GET SUBSCRIPTION BY ID URL: ', url);
-    
+
     let headers = new HttpHeaders({
       'Authorization': this.TOKEN
     })
 
-    return this.http.get<[]>(url, { headers: headers })
+    return this.http
+      .get<[any]>(url, { headers: headers })
   }
 
   /**
@@ -91,9 +93,9 @@ export class WebhookService {
    * @param event 
    * @returns 
    */
-  createNewSubscription(target, event): Observable<[]> {
+  createNewSubscription(target, event): Observable<[any]> {
     this.logger.log('[WEBHOOK-SERV] - ADD NEW SUBSCRIPTION FOR PROJECT ID: ', this.projectID);
-    
+
     const url = this.SERVER_BASE_PATH + this.projectID + '/subscriptions';
     this.logger.log('[WEBHOOK-SERV] - ADD NEW SUBSCRIPTION - URL: ', url);
 
@@ -102,10 +104,11 @@ export class WebhookService {
       'Authorization': this.TOKEN
     })
 
-    let data = {  target: target, event: event }
+    let data = { target: target, event: event }
     this.logger.log('[WEBHOOK-SERV] - ADD NEW SUBSCRIPTION - BODY: ', data);
 
-    return this.http.post<[]>(url, JSON.stringify(data), { headers: headers });
+    return this.http
+      .post<[any]>(url, JSON.stringify(data), { headers: headers });
   }
 
   /**
@@ -115,12 +118,12 @@ export class WebhookService {
    * @param event 
    * @returns 
    */
-  updateSubscription(subscriptionID, target, event): Observable<[]> {
+  updateSubscription(subscriptionID, target, event): Observable<[any]> {
     this.logger.log('[WEBHOOK-SERV] - UPDATE SUBSCRIPTION WITH ID: ', subscriptionID, ' FOR PROJECT ID: ', this.projectID);
- 
+
     const url = this.SERVER_BASE_PATH + this.projectID + '/subscriptions/' + subscriptionID;
     this.logger.log('[WEBHOOK-SERV] - UPDATE SUBSCRIPTION PUT URL: ', url);
-    
+
     let headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': this.TOKEN,
@@ -129,7 +132,8 @@ export class WebhookService {
     let data = { target: target, event: event }
     this.logger.log('[WEBHOOK-SERV] - UPDATE SUBSCRIPTION BODY: ', data);
 
-    return this.http.put<[]>(url , data, { headers: headers });
+    return this.http
+      .put<[any]>(url, data, { headers: headers });
   }
 
 
@@ -138,9 +142,9 @@ export class WebhookService {
    * @param subscriptionID 
    * @returns 
    */
-  deleteSubscription(subscriptionID): Observable<[]> {
+  deleteSubscription(subscriptionID): Observable<[any]> {
     this.logger.log('[WEBHOOK-SERV] - DELETE SUBSCRIPTION WITH ID: ', subscriptionID, ' FOR PROJECT ID: ', this.projectID);
-    
+
     const url = this.SERVER_BASE_PATH + this.projectID + '/subscriptions/' + subscriptionID
     this.logger.log('[WEBHOOK-SERV] - DELETE SUBSCRIPTION URL: ', url);
 
@@ -148,7 +152,8 @@ export class WebhookService {
       'Authorization': this.TOKEN
     })
 
-    return this.http.delete<[]>(url, { headers: headers });
+    return this.http
+      .delete<[any]>(url, { headers: headers });
   }
 
 

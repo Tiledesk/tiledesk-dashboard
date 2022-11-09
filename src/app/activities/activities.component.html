@@ -21,16 +21,33 @@
 
                 <div class="row">
                   <div class="col-xs-12 col-sm-12">
-                    <div class="col-xs-6 col-sm-6" style="padding-right:2px;">
-                      <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="startDate"
-                        placeholder="{{ 'From' | translate }}">
+                    <!-- <div class="col-xs-6 col-sm-6" style="padding-right:2px;">
+                      <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="startDate"  placeholder="{{ 'From' | translate }}">
                       </my-date-picker>
                     </div>
                     <div class="col-xs-6 col-sm-6" style="padding-left:2px;">
-                      <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="endDate"
-                        placeholder="{{ 'To' | translate }}" [disabled]="!startDate">
+                      <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="endDate" placeholder="{{ 'To' | translate }}"  [disabled]="!startDate">
                       </my-date-picker>
-                    </div>
+                    </div> -->
+                    <mat-form-field class="activity-date-range-picker" appearance="standard" style="margin-left: 14px;">
+                      <!-- <mat-label>Enter a date range</mat-label> -->
+                      <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate (dateChange)="addEventStartDate($event.value)" [(ngModel)]="startDate"
+                          placeholder="Start date">
+                        <input matEndDate (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDate"
+                          placeholder="End date">
+                      </mat-date-range-input>
+                      <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
+                        <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                      </mat-datepicker-toggle>
+                      <mat-date-range-picker #picker></mat-date-range-picker>
+
+                      <!-- <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                      <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error> -->
+                    </mat-form-field>
+
                   </div>
                 </div>
 
@@ -97,7 +114,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card" style="margin-top: 0px;">
-          <!-- float: right;  -->
+
           <div class="sort-by-date" style="text-align:right; padding-top:16px; padding-right:28px">
             <span style="cursor: pointer" (click)="sortDirection(asc = !asc)">
               <span style="color:#7695a5; font-weight:400">
@@ -115,24 +132,16 @@
                   <th></th>
                   <th valign="middle">
                     <span class="column-th-span">
-                      <!-- Ultime attività -->
                       {{ 'LatestActivities' | translate}}
                     </span>
-
-                    <!-- <span style="float: right; cursor: pointer" (click)="sortDirection(asc = !asc)"> 
-                      <span style="color:#7695a5; font-weight:400">
-                        {{ 'SortByDate' | translate}}
-                      </span>
-                      <span class="sorting" [ngClass]="{'sorting_desc' : direction === 1, 'sorting_asc': direction === -1}"></span>
-                    </span> -->
-
                   </th>
                 </tr>
               </thead>
 
               <tbody>
-
-                <!-- ===== IF THERE ISN'T ACTIVITIES ===== -->
+                <!-- ------------------------------------------------------------- -->
+                <!--  IF THERE AREN'T ACTIVITIES  -->
+                <!-- ------------------------------------------------------------- -->
                 <tr *ngIf="usersActivities && usersActivities?.length === 0">
                   <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer">
 
@@ -142,25 +151,28 @@
                   </td>
                 </tr>
 
+                <!-- ------------------------------------------------------------- -->
+                <!--  ACTIVITIES  -->
+                <!-- ------------------------------------------------------------- -->
                 <tr *ngFor="let activity of usersActivities">
                   <td style="width:1%; white-space:nowrap">
                     <span *ngIf="activity?.verb === 'PROJECT_USER_INVITE'">
-                      <img class="fontawesome-icon" src="assets/img/user-plus-solid.svg" alt="user-plus" />
+                      <img class="fontawesome-icon" src="assets/img/user-plus-solid.svg" alt="user-invite" />
                     </span>
 
                     <span *ngIf="activity?.verb === 'PROJECT_USER_DELETE'">
-                      <img class="fontawesome-icon" src="assets/img/user-minus-solid.svg" alt="user-plus" />
+                      <img class="fontawesome-icon" src="assets/img/user-minus-solid.svg" alt="user-deleted" />
                     </span>
 
                     <span *ngIf="activity?.verb === 'PROJECT_USER_UPDATE'">
-                      <img class="fontawesome-icon" src="assets/img/user-edit-solid.svg" alt="user-plus" />
+                      <img class="fontawesome-icon" src="assets/img/user-edit-solid.svg" alt="user-updated" />
                     </span>
 
                     <span *ngIf="activity?.verb === 'REQUEST_CREATE'">
-                      <img class="fontawesome-icon" src="assets/img/comment-medical-solid.svg" alt="user-plus" />
+                      <img class="fontawesome-icon" src="assets/img/comment-medical-solid.svg" alt="request-close" />
                     </span>
                     <span *ngIf="activity?.verb === 'REQUEST_CLOSE'">
-                      <img class="fontawesome-icon" src="assets/img/comment-resolved.svg" alt="user-plus" />
+                      <img class="fontawesome-icon" src="assets/img/comment-resolved.svg" alt="request-close" />
                     </span>
                   </td>
 
@@ -238,14 +250,14 @@
                           </span>
                           's
                           availability status has been changed into
-                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === ''">
+                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.activity?.profileStatus === ''">
                             {{ 'Unavailable' | translate }}
                           </span>
-                          <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.profileStatus === ''">
-                           {{ 'Available' | translate }}
+                          <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.activity?.profileStatus === ''">
+                            {{ 'Available' | translate }}
                           </span>
-                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === 'inactive'">
-                           {{ 'Inactive' | translate }}
+                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.activity?.profileStatus === 'inactive'">
+                            {{ 'Unavailable' | translate }}
                           </span>
                         </p>
 
@@ -260,10 +272,10 @@
                           </span>
 
                           è stato cambiato in
-                          <span *ngIf="activity?.actionObj?.user_available === false  && activity?.actionObj?.profileStatus === ''">
+                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === ''">
                             {{ 'Unavailable' | translate }}
                           </span>
-                          <span *ngIf="activity?.actionObj?.user_available === true  && activity?.actionObj?.profileStatus === ''">
+                          <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.profileStatus === ''">
                             {{ 'Available' | translate }}
                           </span>
                           <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === 'inactive'">
@@ -373,15 +385,18 @@
                         </span>
                         {{ 'Into' | translate }}
                         <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === ''">
+                          <!-- non disponibile -->
                           {{ 'Unavailable' | translate }}
                         </span>
 
                         <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.profileStatus === ''">
+                          <!-- disponibile -->
                           {{ 'Available' | translate }}
                         </span>
 
                         <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === 'inactive'">
-                          {{ 'Inactive' | translate }}
+                          <!-- non disponibile -->
+                          {{ 'Unavailable' | translate }}
                         </span>
 
                         <span *ngIf="activity?.actionObj?.role === 'admin'">
@@ -500,24 +515,28 @@
 
                       {{ 'TheConversation' | translate }}
 
-                
+
                       <span *ngIf="activity?.activity_request_text"
                         (click)="goToRequestDetails(activity?.target?.object?.request_id)" class="link-to-user-profile"
                         style="cursor:pointer">
                         <em> {{ activity?.activity_request_text }}</em>
                       </span>
 
-                      <span> 
+                      <span>
 
-                       {{ 'WasResolvedBy' | translate }}: {{activity?.closed_by_label}}
-                      
-                     </span>
+                        {{ 'WasResolvedBy' | translate }}: {{activity?.closed_by_label}}
+
+                      </span>
                     </p>
                     <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px">
                       <!-- {{ activity?.updatedAt | date: 'E/MM/yyyy HH:mm:ss' }}  -->
                       <span style="text-transform:capitalize"> {{ activity?.date }} </span>
                     </span>
                   </td>
+
+
+
+
                 </tr>
 
               </tbody>

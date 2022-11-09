@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy, isDevMode } from '@angular/core';
 
 import { NotifyService } from '../../core/notify.service';
 import { AuthService } from '../../core/auth.service';
@@ -31,7 +31,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   browserLang: string;
   subscriptionCanceledSuccessfully: string;
   subscriptionCanceledError: string;
-
+  prjct_name: string;
   prjct_profile_type: string;
   subscription_is_active: boolean;
   trial_expired: boolean;
@@ -47,6 +47,9 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   learnMoreAboutDefaultRoles: string;
   contactUsEmail: string;
   IS_AVAILABLE: boolean;
+  currentUser: any;
+  profile_name_for_segment: string;
+
   constructor(
     public notify: NotifyService,
     public auth: AuthService,
@@ -66,16 +69,18 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
       this.company_name = brand['company_name'];
       this.contactUsEmail = brand['contact_us_email'];
     }
-  
+
   }
 
   ngOnInit() {
     this.getBrowserLang();
-    this.getCurrentProject()
+    this.getCurrentProject();
+
     // this.getProjectById();
     this.translateMsgSubscriptionCanceledSuccessfully();
     this.translateMsgSubscriptionCanceledError();
     this.getUserRole();
+    this.getCurrentUser()
     this.getProjectPlan();
     this.getWidgetUrl();
     this.getChatUrl();
@@ -85,10 +90,10 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
   getUserAvailability() {
     this.usersService.user_is_available_bs.subscribe((user_available) => {
-        this.IS_AVAILABLE = user_available;
-        this.logger.log('[NAVBAR]- USER IS AVAILABLE ', this.IS_AVAILABLE);
+      this.IS_AVAILABLE = user_available;
+      this.logger.log('[NAVBAR]- USER IS AVAILABLE ', this.IS_AVAILABLE);
     });
-}
+  }
 
 
   translateModalOnlyOwnerCanManageProjectAccount() {
@@ -129,19 +134,31 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       this.logger.log('[NOTIFICATION-MSG] - GET PROJECT PROFILE', projectProfileData)
       if (projectProfileData) {
-
+        this.prjct_name = projectProfileData.name;
         this.prjct_profile_type = projectProfileData.profile_type;
         this.logger.log('[NOTIFICATION-MSG] - GET PROJECT PROFILE prjct_profile_type ', this.prjct_profile_type);
         this.subscription_is_active = projectProfileData.subscription_is_active;
-
         this.trial_expired = projectProfileData.trial_expired;
-
         this.subscription_end_date = projectProfileData.subscription_end_date;
-
         const projectprofile = projectProfileData.profile_name.toUpperCase()
         this.tprojectprofilemane = { projectprofile: projectprofile }
         this.profile_name = projectProfileData.profile_name;
         this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+
+
+        if (projectProfileData.profile_type === 'free') {
+          if (projectProfileData.trial_expired === false) {
+            this.profile_name_for_segment = "Pro plan (trial)"
+          } else {
+            this.profile_name_for_segment = "Free"
+          }
+        } else if (projectProfileData.profile_type === 'payment') {
+          if (projectProfileData.profile_name === 'pro') {
+            this.profile_name_for_segment = "Pro"
+          } else if (projectProfileData.profile_name === 'enterprise') {
+            this.profile_name_for_segment = "Enterprise"
+          }
+        }
       }
     }, err => {
       this.logger.error('[NOTIFICATION-MSG] GET PROJECT PROFILE - ERROR', err);
@@ -208,20 +225,15 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
     } else {
       this.notify.closeDataExportNotAvailable()
-      this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles );
+      this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles);
     }
   }
-
-
 
   onLogoutModalHandled() {
     this.notify.closeLogoutModal()
     this.auth.signOut('userdetailsidebar');
-    
+
   }
-
-
-  // closeExportCSVnotAvailable
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
@@ -257,6 +269,17 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     });
   }
 
+  getCurrentUser() {
+    this.auth.user_bs.subscribe((user) => {
+      this.logger.log('[ActivitiesComponent] - LoggedUser ', user);
+
+      if (user) {
+        this.currentUser = user;
+        this.logger.log('[ActivitiesComponent] - LoggedUser this.currentUser ', this.currentUser);
+      }
+    });
+  }
+
 
   cancelSubscription() {
     this.notify.cancelSubscriptionCompleted(false)
@@ -267,6 +290,39 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
       if (confirmation && confirmation.status === 'canceled') {
         this.notify.showNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
+        if (!isDevMode()) {
+          try {
+            window['analytics'].identify(this.currentUser._id, {
+              name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
+              email: this.currentUser.email,
+              logins: 5,
+              plan: this.profile_name_for_segment,
+            });
+          } catch (err) {
+            this.logger.error('identify [NOTIFICATION-MSG] Cancel subscription error', err);
+          }
+
+          try {
+            window['analytics'].track('Cancel Subscription', {
+              "email": this.currentUser.email,
+            }, {
+              "context": {
+                "groupId": this.projectId
+              }
+            });
+          } catch (err) {
+            this.logger.error('track [NOTIFICATION-MSG] Cancel subscrption error', err);
+          }
+
+          try {
+            window['analytics'].group(this.projectId, {
+              name: this.prjct_name,
+              plan: this.profile_name_for_segment,
+            });
+          } catch (err) {
+            this.logger.error('group [NOTIFICATION-MSG] Cancel subscrption error', err);
+          }
+        }
 
         this.notify.cancelSubscriptionCompleted(true);
       }

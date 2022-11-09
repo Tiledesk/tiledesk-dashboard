@@ -13,10 +13,8 @@ import { Request } from '../../../models/request-model';
 import { UsersService } from '../../../services/users.service';
 import { UAParser } from 'ua-parser-js'
 import { FaqKbService } from '../../../services/faq-kb.service';
-
-import 'rxjs/add/observable/of';
 import { AppConfigService } from '../../../services/app-config.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
 import PerfectScrollbar from 'perfect-scrollbar';
 import { DepartmentService } from '../../../services/department.service';
 
@@ -47,8 +45,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   // @ViewChild('teamContent', { read: ElementRef }) public teamContent: ElementRef<any>;
-  @ViewChild('teamContent') private teamContent: ElementRef;
-  @ViewChild('testwidgetbtn') private testwidgetbtnRef: ElementRef;
+  @ViewChild('teamContent', { static: false })  teamContent: ElementRef;
+  @ViewChild('testwidgetbtn', { static: false })  testwidgetbtnRef: ElementRef;
 
 
   wsRequestsUnserved: any;

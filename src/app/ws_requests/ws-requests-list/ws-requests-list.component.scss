@@ -1,4 +1,4 @@
-// @import url(https://fonts.googleapis.com/css?family=Google+Sans);
+
 @import "./src/assets/sass/md/_variables.scss";
 
 .modal {
@@ -810,9 +810,6 @@ $f21blue: #039be5;
 .is-user-offline {
   background-color: #f44336;
 }
-.is-user-inactive {
-  background-color: #697482;
-}
 
 .scroll-div-side-btn {
   align-items: center;
@@ -964,6 +961,9 @@ $f21blue: #039be5;
 }
 .is-user-offline {
   background-color: #f44336;
+}
+.is-user-inactive {
+  background-color: #697482;
 }
 
 /* ./ teammates scroll div */

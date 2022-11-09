@@ -5,9 +5,8 @@ import { SentimentComponent } from './sentiment.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core'; // suppress the error msg "Can't bind to 'ngModel' + 'clearable' since it isn't a known property of 'ng-select'.""
 
-import { AnalyticsService } from 'app/services/analytics.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Error: StaticInjectorError(DynamicTestModule)[AnalyticsService -> HttpClient]:
-import { HttpModule } from '@angular/http';
+
 
 import { AuthService } from '../../../core/auth.service';
 import { NotifyService } from '../../../core/notify.service';  // Error: StaticInjectorError(DynamicTestModule)[AuthService -> NotifyService]:
@@ -20,6 +19,7 @@ import { DepartmentService } from '../../../services/department.service';
 import { UsersService } from '../../../services/users.service';
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 
 describe('SentimentComponent', () => {
   let component: SentimentComponent;
@@ -32,7 +32,6 @@ describe('SentimentComponent', () => {
       imports: [
         TranslateModule.forRoot(),
         HttpClientModule,
-        HttpModule,
         RouterTestingModule,
         HttpClientTestingModule
       ],

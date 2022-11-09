@@ -80,7 +80,7 @@ import { DepartmentsStaticComponent } from './static-pages/departments-static/de
 
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
-import { MetricheComponent } from './analytics/metrics/metriche.component';
+import { MetricsComponent } from './analytics/metrics/metrics.component';
 import { RealtimeComponent } from './analytics/realtime/realtime.component';
 
 import { TriggerComponent } from './trigger/trigger.component';
@@ -111,7 +111,7 @@ import { AppStoreInstallComponent } from './app-store/app-store-install/app-stor
 import { WebhookComponent } from './webhook/webhook.component';
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 import { MessagesComponent } from './analytics/metrics/messages/messages.component';
-import { RichiesteComponent } from './analytics/metrics/richieste/richieste.component';
+import { RequestsComponent } from './analytics/metrics/requests/requests.component';
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
@@ -120,6 +120,7 @@ import { AppCreateComponent } from './app-store/app-create/app-create.component'
 import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-select-type.component';
 import { TilebotComponent } from './bots/tilebot/tilebot.component';
+import { OnboardingComponent } from './create-project-wizard/onboarding/onboarding.component';
 
 
 const routes: Routes = [
@@ -148,7 +149,8 @@ const routes: Routes = [
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
   { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/configure-widget', component: ConfigureWidgetComponent, canActivate: [AuthGuard] }, // wizard step 2
-  { path: 'project/:projectid/install-widget/:langcode/:langname', component: InstallWidgetComponent, canActivate: [AuthGuard] }, // wizard step 3
+  { path: 'project/:projectid/onboarding/:langcode/:langname', component: OnboardingComponent, canActivate: [AuthGuard] }, // wizard step 3
+  { path: 'project/:projectid/install-widget/:langcode/:langname', component: InstallWidgetComponent, canActivate: [AuthGuard] }, // wizard step 4
 
   { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] },
@@ -262,7 +264,7 @@ const routes: Routes = [
   { path: 'project/:projectid/tilebot/prebuilt', component: TilebotSelectTypeComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/createfaq/:faqkbid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
   // TEST-FAQ PAGE
@@ -281,7 +283,7 @@ const routes: Routes = [
   { path: 'project/:projectid/analytics/metrics/messages-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/messages-analytics', component: MessagesComponent, canActivate: [AuthGuard] }, // doesn't works
-  { path: 'project/:projectid/conversation-analytics', component: RichiesteComponent, canActivate: [AuthGuard] }, // doesn't works
+  { path: 'project/:projectid/conversation-analytics', component: RequestsComponent, canActivate: [AuthGuard] }, // doesn't works
 
 
   // , ProjectProfileGuard

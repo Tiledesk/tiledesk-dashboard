@@ -106,22 +106,6 @@
                   </div>
                 </div>
 
-                <!-- <div style="font-size: 16px;
-                font-family: 'Google Sans', sans-serif !important;
-                color: #394f5a;
-                font-weight: 500;
-                margin-bottom: 33px;
-                /* background: aliceblue; */
-                padding: 7px;
-                border-bottom: 1px solid #e8f0f5;">
-                  <span *ngIf="botType !== 'external'">
-                    {{ 'CreateA' | translate: translateparam }}
-                  </span>
-
-                  <span *ngIf="botType === 'external'">
-                    {{ 'CreateAN' | translate:translateparam }}
-                  </span>
-                </div> -->
               </div>
             </div>
 
@@ -221,7 +205,7 @@
                       <label class="upload-button">
                         <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/JSON"
                           name="uploadprivatekey" type="file">
-                        <span class="browse-btn">{{ 'Browse' | translate }}</span>
+                        <span class="browse-btn">&nbsp;{{ 'Browse' | translate }}</span>
                       </label>
                       <span style="color: rgba(0,0,0,.54);font-weight: 400;"> {{ 'ToUpload' | translate }} </span>
                     </p>
@@ -819,10 +803,7 @@
 
             <h5 style="color:#D06079;"> {{'AnErroOccurredWhileActivatingTheBot' | translate }}</h5>
           </span>
-
         </div>
-        <!-- <span (click)="hookBotToDept()"> {{'ActivateBotsForNewConversations' | translate}}</span> -->
-
       </div> <!-- /.modal-body -->
 
       <div class="modal-footer modal-footer-no-bkgrnd">

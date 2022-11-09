@@ -11,9 +11,9 @@
   <div class="container-fluid">
 
 
-        <!-- ------------------------------------------------------ -->
-        <!-- Link to documentation / tutorial -->
-        <!-- ------------------------------------------------------ -->
+    <!-- ------------------------------------------------------ -->
+    <!-- Link to documentation / tutorial -->
+    <!-- ------------------------------------------------------ -->
     <div class="row" style="margin-right: -30px; margin-left: -30px;">
       <div class="col-xs-12"
         style="background-color: rgb(241,241,241);margin-top: -15px;	padding: 20px 20px 10px 36px;">
@@ -74,7 +74,7 @@
               </label>
               <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
 
-                <input  [(ngModel)]="faqKbName" class="input" type="text"
+                <input [(ngModel)]="faqKbName" class="input" type="text"
                   placeholder='{{ "BotsAddEditPage.BotName" | translate }}'>
               </div>
             </div>
@@ -87,9 +87,9 @@
             <div class="row" style="margin-top: 8px;">
               <label class="col-sm-2 custom-label">RASA URL</label>
               <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-                <input [(ngModel)]="rasaServerUrl" class="input" type="text" 
+                <input [(ngModel)]="rasaServerUrl" class="input" type="text"
                   placeholder="e.g. http(s)://{RASA_HOSTNAME}/webhooks/rest/webhook">
-                   
+
               </div>
             </div>
 
@@ -102,7 +102,7 @@
               <label class="col-sm-2 custom-label">
 
                 {{ "Description" | translate }}
-  
+
               </label>
               <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                 <textarea [(ngModel)]="rasaBotDescription" placeholder="{{ 'Description' | translate }}" class="input"
@@ -119,7 +119,7 @@
               <!-- [disabled]="btn_create_bot_is_disabled" -->
               <div class="col-sm-2"></div>
               <div class="col-sm-10">
-                <button id="create-rasa-bot-btn" class="btn btn-primary" (click)="createRasaBot()"  
+                <button id="create-rasa-bot-btn" class="btn btn-primary" (click)="createRasaBot()"
                   [disabled]="!rasaServerUrl || rasaServerUrl.length === 0 || !faqKbName || faqKbName.length === 0">
                   {{ "BotsAddEditPage.CreateBot" | translate }}
                 </button>
@@ -134,7 +134,7 @@
       <!-- RIGHT SIDEBAR -->
       <!-- ----------------------------------------------- -->
       <div class="col-md-4">
-    
+
         <!-- <div class="card card--no-border" style="margin-top:0px">
           <div class="card-content">
             <section>
@@ -170,14 +170,14 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayInfoModal }"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
-   
+
     <div class="modal-content">
 
       <div class="modal-header custom--modal-header">
         <button type="button" class="close" aria-label="Close" (click)="onCloseModal()"
           style="position: absolute; right: 14px; top: 20px;">
           <span aria-hidden="true">
-            
+
             <svg class="tide-icon" width="24" height="24" viewBox="0 0 24 24">
               <path
                 d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
@@ -197,7 +197,7 @@
 
       <div class="modal-body"
         style="padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px; line-height: 1;min-height: 161px;">
-  
+
         <div style="text-align: center">
 
           <div *ngIf="SHOW_CIRCULAR_SPINNER" style="min-height: 171px;">
@@ -214,7 +214,7 @@
           <!-- WHEN NO ERROR OCCUR  -->
           <!-- ---------------------------------------- -->
           <div *ngIf="!CREATE_BOT_ERROR && !SHOW_CIRCULAR_SPINNER">
-       
+
             <div class="success-checkmark">
               <div class="check-icon">
                 <span class="success-icon-line success-line-tip"></span>
@@ -257,13 +257,13 @@
       </div> <!-- ./ modal-body -->
 
       <div class="modal-footer modal-footer-no-bkgrnd">
-        <button *ngIf="CREATE_BOT_ERROR === false" class="btn btn-primary"
-          (click)="goTo_EditBot()" style="margin-right: 8px;">
+        <button *ngIf="CREATE_BOT_ERROR === false" class="btn btn-primary" (click)="goTo_EditBot()"
+          style="margin-right: 8px;">
           <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
         </button>
 
-        <button *ngIf="CREATE_BOT_ERROR === true" class="btn btn-primary"
-          (click)="onCloseModal()" style="margin-right: 8px;">
+        <button *ngIf="CREATE_BOT_ERROR === true" class="btn btn-primary" (click)="onCloseModal()"
+          style="margin-right: 8px;">
           <span> {{ "Close" | translate }} </span>
         </button>
 
@@ -303,7 +303,6 @@
       </div>
 
       <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px">
-      <!-- padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px;  -->
       <div class="modal-body"
         [ngClass]="{'modal-body-no-padding-top': DISPLAY_SELECT_DEPTS_WITHOUT_BOT && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false}"
         style="line-height: 1 !important;height: 161px!important;text-align: center!important; margin: auto!important;">
@@ -330,27 +329,9 @@
                 </ng-select>
               </div>
             </div>
-            <!-- <div class="col-xs-4">
-              <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === false" class="btn btn-tdblu-no-boxshadow"
-                (click)="hookBotToDept()" [disabled]="DISPLAY_SELECT_DEPTS_WITHOUT_BOT && !selected_bot_id">
-                <span> {{ "ActivateBot" | translate }} </span>
-              </button>
-
-            </div> -->
           </div>
         </span>
 
-
-        <!-- [ngClass]="{'stretchspinner-more-top': DISPLAY_SELECT_DEPTS_WITHOUT_BOT }" -->
-        <!-- <div *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false">
-          <div class="stretchspinner" style="top: 50px;">
-            <div class="rect1"></div>
-            <div class="rect2"></div>
-            <div class="rect3"></div>
-            <div class="rect4"></div>
-            <div class="rect5"></div>
-          </div>
-        </div> -->
 
         <div *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === true">
 
@@ -381,8 +362,6 @@
           </span>
 
         </div>
-        <!-- <span (click)="hookBotToDept()"> {{'ActivateBotsForNewConversations' | translate}}</span> -->
-
       </div> <!-- /.modal-body -->
 
       <div class="modal-footer modal-footer-no-bkgrnd">

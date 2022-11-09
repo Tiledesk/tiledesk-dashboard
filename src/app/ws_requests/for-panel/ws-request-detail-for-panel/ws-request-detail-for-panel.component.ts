@@ -21,7 +21,8 @@ import { NotifyService } from '../../../core/notify.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { ContactsService } from '../../../services/contacts.service';
 import { LoggerService } from '../../../services/logger/logger.service';
-import * as moment from 'moment';
+// import * as moment from 'moment';
+import moment from "moment";
 import { WebSocketJs } from 'app/services/websocket/websocket-js';
 @Component({
   selector: 'appdashboard-ws-request-detail-for-panel',
@@ -34,7 +35,7 @@ import { WebSocketJs } from 'app/services/websocket/websocket-js';
 export class WsRequestDetailForPanelComponent extends WsSharedComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject<any>();
 
-  @ViewChild('scrollMe')
+  @ViewChild('scrollMe', { static: false })
   private myScrollContainer: ElementRef;
 
   @Output() valueChange = new EventEmitter();

@@ -151,9 +151,10 @@ export class ResetPswComponent implements OnInit {
 
     }, (error) => {
       this.logger.error('[RESET-PSW] »»» »»» CHECK RESET PSW REQUEST ID - ERROR ', error);
-      const ckeckrequestid_errorbody = JSON.parse(error._body);
-      this.logger.log('[RESET-PSW] »»» »»» CHECK RESET PSW REQUEST ID - ERROR BODY ', ckeckrequestid_errorbody)
-      if (error && ckeckrequestid_errorbody.msg === 'Invalid password reset key') {
+
+      const ckeckrequestid_errorMsg = error['error']['msg'];
+      this.logger.log('[RESET-PSW] »»» »»» CHECK RESET PSW REQUEST ID - ERROR MSG ', ckeckrequestid_errorMsg)
+      if (ckeckrequestid_errorMsg && ckeckrequestid_errorMsg === 'Invalid password reset key') {
 
         this.RESET_PSW_REQUEST_ID_IS_VALID = false;
         this.logger.log('[RESET-PSW] »»» »»» CHECK RESET PSW REQUEST ID - IS VALID REQUEST ID ', this.RESET_PSW_REQUEST_ID_IS_VALID);

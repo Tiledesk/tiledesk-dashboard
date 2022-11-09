@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Base",
+        "id": 1,
+        "description_key": "fullname, email",
+        "cancelCommands": [],
+        "cancelReply": "",
+        "fields": [
+            {
+                "name": "userFullname",
+                "type": "text",
+                "label": "What is your name?"
+            }, {
+                "name": "userEmail",
+                "type": "text",
+                "regex": "/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/",
+                "label": "Hi ${userFullname}\n\nJust one last question\n\nYour email 🙂",
+                "errorLabel": "${userFullname} this email address is invalid\n\nCan you insert a correct email address?"
+            }
+        ]
+    }, 
+    {
+        "name": "Advanced",
+        "id": 2,
+        "description_key": "fullname, company name, phone, email",
+        "cancelCommands": [],
+        "cancelReply": "",
+        "fields": [
+            {
+                "name": "userFullname",
+                "type": "text",
+                "label": "What is your name?"
+            },{
+                "name": "companyName",
+                "type": "text",
+                "label": "Thank you ${userFullname}! What is your Company name?"
+            }, {
+                "name": "userPhone",
+                "type": "text",
+                "label": "Thank you ${userFullname}! What is your phone number?"
+            },{
+                "name": "userEmail",
+                "type": "text",
+                "regex": "/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/",
+                "label": "Hi ${userFullname} \n\nJust one last question\n\nYour email 🙂",
+                "errorLabel": "${userFullname} this email address is invalid\n\nCan you insert a correct email address?"
+            }
+        ]
+    }
+  ]

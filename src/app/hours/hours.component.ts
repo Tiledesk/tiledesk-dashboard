@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy, ViewChild } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 
 import { ProjectService } from '../services/project.service';
 import { UsersService } from '../services/users.service';
 
-import { AmazingTimePickerService } from 'amazing-time-picker';
+// import { AmazingTimePickerService } from 'amazing-time-picker';
 import { TranslateService } from '@ngx-translate/core';
 
 // import * as moment from 'moment';
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { Project } from './../models/project-model';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { FormControl } from "@angular/forms";
 
 @Component({
   selector: 'appdashboard-hours',
@@ -25,6 +26,14 @@ import { LoggerService } from '../services/logger/logger.service';
 
 
 export class HoursComponent implements OnInit, OnDestroy {
+
+  // time picker
+  formControlItem: FormControl = new FormControl("");
+  required: boolean = !1;
+  @ViewChild("timepicker") timepicker: any;
+
+
+
   activeOperatingHours: boolean;
   operatingHours: any;
 
@@ -148,7 +157,7 @@ export class HoursComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private projectService: ProjectService,
     private usersService: UsersService,
-    private atp: AmazingTimePickerService,
+    // private atp: AmazingTimePickerService,
     private translate: TranslateService,
     public notify: NotifyService,
     private router: Router,
@@ -371,7 +380,6 @@ export class HoursComponent implements OnInit, OnDestroy {
           if (project.operatingHours !== undefined) {
             this.project_operatingHours = JSON.parse(project.operatingHours);
             this.logger.log('[HOURS]- on init PROJECT OPERATING HOURS: ', this.project_operatingHours);
-
             this.logger.log('[HOURS] - on init PROJECT TIMEZONE NAME: ', this.project_operatingHours['tzname']);
 
             this.current_prjct_timezone_name = this.project_operatingHours['tzname'];
@@ -542,7 +550,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   //       color: 'white'
   //     }
   //   });
-  //   amazingTimePicker.afterClose().subscribe(time => {
+  //   onChangeOpenedClosedStatus.afterClose().subscribe(time => {
   //     this.days[dayid].operatingHoursAmStart = time;
   //     this.logger.log('SELECTED TIME  ', this.days[dayid].operatingHoursAmStart)
   //     this.logger.log('DAYS  ', this.days)
@@ -685,85 +693,85 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   openAmStart(dayid) {
-    this.logger.log('[HOURS] - openAmStart DAY ID ', dayid);
-    const amazingTimePicker = this.atp.open({
-      // time: this.selectedTime,
-      time: this.days[dayid].operatingHoursAmStart,
-      theme: 'dark',
-      arrowStyle: {
-        background: 'red',
-        color: 'white'
-      }
-    });
-    amazingTimePicker.afterClose().subscribe(time => {
-      this.days[dayid].operatingHoursAmStart = time;
-      this.logger.log('[HOURS] - openAmStart SELECTED TIME  ', this.days[dayid].operatingHoursAmStart);
-      this.logger.log('[HOURS] - openAmStart DAYS  ', this.days);
-    });
+    // this.logger.log('[HOURS] - openAmStart DAY ID ', dayid);
+    // const amazingTimePicker = this.atp.open({
+    //   // time: this.selectedTime,
+    //   time: this.days[dayid].operatingHoursAmStart,
+    //   theme: 'dark',
+    //   arrowStyle: {
+    //     background: 'red',
+    //     color: 'white'
+    //   }
+    // });
+    // amazingTimePicker.afterClose().subscribe(time => {
+    //   this.days[dayid].operatingHoursAmStart = time;
+    //   this.logger.log('[HOURS] - openAmStart SELECTED TIME  ', this.days[dayid].operatingHoursAmStart);
+    //   this.logger.log('[HOURS] - openAmStart DAYS  ', this.days);
+    // });
   }
 
   openAmEnd(dayid) {
-    this.logger.log('[HOURS] openAmEnd DAY ID ', dayid);
-    const amazingTimePicker = this.atp.open({
-      // time: this.selectedTime,
-      time: this.days[dayid].operatingHoursAmEnd,
-      theme: 'dark',
-      arrowStyle: {
-        background: 'red',
-        color: 'white'
-      }
-    });
-    amazingTimePicker.afterClose().subscribe(time => {
-      this.days[dayid].operatingHoursAmEnd = time;
-      this.logger.log('[HOURS] - openAmEnd SELECTED TIME  ', this.days[dayid].operatingHoursAmEnd);
-      this.logger.log('[HOURS] - openAmEnd DAYS  ', this.days);
-    });
+    // this.logger.log('[HOURS] openAmEnd DAY ID ', dayid);
+    // const amazingTimePicker = this.atp.open({
+    //   // time: this.selectedTime,
+    //   time: this.days[dayid].operatingHoursAmEnd,
+    //   theme: 'dark',
+    //   arrowStyle: {
+    //     background: 'red',
+    //     color: 'white'
+    //   }
+    // });
+    // amazingTimePicker.afterClose().subscribe(time => {
+    //   this.days[dayid].operatingHoursAmEnd = time;
+    //   this.logger.log('[HOURS] - openAmEnd SELECTED TIME  ', this.days[dayid].operatingHoursAmEnd);
+    //   this.logger.log('[HOURS] - openAmEnd DAYS  ', this.days);
+    // });
   }
 
   openPmStart(dayid) {
     this.logger.log('[HOURS] - openPmStart DAY ID ', dayid);
-    const amazingTimePicker = this.atp.open({
-      // time: this.selectedTime,
-      time: this.days[dayid].operatingHoursPmStart,
-      theme: 'dark',
-      arrowStyle: {
-        background: 'red',
-        color: 'white'
-      }
-    });
-    amazingTimePicker.afterClose().subscribe(time => {
-      this.days[dayid].operatingHoursPmStart = time;
-      this.logger.log('[HOURS] - openPmStart SELECTED TIME  ', this.days[dayid].operatingHoursPmStart);
-      this.logger.log('[HOURS] - openPmStart DAYS  ', this.days);
+    // const amazingTimePicker = this.atp.open({
+    //   // time: this.selectedTime,
+    //   time: this.days[dayid].operatingHoursPmStart,
+    //   theme: 'dark',
+    //   arrowStyle: {
+    //     background: 'red',
+    //     color: 'white'
+    //   }
+    // });
+    // amazingTimePicker.afterClose().subscribe(time => {
+    //   this.days[dayid].operatingHoursPmStart = time;
+    //   this.logger.log('[HOURS] - openPmStart SELECTED TIME  ', this.days[dayid].operatingHoursPmStart);
+    //   this.logger.log('[HOURS] - openPmStart DAYS  ', this.days);
 
-      // IF THE PM START TIME IS not EMPTY SET to TRUE isOpenPm
-      if (this.days[dayid].operatingHoursPmStart !== '') {
-        this.days[dayid].isOpenPm = true;
-      }
-    });
+    //   // IF THE PM START TIME IS not EMPTY SET to TRUE isOpenPm
+    //   if (this.days[dayid].operatingHoursPmStart !== '') {
+    //     this.days[dayid].isOpenPm = true;
+    //   }
+    // });
   }
 
   openPmEnd(dayid) {
     this.logger.log('[HOURS] - openPmEnd DAY ID ', dayid);
-    const amazingTimePicker = this.atp.open({
-      // time: this.selectedTime,
-      time: this.days[dayid].operatingHoursPmEnd,
-      theme: 'dark',
-      arrowStyle: {
-        background: 'red',
-        color: 'white'
-      }
-    });
-    amazingTimePicker.afterClose().subscribe(time => {
-      this.days[dayid].operatingHoursPmEnd = time;
-      this.logger.log('[HOURS] - openPmEnd SELECTED TIME  ', this.days[dayid].operatingHoursPmEnd);
-      this.logger.log('[HOURS] - openPmEnd DAYS  ', this.days);
+    // const amazingTimePicker = this.atp.open({
+    //   // time: this.selectedTime,
+    //   time: this.days[dayid].operatingHoursPmEnd,
+    //   theme: 'dark',
+    //   arrowStyle: {
+    //     background: 'red',
+    //     color: 'white'
+    //   }
+    // });
+    // amazingTimePicker.afterClose().subscribe(time => {
+    //   this.days[dayid].operatingHoursPmEnd = time;
+    //   this.logger.log('[HOURS] - openPmEnd SELECTED TIME  ', this.days[dayid].operatingHoursPmEnd);
+    //   this.logger.log('[HOURS] - openPmEnd DAYS  ', this.days);
 
-      // IF THE PM END TIME IS not EMPTY SET to TRUE isOpenPm
-      if (this.days[dayid].operatingHoursPmEnd !== '') {
-        this.days[dayid].isOpenPm = true;
-      }
-    });
+    //   // IF THE PM END TIME IS not EMPTY SET to TRUE isOpenPm
+    //   if (this.days[dayid].operatingHoursPmEnd !== '') {
+    //     this.days[dayid].isOpenPm = true;
+    //   }
+    // });
   }
 
 

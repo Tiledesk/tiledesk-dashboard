@@ -43,7 +43,7 @@
                         <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
                           <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
-                            width="17" height="17" style="position: relative;left: -61px;top: -7px;"
+                            width="17" height="17" style="position: relative;left: -58px;top: -7px;"
                             xml:space="preserve">
                             <style type="text/css">
                               .st0 {
@@ -93,8 +93,8 @@
                     <!-- ---------------------------------------- -->
                     <!-- Open the chat -->
                     <!-- ---------------------------------------- -->
-                   
-                    <div class="row w-100"
+                    <!-- w-100 -->
+                    <div class="row chat-header-wpr-open-chat-btn"
                       *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
                       <!-- [ngClass]="{'disable_open_the_chat_btn' : request?.status == 1000}" -->
                       <div class="col-xs-12 chat-header-wpr-btn">
@@ -113,7 +113,8 @@
                     <!-- ---------------------------------------- -->
                     <!-- Join to chat -->
                     <!-- ---------------------------------------- -->
-                    <div class="row w-100"
+                    <!-- w-100 -->
+                    <div class="row  chat-header-wpr-join-chat-btn"
                       *ngIf="JOIN_TO_GROUP_HAS_ERROR === false && IS_CURRENT_USER_JOINED === false  && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
                       <div class="col-xs-12">
                         <button class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
@@ -128,9 +129,9 @@
                     </div>
 
                     <!-- ---------------------------------------- -->
-                    <!-- Loading -->
+                    <!-- Loading w-100-->
                     <!-- ---------------------------------------- -->
-                    <div class="row w-100" style="height: 62px;" *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true 
+                    <div class="row chat-header-wpr-loadin-chat-btn" style="height: 62px;" *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true 
                     && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  
                     && JOIN_TO_GROUP_HAS_ERROR === false">
                       <!-- <div class="col-xs-8 h-100 chat-header-btn plr-8 ptb-8 pull-right">
@@ -147,9 +148,10 @@
                     </div>
 
                     <!-- ---------------------------------------- -->
-                    <!-- Error -->
+                    <!-- Error w-100 -->
                     <!-- ---------------------------------------- -->
-                    <div class="row w-100" style="height: 62px;" *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
+                    <div class="row chat-header-wpr-error-chat-btn" style="height: 62px;"
+                      *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
                       <!-- <div class="col-xs-8 h-100 plr-0">
                         <div class="chat-footer-text-wpr">
                           {{ 'ThereHasBeenAnErrorProcessing' | translate }}
@@ -170,20 +172,7 @@
                     <!-- ------------------------------------------------------------ -->
                     <!-- CONTACT INFO DROPDOWN MENU  -->
                     <!-- ------------------------------------------------------------  -->
-                    <!-- <div *ngIf="NODEJS_REQUEST_CNTCT_FOUND" class="dropdown pull-right" style="left: 14px;top: -3px;">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="material-icons" style="color:rgba(0, 0, 0, 0.87); margin-top: 20px;">
-                          more_vert
-                        </span>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a (click)='goToContactDetails()'>
-                            {{ 'ContactDetails' | translate}}
-                          </a>
-                        </li>
-                      </ul>
-                    </div> -->
+          
 
                   </div>
                 </div>
@@ -527,7 +516,7 @@
                       </div>
                     </div> -->
                     <div class="row w-100">
-                      <div class="col-xs-12 h-100 plr-0" style="    margin-top: -4px;  ">
+                      <div class="col-xs-12 h-100 plr-0">
                         <ng-select class="select-response-type" [clearable]="false" [searchable]="false"
                           [items]="responseType" bindLabel="name" bindValue="id" [(ngModel)]="selectedResponseTypeID"
                           (change)="onChangeReplyType(selectedResponseTypeID)">
@@ -585,7 +574,7 @@
 
                     <div class="col-xs-12  w-100 plr-0">
                       <div class="row w-100">
-                     
+
                         <div class="col-xs-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">
                           <!-- <button class="btn pull-right send-chat-msg-btn" (click)="sendChatMessage()"
                             [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
@@ -594,65 +583,73 @@
                             </span>
                           </button>  -->
 
-                           <div class="btn-group dropup pull-right" style="margin: 5px 1px;">
-                          
-                            <button type="button" class="btn btn-primary send-msg" style="border-right: 1px solid #fff;" (click)="sendChatMessage()"
-                            [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
-                             <span style="font-weight:300;"> {{'SendAs' | translate }}  </span> 
-                              <span *ngIf="HAS_SELECTED_SEND_AS_OPENED === true && HAS_SELECTED_SEND_AS_PENDING === false && HAS_SELECTED_SEND_AS_SOLVED === false" 
-                              style="font-weight:500;"> 
-                              {{'Open' | translate }} 
-                            </span> 
-                              <span *ngIf="HAS_SELECTED_SEND_AS_OPENED === false && HAS_SELECTED_SEND_AS_PENDING === true && HAS_SELECTED_SEND_AS_SOLVED === false" 
-                              style="font-weight:500;"> 
-                              {{'Pending' | translate }} 
-                            </span> 
-                              <span *ngIf="HAS_SELECTED_SEND_AS_OPENED === false && HAS_SELECTED_SEND_AS_PENDING === false && HAS_SELECTED_SEND_AS_SOLVED === true" 
-                              style="font-weight:500;"> {{'Resolved' | translate }} </span> 
+                          <div class="btn-group dropup pull-right" style="margin: 5px 1px;">
+
+                            <button type="button" class="btn btn-primary send-msg" style="border-right: 1px solid #fff;"
+                              (click)="sendChatMessage()"
+                              [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
+                              <span style="font-weight:300;"> {{'SendAs' | translate }} </span>
+                              <span
+                                *ngIf="HAS_SELECTED_SEND_AS_OPENED === true && HAS_SELECTED_SEND_AS_PENDING === false && HAS_SELECTED_SEND_AS_SOLVED === false"
+                                style="font-weight:500;">
+                                {{'Open' | translate }}
+                              </span>
+                              <span
+                                *ngIf="HAS_SELECTED_SEND_AS_OPENED === false && HAS_SELECTED_SEND_AS_PENDING === true && HAS_SELECTED_SEND_AS_SOLVED === false"
+                                style="font-weight:500;">
+                                {{'Pending' | translate }}
+                              </span>
+                              <span
+                                *ngIf="HAS_SELECTED_SEND_AS_OPENED === false && HAS_SELECTED_SEND_AS_PENDING === false && HAS_SELECTED_SEND_AS_SOLVED === true"
+                                style="font-weight:500;"> {{'Resolved' | translate }} </span>
                             </button>
-                           
-        
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" (click)="isOpenDropdown(isOpen = !isOpen)">
-                              <span class="caret" [ngClass]="{'caret-rotate-0': is0penDropDown === true, 'caret-rotate-180': is0penDropDown === false}"></span>
+
+
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                              (click)="isOpenDropdown(isOpen = !isOpen)">
+                              <span class="caret"
+                                [ngClass]="{'caret-rotate-0': is0penDropDown === true, 'caret-rotate-180': is0penDropDown === false}"></span>
                               <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
                               <li>
-                                
+
                                 <a (click)="hasSelectedSendAsOpen()" style="padding-left: 15px; padding-right: 15px;">
                                   <i class="material-icons" style="padding-right: 5px;color: rgb(197, 44, 36);">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
-                                   
+
                                     {{'SendAs' | translate }}
-                                     <span style="font-weight:500; "> {{'Open' | translate }} </span> 
+                                    <span style="font-weight:500; "> {{'Open' | translate }} </span>
                                   </span>
                                 </a>
                               </li>
                               <li>
-                                
-                                <a (click)="hasSelectedSendAsPending()" style="padding-left: 15px; padding-right: 15px;">
+
+                                <a (click)="hasSelectedSendAsPending()"
+                                  style="padding-left: 15px; padding-right: 15px;">
                                   <i class="material-icons" style="padding-right: 5px;color: rgb(55,147,233);">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
-                               
-                                    {{'SendAs' | translate }} 
+
+                                    {{'SendAs' | translate }}
                                     <span style="font-weight:500; "> {{'Pending' | translate }}</span>
                                   </span>
                                 </a>
                               </li>
                               <li>
-                                
+
                                 <a (click)="hasSelectedSendAsSolved()" style="padding-left: 15px; padding-right: 15px;">
-                                  <i class="material-icons" style="padding-right: 5px; color: rgb(136, 146,156);">stop</i>
+                                  <i class="material-icons"
+                                    style="padding-right: 5px; color: rgb(136, 146,156);">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
-                                  
-                                    {{'SendAs' | translate }}  
+
+                                    {{'SendAs' | translate }}
                                     <span style="font-weight:500;"> {{'Resolved' | translate }} </span>
                                   </span>
                                 </a>
                               </li>
 
                             </ul>
-                          </div> 
+                          </div>
 
 
 
@@ -924,7 +921,7 @@
                         <!-- IF IS A CLOSED REQUEST -->
                         <!-- ------------------------------------- -->
                         <span *ngIf="request?.status == 1000 && !request?.subject">
-                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
+                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 30px" xml:space="preserve">
                             <style type="text/css">
                               .st0-chat-closed {
                                 fill: none;
@@ -946,10 +943,9 @@
                           <span class="request-category" style="color: #999999" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'RequestMsgsPage.RequestResolved' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='below' matTooltipHideDelay="100">
-                            <!-- {{ "RequestMsgsPage.RequestClosed" | translate }} -->
                             {{ "RequestMsgsPage.Resolved_F" | translate }}
                             <span *ngIf="request?.closed_by"
-                              style="font-size: 14px">({{request?.closed_by_label}})</span>
+                              style="font-size: 12px; font-weight: 400;">({{request?.closed_by_label}})</span>
                           </span>
                         </span>
 
@@ -958,10 +954,9 @@
                         <!-- IF IS AN INTERNAL CLOSED REQUEST -->
                         <!-- ------------------------------------- -->
                         <span *ngIf="request?.status == 1000 && request?.subject">
-
                           <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
-                            style="width: 35px" xml:space="preserve">
+                            style="width: 30px" xml:space="preserve">
                             <style type="text/css">
                               .closed_Internal_st0 {
                                 fill: none;
@@ -988,7 +983,7 @@
 
                             {{ "RequestMsgsPage.Resolved_M" | translate }}
                             <span *ngIf="request?.closed_by"
-                              style="font-size: 14px">({{request?.closed_by_label}})</span>
+                              style="font-size: 12px; font-weight: 400;">({{request?.closed_by_label}})</span>
                           </span>
                         </span>
 
@@ -997,7 +992,7 @@
                         <!-- IF IS AN UNSERVED REQUEST -->
                         <!-- ------------------------------------- -->
                         <span *ngIf="request?.status === 100 && !request?.subject">
-                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
+                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 30px" xml:space="preserve">
                             <style type="text/css">
                               .st0-unserved {
                                 fill: none;
@@ -1022,9 +1017,7 @@
                           <span class="request-category" style="color: #f44336" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='below' matTooltipHideDelay="100">
-                            <!-- {{ "RequestMsgsPage.RequestUnserved" | translate }} -->
                             {{ "NotAssigned_F" | translate }}
-
                           </span>
                         </span>
 
@@ -1035,7 +1028,7 @@
                         <span *ngIf="request?.status === 100 && request?.subject">
                           <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
-                            style="width: 35px" xml:space="preserve">
+                            style="width: 30px" xml:space="preserve">
                             <style type="text/css">
                               .unserved_Internal_st0 {
                                 fill: none;
@@ -1067,7 +1060,7 @@
                         <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
                         <!-- <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true"> -->
                         <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && !request?.subject">
-                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
+                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 30px" xml:space="preserve">
                             <style type="text/css">
                               .st0-served-by-cu {
                                 fill: none;
@@ -1101,7 +1094,7 @@
                         <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && request?.subject">
                           <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
-                            style="width: 35px" xml:space="preserve">
+                            style="width: 30px" xml:space="preserve">
                             <style type="text/css">
                               .served_bycu_Internal_st0 {
                                 fill: none;
@@ -1134,8 +1127,7 @@
                         <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
                         <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
                         <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && !request?.subject">
-
-                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 35px" xml:space="preserve">
+                          <svg class="conv-svg-icon" viewBox="0 0 58.1 53.9" style="width: 30px" xml:space="preserve">
                             <style type="text/css">
                               .st0-served {
                                 fill: none;
@@ -1175,7 +1167,7 @@
 
                           <svg class="conv-svg-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
-                            style="width: 35px" xml:space="preserve">
+                            style="width: 30px" xml:space="preserve">
                             <style type="text/css">
                               .served__Internal_st0 {
                                 fill: none;
@@ -1199,20 +1191,9 @@
                           <span class="request-category" style="color: #00bcd4;" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-
-                            <!-- {{ "RequestMsgsPage.InternalRequestServedBy" | translate }} -->
                             {{ "Served" | translate }}
-
                           </span>
                         </span>
-
-
-                        <!-- <div class="id__request"
-                      style="color: #7695a5 !important; font-size: 10px; display: block; margin-left: 43px; margin-top: -26px;font-weight: 400;">
-                    <span style="color:#394f5a;"> id: </span>
-                      {{ id_request }}
-                    </div> -->
-
                       </div>
 
                       <div class="right-sidebar-actions"
@@ -1228,7 +1209,7 @@
                               more_horiz
                             </span>
                             <span class="material-icons" *ngIf="CHAT_PANEL_MODE === false"
-                              style="color:rgba(0, 0, 0, 0.87);margin-top: 6px;">
+                              style="color:rgba(0, 0, 0, 0.87);margin-top: 10px;">
                               more_vert
                             </span>
                           </a>
@@ -1351,26 +1332,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- <span class="row-body">
-                    <span style="color:#394f5a;"> id: </span> {{ id_request }}
-                  </span> -->
-
-                <!-- ----------------------------------------------------------------------->
-                <!-- old Subject-->
-                <!-- --------------------------------------------------------------------- -->
-                <!-- <div *ngIf="request?.subject" class="row" style="margin-top:5px">
-                  <div class="col-sm-12">
-                    <p class="" style="margin-bottom: 1px;">
-                      <span
-                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;margin-left: 4px;">
-                        {{ "RequestMsgsPage.Subject" | translate }}
-                      </span>
-                      <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                        {{ request?.subject}}
-                      </span>
-                    </p>
-                  </div>
-                </div> -->
 
                 <!-- ------------------------------------------------------ -->
                 <!-- @ Attributes decoded JWT accordion -->
@@ -1449,11 +1410,22 @@
                       <!-- (click)="goToProjectHomeInNewTab()" -->
                       <!-- <div class="col-xs-12" style="padding-right:10px"> -->
                       <p class="chat-panel-mode-project-name" style="margin-top: 0px;">
-                        <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
+                        <!-- <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'Project' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
                           matTooltipHideDelay="100">
                           apps
-                        </i>
+                        </i> -->
+
+                        <span class="project-icon-wpr" style="vertical-align: middle; position: relative; top: 3px;" matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'Project' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        matTooltipHideDelay="100">
+                          <svg class="project-icon" fill="none" height="22"
+                            viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M22.002 12C22.002 6.477 17.524 2 12 2 6.476 1.999 2 6.477 2 12.001c0 5.186 3.947 9.45 9.001 9.952V20.11c-.778-.612-1.478-1.905-1.939-3.61h1.94V15H8.737a18.969 18.969 0 0 1-.135-5h6.794c.068.64.105 1.31.105 2h1.5c0-.684-.033-1.353-.095-2h3.358c.154.64.237 1.31.237 2h1.5ZM4.786 16.5h2.722l.102.396c.317 1.17.748 2.195 1.27 3.015a8.532 8.532 0 0 1-4.094-3.41ZM3.736 10h3.358a20.847 20.847 0 0 0-.095 2c0 1.043.075 2.051.217 3H4.043a8.483 8.483 0 0 1-.544-3c0-.682.08-1.347.232-1.983L3.736 10Zm5.122-5.902.023-.008C8.16 5.222 7.611 6.748 7.298 8.5H4.25c.905-2 2.56-3.587 4.608-4.402Zm3.026-.594L12 3.5l.126.006c1.262.126 2.48 2.125 3.045 4.995H8.83c.568-2.878 1.79-4.88 3.055-4.996Zm3.343.76-.107-.174.291.121a8.533 8.533 0 0 1 4.339 4.29h-3.048c-.298-1.665-.806-3.125-1.475-4.237Z M12 19a1 1 0 0 0 1 1h3v2h-.5a.5.5 0 1 0 0 1h4a.5.5 0 0 0 0-1H19v-2h3a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1h-9a1 1 0 0 0-1 1v5Z"
+                              fill="#394f5a"></path>
+                          </svg>
+                        </span>
                         <span style="position: relative;top: 1px;">
                           <span class="conv-details-sidebar-text">
                             {{ project_name }}
@@ -1478,7 +1450,6 @@
                   <!-- Ticket id -->
                   <!-- --------------------------------------------------------------------- -->
                   <div class="row" *ngIf="request?.ticket_id" style="margin-top:5px">
-                    <!-- border-top: 1px solid #e1eef4;" -->
                     <div class="col-sm-12">
                       <p class="" style="margin-bottom: 0px">
                         <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
@@ -1486,11 +1457,7 @@
                           matTooltipHideDelay="100">
                           info
                         </i>
-                        <span style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{'TicketId' | translate}}
-                        </span> -->
+                        <span style="position: relative;top: -1px;">
                           <span class="conv-details-sidebar-text">
                             #{{ request?.ticket_id}}
                           </span>
@@ -1503,7 +1470,6 @@
                   <!-- Subject -->
                   <!-- --------------------------------------------------------------------- -->
                   <div *ngIf="request?.subject" class="row" style="margin-top:5px">
-
                     <div class="col-sm-12">
                       <p class="" style="margin-bottom: 0px">
                         <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
@@ -1511,13 +1477,8 @@
                           matTooltipPosition='right' matTooltipHideDelay="100" style="margin-bottom: 0px;">
                           subject
                         </i>
-                        <span style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ "RequestMsgsPage.Subject" | translate }}
-                        </span> -->
+                        <span style="position: relative;top: -1px;">
                           <span *ngIf='!ticketSubjectEditMode' class="conv-details-sidebar-text">
-                            <!-- {{ request?.subject}} -->
                             {{ticketSubject}}
                           </span>
                           <span *ngIf='!ticketSubjectEditMode' class="material-icons edit-in-place"
@@ -1527,7 +1488,6 @@
                             mode_edit
                           </span>
                         </span>
-                        <!-- (blur)="editTicketSubjectFocusOut()" -->
                         <input *ngIf='ticketSubjectEditMode' (blur)="editTicketSubjectFocusOut()"
                           (keydown.enter)='saveEditInPlaceSubject()' [(ngModel)]='ticketSubject' class='cellInput'
                           appdashboardAutofocus>
@@ -1539,22 +1499,14 @@
                   <!-- Contact email -->
                   <!-- --------------------------------------------------------------------- -->
                   <div class="row" style="margin-top:5px" *ngIf="CHAT_PANEL_MODE === false">
-                    <!-- border-top: 1px solid #e1eef4;" -->
-                    <!-- border-bottom: 1px solid #e1eef4; -->
                     <div class="col-xs-10">
-                      <!-- margin-top: 6px; -->
                       <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
                         <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'ContactEmail' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
                           matTooltipHideDelay="100">
                           email
                         </i>
-                        <span style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ "ContactEmail" | translate }}
-                        </span> -->
-
+                        <span style="position: relative;top: -2px;">
                           <a class="custom-link" style="font-size: 13px;font-weight: 400; text-transform: lowercase;"
                             target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
                             {{request?.lead?.email}}
@@ -1564,7 +1516,7 @@
                         </span>
                       </p>
                     </div>
-                    <div class="col-xs-2 copy-icon-wpr" style="padding-right: 18px;"
+                    <div class="col-xs-2 copy-icon-wpr" style="padding-right: 18px; position:relative; top:-2px"
                       (click)="copyToClipboardContactEmail(request?.lead?.email)">
                       <div id="contact-email" class="has-copied-tooltip">
                         {{ 'Copied' | translate }}
@@ -1580,24 +1532,16 @@
                   <!-- Created At -->
                   <!-- --------------------------------------------------------------------- -->
                   <div class="row" style="margin-top:5px">
-
                     <div class="col-sm-12">
-
                       <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
                         <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'Created' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
                           matTooltipHideDelay="100">
                           calendar_today
                         </i>
-                        <span style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ "Created" | translate }}
-                        </span> -->
-
+                        <span style="position: relative;top: -2px;">
                           <span class="conv-details-sidebar-text">
                             {{ request?.createdAt | amTimeAgo }}
-                            <!-- *ngIf="CHAT_PANEL_MODE === false" -->
                             <span>
                               ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
                             </span>
@@ -1619,9 +1563,7 @@
                           matTooltipHideDelay="100">
                           language
                         </i>
-                        <span style="position: relative;top: 1px;">
-
-
+                        <span style="position: relative;top: -2px;">
                           <span *ngIf="request?.language" class="conv-details-sidebar-text"
                             style="text-transform: uppercase;">
                             {{ request?.language }}
@@ -1643,14 +1585,15 @@
                       <p class="" style="margin-bottom: 0px; cursor: pointer;">
                         <i class="material-icons conv-details-sidebar-icon location-icon"
                           matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Location' | translate }}"
-                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                          style="margin-right: 3px;">
                           location_on
                         </i>
-                        <span style="position: relative;top: 1px;" (click)="openMapRightSideBar()">
+                        <span style="position: relative;top: -1px;" (click)="openMapRightSideBar()">
 
                           <span class="conv-details-sidebar-text custom-link">
-                            <span *ngIf="locationCity">{{ locationCity }}</span><span *ngIf="locationCity ">,
-                            </span><span *ngIf="locationCountry"> {{ locationCountry }} </span>
+                            <span *ngIf="locationCity">{{ locationCity }}</span>
+                            <span *ngIf="locationCountry"> {{ locationCountry }} </span>
                           </span>
 
                         </span>
@@ -1659,12 +1602,10 @@
                   </div>
 
                   <!-- ------------------------------------------------------ -->
-                  <!-- Request ID -->
+                  <!-- Request ID - DISPLAY NONE !!! -->
                   <!-- ------------------------------------------------------ -->
                   <div class="row" style="margin-top:5px; display: none;">
                     <div class="col-sm-12">
-
-
                       <span style="position: relative;top: 1px;">
                         <div class="row">
                           <div class="col-xs-10" style="padding-right:10px">
@@ -1674,10 +1615,6 @@
                                 matTooltipPosition='right' matTooltipHideDelay="100">
                                 info
                               </i>
-                              <!-- <span
-                              style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                              {{ "RequestMsgsPage.RequestId" | translate }}
-                            </span> -->
                               <span class="conv-details-sidebar-text">
                                 <span *ngIf="showAllIdRequest">
                                   {{id_request}}
@@ -1714,11 +1651,8 @@
                           matTooltipHideDelay="100">
                           account_balance
                         </i>
-                        <span style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ "Department" | translate }}
-                        </span> -->
+                        <span style="position: relative;top: -2px;">
+            
                           <span class="conv-details-sidebar-text">
                             <span *ngIf="request?.department">
                               {{request?.department?.name}}
@@ -1747,10 +1681,7 @@
                                   src="assets/img/user_agent/source_page.svg" matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{ 'RequestMsgsPage.SourcePage' | translate }}" #tooltip="matTooltip"
                                   matTooltipPosition='right' matTooltipHideDelay="100" />
-                                <!-- <span
-                                style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                                {{ "RequestMsgsPage.SourcePage" | translate }
-                              </span> -->
+                      
                                 <span style="font-weight: 400; font-size: 13px;">
                                   <span *ngIf="showAllSourcePageString" style="word-wrap: break-word;">
                                     <a class="custom-link" href="{{request?.sourcePage}}"
@@ -1804,10 +1735,9 @@
 
 
                         <!-- ---------------------------------------------------------------- -->
-                        <!--  Chrome or Chromium -->
+                        <!--  Chrome or Chromium  -->
                         <!--  ---------------------------------------------------------------- -->
-                        <span
-                          *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
+                        <span *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
                           <img class="request_details___ua_browser_icon" src="assets/img/user_agent/chrome.svg"
                             matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Browser' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
@@ -1815,7 +1745,7 @@
 
 
                         <!--  ---------------------------------------------------------------- -->
-                        <!--  Firefox -->
+                        <!--  Firefox  -->
                         <!--  ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
                           <img class="request_details___ua_browser_icon" src="assets/img/user_agent/firefox.svg"
@@ -1825,7 +1755,7 @@
 
 
                         <!-- ---------------------------------------------------------------- -->
-                        <!-- Edge -->
+                        <!-- Edge  -->
                         <!-- ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_browser.indexOf('Edge') !== -1">
                           <img class="request_details___ua_browser_icon" src="assets/img/user_agent/edge.svg"
@@ -1833,10 +1763,10 @@
                             #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
                         </span>
 
-                        <!-- 
-                      // ----------------------------------------------------------------
-                      // Opera
-                      // ---------------------------------------------------------------- -->
+
+                        <!-- ---------------------------------------------------------------- -->
+                        <!-- Opera  -->
+                        <!-- ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_browser.indexOf('Opera') !== -1">
                           <img class="request_details___ua_browser_icon" src="assets/img/user_agent/opera.svg"
                             matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Browser' | translate }}"
@@ -1845,7 +1775,7 @@
 
 
                         <!--  ---------------------------------------------------------------- -->
-                        <!--  Safari -->
+                        <!--  Safari  -->
                         <!--  ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_browser.indexOf('Safari') !== -1">
                           <img class="request_details___ua_browser_icon" src="assets/img/user_agent/safari.svg"
@@ -1855,7 +1785,7 @@
 
 
                         <!--  ---------------------------------------------------------------- -->
-                        <!--  Explorer -->
+                        <!--  Explorer  -->
                         <!--  ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_browser.indexOf('IE') !== -1">
                           <img class="request_details___ua_browser_icon" src="assets/img/user_agent/explorer.svg"
@@ -1866,11 +1796,8 @@
 
                         <!-- ------------------------------------------------------ -->
 
-                        <span style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          Browser
-                        </span> -->
+                        <span style="position: relative;top: -1px;">
+
 
                           <span class="conv-details-sidebar-text">
                             <!-- <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span> -->
@@ -1907,9 +1834,9 @@
 
 
                         <!-- ---------------------------------------------------------------- -->
-                        <!-- if is Android -->
+                        <!-- if is Android   -->
                         <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_os.indexOf('Android') !== -1">
+                        <span *ngIf="request?.ua_os.indexOf('Android') !== -1" class="os-wpr">
                           <img class="request_details___os_icon" src="assets/img/user_agent/android.svg"
                             matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'OperatingSystem' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
@@ -1917,9 +1844,9 @@
 
 
                         <!-- ---------------------------------------------------------------- -->
-                        <!-- if is Mac OS or iOS -->
+                        <!-- if is Mac OS or iOS  -->
                         <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
+                        <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1" class="os-wpr">
                           <img class="request_details___os_icon" src="assets/img/user_agent/apple.svg"
                             matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'OperatingSystem' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
@@ -1927,9 +1854,9 @@
 
 
                         <!--  ---------------------------------------------------------------- -->
-                        <!--  if is Windows -->
+                        <!--  if is Windows  -->
                         <!--  ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
+                        <span *ngIf="request?.ua_os.indexOf('Windows') !== -1" class="os-wpr">
                           <img class="request_details___os_icon" src="assets/img/user_agent/windows.svg"
                             matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'OperatingSystem' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
@@ -1937,9 +1864,9 @@
 
 
                         <!--  ---------------------------------------------------------------- -->
-                        <!--  if is Ubuntu -->
+                        <!--  if is Ubuntu  -->
                         <!--  ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1">
+                        <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1" class="os-wpr">
                           <img class="request_details___os_icon" src="assets/img/user_agent/ubuntu.svg"
                             matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'OperatingSystem' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
@@ -1947,13 +1874,7 @@
 
 
                         <span style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ 'OperatingSystem' | translate }}
-                        </span> -->
 
-
-                          <!-- 'Ubuntu undefined' problem in operating system -->
                           <span class="conv-details-sidebar-text">
                             <!-- <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span> -->
                             <!-- <span *ngIf="request?.ua_os === 'undefined undefined'"> N/A </span> -->
@@ -1967,7 +1888,7 @@
                   <!-- ---------------------------------------- -->
                   <!-- Message Channel  -->
                   <!-- ---------------------------------------- -->
-                  <!--   -->
+
                   <div *ngIf="request?.channel?.name !== 'chat21'" class="row" style="margin-top:5px">
                     <div class="col-sm-12">
                       <!-- [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true}" -->
@@ -1975,104 +1896,90 @@
                         <!-- ---------------------------------------- -->
                         <!-- Channel - Telegram -->
                         <!-- ---------------------------------------- -->
-                        <!--  -->
-                        <span *ngIf="request?.channel?.name === 'telegram'">
+                        <span *ngIf="request?.channel?.name === 'telegram'" class="channel-wpr">
+                          <span>
+                            <img class="channel-icon" src="assets/img/channel_icons/telegram-logo.svg"
+                              matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
+                              #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                          </span>
 
-                          <img class="channel-icon" src="assets/img/channel_icons/telegram-logo.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
-                        </span>
-                        <!--  -->
-                        <span *ngIf="request?.channel?.name === 'telegram'" style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ 'MessageChannel' | translate }}
-                        </span> -->
-                          <span class="conv-details-sidebar-text">
-                            <span>Telegram</span>
+                          <span style="position: relative;top: 0px;">
+                            <span class="conv-details-sidebar-text">
+                              <span>Telegram</span>
+                            </span>
                           </span>
                         </span>
 
 
                         <!-- ---------------------------------------- -->
-                        <!-- Channel - WhatsApp -->
+                        <!-- Channel - WhatsApp  -->
                         <!-- ---------------------------------------- -->
-
-                        <span *ngIf="request?.channel?.name === 'whatsapp'">
-                          <img class="channel-icon" src="assets/img/channel_icons/whatsapp-logo.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
-                        </span>
-
-                        <span *ngIf="request?.channel?.name === 'whatsapp'" style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ 'MessageChannel' | translate }}
-                        </span> -->
-                          <span class="conv-details-sidebar-text">
-                            <span>WhatsApp</span>
+                        <span  *ngIf="request?.channel?.name === 'whatsapp'" class="channel-wpr">
+                          <span>
+                            <img class="channel-icon" src="assets/img/channel_icons/whatsapp-logo.svg"
+                              matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
+                              #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
                           </span>
-                        </span>
 
-
-
-
-                        <!-- ---------------------------------------- -->
-                        <!-- Channel - Messenger -->
-                        <!-- ---------------------------------------- -->
-                        <span *ngIf="request?.channel?.name === 'messenger'">
-                          <img class="channel-icon" src="assets/img/channel_icons/messenger-logo.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
-                        </span>
-
-                        <span *ngIf="request?.channel?.name === 'messenger'" style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ 'MessageChannel' | translate }}
-                        </span> -->
-                          <span class="conv-details-sidebar-text">
-                            <span>Facebook Messenger</span>
+                          <span style="position: relative;top: 0px;">
+                            <span class="conv-details-sidebar-text">
+                              <span>WhatsApp</span>
+                            </span>
                           </span>
                         </span>
 
                         <!-- ---------------------------------------- -->
-                        <!-- Channel - Email -->
+                        <!-- Channel - Messenger  -->
                         <!-- ---------------------------------------- -->
-                        <span *ngIf="request?.channel?.name === 'email'">
-                          <img class="channel-icon" src="assets/img/channel_icons/email-logo.svg"
-                            style="width: 17px; margin-left: 2px;" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'MessageChannel' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100" />
-                        </span>
+                        <span *ngIf="request?.channel?.name === 'messenger'" class="channel-wpr">
+                          <span>
+                            <img class="channel-icon" src="assets/img/channel_icons/messenger-logo.svg"
+                              matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
+                              #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                          </span>
 
-                        <span *ngIf="request?.channel?.name === 'email'" style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ 'MessageChannel' | translate }}
-                        </span> -->
-                          <span class="conv-details-sidebar-text">
-                            <span>Email</span>
+                          <span style="position: relative;top: 0px;">
+                            <span class="conv-details-sidebar-text">
+                              <span>Facebook Messenger</span>
+                            </span>
                           </span>
                         </span>
 
                         <!-- ---------------------------------------- -->
-                        <!-- Channel - Form -->
+                        <!-- Channel - Email  -->
                         <!-- ---------------------------------------- -->
-                        <span *ngIf="request?.channel?.name === 'form'" style="margin-left: 1px;">
-                          <img class="channel-icon" src="assets/img/channel_icons/form-logo_v2.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
-                            style="width: 17px; margin-left:1px;" />
+                        <span *ngIf="request?.channel?.name === 'email'" class="channel-wpr">
+                          <span>
+                            <img class="channel-icon" src="assets/img/channel_icons/email-logo.svg"
+                              style="width: 17px; margin-left: 2px;" matTooltipClass="custom-mat-tooltip"
+                              matTooltip="{{ 'MessageChannel' | translate }}" #tooltip="matTooltip"
+                              matTooltipPosition='right' matTooltipHideDelay="100" />
+                          </span>
+
+                          <span style="position: relative;top: 0px;">
+
+                            <span class="conv-details-sidebar-text">
+                              <span>Email</span>
+                            </span>
+                          </span>
                         </span>
 
-                        <span *ngIf="request?.channel?.name === 'form'" style="position: relative;top: 1px;">
-                          <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ 'MessageChannel' | translate }}
-                        </span> -->
-                          <span class="conv-details-sidebar-text">
-                            <span>Form</span>
+                        <!-- ---------------------------------------- -->
+                        <!-- Channel - Form  -->
+                        <!-- ---------------------------------------- -->
+                        <span *ngIf="request?.channel?.name === 'form'" class="channel-wpr">
+                          <span style="margin-left: 1px;">
+                            <img class="channel-icon" src="assets/img/channel_icons/form-logo_v2.svg"
+                              matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
+                              #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                              style="width: 17px; margin-left:1px;" />
+                          </span>
+
+                          <span style="position: relative;top: 0px;">
+
+                            <span class="conv-details-sidebar-text">
+                              <span>Form</span>
+                            </span>
                           </span>
                         </span>
 
@@ -2091,7 +1998,7 @@
                         style="vertical-align: middle; color: crimson;font-size:16px">perm_contact_calendar</i>
                       <span style="position: relative;top: 1px;">
                         <span
-                          style="font-size: 12px; color: crimson; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          style="font-size: 12px; color: crimson; font-weight: 500;font-family: 'Poppins', sans-serif !important;">
                          EVENTS TEST
                         </span>
            
@@ -2101,25 +2008,8 @@
                 </div> -->
 
 
-                <!-- --------------------------------------------------------------------- -->
-                <!-- Go to request details - dispalyed only if CHAT_PANEL_MODE === true -->
-                <!-- --------------------------------------------------------------------- -->
-                <!-- <div class="row" style="margin-top:5px" *ngIf="CHAT_PANEL_MODE === true">
-                      <div class="col-sm-12">
-                        <p class="" style="">
-                          <i (click)="goToRequestInNewTab()" class="material-icons"
-                            style="vertical-align: middle; color: #394f5a;font-size:16px; cursor: pointer;">open_in_new</i>
-                          <span style="position: relative;top: 0px;">
-                            <span
-                              style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                              <a style="cursor: pointer;" (click)="goToRequestInNewTab()"> {{ 'GoToRequest' | translate }}
-                              </a>
-                            </span>
-
-                          </span>
-                        </p>
-                      </div>
-                    </div> -->
+           
+  
 
                 <!--  ---------------------------------------------------------------- -->
                 <!--  @ Apps row -->
@@ -2866,7 +2756,7 @@
                   </div>
                 </div>
 
-             
+
 
                 <!--  ----------------------------------------------------------------------------- -->
                 <!--  Tags -->
@@ -2891,8 +2781,8 @@
                           <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
                           <div (click)="removeTag(tag)">
                             <div class="icon-container" style="display: inline-block;">
-                              <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;" aria-hidden="true"
-                                focusable="false" data-prefix="fas" data-icon="tag"
+                              <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
+                                aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
                                 class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 
@@ -2966,7 +2856,8 @@
                               <input id="tag_name_in_conv_detail" (keyup.enter)="onPressEnterInIputTypeNewTag()"
                                 (focus)="onFocusInIputTypeNewTag()" (blur)="onBlurIputTypeNewTag()"
                                 class="tag-name-in-conv-detail" name="tag_name_in_conv_detail" [(ngModel)]="tag_name"
-                                type="text" placeholder="{{ 'TypeNewTagHere' | translate }}" style="padding-left: 27px;">
+                                type="text" placeholder="{{ 'TypeNewTagHere' | translate }}"
+                                style="padding-left: 27px;">
                               <i class="fa fa-circle" style="font-size: 18px; position: absolute;
                                   left: 7px;
                                   top: 13px;" [ngStyle]="{'color':tag_selected_color}"></i>
@@ -3012,7 +2903,8 @@
                 <!-- @ Notes accordion -->
                 <!-- ----------------------------------------------------------------------------- -->
                 <div class="row">
-                  <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;">
+                  <div class="col-sm-12"
+                    style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;">
                     <p class="row-header accordion" (click)="openNotesAccordion()"
                       style="padding-left:13px; padding-right:15px; font-size: 14px;">
                       <i class="material-icons" style="vertical-align: middle; color: #2C3E48"> note_alt </i>

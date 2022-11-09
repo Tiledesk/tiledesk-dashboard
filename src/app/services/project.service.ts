@@ -1,19 +1,14 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, BehaviorSubject} from 'rxjs';
 import { Project } from '../models/project-model';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import 'rxjs/add/operator/map';
-import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 export class ProjectService {
 
-  http: Http;
   SERVER_BASE_PATH: string;
   PROJECTS_URL: string;
   TOKEN: string;
@@ -25,15 +20,12 @@ export class ProjectService {
   public hasCreatedNewProject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
-    http: Http,
+ 
     public auth: AuthService,
-    public http_client: HttpClient,
+    public _httpclient: HttpClient,
     public appConfigService: AppConfigService,
     private logger: LoggerService
   ) {
-
-    this.http = http;
-
     this.user = auth.user_bs.value
     this.checkIfUserExistAndGetToken()
 
@@ -84,32 +76,21 @@ export class ProjectService {
   }
 
   // ------------------------------------------------------
-  // READ (GET ALL PROJECTS) -  HTTP VERSION
+  // READ (GET ALL PROJECTS)
   // ------------------------------------------------------
   public getProjects(): Observable<Project[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
     const url = this.PROJECTS_URL;
     this.logger.log('[PROJECT-SERV] - GET PROJECTS URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this._httpclient
+      .get<Project[]>(url, httpOptions)
   }
-
-
-  // ------------------------------------------------------
-  // READ (GET ALL PROJECTS) -  HTTP CLIENT VERSION
-  // ------------------------------------------------------
-  // public getProjects(): Observable<Project[]> {
-  //   const url = this.PROJECTS_URL;
-  //   this.logger.log('[PROJECT-SERV] - GET PROJECTS URL', url);
-  //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' }).set('Authorization', this.TOKEN)
-  //   return this.http_client
-  //     .get<Project[]>(url, { headers })
-  // }
-
 
   /**
    * DELETE PROJECT
@@ -117,17 +98,19 @@ export class ProjectService {
    * @returns 
    */
   public deleteProject(projectid: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     let url = this.PROJECTS_URL + projectid;
     this.logger.log('[PROJECT-SERV] - DELETE URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    return this._httpclient
+      .delete(url, httpOptions)
   }
 
 
@@ -137,16 +120,19 @@ export class ProjectService {
    * @returns 
    */
   public getProjectById(id: string): Observable<Project[]> {
-    let url = this.PROJECTS_URL;
-    url += `${id}`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.PROJECTS_URL + id;
     this.logger.log('[PROJECT-SERV] - GET PROJECT BY ID - URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this._httpclient
+      .get<Project[]>(url, httpOptions)
   }
 
   /**
@@ -155,158 +141,110 @@ export class ProjectService {
    * @param id_user
    */
   public createProject(name: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-    // , 'id_user': this.currentUserID
-    const body = { 'name': name };
-
-    this.logger.log('[PROJECT-SERV] CREATE PROJECT POST REQUEST - BODY ', body);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.PROJECTS_URL;
     this.logger.log('[PROJECT-SERV] CREATE PROJECT POST REQUEST - URL ', url);
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    const body = { 'name': name };
+    this.logger.log('[PROJECT-SERV] CREATE PROJECT POST REQUEST - BODY ', body);
+
+    return this._httpclient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
-  // ----------------------------
-  // CANCEL SUBSCRIPTION 
-  // ----------------------------
-  public cancelSubscription() {
-    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/cancelsubscription';
+  // ----------------------------------------------------------
+  // @ Stripe service 
+  // ----------------------------------------------------------
 
-    this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-    const body = { 'projectid': this.projectID, 'userid': this.user._id };
-
-    this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT REQUEST BODY ', body);
-
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-  }
-
-
-  // ----------------------------
-  // UPDATE SUBSCRIPTION 
-  // ----------------------------
-  public updatesubscription() {
-    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/updatesubscription';
-
-    this.logger.log('[PROJECT-SERV] UPDATE SUBSCRIPTION PUT URL ', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-    const body = { 'projectid': this.projectID, 'userid': this.user._id };
-
-    this.logger.log('[PROJECT-SERV] UPDATE SUBSCRIPTION PUT  BODY ', body);
-
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-  }
-
-
-  // ----------------------------
-  // GET SUBSCRIPTION PAYMENTS 
-  // ----------------------------
-  public getSubscriptionPayments(subscriptionId: string): Observable<[]> {
+  /**
+   * Get stripe subscription payments
+   * @param subscriptionId 
+   * @returns 
+   */
+  public getSubscriptionPayments(subscriptionId: string): Observable<[any]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/' + subscriptionId;
     this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION PAYMENTS - URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this._httpclient
+      .get<[any]>(url, httpOptions)
   }
 
-
-  // ----------------------------
-  //  GET SUBSCRIPTION by ID
-  // ----------------------------
-  public getSubscriptionById(subscriptionId: string): Observable<[]> {
-    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/stripesubs/' + subscriptionId;
-    // const url =  'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/stripesubs/' + subscriptionId;
-    this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - ID', subscriptionId);
-    this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - URL', url);
-
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
-
-  // ----------------------------
-  //  GET CUSTOMER by ID
-  // ----------------------------
-  public getCustomerById(customerId: string): Observable<[]> {
-
-    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customers/' + customerId;
-    // const url =  'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerId;
-    this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - ID', customerId);
-    this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - URL', url);
-
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
-
-
-
+  /**
+   * Get stripe customer
+   * @returns 
+   */
   public getStripeCustomer() {
- 
-    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customer/' + this.projectID
-    // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customer/' + this.projectID
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customer/' + this.projectID  // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customer/' + this.projectID
     this.logger.log('[PROJECT-SERV] GET STRIPE CUSTOMER - URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-    return this.http
-      .get(url, options)
-      .map((res) => res.json());
+    return this._httpclient
+      .get(url, httpOptions)
   }
 
+  /**
+   * Get customer payment methods
+   * @param customerid 
+   * @returns 
+   */
+  getCustomerPaymentMethodsList(customerid) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/payment_methods/' + customerid    // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/payment_methods/' + customerid
+    this.logger.log('[PROJECT-SERV]  GET PAYMENT METHODS LIST', url);
 
+    return this._httpclient
+      .get(url, httpOptions)
+  }
+
+  /**
+   * Update stripe customer
+   * @param customerid 
+   * @param creditcardnum 
+   * @param expirationDateMonth 
+   * @param expirationDateYear 
+   * @param creditcardcvc 
+   * @returns 
+   */
   public updateStripeCustomer(customerid, creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc) {
-   
-    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customers/' + customerid
-    // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerid
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customers/' + customerid  // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerid
     this.logger.log('[PROJECT-SERV] UPDATE STRIPE CUSTOMER - URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
     const expirationDateMonthNum = +expirationDateMonth;
     const expirationDateYearNum = +expirationDateYear;
     const body = {
@@ -315,179 +253,99 @@ export class ProjectService {
       'expiration_date_year': expirationDateYearNum,
       'credit_card_cvc': creditcardcvc
     };
-
     this.logger.log('[PROJECT-SERV] UPDATE STRIPE CUSTOMER POST  BODY ', body);
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
-  getCustomerPaymentMethodsList(customerid) {
-    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/payment_methods/' + customerid
-    // const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/payment_methods/' + customerid
+  /**
+   * Cancel subscription
+   * @returns 
+   */
+  public cancelSubscription() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    this.logger.log('[PROJECT-SERV]  GET PAYMENT METHODS LIST', url);
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/cancelsubscription';
+    this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const body = { 'projectid': this.projectID, 'userid': this.user._id };
+    this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT REQUEST BODY ', body);
 
-    return this.http
-      .get(url, options)
-      .map((res) => res.json());
-
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
-    // ----------------------------
-  //  GET CUSTOMER CARD LIST
-  // ----------------------------
-  // public getCustomerCardList(customerId: string): Observable<[]> {
-  //   // const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customers/' + customerId;
+  // ----------------------------------------------------------
+  // @ ./ Stripe service 
+  // ----------------------------------------------------------
 
-  //   const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerId + '/sources/';
-  //   console.log('[PROJECT-SERV] - GET CARD CUSTOMER BY ID - ID', customerId);
-  //   console.log('[PROJECT-SERV] - GET CARD CUSTOMER BY ID - URL', url);
-
-  //   const headers = new Headers();
-  //   headers.append('Content-Type', 'application/json');
-  //   headers.append('Authorization', this.TOKEN);
-  //   return this.http
-  //     .get(url, { headers })
-  //     .map((response) => response.json());
-  // }
-
-  // public createCustomerPortal() {
-  //   // const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/updatesubscription';
-  //   // 
-  //   const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/billingPortal/sessions'
-
-  //   console.log('[PROJECT-SERV] CREATE CUSTOMER PORTAL ', url);
-
-  //   const headers = new Headers();
-  //   headers.append('Accept', 'application/json');
-  //   headers.append('Content-type', 'application/json');
-  //   headers.append('Authorization', this.TOKEN);
-  //   const options = new RequestOptions({ headers });
-
-  //   // const body = { 'projectid': this.projectID};
-
-  //   // this.logger.log('[PROJECT-SERV] CREATE CUSTOMER PORTAL ', body);
-
-  //   return this.http
-  //     .post(url, null, options)
-  //     .map((res) => res.json());
-  // }
-
-  // public createCardToken() {
-  //   // const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/updatesubscription';
-  //   // 
-  //   const url = 'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/tokens'
-
-  //   console.log('[PROJECT-SERV] UPDATE STRIPE CUSTOMER - URL ', url);
-
-  //   const headers = new Headers();
-  //   headers.append('Accept', 'application/json');
-  //   headers.append('Content-type', 'application/json');
-  //   headers.append('Authorization', this.TOKEN);
-  //   const options = new RequestOptions({ headers });
-
-  //   const body = { 'projectid': this.projectID};
-
-  //   this.logger.log('[PROJECT-SERV] UPDATE STRIPE CUSTOMER POST  BODY ', body);
-
-  //   return this.http
-  //     .post(url, JSON.stringify(body), options)
-  //     .map((res) => res.json());
-  // }
-
-
-  // ----------------------------------------------------------------------
-  // !!! NOT USED -  DOWNGRADE PLAN - todo from put to patch & TODO SERVICE
-  // ----------------------------------------------------------------------
-  public downgradePlanToFree(projectid: string) {
-    const url = this.PROJECTS_URL + projectid + '/downgradeplan';
-    this.logger.log('[PROJECT-SERV] DOWNGRADE PLAN TO FREE  - URL ', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    const body = { 'profile.type': 'free', 'profile.name': 'free' };
-
-    this.logger.log('[PROJECT-SERV] - DOWNGRADE PLAN TO FREE - body ', body);
-
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-  }
 
 
   // -----------------------------------------------------------------
   // Used to update the project name - todo from put to patch
   // -----------------------------------------------------------------
   public updateProjectName(id: string, name: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     let url = this.PROJECTS_URL + id;
-
     this.logger.log('[PROJECT-SERV] - UPDATE PROJECT NAME - PUT URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
     const body = { 'name': `${name}` };
-
     this.logger.log('[PROJECT-SERV] - UPDATE PROJECT NAME - PUT BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
 
-  public addAllowedIPranges(id: string , ipFilterEnabled: boolean, ipFilterArray: any) {
+  public addAllowedIPranges(id: string, ipFilterEnabled: boolean, ipFilterArray: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     let url = this.PROJECTS_URL + id;
-
     this.logger.log('[PROJECT-SERV] - ADD ALLOWED IP RANGES - PUT URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
 
     const body = { 'ipFilterEnabled': ipFilterEnabled, 'ipFilter': ipFilterArray };
-
     this.logger.log('[PROJECT-SERV] - ADD ALLOWED IP RANGES - PUT BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
+
   }
-
-
 
   // --------------------------------
   // UPDATE PROJECT ADVANCED SETTINGS
   // --------------------------------
   public updateAdvancedSettings(chatlimit: number, reassignmenttimeout: number, automaticidlechats: number, chat_limit_on: boolean, reassignment_on: boolean, unavailable_status_on: boolean) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    let url = this.PROJECTS_URL + this.projectID;
-    // url += this.projectID;
+    let url = this.PROJECTS_URL + this.projectID;;
     this.logger.log('[PROJECT-SERV] - UPDATE ADVANCED SETTINGS - PUT URL ', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
 
     const body = {
       'settings.max_agent_assigned_chat': chatlimit,
@@ -500,62 +358,69 @@ export class ProjectService {
 
     this.logger.log('[PROJECT-SERV] - UPDATE ADVANCED SETTINGS - PUT BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
   // -------------------------------------------------------------------------------------
   // UPDATE PROJECT SETTINGS > AUTO SEND TRANSCRIPT TO REQUESTER  - todo from put to patch
   // -------------------------------------------------------------------------------------
   public updateAutoSendTranscriptToRequester(autosend: boolean) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     let url = this.PROJECTS_URL + this.projectID;
-    // url += this.projectID;
     this.logger.log('[PROJECT-SERV] UPDATE AUTO SEND TRASCRIPT TO REQUESTER - PUT URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
     const body = { 'settings.email.autoSendTranscriptToRequester': autosend }
-
     this.logger.log('[PROJECT-SERV] UPDATE AUTO SEND TRASCRIPT TO REQUESTER - PUT BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
+  /**
+   * Get email template
+   * @param temaplateName 
+   * @returns 
+   */
   public getEmailTemplate(temaplateName) {
-    const url = this.SERVER_BASE_PATH + this.projectID + '/emails/templates/' + temaplateName;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
+    const url = this.SERVER_BASE_PATH + this.projectID + '/emails/templates/' + temaplateName;
     this.logger.log('[PROJECT-SERV] - GET EMAIL TEMPLATE - URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    return this._httpclient
+      .get(url, httpOptions)
   }
 
   // ------------------------------
   // Update Emai template
   // ------------------------------
   public updateEmailTempalte(temaplateName: string, template: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     let url = this.PROJECTS_URL + this.projectID + '/'
     this.logger.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - PUT URL ', url);
     this.logger.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - temaplateName ', temaplateName);
     // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
 
     // const body = { "settings.email.templates": template }
     // Object.keys(body).forEach(k => {
@@ -572,31 +437,23 @@ export class ProjectService {
     // let body = { settings: { email: { templates: { }} } }
     // body.settings.email.templates[temaplateName] = template
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
   // ------------------------------
   // Update SMTP settings
   // ------------------------------
   public updateSMPTSettings(smtp_host_name, smtp_port, sender_email_address, smtp_usermame, smtp_pswd, smtp_connetion_security) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     let url = this.PROJECTS_URL + this.projectID + '/'
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - PUT URL ', url);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_host_name ', smtp_host_name);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_port ', smtp_port);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - sender_email_address ', sender_email_address);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_usermame ', smtp_usermame);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_pswd ', smtp_pswd);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_connetion_security ', smtp_connetion_security);
-    // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-
 
     const body = {
       'settings.email.from': sender_email_address,
@@ -607,9 +464,8 @@ export class ProjectService {
       'settings.email.config.pass': smtp_pswd,
     }
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
 
@@ -617,58 +473,43 @@ export class ProjectService {
   // Reset to default SMTP settings
   // ------------------------------
   public resetToDefaultSMPTSettings() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     let url = this.PROJECTS_URL + this.projectID + '/'
     // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - PUT URL ', url);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_host_name ', smtp_host_name);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_port ', smtp_port);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - sender_email_address ', sender_email_address);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_usermame ', smtp_usermame);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_pswd ', smtp_pswd);
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - smtp_connetion_security ', smtp_connetion_security);
-    // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
 
-    // project.settings.email.config=undefined
-
-    // const body = {
-    //   'settings.email.from': "",
-    //   'settings.email.config': "",
-    // }
-    // const body = {
-
-    // }
     let body = {}
     body["settings.email.from"] = undefined;
     body["settings.email.config"] = undefined;
 
     this.logger.log('[PROJECT-SERV] RESET TO DEFAULT SMTP - body ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
   public sendTestEmail(recipientemail, smtp_host_name, smtp_port_number, smtp_connetion_security, smtp_usermame, smtp_pswd) {
     let url = this.SERVER_BASE_PATH + this.projectID + '/emails/test/send'
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    // {"to":"andrea.leo@frontiere21.it", "config":{"host":"testprj2"}}' http://localhost:3001/61d7f94260608866810b39bd/emails/test/send
     const body = { "to": recipientemail, "config": { "host": smtp_host_name, 'port': smtp_port_number, 'secure': smtp_connetion_security, 'user': smtp_usermame, 'pass': smtp_pswd } }
-
-
     this.logger.log('[PROJECT-SERV] SEND TEST EMAIL POST - body ', body);
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .post(url, JSON.stringify(body), httpOptions)
+
   }
 
 
@@ -677,22 +518,23 @@ export class ProjectService {
   // -----------------------------------------------------------------
   public updateWidgetProject(widget_settings: any) {
     let url = this.PROJECTS_URL + this.projectID;
-    // url += this.projectID;
+
     this.logger.log('[PROJECT-SERV] - UPDATE WIDGET PROJECT - PUT URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'widget': widget_settings };
 
     this.logger.log('[PROJECT-SERV] UPDATE WIDGET PROJECT - PUT BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
 
@@ -700,24 +542,23 @@ export class ProjectService {
   // UPDATE OPERATING HOURS - todo from put to patch
   // -----------------------------------------------------------------
   public updateProjectOperatingHours(_activeOperatingHours: boolean, _operatingHours: any): Observable<Project[]> {
-
-    // const url = this.UPDATE_OPERATING_HOURS_URL;
     const url = this.PROJECTS_URL + this.projectID;
     this.logger.log('[PROJECT-SERV] -  UPDATE PROJECT OPERATING HOURS - PUT URL ', url);
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
 
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'activeOperatingHours': _activeOperatingHours, 'operatingHours': _operatingHours };
 
     this.logger.log('[PROJECT-SERV] - UPDATE PROJECT OPERATING HOURS PUT BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((response) => response.json());
+    return this._httpclient
+      .put<Project[]>(url, JSON.stringify(body), httpOptions)
   }
   /// UPDATE TIMETABLE AND GET AVAILABLE PROJECT USER
 
@@ -728,11 +569,14 @@ export class ProjectService {
   // -----------------------------------------------------------------
   /* https://api.tiledesk.com/v1/PROJECTID/keys/generate */
   public generateSharedSecret() {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    headers.append('Authorization', this.TOKEN);
     const url = this.SERVER_BASE_PATH + this.projectID + '/keys/generate';
 
     /** ********* FOR TEST  ********* **/
@@ -741,10 +585,9 @@ export class ProjectService {
 
     this.logger.log('[PROJECT-SERV] - GENERATE SHARED SECRET - POST URL ', url);
     const body = {};
-    const options = new RequestOptions({ headers });
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+
+    return this._httpclient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
 
@@ -752,23 +595,21 @@ export class ProjectService {
   // @ Ban visitor 
   // -----------------------------------------------------------------------------------------
   public banVisitor(leadid: string, ipaddress: string) {
-  // public banVisitor(bannedArray) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    // 
-    const url = this.PROJECTS_URL + this.projectID + '/ban';
-    // console.log('[WS-REQUESTS-SERV] - BAN VISITOR - URL ', url)
-    // const body = {bannedUsers: [{id: leadid, ip: ipaddress}]}
-    // const body = {bannedUsers: bannedArray}
-    const body = {"id":leadid, "ip":ipaddress}
-    // console.log('[WS-REQUESTS-SERV] - BAN VISITOR - body ', body)
-    return this.http
-      .post(url,  JSON.stringify(body), options)
-      .map((res) => res.json());
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.PROJECTS_URL + this.projectID + '/ban';
+
+    const body = { "id": leadid, "ip": ipaddress }
+
+    return this._httpclient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
 
@@ -779,14 +620,16 @@ export class ProjectService {
     let url = this.PROJECTS_URL + this.projectID + '/ban/' + contactid;
     // console.log('[PROJECT-SERV] - DELETE URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpclient
+      .delete(url, httpOptions)
   }
 
 
@@ -796,22 +639,23 @@ export class ProjectService {
   public updateGettingStartedProject(getting_started: any) {
 
     let url = this.PROJECTS_URL + this.projectID
-    // url += this.projectID;
+
     this.logger.log('[PROJECT-SERV] UPDATE GETTING-STARTED - URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'gettingStarted': getting_started };
 
     this.logger.log('[PROJECT-SERV] UPDATE GETTING-STARTED - BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
   }
 
   // --------------------------------------------------------------------------------------
@@ -826,8 +670,7 @@ export class ProjectService {
         'Authorization': this.TOKEN
       })
 
-      //this.http.patch(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.assigned": status }, options)
-      this.http_client.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.assigned": status }, { headers: headers })
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.assigned": status }, { headers: headers })
         .toPromise().then((res) => {
           resolve(res)
         }).catch((err) => {
@@ -847,7 +690,7 @@ export class ProjectService {
         'Authorization': this.TOKEN
       })
 
-      this.http_client.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.pooled": status }, { headers: headers })
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.pooled": status }, { headers: headers })
         .toPromise().then((res) => {
           resolve(res)
         }).catch((err) => {
@@ -857,6 +700,96 @@ export class ProjectService {
     return promise;
   }
 
+  // -------------------------------------
+  // UPDATE SUBSCRIPTION !! Used for test
+  // -------------------------------------
+  public updatesubscription() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/updatesubscription';
+    this.logger.log('[PROJECT-SERV] UPDATE SUBSCRIPTION PUT URL ', url);
+
+    const body = { 'projectid': this.projectID, 'userid': this.user._id };
+    this.logger.log('[PROJECT-SERV] UPDATE SUBSCRIPTION PUT  BODY ', body);
+
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
+  }
+
+  // ----------------------------------------------------------------
+  // Not used service
+  // ----------------------------------------------------------------
+
+  // -----------------------------------
+  //  GET SUBSCRIPTION by ID !! Not used
+  // -----------------------------------
+  public getSubscriptionById(subscriptionId: string): Observable<[any]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/stripesubs/' + subscriptionId;
+    this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - ID', subscriptionId);
+    this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - URL', url);
+
+
+    return this._httpclient
+      .get<[any]>(url, httpOptions)
+  }
+
+  // ----------------------------------------------------------------------
+  // !!! NOT USED -  DOWNGRADE PLAN - todo from put to patch & TODO SERVICE
+  // ----------------------------------------------------------------------
+  public downgradePlanToFree(projectid: string) {
+    const url = this.PROJECTS_URL + projectid + '/downgradeplan';
+    this.logger.log('[PROJECT-SERV] DOWNGRADE PLAN TO FREE  - URL ', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const body = { 'profile.type': 'free', 'profile.name': 'free' };
+    this.logger.log('[PROJECT-SERV] - DOWNGRADE PLAN TO FREE - body ', body);
+
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
+  }
+
+  // --------------------------------
+  //  GET CUSTOMER by ID !! Not used   
+  // --------------------------------
+  public getCustomerById(customerId: string): Observable<[any]> {
+
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customers/' + customerId;
+    // const url =  'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerId;
+    this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - ID', customerId);
+    this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - URL', url);
+   
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpclient
+      .get<[any]>(url, httpOptions)
+
+  }
 
 }

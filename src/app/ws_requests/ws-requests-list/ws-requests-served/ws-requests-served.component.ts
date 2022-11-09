@@ -111,7 +111,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   ngOnInit() {
     this.getProfileImageStorageAndChatBaseUrl();
     this.getCurrentProject();
-    this.getDepartments();
+    // this.getDepartments();
     this.getLoggedUser();
     this.detectBrowserRefresh();
     this.getTranslations();
@@ -129,11 +129,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   getRequestMsg(request) {
     this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
-      this.logger.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - RES: ', msgs);
+      this.logger.log('[WS-REQUESTS-SERVED] -  GET REQUESTS MSGS - RES: ', msgs);
       if (msgs) {
-        const parsedMsgs = JSON.parse(msgs)
         const msgsArray = [];
-        parsedMsgs.forEach((msgs, index) => {
+        msgs.forEach((msgs, index) => {
           if ((msgs)) {
             if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
               // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
@@ -416,22 +415,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       });
   }
 
-  // findCurrentProjectAmongAll(projectId: string) {
-
-  //   this.projectService.getProjects().subscribe((projects: any) => {
-  //     // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
-  //     // console.log('[WS-REQUESTS-LIST][SERVED] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
-
-  //     this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-  //     console.log('[WS-REQUESTS-LIST][SERVED] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
-
-  //     console.log('[WS-REQUESTS-LIST][SERVED] - GET PROJECTS - projects ', projects);
-  //   }, error => {
-  //     console.log('[WS-REQUESTS-LIST][SERVED] - GET PROJECTS - ERROR: ', error);
-  //   }, () => {
-  //     console.log('[WS-REQUESTS-LIST][SERVED]] - GET PROJECTS * COMPLETE * ');
-  //   });
-  // }
+  
 
 
   // SERVED_BY : add this
@@ -562,68 +546,78 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // Join request
   // ------------------------------------------
   joinRequest(currentuserisjoined, participantingagents, request_id: string, channel) {
-  //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
-  //  console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
-  //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
-    
-    const participantingagentslength = participantingagents.length
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents length', participantingagentslength);
-
-    let chatAgent = '';
-
-    participantingagents.forEach((agent, index) => {
-      let stringEnd = ' '
-
-      // if (participantingagentslength === 1) {
-      //   stringEnd = '.';
-      // }
-
-      if (participantingagentslength - 1 === index) {
-        stringEnd = '.';
-      } else {
-        stringEnd = ', ';
-      }
-
-      // if (participantingagentslength > 2 ) {
-      //   // this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2', index);
-      //   if (participantingagentslength - 1 === index) {
-      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 posizione lenght = index ', participantingagentslength - 1 === index ,'metto punto ');
-      //     stringEnd = '.';
-      //   } else if (participantingagentslength - 2) {
-      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index lenght - 2 ', index , 'participantingagentslength - 2', participantingagentslength - 2, 'metto and ');
-      //     stringEnd = ' and ';
-      //   } else {
-      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index', index ,'metto , ');
-      //     stringEnd = ', ';
-      //   }
-      // }
-
-      if (agent.firstname && agent.lastname) {
-
-        chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
-      }
-
-      if (agent.name) {
-        chatAgent += agent.name + stringEnd
-      }
-
-    });
-
-
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest chatAgent', chatAgent);
-
-    if (currentuserisjoined === false) {
-      if (channel.name === 'email' || channel.name === 'form') { 
-       if (participantingagents.length === 1) {
-        this.presentModalYouCannotJoinChat()
-       } else if (participantingagents.length === 0) {
-        this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
-       }
-      } else if (channel.name !== 'email' || channel.name !== 'form' || channel.name === 'telegram' || channel.name === 'whatsapp' || channel.name === 'messenger' || channel.name === 'chat21') {
-        this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
+    //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
+    //  console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
+    //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
+      
+      const participantingagentslength = participantingagents.length
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents length', participantingagentslength);
+  
+      let chatAgent = '';
+  
+      participantingagents.forEach((agent, index) => {
+        let stringEnd = ' '
+  
+        // if (participantingagentslength === 1) {
+        //   stringEnd = '.';
+        // }
+  
+        if (participantingagentslength - 1 === index) {
+          stringEnd = '.';
+        } else {
+          stringEnd = ', ';
+        }
+  
+        // if (participantingagentslength > 2 ) {
+        //   // this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2', index);
+        //   if (participantingagentslength - 1 === index) {
+        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 posizione lenght = index ', participantingagentslength - 1 === index ,'metto punto ');
+        //     stringEnd = '.';
+        //   } else if (participantingagentslength - 2) {
+        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index lenght - 2 ', index , 'participantingagentslength - 2', participantingagentslength - 2, 'metto and ');
+        //     stringEnd = ' and ';
+        //   } else {
+        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index', index ,'metto , ');
+        //     stringEnd = ', ';
+        //   }
+        // }
+  
+        if (agent.firstname && agent.lastname) {
+  
+          chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
+        }
+  
+        if (agent.name) {
+          chatAgent += agent.name + stringEnd
+        }
+  
+      });
+  
+  
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest chatAgent', chatAgent);
+  
+      if (currentuserisjoined === false) {
+        if (channel.name === 'email' || channel.name === 'form') { 
+         if (participantingagents.length === 1) {
+          this.presentModalYouCannotJoinChat()
+         } else if (participantingagents.length === 0) {
+          this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
+         }
+        } else if (channel.name !== 'email' || channel.name !== 'form' || channel.name === 'telegram' || channel.name === 'whatsapp' || channel.name === 'messenger' || channel.name === 'chat21') {
+          this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
+        }
       }
     }
-  }
+
+    presentModalYouCannotJoinChat() {
+      swal({
+        title: this.joinChatTitle,
+        text: this.youCannotJoinChat,
+        icon: "info",
+        buttons: 'OK',
+        dangerMode: false,
+      })
+    }
 
   displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id) {
     swal({
@@ -649,16 +643,6 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           this.onJoinHandled(request_id, this.currentUserID);
         }
       })
-  }
-
-  presentModalYouCannotJoinChat() {
-    swal({
-      title: this.joinChatTitle,
-      text: this.youCannotJoinChat,
-      icon: "info",
-      buttons: 'OK',
-      dangerMode: false,
-    })
   }
 
   openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
@@ -731,15 +715,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.logger.log('[WS-REQUESTS-LIST][SERVED] - IS MOBILE ', this.isMobile);
   }
 
-  // dept_replace(deptid) {
-  //   if (this.depts) {
-  //     const foundDept = this.depts.filter((obj: any) => {
-  //       return obj._id === deptid;
-  //     });
-  //     // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- served - dept_replace foundDept', foundDept)
-  //     return deptid = foundDept[0]['name'];
-  //   }
-  // }
+
 
 
   updateUrl($event, agent) {
@@ -835,6 +811,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       .subscribe((text: string) => {
         this.allConversationsaveBeenArchivedMsg = text
       })
+
   }
 
   translateModalYouCannotJoinChat() {

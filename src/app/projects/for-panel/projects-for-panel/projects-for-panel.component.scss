@@ -807,7 +807,7 @@ button.close {
 .small-projects-sidebar:hover #arrow_1 .arrow:hover span {
   $size: 16px;
   $width: 2px;
-  width: $size * 1.414;
+  width: calc($size * 1.414);
 }
 
 .arrow-wrapper {
@@ -821,8 +821,8 @@ button.close {
 
   cursor: pointer;
   display: block;
-  width: $size / 1.414;
-  height: $size / 1.414 * 2;
+  width: calc($size / 1.414);
+  height: calc($size / 1.414) * 2;
   position: relative;
 
   & span,
@@ -849,7 +849,7 @@ button.close {
     width: 0;
   }
   &:hover span {
-    width: $size * 1.414;
+    width: calc($size * 1.414);
   }
 
   @each $direction in "left" "right" {
@@ -869,14 +869,6 @@ button.close {
       & span {
         transition: width 0.3s, #{$direction} 0.3s 0.05s;
       }
-
-      // &:hover {
-      //   & span,
-      //   &:before,
-      //   &:after {
-      //     #{$direction}: $size / 1.414 * -1;
-      //   }
-      // }
     }
   }
 }

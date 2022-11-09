@@ -1,18 +1,15 @@
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from "rxjs/Subject";
+import { Subject, BehaviorSubject } from "rxjs";
 import { AuthService } from '../../core/auth.service';
 import { WebSocketJs } from "./websocket-js";
 import { Request } from '../../models/request-model';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import 'rxjs/add/observable/of';
-import { Subscription } from 'rxjs/Subscription';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Subscription } from 'rxjs'
 import { AppConfigService } from '../../services/app-config.service';
-
-
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from '../users-local-db.service';
+import { map } from 'rxjs/operators';
 export interface Message {
   action: string;
   payload: {
@@ -28,16 +25,18 @@ export class WsRequestsService implements OnDestroy {
   public wsRequesterStatus$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved here from user.service 
   public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); // Moved here from user.service 
-  public wsProjectUsersStatus$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  http: Http;
+
+  // http: Http;
   public messages: Subject<Message>;
 
   requesTtotal: number;
   public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
-  public projectUsersOfProject$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
+  public projectUsersOfProject$: BehaviorSubject<Array<[any]>> = new BehaviorSubject<Array<[any]>>([]);
   public wsOnDataUnservedConvs$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public foregroundNotificationCount$: BehaviorSubject<number> = new BehaviorSubject(null);
   public hasChangedSoundPreference$: BehaviorSubject<string> = new BehaviorSubject(null);
+
+  public requestIsReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   public ws__RequestsList$: any;
 
@@ -91,15 +90,14 @@ export class WsRequestsService implements OnDestroy {
    * @param {AuthService} auth 
    */
   constructor(
-    http: Http,
+
     public auth: AuthService,
     public webSocketJs: WebSocketJs,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
-    public usersLocalDbService: LocalDbService
+    public usersLocalDbService: LocalDbService,
+    private _httpClient: HttpClient
   ) {
-    this.http = http;
-
     this.getAppConfig();
     // -----------------------------------------------------------------------------------------------------
     // REQUESTS - @ the publication of the 'current project' subscribes to the websocket requests
@@ -516,6 +514,10 @@ export class WsRequestsService implements OnDestroy {
     this.wsRequest$.next(request);
   }
 
+  requestIsReady(ready) {
+    this.requestIsReady$.next(true)
+  }
+
 
   /**
    * unsubscribeTo_wsRequestById
@@ -578,14 +580,14 @@ export class WsRequestsService implements OnDestroy {
 
     var self = this;
 
-    // console.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO CURRENT-USER AVAILABILITY (REF) - prjctuserid", prjctuserid);
+    self.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO CURRENT-USER AVAILABILITY (REF) - prjctuserid", prjctuserid);
     const path = '/' + this.project_id + '/project_users/' + prjctuserid
 
     this.webSocketJs.ref(path, 'subscriptionToWsCurrentUser',
       function (data, notification) {
 
-        // console.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO CURRENT-USER AVAILABILITY - CREATE data", data);
-
+        self.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO CURRENT-USER AVAILABILITY - CREATE data", data);
+        // self.currentUserWsAvailability$.next(data.user_available);
         self.currentUserWsAvailability$.next(data);
         if (data.isBusy) {
           self.currentUserWsIsBusy$.next(data.isBusy)
@@ -610,36 +612,6 @@ export class WsRequestsService implements OnDestroy {
         }
       }
     );
-  }
-
-  subscriptionToWsProjectUsers(prjctuserid) {
-
-    var self = this;
-    const path = '/' + this.project_id + '/project_users/' + prjctuserid
-    // console.log('[WS-REQUESTS-SERV] - SUBSCR (REF) TO WS P-USERS PATH: ', path);
-
-    return new Promise(function (resolve, reject) {
-
-      self.webSocketJs.ref(path, 'subscriptionToWsProjectUsers',
-        function (data, notification) {
-          // console.log("[WS-REQUESTS-SERV] SUBSCR TO WS P-USER  - CREATE - data ", data);
-          resolve(data)
-        
-          self.wsProjectUsersStatus$.next(data)
-
-        }, function (data, notification) {
-          resolve(data)
-          self.logger.log("[WS-REQUESTS-SERV] SUBSCR TO WS P-USER - UPDATE - data ", data);
-          self.wsProjectUsersStatus$.next(data)
-
-        }, function (data, notification) {
-          resolve(data)
-          if (data) {
-            // console.log("[WS-REQUESTS-SERV] SUBSCR TO WS P-USER - ON-DATA - data", data);
-          }
-        });
-
-    })
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -701,12 +673,12 @@ export class WsRequestsService implements OnDestroy {
   // @ Close support group
   // --------------------------------------------------
   public closeSupportGroup(group_id: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
     // this.logger.log('[WS-REQUESTS-SERV] -  CLOSE SUPPORT-GROUP OPTIONS  ', options)
 
     const body = {};
@@ -715,8 +687,8 @@ export class WsRequestsService implements OnDestroy {
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + group_id + '/close';
 
     this.logger.log('[WS-REQUESTS-SERV] - CLOSE SUPPORT-GROUP URL ', url);
-    return this.http
-      .put(url, body, options)
+    return this._httpClient.put(url, JSON.stringify(body), httpOptions)
+
   }
 
   // --------------------------------------------------
@@ -725,17 +697,18 @@ export class WsRequestsService implements OnDestroy {
   public archiveRequestOnPromise(request_id) {
     let promise = new Promise((resolve, reject) => {
 
-      const headers = new Headers();
-      headers.append('Accept', 'application/json');
-      headers.append('Content-type', 'application/json');
-      headers.append('Authorization', this.TOKEN);
-      const options = new RequestOptions({ headers });
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': this.TOKEN
+        })
+      };
 
       const body = {};
       const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/close';
       this.logger.log('[WS-REQUESTS-SERV] - ARCHIVE REQUEST WITH PROMISE - URL ', url)
 
-      this.http.put(url, body, options)
+      this._httpClient.put(url, body, httpOptions)
         .toPromise()
         .then((res) => {
           resolve(res);
@@ -751,36 +724,37 @@ export class WsRequestsService implements OnDestroy {
   // @ Unarchive request 
   // --------------------------------------------------
   public unarchiveRequest(request_id: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/reopen';
     this.logger.log('[WS-REQUESTS-SERV] - REOPEN REQUEST - URL ', url)
 
-    return this.http
-      .put(url, null, options)
-      .map((res) => res.json());
+    return this._httpClient.put(url, null, httpOptions)
+
   }
 
   // --------------------------------------------------
   // @ Delete request 
   // --------------------------------------------------
   public deleteRequest(request_id: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
     this.logger.log('[WS-REQUESTS-SERV] - DELETE REQUEST - URL ', url)
 
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    return this._httpClient.delete(url, httpOptions)
+
   }
 
   // --------------------------------------------------
@@ -789,16 +763,17 @@ export class WsRequestsService implements OnDestroy {
   public deleteRequestOnPromise(request_id) {
     let promise = new Promise((resolve, reject) => {
 
-      const headers = new Headers();
-      headers.append('Accept', 'application/json');
-      headers.append('Content-type', 'application/json');
-      headers.append('Authorization', this.TOKEN);
-      const options = new RequestOptions({ headers });
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': this.TOKEN
+        })
+      };
 
       const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
       this.logger.log('[WS-REQUESTS-SERV] - DELETE REQUEST USING PROMISE - URL ', url)
 
-      this.http.delete(url, options)
+      this._httpClient.delete(url, httpOptions)
         .toPromise()
         .then((res) => {
           resolve(res);
@@ -814,12 +789,12 @@ export class WsRequestsService implements OnDestroy {
   // @ JOIN DEPT
   // --------------------------------------------------
   joinDept(departmentid, requestid) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
     // this.logger.log('[WS-REQUESTS-SERV] JOIN DEPT OPTIONS  ', options)
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + requestid + '/departments'
@@ -828,28 +803,25 @@ export class WsRequestsService implements OnDestroy {
     const body = { 'departmentid': departmentid };
     // this.logger.log('CLOUD FUNCT CLOSE SUPPORT GROUP REQUEST BODY ', body);
 
-    return this.http
-      .put(url, body, options)
+    return this._httpClient.put(url, body, httpOptions)
   }
 
   // --------------------------------------------------
   // @ LEAVE THE GROUP
   // --------------------------------------------------
   public leaveTheGroup(requestid: string, userid: string,) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    // this.logger.log('LEAVE THE GROUP OPTIONS  ', options)
 
-    //   /:project_id/requests/:id/participants
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + requestid + '/participants/' + userid
     this.logger.log('[WS-REQUESTS-SERV] - LEAVE THE GROUP URL ', url)
 
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    return this._httpClient.delete(url, httpOptions)
   }
 
   // SEE DOC HERE -> https://developer.tiledesk.com/apis/api/requests#set-the-request-participants
@@ -857,12 +829,13 @@ export class WsRequestsService implements OnDestroy {
   // @ Reassign request
   // -----------------------------------------------------------------------------------------
   public setParticipants(requestid: string, userUid: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    // this.logger.log('JOIN FUNCT OPTIONS  ', options);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = [userUid];
 
@@ -871,9 +844,10 @@ export class WsRequestsService implements OnDestroy {
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + requestid + '/participants/'
     this.logger.log('[WS-REQUESTS-SERV] REASSIGN REQUEST - URL ', url)
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+
+
   }
 
   // SEE DOC HERE -> https://developer.tiledesk.com/apis/api/requests#add-a-participant-to-a-request
@@ -881,12 +855,13 @@ export class WsRequestsService implements OnDestroy {
   // @ Add participant
   // -----------------------------------------------------------------------------------------
   public addParticipant(requestid: string, userid: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    // this.logger.log('JOIN FUNCT OPTIONS  ', options);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'member': userid };
     this.logger.log('[WS-REQUESTS-SERV] ADD PARTICIPANT - BODY ', body);
@@ -894,9 +869,8 @@ export class WsRequestsService implements OnDestroy {
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + requestid + '/participants/'
     this.logger.log('[WS-REQUESTS-SERV] ADD PARTICIPANT - URL ', url)
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
   // SEE DOC HERE ->  https://developer.tiledesk.com/apis/rest-api/requests#add-a-follower-to-a-request
@@ -904,20 +878,21 @@ export class WsRequestsService implements OnDestroy {
   // @ Add Follower
   // -----------------------------------------------------------------------------------------
   public addFollower(projectuserid: string, request_id: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    // this.logger.log('JOIN FUNCT OPTIONS  ', options);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/followers'
     this.logger.log('[WS-REQUESTS-SERV] - ADD FOLLOWER URL ', url)
 
     const body = { 'member': projectuserid };
     this.logger.log('[WS-REQUESTS-SERV] - ADD FOLLOWER body ', body);
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
+
   }
 
 
@@ -928,18 +903,20 @@ export class WsRequestsService implements OnDestroy {
   // @ REMOVE Follower
   // -----------------------------------------------------------------------------------------
   public removeFollower(projectuserid: string, request_id: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/followers/' + projectuserid
     // console.log('[WS-REQUESTS-SERV] - REMOVE FOLLOWER  URL ', url);
 
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    return this._httpClient
+      .delete(url, httpOptions)
+
   }
 
   // https://developer.tiledesk.com/apis/rest-api/requests#set-the-request-followers
@@ -948,18 +925,19 @@ export class WsRequestsService implements OnDestroy {
   // @ REMOVE ALL Follower
   // -----------------------------------------------------------------------------------------
   public removeAllFollowers(request_id: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/followers';
     this.logger.log('[WS-REQUESTS-SERV] - REMOVE ALL FOLLOWERS - URL ', url)
     const body = []
-    return this.http
-      .put(url, body, options)
-      .map((res) => res.json());
+    return this._httpClient
+      .put(url, body, httpOptions)
 
   }
 
@@ -970,31 +948,35 @@ export class WsRequestsService implements OnDestroy {
   // https://tiledesk-server-pre.herokuapp.com/public/requests/support-group-62e26b1324bc4200357b1a3c-0930f905800f4c62b6bac937d6beb568/messages.html
   // https://tiledesk-server-pre.herokuapp.com/public/requests/support-group-62e26b1324bc4200357b1a3c-0930f905800f4c62b6bac937d6beb568/messages.pdf
   // https://tiledesk-server-pre.herokuapp.com/public/requests/support-group-62e26b1324bc4200357b1a3c-0930f905800f4c62b6bac937d6beb568/messages.csv
-  public exportTranscriptAsCSVFile(idrequest: string) {
+  public exportTranscriptAsCSVFile(idrequest: any) {
     const url = this.SERVER_BASE_PATH + 'public/requests/' + idrequest + '/messages.csv';
     // console.log('DOWNLOAD TRANSCRIPT AS CSV URL ', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/csv');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      }),
+      responseType: 'text' as 'json'
+    };
 
-    headers.append('Authorization', this.TOKEN);
-
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.text());
+    return this._httpClient
+      .get(url, httpOptions);
   }
 
+  // Not USED
   public exportTranscriptAsPDFFile(idrequest: string) {
     const url = this.SERVER_BASE_PATH + 'public/requests/' + idrequest + '/messages.pdf';
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/pdf');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      })
+    };
 
-    headers.append('Authorization', this.TOKEN);
-
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.text());
+    return this._httpClient
+      .get(url, httpOptions)
   }
 
 
@@ -1002,11 +984,14 @@ export class WsRequestsService implements OnDestroy {
   // @ Create internal request
   // -----------------------------------------------------------------------------------------
   createInternalRequest(requester_id: string, request_id: string, subject: string, message: string, departmentid: string, participantid: string, ticketpriority: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
     // this.logger.log('JOIN FUNCT OPTIONS  ', options);
     let body = {}
     body = { 'sender': requester_id, 'subject': subject, 'text': message, 'departmentid': departmentid, 'channel': { 'name': 'form' }, 'priority': ticketpriority };
@@ -1015,75 +1000,52 @@ export class WsRequestsService implements OnDestroy {
     } else {
       body['participants'] = participantid
     }
-    // , 'participants': [participantid]
-
 
     this.logger.log('[WS-REQUESTS-SERV] - CREATE INTERNAL REQUEST body ', body);
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/messages'
     this.logger.log('[WS-REQUESTS-SERV] - CREATE INTERNAL REQUEST URL ', url)
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
+
   }
-
-  // -----------------------------------------------------------------------------------------
-  // Update request by id - Remove all Tag -  /// NOT USED (was used for tag)
-  // -----------------------------------------------------------------------------------------
-  // updateRequestsById_RemoveAllTags(request_id: string) {
-  //   const headers = new Headers();
-  //   headers.append('Accept', 'application/json');
-  //   headers.append('Content-type', 'application/json');
-  //   headers.append('Authorization', this.TOKEN);
-  //   const options = new RequestOptions({ headers });
-  //   // this.logger.log('JOIN FUNCT OPTIONS  ', options);
-
-  //   const body = { 'tags': [] };
-
-  //   this.logger.log('[WS-REQUESTS-SERV] updateRequestsById - REMOVE ALL TAG - BODY ', body);
-
-  //   const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
-  //   this.logger.log('[WS-REQUESTS-SERV] updateRequestsById - REMOVE ALL TAG - BODY - URL ', url)
-
-  //   return this.http
-  //     .patch(url, JSON.stringify(body), options)
-  //     .map((res) => res.json());
-  // }
 
   // -----------------------------------------------------------------------------------------
   // Update Ticket Subject
   // -----------------------------------------------------------------------------------------
   updateRequestsById_UpdateTicketSubject(request_id: string, subject: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    // this.logger.log('JOIN FUNCT OPTIONS  ', options);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'subject': subject };
-    // const body = { 'tags':  { tag: "kll", color: "#43B1F2" } };
+
     this.logger.log('[WS-REQUESTS-SERV] UPDATE TICKET SUBJECT - BODY ', body);
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
     this.logger.log('[WS-REQUESTS-SERV] UPDATE TICKET SUBJECT - URL ', url);
 
-    return this.http
-      .patch(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .patch(url, JSON.stringify(body), httpOptions)
+
   }
 
   // -----------------------------------------------------------------------------------------
   // Update request by id - (UPDATE TAG) Add / Remove tag
   // -----------------------------------------------------------------------------------------
   updateRequestsById_UpdateTag(request_id: string, tags: Array<string>) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    // this.logger.log('JOIN FUNCT OPTIONS  ', options);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'tags': tags };
     // const body = { 'tags':  { tag: "kll", color: "#43B1F2" } };
@@ -1092,20 +1054,20 @@ export class WsRequestsService implements OnDestroy {
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
     this.logger.log('[WS-REQUESTS-SERV] UPDATE TAG - URL ', url);
 
-    return this.http
-      .patch(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .patch(url, JSON.stringify(body), httpOptions)
   }
 
   // -------------------------------------------------------
   // @ Create note
   // -------------------------------------------------------
   public createNote(note: string, request_id: string,) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'text': note };
     this.logger.log('[WS-REQUESTS-SERV] - CREATE NOTE  body ', body);
@@ -1113,38 +1075,39 @@ export class WsRequestsService implements OnDestroy {
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/notes'
     this.logger.log('[WS-REQUESTS-SERV] - CREATE NOTE - URL ', url)
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
   // ------------------------------------------------------
   // @ Delete note
   // ------------------------------------------------------
   public deleteNote(requestid: string, noteid: string,) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + requestid + '/notes/' + noteid
     this.logger.log('[WS-REQUESTS-SERV] - DELETE NOTE  URL ', url);
 
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    return this._httpClient
+      .delete(url, httpOptions)
+
   }
 
   // -----------------------------------------------------------------------------------------
   // Update Priority
   // -----------------------------------------------------------------------------------------
   updatePriority(request_id: string, selectedPriority: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
     // this.logger.log('JOIN FUNCT OPTIONS  ', options);
 
     const body = { 'priority': selectedPriority };
@@ -1154,21 +1117,23 @@ export class WsRequestsService implements OnDestroy {
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
     this.logger.log('[WS-REQUESTS-SERV] UPDATE PRIORITY - URL ', body);
 
-    return this.http
-      .patch(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .patch(url, JSON.stringify(body), httpOptions)
   }
+
 
   // -----------------------------------------------------------------------------------------
   // Update Working Status
   // -----------------------------------------------------------------------------------------
   updateRequestWorkingStatus(request_id: string, workingstatus: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    // this.logger.log('JOIN FUNCT OPTIONS  ', options);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'workingStatus': workingstatus };
     // const body = { 'tags':  { tag: "kll", color: "#43B1F2" } };
@@ -1177,9 +1142,8 @@ export class WsRequestsService implements OnDestroy {
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
     this.logger.log('[WS-REQUESTS-SERV] UPDATE PRIORITY - URL ', body);
 
-    return this.http
-      .patch(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .patch(url, JSON.stringify(body), httpOptions)
   }
 
 
@@ -1194,16 +1158,15 @@ export class WsRequestsService implements OnDestroy {
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status=1000' + _querystring + '&page=' + pagenumber;
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV URL ', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/csv');
-    /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
-    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
-    /* *** USED IN PRODUCTION *** */
-    headers.append('Authorization', this.TOKEN);
-
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.text());
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      }),
+      responseType: 'text' as 'json'
+    };
+    return this._httpClient
+      .get(url, httpOptions)
   }
 
   // -------------------------------------------------------------
@@ -1238,230 +1201,92 @@ export class WsRequestsService implements OnDestroy {
 
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - GET REQUESTS URL ', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      })
+    };
 
-    headers.append('Authorization', this.TOKEN);
+    return this._httpClient
+      .get(url, httpOptions)
+      .pipe(
+        map(
+          (response) => {
+            const data = response;
+            // Does something on data.data
+            this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE * DATA * ', data);
 
-    return this.http
-      .get(url, { headers })
-      // .map((response) => response.json());
-      .map(
-        (response) => {
-          const data = response.json();
-          // Does something on data.data
-          this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE * DATA * ', data);
+            if (data['requests']) {
+              data['requests'].forEach(request => {
 
-          if (data.requests) {
-            data.requests.forEach(request => {
-
-              // ----------------------------------
-              // @ Department
-              // ----------------------------------
-              if (request.snapshot && request.snapshot.department) {
-                this.logger.log("[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] snapshot department", request.snapshot.department);
-                request.department = request['snapshot']["department"]
+                // ----------------------------------
+                // @ Department
+                // ----------------------------------
+                if (request.snapshot && request.snapshot.department) {
+                  this.logger.log("[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] snapshot department", request.snapshot.department);
+                  request.department = request['snapshot']["department"]
 
 
-              }
-              else if (request['attributes']) {
-                if (request['attributes']['departmentId'] && request['attributes']['departmentName'])
-                  request.department = { 'name': request['attributes']['departmentName'], 'id': request['attributes']['departmentId'] }
-              }
-
-              else if (request.department) {
-                request.department = request.department
-              }
-
-              // ----------------------------------
-              // @ Lead
-              // ----------------------------------
-              if (request.snapshot && request.snapshot.lead) {
-                this.logger.log("[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] snapshot lead ", request.snapshot.lead);
-                request.lead = request['snapshot']["lead"]
-              }
-              else {
-
-                if (request['attributes']) {
-                  if (request['attributes']['userFullname'] && request['attributes']['userEmail'] && request['attributes']['requester_id']) {
-                    request.lead = { 'fullname': request['attributes']['userFullname'], 'email': request['attributes']['userEmail'], 'lead_id': request['attributes']['requester_id'] }
-                  }
-                  else if (request.lead) {
-                    request.lead = request.lead
-                  }
-                } else if (request.lead) {
-                  request.lead = request.lead;
                 }
-              }
-
-              // ----------------------------------
-              // @ Requester
-              // ----------------------------------
-              if (request.snapshot && request.snapshot.requester) {
-                this.logger.log("[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] snapshot requester ", request.snapshot.requester);
-                request.requester = request['snapshot']["requester"]
-
-              } else if (request.requester) {
-                request.requester = request.requester
-              }
-
-              // ----------------------------------
-              // @ Agents
-              // ----------------------------------
-              if (request.snapshot && request.snapshot.agents) {
-                this.logger.log("[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] snapshot agents ", request.snapshot.agents);
-                request.agents = request['snapshot']["agents"]
-              } else {
-                if (request.agents) {
-                  request.agents = request.agents
+                else if (request['attributes']) {
+                  if (request['attributes']['departmentId'] && request['attributes']['departmentName'])
+                    request.department = { 'name': request['attributes']['departmentName'], 'id': request['attributes']['departmentId'] }
                 }
-              }
-            });
-          }
-          return data;
-        })
+
+                else if (request.department) {
+                  request.department = request.department
+                }
+
+                // ----------------------------------
+                // @ Lead
+                // ----------------------------------
+                if (request.snapshot && request.snapshot.lead) {
+                  this.logger.log("[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] snapshot lead ", request.snapshot.lead);
+                  request.lead = request['snapshot']["lead"]
+                }
+                else {
+
+                  if (request['attributes']) {
+                    if (request['attributes']['userFullname'] && request['attributes']['userEmail'] && request['attributes']['requester_id']) {
+                      request.lead = { 'fullname': request['attributes']['userFullname'], 'email': request['attributes']['userEmail'], 'lead_id': request['attributes']['requester_id'] }
+                    }
+                    else if (request.lead) {
+                      request.lead = request.lead
+                    }
+                  } else if (request.lead) {
+                    request.lead = request.lead;
+                  }
+                }
+
+                // ----------------------------------
+                // @ Requester
+                // ----------------------------------
+                if (request.snapshot && request.snapshot.requester) {
+                  this.logger.log("[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] snapshot requester ", request.snapshot.requester);
+                  request.requester = request['snapshot']["requester"]
+
+                } else if (request.requester) {
+                  request.requester = request.requester
+                }
+
+                // ----------------------------------
+                // @ Agents
+                // ----------------------------------
+                if (request.snapshot && request.snapshot.agents) {
+                  this.logger.log("[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] snapshot agents ", request.snapshot.agents);
+                  request.agents = request['snapshot']["agents"]
+                } else {
+                  if (request.agents) {
+                    request.agents = request.agents
+                  }
+                }
+              });
+            }
+            return data;
+          })
+      );
   }
-
-
-
-
-
-  // ---------------------------------
-  // NOT SEEMS USED !!!!
-  // ---------------------------------
-  // public downloadNodeJsWSRequestsAsCsv(querystring: string, pagenumber: number) {
-  //   let _querystring = '&' + querystring
-  //   if (querystring === undefined || !querystring) {
-  //     _querystring = ''
-  //   }
-  //   const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status<1000' + _querystring + '&page=' + pagenumber;
-  //   this.logger.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV URL ', url);
-
-  //   const headers = new Headers();
-  //   headers.append('Content-Type', 'application/csv');
-  //   /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
-  //   // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
-  //   /* *** USED IN PRODUCTION *** */
-  //   headers.append('Authorization', this.TOKEN);
-
-  //   return this.http
-  //     .get(url, { headers })
-  //     .map((response) => response.text());
-  //   // .map((response) => JSON.stringify(response.text()));
-  // }
-
-
-
-  // getWsRequestsById() {
-  //   const self = this;
-  //   self.wsRequestsList = []
-
-  //   this.requestById = new WebSocketJs(
-  //     CHAT_URL,
-
-  //     function (data, notification) {
-
-  //       this.logger.log("% WsRequestsService getWs RequestsById create", data);
-
-  //       // const hasFound = self.wsRequestsList.filter((obj: any) => {
-  //       //   return obj._id === data._id;
-  //       // });
-
-  //       // if (hasFound.length === 0) {
-  //       //   self.addWsRequest(data)
-  //       // } else {
-  //       //   // this.logger.log("%%%  WsRequestsService hasFound - not add", hasFound);
-  //       // }
-
-  //       // if() 
-
-
-  //     }, function (data, notification) {
-
-  //       this.logger.log("% WsRequestsService getWs RequestsById update", data);
-  //       // this.wsRequestsList.push(data);
-
-  //       // self.addOrUpdateWsRequestsList(data);
-  //       // self.updateWsRequest(data)
-  //     }
-  //   );
-
-  //   // if(this.wsRequestsList) {
-  //   //   self.wsRequestsList$.next(this.wsRequestsList);
-  //   // }
-
-  // }
-
-
-  // -----------------------------
-
-  // addOrUpdateWsRequestsList(request) {
-  //   this.logger.log("% WsRequestsService getWsRequests addOrUpdateWsRequestsList: ", request);
-  //   for (let i = 0; i < this.wsRequestsList.length; i++) {
-  //     if (request._id === this.wsRequestsList[i]._id) {
-  //       this.logger.log("% WsRequestsService getWsRequests UPATE AN EXISTING REQUESTS - request._id : ", request._id, ' wsRequestsList[i]._id: ', this.wsRequestsList[i]._id);
-  //       /// UPATE AN EXISTING REQUESTS
-  //       this.wsRequestsList[i] = request
-
-  //     } else {
-
-  //       this.wsRequestsList.push(request);
-  //     }
-  //   }
-
-  //   this.wsRequestsList$.next(this.wsRequestsList);
-  // }
-
-  // getWsRequests_old() {
-  //   this.wsRequestsList = []
-  //   this.messages.subscribe(json => {
-  //     this.logger.log("% WsRequestsService getWsRequests (Response from websocket) json : ", json);
-
-  //     if (json) {
-  //       const wsresponse = json
-  //       const wsmethod = wsresponse['payload']['method'];
-
-  //       // this.wsRequestsList$.next(this.wsRequestsList);
-
-
-  //       this.logger.log("% WsRequestsService getWsRequests (Response from websocket) wsmethod: ", wsmethod);
-  //       this.logger.log("% WsRequestsService getWsRequests (Response from websocket) wsRequestsList: ", this.wsRequestsList);
-  //       //hai array di richieste iniziali 
-
-
-  //       wsresponse['payload']['message'].forEach(request => {
-
-  //         this.addOrUpdateWsRequestsList(request);
-
-  //       });
-
-  //     }
-
-  //   });
-  // }
-
-
-
-
-
-  // wsConnectOld() {
-  //   this.logger.log('%% HI WsRequestsService! - wsService ')
-  //   this.messages = <Subject<Message>>this.wsService.connect(CHAT_URL).map(
-  //     (response: MessageEvent): Message => {
-  //       this.logger.log('%% WsRequestsService response ', response)
-  //       let data = JSON.parse(response.data);
-  //       return data;
-  //       // return {
-  //       //   action: data.action,
-  //       //   payload: data.payload.topic
-  //       // };
-
-  //     }
-  //   );
-  // }
-
-
-  // topic: '/5dc924a13fa2b8001798b9c1/requests',
 
 
 }

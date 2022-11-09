@@ -9,8 +9,8 @@ import { Location } from '@angular/common';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
 import { UsersService } from '../services/users.service';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/pairwise';
+import { Subscription } from 'rxjs';
+
 import { LoggerService } from '../services/logger/logger.service';
 // import { RequestsMsgsComponent } from '../requests-msgs/requests-msgs.component';
 // import { HomeComponent } from '../home/home.component';
@@ -69,9 +69,7 @@ export class AuthGuard implements CanActivate {
     this.detectResetPswRoute();
 
 
-    // this.router.events.pairwise().subscribe((event) => {
-    //   this.logger.log([AUTH-GUARD] EVENT ', event);
-    // });
+   
 
     /**
      * !!! having made a change of logic getCurrentProject() is no more used

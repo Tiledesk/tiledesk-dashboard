@@ -3,14 +3,13 @@ import { NotifyService } from '../core/notify.service';
 import { ProjectService } from '../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../core/auth.service';
-import { Observable } from 'rxjs/Observable';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 
 @Injectable()
 export class WidgetService {
-  http: Http;
   public id_project: string;
   public widgetSettingsObjct;
   updateWidgetSuccessNoticationMsg: string;
@@ -19,7 +18,7 @@ export class WidgetService {
   projectID: string;
 
   constructor(
-    http: Http,
+    private _httpClient: HttpClient,
     private notify: NotifyService,
     private projectService: ProjectService,
     private translate: TranslateService,
@@ -27,9 +26,6 @@ export class WidgetService {
     public appConfigService: AppConfigService,
     private logger: LoggerService
   ) {
-    this.http = http;
-    // this.logger.log('[WIDGET-SERV] HELLO WIDGET SERVICE !')
-
     this.getAppConfig();
     this.getUserToken()
     this.getCurrentProject();
@@ -61,8 +57,6 @@ export class WidgetService {
     });
   }
 
-
-
   /**
    * UPDATE PROJECT WIDGET
    * @param widgetSettingsObj 
@@ -71,7 +65,7 @@ export class WidgetService {
     this.projectService.updateWidgetProject(widgetSettingsObj)
       .subscribe((data) => {
         // this.logger.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE data', data);
-        this.logger.log('[WIDGET-SERV] - UPDATE PROJECT WIDGET - RESPONSE data.widget', data.widget);
+        this.logger.log('[WIDGET-SERV] - UPDATE PROJECT WIDGET - RESPONSE data.widget', data['widget']);
 
         this.translateAndShowUpdateWidgetNotification();
 
@@ -113,45 +107,53 @@ export class WidgetService {
   // -------------------------------------------------------------------
   // Get all default labels
   // -------------------------------------------------------------------
-  public getAllDefaultLabels(): Observable<[]> {
+  public getAllDefaultLabels(): Observable<[any]> {
     // https://tiledesk-server-pre.herokuapp.com/5fa12801d41fef0034f646e8/labels/default/EN
 
     const url = this.SERVER_BASE_PATH + this.projectID + '/labels/default'
 
     this.logger.log('[WIDGET-SERV] - GET ALL DEFAULT LABEL URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient
+      .get<[any]>(url, httpOptions)
   }
 
 
   // -------------------------------------------------------------------
   // Get EN default labels
   // -------------------------------------------------------------------
-  public getEnDefaultLabels(): Observable<[]> {
+  public getEnDefaultLabels(): Observable<[any]> {
     // https://tiledesk-server-pre.herokuapp.com/5fa12801d41fef0034f646e8/labels/default/EN
 
     const url = this.SERVER_BASE_PATH + this.projectID + '/labels/default/EN'
 
     this.logger.log('[WIDGET-SERV] - GET EN DEFAULT LABELS URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient
+      .get<[any]>(url, httpOptions)
   }
 
 
   // -------------------------------------------------------------------
   // Get all labels
   // -------------------------------------------------------------------
-  public getLabels(): Observable<[]> {
+  public getLabels(): Observable<[any]> {
     // const url = this.SERVER_BASE_PATH + this.projectID + '/labels/it'
     // https://tiledesk-server-pre.herokuapp.com/5df2240cecd41b00173a06bb/labels2
 
@@ -159,12 +161,16 @@ export class WidgetService {
 
     this.logger.log('[WIDGET-SERV] - GET ALL LABELS URL', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient
+      .get<[any]>(url, httpOptions)
   }
 
   /**
@@ -178,18 +184,19 @@ export class WidgetService {
     const url = this.SERVER_BASE_PATH + this.projectID + '/labels/' + _languagecode + '/default';
     this.logger.log('[WIDGET-SERV] - SET DEFAULT LANGUAGE URL', url);
     
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const body = { 'lang': _languagecode };
     this.logger.log('[WIDGET-SERV] - SET DEFAULT LANGUAGE BODY ', body);
 
-    return this.http
-      .patch(url, null, options)
-      .map((res) => res.json());
+    return this._httpClient
+      .patch(url, null, httpOptions)
   }
 
 
@@ -199,10 +206,14 @@ export class WidgetService {
  * @returns 
  */
   public cloneLabel(langCode) {
-    const headers = new Headers();
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
     
     const url = this.SERVER_BASE_PATH + this.projectID + '/labels/default/clone?lang=' + langCode
     this.logger.log('[WIDGET-SERV] - CLONE LABELS URL', url);
@@ -211,9 +222,8 @@ export class WidgetService {
     this.logger.log('[WIDGET-SERV] - CLONE LABELS BODY', body);
    
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
   /**
@@ -224,10 +234,13 @@ export class WidgetService {
    * @returns 
    */
   public editLabels(langCode, isdefault, translationObjct) {
-    const headers = new Headers();
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
     const url = this.SERVER_BASE_PATH + this.projectID + '/labels/'
     this.logger.log('[WIDGET-SERV] - EDIT LABELS URL', url);
@@ -235,9 +248,8 @@ export class WidgetService {
     const body = { "lang": langCode, default: isdefault, "data": translationObjct };
     this.logger.log('[WIDGET-SERV] - EDIT LABELS BODY', body);
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
   }
 
 
@@ -249,15 +261,17 @@ export class WidgetService {
   public deleteLabels(langCode) {
     const url = this.SERVER_BASE_PATH + this.projectID + '/labels/' + langCode
     this.logger.log('[WIDGET-SERV] - DELETE LABELS URL', url);
+    
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    const headers = new Headers();
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    return this._httpClient
+      .delete(url, httpOptions)
   }
 
 

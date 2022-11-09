@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
+import { BehaviorSubject } from 'rxjs';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
 import { LoggerService } from '../services/logger/logger.service';
@@ -283,7 +282,7 @@ export class UploadImageService {
     const file_name = 'launcher.jpg';
     // Create a root reference
     const storageRef = firebase.storage().ref();
-
+  
     // const uploadTask = storageRef.child('public/images/' + projctid + '/' + file_name).put(file, file_metadata);
     const uploadTask = storageRef.child('profiles/' + projctid + '/' + file_name).put(file, file_metadata);
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
@@ -300,7 +299,7 @@ export class UploadImageService {
         this.logger.log('Upload is ' + progress + '% done');
         switch (uploadTask.snapshot.state) {
           case firebase.storage.TaskState.PAUSED: // or 'paused'
-            // console.log('Upload is paused');
+          // console.log('Upload is paused');
             break;
           case firebase.storage.TaskState.RUNNING: // or 'running'
             this.logger.log('Upload is running');
@@ -330,7 +329,7 @@ export class UploadImageService {
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
           // self.logger.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
           // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
-          self.hasUploadedLauncherLogo$.next(downloadURL);
+         self.hasUploadedLauncherLogo$.next(downloadURL);
         });
       }
     );
@@ -342,7 +341,7 @@ export class UploadImageService {
     const file_name_thumb = 'thumb_launcher.jpg';
     // Create a root reference
     const storageRef = firebase.storage().ref();
-
+  
     // const deleteCustomLauncherLogo = storageRef.child('public/images/' + projctid + '/' + file_name)
     // const deleteCustomLauncherLogoThumb = storageRef.child('public/images/' + projctid + '/' + file_name_thumb)
 
@@ -352,9 +351,9 @@ export class UploadImageService {
     // Delete the file launcher Logo
     // ------------------------------------
     deleteCustomLauncherLogo.delete().then((res) => {
-      //  console.log('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO RES', res)
+    //  console.log('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO RES', res)
 
-      this.hasdeletedLauncherLogo$.next(true);
+     this.hasdeletedLauncherLogo$.next(true);
     }).catch((error) => {
       // console.error('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO - ERROR ', error)
     });
@@ -372,7 +371,7 @@ export class UploadImageService {
   }
 
 
-  // ---------------------------------------------------
+    // ---------------------------------------------------
   // @ Upload image
   // ---------------------------------------------------
   private createGuid() {

@@ -40,7 +40,7 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   customFields = [
     { 'field_name': "First_name_of_recipient", 'field_value': "$recipient_name", "field_desc": "CannedResponses.recipient_name_desc" },
     { 'field_name': "First_name_of_agent", 'field_value': "$agent_name", "field_desc": "CannedResponses.agent_name_desc" },
-    
+
   ]
 
   constructor(
@@ -56,9 +56,9 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.logger.log('[CANNED-RES-EDIT-CREATE] - modalMode ', this.modalMode);
     this.logger.log('[CANNED-RES-EDIT-CREATE] - selectCannedResponseId ', this.selectCannedResponseId);
-    
+
     this.auth.checkRoleForCurrentProject();
-    
+
     if (this.modalMode === 'edit') {
 
       this.showSkeleton = true
@@ -147,7 +147,7 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   }
 
   insertCustomField(customfieldValue: string) {
-    
+
     if (this.elTextarea) {
       this.insertAtCursor(this.elTextarea, customfieldValue)
       this.displayAddcustomizationView = false;
@@ -155,13 +155,13 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   }
 
   insertAtCursor(myField, myValue) {
-    this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - myValue ', myValue );
-     
+    this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - myValue ', myValue);
+
     if (this.addWhiteSpaceBefore === true) {
       myValue = ' ' + myValue;
-      this.logger.log('[CANNED-RES-EDIT-CREATE] - GET TEXT AREA - QUI ENTRO myValue ', myValue );
+      this.logger.log('[CANNED-RES-EDIT-CREATE] - GET TEXT AREA - QUI ENTRO myValue ', myValue);
     }
-   
+
     //IE support
     if (myField.selection) {
       myField.focus();
@@ -173,18 +173,18 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
     else if (myField.selectionStart || myField.selectionStart == '0') {
       var startPos = myField.selectionStart;
       this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - startPos ', startPos);
-      
+
       var endPos = myField.selectionEnd;
       this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - endPos ', endPos);
-      
+
       myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-  
+
       // place cursor at end of text in text input element
       myField.focus();
       var val = myField.value; //store the value of the element
       myField.value = ''; //clear the value of the element
       myField.value = val + ' '; //set that value back. 
-  
+
       this.cannedResponseMessage = myField.value;
 
       this.texareaIsEmpty = false;
@@ -203,17 +203,17 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
       // this.texareaIsEmpty = true;
     }
 
-    if(/\s$/.test($event)) {
-    
+    if (/\s$/.test($event)) {
+
       this.logger.log('[CANNED-RES-EDIT-CREATE] - ON MSG CHANGED - string contains space at last');
       this.addWhiteSpaceBefore = false;
-   } else {
-     
+    } else {
+
       this.logger.log('[CANNED-RES-EDIT-CREATE] - ON MSG CHANGED - string does not contain space at last');
 
       // IS USED TO ADD A WHITE SPACE TO THE 'PERSONALIZATION' VALUE IF THE STRING DOES NOT CONTAIN SPACE AT LAST
       this.addWhiteSpaceBefore = true;
-   }       
+    }
 
   }
 

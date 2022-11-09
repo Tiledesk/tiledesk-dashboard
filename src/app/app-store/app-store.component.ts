@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AppStoreService } from '../services/app-store.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
 import { LoggerService } from '../services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
-import { ColorCollection } from '@syncfusion/ej2-angular-heatmap';
 import { TranslateService } from '@ngx-translate/core';
-import { k } from '@angular/core/src/render3';
+
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-app-store',

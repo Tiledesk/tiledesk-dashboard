@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, isDevMode } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -9,12 +9,12 @@ import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { NotifyService } from '../core/notify.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core';
 
 import { UsersService } from '../services/users.service';
-import * as moment from 'moment';
-
+// import * as moment from 'moment';
+import moment from "moment";
 import { environment } from './../../environments/environment';
 import { AppConfigService } from '../services/app-config.service';
 import { Subject } from 'rxjs';
@@ -25,7 +25,7 @@ import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { avatarPlaceholder, getColorBck, URL_setting_up_automatic_assignment } from './../utils/util';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreditCardValidator } from 'angular-cc-library';
+import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
 const swal = require('sweetalert');
 
@@ -38,8 +38,8 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./project-edit-add.component.scss']
 })
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
-  @ViewChild('ccNumber') ccNumberField: ElementRef;
-  @ViewChild('ccExpdate') ccExpdateField: ElementRef;
+  @ViewChild('ccNumber', { static: false }) ccNumberField: ElementRef;
+  @ViewChild('ccExpdate', { static: false }) ccExpdateField: ElementRef;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   // tparams = brand;
@@ -296,7 +296,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     // });
     this.form = this._fb.group({
       creditCard: ['', [Validators.required]],
-      expirationDate: ['', [<any>CreditCardValidator.validateExpDate]],
+      expirationDate: ['', [<any>CreditCardValidators.validateExpDate]],
       cvc: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(4)]]
     });
 
@@ -814,6 +814,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (this.USER_ROLE === 'owner') {
       this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Payments ');
       this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
+      if (!isDevMode()) {
+        try {
+          window['analytics'].page("Project Settings, Subscription", {});
+        } catch (err) {
+          this.logger.error('page Home error', err);
+        }
+      }
 
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
@@ -892,7 +899,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     //     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage ');
     //     this.router.navigate(['project/' + this.id_project + '/notification-email'])
     //   } else {
-    //     this.presentModalOnlyOwnerCanManageEmailTempalte()
+    //     
     //   }
     // } else if (this.profile_name === 'enterprise' && this.subscription_is_active === false) {
     //   this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
@@ -1023,14 +1030,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
-        // If the subscription id is present in the project profile, the methods getSubscriptionPayments() getCustomerAndPaymentMethods() and  are executed
+        // If the subscription id is present in the project profile, the methods getSubscriptionPayments() getCustomerAndPaymentMethods() are executed
         // ------------------------------------------------------------------------------------------------------------------------------------------------
         if (projectProfileData.subscription_id) {
           this.subscription_id = projectProfileData.subscription_id;
           this.logger.log('[PRJCT-EDIT-ADD] this.subscription_id ', this.subscription_id)
           this.getSubscriptionPayments(projectProfileData.subscription_id);
           this.getCustomerAndPaymentMethods()
-          // this.getSubscriptionByID(projectProfileData.subscription_id);
         }
       }
     }, error => {
@@ -1079,8 +1085,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
-
-
 
   // GET THE SUBSCRIPTION PAYMENT SAVED IN OUR DB
   getSubscriptionPayments(subscription_id) {
@@ -1155,36 +1159,35 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.showSpinner = false;
     });
   }
-  // cus_JvdAzyrsRuRnA0
+
   getCustomerAndPaymentMethods() {
     this.projectService.getStripeCustomer().subscribe((customer: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer ', customer);
+      this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer ', customer);
       if (customer) {
         this.customer_id = customer.id
-        this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer id', this.customer_id);
+        this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer id', this.customer_id);
         if (customer.invoice_settings && customer.invoice_settings.default_payment_method !== null) {
           this.customer_default_payment_method_id = customer.invoice_settings.default_payment_method
-          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from invoice_settings > default_payment_method)', this.customer_default_payment_method_id);
+          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer_default_payment_method_id (from invoice_settings > default_payment_method)', this.customer_default_payment_method_id);
         } else {
-          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from invoice_settings > default_payment_method) 2', this.customer_default_payment_method_id);
-          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer_default_payment_method_id (from customer > default_source) 2', customer.default_source);
+          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer_default_payment_method_id (from invoice_settings > default_payment_method) 2', this.customer_default_payment_method_id);
+          this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer_default_payment_method_id (from customer > default_source) 2', customer.default_source);
           this.customer_default_payment_method_id = customer.default_source
         }
-        this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION -  this.customer_default_payment_method_id', this.customer_default_payment_method_id);
+        this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS -  this.customer_default_payment_method_id', this.customer_default_payment_method_id);
         if (customer.paymentMethods) {
-          // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethods ', customer.paymentMethods.data);
           customer.paymentMethods.data.forEach(paymentmethod => {
-            this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer >  paymentMethod ', paymentmethod);
+            this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer >  paymentMethod ', paymentmethod);
             if (this.customer_default_payment_method_id !== null && this.customer_default_payment_method_id === paymentmethod.id) {
-              this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod ', paymentmethod);
+              this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer > default paymentMethod ', paymentmethod);
               if (paymentmethod.card) {
-                this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > default paymentMethod CARD', paymentmethod.card);
+                this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer > default paymentMethod CARD', paymentmethod.card);
                 this.default_card_brand_name = paymentmethod.card.brand;
                 this.card_last_four_digits = paymentmethod.card.last4;
               }
             } else if (this.customer_default_payment_method_id === null) {
               if (paymentmethod.card) {
-                this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT SUBSCRIPTION - customer > NO default paymentMethod OT deafult source - CARD', paymentmethod.card);
+                console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer > NO default paymentMethod OT deafult source - CARD', paymentmethod.card);
                 this.default_card_brand_name = paymentmethod.card.brand;
                 this.card_last_four_digits = paymentmethod.card.last4;
               }
@@ -1331,19 +1334,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.CARD_HAS_ERROR = null
     this.projectService.updateStripeCustomer(this.customer_id, creditcardnum, expirationDateMonth, expirationDateYear, creditcardcvc).subscribe((updatedcustomer: any) => {
       this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER - customer ', updatedcustomer);
-      // if (updatedcustomer) {
 
-      //   console.log('[PRJCT-EDIT-ADD] - UPDATE - customer_id ', this.customer_id);
-      // }
 
     }, (error) => {
       // console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error ', error);  
       // console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error _body', error._body);
 
-      const error_body = JSON.parse(error._body)
-      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body ', error_body);
+      const error_body = error
+      this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body ', error_body);
       this.credit_card_error_msg = error_body.msg.raw.message;
-      this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
+      this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
       this.CARD_HAS_ERROR = true;
       this.SPINNER_IN_ADD_CARD_MODAL = false
       this.DISPLAY_ADD_CARD_COMPLETED = false
@@ -1433,30 +1433,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     });
   }
 
-  // doCancelSubcription() {
-  //   this.showSpinner = true;
-  //   this.projectService.cancelSubscription().subscribe((confirmation: any) => {
-  //     this.logger.log('cancelSubscription RES ', confirmation);
 
-  //     if (confirmation && confirmation.status === 'canceled') {
-  //       this.notify.showNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
-
-  //       // this.ngOnInit()
-  //       this.prjct_profile_type = 'free'
-  //       this.cancelSubscriptionDone = true;
-  //       this.logger.log('ProjectEditAddComponent cancelSubscriptionDone ', this.cancelSubscriptionDone);
-  //       // setTimeout(() => {
-  //       // }, 2000);
-  //     }
-  //   }, error => {
-  //     this.logger.log('cancelSubscription - ERROR: ', error);
-  //     this.notify.showNotification(this.subscriptionCanceledError, 4, 'report_problem');
-  //     this.showSpinner = false;
-  //   }, () => {
-  //     this.logger.log('cancelSubscription * COMPLETE *');
-  //     this.showSpinner = false;
-  //   });
-  // }
 
   goToPayments() {
     if (this.USER_ROLE === 'owner') {
@@ -1571,6 +1548,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       })
   }
 
+
   unbanVisitor(bannedUserId: string) {
     this.logger.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR contact_id ', bannedUserId)
     this.projectService.unbanVisitor(bannedUserId).subscribe((res: any) => {
@@ -1608,16 +1586,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
       // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
-
-
       if (project) {
         this.projectObject = project;
         this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', this.projectObject);
 
-        // * the good one *
-        this.getAllLeads(this.projectObject)
+        this.projectObject['bannedUsers'].forEach(bannedUser => {
+          // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - bannedUser: ', bannedUser);
+          this.getAllLeads(this.projectObject)
 
-     
+        });
         this.projectName_toUpdate = project.name;
         this.logger.log('[PRJCT-EDIT-ADD] - PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
 
@@ -1942,14 +1919,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.logger.log('[PRJCT-EDIT-ADD] - UPDATE PROJECT - RESPONSE ', prjct);
 
         if (prjct) {
-          if (prjct.name === this.projectName_toUpdate) {
+          if (prjct['name'] === this.projectName_toUpdate) {
             this.DISABLE_UPDATE_BTN = true;
           }
 
           // WHEN THE USER UPDATE THE PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT RE-PUBLISHES IT
           const project: Project = {
             _id: this.id_project,
-            name: prjct.name,
+            name: prjct['name'],
           }
           this.auth.projectSelected(project)
 
@@ -1971,11 +1948,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
             const storedProjectOH = projectObject['operatingHours'];
 
-            if (storedProjectName !== prjct.name) {
+            if (storedProjectName !== prjct['name']) {
 
               const updatedProjectForStorage: Project = {
                 _id: storedProjectId,
-                name: prjct.name,
+                name: prjct['name'],
                 role: storedUserRole,
                 operatingHours: storedProjectOH
               }
@@ -2131,7 +2108,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.projectService.generateSharedSecret()
       .subscribe((res) => {
         this.logger.log('[PRJCT-EDIT-ADD] - GENERATE SHARED SECRET - RESPONSE ', res);
-        this.sharedSecret = res.jwtSecret
+        this.sharedSecret = res['jwtSecret']
 
       }, (error) => {
         this.logger.error('[PRJCT-EDIT-ADD] GENERATE SHARED SECRET - ERROR ', error);

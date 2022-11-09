@@ -197,8 +197,8 @@
                     </span>
                   </label>
 
-                  <div class="col-sm-6 left-date-picker">
-                    <my-date-picker placeholder="{{ 'From' | translate }}" name="mydate"
+                  <div class="col-sm-12 left-date-picker">
+                    <!-- <my-date-picker placeholder="{{ 'From' | translate }}" name="mydate"
                       (dateChanged)="startDateSelected($event)" [options]="myDatePickerOptions" [(ngModel)]="startDate"
                       [disabled]="date_picker_is_disabled">
                     </my-date-picker>
@@ -207,7 +207,46 @@
                     <my-date-picker placeholder="{{ 'To' | translate }}" name="mydate"
                       (dateChanged)="endDateSelected($event)" [options]="endDatePickerOptions" [(ngModel)]="endDate"
                       [disabled]="date_picker_is_disabled || start_date_is_null">
-                    </my-date-picker>
+                    </my-date-picker> -->
+
+                    <!-- ---------------------------------------- -->
+                    <!-- New date picker -->
+                    <!-- ---------------------------------------- -->
+                    <!-- <mat-form-field appearance="fill">
+                    <mat-label>Enter a date range</mat-label> 
+                      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                        <input matStartDate formControlName="start" placeholder="Start date">
+                        <input matEndDate formControlName="end" placeholder="End date">
+                      </mat-date-range-input>
+                      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-date-range-picker #picker></mat-date-range-picker>
+                    
+                      <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                      <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                   </mat-form-field>
+                    
+                    <p>Selected range: {{range?.value | json}}</p> -->
+
+                    <mat-form-field class="custom-date-range-picker" appearance="standard">
+                      <!-- <mat-label>Enter a date range</mat-label> -->
+                      <!-- (dateInput)="addEventStartDate('input', $event)" -->
+                      <!-- (dateInput)="addEventEndDate('input', $event)" -->
+                      <mat-date-range-input [rangePicker]="picker">
+                        <input (dateChange)="addEventStartDate($event.value)"
+                          (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
+                          placeholder="Start date">
+                        <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
+                          placeholder="End date">
+                      </mat-date-range-input>
+                      <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
+                        <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                      </mat-datepicker-toggle>
+
+                      <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
                   </div>
                 </div>
               </div>
@@ -1051,8 +1090,9 @@
                     matTooltipPosition='right' matTooltipHideDelay="100">
                     #{{request?.ticket_id }}
                   </span>
-                  <p class="column-td" [innerHTML]="getRequestText(request?.first_text)" [tooltip]="HtmlContent"
-                    content-type="template" (mouseover)='overfirstTextGetRequestMsg(request)'> </p>
+                  <p class="column-td request-first-text" [innerHTML]="getRequestText(request?.first_text)"
+                    [tooltip]="HtmlContent" contentType="template" (mouseover)='overfirstTextGetRequestMsg(request)'>
+                  </p>
 
                   <ng-template #HtmlContent>
                     <div class="ng2-tooltip-header">
@@ -1213,44 +1253,50 @@
                       <!-- ---------------------------------------- -->
                       <!-- Priority High -->
                       <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.priority === 'high'" class="tool_tip">
+                      <span *ngIf="request?.priority === 'high'" class="tool_tip" matTooltipClass="mat-white-tooltip"
+                        matTooltip="{{'Priority' | translate}}: {{'high' | translate}}" #tooltip="matTooltip"
+                        matTooltipPosition='above' matTooltipHideDelay="100">
                         <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/high_v2.svg"
                           class="img-fluid">
-                        <span class="bottom tool-tip-bottom--custom">
+                        <!-- <span class="bottom tool-tip-bottom--custom">
                           <span style="font-weight: 400;">
                             {{'Priority' | translate}}:
                           </span>
                           <span style="font-weight: 400;">{{ 'high' | translate }} </span>
                           <i></i>
-                        </span>
+                        </span> -->
                       </span>
                       <!-- ---------------------------------------- -->
                       <!-- Priority Urgent -->
                       <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.priority === 'urgent'" class="tool_tip">
+                      <span *ngIf="request?.priority === 'urgent'" class="tool_tip" matTooltipClass="mat-white-tooltip"
+                        matTooltip="{{'Priority' | translate}}: {{'urgent' | translate}}" #tooltip="matTooltip"
+                        matTooltipPosition='above' matTooltipHideDelay="100">
                         <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/urgent_v2.svg"
                           class="img-fluid">
-                        <span class="bottom tool-tip-bottom--custom">
+                        <!-- <span class="bottom tool-tip-bottom--custom">
                           <span style="font-weight: 400;">
                             {{'Priority' | translate}}:
                           </span>
                           <span style="font-weight: 400;">{{ 'urgent' | translate }} </span>
                           <i></i>
-                        </span>
+                        </span> -->
                       </span>
                       <!-- ---------------------------------------- -->
                       <!-- Priority Low -->
                       <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.priority === 'low'" class="tool_tip">
+                      <span *ngIf="request?.priority === 'low'" class="tool_tip" matTooltipClass="mat-white-tooltip"
+                        matTooltip="{{'Priority' | translate}}: {{'low' | translate}}" #tooltip="matTooltip"
+                        matTooltipPosition='above' matTooltipHideDelay="100">
                         <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/low_v2.svg"
                           class="img-fluid">
-                        <span class="bottom tool-tip-bottom--custom">
+                        <!-- <span class="bottom tool-tip-bottom--custom">
                           <span style="font-weight: 400;">
                             {{'Priority' | translate}}:
                           </span>
                           <span style="font-weight: 400;">{{ 'low' | translate }} </span>
                           <i></i>
-                        </span>
+                        </span> -->
                       </span>
                     </div>
 
@@ -1375,7 +1421,7 @@
                       <svg [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname }" version="1.1"
                         id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17" height="17"
-                        style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
+                        style="position: relative;left: -38px;top: 1px;" xml:space="preserve">
                         <style type="text/css">
                           .st0 {
                             fill: none;
@@ -1439,7 +1485,8 @@
                                     (request?.ua_os?.indexOf('Windows') === -1) &&
                                     (request?.ua_os?.indexOf('Ubuntu') === -1)">
 
-                      <img style="width: 13px;margin-top: 2px;" class="" src="assets/img/user_agent/laptop.svg" />
+                      <img style="width: 13px;margin-top: 2px; margin-right: 6px;" class=""
+                        src="assets/img/user_agent/laptop.svg" />
                     </span>
 
 
@@ -1448,7 +1495,7 @@
                       // if is Android
                       // ---------------------------------------------------------------- -->
                     <span *ngIf="request?.ua_os.indexOf('Android') !== -1">
-                      <img style="width: 13px;" class="" src="assets/img/user_agent/android.svg" />
+                      <img style="width: 13px; margin-right: 6px;" class="" src="assets/img/user_agent/android.svg" />
                     </span>
 
                     <!-- 
@@ -1456,7 +1503,8 @@
                       // if is Mac OS or iOS
                       // ---------------------------------------------------------------- -->
                     <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
-                      <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/apple.svg" />
+                      <img style="width: 13px;margin-bottom: 2px;margin-right: 6px;" class=""
+                        src="assets/img/user_agent/apple.svg" />
                     </span>
 
                     <!-- 
@@ -1464,7 +1512,8 @@
                       // if is Windows
                       // ---------------------------------------------------------------- -->
                     <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
-                      <img style="width: 12px; margin-top: 2px;" class="" src="assets/img/user_agent/windows.svg" />
+                      <img style="width: 12px; margin-top: 2px;margin-right: 6px;" class=""
+                        src="assets/img/user_agent/windows.svg" />
                     </span>
 
                     <!-- 
@@ -1472,7 +1521,7 @@
                       // if is Ubuntu
                       // ---------------------------------------------------------------- -->
                     <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1">
-                      <img style="width: 13px;" class="" src="assets/img/user_agent/ubuntu.svg" />
+                      <img style="width: 13px;margin-right: 6px;" class="" src="assets/img/user_agent/ubuntu.svg" />
                     </span>
 
                     <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">

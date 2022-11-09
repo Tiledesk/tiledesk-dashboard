@@ -19,9 +19,15 @@ const swal = require('sweetalert');
 })
 export class DepartmentsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
 
-  imageUrlArray = [
-    { url: 'assets/img/static-depts4.png', backgroundSize: 'contain' },
-    { url: 'assets/img/static-depts5.png', backgroundSize: 'contain' }
+  imageObject = [
+    {
+      image: 'assets/img/static-depts4.png',
+      thumbImage: 'assets/img/static-depts4.png'
+    },
+    {
+      image: 'assets/img/static-depts5.png',
+      thumbImage: 'assets/img/static-depts4.png'
+    }
   ];
 
 
@@ -63,11 +69,11 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;

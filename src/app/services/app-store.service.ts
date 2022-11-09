@@ -1,8 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
-import { map } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
 import { BehaviorSubject } from 'rxjs';
 import { AppConfigService } from './app-config.service';
@@ -11,27 +9,23 @@ import { AppConfigService } from './app-config.service';
 export class AppStoreService {
   public requestHasChanged$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public hasOpenAppsSidebar$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
-  http: Http;
+  // http: Http;
   TOKEN: string;
   TOKEN_NO_JWT_SUBSTRING: string;
   userID: string;
   // APPS_URL = "https://tiledesk-apps.herokuapp.com/api/apps?sort=score";
   // APPS_BASE_URL = "https://tiledesk-apps.herokuapp.com/"
-
-  APPS_URL: string ;
+  APPS_URL: string;
   APPS_BASE_URL: string;
   constructor(
-    http: Http,
-    private httpClient: HttpClient,
+    // http: Http,
+    private _httpClient: HttpClient,
     public auth: AuthService,
     private logger: LoggerService,
-    public appConfigService: AppConfigService,
+    public appConfigService: AppConfigService
   ) {
-    this.http = http;
     this.APPS_BASE_URL = this.appConfigService.getConfig().appsUrl;
     this.APPS_URL = this.APPS_BASE_URL + "api/apps?sort=score"
-    // console.log('[APP-STORE-SERVICE] APPS_BASE_URL ',  this.APPS_BASE_URL)
-    // console.log('[APP-STORE-SERVICE] APPS_URL ',  this.APPS_URL)
     this.getToken();
   }
 
@@ -46,10 +40,10 @@ export class AppStoreService {
     this.requestHasChanged$.next(null)
   }
 
-  hasOpenAppsSidebar (hasOpen) {
+  hasOpenAppsSidebar(hasOpen) {
     // console.log('[APP-STORE-SERVICE] HAS OPEN APP SIDEABR');
     this.hasOpenAppsSidebar$.next(true)
-  } 
+  }
 
 
   getToken() {
@@ -69,24 +63,26 @@ export class AppStoreService {
   public getApps() {
     let url = this.APPS_URL;
 
-
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    return this._httpClient
+      .get(url, httpOptions)
   }
 
   public getAppDetail(appId) {
+    const url = this.APPS_BASE_URL + "api/apps/" + appId
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    const headers = new Headers({
-      'Content-Type': 'application/json',
-      'Authorization': this.TOKEN
-    })
-
-    return this.http.get(this.APPS_BASE_URL + "api/apps/" + appId)
-    // return this.http.get("https://tiledesk-apps.herokuapp.com/api/apps/" + appId)
+    return this._httpClient.get(url, httpOptions)
   }
 
   getInstallation(projectId) {
@@ -97,7 +93,7 @@ export class AppStoreService {
         'Authorization': this.TOKEN
       })
 
-      this.httpClient.get(this.APPS_BASE_URL + 'api/installation/' + projectId, { headers: headers })
+      this._httpClient.get(this.APPS_BASE_URL + 'api/installation/' + projectId, { headers: headers })
         .toPromise().then((res) => {
           resolve(res);
         }).catch((err) => {
@@ -115,7 +111,7 @@ export class AppStoreService {
         'Authorization': this.TOKEN
       })
 
-      this.httpClient.get(this.APPS_BASE_URL + 'api/installation/' + projectId + '?returnapp=true', { headers: headers })
+      this._httpClient.get(this.APPS_BASE_URL + 'api/installation/' + projectId + '?returnapp=true', { headers: headers })
         .toPromise().then((res) => {
           resolve(res);
         }).catch((err) => {
@@ -126,22 +122,26 @@ export class AppStoreService {
   }
 
   public installAppVersionTwo(project_id: string, appId: string) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN_NO_JWT_SUBSTRING);
-    const options = new RequestOptions({ headers });
+
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN_NO_JWT_SUBSTRING
+      })
+    };
 
     const url = this.APPS_BASE_URL + "api/installation"
     this.logger.log('[APP-STORE-SERVICE] INSTALL V2 APP - url', url);
 
-    const body = { project_id: project_id, app_id: appId, createdAt: Date.now(), }
+    const body = { project_id: project_id, app_id: appId, createdAt: Date.now() }
 
     this.logger.log('[APP-STORE-SERVICE] INSTALL V2 APP - body  ', body);
 
-    return this.http
-      .post(url, body, options)
-      .map((res) => res.json());
+    return this._httpClient
+      .post(url, body, httpOptions)
+
   }
 
   // 
@@ -156,11 +156,14 @@ export class AppStoreService {
     app_status: string,
     user_id: string,
     clients: any) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN_NO_JWT_SUBSTRING);
-    const options = new RequestOptions({ headers });
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN_NO_JWT_SUBSTRING
+      })
+    };
 
     const url = this.APPS_BASE_URL + "api/apps"
     this.logger.log('[APP-STORE-SERVICE] CREATE NEW APP URL ', url);
@@ -181,9 +184,8 @@ export class AppStoreService {
 
     this.logger.log('[APP-STORE-SERVICE] CREATE NEW APP BODY ', body);
 
-    return this.http
-      .post(url, body, options)
-      .map((res) => res.json());
+    return this._httpClient
+      .post(url, body, httpOptions)
   }
 
 
@@ -199,11 +201,14 @@ export class AppStoreService {
     app_status: string,
     user_id: string,
     clients: any) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN_NO_JWT_SUBSTRING);
-    const options = new RequestOptions({ headers });
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN_NO_JWT_SUBSTRING
+      })
+    };
 
     const url = this.APPS_BASE_URL + "api/apps/" + app_id
     this.logger.log('[APP-STORE-SERVICE] UPDATE NEW APP URL ', url);
@@ -224,81 +229,40 @@ export class AppStoreService {
 
     this.logger.log('[APP-STORE-SERVICE] UPDATE NEW APP BODY ', body);
 
-    return this.http
-      .put(url, body, options)
-      .map((res) => res.json());
+    return this._httpClient
+      .put(url, body, httpOptions)
   }
-
 
   unistallNewApp(projectId: string, appId: string) {
     let url = this.APPS_BASE_URL + "api/installation/" + projectId + '/' + appId
     this.logger.log('[APP-STORE-SERVICE] UNINSTALL NEW APP URL ', url);
 
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    return this._httpClient
+      .delete(url, httpOptions)
   }
 
   deleteNewApp(appId: string) {
     let url = this.APPS_BASE_URL + "api/apps/" + appId
     this.logger.log('[APP-STORE-SERVICE] UNINSTALL NEW APP URL ', url);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    return this.http
-      .delete(url, options)
-      .map((res) => res.json());
+    return this._httpClient
+      .delete(url, httpOptions)
   }
 
 
-
-
-  // where: selectedClient,
-  public _createNewApp(
-  app_icon_url: string,
-  app_name: string,
-  app_description: string,
-  install_action_type: string,
-  app_installation_url: string,
-  app_learn_more_url: string,
-  app_status: string,
-  user_id: string,
-  selectedClient: string) {
-  const url = this.APPS_BASE_URL + "api/apps"
-  this.logger.log('[TILEDESK-SERVICE] - CREATE NEW APP - URL ', url);
-  const headers = { 'Authorization': this.TOKEN, 'Content-Type': 'application/json' };
-
-
-  const body = {
-    logo: app_icon_url,
-    title: app_name,
-    description: app_description,
-    installActionType: install_action_type,
-    installActionURL: app_installation_url,
-    learnmore: app_learn_more_url,
-    status: app_status,
-    visibleForUserIds: [user_id],
-    where: selectedClient,
-    createdBy: "test",
-    updatedBy: "test"
-  };
-  this.logger.log('[TILEDESK-SERVICE] - CREATE NEW APP - body ', body);
-  return this.httpClient
-    .post(url, body, { headers })
-    .pipe(map((res: any) => {
-      this.logger.log('[TILEDESK-SERVICE] - CREATE NEW PROJECT USER TO GET NEW LEAD ID url ', res);
-      return res
-    }))
-}
 
 }

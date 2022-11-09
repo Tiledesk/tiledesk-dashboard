@@ -380,10 +380,10 @@ export class DepartmentsComponent implements OnInit {
     }, error => {
       this.logger.error('[DEPTS] -- > BOT GET BY ID - ERROR', error);
 
-      const errorBody = JSON.parse(error._body)
-      this.logger.log('[DEPTS] - BOT GET BY ID - ERROR BODY', errorBody);
-      if (errorBody.msg === 'Object not found.') {
-        this.logger.log('[DEPTS] -  BOT GET BY ID - ERROR BODY MSG', errorBody.msg);
+      const errorMsg = error['error']['msg'];
+      this.logger.log('[DEPTS] - BOT GET BY ID - ERROR MSG', errorMsg);
+      if (errorMsg === 'Object not found.') {
+        this.logger.log('[DEPTS] -  BOT GET BY ID - ERROR BODY MSG', errorMsg);
         this.logger.log('[DEPTS] - BOT GET BY ID - ERROR url', error.url);
         const IdOfBotNotFound = error.url.split('/').pop();
         this.logger.log('[DEPTS] - BOT GET BY ID - ERROR - ID OF BOT NOT FOUND ', IdOfBotNotFound);

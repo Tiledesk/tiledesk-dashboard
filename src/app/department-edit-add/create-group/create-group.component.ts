@@ -23,8 +23,6 @@ export class CreateGroupComponent implements OnInit {
   @Input() newInnerWidth
   @Input() deptName_toUpdate
 
-  // @ViewChild('scrollMe')
-  // private myScrollContainer: ElementRef;
 
   showSpinner = true;
   projectUsersList: any;
@@ -187,8 +185,8 @@ export class CreateGroupComponent implements OnInit {
         this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP]  - RES ', group);
 
         if (group) {
-          this.group_name = group.name;
-          this.new_group_id = group._id
+          this.group_name = group['name'];
+          this.new_group_id = group['_id']
 
           this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP]  - new_group_id ', this.new_group_id);
         }
@@ -211,7 +209,7 @@ export class CreateGroupComponent implements OnInit {
       this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - UPDATED GROUP WITH THE USER SELECTED', group);
 
       // this.COUNT_OF_MEMBERS_ADDED = group.members.length;
-      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - # OF MEMBERS ADDED ', group.members.length);
+      this.logger.log('[DEPT-EDIT-ADD - CREATE-GROUP] - # OF MEMBERS ADDED ', group['members'].length);
 
     }, (error) => {
       this.logger.error('[DEPT-EDIT-ADD - CREATE-GROUP] - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);

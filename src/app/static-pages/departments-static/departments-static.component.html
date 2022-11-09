@@ -13,7 +13,6 @@
             <div class="row"> 
               <div class="col-sm-12"> 
                 <h2 class="demopage-title">
-                  <!-- Available with the PRO plan  -->
                   {{ "AvailableWithTheProPlan" | translate }}
                 </h2>
               </div>
@@ -22,14 +21,10 @@
             <div class="row">
               <div class="col-sm-12">
                 <h3 class="demopage-subtitle"> 
-                   <!-- Departments are a great way to separate chats and users into logical support groups. -->
                    {{ 'DepartmentsPage.DepartmentsAreAGreatWayToSeparateChats' | translate }}.
-
                   <span style="display: block">
-                    <!-- Direct users to the team who can answer the users questions best.  -->
                     {{ 'DepartmentsPage.DirectUsersToTheTeamWhoCanAnswerTheUsersQuestionsBest' | translate }} 
                   </span>  
-
                 </h3>
               </div>
             </div>
@@ -55,9 +50,14 @@
               <div class="card-content">
                 <div class="row">
                   <div  class="col-md-12">
-                    <!-- <img src="assets/img/static-depts2.png" class="img-fluid" style=""/> -->
-                  
-                    <slideshow [imageUrls]="imageUrlArray" [minHeight]="'410px'" [autoPlay]="true"  [showArrows]="false"></slideshow>
+
+                    <ng-image-slider #nav
+                    [images]="imageObject" 
+                    [imageSize]="{width: 766, height: 410}" 
+                    [infinite]="true"
+                    [manageImageRatio]="true" 
+                    [showArrow]="false" 
+                    [autoSlide]="2"></ng-image-slider>
                   </div>
 
                  

@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener, EventEmitter, Output, Input } from '@angular/core';
 
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd,  Event as NavigationEvent } from '@angular/router';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
@@ -24,7 +24,7 @@ import { DepartmentService } from '../../services/department.service';
 
 // import { publicKey } from '../../utils/util';
 // import { public_Key } from '../../utils/util';
-import { environment } from '../../../environments/environment';
+// import { environment } from '../../../environments/environment';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { WsRequestsService } from './../../services/websocket/ws-requests.service';
@@ -281,10 +281,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.listenSoundPreference();
         this.getNotificationSoundPreferences();
         this.getWsCurrentUserAvailability$();
-        this.getWsCurrentUserAvailability$();
     }
-
-
 
 
 
@@ -582,26 +579,26 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     getCurrentRoute() {
-        this.router.events.filter((event: any) => event instanceof NavigationEnd)
-            .subscribe(event => {
+        this.router.events.subscribe((event: NavigationEvent) => {
+            if (event instanceof NavigationEnd) {
                 if (event.url.indexOf('/request-for-panel') !== -1) {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = true;
-                    this.logger.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    // console.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 } else {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = false;
-                    this.logger.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    // console.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 }
 
                 if (event.url.indexOf('/unserved-request-for-panel') !== -1) {
                     this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = true;
-                    this.logger.log('[SIDEBAR] NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                    // console.log('[SIDEBAR] NavigationEnd - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 } else {
                     this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = false;
-                    this.logger.log('[SIDEBAR] NavigationEnd- IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
+                    // console.log('[SIDEBAR] NavigationEnd- IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
                 }
 
                 if (event.url.indexOf('/autologin') !== -1) {
-                    this.logger.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
+                    // console.log('[SIDEBAR] NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.AUTOLOGIN_ROUTE_IS_ACTIVE = true;
 
                 } else {
@@ -892,7 +889,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.CONTACT_CONVS_ROUTE_IS_ACTIVE = false;
                     // console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
                 }
-            });
+            }
+        });
     }
 
 
@@ -1085,7 +1083,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // RE-RUN getAllUsersOfCurrentProject TO UPDATE AVAILABLE / UNAVAILABLE BTN ON THE TOP OF THE SIDEBAR
     hasChangedAvailabilityStatusInUsersComp() {
         this.usersService.has_changed_availability_in_users.subscribe((has_changed_availability) => {
-        //    console.log('[SIDEBAR] SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
+            //    console.log('[SIDEBAR] SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
 
             if (this.project) {
                 this.getProjectUser()
@@ -1099,7 +1097,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
     getProjectUser() {
-    //    console.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
+        //    console.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
         this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
             this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
@@ -1167,7 +1165,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         this.IS_AVAILABLE = false;
                         this.IS_INACTIVE = true;
                         // console.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_INACTIVE ' , this.IS_INACTIVE) 
-                    } else if (data['user_available'] === false && (data['profileStatus'] === '' || !data['profileStatus'] )) {
+                    } else if (data['user_available'] === false && (data['profileStatus'] === '' || !data['profileStatus'])) {
                         this.IS_AVAILABLE = false;
                         this.IS_INACTIVE = false;
                         // console.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 

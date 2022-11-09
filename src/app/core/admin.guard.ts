@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { AuthService } from '../core/auth.service';
 import { LoggerService } from '../services/logger/logger.service';
@@ -64,22 +63,5 @@ export class AdminGuard {
       }
     });
   }
-
-
-//   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-
-//     // this.logger.log('[ADMIN-GUARD] - CAN ACTIVATE - USER IS OWNER or ADMIN ', this.usersService.checkRole() )
-//     const hasAdminPrivileges = this.usersService.checkRole();
-//     this.logger.log('[ADMIN-GUARD] - CAN ACTIVATE - USER IS OWNER or ADMIN ', hasAdminPrivileges);
-
-//     if (hasAdminPrivileges === true) {
-
-//       return true;
-//     }
-//     this.router.navigate([`project/${this.projectId}/unauthorized`]);
-//     return false;
-
-//   }
-//   // canActivate(): (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean { }
 
 }

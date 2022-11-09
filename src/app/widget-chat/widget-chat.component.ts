@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'appdashboard-widget-chat',
@@ -22,13 +23,25 @@ export class WidgetChatComponent implements OnInit, OnChanges {
   @Input() currentUserId: string;
   @Input() current_user_name: string;
   @Input() LABEL_PLACEHOLDER: string;
+
+  @Input() questions: any;
+  @Input() activeQuestion: number;
+
   primaryColorRGBA_1: any
   primaryColorRGBA_050: any
   linearGradient: any
-  constructor() { }
+  IS_ONBOARDING_PAGE: boolean = false;
+  constructor(
+    private router: Router,
+    private elementRef: ElementRef
+  ) { }
 
   ngOnInit() {
     // console.log('[WIDGET-CHAT-COMP] primaryColor', this.primaryColor)
+    const current_url = this.router.url
+    if (current_url.indexOf('onboarding') > -1) {
+      this.IS_ONBOARDING_PAGE = true;
+    }
 
   }
 

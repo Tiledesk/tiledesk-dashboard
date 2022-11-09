@@ -1,0 +1,39 @@
+
+<ul class="bottom-nav-metrics" style="margin-left: -25px;margin-right: -25px;">
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'richieste', 'border-from-center': selected !== 'richieste'}" (click)="goTo('richieste')" >
+      <a>{{ 'Analytics.Metrics.Requests' | translate }}</a>
+  </li>
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'visitors', 'border-from-center': selected !== 'visitors'}" (click)="goTo('visitors')">
+    <a>{{ 'Analytics.VisitorsComponentTitle' | translate }}</a>
+  </li>
+  <li class="bnt-with-border-effect " [ngClass]="{'li-active' : selected === 'messages', 'border-from-center': selected !== 'visitors'}" (click)="goTo('messages')">
+    <a>{{ 'Analytics.MessagesComponentTitle' | translate }}</a>
+  </li>
+  <!-- <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'sentiment', 'border-from-center': selected !== 'sentiment'}" (click)="goTo('sentiment')">
+      <a>{{ 'Analytics.Metrics.Sentiment' | translate }}</a>
+  </li> -->
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'tempiRisposta', 'border-from-center': selected !== 'tempiRisposta'}" (click)="goTo('tempiRisposta')">
+      <a>{{ 'Analytics.Metrics.ResponseTime' | translate }}</a>
+  </li>
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'durataConv', 'border-from-center': selected !== 'durataConv'}" (click)="goTo('durataConv')">
+    <a>{{ 'Analytics.Metrics.ConversationLenght' | translate }}</a>
+  </li>
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'events', 'border-from-center': selected !== 'events'}" (click)="goTo('events')">
+    <a>{{ 'Analytics.Metrics.Events' | translate }}</a>
+  </li>
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'satisfaction', 'border-from-center': selected !== 'satisfaction'}" (click)="goTo('satisfaction')">
+    <a>{{ 'Analytics.Metrics.Satisfaction' | translate }}</a>
+  </li>
+</ul>
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <appdashboard-requests *ngIf="selected=='richieste'"></appdashboard-requests>
+    <appdashboard-visitors-analytics *ngIf="selected=='visitors'"></appdashboard-visitors-analytics>
+    <appdashboard-messages *ngIf="selected=='messages'"></appdashboard-messages>
+    <!-- <appdashboard-sentiment *ngIf="selected=='sentiment'"></appdashboard-sentiment> -->
+    <appdashboard-responsetimes *ngIf="selected=='tempiRisposta'"></appdashboard-responsetimes>
+    <appdashboard-convsduration *ngIf="selected=='durataConv'"></appdashboard-convsduration>
+    <appdashboard-events-analytics *ngIf="selected=='events'"></appdashboard-events-analytics>
+    <appdashboard-satisfaction *ngIf="selected=='satisfaction'"></appdashboard-satisfaction>
+  </div>
+</div>

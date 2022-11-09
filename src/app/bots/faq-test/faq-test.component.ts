@@ -8,7 +8,8 @@ import { FaqService } from '../../services/faq.service';
 // USED FOR go back last page
 import { Location } from '@angular/common';
 import { FaqKbService } from '../../services/faq-kb.service';
-import * as moment from 'moment';
+// import * as moment from 'moment';
+import moment from "moment";
 import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
@@ -18,7 +19,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 })
 export class FaqTestComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('runtestbtn') private elementRef: ElementRef;
+  @ViewChild('runtestbtn', { static: false }) elementRef: ElementRef;
   project: Project;
   questionToTest: string;
   remote_faq_kb_key: string;
@@ -176,7 +177,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
           this.logger.log('[FAQ-TEST-COMP] REMOTE FAQ FOUND - POST DATA ', remoteFaq);
 
           if (remoteFaq) {
-            this.hits = remoteFaq.hits
+            this.hits = remoteFaq['hits']
             this.logger.log('[FAQ-TEST-COMP] *** hits *** ', this.hits);
             let answer = '';
 
@@ -197,7 +198,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
             this.logger.log('[FAQ-TEST-COMP] *** Questions & Answers Array *** ', this.questionsAndAnswersArray);
             this.logger.log('[FAQ-TEST-COMP] *** Reverse Questions & Answers Array *** ', this.reverseQuestionsAndAnswersArray);
 
-            this.faq_number_of_found = remoteFaq.total;
+            this.faq_number_of_found = remoteFaq['total'];
             this.logger.log('[FAQ-TEST-COMP] REMOTE FAQ LENGHT ', this.faq_number_of_found);
 
           }
@@ -223,9 +224,6 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
   goToEditFaqPage(id_faq: string) {
     this.logger.log('[FAQ-TEST-COMP] ID OF FAQ Pressed', id_faq);
-
-    // this.getFaqById(id_faq);
-    // this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id]);
   }
 
   getFaqKbIdAndGoToEditFaqPage(id_faq) {

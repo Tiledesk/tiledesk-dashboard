@@ -132,26 +132,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.logger.log('[BOT-CREATE] »»»» Bot Create Component on Init !!!')
     this.auth.checkRoleForCurrentProject();
     this.getBrowserVersion();
-
     this.detectBrowserLang();
-
-    // BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ-KB PAGE) 'CREATE' OR 'EDIT'
-    // if (this.router.url === '/createfaqkb') {
-    // if (this.router.url.indexOf('/createfaqkb') !== -1) {
-    //   this.logger.log('HAS CLICKED CREATE ');
-    //   this.CREATE_VIEW = true;
-    //   this.showSpinner = false;
-    // } else {
-    //   this.logger.log('HAS CLICKED EDIT ');
-    //   this.EDIT_VIEW = true;
-
-    //   // GET THE ID OF FAQ-KB PASSED BY FAQ-KB PAGE
-    //   this.getFaqKbId();
-
-    //   // GET THE DETAIL OF FAQ-KB BY THE ID AS ABOVE
-    //   this.getFaqKbById();
-    // }
-
     this.getCurrentProject();
     this.getParamsBotTypeAndDepts();
     this.translateFileTypeNotSupported();
@@ -192,7 +173,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
       this.logger.log('[BOT-CREATE] --->  PARAMS', params);
-    //  console.log('[BOT-CREATE] --->  PARAMS botType', this.botType);
+      //  console.log('[BOT-CREATE] --->  PARAMS botType', this.botType);
 
       this.template = params.template;
       if (this.botType === 'native') {
@@ -249,8 +230,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         if (this.depts_length > 1) {
           this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = true;
           departments.forEach(dept => {
-
-            // if (dept.default === false) {
 
             if (dept.hasBot === true) {
               this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT ');
@@ -354,7 +333,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       _botType = 'internal'
       this.language = this.botDefaultSelectedLangCode;
 
-    } else if (this.botType === 'tilebot')  {
+    } else if (this.botType === 'tilebot') {
       _botType = 'tilebot'
       this.language = this.botDefaultSelectedLangCode;
       // -------------------------------------------------------------------------------------------
@@ -376,12 +355,12 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         this.logger.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
 
         if (faqKb) {
-          this.newBot_name = faqKb.name;
-          this.newBot_Id = faqKb._id;
+          this.newBot_name = faqKb['name'];
+          this.newBot_Id = faqKb['_id'];
 
           this.translateparamBotName = { bot_name: this.newBot_name }
 
-          if (faqKb.type === 'external') {
+          if (faqKb['type'] === 'external') {
             this.newBot_External = true;
           } else {
             this.newBot_External = false;
@@ -401,57 +380,56 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         if (this.botType !== 'dialogflow') {
           this.CREATE_BOT_ERROR = true;
         }
-      },
-        () => {
-          this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
+      }, () => {
+        this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
 
-          if (this.botType !== 'dialogflow') {
-            this.SHOW_CIRCULAR_SPINNER = false;
-            this.CREATE_BOT_ERROR = false;
-          }
+        if (this.botType !== 'dialogflow') {
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.CREATE_BOT_ERROR = false;
+        }
 
-          // if the bot type is 'dialogflow' with the bot-id returned from the response of 'createBot()' run another POST CALLBACK with the uploaded credential
-          if (this.botType === 'dialogflow') {
+        // if the bot type is 'dialogflow' with the bot-id returned from the response of 'createBot()' run another POST CALLBACK with the uploaded credential
+        if (this.botType === 'dialogflow') {
 
-            this.logger.log('Create Bot (dialogflow) »»»»»»»»» - Bot Type: ', this.botType,
-              ' - uploadedFile: ', this.uploadedFile,
-              ' - lang Code ', this.dlgflwSelectedLangCode,
-              ' - kbs (dlgflwKnowledgeBaseID) ', this.dlgflwKnowledgeBaseID);
+          this.logger.log('Create Bot (dialogflow) »»»»»»»»» - Bot Type: ', this.botType,
+            ' - uploadedFile: ', this.uploadedFile,
+            ' - lang Code ', this.dlgflwSelectedLangCode,
+            ' - kbs (dlgflwKnowledgeBaseID) ', this.dlgflwKnowledgeBaseID);
 
-            const formData = new FormData();
+          const formData = new FormData();
 
-            // --------------------------------------------------------------------------
-            // formData.append language
-            // --------------------------------------------------------------------------
-            formData.append('language', this.dlgflwSelectedLangCode);
+          // --------------------------------------------------------------------------
+          // formData.append language
+          // --------------------------------------------------------------------------
+          formData.append('language', this.dlgflwSelectedLangCode);
 
-            // --------------------------------------------------------------------------
-            // formData.append Knowledge Base ID
-            // --------------------------------------------------------------------------
-            if (this.dlgflwKnowledgeBaseID !== undefined) {
-              if (this.dlgflwKnowledgeBaseID.length > 0) {
-                this.logger.log('[BOT-CREATE] Create BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
-                formData.append('kbs', this.dlgflwKnowledgeBaseID.trim());
-              } else {
-                this.logger.log('[BOT-CREATE] Create BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
-                formData.append('kbs', "");
-              }
-
-            } else if (this.dlgflwKnowledgeBaseID === undefined || this.dlgflwKnowledgeBaseID === 'undefined' || this.dlgflwKnowledgeBaseID === null || this.dlgflwKnowledgeBaseID === 'null') {
-              this.logger.log('[BOT-CREATE] Create BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID ', this.dlgflwKnowledgeBaseID);
+          // --------------------------------------------------------------------------
+          // formData.append Knowledge Base ID
+          // --------------------------------------------------------------------------
+          if (this.dlgflwKnowledgeBaseID !== undefined) {
+            if (this.dlgflwKnowledgeBaseID.length > 0) {
+              this.logger.log('[BOT-CREATE] Create BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
+              formData.append('kbs', this.dlgflwKnowledgeBaseID.trim());
+            } else {
+              this.logger.log('[BOT-CREATE] Create BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
               formData.append('kbs', "");
             }
 
-            // --------------------------------------------------------------------------
-            // formData.append file
-            // --------------------------------------------------------------------------
-            formData.append('file', this.uploadedFile, this.uploadedFile.name);
-            this.logger.log('[BOT-CREATE] Create BOT FORM DATA ', formData)
-
-            this.uploaddialogflowBotCredential(this.newBot_Id, formData);
-            //
+          } else if (this.dlgflwKnowledgeBaseID === undefined || this.dlgflwKnowledgeBaseID === 'undefined' || this.dlgflwKnowledgeBaseID === null || this.dlgflwKnowledgeBaseID === 'null') {
+            this.logger.log('[BOT-CREATE] Create BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID ', this.dlgflwKnowledgeBaseID);
+            formData.append('kbs', "");
           }
-        });
+
+          // --------------------------------------------------------------------------
+          // formData.append file
+          // --------------------------------------------------------------------------
+          formData.append('file', this.uploadedFile, this.uploadedFile.name);
+          this.logger.log('[BOT-CREATE] Create BOT FORM DATA ', formData)
+
+          this.uploaddialogflowBotCredential(this.newBot_Id, formData);
+          //
+        }
+      });
   }
 
 
@@ -464,17 +442,13 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     }, (error) => {
       this.logger.log('[BOT-CREATE] CREATE FAQKB - uploadDialogflowBotCredetial - ERROR ', error);
       if (error) {
-        const objctErrorBody = JSON.parse(error._body)
-        this.DIALOGFLOW_BOT_ERROR_MSG = objctErrorBody.msg
+        const objctErrorBody = error.error.msg
+        this.DIALOGFLOW_BOT_ERROR_MSG = objctErrorBody
         this.logger.error('[BOT-CREATE] CREATE FAQKB - DIALOGFLOW_BOT_ERROR_MSG ', this.DIALOGFLOW_BOT_ERROR_MSG);
       }
-
       this.CREATE_DIALOGFLOW_BOT_ERROR = true;
       this.SHOW_CIRCULAR_SPINNER = false;
-
     }, () => {
-
-
       this.CREATE_DIALOGFLOW_BOT_ERROR = false;
       this.SHOW_CIRCULAR_SPINNER = false;
 
@@ -522,7 +496,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     if (this.botType === 'resolution') {
       bot_type = 'native'
       this.router.navigate(['project/' + this.project._id + '/chatbots/' + this.newBot_Id + "/" + bot_type + "/intents"]);
-     } else if (this.botType === 'tilebot') {
+    } else if (this.botType === 'tilebot') {
       bot_type = 'tilebot'
       this.router.navigate(['project/' + this.project._id + '/tilebot/' + this.newBot_Id + "/" + bot_type + "/intents"]);
     } else {
@@ -542,8 +516,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       this.logger.error('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
 
       this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
-
-
       this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR = true;
 
       this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);

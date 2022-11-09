@@ -97,7 +97,6 @@ export class GroupEditAddComponent implements OnInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
    } 
 
@@ -317,8 +316,8 @@ export class GroupEditAddComponent implements OnInit {
         this.logger.log('[GROUP-EDIT-ADD] - CREATE GROUP - POST DATA ', group);
 
         if (group) {
-          this.group_name = group.name;
-          this.id_new_group = group._id
+          this.group_name = group['name'];
+          this.id_new_group = group['_id']
         }
 
         // RE-RUN GET CONTACT TO UPDATE THE TABLE
@@ -465,8 +464,8 @@ export class GroupEditAddComponent implements OnInit {
 
       this.logger.log('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED', group);
 
-      this.COUNT_OF_MEMBERS_ADDED = group.members.length;
-      this.logger.log('[GROUP-EDIT-ADD] - # OF MEMBERS ADDED ', group.members.length);
+      this.COUNT_OF_MEMBERS_ADDED = group['members'].length;
+      this.logger.log('[GROUP-EDIT-ADD] - # OF MEMBERS ADDED ', group['members'].length);
     }, (error) => {
       this.logger.error('[GROUP-EDIT-ADD] - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
       this.SHOW_CIRCULAR_SPINNER = false;

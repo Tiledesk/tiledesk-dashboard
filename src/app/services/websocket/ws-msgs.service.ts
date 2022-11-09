@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
 import { WebSocketJs } from "./websocket-js";
 import { AuthService } from '../../core/auth.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { WsMessage } from '../../models/ws-message-model';
 import { LoggerService } from '../../services/logger/logger.service';
-import { Http, Headers, RequestOptions } from '@angular/http';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from '../app-config.service';
 @Injectable()
 
 export class WsMsgsService {
-  http: Http;
+
   wsService: WebSocketJs;
   project_id: string;
   wsMsgsList: any;
   WS_IS_CONNECTED: number;
   TOKEN: string
-  public wsMsgsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
+  public wsMsgsList$: BehaviorSubject<Array<[any]>> = new BehaviorSubject<Array<[any]>>([]);
   public wsMsgsGotAllData$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   SERVER_BASE_PATH: string;
@@ -24,13 +25,13 @@ export class WsMsgsService {
   CURRENT_USER_ID: string;
 
   constructor(
-    http: Http,
+ 
     public auth: AuthService,
     public webSocketJs: WebSocketJs,
     private logger: LoggerService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private _httpClient: HttpClient
   ) {
-    this.http = http;
     this.wsMsgsList = [];
     this.logger.log('[WS-MSGS-SERV] - HELLO !!! wsMsgsList ', this.wsMsgsList)
     this.getCurrentProject();
@@ -175,14 +176,13 @@ export class WsMsgsService {
 
   public sendChatMessage(projectid: string, convid: string, chatmsg: string, replytypedid: number, requesterid: string, iscurrentuserjoined: boolean, msgmetadata: any, msgTipe: string) {
     // console.log('[WS-MSGS-SERV] replytypedid ', replytypedid ) 
-    this.logger.log('[WS-MSGS-SERV] msgmetadata ', msgmetadata)
-    this.logger.log('[WS-MSGS-SERV] msgTipe ', msgTipe)
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    // const url = "https://api.tiledesk.com/v2/5b55e806c93dde00143163dd/requests/support-group-1234/messages;" 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+   
     const url = this.SERVER_BASE_PATH + projectid + '/requests/' + convid + '/messages'
     this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL', this.SERVER_BASE_PATH)
     let body = {}
@@ -218,47 +218,25 @@ export class WsMsgsService {
     }
 
     this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL BODY ', body);
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-
+    return this._httpClient.post(url, JSON.stringify(body), httpOptions)
   }
-
-  // uploadFileToChat(projectid: string, convid: string,formData: any) {
-  //   const headers = new Headers();
-
-  //   // headers.append('Accept', 'text/csv');
-  //   // headers.append('Accept', 'application/json');
-  //   // headers.append('Content-type', 'multipart/form-data');
-  //   headers.append('Authorization', this.TOKEN);
-  //   console.log('[WS-MSGS-SERV] - uploadFileToChat formData ', formData)
-
-  //   // const url =  "http://dialogflow-proxy-tiledesk.herokuapp.com/uploadgooglecredendials/" + botid
-  //   const url = this.SERVER_BASE_PATH + projectid + '/requests/' + convid + '/messages'
-  //   this.logger.log('[WS-MSGS-SERV] - uploadFileToChat POST URL ', url)
-  //   const options = new RequestOptions({ headers: headers });
-  //   return this.http
-  //     .post(url, formData, options)
-  //     .map(res => res.json())
-  // }
 
   // SEE DOCS -> https://developer.tiledesk.com/apis/rest-api/messages#get-the-messages-of-a-request-by-id
   // /v2/:project_id/requests/:request_id/messages
   public geRequestMsgs(request_id) {
-
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/messages/';
     this.logger.log('[WS-MSGS-SERV] - GET REQUESTS MSGS ', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/csv');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    headers.append('Authorization', this.TOKEN);
+    return this._httpClient.get(url, httpOptions);
 
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.text());
   }
-
 
   public updateConversationSmartAssigment(request_id: string, smartassigment: boolean) {
 
@@ -266,21 +244,21 @@ export class WsMsgsService {
 
     this.logger.log('[WS-MSGS-SERV] - UPDATE CONV SMART ASSIGMENT - URL', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
                   
     // const body = {'smartAssignmentEnabled': smartassigment };
     const body = { 'smartAssignment': smartassigment };
 
     this.logger.log('[WS-MSGS-SERV] - UPDATE CONV SMART ASSIGMENT - BODY', body);
 
-    return this.http
-      .patch(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+    return this._httpClient
+      .patch(url, JSON.stringify(body), httpOptions)
+
   }
-
-
+     
 }

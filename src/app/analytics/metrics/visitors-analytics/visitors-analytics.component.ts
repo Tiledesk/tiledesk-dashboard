@@ -1,9 +1,10 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
 import { Chart } from 'chart.js';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
+// import * as moment from 'moment';
+import moment from "moment";
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 @Component({

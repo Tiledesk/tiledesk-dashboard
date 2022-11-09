@@ -36,7 +36,7 @@ const swal = require('sweetalert');
   styleUrls: ['./tilebot.component.scss']
 })
 export class TilebotComponent extends BotsBaseComponent implements OnInit {
-  @ViewChild('editbotbtn') private elementRef: ElementRef;
+  @ViewChild('editbotbtn', { static: false }) private elementRef: ElementRef;
 
   faq: Faq[];
   question: string;
@@ -68,6 +68,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   modalChoosefileDisabled: boolean;
 
   faqKb_name: string;
+  faqkb_language: string;
   faqKbUrlToUpdate: string;
   faqKb_id: string;
   faqKb_created_at: any;
@@ -173,7 +174,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   public FULFILLMENT_ROUTE_IS_ACTIVE: boolean = false
   public TRAINING_ROUTE_IS_ACTIVE: boolean = false
   isChromeVerGreaterThan100: boolean;
-  @ViewChild('fileInputBotProfileImage') fileInputBotProfileImage: any;
+  @ViewChild('fileInputBotProfileImage', { static: false }) fileInputBotProfileImage: any;
 
   constructor(
     private faqService: FaqService,
@@ -211,7 +212,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     this.checkBotImageUploadIsComplete();
     this.getParamsBotType();
     this.getTranslations();
-    this.getDeptsByProjectId();
+    // this.getDeptsByProjectId();
     this.listenSidebarIsOpened();
     this.getBrowserVersion()
   }
@@ -333,7 +334,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
   toggleWebhook($event) {
-    this.logger.log('[FAQ-COMP] toggleWebhook ', $event.target.checked);
+    this.logger.log('[TILEBOT] toggleWebhook ', $event.target.checked);
     this.webhook_is_enabled = $event.target.checked
 
     this.validateUrl(this.webhookUrl)
@@ -527,16 +528,16 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
   onSelectDept() {
-    this.logger.log('[FAQ-COMP] --->  onSelectDept dept_id', this.dept_id);
-    this.logger.log('[FAQ-COMP] --->  onSelectDept selected_dept_id', this.selected_dept_id);
-    this.logger.log('[FAQ-COMP] --->  onSelectDept id_faq_kb', this.id_faq_kb);
+    this.logger.log('[TILEBOT] --->  onSelectDept dept_id', this.dept_id);
+    this.logger.log('[TILEBOT] --->  onSelectDept selected_dept_id', this.selected_dept_id);
+    this.logger.log('[TILEBOT] --->  onSelectDept id_faq_kb', this.id_faq_kb);
     this.dept_id = this.selected_dept_id
 
 
     const hasFound = this.depts_without_bot_array.filter((obj: any) => {
       return obj.id === this.selected_dept_id;
     });
-    this.logger.log('[FAQ-COMP] --->  onSelectBotId dept found', hasFound);
+    this.logger.log('[TILEBOT] --->  onSelectBotId dept found', hasFound);
 
     if (hasFound.length > 0) {
       this.selected_dept_name = hasFound[0]['name']
@@ -546,11 +547,11 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
   hookBotToDept() {
     this.departmentService.updateExistingDeptWithSelectedBot(this.dept_id, this.id_faq_kb).subscribe((res) => {
-      this.logger.log('[FAQ-COMP] - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+      this.logger.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
     }, (error) => {
-      this.logger.error('[FAQ-COMP] - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
+      this.logger.error('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
     }, () => {
-      this.logger.log('[FAQ-COMP] - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
+      this.logger.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
       this.translateAndPresentModalBotAssociatedWithDepartment();
     });
   }
@@ -579,7 +580,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   // Upload bot photo
   // ---------------------------------------------------
   upload(event) {
-    this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload')
+    this.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) upload')
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
 
@@ -588,17 +589,17 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     } else {
 
       // Native upload
-      this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service')
+      this.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) upload with native service')
 
       this.uploadImageNativeService.uploadBotPhotoProfile_Native(file, this.id_faq_kb).subscribe((downoloadurl) => {
-        this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - RES downoloadurl', downoloadurl);
+        this.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - RES downoloadurl', downoloadurl);
 
         this.botProfileImageurl = downoloadurl
 
         this.timeStamp = (new Date()).getTime();
       }, (error) => {
 
-        this.logger.error('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - ERR ', error);
+        this.logger.error('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - ERR ', error);
       })
 
     }
@@ -610,12 +611,12 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   // ---------------------------------------------------
   deleteBotProfileImage() {
     // const file = event.target.files[0]
-    this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) deleteBotProfileImage')
+    this.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) deleteBotProfileImage')
 
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.deleteBotProfileImage(this.id_faq_kb);
     } else {
-      this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) deleteUserProfileImage with native service')
+      this.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) deleteUserProfileImage with native service')
       this.uploadImageNativeService.deletePhotoProfile_Native(this.id_faq_kb, 'bot')
     }
     this.botProfileImageExist = false;
@@ -626,13 +627,13 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
   checkBotImageExistOnFirebase() {
-    this.logger.log('[FAQ-COMP] checkBotImageExistOnFirebase (FAQ-COMP) ')
-    this.logger.log('[FAQ-COMP] STORAGE-BUCKET (FAQ-COMP) firebase_conf ', this.appConfigService.getConfig().firebase)
+    this.logger.log('[TILEBOT] checkBotImageExistOnFirebase (FAQ-COMP) ')
+    this.logger.log('[TILEBOT] STORAGE-BUCKET (FAQ-COMP) firebase_conf ', this.appConfigService.getConfig().firebase)
 
     const firebase_conf = this.appConfigService.getConfig().firebase;
     if (firebase_conf) {
       this.storageBucket = firebase_conf['storageBucket'];
-      this.logger.log('[FAQ-COMP] STORAGE-BUCKET (FAQ-COMP) ', this.storageBucket)
+      this.logger.log('[TILEBOT] STORAGE-BUCKET (FAQ-COMP) ', this.storageBucket)
     }
 
     const imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + this.id_faq_kb + '%2Fphoto.jpg?alt=media';
@@ -643,12 +644,12 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
 
-        self.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebase')
+        self.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebase')
         self.setImageProfileUrl(self.storageBucket);
       } else {
         self.botProfileImageExist = imageExists
 
-        self.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebase')
+        self.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase firebase')
       }
     })
   }
@@ -662,14 +663,14 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
 
-        self.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+        self.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
 
         self.setImageProfileUrl_Native(baseUrl)
 
       } else {
         self.botProfileImageExist = imageExists
 
-        self.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+        self.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
       }
     })
   }
@@ -686,18 +687,18 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
   checkBotImageUploadIsComplete() {
-    this.logger.log('[FAQ-COMP] checkBotImageUploadIsComplete')
+    this.logger.log('[TILEBOT] checkBotImageUploadIsComplete')
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
       this.uploadImageService.botImageWasUploaded.subscribe((imageuploaded) => {
-        this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Firebase)');
+        this.logger.log('[TILEBOT] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Firebase)');
         this.botImageHasBeenUploaded = imageuploaded;
 
         if (this.storageBucket && this.botImageHasBeenUploaded === true) {
 
           this.showSpinnerInUploadImageBtn = false;
 
-          this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD botProfileImageurl ');
+          this.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD botProfileImageurl ');
 
           this.setImageProfileUrl(this.storageBucket)
         }
@@ -705,7 +706,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     } else {
       // Native
       this.uploadImageNativeService.botImageWasUploaded_Native.subscribe((imageuploaded) => {
-        this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Native)');
+        this.logger.log('[TILEBOT] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Native)');
 
         this.botImageHasBeenUploaded = imageuploaded;
 
@@ -758,15 +759,15 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
         }
       }
       if (key.includes("PAY")) {
-        this.logger.log('[FAQ-COMP] PUBLIC-KEY - key', key);
+        this.logger.log('[TILEBOT] PUBLIC-KEY - key', key);
         let pay = key.split(":");
         // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
-          this.logger.log('[FAQ-COMP] - pay isVisible', this.payIsVisible);
+          this.logger.log('[TILEBOT] - pay isVisible', this.payIsVisible);
         } else {
           this.payIsVisible = true;
-          this.logger.log('[FAQ-COMP] - pay isVisible', this.payIsVisible);
+          this.logger.log('[TILEBOT] - pay isVisible', this.payIsVisible);
         }
       }
       if (key.includes("ANA")) {
@@ -792,13 +793,13 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
     if (!this.public_Key.includes("PAY")) {
       this.payIsVisible = false;
-      // this.logger.log('[FAQ-COMP] - pay isVisible', this.payIsVisible);
+      // this.logger.log('[TILEBOT] - pay isVisible', this.payIsVisible);
     }
   }
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[FAQ-COMP] -getProjectPlan - project Profile Data', projectProfileData)
+      this.logger.log('[TILEBOT] -getProjectPlan - project Profile Data', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_profile_type = projectProfileData.profile_type;
@@ -811,10 +812,10 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       }
     }, error => {
 
-      this.logger.error('[FAQ-COMP] - getProjectPlan - ERROR', error);
+      this.logger.error('[TILEBOT] - getProjectPlan - ERROR', error);
     }, () => {
 
-      this.logger.log('[FAQ-COMP] - getProjectPlan - COMPLETE')
+      this.logger.log('[TILEBOT] - getProjectPlan - COMPLETE')
 
     });
   }
@@ -884,14 +885,14 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      this.project = project
+      this.project = project;
       this.logger.log('[TILEBOT] project from AUTH service subscription  ', this.project)
     });
   }
 
   getFaqKbById() {
     this.showSpinnerInUpdateBotCard = true
-    // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
+
     this.faqKbService.getFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
       this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
@@ -919,11 +920,12 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID - webhookUrl ', this.webhookUrl);
 
       this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID - LANGUAGE ', faqkb.language);
-
+      
       // for the comnobobox "select bot language" -now not used because the user cannot change the language of the bot he chose during creation
       // this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)]
-      // this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
+      // this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       if (faqkb && faqkb.language) {
+        this.faqkb_language = faqkb.language;
         this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)].name
         this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       }
@@ -986,7 +988,8 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
   goToEditAddPage_CREATE() {
     this.logger.log('[TILEBOT] ID OF FAQKB ', this.id_faq_kb);
-    this.router.navigate(['project/' + this.project._id + '/createfaq', this.id_faq_kb, this.botType]);
+    // console.log('1 goToEditAddPage_CREATE:   ', this.faqkb_language);
+    this.router.navigate(['project/' + this.project._id + '/createfaq', this.id_faq_kb, this.botType, this.faqkb_language]);
   }
 
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ ID (RECEIVED FROM THE VIEW) AND
@@ -1000,12 +1003,12 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/bots']);
   }
 
- // -----------------------------------------------------------------------------------------
-  // GET ONLY THE FAQ WITH THE FAQ-KB ID PASSED FROM FAQ-KB COMPONENT & THEN GET REPLIES COUNT
-  // -----------------------------------------------------------------------------------------
+  // ----------------------------------------------------------------
+  // GET ONLY THE FAQ WITH THE FAQ-KB ID PASSED FROM FAQ-KB COMPONENT 
+  // ----------------------------------------------------------------
   getAllFaqByFaqKbId() {
     this.faqService.getAllFaqByFaqKbId(this.id_faq_kb).subscribe((faq: any) => {
-    //  console.log('[TILEBOT] - GET FAQS', faq);
+      this.logger.log('[TILEBOT] - GET ALL FAQ BY BOT ID', faq);
 
       if (faq) {
 
@@ -1014,19 +1017,19 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
           const totalPagesNo = faq.length / this.faqPerPageLimit;
           this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
         }
-    
+
       }
     }, (error) => {
-      this.logger.error('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - ERR ', error);
+      this.logger.error('[TILEBOT] >> FAQs GOT BY FAQ-KB ID - ERR ', error);
     }, () => {
-      this.logger.log('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
+      this.logger.log('[TILEBOT] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }
 
   fulltextChange($event) {
-    this.logger.log('[FAQ-COMP] - fulltextChange ', $event);
+    this.logger.log('[TILEBOT] - fulltextChange ', $event);
     this.fullText = $event
-    this.logger.log('[FAQ-COMP] - fulltextChange  $event length', $event.length);
+    this.logger.log('[TILEBOT] - fulltextChange  $event length', $event.length);
     if ($event.length === 0) {
       this.queryString = undefined;
       this.has_searched = false;
@@ -1057,38 +1060,38 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       this.queryString = this.fullText;
     }
     // else {
-    //   console.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.fullText);
+    //   console.log('[TILEBOT] - FULL TEXT SEARCH ', this.fullText);
     //   this.fullText_temp = '';
     // }
 
     // this.queryString = this.fullText_temp
-    this.logger.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.queryString)
+    this.logger.log('[TILEBOT] - FULL TEXT SEARCH ', this.queryString)
     this.getPaginatedFaqByFaqKbIdAndRepliesCount();
     this.getAllSearcedFaq()
   }
 
-    // ------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------
   // PAGINATION
   // ------------------------------------------------------------------------------
   decreasePageNumber() {
     this.pageNo -= 1;
-    this.logger.log('[FAQ-COMP] - DECREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[TILEBOT] - DECREASE PAGE NUMBER ', this.pageNo);
     this.getPaginatedFaqByFaqKbIdAndRepliesCount()
   }
 
   increasePageNumber() {
     this.pageNo += 1;
-    this.logger.log('[FAQ-COMP] - INCREASE PAGE NUMBER ', this.pageNo);
+    this.logger.log('[TILEBOT] - INCREASE PAGE NUMBER ', this.pageNo);
     this.getPaginatedFaqByFaqKbIdAndRepliesCount()
   }
 
-    // -----------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------
   // GET PAGINATED FAQS
   // -----------------------------------------------------------------------------------------
   getPaginatedFaqByFaqKbIdAndRepliesCount() {
     this.showSpinner = true;
     this.faqService.getPaginatedFaqByFaqKbId(this.id_faq_kb, this.pageNo, this.faqPerPageLimit, this.queryString).subscribe((faq: any) => {
-      // console.log('[FAQ-COMP] - GET Paginated FAQS', faq);
+      this.logger.log('[TILEBOT] - GET Paginated FAQS', faq);
       if (faq) {
         this.faq = faq;
         this.paginated_answers_count = faq.length
@@ -1098,19 +1101,19 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
         //   this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
         // }
         // this.faq_lenght = faq.length
-        // in aggiornamento
+
         this.faqService.getCountOfFaqReplies(this.id_faq_kb).subscribe((res: any) => {
-          this.logger.log("[FAQ-COMP] REPLIES COUNT RESPONSE: ", res);
+          this.logger.log("[TILEBOT] REPLIES COUNT RESPONSE: ", res);
 
           for (let fq of this.faq) {
-            this.logger.log("[FAQ-COMP] FQ id: ", fq._id)
+            this.logger.log("[TILEBOT] FQ id: ", fq._id)
             let reply: any;
             for (reply of res) {
               // this.logger.log("REPLY id: ", reply._id._answerid)
               if (fq._id == reply._id._answerid) {
-                this.logger.log("[FAQ-COMP] RES count: ", reply.count);
+                this.logger.log("[TILEBOT] RES count: ", reply.count);
                 fq['message_count'] = reply.count;
-                this.logger.log("[FAQ-COMP] MESSAGE COUNT: ", fq['message_count'])
+                this.logger.log("[TILEBOT] MESSAGE COUNT: ", fq['message_count'])
               }
             }
           }
@@ -1118,22 +1121,22 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       }
     }, (error) => {
       this.showSpinner = false;
-      this.logger.error('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - ERROR', error);
+      this.logger.error('[TILEBOT] >> FAQs GOT BY FAQ-KB ID - ERROR', error);
     }, () => {
       setTimeout(() => {
         this.showSpinner = false;
       }, 800);
-      this.logger.log('[FAQ-COMP] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
+      this.logger.log('[TILEBOT] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }
 
-    // -----------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------
   // GET ALL serched faq
   // -----------------------------------------------------------------------------------------
   getAllSearcedFaq() {
 
     this.faqService.getCountOfAllSearcedFaq(this.id_faq_kb, this.queryString).subscribe((faq: any) => {
-      this.logger.log('[FAQ-COMP] - GET ALL SEARCHED FAQS', faq);
+      this.logger.log('[TILEBOT] - GET ALL SEARCHED FAQS', faq);
       // this.faq = faq;
 
       if (faq) {
@@ -1148,41 +1151,42 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       }
     }, (error) => {
 
-      this.logger.error('[FAQ-COMP] >> GET ALL SEARCHED FAQS - ERROR', error);
+      this.logger.error('[TILEBOT] >> GET ALL SEARCHED FAQS - ERROR', error);
     }, () => {
 
-      this.logger.log('[FAQ-COMP] >> GET ALL SEARCHED FAQS - COMPLETE');
+      this.logger.log('[TILEBOT] >> GET ALL SEARCHED FAQS - COMPLETE');
     });
 
   }
 
   exportFaqsToCsv() {
     this.faqService.exsportFaqsToCsv(this.id_faq_kb).subscribe((faq: any) => {
-      this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - FAQS', faq)
+      this.logger.log('[TILEBOT] - EXPORT FAQ TO CSV - FAQS', faq)
 
       if (faq) {
         this.downloadFile(faq, 'faqs.csv');
       }
     }, (error) => {
-      this.logger.error('[FAQ-COMP] - EXPORT FAQ TO CSV - ERROR', error);
+      this.logger.error('[TILEBOT] - EXPORT FAQ TO CSV - ERROR', error);
     }, () => {
-      this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - COMPLETE');
+      this.logger.log('[TILEBOT] - EXPORT FAQ TO CSV - COMPLETE');
     });
+
 
     // if (this.payIsVisible) {
     //   if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
     //     this.notify.openDataExportNotAvailable()
     //   } else {
     //     this.faqService.exsportFaqsToCsv(this.id_faq_kb).subscribe((faq: any) => {
-    //       this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - FAQS', faq)
+    //       this.logger.log('[TILEBOT] - EXPORT FAQ TO CSV - FAQS', faq)
 
     //       if (faq) {
     //         this.downloadFile(faq, 'faqs.csv');
     //       }
     //     }, (error) => {
-    //       this.logger.error('[FAQ-COMP] - EXPORT FAQ TO CSV - ERROR', error);
+    //       this.logger.error('[TILEBOT] - EXPORT FAQ TO CSV - ERROR', error);
     //     }, () => {
-    //       this.logger.log('[FAQ-COMP] - EXPORT FAQ TO CSV - COMPLETE');
+    //       this.logger.log('[TILEBOT] - EXPORT FAQ TO CSV - COMPLETE');
     //     });
     //   }
     // } else {
@@ -1195,7 +1199,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     const dwldLink = document.createElement('a');
     const url = URL.createObjectURL(blob);
     const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
-    this.logger.log('[FAQ-COMP] isSafariBrowser ', isSafariBrowser)
+    this.logger.log('[TILEBOT] isSafariBrowser ', isSafariBrowser)
     if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
       dwldLink.setAttribute('target', '_blank');
 
@@ -1228,57 +1232,57 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     this.downloadFile(examplecsv, 'example.csv');
   }
 
-    /**
-   * MODAL DELETE FAQ
-   * @param id
-   * @param hasClickedDeleteModal
-   */
+  /**
+ * MODAL DELETE FAQ
+ * @param id
+ * @param hasClickedDeleteModal
+ */
   // deptName: string,
   openDeleteModal(id: string) {
-    this.logger.log('[FAQ-COMP] ON OPEN MODAL TO DELETE FAQ -> FAQ ID ', id);
+    this.logger.log('[TILEBOT] ON OPEN MODAL TO DELETE FAQ -> FAQ ID ', id);
     this.displayDeleteFaqModal = 'block';
     this.id_toDelete = id;
     // this.faq_toDelete = deptName;
   }
 
-    /**
-   * DELETE FAQ (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)  */
-     onCloseDeleteModalHandled() {
-      this.displayDeleteFaqModal = 'none';
-  
-      this.faqService.deleteFaq(this.id_toDelete).subscribe((data) => {
-        this.logger.log('[FAQ-COMP] DELETE FAQ ', data);
-  
-  
-        this.ngOnInit();
-  
-        /* https://stackoverflow.com/questions/21315306/how-to-stop-window-scroll-after-specific-event */
-        // const $window = $(window);
-        // let previousScrollTop = 0;
-        // const scrollLock = true;
-        // this.logger.log('»»» 1) SCROLL LOCK ', scrollLock)
-        // $window.scroll(function (event) {
-        //   if (scrollLock) {
-        //     this.logger.log('»»» 2)SCROLL LOCK ', scrollLock)
-        //     $window.scrollTop(previousScrollTop);
-        //   }
-  
-        //   previousScrollTop = $window.scrollTop();
-  
-        // });
-      }, (error) => {
-        this.logger.error('[FAQ-COMP] DELETE FAQ ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        this.notify.showNotification(this.errorDeletingAnswerMsg, 4, 'report_problem');
-      }, () => {
-        this.logger.log('[FAQ-COMP] DELETE FAQ * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification(this.answerSuccessfullyDeleted, 2, 'done');
-      });
-  
-    }
+  /**
+ * DELETE FAQ (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)  */
+  onCloseDeleteModalHandled() {
+    this.displayDeleteFaqModal = 'none';
 
-      // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
+    this.faqService.deleteFaq(this.id_toDelete).subscribe((data) => {
+      this.logger.log('[TILEBOT] DELETE FAQ ', data);
+
+
+      this.ngOnInit();
+
+      /* https://stackoverflow.com/questions/21315306/how-to-stop-window-scroll-after-specific-event */
+      // const $window = $(window);
+      // let previousScrollTop = 0;
+      // const scrollLock = true;
+      // this.logger.log('»»» 1) SCROLL LOCK ', scrollLock)
+      // $window.scroll(function (event) {
+      //   if (scrollLock) {
+      //     this.logger.log('»»» 2)SCROLL LOCK ', scrollLock)
+      //     $window.scrollTop(previousScrollTop);
+      //   }
+
+      //   previousScrollTop = $window.scrollTop();
+
+      // });
+    }, (error) => {
+      this.logger.error('[TILEBOT] DELETE FAQ ERROR ', error);
+      // =========== NOTIFY ERROR ===========
+      this.notify.showNotification(this.errorDeletingAnswerMsg, 4, 'report_problem');
+    }, () => {
+      this.logger.log('[TILEBOT] DELETE FAQ * COMPLETE *');
+      // =========== NOTIFY SUCCESS===========
+      this.notify.showNotification(this.answerSuccessfullyDeleted, 2, 'done');
+    });
+
+  }
+
+  // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {
     this.displayDeleteFaqModal = 'none';
     this.displayInfoModal = 'none';
@@ -1290,19 +1294,19 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
   onCloseInfoModalHandledSuccess() {
-    this.logger.log('[FAQ-COMP] onCloseInfoModalHandledSuccess')
+    this.logger.log('[TILEBOT] onCloseInfoModalHandledSuccess')
     this.displayInfoModal = 'none';
     this.ngOnInit();
   }
   onCloseInfoModalHandledError() {
-    this.logger.log('[FAQ-COMP] onCloseInfoModalHandledError')
+    this.logger.log('[TILEBOT] onCloseInfoModalHandledError')
     this.displayInfoModal = 'none';
     // this.router.navigate(['project/' + this.project._id + '/faqkb']);
     this.ngOnInit();
   }
 
   countDelimiterDigit(event) {
-    this.logger.log('[FAQ-COMP] # OF DIGIT ', this.csvColumnsDelimiter.length)
+    this.logger.log('[TILEBOT] # OF DIGIT ', this.csvColumnsDelimiter.length)
     if (this.csvColumnsDelimiter.length !== 1) {
       (<HTMLInputElement>document.getElementById('file')).disabled = true;
       this.modalChoosefileDisabled = true;
@@ -1312,124 +1316,124 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     }
   }
 
-    // UPLOAD FAQ FROM CSV
-    fileChangeUploadCSV(event) {
-      this.displayImportModal = 'none';
-      this.displayInfoModal = 'block';
-  
-      this.SHOW_CIRCULAR_SPINNER = true;
-  
-      this.logger.log('[FAQ-COMP] CSV COLUMNS DELIMITER ', this.csvColumnsDelimiter)
-      const fileList: FileList = event.target.files;
-      if (fileList.length > 0) {
-        const file: File = fileList[0];
-        const formData: FormData = new FormData();
-        formData.set('id_faq_kb', this.id_faq_kb);
-        formData.set('delimiter', this.csvColumnsDelimiter);
-        formData.append('uploadFile', file, file.name);
-        this.logger.log('FORM DATA ', formData)
-  
-        this.faqService.uploadFaqCsv(formData)
-          .subscribe(data => {
-            this.logger.log('[FAQ-COMP] UPLOAD CSV DATA ', data);
-            if (data['success'] === true) {
-              this.parse_done = true;
-              this.parse_err = false;
-            } else if (data['success'] === false) {
-              this.parse_done = false;
-              this.parse_err = true;
-            }
-          }, (error) => {
-            this.logger.error('[FAQ-COMP] UPLOAD CSV - ERROR ', error);
-            this.SHOW_CIRCULAR_SPINNER = false;
-          }, () => {
-            this.logger.log('[FAQ-COMP] UPLOAD CSV * COMPLETE *');
-            setTimeout(() => {
-              this.SHOW_CIRCULAR_SPINNER = false
-            }, 300);
-          });
-  
-      }
-    }
+  // UPLOAD FAQ FROM CSV
+  fileChangeUploadCSV(event) {
+    this.displayImportModal = 'none';
+    this.displayInfoModal = 'block';
 
-    openRightSidebar() {
-      this.OPEN_RIGHT_SIDEBAR = true;
-      const elemMainContent = <HTMLElement>document.querySelector('.main-content');
-      this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
-      this.logger.log('[FAQ-COMP] - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
-    }
-  
-    closeRightSidebar(event) {
-      this.logger.log('[FAQ-COMP] »»»» CLOSE RIGHT SIDEBAR ', event);
-      this.OPEN_RIGHT_SIDEBAR = event;
-    }
+    this.SHOW_CIRCULAR_SPINNER = true;
 
- 
-    // -----------------------------------------------------------------------
-    // Resolution bot doc link
-    // -----------------------------------------------------------------------
-    openResolutionBotDocsStylingYourChatbotReplies() {
-      const url = URL_styling_your_chatbot_replies;
-      window.open(url, '_blank');
+    this.logger.log('[TILEBOT] CSV COLUMNS DELIMITER ', this.csvColumnsDelimiter)
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      const file: File = fileList[0];
+      const formData: FormData = new FormData();
+      formData.set('id_faq_kb', this.id_faq_kb);
+      formData.set('delimiter', this.csvColumnsDelimiter);
+      formData.append('uploadFile', file, file.name);
+      this.logger.log('FORM DATA ', formData)
+
+      this.faqService.uploadFaqCsv(formData)
+        .subscribe(data => {
+          this.logger.log('[TILEBOT] UPLOAD CSV DATA ', data);
+          if (data['success'] === true) {
+            this.parse_done = true;
+            this.parse_err = false;
+          } else if (data['success'] === false) {
+            this.parse_done = false;
+            this.parse_err = true;
+          }
+        }, (error) => {
+          this.logger.error('[TILEBOT] UPLOAD CSV - ERROR ', error);
+          this.SHOW_CIRCULAR_SPINNER = false;
+        }, () => {
+          this.logger.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
+          setTimeout(() => {
+            this.SHOW_CIRCULAR_SPINNER = false
+          }, 300);
+        });
+
     }
-  
-    openDocsResolutionBotSendImageVideosMore() {
-      const url = URL_response_bot_images_buttons_videos_and_more
-      window.open(url, '_blank');
-    }
-  
-    openDocsResolutionBotHandoffToHumanAgent() {
-      // const url = 'https://gethelp.tiledesk.com/articles/handoff-to-human-agents/';
-      const url = URL_handoff_to_human_agents
-      window.open(url, '_blank');
-    }
-  
-    openDocsResolutionBotConfigureYourFirstChatbot() {
-      // const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/'; (replaced by configure-your-first-chatbot/ )
-      // const url = 'https://gethelp.tiledesk.com/articles/configure-your-first-chatbot/';
-      const url = URL_configure_your_first_chatbot;
-      window.open(url, '_blank');
-    }
-  
-    // -----------------------------------------------------------------------
-    // Dialogflow bot doc link
-    // -----------------------------------------------------------------------
-    openDeveloperTiledeskGenerateDFCredentialFile() {
-      const url = 'https://developer.tiledesk.com/external-chatbot/build-your-own-dialogflow-connnector/generate-dialgoflow-google-credentials-file';
-      window.open(url, '_blank');
-    }
-  
-    openDocsTiledeskDialogflowConnector() {
-      // const url = 'https://docs.tiledesk.com/knowledge-base/microlanguage-for-dialogflow-images-videos/'; // NOT FOUND on gethelp
-      const url = URL_microlanguage_for_dialogflow_images_videos // NOT FOUND on gethelp
-      window.open(url, '_blank');
-    }
-  
-    openDocsDialogFlowHandoffToHumanAgent() {
-      // https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/ 
-      const url = URL_dialogflow_connector_handoff_to_human_agent_example
-      window.open(url, '_blank');
-    }
-  
-    openDialogflowConnectorDoc() {
-      const url = URL_dialogflow_connector
-      window.open(url, '_blank');
-    }
-  
-    // -----------------------------------------------------------------------
-    // External bot doc link
-    // -----------------------------------------------------------------------
-    openExternalBotIntegrationTutorial() {
-      // const url = 'https://developer.tiledesk.com/apis/tutorials/connect-your-own-chatbot';
-      const url = 'https://developer.tiledesk.com/external-chatbot/connect-your-own-chatbot';
-      window.open(url, '_blank');
-    }
-  
-    openWebhookRequirementsDoc() {
-      const url = 'https://developer.tiledesk.com/resolution-bot-programming/webhook-data-model';
-      window.open(url, '_blank');
-    }
-  
- 
+  }
+
+  openRightSidebar() {
+    this.OPEN_RIGHT_SIDEBAR = true;
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    this.logger.log('[TILEBOT] - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+  }
+
+  closeRightSidebar(event) {
+    this.logger.log('[TILEBOT] »»»» CLOSE RIGHT SIDEBAR ', event);
+    this.OPEN_RIGHT_SIDEBAR = event;
+  }
+
+
+  // -----------------------------------------------------------------------
+  // Resolution bot doc link
+  // -----------------------------------------------------------------------
+  openResolutionBotDocsStylingYourChatbotReplies() {
+    const url = URL_styling_your_chatbot_replies;
+    window.open(url, '_blank');
+  }
+
+  openDocsResolutionBotSendImageVideosMore() {
+    const url = URL_response_bot_images_buttons_videos_and_more
+    window.open(url, '_blank');
+  }
+
+  openDocsResolutionBotHandoffToHumanAgent() {
+    // const url = 'https://gethelp.tiledesk.com/articles/handoff-to-human-agents/';
+    const url = URL_handoff_to_human_agents
+    window.open(url, '_blank');
+  }
+
+  openDocsResolutionBotConfigureYourFirstChatbot() {
+    // const url = 'https://docs.tiledesk.com/knowledge-base/create-a-bot/'; (replaced by configure-your-first-chatbot/ )
+    // const url = 'https://gethelp.tiledesk.com/articles/configure-your-first-chatbot/';
+    const url = URL_configure_your_first_chatbot;
+    window.open(url, '_blank');
+  }
+
+  // -----------------------------------------------------------------------
+  // Dialogflow bot doc link
+  // -----------------------------------------------------------------------
+  openDeveloperTiledeskGenerateDFCredentialFile() {
+    const url = 'https://developer.tiledesk.com/external-chatbot/build-your-own-dialogflow-connnector/generate-dialgoflow-google-credentials-file';
+    window.open(url, '_blank');
+  }
+
+  openDocsTiledeskDialogflowConnector() {
+    // const url = 'https://docs.tiledesk.com/knowledge-base/microlanguage-for-dialogflow-images-videos/'; // NOT FOUND on gethelp
+    const url = URL_microlanguage_for_dialogflow_images_videos // NOT FOUND on gethelp
+    window.open(url, '_blank');
+  }
+
+  openDocsDialogFlowHandoffToHumanAgent() {
+    // https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/ 
+    const url = URL_dialogflow_connector_handoff_to_human_agent_example
+    window.open(url, '_blank');
+  }
+
+  openDialogflowConnectorDoc() {
+    const url = URL_dialogflow_connector
+    window.open(url, '_blank');
+  }
+
+  // -----------------------------------------------------------------------
+  // External bot doc link
+  // -----------------------------------------------------------------------
+  openExternalBotIntegrationTutorial() {
+    // const url = 'https://developer.tiledesk.com/apis/tutorials/connect-your-own-chatbot';
+    const url = 'https://developer.tiledesk.com/external-chatbot/connect-your-own-chatbot';
+    window.open(url, '_blank');
+  }
+
+  openWebhookRequirementsDoc() {
+    const url = 'https://developer.tiledesk.com/resolution-bot-programming/webhook-data-model';
+    window.open(url, '_blank');
+  }
+
+
 
 }

@@ -1,0 +1,206 @@
+
+
+<div *ngIf="selected!=='step0' && selected!=='step3'" class="wizard-bckgrnd"></div>
+<div class="main-content css-onboarding">
+  <img [src]="companyLogoBlack_Url" class="logo" />
+  <div *ngIf="selected=='step2'" class="box-steps">
+    <div class="step-number">
+      <span class="number-label">
+        {{ "OnboardPage.Pass" | translate }}   
+        <div class="number-list">
+          <ul [ngStyle]="{'transform': translateY}">
+            <li *ngFor="let intent of step2Questions; index as i">
+              {{i+1}}
+            </li>
+          </ul>
+        </div>
+      </span>
+      <span class="number-of"> / {{step2Questions.length}}</span>
+    </div>
+    <div class="step-points">
+      <span *ngFor="let intent of step2Questions; index as i" class="point" [ngClass]="{'active': stepNumber >= i+1}"></span>
+    </div>
+  </div>
+
+  <div class="box-step-0" *ngIf="selected=='step0' && DISPLAY_SPINNER_SECTION == false">
+    
+    <div class="container">
+      <div class="row equal">
+
+        <div class="fade-in">
+          <div class="container-text-msg">
+            <h1 class="title">{{'OnboardPage.ChatbotTitle' | translate}}</h1>
+            <p class="description">{{'OnboardPage.DoYouWantChatbot' | translate}}</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-buttons col-md-6">
+          <div class="icon-button fade-in">🤖</div>
+          <button class="btn btn-lg btn-primary fade-in-left create-bot-continue-to-next-step" (click)="goToNextStep('step1')" >
+            {{ "OnboardPage.YesChatboat" | translate }}
+          </button>
+        </div>
+        <div class="col-buttons col-md-6">
+          <div class="icon-button fade-in">👨🏻‍🦰</div>
+          <button class="btn btn-lg btn-primary fade-in-right" (click)="continueToNextStep()" >
+            {{ "OnboardPage.NoChatboat" | translate }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+            
+  </div>
+    
+
+    
+  <appdashboard-welcome-message-configuration 
+    *ngIf="selected=='step1'"
+    [welcomeMessage]="welcomeMessage" 
+    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+    [primaryColor]="primaryColor"
+    [secondaryColor]="secondaryColor"
+    [projectName]="projectName"
+    (changePage)="gotToChangePage($event)">
+  </appdashboard-welcome-message-configuration>
+
+
+  <appdashboard-chatbot-configuration 
+    *ngIf="selected=='step2'"
+    [welcomeMessage]="welcomeMessage" 
+    [questions] = "step2Questions"
+    [answers] = "step2Answers"
+    [primaryColor]="primaryColor"
+    [secondaryColor]="secondaryColor"
+    [projectName]="projectName"
+    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+    (changePage)="gotToChangePage($event)"
+    (changeStepNumber) = "gotToChangeStepNumber($event)"
+  ></appdashboard-chatbot-configuration>
+
+  <appdashboard-human-configuration
+    *ngIf="selected=='step3'"
+    [welcomeMessage]="welcomeMessage" 
+    [questions] = "step3Questions"
+    [answers] = "step3Answers"
+    [questionMsg] = "questionStep4ChatbotConfiguration"
+    [answerMsg] = "answareStep4ChatbotConfiguration"
+    [primaryColor]="primaryColor"
+    [secondaryColor]="secondaryColor"
+    [projectName]="projectName"
+    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+    (changePage)="gotToChangePage($event)"
+    (changeStepNumber) = "gotToChangeStepNumber($event)"
+  ></appdashboard-human-configuration>
+      
+
+  
+  <appdashboard-error-result
+  *ngIf="DISPLAY_SPINNER_SECTION"
+  [DISPLAY_SPINNER]="DISPLAY_SPINNER"
+  [DISPLAY_BOT]="DISPLAY_BOT"
+  [DISPLAY_FAQ]="DISPLAY_FAQ"
+  [CREATE_BOT_ERROR]="CREATE_BOT_ERROR"
+  [CREATE_FAQ_ERROR]="CREATE_FAQ_ERROR"
+  (cancel)="cancel($event)"
+  (continueToNextStep)="continueToNextStep($event)"
+  ></appdashboard-error-result> 
+
+ <!-- <div *ngIf="DISPLAY_SPINNER_SECTION" class="loading-section" style="display: flex;flex-flow: column;">
+
+    <div class="images-wrapper">
+      <div *ngIf="DISPLAY_SPINNER" class="svg-wrapper">
+        <div class="dot-spinner">
+          <div class="dot1"></div>
+          <div class="dot2"></div>
+        </div>
+      </div>
+
+      <div *ngIf="!DISPLAY_SPINNER">
+        <div *ngIf="!CREATE_BOT_ERROR" class="success-checkmark-project">
+          <div class="check-icon-project">
+            <span class="icon-line line-tip"></span>
+            <span class="icon-line line-long"></span>
+            <div class="icon-circle"></div>
+            <div class="icon-fix"></div>
+          </div>
+        </div>
+        <div *ngIf="CREATE_BOT_ERROR" class="swal2-icon swal2-error swal2-animate-error-icon" style="display: flex;">
+          <span class="swal2-x-mark">
+            <span class="swal2-x-mark-line-left"></span>
+            <span class="swal2-x-mark-line-right"></span>
+          </span>
+        </div>
+      </div>
+
+    </div> 
+
+
+
+    <div class="wizard-success-container">
+
+      <div *ngIf="DISPLAY_SPINNER" class="success-label">
+        <span class="wizard-span-processing-msg">{{ "Processing" | translate }}</span>
+      </div>
+
+      <div *ngIf="!DISPLAY_SPINNER">
+      
+        <div *ngIf="DISPLAY_BOT && !DISPLAY_FAQ">
+          <div *ngIf="!CREATE_BOT_ERROR" class="success-label">
+            <p class="wizard-span-success-msg">
+              {{ "BotsAddEditPage.TheBot" | translate }} 
+              {{ "BotsAddEditPage.HasBeenCreated" | translate }}
+            </p>
+          </div>
+
+          <div *ngIf="CREATE_BOT_ERROR" class="error-label">
+            <p class="wizard-span-success-msg">
+              {{ "BotsAddEditPage.AnErrorHasOccurred" | translate }}
+            </p>
+          </div>
+
+          <button style="margin-top: 76px;" *ngIf="!CREATE_BOT_ERROR" class="btn btn-lg btn-primary create-bot-continue-to-next-step" (click)="continueToNextStep()" >
+            {{ "ProjectsPage.Continue" | translate }}
+          </button>
+          <button *ngIf="CREATE_BOT_ERROR" class="btn btn-lg btn-primary" (click)="cancel('step1')" >
+            {{ "Close" | translate }}
+          </button>
+        </div>
+
+        <div *ngIf="DISPLAY_FAQ && !DISPLAY_BOT">
+
+          <div *ngIf="!CREATE_FAQ_ERROR" class="success-label">
+            <p class="wizard-span-success-msg">
+              {{ "FaqPage.FaqsSuccessfullyUploaded" | translate }} 
+            </p>
+          </div>
+
+
+          <div *ngIf="CREATE_FAQ_ERROR" class="error-label">
+            <p class="wizard-span-success-msg">
+              {{ "FaqPage.AnErrorOccurredDuringTheUpload" | translate }}
+            </p>
+          </div>
+
+
+          <button style="margin-top: 76px;" *ngIf="!CREATE_FAQ_ERROR" class="btn btn-lg btn-primary create-faqs-continue-to-next-step" (click)="continueToNextStep()" >
+            {{ "ProjectsPage.Continue" | translate }}
+          </button>
+          <button *ngIf="CREATE_FAQ_ERROR" class="btn btn-lg btn-primary" (click)="cancel('step1')" >
+            {{ "Close" | translate }}
+          </button>
+        </div>
+
+      </div>
+      
+    </div>
+
+  </div>
+
+
+     -->
+  
+</div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs'
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { SsoService } from '../../core/sso.service';
 import * as firebase from 'firebase/app';
@@ -134,7 +134,7 @@ export class AutologinComponent implements OnInit {
     this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
 
-      const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, email: auth_user.email, emailverified: auth_user.emailverified, token: JWT }
+      const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
       localStorage.setItem('user', JSON.stringify(user));
@@ -151,7 +151,7 @@ export class AutologinComponent implements OnInit {
           // !this.APP_IS_DEV_MODE && 
 
           if (this.FCM_Supported === true) {
-            this.getPermission(auth_user._id);
+            this.getPermission(auth_user['_id']);
           }
         }
       }
@@ -246,7 +246,7 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is NOT equal to params JWT ');
     }
 
-    this.sso.chat21CreateFirebaseCustomToken(JWT).subscribe(fbtoken => {
+    this.sso.chat21CreateFirebaseCustomToken(JWT).subscribe((fbtoken: string) => {
 
       this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken chat21CreateFirebaseCustomToken res ', fbtoken);
 
@@ -261,7 +261,7 @@ export class AutologinComponent implements OnInit {
                 this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser RES ', auth_user);
                 this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser JWT ', JWT);
                 // const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
-                const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, email: auth_user.email, emailverified: auth_user.emailverified, token: JWT }
+                const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
                 localStorage.setItem('user', JSON.stringify(user));
                 localStorage.setItem('chat_sv5__tiledeskToken', JWT);
 
@@ -275,7 +275,7 @@ export class AutologinComponent implements OnInit {
                   // && this.appConfigService.getConfig().firebaseAuth === true
                   if (this.appConfigService.getConfig().pushEngine === 'firebase') {
                     if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
-                      this.getPermission(auth_user._id);
+                      this.getPermission(auth_user['_id']);
                     }
                   }
                 }

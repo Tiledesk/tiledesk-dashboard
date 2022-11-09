@@ -370,7 +370,7 @@ p.member:hover {
 
 .requester-verified {
   position: relative;
-  left: -20px;
+  left: -17px;
 }
 
 .requester-email {
@@ -395,7 +395,7 @@ p.member:hover {
 
 .requester-verified-email {
   position: relative;
-  left: 20px;
+  left: 17px;
 }
 
 .column-th-span {
@@ -408,6 +408,10 @@ p.member:hover {
 .column-td {
   font-size: 12px;
   font-weight: 400;
+}
+
+.request-first-text:hover {
+  color: rgb(20, 74, 117);
 }
 
 .member {
