@@ -476,8 +476,8 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
   continueToNextStep() {
     // this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
     this.router.navigate([`/project/${this.projectId}/onboarding/` + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
-    console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
-    console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
+    // console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
+    // console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
     // this.addNewLanguage();
     this.saveWidgetApparance()
   }

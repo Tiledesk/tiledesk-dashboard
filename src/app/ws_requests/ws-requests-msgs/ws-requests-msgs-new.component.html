@@ -878,7 +878,7 @@
                             <!-- ------------------------------------- -->
                             <!-- IF IS AN INTERNAL UNSERVED REQUEST  -->
                             <!-- ------------------------------------- -->
-                            <img src="assets/img/request_icons/status100_internal.svg"
+                            <img *ngIf="request?.status === 100 && request?.subject" src="assets/img/request_icons/status100_internal.svg"
                               matTooltipClass="custom-mat-tooltip"
                               matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}"
                               #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
@@ -1954,16 +1954,17 @@
                         </svg>
                         <div>
                           <div class="rating-group e9elja63" *ngIf="request">
+                       
                             <span class="material-icons"
                               [ngClass]="{'yellow-star': request?.rating === 1 || request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
                               star
                             </span>
                             <span class="material-icons"
-                              [ngClass]="{'yellow-star': request?.rating === 2 || request?.rating === 3}">
+                              [ngClass]="{'yellow-star': request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
                               star
                             </span>
                             <span class="material-icons"
-                              [ngClass]="{'yellow-star': request?.rating === 3 || request?.rating === 4}">
+                              [ngClass]="{'yellow-star': request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
                               star
                             </span>
                             <span class="material-icons"

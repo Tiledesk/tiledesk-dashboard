@@ -3084,6 +3084,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.prechatFormArray[index + 1] = el;
     }
   }
+  hasClickedUpdatePrechatformCustomFields() {
+    this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+  }
 
   savePrechatFormCustomFields() {
     const prechatform_savejson_btn = <HTMLElement>document.querySelector('.prechatform-savejson-btn');
