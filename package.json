@@ -21,7 +21,7 @@
   "bin": {
     "tiledesk-dashboard": "./bin/dashboard"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "^14.2.2",
     "@angular/cdk": "^14.2.2",
