@@ -72,7 +72,7 @@ And more.
 	
 - If you want to to manage multiple active Node.js versions, to install node use the tool Node Version Manager (NVM)
 
-- Install angular-cli v7.3.10 with `npm install -g @angular/cli@7.3.10`
+- Install angular-cli v7.3.10 with `npm install -g @angular/cli@14.2.9`
 
 - tiledesk-server installed and running (https://github.com/Tiledesk/tiledesk-server.git)
 
