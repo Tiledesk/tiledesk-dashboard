@@ -1,5 +1,7 @@
 # tiledesk-dashboard
 
+### 2.3.1
+- Updates "Dockerfile" 
 
 ### 2.3.0
 - Migrates from Angular v5 to Angular v14
