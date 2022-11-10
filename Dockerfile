@@ -19,7 +19,8 @@ COPY . .
 
 # with prod option
 #RUN npm run ng build -- --prod --output-path=dist --base-href ./
-RUN node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng --configuration production --output-path=dist --base-href ./
+# RUN node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng --configuration production --output-path=dist --base-href ./
+RUN npm run ng build -- --configuration production --output-path=dist --base-href ./
 
 ### STAGE 2: Setup ###
 
