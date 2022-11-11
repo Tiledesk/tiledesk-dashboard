@@ -1,75 +1,61 @@
 .box-step-4 {
-    &.first-page, &.second-page {
-        display: block;
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins',Arial,sans-serif;
+    /** STRUCTURE **/
+    .container {
         width: 90%;
-        min-height: 400px;
-        height: 100%;
-        padding: 0px;
-        font-family: "Poppins", Arial, sans-serif;
-        margin-top: 60px;
+        margin: 80px auto;
+        padding: 0;
+        .col-md-6 {
+            position: relative;
+            min-height: 400px;
+            padding: 0; 
+        }
+    }
+    
+    .container-text-msg {
+        width: auto;
+        height: auto;
+        margin-bottom: 40px;
+    }
+    button {
+        white-space: normal;
+        margin: 20px 10px;
+        width: 100%;
+    }
+    .title {
+        font-size: 40px;
+        font-weight: 500;
+        line-height: normal;
+        margin-top: 0px;
+        margin-bottom: 0.5em;
+    }
+    .description {
+        color: #566787;
+        position: relative;
+        font-family: "Poppins","Roboto",Arial,sans-serif;
+        font-size: 24px;
+        line-height: normal;
+        margin-bottom: 1em;
     }
     &.first-page {
-        // margin: 20vh auto;
-        .container-text-msg {
-            width: auto;
-            height: auto;
-            margin-bottom: 40px;
-        }
-        .title {
-            font-size: 36px;
-            font-weight: 300;
-            line-height: normal;
-            text-align: left;
-        }
-
-        .description {
-            color: #566787;
-            position: relative;
-            font-family: "Poppins","Roboto",Arial,sans-serif;
-            font-size: 18px;
-            line-height: normal;
-            text-align: left;
-        }
-
         .col-buttons {
             text-align: center;
+            padding:0;
         }
-
         .icon-button {
             text-align: center;
-            font-size: 6em;
+            font-size: 10em;
             line-height: normal;
         }
-
-        button {
-            white-space: normal;
-            // padding: 12px 20px;
-            // font-size: 1em;
-            margin: 20px 10px;
-        }
     }
+    
 }
 
 
 .box-step-4 {
     &.second-page {
-        // display: block;
-        // margin: 0;
-        // position: absolute;
-        // top: 50%;
-        // left: 50%;
-        // transform: translate(-50%, -50%);
-        // width: 90%;
-        // min-height: 400px;
-        // height: 100%;
-        // padding: 0px;
-        // font-family: "Poppins", Arial, sans-serif;
-        // margin-top: 60px;
         .num-chars {
             background: #eee;
             padding: 0px 8px;
@@ -77,49 +63,7 @@
             font-size: 11px;
             color: #333;
         }
-    
-        /** STRUCTURE **/
-        .container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            .col-md-6 {
-                position: relative;
-                min-height: 400px;
-                padding: 0;
-            }
-            .container-text-msg {
-                width: auto;
-                height: auto;
-                margin-bottom: 40px;
-            }
-            .container-webchat {
-                position: absolute;
-                // top: 50%;
-                // height: 90px;
-                width: 100%;
-            }
-            .btn {
-                font-size: 14px;
-                padding: 18px 36px;
-                width: 100%;
-                margin: 20px 10px;
-            }
-        }
-    
         /** PAGE INPUT **/
-        .title {
-            font-size: 36px;
-            font-weight: 300;
-            line-height: normal;
-        }
-        .description {
-            color: #566787;
-            position: relative;
-            font-family: "Poppins","Roboto",Arial,sans-serif;
-            font-size: 18px;
-            line-height: normal;
-        }
         .header-input {
             display: flex;
             -webkit-box-align: center;
@@ -248,6 +192,7 @@
 .navigation-btn {
     display: flex;
     flex-direction: row;
+    margin-left: -10px;
 }
 
 .navigation-btn-later {
@@ -277,7 +222,7 @@
     border-radius: 3px;
     border: 0px solid #efefef;
     background: #efefef;
-    margin: 20px 10px 20px 0px;
+    margin: 20px 10px 20px 0;
     padding: 10px;
     svg{
         fill: #3C4858;

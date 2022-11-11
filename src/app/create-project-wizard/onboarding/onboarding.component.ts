@@ -277,14 +277,18 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
     // console.log('this.step3Questions::: ', this.step3Questions);
     var buttons = "";
     for(let i=0;i<this.questions.length;i++) {
-      let domanda = this.questions[i];
-      buttons += "\n* "+domanda;
+      let question = this.questions[i];
+      buttons += "\n* "+question;
     }
     let answer = this.welcomeMessage+buttons;
 
     this.answers.forEach((answer, index) => {
       if(!answer.includes(this.buttonAgent)){
         this.answers[index] += this.buttonBackMenu;
+      } else {
+        // the button "talk with an agent" has been created
+        // when add it to defaultFallback
+        this.defaultFallback += "\n* "+this.questions[index];
       }
     });
     this.intents = ['start','defaultFallback'].concat(this.intents);
@@ -401,6 +405,8 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
       this.welcomeMessage = event.msg;
     }
     if(event.step === 'step2'){
+      this.stepNumber = 1;
+      this.gotToChangeStepNumber(0);
     }
     else if(event.step === 'step3'){
       if( event.questions){

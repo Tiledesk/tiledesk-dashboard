@@ -2182,7 +2182,7 @@
         "TitleWelcomeMessage": "Wie möchten Sie Besucher begrüßen, wenn sie auf Ihrer Website ankommen?",
         "LabelWelcomeMessage": "Willkommensnachricht",
         "WelcomeMessage": "Hallo 👋🏻 Ich bin dein virtueller Assistent 🤖 Wie kann ich helfen?",
-        "DefaultFallback": "Ich kann keine angemessene Antwort geben. Schreiben Sie eine neue Frage oder sprechen Sie mit einem menschlichen Agenten. \n* Zurück zu Top Tdaction: Start \n* Siehe Dokumente https://docs.tiledesk.com/",
+        "DefaultFallback": "Ich kann keine angemessene Antwort geben. Schreiben Sie eine neue Frage oder sprechen Sie mit einem menschlichen Agenten. \n* Zurück zu Top Tdaction: Start",
         "Question": "Frage",
         "Answer": "Antworten",
         "DescriptionStep1ChatbotConfiguration": "Verbessern Sie Ihren Chatbot, um Ihre Zeit zu sparen! Trainieren Sie Ihren Chatbot, um auf die häufigsten Fragen zu antworten, die Ihre Kunden Ihnen stellen",

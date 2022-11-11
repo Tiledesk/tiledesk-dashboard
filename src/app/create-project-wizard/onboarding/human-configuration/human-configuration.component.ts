@@ -95,6 +95,8 @@ export class HumanConfigurationComponent implements OnInit {
   }
 
   goToPrevPage() {
+    this.questions.pop();
+    this.answers.pop();
     let event = { step:'step2'}
     this.changePage.emit(event);
     this.page = 'first';

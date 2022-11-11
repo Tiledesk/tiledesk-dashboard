@@ -2183,7 +2183,7 @@
         "TitleWelcomeMessage": "How do you like to greet visitors when they arrive on your website?",
         "LabelWelcomeMessage": "Welcome message",
         "WelcomeMessage": "Hello 👋🏻 I'm your virtual assistant 🤖 How can I help?",
-        "DefaultFallback": "I cannot provide an adequate answer. Write a new question or talk to a human agent. \n* Back to top tdAction:start  \n* See documents https://docs.tiledesk.com/",
+        "DefaultFallback": "I cannot provide an adequate answer. Write a new question or talk to a human agent. \n* Back to top tdAction:start",
         "Question": "Question",
         "Answer": "Answer",
         "DescriptionStep1ChatbotConfiguration": "Improve your chatbot to save your time! Train your chatbot to reply to the most common questions your customers ask you",

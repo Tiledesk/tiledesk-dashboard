@@ -2182,7 +2182,7 @@
         "TitleWelcomeMessage": "Web sitenize vardıklarında ziyaretçileri selamlamayı nasıl istersiniz?",
         "LabelWelcomeMessage": "Karşılama mesajı",
         "WelcomeMessage": "Merhaba 👋🏻 Ben senin sanal asistanınız 🤖 Nasıl yardımcı olabilirim?",
-        "DefaultFallback": "Yeterli bir cevap veremem. Yeni bir soru yazın veya bir insan ajanı ile konuşun. \n* TOP TDACT'e Dön: Başlat \n* Belgelere bakın https://docs.tiledesk.com/",
+        "DefaultFallback": "Yeterli bir cevap veremem. Yeni bir soru yazın veya bir insan ajanı ile konuşun. \n* TOP TDACT'e Dön: Başlat",
         "Question": "Soru",
         "Answer": "Cevap",
         "DescriptionStep1ChatbotConfiguration": "Zamanınızı kazanmak için sohbet botunuzu geliştirin! Müşterilerinizin size istediği en yaygın soruları yanıtlamak için sohbet botunuzu eğitin",
