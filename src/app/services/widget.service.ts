@@ -65,7 +65,7 @@ export class WidgetService {
     this.projectService.updateWidgetProject(widgetSettingsObj)
       .subscribe((data) => {
         // this.logger.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE data', data);
-        this.logger.log('[WIDGET-SERV] - UPDATE PROJECT WIDGET - RESPONSE data.widget', data['widget']);
+        console.log('[WIDGET-SERV] - UPDATE PROJECT WIDGET - RESPONSE data.widget', data['widget']);
 
         this.translateAndShowUpdateWidgetNotification();
 

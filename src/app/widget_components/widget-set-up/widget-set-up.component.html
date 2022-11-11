@@ -599,7 +599,7 @@
 										</div>
 
 										<!-- ---------------------------------------- -->
-										<!-- Select Primary color -->
+										<!-- Select Primary color & secondar color -->
 										<!-- ---------------------------------------- -->
 										<div class="row">
 											<label class="col-sm-12 control-label widget-settings-control-head-label"
@@ -638,7 +638,7 @@
 																	style="display: flex;flex-direction: row;">
 																	<div class="primary-color-selection"
 																		style="position: absolute;">
-																
+
 																		<div class="widget-settings-palette"
 																			(colorPickerChange)="onChangePrimaryColor($event)"
 																			[style.background-color]="primaryColor"
@@ -654,7 +654,7 @@
 																			<ngx-mat-color-picker #picker></ngx-mat-color-picker>
 																		  </mat-form-field> -->
 
-																	
+
 
 																	</div>
 
@@ -697,7 +697,7 @@
 
 																	<div class="primary-secondary-selection"
 																		style="position: absolute;">
-															
+
 																		<div class="widget-settings-palette"
 																			[style.background-color]="secondaryColor"
 																			[cpAlphaChannel]="'disabled'"
@@ -723,11 +723,76 @@
 																		(colorPickerClose)="onCloseSecondaryColorDialog($event)">
 																</div>
 															</div>
+
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+
+										<!-- ---------------------------------------- -->
+										<!-- Primary color opacity -->
+										<!-- ---------------------------------------- -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+											<div class="row" style="margin-left: 0px;">
+												<label class="col-sm-12 control-label widget-settings-control-label"
+													style="padding-top:12px; padding-bottom: 2px;">
+
+													Primary color gradient
+													<span matTooltipClass="custom-mat-tooltip-in-widget-setup"
+														matTooltip=" Enable / Disable the gradient of the primary color of the widget"
+														#tooltip="matTooltip" matTooltipPosition='above'
+														matTooltipHideDelay="100">
+														<i class="material-icons" style="
+															color: #566787;
+															cursor: pointer;
+															vertical-align: middle;
+															font-size: 14px;">
+															help_outline
+														</i>
+													</span>
+
+												</label>
+											</div>
+
+											<div class="row" style="margin-left: 0px;">
+												<div class="col-xs-12">
+
+													<!-- <mat-slide-toggle (change)="changePrimaryColorOpacity($event)"
+														[checked]="primaryColorOpacityEnabled">
+														<span *ngIf="primaryColorOpacityEnabled">
+															{{ 'Enabled' | translate }} </span>
+														<span *ngIf="!primaryColorOpacityEnabled">
+															{{ 'Disabled' | translate }} </span>
+													</mat-slide-toggle> -->
+
+													<div class="on-off-primary-color-switch-and-lbl-wpr">
+														<div class="on-off-primary-color-switch-wpr">
+															<div class="nw-onoffswitch">
+																<input (change)="changePrimaryColorOpacity($event)"
+																	type="checkbox" name="nw-opacity-switch"
+																	class="nw-onoffswitch-checkbox"
+																	id="nw-opacity-switch" tabindex="0"
+																	[checked]="primaryColorOpacityEnabled">
+																<label class="nw-onoffswitch-label"
+																	for="nw-opacity-switch"></label>
+															</div>
+														</div>
+														<div class="on-off-primary-color-lbl-wpr">
+															<div *ngIf="primaryColorOpacityEnabled">
+																{{ 'Enabled' | translate }} </div>
+															<div *ngIf="!primaryColorOpacityEnabled">
+																{{ 'Disabled' | translate }} </div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
+
+
+
 
 										<!-- ---------------------------------------- -->
 										<!-- Logo on /off switch -->
@@ -740,8 +805,12 @@
 													style="padding-top:12px; padding-bottom: 2px;">
 
 													{{'HeaderLogo' | translate }}
-
-													<span class="widget_design__Tooltip">
+													<!-- class="widget_design__Tooltip"  -->
+													<span class="info-icon---wpr"
+														matTooltipClass="custom-mat-tooltip-in-widget-setup" matTooltip="• {{ 'YourLogoMustBeSmallerThan50kB' | translate }}
+													• {{ 'TheOptimumImageSizeIs78x78' | translate }}
+													• {{ 'PNGorGIFwithTransparentBackgroundWorksBest' | translate }}" #tooltip="matTooltip"
+														matTooltipPosition='above' matTooltipHideDelay="100">
 														<span>
 															<i class="material-icons" style="font-size: 18px;
 															color: #566787;
@@ -750,7 +819,7 @@
 																help_outline
 															</i>
 														</span>
-														<span class="widget_design__Tooltiptext"
+														<!-- <span  dclass="widget_design__Tooltiptext"
 															style="margin-left: -108px;min-width: 305px;height:fit-content">
 															<ul class="logo-note-in-tooltip">
 																<li>
@@ -760,60 +829,65 @@
 																	{{ 'TheOptimumImageSizeIs78x78' | translate }}
 																</li>
 																<li>
-																	{{ 'PNGorGIFwithTransparentBackgroundWorksBest' |
-																	translate
-																	}}
+																	{{ 'PNGorGIFwithTransparentBackgroundWorksBest' | translate }}
 																</li>
 															</ul>
-														</span>
+														</span> -->
 													</span>
 
 												</label>
 											</div>
 
 											<div class="row" style="margin-left: 0px;">
-												<div class="col-xs-3">
-													<label class="control-label widget-settings-control-label">
-														{{ 'displayLogo' | translate }}
-													</label>
-													<!-- <div class="col-xs-4"> -->
-													<div class="wrapper-logo-link" style="margin-top: 3px;">
+												<div class="display-logo-switch-and-logourl-wpr">
+													<!-- <div class="col-xs-3"> -->
+													<div class="display-logo-switch-wpr">
+														<label class="control-label widget-settings-control-label">
+															{{ 'displayLogo' | translate }}
+														</label>
+														<!-- <div class="col-xs-4"> -->
+														<div class="wrapper-logo-link" style="margin-top: 3px;">
 
-														<div class="nw-onoffswitch-wrapper" style="clear: both;">
-															<div class="nw-onoffswitch">
-																<input (change)="onLogoOnOff($event)" type="checkbox"
-																	name="nw-logo-switch"
-																	class="nw-onoffswitch-checkbox" id="nw-logo-switch"
-																	tabindex="0" [checked]="LOGO_IS_ON === true">
-																<label class="nw-onoffswitch-label"
-																	for="nw-logo-switch"></label>
+
+
+															<div class="nw-onoffswitch-wrapper" style="clear: both;">
+																<div class="nw-onoffswitch">
+																	<input (change)="onLogoOnOff($event)"
+																		type="checkbox" name="nw-logo-switch"
+																		class="nw-onoffswitch-checkbox"
+																		id="nw-logo-switch" tabindex="0"
+																		[checked]="LOGO_IS_ON === true">
+																	<label class="nw-onoffswitch-label"
+																		for="nw-logo-switch"></label>
+																</div>
 															</div>
 														</div>
 													</div>
-												</div>
-												<!-- ---------------------------------------- -->
-												<!-- Logo url -->
-												<!-- ---------------------------------------- -->
-												<div class="col-xs-9">
-													<label
-														class=" control-label widget-settings-control-label padding-top-2">
-														{{ 'YourLogoURL' | translate }}
-													</label>
-													<div class="wrapper-logo-link">
-														<!-- (blur)="onBlurChangeLogo()"  -->
-														<!-- (ngModelChange)="logoChange($event)"  -->
-														<input class="custom-input" id="change-logo"
-															(ngModelChange)="logoChange($event)" [(ngModel)]="logoUrl"
-															style="font-weight: 400;"
-															[ngClass]="{'image-not-exist-input-border' : IMAGE_EXIST === false, 'input-is-disabled': LOGO_IS_ON === false}"
-															placeholder="{{ 'YourLogoURL' | translate }}"
-															[disabled]="LOGO_IS_ON === false"
-															(focus)="onFocusLogoInput()">
+													<!-- ---------------------------------------- -->
+													<!-- Logo url -->
+													<!-- ---------------------------------------- -->
+													<!-- <div class="col-xs-9"> -->
+													<div class="display-logo-logourl-wpr">
+														<label
+															class=" control-label widget-settings-control-label padding-top-2">
+															{{ 'YourLogoURL' | translate }}
+														</label>
+														<div class="wrapper-logo-link">
+															<!-- (blur)="onBlurChangeLogo()"  -->
+															<!-- (ngModelChange)="logoChange($event)"  -->
+															<input class="custom-input" id="change-logo"
+																(ngModelChange)="logoChange($event)"
+																[(ngModel)]="logoUrl" style="font-weight: 400;"
+																[ngClass]="{'image-not-exist-input-border' : IMAGE_EXIST === false, 'input-is-disabled': LOGO_IS_ON === false}"
+																placeholder="{{ 'YourLogoURL' | translate }}"
+																[disabled]="LOGO_IS_ON === false"
+																(focus)="onFocusLogoInput()">
 
-														<span *ngIf="IMAGE_EXIST === false"
-															style="color:#f44336; display: block;font-size: 12px;">
-															{{ "LogoImageNotFound" | translate}}
-														</span>
+															<span *ngIf="IMAGE_EXIST === false"
+																style="color:#f44336; display: block;font-size: 12px;">
+																{{ "LogoImageNotFound" | translate}}
+															</span>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -880,7 +954,8 @@
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;"
 											[ngClass]="{'custom-launcher-feature-not-available' : prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true}">
-											<label class="col-xs-6 control-label widget-settings-control-head-label" style="white-space: nowrap;">
+											<label class="col-xs-6 control-label widget-settings-control-head-label"
+												style="white-space: nowrap;">
 
 												{{'CustomLauncherButton' | translate }}
 												<span matTooltipClass="custom-mat-tooltip-in-widget-setup"
@@ -895,7 +970,7 @@
 													</i>
 												</span>
 
-												<span class="pro-only-badge" style="top:-1px !important"> 
+												<span class="pro-only-badge" style="top:-1px !important">
 													{{'ProOnly' | translate }}
 												</span>
 											</label>
@@ -959,21 +1034,28 @@
 																		d="M55,30c0,13.8-11.2,25-25,25S5,43.8,5,30S16.2,5,30,5S55,16.2,55,30" />
 																	<g>
 																		<g>
-																			<polyline class="launcher-button-placeholder-st1"
+																			<polyline
+																				class="launcher-button-placeholder-st1"
 																				points="58,56 58,58 56,58 		" />
-																			<line class="launcher-button-placeholder-st2" x1="52" y1="58" x2="6"
-																				y2="58" />
-																			<polyline class="launcher-button-placeholder-st1"
+																			<line
+																				class="launcher-button-placeholder-st2"
+																				x1="52" y1="58" x2="6" y2="58" />
+																			<polyline
+																				class="launcher-button-placeholder-st1"
 																				points="4,58 2,58 2,56 		" />
-																			<line class="launcher-button-placeholder-st2" x1="2" y1="52" x2="2"
-																				y2="6" />
-																			<polyline class="launcher-button-placeholder-st1"
+																			<line
+																				class="launcher-button-placeholder-st2"
+																				x1="2" y1="52" x2="2" y2="6" />
+																			<polyline
+																				class="launcher-button-placeholder-st1"
 																				points="2,4 2,2 4,2 		" />
-																			<line class="launcher-button-placeholder-st2" x1="8" y1="2" x2="54"
-																				y2="2" />
+																			<line
+																				class="launcher-button-placeholder-st2"
+																				x1="8" y1="2" x2="54" y2="2" />
 																			<polyline points="56,2 58,2 58,4 		" />
-																			<line class="launcher-button-placeholder-st2" x1="58" y1="8" x2="58"
-																				y2="54" />
+																			<line
+																				class="launcher-button-placeholder-st2"
+																				x1="58" y1="8" x2="58" y2="54" />
 																		</g>
 																	</g>
 																	<g>
@@ -1032,38 +1114,78 @@
 													<!-- ------------------------------------------- -->
 													<!-- CUSTOMIZE LAUNCER BUTTON VIA UPLOAD LOGO -->
 													<!-- ------------------------------------------- -->
-													 <div class="row" style="display: none;">
+													<div class="row" style="display: none;">
 														<div class="col-xs-2">
 															<div *ngIf="hasOwnLauncherLogo === false || featureIsAvailable === false"
 																id="custom-launcher-logo-placeholder">
 
-																<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-																viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
+																<svg version="1.1" id="Livello_1"
+																	xmlns="http://www.w3.org/2000/svg"
+																	xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+																	y="0px" viewBox="0 0 60 60"
+																	style="enable-background:new 0 0 60 60;"
+																	xml:space="preserve">
 																	<style type="text/css">
-																		.lb-st0{fill:none;stroke:#FDFEFF;stroke-width:2;stroke-miterlimit:10;}
-																		.lb-st1{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;}
-																		.lb-st2{fill:none;stroke:#FCFCFC;stroke-width:2;stroke-miterlimit:10;}
-																		.lb-st3{fill:#143448;}
-																		.lb-st4{fill:#506A7B;}
-																		.lb-st5{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;stroke-dasharray:4,4;}
+																		.lb-st0 {
+																			fill: none;
+																			stroke: #FDFEFF;
+																			stroke-width: 2;
+																			stroke-miterlimit: 10;
+																		}
+
+																		.lb-st1 {
+																			fill: none;
+																			stroke: #FFFFFF;
+																			stroke-width: 2;
+																			stroke-miterlimit: 10;
+																		}
+
+																		.lb-st2 {
+																			fill: none;
+																			stroke: #FCFCFC;
+																			stroke-width: 2;
+																			stroke-miterlimit: 10;
+																		}
+
+																		.lb-st3 {
+																			fill: #143448;
+																		}
+
+																		.lb-st4 {
+																			fill: #506A7B;
+																		}
+
+																		.lb-st5 {
+																			fill: none;
+																			stroke: #FFFFFF;
+																			stroke-width: 2;
+																			stroke-miterlimit: 10;
+																			stroke-dasharray: 4, 4;
+																		}
 																	</style>
-																	<polyline class="lb-st0" points="31,29 31,31 29,31 "/>
-																	<polyline class="lb-st1" points="31,31 29,31 29,29 "/>
-																	<polyline class="lb-st2" points="29,31 29,29 31,29 "/>
-																	<polyline class="lb-st0" points="29,29 31,29 31,31 "/>
+																	<polyline class="lb-st0"
+																		points="31,29 31,31 29,31 " />
+																	<polyline class="lb-st1"
+																		points="31,31 29,31 29,29 " />
+																	<polyline class="lb-st2"
+																		points="29,31 29,29 31,29 " />
+																	<polyline class="lb-st0"
+																		points="29,29 31,29 31,31 " />
 																	<g>
-																		<path class="lb-st3" d="M55,30c0,13.8-11.2,25-25,25S5,43.8,5,30S16.2,5,30,5S55,16.2,55,30"/>
+																		<path class="lb-st3"
+																			d="M55,30c0,13.8-11.2,25-25,25S5,43.8,5,30S16.2,5,30,5S55,16.2,55,30" />
 																		<g>
 																			<path class="lb-st4" d="M38.8,29h-7.6c-0.7,0-1.2-0.5-1.2-1.1v-7.1c0-0.6-0.5-1.1-1.2-1.1h-7.6c-0.7,0-1.2,0.5-1.2,1.1v8.3v8.3
 																				c0,0.6,0.5,1.1,1.2,1.1h-0.5h1.4c0.3,0,0.5,0.1,0.7,0.3l0.9,0.8l0.8,0.7c0.3,0.2,0.7,0.2,1,0l0.8-0.7l0.9-0.8
-																				c0.2-0.1,0.4-0.3,0.7-0.3h10.9c0.7,0,1.2-0.5,1.2-1.1v-7.1C40,29.5,39.4,29,38.8,29"/>
+																				c0.2-0.1,0.4-0.3,0.7-0.3h10.9c0.7,0,1.2-0.5,1.2-1.1v-7.1C40,29.5,39.4,29,38.8,29" />
 																			<path class="lb-st4" d="M39.3,27.5h-6.9c-0.4,0-0.7-0.3-0.7-0.7v-6.5c0-0.4,0.3-0.7,0.7-0.7h6.9c0.4,0,0.7,0.3,0.7,0.7v6.5
-																				C40,27.1,39.6,27.5,39.3,27.5"/>
+																				C40,27.1,39.6,27.5,39.3,27.5" />
 																		</g>
 																	</g>
-																	<rect x="15" y="15" class="lb-st5" width="30" height="30"/>
-														   		</svg>
-														   
+																	<rect x="15" y="15" class="lb-st5" width="30"
+																		height="30" />
+																</svg>
+
 															</div>
 															<!-- ---------------------------------------------- -->
 															<!-- Custom launcher button IMG of the end-user  -->
@@ -1085,12 +1207,13 @@
 																		name="upload-launcher-button-logo"
 																		id="upload-launcher-button-logo" type="file"
 																		(change)="uploadLauncherButtonLogo($event)"
-																		accept=".jpg, .JPEG, .png, .svg" [disabled]="hasOwnLauncherBtn"   />
-																		<!-- [matTooltipDisabled]="hasOwnLauncherBtn" -->
+																		accept=".jpg, .JPEG, .png, .svg"
+																		[disabled]="hasOwnLauncherBtn" />
+																	<!-- [matTooltipDisabled]="hasOwnLauncherBtn" -->
 																	<label class="btn btn-white upload-launcher-btn"
-																		for="upload-launcher-button-logo" matTooltipClass="custom-mat-tooltip" 
-																		matTooltip="Edit App"
-																		#tooltip="matTooltip"
+																		for="upload-launcher-button-logo"
+																		matTooltipClass="custom-mat-tooltip"
+																		matTooltip="Edit App" #tooltip="matTooltip"
 																		matTooltipPosition='above'
 																		matTooltipHideDelay="100"
 																		[matTooltipDisabled]="!hasOwnLauncherBtn">
@@ -1100,15 +1223,18 @@
 																		{{'UploadYourLogo' | translate}}
 																	</label>
 
-																	<button  class="btn btn-white delete-custom-launcher-logo" (click)="deleteCustomLauncherLogo()">
-																		<span class="material-icons" style="font-size: 24px;">
+																	<button
+																		class="btn btn-white delete-custom-launcher-logo"
+																		(click)="deleteCustomLauncherLogo()">
+																		<span class="material-icons"
+																			style="font-size: 24px;">
 																			delete_forever
 																		</span>
 																	</button>
 																</div>
 															</div>
 														</div>
-													</div> 
+													</div>
 												</div>
 											</div>
 										</div>
@@ -1130,6 +1256,84 @@
 											</div>
 										</div>
 									</div>
+								</div>
+
+
+								<!-- ---------------------------------------------------------------------------- -->
+								<!-- @ Single Conversation SECTION -->
+								<!-- ---------------------------------------------------------------------------- -->
+								<button type="button" class="widget-section-accordion widget-section-header">
+
+									<div class="widget-section-title">
+										<div class="widget-setting-icon-wrap">
+											<svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
+												viewBox="0 0 512 512">
+												<title>Chatbox</title>
+												<path
+													d="M408 64H104a56.16 56.16 0 00-56 56v192a56.16 56.16 0 0056 56h40v80l93.72-78.14a8 8 0 015.13-1.86H408a56.16 56.16 0 0056-56V120a56.16 56.16 0 00-56-56z"
+													fill="none" stroke="currentColor" stroke-linejoin="round"
+													stroke-width="32" />
+											</svg>
+										</div>
+										<h4 class="widget-section-header__title-underlined">
+											Single conversatation
+										</h4>
+									</div>
+									<div class="widget-section-arrow">
+										<i class="material-icons widget-section-arrow-icon">
+											keyboard_arrow_down
+										</i>
+									</div>
+								</button>
+								<div class="widget-section-container"
+									style="height: auto; transition-duration: 0.613s;">
+									<div class="section-offset">
+
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+											<div class="row" style="margin-left: 0px;">
+											<label
+												class="col-sm-12 control-label widget-settings-control-head-label-info"
+												style="background: none !important;max-width:600px">
+
+												Tiledesk Widget can handle only one conversation at a time by enable the Single Conversation feature. 
+												This option disables the possibility of viewing the home with the list of open conversations and those already archived.
+												This change makes conversations more of a continuous thread, preventing customers from reaching out to your team multiple times, which saves your team time and effort.
+											</label>
+											</div>
+
+											<div class="row" style="margin-left: 0px;">
+												<label class="col-sm-12 control-label widget-settings-control-head-label"
+													style="padding-top:12px; padding-bottom: 2px;">
+
+													Single conversation
+												</label>
+											</div>
+
+											<div class="on-off-singleconversation-switch-and-lbl-wpr">
+												<div class="on-off-singleconversation-switch-wpr">
+													<div class="nw-onoffswitch">
+														<input (change)="enableSingleConversation($event)"
+															type="checkbox" name="nw-singleconversation-switch"
+															class="nw-onoffswitch-checkbox"
+															id="nw-singleconversation-switch" tabindex="0"
+															[checked]="singleConversationEnabled">
+														<label class="nw-onoffswitch-label"
+															for="nw-singleconversation-switch"></label>
+													</div>
+												</div>
+												<div class="on-off-singleconversation-lbl-wpr">
+													<div *ngIf="singleConversationEnabled">
+														{{ 'Enabled' | translate }} </div>
+													<div *ngIf="!singleConversationEnabled">
+														{{ 'Disabled' | translate }} </div>
+												</div>
+											</div>
+										
+
+										</div>
+
+									</div> <!-- ./	section-offset -->
 								</div>
 
 
@@ -1234,6 +1438,10 @@
 									</div>
 								</div>
 								<!-- / end Unbranding section -->
+
+
+					
+
 
 								<!-- ---------------------------------------------------------------------------- -->
 								<!-- @ Greetings SECTION -->
@@ -1551,7 +1759,7 @@
 									</div>
 
 									<div class="widget-section-arrow">
-										<i class="material-icons widget-section-arrow-icon" style="">
+										<i class="material-icons widget-section-arrow-icon">
 											keyboard_arrow_down
 										</i>
 									</div>
@@ -1794,6 +2002,9 @@
 														<label class="nw-onoffswitch-label"
 															for="nw-callout-switch"></label>
 													</div>
+
+													<!-- <mat-slide-toggle (change)="toggleCallout($event)" 
+													[checked]="CALLOUT_IS_DISABLED === false"></mat-slide-toggle> -->
 												</div>
 											</div>
 										</div>
@@ -2143,7 +2354,8 @@
 											<div class="col-sm-12">
 												<button class="btn btn-success-no-boxshadow  prechatform-savejson-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
-													(click)="saveTranslation()" (click)="hasClickedUpdatePrechatformCustomFields()">
+													(click)="saveTranslation()"
+													(click)="hasClickedUpdatePrechatformCustomFields()">
 													{{ 'UpdateWidget' | translate }}
 												</button>
 											</div>
@@ -2529,14 +2741,10 @@
 									<div style="width: 437px;">
 
 										<appdashboard-widget-home *ngIf="DISPLAY_WIDGET_HOME"
-											[primaryColorGradiend]="primaryColorGradiend" 
-											[LOGO_IS_ON]="LOGO_IS_ON"
-											[hasOwnLogo]="hasOwnLogo" 
-											[logoUrl]="logoUrl"
-											[secondaryColor]="secondaryColor" 
-											[welcomeTitle]="welcomeTitle"
-											[welcomeMsg]="welcomeMsg"
-											[primaryColorBorder]="primaryColorBorder"
+											[primaryColorGradiend]="primaryColorGradiend" [LOGO_IS_ON]="LOGO_IS_ON"
+											[hasOwnLogo]="hasOwnLogo" [logoUrl]="logoUrl"
+											[secondaryColor]="secondaryColor" [welcomeTitle]="welcomeTitle"
+											[welcomeMsg]="welcomeMsg" [primaryColorBorder]="primaryColorBorder"
 											[company_name]="company_name" [primaryColor]="primaryColor"
 											[selected_translation]="selected_translation"
 											[company_site_url]="company_site_url"
@@ -2545,11 +2753,9 @@
 											[C21_BODY_HOME]="C21_BODY_HOME"
 											[waitingTimeNotFoundMsg]="waitingTimeNotFoundMsg"
 											[DISPLAY_LAUNCER_BUTTON]="DISPLAY_LAUNCER_BUTTON"
-											[waitingTimeFoundMsg]="waitingTimeFoundMsg"
-											[currentUserId]="currentUserId"
+											[waitingTimeFoundMsg]="waitingTimeFoundMsg" [currentUserId]="currentUserId"
 											[UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE"
-											[imageUrl]="imageUrl" 
-											[newConversation]="newConversation"
+											[imageUrl]="imageUrl" [newConversation]="newConversation"
 											[noConversation]="noConversation"
 											[HAS_SELECT_DYMANIC_REPLY_TIME_MSG]="HAS_SELECT_DYMANIC_REPLY_TIME_MSG"
 											[HAS_SELECT_STATIC_REPLY_TIME_MSG]="HAS_SELECT_STATIC_REPLY_TIME_MSG"
@@ -2557,28 +2763,23 @@
 											[subscription_is_active]="subscription_is_active"
 											[prjct_trial_expired]="prjct_trial_expired"
 											[hasOwnLauncherBtn]="hasOwnLauncherBtn"
-											[hasOwnLauncherLogo] = "hasOwnLauncherLogo"
+											[hasOwnLauncherLogo]="hasOwnLauncherLogo"
 											[customLauncherURL]="customLauncherURL"
-											[featureIsAvailable]="featureIsAvailable"
-											[id_project]="id_project"
+											[featureIsAvailable]="featureIsAvailable" [id_project]="id_project"
 											[imageStorage]="imageStorage">
 										</appdashboard-widget-home>
 
 
 										<appdashboard-widget-callout *ngIf="DISPLAY_CALLOUT"
-											[newInnerWidth]="newInnerWidth"
-											[callout_emoticon]="callout_emoticon"
-											[calloutTitleForPreview]="calloutTitleForPreview" 
-											[calloutMsg]="calloutMsg"
-											[primaryColor]="primaryColor" 
-											[secondaryColor]="secondaryColor"
+											[newInnerWidth]="newInnerWidth" [callout_emoticon]="callout_emoticon"
+											[calloutTitleForPreview]="calloutTitleForPreview" [calloutMsg]="calloutMsg"
+											[primaryColor]="primaryColor" [secondaryColor]="secondaryColor"
 											[hasSelectedRightAlignment]="hasSelectedRightAlignment"
 											[hasSelectedLeftAlignment]="hasSelectedLeftAlignment"
 											[hasOwnLauncherBtn]="hasOwnLauncherBtn"
-											[hasOwnLauncherLogo] = "hasOwnLauncherLogo"
+											[hasOwnLauncherLogo]="hasOwnLauncherLogo"
 											[customLauncherURL]="customLauncherURL"
-											[featureIsAvailable]="featureIsAvailable"
-											[id_project]="id_project"
+											[featureIsAvailable]="featureIsAvailable" [id_project]="id_project"
 											[imageStorage]="imageStorage">
 										</appdashboard-widget-callout>
 
@@ -2698,9 +2899,9 @@
 													{{ 'TestWidgetAllowYou' | translate }}.
 												</span>
 												<span
-												style="display: block;color: #7695a5;font-size: 12px;line-height: 16px;margin-top: 6px;font-weight: 400;">
-												{{ 'NoteThatTheWidgetLabelsOnAwebsite' | translate }}.
-											</span>
+													style="display: block;color: #7695a5;font-size: 12px;line-height: 16px;margin-top: 6px;font-weight: 400;">
+													{{ 'NoteThatTheWidgetLabelsOnAwebsite' | translate }}.
+												</span>
 											</div>
 										</div>
 									</form>

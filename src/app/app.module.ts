@@ -265,6 +265,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
+
 import { MomentModule } from 'ngx-moment';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
@@ -518,7 +522,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     PrestashopInstallationComponent,
     JoomlaInstallationComponent,
     TilebotFormComponent, 
-    ModalDeleteComponent, TilebotAddEditFormComponent, TilebotListFieldsFormComponent
+    ModalDeleteComponent, 
+    TilebotAddEditFormComponent, 
+    TilebotListFieldsFormComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
@@ -541,6 +547,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MatSelectModule,
     MatToolbarModule,
     MatTabsModule,
+    MatSliderModule,
+    MatSlideToggleModule,
     /* PRIVATE */
     PricingModule,
     /* PRIVATE */

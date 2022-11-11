@@ -1657,3 +1657,13 @@ footer ul {
 .ng-select.ng-select-tags .ng-select-container:hover {
   box-shadow: unset !important;
 }
+
+/*
+ mat-slide-toggle custom color
+ -------------------------------- */
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background-color: #3ea9f5 !important;
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #fff !important;
+}

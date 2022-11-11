@@ -57,8 +57,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   private unsubscribe$: Subject<any> = new Subject<any>();
 
-  @ViewChild('testwidgetbtn', { static: false })  elementRef: ElementRef;
-  @ViewChild("multilanguage", { static: false })  multilanguageRef: ElementRef;
+  @ViewChild('testwidgetbtn', { static: false }) elementRef: ElementRef;
+  @ViewChild("multilanguage", { static: false }) multilanguageRef: ElementRef;
   @ViewChild(NgSelectComponent, { static: false }) ngSelectComponent: NgSelectComponent;
   tparams: any;
   company_name: any;
@@ -72,6 +72,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public primaryColorGradiend: string;
   public primaryColorBorder: string;
   public secondaryColor: string;
+
+  // primaryColor opacity
+
+
+  primaryColorOpacityEnabled: boolean = true
+  primarycoloropacity: string = "0.50"
   public logoUrl: string;
   public hasOwnLogo = false;
 
@@ -79,6 +85,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public hasOwnLauncherLogo: boolean = false;
   public hasOwnLauncherBtn: boolean = false;
   public launcherLogoUrl: string;
+
+  singleConversationEnabled: boolean = false;
   public timeStamp: any;
 
   public footerBrand: string
@@ -456,7 +464,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         dangerMode: false,
       })
         .then((value) => {
-        //  console.log('[WIDGET-SET-UP] - uploadLauncherButtonLogo value', value)
+          //  console.log('[WIDGET-SET-UP] - uploadLauncherButtonLogo value', value)
 
           if (value === 'catch') {
 
@@ -466,7 +474,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
-  
+
   deleteCustomLauncherLogo() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.logger.log('[USER-PROFILE] IMAGE deleteUserProfileImage with firebase service')
@@ -2223,18 +2231,36 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   generateRgbaGradientAndBorder(primaryColor: string) {
     // this.logger.log('»» WIDGET DESIGN - ON CLOSE PRIMARY COLOR DIALOG COLOR (RGB) ', primaryColor);
     const new_col = primaryColor.replace(/rgb/i, 'rgba');
-    this.primaryColorRgba = new_col.replace(/\)/i, ',0.50)');
-    // this.logger.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
+    // this.primaryColorRgba = new_col.replace(/\)/i, ',0.50)');
+    this.primaryColorRgba = new_col.replace(/\)/i, `, ${this.primarycoloropacity})`);
+    console.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
 
     this.primaryColorGradiend = `linear-gradient(${this.primaryColor}, ${this.primaryColorRgba})`;
     this.primaryColorBorder = `2.4px solid ${this.primaryColorRgba}`;
   }
 
+  // --------------------------------------------------------------------------------------
+  //  @ Primary  color opacity   
+  // --------------------------------------------------------------------------------------
+  changePrimaryColorOpacity(event) {
+    console.log('Enable / Disable primary color  opacity - event', event.target.checked)
+    this.primaryColorOpacityEnabled = event.target.checked
+    if (this.primaryColorOpacityEnabled === false) {
+      this.primarycoloropacity = "1";
+      this.widgetObj['primary_color_opacity'] = '1';
+      this.generateRgbaGradientAndBorder(this.primaryColorRgb)
+      this.widgetService.updateWidgetProject(this.widgetObj)
+    } else if (this.primaryColorOpacityEnabled === true) {
+      this.primarycoloropacity = "0.50"
+      delete this.widgetObj['primary_color_opacity'];
+      this.generateRgbaGradientAndBorder(this.primaryColorRgb)
+      this.widgetService.updateWidgetProject(this.widgetObj)
+    }
+  }
 
   // --------------------------------------------------------------------------------------
-  //  *** SECONDARY COLOR (alias for themeForegroundColor) ***  
+  //  @ SECONDARY COLOR (alias for themeForegroundColor)   
   // --------------------------------------------------------------------------------------
-
   onCloseSecondaryColorDialog(event) {
     this.logger.log('[WIDGET-SET-UP] - ON CLOSE SECONDARY DIALOG ', event);
     this.secondaryColor = event
@@ -2543,11 +2569,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.widget_preview_selected = "0000"
 
 
-
-    this.logger.log('[WIDGET-SET-UP] - LOGO ON/OFF ', $event.target.checked)
+    console.log('[WIDGET-SET-UP] - LOGO ON/OFF event ', $event)
+    // console.log('[WIDGET-SET-UP] - LOGO ON/OFF ', $event.target.checked)
     this.LOGO_IS_ON = false
 
     if ($event.target.checked === false) {
+      // if ($event.checked === false) {
       this.logoUrl = 'No Logo'
 
       // CASE SWITCH BTN = OFF
@@ -2558,6 +2585,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       // this.widgetService.updateWidgetProject(this.widgetObj);
 
     } else if ($event.target.checked === true) {
+    // } else if ($event.checked === true) {
 
       // this.logoUrl = 'tiledesklogo'
       this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
@@ -2647,6 +2675,25 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
+    // --------------------------------------------------------------------------------------
+  //  @ Single Conversation 
+  // --------------------------------------------------------------------------------------
+  enableSingleConversation(event) {
+    console.log('Enable / Disable SINGLE CONVERSATION - event', event.target.checked)
+    this.singleConversationEnabled = event.target.checked
+    if (this.singleConversationEnabled === true) {
+     
+      this.widgetObj['singleConversationEnabled'] = this.singleConversationEnabled ;
+     
+      this.widgetService.updateWidgetProject(this.widgetObj)
+    } else if (this.singleConversationEnabled === false) {
+      
+      delete this.widgetObj['singleConversationEnabled'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
+     
+    }
+  }
+
   // ===========================================================================
   // ============== *** CALLOUT TIMER (calloutTimer) ***  ==============
   // ===========================================================================
@@ -2662,17 +2709,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
     if ($event.target.checked) {
+    // if ($event.checked) {
       // this.calloutTimerSecondSelected = 5;
       this.CALLOUT_IS_DISABLED = false;
       this.widgetObj['calloutTimer'] = this.calloutTimerSecondSelected;
 
-      this.logger.log('[WIDGET-SET-UP] CALLOUT TIMER - toggleCallout calloutTimerSecondSelected', this.calloutTimerSecondSelected);
+     console.log('[WIDGET-SET-UP] CALLOUT TIMER - toggleCallout calloutTimerSecondSelected', this.calloutTimerSecondSelected);
     } else {
 
       // this.calloutTimerSecondSelected = -1;
       this.CALLOUT_IS_DISABLED = true;
       delete this.widgetObj['calloutTimer'];
-      this.logger.log('[WIDGET-SET-UP] CALLOUT TIMER - toggleCallout calloutTimerSecondSelected', this.calloutTimerSecondSelected);
+      console.log('[WIDGET-SET-UP] CALLOUT TIMER - toggleCallout calloutTimerSecondSelected', this.calloutTimerSecondSelected);
     }
   }
 
