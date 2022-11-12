@@ -1,25 +1,5 @@
 <div class="main-content css-onboarding">
   <img [src]="companyLogoBlack_Url" class="logo" />
-  <!-- <img [src]="companyLogoBlack_Url" class="logo" /> -->
-  <!-- <div *ngIf="selected=='step2'" class="box-steps">
-    <div class="step-number">
-      <span class="number-label">
-        {{ "OnboardPage.Pass" | translate }}   
-        <div class="number-list">
-          <ul [ngStyle]="{'transform': translateY}">
-            <li *ngFor="let intent of step2Questions; index as i">
-              {{i+1}}
-            </li>
-          </ul>
-        </div>
-      </span>
-      <span class="number-of"> / {{step2Questions.length}}</span>
-    </div>
-    <div class="step-points">
-      <span *ngFor="let intent of step2Questions; index as i" class="point" [ngClass]="{'active': stepNumber >= i+1}"></span>
-    </div>
-  </div> -->
-
 
     <div class="col-left">
 
@@ -51,6 +31,32 @@
         (changePage)="gotToChangePage($event)"
         (changeStepNumber) = "gotToChangeStepNumber($event)"
       ></appdashboard-chatbot-configuration>
+
+      <appdashboard-human-configuration
+        *ngIf="selected=='step3'"
+        [welcomeMessage]="welcomeMessage" 
+        [questions] = "step3Questions"
+        [answers] = "step3Answers"
+        [questionMsg] = "questionStep4ChatbotConfiguration"
+        [answerMsg] = "answareStep4ChatbotConfiguration"
+        [primaryColor]="primaryColor"
+        [secondaryColor]="secondaryColor"
+        [projectName]="projectName"
+        [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+        (changePage)="gotToChangePage($event)"
+        (changeStepNumber) = "gotToChangeStepNumber($event)"
+      ></appdashboard-human-configuration>
+
+      <appdashboard-error-result
+        *ngIf="DISPLAY_SPINNER_SECTION"
+        [DISPLAY_SPINNER]="DISPLAY_SPINNER"
+        [DISPLAY_BOT]="DISPLAY_BOT"
+        [DISPLAY_FAQ]="DISPLAY_FAQ"
+        [CREATE_BOT_ERROR]="CREATE_BOT_ERROR"
+        [CREATE_FAQ_ERROR]="CREATE_FAQ_ERROR"
+        (cancel)="cancel($event)"
+        (continueToNextStep)="continueToNextStep($event)"
+      ></appdashboard-error-result>
       
     </div>
 
@@ -71,44 +77,6 @@
       </div>
 
     </div>
-
-
-  
-    
-
-<!--     
-  
-
-
-  
-
-  <appdashboard-human-configuration
-    *ngIf="selected=='step3'"
-    [welcomeMessage]="welcomeMessage" 
-    [questions] = "step3Questions"
-    [answers] = "step3Answers"
-    [questionMsg] = "questionStep4ChatbotConfiguration"
-    [answerMsg] = "answareStep4ChatbotConfiguration"
-    [primaryColor]="primaryColor"
-    [secondaryColor]="secondaryColor"
-    [projectName]="projectName"
-    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
-    (changePage)="gotToChangePage($event)"
-    (changeStepNumber) = "gotToChangeStepNumber($event)"
-  ></appdashboard-human-configuration>
-      
-
-  
-  <appdashboard-error-result
-  *ngIf="DISPLAY_SPINNER_SECTION"
-  [DISPLAY_SPINNER]="DISPLAY_SPINNER"
-  [DISPLAY_BOT]="DISPLAY_BOT"
-  [DISPLAY_FAQ]="DISPLAY_FAQ"
-  [CREATE_BOT_ERROR]="CREATE_BOT_ERROR"
-  [CREATE_FAQ_ERROR]="CREATE_FAQ_ERROR"
-  (cancel)="cancel($event)"
-  (continueToNextStep)="continueToNextStep($event)"
-  ></appdashboard-error-result>  -->
 
   
 </div>

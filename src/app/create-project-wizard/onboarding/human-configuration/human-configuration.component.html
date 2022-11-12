@@ -1,51 +1,47 @@
-<div *ngIf="page == 'first'" class="box-step-4 first-page">
-    <div class="container">
-        <div class="row equal">
+<div class="box-step-3">
+
+    <div *ngIf="page == 'first'" class="first-page">
+        <div class="fade-in-left col-left">
+            <div class="container-text-msg">
+                <h1 class="title">{{'OnboardPage.SetupChatbotTitle' | translate}}</h1>
+                <p class="description">{{'OnboardPage.ContactAnOperator' | translate}}</p>
             
-            <div class="fade-in-left col-md-6">
-                <div class="container-text-msg">
-                    <h1 class="title">{{'OnboardPage.SetupChatbotTitle' | translate}}</h1>
-                    <p class="description">{{'OnboardPage.ContactAnOperator' | translate}}</p>
-                </div>
+                <div class="col-buttons">
+                    <div class="icon-button fade-in-fwd">👨‍💻</div> 
+                    <!-- 🙋 -->
+                   
+                    <div class="row-navigation">
 
-                <!-- <div class="row"> -->
-                    
-                    <div class="col-buttons col-md-12">
-                        <div class="icon-button fade-in-25s">👨‍💻</div>
-                        <div class="row-navigation">
+                        <div class="navigation-btn">
 
-                            <div class="navigation-btn">
+                            <button
+                                type="button" 
+                                class="btn-back"
+                                (click)="goToPrevPage()">
+                                <svg viewBox="0 0 24 24" focusable="false" role="presentation" aria-hidden="true"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg>
+                            </button>
 
-                                <button
-                                    type="button" 
-                                    class="btn-back"
-                                    (click)="goToPrevPage()">
-                                    <svg viewBox="0 0 24 24" focusable="false" role="presentation" aria-hidden="true"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg>
-                                </button>
-
-                                <button class="btn btn-lg btn-primary fade-in-right" (click)="goToNextStep()" >
-                                    {{ "OnboardPage.YesAddButtonAgent" | translate }}
-                                </button>
-
-                            </div>
-
-                            <div class="navigation-btn">
-                                <!-- <div class="icon-button fade-in-15s">🤖</div> -->
-                                <button class="btn btn-lg btn-secondary fade-in-left" (click)="goToNextPageWithoutHuman()" >
-                                {{ "OnboardPage.NoDontWantAnAgent" | translate }}
-                                </button>
-                            </div>
+                            <button class="btn btn-lg btn-primary" (click)="goToNextStep()" >
+                                {{ "OnboardPage.YesAddButtonAgent" | translate }}
+                            </button>
 
                         </div>
-                    </div>
-                <!-- </div> -->
 
+                        <div class="navigation-btn">
+                            <button class="btn btn-lg btn-secondary" (click)="goToNextPageWithoutHuman()" >
+                            {{ "OnboardPage.NoDontWantAnAgent" | translate }}
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
 
-            
-            <div class="fade-in-right col-md-6">
-                <div class="container-webchat">
-                <!--  DEMO webchat WIDGET -->
+        </div>
+
+        <div class="fade-in-right col-right">
+            <div class="container-webchat">
                 <appdashboard-widget-chat 
                     [primaryColor]="primaryColor" 
                     [secondaryColor]="secondaryColor"
@@ -55,80 +51,83 @@
                     [questions]="questions"
                     [activeQuestion]="step"
                 ></appdashboard-widget-chat>
-                <!-- END webchat WIDGET -->
-                </div>  
-            </div>
-
+            </div>  
         </div>
+
     </div>
-</div>
 
-<div *ngIf="page == 'second'" class="box-step-4 second-page">
 
-    <div class="container">
-        <div class="row equal">
-            <div class="fade-in-left col-md-6">
+
+    <div *ngIf="page == 'second'" class="second-page">
+        <div class="fade-in-left col-left">
+        
+            <div *ngIf="DISPLAY_SPINNER_SECTION === false" class="container-text-msg">
+                <h1 class="title">{{'OnboardPage.SetupChatbotTitle' | translate}}</h1>
+                <p class="description"><span>{{'OnboardPage.ContactAnOperator' | translate}}</span></p>
             
-                <div *ngIf="DISPLAY_SPINNER_SECTION === false" class="container-text-msg">
-                    <h1 class="title">{{'OnboardPage.SetupChatbotTitle' | translate}}</h1>
-                    <p class="description"><span>{{'OnboardPage.ContactAnOperator' | translate}}</span></p>
-                
-                    <div class="box-form">
-                        <form>
-                            <div class="box-question" [ngClass]="{'error' : questionError}">
-                                <div class="header-input">
+                <div class="box-form">
+                    <form>
+                        <div class="box-input" [ngClass]="{'error' : questionError}">
+                            <div class="header-input">
                                 <label class="label-input" for="question">
                                     <span class="text-label">{{'OnboardPage.Question' | translate}}</span>
                                 </label>
                                 <p class="num-chars">{{numCharsTitle}}/{{limitCharsTitle}}</p>
-                                </div>
-                                <input name="question" type="text" [(ngModel)]="questionMsg" (ngModelChange)="titleChange($event)" value="{{questionMsg}}">
-                                <div class="input-error">{{'OnboardPage.ErrorCharsLimit' | translate}}</div>
                             </div>
-    
-                            <div class="box-answer" [ngClass]="{'error' : answerError}">
-                                <div class="header-input">
+                            <input name="question" type="text" [(ngModel)]="questionMsg" (ngModelChange)="titleChange($event)" value="{{questionMsg}}">
+
+                            <div class="input-error">
+                                <span class="msg-error">{{'OnboardPage.ErrorCharsLimit' | translate}}</span>
+                            </div>
+                        </div>
+
+                        <div class="box-input" [ngClass]="{'error' : answerError}">
+                            <div class="header-input">
                                 <label class="label-input" for="answer">
                                     <span class="text-label">{{'OnboardPage.Answer' | translate}}</span>
                                 </label>
                                 <p class="num-chars">{{numCharsText}}/{{limitCharsText}}</p>
-                                </div>
-                                <textarea 
+                            </div>
+                            <textarea 
                                 rows="4" name="message" type="text" 
                                 [(ngModel)]="answerMsg"
                                 (ngModelChange)="messageChange($event)">
                                 {{answerMsg}}
-                                </textarea>
-                                <div class="input-error">{{'OnboardPage.ErrorCharsLimit' | translate}}</div>
+                            </textarea>
+                            <div class="input-error">
+                                <span class="msg-error">{{'OnboardPage.ErrorCharsLimit' | translate}}</span>
                             </div>
-                        </form>
-                    </div>         
-                </div>
-  
-                <div *ngIf="DISPLAY_SPINNER_SECTION === false" class="row-navigation">
-                    <div class="navigation-btn">
-                        <button
+                        </div>
+
+                    </form>
+                </div>  
+
+            </div>
+
+            <div *ngIf="DISPLAY_SPINNER_SECTION === false" class="row-navigation">
+                <div class="navigation-btn">
+                    <button
                         type="button" 
                         class="btn-back" 
                         (click)="goToPrevStep()">
                         <svg viewBox="0 0 24 24" focusable="false" class="chakra-icon css-abioxt" role="presentation" aria-hidden="true"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg>
-                        </button>
-        
-                        <button
+                    </button>
+    
+                    <button
                         type="button" 
                         class="btn btn-lg btn-primary"
                         (click)="goToNextPage()">
                         {{'OnboardPage.Configure' | translate}}
-                        </button>
-                    </div>
+                    </button>
                 </div>
-  
             </div>
-  
-            <div class="fade-in-right col-md-6">
-                <div class="container-webchat">
-                    <!--  DEMO webchat WIDGET -->
-                    <appdashboard-widget-chat 
+
+        </div>
+
+    
+        <div class="fade-in-right col-right">
+            <div class="container-webchat">
+                <appdashboard-widget-chat 
                     [primaryColor]="primaryColor" 
                     [secondaryColor]="secondaryColor"
                     [HAS_FOCUSED_ONLINE_MSG]="HAS_FOCUSED_ONLINE_MSG"
@@ -136,12 +135,10 @@
                     [projectName]="projectName"
                     [questions]="questions"
                     [activeQuestion]="step"
-                    ></appdashboard-widget-chat>
-                    <!-- END webchat WIDGET -->
-                </div>  
-            </div>
-  
-      </div>  <!-- .row -->
-    </div>  <!-- .container -->
-  </div>  <!-- #welcome-message-configuration -->
+                ></appdashboard-widget-chat>
+            </div>  
+        </div>
 
+    </div>
+
+</div>
