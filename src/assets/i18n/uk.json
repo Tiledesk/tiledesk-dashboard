@@ -2244,6 +2244,9 @@
     "Unfollow":"Відписатися",
     "ClickToDisplayActions":"Натисніть, щоб відобразити дії",
     "ClosesTheCurrentConversation":"Закриває поточну розмову",
+    "ClosesTheCurrentTicket":"Закриває поточний квиток",
+    "ReopenTheCurrentConversation":"Повторно відкриває поточну розмову",
+    "ReopenTheCurrentTicket":"Повторно відкрити поточний квиток",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

@@ -2244,6 +2244,9 @@
     "Unfollow":"Kuzatishni bekor qilish",
     "ClickToDisplayActions":"Amallarni ko'rsatish uchun bosing",
     "ClosesTheCurrentConversation":"Joriy suhbatni yopadi",
+    "ClosesTheCurrentTicket":"Joriy ticket yopadi",
+    "ReopenTheCurrentConversation":"Joriy suhbatni qayta ochadi",
+    "ReopenTheCurrentTicket":"Joriy chiptani qayta oching",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",
