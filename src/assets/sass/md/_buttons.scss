@@ -33,6 +33,9 @@
     &.btn-tdblu{
       @include btn-styles($brand-tdblu);
     }
+    &.btn-deepred{
+      @include btn-styles($brand-deepred);
+    }
     &.btn-success{
       @include btn-styles($brand-success);
     }
