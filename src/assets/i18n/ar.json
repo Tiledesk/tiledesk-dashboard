@@ -2243,6 +2243,7 @@
     "Follow":"يتبع",
     "Unfollow":"الغاء المتابعة",
     "ClickToDisplayActions":"انقر لعرض الإجراءات",
+    "ClosesTheCurrentConversation":"يغلق المحادثة الحالية",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",

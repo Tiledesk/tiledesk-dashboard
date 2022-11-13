@@ -2244,6 +2244,7 @@
     "Follow":"Follow",
     "Unfollow":"Unfollow",
     "ClickToDisplayActions":"Click to display actions",
+    "ClosesTheCurrentConversation":"Closes the current conversation",
     "CancelReply": "Form canceled",
     "AddIntentPage": {
         "AddForm": "Add form",

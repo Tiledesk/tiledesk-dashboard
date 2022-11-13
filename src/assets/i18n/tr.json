@@ -2243,6 +2243,7 @@
     "Follow":"Takip et",
     "Unfollow":"Takipten çık",
     "ClickToDisplayActions":"Eylemleri görüntülemek için tıklayın",
+    "ClosesTheCurrentConversation":"Mevcut konuşmayı kapatır",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

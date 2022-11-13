@@ -2243,6 +2243,7 @@
     "Follow":"Segui",
     "Unfollow":"Non seguire",
     "ClickToDisplayActions":"Clicca per visualizzare le azioni",
+    "ClosesTheCurrentConversation":"Chiude la conversazione corrente",
     "CancelReply": "Form Annullata",
     "AddIntentPage": {
         "AddForm": "Aggiungi form",

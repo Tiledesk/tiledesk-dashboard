@@ -2242,5 +2242,6 @@
 	"Followers":"Anhänger",
 	"Follow":"Befolgen",
 	"Unfollow":"Entfolgen",
-	"ClickToDisplayActions":"Klicken Sie darauf, um Aktionen anzuzeigen"
+	"ClickToDisplayActions":"Klicken Sie darauf, um Aktionen anzuzeigen",
+	"ClosesTheCurrentConversation":"Schließt die aktuelle Konversation"
 }

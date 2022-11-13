@@ -2243,6 +2243,7 @@
     "Follow":"Пратити",
     "Unfollow":"Престани пратити",
     "ClickToDisplayActions":"Klicka för att visa åtgärder",
+    "ClosesTheCurrentConversation":"Stänger den aktuella konversationen",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",

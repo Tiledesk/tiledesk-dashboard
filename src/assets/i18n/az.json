@@ -2243,6 +2243,7 @@
     "Follow":"İzləyin",
     "Unfollow":"İzləməni dayandır",
     "ClickToDisplayActions":"Hərəkətləri göstərmək üçün klikləyin",
+    "ClosesTheCurrentConversation":"Cari söhbəti bağlayır",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

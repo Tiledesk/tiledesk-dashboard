@@ -2243,6 +2243,7 @@
     "Follow":"Följ",
     "Unfollow":"Sluta följa",
     "ClickToDisplayActions":"Кликните за приказ радњи",
+    "ClosesTheCurrentConversation":"Затвара тренутну конверзацију",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",

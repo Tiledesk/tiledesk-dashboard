@@ -2243,6 +2243,7 @@
     "Follow":"Kuzatish",
     "Unfollow":"Kuzatishni bekor qilish",
     "ClickToDisplayActions":"Amallarni ko'rsatish uchun bosing",
+    "ClosesTheCurrentConversation":"Joriy suhbatni yopadi",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

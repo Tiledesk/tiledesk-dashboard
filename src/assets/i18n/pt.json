@@ -2243,6 +2243,7 @@
     "Follow":"Seguir",
     "Unfollow":"Deixar de seguir",
     "ClickToDisplayActions":"Clique para exibir as ações",
+    "ClosesTheCurrentConversation":"Fecha a conversa atual",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",
