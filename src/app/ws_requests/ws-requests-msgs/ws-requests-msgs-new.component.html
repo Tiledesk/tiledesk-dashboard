@@ -490,7 +490,8 @@
                             <ul class="dropdown-menu" role="menu">
                               <li>
 
-                                <a (click)="hasSelectedSendAsOpen()" style="padding-left: 15px; padding-right: 15px;">
+                                <a (click)="hasSelectedOpen('sendMessageAs')"
+                                  style="padding-left: 15px; padding-right: 15px;">
                                   <i class="material-icons" style="padding-right: 5px;color: rgb(197, 44, 36);">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
 
@@ -501,7 +502,7 @@
                               </li>
                               <li>
 
-                                <a (click)="hasSelectedSendAsPending()"
+                                <a (click)="hasSelectedPending('sendMessageAs')"
                                   style="padding-left: 15px; padding-right: 15px;">
                                   <i class="material-icons" style="padding-right: 5px;color: rgb(55,147,233);">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
@@ -513,7 +514,8 @@
                               </li>
                               <li>
 
-                                <a (click)="hasSelectedSendAsSolved()" style="padding-left: 15px; padding-right: 15px;">
+                                <a (click)="hasSelectedSolved('sendMessageAs')"
+                                  style="padding-left: 15px; padding-right: 15px;">
                                   <i class="material-icons"
                                     style="padding-right: 5px; color: rgb(136, 146,156);">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
@@ -601,7 +603,8 @@
 
                 <!-- --- new ---- -->
                 <div class="conv-info-sidebar-wpr">
-                  <div class="conv-info-sidebar-header-wpr" [ngClass]="{'conv-info-sidebar-header-wpr-chat': CHAT_PANEL_MODE === true}">
+                  <div class="conv-info-sidebar-header-wpr"
+                    [ngClass]="{'conv-info-sidebar-header-wpr-chat': CHAT_PANEL_MODE === true}">
                     <!-- [ngClass]="{'chat-right-sidebar-actions' : CHAT_PANEL_MODE === true}" -->
                     <div class="right-sidebar-actions">
 
@@ -693,7 +696,7 @@
                       </div>
 
                     </div>
-      
+
                     <!-- <div class="conv-info-sidebar-header-contact-info-wpr-sk">
                       <div role="button" tabindex="-1" class="avatar"
                         [ngClass]="{'chat-avatar': CHAT_PANEL_MODE === true}">
@@ -720,171 +723,173 @@
                         </div>
                       </div>
                     </div> -->
-                  </div>
-
-                  <!-- *ngIf="!showSpinner" -->
-                  <div  class="conv-info-sidebar-header-contact-info-wpr">
-                    <div role="button" tabindex="-1" class="avatar"
-                      [ngClass]="{'chat-avatar': CHAT_PANEL_MODE === true}"
-                      [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}">
-                      {{ requester_fullname_initial }}
-                    </div>
-                    <!-- ----------------------------------- -->
-                    <!-- Contact verified icon   -->
-                    <!-- ----------------------------------- -->
-                    <div class="contact-verified-icon-wpr"
-                      [ngClass]="{'contact-verified-icon-wpr-chat': CHAT_PANEL_MODE === true}"
-                      matTooltipClass="custom-mat-tooltip"
-                      matTooltip="{{ 'VisitorsPage.AuthenticatedUser' | translate }}" #tooltip="matTooltip"
-                      matTooltipPosition='right' matTooltipHideDelay="100" *ngIf="REQUESTER_IS_VERIFIED === true">
-                      <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
-                        height="17" xml:space="preserve">
-                        <style type="text/css">
-                          .contact-verified-icon-st0 {
-                            fill: none;
-                          }
-
-                          .contact-verified-icon-st1 {
-                            fill: #FFFFFF;
-                          }
-
-                          .contact-verified-icon-st2 {
-                            fill: #18BDF7;
-                          }
-                        </style>
-                        <path class="contact-verified-icon-st0" d="M1.3,1.3h24v24h-24V1.3z" />
-                        <path class="contact-verified-icon-st1"
-                          d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                        <path class="contact-verified-icon-st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
-                                      l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                      </svg>
-
-                    </div>
-                    <!-- ----------------------------------- -->
-                    <!-- contact status icon  -->
-                    <!-- ----------------------------------- -->
-                    <div class="contact--offline-status"
-                      [ngClass]="{'contact--oline-status' : REQUESTER_IS_ONLINE, 'contact--offline-status-chat': CHAT_PANEL_MODE === true}">
-                    </div>
 
 
-                    <div class="conv-info-sidebar-header-contact-info">
-                      <div class="td-dropdown">
-                        <div role="button" class="td-dropdown__trigger" tabindex="0" (click)="openAddContactNameForm()">
-                          <div id="edit-fullname-contact-info-wpr" class="contact-info-wpr">
-                            <h3 *ngIf="request?.lead?.fullname" class="contact-info--name">
-                              {{request?.lead?.fullname}}
-                            </h3>
-
-                            <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg"
-                              width="24" height="24" viewBox="0 0 24 24" class="edit--icon"
-                              (click)="openAddContactNameForm()">
-                              <path
-                                d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
-                              </path>
-                              <path d="M0 0h24v24H0z" fill="none"></path>
-                            </svg>
-                          </div>
-
-                        </div>
-                        <div class="dropdown__menu-form " style="left: -48px;">
-                          <div id="edit-fullname-content-form" class="dropdown__content-form">
-                            <form id="edit-fullname-form" class="contact-form">
-                              <div #editFullnameDropdown id="edit-fullname-input-wrapper" class="input-wrapper">
-                                <label id="edit-fullname-firstname-label" for="edit-fullname-firstname-input">
-                                  {{'FirstName' | translate}}
-                                </label>
-                                <input id="edit-fullname-firstname-input" type="text" class="form-input"
-                                  autocomplete="off" [(ngModel)]="contactNewFirstName">
-
-                                <label id="edit-fullname-lastname-label" for="edit-fullname-lastname-input">
-                                  {{'LastName' | translate}}
-                                </label>
-                                <input id="edit-fullname-lastname-input" type="text" class="form-input"
-                                  autocomplete="off" [(ngModel)]="contactNewLastName">
-                              </div>
-                              <div id="edit-fullname-submit-btn-wpr">
-                                <button id="edit-fullname-submit-btn" class="done--btn" type="submit"
-                                  (click)="updateContactFullName()"
-                                  [disabled]="!contactNewFirstName || contactNewFirstName.length < 2">
-                                  {{'Done' | translate}}
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
+                    <!-- *ngIf="!showSpinner" -->
+                    <div class="conv-info-sidebar-header-contact-info-wpr">
+                      <div role="button" tabindex="-1" class="avatar"
+                        [ngClass]="{'chat-avatar': CHAT_PANEL_MODE === true}"
+                        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}">
+                        {{ requester_fullname_initial }}
                       </div>
-                      <div class="contact-location-and-served-by-wpr">
-                        <a rel="noopener noreferrer" class="contact-location"
-                          [ngClass]="{
+                      <!-- ----------------------------------- -->
+                      <!-- Contact verified icon   -->
+                      <!-- ----------------------------------- -->
+                      <div class="contact-verified-icon-wpr"
+                        [ngClass]="{'contact-verified-icon-wpr-chat': CHAT_PANEL_MODE === true}"
+                        matTooltipClass="custom-mat-tooltip"
+                        matTooltip="{{ 'VisitorsPage.AuthenticatedUser' | translate }}" #tooltip="matTooltip"
+                        matTooltipPosition='right' matTooltipHideDelay="100" *ngIf="REQUESTER_IS_VERIFIED === true">
+                        <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
+                          height="17" xml:space="preserve">
+                          <style type="text/css">
+                            .contact-verified-icon-st0 {
+                              fill: none;
+                            }
+
+                            .contact-verified-icon-st1 {
+                              fill: #FFFFFF;
+                            }
+
+                            .contact-verified-icon-st2 {
+                              fill: #18BDF7;
+                            }
+                          </style>
+                          <path class="contact-verified-icon-st0" d="M1.3,1.3h24v24h-24V1.3z" />
+                          <path class="contact-verified-icon-st1"
+                            d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
+                          <path class="contact-verified-icon-st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                                      l6.6-6.6l1.4,1.4L11.3,18.3z" />
+                        </svg>
+
+                      </div>
+                      <!-- ----------------------------------- -->
+                      <!-- contact status icon  -->
+                      <!-- ----------------------------------- -->
+                      <div class="contact--offline-status"
+                        [ngClass]="{'contact--oline-status' : REQUESTER_IS_ONLINE, 'contact--offline-status-chat': CHAT_PANEL_MODE === true}">
+                      </div>
+
+
+                      <div class="conv-info-sidebar-header-contact-info">
+                        <div class="td-dropdown">
+                          <div role="button" class="td-dropdown__trigger" tabindex="0"
+                            (click)="openAddContactNameForm()">
+                            <div id="edit-fullname-contact-info-wpr" class="contact-info-wpr">
+                              <h3 *ngIf="request?.lead?.fullname" class="contact-info--name">
+                                {{request?.lead?.fullname}}
+                              </h3>
+
+                              <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" viewBox="0 0 24 24" class="edit--icon"
+                                (click)="openAddContactNameForm()">
+                                <path
+                                  d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
+                                </path>
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                              </svg>
+                            </div>
+
+                          </div>
+                          <div class="dropdown__menu-form " style="left: -48px;">
+                            <div id="edit-fullname-content-form" class="dropdown__content-form">
+                              <form id="edit-fullname-form" class="contact-form">
+                                <div #editFullnameDropdown id="edit-fullname-input-wrapper" class="input-wrapper">
+                                  <label id="edit-fullname-firstname-label" for="edit-fullname-firstname-input">
+                                    {{'FirstName' | translate}}
+                                  </label>
+                                  <input id="edit-fullname-firstname-input" type="text" class="form-input"
+                                    autocomplete="off" [(ngModel)]="contactNewFirstName">
+
+                                  <label id="edit-fullname-lastname-label" for="edit-fullname-lastname-input">
+                                    {{'LastName' | translate}}
+                                  </label>
+                                  <input id="edit-fullname-lastname-input" type="text" class="form-input"
+                                    autocomplete="off" [(ngModel)]="contactNewLastName">
+                                </div>
+                                <div id="edit-fullname-submit-btn-wpr">
+                                  <button id="edit-fullname-submit-btn" class="done--btn" type="submit"
+                                    (click)="updateContactFullName()"
+                                    [disabled]="!contactNewFirstName || contactNewFirstName.length < 2">
+                                    {{'Done' | translate}}
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="contact-location-and-served-by-wpr">
+                          <a rel="noopener noreferrer" class="contact-location"
+                            [ngClass]="{
                           'contact-location-chat-one-agent': CHAT_PANEL_MODE === true && agents_array?.length === 1, 
                           'contact-location-chat-two-agent': CHAT_PANEL_MODE === true && agents_array?.length === 2,
                           'contact-location-chat-three-agent': CHAT_PANEL_MODE === true && agents_array?.length === 3}">
-                          <span (click)="openMapRightSideBar()" *ngIf="locationCity || locationCountry"
-                            class="location-wpr" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'Location' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-                            matTooltipHideDelay="100">
-                            <span *ngIf="locationCity && locationCountry">{{ locationCity }},</span>
-                            <span *ngIf="locationCity && !locationCountry">{{ locationCity }}</span>
-                            <span *ngIf="locationCountry" style="text-transform: capitalize;"> {{ locationCountry }}
+                            <span (click)="openMapRightSideBar()" *ngIf="locationCity || locationCountry"
+                              class="location-wpr" matTooltipClass="custom-mat-tooltip"
+                              matTooltip="{{ 'Location' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                              matTooltipHideDelay="100">
+                              <span *ngIf="locationCity && locationCountry">{{ locationCity }},</span>
+                              <span *ngIf="locationCity && !locationCountry">{{ locationCity }}</span>
+                              <span *ngIf="locationCountry" style="text-transform: capitalize;"> {{ locationCountry }}
+                              </span>
                             </span>
-                          </span>
-                        </a>
-                        <!-- ----------------------------------- -->
-                        <!-- @ Served by (new) -->
-                        <!-- ----------------------------------- -->
-                        <div class="served-by-wpr  eyj5dak5">
+                          </a>
+                          <!-- ----------------------------------- -->
+                          <!-- @ Served by (new) -->
+                          <!-- ----------------------------------- -->
+                          <div class="served-by-wpr  eyj5dak5">
 
-                          <!-- ------------------------------------------------------ -->
-                          <!-- No Agent Unserved conversation / ticket -->
-                          <!-- ------------------------------------------------------ -->
-                          <div *ngIf="agents_array?.length === 0" class="unserved--wpr">
+                            <!-- ------------------------------------------------------ -->
+                            <!-- No Agent Unserved conversation / ticket -->
+                            <!-- ------------------------------------------------------ -->
+                            <div *ngIf="agents_array?.length === 0" class="unserved--wpr">
 
-                            <!-- ------------------------------------- -->
-                            <!-- IF IS AN UNSERVED REQUEST -->
-                            <!-- ------------------------------------- -->
+                              <!-- ------------------------------------- -->
+                              <!-- IF IS AN UNSERVED REQUEST -->
+                              <!-- ------------------------------------- -->
 
-                            <svg *ngIf="request?.status === 100 && !request?.subject" class="header-conv-svg-icon"
-                              height="24" width="24" viewBox="0 0 58.1 53.9" xml:space="preserve"
-                              matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}" #tooltip="matTooltip"
-                              matTooltipPosition='below' matTooltipHideDelay="100" style="vertical-align: middle;">
-                              <style type="text/css">
-                                .st0-unserved {
-                                  fill: none;
-                                  stroke: #ED4537;
-                                  stroke-width: 2;
-                                  stroke-miterlimit: 10;
-                                }
+                              <svg *ngIf="request?.status === 100 && !request?.subject" class="header-conv-svg-icon"
+                                height="24" width="24" viewBox="0 0 58.1 53.9" xml:space="preserve"
+                                matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}" #tooltip="matTooltip"
+                                matTooltipPosition='below' matTooltipHideDelay="100" style="vertical-align: middle;">
+                                <style type="text/css">
+                                  .st0-unserved {
+                                    fill: none;
+                                    stroke: #ED4537;
+                                    stroke-width: 2;
+                                    stroke-miterlimit: 10;
+                                  }
 
-                                .st1-unserved {
-                                  fill: #ED4537;
-                                }
-                              </style>
-                              <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                                  .st1-unserved {
+                                    fill: #ED4537;
+                                  }
+                                </style>
+                                <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
                                         c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3.3,30.5,3.3z" />
-                              <g>
-                                <path class="st1-unserved"
-                                  d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
-                                <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
+                                <g>
+                                  <path class="st1-unserved"
+                                    d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
+                                  <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
                                       c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
-                              </g>
-                            </svg>
+                                </g>
+                              </svg>
 
 
 
 
-                            <!-- ------------------------------------- -->
-                            <!-- IF IS AN INTERNAL UNSERVED REQUEST  -->
-                            <!-- ------------------------------------- -->
-                            <img *ngIf="request?.status === 100 && request?.subject" src="assets/img/request_icons/status100_internal.svg"
-                              matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}"
-                              #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
-                              style="width: 24px;">
+                              <!-- ------------------------------------- -->
+                              <!-- IF IS AN INTERNAL UNSERVED REQUEST  -->
+                              <!-- ------------------------------------- -->
+                              <img *ngIf="request?.status === 100 && request?.subject"
+                                src="assets/img/request_icons/status100_internal.svg"
+                                matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}"
+                                #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                style="width: 24px;">
 
-                            <!-- <svg *ngIf="request?.status === 100 && request?.subject" class="header-conv-svg-icon" height="24" width="24" version="1.1" id="Livello_1"
+                              <!-- <svg *ngIf="request?.status === 100 && request?.subject" class="header-conv-svg-icon" height="24" width="24" version="1.1" id="Livello_1"
                                   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                                   y="0px" viewBox="0 0 58.1 53.9" xml:space="preserve"
                                   matTooltipClass="custom-mat-tooltip"
@@ -912,368 +917,501 @@
                                 </svg> -->
 
 
-                          </div>
-                          <ul class="served-by"
-                            [ngClass]="{'served-by-with-other-agent-button': agents_array?.length > 2}">
+                            </div>
+                            <ul class="served-by"
+                              [ngClass]="{'served-by-with-other-agent-button': agents_array?.length > 2}">
 
-                            <li class="served-by-avatar eyj5dak2"
-                              *ngFor="let agent of agents_array | slice:0:2; let i=index">
+                              <li class="served-by-avatar eyj5dak2"
+                                *ngFor="let agent of agents_array | slice:0:2; let i=index">
 
-                              <!-- ---------------------------------------------------------------------------- -->
-                              <!-- @ Human Agent photo - USE CASE: AGENT HAS IMAGE & UPLOAD ENGINE IS FIREBASE -->
-                              <!-- ---------------------------------------------------------------------------- -->
-                              <!-- (mouseenter)="agentfbimg.open()"  -->
-                              <img *ngIf="agent.isBot === false && agent.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
-                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
-                                alt="human-agent-profile-photo" class="served-by-avatar--img eyj5dak1"
-                                onerror="this.src='assets/img/no_image_user.png'" [satPopoverAnchor]="agentfbimg"
-                                (click)="agentfbimg.toggle()" (click)="$event.stopPropagation()"
-                                (document:click)="agentfbimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}}
+                                <!-- ---------------------------------------------------------------------------- -->
+                                <!-- @ Human Agent photo - USE CASE: AGENT HAS IMAGE & UPLOAD ENGINE IS FIREBASE -->
+                                <!-- ---------------------------------------------------------------------------- -->
+                                <!-- (mouseenter)="agentfbimg.open()"  -->
+                                <img *ngIf="agent.isBot === false && agent.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
+                                  src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
+                                  alt="human-agent-profile-photo" class="served-by-avatar--img eyj5dak1"
+                                  onerror="this.src='assets/img/no_image_user.png'" [satPopoverAnchor]="agentfbimg"
+                                  (click)="agentfbimg.toggle()" (click)="$event.stopPropagation()"
+                                  (document:click)="agentfbimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}}
                                   {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                matTooltipPosition='above' matTooltipHideDelay="100" />
-                              <sat-popover #agentfbimg horizontalAlign="before">
-                                <div class="popover-wrapper">
-                                  <div class="sat-popover-agent-fullname">
-                                    {{agent?.firstname}} {{agent?.lastname}}
+                                  matTooltipPosition='above' matTooltipHideDelay="100" />
+                                <sat-popover #agentfbimg horizontalAlign="before">
+                                  <div class="popover-wrapper">
+                                    <div class="sat-popover-agent-fullname">
+                                      {{agent?.firstname}} {{agent?.lastname}}
+                                    </div>
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                      {{'ViewProfile' | translate }}
+                                    </button>
+                                    <button class="sat-popover-chat-with"
+                                      (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
+
+                                      {{'Message' | translate }}
+                                    </button>
                                   </div>
-                                  <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
-                                    {{'ViewProfile' | translate }}
-                                  </button>
-                                  <button class="sat-popover-chat-with"
-                                    (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
+                                </sat-popover>
 
-                                    {{'Message' | translate }}
-                                  </button>
-                                </div>
-                              </sat-popover>
-
-                              <!-- ---------------------------------------------------------------------------- -->
-                              <!-- @ Human agent photo - USE CASE: AGENT HAS IMAGE & UPLOAD ENGINE IS NATIVE -->
-                              <!-- ---------------------------------------------------------------------------- -->
-                              <!-- (mouseenter)="agentntimg.open()" -->
-                              <img *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
-                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                class="served-by-avatar--img" (click)="goToMemberProfile( agent?._id )"
-                                [satPopoverAnchor]="agentntimg" (click)="agentntimg.toggle()"
-                                (click)="$event.stopPropagation()" (document:click)="agentntimg.close()"
-                                matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}}
+                                <!-- ---------------------------------------------------------------------------- -->
+                                <!-- @ Human agent photo - USE CASE: AGENT HAS IMAGE & UPLOAD ENGINE IS NATIVE -->
+                                <!-- ---------------------------------------------------------------------------- -->
+                                <!-- (mouseenter)="agentntimg.open()" -->
+                                <img *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  class="served-by-avatar--img" (click)="goToMemberProfile( agent?._id )"
+                                  [satPopoverAnchor]="agentntimg" (click)="agentntimg.toggle()"
+                                  (click)="$event.stopPropagation()" (document:click)="agentntimg.close()"
+                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}}
                                   {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                matTooltipPosition='above' matTooltipHideDelay="100" />
+                                  matTooltipPosition='above' matTooltipHideDelay="100" />
 
-                              <sat-popover #agentntimg horizontalAlign="before">
-                                <div class="popover-wrapper">
-                                  <div class="sat-popover-agent-fullname">
-                                    {{agent?.firstname}} {{agent?.lastname}}
+                                <sat-popover #agentntimg horizontalAlign="before">
+                                  <div class="popover-wrapper">
+                                    <div class="sat-popover-agent-fullname">
+                                      {{agent?.firstname}} {{agent?.lastname}}
+                                    </div>
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                      {{'ViewProfile' | translate }}
+                                    </button>
+                                    <button class="sat-popover-chat-with"
+                                      (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
+
+                                      {{'Message' | translate }}
+                                    </button>
                                   </div>
-                                  <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
-                                    {{'ViewProfile' | translate }}
-                                  </button>
-                                  <button class="sat-popover-chat-with"
-                                    (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
+                                </sat-popover>
 
-                                    {{'Message' | translate }}
-                                  </button>
-                                </div>
-                              </sat-popover>
-
-                              <!-- ---------------------------------------------------------------------------- -->
-                              <!-- @ Human agent avatar with name initials - USE CASE: AGENT NOT HAS IMAGE  -->
-                              <!-- ---------------------------------------------------------------------------- -->
-                              <!-- goToMemberProfile( agent?._id ) -->
-                              <!-- (mouseenter)="agentnoimg.open()" -->
-                              <div *ngIf="agent.isBot === false && !agent.hasImage" class="served-by-avatar--no-img"
-                                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}"
-                                style="cursor:pointer" [satPopoverAnchor]="agentnoimg"
-                                (click)="$event.stopPropagation()" (click)="agentnoimg.toggle()"
-                                (document:click)="agentnoimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.userFullname}}
+                                <!-- ---------------------------------------------------------------------------- -->
+                                <!-- @ Human agent avatar with name initials - USE CASE: AGENT NOT HAS IMAGE  -->
+                                <!-- ---------------------------------------------------------------------------- -->
+                                <!-- goToMemberProfile( agent?._id ) -->
+                                <!-- (mouseenter)="agentnoimg.open()" -->
+                                <div *ngIf="agent.isBot === false && !agent.hasImage" class="served-by-avatar--no-img"
+                                  [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}"
+                                  style="cursor:pointer" [satPopoverAnchor]="agentnoimg"
+                                  (click)="$event.stopPropagation()" (click)="agentnoimg.toggle()"
+                                  (document:click)="agentnoimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.userFullname}}
                                    {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                matTooltipPosition='above' matTooltipHideDelay="100">
-                                {{ agent?.userFullname }}
-                              </div>
-
-                              <sat-popover #agentnoimg horizontalAlign="before">
-                                <div class="popover-wrapper">
-                                  <div class="sat-popover-agent-fullname">
-                                    {{agent?.firstname}} {{agent?.lastname}}
-                                  </div>
-                                  <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
-                                    {{'ViewProfile' | translate }}
-                                  </button>
-                                  <button class="sat-popover-chat-with"
-                                    (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
-
-                                    {{'Message' | translate }}
-                                  </button>
+                                  matTooltipPosition='above' matTooltipHideDelay="100">
+                                  {{ agent?.userFullname }}
                                 </div>
-                              </sat-popover>
 
-                              <!-- ---------------------------------------------------------------------------- -->
-                              <!-- @ Bot agent photo - USE CASE: BOT HAS IMAGE & UPLOAD ENGINE IS FIREBASE -->
-                              <!-- ---------------------------------------------------------------------------- -->
-                              <!-- (mouseenter)="botfbengine.open()" -->
-                              <img *ngIf="agent.isBot === true && UPLOAD_ENGINE_IS_FIREBASE"
-                                class="served-by-avatar--img"
-                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4}}%2Fthumb_photo.jpg?alt=media"
-                                onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" [satPopoverAnchor]="botfbengine"
-                                (click)="botfbengine.toggle()" (click)="$event.stopPropagation()"
-                                (document:click)="botfbengine.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)
-                                  {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                matTooltipPosition='above' matTooltipHideDelay="100" />
+                                <sat-popover #agentnoimg horizontalAlign="before">
+                                  <div class="popover-wrapper">
+                                    <div class="sat-popover-agent-fullname">
+                                      {{agent?.firstname}} {{agent?.lastname}}
+                                    </div>
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                      {{'ViewProfile' | translate }}
+                                    </button>
+                                    <button class="sat-popover-chat-with"
+                                      (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
 
-                              <sat-popover #botfbengine horizontalAlign="before">
-                                <div class="popover-wrapper">
-                                  <div class="sat-popover-agent-fullname">
-                                    {{agent?.firstname}} {{agent?.lastname}} (bot)
+                                      {{'Message' | translate }}
+                                    </button>
                                   </div>
-                                  <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
-                                    {{'ViewProfile' | translate }}
-                                  </button>
-                                  <!-- <button class="sat-popover-chat-with"
+                                </sat-popover>
+
+                                <!-- ---------------------------------------------------------------------------- -->
+                                <!-- @ Bot agent photo - USE CASE: BOT HAS IMAGE & UPLOAD ENGINE IS FIREBASE -->
+                                <!-- ---------------------------------------------------------------------------- -->
+                                <!-- (mouseenter)="botfbengine.open()" -->
+                                <img *ngIf="agent.isBot === true && UPLOAD_ENGINE_IS_FIREBASE"
+                                  class="served-by-avatar--img"
+                                  src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4}}%2Fthumb_photo.jpg?alt=media"
+                                  onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
+                                  [satPopoverAnchor]="botfbengine" (click)="botfbengine.toggle()"
+                                  (click)="$event.stopPropagation()" (document:click)="botfbengine.close()"
+                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)
+                                  {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
+                                  matTooltipPosition='above' matTooltipHideDelay="100" />
+
+                                <sat-popover #botfbengine horizontalAlign="before">
+                                  <div class="popover-wrapper">
+                                    <div class="sat-popover-agent-fullname">
+                                      {{agent?.firstname}} {{agent?.lastname}} (bot)
+                                    </div>
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                      {{'ViewProfile' | translate }}
+                                    </button>
+                                    <!-- <button class="sat-popover-chat-with"
                                       (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
 
                                       {{'ChatWith' | translate }}
                                     </button> -->
-                                </div>
-                              </sat-popover>
-
-                              <!-- ---------------------------------------------------------------------------- -->
-                              <!-- @ Bot agent photo - USE CASE: BOT HAS IMAGE & UPLOAD ENGINE IS NATIVE -->
-                              <!-- ---------------------------------------------------------------------------- -->
-                              <!-- (mouseenter)="botntengine.open()" -->
-                              <img *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE"
-                                class="served-by-avatar--img"
-                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" satPopoverAnchor]="botntengine"
-                                (click)="botntengine.toggle()" (click)="$event.stopPropagation()"
-                                (document:click)="botntengine.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)
-                                  {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                matTooltipPosition='above' matTooltipHideDelay="100" />
-
-                              <sat-popover #botntengine horizontalAlign="before">
-                                <div class="popover-wrapper">
-                                  <div class="sat-popover-agent-fullname">
-                                    {{agent?.firstname}} {{agent?.lastname}} (bot)
                                   </div>
-                                  <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
-                                    {{'ViewProfile' | translate }}
-                                  </button>
-                                  <!-- <button class="sat-popover-chat-with"
+                                </sat-popover>
+
+                                <!-- ---------------------------------------------------------------------------- -->
+                                <!-- @ Bot agent photo - USE CASE: BOT HAS IMAGE & UPLOAD ENGINE IS NATIVE -->
+                                <!-- ---------------------------------------------------------------------------- -->
+                                <!-- (mouseenter)="botntengine.open()" -->
+                                <img *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE"
+                                  class="served-by-avatar--img"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
+                                  satPopoverAnchor]="botntengine" (click)="botntengine.toggle()"
+                                  (click)="$event.stopPropagation()" (document:click)="botntengine.close()"
+                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)
+                                  {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
+                                  matTooltipPosition='above' matTooltipHideDelay="100" />
+
+                                <sat-popover #botntengine horizontalAlign="before">
+                                  <div class="popover-wrapper">
+                                    <div class="sat-popover-agent-fullname">
+                                      {{agent?.firstname}} {{agent?.lastname}} (bot)
+                                    </div>
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                      {{'ViewProfile' | translate }}
+                                    </button>
+                                    <!-- <button class="sat-popover-chat-with"
                                         (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
   
                                         {{'ChatWith' | translate }}
                                       </button> -->
-                                </div>
-                              </sat-popover>
+                                  </div>
+                                </sat-popover>
 
-                            </li>
-                            <!-- ------------------------------------- -->
-                            <!-- @ Served by other Agents  -->
-                            <!-- ------------------------------------- -->
-                            <li *ngIf="agents_array?.length > 2">
-                              <div class="other-agents-dropdown-wpr"
-                                style="position: absolute; top: 40px; right: 26px;">
-                                <div class="dropdown pull-right">
-                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <div role="button" class="served-by-avatar--others-agents"
-                                      style="position: absolute;z-index: 6;top: 3px;left:-6px">
-                                      +{{agents_array?.length - 2 }}
-                                    </div>
-                                  </a>
-                                  <ul class="dropdown-menu agents-dropdown"
-                                    style="padding:8px; top: 30px;min-width: 180px;">
-                                    <li *ngFor="let agent of agents_array | slice:2; let i=index">
-                                      <!-- ---------------------------------------------------------------------------- -->
-                                      <!-- @ Human Agent photo FB Engine -->
-                                      <!-- ---------------------------------------------------------------------------- -->
-                                      <div class="dropdown-served-by"
-                                        *ngIf="agent.isBot === false && agent.hasImage && UPLOAD_ENGINE_IS_FIREBASE">
-                                        <img
-                                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
-                                          alt="human-agent-profile-photo" class="served-by-avatar--img eyj5dak1"
-                                          onerror="this.src='assets/img/no_image_user.png'" />
-                                        <span style="margin-left: 8px; font-size: 12px; font-weight: 400;">
-                                          {{agent?.firstname}} {{agent?.lastname}}
-                                        </span>
-                                        <div class="dropdown-btn-wpr">
-                                          <button class="dropdown-btn-view-profile"
-                                            (click)="goToMemberProfile( agent?._id )">
-                                            {{'ViewProfile' | translate }}
-                                          </button>
-                                          <button class="dropdown-btn-chat-with"
-                                            (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
-                                            {{'Message' | translate }}
-                                          </button>
-                                        </div>
+                              </li>
+                              <!-- ------------------------------------- -->
+                              <!-- @ Served by other Agents  -->
+                              <!-- ------------------------------------- -->
+                              <li *ngIf="agents_array?.length > 2">
+                                <div class="other-agents-dropdown-wpr"
+                                  style="position: absolute; top: 40px; right: 26px;">
+                                  <div class="dropdown pull-right">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                      <div role="button" class="served-by-avatar--others-agents"
+                                        style="position: absolute;z-index: 6;top: 3px;left:-6px">
+                                        +{{agents_array?.length - 2 }}
                                       </div>
-                                      <!-- ---------------------------------------------------------------------------- -->
-                                      <!-- @ Human agent photo - USE CASE: AGENT HAS IMAGE & UPLOAD ENGINE IS NATIVE -->
-                                      <!-- ---------------------------------------------------------------------------- -->
-                                      <div class="dropdown-served-by"
-                                        *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE">
-                                        <img
-                                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                          class="served-by-avatar--img" (click)="goToMemberProfile( agent?._id )" />
-                                        <span style="margin-left: 8px;font-size: 12px; font-weight: 400;">
-                                          {{agent?.firstname}} {{agent?.lastname}}
-                                        </span>
-                                        <div class="dropdown-btn-wpr">
-                                          <button class="dropdown-btn-view-profile"
-                                            (click)="goToMemberProfile( agent?._id )">
-                                            {{'ViewProfile' | translate }}
-                                          </button>
-                                          <button class="dropdown-btn-chat-with"
-                                            (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
-
-                                            {{'Message' | translate }}
-                                          </button>
-                                        </div>
-                                      </div>
-
-                                      <!-- ---------------------------------------------------------------------------- -->
-                                      <!-- @ Human agent no photo  -->
-                                      <!-- ---------------------------------------------------------------------------- -->
-                                      <div class="dropdown-served-by" *ngIf="agent.isBot === false && !agent.hasImage">
-                                        <div class="served-by-avatar--no-img"
-                                          [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}"
-                                          style="display: inline-block;">
-                                          {{ agent?.userFullname }}
-                                        </div>
-                                        <div style="display: inline-block;">
+                                    </a>
+                                    <ul class="dropdown-menu agents-dropdown"
+                                      style="padding:8px; top: 30px;min-width: 180px;">
+                                      <li *ngFor="let agent of agents_array | slice:2; let i=index">
+                                        <!-- ---------------------------------------------------------------------------- -->
+                                        <!-- @ Human Agent photo FB Engine -->
+                                        <!-- ---------------------------------------------------------------------------- -->
+                                        <div class="dropdown-served-by"
+                                          *ngIf="agent.isBot === false && agent.hasImage && UPLOAD_ENGINE_IS_FIREBASE">
+                                          <img
+                                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
+                                            alt="human-agent-profile-photo" class="served-by-avatar--img eyj5dak1"
+                                            onerror="this.src='assets/img/no_image_user.png'" />
                                           <span style="margin-left: 8px; font-size: 12px; font-weight: 400;">
                                             {{agent?.firstname}} {{agent?.lastname}}
                                           </span>
+                                          <div class="dropdown-btn-wpr">
+                                            <button class="dropdown-btn-view-profile"
+                                              (click)="goToMemberProfile( agent?._id )">
+                                              {{'ViewProfile' | translate }}
+                                            </button>
+                                            <button class="dropdown-btn-chat-with"
+                                              (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
+                                              {{'Message' | translate }}
+                                            </button>
+                                          </div>
                                         </div>
-                                        <div class="dropdown-btn-wpr">
-                                          <button class="dropdown-btn-view-profile"
-                                            (click)="goToMemberProfile( agent?._id )">
-                                            {{'ViewProfile' | translate }}
-                                          </button>
-                                          <button class="dropdown-btn-chat-with"
-                                            (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
+                                        <!-- ---------------------------------------------------------------------------- -->
+                                        <!-- @ Human agent photo - USE CASE: AGENT HAS IMAGE & UPLOAD ENGINE IS NATIVE -->
+                                        <!-- ---------------------------------------------------------------------------- -->
+                                        <div class="dropdown-served-by"
+                                          *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE">
+                                          <img
+                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                            class="served-by-avatar--img" (click)="goToMemberProfile( agent?._id )" />
+                                          <span style="margin-left: 8px;font-size: 12px; font-weight: 400;">
+                                            {{agent?.firstname}} {{agent?.lastname}}
+                                          </span>
+                                          <div class="dropdown-btn-wpr">
+                                            <button class="dropdown-btn-view-profile"
+                                              (click)="goToMemberProfile( agent?._id )">
+                                              {{'ViewProfile' | translate }}
+                                            </button>
+                                            <button class="dropdown-btn-chat-with"
+                                              (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
 
-                                            {{'Message' | translate }}
-                                          </button>
+                                              {{'Message' | translate }}
+                                            </button>
+                                          </div>
                                         </div>
-                                      </div>
-                                      <!-- ---------------------------------------------------------------------------- -->
-                                      <!-- @ Bot agent photo FB Engine -->
-                                      <!-- ---------------------------------------------------------------------------- -->
-                                      <div class="dropdown-served-by"
-                                        *ngIf="agent.isBot === true && UPLOAD_ENGINE_IS_FIREBASE">
-                                        <img class="served-by-avatar--img"
-                                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4}}%2Fthumb_photo.jpg?alt=media"
-                                          onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
-                                        <span style="margin-left: 8px;font-size: 12px; font-weight: 400;">
-                                          {{agent?.firstname}} {{agent?.lastname}} (bot)
-                                        </span>
-                                        <div class="dropdown-btn-wpr">
-                                          <button class="dropdown-btn-view-profile"
-                                            (click)="goToMemberProfile( agent?._id )">
-                                            {{'ViewProfile' | translate }}
-                                          </button>
 
+                                        <!-- ---------------------------------------------------------------------------- -->
+                                        <!-- @ Human agent no photo  -->
+                                        <!-- ---------------------------------------------------------------------------- -->
+                                        <div class="dropdown-served-by"
+                                          *ngIf="agent.isBot === false && !agent.hasImage">
+                                          <div class="served-by-avatar--no-img"
+                                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}"
+                                            style="display: inline-block;">
+                                            {{ agent?.userFullname }}
+                                          </div>
+                                          <div style="display: inline-block;">
+                                            <span style="margin-left: 8px; font-size: 12px; font-weight: 400;">
+                                              {{agent?.firstname}} {{agent?.lastname}}
+                                            </span>
+                                          </div>
+                                          <div class="dropdown-btn-wpr">
+                                            <button class="dropdown-btn-view-profile"
+                                              (click)="goToMemberProfile( agent?._id )">
+                                              {{'ViewProfile' | translate }}
+                                            </button>
+                                            <button class="dropdown-btn-chat-with"
+                                              (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
+
+                                              {{'Message' | translate }}
+                                            </button>
+                                          </div>
                                         </div>
-                                      </div>
+                                        <!-- ---------------------------------------------------------------------------- -->
+                                        <!-- @ Bot agent photo FB Engine -->
+                                        <!-- ---------------------------------------------------------------------------- -->
+                                        <div class="dropdown-served-by"
+                                          *ngIf="agent.isBot === true && UPLOAD_ENGINE_IS_FIREBASE">
+                                          <img class="served-by-avatar--img"
+                                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4}}%2Fthumb_photo.jpg?alt=media"
+                                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                                          <span style="margin-left: 8px;font-size: 12px; font-weight: 400;">
+                                            {{agent?.firstname}} {{agent?.lastname}} (bot)
+                                          </span>
+                                          <div class="dropdown-btn-wpr">
+                                            <button class="dropdown-btn-view-profile"
+                                              (click)="goToMemberProfile( agent?._id )">
+                                              {{'ViewProfile' | translate }}
+                                            </button>
 
-                                      <!-- ---------------------------------------------------------------------------- -->
-                                      <!-- @ Bot agent photo Native Engine -->
-                                      <!-- ---------------------------------------------------------------------------- -->
-                                      <div class="dropdown-served-by"
-                                        *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE">
-                                        <img class="served-by-avatar--img"
-                                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                          onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
-                                        <span style="margin-left: 8px;font-size: 12px; font-weight: 400;"
+                                          </div>
+                                        </div>
+
+                                        <!-- ---------------------------------------------------------------------------- -->
+                                        <!-- @ Bot agent photo Native Engine -->
+                                        <!-- ---------------------------------------------------------------------------- -->
+                                        <div class="dropdown-served-by"
                                           *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE">
-                                          {{agent?.firstname}} {{agent?.lastname}} (bot)
-                                        </span>
-                                        <div class="dropdown-btn-wpr">
-                                          <button class="dropdown-btn-view-profile"
-                                            (click)="goToMemberProfile( agent?._id )">
-                                            {{'ViewProfile' | translate }}
-                                          </button>
+                                          <img class="served-by-avatar--img"
+                                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                                          <span style="margin-left: 8px;font-size: 12px; font-weight: 400;"
+                                            *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE">
+                                            {{agent?.firstname}} {{agent?.lastname}} (bot)
+                                          </span>
+                                          <div class="dropdown-btn-wpr">
+                                            <button class="dropdown-btn-view-profile"
+                                              (click)="goToMemberProfile( agent?._id )">
+                                              {{'ViewProfile' | translate }}
+                                            </button>
+                                          </div>
                                         </div>
-                                      </div>
-                                    </li>
-                                  </ul> <!-- agents-dropdown -->
+                                      </li>
+                                    </ul> <!-- agents-dropdown -->
+                                  </div>
                                 </div>
-                              </div>
-                            </li>
-                          </ul>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="header-badge-wpr">
-                    <div class="request-working-status"
-                      [ngClass]="{
-                          'working-status-open' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000,
-                          'working-status-pending' : request?.workingStatus === 'pending' && request?.status !== 1000,
-                          'working-status-resolved' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000)}">
-                      <div class="open-conv"
-                        *ngIf="(request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000">
-                        <!-- use case: conversation assigned -->
-                        <div class="conversation-open-assigned" *ngIf="!request?.subject && request?.status === 200"
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{'Open' | translate}} - {{ 'ConversationBeingProcessed' | translate }}"
-                          #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                          O
+                    <div class="header-badge-wpr">
+                      <!-- ------------------------------------------------------------------------------------ -->
+                      <!-- Working status badge !!! Diplay none - Replaced by Working status dropdown -->
+                      <!-- ------------------------------------------------------------------------------------ -->
+                      <div style="display: none;" class="request-working-status"
+                        [ngClass]="{
+                        'working-status-open' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000,
+                        'working-status-pending' : request?.workingStatus === 'pending' && request?.status !== 1000,
+                        'working-status-resolved' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000)}">
+                        <div class="open-conv"
+                          *ngIf="(request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000">
+                          <!-- use case: conversation assigned -->
+                          <div class="conversation-open-assigned" *ngIf="!request?.subject && request?.status === 200"
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'Open' | translate}} - {{ 'ConversationBeingProcessed' | translate }}"
+                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            {{'Open' | translate}}
+                          </div>
+                          <!-- use case: conversation unsassigned -->
+                          <div class="conversation-unsassigned" *ngIf="!request?.subject && request?.status === 100"
+                            matTooltipClass="custom-mat-tooltip" matTooltip="{{'Open' | translate}}"
+                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            {{'Open' | translate}}
+                          </div>
+                          <!-- use case: Ticket assigned  -->
+                          <div class="ticket-assigned" *ngIf="request?.subject && request?.status === 200"
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'Open' | translate}} - {{ 'TicketBeingProcessed' | translate }}"
+                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            {{'Open' | translate}}
+                          </div>
+                          <!-- use case: Ticket assigned  -->
+                          <div class="ticket-unassigned" *ngIf="request?.subject && request?.status === 100"
+                            matTooltipClass="custom-mat-tooltip" matTooltip="{{'Open' | translate}}"
+                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            {{'Open' | translate}}
+                          </div>
                         </div>
-                        <!-- use case: conversation unsassigned -->
-                        <div class="conversation-resolved" *ngIf="!request?.subject && request?.status === 100"
-                          matTooltipClass="custom-mat-tooltip" matTooltip="{{'Open' | translate}}" #tooltip="matTooltip"
-                          matTooltipPosition='below' matTooltipHideDelay="100">
-                          O
+                        <div class="pending-conv-ticket"
+                          *ngIf="request?.workingStatus === 'pending' && request?.status !== 1000">
+                          <div class="pending" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'Pending' | translate }} - {{ 'WaitingForReplyFromTheRequester' | translate }}"
+                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            {{'Pending' | translate}}
+                          </div>
+
                         </div>
-                        <!-- use case: Ticket assigned  -->
-                        <div class="ticket-resolved" *ngIf="request?.subject && request?.status === 200"
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{'Open' | translate}} - {{ 'TicketBeingProcessed' | translate }}"
-                          #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                          O
-                        </div>
-                        <!-- use case: Ticket assigned  -->
-                        <div class="ticket-resolved" *ngIf="request?.subject && request?.status === 100"
-                          matTooltipClass="custom-mat-tooltip" matTooltip="{{'Open' | translate}}" #tooltip="matTooltip"
-                          matTooltipPosition='below' matTooltipHideDelay="100">
-                          O
+                        <div class="resolved-conv"
+                          *ngIf="(request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) ">
+                          <!-- use case: conversation  -->
+                          <div class="conversation-resolved" *ngIf="!request?.subject"
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'TheConversationWasResolved' | translate }} ({{request?.closed_by_label}})"
+                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            {{'Resolved' | translate}}
+                          </div>
+                          <!-- use case: Ticket  -->
+                          <div class="ticket-resolved" *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'TheTicketWasResolved' | translate }} ({{request?.closed_by_label}})"
+                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            {{'Resolved' | translate}}
+                          </div>
                         </div>
                       </div>
-                      <div class="pending-conv-ticket"
-                        *ngIf="request?.workingStatus === 'pending' && request?.status !== 1000">
-                        <div class="pending" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{'Pending' | translate }} - {{ 'WaitingForReplyFromTheRequester' | translate }}"
-                          #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                          P
-                        </div>
-
+                      <!-- ----------------------------------------------------------  -->
+                      <!-- Working status dropdow -->
+                      <!-- ----------------------------------------------------------  -->
+                      <div class="dropdown">
+                        <a class="btn working-status-dropdown-btn dropdown-toggle" data-toggle="dropdown"
+                          [ngClass]="{
+                          'working-status-dropdown-btn-chat': CHAT_PANEL_MODE === true,
+                          'btn-deepred' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000,
+                          'btn-tdblu' : request?.workingStatus === 'pending' && request?.status !== 1000,
+                          'btn-default' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000)}">
+                          <!-- use case: conversation assigned -->
+                          <span class="open-conv"
+                            *ngIf="(request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000">
+                            {{'Open' | translate}}
+                          </span>
+                          <span class="pending"
+                            *ngIf="request?.workingStatus === 'pending' && request?.status !== 1000">
+                            {{'Pending' | translate}}
+                          </span>
+                          <span class="resolved"
+                            *ngIf="(request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) ">
+                            {{'Resolved' | translate}}
+                          </span>
+                          <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" [ngClass]="{'dropdown-menu-working-status-chat': CHAT_PANEL_MODE === true}">
+                          <li (click)="hasSelectedOpen('updatedWorkingStatus')" class="conversation-open-assigned"
+                            *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'ConversationBeingProcessed' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='left' matTooltipHideDelay="100">
+                            <a>
+                              {{'Open' | translate}}
+                            </a>
+                          </li>
+                          <li (click)="hasSelectedOpen('updatedWorkingStatus')" class="ticket-open-assigned"
+                            *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'TicketBeingProcessed' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='left' matTooltipHideDelay="100">
+                            <a>
+                              {{'Open' | translate}}
+                            </a>
+                          </li>
+                          <li (click)="hasSelectedPending('updatedWorkingStatus')" class="pending"
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'WaitingForReplyFromTheRequester' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='left' matTooltipHideDelay="100">
+                            <a>
+                              {{'Pending' | translate}}
+                            </a>
+                          </li>
+                          <li
+                            [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true }"
+                            (click)="hasSelectedSolved('updatedWorkingStatus')" class="conversation-resolved"
+                            *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='left' matTooltipHideDelay="100">
+                            <a>
+                              {{'VisitorsPage.Resolve' | translate}}
+                            </a>
+                          </li>
+                          <li (click)="hasSelectedSolved('updatedWorkingStatus')" class="ticket-resolved"
+                            *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='left' matTooltipHideDelay="100">
+                            <a>
+                              {{'VisitorsPage.Resolve' | translate}}
+                            </a>
+                          </li>
+                        </ul>
                       </div>
-                      <div class="resolved-conv"
-                        *ngIf="(request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) ">
-                        <!-- use case: conversation  -->
-                        <div class="conversation-resolved" *ngIf="!request?.subject"
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'TheConversationWasResolved' | translate }} ({{request?.closed_by_label}})"
-                          #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                          R
+
+                      <!-- ---------------------------------------------------------------------- -->
+                      <!-- Resolve and Reopen btn in sidebar -->
+                      <!-- ---------------------------------------------------------------------- -->
+                      <div class="resolve-reopen-btns-in-right-sidebar-wpr">
+                        <!--  Resolve - use case Conversation -->
+                        <div *ngIf="request?.status !== 1000 && !request?.subject"
+                          class="resolve-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
+                          matTooltip=" {{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='left' matTooltipHideDelay="100">
+                          <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
+                            class="btn btn-primary sideber-header-btn pull-right" role="button"
+                            [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                            <i class="material-icons" style="vertical-align: middle; padding-bottom: 2px;">archive</i>
+                            <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
+                          </button>
                         </div>
-                        <!-- use case: Ticket  -->
-                        <div class="ticket-resolved" *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'TheTicketWasResolved' | translate }} ({{request?.closed_by_label}})"
-                          #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                          R
+
+                        <!-- Resolve - use case Ticket -->
+                        <div *ngIf="request?.status !== 1000 && request?.subject"
+                          class="resolve-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
+                          matTooltip=" {{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='left' matTooltipHideDelay="100">
+                          <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
+                            class="btn btn-primary sideber-header-btn pull-right" role="button"
+                            [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                            <i class="material-icons" style="vertical-align: middle; padding-bottom: 2px;">archive</i>
+                            <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
+                          </button>
+                        </div>
+
+                        <!--  Reopen - use case Conversation -->
+                        <div *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000 && !request?.subject"
+                          class="reopen-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
+                          matTooltip=" {{ 'ReopenTheCurrentConversation' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='left' matTooltipHideDelay="100">
+                          <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
+                            class="btn btn-primary sideber-header-btn pull-right" role="button"
+                            [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                            <i class="material-icons"
+                              style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
+                            <span style="vertical-align: middle"> {{ 'Reopen' | translate }} </span>
+                          </button>
+                        </div>
+
+                        <!--  Reopen - use case Ticket -->
+                        <div *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000 && request?.subject"
+                          class="reopen-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
+                          matTooltip=" {{ 'ReopenTheCurrentTicket' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='left' matTooltipHideDelay="100">
+                          <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
+                            class="btn btn-primary sideber-header-btn pull-right" role="button"
+                            [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                            <i class="material-icons"
+                              style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
+                            <span style="vertical-align: middle"> {{ 'Reopen' | translate }} </span>
+                          </button>
                         </div>
                       </div>
-                    </div>
 
-                    <!-- ---------------------------------------------------------------------- -->
 
-                    <!-- [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}" -->
-                    <div class="request-icons-in-right-sidebar">
-
-                      <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
-                      <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && !request?.subject">
-                        <svg class="header-conv-svg-icon" height="24" width="24" viewBox="0 0 58.1 53.9"
+                      <div class="request-icons-in-right-sidebar">
+                        <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
+                        <svg
+                          *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && !request?.subject && CHAT_PANEL_MODE === false"
+                          class="header-conv-svg-icon" height="24" width="24" viewBox="0 0 58.1 53.9"
                           xml:space="preserve" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
                           #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -1297,21 +1435,19 @@
                           </g>
                         </svg>
 
-                        <!-- <span class="request-category" style="color: #4CAF50" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
-                          #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                          {{ "Assigned_F" | translate }}
-                        </span> -->
-                      </span>
 
-                      <!-- IF IS A INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
-                      <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && request?.subject"
-                        matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
-                        <svg class="header-conv-svg-icon" height="24" width="24" version="1.1" id="Livello_1"
+                        <!-- ------------------------------------------------------------------------------------ -->
+                        <!-- IF IS A INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
+                        <!-- ------------------------------------------------------------------------------------ -->
+                        <!-- <svg *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && request?.subject"
+                          class="header-conv-svg-icon" height="25" width="25" version="1.1" id="Livello_1"
                           xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                          viewBox="0 0 58.1 53.9" xml:space="preserve">
+                          viewBox="0 0 58.1 53.9" xml:space="preserve" 
+                          matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" 
+                          #tooltip="matTooltip"
+                          matTooltipPosition='below' 
+                          matTooltipHideDelay="100">
                           <style type="text/css">
                             .served_bycu_Internal_st0 {
                               fill: none;
@@ -1330,22 +1466,26 @@
                       c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
                       C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
                       c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                        </svg>
+                        </svg> -->
 
-                        <!-- <span class="request-category" style="color: #4CAF50" >
-                          {{ "Assigned_M" | translate }}
-                        </span> -->
-                      </span>
-
-
-                      <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
-                      <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
-                      <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && !request?.subject"
+                        <img *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && request?.subject" 
+                        class="header-conv-svg-icon"
+                        src="assets/img/request_icons/status200_joined_internal.svg"
                         matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
-                        <svg class="header-conv-svg-icon" height="24" width="24" viewBox="0 0 58.1 53.9"
-                          xml:space="preserve">
+                        matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" 
+                        #tooltip="matTooltip"
+                        matTooltipPosition='below' 
+                        matTooltipHideDelay="100"
+                        style="width: 24px;height: 24px;">
+
+                        <!-- ------------------------------------------------------------------------------------ -->
+                        <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
+                        <!-- ------------------------------------------------------------------------------------ -->
+                        <svg *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && !request?.subject"
+                          class="header-conv-svg-icon" height="24" width="24" viewBox="0 0 58.1 53.9"
+                          xml:space="preserve" matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='below' matTooltipHideDelay="100">
                           <style type="text/css">
                             .st0-served {
                               fill: none;
@@ -1360,7 +1500,7 @@
                           </style>
                           <g>
                             <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                    c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
+                                c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
                             <g>
                               <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
                               <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
@@ -1368,22 +1508,16 @@
                             </g>
                           </g>
                         </svg>
-                        <!-- 
-                        <span class="request-category" style="color: #00bcd4;" >
-                          {{ "Served" | translate }}
-                        </span> -->
-                      </span>
 
-                      <!-- IF IS AN INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
-                      <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
-                      <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && request?.subject"
-                        matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
-
-                        <svg class="header-conv-svg-icon" height="24" width="24" version="1.1" id="Livello_1"
+                        <!-- --------------------------------------------------------------------------------------- -->
+                        <!-- IF IS AN INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
+                        <!-- --------------------------------------------------------------------------------------- -->
+                        <svg *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && request?.subject"
+                          class="header-conv-svg-icon" height="24" width="24" version="1.1" id="Livello_1"
                           xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                          viewBox="0 0 58.1 53.9" xml:space="preserve">
+                          viewBox="0 0 58.1 53.9" xml:space="preserve" matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='below' matTooltipHideDelay="100">
                           <style type="text/css">
                             .served__Internal_st0 {
                               fill: none;
@@ -1397,63 +1531,56 @@
                             }
                           </style>
                           <path class="served__Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
-                      C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+                              C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
                           <path class="served__Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
-                      c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
-                      C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
-                      c0.5,0,0.9-0.5,0.9-1.1V22z" />
+                              c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+                              C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+                              c0.5,0,0.9-0.5,0.9-1.1V22z" />
                         </svg>
+                      </div>
 
-                        <!-- <span class="request-category" style="color: #00bcd4;" >
-                          {{ "Served" | translate }}
-                        </span> -->
-                      </span>
+
+
+                      <!-- ---------------------------------------- -->
+                      <!-- @ Priority WRAPPER style="flex: 1;; text-align: right;" -->
+                      <!-- ---------------------------------------- -->
+                      <div *ngIf="request?.priority !== 'medium'" class="priority_wpr">
+                        <!-- ---------------------------------------- -->
+                        <!-- Priority High -->
+                        <!-- ---------------------------------------- -->
+                        <span *ngIf="request?.priority === 'high'" matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{'Priority' | translate}}: {{'high' | translate}}" #tooltip="matTooltip"
+                          matTooltipPosition='below' matTooltipHideDelay="100">
+                          <img style="width: 15px;height: 15px; vertical-align: top;"
+                            src="assets/img/priority_icons/high_v2.svg" class="img-fluid">
+
+                        </span>
+                        <!-- ---------------------------------------- -->
+                        <!-- Priority Urgent -->
+                        <!-- ---------------------------------------- -->
+                        <span *ngIf="request?.priority === 'urgent'" matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{'Priority' | translate}}: {{'urgent' | translate}}" #tooltip="matTooltip"
+                          matTooltipPosition='above' matTooltipHideDelay="100">
+                          <img style="width: 15px;height: 15px; vertical-align: top;"
+                            src="assets/img/priority_icons/urgent_v2.svg" class="img-fluid">
+
+                        </span>
+                        <!-- ---------------------------------------- -->
+                        <!-- Priority Low -->
+                        <!-- ---------------------------------------- -->
+                        <span *ngIf="request?.priority === 'low'" matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{'Priority' | translate}}: {{'low' | translate}}" #tooltip="matTooltip"
+                          matTooltipPosition='above' matTooltipHideDelay="100">
+                          <img style="width: 15px;height: 15px; vertical-align: top;"
+                            src="assets/img/priority_icons/low_v2.svg" class="img-fluid">
+
+                        </span>
+                      </div>
                     </div>
+                    <!-- ---------------------------------------------------------------------- -->
 
-
-
-                    <!-- ---------------------------------------- -->
-                    <!-- @ Priority WRAPPER style="flex: 1;; text-align: right;" -->
-                    <!-- ---------------------------------------- -->
-                    <div *ngIf="request?.priority !== 'medium'" class="priority_wpr" style="margin-left: 8px;
-                        position: relative;
-                        top: -1px;">
-                      <!-- ---------------------------------------- -->
-                      <!-- Priority High -->
-                      <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.priority === 'high'" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{'Priority' | translate}}: {{'high' | translate}}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
-                        <img style="width: 15px;height: 15px; vertical-align: top;"
-                          src="assets/img/priority_icons/high_v2.svg" class="img-fluid">
-
-                      </span>
-                      <!-- ---------------------------------------- -->
-                      <!-- Priority Urgent -->
-                      <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.priority === 'urgent'" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{'Priority' | translate}}: {{'urgent' | translate}}" #tooltip="matTooltip"
-                        matTooltipPosition='above' matTooltipHideDelay="100">
-                        <img style="width: 15px;height: 15px; vertical-align: top;"
-                          src="assets/img/priority_icons/urgent_v2.svg" class="img-fluid">
-
-                      </span>
-                      <!-- ---------------------------------------- -->
-                      <!-- Priority Low -->
-                      <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.priority === 'low'" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{'Priority' | translate}}: {{'low' | translate}}" #tooltip="matTooltip"
-                        matTooltipPosition='above' matTooltipHideDelay="100">
-                        <img style="width: 15px;height: 15px; vertical-align: top;"
-                          src="assets/img/priority_icons/low_v2.svg" class="img-fluid">
-
-                      </span>
-                    </div>
-                  </div>
-                  <!-- ---------------------------------------------------------------------- -->
-
-                  <div class="sidebar-tab-wpr">
-                    <!-- <mat-tab-group mat-align-tabs="center" [color]="rgb(5, 102, 255)">
+                    <div class="sidebar-tab-wpr">
+                      <!-- <mat-tab-group mat-align-tabs="center" [color]="rgb(5, 102, 255)">
                         <mat-tab label="Profile">Content 1</mat-tab>
                         <mat-tab label="Ticket">Content 2</mat-tab>
                         <mat-tab label="Notes ({{ notesArray?.length }})">Content 3</mat-tab>
@@ -1461,75 +1588,76 @@
                         <mat-tab label="Attributes">Content 5</mat-tab>
                       </mat-tab-group> -->
 
-                    <div class="more-options-dropdown-wpr e4erhsw2">
+                      <div class="more-options-dropdown-wpr e4erhsw2">
 
-                      <div width="57" offset="0" class="sidebar-tabs"
-                        [ngClass]="{
+                        <div width="57" offset="0" class="sidebar-tabs"
+                          [ngClass]="{
                             'selectTab0': tab0 === true && tab1 === false && tab2 === false && tab3 === false && tab4 === false, 
                             'selectTab1': tab1 === true && tab0 === false && tab2 === false && tab3 === false && tab4 === false,
                             'selectTab2': tab2 === true && tab0 === false && tab1 === false && tab3 === false && tab4 === false,
                             'selectTab3': tab0 === false && tab1 === false && tab2 === false && tab3 === true && tab4 === false, 
                             'selectTab4': tab0 === false && tab1 === false && tab2 === false && tab3 === false && tab4 === true }">
-                        <!-- ------------------------------------- -->
-                        <!-- Arrow left -->
-                        <!-- ------------------------------------- -->
-                        <div class="sidebar-tab-arrow-left-wpr" [ngClass]="{'active-arrow': otherTabs === true}"
-                          (click)="hasSelectMainTabs()">
-                          <svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 24 24" width="22"
-                            class="sidebar-tab-arrow-right"
-                            style="min-width: 22px; min-height: 22px; transform: rotate(180deg);">
-                            <path d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-                          </svg>
-                        </div>
-                        <!-- ------------------------------------- -->
-                        <!-- Main tabs -->
-                        <!-- ------------------------------------- -->
-                        <div *ngIf="mainTabs" class="sidebar-tab"
-                          [ngClass]="{'sidebar-select-tab': tab0 === true && tab1 === false && tab2 === false && tab3 === false && tab4 === false}"
-                          (click)="hasSelectedTab0()">
-                          Profile
-                        </div>
-                        <div *ngIf="mainTabs" class="sidebar-tab"
-                          [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === true && tab2 === false && tab3 === false && tab4 === false}"
-                          (click)="hasSelectedTab1()">
-                          Ticket
-                        </div>
-                        <div *ngIf="mainTabs" class="sidebar-tab"
-                          [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === false && tab2 === true && tab3 === false && tab4 === false}"
-                          (click)="hasSelectedTab2()">
-                          Notes ({{ notesArray?.length }})
-                        </div>
-                        <!-- ------------------------------------- -->
-                        <!-- Other tabs -->
-                        <!-- ------------------------------------- -->
-                        <div *ngIf="otherTabs" class="sidebar-tab"
-                          [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === false && tab2 === false && tab3 === true && tab4 === false}"
-                          (click)="hasSelectedTab3()">
-                          Conversations
-                        </div>
-                        <div *ngIf="otherTabs" class="sidebar-tab"
-                          [ngClass]="{'sidebar-select-tab': tab0 === false && tab2 === false && tab1 === false && tab3 === false && tab4 === true}"
-                          (click)="hasSelectedTab4()">
-                          Attributes
-                        </div>
-                        <!-- ------------------------------------- -->
-                        <!-- Arrow right -->
-                        <!-- ------------------------------------- -->
-                        <div class="sidebar-tab-arrow-right-wpr" [ngClass]="{'active-arrow': mainTabs === true}"
-                          (click)="hasSelectedMoreTabs()">
-                          <svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 24 24" width="22"
-                            class="sidebar-tab-arrow-right" style="min-width: 22px; min-height: 22px;">
-                            <path d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-                          </svg>
+                          <!-- ------------------------------------- -->
+                          <!-- Arrow left -->
+                          <!-- ------------------------------------- -->
+                          <div class="sidebar-tab-arrow-left-wpr" [ngClass]="{'active-arrow': otherTabs === true}"
+                            (click)="hasSelectMainTabs()">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 24 24" width="22"
+                              class="sidebar-tab-arrow-right"
+                              style="min-width: 22px; min-height: 22px; transform: rotate(180deg);">
+                              <path d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+                            </svg>
+                          </div>
+                          <!-- ------------------------------------- -->
+                          <!-- Main tabs -->
+                          <!-- ------------------------------------- -->
+                          <div *ngIf="mainTabs" class="sidebar-tab"
+                            [ngClass]="{'sidebar-select-tab': tab0 === true && tab1 === false && tab2 === false && tab3 === false && tab4 === false}"
+                            (click)="hasSelectedTab0()">
+                            {{ 'UserProfile.Profile' | translate }}
+                          </div>
+                          <div *ngIf="mainTabs" class="sidebar-tab"
+                            [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === true && tab2 === false && tab3 === false && tab4 === false}"
+                            (click)="hasSelectedTab1()">
+                            Ticket
+                          </div>
+                          <div *ngIf="mainTabs" class="sidebar-tab"
+                            [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === false && tab2 === true && tab3 === false && tab4 === false}"
+                            (click)="hasSelectedTab2()">
+                            {{'Notes.Notes' | translate}} ({{ notesArray?.length }})
+                          </div>
+                          <!-- ------------------------------------- -->
+                          <!-- Other tabs -->
+                          <!-- ------------------------------------- -->
+                          <div *ngIf="otherTabs" class="sidebar-tab"
+                            [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === false && tab2 === false && tab3 === true && tab4 === false}"
+                            (click)="hasSelectedTab3()">
+                            {{'Conversations' | translate}}
+                          </div>
+                          <div *ngIf="otherTabs" class="sidebar-tab"
+                            [ngClass]="{'sidebar-select-tab': tab0 === false && tab2 === false && tab1 === false && tab3 === false && tab4 === true}"
+                            (click)="hasSelectedTab4()">
+                            {{'Attributes' | translate }}
+                          </div>
+                          <!-- ------------------------------------- -->
+                          <!-- Arrow right -->
+                          <!-- ------------------------------------- -->
+                          <div class="sidebar-tab-arrow-right-wpr" [ngClass]="{'active-arrow': mainTabs === true}"
+                            (click)="hasSelectedMoreTabs()">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 24 24" width="22"
+                              class="sidebar-tab-arrow-right" style="min-width: 22px; min-height: 22px;">
+                              <path d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+                            </svg>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div *ngIf="tab0" class="ul-wpr" [ngStyle]="{ 'height': tagContainerElementHeight }"
-                  [ngClass]="{'ul-wpr-chat': CHAT_PANEL_MODE === true}">
+                <div *ngIf="tab0" class="ul-wpr tab0-card1" [ngClass]="{'tab0-card1-ticket': request?.subject, 'ul-wpr-chat': CHAT_PANEL_MODE === true }"
+                  [ngStyle]="{ 'height': tagContainerElementHeight }">
                   <ul class="request-info-list">
 
                     <!-- ------------------------------------- -->
@@ -1954,7 +2082,7 @@
                         </svg>
                         <div>
                           <div class="rating-group e9elja63" *ngIf="request">
-                       
+
                             <span class="material-icons"
                               [ngClass]="{'yellow-star': request?.rating === 1 || request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
                               star
@@ -1990,7 +2118,8 @@
                   <!-- ------------------------------------- -->
                   <!-- Apps -->
                   <!-- ------------------------------------- -->
-                  <div *ngIf="tab0" class="tab0-card3" [ngClass]="{'tab0-card3-chat': CHAT_PANEL_MODE === true}">
+                  <div *ngIf="tab0 && isVisibleAPP === true && displayAppsinSidebar" class="tab0-card3"
+                    [ngClass]="{'tab0-card3-chat': CHAT_PANEL_MODE === true}">
                     <div class="tab0-card3-content-wpr"
                       [ngClass]="{'tab0-card3-content-wpr-chat': CHAT_PANEL_MODE === true}">
                       <div class="tab0-card3-content">

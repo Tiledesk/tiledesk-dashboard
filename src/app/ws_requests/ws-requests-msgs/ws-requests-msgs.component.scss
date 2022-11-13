@@ -2261,9 +2261,15 @@ span .conv-svg-icon {
   display: none;
 }
 
-// .request-icons-in-right-sidebar {
-//   margin-bottom: 0px; min-height: 50px;border-bottom: 1px solid #eeeeee;
-// }
+.request-icons-in-right-sidebar {
+  height: 24px;
+}
+
+.priority_wpr {
+  margin-left: 8px;
+  position: relative;
+  top: 2px;
+}
 
 .right-sidebar-header {
   border-bottom: 1px solid #e5effe;
@@ -3583,20 +3589,12 @@ span .conv-svg-icon {
 
 /* new style --------------------------------------- */
 .conv-info-sidebar-wpr {
-  display: flex;
-  flex-direction: column;
-  -webkit-box-pack: start;
-  justify-content: flex-start;
-  align-items: normal;
-  background-color:#fff ;
-}
-
-.conv-info-sidebar-wpr.conv-info-sidebar-wpr > * {
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-
-.conv-info-sidebar-header-wpr {
+  // display: flex;
+  // flex-direction: column;
+  // -webkit-box-pack: start;
+  // justify-content: flex-start;
+  // align-items: normal;
+  // background-color:#fff ;
   position: sticky;
   top: 0px;
   z-index: 10;
@@ -3607,6 +3605,23 @@ span .conv-svg-icon {
   padding-right: 8px;
   background: #ffff;
 }
+
+.conv-info-sidebar-wpr.conv-info-sidebar-wpr > * {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.conv-info-sidebar-header-wpr {
+  // position: sticky;
+  // top: 0px;
+  // z-index: 10;
+  // padding-top: 2px;
+  // margin-left: -8px;
+  // margin-right: -8px;
+  // padding-left: 8px;
+  // padding-right: 8px;
+  // background: #ffff;
+}
 .conv-info-sidebar-header-wpr-chat {
   background: #ffff !important;
 }
@@ -3614,7 +3629,7 @@ span .conv-svg-icon {
 .conv-info-sidebar-header-contact-info-wpr {
   width: 100%;
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   min-height: 73px;
   // margin-top: 10px;
 }
@@ -3709,8 +3724,8 @@ span .conv-svg-icon {
 }
 
 .header-conv-svg-icon {
-  max-width: 24px;
-  max-height: 24px;
+  max-width: 25px;
+  max-height: 25px;
 }
 
 .td-dropdown {
@@ -3777,16 +3792,16 @@ span .conv-svg-icon {
   width: 14px;
   height: 14px;
   // top: 31px;
-  top: 59px;
-  left: 46px;
+  top: 55px;
+  left: 40px;
   border: 2px solid #ffffff;
   border-radius: 50%;
   background-color: #f44336;
 }
 
 .contact--offline-status-chat {
-  top: 55px !important;;
-  left: 38px !important;
+  top: 55px !important;
+  left: 45px !important;
 }
 
 .contact--oline-status {
@@ -3795,11 +3810,11 @@ span .conv-svg-icon {
 
 .contact-verified-icon-wpr {
   position: absolute;
-  left: 10px;
+  left: 3px;
 }
 
 .contact-verified-icon-wpr-chat {
-  left: 2px !important;
+  left: 10px !important;
 }
 
 .dropdown-menu-chat {
@@ -4341,6 +4356,17 @@ label {
   font-size: 20px;
   margin-right: 12px;
 }
+.tab0-card1 {
+  min-height: 225px;
+}
+
+.dropdown-menu-working-status-chat {
+  left: 10px !important;
+}
+
+.tab0-card1-ticket {
+  min-height: 191px !important;
+}
 
 .tab0-card2-content-wpr.tab0-card2-content-wpr > * + * {
   margin-top: 12px;
@@ -4826,6 +4852,44 @@ label {
   justify-content: flex-start;
   align-items: center;
   margin-right: auto;
+  margin-bottom: 5px;
+}
+
+.working-status-dropdown-btn {
+  padding: 4px 5px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: 24px;
+  box-shadow: none;
+  font-size: 11px;
+ 
+}
+
+.working-status-dropdown-btn-chat {
+  margin-left: 10px !important;
+}
+
+.sideber-header-btn {
+  padding: 4px 5px;
+  height: 24px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  box-shadow: none !important;
+  background-color: #dce9ff;
+  border-color: #dce9ff;
+  color: #074095;
+  margin-left: 8px;
+  margin-right: 8px;
+  font-size: 11px;
+}
+.sideber-header-btn > i {
+  font-size: 16px;
+}
+
+.sideber-header-btn:hover {
+  background-color: #9ac1ff !important;
+  border-color: #9ac1ff !important;
+  color: #074095 !important;
 }
 
 .project-name-icon {

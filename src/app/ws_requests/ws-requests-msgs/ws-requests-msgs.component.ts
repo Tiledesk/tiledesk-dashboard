@@ -342,6 +342,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   tagContainerElementHeight: any;
   requestInfoListElementHeight: any;
+  displayAppsinSidebar: boolean = false
+  dashboardApps: Array<any>
+  webchatApps: Array<any>
 
   serveByTooltipOption: TooltipOptions = {
     'show-delay': 0,
@@ -845,9 +848,57 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.getfromStorageIsOpenAppSidebar()
     }
 
+    this.getAppsInstalledApps()
+
   }
 
+  getAppsInstalledApps() {
+    let promise = new Promise((resolve, reject) => {
+      this.appStoreService.getInstallationWithApp(this.id_project).then((installations: any) => {
+        console.log("[WS-REQUESTS-MSGS] Get Installation Response: ", installations);
 
+        this.dashboardApps = []
+        this.webchatApps = []
+
+        installations.forEach(installation => {
+
+          if (installation.app !== null && installation.app.version === 'v2') {
+
+            this.logger.log('getInstallationsPopulateWithApp installation.app  where', installation.app.where)
+            if (installation.app.where.dashboard === true) {
+              this.dashboardApps.push(installation.app)
+            }
+
+            if (installation.app.where.webchat === true) {
+              this.webchatApps.push(installation.app)
+            }
+
+          }
+        });
+
+        console.log("[WS-REQUESTS-MSGS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
+        console.log("[WS-REQUESTS-MSGS] WEBCHAT APPS ARRAY: ", this.webchatApps);
+
+
+
+        if (this.dashboardApps && this.dashboardApps.length > 0 && this.CHAT_PANEL_MODE === false) {
+          this.displayAppsinSidebar = true
+          console.log("[WS-REQUESTS-MSGS] - DASHBOARD - DISPLAY APPS ", this.displayAppsinSidebar);
+        }
+
+        if (this.webchatApps && this.webchatApps.length > 0 && this.CHAT_PANEL_MODE === true) {
+          this.displayAppsinSidebar = true
+          console.log("[WS-REQUESTS-MSGS] - CHAT - DISPLAY APPS ", this.displayAppsinSidebar);
+        }
+        resolve(installations);
+      }).catch((err) => {
+        this.logger.error("[WS-REQUESTS-MSGS] Error getting installation: ", err);
+        reject(err);
+      })
+    })
+    return promise;
+
+  }
 
   getfromStorageIsOpenAppSidebar() {
     const isOpenAppSidebar = this.usersLocalDbService.getStoredIsOpenAppSidebar();
@@ -1256,7 +1307,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   removeTicket() {
     this.ticketSubject = ''
-  } 
+  }
 
   getTagContainerElementHeightAfterViewInit() {
     setTimeout(() => {
@@ -1278,7 +1329,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -2799,7 +2850,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   closeMoreOptionDropdown() {
     const elemDropdownMoreOption = <HTMLElement>document.querySelector('.dropdown__menu-more-options');
-    this.logger.log('[WS-REQUESTS-MSGS] - elemDropdownMoreOption', elemDropdownMoreOption) 
+    this.logger.log('[WS-REQUESTS-MSGS] - elemDropdownMoreOption', elemDropdownMoreOption)
     if (elemDropdownMoreOption && elemDropdownMoreOption.classList.contains("dropdown__menu-more-options--active")) {
       elemDropdownMoreOption.classList.remove("dropdown__menu-more-options--active");
     }
@@ -4474,45 +4525,66 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             convWokingStatus = ''
           }
 
-          this.wsRequestsService.updateRequestWorkingStatus(this.id_request, convWokingStatus)
-            .subscribe((request) => {
+          this.updateRequestWorkingStatus(convWokingStatus)
 
-              this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
-            }, (error) => {
-              this.logger.error('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS - ERROR ', error);
-
-            }, () => {
-              this.logger.log('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS  * COMPLETE');
-              if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
-                this.archiveRequest(this.id_request)
-              }
-            })
         });
     }
   }
 
-  hasSelectedSendAsOpen() {
+  updateRequestWorkingStatus(convWokingStatus) {
+    this.wsRequestsService.updateRequestWorkingStatus(this.id_request, convWokingStatus)
+      .subscribe((request) => {
+
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST WORKING STATUS ', request);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS  * COMPLETE');
+        if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
+          this.archiveRequest(this.id_request)
+        }
+      })
+  }
+
+  hasSelectedOpen(calledby) {
+    console.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN ', calledby)
     this.HAS_SELECTED_SEND_AS_OPENED = true;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
+    if (calledby ==='updatedWorkingStatus') {
+    let  convWokingStatus = 'open'
+      this.updateRequestWorkingStatus(convWokingStatus)
+    }
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
   }
 
-  hasSelectedSendAsPending() {
+  hasSelectedPending(calledby) {
+    console.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING ', calledby)
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = true;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
+    if (calledby ==='updatedWorkingStatus') {
+      let  convWokingStatus = 'open'
+      this.updateRequestWorkingStatus(convWokingStatus)
+    }
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
   }
 
-  hasSelectedSendAsSolved() {
+  hasSelectedSolved(calledby) {
+    console.log('[WS-REQUESTS-MSGS] HAS SELECTED SOLVED ', calledby)
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = true;
+    if (calledby ==='updatedWorkingStatus') {
+      let convWokingStatus = ''
+      this.updateRequestWorkingStatus(convWokingStatus)
+    }
+    
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
