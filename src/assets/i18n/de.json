@@ -2243,5 +2243,8 @@
 	"Follow":"Befolgen",
 	"Unfollow":"Entfolgen",
 	"ClickToDisplayActions":"Klicken Sie darauf, um Aktionen anzuzeigen",
-	"ClosesTheCurrentConversation":"Schließt die aktuelle Konversation"
+	"ClosesTheCurrentConversation":"Schließt die aktuelle Konversation",
+	"ClosesTheCurrentTicket":"Schließt das aktuelle Ticket",
+	"ReopenTheCurrentConversation":"Öffnet die aktuelle Konversation erneut",
+    "ReopenTheCurrentTicket":"Öffnet das aktuelle Ticket erneut"
 }

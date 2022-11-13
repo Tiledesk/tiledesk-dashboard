@@ -2244,6 +2244,9 @@
     "Unfollow":"Dejar de seguir",
     "ClickToDisplayActions":"Haga clic para mostrar acciones",
     "ClosesTheCurrentConversation":"Cierra la conversación actual",
+    "ClosesTheCurrentTicket":"Cierra el ticket actual",
+    "ReopenTheCurrentConversation":"Vuelve a abrir la conversación actual",
+    "ReopenTheCurrentTicket":"Vuelve a abrir el ticket actual",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

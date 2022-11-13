@@ -2244,6 +2244,9 @@
     "Unfollow":"İzləməni dayandır",
     "ClickToDisplayActions":"Hərəkətləri göstərmək üçün klikləyin",
     "ClosesTheCurrentConversation":"Cari söhbəti bağlayır",
+    "ClosesTheCurrentTicket":"Cari ticket bağlayır",
+    "ReopenTheCurrentConversation":"Cari söhbəti yenidən açır",
+    "ReopenTheCurrentTicket":"Cari ticket yenidən açır",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

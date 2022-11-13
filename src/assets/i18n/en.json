@@ -2245,6 +2245,9 @@
     "Unfollow":"Unfollow",
     "ClickToDisplayActions":"Click to display actions",
     "ClosesTheCurrentConversation":"Closes the current conversation",
+    "ClosesTheCurrentTicket":"Closes the current ticket",
+    "ReopenTheCurrentConversation":"Reopens the current conversation",
+    "ReopenTheCurrentTicket":"Reopens the current ticket",
     "CancelReply": "Form canceled",
     "AddIntentPage": {
         "AddForm": "Add form",

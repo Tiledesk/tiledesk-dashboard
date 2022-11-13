@@ -2244,6 +2244,9 @@
     "Unfollow":"الغاء المتابعة",
     "ClickToDisplayActions":"انقر لعرض الإجراءات",
     "ClosesTheCurrentConversation":"يغلق المحادثة الحالية",
+    "ClosesTheCurrentTicket":"لإغلاق التذكرة الحالية",
+    "ReopenTheCurrentConversation":"يعيد فتح المحادثة الحالية",
+    "ReopenTheCurrentTicket":"يعيد فتح التذكرة الحالية",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",

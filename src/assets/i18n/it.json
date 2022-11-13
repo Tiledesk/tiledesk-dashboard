@@ -2243,7 +2243,10 @@
     "Follow":"Segui",
     "Unfollow":"Non seguire",
     "ClickToDisplayActions":"Clicca per visualizzare le azioni",
-    "ClosesTheCurrentConversation":"Chiude la conversazione corrente",
+    "ClosesTheCurrentConversation":"Chiudi la conversazione corrente",
+    "ClosesTheCurrentTicket":"Chiudi il ticket corrente",
+    "ReopenTheCurrentConversation":"Riapri la conversazione corrente",
+    "ReopenTheCurrentTicket":"Riapri il ticket corrente",
     "CancelReply": "Form Annullata",
     "AddIntentPage": {
         "AddForm": "Aggiungi form",
