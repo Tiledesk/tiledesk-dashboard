@@ -36,11 +36,16 @@
       </div>
     </div>
   </div>
+  hasOwnLauncherBtn > {{ hasOwnLauncherBtn }} - hasOwnLauncherLogo > {{ hasOwnLauncherLogo }}
+  <div *ngIf="hasOwnLauncherBtn === false || featureIsAvailable === false" 
+    id="chat21-launcher-button-in-callout" style="z-index:1029" 
+    [ngClass]="{
+      'chat21-launcher-button-in-callout--left' : hasSelectedLeftAlignment === true ,
+      'chat21-launcher-button-in-callout--right' : hasSelectedRightAlignment === true }"
+      [ngStyle]="{'background-color': primaryColor}">
 
-  <div *ngIf="hasOwnLauncherBtn === false || featureIsAvailable === false" id="chat21-launcher-button-in-callout" style="z-index:1029" [ngClass]="{'chat21-launcher-button-in-callout--left' : hasSelectedLeftAlignment === true ,
-  'chat21-launcher-button-in-callout--right' : hasSelectedRightAlignment === true }"
-    [ngStyle]="{'background-color': primaryColor}">
-    <div class="wpr-launcher-btn" style="width:100%; height:100%; padding:0px; margin: 0px;"  [ngClass]="{'wpr-custom-launcher-btn':hasOwnLauncherLogo}">
+    <div class="wpr-launcher-btn" style="width:100%; height:100%; padding:0px; margin: 0px;"  
+    [ngClass]="{'wpr-custom-launcher-btn':hasOwnLauncherLogo}">
 
       <svg  *ngIf="!hasOwnLauncherLogo" class="ng-tns-c1-0" height="100%" role="img" viewBox="0 0 90 90" width="100%"
         xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor}" style="border-radius: 50%;">
@@ -73,7 +78,8 @@
     </div>
   </div>
 
-  <div *ngIf="hasOwnLauncherBtn === true && featureIsAvailable === true" id="chat21-launcher-button-in-callout" style="z-index:1029" [ngClass]="{'chat21-launcher-button-in-callout--left' : hasSelectedLeftAlignment === true ,
+  <div *ngIf="hasOwnLauncherBtn === true && featureIsAvailable === true" id="chat21-launcher-button-in-callout" style="z-index:1029" 
+  [ngClass]="{'chat21-launcher-button-in-callout--left' : hasSelectedLeftAlignment === true ,
   'chat21-launcher-button-in-callout--right' : hasSelectedRightAlignment === true }" >
     <div style="width:100%; height:100%; padding:0px; margin: 0px;">
 

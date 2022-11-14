@@ -4567,7 +4567,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.HAS_SELECTED_SEND_AS_PENDING = true;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
     if (calledby ==='updatedWorkingStatus') {
-      let  convWokingStatus = 'open'
+      let  convWokingStatus = 'pending'
       this.updateRequestWorkingStatus(convWokingStatus)
     }
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)

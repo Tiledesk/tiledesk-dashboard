@@ -18,6 +18,7 @@
   text-align-last: initial;
   text-decoration: none;
   -webkit-text-emphasis: none;
+  text-emphasis: none;
   text-indent: 0;
   text-justify: auto;
   text-shadow: none;
@@ -51,7 +52,6 @@
   clear: none;
   clip: auto;
   color: inherit;
-  color-profile: auto;
   -webkit-column-count: auto;
   -moz-column-count: auto;
   column-count: auto;
@@ -416,7 +416,7 @@ div.clear {
 }
 
 .c21-last-time {
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 9px;
   color: #aaa;
   float: right;
@@ -435,7 +435,7 @@ div.clear {
 }
 
 .c21-msg {
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-weight: 400;
   color: #3a3c4c;
   font-size: 12px;
@@ -638,6 +638,63 @@ input[type="text"]:disabled {
   }
 }
 
+.on-off-primary-color-switch-and-lbl-wpr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.on-off-primary-color-lbl-wpr {
+  color: #737376;
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: 4px;
+  position: relative;
+  top: -4px;
+}
+
+.display-logo-switch-and-logourl-wpr {
+  display: flex;
+  width: 100%;
+}
+
+.display-logo-switch-wpr {
+  width: 145px;
+  margin-left: 15px;
+}
+
+.display-logo-logourl-wpr {
+  flex: 1;
+}
+
+.single-conversation-content {
+  display: flex;
+  width: 100%;
+}
+.single-conversation-switch {
+  width: 200px;
+}
+.single-conversation-preview {
+  flex: 1;
+}
+
+.on-off-singleconversation-switch-and-lbl-wpr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 15px;
+  margin-top: 6px;
+}
+.on-off-singleconversation-lbl-wpr {
+  color: #737376;
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: 4px;
+  position: relative;
+  top: -4px;
+}
+
 .pre-chat-form-field-div {
   padding: 8px;
   margin-bottom: 5px;
@@ -735,8 +792,6 @@ input[type="text"]:disabled {
   // bottom: 38px;
   color: #3c4858;
 }
-
-
 
 #chat21-launcher-button-in-callout {
   border-radius: 50%;
@@ -892,6 +947,112 @@ input[type="text"]:disabled {
   position: relative;
   top: 10px;
   left: 8px;
+}
+
+.widget-single-conv-demo {
+  height: 420px;
+  position: relative;
+  top: 14px;
+  background: #fff;
+  box-shadow: 0 2px 6px #e6e9ed;
+  border-radius: 10px;
+  width: 315px;
+  margin-bottom: 18px;
+}
+
+.widget-single-conv-demo-header {
+  height: 52px;
+  background: rgb(244, 243, 244);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.widget-single-conv-demo-content {
+  padding: 20px;
+}
+
+.widget-single-conv-firt-row-avatar-and-conversation-wpr {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.widget-single-conv-firt-row-avatar {
+  background: white;
+  background: rgb(244, 243, 244);
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+
+.widget-single-conv-firt-row-conversation {
+  background: rgb(244,243,244);
+  top: 10px;
+  width: 25px;
+  height: 20px;
+  flex: 1;
+  max-width: 200px;
+  border-radius: 5px;
+  margin-left: 8px;
+}
+
+.widget-single-conv-second-row-conversation-wpr {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.widget-single-conv-second-row-conversation {
+  background: rgb(244,243,244);
+  width: 177px;
+  height: 20px;
+  border-radius: 5px;
+  margin-top: 16px;
+}
+
+.widget-single-conv-third-row-avatar-and-conversation-wpr{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.widget-single-conv-third-row-avatar {
+  background: white;
+  background: rgb(244, 243, 244);
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.widget-single-conv-third-row-conversation {
+  background: rgb(244,243,244);
+  top: 10px;
+  width: 25px;
+  height: 20px;
+  flex: 1;
+  max-width: 200px;
+  border-radius: 5px;
+  margin-left: 8px;
+}
+
+.widget-single-conv-footer {
+  position: absolute;
+  // background: blueviolet;
+  width: 273px;
+  height: 20px;
+  bottom: 20px;
+}
+.widget-single-conv-new-conv-btn {
+  height: 29px;
+  width: 144px;
+  background: rgb(42,106,193);
 }
 
 // -------------------------
@@ -1502,17 +1663,16 @@ button.buttonRounded:hover {
 }
 
 .widget-appearance-section {
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-weight: 600;
   margin-bottom: 4px;
   font-size: 14px;
 }
 
-
 .card-title {
   text-transform: none;
   color: #566787;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   height: 30px;
   font-size: 16px;
 }
@@ -1707,7 +1867,7 @@ button.buttonRounded:hover {
   margin-bottom: 0px;
   height: 40px !important;
   position: relative;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   // font-size: 18px;
   font-size: 18px;
   margin-top: 10px;
@@ -1830,12 +1990,12 @@ button.buttonRounded:hover {
   color: #566787 !important;
   text-align: left;
   padding-bottom: 12px;
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-weight: 500 !important;
 }
 
 .widget-settings-control-head-label-info {
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   color: #566787 !important;
   text-align: left;
   padding: 6px 12px;
@@ -2075,12 +2235,12 @@ button.buttonRounded:hover {
 
 .current-language-text {
   color: #3ecf8e;
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-weight: 400;
 }
 
 .language-name {
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-weight: 400;
 }
 .selected-language-name {
@@ -2096,7 +2256,7 @@ button.buttonRounded:hover {
 
 .preview-button-text {
   line-height: 42px;
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
 // ./end new switch left / right widget alignment
@@ -2168,7 +2328,7 @@ button.buttonRounded:hover {
   // padding-right: 42px;
   font-size: 18px;
   font-weight: 600;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   padding-left: 0px;
   border-bottom-color: #ececec;
   // padding-top: 30px;
@@ -2467,7 +2627,7 @@ pre {
 
 .widget-live-test-text {
   cursor: pointer;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 18px;
   color: #1bb978;
 }
@@ -2579,10 +2739,11 @@ pre {
   font-size: 12px !important;
   line-height: 1.2;
   border-radius: 2px !important;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
   border: 1px solid #555555 !important;
+  white-space: pre-line;
 }
 
 .feature-not-available {
@@ -2655,7 +2816,6 @@ pre {
   margin-right: 6px;
 }
 
-
 #custom-launcher-logo-placeholder {
   width: 60px;
   height: 60px;
@@ -2663,30 +2823,29 @@ pre {
 }
 
 #upload-launcher-button-logo {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .section-offset-feature-not-available {
- height: 658px ;
+  height: 658px;
 }
 .section-offset-feature-available {
   height: 621px;
 }
 
 .widget-section-container-feature-not-available {
-  max-height:658px !important;
+  max-height: 658px !important;
 }
 
 // Upload you logo button
 .inputfile {
-  width: 0.1px  !important;
-  height: 0.1px  !important;
-  opacity: 0  !important;
-  overflow: hidden  !important;
-  position: absolute  !important;
-  z-index: -1  !important;
+  width: 0.1px !important;
+  height: 0.1px !important;
+  opacity: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  z-index: -1 !important;
 }
-
 
 .upload-launcher-btn {
   padding-left: 15px;
@@ -2699,11 +2858,11 @@ pre {
   padding-bottom: 6px;
   cursor: pointer;
   position: relative;
- top: 4px;
+  top: 4px;
 }
 
-.upload-launcher-btn:hover { 
-  background: #D3D5DA !important;
+.upload-launcher-btn:hover {
+  background: #d3d5da !important;
   color: #222;
 }
 
@@ -2717,19 +2876,17 @@ pre {
   // background: #f44336;
 }
 .delete-custom-launcher-logo > span {
-color: #f44336
+  color: #f44336;
 }
 
 ::ng-deep .custom-mat-tooltip {
   background-color: #2d323e !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: "Poppins","Roboto", "Arial", sans-serif !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
-
-
 
 // .delete-custom-launcher-logo:hover {
 //   background: #8d021f;

@@ -72,6 +72,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public primaryColorGradiend: string;
   public primaryColorBorder: string;
   public secondaryColor: string;
+
+  // PrimaryColor opacity
+  public  primaryColorOpacityEnabled: boolean = true
+  public  themeColorOpacity: string = "0.50"
+  
   public logoUrl: string;
   public hasOwnLogo = false;
 
@@ -79,6 +84,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public hasOwnLauncherLogo: boolean = false;
   public hasOwnLauncherBtn: boolean = false;
   public launcherLogoUrl: string;
+  public singleConversation: boolean = false;
   public timeStamp: any;
 
   public footerBrand: string
@@ -491,7 +497,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   subscribeToLauncherLogoUrl() {
     this.uploadImageService.hasUploadedLauncherLogo$.subscribe((downoloadurl) => {
-      // console.log('[WIDGET-SET-UP] IMAGE upload with fb service downoloadurl ', downoloadurl);
+      console.log('[WIDGET-SET-UP] IMAGE upload with fb service downoloadurl ', downoloadurl);
       this.setLauncherLogoUrl(this.imageStorage)
       // this.hasOwnLauncherLogo = true
       // this.hasOwnLauncherBtn = false
@@ -510,10 +516,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.hasOwnLauncherLogo = true
           this.hasOwnLauncherBtn = false
 
-          // console.log('[USER-SERV] - LAUNCHER LOGO EXIST ON FB? ', imageExists)
-
-
-
+          console.log('[USER-SERV] - LAUNCHER LOGO EXIST ON FB? ', imageExists)
         }
       });
     } else {
@@ -1661,7 +1664,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
 
-      // console.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
+      console.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
 
       if (project.widget) {
         this.widgetObj = project.widget;
@@ -1714,7 +1717,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.hasOwnLauncherBtn = true;
           this.hasOwnLauncherLogo = false;
 
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BALOON IMAGE : ', this.customLauncherURL);
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BALOON IMAGE : ', this.customLauncherURL);
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) hasOwnLauncherBtn : ', this.hasOwnLauncherBtn);
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) hasOwnLauncherLogo : ', this.hasOwnLauncherLogo);
 
         } else {
           // ------------------------------------------------------------------------
@@ -1723,6 +1728,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // ------------------------------------------------------------------------
           this.hasOwnLauncherBtn = false;
           this.hasOwnLauncherLogo = false;
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BUT NOT POWERED-BY hasOwnLauncherBtn: ', this.hasOwnLauncherBtn);
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BUT NOT POWERED-BY hasOwnLauncherBtn: ', this.hasOwnLauncherLogo);
 
         }
 
@@ -1769,6 +1776,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat, ' HAS HOWN LOGO ', this.hasOwnLogo, ' LOGO IS ON', this.LOGO_IS_ON);
         }
 
+        // -----------------------------------------
+        // Single conversation
+        // -----------------------------------------
+        if (project.widget.singleConversation)  {
+         
+          this.singleConversation = true;
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) - singleConversation' , this.singleConversation  )
+        } else {
+          this.singleConversation = false;
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) - singleConversation' , this.singleConversation  )
+        }
+        
 
         // -----------------------------------------
         // Pre-chat form
@@ -1865,9 +1884,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR: ', project.widget.themeColor,
             ' IS UNDEFINED > SET DEFAULT ', this.primaryColor);
 
-          this.primaryColorRgb = this.hexToRgb(this.primaryColor)
+          this.primaryColorRgb = this.hexToRgb(this.primaryColor);
+          if (project.widget.primary_color_opacity === "1") {
+          this.themeColorOpacity = "1";
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+          } else if (!project.widget.primary_color_opacity) {
+            this.themeColorOpacity = "0.50";
+            this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+          }
         }
+        
 
         // ------------------------------------------------------------------------
         // @ themeForegroundColor
@@ -1947,7 +1973,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         this.hasOwnLauncherBtn = false;
         this.hasOwnLauncherLogo = false;
-
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > hasOwnLauncherBtn: ', this.hasOwnLauncherBtn);
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > hasOwnLauncherLogo: ', this.hasOwnLauncherLogo);
 
         // -----------------------------------------------------------------------
         // @ themeColor
@@ -1955,7 +1982,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         this.primaryColor = this.widgetDefaultSettings.themeColor
         this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME COLOR: ', this.primaryColor);
-        this.primaryColorRgb = this.hexToRgb(this.primaryColor)
+        this.primaryColorRgb = this.hexToRgb(this.primaryColor);
+        this.themeColorOpacity = "0.50";
         this.generateRgbaGradientAndBorder(this.primaryColorRgb);
 
         // -----------------------------------------------------------------------
@@ -1979,6 +2007,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/"><img src="https://console.tiledesk.com/v2/dashboard/assets/img/logos/tiledesk-logo_new_gray.svg"/></a>';
 
+
+        // -----------------------------------------------------------------------
+        // @ Single conversation
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.singleConversation = false;
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) - singleConversation' , this.singleConversation  )
+        
         // -----------------------------------------------------------------------
         // @ preChatForm
         // WIDGET UNDEFINED
@@ -2223,18 +2259,40 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   generateRgbaGradientAndBorder(primaryColor: string) {
     // this.logger.log('»» WIDGET DESIGN - ON CLOSE PRIMARY COLOR DIALOG COLOR (RGB) ', primaryColor);
     const new_col = primaryColor.replace(/rgb/i, 'rgba');
-    this.primaryColorRgba = new_col.replace(/\)/i, ',0.50)');
+    // this.primaryColorRgba = new_col.replace(/\)/i, ',0.50)');
+    this.primaryColorRgba = new_col.replace(/\)/i, `, ${this.themeColorOpacity})`);
+    console.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
+
     // this.logger.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
 
     this.primaryColorGradiend = `linear-gradient(${this.primaryColor}, ${this.primaryColorRgba})`;
     this.primaryColorBorder = `2.4px solid ${this.primaryColorRgba}`;
   }
 
+     // --------------------------------------------------------------------------------------
+  //  @ Primary  color opacity   
+   // --------------------------------------------------------------------------------------
+  changePrimaryColorOpacity(event) {
+    console.log('Enable / Disable primary color  opacity - event', event.target.checked)
+    this.primaryColorOpacityEnabled = event.target.checked
+    if (this.primaryColorOpacityEnabled === false) {
+      this.themeColorOpacity = "1";
+      this.widgetObj['themeColorOpacity'] = 100;
+      this.generateRgbaGradientAndBorder(this.primaryColorRgb)
+      this.widgetService.updateWidgetProject(this.widgetObj)
+    } else if (this.primaryColorOpacityEnabled === true) {
+      this.themeColorOpacity = "0.50"
+      delete this.widgetObj['themeColorOpacity'];
+     this.generateRgbaGradientAndBorder(this.primaryColorRgb)
+      this.widgetService.updateWidgetProject(this.widgetObj)
+    }
+  }
+
+
 
   // --------------------------------------------------------------------------------------
-  //  *** SECONDARY COLOR (alias for themeForegroundColor) ***  
+  //  @ SECONDARY COLOR (alias for themeForegroundColor) ***  
   // --------------------------------------------------------------------------------------
-
   onCloseSecondaryColorDialog(event) {
     this.logger.log('[WIDGET-SET-UP] - ON CLOSE SECONDARY DIALOG ', event);
     this.secondaryColor = event
@@ -2492,11 +2550,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_CHAT = false;
     this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     this.widget_preview_selected = "0003";
-
+    console.log('[WIDGET-SET-UP] - onFocuCustomLauncherURLInput');
   }
 
   launcherLogoChange(event) {
-    // console.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
+    console.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
 
     if (event.length === 0) {
 
@@ -2504,7 +2562,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.hasOwnLauncherBtn = false;
       this.hasOwnLauncherLogo = false;
 
-      // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.customLauncherURL  ', this.customLauncherURL);
+      console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.customLauncherURL  ', this.customLauncherURL);
     } else {
 
       this.verifyImageURL(event, (imageExists) => {
@@ -2647,10 +2705,29 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
-  // ===========================================================================
-  // ============== *** CALLOUT TIMER (calloutTimer) ***  ==============
-  // ===========================================================================
+  // --------------------------------------------------------------------------------------
+  //  @ Single Conversation 
+  // --------------------------------------------------------------------------------------
+  enableSingleConversation(event) {
+    console.log('Enable / Disable SINGLE CONVERSATION - event', event.target.checked)
+    this.singleConversation = event.target.checked
+    if (this.singleConversation === true) {
+     
+      this.widgetObj['singleConversation'] = this.singleConversation ;
+     
+      this.widgetService.updateWidgetProject(this.widgetObj)
+    } else if (this.singleConversation === false) {
+      
+      delete this.widgetObj['singleConversation'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
+     
+    }
+  }
 
+
+  // ---------------------------------------------------------------------
+  //  @ CALLOUT TIMER (calloutTimer) 
+  // ---------------------------------------------------------------------
   toggleCallout($event) {
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_CALLOUT = true;

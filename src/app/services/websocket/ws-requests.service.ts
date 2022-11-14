@@ -681,7 +681,8 @@ export class WsRequestsService implements OnDestroy {
     };
     // this.logger.log('[WS-REQUESTS-SERV] -  CLOSE SUPPORT-GROUP OPTIONS  ', options)
 
-    const body = {};
+    const body = {force: true};
+    // const body = {};
 
     // const url = 'https://tiledesk-server-pre.herokuapp.com/' + this.project_id + '/requests/' + group_id + '/close';
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + group_id + '/close';
