@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.4.0-rc1
+- Enhance the "chatbot creation step" of the onboarding wizard
+
 ### 2.3.1
 - Updates "Dockerfile" 
 
