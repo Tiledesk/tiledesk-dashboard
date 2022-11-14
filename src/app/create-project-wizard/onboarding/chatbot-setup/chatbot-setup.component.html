@@ -1,0 +1,30 @@
+<div class="box-step-0">
+
+      <div class="first-row">
+
+        <div class="fade-in">
+            <h1 class="title">{{'OnboardPage.ChatbotTitle' | translate}}</h1>
+            <p class="description">{{'OnboardPage.DoYouWantChatbot' | translate}}</p>
+        </div>
+
+      </div>
+
+      <div class="second-row">
+
+        <div class="col-buttons col-md-6">
+          <div class="icon-button fade-in">🤖</div>
+          <button class="btn btn-lg btn-primary fade-in-left" (click)="localGoToNextStep('step1')" >
+            {{ "OnboardPage.YesChatboat" | translate }}
+          </button>
+        </div>
+
+        <div class="col-buttons col-md-6">
+          <div class="icon-button fade-in">👨🏻</div>
+          <button class="btn btn-lg btn-primary fade-in-right" (click)="localContinueToNextStep()" >
+            {{ "OnboardPage.NoChatboat" | translate }}
+          </button>
+        </div>
+
+      </div>
+ 
+</div> 

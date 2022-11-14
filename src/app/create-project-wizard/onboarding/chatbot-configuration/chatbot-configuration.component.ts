@@ -30,6 +30,7 @@ export class ChatbotConfigurationComponent implements OnInit {
   limitCharsTitle = 35;
   numCharsText = 0;
   limitCharsText = 500;
+  translateY: string;
 
   constructor(
   ) { }
@@ -43,6 +44,7 @@ export class ChatbotConfigurationComponent implements OnInit {
     this.answerError = false;
     this.step = 0;
     this.lastQuestion = false;
+    this.translateY = 'translateY(0px)';
     this.initQuestion();
   }
 
@@ -124,26 +126,32 @@ export class ChatbotConfigurationComponent implements OnInit {
     this.lastQuestion = false;
     if(this.step > 0){
       this.step--;
-      this.changeStepNumber.emit(-1);
+      this.questionError = false;
+      this.answerError = false;
+      // this.changeStepNumber.emit(-1);
       this.initQuestion();
-      return;
+      this.gotToChangeStepNumber();
     }
   }
 
   goToNextStep(){
-    // if(this.checkError() == true){
-      if(this.step < (this.questions.length-1)){
-        this.step++;
-        this.changeStepNumber.emit(1);
-        this.initQuestion();
-        if(this.step === (this.questions.length-1)){
-          this.lastQuestion = true;
-        } else {
-          this.lastQuestion = false;
-        }
-        return;
+    if(this.step < (this.questions.length-1)){
+      this.step++;
+      this.questionError = false;
+      this.answerError = false;
+      // this.changeStepNumber.emit(1);
+      this.initQuestion();
+      this.gotToChangeStepNumber();
+      if(this.step === (this.questions.length-1)){
+        this.lastQuestion = true;
+      } else {
+        this.lastQuestion = false;
       }
-    // }
+    }
+  }
+
+  gotToChangeStepNumber(){
+    this.translateY = 'translateY('+(-(this.step+1)*20+20)+'px)';
   }
 
 

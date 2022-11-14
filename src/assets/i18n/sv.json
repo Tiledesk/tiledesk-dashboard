@@ -2182,7 +2182,7 @@
         "TitleWelcomeMessage": "Hur gillar du att hälsa besökare när de anländer till din webbplats?",
         "LabelWelcomeMessage": "Välkomstmeddelande",
         "WelcomeMessage": "Hej 👋🏻 Jag är din virtuella assistent 🤖 Hur kan jag hjälpa till?",
-        "DefaultFallback": "Jag kan inte ge ett adekvat svar. Skriv en ny fråga eller prata med en mänsklig agent. \n* Tillbaka till toppen TDACTION: Start \n* Se dokument https://docs.tiledesk.com/",
+        "DefaultFallback": "Jag kan inte ge ett adekvat svar. Skriv en ny fråga eller prata med en mänsklig agent. \n* Tillbaka till toppen TDACTION: Start",
         "Question": "Fråga",
         "Answer": "Svar",
         "DescriptionStep1ChatbotConfiguration": "Förbättra din chatbot för att spara din tid! Träna din chatbot för att svara på de vanligaste frågorna som dina kunder ställer dig",
