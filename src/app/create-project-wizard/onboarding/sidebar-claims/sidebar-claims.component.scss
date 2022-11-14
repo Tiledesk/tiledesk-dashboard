@@ -1,7 +1,11 @@
 // LOCAL COLORS //
 $color-white: #ffffff;
+$color-light-gray: #eff2f6;
 $color-enterprise-plan: #6772e5;
+
+$color-pro-plan-up: #1a73e8;
 $color-pro-plan: #3ea9f5;
+$color-star: #ff9d28;
 
 .wizard-bckgrnd {
     position: absolute;
@@ -10,86 +14,128 @@ $color-pro-plan: #3ea9f5;
     background-size: 375px 100%, 188px 100%, 179px 100%;
     background-position: right -12px bottom, right, calc(100% - 179px);
     background-repeat: no-repeat;
-    background-image: linear-gradient(to bottom, #1a73e8 0%, $color-pro-plan 100%),
-    linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+    background-image: linear-gradient(to bottom, $color-pro-plan-up 0%, $color-pro-plan 100%),
+    linear-gradient(to bottom, $color-white 0%, $color-white 50%, $color-light-gray 50%, $color-light-gray 100%);
     .claim {
-      height: auto;
-      position: absolute;
-      top: 50%;
-      margin-top: -50%;
-      transform: translateY(-50%);
-      font-size: 40px;
-      font-weight: 200;
-      line-height: 1.2em;
-      padding: 30px;
-      color: #fff;
+        
+        height: auto;
+        position: absolute;
+        top: 50%;
+        // margin-top: -50%;
+        transform: translateY(-50%);
+        font-size: 2em;
+        font-weight: 200;
+        line-height: 1.2em;
+        padding: 30px;
+        color: $color-white;
+        display: block;
+        opacity: 0;
+
+        &.visible {
+            animation-name: fade-in-out;
+            // visibility: visible;
+            // opacity: 1;
+            // -webkit-animation: puff-in-center 0.8s cubic-bezier(0.600, -0.280, 0.735, 0.045) 0.7s both;
+	        // animation: puff-in-center 0.8s cubic-bezier(0.600, -0.280, 0.735, 0.045) 0.7s both;
+            // transition: opacity 250ms ease-in, visibility 0ms ease-in 0ms;
+        }
     }
+
+    @keyframes fade-in-out {
+        0%   {
+            opacity:0;
+        }
+        25%  {
+            opacity:1;
+        }
+        50%  {
+            
+        }
+        85%  {
+            opacity:1;
+        }
+        100% {
+            opacity:0;
+        }
+    }
+
     .stars{
-      width: auto;
-      margin: 0;
-      padding: 0;
-      float: initial;
-      display: block;
-      position: initial;
-      text-align: left;
-      svg {
-        margin-right: 4px;
-        height: 18px;
-        width: 18px;
-        color: #ff9d28;
-      }
+        width: auto;
+        margin: 0;
+        padding: 0;
+        float: initial;
+        display: block;
+        position: initial;
+        text-align: right;
+        svg {
+            margin-right: 4px;
+            height: 24px;
+            width: 24px;
+            color: $color-star;
+        }
     }
-    .sing{
-      font-size: 20px;
-      font-weight: 300;
-      text-align: right;
-      width: 100%;
-      font-size: 18px;
-      font-weight: 500;
-      position: absolute;
-      padding-right: 30px;
-      right: 0;
-      bottom: -20px;
+    .text {
+        font-family: "Roboto",Arial,sans-serif;
+        font-size: 1em;
+        width: 100%;
+        margin: 0px; 
+        padding: 0px;
+    }
+    .sing {
+        display: block;
+        text-align: right;
+        width: 100%;
+        font-size: 20px;
+        font-weight: 500;
+    }
+    .role {
+        display: block;
+        font-size: 18px;
+        font-weight: 300;
+        text-align: right;
+        line-height: 1em;
+        width: 100%;
     }
 
 
 
-blockquote {
-	font-weight: 100;
-	font-size: 1em;
-	max-width: 600px;
-	line-height: 1.4;
-	position: relative;
-	margin: 0;
-	padding: .5rem;
-    border: none;
+    blockquote {
+        font-weight: 100;
+        font-size: 1em;
+        max-width: 600px;
+        line-height: 1.4;
+        position: relative;
+        margin: 0;
+        padding: .5rem;
+        border: none;
+    }
+
+    blockquote:before,
+    blockquote:after {
+        position: absolute;
+        color: #ffffff30;
+        font-family: 'Material Icons';
+        font-style: italic;
+        font-size: 4em;
+        width: auto;
+        height: 60px;
+        line-height: 60px;
+    }
+
+    blockquote:before {
+        content: '“';
+        left: -40px;
+        top: -30px;
+    }
+
+    blockquote:after {
+        content: '”';
+        right: -30px;
+        bottom: -20px;
+    }
+
+
 }
-
-blockquote:before,
-blockquote:after {
-	position: absolute;
-    color: #ffffff30;
-    font-size: 4em;
-    width: 4em;
-    height: 4em;
-    font-family: 'Material Icons';
-    font-style: italic;
-}
-
-blockquote:before {
-	content: '“';
-	left: -5rem;
-	top: -2rem;
-}
-
-blockquote:after {
-	content: '”';
-	right: -5rem;
-	bottom: 1rem;
-}
-
-
-  }
 
 
 // ANIMATIONS //
