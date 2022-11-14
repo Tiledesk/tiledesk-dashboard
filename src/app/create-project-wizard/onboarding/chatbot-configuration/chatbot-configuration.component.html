@@ -1,8 +1,7 @@
-<div id="chatbot-configuration">
+<div class="box-step-2">
 
-    <div class="container">
-      <div class="row equal">
-          <div class="fade-in-left col-md-6">
+
+          <div class="fade-in-left col-left">
             
             <div *ngIf="DISPLAY_SPINNER_SECTION === false" class="container-text-msg">
               <h1 class="title">{{'OnboardPage.SetupChatbotTitle' | translate}}</h1>
@@ -13,7 +12,7 @@
               <div class="box-form">
                 <form>
   
-                  <div class="box-question" [ngClass]="{'error' : questionError}">
+                  <div class="box-input" [ngClass]="{'error' : questionError}">
                     <div class="header-input">
                       <label class="label-input" for="question">
                         <span class="text-label">{{'OnboardPage.Question' | translate}}</span>
@@ -21,13 +20,15 @@
                       <p class="num-chars">{{numCharsTitle}}/{{limitCharsTitle}}</p>
                     </div>
                     <input name="question" type="text" [(ngModel)]="questionMsg" (ngModelChange)="titleChange($event)" value="{{questionMsg}}">
-                    <div class="input-error">{{'OnboardPage.ErrorCharsLimit' | translate}}</div>
+                    <div class="input-error">
+                      <span class="msg-error">{{'OnboardPage.ErrorCharsLimit' | translate}}</span>
+                    </div>
                   </div>
   
-                  <div class="box-answer" [ngClass]="{'error' : answerError}">
+                  <div class="box-input" [ngClass]="{'error' : answerError}">
                     <div class="header-input">
-                      <label class="label-input" for="answer">
-                        <span class="text-label">{{'OnboardPage.Answer' | translate}}</span>
+                      <label class="label-textarea" for="answer">
+                        <span class="text-label-textarea">{{'OnboardPage.Answer' | translate}}</span>
                       </label>
                       <p class="num-chars">{{numCharsText}}/{{limitCharsText}}</p>
                     </div>
@@ -37,7 +38,9 @@
                     (ngModelChange)="messageChange($event)">
                     {{answerMsg}}
                     </textarea>
-                    <div class="input-error">{{'OnboardPage.ErrorCharsLimit' | translate}}</div>
+                    <div class="input-error">
+                      <span class="msg-error">{{'OnboardPage.ErrorCharsLimit' | translate}}</span>
+                    </div>
                   </div>
   
                 </form>
@@ -68,13 +71,6 @@
                   (click)="goToNextStep()">
                   {{'OnboardPage.Next' | translate}}
                 </button>
-  
-                <!-- <button *ngIf="lastQuestion == true"
-                  type="button" 
-                  class="btn btn-lg btn-secondary"
-                  (click)="goToNextPageAndSaveQuestions()">
-                  {{'OnboardPage.NoThanks' | translate}}
-                </button> -->
 
                 <button *ngIf="lastQuestion == true"
                   type="button" 
@@ -94,22 +90,43 @@
   
           </div>
   
-          <div class="fade-in-right col-md-6">
-              <div class="container-webchat">
-                <!--  DEMO webchat WIDGET -->
-                <appdashboard-widget-chat 
-                  [primaryColor]="primaryColor" 
-                  [secondaryColor]="secondaryColor"
-                  [HAS_FOCUSED_ONLINE_MSG]="HAS_FOCUSED_ONLINE_MSG"
-                  [onlineMsg]="welcomeMessage"
-                  [projectName]="projectName"
-                  [questions]="questions"
-                  [activeQuestion]="step"
-                ></appdashboard-widget-chat>
-                <!-- END webchat WIDGET -->
-              </div>  
+
+
+          <div class="fade-in-right col-right">
+
+            <div class="box-steps">
+              <div class="step-number">
+                <span class="number-label">
+                  {{ "OnboardPage.Pass" | translate }}   
+                  <div class="number-list">
+                    <ul [ngStyle]="{'transform': translateY}">
+                      <li *ngFor="let intent of questions; index as i">
+                        {{i+1}}
+                      </li>
+                    </ul>
+                  </div>
+                </span>
+                <span class="number-of"> / {{questions.length}}</span>
+              </div>
+              <div class="step-points">
+                <span *ngFor="let intent of questions; index as i" class="point" [ngClass]="{'active': step >= i}"></span>
+              </div>
+            </div> 
+
+            <div class="container-webchat">
+              <appdashboard-widget-chat 
+                [primaryColor]="primaryColor" 
+                [secondaryColor]="secondaryColor"
+                [HAS_FOCUSED_ONLINE_MSG]="HAS_FOCUSED_ONLINE_MSG"
+                [onlineMsg]="welcomeMessage"
+                [projectName]="projectName"
+                [questions]="questions"
+                [activeQuestion]="step"
+              ></appdashboard-widget-chat>
+            </div>  
+
           </div>
   
-      </div>  <!-- .row -->
-    </div>  <!-- .container -->
-  </div>  <!-- #welcome-message-configuration -->
+
+
+  </div>
