@@ -226,7 +226,7 @@ export class FaqService {
    * @param faqwebhookenabled 
    * @returns 
    */
-  public addFaq(question: string, answer: string, id_faq_kb: string, intentname: string, faqwebhookenabled: boolean) {
+  public addFaq(question: string, answer: string, id_faq_kb: string, intentname: string, intentform: any, faqwebhookenabled: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -237,7 +237,7 @@ export class FaqService {
     const url = this.FAQ_URL;
     this.logger.log('[FAQ-SERV] ADD FAQ -  PUT URL ', url);
 
-    const body = { 'question': question, 'answer': answer, 'id_faq_kb': id_faq_kb, 'intent_display_name': intentname, 'webhook_enabled': faqwebhookenabled };
+    const body = { 'question': question, 'answer': answer, 'id_faq_kb': id_faq_kb, 'intent_display_name': intentname, 'form':intentform, 'webhook_enabled': faqwebhookenabled };
     this.logger.log('[FAQ-SERV] ADD FAQ - POST BODY ', body);
 
     return this._httpClient
@@ -253,7 +253,7 @@ export class FaqService {
    * @param faqwebhookenabled 
    * @returns 
    */
-  public updateFaq(id: string, question: string, answer: string, intentname: string, faqwebhookenabled: boolean) {
+  public updateFaq(id: string, question: string, answer: string, intentname: string, intentform: any, faqwebhookenabled: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -265,7 +265,7 @@ export class FaqService {
     let url = this.FAQ_URL + id; 
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT URL ', url);
 
-    const body = { 'question': question, 'answer': answer, 'intent_display_name': intentname, 'webhook_enabled': faqwebhookenabled };
+    const body = { 'question': question, 'answer': answer, 'intent_display_name': intentname, 'form':intentform, 'webhook_enabled': faqwebhookenabled };
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT REQUEST BODY ', body);
 
     return this._httpClient

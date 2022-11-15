@@ -48,6 +48,7 @@ export class FaqEditAddComponent implements OnInit {
   editFaqErrorNoticationMsg: string;
   botType: string;
   intent_name: string;
+  intentForm: any;
   faq_webhook_is_enabled: boolean;
   error_status: number;
   intentNameAlreadyExistsMsg: string;
@@ -274,6 +275,7 @@ export class FaqEditAddComponent implements OnInit {
       if (faq) {
         this.question_toUpdate = faq.question;
         this.answer_toUpdate = faq.answer;
+        this.intentForm = faq.form;
         this.faq_creationDate = faq.createdAt;
         this.intent_name = faq.intent_display_name;
         this.faq_webhook_is_enabled = faq.webhook_enabled;
@@ -322,7 +324,7 @@ export class FaqEditAddComponent implements OnInit {
     create_answer_btn.blur();
 
     this.logger.log('[FAQ-EDIT-ADD] CREATE FAQ - QUESTION: ', this.question, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.id_faq_kb, ' - INTENT NAME ', this.intent_name, ' - FAQ WEBHOOK ENABLED ', this.faq_webhook_is_enabled);
-    this.faqService.addFaq(this.question, this.answer, this.id_faq_kb, this.intent_name, this.faq_webhook_is_enabled)
+    this.faqService.addFaq(this.question, this.answer, this.id_faq_kb, this.intent_name, this.intentForm, this.faq_webhook_is_enabled)
       .subscribe((faq) => {
         this.logger.log('[FAQ-EDIT-ADD] CREATED FAQ RES ', faq);
 
@@ -370,7 +372,7 @@ export class FaqEditAddComponent implements OnInit {
     this.logger.log('[FAQ-EDIT-ADD] FAQ QUESTION TO UPDATE ', this.question_toUpdate);
     this.logger.log('[FAQ-EDIT-ADD] FAQ ANSWER TO UPDATE ', this.answer_toUpdate);
 
-    this.faqService.updateFaq(this.id_faq, this.question_toUpdate, this.answer_toUpdate, this.intent_name, this.faq_webhook_is_enabled)
+    this.faqService.updateFaq(this.id_faq, this.question_toUpdate, this.answer_toUpdate, this.intent_name, this.intentForm, this.faq_webhook_is_enabled)
       .subscribe((data) => {
         this.logger.log('[FAQ-EDIT-ADD] UPDATE FAQ RES', data);
 
@@ -472,6 +474,14 @@ export class FaqEditAddComponent implements OnInit {
     // const url = 'https://gethelp.tiledesk.com/articles/styling-your-chatbot-replies/';
     const url = URL_styling_your_chatbot_replies;
     window.open(url, '_blank');
+  }
+
+  /**
+   * GET JSON FORM
+   */
+   passJsonIntentForm(json){
+    this.intentForm = json;
+    console.log("-------------------> passJsonIntentForm::: ", this.intentForm);
   }
 
 }
