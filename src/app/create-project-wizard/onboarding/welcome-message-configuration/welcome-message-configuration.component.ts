@@ -8,7 +8,8 @@ import { LoggerService } from '../../../services/logger/logger.service';
   styleUrls: ['./welcome-message-configuration.component.scss']
 })
 export class WelcomeMessageConfigurationComponent implements OnInit {
-  @Output() changePage = new EventEmitter();
+  @Output() prevPage = new EventEmitter();
+  @Output() nextPage = new EventEmitter();
   @Input() welcomeMessage: string;
   @Input() DISPLAY_SPINNER_SECTION: boolean;
   @Input() primaryColor: string;
@@ -32,19 +33,19 @@ export class WelcomeMessageConfigurationComponent implements OnInit {
 
   goToPrevPage() {
     let event = { step:'step0'}
-    this.changePage.emit(event);
+    this.prevPage.emit(event);
   }
+
   goToNextPage() {
-    if( this.messegeError === false){
+    if(this.messegeError === false){
       let event = { step:'step2', msg: this.welcomeMessage }
-      this.changePage.emit(event);
+      this.nextPage.emit(event);
     }
   }
 
   messageChange(event:string) {
     this.numChars = event.length;
     this.welcomeMessage = event;
-    
     if(this.numChars > this.limitChars){
       this.welcomeMessage = this.welcomeMessage.substring(0,this.limitChars);
       this.numChars = this.limitChars;

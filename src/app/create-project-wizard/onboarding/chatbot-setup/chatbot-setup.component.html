@@ -13,14 +13,14 @@
 
         <div class="col-buttons col-md-6">
           <div class="icon-button fade-in">🤖</div>
-          <button class="btn btn-lg btn-primary fade-in-left" (click)="localGoToNextStep('step1')" >
+          <button class="btn btn-lg btn-primary fade-in-left" (click)="goToNextStep('step1')" >
             {{ "OnboardPage.YesChatboat" | translate }}
           </button>
         </div>
 
         <div class="col-buttons col-md-6">
           <div class="icon-button fade-in">👨🏻</div>
-          <button class="btn btn-lg btn-primary fade-in-right" (click)="localContinueToNextStep()" >
+          <button class="btn btn-lg btn-primary fade-in-right" (click)="goToLastStep()" >
             {{ "OnboardPage.NoChatboat" | translate }}
           </button>
         </div>
