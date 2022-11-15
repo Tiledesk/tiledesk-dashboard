@@ -5,6 +5,7 @@
 - Adds the ability, in the Project settings > Widget configuration page, to set the functionality of the "Single conversation" widget
 - Fixes the bug: in the chatbot creation wizard step the labels do not update when they are modified
 - Adds the ability to add a form in the tilebot type chatbot
+- Refactors the conversation details sidebar
 
 ### 2.4.0-rc1
 - Enhance the "chatbot creation step" of the onboarding wizard
