@@ -145,7 +145,7 @@ export class TilebotFormComponent implements OnInit {
 
   /** */
   jsonGenerator(){
-    console.log('this.intentForm:: ', this.intentForm);
+    // console.log('this.intentForm:: ', this.intentForm);
     this.passJsonIntentForm.emit(this.intentForm);
   }
 
@@ -202,14 +202,13 @@ export class TilebotFormComponent implements OnInit {
   /** Event modal confirm delete field */
   confirmDeleteModal(i:number){
     this.fields.splice(i, 1);
-    
     this.displayMODAL = false;
     if(this.fields.length === 0){
       this.intentForm = {};
-      this.displayNewFormButton = true;
-      this.displaySettingsButton = false;
+      this.displayNewFormButton = false;
+      this.displaySettingsButton = true;
     }
-    console.log('confirmDeleteModal:: ', this.fields);
+    // console.log('confirmDeleteModal:: ', this.fields);
     this.jsonGenerator();
   }
 
@@ -244,6 +243,8 @@ export class TilebotFormComponent implements OnInit {
     } else {
       this.fields.splice(objIndex, 1, event);
     }
+    this.intentForm.fields = this.fields;
+    // console.log('saveAddEditForm', this.intentForm.fields);
     this.displayAddEditForm = false;
     this.jsonGenerator();
   }
