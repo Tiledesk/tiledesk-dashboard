@@ -103,8 +103,11 @@ export class HumanConfigurationComponent implements OnInit {
   }
 
   goToNextPage() {
-    this.answerMsg = this.answers.pop() + '\n\\agent';
+    this.questions.pop();
+    this.answers.pop();
+    this.answerMsg = this.answerMsg + '\n\\agent';
     this.answers.push(this.answerMsg);
+    this.questions.push(this.questionMsg);
     let event = { step:'createBot', questions:this.questions, answers: this.answers}
     this.changePage.emit(event);
   }
