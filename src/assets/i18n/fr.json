@@ -2247,6 +2247,10 @@
     "ClosesTheCurrentTicket":"Ferme le ticket en cours",
     "ReopenTheCurrentConversation":"Rouvre la conversation en cours",
     "ReopenTheCurrentTicket":"Rouvre le ticket en cours",
+    "SingleConversation":"Conversation unique",
+    "SingleConversationDescription":"Tiledesk Widget ne peut gérer qu'une seule conversation à la fois en activant la fonction Conversation unique. Cette option désactive la possibilité de visualiser l'accueil avec la liste des conversations ouvertes et celles déjà archivées. Ce changement rend les conversations plus continues, empêchant les clients de contacter votre équipe plusieurs fois, ce qui permet à votre équipe d'économiser du temps et des efforts.",
+    "EnableDisableprimaryColorGradient":"Activer/Désactiver le dégradé de la couleur primaire du widget",
+    "PrimaryColorGradient":"Dégradé de couleur primaire",
     "CHAT_IONIC": {
         "LABEL_TU": "vous: ",
         "LABEL_MSG_PUSH_START_CHAT": "Pas encore de conversation",

@@ -2247,6 +2247,10 @@
     "ClosesTheCurrentTicket":"Stänger den aktuella ticket",
     "ReopenTheCurrentConversation":"Öppnar den nuvarande konversationen igen",
     "ReopenTheCurrentTicket":"Öppna den aktuella ticket igen",
+    "SingleConversation":"Singel konversation",
+    "SingleConversationDescription":"Tiledesk Widget kan bara hantera en konversation åt gången genom att aktivera funktionen för enstaka konversationer. Det här alternativet inaktiverar möjligheten att visa hemmet med listan över öppna konversationer och de som redan är arkiverade. Denna förändring gör konversationer mer till en kontinuerlig tråd, vilket förhindrar kunder från att nå ut till ditt team flera gånger, vilket sparar ditt team tid och ansträngning.",
+    "PrimaryColorGradient":"Primärfärgens gradient",
+    "EnableDisableprimaryColorGradient":"Aktivera/avaktivera gradienten för widgetens primärfärg",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",

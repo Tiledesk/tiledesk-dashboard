@@ -2247,6 +2247,10 @@
     "ClosesTheCurrentTicket":"Chiudi il ticket corrente",
     "ReopenTheCurrentConversation":"Riapri la conversazione corrente",
     "ReopenTheCurrentTicket":"Riapri il ticket corrente",
+    "SingleConversation":"Singola conversazione",
+    "SingleConversationDescription":"Tiledesk Widget può gestire solo una conversazione alla volta abilitando la funzione Conversazione singola. Questa opzione disabilita la possibilità di visualizzare la home con l'elenco delle conversazioni aperte e di quelle già archiviate. Questa modifica rende le conversazioni più un thread continuo, impedendo ai clienti di contattare il tuo team più volte, il che fa risparmiare tempo e fatica al tuo team.",
+    "PrimaryColorGradient":"Gradiente del colore primario",
+    "EnableDisableprimaryColorGradient":"Abilita/Disabilita il gradiente del colore primario del widget",
     "CancelReply": "Form Annullata",
     "AddIntentPage": {
         "AddForm": "Aggiungi form",

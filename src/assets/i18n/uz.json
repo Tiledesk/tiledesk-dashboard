@@ -2247,6 +2247,10 @@
     "ClosesTheCurrentTicket":"Joriy ticket yopadi",
     "ReopenTheCurrentConversation":"Joriy suhbatni qayta ochadi",
     "ReopenTheCurrentTicket":"Joriy chiptani qayta oching",
+    "SingleConversation":"Yagona suhbat",
+    "SingleConversationDescription":"Tiledesk vidjeti Yagona suhbat funksiyasini yoqish orqali bir vaqtning o‘zida faqat bitta suhbatni boshqarishi mumkin. Ushbu parametr uyni ochiq suhbatlar va arxivlanganlar roʻyxati bilan koʻrish imkoniyatini oʻchirib qoʻyadi. Bu oʻzgarish suhbatlarni uzluksiz mavzuga aylantirib, mijozlarning jamoangiz bilan bir necha bor bogʻlanishiga yoʻl qoʻymaydi, bu esa jamoangizning vaqt va kuchini tejaydi.",
+    "PrimaryColorGradient":"Birlamchi rangning gradienti",
+    "EnableDisableprimaryColorGradient":"Vidjetning asosiy rangining gradientini yoqish/o'chirish",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

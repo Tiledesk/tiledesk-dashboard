@@ -740,9 +740,9 @@
 												<label class="col-sm-12 control-label widget-settings-control-label"
 													style="padding-top:12px; padding-bottom: 2px;">
 
-													Primary color gradient
+													{{'PrimaryColorGradient' | translate}}
 													<span matTooltipClass="custom-mat-tooltip-in-widget-setup"
-														matTooltip=" Enable / Disable the gradient of the primary color of the widget"
+														matTooltip="{{'EnableDisableprimaryColorGradient' | translate}}"
 														#tooltip="matTooltip" matTooltipPosition='above'
 														matTooltipHideDelay="100">
 														<i class="material-icons" style="
@@ -1267,7 +1267,7 @@
 											</svg>
 										</div>
 										<h4 class="widget-section-header__title-underlined">
-											Single conversatation
+											{{'SingleConversation' | translate}}
 										</h4>
 									</div>
 									<div class="widget-section-arrow">
@@ -1287,13 +1287,7 @@
 													class="col-sm-12 control-label widget-settings-control-head-label-info"
 													style="background: none !important;max-width:600px">
 
-													Tiledesk Widget can handle only one conversation at a time by enable
-													the Single Conversation feature.
-													This option disables the possibility of viewing the home with the
-													list of open conversations and those already archived.
-													This change makes conversations more of a continuous thread,
-													preventing customers from reaching out to your team multiple times,
-													which saves your team time and effort.
+													{{'SingleConversationDescription' | translate}}
 												</label>
 											</div>
 
@@ -1302,7 +1296,7 @@
 													class="col-sm-12 control-label widget-settings-control-head-label"
 													style="padding-top:12px; padding-bottom: 2px;">
 
-													Single conversation
+													{{'SingleConversation' | translate}}
 												</label>
 											</div>
 
@@ -1328,12 +1322,13 @@
 														</div>
 													</div>
 												</div>
-												<div class="single-conversation-preview">
-
+												<!-- --------------------------------------------- -->
+												<!-- Single conversation widget preview -->
+												<!-- --------------------------------------------- -->
+												<div *ngIf="singleConversation" class="single-conversation-preview">
 													<div class="widget-single-conv-demo">
 														<div class="widget-single-conv-demo-header">
 															<div class="widget-single-conv-demo-header-btn-wpr">
-
 																<div class="widget-single-conv-demo-header-btn">
 																</div>
 
@@ -1364,32 +1359,65 @@
 															<div class="widget-single-conv-footer">
 																<div class="widget-single-conv-btns-wpr">
 																	<div class="widget-single-conv-new-conv-btn">
-																		<svg height="20"
-																			viewBox="0 0 24 24" width="20"
-																			xmlns="http://www.w3.org/2000/svg">
-																			<path 
-																				d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"
-																				style="fill: rgb(255, 255, 255);">
-																			</path>
-																			<path 
-																				d="M0 0h24v24H0z" fill="none"></path>
-																		</svg>
-																		New conversation
-																	</div>
-																	<div class="widget-single-conv-continue-conv-btn">
+																		<span class="new-conv-btn-icon-wpr">
+																			<svg height="20" viewBox="0 0 24 24"
+																				width="20"
+																				xmlns="http://www.w3.org/2000/svg">
+																				<path
+																					d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"
+																					style="fill: rgb(255, 255, 255);">
+																				</path>
+																				<path d="M0 0h24v24H0z" fill="none">
+																				</path>
+																			</svg>
+																		</span>
+																		<span class="new-conv-btn-text-wpr">
+																			{{'NewConversation' | translate}}
+																		</span>
 																	</div>
 																</div>
-
 															</div>
 														</div>
-
 													</div>
-
 												</div>
 
+												<!-- --------------------------------------------- -->
+												<!-- Default widget preview -->
+												<!-- --------------------------------------------- -->
+												<div *ngIf="!singleConversation" class="widget-default-preview">
+													<div class="widget-default-content-wpr">
+														<div class="widget-default-header">
+															<div class="widget-default-header-btn-wpr">
+															</div>
+														</div>
+														<div class="widget-default-content">
+															<div class="widget-default-card">
+																<div class="widget-default-card-avatar"></div>
+
+																<div class="widget-default-btns-wpr">
+																	<div class="widget-default-new-conv-btn">
+																		<span class="new-conv-btn-icon-wpr">
+																			<svg height="20" viewBox="0 0 24 24"
+																				width="20"
+																				xmlns="http://www.w3.org/2000/svg">
+																				<path
+																					d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"
+																					style="fill: rgb(255, 255, 255);">
+																				</path>
+																				<path d="M0 0h24v24H0z" fill="none">
+																				</path>
+																			</svg>
+																		</span>
+																		<span class="new-conv-btn-text-wpr">
+																			{{'NewConversation' | translate}}
+																		</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
-
-
 										</div>
 
 									</div> <!-- ./	section-offset -->

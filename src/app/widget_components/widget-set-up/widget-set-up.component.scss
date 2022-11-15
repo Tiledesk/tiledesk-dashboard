@@ -949,6 +949,9 @@ input[type="text"]:disabled {
   left: 8px;
 }
 
+/*
+ * Single conversation widget preview in the accordion
+ * ------------------------------------------------------ */
 .widget-single-conv-demo {
   height: 420px;
   position: relative;
@@ -988,9 +991,8 @@ input[type="text"]:disabled {
   border-radius: 50%;
 }
 
-
 .widget-single-conv-firt-row-conversation {
-  background: rgb(244,243,244);
+  background: rgb(244, 243, 244);
   top: 10px;
   width: 25px;
   height: 20px;
@@ -1006,14 +1008,14 @@ input[type="text"]:disabled {
 }
 
 .widget-single-conv-second-row-conversation {
-  background: rgb(244,243,244);
+  background: rgb(244, 243, 244);
   width: 177px;
   height: 20px;
   border-radius: 5px;
   margin-top: 16px;
 }
 
-.widget-single-conv-third-row-avatar-and-conversation-wpr{
+.widget-single-conv-third-row-avatar-and-conversation-wpr {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -1032,7 +1034,7 @@ input[type="text"]:disabled {
 }
 
 .widget-single-conv-third-row-conversation {
-  background: rgb(244,243,244);
+  background: rgb(244, 243, 244);
   top: 10px;
   width: 25px;
   height: 20px;
@@ -1044,17 +1046,107 @@ input[type="text"]:disabled {
 
 .widget-single-conv-footer {
   position: absolute;
-  // background: blueviolet;
   width: 273px;
   height: 20px;
   bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .widget-single-conv-new-conv-btn {
-  height: 29px;
-  width: 144px;
-  background: rgb(42,106,193);
+  height: 35px;
+  background: rgb(42, 106, 193);
   border-radius: 40px;
+  padding: 0 16px;
+  color: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
 }
+
+.new-conv-btn-icon-wpr {
+  height: 20px;
+  margin-right: 8px;
+}
+/* ./end Single conversation widget preview in the accordion */
+
+/*
+ * Deafult widget preview in the accordion
+ * ------------------------------------------------------ */
+
+.widget-default-preview {
+  flex: 1;
+}
+.widget-default-content-wpr {
+  height: 420px;
+  position: relative;
+  top: 14px;
+  background: #fff;
+  box-shadow: 0 2px 6px #e6e9ed;
+  border-radius: 10px;
+  width: 315px;
+  margin-bottom: 18px;
+}
+
+.widget-default-header {
+  height: 160px;
+
+  background: rgb(244, 243, 244);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+.widget-default-content {
+  padding: 20px;
+}
+
+.widget-default-card-wpr {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.widget-default-card {
+  background: #fff;
+  height: 140px;
+  flex: 1;
+  border-radius: 3px;
+  box-shadow: 0 4px 15px #0003, 0 1px 2px #0003;
+  margin-top: -50px;
+}
+
+.widget-default-card-avatar {
+  background: rgb(244, 243, 244);
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  top: 40px;
+  left: 16px;
+}
+
+.widget-default-btns-wpr {
+  display: flex;
+}
+
+.widget-default-new-conv-btn {
+  height: 35px;
+  background: rgb(42, 106, 193);
+  border-radius: 40px;
+  padding: 0 16px;
+  color: #fff;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  margin-top: 52px;
+  margin-left: 15px;
+}
+/* ./end Deafult widget preview in the accordion */
 
 // -------------------------
 // start TOOLTIP
