@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router'
 import { UsersService } from '../services/users.service';
 import { ProjectService } from '../services/project.service';
 import { ProjectPlanService } from '../services/project-plan.service';
-import { Observable, zip } from 'rxjs';
+import { zip } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
