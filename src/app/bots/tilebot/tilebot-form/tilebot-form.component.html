@@ -51,7 +51,7 @@
     </div>
 
     <!-- SETTINGS FORM -->
-    <div *ngIf="intentForm" class="box-settings-form">
+    <div *ngIf="fields.length>0" class="box-settings-form">
         <div *ngIf="displaySettingForm" class="box-setting-form">
             <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div>
             <div>{{ "AddIntentPage.LabelCancel" | translate }}: <span class="bold">{{cancelCommandsString}}</span></div>
@@ -71,7 +71,7 @@
 
     
     <!-- BUTTON ADD FIELD -->
-    <div *ngIf="!displayAddEditForm && !displaySettingForm && intentForm" class="header-list-form">
+    <div *ngIf="!displayAddEditForm && !displaySettingForm && fields.length > 0" class="header-list-form">
         <button class="btn btn-primary add-field" (click)="eventAddField()">
             <span class="icon">
             <i class="material-icons">add_circle</i>

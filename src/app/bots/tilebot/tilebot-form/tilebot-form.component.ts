@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+
+import { Component, OnInit, Output, Input, EventEmitter} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
@@ -9,7 +10,8 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ['./tilebot-form.component.scss']
 })
 export class TilebotFormComponent implements OnInit {
-
+  @Output() passJsonIntentForm = new EventEmitter();
+  @Input() intentForm: any;
   langBot: string; 
   fields: any[] = [];
 
@@ -27,7 +29,7 @@ export class TilebotFormComponent implements OnInit {
   displayNewFormButton = true;
   displayCancelButton = false;
   displaySettingsButton = false;
-  intentForm: any;
+  // intentForm: any;
 
   selectedForm: any;
   selectedFormId: number;
@@ -58,6 +60,12 @@ export class TilebotFormComponent implements OnInit {
       "deleteField": "Elimina campo",
       "confirmDeleteField": "sei sicuro di voler eliminare il campo",
       "cancel": "annulla"
+    }
+    if(this.intentForm && this.intentForm.fields){
+      // console.log('this.intentForm:::: ', this.intentForm);
+      this.displayNewFormButton = false;
+      this.displaySettingsButton = true;
+      this.fields = this.intentForm.fields;
     }
 
   }
@@ -94,7 +102,9 @@ export class TilebotFormComponent implements OnInit {
     }
     this.displayCancelButton = false;
     this.displaySettingsButton = true;
+    this.jsonGenerator();
   }
+
 
   /** */
   getCurrentTranslation() {   
@@ -135,12 +145,19 @@ export class TilebotFormComponent implements OnInit {
 
   /** */
   jsonGenerator(){
+    console.log('this.intentForm:: ', this.intentForm);
+    this.passJsonIntentForm.emit(this.intentForm);
   }
 
   /** */
-  removeField(i: number) {
-    this.fields.splice(i, 1);
-  }
+  // removeField(i: number) {
+  //   this.fields.splice(i, 1);
+  //   console.log('removeField:: ', this.fields.length);
+  //   if(this.fields.length === 0){
+  //     this.intentForm = null;
+  //   }
+  //   this.jsonGenerator();
+  // }
 
   // EVENTS //
   openBoxNewFormForm(){
@@ -185,7 +202,15 @@ export class TilebotFormComponent implements OnInit {
   /** Event modal confirm delete field */
   confirmDeleteModal(i:number){
     this.fields.splice(i, 1);
+    
     this.displayMODAL = false;
+    if(this.fields.length === 0){
+      this.intentForm = null;
+      this.displayNewFormButton = true;
+      this.displaySettingsButton = false;
+    }
+    console.log('confirmDeleteModal:: ', this.fields);
+    this.jsonGenerator();
   }
 
   /** Event modal close delete field */
