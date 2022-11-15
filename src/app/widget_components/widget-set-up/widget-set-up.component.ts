@@ -57,8 +57,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   private unsubscribe$: Subject<any> = new Subject<any>();
 
-  @ViewChild('testwidgetbtn', { static: false })  elementRef: ElementRef;
-  @ViewChild("multilanguage", { static: false })  multilanguageRef: ElementRef;
+  @ViewChild('testwidgetbtn', { static: false }) elementRef: ElementRef;
+  @ViewChild("multilanguage", { static: false }) multilanguageRef: ElementRef;
   @ViewChild(NgSelectComponent, { static: false }) ngSelectComponent: NgSelectComponent;
   tparams: any;
   company_name: any;
@@ -74,9 +74,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public secondaryColor: string;
 
   // PrimaryColor opacity
-  public  primaryColorOpacityEnabled: boolean = true
-  public  themeColorOpacity: string = "0.50"
-  
+  public primaryColorOpacityEnabled: boolean = true
+  public themeColorOpacity: string = "0.50"
+
   public logoUrl: string;
   public hasOwnLogo = false;
 
@@ -462,7 +462,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         dangerMode: false,
       })
         .then((value) => {
-        //  console.log('[WIDGET-SET-UP] - uploadLauncherButtonLogo value', value)
+          //  console.log('[WIDGET-SET-UP] - uploadLauncherButtonLogo value', value)
 
           if (value === 'catch') {
 
@@ -472,7 +472,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
-  
+
   deleteCustomLauncherLogo() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.logger.log('[USER-PROFILE] IMAGE deleteUserProfileImage with firebase service')
@@ -497,7 +497,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   subscribeToLauncherLogoUrl() {
     this.uploadImageService.hasUploadedLauncherLogo$.subscribe((downoloadurl) => {
-      console.log('[WIDGET-SET-UP] IMAGE upload with fb service downoloadurl ', downoloadurl);
+      // console.log('[WIDGET-SET-UP] IMAGE upload with fb service downoloadurl ', downoloadurl);
       this.setLauncherLogoUrl(this.imageStorage)
       // this.hasOwnLauncherLogo = true
       // this.hasOwnLauncherBtn = false
@@ -516,7 +516,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.hasOwnLauncherLogo = true
           this.hasOwnLauncherBtn = false
 
-          console.log('[USER-SERV] - LAUNCHER LOGO EXIST ON FB? ', imageExists)
+          // console.log('[USER-SERV] - LAUNCHER LOGO EXIST ON FB? ', imageExists)
         }
       });
     } else {
@@ -1403,15 +1403,25 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   }
 
-  saveFooterBrand() {
+  saveFooterBrandAndLauncherBtn() {
     const footerbrand_save_btn = <HTMLElement>document.querySelector('.footerbrand-save-btn');
     this.logger.log('[WIDGET-SET-UP]) - footerbrand_save_btn: ', footerbrand_save_btn);
     if (footerbrand_save_btn) {
       footerbrand_save_btn.blur()
     }
     this.widgetObj['poweredBy'] = this.footerBrand;
-    this.widgetService.updateWidgetProject(this.widgetObj)
 
+
+    // Custom launcher btn
+    if (this.hasOwnLauncherBtn === true) {
+      // console.log('saveFooterBrandAndLauncherBtn customLauncherURL hasOwnLauncherBtn ', this.hasOwnLauncherBtn)
+      this.widgetObj['baloonImage'] = this.customLauncherURL
+    } else if (this.hasOwnLauncherBtn === false) {
+      // console.log('saveFooterBrandAndLauncherBtn customLauncherURL hasOwnLauncherBtn ', this.hasOwnLauncherBtn)
+
+      delete this.widgetObj['baloonImage']
+    }
+    this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
   saveReplyTime() {
@@ -1664,7 +1674,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
 
-      console.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
+      // console.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
 
       if (project.widget) {
         this.widgetObj = project.widget;
@@ -1717,9 +1727,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.hasOwnLauncherBtn = true;
           this.hasOwnLauncherLogo = false;
 
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BALOON IMAGE : ', this.customLauncherURL);
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) hasOwnLauncherBtn : ', this.hasOwnLauncherBtn);
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) hasOwnLauncherLogo : ', this.hasOwnLauncherLogo);
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BALOON IMAGE : ', this.customLauncherURL);
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) hasOwnLauncherBtn : ', this.hasOwnLauncherBtn);
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) hasOwnLauncherLogo : ', this.hasOwnLauncherLogo);
 
         } else {
           // ------------------------------------------------------------------------
@@ -1728,8 +1738,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // ------------------------------------------------------------------------
           this.hasOwnLauncherBtn = false;
           this.hasOwnLauncherLogo = false;
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BUT NOT POWERED-BY hasOwnLauncherBtn: ', this.hasOwnLauncherBtn);
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BUT NOT POWERED-BY hasOwnLauncherBtn: ', this.hasOwnLauncherLogo);
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BUT NOT POWERED-BY hasOwnLauncherBtn: ', this.hasOwnLauncherBtn);
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BUT NOT POWERED-BY hasOwnLauncherBtn: ', this.hasOwnLauncherLogo);
 
         }
 
@@ -1779,15 +1789,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------
         // Single conversation
         // -----------------------------------------
-        if (project.widget.singleConversation)  {
-         
+        if (project.widget.singleConversation) {
+
           this.singleConversation = true;
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) - singleConversation' , this.singleConversation  )
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) - singleConversation', this.singleConversation)
         } else {
           this.singleConversation = false;
-          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) - singleConversation' , this.singleConversation  )
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) - singleConversation', this.singleConversation)
         }
-        
+
 
         // -----------------------------------------
         // Pre-chat form
@@ -1869,9 +1879,20 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         if (project.widget.themeColor) {
 
           this.primaryColor = project.widget.themeColor;
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR: ', this.primaryColor);
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR: ', this.primaryColor);
           this.primaryColorRgb = this.hexToRgb(this.primaryColor)
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+          // if (project.widget.themeColorOpacity === 100) {
+          //   this.themeColorOpacity = "1";
+          //   console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR OPACITY: ', this.themeColorOpacity);
+          //   this.primaryColorOpacityEnabled = true
+          //   this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+          // } else if (!project.widget.themeColorOpacity) {
+          //   this.themeColorOpacity = "0.50";
+          //   this.primaryColorOpacityEnabled = false
+          //   this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+          // }
+
         } else {
 
           // ------------------------------------------------------------------------
@@ -1885,15 +1906,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             ' IS UNDEFINED > SET DEFAULT ', this.primaryColor);
 
           this.primaryColorRgb = this.hexToRgb(this.primaryColor);
-          if (project.widget.primary_color_opacity === "1") {
-          this.themeColorOpacity = "1";
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
-          } else if (!project.widget.primary_color_opacity) {
-            this.themeColorOpacity = "0.50";
-            this.generateRgbaGradientAndBorder(this.primaryColorRgb);
-          }
         }
-        
+
+        // theme color opacity
+        if (project.widget.themeColorOpacity === 100) {
+          this.themeColorOpacity = "1";
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR OPACITY: ', this.themeColorOpacity);
+          this.primaryColorOpacityEnabled = false
+          this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+        } else if (!project.widget.themeColorOpacity) {
+          this.themeColorOpacity = "0.50";
+          this.primaryColorOpacityEnabled = true
+          this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+        }
+
 
         // ------------------------------------------------------------------------
         // @ themeForegroundColor
@@ -1984,6 +2011,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME COLOR: ', this.primaryColor);
         this.primaryColorRgb = this.hexToRgb(this.primaryColor);
         this.themeColorOpacity = "0.50";
+        this.primaryColorOpacityEnabled = true;
+
         this.generateRgbaGradientAndBorder(this.primaryColorRgb);
 
         // -----------------------------------------------------------------------
@@ -2013,8 +2042,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         this.singleConversation = false;
-        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) - singleConversation' , this.singleConversation  )
-        
+        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) - singleConversation', this.singleConversation)
+
         // -----------------------------------------------------------------------
         // @ preChatForm
         // WIDGET UNDEFINED
@@ -2261,7 +2290,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     const new_col = primaryColor.replace(/rgb/i, 'rgba');
     // this.primaryColorRgba = new_col.replace(/\)/i, ',0.50)');
     this.primaryColorRgba = new_col.replace(/\)/i, `, ${this.themeColorOpacity})`);
-    console.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
+    // console.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
 
     // this.logger.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
 
@@ -2269,12 +2298,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.primaryColorBorder = `2.4px solid ${this.primaryColorRgba}`;
   }
 
-     // --------------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------
   //  @ Primary  color opacity   
-   // --------------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------
   changePrimaryColorOpacity(event) {
-    console.log('Enable / Disable primary color  opacity - event', event.target.checked)
-    this.primaryColorOpacityEnabled = event.target.checked
+    // console.log('Enable / Disable primary color  opacity - event', event.target.checked);
+    this.primaryColorOpacityEnabled = event.target.checked;
     if (this.primaryColorOpacityEnabled === false) {
       this.themeColorOpacity = "1";
       this.widgetObj['themeColorOpacity'] = 100;
@@ -2283,12 +2312,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     } else if (this.primaryColorOpacityEnabled === true) {
       this.themeColorOpacity = "0.50"
       delete this.widgetObj['themeColorOpacity'];
-     this.generateRgbaGradientAndBorder(this.primaryColorRgb)
+      this.generateRgbaGradientAndBorder(this.primaryColorRgb)
       this.widgetService.updateWidgetProject(this.widgetObj)
     }
   }
-
-
 
   // --------------------------------------------------------------------------------------
   //  @ SECONDARY COLOR (alias for themeForegroundColor) ***  
@@ -2550,11 +2577,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_CHAT = false;
     this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     this.widget_preview_selected = "0003";
-    console.log('[WIDGET-SET-UP] - onFocuCustomLauncherURLInput');
+    // console.log('[WIDGET-SET-UP] - onFocuCustomLauncherURLInput');
   }
 
   launcherLogoChange(event) {
-    console.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
+    // console.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
 
     if (event.length === 0) {
 
@@ -2562,7 +2589,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.hasOwnLauncherBtn = false;
       this.hasOwnLauncherLogo = false;
 
-      console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.customLauncherURL  ', this.customLauncherURL);
+
     } else {
 
       this.verifyImageURL(event, (imageExists) => {
@@ -2571,7 +2598,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
           this.hasOwnLauncherBtn = true;
           this.hasOwnLauncherLogo = false;
-
+          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.customLauncherURL  ', this.customLauncherURL);
+          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.hasOwnLauncherBtn  ', this.hasOwnLauncherBtn);
           this.CUSTOM_LAUNCHER_LOGO_EXIST = true;
           // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - hasOwnLauncherBtn: ', this.hasOwnLauncherBtn);
           // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - launcherLogo: ', this.customLauncherURL);
@@ -2662,14 +2690,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
     // console.log('saveWidgetAppearance customLauncherURL ', this.customLauncherURL)
     // Custom launcher btn
-    if (this.hasOwnLauncherBtn === true) {
-      // console.log('saveWidgetAppearance customLauncherURL hasOwnLauncherBtn ',this.hasOwnLauncherBtn)
-      this.widgetObj['baloonImage'] = this.customLauncherURL
-    } else if (this.hasOwnLauncherBtn === false) {
-      // console.log('saveWidgetAppearance customLauncherURL hasOwnLauncherBtn ',this.hasOwnLauncherBtn)
+    // if (this.hasOwnLauncherBtn === true) {
+    //   // console.log('saveWidgetAppearance customLauncherURL hasOwnLauncherBtn ',this.hasOwnLauncherBtn)
+    //   this.widgetObj['baloonImage'] = this.customLauncherURL
+    // } else if (this.hasOwnLauncherBtn === false) {
+    //   // console.log('saveWidgetAppearance customLauncherURL hasOwnLauncherBtn ',this.hasOwnLauncherBtn)
 
-      delete this.widgetObj['baloonImage']
-    }
+    //   delete this.widgetObj['baloonImage']
+    // }
 
     /// LOGO
     if (this.logoUrl && this.LOGO_IS_ON === true) {
@@ -2709,18 +2737,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //  @ Single Conversation 
   // --------------------------------------------------------------------------------------
   enableSingleConversation(event) {
-    console.log('Enable / Disable SINGLE CONVERSATION - event', event.target.checked)
+    // console.log('Enable / Disable SINGLE CONVERSATION - event', event.target.checked)
     this.singleConversation = event.target.checked
     if (this.singleConversation === true) {
-     
-      this.widgetObj['singleConversation'] = this.singleConversation ;
-     
+
+      this.widgetObj['singleConversation'] = this.singleConversation;
+
       this.widgetService.updateWidgetProject(this.widgetObj)
     } else if (this.singleConversation === false) {
-      
+
       delete this.widgetObj['singleConversation'];
       this.widgetService.updateWidgetProject(this.widgetObj)
-     
+
     }
   }
 

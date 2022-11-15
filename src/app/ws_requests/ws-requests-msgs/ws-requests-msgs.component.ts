@@ -855,7 +855,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getAppsInstalledApps() {
     let promise = new Promise((resolve, reject) => {
       this.appStoreService.getInstallationWithApp(this.id_project).then((installations: any) => {
-        console.log("[WS-REQUESTS-MSGS] Get Installation Response: ", installations);
+        // console.log("[WS-REQUESTS-MSGS] Get Installation Response: ", installations);
 
         this.dashboardApps = []
         this.webchatApps = []
@@ -876,19 +876,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
         });
 
-        console.log("[WS-REQUESTS-MSGS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
-        console.log("[WS-REQUESTS-MSGS] WEBCHAT APPS ARRAY: ", this.webchatApps);
+        // console.log("[WS-REQUESTS-MSGS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
+        // console.log("[WS-REQUESTS-MSGS] WEBCHAT APPS ARRAY: ", this.webchatApps);
 
 
 
         if (this.dashboardApps && this.dashboardApps.length > 0 && this.CHAT_PANEL_MODE === false) {
           this.displayAppsinSidebar = true
-          console.log("[WS-REQUESTS-MSGS] - DASHBOARD - DISPLAY APPS ", this.displayAppsinSidebar);
+          // console.log("[WS-REQUESTS-MSGS] - DASHBOARD - DISPLAY APPS ", this.displayAppsinSidebar);
         }
 
         if (this.webchatApps && this.webchatApps.length > 0 && this.CHAT_PANEL_MODE === true) {
           this.displayAppsinSidebar = true
-          console.log("[WS-REQUESTS-MSGS] - CHAT - DISPLAY APPS ", this.displayAppsinSidebar);
+          // console.log("[WS-REQUESTS-MSGS] - CHAT - DISPLAY APPS ", this.displayAppsinSidebar);
         }
         resolve(installations);
       }).catch((err) => {
@@ -1329,7 +1329,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -2934,7 +2934,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
-        //  console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        // console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
         // this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
@@ -4548,7 +4548,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   hasSelectedOpen(calledby) {
-    console.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN ', calledby)
+    // console.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN ', calledby)
     this.HAS_SELECTED_SEND_AS_OPENED = true;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
@@ -4562,7 +4562,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   hasSelectedPending(calledby) {
-    console.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING ', calledby)
+    // console.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING ', calledby)
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = true;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
@@ -4576,7 +4576,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   hasSelectedSolved(calledby) {
-    console.log('[WS-REQUESTS-MSGS] HAS SELECTED SOLVED ', calledby)
+    // console.log('[WS-REQUESTS-MSGS] HAS SELECTED SOLVED ', calledby)
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = true;

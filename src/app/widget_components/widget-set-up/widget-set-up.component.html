@@ -939,34 +939,239 @@
 										</div>
 
 
-										<!-- ---------------------------------------- -->
-										<!-- Custom launcher -->
-										<!-- ---------------------------------------- -->
+										<!-- ------------------------------------- -->
+										<!-- Save -->
+										<!-- ------------------------------------- -->
 										<div class="form-group"
-											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;"
-											[ngClass]="{'custom-launcher-feature-not-available' : prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true}">
-											<label class="col-xs-6 control-label widget-settings-control-head-label"
-												style="white-space: nowrap;">
+											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+											<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
+											<div class="col-sm-12">
+												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" -->
+												<button class="btn btn-success-no-boxshadow  appearance_save_btn_bottom"
+													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
+													(click)="saveWidgetAppearance()">
 
-												{{'CustomLauncherButton' | translate }}
-												<span matTooltipClass="custom-mat-tooltip-in-widget-setup"
-													matTooltip=" {{'CustomizeTheWidgetLaunchButtonWithYourLogo' | translate}}"
-													#tooltip="matTooltip" matTooltipPosition='below'
-													matTooltipHideDelay="100">
-													<i class="material-icons" style="font-size: 18px;
-														color: #566787;
-														cursor: pointer;
-														vertical-align: middle;">
-														help_outline
-													</i>
-												</span>
+													{{ 'UpdateWidget' | translate }}
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
 
-												<span class="pro-only-badge" style="top:-1px !important">
-													{{'ProOnly' | translate }}
-												</span>
-											</label>
-											<div class="col-xs-6">
-												<button class="btn btn-get-feature-no-boxshadow pull-right"
+
+								<!-- ---------------------------------------------------------------------------- -->
+								<!-- @ Single Conversation SECTION -->
+								<!-- ---------------------------------------------------------------------------- -->
+								<button type="button" class="widget-section-accordion widget-section-header">
+
+									<div class="widget-section-title">
+										<div class="widget-setting-icon-wrap">
+											<svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
+												viewBox="0 0 512 512">
+												<title>Chatbox</title>
+												<path
+													d="M408 64H104a56.16 56.16 0 00-56 56v192a56.16 56.16 0 0056 56h40v80l93.72-78.14a8 8 0 015.13-1.86H408a56.16 56.16 0 0056-56V120a56.16 56.16 0 00-56-56z"
+													fill="none" stroke="currentColor" stroke-linejoin="round"
+													stroke-width="32" />
+											</svg>
+										</div>
+										<h4 class="widget-section-header__title-underlined">
+											{{'SingleConversation' | translate}}
+										</h4>
+									</div>
+									<div class="widget-section-arrow">
+										<i class="material-icons widget-section-arrow-icon">
+											keyboard_arrow_down
+										</i>
+									</div>
+								</button>
+								<div class="widget-section-container"
+									style="height: auto; transition-duration: 0.613s;">
+									<div class="section-offset">
+
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+											<div class="row" style="margin-left: 0px;">
+												<label
+													class="col-sm-12 control-label widget-settings-control-head-label-info"
+													style="background: none !important;max-width:600px">
+
+													{{'SingleConversationDescription' | translate}}
+												</label>
+											</div>
+
+											<div class="row" style="margin-left: 0px;">
+												<label
+													class="col-sm-12 control-label widget-settings-control-head-label"
+													style="padding-top:12px; padding-bottom: 2px;">
+
+													{{'SingleConversation' | translate}}
+												</label>
+											</div>
+
+											<div class="single-conversation-content">
+												<div class="single-conversation-switch">
+													<div class="on-off-singleconversation-switch-and-lbl-wpr">
+														<div class="on-off-singleconversation-switch-wpr">
+															<div class="nw-onoffswitch">
+																<input (change)="enableSingleConversation($event)"
+																	type="checkbox" name="nw-singleconversation-switch"
+																	class="nw-onoffswitch-checkbox"
+																	id="nw-singleconversation-switch" tabindex="0"
+																	[checked]="singleConversation">
+																<label class="nw-onoffswitch-label"
+																	for="nw-singleconversation-switch"></label>
+															</div>
+														</div>
+														<div class="on-off-singleconversation-lbl-wpr">
+															<div *ngIf="singleConversation">
+																{{ 'Enabled' | translate }} </div>
+															<div *ngIf="!singleConversation">
+																{{ 'Disabled' | translate }} </div>
+														</div>
+													</div>
+												</div>
+												<!-- --------------------------------------------- -->
+												<!-- Single conversation widget preview -->
+												<!-- --------------------------------------------- -->
+												<div *ngIf="singleConversation" class="single-conversation-preview">
+													<div class="widget-single-conv-demo">
+														<div class="widget-single-conv-demo-header">
+															<div class="widget-single-conv-demo-header-btn-wpr">
+																<div class="widget-single-conv-demo-header-btn">
+																</div>
+
+															</div>
+
+														</div>
+														<div class="widget-single-conv-demo-content">
+
+															<div
+																class="widget-single-conv-firt-row-avatar-and-conversation-wpr">
+																<div class="widget-single-conv-firt-row-avatar"></div>
+																<div class="widget-single-conv-firt-row-conversation">
+																</div>
+															</div>
+
+															<div class="widget-single-conv-second-row-conversation-wpr">
+																<div class="widget-single-conv-second-row-conversation">
+																</div>
+															</div>
+
+															<div
+																class="widget-single-conv-third-row-avatar-and-conversation-wpr">
+																<div class="widget-single-conv-third-row-avatar"></div>
+																<div class="widget-single-conv-third-row-conversation">
+																</div>
+															</div>
+
+															<div class="widget-single-conv-footer">
+																<div class="widget-single-conv-btns-wpr">
+																	<div class="widget-single-conv-new-conv-btn">
+																		<span class="new-conv-btn-icon-wpr">
+																			<svg height="20" viewBox="0 0 24 24"
+																				width="20"
+																				xmlns="http://www.w3.org/2000/svg">
+																				<path
+																					d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"
+																					style="fill: rgb(255, 255, 255);">
+																				</path>
+																				<path d="M0 0h24v24H0z" fill="none">
+																				</path>
+																			</svg>
+																		</span>
+																		<span class="new-conv-btn-text-wpr">
+																			{{'NewConversation' | translate}}
+																		</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<!-- --------------------------------------------- -->
+												<!-- Default widget preview -->
+												<!-- --------------------------------------------- -->
+												<div *ngIf="!singleConversation" class="widget-default-preview">
+													<div class="widget-default-content-wpr">
+														<div class="widget-default-header">
+															<div class="widget-default-header-btn-wpr">
+															</div>
+														</div>
+														<div class="widget-default-content">
+															<div class="widget-default-card">
+																<div class="widget-default-card-avatar"></div>
+
+																<div class="widget-default-btns-wpr">
+																	<div class="widget-default-new-conv-btn">
+																		<span class="new-conv-btn-icon-wpr">
+																			<svg height="20" viewBox="0 0 24 24"
+																				width="20"
+																				xmlns="http://www.w3.org/2000/svg">
+																				<path
+																					d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"
+																					style="fill: rgb(255, 255, 255);">
+																				</path>
+																				<path d="M0 0h24v24H0z" fill="none">
+																				</path>
+																			</svg>
+																		</span>
+																		<span class="new-conv-btn-text-wpr">
+																			{{'NewConversation' | translate}}
+																		</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div> <!-- ./	section-offset -->
+								</div>
+
+
+								<!-- ---------------------------------------------------------------------------- -->
+								<!-- @ Unbranding SECTION -->
+								<!-- ---------------------------------------------------------------------------- -->
+								<button type="button" class="widget-section-accordion widget-section-header">
+
+									<div class="widget-section-title">
+										<div class="widget-setting-icon-wrap">
+											<svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
+												viewBox="0 0 512 512">
+												<title>Sparkles</title>
+												<path
+													d="M259.92 262.91L216.4 149.77a9 9 0 00-16.8 0l-43.52 113.14a9 9 0 01-5.17 5.17L37.77 311.6a9 9 0 000 16.8l113.14 43.52a9 9 0 015.17 5.17l43.52 113.14a9 9 0 0016.8 0l43.52-113.14a9 9 0 015.17-5.17l113.14-43.52a9 9 0 000-16.8l-113.14-43.52a9 9 0 01-5.17-5.17zM108 68L88 16 68 68 16 88l52 20 20 52 20-52 52-20-52-20zM426.67 117.33L400 48l-26.67 69.33L304 144l69.33 26.67L400 240l26.67-69.33L496 144l-69.33-26.67z"
+													fill="none" stroke="currentColor" stroke-linecap="round"
+													stroke-linejoin="round" stroke-width="32" />
+											</svg>
+										</div>
+										<h4 class="widget-section-header__title-underlined">
+											Unbranding <span class="pro-only-badge" *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true"> {{'ProOnly' | translate }}
+											</span>
+										</h4>
+									</div>
+									<div class="widget-section-arrow">
+										<i class="material-icons widget-section-arrow-icon">
+											keyboard_arrow_down
+										</i>
+									</div>
+								</button>
+								<div class="widget-section-container"
+									[ngClass]="{'feature-not-available' : prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true}"
+									style="height: auto; transition-duration: 0.613s;">
+									<div class="section-offset">
+										<!-- ---------------------------------------------	 -->
+										<!-- Upgrade plan to get Unbranding features -->
+										<!-- ---------------------------------------------	 -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+
+											<div class="col-xs-12">
+												<button class="btn btn-get-feature-no-boxshadow pull-right" style="margin-bottom: 0px;"
 													*ngIf="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true"
 													(click)="goToPricing()"
 													matTooltipClass="custom-mat-tooltip-in-widget-setup"
@@ -981,6 +1186,65 @@
 													</span>
 												</button>
 											</div>
+										</div>
+										<!-- ------------------------------- -->
+										<!-- Widget  Footer Branding -->
+										<!-- -------------------------------  -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+											<label class="col-xs-12 control-label  widget-settings-control-head-label">
+												{{ "WidgetFooterBranding" | translate}}
+												<span style="cursor: pointer;"
+													matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip=" {{'ToCustomizeTheWidgetFooterWithYourBrand' | translate}}"
+													#tooltip="matTooltip" matTooltipPosition='below'
+													matTooltipHideDelay="100">
+													<i class="material-icons"
+														style="font-size: 18px;
+														color: #566787;
+														cursor: pointer;
+														vertical-align: middle;">
+														help_outline
+													</i>
+												</span>
+											</label>
+
+
+											<div class="col-sm-12">
+												<textarea (focus)="onFocusFooterBranding()" [(ngModel)]="footerBrand"
+													(ngModelChange)="onChangeFooterBrand($event)" rows="3"
+													class="widget-setup-texarea"
+													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">	</textarea>
+												<!-- <div *ngIf="footerBrand?.length <= 0"
+													style="font-size: 11px; color: #f44336;">
+													{{ 'RequiredField' | translate}}
+												</div> -->
+											</div>
+										</div>
+
+										<!-- ---------------------------------------- -->
+										<!-- Custom launcher -->
+										<!-- ---------------------------------------- -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px; margin-top: 12px!important;"
+											[ngClass]="{'custom-launcher-feature-not-available' : prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true}">
+											<label class="col-xs-12 control-label widget-settings-control-head-label"
+												style="white-space: nowrap;">
+
+												{{'CustomLauncherButton' | translate }}
+												<span matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip=" {{'CustomizeTheWidgetLaunchButtonWithYourLogo' | translate}}"
+													#tooltip="matTooltip" matTooltipPosition='below'
+													matTooltipHideDelay="100">
+													<i class="material-icons" style="font-size: 18px;
+														color: #566787;
+														cursor: pointer;
+														vertical-align: middle;">
+														help_outline
+													</i>
+												</span>
+											</label>
+								
 											<div class="col-sm-12">
 												<div class="wrapper-custom-launcher" style="margin-top: 3px;">
 													<!-- ------------------------------------------- -->
@@ -1235,291 +1499,15 @@
 										<!-- ------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
-											<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
+										
 											<div class="col-sm-12">
-												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" -->
-												<button class="btn btn-success-no-boxshadow  appearance_save_btn_bottom"
-													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
-													(click)="saveWidgetAppearance()">
-
-													{{ 'UpdateWidget' | translate }}
-												</button>
-											</div>
-										</div>
-									</div>
-								</div>
-
-
-								<!-- ---------------------------------------------------------------------------- -->
-								<!-- @ Single Conversation SECTION -->
-								<!-- ---------------------------------------------------------------------------- -->
-								<button type="button" class="widget-section-accordion widget-section-header">
-
-									<div class="widget-section-title">
-										<div class="widget-setting-icon-wrap">
-											<svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
-												viewBox="0 0 512 512">
-												<title>Chatbox</title>
-												<path
-													d="M408 64H104a56.16 56.16 0 00-56 56v192a56.16 56.16 0 0056 56h40v80l93.72-78.14a8 8 0 015.13-1.86H408a56.16 56.16 0 0056-56V120a56.16 56.16 0 00-56-56z"
-													fill="none" stroke="currentColor" stroke-linejoin="round"
-													stroke-width="32" />
-											</svg>
-										</div>
-										<h4 class="widget-section-header__title-underlined">
-											{{'SingleConversation' | translate}}
-										</h4>
-									</div>
-									<div class="widget-section-arrow">
-										<i class="material-icons widget-section-arrow-icon">
-											keyboard_arrow_down
-										</i>
-									</div>
-								</button>
-								<div class="widget-section-container"
-									style="height: auto; transition-duration: 0.613s;">
-									<div class="section-offset">
-
-										<div class="form-group"
-											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
-											<div class="row" style="margin-left: 0px;">
-												<label
-													class="col-sm-12 control-label widget-settings-control-head-label-info"
-													style="background: none !important;max-width:600px">
-
-													{{'SingleConversationDescription' | translate}}
-												</label>
-											</div>
-
-											<div class="row" style="margin-left: 0px;">
-												<label
-													class="col-sm-12 control-label widget-settings-control-head-label"
-													style="padding-top:12px; padding-bottom: 2px;">
-
-													{{'SingleConversation' | translate}}
-												</label>
-											</div>
-
-											<div class="single-conversation-content">
-												<div class="single-conversation-switch">
-													<div class="on-off-singleconversation-switch-and-lbl-wpr">
-														<div class="on-off-singleconversation-switch-wpr">
-															<div class="nw-onoffswitch">
-																<input (change)="enableSingleConversation($event)"
-																	type="checkbox" name="nw-singleconversation-switch"
-																	class="nw-onoffswitch-checkbox"
-																	id="nw-singleconversation-switch" tabindex="0"
-																	[checked]="singleConversation">
-																<label class="nw-onoffswitch-label"
-																	for="nw-singleconversation-switch"></label>
-															</div>
-														</div>
-														<div class="on-off-singleconversation-lbl-wpr">
-															<div *ngIf="singleConversation">
-																{{ 'Enabled' | translate }} </div>
-															<div *ngIf="!singleConversation">
-																{{ 'Disabled' | translate }} </div>
-														</div>
-													</div>
-												</div>
-												<!-- --------------------------------------------- -->
-												<!-- Single conversation widget preview -->
-												<!-- --------------------------------------------- -->
-												<div *ngIf="singleConversation" class="single-conversation-preview">
-													<div class="widget-single-conv-demo">
-														<div class="widget-single-conv-demo-header">
-															<div class="widget-single-conv-demo-header-btn-wpr">
-																<div class="widget-single-conv-demo-header-btn">
-																</div>
-
-															</div>
-
-														</div>
-														<div class="widget-single-conv-demo-content">
-
-															<div
-																class="widget-single-conv-firt-row-avatar-and-conversation-wpr">
-																<div class="widget-single-conv-firt-row-avatar"></div>
-																<div class="widget-single-conv-firt-row-conversation">
-																</div>
-															</div>
-
-															<div class="widget-single-conv-second-row-conversation-wpr">
-																<div class="widget-single-conv-second-row-conversation">
-																</div>
-															</div>
-
-															<div
-																class="widget-single-conv-third-row-avatar-and-conversation-wpr">
-																<div class="widget-single-conv-third-row-avatar"></div>
-																<div class="widget-single-conv-third-row-conversation">
-																</div>
-															</div>
-
-															<div class="widget-single-conv-footer">
-																<div class="widget-single-conv-btns-wpr">
-																	<div class="widget-single-conv-new-conv-btn">
-																		<span class="new-conv-btn-icon-wpr">
-																			<svg height="20" viewBox="0 0 24 24"
-																				width="20"
-																				xmlns="http://www.w3.org/2000/svg">
-																				<path
-																					d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"
-																					style="fill: rgb(255, 255, 255);">
-																				</path>
-																				<path d="M0 0h24v24H0z" fill="none">
-																				</path>
-																			</svg>
-																		</span>
-																		<span class="new-conv-btn-text-wpr">
-																			{{'NewConversation' | translate}}
-																		</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<!-- --------------------------------------------- -->
-												<!-- Default widget preview -->
-												<!-- --------------------------------------------- -->
-												<div *ngIf="!singleConversation" class="widget-default-preview">
-													<div class="widget-default-content-wpr">
-														<div class="widget-default-header">
-															<div class="widget-default-header-btn-wpr">
-															</div>
-														</div>
-														<div class="widget-default-content">
-															<div class="widget-default-card">
-																<div class="widget-default-card-avatar"></div>
-
-																<div class="widget-default-btns-wpr">
-																	<div class="widget-default-new-conv-btn">
-																		<span class="new-conv-btn-icon-wpr">
-																			<svg height="20" viewBox="0 0 24 24"
-																				width="20"
-																				xmlns="http://www.w3.org/2000/svg">
-																				<path
-																					d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"
-																					style="fill: rgb(255, 255, 255);">
-																				</path>
-																				<path d="M0 0h24v24H0z" fill="none">
-																				</path>
-																			</svg>
-																		</span>
-																		<span class="new-conv-btn-text-wpr">
-																			{{'NewConversation' | translate}}
-																		</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-
-									</div> <!-- ./	section-offset -->
-								</div>
-
-
-								<!-- ---------------------------------------------------------------------------- -->
-								<!-- @ Unbranding SECTION -->
-								<!-- ---------------------------------------------------------------------------- -->
-								<button type="button" class="widget-section-accordion widget-section-header">
-
-									<div class="widget-section-title">
-										<div class="widget-setting-icon-wrap">
-											<svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
-												viewBox="0 0 512 512">
-												<title>Sparkles</title>
-												<path
-													d="M259.92 262.91L216.4 149.77a9 9 0 00-16.8 0l-43.52 113.14a9 9 0 01-5.17 5.17L37.77 311.6a9 9 0 000 16.8l113.14 43.52a9 9 0 015.17 5.17l43.52 113.14a9 9 0 0016.8 0l43.52-113.14a9 9 0 015.17-5.17l113.14-43.52a9 9 0 000-16.8l-113.14-43.52a9 9 0 01-5.17-5.17zM108 68L88 16 68 68 16 88l52 20 20 52 20-52 52-20-52-20zM426.67 117.33L400 48l-26.67 69.33L304 144l69.33 26.67L400 240l26.67-69.33L496 144l-69.33-26.67z"
-													fill="none" stroke="currentColor" stroke-linecap="round"
-													stroke-linejoin="round" stroke-width="32" />
-											</svg>
-										</div>
-										<h4 class="widget-section-header__title-underlined">
-											Unbranding <span class="pro-only-badge"> {{'ProOnly' | translate }}
-											</span>
-										</h4>
-									</div>
-									<div class="widget-section-arrow">
-										<i class="material-icons widget-section-arrow-icon">
-											keyboard_arrow_down
-										</i>
-									</div>
-								</button>
-								<div class="widget-section-container"
-									[ngClass]="{'feature-not-available' : prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true}"
-									style="height: auto; transition-duration: 0.613s;">
-									<div class="section-offset">
-
-										<!-- ------------------------------- -->
-										<!-- Widget  Footer Branding -->
-										<!-- -------------------------------  -->
-										<div class="form-group"
-											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
-											<label class="col-xs-6 control-label widget-settings-control-label">
-												{{ "WidgetFooterBranding" | translate}}
-												<span style="cursor: pointer;"
-													matTooltipClass="custom-mat-tooltip-in-widget-setup"
-													matTooltip=" {{'ToCustomizeTheWidgetFooterWithYourBrand' | translate}}"
-													#tooltip="matTooltip" matTooltipPosition='below'
-													matTooltipHideDelay="100">
-													<i class="material-icons"
-														style="position: relative;top: 2px; font-size:14px; color:#7695a5">
-														help_outline
-													</i>
-												</span>
-											</label>
-
-											<div class="col-xs-6">
-												<button class="btn btn-get-feature-no-boxshadow pull-right"
-													*ngIf="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true"
-													(click)="goToPricing()"
-													matTooltipClass="custom-mat-tooltip-in-widget-setup"
-													matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}"
-													#tooltip="matTooltip" matTooltipPosition='below'
-													matTooltipHideDelay="100">
-													<span class="material-icons-outlined get-feature-upgrade-plan-icon">
-														upgrade
-													</span>
-													<span>
-														{{ 'Pricing.UpgradePlan' | translate }}
-													</span>
-												</button>
-											</div>
-
-											<div class="col-sm-12">
-												<textarea (focus)="onFocusFooterBranding()" [(ngModel)]="footerBrand"
-													(ngModelChange)="onChangeFooterBrand($event)" rows="3"
-													class="widget-setup-texarea"
-													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">	</textarea>
-												<!-- <div *ngIf="footerBrand?.length <= 0"
-													style="font-size: 11px; color: #f44336;">
-													{{ 'RequiredField' | translate}}
-												</div> -->
-											</div>
-										</div>
-
-										<!-- ------------------------------------- -->
-										<!-- Save Footer branding -->
-										<!-- ------------------------------------- -->
-										<div class="form-group"
-											style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
-
-											<div class="col-sm-12">
-												<!-- (footerBrand?.length === 0 ||  !footerBrand) ||  -->
+										
 												<button class="btn btn-success-no-boxshadow  footerbrand-save-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
-													(click)="saveFooterBrand()"
+													(click)="saveFooterBrandAndLauncherBtn()"
 													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">
-													{{ 'UpdateWidget' | translate }}
+												{{ 'UpdateWidget' | translate }}
 												</button>
-
-
 											</div>
 										</div>
 									</div>
@@ -2854,7 +2842,9 @@
 
 
 										<appdashboard-widget-chat *ngIf="DISPLAY_WIDGET_CHAT"
-											[primaryColor]="primaryColor" [secondaryColor]="secondaryColor"
+											[primaryColor]="primaryColor" 
+											[secondaryColor]="secondaryColor"
+											[themeColorOpacity]="themeColorOpacity"
 											[HAS_FOCUSED_ONLINE_MSG]="HAS_FOCUSED_ONLINE_MSG"
 											[HAS_FOCUSED_OFFLINE_MSG]="HAS_FOCUSED_OFFLINE_MSG"
 											[HAS_FOCUSED_OFFICE_CLOSED_MSG]="HAS_FOCUSED_OFFICE_CLOSED_MSG"
@@ -2867,7 +2857,9 @@
 										</appdashboard-widget-chat>
 
 										<appdashboard-widget-prechat-form *ngIf="DISPLAY_WIDGET_PRECHAT_FORM"
-											[primaryColor]="primaryColor" [secondaryColor]="secondaryColor"
+											[primaryColor]="primaryColor" 
+											[secondaryColor]="secondaryColor"
+											[themeColorOpacity]="themeColorOpacity"
 											[newConversation]="newConversation"
 											[preChatFormCustomFieldsEnabled]="preChatFormCustomFieldsEnabled"
 											[prechatFormArray]="prechatFormArray"

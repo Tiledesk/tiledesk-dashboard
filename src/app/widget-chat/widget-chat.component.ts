@@ -10,6 +10,7 @@ export class WidgetChatComponent implements OnInit, OnChanges {
 
   @Input() primaryColor: string;
   @Input() secondaryColor: string;
+  @Input() themeColorOpacity: string;
   @Input() HAS_FOCUSED_ONLINE_MSG: boolean;
   @Input() HAS_FOCUSED_OFFLINE_MSG: boolean;
   @Input() HAS_FOCUSED_OFFICE_CLOSED_MSG: boolean;
@@ -47,7 +48,16 @@ export class WidgetChatComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // console.log('[WIDGET-CHAT-COMP] LABEL_PLACEHOLDER ', this.LABEL_PLACEHOLDER)
-    this.generateLinearGradient(this.primaryColor)
+    // console.log('[WIDGET-CHAT-COMP] themeColorOpacity ', this.themeColorOpacity)
+    if (this.themeColorOpacity === '0.50') {
+      this.generateLinearGradient(this.primaryColor)
+    } else if (this.themeColorOpacity === '1') {
+      this.genetateThemeColorNoOpacity();
+    }
+  }
+  genetateThemeColorNoOpacity() {
+    this.primaryColorRGBA_1 = this.hexToRgbA_1(this.primaryColor)
+    this.linearGradient = 'linear-gradient( 180grad, ' + this.primaryColorRGBA_1 + ', ' + this.primaryColorRGBA_1 + ')';
   }
 
   generateLinearGradient(primaryColor) {
@@ -82,7 +92,9 @@ export class WidgetChatComponent implements OnInit, OnChanges {
         c = [c[0], c[0], c[1], c[1], c[2], c[2]];
       }
       c = '0x' + c.join('');
+
       return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',0.5)';
+      // return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + `${this.themeColorOpacity})`;
     }
     throw new Error('Bad Hex');
   }
