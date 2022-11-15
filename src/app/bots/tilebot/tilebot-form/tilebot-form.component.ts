@@ -205,7 +205,7 @@ export class TilebotFormComponent implements OnInit {
     
     this.displayMODAL = false;
     if(this.fields.length === 0){
-      this.intentForm = null;
+      this.intentForm = {};
       this.displayNewFormButton = true;
       this.displaySettingsButton = false;
     }
