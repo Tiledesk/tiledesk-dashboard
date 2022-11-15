@@ -375,7 +375,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
       buttons += "\n* "+domanda;
     }
     let answer = this.welcomeMessage+buttons;
-    this.faqService.updateFaq(this.idQuestionStart, question, answer, intent, true)
+    this.faqService.updateFaq(this.idQuestionStart, question, answer, intent, null, true)
       .subscribe((data) => {
           this.logger.log('[FAQ-EDIT-ADD] UPDATE FAQ RES', data);
           this.callback('goToNextStep');

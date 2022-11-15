@@ -1,5 +1,15 @@
 @import "./src/assets/sass/md/_variables.scss";
 
+.box-content {
+  background: #ffffff;
+  margin-bottom: 30px;
+  padding: 20px;
+  display: grid;
+  position: relative;
+  border-radius: 4px;
+  box-shadow: #001b4714 0 3px 8px;
+}
+
 input[type="text"] {
   // min-width: 307px !important;
   height: 36px;
@@ -205,3 +215,5 @@ textarea {
   right: 0px;
 }
 // --------- ./end new on-off btn logo ---------
+
+
