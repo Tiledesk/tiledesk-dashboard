@@ -101,6 +101,8 @@ export class TilebotAddEditFormComponent implements OnInit {
       this.regexResult = false;
       status = false;
     }
+
+    this.field.regex = this.field.regex.toString();
     return status;
   }
 
