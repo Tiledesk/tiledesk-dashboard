@@ -5,14 +5,14 @@
 - Adds ability, in Project Settings > Widget Configuration page, to disable theme color's gradient
 - Adds the ability, in the Project settings > Widget configuration page, to set the functionality of the "Single conversation" widget
 - Fixes the bug: in the chatbot creation wizard step the labels do not update when they are modified
-- Adds the ability to add a form in the tilebot type chatbot
+- Adds the ability to add a form to the Tilebot type chatbot from its "Edit Intent" page 
 - Improves conversation details sidebar
 
 ### 2.3.1-rc2
 - Adds ability, in Project Settings > Widget Configuration page, to disable theme color's gradient
 - Adds the ability, in the Project settings > Widget configuration page, to set the functionality of the "Single conversation" widget
 - Fixes the bug: in the chatbot creation wizard step the labels do not update when they are modified
-- Adds the ability to add a form in the tilebot type chatbot
+- Adds the ability to add a form to the Tilebot type chatbot from its "Edit Intent" page 
 - Improves conversation details sidebar
 
 ### 2.3.1-rc1
