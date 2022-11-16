@@ -2258,6 +2258,7 @@
         "LabelReplay": "Etichetta 'form annullata'",
         "AddField": "Aggiungi campo",
         "FieldName": "Nome campo",
+        "ParameterName": "Nome parametro",
         "Other": "Altro",
         "FieldTypeText": "Tipo campo",
         "AddCustomRegex": "Aggiungi un regex personalizzato",

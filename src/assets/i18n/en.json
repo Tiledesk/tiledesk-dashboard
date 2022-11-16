@@ -2258,6 +2258,7 @@
         "LabelReplay": "'Form canceled' label",
         "AddField": "Add field",
         "FieldName": "Field name",
+        "ParameterName": "Parameter name",
         "Other": "Other",
         "FieldTypeText": "Field type",
         "AddCustomRegex": "Add a custom regex",

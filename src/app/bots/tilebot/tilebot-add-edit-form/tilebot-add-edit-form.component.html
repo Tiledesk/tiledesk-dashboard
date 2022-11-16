@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group" [ngClass]="{'is-error':nameResult === false}">
-                <input type="text" class="form-control" [(ngModel)]="field.name" (focus)="displayMessage('field_name')" placeholder="{{ 'AddIntentPage.FieldName' | translate }}"/>
+                <input type="text" class="form-control" [(ngModel)]="field.name" (focus)="displayMessage('field_name')" placeholder="{{ 'AddIntentPage.ParameterName' | translate }}"/>
             </div> 
         </div>
 
@@ -31,7 +31,17 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group" [ngClass]="{'is-error':labelResult === false}">
-                <input type="text" class="form-control" [(ngModel)]="field.label" (focus)="displayMessage('field_label')" placeholder="{{ 'AddIntentPage.Label' | translate }}"/>
+                <textarea  
+                name="field_label" 
+                [(ngModel)]="field.label" 
+                rows="3"
+                style="resize: vertical;" 
+                class="form-control" 
+                type="text"
+                (focus)="displayMessage('field_label')"
+                placeholder="{{ 'AddIntentPage.Label' | translate }}">
+                </textarea>
+                <!-- <input type="text" class="form-control" [(ngModel)]="field.label" (focus)="displayMessage('field_label')" placeholder="{{ 'AddIntentPage.Label' | translate }}"/> -->
             </div>
         </div>
 

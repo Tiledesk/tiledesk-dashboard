@@ -10,15 +10,15 @@
             </span>
         </button>
 
-        <button *ngIf="displaySettingsButton" class="btn btn-primary add-form" (click)="openSettingsForm()">
-            <span class="icon-label">{{ "Settings" | translate }}</span>
+        <button *ngIf="displaySettingsButton" class="btn btn-primary only-icon" (click)="openSettingsForm()">
+            <!-- <span class="icon-label">{{ "Settings" | translate }}</span> -->
             <span class="icon">
             <i class="material-icons">settings</i>
             </span>
         </button>
 
-        <button *ngIf="displayCancelButton" class="btn btn-primary add-form" (click)="closeGeneral()">
-            <span class="icon-label">{{ "Close" | translate }}</span>
+        <button *ngIf="displayCancelButton" class="btn btn-primary only-icon" (click)="closeGeneral()">
+            <!-- <span class="icon-label">{{ "Close" | translate }}</span> -->
             <span class="icon">
               <i class="material-icons">cancel</i>
             </span>
@@ -53,7 +53,7 @@
     <!-- SETTINGS FORM -->
     <div *ngIf="intentForm" class="box-settings-form">
         <div *ngIf="displaySettingForm" class="box-setting-form">
-            <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div>
+            <!-- <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div> -->
             <div>{{ "AddIntentPage.LabelCancel" | translate }}: <span class="bold">{{cancelCommandsString}}</span></div>
             <div>{{ "AddIntentPage.LabelReplay" | translate }}: <span class="bold">{{cancelReply}}</span></div>
         </div>

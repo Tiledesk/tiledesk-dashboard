@@ -27,6 +27,10 @@ $color-text-box: #566787;
         .icon-label {
             vertical-align: text-top;
         }
+        .only-icon {
+            padding: 0px;
+            min-height: 30px;
+        }
     }
 
     button.add-form {
