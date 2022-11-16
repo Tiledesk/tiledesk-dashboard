@@ -261,27 +261,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     this.logger.log('[PROJECTS] PUBLIC-KEY - public_Key Arry includes MTT', this.public_Key.includes("MTT"));
 
-    // if (this.public_Key.includes("MTT") === true) {
-
-    //   keys.forEach(key => {
-    //     // this.logger.log('NavbarComponent public_Key key', key)
-    //     if (key.includes("MTT")) {
-    //       // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
-    //       let mt = key.split(":");
-    //       // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
-    //       if (mt[1] === "F") {
-    //         this.MT = false;
-    //         // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
-    //       } else {
-    //         this.MT = true;
-    //         // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
-    //       }
-    //     }
-    //   });
-    // } else {
-    //   this.MT = false;
-    //   // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
-    // }
 
     keys.forEach(key => {
       // this.logger.log('NavbarComponent public_Key key', key)

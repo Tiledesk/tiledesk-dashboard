@@ -292,6 +292,7 @@
 
                   <span id="pu-status-icon" class="pu-status-icon"
                   [ngClass]="{
+                  'pu-status-icon-no-ppb': !project_plan_badge,  
                   'is-user-online' : project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
                   'is-user-offline' : project?.ws_projct_user_available === false && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
                   'is-user-inactive': project?.ws_projct_user_available === false && project?.ws_projct_user_profileStatus=== 'inactive',
@@ -319,7 +320,7 @@
             
                 </h4>
 
-                <div class="availabily-and-busy-wpr--prjcts-for-panel"  style="display: inline-block;">
+                <div class="availabily-and-busy-wpr--prjcts-for-panel"  style="display: inline-block;" [ngClass]="{'availabily-and-busy-wpr--prjcts-for-panel-no-ppb': !project_plan_badge}">
 
 
                   <div class="availabily---wpr--prjct-for-panel"

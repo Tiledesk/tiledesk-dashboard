@@ -802,7 +802,15 @@ background-color: #3ea9f5;
   margin-left: 3px;
 }
 
-.pu-status-icon--is-busy {
+.pu-status-icon-no-ppb {
+  bottom: 106px !important;
+}
+
+.availabily-and-busy-wpr--prjcts-for-panel-no-ppb {
+  margin-top: 10px !important;
+}
+
+.pu-status-icon--is-busy:not(.pu-status-icon-no-ppb) {
   bottom: 79px !important;
   margin-left: 0px !important;
 }
