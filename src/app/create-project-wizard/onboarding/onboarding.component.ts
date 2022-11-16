@@ -70,6 +70,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   error_status: number;
   user: any;
   segmentTrack: string;
+  segmentAttributes: any;
  
 
   constructor(
@@ -116,6 +117,11 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   /** INIT */
   init(){
     this.segmentTrack = "Create chatbot";
+    this.segmentAttributes = {
+      "chatbot": false,
+      "faq": false,
+      "agent": false,
+    }
     this.selected = 'step0';
     this.welcomeMessage = ''; 
     this.sub = this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
@@ -136,8 +142,18 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   }
 
 
-  segment(trackName){
-    //if (!isDevMode()) {
+  segment(trackName, attributes){
+    if (!isDevMode()) {
+      let  trackAttr = {
+        "projectId": this.projectId,
+        "projectName": this.projectName,
+        "userId": this.user._id,
+        "username": this.user.firstname + ' ' + this.user.lastname,
+        "chatbot": attributes.chatbot,
+        "faq": attributes.faq,
+        "agent": attributes.agent
+      };
+  
       try {
         window['analytics'].page("Wizard, Onboarding", {
         });
@@ -154,16 +170,11 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
         this.logger.error('Wizard Onboarding identify error', err);
       }
       try {
-        window['analytics'].track(trackName, {
-          "projectId": this.projectId,
-          "projectName": this.projectName,
-          "userId": this.user._id,
-          "username": this.user.firstname + ' ' + this.user.lastname,
-        });
+        window['analytics'].track(trackName, trackAttr);
       } catch (err) {
         this.logger.error('Wizard Create track Trial Started event error', err);
       }
-    //}
+    }
   }
 
   /** */
@@ -434,22 +445,29 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
     // this.segment();
     this.continueToNextStep();
   }
+
+  /** */
+  gotToChatbotSetup(event){
+    this.selected = 'step0'; // event.step;
+    this.segmentAttributes.chatbot = false;
+    this.segmentAttributes.faq = false;
+    this.segmentAttributes.agent = false;
+  }
   /** callBack chatbot-setup */
   goToWelcomeMessage(){
     this.selected = 'step1';
+    this.segmentAttributes.chatbot = true;
     this.DISPLAY_SPINNER_SECTION = false;
     this.DISPLAY_SPINNER = false;
     this.CREATE_BOT_ERROR = false;
     this.CREATE_FAQ_ERROR = false;
   }
 
-  /** */
-  gotToChatbotSetup(event){
-    this.selected = 'step0'; // event.step;
-  }
+
   /** */
   gotToChatbotConfiguration(event){
-    this.selected = 'step2'; // event.step;
+    this.selected = 'step2';
+    this.segmentAttributes.faq = true;
     if(event.msg){
       this.welcomeMessage = event.msg;
     }
@@ -460,6 +478,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   /** */
   gotToHumanConfiguration(event){
     this.selected = 'step3'; // event.step;
+    this.segmentAttributes.agent = true;
     if(event.questions){
       this.step3Questions = event.questions;
     }
@@ -471,14 +490,15 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   /** */
   gotToHumanConfigurationWithoutFaq(event){
     this.selected = 'step3'; // event.step;
+    this.segmentAttributes.faq = false;
+    this.segmentAttributes.agent = true;
     this.step3Questions = [];
     this.step3Answers = [];
-    this.segmentTrack += " without faq";
   }
 
   /** */
-  gotToChatbotConfigurationWithoutAgent(event){
-    this.segmentTrack += " without agent";
+  gotToCreateBotWithoutAgent(event){
+    this.segmentAttributes.agent = false;
     this.gotToCreateBot(event);
   }
 
@@ -536,7 +556,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   /** */
   continueToNextStep() {
     // console.log('continueToNextStep:::: ', this.segmentTrack);
-    this.segment(this.segmentTrack);
+    this.segment(this.segmentTrack, this.segmentAttributes);
     this.router.navigate([`/project/${this.projectId}/install-widget/` +  this.selectedLangCode + '/' + this.selectedLangName]);
   }
 
