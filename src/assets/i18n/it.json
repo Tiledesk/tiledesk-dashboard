@@ -1555,7 +1555,7 @@
     "Friday": "Venerdì",
     "Saturday": "Sabato",
     "Analytics": {
-        "AnalyticsTITLE": "Analitica",
+        "AnalyticsTITLE": "Statistiche",
         "PanoramicaComponentTitle": "Panoramica",
         "HeatMapTitle": "Conversazioni per ora del giorno",
         "MetricsComponentTitle": "Metrica",
@@ -1717,7 +1717,7 @@
     "ConversationStatus": "Conversation status",
     "IntroGreetings": "Saluti introduttivi",
     "ReplyTimeMsg": "Tempo di risposta",
-    "SayHowSoonYourTeamUsuallyReplies": "Di quanto presto risponde normalmente il tuo team",
+    "SayHowSoonYourTeamUsuallyReplies": "Comunica in quanto tempo risponde il tuo team",
     "IsDisplayedWhenAverageTeamResponseTimeIsNotAva ilable": "Questo messaggio viene visualizzato quando il tempo medio di risposta del team non è disponibile",
     "DynamicallySharingAverageResponseTime": "Dinamicamente, condividendo il tempo medio di risposta del team",
     "YourContactsSeeThisMessageIfARTIsNotAvailable": "I tuoi contatti vedono questo messaggio se il tempo medio di risposta del team non è disponibile",
