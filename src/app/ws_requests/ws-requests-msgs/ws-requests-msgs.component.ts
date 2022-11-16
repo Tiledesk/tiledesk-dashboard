@@ -345,7 +345,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   displayAppsinSidebar: boolean = false
   dashboardApps: Array<any>
   webchatApps: Array<any>
-
+  isSafari: any
   serveByTooltipOption: TooltipOptions = {
     'show-delay': 0,
     'tooltip-class': 'served-by-ng2-tooltip',
@@ -498,6 +498,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getFirebaseAuth();
     this.getBrowserLang();
     this.getBrowserVersion()
+    this.getSafaryBrowser()
     this.setMomentLocale()
     this.getTeammates();
     this.getBots();
@@ -832,6 +833,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
+  }
+
+  getSafaryBrowser() {
+     this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    // console.log("[WS-REQUESTS-MSGS]] isSafari ",this.isSafari);
   }
 
   ngAfterViewInit() {

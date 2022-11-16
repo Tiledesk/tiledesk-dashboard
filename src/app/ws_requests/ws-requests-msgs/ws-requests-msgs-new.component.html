@@ -1,12 +1,19 @@
-<!-- margin-top:6px; -->
-<div #navbarBrand *ngIf="CHAT_PANEL_MODE === false" class="navbar-brand"
+
+<!-- Navbar brand for Chrome, Firefox ... -->
+<div  #navbarBrand *ngIf="CHAT_PANEL_MODE === false && !isSafari" class="navbar-brand"
   style="z-index: 1050;position: relative; padding-left:30px"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
-  <!-- Request  -->
   {{ "RequestMsgsPage.RequestDetails" | translate }}
-  <!-- <code style="color:#3f87a6; border: 1px solid #cee9f9; font-size:0.8em"> {{cut_support_group_from_request_id(id_request)}} </code> -->
+</div>
+
+<!-- Navbar brand for Safari -->
+<div #navbarBrand *ngIf="CHAT_PANEL_MODE === false && isSafari" class="navbar-brand"
+  style="z-index: 1050;position: absolute; padding-left:30px; top:6px" >
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+    (click)="goBack()">keyboard_arrow_left</i>
+  {{ "RequestMsgsPage.RequestDetails" | translate }}
 </div>
 
 <div id="conversation-detail-main-content" class="main-content" style="padding-top:0px"
@@ -851,7 +858,7 @@
                                 height="24" width="24" viewBox="0 0 58.1 53.9" xml:space="preserve"
                                 matTooltipClass="custom-mat-tooltip"
                                 matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}" #tooltip="matTooltip"
-                                matTooltipPosition='below' matTooltipHideDelay="100" style="vertical-align: middle;">
+                                matTooltipPosition='above' matTooltipHideDelay="100" style="vertical-align: middle;">
                                 <style type="text/css">
                                   .st0-unserved {
                                     fill: none;
@@ -884,7 +891,7 @@
                                 src="assets/img/request_icons/status100_internal.svg"
                                 matTooltipClass="custom-mat-tooltip"
                                 matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}"
-                                #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100"
                                 style="width: 24px;">
 
                               <!-- <svg *ngIf="request?.status === 100 && request?.subject" class="header-conv-svg-icon" height="24" width="24" version="1.1" id="Livello_1"
@@ -933,7 +940,7 @@
                                   (click)="agentfbimg.toggle()" (click)="$event.stopPropagation()"
                                   (document:click)="agentfbimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}}
                                   {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                  matTooltipPosition='above' matTooltipHideDelay="100" />
+                                  matTooltipPosition='left' matTooltipHideDelay="100" />
                                 <sat-popover #agentfbimg horizontalAlign="before">
                                   <div class="popover-wrapper">
                                     <div class="sat-popover-agent-fullname">
@@ -961,7 +968,7 @@
                                   (click)="$event.stopPropagation()" (document:click)="agentntimg.close()"
                                   matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}}
                                   {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                  matTooltipPosition='above' matTooltipHideDelay="100" />
+                                  matTooltipPosition='left' matTooltipHideDelay="100" />
 
                                 <sat-popover #agentntimg horizontalAlign="before">
                                   <div class="popover-wrapper">
@@ -990,7 +997,7 @@
                                   (click)="$event.stopPropagation()" (click)="agentnoimg.toggle()"
                                   (document:click)="agentnoimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.userFullname}}
                                    {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                  matTooltipPosition='above' matTooltipHideDelay="100">
+                                  matTooltipPosition='left' matTooltipHideDelay="100">
                                   {{ agent?.userFullname }}
                                 </div>
 
@@ -1022,7 +1029,7 @@
                                   (click)="$event.stopPropagation()" (document:click)="botfbengine.close()"
                                   matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)
                                   {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                  matTooltipPosition='above' matTooltipHideDelay="100" />
+                                  matTooltipPosition='left' matTooltipHideDelay="100" />
 
                                 <sat-popover #botfbengine horizontalAlign="before">
                                   <div class="popover-wrapper">
@@ -1052,7 +1059,7 @@
                                   (click)="$event.stopPropagation()" (document:click)="botntengine.close()"
                                   matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)
                                   {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
-                                  matTooltipPosition='above' matTooltipHideDelay="100" />
+                                  matTooltipPosition='left' matTooltipHideDelay="100" />
 
                                 <sat-popover #botntengine horizontalAlign="before">
                                   <div class="popover-wrapper">
@@ -1304,7 +1311,7 @@
                           <li (click)="hasSelectedOpen('updatedWorkingStatus')" class="conversation-open-assigned"
                             *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{'ConversationBeingProcessed' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='left' matTooltipHideDelay="100">
+                            matTooltipPosition='above' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;color: rgb(197, 44, 36);">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;"> {{'Open' | translate}} </span>
@@ -1313,7 +1320,7 @@
                           <li (click)="hasSelectedOpen('updatedWorkingStatus')" class="ticket-open-assigned"
                             *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{'TicketBeingProcessed' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='left' matTooltipHideDelay="100">
+                            matTooltipPosition='above' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;color: rgb(197, 44, 36);">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;"> {{'Open' | translate}} </span>
@@ -1322,7 +1329,7 @@
                           <li (click)="hasSelectedPending('updatedWorkingStatus')" class="pending"
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'WaitingForReplyFromTheRequester' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='left' matTooltipHideDelay="100">
+                            matTooltipPosition='above' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;color:  rgb(55,147,233);">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">  {{'Pending' | translate}} </span>
@@ -1333,7 +1340,7 @@
                             (click)="hasSelectedSolved('updatedWorkingStatus')" class="conversation-resolved"
                             *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='left' matTooltipHideDelay="100">
+                            matTooltipPosition='above' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">  
                               <i class="material-icons" style="padding-right: 5px; color: #999;">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;"> {{'VisitorsPage.Resolve' | translate}} </span>
@@ -1342,7 +1349,7 @@
                           <li (click)="hasSelectedSolved('updatedWorkingStatus')" class="ticket-resolved"
                             *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='left' matTooltipHideDelay="100">
+                            matTooltipPosition='above' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px; color: #999">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;"> {{'VisitorsPage.Resolve' | translate}}</span>
@@ -1359,7 +1366,7 @@
                         <div *ngIf="request?.status !== 1000 && !request?.subject"
                           class="resolve-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
                           matTooltip=" {{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='left' matTooltipHideDelay="100">
+                          matTooltipPosition='above' matTooltipHideDelay="100">
                           <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
                             class="btn btn-primary sideber-header-btn pull-right" role="button"
                             [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
@@ -1372,7 +1379,7 @@
                         <div *ngIf="request?.status !== 1000 && request?.subject"
                           class="resolve-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
                           matTooltip=" {{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='left' matTooltipHideDelay="100">
+                          matTooltipPosition='above' matTooltipHideDelay="100">
                           <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
                             class="btn btn-primary sideber-header-btn pull-right" role="button"
                             [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
@@ -1385,7 +1392,7 @@
                         <div *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000 && !request?.subject"
                           class="reopen-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
                           matTooltip=" {{ 'ReopenTheCurrentConversation' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='left' matTooltipHideDelay="100">
+                          matTooltipPosition='above' matTooltipHideDelay="100">
                           <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
                             class="btn btn-primary sideber-header-btn pull-right" role="button"
                             [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
@@ -1399,7 +1406,7 @@
                         <div *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000 && request?.subject"
                           class="reopen-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
                           matTooltip=" {{ 'ReopenTheCurrentTicket' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='left' matTooltipHideDelay="100">
+                          matTooltipPosition='above' matTooltipHideDelay="100">
                           <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
                             class="btn btn-primary sideber-header-btn pull-right" role="button"
                             [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
@@ -1418,7 +1425,7 @@
                           class="header-conv-svg-icon" height="24" width="24" viewBox="0 0 58.1 53.9"
                           xml:space="preserve" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
-                          #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                          #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                           <style type="text/css">
                             .st0-served-by-cu {
                               fill: none;
@@ -1476,7 +1483,7 @@
                           class="header-conv-svg-icon" src="assets/img/request_icons/status200_joined_internal.svg"
                           matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='below' matTooltipHideDelay="100" style="width: 24px;height: 24px;">
+                          matTooltipPosition='above' matTooltipHideDelay="100" style="width: 24px;height: 24px;">
 
                         <!-- ------------------------------------------------------------------------------------ -->
                         <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
@@ -1485,7 +1492,7 @@
                           class="header-conv-svg-icon" height="24" width="24" viewBox="0 0 58.1 53.9"
                           xml:space="preserve" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='below' matTooltipHideDelay="100">
+                          matTooltipPosition='above' matTooltipHideDelay="100">
                           <style type="text/css">
                             .st0-served {
                               fill: none;
@@ -1547,7 +1554,7 @@
                           matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" 
                           #tooltip="matTooltip"
-                          matTooltipPosition='below' 
+                          matTooltipPosition='above' 
                           matTooltipHideDelay="100"
                           style="width: 24px;height: 24px;">
                       </div>
@@ -1563,7 +1570,7 @@
                         <!-- ---------------------------------------- -->
                         <span *ngIf="request?.priority === 'high'" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{'Priority' | translate}}: {{'high' | translate}}" #tooltip="matTooltip"
-                          matTooltipPosition='below' matTooltipHideDelay="100">
+                          matTooltipPosition='above' matTooltipHideDelay="100">
                           <img style="width: 15px;height: 15px; vertical-align: top;"
                             src="assets/img/priority_icons/high_v2.svg" class="img-fluid">
 
