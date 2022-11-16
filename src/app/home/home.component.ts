@@ -316,14 +316,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.current_selected_prjct.id_project._id)
       this.logger.log('[HOME] - Find Current Project Among All hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', this.current_selected_prjct.id_project._id)
       this.logger.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_type 2', this.prjct_profile_type);
-      if ((this.prjct_profile_type === 'free' && daysDiffNowFromProjctCreated >= 30) || (this.prjct_profile_type === 'payment' && daysDiffNowFromProjctCreated < 30)) {
-        this.logger.log('[HOME] - Find Current Project Among All - BEFORE  Emittting TRIAL ENDED')
-        if (hasEmittedTrialEnded === null) {
-          this.logger.log('[HOME] - Find Current Project Among All - Emittting TRIAL ENDED')
-          // ------------------------------------
-          // @ Segment: emit Trial Ended
-          // ------------------------------------
-          if (!isDevMode()) {
+      // if ((this.prjct_profile_type === 'free' && daysDiffNowFromProjctCreated >= 30) || (this.prjct_profile_type === 'payment' && daysDiffNowFromProjctCreated < 30)) {
+      if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
+        // console.log('[HOME] - Find Current Project Among All - BEFORE  Emitting TRIAL ENDED')
+        // if (hasEmittedTrialEnded === null) {
+
+        this.logger.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED')
+        // ------------------------------------
+        // @ Segment: emit Trial Ended
+        // ------------------------------------
+        if (!isDevMode()) {
+          if (window['analytics']) {
             try {
               window['analytics'].track('Trial Ended', {
                 "userId": this.user._id,
@@ -339,18 +342,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             } catch (err) {
               this.logger.error('track Trial Started event error', err);
             }
+          } else {
+            this.logger.error('track Trial Started window[analytics]', window['analytics']);
           }
         }
       }
 
       if (!isDevMode()) {
-        try {
-          window['analytics'].group(projectProfileData._id, {
-            name: projectProfileData.name,
-            plan: this.profile_name_for_segment,
-          });
-        } catch (err) {
-          this.logger.error('group Home error', err);
+        if (window['analytics']) {
+          try {
+            window['analytics'].group(projectProfileData._id, {
+              name: projectProfileData.name,
+              plan: this.profile_name_for_segment,
+            });
+          } catch (err) {
+            this.logger.error('group Home error', err);
+          }
+        } else {
+          this.logger.error('group Home window[analytics]', window['analytics']);
         }
       }
 
