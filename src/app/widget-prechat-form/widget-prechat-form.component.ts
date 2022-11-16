@@ -10,6 +10,7 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
 
   @Input() primaryColor: string;
   @Input() secondaryColor: string;
+  @Input() themeColorOpacity: string;
   @Input() newConversation: string;
   @Input() preChatFormCustomFieldsEnabled: boolean;
   @Input() prechatFormArray: any; //used for the new projects
@@ -71,7 +72,16 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
     this.elementRef.nativeElement.style.setProperty('--themeColor', this.primaryColor);
     this.elementRef.nativeElement.style.setProperty('--foregroundColor', this.secondaryColor);
 
-    this.generateLinearGradient(this.primaryColor)
+    if (this.themeColorOpacity === '0.50') {
+      this.generateLinearGradient(this.primaryColor)
+    } else if (this.themeColorOpacity === '1') {
+      this.genetateThemeColorNoOpacity();
+    }
+  }
+
+  genetateThemeColorNoOpacity() {
+    this.primaryColorRGBA_1 = this.hexToRgbA_1(this.primaryColor)
+    this.linearGradient = 'linear-gradient( 180grad, ' + this.primaryColorRGBA_1 + ', ' + this.primaryColorRGBA_1 + ')';
   }
 
   generateLinearGradient(primaryColor) {

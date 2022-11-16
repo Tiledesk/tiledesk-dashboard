@@ -1187,7 +1187,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               }
             } else if (this.customer_default_payment_method_id === null) {
               if (paymentmethod.card) {
-                console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer > NO default paymentMethod OT deafult source - CARD', paymentmethod.card);
+                // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer > NO default paymentMethod OT deafult source - CARD', paymentmethod.card);
                 this.default_card_brand_name = paymentmethod.card.brand;
                 this.card_last_four_digits = paymentmethod.card.last4;
               }
