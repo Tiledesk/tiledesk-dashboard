@@ -1,0 +1,30 @@
+#alert-container{
+    /* // z-index: 1051;
+    // position: fixed; */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    z-index: 1051;
+    min-width: 1200px;
+}
+
+
+.alert-content{
+    position: absolute;
+    color: rgb(8, 15, 26);
+    z-index: 999999;
+    top: 0px;
+    left: 50%;
+    background: rgb(255, 194, 97);
+    text-align: center;
+    transition: all 0.15s ease-in-out 0s;
+    font-size: 14px;
+    line-height: 18px;
+    /* // letter-spacing: -0.01em; */
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    box-shadow: rgba(0, 27, 71, .24) 0px 1px 3px;
+    padding: 7px 20px;
+    transform: translate3d(-50%, 0px, 0px);
+    opacity: 1;
+}
