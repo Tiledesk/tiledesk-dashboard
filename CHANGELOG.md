@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.3.1
+### 2.3.2
 - Deploys in production
 - Adds ability, in Project Settings > Widget Configuration page, to disable theme color's gradient
 - Adds the ability, in the Project settings > Widget configuration page, to set the functionality of the "Single conversation" widget
