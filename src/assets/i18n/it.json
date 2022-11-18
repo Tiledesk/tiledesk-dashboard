@@ -2250,6 +2250,7 @@
     "CancelReply": "Form Annullata",
     "AddIntentPage": {
         "AddForm": "Aggiungi form",
+        "DeleteForm": "Elimina form",
         "SelectTemplateForm": "Seleziona una tipologia di form tra quelle suggerite, oppure creane uno nuovo",
         "InfoTemplateForm": "il modello di form selezionato '{{selectedFormName}}' contiene i seguenti campi: {{description_key}} ",
         "CreateForm": "Crea form",

@@ -2250,6 +2250,7 @@
     "CancelReply": "Form canceled",
     "AddIntentPage": {
         "AddForm": "Add form",
+        "DeleteForm": "Delete form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",
         "InfoTemplateForm": "the selected form template '{{selectedFormName}}' contains the following fields: {{description_key}} ",
         "CreateForm": "Create form",

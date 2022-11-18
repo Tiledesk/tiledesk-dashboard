@@ -18,11 +18,14 @@ export class TilebotFormComponent implements OnInit {
   // modal
   displayMODAL = false;
   translateMap: any;
-  selectedObjectId: number;
+  selectedObjectId: string;
   
   // add edit form
   selectedField: any;
-  displayAddEditForm = false;
+  // displayAddEditForm = false;
+  displayTilebotAddEditForm = false;
+  displayAddForm = false;
+  displayEditForm = false
   displayBoxNewForm = false;
   displaySettingForm = false;
 
@@ -31,6 +34,7 @@ export class TilebotFormComponent implements OnInit {
   displaySettingsButton = false;
   // intentForm: any;
 
+  idForm: string = "id-form-000";
   selectedForm: any;
   selectedFormId: number;
   modelsOfForm: any[] = [];
@@ -62,7 +66,6 @@ export class TilebotFormComponent implements OnInit {
       "cancel": "annulla"
     }
     if(this.intentForm && this.intentForm.fields){
-      // console.log('this.intentForm:::: ', this.intentForm);
       this.displayNewFormButton = false;
       this.displaySettingsButton = true;
       this.fields = this.intentForm.fields;
@@ -102,6 +105,13 @@ export class TilebotFormComponent implements OnInit {
     }
     this.displayCancelButton = false;
     this.displaySettingsButton = true;
+    
+    // se sto creando un form custom che non ha campi
+    if(this.fields.length === 0){
+      this.displayEditForm = false;
+      this.displayAddForm = true;
+      this.openAddEditForm();
+    }
     this.jsonGenerator();
   }
 
@@ -150,14 +160,6 @@ export class TilebotFormComponent implements OnInit {
   }
 
   /** */
-  // removeField(i: number) {
-  //   this.fields.splice(i, 1);
-  //   console.log('removeField:: ', this.fields.length);
-  //   if(this.fields.length === 0){
-  //     this.intentForm = null;
-  //   }
-  //   this.jsonGenerator();
-  // }
 
   // EVENTS //
   openBoxNewFormForm(){
@@ -193,46 +195,64 @@ export class TilebotFormComponent implements OnInit {
   }
 
   /** Event modal open delete field */
-  openDeleteFieldModal(index:number) {
+  openDeleteFieldModal(index:string) {
+    let i: number = +index;
     this.displayMODAL = true;
-    this.translateMap["nameField"] =this.fields[index].name; 
+    this.translateMap["nameField"] =this.fields[i].name; 
     this.selectedObjectId = index;
   }
 
   /** Event modal confirm delete field */
-  confirmDeleteModal(i:number){
-    this.fields.splice(i, 1);
-    this.displayMODAL = false;
-    if(this.fields.length === 0){
-      this.intentForm = {};
-      this.displayNewFormButton = false;
-      this.displaySettingsButton = true;
+  confirmDeleteModal(index:string){
+    if(index === this.idForm){
+      this.resetForm();
+    } else {
+      let i: number = +index;
+      this.fields.splice(i, 1);
+      if(this.fields.length === 0){
+        this.resetForm();
+      }
     }
-    // console.log('confirmDeleteModal:: ', this.fields);
     this.jsonGenerator();
+    this.displayMODAL = false;
+  }
+
+  private resetForm(){
+    this.intentForm = {};
+    this.fields = [];
+    this.displayNewFormButton = false;
+    this.displaySettingsButton = true;
+    this.displayAddForm = false;
+    this.displayEditForm = false;
+    this.displayTilebotAddEditForm = false;
   }
 
   /** Event modal close delete field */
   closeDeleteModal(i:number){
-    // console.log('closeDeleteModal: ',i);
     this.displayMODAL = false;
   }
 
   /** Event add field */
   eventAddField(){
+    this.displayEditForm = false;
     this.selectedField = null;
-    this.displayAddEditForm = true;
+    this.displayAddForm = true;
+    this.openAddEditForm();
   }
 
   /** Event edit field */
   eventEditField(i:number){
     this.selectedField = this.fields[i];
-    this.displayAddEditForm = true;
+    this.displayAddForm = false;
+    this.displayEditForm = true;
+    this.openAddEditForm();
   }
 
   /** Event close add/edit form accordion */
   closeAddEditForm(){
-    this.displayAddEditForm = false;
+    this.displayAddForm = false;
+    this.displayEditForm = false;
+    this.displayTilebotAddEditForm = false;
   }
 
   /** Event SAVE field */
@@ -244,8 +264,28 @@ export class TilebotFormComponent implements OnInit {
       this.fields.splice(objIndex, 1, event);
     }
     this.intentForm.fields = this.fields;
-    // console.log('saveAddEditForm', this.intentForm.fields);
-    this.displayAddEditForm = false;
+    this.displayAddForm = false;
+    this.displayEditForm = false;
+    this.displayTilebotAddEditForm = false;
     this.jsonGenerator();
+  }
+
+  openAddEditForm(){
+    this.displayTilebotAddEditForm = false;
+    setTimeout(() => {
+      this.displayTilebotAddEditForm = true;
+    }, 300);
+  }
+
+  /** */
+  openDeleteForm(){
+    this.translateMap = {
+      "deleteField": "Elimina il form",
+      "confirmDeleteField": "sei sicuro di voler eliminare il form",
+      "nameField": '',
+      "cancel": "annulla"
+    }
+    this.displayMODAL = true;
+    this.selectedObjectId = this.idForm;
   }
 }

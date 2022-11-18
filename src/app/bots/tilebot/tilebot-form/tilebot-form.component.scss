@@ -23,35 +23,61 @@ $color-text-box: #566787;
 
     button {
         padding: 6px 10px;
-        margin: 0 4px;
+        margin: 4px;
         .icon-label {
             vertical-align: text-top;
+            display: inline-block;
+            overflow: hidden;
+            margin-left: 0px;
+            width: auto;
+            max-width: 0px;
         }
-        .only-icon {
+        &:hover {
+            .icon-label {
+                transition:max-width 0.1s ease-in;
+                margin-left: 10px;
+                max-width: 80px;
+            }
+        }
+        &.only-icon {
+            border-radius: 20px;
             padding: 0px;
+            height: 30px;
+            width: 30px;
+            background: transparent;
+            margin: 15px 0 0 0;
+            padding: 0;
+            box-shadow: none;
+            .material-icons {
+                transition: transform 1s;
+                font-size: 22px;
+                color: $color-blue;
+            }
+        }
+        &:hover {
+            &.only-icon {
+                .icon-label {
+                    display: none;
+                }
+                .material-icons{
+                    transform: rotate(1turn);
+                }
+            }
+        }
+        &.add-form {
+            border-radius: 20px;
+            padding: 0 0 0 0px;
+            color: $color-withe;
+            margin: 15px 10px 0 10px;
             min-height: 30px;
+            .material-icons {
+                font-size: 20px;
+                top: 0;
+                padding: 0 5px;
+            }
         }
     }
 
-    button.add-form {
-        border-radius: 20px;
-        padding: 0 0 0 10px;
-        background-color: $color-blue;
-        color: $color-withe;
-        margin: 15px 0 10px;
-        min-height: 26px;
-        .material-icons {
-            font-size: 20px;
-            top: 0;
-            padding: 0 5px;
-        }
-    }
-   
-
-    // .box-settings-form{
-    //     background-color: #fff;
-    // }
-    
 
     .box-setting-form {
         margin: 0px;

@@ -18,7 +18,7 @@ export class TilebotListFieldsFormComponent implements OnInit {
 
   // add edit form
   selectedField: any;
-  displayAddEditForm = false;
+  // displayAddEditForm = false;
 
   
   constructor() { }
