@@ -2252,6 +2252,7 @@
     "PrimaryColorGradient":"Birincil rengin gradyanı",
     "EnableDisableprimaryColorGradient":"Widget'ın ana renginin gradyanını etkinleştirin/devre dışı bırakın",
     "ThereWasSomeTroubleConnectingToNetwork":"Özür dileriz. Ağa bağlanırken bazı sorunlar oluştu",
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv dosyasında sadece Cevap ve Soru alanları gereklidir",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

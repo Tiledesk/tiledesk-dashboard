@@ -2252,6 +2252,7 @@
     "PrimaryColorGradient":"Gradiente del colore primario",
     "EnableDisableprimaryColorGradient":"Abilita/Disabilita il gradiente del colore primario del widget",
     "ThereWasSomeTroubleConnectingToNetwork":"Le nostre scuse. Si è verificato un problema di connessione alla rete", 
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"Nel file example.csv sono obbligatori solo i campi Risposta e Domanda",
     "CancelReply": "Form Annullata",
     "AddIntentPage": {
         "AddForm": "Aggiungi form",

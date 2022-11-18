@@ -2252,6 +2252,7 @@
     "PrimaryColorGradient":"Əsas rəngin gradienti",
     "EnableDisableprimaryColorGradient":"Vidcetin əsas rənginin gradientini aktivləşdirin/deaktiv edin",
     "ThereWasSomeTroubleConnectingToNetwork":"Üzr istəyirik. Şəbəkəyə qoşulma zamanı problem yarandı",
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv faylında yalnız Cavab və Sual sahələri tələb olunur",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

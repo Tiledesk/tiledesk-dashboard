@@ -2252,6 +2252,7 @@
     "PrimaryColorGradient":"Градијент примарне боје",
     "EnableDisableprimaryColorGradient":"Омогућите/онемогућите градијент примарне боје виџета",
     "ThereWasSomeTroubleConnectingToNetwork":"Наше извињење. Дошло је до проблема при повезивању на мрежу",
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"У датотеци example.csv обавезна су само поља Одговор и Питање",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Још нема разговора",
