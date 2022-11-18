@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.3.3.1
+- Adds an alert indicating connection status when offline
+- Corrects the translations of the labels of the Spanish language (thanks to @IOhacker)
+
 ### 2.3.2
 - Deploys in production
 - Adds ability, in Project Settings > Widget Configuration page, to disable theme color's gradient
