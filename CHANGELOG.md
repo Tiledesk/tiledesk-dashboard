@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.3.3.1
+### 2.3.3-rc1
 - Adds an alert indicating connection status when offline
 - Corrects the translations of the labels of the Spanish language (thanks to @IOhacker)
 
