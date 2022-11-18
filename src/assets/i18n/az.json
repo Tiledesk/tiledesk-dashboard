@@ -2251,6 +2251,7 @@
     "SingleConversationDescription":"Tiledesk Vidceti Tək Söhbət funksiyasını aktiv etməklə eyni anda yalnız bir söhbəti idarə edə bilər. Bu seçim açıq və artıq arxivləşdirilmiş söhbətlərin siyahısı ilə evə baxmaq imkanını söndürür. Bu dəyişiklik müştərilərin komandanızla dəfələrlə əlaqə saxlamasına mane olmaqla söhbətləri daha çox davamlı mövzu halına gətirir, bu da komandanızın vaxtına və səyinə qənaət edir.",
     "PrimaryColorGradient":"Əsas rəngin gradienti",
     "EnableDisableprimaryColorGradient":"Vidcetin əsas rənginin gradientini aktivləşdirin/deaktiv edin",
+    "ThereWasSomeTroubleConnectingToNetwork":"Üzr istəyirik. Şəbəkəyə qoşulma zamanı problem yarandı",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

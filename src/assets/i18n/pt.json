@@ -2251,6 +2251,7 @@
     "SingleConversationDescription":"O Tiledesk Widget pode lidar com apenas uma conversa por vez, habilitando o recurso Single Conversation. Esta opção desativa a possibilidade de visualizar a casa com a lista de conversas abertas e as já arquivadas. Essa mudança torna as conversas mais contínuas, evitando que os clientes entrem em contato com sua equipe várias vezes, o que economiza tempo e esforço de sua equipe.",
     "PrimaryColorGradient":"Gradiente da cor primária",
     "EnableDisableprimaryColorGradient":"Habilitar/Desabilitar o gradiente da cor primária do widget",
+    "ThereWasSomeTroubleConnectingToNetwork":"Nossas desculpas. Ocorreu algum problema ao conectar-se à rede",
     "CHAT_IONIC": {
         "LABEL_TU": "vocês: ",
         "LABEL_MSG_PUSH_START_CHAT": "Nenhuma conversa ainda",

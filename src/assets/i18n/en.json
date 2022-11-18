@@ -2251,6 +2251,7 @@
     "SingleConversationDescription":"Tiledesk Widget can handle only one conversation at a time by enable the Single Conversation feature. This option disables the possibility of viewing the home with the list of open conversations and those already archived. This change makes conversations more of a continuous thread, preventing customers from reaching out to your team multiple times, which saves your team time and effort.",
     "PrimaryColorGradient":"Primary color's gradient",
     "EnableDisableprimaryColorGradient":"Enable/Disable the gradient of the primary color of the widget",
+    "ThereWasSomeTroubleConnectingToNetwork":"Our apologies. There was some trouble connecting to network",
     "CancelReply": "Form canceled",
     "AddIntentPage": {
         "AddForm": "Add form",

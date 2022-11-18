@@ -2251,6 +2251,7 @@
     "SingleConversationDescription":"Tiledesk виджеті Жалғыз сөйлесу мүмкіндігін қосу арқылы бір уақытта тек бір сөйлесуді өңдей алады. Бұл опция ашық сөйлесулер тізімімен және мұрағатталғандармен үйді көру мүмкіндігін өшіреді. Бұл өзгеріс тұтынушылардың сіздің командаңызға бірнеше рет хабарласуына жол бермей, әңгімелерді үздіксіз ағынға айналдырады, бұл сіздің командаңыздың уақыты мен күшін үнемдейді.",
     "PrimaryColorGradient":"Негізгі түстің градиенті",
     "EnableDisableprimaryColorGradient":"Виджеттің негізгі түсінің градиентін қосыңыз/өшіріңіз",
+    "ThereWasSomeTroubleConnectingToNetwork":"Nos excuses. Il y a eu des problèmes de connexion au réseau",
     "CHAT_IONIC": {
         "LABEL_TU": "сен: ",
         "LABEL_MSG_PUSH_START_CHAT": "Әзірге әңгіме жоқ",

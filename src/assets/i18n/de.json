@@ -2250,5 +2250,6 @@
 	"SingleConversation":"Einzelnes Gespräch",	
 	"SingleConversationDescription":"Tiledesk Widget kann jeweils nur eine Konversation verwalten, indem Sie die Funktion „Einzelne Konversation“ aktivieren. Diese Option deaktiviert die Möglichkeit, das Zuhause mit der Liste der offenen und bereits archivierten Konversationen anzuzeigen. Durch diese Änderung werden Konversationen eher zu einem fortlaufenden Thread, wodurch verhindert wird, dass sich Kunden mehrmals an Ihr Team wenden, was Ihrem Team Zeit und Mühe spart.",
 	"PrimaryColorGradient":"Farbverlauf der Primärfarbe",
-	"EnableDisableprimaryColorGradient":"Aktivieren/Deaktivieren Sie den Farbverlauf der Primärfarbe des Widgets"
+	"EnableDisableprimaryColorGradient":"Aktivieren/Deaktivieren Sie den Farbverlauf der Primärfarbe des Widgets",
+	"ThereWasSomeTroubleConnectingToNetwork":"Wir entschuldigen uns. Beim Verbinden mit dem Netzwerk ist ein Problem aufgetreten"
 }
