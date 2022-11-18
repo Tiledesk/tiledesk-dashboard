@@ -21,7 +21,6 @@ $color-star: #ff9d28;
         height: auto;
         position: absolute;
         top: 50%;
-        // margin-top: -50%;
         transform: translateY(-50%);
         font-size: 2em;
         font-weight: 200;
@@ -33,11 +32,6 @@ $color-star: #ff9d28;
 
         &.visible {
             animation-name: fade-in-out;
-            // visibility: visible;
-            // opacity: 1;
-            // -webkit-animation: puff-in-center 0.8s cubic-bezier(0.600, -0.280, 0.735, 0.045) 0.7s both;
-	        // animation: puff-in-center 0.8s cubic-bezier(0.600, -0.280, 0.735, 0.045) 0.7s both;
-            // transition: opacity 250ms ease-in, visibility 0ms ease-in 0ms;
         }
     }
 
@@ -87,6 +81,7 @@ $color-star: #ff9d28;
         width: 100%;
         font-size: 20px;
         font-weight: 500;
+        margin-top: 20px;
     }
     .role {
         display: block;
@@ -131,7 +126,7 @@ $color-star: #ff9d28;
     blockquote:after {
         content: '”';
         right: -30px;
-        bottom: -20px;
+        bottom: -40px;
     }
 
 

@@ -32,7 +32,9 @@ export class CreateProjectComponent implements OnInit {
   previousUrl: string;
   CLOSE_BTN_IS_HIDDEN = true
   new_project: any;
-  user: any
+  user: any;
+  companyLogoBlack_Url: string;
+
   constructor(
     private projectService: ProjectService,
     private auth: AuthService,
@@ -42,7 +44,8 @@ export class CreateProjectComponent implements OnInit {
     private logger: LoggerService
   ) {
     const brand = brandService.getBrand();
-    this.logo_x_rocket = brand['wizard_create_project_page']['logo_x_rocket']
+    this.logo_x_rocket = brand['wizard_create_project_page']['logo_x_rocket'];
+    this.companyLogoBlack_Url = brand['company_logo_black__url'];
   }
 
   ngOnInit() {
