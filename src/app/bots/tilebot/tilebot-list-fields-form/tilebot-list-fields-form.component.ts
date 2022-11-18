@@ -18,7 +18,6 @@ export class TilebotListFieldsFormComponent implements OnInit {
 
   // add edit form
   selectedField: any;
-  // displayAddEditForm = false;
 
   
   constructor() { }
@@ -37,17 +36,11 @@ export class TilebotListFieldsFormComponent implements OnInit {
   // EVENTS //
   /** Event modal open delete field */
   deleteFieldModal(index:number) {
-    // console.log('deleteFieldModal:::', index);
-    // this.displayMODAL = true;
-    // this.translateMap["nameField"] =this.fields[index].name; 
-    // this.selectedObjectId = index;
     this.openDeleteFieldModal.emit(index);
   }
 
   /** Event edit field */
   editField(index:number){
-    // this.selectedField = this.fields[i];
-    // this.displayAddEditForm = true;
     this.eventEditField.emit(index);
   }
 

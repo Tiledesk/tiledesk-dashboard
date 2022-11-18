@@ -4,11 +4,28 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 
+
+export interface ModalDeleteModel {
+  deleteField?: string;
+  nameField?: string;
+  confirmDeleteField?: string; 
+  cancel?:string;
+} 
+
+// export interface IntentFormModel {
+//   id?: string;
+//   name?: string;
+//   description_key?: string; 
+//   fields?:string;
+// } 
+
 @Component({
   selector: 'appdashboard-tilebot-form',
   templateUrl: './tilebot-form.component.html',
   styleUrls: ['./tilebot-form.component.scss']
 })
+
+
 export class TilebotFormComponent implements OnInit {
   @Output() passJsonIntentForm = new EventEmitter();
   @Input() intentForm: any;
@@ -17,22 +34,21 @@ export class TilebotFormComponent implements OnInit {
 
   // modal
   displayMODAL = false;
-  translateMap: any;
+  translateMap: ModalDeleteModel;
+  translations: any;
+
   selectedObjectId: string;
   
   // add edit form
   selectedField: any;
-  // displayAddEditForm = false;
   displayTilebotAddEditForm = false;
   displayAddForm = false;
   displayEditForm = false
   displayBoxNewForm = false;
   displaySettingForm = false;
-
   displayNewFormButton = true;
   displayCancelButton = false;
   displaySettingsButton = false;
-  // intentForm: any;
 
   idForm: string = "id-form-000";
   selectedForm: any;
@@ -59,18 +75,13 @@ export class TilebotFormComponent implements OnInit {
   ngOnInit(): void {
     this.getCurrentTranslation();
     this.getModelsForm();
-
-    this.translateMap = {
-      "deleteField": "Elimina campo",
-      "confirmDeleteField": "sei sicuro di voler eliminare il campo",
-      "cancel": "annulla"
-    }
+    this.translateMap = {};
+    this.translations = {};
     if(this.intentForm && this.intentForm.fields){
       this.displayNewFormButton = false;
       this.displaySettingsButton = true;
       this.fields = this.intentForm.fields;
     }
-
   }
   
 
@@ -120,8 +131,13 @@ export class TilebotFormComponent implements OnInit {
   getCurrentTranslation() {   
     let jsonWidgetLangURL = 'assets/i18n/'+this.langBot+'.json';
     this.httpClient.get(jsonWidgetLangURL).subscribe(data =>{
-      this.cancelCommands.push(data['Cancel']);
-      this.cancelReply = data['CancelReply'];
+      this.translations = data['AddIntentPage'];
+      let cancel = this.translations['Cancel']? this.translations['Cancel']: 'cancel';
+      this.cancelCommands.push(cancel);
+      this.cancelReply = this.translations['CancelReply']?this.translations['CancelReply']:'';
+      this.translateMap.cancel = cancel;
+
+      // console.log('this.translations:::: ', this.translations);
     })
   }
 
@@ -196,9 +212,12 @@ export class TilebotFormComponent implements OnInit {
 
   /** Event modal open delete field */
   openDeleteFieldModal(index:string) {
+    // console.log('this.translations:::: ', this.translations);
     let i: number = +index;
     this.displayMODAL = true;
-    this.translateMap["nameField"] =this.fields[i].name; 
+    this.translateMap.deleteField = this.translations['DeleteField']?this.translations['DeleteField']:'';
+    this.translateMap.confirmDeleteField = this.translations['ConfirmDeleteField']?this.translations['ConfirmDeleteField']:'';
+    this.translateMap.nameField = this.fields[i].name; 
     this.selectedObjectId = index;
   }
 
@@ -279,12 +298,9 @@ export class TilebotFormComponent implements OnInit {
 
   /** */
   openDeleteForm(){
-    this.translateMap = {
-      "deleteField": "Elimina il form",
-      "confirmDeleteField": "sei sicuro di voler eliminare il form",
-      "nameField": '',
-      "cancel": "annulla"
-    }
+    // console.log('this.translations:::: ', this.translations);
+    this.translateMap.deleteField = this.translations['DeleteField']?this.translations['DeleteField']:'';
+    this.translateMap.confirmDeleteField = this.translations['ConfirmDeleteField']?this.translations['ConfirmDeleteField']:'';
     this.displayMODAL = true;
     this.selectedObjectId = this.idForm;
   }

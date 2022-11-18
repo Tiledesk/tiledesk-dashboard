@@ -48,7 +48,7 @@ export class TilebotAddEditFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('ngOnInit::: ', this.showForm);
+    // console.log('ngOnInit::: ', this.showForm);
     if(this.displayAddForm){
       this.field = {
         "name": "",
@@ -74,13 +74,11 @@ export class TilebotAddEditFormComponent implements OnInit {
 
   ngAfterViewInit(){
     this.showForm = false;
-
     if(this.displayAddForm || this.displayEditForm){
       setTimeout(() => {
         this.showForm = true;
       }, 100);
     }
-    console.log('this.addStatus::: ', this.showForm);
   }
   
 
@@ -117,7 +115,6 @@ export class TilebotAddEditFormComponent implements OnInit {
         this.field.regex = this.phoneRGEX;
         break;
       case 'custom':
-          // this.showRegexField = true;
           this.field.regex = this.fieldRegex;
           break;
       default:
@@ -135,10 +132,6 @@ export class TilebotAddEditFormComponent implements OnInit {
       this.labelResult = false;
       status = false;
     }
-    // if(this.field.errorLabel.length == 0){
-    //   this.errorLabelResult = false;
-    //   status = false;
-    // }
     if(this.field.regex.length == 0 && this.field.type === 'custom'){
       this.regexResult = false;
       status = false;
@@ -153,12 +146,10 @@ export class TilebotAddEditFormComponent implements OnInit {
   onChangeParameterName(parameterName){
     parameterName.toString();
     this.fieldName = parameterName.replace(/[^A-Z0-9_]+/ig, "");
-    //this.field.name = parameterName.replace(/[^A-Z0-9_]+/ig, "");
   }
 
   /** */
   onChange(typeFieldValue) {
-    //console.log('onChange::: ', typeFieldValue);
     if(typeFieldValue === 'custom'){
       this.field.regex = this.customRGEX;
       this.showRegexField = true;

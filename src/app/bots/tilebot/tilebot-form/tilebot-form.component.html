@@ -23,7 +23,7 @@
             </span>
         </button>
 
-        <button *ngIf="displayCancelButton" class="btn btn-primary add-form only-icon2" (click)="closeGeneral()">
+        <button *ngIf="displayCancelButton" class="btn btn-primary only-icon" (click)="closeGeneral()">
             <span class="icon-label">{{ "Close" | translate }}</span>
             <span class="icon">
               <i class="material-icons">cancel</i>
@@ -76,7 +76,7 @@
     </div>
 
     
-    <!-- BUTTON ADD FIELD *ngIf="!displayAddForm && !displayEditForm && !displaySettingForm && intentForm" -->
+    <!-- BUTTON ADD FIELD -->
     <div class="header-list-form">
         <button 
         *ngIf="intentForm"
@@ -89,14 +89,6 @@
             <span>{{ "AddIntentPage.AddField" | translate }}</span>
         </button>
     </div>
-    <!-- <div *ngIf="displayAddEditForm" class="header-list-form">
-        <button class="btn btn-primary add-field" (click)="closeAddEditForm()">
-            <span class="icon">
-                <i class="material-icons">cancel</i>
-            </span>
-            <span>{{ "Close" | translate }}</span>
-        </button>
-    </div> -->
     
 
     <!-- ADD EDIT FIELD    -->

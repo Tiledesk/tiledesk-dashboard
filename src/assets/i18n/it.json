@@ -2247,10 +2247,9 @@
     "ClosesTheCurrentTicket":"Chiudi il ticket corrente",
     "ReopenTheCurrentConversation":"Riapri la conversazione corrente",
     "ReopenTheCurrentTicket":"Riapri il ticket corrente",
-    "CancelReply": "Form Annullata",
+    
     "AddIntentPage": {
         "AddForm": "Aggiungi form",
-        "DeleteForm": "Elimina form",
         "SelectTemplateForm": "Seleziona una tipologia di form tra quelle suggerite, oppure creane uno nuovo",
         "InfoTemplateForm": "il modello di form selezionato '{{selectedFormName}}' contiene i seguenti campi: {{description_key}} ",
         "CreateForm": "Crea form",
@@ -2265,12 +2264,17 @@
         "AddCustomRegex": "Aggiungi un regex personalizzato",
         "Label": "Etichetta",
         "ErrorMessage": "Messaggio d'errore",
+        "CancelReply": "Form annullata",
         "InfoMessages": {
             "field_name": "Dai un nome al campo del form (Ex: nome_utente). Il nome può contenere solo lettere numeri e _",
             "field_type": "Seleziona il tipo di dato che verrà inserito in questo campo (Ex: Text).",
             "field_regex": "Inserisci il Regex personalizzato per il controllo sul dato inserito",
             "field_label": "Scrivi una label chiara che aiuti gli utenti ad inserire i dati corretti (Ex: Come ti chiami?)",
             "field_error": "Scrivi un messaggio di errore in caso in cui il dato inserito dall'utente non sia corretto"
-        }
+        },
+        "DeleteField": "Elimina campo",
+        "ConfirmDeleteField": "Sei sicuro di voler eliminare il campo?",
+        "DeleteForm": "Elimina form",
+        "ConfirmDeleteForm":"Sei sicuro di voler eliminare il form?"
     }
 }
