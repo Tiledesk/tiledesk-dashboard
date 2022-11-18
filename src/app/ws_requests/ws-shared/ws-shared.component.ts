@@ -221,7 +221,7 @@ export class WsSharedComponent implements OnInit {
               });
 
               user['is_bot'] = false
-              console.log('WS-SHARED][WS-REQUESTS-MSGS]',  user)
+              // console.log('WS-SHARED][WS-REQUESTS-MSGS]',  user)
 
               // this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
               this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user['hasImage'], 'userfillColour': user['fillColour'], 'userFullname': user['fullname_initial'] })
