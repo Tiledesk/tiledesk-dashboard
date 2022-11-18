@@ -264,39 +264,39 @@ export class SigninComponent implements OnInit {
     const self = this;
 
     this.logger.log('[SIGN-IN] email ', this.userForm.value['email'])
-    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'],  (error, user) => {
+    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], (error, user) => {
       if (!error) {
         this.logger.log('[SIGN-IN] SSO (Signin) - user', user);
 
         if (!isDevMode()) {
-          try {
-            window['analytics'].page("Auth Page, Signin", {
-              // "properties": {
-              //   "title": 'Signin'
-              // }
-            });
-          } catch (err) {
-            this.logger.error('Signin page error', err);
-          }
+          if (window['analytics']) {
+            try {
+              window['analytics'].page("Auth Page, Signin", {
 
-          try {
-            window['analytics'].identify(user._id, {
-              name: user.firstname + ' ' + user.lastname,
-              email: user.email,
-              logins: 5,
+              });
+            } catch (err) {
+              this.logger.error('Signin page error', err);
+            }
 
-            });
-          } catch (err) {
-            this.logger.error('track signin event error', err);
-          }
-          // Segments
-          try {
-            window['analytics'].track('Signed In', {
-              "username": user.firstname + ' ' + user.lastname,
-              "userId": user._id
-            });
-          } catch (err) {
-            this.logger.error('track signin event error', err);
+            try {
+              window['analytics'].identify(user._id, {
+                name: user.firstname + ' ' + user.lastname,
+                email: user.email,
+                logins: 5,
+
+              });
+            } catch (err) {
+              this.logger.error('track signin event error', err);
+            }
+            // Segments
+            try {
+              window['analytics'].track('Signed In', {
+                "username": user.firstname + ' ' + user.lastname,
+                "userId": user._id
+              });
+            } catch (err) {
+              this.logger.error('track signin event error', err);
+            }
           }
         }
 
@@ -333,9 +333,9 @@ export class SigninComponent implements OnInit {
         this.showSpinnerInLoginBtn = false;
         this.logger.error('[SIGN-IN] 1. POST DATA ERROR', error);
         // self.logger.error('[SIGN-IN] 2. POST DATA ERROR status', error.status);
-      
+
         if (error.status === 0) {
-          
+
           this.display = 'block';
           this.signin_errormsg = 'Sorry, there was an error connecting to the server'
           this.notify.showToast(self.signin_errormsg, 4, 'report_problem')

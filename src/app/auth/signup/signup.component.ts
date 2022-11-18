@@ -121,21 +121,23 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.getOSCODE();
 
     if (!isDevMode()) {
-      try {
-        window['analytics'].page("Auth Page, Signup", {
-          // "properties": {
-          //   "title": 'Signup'
-          // }
-        });
-      } catch (err) {
-        this.logger.error('Signin page error', err);
-      }
-      try {
-        window['analytics'].identify({
-          createdAt: moment().format("YYYY-MM-DD hh:mm:ss")
-        });
-      } catch (err) {
-        this.logger.error('Signin identify error', err);
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Auth Page, Signup", {
+            // "properties": {
+            //   "title": 'Signup'
+            // }
+          });
+        } catch (err) {
+          this.logger.error('Signin page error', err);
+        }
+        try {
+          window['analytics'].identify({
+            createdAt: moment().format("YYYY-MM-DD hh:mm:ss")
+          });
+        } catch (err) {
+          this.logger.error('Signin identify error', err);
+        }
       }
     }
   }
@@ -290,30 +292,34 @@ export class SignupComponent implements OnInit, AfterViewInit {
           const userEmail = signupResponse.user.email
           this.logger.log('[SIGN-UP] RES USER EMAIL ', userEmail);
 
-          try {
-            window['analytics'].identify(signupResponse.user._id, {
-              name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
-              email: signupResponse.user.email,
-              logins: 5,
-            });
-          } catch (err) {
-            this.logger.error('identify signup event error', err);
-          }
+          if (!isDevMode()) {
+            if (window['analytics']) {
+              try {
+                window['analytics'].identify(signupResponse.user._id, {
+                  name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                  email: signupResponse.user.email,
+                  logins: 5,
+                });
+              } catch (err) {
+                this.logger.error('identify signup event error', err);
+              }
 
-          try {
-            window['analytics'].track('Signed Up', {
-              "type": "organic",
-              "first_name": signupResponse.user.firstname,
-              "last_name": signupResponse.user.lastname,
-              "email": signupResponse.user.email,
-              "username": signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
-              'userId': signupResponse.user._id
-              // "properties": {
+              try {
+                window['analytics'].track('Signed Up', {
+                  "type": "organic",
+                  "first_name": signupResponse.user.firstname,
+                  "last_name": signupResponse.user.lastname,
+                  "email": signupResponse.user.email,
+                  "username": signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                  'userId': signupResponse.user._id
+                  // "properties": {
 
-              // }
-            });
-          } catch (err) {
-            this.logger.error('track signup event error', err);
+                  // }
+                });
+              } catch (err) {
+                this.logger.error('track signup event error', err);
+              }
+            }
           }
 
           this.autoSignin(userEmail);

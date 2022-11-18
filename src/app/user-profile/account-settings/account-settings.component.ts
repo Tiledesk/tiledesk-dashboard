@@ -260,46 +260,46 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
       if (res) {
         if (!isDevMode()) {
-          try {
-            window['analytics'].page("User Profile Page, Settings", {
-              // "properties": {
-              //   "title": 'Settings'
-              // }
-            });
-          } catch (err) {
-            this.logger.error('Account Deleted page error', err);
-          }
+          if (window['analytics']) {
+            try {
+              window['analytics'].page("User Profile Page, Settings", {
 
-          try {
-            window['analytics'].identify(this.currentUser._id, {
-              name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
-              email: this.currentUser.email,
-              plan: this.prjct_profile_name
+              });
+            } catch (err) {
+              this.logger.error('Account Deleted page error', err);
+            }
 
-            });
-          } catch (err) {
-            this.logger.error('identify in Account Deleted  error', err);
-          }
+            try {
+              window['analytics'].identify(this.currentUser._id, {
+                name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
+                email: this.currentUser.email,
+                plan: this.prjct_profile_name
 
-          try {
-            window['analytics'].track('Account Deleted', {
-              "account_name": this.prjct_profile_name,
-            }, {
-              "context": {
-                "groupId": this.projectId
-              }
-            });
-          } catch (err) {
-            this.logger.error('track Account Deleted event error', err);
-          }
+              });
+            } catch (err) {
+              this.logger.error('identify in Account Deleted  error', err);
+            }
 
-          try {
-            window['analytics'].group(this.project._id, {
-              name: this.project.name,
-              plan: this.prjct_profile_name,
-            });
-          } catch (err) {
-            this.logger.error('group Signed Out error', err);
+            try {
+              window['analytics'].track('Account Deleted', {
+                "account_name": this.prjct_profile_name,
+              }, {
+                "context": {
+                  "groupId": this.projectId
+                }
+              });
+            } catch (err) {
+              this.logger.error('track Account Deleted event error', err);
+            }
+
+            try {
+              window['analytics'].group(this.project._id, {
+                name: this.project.name,
+                plan: this.prjct_profile_name,
+              });
+            } catch (err) {
+              this.logger.error('group Signed Out error', err);
+            }
           }
         }
       }

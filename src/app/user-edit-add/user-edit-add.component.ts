@@ -175,12 +175,14 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.translateTagNotificationMsgs();
     this.getBrowserVersion();
     if (!isDevMode()) {
-      try {
-        window['analytics'].page("Invite Temmates Page , Invite temmate", {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Invite Temmates Page , Invite temmate", {
 
-        });
-      } catch (err) {
-        this.logger.error('Signin page error', err);
+          });
+        } catch (err) {
+          this.logger.error('Signin page error', err);
+        }
       }
     }
   }
@@ -860,37 +862,39 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.getAllUsersOfCurrentProject();
       this.getPendingInvitation();
       if (!isDevMode()) {
-        try {
-          window['analytics'].identify(this.CURRENT_USER._id, {
-            name: this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname,
-            email: this.CURRENT_USER.email,
-            plan: this.profile_name_for_segment
+        if (window['analytics']) {
+          try {
+            window['analytics'].identify(this.CURRENT_USER._id, {
+              name: this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname,
+              email: this.CURRENT_USER.email,
+              plan: this.profile_name_for_segment
 
-          });
-        } catch (err) {
-          this.logger.error('identify Invite Sent Profile error', err);
-        }
+            });
+          } catch (err) {
+            this.logger.error('identify Invite Sent Profile error', err);
+          }
 
-        try {
-          window['analytics'].track('Invite Sent', {
-            "invitee_email": this.user_email,
-            "invitee_role": this.invitedProjectUser.role
-          }, {
-            "context": {
-              "groupId": this.invitedProjectUser.id_project
-            }
-          });
-        } catch (err) {
-          this.logger.error('track Invite Sent event error', err);
-        }
+          try {
+            window['analytics'].track('Invite Sent', {
+              "invitee_email": this.user_email,
+              "invitee_role": this.invitedProjectUser.role
+            }, {
+              "context": {
+                "groupId": this.invitedProjectUser.id_project
+              }
+            });
+          } catch (err) {
+            this.logger.error('track Invite Sent event error', err);
+          }
 
-        try {
-          window['analytics'].group(this.invitedProjectUser.id_project, {
-            name: this.project_name,
-            plan: this.profile_name_for_segment,
-          });
-        } catch (err) {
-          this.logger.error('group Invite Sent error', err);
+          try {
+            window['analytics'].group(this.invitedProjectUser.id_project, {
+              name: this.project_name,
+              plan: this.profile_name_for_segment,
+            });
+          } catch (err) {
+            this.logger.error('group Invite Sent error', err);
+          }
         }
       }
     });

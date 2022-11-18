@@ -122,7 +122,6 @@ export class ContactsService {
   // @ GET LEADS - ACTIVE
   // -------------------------------
   getLeadsActive(): Observable<Contact[]> {
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

@@ -34,19 +34,18 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.getCurrentProjectAndCurrentUser();
     if (!isDevMode()) {
-      try {
-        window['analytics'].page("Plan updated, Success", {});
-      } catch (err) {
-        this.logger.error('page Home error', err);
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Plan updated, Success", {});
+        } catch (err) {
+          this.logger.error('page Home error', err);
+        }
       }
     }
-
-
   }
 
   ngAfterViewInit() {
     // this.getProjectPlan()
-
   }
 
 

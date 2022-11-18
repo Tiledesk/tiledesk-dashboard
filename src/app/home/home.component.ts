@@ -138,10 +138,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     if (!isDevMode()) {
-      try {
-        window['analytics'].page("Home Page, Home", {});
-      } catch (err) {
-        this.logger.error('page Home error', err);
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Home Page, Home", {});
+        } catch (err) {
+          this.logger.error('page Home error', err);
+        }
       }
     }
     this.getLoggedUser()
@@ -195,16 +197,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (this.user) {
           if (!isDevMode()) {
-            try {
-              window['analytics'].identify(this.user._id, {
-                name: this.user.firstname + ' ' + this.user.lastname,
-                email: this.user.email,
-                logins: 5,
-                plan: this.profile_name_for_segment,
+            if (window['analytics']) {
+              try {
+                window['analytics'].identify(this.user._id, {
+                  name: this.user.firstname + ' ' + this.user.lastname,
+                  email: this.user.email,
+                  logins: 5,
+                  plan: this.profile_name_for_segment,
 
-              });
-            } catch (err) {
-              this.logger.error('identify Home error', err);
+                });
+              } catch (err) {
+                this.logger.error('identify Home error', err);
+              }
             }
           }
 
@@ -321,34 +325,39 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         // console.log('[HOME] - Find Current Project Among All - BEFORE  Emitting TRIAL ENDED')
         // if (hasEmittedTrialEnded === null) {
 
-        this.logger.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED')
+
         // ------------------------------------
         // @ Segment: emit Trial Ended
         // ------------------------------------
         if (!isDevMode()) {
-          if (window['analytics']) {
-            try {
-              window['analytics'].track('Trial Ended', {
-                "userId": this.user._id,
-                "trial_start_date": trialStarDate,
-                "trial_end_date": trialEndDate,
-                "trial_plan_name": "Pro (trial) "
-              }, {
-                "context": {
-                  "groupId": this.current_selected_prjct.id_project._id
-                }
-              });
-              localStorage.setItem('dshbrd----' + this.current_selected_prjct.id_project._id, 'hasEmittedTrialEnded')
-            } catch (err) {
-              this.logger.error('track Trial Started event error', err);
+          setTimeout(() => {
+            if (window['analytics']) {
+              this.logger.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED')
+              try {
+                window['analytics'].track('Trial Ended', {
+                  "userId": this.user._id,
+                  "trial_start_date": trialStarDate,
+                  "trial_end_date": trialEndDate,
+                  "trial_plan_name": "Pro (trial) "
+                }, {
+                  "context": {
+                    "groupId": this.current_selected_prjct.id_project._id
+                  }
+                });
+                // this.updatedProjectTrialEndedEmitted(true)
+                localStorage.setItem('dshbrd----' + this.current_selected_prjct.id_project._id, 'hasEmittedTrialEnded')
+              } catch (err) {
+                this.logger.error('track Trial Started event error', err);
+              }
+            } else {
+              this.logger.error('track Trial Started window[analytics]', window['analytics']);
             }
-          } else {
-            this.logger.error('track Trial Started window[analytics]', window['analytics']);
-          }
+          }, 100);
         }
       }
 
       if (!isDevMode()) {
+        this.logger.log('here yes - group isDevMode', isDevMode())
         if (window['analytics']) {
           try {
             window['analytics'].group(projectProfileData._id, {
@@ -370,6 +379,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, () => {
       this.logger.log('[HOME] - Find Current Project Among All * COMPLETE * ');
     });
+  }
+
+  updatedProjectTrialEndedEmitted(hasemittetedtrialendend) {
+    this.projectService.updateProjectName(this.projectId, hasemittetedtrialendend)
+      .subscribe((prjct) => {
+        this.logger.log('[HOME] - UPDATE PROJECT - HAS EMITTED TRIAL ENDED - RESPONSE ', prjct);
+
+      }, (error) => {
+        this.logger.error('[HOME] UPDATE PROJECT - HAS EMITTED TRIAL ENDED - ERROR ', error);
+      }, () => {
+        this.logger.log('[HOME] UPDATE PROJECT - HAS EMITTED TRIAL ENDED * COMPLETE *');
+      });
   }
 
   init() {

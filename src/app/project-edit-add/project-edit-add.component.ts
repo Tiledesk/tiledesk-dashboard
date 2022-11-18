@@ -815,10 +815,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Payments ');
       this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
       if (!isDevMode()) {
-        try {
-          window['analytics'].page("Project Settings, Subscription", {});
-        } catch (err) {
-          this.logger.error('page Home error', err);
+        if (window['analytics']) {
+          try {
+            window['analytics'].page("Project Settings, Subscription", {});
+          } catch (err) {
+            this.logger.error('page Home error', err);
+          }
         }
       }
 

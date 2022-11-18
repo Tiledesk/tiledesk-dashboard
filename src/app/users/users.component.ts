@@ -748,45 +748,47 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser,)
         // this.ngOnInit();
         if (!isDevMode()) {
-          try {
-            window['analytics'].page("Temmates list Page, Temmates", {
-      
-            });
-          } catch (err) {
-            this.logger.error('Account Deleted page error', err);
-          }
+          if (window['analytics']) {
+            try {
+              window['analytics'].page("Temmates list Page, Temmates", {
 
-          try {
-            window['analytics'].identify(this.CURRENT_USER._id, {
-              name: this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname,
-              email: this.CURRENT_USER.email,
-              plan: this.prjct_profile_name
-
-            });
-          } catch (err) {
-            this.logger.error('identify in Account Removed  error', err);
-          }
-
-          try {
-            window['analytics'].track('Account Removed User', {
-              "userId": projectUsers.id_user
-            },
-              {
-                "context": {
-                  "groupId": this.id_project
-                }
               });
-          } catch (err) {
-            this.logger.error('track signin event error', err);
-          }
+            } catch (err) {
+              this.logger.error('Account Deleted page error', err);
+            }
 
-          try {
-            window['analytics'].group(this.project._id, {
-              name: this.project.name,
-              plan: this.prjct_profile_name,
-            });
-          } catch (err) {
-            this.logger.error('group Signed Out error', err);
+            try {
+              window['analytics'].identify(this.CURRENT_USER._id, {
+                name: this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname,
+                email: this.CURRENT_USER.email,
+                plan: this.prjct_profile_name
+
+              });
+            } catch (err) {
+              this.logger.error('identify in Account Removed  error', err);
+            }
+
+            try {
+              window['analytics'].track('Account Removed User', {
+                "userId": projectUsers.id_user
+              },
+                {
+                  "context": {
+                    "groupId": this.id_project
+                  }
+                });
+            } catch (err) {
+              this.logger.error('track signin event error', err);
+            }
+
+            try {
+              window['analytics'].group(this.project._id, {
+                name: this.project.name,
+                plan: this.prjct_profile_name,
+              });
+            } catch (err) {
+              this.logger.error('group Signed Out error', err);
+            }
           }
         }
       }, (error) => {

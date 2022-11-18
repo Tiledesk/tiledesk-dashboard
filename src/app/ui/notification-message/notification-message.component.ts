@@ -291,36 +291,38 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
       if (confirmation && confirmation.status === 'canceled') {
         this.notify.showNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
         if (!isDevMode()) {
-          try {
-            window['analytics'].identify(this.currentUser._id, {
-              name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
-              email: this.currentUser.email,
-              logins: 5,
-              plan: this.profile_name_for_segment,
-            });
-          } catch (err) {
-            this.logger.error('identify [NOTIFICATION-MSG] Cancel subscription error', err);
-          }
+          if (window['analytics']) {
+            try {
+              window['analytics'].identify(this.currentUser._id, {
+                name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
+                email: this.currentUser.email,
+                logins: 5,
+                plan: this.profile_name_for_segment,
+              });
+            } catch (err) {
+              this.logger.error('identify [NOTIFICATION-MSG] Cancel subscription error', err);
+            }
 
-          try {
-            window['analytics'].track('Cancel Subscription', {
-              "email": this.currentUser.email,
-            }, {
-              "context": {
-                "groupId": this.projectId
-              }
-            });
-          } catch (err) {
-            this.logger.error('track [NOTIFICATION-MSG] Cancel subscrption error', err);
-          }
+            try {
+              window['analytics'].track('Cancel Subscription', {
+                "email": this.currentUser.email,
+              }, {
+                "context": {
+                  "groupId": this.projectId
+                }
+              });
+            } catch (err) {
+              this.logger.error('track [NOTIFICATION-MSG] Cancel subscrption error', err);
+            }
 
-          try {
-            window['analytics'].group(this.projectId, {
-              name: this.prjct_name,
-              plan: this.profile_name_for_segment,
-            });
-          } catch (err) {
-            this.logger.error('group [NOTIFICATION-MSG] Cancel subscrption error', err);
+            try {
+              window['analytics'].group(this.projectId, {
+                name: this.prjct_name,
+                plan: this.profile_name_for_segment,
+              });
+            } catch (err) {
+              this.logger.error('group [NOTIFICATION-MSG] Cancel subscrption error', err);
+            }
           }
         }
 

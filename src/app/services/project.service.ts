@@ -310,6 +310,25 @@ export class ProjectService {
       .put(url, JSON.stringify(body), httpOptions)
   }
 
+  public updateHasEmittedTrialEnded(id: string, triaended: boolean) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.PROJECTS_URL + id;
+    this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WHITH THE KEY TRIAL ENDED - PUT URL ', url);
+
+    const body = { 'trialEnded': triaended };
+    this.logger.log('[PROJECT-SERV] - UPDATE PROJECT WHITH THE KEY TRIAL ENDED - PUT BODY ', body);
+
+    return this._httpclient
+      .put(url, JSON.stringify(body), httpOptions)
+  }
+
 
   public addAllowedIPranges(id: string, ipFilterEnabled: boolean, ipFilterArray: any) {
     const httpOptions = {

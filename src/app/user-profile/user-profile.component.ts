@@ -633,32 +633,34 @@ export class UserProfileComponent implements OnInit {
       this.logger.log('[USER-PROFILE] - CALLBACK RESPONSE ', response)
       if (response === 'success') {
         if (!isDevMode()) {
-          try {
-            window['analytics'].page("User Profile Page, Profile", {
+          if (window['analytics']) {
+            try {
+              window['analytics'].page("User Profile Page, Profile", {
 
-            });
-          } catch (err) {
-            this.logger.error('User Profile page error', err);
-          }
+              });
+            } catch (err) {
+              this.logger.error('User Profile page error', err);
+            }
 
-          try {
-            window['analytics'].identify(this.user._id, {
-              name: this.userFirstname + ' ' + this.userLastname,
-              email: this.user.email,
-              plan: this.prjct_profile_name
+            try {
+              window['analytics'].identify(this.user._id, {
+                name: this.userFirstname + ' ' + this.userLastname,
+                email: this.user.email,
+                plan: this.prjct_profile_name
 
-            });
-          } catch (err) {
-            this.logger.error('identify in User Profile error', err);
-          }
+              });
+            } catch (err) {
+              this.logger.error('identify in User Profile error', err);
+            }
 
-          try {
-            window['analytics'].group(this.prjct_id, {
-              name: this.prjct_name,
-              plan: this.prjct_profile_name,
-            });
-          } catch (err) {
-            this.logger.error('group Signed Out error', err);
+            try {
+              window['analytics'].group(this.prjct_id, {
+                name: this.prjct_name,
+                plan: this.prjct_profile_name,
+              });
+            } catch (err) {
+              this.logger.error('group Signed Out error', err);
+            }
           }
         }
 
