@@ -158,6 +158,8 @@ export class PanoramicaComponent implements OnInit {
       '6': moment.weekdaysShort(5),
       '7': moment.weekdaysShort(6)
     }
+
+    // console.log("[ANALYTICS - OVERVIEW] weekday ", this.weekday );
     // this.hour = {
     //   '1': '01:00', '2': '02:00', '3': '03:00', '4': '04:00', '5': '05:00', '6': '06:00', '7': '07:00', '8': '08:00', '9': '09:00', '10': '10:00',
     //   '11': '11:00', '12': '12:00', '13': '13:00', '14': '14:00', '15': '15:00', '16': '16:00', '17': '17:00', '18': '18:00', '19': '19:00', '20': '20:00',
@@ -191,7 +193,7 @@ export class PanoramicaComponent implements OnInit {
       '24': moment("24:00", "HH:mm").format('LT')
     }
 
-    // console.log('[ANALYTICS - OVERVIEW] existent this.weekday', this.weekday)
+    // console.log('[ANALYTICS - OVERVIEW] hour', this.hour)
     this.yAxis = {
       labels: [
         moment("01:00", "HH:mm").format('LT'),
@@ -503,7 +505,7 @@ export class PanoramicaComponent implements OnInit {
 
       this.analyticsService.getDataHeatMap().subscribe(res => {
         let data: object = res;
-        this.logger.log('[ANALYTICS - OVERVIEW] GET HEAT MAP DATA -> RES ', res);
+        // console.log('[ANALYTICS - OVERVIEW] GET HEAT MAP DATA -> RES ', res);
   
         let heatmapInitData = []
 
@@ -519,10 +521,10 @@ export class PanoramicaComponent implements OnInit {
           this.formattedHeatMapRes.push({ "hour": this.hour[this.getOffset(data[z]._id.hour, data[z]._id.weekday).hours], "weekday": this.weekday[this.getOffset(data[z]._id.hour, data[z]._id.weekday).weekday], 'count': data[z].count });
         }
   
-        this.logger.log("[ANALYTICS - OVERVIEW] GET HEAT MAP DATA -> RES FORMATTED (formattedHeatMapRes)", this.formattedHeatMapRes);
+        // console.log("[ANALYTICS - OVERVIEW] GET HEAT MAP DATA -> RES FORMATTED (formattedHeatMapRes)", this.formattedHeatMapRes);
 
         const finalApxArray = heatmapInitData.map(obj => this.formattedHeatMapRes.find(o => (o.hour === obj.hour) && (o.weekday === obj.weekday)) || obj);
-        this.logger.log("[ANALYTICS - OVERVIEW] GET HEAT MAP DATA - FINAL ARRAY (finalApxArray)", finalApxArray)
+        // console.log("[ANALYTICS - OVERVIEW] GET HEAT MAP DATA - FINAL ARRAY (finalApxArray)", finalApxArray)
      
         if ( finalApxArray) {
           this.buildApxHeatMap(finalApxArray)
@@ -539,100 +541,148 @@ export class PanoramicaComponent implements OnInit {
     this.chartOptions = {
       series: [
         {
-          name: "12:00 AM",
-          data: this.generateData("12:00 AM",finalApxArray)
+          // name: "12:00 AM",
+          // data: this.generateData("12:00 AM",finalApxArray)
+          name: this.hour[24],
+          data: this.generateData(this.hour[24],finalApxArray)
         },
         {
-          name: "11:00 PM",
-          data: this.generateData("11:00 PM",finalApxArray)
+          // name: "11:00 PM",
+          // data: this.generateData("11:00 PM",finalApxArray)
+           name: this.hour[23],
+          data: this.generateData(this.hour[23],finalApxArray)
         },
         {
-          name: "10:00 PM",
-          data: this.generateData("10:00 PM",finalApxArray)
+          // name: "10:00 PM",
+          // data: this.generateData("10:00 PM",finalApxArray)
+          name: this.hour[22],
+          data: this.generateData(this.hour[22],finalApxArray)
         },
         {
-          name: "9:00 PM",
-          data: this.generateData("9:00 PM",finalApxArray)
+          // name: "9:00 PM",
+          // data: this.generateData("9:00 PM",finalApxArray)
+          name: this.hour[21],
+          data: this.generateData(this.hour[21],finalApxArray)
         },
         {
-          name: "8:00 PM",
-          data: this.generateData("8:00 PM",finalApxArray)
+          // name: "8:00 PM",
+          // data: this.generateData("8:00 PM",finalApxArray)
+          name: this.hour[20],
+          data: this.generateData(this.hour[20],finalApxArray)
         },
         {
-          name: "7:00 PM",
-          data: this.generateData("7:00 PM",finalApxArray)
+          // name: "7:00 PM",
+          // data: this.generateData("7:00 PM",finalApxArray)
+          name: this.hour[19],
+          data: this.generateData(this.hour[19],finalApxArray)
         },
         {
-          name: "6:00 PM",
-          data: this.generateData("6:00 PM",finalApxArray)
+          // name: "6:00 PM",
+          // data: this.generateData("6:00 PM",finalApxArray)
+          name: this.hour[18],
+          data: this.generateData(this.hour[18],finalApxArray)
         },
         {
-          name: "5:00 PM",
-          data: this.generateData("5:00 PM",finalApxArray)
+          // name: "5:00 PM",
+          // data: this.generateData("5:00 PM",finalApxArray)
+          name: this.hour[17],
+          data: this.generateData(this.hour[17],finalApxArray)
         },
         {
-          name: "4:00 PM",
-          data: this.generateData("4:00 PM",finalApxArray)
+          // name: "4:00 PM",
+          // data: this.generateData("4:00 PM",finalApxArray)
+          name: this.hour[16],
+          data: this.generateData(this.hour[16],finalApxArray)
         },
         {
-          name: "3:00 PM",
-          data: this.generateData("3:00 PM",finalApxArray)
+          // name: "3:00 PM",
+          // data: this.generateData("3:00 PM",finalApxArray)
+          name: this.hour[15],
+          data: this.generateData(this.hour[15],finalApxArray)
         },
         {
-          name: "2:00 PM",
-          data: this.generateData("2:00 PM",finalApxArray)
+          // name: "2:00 PM",
+          // data: this.generateData("2:00 PM",finalApxArray)
+          name: this.hour[14],
+          data: this.generateData(this.hour[14],finalApxArray)
         },
         {
-          name: "1:00 PM",
-          data: this.generateData("1:00 PM",finalApxArray)
+          // name: "1:00 PM",
+          // data: this.generateData("1:00 PM",finalApxArray)
+          name: this.hour[13],
+          data: this.generateData(this.hour[13],finalApxArray)
         },
         {
-          name: "12:00 PM",
-          data: this.generateData("12:00 PM",finalApxArray)
+          // name: "12:00 PM",
+          // data: this.generateData("12:00 PM",finalApxArray)
+          name: this.hour[12],
+          data: this.generateData(this.hour[12],finalApxArray)
         },
         {
-          name: "11:00 AM",
-          data: this.generateData("11:00 AM",finalApxArray)
+          // name: "11:00 AM",
+          // data: this.generateData("11:00 AM",finalApxArray)
+          name: this.hour[11],
+          data: this.generateData(this.hour[11],finalApxArray)
         },
         {
-          name: "10:00 AM",
-          data: this.generateData("10:00 AM",finalApxArray)
+          // name: "10:00 AM",
+          // data: this.generateData("10:00 AM",finalApxArray)
+          name: this.hour[10],
+          data: this.generateData(this.hour[10],finalApxArray)
         },
         {
-          name: "9:00 AM",
-          data: this.generateData("9:00 AM",finalApxArray)
+          // name: "9:00 AM",
+          // data: this.generateData("9:00 AM",finalApxArray)
+          name: this.hour[9],
+          data: this.generateData(this.hour[9],finalApxArray)
         },
         {
-          name: "8:00 AM",
-          data: this.generateData("8:00 AM",finalApxArray)
+          // name: "8:00 AM",
+          // data: this.generateData("8:00 AM",finalApxArray)
+          name: this.hour[8],
+          data: this.generateData(this.hour[8],finalApxArray)
         },
         {
-          name: "7:00 AM",
-          data: this.generateData("7:00 AM",finalApxArray)
+          // name: "7:00 AM",
+          // data: this.generateData("7:00 AM",finalApxArray)
+          name: this.hour[7],
+          data: this.generateData(this.hour[7],finalApxArray)
         },
         {
-          name: "6:00 AM",
-          data: this.generateData("6:00 AM",finalApxArray)
+          // name: "6:00 AM",
+          // data: this.generateData("6:00 AM",finalApxArray)
+          name: this.hour[6],
+          data: this.generateData(this.hour[6],finalApxArray)
         },
         {
-          name: "5:00 AM",
-          data: this.generateData("5:00 AM",finalApxArray)
+          // name: "5:00 AM",
+          // data: this.generateData("5:00 AM",finalApxArray)
+          name: this.hour[5],
+          data: this.generateData(this.hour[5],finalApxArray)
         },
         {
-          name: "4:00 AM",
-          data: this.generateData("4:00 AM", finalApxArray)
+          // name: "4:00 AM",
+          // data: this.generateData("4:00 AM", finalApxArray)
+          name: this.hour[4],
+          data: this.generateData(this.hour[4],finalApxArray)
         },
         {
-          name: "3:00 AM",
-          data: this.generateData("3:00 AM", finalApxArray)
+          // name: "3:00 AM",
+          // data: this.generateData("3:00 AM", finalApxArray)
+          name: this.hour[3],
+          data: this.generateData(this.hour[3],finalApxArray)
         },
         {
-          name: "2:00 AM",
-          data: this.generateData("2:00 AM",finalApxArray)
+          // name: "2:00 AM",
+          // data: this.generateData("2:00 AM",finalApxArray)
+          name: this.hour[2],
+          data: this.generateData(this.hour[2],finalApxArray)
         },
         {
-          name: "1:00 AM",
-          data: this.generateData("1:00 AM", finalApxArray)
+          // name: "1:00 AM",
+          // data: this.generateData("1:00 AM", finalApxArray)
+          name: this.hour[1],
+          data: this.generateData(this.hour[1],finalApxArray)
         }
       ],
       chart: {
@@ -648,7 +698,8 @@ export class PanoramicaComponent implements OnInit {
       colors: ["#008FFB"],
       xaxis: {
         type: "category",
-        categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+        // categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+        categories: [this.weekday[1],  this.weekday[2], this.weekday[3], this.weekday[4], this.weekday[5], this.weekday[6], this.weekday[7]]
       },
       grid: {
         padding: {
