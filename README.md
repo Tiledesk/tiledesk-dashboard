@@ -100,9 +100,12 @@ Install the latest stable release. Check on Github page the last release under t
 
   
 
-You can put your API URL and the other settings directly in the environment.*.ts  if `remoteConfig` is set to `false` or in the `dashboard-config.json`  if `remoteConfig` is set to `true`.
+You can put your API URL and the other settings directly in the environment.*.ts.
 
-If `remoteConfig` is set to `true` create a file name `dashboard-config.json` and put it into `src` folder.
+**Note** 
+If the remoteConfig is set to true, you will have to set up the tiledesk server with correct configuration for the app to work as intended
+
+If remoteConfig is false, the configuration from _environment.ts_ will be used the single source of truth
 
 An example of the configuration of the  `environment.ts` file in  `src/environments/`
 
