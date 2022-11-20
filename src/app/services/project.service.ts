@@ -792,7 +792,6 @@ export class ProjectService {
   //  GET CUSTOMER by ID !! Not used   
   // --------------------------------
   public getCustomerById(customerId: string): Observable<[any]> {
-
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/customers/' + customerId;
     // const url =  'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerId;
     this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - ID', customerId);
@@ -805,10 +804,28 @@ export class ProjectService {
         'Authorization': this.TOKEN
       })
     };
-
     return this._httpclient
       .get<[any]>(url, httpOptions)
-
   }
+
+  getPromoBanner(): Observable<[any]>{
+      const url = "https://dashbordpromobanner.nicolan74.repl.co/get/dashboard_promo.json";
+     
+      this.logger.log('[PROJECT-SERV] - GET PROMO BRAND URL', url);
+      
+     
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }),
+        // responseType: 'text' as 'json'
+      };
+
+      return this._httpclient
+        .get<[any]>(url, httpOptions)
+    }
+
+  
 
 }
