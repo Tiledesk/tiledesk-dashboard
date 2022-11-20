@@ -2,13 +2,36 @@
   Home
   <!-- <button (click)="sumuptest()" type="button">  test  </button> -->
 </p>
+<!-- -------------------------------- -->
+<!-- Promo Banner -->
+<!-- -------------------------------- -->
+
+<div  *ngIf="dispayPromoBanner && resPromoBanner" class="promo-banner-wpr">
+  <!-- <p>{{resPromoBanner | json}} </p>  -->
+  <div class="promo-banner-left-column">
+    {{ resPromoBanner['left-title']}}
+    
+  </div>
+
+  <div class="promo-banner-center-column">
+    {{resPromoBanner['center-message']}}
+    <button type="button" class="btn btn-new btn-size-m btn-link btn-inline" (click)="goToPromoBannerLink(resPromoBanner?.link, resPromoBanner['link-target'])">
+      <span>   {{resPromoBanner['link-button-text']}}</span>
+    </button>
+  </div>
+  <div class="promo-banner-right-column">
+    <img [src]="resPromoBanner['image']"/>
+
+  </div>
+
+</div>
 
 <div class="main-content" style="padding-top: 8px;margin-top: 0px;">
   <!-- ----------------------------------------------------------- -->
   <!-- Home header -->
   <!-- ----------------------------------------------------------- -->
   <div class="row" style=" margin-left: -15px; margin-right: -15px;">
-    <div class="col-md-12" style="padding-left: 0px; padding-right: 0px;  margin-top: -25px;">
+    <div class="col-md-12 n-header-home-wpr" [ngStyle]="{'margin-top':dispayPromoBanner === true ? '-28px' : '-25px' }">
       <div class="n-header-home">
         <h2 class="n-header-home-title">
          <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span> 
