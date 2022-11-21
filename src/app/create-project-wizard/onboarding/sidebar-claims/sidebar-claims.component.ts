@@ -20,8 +20,8 @@ export class SidebarClaimsComponent implements OnInit {
 
   ngOnInit(): void {
     this.claims = [
-      { stars: 6, message: 'We love what Tiledesk is today. But the best has yet to come',  author:'Andrea Sponziello', role:'Tiledesk CEO'},
       { stars: 5, message: 'El mejor chatbot que uso, sencillo de manejar',  author:'Alberto P.', role:'CEO'},
+      { stars: 6, message: 'We love what Tiledesk is today. But the best has yet to come',  author:'Andrea Sponziello', role:'Tiledesk CEO'},
       { stars: 5, message: 'Great product, great support, excited to see more businesses using Tiledesk in the future',  author:'Michael R.', role:'CTO'},
       { stars: 5, message: 'The best open source live chat, especially with its bot replies',  author:'Peter X.', role:'Co-Founder'},
       { stars: 5, message: 'Great system with lots of features',  author:'Richard M.', role:'CTO'}

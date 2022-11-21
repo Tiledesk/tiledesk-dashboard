@@ -6,8 +6,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./chatbot-configuration.component.scss']
 })
 export class ChatbotConfigurationComponent implements OnInit {
-  @Output() changePage = new EventEmitter();
-  @Output() changeStepNumber = new EventEmitter();
+  @Output() nextPage = new EventEmitter();
+  @Output() nextPageNoFaq = new EventEmitter();
+  @Output() prevPage = new EventEmitter();
   @Input() selectedQuestion: string;
   @Input() welcomeMessage: string;
   @Input() primaryColor: string;
@@ -101,12 +102,12 @@ export class ChatbotConfigurationComponent implements OnInit {
 
   goToPrevPage() {
     let event = { step:'step1'}
-    this.changePage.emit(event);
+    this.prevPage.emit(event);
   }
 
   goToNextPageAndSaveAllQuestions() {
     let event = { step:'step3', questions:this.questions, answers: this.answers}
-    this.changePage.emit(event);
+    this.nextPage.emit(event);
   }
 
   // goToNextPageAndSaveQuestions() {
@@ -118,7 +119,7 @@ export class ChatbotConfigurationComponent implements OnInit {
 
   goToNextPage() {
     let event = { step:'step3', questions:[], answers:[] }
-    this.changePage.emit(event);
+    this.nextPageNoFaq.emit(event);
   }
 
 
