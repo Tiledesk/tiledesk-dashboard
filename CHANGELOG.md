@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.3.3
+- Deploys in production
+- Restyling of the graphics of the "Create project" wizard
+- Adds a call to action banner on the home page
+- Fixes the bug: in Analytics > Overview, "Heatmap" chart values are only displayed if dashboard language is set to English
+- Adds "promoBannerUrl" environment variable
+
 ### 2.3.3-rc2
 - Restyling of the graphics of the "Create project" wizard
 - Adds a call to action banner on the home page
