@@ -806,26 +806,6 @@ export class ProjectService {
     };
     return this._httpclient
       .get<[any]>(url, httpOptions)
-  }
-
-  getPromoBanner(): Observable<[any]>{
-      const url = "https://dashbordpromobanner.nicolan74.repl.co/get/dashboard_promo.json";
-     
-      this.logger.log('[PROJECT-SERV] - GET PROMO BRAND URL', url);
-      
-     
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }),
-        // responseType: 'text' as 'json'
-      };
-
-      return this._httpclient
-        .get<[any]>(url, httpOptions)
-    }
-
-  
+  } 
 
 }
