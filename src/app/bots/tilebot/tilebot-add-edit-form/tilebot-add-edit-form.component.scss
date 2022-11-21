@@ -2,8 +2,6 @@
     height: auto; 
     max-height: 0;
     overflow: hidden;
-    // transition-delay: 0.3s;
-    // transition-duration: 0.613s;
     box-shadow: none;
     transition: max-height 0.3s ease-in;
     &.active {
@@ -15,8 +13,26 @@
         padding: 8px 16px; 
         margin: 0px;
     }
-   
 }
+
+.info-message {
+    background-color: #fff; 
+    border: 1px solid #e8f0f5;
+    box-shadow: none;
+    padding: 10px;
+    display: flex;
+    em.material-icons {
+        vertical-align: middle; 
+        display: inline-flex; 
+        color: #3ea9f5; 
+        margin-right: 3px;
+        span {
+            vertical-align: middle; 
+            display: inline-flex;
+        }
+    }
+}
+
 
 
 
@@ -38,6 +54,14 @@
         color: #3c4858;
         font-weight: 400;
     } 
+    .ng-select {
+        &.form-control-select ::ng-deep .ng-select-container  { 
+            background-size: 0 2px,100% 1px;
+            background-repeat: no-repeat;
+            background-position: center bottom,center calc(100% - 1px);
+        }
+
+    }
 }
 
 .form-group.is-focused textarea.form-control{
@@ -71,10 +95,84 @@ input.form-control {
     }
 }
 
-.form-group.is-error .form-control {
-    outline: none;
-    background-image: linear-gradient(#ed2e19,#ed2e19),linear-gradient(#D2D2D2,#D2D2D2);
-    background-size: 100% 2px,100% 1px;
-    box-shadow: none;
-    transition-duration: .3s;
+.form-group.is-error {
+    .form-control {
+        outline: none;
+        background-image: linear-gradient(#ed2e19,#ed2e19),linear-gradient(#D2D2D2,#D2D2D2);
+        background-size: 100% 2px,100% 1px;
+        box-shadow: none;
+        transition-duration: .3s;
+    }
+    .ng-select {
+        &.form-control-select ::ng-deep .ng-select-container  { 
+            display: flex;
+            outline: none;
+            background-image: linear-gradient(#ed2e19,#ed2e19),linear-gradient(#D2D2D2,#D2D2D2);
+            background-size: 100% 2px,100% 1px;
+            box-shadow: none;
+            transition-duration: .3s;
+        }
+    }
 }
+
+
+.form-group.is-empty label.control-label {
+    top: -6px;
+    left: 6px;
+    font-size: 14px;
+    line-height: normal;
+    position: absolute;
+    color: #aaa;
+    z-index:1;
+    pointer-events: none;
+}
+
+.form-group label.control-label {
+    top: -35px; 
+    left: 0;
+    font-size: 11px;
+    line-height: normal;
+    position: absolute;
+    pointer-events: none;
+    transition: .3s ease all;
+    color:#3c4858;
+}
+
+.form-group.is-focused label.control-label{
+  top: -35px; 
+  left: 0;
+  font-size: 11px;
+  line-height: normal;
+  position: absolute;
+  pointer-events: none;
+  transition: .3s ease all;
+  color:#3c4858;
+}
+
+
+
+.form-group.ng-select {
+    label.control-label {
+        top: -35px; 
+        left: 0;
+        font-size: 11px;
+        line-height: normal;
+        position: absolute;
+        pointer-events: none;
+        transition: .3s ease all;
+        color:#3c4858;
+    }
+    &.is-placeholder {
+        label.control-label {
+            top: -6px;
+            left: 6px;
+            font-size: 14px;
+            line-height: normal;
+            position: absolute;
+            color: #aaa;
+            z-index:1;
+            pointer-events: none;
+        }
+    }
+} 
+

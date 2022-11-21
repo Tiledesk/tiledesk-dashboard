@@ -4,42 +4,54 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group" [ngClass]="{'is-error':nameResult === false}">
+                    <label class="control-label">
+                        {{ 'AddIntentPage.ParameterName' | translate }}
+                    </label>
                     <input 
                         type="text" 
                         class="input form-control" 
                         [(ngModel)]="fieldName" 
                         (ngModelChange)="onChangeParameterName($event)" 
                         (focus)="displayMessage('field_name')" 
-                        placeholder="{{ 'AddIntentPage.ParameterName' | translate }}"
                     />
                 </div> 
             </div>
 
             <div class="col-md-6">
-                <div class="form-group">
+               
+                <div class="form-group ng-select" 
+                    [ngClass]="{'is-error':typeResult === false, 'is-placeholder':inputTypePlaceholderClass === true}">
+                    <label class="control-label">
+                        {{ 'SiteName' | translate }}
+                    </label>
                     <div class="selectFormModel">
                         <ng-select 
-                            [items]="modelsOfType" 
-                            bindLabel="item"
-                            bindValue="item"
+                            class = "form-control-select" 
+                            [items] = "modelsOfType" 
+                            bindLabel = "item"
+                            bindValue = "item"
+                            [searchable] = false
                             [clearable] = false
-                            [(ngModel)]="fieldType"
-                            (focus)="displayMessage('field_type')" 
-                            (change)="onChange($event)">
+                            [(ngModel)] = "fieldType"
+                            (blur) = "displayPlaceholder(true)"
+                            (focus) = "displayPlaceholder(false); displayMessage('field_type')" 
+                            (change) = "onChange($event)">
                         </ng-select>
                     </div>
                 </div>
             </div>
 
+
             <div *ngIf="showRegexField" class="col-md-12">
                 <div class="form-group" [ngClass]="{'is-error':regexResult === false}">
-                    <label>{{ 'AddIntentPage.AddCustomRegex' | translate }}</label>
+                    <label class="control-label">
+                        {{ 'AddIntentPage.AddCustomRegex' | translate }} ex: {{nameRGEX}}
+                    </label>
                     <input 
                         type="text" 
                         class="input form-control" 
                         [(ngModel)]="fieldRegex" 
-                        (focus)="displayMessage('field_regex')" 
-                        placeholder="ex: {{nameRGEX}}"
+                        (focus)="displayMessage('field_regex')"
                     />
                 </div>
             </div>
@@ -49,6 +61,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group" [ngClass]="{'is-error':labelResult === false}">
+                    <label class="control-label">
+                        {{ 'AddIntentPage.Label' | translate }}
+                    </label>
                     <textarea  
                         name="field_label" 
                         [(ngModel)]="fieldLabel" 
@@ -56,20 +71,21 @@
                         style="resize: vertical;" 
                         class="form-control" 
                         type="text"
-                        (focus)="displayMessage('field_label')"
-                        placeholder="{{ 'AddIntentPage.Label' | translate }}">
+                        (focus)="displayMessage('field_label')">
                     </textarea>
                 </div>
             </div>
 
             <div *ngIf="fieldType != 'text'" class="col-md-12">
                 <div class="form-group" [ngClass]="{'is-error':errorLabelResult === false}">
+                    <label class="control-label">
+                        {{ 'AddIntentPage.ErrorMessage' | translate }}
+                    </label>
                     <input 
                         type="text" 
                         class="input form-control" 
                         [(ngModel)]="fieldErrorLabel" 
                         (focus)="displayMessage('field_error')" 
-                        placeholder="{{ 'AddIntentPage.ErrorMessage' | translate }}"
                     />
                 </div>
             </div>
@@ -77,16 +93,12 @@
 
         <div *ngIf="displayInfoMessage" class="input-wrapper">
             <div class="row">
-            <div class="col-sm-12">
-                <div style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
-                <span style="display: flex;">
-                    <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5; margin-right: 3px;" class="material-icons">info</i>
-                    <span style="vertical-align: middle; display: inline-flex;">
-                    {{ infoMessage }}
-                    </span>
-                </span>
+                <div class="col-sm-12">
+                    <div class="info-message">
+                        <em class="material-icons">info</em>
+                        <span [innerHTML]="infoMessage"></span>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
 
@@ -100,7 +112,7 @@
             {{ 'Add' | translate}}
         </button>
         <button *ngIf="displayEditForm === true" class="btn btn-primary" type="submit" (click)="save()">
-            {{ 'Edit' | translate}}
+            {{ 'Update' | translate}}
         </button>
     </div>
 </div>

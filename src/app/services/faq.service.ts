@@ -236,8 +236,10 @@ export class FaqService {
 
     const url = this.FAQ_URL;
     this.logger.log('[FAQ-SERV] ADD FAQ -  PUT URL ', url);
-
-    const body = { 'question': question, 'answer': answer, 'id_faq_kb': id_faq_kb, 'intent_display_name': intentname, 'form':intentform, 'webhook_enabled': faqwebhookenabled };
+    const body = { 'question': question, 'answer': answer, 'id_faq_kb': id_faq_kb, 'intent_display_name': intentname, 'webhook_enabled': faqwebhookenabled };
+    if(intentform && intentform.fields && intentform.fields.length>0){
+      body['form'] = intentform;
+    }
     this.logger.log('[FAQ-SERV] ADD FAQ - POST BODY ', body);
 
     return this._httpClient

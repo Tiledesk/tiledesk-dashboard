@@ -93,19 +93,12 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   }
 
   ngOnInit() {
-    // this.DISPLAY_SPINNER_SECTION = true;
-    // this.DISPLAY_SPINNER = false;
-    // this.DISPLAY_BOT = true;
-    // this.CREATE_BOT_ERROR = false;
-    // this.DISPLAY_FAQ = true;
-    // this.CREATE_FAQ_ERROR = true;
     this.init();
   }
 
   
   ngOnDestroy() {
     this.sub.unsubscribe();
-    // this.whenCreateBot.unsubscribe();
   }
 
   /** INIT */

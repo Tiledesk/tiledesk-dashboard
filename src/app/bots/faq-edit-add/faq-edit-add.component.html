@@ -78,12 +78,12 @@
               </div> 
               
               <div class="col-sm-12" style="height:10px"></div>
-              <label class="col-sm-12 custom-label-left" style="margin-bottom: 0px;">
-                {{ "Questions" | translate }}
-              </label>
-              <span style="display:block; font-size:12px; color: #7695a5;padding-left: 16px; ">
+              <label class="col-sm-12 custom-label-left">
                 {{ 'TypeAddYourQuestionHere' | translate}}
-              </span>
+              </label>
+              <!-- <span style="display:block; font-size:12px; color: #7695a5;padding-left: 16px; "> -->
+                
+              <!-- </span> -->
               <div class="col-sm-12">
                 <textarea 
                   [(ngModel)]="question" 
@@ -135,7 +135,7 @@
               </div>
               <div class="col-sm-12" style="height:10px"></div>
               <label class="col-sm-12 custom-label-left">
-                {{ "FaqEditAddPage.Answer" | translate }}
+                {{ "FaqEditAddPage.InfoAnswer" | translate }}
               </label>
               <div class="col-xs-12">
                 <textarea 
@@ -185,6 +185,10 @@
                     {{ 'EnableWebhookCallForThisIntent' | translate }}
                   </span>
                 </div>
+
+                <div class="col-sm-12" style="height:10px"></div>
+                <label class="col-sm-12 custom-label-left" [innerHTML]='"FaqEditAddPage.MoreOnWebhooks" | translate'></label>
+  
               </div>
             </div>
             <!-- END Webhook -->
@@ -256,13 +260,13 @@
               </div>
               <div class="col-sm-12" style="height:10px"></div>
               <label
-                style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;color: #7695a5;margin-bottom: 0px;"
+                style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;color: #7695a5;"
                 class="col-sm-12 ">
-                {{ "Questions" | translate }}
-              </label>
-              <span style="display:block; font-size:12px; color: #7695a5;padding-left: 16px; ">
                 {{ 'TypeAddYourQuestionHere' | translate}}
-              </span>
+              </label>
+              <!-- <span style="display:block; font-size:12px; color: #7695a5;padding-left: 16px; ">
+                {{ 'TypeAddYourQuestionHere' | translate}}
+              </span> -->
               <div class="col-sm-12">
                 <textarea 
                   [(ngModel)]="question_toUpdate" 
@@ -316,7 +320,7 @@
               </div>
               <div class="col-sm-12" style="height:10px"></div>
               <label style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;color: #7695a5;" class="col-sm-12 ">
-                {{ "FaqEditAddPage.Answer" | translate }}
+                {{ "FaqEditAddPage.InfoAnswer" | translate }}
               </label>
               <div class="col-sm-12">
                 <textarea 
@@ -346,7 +350,6 @@
                   <div class="section-subtitle"> </div>
                 </div>
               </div>
-
               <div class="col-sm-12">
                 <div class="nw-onoffswitch-wrapper" style="clear: both;display: inline-block;">
                   <div class="nw-onoffswitch">
@@ -367,7 +370,12 @@
                     {{ 'EnableWebhookCallForThisIntent' | translate }}
                   </span>
                 </div>
+
+                <div class="col-sm-12" style="height:10px"></div>
+                <label class="col-sm-12 custom-label-left" [innerHTML]='"FaqEditAddPage.MoreOnWebhooks" | translate'></label>
+  
               </div>
+
             </div>
             <!-- END Webhook -->
 

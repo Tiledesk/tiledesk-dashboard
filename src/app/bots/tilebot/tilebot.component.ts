@@ -18,7 +18,6 @@ import { UsersService } from '../../services/users.service';
 import { BotsBaseComponent } from '../bots-base/bots-base.component';
 import { BrandService } from '../../services/brand.service';
 import { DepartmentService } from '../../services/department.service';
-import { avatarPlaceholder, getColorBck } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 import {
   URL_microlanguage_for_dialogflow_images_videos,
@@ -27,7 +26,9 @@ import {
   URL_response_bot_images_buttons_videos_and_more,
   URL_handoff_to_human_agents,
   URL_configure_your_first_chatbot,
-  URL_dialogflow_connector
+  URL_dialogflow_connector,
+  avatarPlaceholder, 
+  getColorBck
 } from '../../utils/util';
 const swal = require('sweetalert');
 @Component({

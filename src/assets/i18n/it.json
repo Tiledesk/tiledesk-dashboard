@@ -1030,7 +1030,9 @@
         "TheRequestWillBeAssignedToAHumanAgent": "inserisci '\\agent' come ultima riga nell'area di testo “Risposta“ per spostare automaticamente la conversazione su un agente umano, seguendo le regole del dipartimento. Altro sul Human handoff:",
         "DisplayTheButtonWithNameButton_1": "sintassi per visualizzare un pulsante: utilizza ‘*’ seguito da uno spazio, quindi il testo del pulsante su una nuova riga del testo della risposta. Vedi esempio",
         "DisplayTheImageWithTheSpecifiedURL": "visualizza l'immagine con l'URL specificato",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint": "chiama il webhook esterno all'endpoint specificato"
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "chiama il webhook esterno all'endpoint specificato",
+        "MoreOnWebhooks": "Scopri di più sui webhooks <a href='https://developer.tiledesk.com/resolution-bot/quickstart/' target='_blank'>qui</a>",
+        "InfoAnswer": "Inserisci la risposta del Chatbot alla domanda sopra"
     },
     "FaqTestPage": {
         "Question": "Domanda",
@@ -2275,6 +2277,7 @@
         "DeleteField": "Elimina campo",
         "ConfirmDeleteField": "Sei sicuro di voler eliminare il campo?",
         "DeleteForm": "Elimina form",
-        "ConfirmDeleteForm":"Sei sicuro di voler eliminare il form?"
+        "ConfirmDeleteForm":"Sei sicuro di voler eliminare il form?",
+        "MarkbotLabel": "Puoi usare il <a href='https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/' target='_blank'>Markbot</a> per formattare il testo."
     }
 }

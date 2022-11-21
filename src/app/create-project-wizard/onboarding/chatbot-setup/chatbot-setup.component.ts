@@ -9,9 +9,12 @@ export class ChatbotSetupComponent implements OnInit {
   @Output() goToNextStep = new EventEmitter();
   @Output() continueToNextStep = new EventEmitter();
   @Input() selectedQuestion: string;
-  constructor() { }
+  constructor() { 
+    // is empty
+  }
 
   ngOnInit(): void {
+    // is empty
   }
 
 

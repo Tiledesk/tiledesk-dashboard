@@ -1030,7 +1030,9 @@
         "TheRequestWillBeAssignedToAHumanAgent": "insert '\\agent' as the last line in “Answer” text area to automatically move the conversaton to a human agent, following the department rules. More on human handoff",
         "DisplayTheButtonWithNameButton_1": "display button syntax: Use ‘*’ followed by one space, then the button’s text on a new line of the answer text. See example",
         "DisplayTheImageWithTheSpecifiedURL": "display the image with the specified URL. See example",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint": "call the external webhook to the specified endpoint"
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "call the external webhook to the specified endpoint",
+        "MoreOnWebhooks": "More on webhooks <a href='https://developer.tiledesk.com/resolution-bot/quickstart/' target='_blank'>here</a>",
+        "InfoAnswer": "Enter the Chatbot's answer to the question above"
     },
     "FaqTestPage": {
         "Question": "Question",
@@ -2275,7 +2277,8 @@
         "DeleteField": "Delete field",
         "ConfirmDeleteField": "Are you sure you want to delete the field?",
         "DeleteForm": "Delete form",
-        "ConfirmDeleteForm":"Are you sure you want to delete the form?"
+        "ConfirmDeleteForm":"Are you sure you want to delete the form?",
+        "MarkbotLabel": "You can use <a href='https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/' target='_blank'>Markbot</a> to format your labels."
     },
     "CHAT_IONIC": {
         "LABEL_TU": "you: ",

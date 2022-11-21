@@ -20,11 +20,13 @@ export class TilebotAddEditFormComponent implements OnInit {
   langDashboard = 'En';
   showForm = false;
   nameResult = true;
+  typeResult = true;
   labelResult = true;
   regexResult = true;
   errorLabelResult = true;
   showRegexField = false;
   displayInfoMessage = false;
+  inputTypePlaceholderClass = true;
 
   customRGEX = /^.{1,}$/;
   textRGEX = /^.{1,}$/;
@@ -34,9 +36,10 @@ export class TilebotAddEditFormComponent implements OnInit {
   modelsOfType = ["text", "email", "number", "custom"];
   infoMessages = {}
   infoMessage: string;
+  markbotLabel: string;
 
   fieldName: string = '';
-  fieldType: string = 'text';
+  fieldType: string = null;
   fieldRegex: string = '';
   fieldLabel: string = '';
   fieldErrorLabel: string = '';
@@ -52,7 +55,7 @@ export class TilebotAddEditFormComponent implements OnInit {
     if(this.displayAddForm){
       this.field = {
         "name": "",
-        "type": "text",
+        "type": "",
         "regex": "",
         "label": "",
         "errorLabel": ""
@@ -83,6 +86,7 @@ export class TilebotAddEditFormComponent implements OnInit {
   
 
   // FUNCTIONS //
+  
   /** */
   getCurrentTranslation() {   
     if(this.translate.currentLang){
@@ -91,23 +95,33 @@ export class TilebotAddEditFormComponent implements OnInit {
     let jsonWidgetLangURL = 'assets/i18n/'+this.langDashboard+'.json';
     this.httpClient.get(jsonWidgetLangURL).subscribe(data =>{
       this.infoMessages = data['AddIntentPage'].InfoMessages;
+      this.markbotLabel = data['AddIntentPage']['MarkbotLabel'];
     })
   }
 
   /** */
   checkFields(){
-
     this.nameResult = true;
+    this.typeResult = true;
     this.labelResult = true;
     this.errorLabelResult = true;
     let status = true;
 
     this.field.name = this.fieldName?this.fieldName:'';
-    this.field.type = this.fieldType?this.fieldType:'';
+    this.field.type = this.fieldType?this.fieldType:null;
     this.field.regex = this.fieldRegex?this.fieldRegex:this.customRGEX;
     this.field.label = this.fieldLabel?this.fieldLabel.trim():'';
     this.field.errorLabel = this.fieldErrorLabel?this.fieldErrorLabel.trim():'';
+
+    if(this.fieldType == null){
+      this.typeResult = false;
+      status = false;
+    }
+    
     switch (this.field.type) {
+      case 'text':
+        this.field.regex = this.textRGEX;
+        break;
       case 'email':
         this.field.regex = this.emailRGEX;
         break;
@@ -118,12 +132,14 @@ export class TilebotAddEditFormComponent implements OnInit {
           this.field.regex = this.fieldRegex;
           break;
       default:
-        this.field.regex = this.textRGEX;
+        status = false;
+        //this.field.regex = this.textRGEX;
     }
     this.nameResult = this.nameRGEX.test(this.field.name);
     if(this.nameResult === false){
       status = false;
     }
+    
     if(this.field.name.length == 0){
       this.nameResult = false;
       status = false;
@@ -158,11 +174,27 @@ export class TilebotAddEditFormComponent implements OnInit {
     }
   }
 
+  displayPlaceholder(event){
+    if(event === true && this.fieldType){
+      this.inputTypePlaceholderClass = false;
+    } else if(event === false){
+      this.inputTypePlaceholderClass = false;
+    } else {
+      this.inputTypePlaceholderClass = true;
+    }
+    console.log("displayPlaceholder:::: ", this.inputTypePlaceholderClass, event);
+  }
+
   displayMessage(field){
     if(this.infoMessages[field]){
       this.infoMessage = this.infoMessages[field];
       this.displayInfoMessage = true;
     }
+    if(field === 'field_label'){
+      this.infoMessage += " "+this.markbotLabel;
+      // "You can use markbot to format your labels (https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/)";
+    }
+    
   }
 
   save(){

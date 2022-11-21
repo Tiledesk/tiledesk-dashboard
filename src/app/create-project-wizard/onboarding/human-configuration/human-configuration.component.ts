@@ -32,7 +32,9 @@ export class HumanConfigurationComponent implements OnInit {
   limitCharsText = 500;
   HAS_FOCUSED_ONLINE_MSG: boolean = true;
 
-  constructor() { }
+  constructor() { 
+    // is empty
+  }
 
   ngOnInit() {
     this.init();
