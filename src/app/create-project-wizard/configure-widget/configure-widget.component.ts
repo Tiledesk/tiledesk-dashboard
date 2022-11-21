@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs'
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
-import { slideInAnimation } from '../../_animations/index';
+// import { slideInAnimation } from '../../_animations/index';
 import { BrandService } from '../../services/brand.service';
 import { ProjectService } from '../../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,22 +10,24 @@ import { WidgetSetUpBaseComponent } from '../../widget_components/widget-set-up/
 import { WidgetService } from '../../services/widget.service';
 import { AppConfigService } from '../../services/app-config.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'appdashboard-configure-widget',
   templateUrl: './configure-widget.component.html',
   styleUrls: ['./configure-widget.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: [slideInAnimation],
+  // animations: [slideInAnimation],
   // tslint:disable-next-line:use-host-property-decorator
-  host: { '[@slideInAnimation]': '' }
+  // host: { '[@slideInAnimation]': '' }
 })
 export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implements OnInit {
-
+  companyLogoBlack_Url: string;
   projectName: string;
   projectId: string;
   sub: Subscription;
   tparams: any;
+  // CLOSE_BTN_IS_HIDDEN = true;
   DISPLAY_WIDGET_HOME = true;
   DISPLAY_CALLOUT = false;
   public company_name: any;
@@ -82,11 +84,12 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     public translate: TranslateService,
     private widgetService: WidgetService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public location: Location
   ) {
     super(translate);
     const brand = brandService.getBrand();
-
+    this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.tparams = brand;
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
@@ -97,9 +100,18 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     this.getProfileImageStorage();
     this.getLoggedUser();
     this.getCurrentProject();
-    // this.getEnDefaultTranslation();
+    // this.checkCurrentUrlAndHideCloseBtn();
     this.getALLDefaultTranslations();
   }
+
+  // checkCurrentUrlAndHideCloseBtn() {
+  //   this.logger.log('[WIZARD - CREATE-PRJCT] this.router.url  ', this.router.url)
+  //   if (this.router.url === '/create-project') {
+  //     this.CLOSE_BTN_IS_HIDDEN = true;
+  //   } else {
+  //     this.CLOSE_BTN_IS_HIDDEN = false;
+  //   }
+  // }
 
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -569,6 +581,10 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
       this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** GET labels ***** * COMPLETE *')
 
     });
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { Subscription } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../core/auth.service';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -67,7 +68,9 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   parse_done: boolean;
   parse_err: boolean;
   error_status: number;
-  
+  user: any;
+  segmentTrack: string;
+  segmentAttributes: any;
  
 
   constructor(
@@ -76,6 +79,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
     private botLocalDbService: BotLocalDbService,
     private router: Router,
     private route: ActivatedRoute,
+    private auth: AuthService,
     public brandService: BrandService,
     private logger: LoggerService,
     public translate: TranslateService,
@@ -93,23 +97,31 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   }
 
   ngOnInit() {
-    // this.DISPLAY_SPINNER_SECTION = true;
-    // this.DISPLAY_SPINNER = false;
-    // this.DISPLAY_BOT = true;
-    // this.CREATE_BOT_ERROR = false;
-    // this.DISPLAY_FAQ = true;
-    // this.CREATE_FAQ_ERROR = true;
+    this.getLoggedUser();
     this.init();
   }
-
   
   ngOnDestroy() {
     this.sub.unsubscribe();
-    // this.whenCreateBot.unsubscribe();
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs
+      .subscribe((user) => {
+        if (user) {
+          this.user = user;
+        }
+      });
   }
 
   /** INIT */
   init(){
+    this.segmentTrack = "Create chatbot";
+    this.segmentAttributes = {
+      "chatbot": false,
+      "faq": false,
+      "agent": false,
+    }
     this.selected = 'step0';
     this.welcomeMessage = ''; 
     this.sub = this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
@@ -129,6 +141,41 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
     });
   }
 
+
+  segment(trackName, attributes){
+    if (!isDevMode()) {
+      let  trackAttr = {
+        "projectId": this.projectId,
+        "projectName": this.projectName,
+        "userId": this.user._id,
+        "username": this.user.firstname + ' ' + this.user.lastname,
+        "chatbot": attributes.chatbot,
+        "faq": attributes.faq,
+        "agent": attributes.agent
+      };
+  
+      try {
+        window['analytics'].page("Wizard, Onboarding", {
+        });
+      } catch (err) {
+        this.logger.error('Wizard Onboarding page error', err);
+      }
+      try {
+        window['analytics'].identify(this.user._id, {
+          name: this.user.firstname + ' ' + this.user.lastname,
+          email: this.user.email,
+          logins: 5
+        });
+      } catch (err) {
+        this.logger.error('Wizard Onboarding identify error', err);
+      }
+      try {
+        window['analytics'].track(trackName, trackAttr);
+      } catch (err) {
+        this.logger.error('Wizard Create track Trial Started event error', err);
+      }
+    }
+  }
 
   /** */
   getCurrentTranslation() {     
@@ -187,6 +234,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
       this.DISPLAY_SPINNER_SECTION = true;
       this.DISPLAY_SPINNER = false;
       this.DISPLAY_BOT = true;
+      // this.segmentTrack = "Create project with chatboat";
       //this.continueToNextStep();
     }
   }
@@ -294,12 +342,6 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
     this.intents = ['start','defaultFallback'].concat(this.intents);
     this.questions = ['\\start','defaultFallback'].concat(this.questions);
     this.answers = [answer,this.defaultFallback].concat(this.answers);
-    // this.intents.unshift('defaultFallback');
-    // this.questions.unshift('defaultFallback');
-    // this.answers.unshift(this.defaultFallback);
-    // this.intents.unshift('start');
-    // this.questions.unshift('\\start');
-    // this.answers.unshift(this.welcomeMessage);
   }
 
 
@@ -397,33 +439,105 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   }
 
   /** ACTIONS */
+  /** callBack chatbot-setup */
+  goToInstallWidget(){
+    this.segmentTrack = "Create project without chatbot";
+    // this.segment();
+    this.continueToNextStep();
+  }
+
   /** */
-  gotToChangePage(event) {
-    // console.log('gotToChangePage:::: ',event);
-    this.selected = event.step;
+  gotToChatbotSetup(event){
+    this.selected = 'step0'; // event.step;
+    this.segmentAttributes.chatbot = false;
+    this.segmentAttributes.faq = false;
+    this.segmentAttributes.agent = false;
+  }
+  /** callBack chatbot-setup */
+  goToWelcomeMessage(){
+    this.selected = 'step1';
+    this.segmentAttributes.chatbot = true;
+    this.DISPLAY_SPINNER_SECTION = false;
+    this.DISPLAY_SPINNER = false;
+    this.CREATE_BOT_ERROR = false;
+    this.CREATE_FAQ_ERROR = false;
+  }
+
+
+  /** */
+  gotToChatbotConfiguration(event){
+    this.selected = 'step2';
+    this.segmentAttributes.faq = true;
     if(event.msg){
       this.welcomeMessage = event.msg;
     }
-    if(event.step === 'step2'){
-      this.stepNumber = 1;
-      this.gotToChangeStepNumber(0);
+    this.stepNumber = 1;
+    this.gotToChangeStepNumber(0);
+  }
+
+  /** */
+  gotToHumanConfiguration(event){
+    this.selected = 'step3'; // event.step;
+    this.segmentAttributes.agent = true;
+    if(event.questions){
+      this.step3Questions = event.questions;
     }
-    else if(event.step === 'step3'){
-      if( event.questions){
-        this.step3Questions = event.questions;
-      }
-      if( event.answers){
-        this.step3Answers = event.answers;
-      }
-      // this.createDefaultFaqOnBot();
-    }
-    else if(event.step === 'createBot'){
-      this.setIntentsAndCreateBot(event);
-    } 
-    else if(event.step === 'next'){
-      this.continueToNextStep();
+    if(event.answers){
+      this.step3Answers = event.answers;
     }
   }
+
+  /** */
+  gotToHumanConfigurationWithoutFaq(event){
+    this.selected = 'step3'; // event.step;
+    this.segmentAttributes.faq = false;
+    this.segmentAttributes.agent = true;
+    this.step3Questions = [];
+    this.step3Answers = [];
+  }
+
+  /** */
+  gotToCreateBotWithoutAgent(event){
+    this.segmentAttributes.agent = false;
+    this.gotToCreateBot(event);
+  }
+
+  /** */
+  gotToCreateBot(event){
+    this.selected = 'createBot'; // event.step;
+    this.setIntentsAndCreateBot(event);
+  }
+  
+
+  /** */
+  // gotToChangePage(event) {
+    // this.selected = event.step;
+    // if(event.msg){
+    //   this.welcomeMessage = event.msg;
+    // }
+    // if(event.step === 'step2'){
+    //   this.stepNumber = 1;
+    //   this.gotToChangeStepNumber(0);
+    // } 
+    // if(event.step === 'step3'){
+    //   if( event.questions){
+    //     this.step3Questions = event.questions;
+    //   }
+    //   if( event.answers){
+    //     this.step3Answers = event.answers;
+    //   }
+    //   // this.createDefaultFaqOnBot();
+    // }
+    // if(event.step === 'createBot'){
+    //   this.setIntentsAndCreateBot(event);
+    // } 
+    // else if(event.step === 'next'){
+    //   this.continueToNextStep();
+    // }
+  // }
+
+
+  
 
   /** */
   gotToChangeStepNumber(next){
@@ -441,6 +555,8 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
 
   /** */
   continueToNextStep() {
+    // console.log('continueToNextStep:::: ', this.segmentTrack);
+    this.segment(this.segmentTrack, this.segmentAttributes);
     this.router.navigate([`/project/${this.projectId}/install-widget/` +  this.selectedLangCode + '/' + this.selectedLangName]);
   }
 
@@ -450,29 +566,30 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
     this.DISPLAY_SPINNER = false;
     this.CREATE_BOT_ERROR = false;
     this.CREATE_FAQ_ERROR = false;
-    this.selected = step;
-    if(step === 'step1'){
-      this.stepNumber = 1;
-      this.gotToChangePage(step);
-    }
-    if(step === 'step2'){
-      this.stepNumber = 1;
-      this.gotToChangeStepNumber(0);
-    }
+    // this.selected = step;
+    this.gotToChatbotSetup(step);
+    // if(step === 'step1'){
+    //   this.stepNumber = 1;
+    //   this.gotToChatbotSetup(step);
+    // }
+    // if(step === 'step2'){
+    //   this.stepNumber = 1;
+    //   this.gotToChangeStepNumber(0);
+    // }
   }
 
   /** */
-  goToNextStep(step){
-    if(step){
-      this.DISPLAY_SPINNER_SECTION = false;
-      this.DISPLAY_SPINNER = false;
-      this.CREATE_BOT_ERROR = false;
-      this.CREATE_FAQ_ERROR = false;
-      this.selected = step;
-      // console.log('goToNextStep:: ', this.selected, this.DISPLAY_SPINNER_SECTION);
-    } else {
-      this.continueToNextStep();
-    }
-  }
+  // goToNextStep(step){
+  //   if(step){
+  //     this.DISPLAY_SPINNER_SECTION = false;
+  //     this.DISPLAY_SPINNER = false;
+  //     this.CREATE_BOT_ERROR = false;
+  //     this.CREATE_FAQ_ERROR = false;
+  //     this.selected = step;
+  //     // console.log('goToNextStep:: ', this.selected, this.DISPLAY_SPINNER_SECTION);
+  //   } else {
+  //     this.continueToNextStep();
+  //   }
+  // }
 
 }

@@ -1,12 +1,12 @@
 <div class="main-content css-onboarding">
-  <img [src]="companyLogoBlack_Url" class="logo" />
+  <img alt="logo" [src]="companyLogoBlack_Url" class="logo" />
 
     <div class="col-left">
 
       <appdashboard-chatbot-setup
       *ngIf="selected=='step0'"
-      (continueToNextStep)="continueToNextStep()"
-      (goToNextStep)="goToNextStep($event)">
+      (lastPage)="goToInstallWidget()"
+      (nextPage)="goToWelcomeMessage($event)">
       </appdashboard-chatbot-setup>
 
       <appdashboard-welcome-message-configuration 
@@ -16,7 +16,8 @@
         [primaryColor]="primaryColor"
         [secondaryColor]="secondaryColor"
         [projectName]="projectName"
-        (changePage)="gotToChangePage($event)">
+        (prevPage)="gotToChatbotSetup($event)"
+        (nextPage)="gotToChatbotConfiguration($event)">
       </appdashboard-welcome-message-configuration>
 
       <appdashboard-chatbot-configuration 
@@ -28,8 +29,9 @@
         [secondaryColor]="secondaryColor"
         [projectName]="projectName"
         [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
-        (changePage)="gotToChangePage($event)"
-        (changeStepNumber) = "gotToChangeStepNumber($event)"
+        (nextPageNoFaq)="gotToHumanConfigurationWithoutFaq($event)"
+        (nextPage)="gotToHumanConfiguration($event)"
+        (prevPage) = "goToWelcomeMessage($event)"
       ></appdashboard-chatbot-configuration>
 
       <appdashboard-human-configuration
@@ -43,8 +45,9 @@
         [secondaryColor]="secondaryColor"
         [projectName]="projectName"
         [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
-        (changePage)="gotToChangePage($event)"
-        (changeStepNumber) = "gotToChangeStepNumber($event)"
+        (nextPage)="gotToCreateBot($event)"
+        (lastPage)="gotToCreateBotWithoutAgent($event)"
+        (prevPage) = "gotToChatbotConfiguration($event)"
       ></appdashboard-human-configuration>
 
       <appdashboard-error-result

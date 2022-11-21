@@ -6,8 +6,9 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
   styleUrls: ['./human-configuration.component.scss']
 })
 export class HumanConfigurationComponent implements OnInit {
-  @Output() changePage = new EventEmitter();
-  @Output() changeStepNumber = new EventEmitter();
+  @Output() lastPage = new EventEmitter();
+  @Output() nextPage = new EventEmitter();
+  @Output() prevPage = new EventEmitter();
   @Input() selectedQuestion: string;
   @Input() welcomeMessage: string;
   @Input() primaryColor: string;
@@ -68,6 +69,7 @@ export class HumanConfigurationComponent implements OnInit {
     } else {
       this.questionError = false;
     }
+    this.questions[this.questions.length-1] = this.questionMsg;
   }
 
   messageChange(event:string) {
@@ -80,6 +82,7 @@ export class HumanConfigurationComponent implements OnInit {
     } else {
       this.answerError = false;
     }
+    this.answers[this.answers.length-1] = this.answerMsg;
   }
 
   checkError(){
@@ -98,7 +101,7 @@ export class HumanConfigurationComponent implements OnInit {
     this.questions.pop();
     this.answers.pop();
     let event = { step:'step2'}
-    this.changePage.emit(event);
+    this.prevPage.emit(event);
     this.page = 'first';
   }
 
@@ -109,14 +112,14 @@ export class HumanConfigurationComponent implements OnInit {
     this.answers.push(this.answerMsg);
     this.questions.push(this.questionMsg);
     let event = { step:'createBot', questions:this.questions, answers: this.answers}
-    this.changePage.emit(event);
+    this.nextPage.emit(event);
   }
 
-  goToNextPageWithoutHuman() {
+  goToNextPageWithoutAgent() {
     this.questions.pop();
     this.answers.pop();
     let event = { step:'createBot', questions:this.questions, answers: this.answers}
-    this.changePage.emit(event);
+    this.lastPage.emit(event);
   }
 
 

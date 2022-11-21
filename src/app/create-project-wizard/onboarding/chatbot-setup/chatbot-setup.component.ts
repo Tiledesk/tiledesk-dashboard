@@ -6,21 +6,20 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
   styleUrls: ['./chatbot-setup.component.scss']
 })
 export class ChatbotSetupComponent implements OnInit {
-  @Output() goToNextStep = new EventEmitter();
-  @Output() continueToNextStep = new EventEmitter();
+  @Output() nextPage = new EventEmitter();
+  @Output() lastPage = new EventEmitter();
   @Input() selectedQuestion: string;
   constructor() { }
 
   ngOnInit(): void {
   }
 
-
-  localGoToNextStep(event){
-    this.goToNextStep.emit(event);
+  goToNextStep(event){
+    this.nextPage.emit(event);
   }
 
-  localContinueToNextStep(){
-    this.continueToNextStep.emit(event);
+  goToLastStep(){
+    this.lastPage.emit();
   }
 
 }
