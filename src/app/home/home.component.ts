@@ -106,6 +106,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   isVisibleANA: boolean;
   isVisibleAPP: boolean;
   isVisibleOPH: boolean;
+  isVisibleHomeBanner: boolean;
   hidechangelogrocket: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
@@ -113,10 +114,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   current_selected_prjct: any;
   popup_visibility: string = 'none'
-  dispayPromoBanner: boolean = true;
-  promoBannerContent: any;
-  promoBannerSyle: any;
-  resPromoBanner: any;
+  // dispayPromoBanner: boolean = true;
+  // promoBannerContent: any;
+  // promoBannerSyle: any;
+  // resPromoBanner: any;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -173,80 +174,47 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.getProjectPlan(); // nk 
     // this.getVisitorCounter();
     this.getOSCODE();
+    this.checkPromoURL()
     this.getChatUrl();
     this.getHasOpenBlogKey()
     this.diplayPopup();
     // this.startChabgelogAnimation()
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
 
-    this.getPromoBanner()
+    // this.getPromoBanner()
   }
 
-  getPromoBanner() {
-    this.projectService.getPromoBanner().subscribe((res: any) => {
-      console.log('[HOME] GET PROMO BANNER res ', res);
+  // getPromoBanner() {
+  //   this.projectService.getPromoBanner().subscribe((res: any) => {
+  //     console.log('[HOME] GET PROMO BANNER res ', res);
 
-      if (res) {
-        this.resPromoBanner = res
-        this.resPromoBanner['link'] = res.link.replace('$project_id', this.projectId).replace('$app_id', '6319fe155f9ced0018413a06')
-        console.log('[HOME] GET PROMO BANNER resPromoBanner ', this.resPromoBanner) 
-        this.dispayPromoBanner = true
-        this.promoBannerContent = res['left-title']
+  //     if (res) {
+  //       this.resPromoBanner = res
+  //       this.resPromoBanner['link'] = res.link.replace('$project_id', this.projectId).replace('$app_id', '6319fe155f9ced0018413a06')
+  //       console.log('[HOME] GET PROMO BANNER resPromoBanner ', this.resPromoBanner) 
+  //       this.dispayPromoBanner = true
+  //       this.promoBannerContent = res['left-title']
 
-        console.log('[HOME] GET PROMO BANNER promoBannerContent', this.promoBannerContent);
+  //       console.log('[HOME] GET PROMO BANNER promoBannerContent', this.promoBannerContent);
+  //     }
 
-      
-    
+  //   }, error => {
+  //     console.error('[HOME] GET PROMO BANNER - ERROR ', error)
+  //     this.dispayPromoBanner = false
+  //   }, () => {
+  //     console.log('[HOME] GET PROMO BANNER - COMPLETE')
+  //   });
+  // }
 
-      }
-
-    }, error => {
-      console.error('[HOME] GET PROMO BANNER - ERROR ', error)
-      this.dispayPromoBanner = false
-    }, () => {
-      console.log('[HOME] GET PROMO BANNER - COMPLETE')
-
-      // const promoBannerStyle = this.stringToStyleArray(this.promoBannerContent);
-      // console.log('[NAVBAR] GET PROMO BANNER STYLE ', promoBannerStyle)
-   
-      // let promoBannerElInnerHTML = ''
-      // setTimeout(() => {
-      //   let promoBannerEl = <HTMLElement>document.querySelector('.promo-banner') 
-      //   // console.log('[NAVBAR] GET PROMO BANNER - PROMO BANNER promoBannerEl ELEMEN ', promoBannerEl)
-      //   // promoBannerEl.style.cssText = promoBannerStyle[0]
-      //   promoBannerElInnerHTML = promoBannerEl.innerHTML
-      //   console.log('[NAVBAR] GET PROMO BANNER - PROMO BANNER INNERhtml ELEMEN ', promoBannerElInnerHTML)
-      //   // promoBannerElInnerHTML.style.cssText
-      // }, 0);
-
-      // promoBannerEl.style.cssText =
-    });
-  }
-
-  goToPromoBannerLink(promobannerlink, target) {
-    console.log('[HOME] GO TO PROMO BANNER LINK - promobannerlink', promobannerlink, ' target ' , target)
-    window.open(promobannerlink, target);
-  }
-
-  stringToStyleArray(string, split = false) {
-    let styles = [];
-    const dom = (new DOMParser()).parseFromString(string, "text/html");
-    dom.querySelectorAll('[style]').forEach((el) => {
-      if (split) {
-        styles = [...styles, ...el.getAttribute("style").split(';')];
-        console.log('stringToStyleArray split  TRUE styles', styles)
-      }
-      else {
-        styles.push(el.getAttribute("style"));
-        console.log('stringToStyleArray split  FALSE styles', styles)
-      }
-    });
-    return styles;
-  }
+  // goToPromoBannerLink(promobannerlink, target) {
+  //   console.log('[HOME] GO TO PROMO BANNER LINK - promobannerlink', promobannerlink, ' target ' , target)
+  //   window.open(promobannerlink, target);
+  // }
 
 
-  ngAfterViewInit() { 
- 
+
+  ngAfterViewInit() {
+
   }
 
   ngOnDestroy() {
@@ -993,6 +961,20 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
         }
       }
+
+      if (key.includes("HPB")) {
+        // this.logger.log('[HOME] PUBLIC-KEY - key', key);
+        let hpb = key.split(":");
+        // this.logger.log('[HOME] PUBLIC-KEY - oph key&value', oph);
+
+        if (hpb[1] === "F") {
+          this.isVisibleHomeBanner = false;
+          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
+        } else {
+          this.isVisibleHomeBanner = true;
+          // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
+        }
+      }
     });
 
     if (!this.public_Key.includes("ANA")) {
@@ -1010,6 +992,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isVisibleOPH = false;
     }
 
+    if (!this.public_Key.includes("HPB")) {
+      // this.logger.log('[HOME] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
+      this.isVisibleHomeBanner = false;
+    }
+
     // this.logger.log('eoscode', this.eos)
     // if (this.eos && this.eos === publicKey) {
 
@@ -1021,6 +1008,33 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     //   this.logger.log('eoscode isVisible ', this.isVisible);
     // }
   }
+
+  checkPromoURL() {
+    const hasKeyPromoBannerUrl = this.appConfigService.getConfig().hasOwnProperty('promoBannerUrl');
+    this.logger.log('HOME CHECK PROMO URL promoUrl - env hasKeyPromoBannerUrl', hasKeyPromoBannerUrl)
+    if (hasKeyPromoBannerUrl) {
+      for (const [key, value] of Object.entries(this.appConfigService.getConfig())) {
+        // console.log(`${key}: ${value}`);
+        if (key === 'promoBannerUrl' && value === '') {
+          this.logger.log('HOME CHECK PROMO URL promoUrl - exist key but value is empty value', value)
+          this.isVisibleHomeBanner = false;
+        } else if (key === 'promoBannerUrl' && value !== '') {
+          this.logger.log('HOME CHECK PROMO URL promoUrl - exist key', key, 'and value', value)
+          this.isVisibleHomeBanner = true;
+        }
+      }
+    } else {
+      this.logger.log('HOME CHECK PROMO URL promoUrl - env NOT HAS hasKeyPromoBannerUrl', hasKeyPromoBannerUrl)
+      this.isVisibleHomeBanner = false;
+    }
+  }
+
+  showPromoBanner() {
+    this.isVisibleHomeBanner = false;
+    this.logger.log('[HOME] isVisibleHomeBanner', this.isVisibleHomeBanner);
+  }
+
+
 
   // OLD - NOW NOT WORKS
   // getVisitorCounter() {

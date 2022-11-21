@@ -2,7 +2,9 @@ import { NotificationService } from './services/notification.service';
 import { PopupService } from './services/popup.service';
 import { MarkerService } from './services/marker.service';
 import { LoggerService } from './services/logger/logger.service';
+import { HomeService } from './services/home.service';
 import { ActivitiesService } from './activities/activities-service/activities.service';
+
 
 // import { LoggerInstance } from './services/logger/LoggerInstance';
 import { MapRequestComponent } from './map-request/map-request.component';
@@ -291,13 +293,14 @@ import { SatPopoverModule } from '@ncstate/sat-popover';
 import { TilebotFormComponent } from './bots/tilebot/tilebot-form/tilebot-form.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
-// MODALS 
+
 import { ModalDeleteComponent } from './components/modals/modal-delete/modal-delete.component';
 import { TilebotAddEditFormComponent } from './bots/tilebot/tilebot-add-edit-form/tilebot-add-edit-form.component';
 import { TilebotListFieldsFormComponent } from './bots/tilebot/tilebot-list-fields-form/tilebot-list-fields-form.component';
 import { ChatbotSetupComponent } from './create-project-wizard/onboarding/chatbot-setup/chatbot-setup.component';
 import { SidebarClaimsComponent } from './create-project-wizard/onboarding/sidebar-claims/sidebar-claims.component';
 import { NetworkOfflineComponent } from './network-offline/network-offline.component';
+import { HomePromoBannerComponent } from './home-promo-banner/home-promo-banner.component';
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -521,7 +524,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     PrestashopInstallationComponent,
     JoomlaInstallationComponent,
     TilebotFormComponent, 
-    ModalDeleteComponent, TilebotAddEditFormComponent, TilebotListFieldsFormComponent, ChatbotSetupComponent, SidebarClaimsComponent, NetworkOfflineComponent
+    ModalDeleteComponent, TilebotAddEditFormComponent, TilebotListFieldsFormComponent, ChatbotSetupComponent, SidebarClaimsComponent, NetworkOfflineComponent, HomePromoBannerComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
@@ -586,6 +589,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AppConfigService, // https://juristr.com/blog/2018/01/ng-app-runtime-config/
     BrandService,
     LoggerService,
+    HomeService,
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFn,

@@ -1,0 +1,15 @@
+<div  *ngIf="dispayPromoBanner && resPromoBanner" class="promo-banner-wpr">
+    <div class="promo-banner-left-column">
+      {{ resPromoBanner['left-title']}}
+    </div>
+  
+    <div class="promo-banner-center-column">
+      {{resPromoBanner['center-message']}}
+      <button type="button" class="btn btn-new btn-size-m btn-link btn-inline" (click)="goToPromoBannerLink(resPromoBanner?.link, resPromoBanner['link-target'])">
+        <span>   {{resPromoBanner['link-button-text']}}</span>
+      </button>
+    </div>
+    <div class="promo-banner-right-column">
+      <img [src]="resPromoBanner['image']"/>
+    </div>
+  </div>

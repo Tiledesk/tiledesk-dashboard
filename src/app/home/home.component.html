@@ -5,33 +5,14 @@
 <!-- -------------------------------- -->
 <!-- Promo Banner -->
 <!-- -------------------------------- -->
-
-<div  *ngIf="dispayPromoBanner && resPromoBanner" class="promo-banner-wpr">
-  <!-- <p>{{resPromoBanner | json}} </p>  -->
-  <div class="promo-banner-left-column">
-    {{ resPromoBanner['left-title']}}
-    
-  </div>
-
-  <div class="promo-banner-center-column">
-    {{resPromoBanner['center-message']}}
-    <button type="button" class="btn btn-new btn-size-m btn-link btn-inline" (click)="goToPromoBannerLink(resPromoBanner?.link, resPromoBanner['link-target'])">
-      <span>   {{resPromoBanner['link-button-text']}}</span>
-    </button>
-  </div>
-  <div class="promo-banner-right-column">
-    <img [src]="resPromoBanner['image']"/>
-
-  </div>
-
-</div>
+<appdashboard-home-promo-banner *ngIf="isVisibleHomeBanner" (showPromoBanner)='showPromoBanner()'></appdashboard-home-promo-banner>
 
 <div class="main-content" style="padding-top: 8px;margin-top: 0px;">
   <!-- ----------------------------------------------------------- -->
   <!-- Home header -->
   <!-- ----------------------------------------------------------- -->
   <div class="row" style=" margin-left: -15px; margin-right: -15px;">
-    <div class="col-md-12 n-header-home-wpr" [ngStyle]="{'margin-top':dispayPromoBanner === true ? '-28px' : '-25px' }">
+    <div class="col-md-12 n-header-home-wpr" [ngStyle]="{'margin-top':isVisibleHomeBanner === true ? '-28px' : '-25px' }" [ngClass]="{'n-header-home-wpr-max-media-991-promo-banner': isVisibleHomeBanner}">
       <div class="n-header-home">
         <h2 class="n-header-home-title">
          <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span> 
