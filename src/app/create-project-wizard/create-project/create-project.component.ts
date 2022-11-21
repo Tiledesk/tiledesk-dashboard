@@ -4,7 +4,7 @@ import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { slideInAnimation } from '../../_animations/index';
+// import { slideInAnimation } from '../../_animations/index';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
@@ -14,9 +14,8 @@ import moment from 'moment';
   selector: 'appdashboard-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
-  animations: [slideInAnimation],
-  // tslint:disable-next-line:use-host-property-decorator
-  host: { '[@slideInAnimation]': '' }
+  // animations: [slideInAnimation],
+  // host: { '[@slideInAnimation]': '' }
 })
 
 
@@ -70,10 +69,8 @@ export class CreateProjectComponent implements OnInit {
 
     if (this.router.url === '/create-project') {
       this.CLOSE_BTN_IS_HIDDEN = true;
-
     } else {
       this.CLOSE_BTN_IS_HIDDEN = false;
-
     }
   }
 

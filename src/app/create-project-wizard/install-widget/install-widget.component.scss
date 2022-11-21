@@ -1,4 +1,135 @@
+@import "../../../assets/sass/md/_variables.scss";
+
 $color-pro-plan: #3ea9f5;
+//---------------------//
+// STRUCTURE
+//---------------------//
+.css-install-widget {
+  // animation: none !important;
+  /**  local variables **/ 
+  --width-col-rigth: 360px;
+  //----------------------------------//
+  font-family: $mdb-font-family-poppins;
+  background: white;
+  width: 100%;
+  margin: 0px; 
+  padding: 0px;
+  display: flex;
+  .logo {
+    position:absolute;
+    width: 150px;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+  }
+  .title {
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1.3em;
+    margin-top: 10px;
+    margin-bottom: 0.5em;
+    span {
+      display: "block";
+    }
+  }
+  .pre-title {
+    color: $black-input-color; //#566787;
+    position: relative;
+    line-height: normal;
+    margin-bottom: 1em;
+    font-size: 24px;
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  .col-left {
+    min-height: 100vh;
+    height: auto;
+    background: white;
+    width: calc(100% - var(--width-col-rigth));
+    position: relative;
+    float: left;
+    padding: 100px 60px 60px;
+    z-index: 20;
+  }
+  .col-right {
+    min-height: 100vh;
+    height: auto;
+    width: var(--width-col-rigth);
+    position: relative;
+    float: left;
+    overflow: hidden;
+    z-index: 10;
+    background-color: #4caf50;
+  }  
+
+
+
+  /** START DISPLAY_SPINNER_SECTION */
+  .loading-section {
+    display: flex;
+    flex-flow: column;
+    .images-wrapper {
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background-color: #fff;
+      height: 112px;
+      overflow: hidden;
+      width: 112px;
+      margin-left: 0px;
+      margin-top: -55px;
+    }
+  }
+
+  .wizard-success-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    margin-top: 8px;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin-left: 0px;
+    .success-label {
+      color:#70b665;
+      .wizard-span-processing-msg {
+        font-size: 18px;
+        top: 2px;
+        position: relative;
+      }
+      .wizard-span-success-msg {
+        font-size: 18px;
+        top: 2px;
+        position: relative;
+        margin-left: 8px;
+      }
+    }
+    /** END DISPLAY_SPINNER_SECTION */
+  }
+
+  /** **/
+  @media (max-width: 992px) {
+    .col-left {
+      width: 100%;
+    }
+    .col-right {
+      display: none;
+    }
+
+    .close-wizard-page {  
+      .close-btn {
+        color: $black-color;
+      }
+    }
+  }
+
+}
+
+
 
 .logo_on_rocket {
   max-width: 34px;

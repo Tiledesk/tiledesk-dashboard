@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs'
 import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { slideInAnimation } from '../../_animations/index';
+// import { slideInAnimation } from '../../_animations/index';
 import { AppConfigService } from '../../services/app-config.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
@@ -15,9 +15,9 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'appdashboard-install-widget',
   templateUrl: './install-widget.component.html',
   styleUrls: ['./install-widget.component.scss'],
-  animations: [slideInAnimation],
+  // animations: [slideInAnimation],
   // tslint:disable-next-line:use-host-property-decorator
-  host: { '[@slideInAnimation]': '' }
+  // hostx: { '[@slideInAnimation]': '' }
 })
 
 export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements OnInit, OnDestroy {
@@ -35,6 +35,7 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
 
   // WIDGET_URL = environment.widgetUrl; // now get from appconfig
   WIDGET_URL: string;
+  companyLogoBlack_Url: string;
 
   constructor(
     private auth: AuthService,
@@ -49,6 +50,7 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
     super(translate);
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.logo_on_rocket = brand['wizard_install_widget_page']['logo_on_rocket'];
     const selectLangCode = this.route.snapshot.params['langcode'];
     const selectLangName = this.route.snapshot.params['langname'];

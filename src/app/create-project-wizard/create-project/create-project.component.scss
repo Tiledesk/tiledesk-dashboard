@@ -1,20 +1,16 @@
-@import "./src/assets/sass/md/_variables.scss";
+@import "../../../assets/sass/md/_variables.scss";
 @import "./src/assets/sass/_spinner-section.scss";
-@import "./src/assets/sass/_animations.scss";
-
-// LOCAL COLORS //
-$color-white: #ffffff;
-$color-enterprise-plan: #6772e5;
-$color-pro-plan: #3ea9f5;
+// @import "./src/assets/sass/_animations.scss";
 
 //---------------------//
 // STRUCTURE
 //---------------------//
 .css-create-project {
+  // animation: none !important;
   /**  local variables **/ 
   --width-col-rigth: 360px;
   //----------------------------------//
-  font-family: "Poppins","Roboto",Arial,sans-serif;
+  font-family: $mdb-font-family-poppins;
   background: white;
   width: 100%;
   margin: 0px; 
@@ -27,6 +23,26 @@ $color-pro-plan: #3ea9f5;
     left: 20px;
     z-index: 9999;
   }
+  .title {
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1.3em;
+    margin-top: 10px;
+    margin-bottom: 0.5em;
+    span {
+      display: "block";
+    }
+
+  }
+  .pre-title {
+    color: $black-input-color; //#566787;
+    position: relative;
+    line-height: normal;
+    margin-bottom: 1em;
+    font-size: 24px;
+    font-weight: 300;
+    font-style: normal;
+  }
   .close-wizard-page {
     text-align: left;
     height: 66px;
@@ -34,21 +50,24 @@ $color-pro-plan: #3ea9f5;
     top: 20px;
     right: 20px;
     margin-left: -100%;
-    color: $color-white;
+    color: $white;
     z-index: 9999;
 
     .close-btn {
       font-size: 60px;
       font-weight: 100;
-      color: $color-white;
+      color: $white;
       cursor: pointer;
       opacity: 0.8;
     }
-    
+
     .close-btn:hover {
       opacity: 0.5;
     }
+  
   }
+
+
   .row {
     z-index: 10;
   }
@@ -70,23 +89,9 @@ $color-pro-plan: #3ea9f5;
     float: left;
     overflow: hidden;
     z-index: 10;
+    background-color: #4caf50;
   }  
 
-  .pre-title {
-    font-size: 20px; 
-    line-height: 28px; 
-    color: rgba(0,0,0,.54); 
-    padding-bottom: 50px;
-  }
-
-  .wizard-page-title {
-    margin-top: 10px;
-    font-family: "Poppins", Arial, sans-serif;
-    font-size: 36px;
-    span {
-      display: "block";
-    }
-  }
 
 
   /** START DISPLAY_SPINNER_SECTION */
@@ -124,13 +129,11 @@ $color-pro-plan: #3ea9f5;
       color:#70b665;
       .wizard-span-processing-msg {
         font-size: 18px;
-        font-family: "Poppins", Arial, sans-serif;;
         top: 2px;
         position: relative;
       }
       .wizard-span-success-msg {
         font-size: 18px;
-        font-family: "Poppins", Arial, sans-serif;;
         top: 2px;
         position: relative;
         margin-left: 8px;
@@ -140,7 +143,6 @@ $color-pro-plan: #3ea9f5;
     
   }
 
-
   /** **/
   @media (max-width: 992px) {
     .col-left {
@@ -148,6 +150,12 @@ $color-pro-plan: #3ea9f5;
     }
     .col-right {
       display: none;
+    }
+
+    .close-wizard-page {  
+      .close-btn {
+        color: $black-color;
+      }
     }
   }
 }

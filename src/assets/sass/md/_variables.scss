@@ -2,8 +2,11 @@
 
 @import '_colors';
 
+
+
 // Typography elements
 $mdb-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
+$mdb-font-family-poppins: "Poppins", "Roboto", Arial, sans-serif !default;
 $mdb-text-color-light:  $white !default;
 $mdb-text-color-light-hex: $white !default; // for contrast function in inverse
 $mdb-text-color-primary: unquote("rgba(#{$rgb-black}, 0.87)") !default;
@@ -127,7 +130,7 @@ $headings-font-weight: 300 !default;
 
 $font-weight-light: 300 !default;
 $font-weight-default: 400 !default;
-$font-weight-bold:    500 !default;
+$font-weight-bold: 500 !default;
 $font-weight-extra-bold: 700 !default;
 $font-weight-ultra-bold: 900 !default;
 
