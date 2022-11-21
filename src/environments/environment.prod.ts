@@ -16,6 +16,8 @@ export const environment = {
     uploadEngine: 'native',
     pushEngine: 'none',
     logLevel: 'Info',
+    appsUrl: 'CHANGEIT',
+    promoBannerUrl: 'CHANGEIT',
     firebase: {
         apiKey: "CHANGE-IT",
         authDomain: "CHANGE-IT",

@@ -16,6 +16,7 @@
   "pushEngine": "${PUSH_ENGINE}",
   "logLevel": "${LOG_LEVEL}",
   "appsUrl":  "${APPS_URL}",
+  "promoBannerUrl": "${PROMO_BANNER_URL}",
   "firebase": {
     "apiKey": "${FIREBASE_APIKEY}",
     "authDomain": "${FIREBASE_AUTHDOMAIN}",
