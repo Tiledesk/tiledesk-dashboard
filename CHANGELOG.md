@@ -4,6 +4,7 @@
 - Restyling of the graphics of the "Create project" wizard
 - Adds a call to action banner on the home page
 - Fixes the bug: in Analytics > Overview, "Heatmap" chart values are only displayed if dashboard language is set to English
+- Adds "promoBannerUrl" environment variable
 
 ### 2.3.3-rc1
 - Adds an alert indicating connection status when offline
