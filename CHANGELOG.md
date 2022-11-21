@@ -1,8 +1,14 @@
 # tiledesk-dashboard
 
+### 2.3.3-rc2
+- Restyling of the graphics of the "Create project" wizard
+- Adds a call to action banner on the home page
+- Fixes the bug: in Analytics > Overview, "Heatmap" chart values are only displayed if dashboard language is set to English
+
 ### 2.3.3-rc1
 - Adds an alert indicating connection status when offline
-- Corrects the translations of the labels of the Spanish language (thanks to @IOhacker)
+- Corrects the translations of the labels of the Spanish language (thanks to IOhacker)
+
 
 ### 2.3.2
 - Deploys in production
