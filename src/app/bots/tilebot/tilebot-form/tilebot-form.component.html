@@ -79,7 +79,7 @@
     <!-- BUTTON ADD FIELD -->
     <div class="header-list-form">
         <button 
-        *ngIf="intentForm"
+        *ngIf="displayTilebotAddEditForm && intentForm"
         [disabled]="displayAddForm || displayEditForm || displaySettingForm"
         class="btn btn-primary add-field" 
         (click)="eventAddField()">

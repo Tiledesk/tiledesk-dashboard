@@ -183,6 +183,21 @@ export class TilebotFormComponent implements OnInit {
     this.displayCancelButton = true;
     this.displayNewFormButton = false;
     this.displaySettingsButton = false;
+    this.displayTilebotAddEditForm = true;
+    this.displayAddForm = false;
+    this.displayEditForm = false
+    this.displaySettingForm = false;
+    // this.intentForm = {};
+    // this.fields = [];
+    // displayTilebotAddEditForm = false;
+    // displayAddForm = false;
+    // displayEditForm = false
+    // displayBoxNewForm = false;
+    // displaySettingForm = false;
+    // displayNewFormButton = true;
+    // displayCancelButton = false;
+    // displaySettingsButton = false;
+
   }
 
   openSettingsForm(){
@@ -224,7 +239,7 @@ export class TilebotFormComponent implements OnInit {
   /** Event modal confirm delete field */
   confirmDeleteModal(index:string){
     if(index === this.idForm){
-      this.resetForm();
+      this.deleteForm();
     } else {
       let i: number = +index;
       this.fields.splice(i, 1);
@@ -236,9 +251,24 @@ export class TilebotFormComponent implements OnInit {
     this.displayMODAL = false;
   }
 
+  private deleteForm(){
+    this.displayTilebotAddEditForm = false;
+    this.displayAddForm = false;
+    this.displayEditForm = false
+    this.displayBoxNewForm = true;
+    this.displaySettingForm = false;
+    this.displayNewFormButton = true;
+    this.displayCancelButton = false;
+    this.displaySettingsButton = false;
+    this.intentForm = {};
+    this.fields = [];
+  }
+
+
   private resetForm(){
     this.intentForm = {};
     this.fields = [];
+    
     this.displayNewFormButton = false;
     this.displaySettingsButton = true;
     this.displayAddForm = false;
@@ -299,8 +329,8 @@ export class TilebotFormComponent implements OnInit {
   /** */
   openDeleteForm(){
     // console.log('this.translations:::: ', this.translations);
-    this.translateMap.deleteField = this.translations['DeleteField']?this.translations['DeleteField']:'';
-    this.translateMap.confirmDeleteField = this.translations['ConfirmDeleteField']?this.translations['ConfirmDeleteField']:'';
+    this.translateMap.deleteField = this.translations['DeleteForm']?this.translations['DeleteForm']:'';
+    this.translateMap.confirmDeleteField = this.translations['ConfirmDeleteForm']?this.translations['ConfirmDeleteForm']:'';
     this.displayMODAL = true;
     this.selectedObjectId = this.idForm;
   }

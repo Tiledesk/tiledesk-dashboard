@@ -70,6 +70,7 @@ export class TilebotAddEditFormComponent implements OnInit {
       this.fieldRegex = this.field.regex;
       this.fieldLabel = this.field.label;
       this.fieldErrorLabel = this.field.errorLabel;
+      this.inputTypePlaceholderClass = false;
     }
     this.getCurrentTranslation();
     this.infoMessage = this.infoMessages['field_name'];
@@ -194,7 +195,7 @@ export class TilebotAddEditFormComponent implements OnInit {
       this.infoMessage += " "+this.markbotLabel;
       // "You can use markbot to format your labels (https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/)";
     }
-    
+
   }
 
   save(){

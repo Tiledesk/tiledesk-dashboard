@@ -30,40 +30,30 @@
           <div *ngIf="!showSpinner" class="card-content">
 
             <!-- START Intent -->
-            <div class="box-content">
+            <div>
               <div class="row">
-                <div class="col-sm-12 col-md-12">
-                  <h3 class="card_title__underlined">
-                    <span class="card_title__underline">
-                      Intent
-                    </span>
-                  </h3>
+                <div class="col-md-12 form-group label-floating" style="margin-bottom: 30px;">
+                  <label class="control-label intentTitle">
+                    {{ 'EnterIntentName' | translate}}
+                  </label>
+                  <input 
+                    id="intent-name" 
+                    name="intent-name" 
+                    [(ngModel)]="intent_name" 
+                    class="input form-control" 
+                    type="text" 
+                    autocomplete="off"
+                    style="margin-bottom: 3px;" 
+                    placeholder=""
+                  >
                 </div>
-                <div class="col-sm-12 col-md-12">
-                  <div class="section-subtitle"></div>
-                </div>
-              </div>
-     
-              <label class="col-sm-12 custom-label-left">
-                {{'IntentName' | translate}} <span style="color:#ff5252">*</span>
-              </label>
-              <div class="col-sm-12">
-                <input 
-                id="intent-name" 
-                name="intent-name" 
-                [(ngModel)]="intent_name" 
-                class="input" 
-                type="text" 
-                autocomplete="off"
-                style="margin-bottom: 3px;" 
-                placeholder="{{'EnterIntentName' | translate}}"
-              >
               </div>
             </div>
             <!-- END Intent --> 
             
             <!-- START Question -->
             <div class="box-content">
+              
               <div class="row">
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
@@ -77,22 +67,19 @@
                 </div>
               </div> 
               
-              <div class="col-sm-12" style="height:10px"></div>
-              <label class="col-sm-12 custom-label-left">
-                {{ 'TypeAddYourQuestionHere' | translate}}
-              </label>
-              <!-- <span style="display:block; font-size:12px; color: #7695a5;padding-left: 16px; "> -->
-                
-              <!-- </span> -->
-              <div class="col-sm-12">
+              <div class="form-group label-floating">
+                <label class="control-label">
+                  {{ 'TypeAddYourQuestionHere' | translate}}
+                </label>
                 <textarea 
                   [(ngModel)]="question" 
-                  class="textarea" 
+                  class="textarea form-control" 
                   rows="3" 
                   style="resize: vertical; border-radius:5px"  
-                  placeholder='{{ "Questions" | translate }}'>
+                  placeholder=''>
                 </textarea>
               </div>
+
             </div>
             <!-- END Question -->  
 
@@ -133,17 +120,17 @@
                   <div class="section-subtitle"></div>
                 </div>
               </div>
-              <div class="col-sm-12" style="height:10px"></div>
-              <label class="col-sm-12 custom-label-left">
-                {{ "FaqEditAddPage.InfoAnswer" | translate }}
-              </label>
-              <div class="col-xs-12">
+
+              <div class="form-group label-floating">
+                <label class="control-label">
+                  {{ "FaqEditAddPage.InfoAnswer" | translate }}
+                </label>
                 <textarea 
                   [(ngModel)]="answer" 
-                  class="textarea" 
+                  class="textarea form-control" 
                   rows="3" 
                   style="resize: vertical; border-radius:5px"
-                  placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
+                  placeholder=''>
                 </textarea>
               </div>
             </div>
@@ -185,17 +172,13 @@
                     {{ 'EnableWebhookCallForThisIntent' | translate }}
                   </span>
                 </div>
-
-                <div class="col-sm-12" style="height:10px"></div>
-                <label class="col-sm-12 custom-label-left" [innerHTML]='"FaqEditAddPage.MoreOnWebhooks" | translate'></label>
-  
+                <label style="display: block;" [innerHTML]='"FaqEditAddPage.MoreOnWebhooks" | translate'></label>
               </div>
             </div>
             <!-- END Webhook -->
 
 
             <!-- START buttons -->
-
             <div class="col-sm-12">
               <button class="btn btn-primary pull-right create-answer-btn"
                 [disabled]="question?.length < 2 || answer?.length < 2 || intent_name?.length < 1" (click)="create()">
@@ -203,7 +186,6 @@
                 {{ "AddIntent" | translate }}
               </button>
             </div>
-
             <!-- END buttons -->
 
           </div>
@@ -219,9 +201,27 @@
           <div *ngIf="!showSpinner" class="card-content">
 
             <!-- START Intent -->
-            <div class="box-content">
+            <div>
               <div class="row">
-                <div class="col-sm-12 col-md-12">
+                <div class="col-md-12 form-group label-floating" style="margin-bottom: 30px;">
+                  <label class="control-label intentTitle">
+                    {{ 'IntentName' | translate}}
+                  </label>
+                  <input 
+                    id="intent-name" 
+                    name="intent-name" 
+                    [(ngModel)]="intent_name" 
+                    class="input form-control" 
+                    type="text" 
+                    autocomplete="off"
+                    style="margin-bottom: 3px;" 
+                    placeholder=""
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- END Intent -->
+                <!-- <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
                       Intent
@@ -239,14 +239,42 @@
                 <input id="intent-name" name="intent-name" [(ngModel)]="intent_name" class="input" type="text"
                   style="margin-bottom: 3px;" placeholder="{{'EnterIntentName' | translate}}">
               </div>
-            </div>
+            </div> -->
             <!-- END Intent -->
 
 
             <!-- START Question -->
-            <!-- <div class="col-sm-12" class="div-spacer" style="height:15px"></div> -->
             <div class="box-content">
               <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "Questions" | translate }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"></div>
+                </div>
+              </div> 
+              
+              <div class="form-group label-floating">
+                <label class="control-label">
+                  {{ 'TypeAddYourQuestionHere' | translate}}
+                </label>
+                <textarea 
+                  [(ngModel)]="question_toUpdate" 
+                  class="textarea form-control" 
+                  rows="3" 
+                  style="resize: vertical; border-radius:5px"  
+                  placeholder=''>
+                </textarea>
+              </div>
+            </div>
+
+
+
+              <!-- <div class="row">
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
@@ -264,9 +292,6 @@
                 class="col-sm-12 ">
                 {{ 'TypeAddYourQuestionHere' | translate}}
               </label>
-              <!-- <span style="display:block; font-size:12px; color: #7695a5;padding-left: 16px; ">
-                {{ 'TypeAddYourQuestionHere' | translate}}
-              </span> -->
               <div class="col-sm-12">
                 <textarea 
                   [(ngModel)]="question_toUpdate" 
@@ -276,7 +301,7 @@
                   placeholder='{{ "FaqEditAddPage.Question" | translate }}'>
                 </textarea>
               </div>
-            </div>
+            </div> -->
             <!-- END Question -->
 
 
@@ -318,6 +343,35 @@
                   <div class="section-subtitle"></div>
                 </div>
               </div>
+
+              <div class="form-group label-floating">
+                <label class="control-label">
+                  {{ "FaqEditAddPage.InfoAnswer" | translate }}
+                </label>
+                <textarea 
+                  [(ngModel)]="answer_toUpdate" 
+                  class="textarea form-control" 
+                  rows="3" 
+                  style="resize: vertical; border-radius:5px"
+                  placeholder=''>
+                </textarea>
+              </div>
+            </div>
+
+
+
+              <!-- <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "FaqEditAddPage.Answer" | translate }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"></div>
+                </div>
+              </div>
               <div class="col-sm-12" style="height:10px"></div>
               <label style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;color: #7695a5;" class="col-sm-12 ">
                 {{ "FaqEditAddPage.InfoAnswer" | translate }}
@@ -331,14 +385,51 @@
                   placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
                 </textarea>
               </div>
-            </div>
+            </div> -->
             <!-- END Answer -->
           
 
             <!-- START Webhook -->
-            <!-- <div class="col-sm-12" class="div-spacer" style="height:15px"></div> -->
             <div class="box-content">
+
               <div class="row">
+                <div class="col-sm-12 col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      Webhook
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="nw-onoffswitch-wrapper" style="clear: both;display: inline-block;">
+                  <div class="nw-onoffswitch">
+                    <input 
+                      (change)="toggleFaqWebhook($event)" 
+                      type="checkbox" 
+                      name="webhook-editfaq-switch"
+                      class="nw-onoffswitch-checkbox" 
+                      id="webhook-editfaq-switch"
+                      [checked]="faq_webhook_is_enabled === true"
+                    >
+                    <label class="nw-onoffswitch-label" for="webhook-editfaq-switch"></label>
+                  </div>
+                </div>
+
+                <div class="enable-webhook-description-wpr">
+                  <span class="enable-webhook-description">
+                    {{ 'EnableWebhookCallForThisIntent' | translate }}
+                  </span>
+                </div>
+                <label style="display: block;" [innerHTML]='"FaqEditAddPage.MoreOnWebhooks" | translate'></label>
+              </div>
+
+            </div>
+
+              <!-- <div class="row">
                 <div class="col-sm-12 col-md-12">
                   <h3 class="card_title__underlined">
                     <span class="card_title__underline">
@@ -376,7 +467,7 @@
   
               </div>
 
-            </div>
+            </div> -->
             <!-- END Webhook -->
 
 

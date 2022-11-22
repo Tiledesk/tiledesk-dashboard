@@ -1032,7 +1032,7 @@
         "DisplayTheImageWithTheSpecifiedURL": "visualizza l'immagine con l'URL specificato",
         "CallTheExternalWebhookToTheSpecifiedEndpoint": "chiama il webhook esterno all'endpoint specificato",
         "MoreOnWebhooks": "Scopri di più sui webhooks <a href='https://developer.tiledesk.com/resolution-bot/quickstart/' target='_blank'>qui</a>",
-        "InfoAnswer": "Inserisci la risposta del Chatbot alla domanda sopra"
+        "InfoAnswer": "Risposta del chatbot alla domanda fatta dall'utente"
     },
     "FaqTestPage": {
         "Question": "Domanda",
@@ -2275,9 +2275,9 @@
             "field_error": "Scrivi un messaggio di errore in caso in cui il dato inserito dall'utente non sia corretto"
         },
         "DeleteField": "Elimina campo",
-        "ConfirmDeleteField": "Sei sicuro di voler eliminare il campo?",
+        "ConfirmDeleteField": "Sei sicuro di voler eliminare il campo",
         "DeleteForm": "Elimina form",
-        "ConfirmDeleteForm":"Sei sicuro di voler eliminare il form?",
+        "ConfirmDeleteForm":"Sei sicuro di voler eliminare il form",
         "MarkbotLabel": "Puoi usare il <a href='https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/' target='_blank'>Markbot</a> per formattare il testo."
     }
 }
