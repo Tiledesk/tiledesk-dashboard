@@ -178,7 +178,7 @@ export class RasaBotComponent implements OnInit {
 
         if (faqKb) {
           this.newBot_name = faqKb['name'];
-          this.newBot_Id = faqKb['name'];
+          this.newBot_Id = faqKb['_id'];
           this.translateparamBotName = { bot_name: this.newBot_name }
 
           // SAVE THE BOT IN LOCAL STORAGE
