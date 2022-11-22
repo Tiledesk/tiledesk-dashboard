@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.3.4
+- Deploys in production
+- Fixes the bug:: chatbots of type "RASA" are not created
+
+### 2.3.4-rc1
+- Fixes the bug:: chatbots of type "RASA" are not created
+
 ### 2.3.3
 - Deploys in production
 - Restyling of the graphics of the "Create project" wizard
