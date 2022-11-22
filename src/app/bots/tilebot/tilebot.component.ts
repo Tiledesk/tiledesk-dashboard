@@ -168,12 +168,15 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   queryString: string;
   paginated_answers_count: number;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  HAS_SELECTED_BOT_DETAILS:boolean = true;
+  HAS_SELECTED_BOT_IMPORTEXORT:boolean = false;
   _route: string
   public GENERAL_ROUTE_IS_ACTIVE: boolean = false
   public INTENTS_ROUTE_IS_ACTIVE: boolean = false
   public FULFILLMENT_ROUTE_IS_ACTIVE: boolean = false
   public TRAINING_ROUTE_IS_ACTIVE: boolean = false
   isChromeVerGreaterThan100: boolean;
+  thereHasBeenAnErrorProcessing: string;
   @ViewChild('fileInputBotProfileImage', { static: false }) fileInputBotProfileImage: any;
 
   constructor(
@@ -215,8 +218,13 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     // this.getDeptsByProjectId();
     this.listenSidebarIsOpened();
     this.getBrowserVersion()
+    
   }
 
+ 
+
+
+ 
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -242,9 +250,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       } else {
         this.checkBotImageExistOnNative();
       }
-      // console.log('[TILEBOT] - GENERAL_ROUTE_IS_ACTIVE  ', this.GENERAL_ROUTE_IS_ACTIVE)
-      // console.log('[TILEBOT] - INTENTS_ROUTE_IS_ACTIVE  ', this.INTENTS_ROUTE_IS_ACTIVE)
-      // console.log('[TILEBOT] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
+
       this.getFaqKbById();
       this.getAllFaqByFaqKbId();
       this.getPaginatedFaqByFaqKbIdAndRepliesCount()
@@ -278,6 +284,110 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       this.logger.log('[TILEBOT] - FULFILLMENT_ROUTE_IS_ACTIVE  ', this.FULFILLMENT_ROUTE_IS_ACTIVE)
     }
   }
+
+  toggleTab(displaysecodtab) {
+    
+    console.log('[TILEBOT] displaydetails', displaysecodtab ) 
+    if (displaysecodtab) {
+      this.HAS_SELECTED_BOT_DETAILS = false;
+      this.HAS_SELECTED_BOT_IMPORTEXORT= true;
+    } else {
+      this.HAS_SELECTED_BOT_DETAILS = true;
+      this.HAS_SELECTED_BOT_IMPORTEXORT= false;
+    }
+
+    console.log('[TILEBOT] toggle Tab Detail / Import Export HAS_SELECTED_BOT_DETAILS', this.HAS_SELECTED_BOT_DETAILS ) 
+    console.log('[TILEBOT] toggle Tab Detail / Import Export HAS_SELECTED_BOT_IMPORTEXORT', this.HAS_SELECTED_BOT_IMPORTEXORT ) 
+  }
+  // hasSelectBotdetails () {
+  //   this.HAS_SELECTED_BOT_DETAILS = true;
+  //   this.HAS_SELECTED_BOT_IMPORTEXORT= false;
+   
+  // }
+
+  // hasSelectImportExport () {
+  //   this.HAS_SELECTED_BOT_DETAILS = false;
+  //   this.HAS_SELECTED_BOT_IMPORTEXORT= true;
+  // }
+
+  exportFaqToJSON() {
+    const  exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-faq-to-json-btn');
+    exportFaqToJsonBtnEl.blur();
+    this.faqService.exportFaqsToJSON(this.id_faq_kb).subscribe((faq: any) => {
+      console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS', faq)
+      console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
+      if (faq) {
+        this.downloadObjectAsJson(faq.intents, 'faqs');
+      }
+    }, (error) => {
+      this.logger.error('[TILEBOT] - EXPORT FAQ TO CSV - ERROR', error);
+    }, () => {
+      this.logger.log('[TILEBOT] - EXPORT FAQ TO CSV - COMPLETE');
+    });
+  }
+
+  downloadObjectAsJson(exportObj, exportName){
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  }
+
+
+  // inportFaqToJSON() {
+  //   const  exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-faq-to-json-btn');
+  //   exportFaqToJsonBtnEl.blur();
+  //   this.faqService.importFaqFromJSON(this.id_faq_kb).subscribe((faq: any) => {
+  //     console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS', faq)
+
+  //     if (faq) {
+  //       this.downloadFile(faq, 'faqs.json');
+  //     }
+  //   }, (error) => {
+  //     this.logger.error('[TILEBOT] -  FAQ TO CSV - ERROR', error);
+  //   }, () => {
+  //     this.logger.log('[TILEBOT] - EXPORT FAQ TO CSV - COMPLETE');
+  //   });
+  // }
+
+
+  fileChangeUploadJSON(event) {
+    console.log('[TILEBOT] - fileChangeUploadJSON $event ', event);
+  let  fileJsonToUpload = ''
+   const selectedFile = event.target.files[0];
+   const fileReader = new FileReader();
+   fileReader.readAsText(selectedFile, "UTF-8");
+   fileReader.onload = () => {
+    fileJsonToUpload = JSON.parse(fileReader.result as string)
+    console.log('fileJsonToUpload', fileJsonToUpload) ;
+   }
+   fileReader.onerror = (error) => {
+     console.log(error);
+   }
+
+     this.faqService.importFaqFromJSON(this.id_faq_kb, fileJsonToUpload).subscribe((faq: any) => {
+      console.log('[TILEBOT] - IMPORT FAQ FROM JSON - FAQS', faq)
+
+      if (faq) {
+        this.downloadFile(faq, 'faqs.json');
+      }
+    }, (error) => {
+      this.logger.error('[TILEBOT] -  IMPORT FAQ FROM - ERROR', error);
+      
+      this.notify.showWidgetStyleUpdateNotification("thereHasBeenAnErrorProcessing", 4, 'report_problem');
+    }, () => {
+      this.logger.log('[TILEBOT] - IMPORT FAQ FROM- COMPLETE');
+    });
+  }
+
+
+  // importFaqFromJSON() {
+  //   const  importFaqFromJsonBtnEl = <HTMLElement>document.querySelector('.import-faq-from-json-btn');
+  //   importFaqFromJsonBtnEl.blur();
+  // }
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
     this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
@@ -317,6 +427,13 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       .subscribe((text: string) => {
         this.done_msg = text;
       });
+
+      
+        this.translate.get('ThereHasBeenAnErrorProcessing')
+          .subscribe((translation: any) => {
+            this.thereHasBeenAnErrorProcessing = translation;
+          });
+        
   }
 
   getParamsBotType() {

@@ -217,6 +217,40 @@ export class FaqService {
       .get(url, httpOptions)
   }
 
+  public exportFaqsToJSON(id_faq_kb: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      }),
+      // responseType: 'text' as 'json'
+    };
+    
+    const url = "https://api.tiledesk.com/v2/" + this.project._id + "/faq_kb/exportjson/" + id_faq_kb;
+    this.logger.log('[FAQ-SERV] - EXPORT FAQS AS JSON - URL', url);
+
+    return this._httpClient
+      .get(url, httpOptions)
+  }
+
+  public importFaqFromJSON(id_faq_kb: string, jsonfile) {
+
+    const options = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    const body = { }
+
+    const url = "https://api.tiledesk.com/v2/" + this.project._id + "/faq_kb/exportjson/" + id_faq_kb
+    this.logger.log('[FAQ-SERV] UPLOAD FAQS CSV - URL ', url);
+
+    return this._httpClient
+      .post(url, jsonfile, options)
+  }
+
+
   /**
    * CREATE FAQ (POST)
    * @param question 
