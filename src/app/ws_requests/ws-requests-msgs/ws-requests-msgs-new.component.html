@@ -1,6 +1,5 @@
-
 <!-- Navbar brand for Chrome, Firefox ... -->
-<div  #navbarBrand *ngIf="CHAT_PANEL_MODE === false && !isSafari" class="navbar-brand"
+<div #navbarBrand *ngIf="CHAT_PANEL_MODE === false && !isSafari" class="navbar-brand"
   style="z-index: 1050;position: relative; padding-left:30px"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
@@ -10,7 +9,7 @@
 
 <!-- Navbar brand for Safari -->
 <div #navbarBrand *ngIf="CHAT_PANEL_MODE === false && isSafari" class="navbar-brand"
-  style="z-index: 1050;position: absolute; padding-left:30px; top:6px" >
+  style="z-index: 1050;position: absolute; padding-left:30px; top:6px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
   {{ "RequestMsgsPage.RequestDetails" | translate }}
@@ -1314,7 +1313,8 @@
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;color: rgb(197, 44, 36);">stop</i>
-                              <span style="font-weight:500; position: relative; top: 1px;"> {{'Open' | translate}} </span>
+                              <span style="font-weight:500; position: relative; top: 1px;"> {{'Open' | translate}}
+                              </span>
                             </a>
                           </li>
                           <li (click)="hasSelectedOpen('updatedWorkingStatus')" class="ticket-open-assigned"
@@ -1323,7 +1323,8 @@
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;color: rgb(197, 44, 36);">stop</i>
-                              <span style="font-weight:500; position: relative; top: 1px;"> {{'Open' | translate}} </span>
+                              <span style="font-weight:500; position: relative; top: 1px;"> {{'Open' | translate}}
+                              </span>
                             </a>
                           </li>
                           <li (click)="hasSelectedPending('updatedWorkingStatus')" class="pending"
@@ -1332,7 +1333,8 @@
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;color:  rgb(55,147,233);">stop</i>
-                              <span style="font-weight:500; position: relative; top: 1px;">  {{'Pending' | translate}} </span>
+                              <span style="font-weight:500; position: relative; top: 1px;"> {{'Pending' | translate}}
+                              </span>
                             </a>
                           </li>
                           <li
@@ -1341,9 +1343,10 @@
                             *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
-                            <a style="padding-left: 15px; padding-right: 15px;">  
+                            <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px; color: #999;">stop</i>
-                              <span style="font-weight:500; position: relative; top: 1px;"> {{'VisitorsPage.Resolve' | translate}} </span>
+                              <span style="font-weight:500; position: relative; top: 1px;">
+                                {{'VisitorsPage.Resolve' | translate}} </span>
                             </a>
                           </li>
                           <li (click)="hasSelectedSolved('updatedWorkingStatus')" class="ticket-resolved"
@@ -1352,7 +1355,8 @@
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px; color: #999">stop</i>
-                              <span style="font-weight:500; position: relative; top: 1px;"> {{'VisitorsPage.Resolve' | translate}}</span>
+                              <span style="font-weight:500; position: relative; top: 1px;">
+                                {{'VisitorsPage.Resolve' | translate}}</span>
                             </a>
                           </li>
                         </ul>
@@ -1363,57 +1367,61 @@
                       <!-- ---------------------------------------------------------------------- -->
                       <div class="resolve-reopen-btns-in-right-sidebar-wpr">
                         <!--  Resolve - use case Conversation -->
-                        <div *ngIf="request?.status !== 1000 && !request?.subject"
-                          class="resolve-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
-                          matTooltip=" {{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='above' matTooltipHideDelay="100">
-                          <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
-                            class="btn btn-primary sideber-header-btn pull-right" role="button"
-                            [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
-                            <i class="material-icons" style="vertical-align: middle; padding-bottom: 2px;">archive</i>
-                            <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
-                          </button>
+                        <div class="resolve-btns-in-right-sidebar-wpr" *ngIf="request?.status !== 1000">
+                          <div *ngIf="!request?.subject" class="resolve-btn-in-right-sidebar-wpr"
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip=" {{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
+                              class="btn btn-primary sideber-header-btn pull-right" role="button"
+                              [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                              <i class="material-icons" style="vertical-align: middle; padding-bottom: 2px;">archive</i>
+                              <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
+                            </button>
+                          </div>
+
+                          <!-- Resolve - use case Ticket -->
+                          <div *ngIf="request?.subject" class="resolve-btn-in-right-sidebar-wpr"
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip=" {{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
+                              class="btn btn-primary sideber-header-btn pull-right" role="button"
+                              [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                              <i class="material-icons" style="vertical-align: middle; padding-bottom: 2px;">archive</i>
+                              <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
+                            </button>
+                          </div>
                         </div>
 
-                        <!-- Resolve - use case Ticket -->
-                        <div *ngIf="request?.status !== 1000 && request?.subject"
-                          class="resolve-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
-                          matTooltip=" {{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='above' matTooltipHideDelay="100">
-                          <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
-                            class="btn btn-primary sideber-header-btn pull-right" role="button"
-                            [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
-                            <i class="material-icons" style="vertical-align: middle; padding-bottom: 2px;">archive</i>
-                            <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
-                          </button>
-                        </div>
+                        <div class="reopen-btns-in-right-sidebar-wpr" *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000">
+                          <!--  Reopen - use case Conversation -->
+                          <div *ngIf="!request?.subject"
+                            class="reopen-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
+                            matTooltip=" {{ 'ReopenTheCurrentConversation' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
+                              class="btn btn-primary sideber-header-btn pull-right" role="button"
+                              [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                              <i class="material-icons"
+                                style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
+                              <span style="vertical-align: middle"> {{ 'Reopen' | translate }} </span>
+                            </button>
+                          </div>
 
-                        <!--  Reopen - use case Conversation -->
-                        <div *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000 && !request?.subject"
-                          class="reopen-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
-                          matTooltip=" {{ 'ReopenTheCurrentConversation' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='above' matTooltipHideDelay="100">
-                          <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
-                            class="btn btn-primary sideber-header-btn pull-right" role="button"
-                            [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
-                            <i class="material-icons"
-                              style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
-                            <span style="vertical-align: middle"> {{ 'Reopen' | translate }} </span>
-                          </button>
-                        </div>
-
-                        <!--  Reopen - use case Ticket -->
-                        <div *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000 && request?.subject"
-                          class="reopen-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
-                          matTooltip=" {{ 'ReopenTheCurrentTicket' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='above' matTooltipHideDelay="100">
-                          <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
-                            class="btn btn-primary sideber-header-btn pull-right" role="button"
-                            [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
-                            <i class="material-icons"
-                              style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
-                            <span style="vertical-align: middle"> {{ 'Reopen' | translate }} </span>
-                          </button>
+                          <!--  Reopen - use case Ticket -->
+                          <div *ngIf="request?.subject"
+                            class="reopen-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
+                            matTooltip=" {{ 'ReopenTheCurrentTicket' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
+                              class="btn btn-primary sideber-header-btn pull-right" role="button"
+                              [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                              <i class="material-icons"
+                                style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
+                              <span style="vertical-align: middle"> {{ 'Reopen' | translate }} </span>
+                            </button>
+                          </div>
                         </div>
                       </div>
 
@@ -1548,15 +1556,11 @@
                               c0.5,0,0.9-0.5,0.9-1.1V22z" />
                         </svg> -->
 
-                        <img *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && request?.subject" 
-                          src="assets/img/request_icons/status200_no_joined_internal.svg"
-                          class="header-conv-svg-icon" 
+                        <img *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && request?.subject"
+                          src="assets/img/request_icons/status200_no_joined_internal.svg" class="header-conv-svg-icon"
                           matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" 
-                          #tooltip="matTooltip"
-                          matTooltipPosition='above' 
-                          matTooltipHideDelay="100"
-                          style="width: 24px;height: 24px;">
+                          matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='above' matTooltipHideDelay="100" style="width: 24px;height: 24px;">
                       </div>
 
 
@@ -1720,12 +1724,13 @@
                               d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 2px;">
+                        <!-- (blur)="editContactEmail()"  -->
+                        <div class="form-group" style="margin-top: 2px;" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
                           <input type="email" name="email" data-id="email" class="form-control input-md"
                             [(ngModel)]="contactNewEmail" (ngModelChange)="emailChange($event)"
                             pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" placeholder="Email..."
-                            maxlength="255" (blur)="editContactEmail()" (keydown.enter)='editContactEmail()'
-                            [(ngModel)]="contactNewEmail" autocomplete="off" style="padding-bottom: 2px;">
+                            maxlength="255" (keydown.enter)='editContactEmail()' [(ngModel)]="contactNewEmail"
+                            autocomplete="off" style="padding-bottom: 2px;" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
                         </div>
                         <div class="action-btns">
                           <button type="button" data-id="email" (click)="removeEmailAnUpdateContact()">
@@ -1870,11 +1875,11 @@
                               d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-.61.08-1.21.21-1.78L8.99 15v1c0 1.1.9 2 2 2v1.93C7.06 19.43 4 16.07 4 12zm13.89 5.4c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41C17.92 5.77 20 8.65 20 12c0 2.08-.81 3.98-2.11 5.4z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;" (click)="openSourcePage(request?.sourcePage)">
+                        <div class="form-group" style="margin-top: 9px;" (click)="openSourcePage(request?.sourcePage)" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
                           <input *ngIf="!showSpinner" id="source-page-input" name="sourcepage" type="text"
                             data-id="sourcepage" class="form-control input-md" title="{{request?.sourcePage}}" disabled
                             value="{{request?.sourcePage}}" style="cursor: pointer;"
-                            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '220px' : '240px' }">
+                            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '220px' : '100%' }">
                         </div>
                       </div>
                     </li>
@@ -2048,7 +2053,7 @@
                           </div>
                         </div>
                         <div class="ng-select-tags-wpr"
-                          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '220px' : '240px' }">
+                          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '240px' : 'auto' }">
 
                           <!-- [loading]=loadingTags loadingText='Loading...' -->
                           <ng-select class="ng-select-tags" id="select-tag" #ngSelect (change)="addTag()"

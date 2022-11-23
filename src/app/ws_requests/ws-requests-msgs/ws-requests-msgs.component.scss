@@ -4779,12 +4779,14 @@ label {
 }
 .sidebar-tab-arrow-left-wpr > svg {
   fill: rgb(100, 116, 145);
-  opacity: 0.6;
+  // opacity: 0.6;
+  opacity: 0;
 }
 
 .sidebar-tab-arrow-right-wpr > svg {
   fill: rgb(100, 116, 145);
-  opacity: 0.6;
+  // opacity: 0.6;
+  opacity: 0;
 }
 
 .active-arrow > svg {

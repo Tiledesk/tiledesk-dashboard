@@ -1335,7 +1335,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1349,7 +1349,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.lead) {
             this.getContactRequests(this.request.lead._id)
             this.request.lead.email
-
           }
 
 
@@ -1417,9 +1416,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.selectedFollowers = storedProjectUsersArray;
             this.followers = storedProjectUsersArray
 
-
-
-
             // Filter array of objects with another array of objects
             // https://stackoverflow.com/questions/31005396/filter-array-of-objects-with-another-array-of-objects 
             // const myArrayFiltered = this.projectTeammates.filter((el) => {
@@ -1430,7 +1426,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             // this.selectedFollowers = myArrayFiltered;
             // this.followers = myArrayFiltered
             // console.log('this.request. myArrayFiltered', myArrayFiltered)
-
 
           }
 
