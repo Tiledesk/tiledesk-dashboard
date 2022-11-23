@@ -246,20 +246,17 @@ export class ContactsService {
   // @ Update lead Fullname
   // ---------------------------------------------
   public updateLeadFullname(leadid: string, fullName: string) {
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN,
       })
     };
-
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + leadid;
     this.logger.log('[CONTACTS-SERV] UPDATE LEAD - URL ', url);
 
     const body = { 'fullname': fullName };
     this.logger.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
-
     return this.httpClient
       .put(url, JSON.stringify(body), httpOptions)
   }
@@ -268,21 +265,17 @@ export class ContactsService {
   // @ Update lead Email
   // ---------------------------------------------
   public updateLeadEmail(leadid: string, lead_email: string) {
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN,
       })
     };
-
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + leadid;
     this.logger.log('[CONTACTS-SERV] UPDATE LEAD - URL ', url);
-
     const body = {
       'email': lead_email
     };
-
     this.logger.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
     return this.httpClient
       .put(url, JSON.stringify(body), httpOptions)
