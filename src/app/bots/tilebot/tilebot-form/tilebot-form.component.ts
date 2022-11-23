@@ -317,7 +317,7 @@ export class TilebotFormComponent implements OnInit {
     } else {
       this.fields.splice(objIndex, 1, event);
     }
-    if(this.intentForm && this.intentForm.fields){
+    if(this.intentForm){
       this.intentForm.fields = this.fields;
     }
     this.displayAddForm = false;
