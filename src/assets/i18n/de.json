@@ -1030,7 +1030,9 @@
 		"TheRequestWillBeAssignedToAHumanAgent": "fügen Sie '\\agent' als letzte Zeile in den Textbereich “Antwort“ ein, um die Konversation gemäß den Abteilungsregeln automatisch auf einen menschlichen Agenten zu verschieben. Mehr zur Human handoff:",
 		"DisplayTheButtonWithNameButton_1": "syntax der Anzeigetaste: Verwenden Sie ‘*’, gefolgt von einem Leerzeichen und dem Text der Schaltfläche in einer neuen Zeile des Antworttextes. Siehe Beispiel",
 		"DisplayTheImageWithTheSpecifiedURL": "zeigen Sie das Bild mit der angegebenen URL an. Siehe Beispiel",
-		"CallTheExternalWebhookToTheSpecifiedEndpoint": "Rufen Sie den externen Webhook zum angegebenen Endpunkt auf"
+		"CallTheExternalWebhookToTheSpecifiedEndpoint": "Rufen Sie den externen Webhook zum angegebenen Endpunkt auf",
+		"MoreOnWebhooks": "Mehr zu Webhooks <a href='https://developer.tiledesk.com/resolution-bot/quickstart/'darget='_blank'> hier </a> </a>",
+		"InfoAnswer": "Chatbot - Antwort auf die Benutzerfrage"
 	},
 	"FaqTestPage": {
 		"Question": "Frage",
@@ -2246,5 +2248,35 @@
 	"ClosesTheCurrentConversation":"Schließt die aktuelle Konversation",
 	"ClosesTheCurrentTicket":"Schließt das aktuelle Ticket",
 	"ReopenTheCurrentConversation":"Öffnet die aktuelle Konversation erneut",
-    "ReopenTheCurrentTicket":"Öffnet das aktuelle Ticket erneut"
+    "ReopenTheCurrentTicket":"Öffnet das aktuelle Ticket erneut",
+	"AddIntentPage": {
+		"AddForm": "Form hinzufügen",
+		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",
+		"InfoTemplateForm": "Das Modell der ausgewählten Form '{{{SelectedFormName}}' enthält die folgenden Felder: {{Beschreibung_key}}",
+		"CreateForm": "Form erstellen",
+		"NameForm": "Formularname",
+		"LabelCancel": "Label abbrechen",
+		"LabelReplay": "Etikett 'Formular storniert'",
+		"AddField": "Feld hinzufügen",
+		"FieldName": "Feldname",
+		"ParameterName": "Parametername",
+		"Other": "Sonstiges",
+		"FieldTypeText": "Feldtyp",
+		"AddCustomRegex": "Fügen Sie eine benutzerdefinierte Regex hinzu",
+		"Label": "Etikett",
+		"ErrorMessage": "Fehlermeldung",
+		"CancelReply": "Form gelöscht",
+		"DeleteField": "Feld löschen",
+		"ConfirmDeleteField": "Sind Sie sicher, dass Sie das Feld löschen möchten?",
+		"DeleteForm": "Formular löschen",
+		"ConfirmDeleteForm": "Sind Sie sicher, dass Sie das Formular löschen möchten?",
+		"MarkbotLabel": "Sie können <a href='https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/'darget='_blank'> markbot </a> verwenden, um Ihre Labels zu formatieren .",
+		"InfoMessages": {
+			"field_name": "Geben Sie dem Feld Formular einen Namen an (z. B. Name _ Benutzer). Der Name kann nur Buchstabenzahlen und _ enthalten",
+			"field_type": "Wählen Sie den angegebenen Typ aus, der in diesem Feld eingefügt wird (Beispiel: Text).",
+			"field_regex": "Fügen Sie die personalisierte Regex zur Kontrolle über die eingefügten Daten ein",
+			"field_label": "Schreiben Sie ein klares Etikett, das den Benutzern hilft, die richtigen Daten einzugeben (Beispiel: Wie heißt Ihr Name?)",
+			"field_error": "Schreiben Sie eine Fehlermeldung, wenn die vom Benutzer eingegebenen Daten nicht korrekt sind"
+		}
+	}
 }

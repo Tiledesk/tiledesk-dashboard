@@ -1030,7 +1030,9 @@
         "TheRequestWillBeAssignedToAHumanAgent": "Departamentin qaydalarına əməl edərək söhbəti avtomatik olaraq insan agentinə köçürmək üçün “Cavab ver” mətn sahəsinə sonuncu sətir kimi '\\agent' daxil edin. İnsan təhvil verilməsi haqqında daha çox",
         "DisplayTheButtonWithNameButton_1": "düyməni göstərin sintaksisi: Cavab mətninin yeni sətirində bir boşluqdan sonra '*' işarəsindən, sonra düymənin mətnindən istifadə edin. Nümunəyə baxın",
         "DisplayTheImageWithTheSpecifiedURL": "göstərilən URL ilə şəkli göstərin. Nümunəyə baxın",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint": "xarici webhook-u göstərilən son nöqtəyə çağırın"
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "xarici webhook-u göstərilən son nöqtəyə çağırın",
+        "MoreOnWebhooks": "Daha çox WebHhooks-da <a href='https://developer.tiledesk.com/resolution-bot/quickstart/' hədəf",
+        "InfoAnswer": "Chatbot istifadəçi sualına cavab"
     },
     "FaqTestPage": {
         "Question": "Sual",
@@ -2247,6 +2249,36 @@
     "ClosesTheCurrentTicket":"Cari ticket bağlayır",
     "ReopenTheCurrentConversation":"Cari söhbəti yenidən açır",
     "ReopenTheCurrentTicket":"Cari ticket yenidən açır",
+    "AddIntentPage": {
+        "AddForm": "Forma vermək",
+        "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",
+        "InfoTemplateForm": "'{{Seçilmiş formadam}} seçilmiş formanın modeli' aşağıdakı sahələri ehtiva edir: {{Təsvir_Key}}",
+        "CreateForm": "Forma yaratmaq",
+        "NameForm": "Mətbuat qoymaq",
+        "LabelCancel": "Etiketi ləğv edin",
+        "LabelReplay": "Etiket 'forması ləğv edildi'",
+        "AddField": "Sahə əlavə etmək",
+        "FieldName": "Sahə adı",
+        "ParameterName": "Parametr adı",
+        "Other": "Digər",
+        "FieldTypeText": "Sahə növü",
+        "AddCustomRegex": "Xüsusi bir regex əlavə edin",
+        "Label": "Etiketləmək",
+        "ErrorMessage": "Səhv mesajı",
+        "CancelReply": "Forma silindi",
+        "DeleteField": "Sahə silmək",
+        "ConfirmDeleteField": "Sahəni silmək istədiyinizə əminsiniz?",
+        "DeleteForm": "Formanı silmək",
+        "ConfirmDeleteForm": "Formanı silmək istədiyinizə əminsiniz?",
+        "MarkbotLabel": "Siz <a href='https://gethelp.tiledesk.com/articles/sending-Images-videos-quick-replies-d-more/' hədəf='_blank/'tik .",
+        "InfoMessages": {
+            "field_name": "Forma sahəsinə bir ad verin (ex: ad _ istifadəçi). Adı yalnız hərflər nömrələrini ehtiva edə bilər və _",
+            "field_type": "Bu sahədə (ex: mətn) daxil ediləcək verilən növü seçin.",
+            "field_regex": "Əlavə edilmiş məlumatlara nəzarət üçün fərdi regex daxil edin",
+            "field_label": "İstifadəçilərə düzgün məlumat daxil olmağa kömək edən aydın bir etiket yazın (ex: adınız nədir?)",
+            "field_error": "İstifadəçi tərəfindən daxil olan məlumatlar düzgün deyilsə, səhv mesajı yazın"
+        }
+    },
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

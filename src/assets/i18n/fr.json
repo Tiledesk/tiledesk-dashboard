@@ -1030,7 +1030,9 @@
         "TheRequestWillBeAssignedToAHumanAgent": "insérez '\\agent' comme dernière ligne dans la zone de texte \"Réponse\" pour déplacer automatiquement la conversation vers un agent humain, en suivant les règles du service. En savoir plus sur le transfert humain",
         "DisplayTheButtonWithNameButton_1": "syntaxe du bouton d'affichage : utilisez '*' suivi d'un espace, puis le texte du bouton sur une nouvelle ligne du texte de réponse. Voir exemple",
         "DisplayTheImageWithTheSpecifiedURL": "afficher l'image avec l'URL spécifiée. Voir exemple",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint": "appeler le webhook externe au point de terminaison spécifié"
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "appeler le webhook externe au point de terminaison spécifié",
+        "MoreOnWebhooks": "Plus sur webhooks <a href='https://developer.tilidesk.com/resolution-bot/quickstart/' Target='_blank'> ici </a>",
+        "InfoAnswer": "Réponse de chatbot à la question de l'utilisateur"
     },
     "FaqTestPage": {
         "Question": "Demande",
@@ -2247,6 +2249,36 @@
     "ClosesTheCurrentTicket":"Ferme le ticket en cours",
     "ReopenTheCurrentConversation":"Rouvre la conversation en cours",
     "ReopenTheCurrentTicket":"Rouvre le ticket en cours",
+    "AddIntentPage": {
+        "AddForm": "Ajouter le formulaire",
+        "SelectTemplateForm": "Sélectionnez un type de forme parmi ceux suggérés, ou créez-en un nouveau",
+        "InfoTemplateForm": "Le modèle du formulaire sélectionné '{{selectedFormName}}' contient les champs suivants: {{description_key}}",
+        "CreateForm": "Créer une forme",
+        "NameForm": "Nom de forme",
+        "LabelCancel": "Annuler l'étiquette",
+        "LabelReplay": "Étiquette «Formulaire annulé»",
+        "AddField": "Ajouter le champ",
+        "FieldName": "Nom de domaine",
+        "ParameterName": "Le nom du paramètre",
+        "Other": "Autre",
+        "FieldTypeText": "Type de champ",
+        "AddCustomRegex": "Ajouter un regex personnalisé",
+        "Label": "Étiquette",
+        "ErrorMessage": "Message d'erreur",
+        "CancelReply": "Formulaire supprimé",
+        "DeleteField": "Supprimer le champ",
+        "ConfirmDeleteField": "Êtes-vous sûr de vouloir supprimer le champ?",
+        "DeleteForm": "Supprimer le formulaire",
+        "ConfirmDeleteForm": "Êtes-vous sûr de vouloir supprimer le formulaire?",
+        "MarkbotLabel": "Vous pouvez utiliser <a href='https://gethelp.tilidesk.com/articles/sending-images-videos-quick-replies-and-more/''' Target='_Blank'> Markbot </a> Pour formater vos étiquettes .",
+        "InfoMessages": {
+            "field_name": "Donnez un nom au champ de formulaire (ex: nom _ utilisateur). Le nom ne peut contenir que des numéros de lettres et _",
+            "field_type": "Sélectionnez le type de donné qui sera inséré dans ce champ (ex: texte).",
+            "field_regex": "Insérez le regexex personnalisé pour contrôler les données insérées",
+            "field_label": "Écrivez une étiquette claire qui aide les utilisateurs à saisir les données correctes (Ex: quel est votre nom?)",
+            "field_error": "Écrivez un message d'erreur si les données entrées par l'utilisateur ne sont pas correctes"
+        }
+    },
     "CHAT_IONIC": {
         "LABEL_TU": "vous: ",
         "LABEL_MSG_PUSH_START_CHAT": "Pas encore de conversation",

@@ -1030,7 +1030,9 @@
         "TheRequestWillBeAssignedToAHumanAgent": "أدخل \"\\ agent\" باعتباره السطر الأخير في منطقة نص \"الإجابة\" لنقل المحادثة تلقائيًا إلى وكيل بشري ، باتباع قواعد القسم. المزيد عن تسليم الإنسان",
         "DisplayTheButtonWithNameButton_1": "صيغة زر العرض: استخدم \"*\" متبوعة بمسافة واحدة ، ثم نص الزر في سطر جديد من نص الإجابة. انظر المثال",
         "DisplayTheImageWithTheSpecifiedURL": "عرض الصورة مع URL المحدد. انظر المثال",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint": "استدعاء خطاف الويب الخارجي إلى نقطة النهاية المحددة"
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "استدعاء خطاف الويب الخارجي إلى نقطة النهاية المحددة",
+        "MoreOnWebhooks": "المزيد على webhooks <a href='https://developer.tiledesk.com/resolution-bot/quickstart/' target='_blank'> هنا </a>",
+        "InfoAnswer": "استجابة chatbot على سؤال المستخدم"
     },
     "FaqTestPage": {
         "Question": "سؤال",
@@ -2247,6 +2249,36 @@
     "ClosesTheCurrentTicket":"لإغلاق التذكرة الحالية",
     "ReopenTheCurrentConversation":"يعيد فتح المحادثة الحالية",
     "ReopenTheCurrentTicket":"يعيد فتح التذكرة الحالية",
+    "AddIntentPage": {
+        "AddForm": "أضف النموذج",
+        "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",
+        "InfoTemplateForm": "يحتوي نموذج النموذج المحدد '{{selectFormName}}' على الحقول التالية: {{description_key}}",
+        "CreateForm": "إنشاء نموذج",
+        "NameForm": "اسم النموذج",
+        "LabelCancel": "إلغاء التسمية",
+        "LabelReplay": "تسمية \"نموذج إلغاء\"",
+        "AddField": "إضافة حقل",
+        "FieldName": "اسم الحقل",
+        "ParameterName": "اسم المعلمة",
+        "Other": "آخر",
+        "FieldTypeText": "نوع الحقل",
+        "AddCustomRegex": "أضف regex مخصص",
+        "Label": "مُلصَق",
+        "ErrorMessage": "رسالة خطأ",
+        "CancelReply": "شكل تم حذفه",
+        "DeleteField": "حذف الحقل",
+        "ConfirmDeleteField": "هل أنت متأكد من أنك تريد حذف الحقل؟",
+        "DeleteForm": "حذف النموذج",
+        "ConfirmDeleteForm": "هل أنت متأكد من أنك تريد حذف النموذج؟",
+        "MarkbotLabel": "يمكنك استخدام <a href='https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/' target='_blank'> markbot </a> لتنسيق ملصقاتك .",
+        "InfoMessages": {
+            "field_name": "أعط اسمًا لحقل النموذج (على سبيل المثال: الاسم _ المستخدم). يمكن أن يحتوي الاسم على أرقام أحرف فقط و _",
+            "field_type": "حدد نوع المعطى الذي سيتم إدراجه في هذا الحقل (على سبيل المثال: النص).",
+            "field_regex": "أدخل regex المخصصة للتحكم في البيانات المدرجة",
+            "field_label": "اكتب تسمية واضحة تساعد المستخدمين على إدخال البيانات الصحيحة (على سبيل المثال: ما اسمك؟)",
+            "field_error": "اكتب رسالة خطأ إذا كانت البيانات التي أدخلها المستخدم غير صحيحة"
+        }
+    },
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",

@@ -183,7 +183,7 @@ export class TilebotAddEditFormComponent implements OnInit {
     } else {
       this.inputTypePlaceholderClass = true;
     }
-    console.log("displayPlaceholder:::: ", this.inputTypePlaceholderClass, event);
+    // console.log("displayPlaceholder:::: ", this.inputTypePlaceholderClass, event);
   }
 
   displayMessage(field){

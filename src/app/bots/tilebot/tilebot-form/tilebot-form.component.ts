@@ -80,7 +80,7 @@ export class TilebotFormComponent implements OnInit {
     if(this.intentForm && this.intentForm.fields){
       this.displayNewFormButton = false;
       this.displaySettingsButton = true;
-      this.fields = this.intentForm.fields;
+      this.fields = structuredClone(this.intentForm.fields);
     }
   }
   
@@ -97,6 +97,11 @@ export class TilebotFormComponent implements OnInit {
 
   /** */
   generateJsonIntentForm(){
+    if(this.selectedFormId && !this.selectedForm){
+      this.getFieldFromId(this.selectedFormId);
+    }
+
+    // console.log("generateJsonIntentForm", this.selectedFormId, this.selectedForm);
     if(this.selectedForm){  
       this.intentForm = {};
       this.intentForm.cancelCommands = this.cancelCommands;
@@ -110,7 +115,7 @@ export class TilebotFormComponent implements OnInit {
       }
       if(this.selectedForm.fields){
         this.intentForm.fields = this.selectedForm.fields;
-        this.fields = this.selectedForm.fields;
+        this.fields = structuredClone(this.selectedForm.fields);
       }
       // console.log('generateForm:  ', this.intentForm);
     }
@@ -178,27 +183,7 @@ export class TilebotFormComponent implements OnInit {
   /** */
 
   // EVENTS //
-  openBoxNewFormForm(){
-    this.displayBoxNewForm = true;
-    this.displayCancelButton = true;
-    this.displayNewFormButton = false;
-    this.displaySettingsButton = false;
-    this.displayTilebotAddEditForm = true;
-    this.displayAddForm = false;
-    this.displayEditForm = false
-    this.displaySettingForm = false;
-    // this.intentForm = {};
-    // this.fields = [];
-    // displayTilebotAddEditForm = false;
-    // displayAddForm = false;
-    // displayEditForm = false
-    // displayBoxNewForm = false;
-    // displaySettingForm = false;
-    // displayNewFormButton = true;
-    // displayCancelButton = false;
-    // displaySettingsButton = false;
-
-  }
+  
 
   openSettingsForm(){
     this.displaySettingsButton = false;
@@ -241,26 +226,46 @@ export class TilebotFormComponent implements OnInit {
     if(index === this.idForm){
       this.deleteForm();
     } else {
+      this.displayAddForm = false;
+      this.displayEditForm = false;
       let i: number = +index;
       this.fields.splice(i, 1);
+      // console.log('this.fields.length::: 1', this.fields.length);
       if(this.fields.length === 0){
-        this.resetForm();
+        this.deleteForm();
       }
+      // console.log('this.fields.length::: 2');
     }
     this.jsonGenerator();
     this.displayMODAL = false;
   }
 
-  private deleteForm(){
-    this.displayTilebotAddEditForm = false;
+
+  openBoxNewFormForm(){
+    this.intentForm = null;
+    this.fields = [];
+    this.displayBoxNewForm = true;
+    this.displayTilebotAddEditForm = true;
+    this.displayCancelButton = true;
+    this.displayNewFormButton = false;
+    this.displaySettingsButton = false;
     this.displayAddForm = false;
-    this.displayEditForm = false
+    this.displayEditForm = false;
+    this.displaySettingForm = false;
+    // console.log('openBoxNewFormForm:: ', this.displayBoxNewForm, this.intentForm);
+  }
+
+  private deleteForm(){
+    // console.log('deleteForm:: ');
+    this.displayTilebotAddEditForm = false;
+    this.displayNewFormButton = true;
     this.displayBoxNewForm = true;
     this.displaySettingForm = false;
-    this.displayNewFormButton = true;
+    this.displayAddForm = false;
+    this.displayEditForm = false
     this.displayCancelButton = false;
     this.displaySettingsButton = false;
-    this.intentForm = {};
+    this.intentForm = null;
     this.fields = [];
   }
 
@@ -301,7 +306,7 @@ export class TilebotFormComponent implements OnInit {
   closeAddEditForm(){
     this.displayAddForm = false;
     this.displayEditForm = false;
-    this.displayTilebotAddEditForm = false;
+    this.displayTilebotAddEditForm = true;
   }
 
   /** Event SAVE field */
@@ -312,10 +317,12 @@ export class TilebotFormComponent implements OnInit {
     } else {
       this.fields.splice(objIndex, 1, event);
     }
-    this.intentForm.fields = this.fields;
+    if(this.intentForm && this.intentForm.fields){
+      this.intentForm.fields = this.fields;
+    }
     this.displayAddForm = false;
     this.displayEditForm = false;
-    this.displayTilebotAddEditForm = false;
+    this.displayTilebotAddEditForm = true;
     this.jsonGenerator();
   }
 

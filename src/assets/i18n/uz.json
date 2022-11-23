@@ -1030,7 +1030,9 @@
         "TheRequestWillBeAssignedToAHumanAgent": "Boʻlim qoidalariga rioya qilgan holda suhbatni avtomatik ravishda odam agentiga oʻtkazish uchun “Javob berish” matn maydoniga oxirgi qator sifatida “agent”ni qoʻying. Odam o'tkazish haqida ko'proq",
         "DisplayTheButtonWithNameButton_1": "tugma sintaksisini ko'rsatish: javob matnining yangi satrida \"*\" belgisidan keyin bitta bo'sh joydan keyin tugma matnidan foydalaning. Misolga qarang",
         "DisplayTheImageWithTheSpecifiedURL": "tasvirni belgilangan URL bilan ko'rsatish. Misolga qarang",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint": "tashqi veb-hukni belgilangan oxirgi nuqtaga chaqiring"
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "tashqi veb-hukni belgilangan oxirgi nuqtaga chaqiring",
+        "MoreOnWebhooks": "Batafsilroq veb-saytlar <a href=htttth:steedesk.com/rewologinog'/Ris=_Blank'y'x.co> Bu erda </a>",
+        "InfoAnswer": "ChatBot foydalanuvchi savollariga javob"
     },
     "FaqTestPage": {
         "Question": "Savol",
@@ -2247,6 +2249,36 @@
     "ClosesTheCurrentTicket":"Joriy ticket yopadi",
     "ReopenTheCurrentConversation":"Joriy suhbatni qayta ochadi",
     "ReopenTheCurrentTicket":"Joriy chiptani qayta oching",
+    "AddIntentPage": {
+        "AddForm": "Shakl qo'shing",
+        "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",
+        "InfoTemplateForm": "Tanlangan shaklning modeli quyidagi maydonlarni o'z ichiga oladi: {Ratsion_key}}",
+        "CreateForm": "Shaklni yaratish",
+        "NameForm": "Forma nomi",
+        "LabelCancel": "Yorliqni bekor qilish",
+        "LabelReplay": "Forma bekor qilindi",
+        "AddField": "Maydon qo'shish",
+        "FieldName": "Maydon nomi",
+        "ParameterName": "Parametr nomi",
+        "Other": "Boshqa",
+        "FieldTypeText": "Dala turi",
+        "AddCustomRegex": "Maxsus Regm qo'shing",
+        "Label": "Yorliq",
+        "ErrorMessage": "Xato xabari",
+        "CancelReply": "Shaklni o'chirish",
+        "DeleteField": "O'chirish maydonchasi",
+        "ConfirmDeleteField": "Maydonni yo'q qilmoqchi ekanligiga ishonchingiz komilmi?",
+        "DeleteForm": "Shaklni o'chirish",
+        "ConfirmDeleteForm": "Shaklni o'chirishni xohlayotganingizga ishonchingiz komilmi?",
+        "MarkbotLabel": "Siz <a href=mhtths:/getcelp.tiedesk.com/ticles/ssplesk-ick-wrack-and-and-e/blekls-and-ech'its-and-e -/ge/blons.",
+        "InfoMessages": {
+            "field_name": "Shakl maydoniga nom bering (EX: ism _ foydalanuvchi). Ism faqat harflarni o'z ichiga olishi mumkin va _",
+            "field_type": "Ushbu maydonga kiritilgan tovar turini tanlang (EX: Matn).",
+            "field_regex": "Shaxsiylashtirilgan regexni belgilangan ma'lumotni boshqarish uchun joylashtiring",
+            "field_label": "Foydalanuvchilarga to'g'ri ma'lumotni kiritishga yordam beradigan aniq yorliqni yozing (sizning ismingiz nima?)",
+            "field_error": "Agar foydalanuvchi kiritilmagan ma'lumotlar to'g'ri bo'lmasa, xato xabarini yozing"
+        }
+    },
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",
