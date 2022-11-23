@@ -2252,5 +2252,6 @@
 	"PrimaryColorGradient":"Farbverlauf der Primärfarbe",
 	"EnableDisableprimaryColorGradient":"Aktivieren/Deaktivieren Sie den Farbverlauf der Primärfarbe des Widgets",
 	"ThereWasSomeTroubleConnectingToNetwork":"Wir entschuldigen uns. Beim Verbinden mit dem Netzwerk ist ein Problem aufgetreten",
-	"InTheExampleCsFileTheAnswerAndQuestionAreRequired":"In der example.csv-Datei sind nur die Antwort- und Fragefelder erforderlich"
+	"InTheExampleCsFileTheAnswerAndQuestionAreRequired":"In der example.csv-Datei sind nur die Antwort- und Fragefelder erforderlich",
+	"InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy":"In der hochzuladenden CSV-Datei werden die Spalten durch getrennt"
 }

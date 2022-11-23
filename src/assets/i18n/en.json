@@ -2253,6 +2253,7 @@
     "EnableDisableprimaryColorGradient":"Enable/Disable the gradient of the primary color of the widget",
     "ThereWasSomeTroubleConnectingToNetwork":"Our apologies. There was some trouble connecting to network",
     "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"In the example.csv file only the Answer and Question fields are required",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "In the CSV file to be uploaded, the columns are separated by",
     "CancelReply": "Form canceled",
     "AddIntentPage": {
         "AddForm": "Add form",

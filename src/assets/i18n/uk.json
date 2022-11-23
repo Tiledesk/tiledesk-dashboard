@@ -2253,6 +2253,7 @@
     "EnableDisableprimaryColorGradient":"Увімкнути/вимкнути градієнт основного кольору віджета",
     "ThereWasSomeTroubleConnectingToNetwork":"Наші вибачення. Виникли проблеми з підключенням до мережі",
     "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"У файлі example.csv потрібні лише поля «Відповідь» і «Питання».",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "У файлі CSV, який потрібно завантажити, стовпці розділені символом",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

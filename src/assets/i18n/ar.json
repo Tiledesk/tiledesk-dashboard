@@ -2253,6 +2253,7 @@
     "EnableDisableprimaryColorGradient":"تمكين / تعطيل التدرج اللوني للون الأساسي لعنصر واجهة المستخدم",
     "ThereWasSomeTroubleConnectingToNetwork":"اعتذارنا. حدثت مشكلة في الاتصال بالشبكة", 
     "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"في ملف example.csv ، مطلوب حقلا الإجابة والسؤال فقط",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy":"في ملف CSV المراد تحميله ، يتم فصل الأعمدة بـ",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",

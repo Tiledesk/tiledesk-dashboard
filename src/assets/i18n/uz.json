@@ -2253,6 +2253,7 @@
     "EnableDisableprimaryColorGradient":"Vidjetning asosiy rangining gradientini yoqish/o'chirish",
     "ThereWasSomeTroubleConnectingToNetwork":"Uzr so'raymiz. Tarmoqqa ulanishda muammo yuz berdi",
     "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv faylida faqat Javob va Savol maydonlari talab qilinadi",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Yuklanishi kerak bo'lgan CSV faylida ustunlar bilan ajratilgan",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

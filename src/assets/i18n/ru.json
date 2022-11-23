@@ -2253,6 +2253,7 @@
     "EnableDisableprimaryColorGradient":"Включить/отключить градиент основного цвета виджета",
     "ThereWasSomeTroubleConnectingToNetwork":"Наши извинения. Возникли проблемы с подключением к сети",
     "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"В файле example.csv обязательны только поля «Ответ» и «Вопрос».",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "В файле CSV, который необходимо загрузить, столбцы разделены",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

@@ -2253,6 +2253,7 @@
     "EnableDisableprimaryColorGradient":"Виджеттің негізгі түсінің градиентін қосыңыз/өшіріңіз",
     "ThereWasSomeTroubleConnectingToNetwork":"Nos excuses. Il y a eu des problèmes de connexion au réseau",
     "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv файлында тек Жауап және Сұрақ өрістері қажет",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Жүктеп салынатын CSV файлында бағандар арқылы бөлінеді",
     "CHAT_IONIC": {
         "LABEL_TU": "сен: ",
         "LABEL_MSG_PUSH_START_CHAT": "Әзірге әңгіме жоқ",

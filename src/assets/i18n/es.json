@@ -2253,6 +2253,7 @@
     "EnableDisableprimaryColorGradient":"Habilitar/Deshabilitar el degradado del color primario del widget",
     "ThereWasSomeTroubleConnectingToNetwork":"Nuestras disculpas. Hubo algunos problemas para conectarse a la red", 
     "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"En el archivo example.csv solo se requieren los campos Respuesta y Pregunta",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy":"En el archivo CSV que se va a cargar, las columnas están separadas por",
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",
