@@ -33,6 +33,29 @@
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
         <div class="row">
+          <div class="col-md-12" style="padding-left: 0px; ">
+            <div class="chatbot-general-setting-tab-wpr" *ngIf="GENERAL_ROUTE_IS_ACTIVE === true">
+              <ul class="bottom-nav" style="margin-bottom: 16px;    box-shadow: 0 2px 0px #00003c14 !important;">
+                <li (click)="toggleTab(details = !details)" class="btn-with-border-effect" [ngClass]="
+                      { 'disabled-li' :        HAS_SELECTED_BOT_IMPORTEXORT === false, 
+                        'border-from-center' : HAS_SELECTED_BOT_IMPORTEXORT === true,
+                        'li-active' :          HAS_SELECTED_BOT_IMPORTEXORT === false
+                      }">
+
+                  <a href="javascript:;" role="button"> {{ "BotDetails" | translate }} </a>
+                </li>
+
+                <li (click)="toggleTab(details = !details)" class="btn-with-border-effect" [ngClass]="
+                  { 'disabled-li' : HAS_SELECTED_BOT_IMPORTEXORT === true, 
+                    'border-from-center' : HAS_SELECTED_BOT_IMPORTEXORT === false, 
+                    'li-active' : HAS_SELECTED_BOT_IMPORTEXORT === true
+                  }">
+                  <a href="javascript:;" role="button"> Chatbot Import Export </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
           <div class="col-md-8" [ngStyle]="{'display': INTENTS_ROUTE_IS_ACTIVE === true ? 'none' : 'block' }">
             <div class="card custom_card card--no-border"
               style="padding-top: 0px;padding-bottom:5px;margin-bottom: 5px;margin-top: 0px;">
@@ -45,7 +68,7 @@
                 <!-- General -->
                 <!-- ---------------------------------------------------------- -->
                 <section *ngIf="GENERAL_ROUTE_IS_ACTIVE === true">
-                  <div class="row">
+                  <!-- <div class="row">
                     <div class="col-sm-10 col-md-10">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
@@ -57,7 +80,7 @@
                     <div class="col-sm-10 col-md-10">
                       <div class="section-subtitle"> </div>
                     </div>
-                  </div>
+                  </div> -->
                   <!-- <ul class="bottom-nav" style="margin-bottom: 30px;">
                     <li (click)="toggleTab(details = !details)" class="btn-with-border-effect" [ngClass]="
                             { 'disabled-li' :        HAS_SELECTED_BOT_IMPORTEXORT === false, 
@@ -75,11 +98,10 @@
                         }">
                       <a href="javascript:;" role="button"> FAQ Import Export </a>
                     </li>
-                  </ul> -->
+                  </ul>  -->
 
-                  <!-- <div *ngIf="HAS_SELECTED_BOT_DETAILS" class="chatbot-details-wpr"> -->
-
-                    <!-- <div class="row">
+                  <div *ngIf="HAS_SELECTED_BOT_DETAILS" class="chatbot-details-wpr">
+                    <div class="row">
                       <div class="col-sm-10 col-md-10">
                         <h3 class="card_title__underlined">
                           <span class="card_title__underline">
@@ -91,7 +113,7 @@
                       <div class="col-sm-10 col-md-10">
                         <div class="section-subtitle"> </div>
                       </div>
-                    </div> -->
+                    </div>
 
 
                     <!--  --------------------------------------------------------------------------------------------------- -->
@@ -303,10 +325,10 @@
                         </span>
                       </div>
                     </div>
-                  <!-- </div>  -->
-                  <!-- bot details -->
+                  </div> <!-- ./ bot details -->
 
-                  <div style="display: none;" *ngIf="HAS_SELECTED_BOT_IMPORTEXORT" class="chatbot-faq-export-import-wpr">
+
+                  <div *ngIf="HAS_SELECTED_BOT_IMPORTEXORT" class="chatbot-faq-export-import-wpr">
 
                     <div class="row">
                       <div class="col-sm-10 col-md-10">
@@ -323,28 +345,39 @@
                     </div>
 
                     <!-- Export FAQ to Json Btn-->
-                    <div class="export-faq-to-json-btn-wpr">
+                    <span class="export-faq-to-json-btn-wpr">
                       <button class="btn btn-primary export-faq-to-json-btn" (click)="exportFaqToJSON()">
                         <span class="icon" style="padding-right:8px">
                           <span class="material-icons">
                             cloud_download
                           </span>
                         </span>
-                        Export FAQ to JSON
+                        Export Chatbot to JSON
                       </button>
-                    </div>
+                    </span>
 
                     <!-- Import FAQ to Json Btn-->
-                    <div class="import-faq-to-json-btn-wpr">
+                    <span class="import-faq-from-json-btn-wpr" style="margin-left: 16px;">
                       <input style="display:inline" name="fileChangeUploadFromJSON" id="fileChangeUploadFromJSON"
-                        class="inputfile" type="file" (change)="fileChangeUploadJSON($event)" accept=".json" />
+                        class="inputfile" type="file" (change)="fileChangeUploadJSON($event)" accept=".txt" />
                       <label class="btn btn-primary" for="fileChangeUploadFromJSON">
                         <span class="material-icons" style="padding-right: 8px;">
                           cloud_upload
                         </span>
                         Import FAQ from JSON
                       </label>
-                    </div>
+                    </span>
+
+                    <span class="create-bot-from-json-btn-wpr" style="margin-left: 16px;">
+                      <input style="display:inline" name="fileChangeUploadFromJSON" id="fileChangeUploadFromJSON"
+                        class="inputfile" type="file" (change)="fileChangeUploadJSON($event)" accept=".txt" />
+                      <label class="btn btn-primary" for="fileChangeUploadFromJSON">
+                        <span class="material-icons" style="padding-right: 8px;">
+                          cloud_upload
+                        </span>
+                        Create Chatbot from JSON
+                      </label>
+                    </span>
 
                     <div class="row">
                       <div class="col-sm-10 col-md-10">
@@ -373,8 +406,7 @@
 
 
 
-                  </div> <!-- faq export import -->
-
+                  </div> <!-- ./ faq export import -->
 
                 </section>
 
@@ -508,7 +540,7 @@
                 <!-- --------------------------------------------------- -->
                 <!-- BUTTON ADD FAQs FROM CSV FILE -->
                 <!-- --------------------------------------------------- -->
-                <button class="btn btn-light-blu upload-csv tooltipx"
+                <!-- <button class="btn btn-light-blu upload-csv tooltipx"
                   [ngClass]="{'add-padding' : windowWidthMore764 === true}" (click)="openImportModal()">
                   <span class="icon" style="padding-right:0px;">
                     <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
@@ -519,13 +551,13 @@
                   </span>
                   <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
                     {{ 'UploadAnswersFromCsv' | translate }}</span>
-                </button>
+                </button> -->
                 <!-- ./ button upload-csv -->
 
                 <!-- --------------------------------------------------- -->
                 <!-- BUTTON EXPORT FAQs TO CSV  -->
                 <!-- --------------------------------------------------- -->
-                <button class="btn btn-light-blu export-csv tooltipx"
+                <!-- <button class="btn btn-light-blu export-csv tooltipx"
                   [ngClass]="{'add-padding' : windowWidthMore764 === true}" (click)="exportFaqsToCsv()">
                   <span class="icon" style="padding-right:0px;">
                     <i class="material-icons" style="font-size:18px; top:0px">save_alt</i>
@@ -536,7 +568,7 @@
                   <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
                     {{'ExportAnswersToCsv' | translate }}
                   </span>
-                </button>
+                </button> -->
                 <!-- ./ button export-csv -->
 
                 <!-- --------------------------------------------------- -->
@@ -1129,6 +1161,9 @@
                   {{ 'download' | translate }} <span style="font-weight:400"> {{ 'examplecsv' | translate }} </span>
                 </p>
               </div>
+              <!-- ----------------------------------- -->
+              <!-- Note -> display none -->
+              <!-- ----------------------------------- -->
               <div class="col-xs-10 col-xs-offset-1"
                 style="text-align:center; border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee">
                 <p style="margin:5px; font-weight: 400;">
@@ -1162,60 +1197,60 @@
                   <!-- --------------------- -->
                   <!-- Columns Delimiter -->
                   <!-- --------------------- -->
-                  <span>
+                  <!-- <span>
                     <strong>
                       {{csvColumnsDelimiter}}
                     </strong>
-                  </span>
+                  </span> -->
 
                   <!-- --------------------- -->
                   <!-- intent_id -->
                   <!-- --------------------- -->
-                  <span>
+                  <!-- <span>
                     <em>
                       intent id
                     </em>
-                  </span>
+                  </span> -->
 
                   <!-- --------------------- -->
                   <!-- Columns Delimiter -->
                   <!-- --------------------- -->
-                  <span>
+                  <!-- <span>
                     <strong>
                       {{csvColumnsDelimiter}}
                     </strong>
-                  </span>
+                  </span> -->
 
                   <!-- --------------------- -->
                   <!-- intent_display_name -->
                   <!-- --------------------- -->
-                  <span>
+                  <!-- <span>
                     <em>
                       intent name
                     </em>
-                  </span>
+                  </span> -->
 
                   <!-- --------------------- -->
                   <!-- Columns Delimiter -->
                   <!-- --------------------- -->
-                  <span>
+                  <!-- <span>
                     <strong>
                       {{csvColumnsDelimiter}}
                     </strong>
-                  </span>
+                  </span> -->
 
                   <!-- --------------------- -->
                   <!-- webhook_enabled -->
                   <!-- --------------------- -->
-                  <span>
+                  <!-- <span>
                     <em>
                       webhook enabled
                     </em>
-                  </span>
+                  </span> -->
 
-                  <span style="display: block;font-size: 12px;font-weight: 400;color: rgb(100, 116, 145);">
+                  <!-- <span style="display: block;font-size: 12px;font-weight: 400;color: rgb(100, 116, 145);">
                     ({{ 'InTheExampleCsFileTheAnswerAndQuestionAreRequired' | translate}})
-                  </span>
+                  </span> -->
 
                 </p>
               </div>
@@ -1224,10 +1259,11 @@
             <div class="row" style="margin-right: 0px;">
               <div class="col-sm-12">
                 <label
-                  style="height: 36px; padding-top:10px; padding-left:16px; padding-right:16px; text-align:right; color: #7695a5;font-weight: 300 !important;"
+                  style="height: 36px; padding-left:16px; padding-right:16px; text-align:right; color: #7695a5;font-weight: 300 !important;"
                   class="col-xs-6 col-sm-6 ">
                   <!-- Columns separated with: -->
-                  {{ 'FaqPage.ColumnsSeparatedWith' | translate }}
+                  <!-- {{ 'FaqPage.ColumnsSeparatedWith' | translate }} -->
+                  {{ 'InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy' | translate}}:
                 </label>
                 <div class="col-xs-6 col-sm-6" style="text-align:start">
                   <input style="padding-left:5px; margin-top:7px; width:55px; border-radius: 5px;

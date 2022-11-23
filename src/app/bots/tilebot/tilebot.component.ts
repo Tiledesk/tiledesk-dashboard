@@ -168,8 +168,8 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   queryString: string;
   paginated_answers_count: number;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
-  HAS_SELECTED_BOT_DETAILS:boolean = true;
-  HAS_SELECTED_BOT_IMPORTEXORT:boolean = false;
+  HAS_SELECTED_BOT_DETAILS: boolean = true;
+  HAS_SELECTED_BOT_IMPORTEXORT: boolean = false;
   _route: string
   public GENERAL_ROUTE_IS_ACTIVE: boolean = false
   public INTENTS_ROUTE_IS_ACTIVE: boolean = false
@@ -218,13 +218,13 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     // this.getDeptsByProjectId();
     this.listenSidebarIsOpened();
     this.getBrowserVersion()
-    
+
   }
 
- 
 
 
- 
+
+
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -286,23 +286,23 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
   toggleTab(displaysecodtab) {
-    
-    console.log('[TILEBOT] displaydetails', displaysecodtab ) 
+
+    console.log('[TILEBOT] displaydetails', displaysecodtab)
     if (displaysecodtab) {
       this.HAS_SELECTED_BOT_DETAILS = false;
-      this.HAS_SELECTED_BOT_IMPORTEXORT= true;
+      this.HAS_SELECTED_BOT_IMPORTEXORT = true;
     } else {
       this.HAS_SELECTED_BOT_DETAILS = true;
-      this.HAS_SELECTED_BOT_IMPORTEXORT= false;
+      this.HAS_SELECTED_BOT_IMPORTEXORT = false;
     }
 
-    console.log('[TILEBOT] toggle Tab Detail / Import Export HAS_SELECTED_BOT_DETAILS', this.HAS_SELECTED_BOT_DETAILS ) 
-    console.log('[TILEBOT] toggle Tab Detail / Import Export HAS_SELECTED_BOT_IMPORTEXORT', this.HAS_SELECTED_BOT_IMPORTEXORT ) 
+    console.log('[TILEBOT] toggle Tab Detail / Import Export HAS_SELECTED_BOT_DETAILS', this.HAS_SELECTED_BOT_DETAILS)
+    console.log('[TILEBOT] toggle Tab Detail / Import Export HAS_SELECTED_BOT_IMPORTEXORT', this.HAS_SELECTED_BOT_IMPORTEXORT)
   }
   // hasSelectBotdetails () {
   //   this.HAS_SELECTED_BOT_DETAILS = true;
   //   this.HAS_SELECTED_BOT_IMPORTEXORT= false;
-   
+
   // }
 
   // hasSelectImportExport () {
@@ -311,26 +311,26 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   // }
 
   exportFaqToJSON() {
-    const  exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-faq-to-json-btn');
+    const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-faq-to-json-btn');
     exportFaqToJsonBtnEl.blur();
     this.faqService.exportFaqsToJSON(this.id_faq_kb).subscribe((faq: any) => {
-      console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS', faq)
-      console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
+      console.log('[TILEBOT] - EXPORT BOT TO JSON - FAQS', faq)
+      // console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
       if (faq) {
-        this.downloadObjectAsJson(faq.intents, 'faqs');
+        this.downloadObjectAsJson(faq, faq.name);
       }
     }, (error) => {
-      this.logger.error('[TILEBOT] - EXPORT FAQ TO CSV - ERROR', error);
+      this.logger.error('[TILEBOT] - EXPORT BOT TO JSON - ERROR', error);
     }, () => {
-      this.logger.log('[TILEBOT] - EXPORT FAQ TO CSV - COMPLETE');
+      this.logger.log('[TILEBOT] - EXPORT BOT TO JSON - COMPLETE');
     });
   }
 
-  downloadObjectAsJson(exportObj, exportName){
+  downloadObjectAsJson(exportObj, exportName) {
     var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
     var downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href",     dataStr);
-    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".txt");
     document.body.appendChild(downloadAnchorNode); // required for firefox
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
@@ -356,30 +356,31 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
   fileChangeUploadJSON(event) {
     console.log('[TILEBOT] - fileChangeUploadJSON $event ', event);
-  let  fileJsonToUpload = ''
-   const selectedFile = event.target.files[0];
-   const fileReader = new FileReader();
-   fileReader.readAsText(selectedFile, "UTF-8");
-   fileReader.onload = () => {
-    fileJsonToUpload = JSON.parse(fileReader.result as string)
-    console.log('fileJsonToUpload', fileJsonToUpload) ;
-   }
-   fileReader.onerror = (error) => {
-     console.log(error);
-   }
+    let fileJsonToUpload = ''
+    console.log('[TILEBOT] - fileChangeUploadJSON $event  target', event.target);
+    const selectedFile = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.readAsText(selectedFile, "UTF-8");
+    fileReader.onload = () => {
+      fileJsonToUpload = JSON.parse(fileReader.result as string)
+      console.log('fileJsonToUpload intents', fileJsonToUpload['intents']);
+    }
+    fileReader.onerror = (error) => {
+      console.log(error);
+    }
 
-     this.faqService.importFaqFromJSON(this.id_faq_kb, fileJsonToUpload).subscribe((faq: any) => {
-      console.log('[TILEBOT] - IMPORT FAQ FROM JSON - FAQS', faq)
+    this.faqService.importFaqFromJSON(this.id_faq_kb, fileJsonToUpload).subscribe((res: any) => {
+      console.log('[TILEBOT] - IMPORT BOT FROM JSON - ', res)
 
-      if (faq) {
-        this.downloadFile(faq, 'faqs.json');
-      }
+      // if (faq) {
+      //   this.downloadFile(faq, 'faqs.json');
+      // }
     }, (error) => {
-      this.logger.error('[TILEBOT] -  IMPORT FAQ FROM - ERROR', error);
-      
+      this.logger.error('[TILEBOT] -  IMPORT BOT FROM JSON- ERROR', error);
+
       this.notify.showWidgetStyleUpdateNotification("thereHasBeenAnErrorProcessing", 4, 'report_problem');
     }, () => {
-      this.logger.log('[TILEBOT] - IMPORT FAQ FROM- COMPLETE');
+      this.logger.log('[TILEBOT] - IMPORT BOT FROM JSON - COMPLETE');
     });
   }
 
@@ -428,12 +429,12 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
         this.done_msg = text;
       });
 
-      
-        this.translate.get('ThereHasBeenAnErrorProcessing')
-          .subscribe((translation: any) => {
-            this.thereHasBeenAnErrorProcessing = translation;
-          });
-        
+
+    this.translate.get('ThereHasBeenAnErrorProcessing')
+      .subscribe((translation: any) => {
+        this.thereHasBeenAnErrorProcessing = translation;
+      });
+
   }
 
   getParamsBotType() {
@@ -1037,7 +1038,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID - webhookUrl ', this.webhookUrl);
 
       this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID - LANGUAGE ', faqkb.language);
-      
+
       // for the comnobobox "select bot language" -now not used because the user cannot change the language of the bot he chose during creation
       // this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)]
       // this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
@@ -1345,7 +1346,8 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
   downloadExampleCsv() {
-    const examplecsv = 'Question; Answer; intent_id (must be unique); intent_display_name; webhook_enabled (must be false)'
+    // const examplecsv = 'Question; Answer; intent_id (must be unique); intent_display_name; webhook_enabled (must be false)'
+    const examplecsv = 'Where is standard shipping available?;Standard shipping is only available to the contiguous US, excluding Alaska, Hawaii, and all US territories. If you are shipping to any of these excluded regions, you are ineligible for standard shipping\nHow is software delivered?;Unless otherwise stated, Software shall be delivered digitally. Instructions for download orders will be sent via email\nWhen will my backorder ship?;Although we try to maintain inventory of all products in the warehouse, occasionally an item will be backordered. Normally, the product will become available in a week. You will receive an email notification as soon as the product ships. As a reminder, your credit card will not be charged until your order has been shipped. If you use a third-party payment or billing provider (e.g., PayPal), you may be charged before your order ships pursuant to their terms and conditions\nCan I change my shipping address?;Unfortunately, you cannot change your shipping address after your order has been submitted. The order is immediately sent to the fulfilment agency and can no longer be changed by our system. If your package is not successfully delivered, it will be returned to the warehouse and a credit will be made to your account\nCan I change my shipping method?;Unfortunately, you cannot change your shipment method after your order has been submitted. The order is immediately sent to the fulfilment agency and can no longer be changed by our system\nShipping notification;Shipment confirmation emails with tracking numbers are sent the business day after your order ships\nDelivery costs;Delivery costs are calculated and displayed after you have entered your shipping information on the checkout page\nDo you ship to P.O. Boxes?;Due to shipping restrictions, we cannot deliver to P.O. Boxes\nWhen is your shipping cut off time?;Orders placed for in-stock items before 10am PST (Pacific Standard Time), Monday through Friday will usually ship within one business day. We do not offer Saturday, Sunday, or holiday shipping or deliveries. Please note that we may have to verify your billing information. Any incomplete or incorrect information may result in processing delays or cancellations\n'
     this.downloadFile(examplecsv, 'example.csv');
   }
 
