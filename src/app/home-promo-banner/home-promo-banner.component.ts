@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, isDevMode, OnInit, Output } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { HomeService } from 'app/services/home.service';
 import { LoggerService } from '../services/logger/logger.service';
@@ -14,6 +14,7 @@ export class HomePromoBannerComponent implements OnInit {
   promoBannerSyle: any;
   resPromoBanner: any;
   projectId: string;
+  currentUserID: string;
   // @Output() dispayPromoBanner = new EventEmitter();
   @Output() showPromoBanner = new EventEmitter();
   constructor(
@@ -34,6 +35,15 @@ export class HomePromoBannerComponent implements OnInit {
         // this.logger.log('[PROJECT-SERV] project ID from AUTH service subscription ', this.projectID)
       }
     });
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs
+      .subscribe((user) => {
+        if (user) {
+          this.currentUserID = user._id
+        }
+      });
   }
 
   getPromoBanner() {
@@ -64,6 +74,24 @@ export class HomePromoBannerComponent implements OnInit {
   goToPromoBannerLink(promobannerlink, target) {
     this.logger.log('[HOME-PROMO-BANNER] GO TO PROMO BANNER LINK - promobannerlink', promobannerlink, ' target ', target)
     window.open(promobannerlink, target);
+    if (!isDevMode()) {
+    
+        if (window['analytics']) {
+          this.logger.log('[HOME-PROMO-BANNER] - track Home Banner button clicked')
+          try {
+            window['analytics'].track('Home Banner button clicked', {
+              "userId": this.currentUserID,
+            }, {
+              "context": {
+                "groupId": this.projectId
+              }
+            });
+           
+          } catch (err) {
+            this.logger.error('[HOME-PROMO-BANNER] - track Home Banner button clicked - err', err);
+          }
+        }
+    }
   }
 
 }
