@@ -836,7 +836,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   getSafaryBrowser() {
-     this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     // console.log("[WS-REQUESTS-MSGS]] isSafari ",this.isSafari);
   }
 
@@ -3311,7 +3311,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.wsRequestsService.closeSupportGroup(requestid)
       .subscribe((data: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
+        console.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
       },
         (err) => {
           this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
@@ -3323,6 +3323,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
           //  NOTIFY SUCCESS
           this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+
+          let convWokingStatus = ''
+          this.updateRequestWorkingStatus(convWokingStatus)
         });
   }
 
@@ -3360,6 +3363,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       // console.log(moment(closedAtPlusTen).isSame(today))
       this.reopenConversation(request_id)
 
+      let convWokingStatus = 'open'
+      this.updateRequestWorkingStatus(convWokingStatus)
+
       this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
     }
   }
@@ -3377,7 +3383,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   reopenConversation(request_id) {
     this.wsRequestsService.unarchiveRequest(request_id).subscribe((res: any) => {
-      this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST ', res)
+      console.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST ', res)
 
     }, (error) => {
       this.logger.error('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST - ERROR ', error);
@@ -4484,6 +4490,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (this.request.status === 1000 && daysDiff > 10) {
       this.presenModalMessageCouldNotBeSent();
     } else {
+
+      if (this.selectedResponseTypeID && this.IS_CURRENT_USER_JOINED === false) {
+        this.reopenConversation(this.id_request)
+      }
+
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
       let _chat_message = ''
       if (this.type !== 'file') {
@@ -4542,19 +4553,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS  * COMPLETE');
-        if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
-          this.archiveRequest(this.id_request)
-        }
+        // if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
+          
+        // }
       })
   }
 
-  hasSelectedOpen(calledby) {
-    // console.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN ', calledby)
+  hasSelectedOpen(calledby, request) {
+    console.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN calledby', calledby)
+    console.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN request', request)
     this.HAS_SELECTED_SEND_AS_OPENED = true;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
-    if (calledby ==='updatedWorkingStatus') {
-    let  convWokingStatus = 'open'
+    if (calledby === 'updatedWorkingStatus') {
+  
+      if (request.status === 1000) {
+        this.reopenConversation(request.request_id)
+      }
+      let convWokingStatus = 'open'
       this.updateRequestWorkingStatus(convWokingStatus)
     }
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
@@ -4562,13 +4578,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
   }
 
-  hasSelectedPending(calledby) {
-    // console.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING ', calledby)
+  hasSelectedPending(calledby, request) {
+    console.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING calledby', calledby)
+    console.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING request', request)
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = true;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
-    if (calledby ==='updatedWorkingStatus') {
-      let  convWokingStatus = 'pending'
+    if (calledby === 'updatedWorkingStatus') {
+    
+      if (request.status === 1000) {
+        this.reopenConversation(request.request_id)
+      }
+      let convWokingStatus = 'pending'
       this.updateRequestWorkingStatus(convWokingStatus)
     }
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
@@ -4581,11 +4602,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = true;
-    if (calledby ==='updatedWorkingStatus') {
+    if (calledby === 'updatedWorkingStatus') {
       let convWokingStatus = ''
       this.updateRequestWorkingStatus(convWokingStatus)
     }
-    
+    this.archiveRequest(this.id_request)
+
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
     // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)

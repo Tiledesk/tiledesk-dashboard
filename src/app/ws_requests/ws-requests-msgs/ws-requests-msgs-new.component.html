@@ -495,7 +495,7 @@
                             <ul class="dropdown-menu" role="menu">
                               <li>
 
-                                <a (click)="hasSelectedOpen('sendMessageAs')"
+                                <a (click)="hasSelectedOpen('sendMessageAs', request)"
                                   style="padding-left: 15px; padding-right: 15px;">
                                   <i class="material-icons" style="padding-right: 5px;color: rgb(197, 44, 36);">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
@@ -507,7 +507,7 @@
                               </li>
                               <li>
 
-                                <a (click)="hasSelectedPending('sendMessageAs')"
+                                <a (click)="hasSelectedPending('sendMessageAs',request)"
                                   style="padding-left: 15px; padding-right: 15px;">
                                   <i class="material-icons" style="padding-right: 5px;color:  rgb(55,147,233);">stop</i>
                                   <span style="position: relative; top: 1px; cursor:pointer">
@@ -1283,8 +1283,8 @@
                       <!-- ----------------------------------------------------------  -->
                       <!-- Working status dropdow -->
                       <!-- ----------------------------------------------------------  -->
-                      <div class="dropdown">
-                        <a class="btn working-status-dropdown-btn dropdown-toggle" data-toggle="dropdown"
+                      <div class="dropdown" >
+                        <a class="btn working-status-dropdown-btn dropdown-toggle" style="min-width: 65px;" data-toggle="dropdown"
                           [ngClass]="{
                           'working-status-dropdown-btn-chat': CHAT_PANEL_MODE === true,
                           'btn-deepred' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000,
@@ -1307,7 +1307,7 @@
                         </a>
                         <ul class="dropdown-menu" style="cursor: pointer;"
                           [ngClass]="{'dropdown-menu-working-status-chat': CHAT_PANEL_MODE === true}">
-                          <li (click)="hasSelectedOpen('updatedWorkingStatus')" class="conversation-open-assigned"
+                          <li (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="conversation-open-assigned"
                             *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{'ConversationBeingProcessed' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
@@ -1317,7 +1317,7 @@
                               </span>
                             </a>
                           </li>
-                          <li (click)="hasSelectedOpen('updatedWorkingStatus')" class="ticket-open-assigned"
+                          <li (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="ticket-open-assigned"
                             *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{'TicketBeingProcessed' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
@@ -1327,7 +1327,7 @@
                               </span>
                             </a>
                           </li>
-                          <li (click)="hasSelectedPending('updatedWorkingStatus')" class="pending"
+                          <li (click)="hasSelectedPending('updatedWorkingStatus', request)" class="pending"
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'WaitingForReplyFromTheRequester' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
@@ -1349,7 +1349,9 @@
                                 {{'VisitorsPage.Resolve' | translate}} </span>
                             </a>
                           </li>
-                          <li (click)="hasSelectedSolved('updatedWorkingStatus')" class="ticket-resolved"
+                          <li 
+                          [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true }"
+                          (click)="hasSelectedSolved('updatedWorkingStatus')" class="ticket-resolved"
                             *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
