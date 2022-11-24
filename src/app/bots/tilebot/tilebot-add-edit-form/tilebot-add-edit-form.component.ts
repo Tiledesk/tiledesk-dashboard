@@ -118,7 +118,7 @@ export class TilebotAddEditFormComponent implements OnInit {
     if(this.fieldType == null){
       this.typeResult = false;
       status = false;
-      console.log('this.fieldType:', this.fieldType);
+      // console.log('this.fieldType:', this.fieldType);
     }
     
     switch (this.field.type) {
@@ -140,23 +140,23 @@ export class TilebotAddEditFormComponent implements OnInit {
     this.nameResult = this.nameRGEX.test(this.field.name);
     if(this.nameResult === false){
       status = false;
-      console.log('this.nameResult1:', this.nameResult);
+      // console.log('this.nameResult1:', this.nameResult);
     }
     
     if(this.field.name.length == 0){
       this.nameResult = false;
       status = false;
-      console.log('this.nameResult2:', this.nameResult);
+      // console.log('this.nameResult2:', this.nameResult);
     }
     if(this.field.label.length == 0){
       this.labelResult = false;
       status = false;
-      console.log('this.labelResult:', this.labelResult);
+      // console.log('this.labelResult:', this.labelResult);
     }
     if(this.field.regex.length == 0 && this.field.type === 'custom'){
       this.regexResult = false;
       status = false;
-      console.log('this.regexResult:', this.regexResult);
+      // console.log('this.regexResult:', this.regexResult);
     }
     this.field.regex = this.field.regex.toString();
     return status;

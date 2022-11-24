@@ -288,7 +288,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
   toggleTab(displaysecodtab) {
 
-    console.log('[TILEBOT] displaydetails', displaysecodtab)
+    // console.log('[TILEBOT] displaydetails', displaysecodtab)
     if (displaysecodtab) {
       this.HAS_SELECTED_BOT_DETAILS = false;
       this.HAS_SELECTED_BOT_IMPORTEXORT = true;
@@ -297,8 +297,8 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       this.HAS_SELECTED_BOT_IMPORTEXORT = false;
     }
 
-    console.log('[TILEBOT] toggle Tab Detail / Import Export HAS_SELECTED_BOT_DETAILS', this.HAS_SELECTED_BOT_DETAILS)
-    console.log('[TILEBOT] toggle Tab Detail / Import Export HAS_SELECTED_BOT_IMPORTEXORT', this.HAS_SELECTED_BOT_IMPORTEXORT)
+    // console.log('[TILEBOT] toggle Tab Detail / Import Export HAS_SELECTED_BOT_DETAILS', this.HAS_SELECTED_BOT_DETAILS)
+    // console.log('[TILEBOT] toggle Tab Detail / Import Export HAS_SELECTED_BOT_IMPORTEXORT', this.HAS_SELECTED_BOT_IMPORTEXORT)
   }
   // hasSelectBotdetails () {
   //   this.HAS_SELECTED_BOT_DETAILS = true;
@@ -318,7 +318,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
     exportFaqToJsonBtnEl.blur();
     this.faqService.exportChatbotToJSON(this.id_faq_kb).subscribe((faq: any) => {
-      console.log('[TILEBOT] - EXPORT CHATBOT TO JSON - FAQS', faq)
+      // console.log('[TILEBOT] - EXPORT CHATBOT TO JSON - FAQS', faq)
       // console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
       if (faq) {
         this.downloadObjectAsJson(faq, faq.name);
@@ -337,7 +337,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-intents-to-json-btn');
     exportFaqToJsonBtnEl.blur();
     this.faqService.exportIntentsToJSON(this.id_faq_kb).subscribe((faq: any) => {
-      console.log('[TILEBOT] - EXPORT BOT TO JSON - FAQS', faq)
+      // console.log('[TILEBOT] - EXPORT BOT TO JSON - FAQS', faq)
       // console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
       if (faq) {
         this.downloadObjectAsJson(faq, this.faqKb_name + ' intents');
@@ -363,22 +363,22 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   // @ Import chatbot from json
   // --------------------------------------------------------------------------
   fileChangeUploadChatbotFromJSON(event){
-    console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event ', event);
+    this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event ', event);
     let fileJsonToUpload = ''
-    console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
+    // console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
     const selectedFile = event.target.files[0];
     const fileReader = new FileReader();
     fileReader.readAsText(selectedFile, "UTF-8");
     fileReader.onload = () => {
       fileJsonToUpload = JSON.parse(fileReader.result as string)
-      console.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
+      this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
     }
     fileReader.onerror = (error) => {
-      console.log(error);
+      this.logger.log(error);
     }
 
     this.faqService.importChatbotFromJSON(this.id_faq_kb, fileJsonToUpload).subscribe((res: any) => {
-      console.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - ', res)
+      this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - ', res)
 
     }, (error) => {
       this.logger.error('[TILEBOT] -  IMPORT CHATBOT FROM JSON- ERROR', error);
@@ -394,7 +394,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   // @ Import Itents from JSON
   // --------------------------------------------------------------------------
   fileChangeUploadIntentsFromJSON(event) {
-    console.log('[TILEBOT] - fileChangeUploadJSON $event ', event);
+    this.logger.log('[TILEBOT] - fileChangeUploadJSON $event ', event);
     // let fileJsonToUpload = ''
     // console.log('[TILEBOT] - fileChangeUploadJSON $event  target', event.target);
     // const selectedFile = event.target.files[0];
@@ -412,10 +412,10 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     const formData: FormData = new FormData();
     formData.set('id_faq_kb', this.id_faq_kb);
     formData.append('uploadFile', file, file.name);
-    console.log('FORM DATA ', formData)
+    this.logger.log('FORM DATA ', formData)
    
     this.faqService.importIntentsFromJSON(this.id_faq_kb, formData).subscribe((res: any) => {
-      console.log('[TILEBOT] - IMPORT INTENTS FROM JSON - ', res)
+      this.logger.log('[TILEBOT] - IMPORT INTENTS FROM JSON - ', res)
 
     }, (error) => {
       this.logger.error('[TILEBOT] -  IMPORT INTENTS FROM JSON- ERROR', error);

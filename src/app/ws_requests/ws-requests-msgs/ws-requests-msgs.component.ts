@@ -1335,7 +1335,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -3311,7 +3311,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.wsRequestsService.closeSupportGroup(requestid)
       .subscribe((data: any) => {
-        console.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
+        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
       },
         (err) => {
           this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
@@ -3330,8 +3330,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   reopenArchivedRequest(request, request_id) {
-    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
-    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
+    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
+    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
     // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
     // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
     // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
@@ -3347,17 +3347,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
     const requestclosedAt = moment(request['closed_at']);
-    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
+    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
     const currentTime = moment();
-    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
+    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
 
 
     const daysDiff = currentTime.diff(requestclosedAt, 'd');
-    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
 
 
     if (daysDiff > 10) {
-      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
+      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
       this.presentModalReopenConvIsNotPossible()
     } else {
       // console.log(moment(closedAtPlusTen).isSame(today))
@@ -3366,7 +3366,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       let convWokingStatus = 'open'
       this.updateRequestWorkingStatus(convWokingStatus)
 
-      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
+      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
     }
   }
 
@@ -3383,14 +3383,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   reopenConversation(request_id) {
     this.wsRequestsService.unarchiveRequest(request_id).subscribe((res: any) => {
-      console.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST ', res)
+      this.logger.log('[WS-REQUESTS-MSGS]  REOPEN ARCHIVED REQUEST ', res)
 
     }, (error) => {
-      this.logger.error('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST - ERROR ', error);
+      this.logger.error('[WS-REQUESTS-MSGS]  REOPEN ARCHIVED REQUEST - ERROR ', error);
 
 
     }, () => {
-      this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST * COMPLETE *');
+      this.logger.log('[WS-REQUESTS-MSGS]  REOPEN ARCHIVED REQUEST * COMPLETE *');
 
     })
   }
@@ -4560,8 +4560,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   hasSelectedOpen(calledby, request) {
-    console.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN calledby', calledby)
-    console.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN request', request)
+    this.logger.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN calledby', calledby)
+    this.logger.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN request', request)
     this.HAS_SELECTED_SEND_AS_OPENED = true;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
@@ -4579,8 +4579,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   hasSelectedPending(calledby, request) {
-    console.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING calledby', calledby)
-    console.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING request', request)
+    this.logger.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING calledby', calledby)
+    this.logger.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING request', request)
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = true;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
