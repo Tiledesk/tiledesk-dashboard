@@ -1030,7 +1030,9 @@
         "TheRequestWillBeAssignedToAHumanAgent": "уметните '\\агент' као последњи ред у области текста \"Одговори\" да бисте аутоматски преместили разговор на људског агента, пратећи правила одељења. Више о људској примопредаји",
         "DisplayTheButtonWithNameButton_1": "синтакса дугмета за приказ: Користите '*' након чега следи један размак, а затим текст дугмета у новом реду текста одговора. Види пример",
         "DisplayTheImageWithTheSpecifiedURL": "приказати слику са наведеним УРЛ-ом. Види пример",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint": "позовите екстерни веб-хук на наведену крајњу тачку"
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "позовите екстерни веб-хук на наведену крајњу тачку",
+        "MoreOnWebhooks": "More on webhooks <a href='https://developer.tiledesk.com/resolution-bot/quickstart/' target='_blank'>here</a>",
+        "InfoAnswer": "Chatbot response to user question"
     },
     "FaqTestPage": {
         "Question": "Питање",
@@ -2254,28 +2256,34 @@
     "ThereWasSomeTroubleConnectingToNetwork": "Our apologies. There was some trouble connecting to network",
     "InTheExampleCsFileTheAnswerAndQuestionAreRequired": "In the example.csv file only the Answer and Question fields are required",
     "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "In the CSV file to be uploaded, the columns are separated by",
-    "CancelReply": "Form canceled",
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",
-        "InfoTemplateForm": "the selected form template '{{selectedFormName}}' contains the following fields: {{description_key}} ",
+        "InfoTemplateForm": "The model of selected form '{{selectedformname}}' contains the following fields: {{description_key}}",
         "CreateForm": "Create form",
         "NameForm": "Form name",
         "LabelCancel": "Cancel label",
-        "LabelReplay": "'Form canceled' label",
+        "LabelReplay": "Label 'form canceled'",
         "AddField": "Add field",
         "FieldName": "Field name",
+        "ParameterName": "Parameter name",
         "Other": "Other",
         "FieldTypeText": "Field type",
         "AddCustomRegex": "Add a custom regex",
         "Label": "Label",
         "ErrorMessage": "Error message",
+        "CancelReply": "Form deleted",
+        "DeleteField": "Delete field",
+        "ConfirmDeleteField": "Are you sure you want to delete the field?",
+        "DeleteForm": "Delete form",
+        "ConfirmDeleteForm": "Are you sure you want to delete the form?",
+        "MarkbotLabel": "You can use <a href='https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/' target='_blank'>Markbot</a> to format your labels.",
         "InfoMessages": {
-            "field_name": "Give the form field a name (Ex: username). The name can only contain letters, numbers and _",
-            "field_type": "Select the type of data that will be entered in this field (Ex: Text).",
-            "field_regex": "Insert the custom Regex for the control on the inserted data",
-            "field_label": "Write a clear label that helps users enter the correct data (Ex: What's your name?)",
-            "field_error": "Write an error message in case the data entered by the user is wrong"
+            "field_name": "Give a name to the Form field (ex: name _ User). The name can contain only letters numbers and _",
+            "field_type": "Select the type of given that will be inserted in this field (ex: Text).",
+            "field_regex": "Insert the personalized regex for control over the inserted data",
+            "field_label": "Write a clear label that helps users to enter the correct data (ex: what's your name?)",
+            "field_error": "Write an error message if the data entered by the user is not correct"
         }
     },
     "CHAT_IONIC": {
