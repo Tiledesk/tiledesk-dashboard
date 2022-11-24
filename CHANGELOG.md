@@ -1,8 +1,13 @@
 # tiledesk-dashboard
 
+### 2.3.5-rc1
+- Fixes the bug: on Edit Bot page of Tilebot type bot the form builder doesn't work properly
+- Adds the “Import Export" tab to the Tilebot type chatbot edit page (in progress)
+- Fixes the bug: in the sidebar of the conversation details page the drop-down menu to change the conversation status does not work correctly
+
 ### 2.3.4
 - Deploys in production
-- Fixes the bug:: chatbots of type "RASA" are not created
+- Fixes the bug: chatbots of type "RASA" are not created
 
 ### 2.3.4-rc1
 - Fixes the bug:: chatbots of type "RASA" are not created
