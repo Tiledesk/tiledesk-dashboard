@@ -22,7 +22,12 @@
 
         <tbody cdkDropList class="fields-list2" (cdkDropListDropped)="drop($event)">
             
-            <tr *ngFor="let field of fields; let i = index;" style="cursor:pointer;" class="field-box2 trigger" cdkDrag>
+            <tr 
+            *ngFor="let field of fields; let i = index;" 
+            style="cursor:pointer;" 
+            class="field-box2 trigger" 
+            [ngClass]="{'selected':selectedObjectId === i}" 
+            cdkDrag>
                 
                 <!-- // NAME -->
                 <td class="col-sm-4" (click)='editField(i)'>

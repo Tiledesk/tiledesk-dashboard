@@ -20,9 +20,12 @@ export class TilebotListFieldsFormComponent implements OnInit {
   selectedField: any;
 
   
-  constructor() { }
+  constructor() { 
+    // void
+  }
 
   ngOnInit(): void {
+    this.selectedObjectId = null;
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -41,6 +44,7 @@ export class TilebotListFieldsFormComponent implements OnInit {
 
   /** Event edit field */
   editField(index:number){
+    this.selectedObjectId = index;
     this.eventEditField.emit(index);
   }
 

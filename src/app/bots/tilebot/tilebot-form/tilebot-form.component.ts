@@ -41,7 +41,7 @@ export class TilebotFormComponent implements OnInit {
   
   // add edit form
   selectedField: any;
-  displayTilebotAddEditForm = false;
+  displayTilebotAddEditForm = true;
   displayAddForm = false;
   displayEditForm = false
   displayBoxNewForm = false;
@@ -273,7 +273,6 @@ export class TilebotFormComponent implements OnInit {
   private resetForm(){
     this.intentForm = {};
     this.fields = [];
-    
     this.displayNewFormButton = false;
     this.displaySettingsButton = true;
     this.displayAddForm = false;

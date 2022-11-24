@@ -32,6 +32,9 @@ $color-text-box: #566787;
             font-weight: bold;
         }
     }
+    tr.selected{
+      background-color: #f5f5f5;
+    }
 
     .td-order {
         margin: 0;
