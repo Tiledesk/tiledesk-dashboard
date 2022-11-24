@@ -50,7 +50,7 @@
                     'border-from-center' : HAS_SELECTED_BOT_IMPORTEXORT === false, 
                     'li-active' : HAS_SELECTED_BOT_IMPORTEXORT === true
                   }">
-                  <a href="javascript:;" role="button"> Chatbot Import Export </a>
+                  <a href="javascript:;" role="button">Import / Export </a>
                 </li>
               </ul>
             </div>
@@ -329,7 +329,6 @@
 
 
                   <div *ngIf="HAS_SELECTED_BOT_IMPORTEXORT" class="chatbot-faq-export-import-wpr">
-
                     <div class="row">
                       <div class="col-sm-10 col-md-10">
                         <h3 class="card_title__underlined">
@@ -343,10 +342,11 @@
                         <div class="section-subtitle"> </div>
                       </div>
                     </div>
-
-                    <!-- Export FAQ to Json Btn-->
-                    <span class="export-faq-to-json-btn-wpr">
-                      <button class="btn btn-primary export-faq-to-json-btn" (click)="exportFaqToJSON()">
+                    <!-- -------------------------------------------- -->
+                    <!-- Export Chatbot to Json Btn-->
+                    <!-- -------------------------------------------- -->
+                    <span class="export-chatbot-to-json-btn-wpr">
+                      <button class="btn btn-primary export-chatbot-to-json-btn" (click)="exportChatbotToJSON()">
                         <span class="icon" style="padding-right:8px">
                           <span class="material-icons">
                             cloud_download
@@ -356,28 +356,50 @@
                       </button>
                     </span>
 
-                    <!-- Import FAQ to Json Btn-->
-                    <span class="import-faq-from-json-btn-wpr" style="margin-left: 16px;">
-                      <input style="display:inline" name="fileChangeUploadFromJSON" id="fileChangeUploadFromJSON"
-                        class="inputfile" type="file" (change)="fileChangeUploadJSON($event)" accept=".txt" />
-                      <label class="btn btn-primary" for="fileChangeUploadFromJSON">
+                    <!-- -------------------------------------------- -->
+                    <!-- Export Intents to Json Btn-->
+                    <!-- -------------------------------------------- -->
+                    <span class="export-intents-to-json-btn-wpr">
+                      <button class="btn btn-primary export-intents-to-json-btn" (click)="exportIntentsToJSON()">
+                        <span class="icon" style="padding-right:8px">
+                          <span class="material-icons">
+                            cloud_download
+                          </span>
+                        </span>
+                        Export Intents to JSON
+                      </button>
+                    </span>
+
+
+
+                     <!-- Import Chatbot from Json Btn-->
+                    <span class="import-chatbot-from-json-btn-wpr" style="margin-left: 16px;">
+                      <input style="display:inline" name="upload-chatbot-from-json" id="upload-chatbot-from-json"
+                        class="inputfile" type="file" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".txt" />
+                      <label class="btn btn-primary" for="upload-chatbot-from-json">
                         <span class="material-icons" style="padding-right: 8px;">
                           cloud_upload
                         </span>
-                        Import FAQ from JSON
+                        Import Chatbot from JSON
                       </label>
                     </span>
 
-                    <span class="create-bot-from-json-btn-wpr" style="margin-left: 16px;">
-                      <input style="display:inline" name="fileChangeUploadFromJSON" id="fileChangeUploadFromJSON"
-                        class="inputfile" type="file" (change)="fileChangeUploadJSON($event)" accept=".txt" />
-                      <label class="btn btn-primary" for="fileChangeUploadFromJSON">
+                    <!-- Import Intents from Json Btn-->
+                    <span class="import-intents-from-json-btn-wpr" style="margin-left: 16px;">
+                      <input style="display:inline" name="upload-intents-from-json" id="upload-intents-from-json"
+                        class="inputfile" type="file" (change)="fileChangeUploadIntentsFromJSON($event)" accept=".txt" />
+                      <label class="btn btn-primary" for="upload-intents-from-json">
                         <span class="material-icons" style="padding-right: 8px;">
                           cloud_upload
                         </span>
-                        Create Chatbot from JSON
+                        Import Intents from JSON
                       </label>
                     </span>
+
+           
+
+               
+                 
 
                     <div class="row">
                       <div class="col-sm-10 col-md-10">

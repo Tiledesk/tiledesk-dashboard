@@ -310,14 +310,36 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   //   this.HAS_SELECTED_BOT_IMPORTEXORT= true;
   // }
 
-  exportFaqToJSON() {
-    const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-faq-to-json-btn');
+  // -------------------------------------------------------------------------------------- 
+  // Export chatbot to JSON
+  // -------------------------------------------------------------------------------------- 
+  exportChatbotToJSON() {
+    const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
     exportFaqToJsonBtnEl.blur();
-    this.faqService.exportFaqsToJSON(this.id_faq_kb).subscribe((faq: any) => {
-      console.log('[TILEBOT] - EXPORT BOT TO JSON - FAQS', faq)
+    this.faqService.exportChatbotToJSON(this.id_faq_kb).subscribe((faq: any) => {
+      console.log('[TILEBOT] - EXPORT CHATBOT TO JSON - FAQS', faq)
       // console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
       if (faq) {
         this.downloadObjectAsJson(faq, faq.name);
+      }
+    }, (error) => {
+      this.logger.error('[TILEBOT] - EXPORT BOT TO JSON - ERROR', error);
+    }, () => {
+      this.logger.log('[TILEBOT] - EXPORT BOT TO JSON - COMPLETE');
+    });
+  }
+
+  // -------------------------------------------------------------------------------------- 
+  // Export intents to JSON
+  // -------------------------------------------------------------------------------------- 
+  exportIntentsToJSON() {
+    const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-intents-to-json-btn');
+    exportFaqToJsonBtnEl.blur();
+    this.faqService.exportIntentsToJSON(this.id_faq_kb).subscribe((faq: any) => {
+      console.log('[TILEBOT] - EXPORT BOT TO JSON - FAQS', faq)
+      // console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
+      if (faq) {
+        this.downloadObjectAsJson(faq, this.faqKb_name + ' intents');
       }
     }, (error) => {
       this.logger.error('[TILEBOT] - EXPORT BOT TO JSON - ERROR', error);
@@ -336,59 +358,76 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     downloadAnchorNode.remove();
   }
 
-
-  // inportFaqToJSON() {
-  //   const  exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-faq-to-json-btn');
-  //   exportFaqToJsonBtnEl.blur();
-  //   this.faqService.importFaqFromJSON(this.id_faq_kb).subscribe((faq: any) => {
-  //     console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS', faq)
-
-  //     if (faq) {
-  //       this.downloadFile(faq, 'faqs.json');
-  //     }
-  //   }, (error) => {
-  //     this.logger.error('[TILEBOT] -  FAQ TO CSV - ERROR', error);
-  //   }, () => {
-  //     this.logger.log('[TILEBOT] - EXPORT FAQ TO CSV - COMPLETE');
-  //   });
-  // }
-
-
-  fileChangeUploadJSON(event) {
-    console.log('[TILEBOT] - fileChangeUploadJSON $event ', event);
+  // --------------------------------------------------------------------------
+  // @ Import chatbot from json
+  // --------------------------------------------------------------------------
+  fileChangeUploadChatbotFromJSON(event){
+    console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event ', event);
     let fileJsonToUpload = ''
-    console.log('[TILEBOT] - fileChangeUploadJSON $event  target', event.target);
+    console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
     const selectedFile = event.target.files[0];
     const fileReader = new FileReader();
     fileReader.readAsText(selectedFile, "UTF-8");
     fileReader.onload = () => {
       fileJsonToUpload = JSON.parse(fileReader.result as string)
-      console.log('fileJsonToUpload intents', fileJsonToUpload['intents']);
+      console.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
     }
     fileReader.onerror = (error) => {
       console.log(error);
     }
 
-    this.faqService.importFaqFromJSON(this.id_faq_kb, fileJsonToUpload).subscribe((res: any) => {
-      console.log('[TILEBOT] - IMPORT BOT FROM JSON - ', res)
+    this.faqService.importChatbotFromJSON(this.id_faq_kb, fileJsonToUpload).subscribe((res: any) => {
+      console.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - ', res)
 
-      // if (faq) {
-      //   this.downloadFile(faq, 'faqs.json');
-      // }
     }, (error) => {
-      this.logger.error('[TILEBOT] -  IMPORT BOT FROM JSON- ERROR', error);
+      this.logger.error('[TILEBOT] -  IMPORT CHATBOT FROM JSON- ERROR', error);
 
       this.notify.showWidgetStyleUpdateNotification("thereHasBeenAnErrorProcessing", 4, 'report_problem');
     }, () => {
-      this.logger.log('[TILEBOT] - IMPORT BOT FROM JSON - COMPLETE');
+      this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - COMPLETE');
     });
   }
 
 
-  // importFaqFromJSON() {
-  //   const  importFaqFromJsonBtnEl = <HTMLElement>document.querySelector('.import-faq-from-json-btn');
-  //   importFaqFromJsonBtnEl.blur();
-  // }
+  // --------------------------------------------------------------------------
+  // @ Import Itents from JSON
+  // --------------------------------------------------------------------------
+  fileChangeUploadIntentsFromJSON(event) {
+    console.log('[TILEBOT] - fileChangeUploadJSON $event ', event);
+    // let fileJsonToUpload = ''
+    // console.log('[TILEBOT] - fileChangeUploadJSON $event  target', event.target);
+    // const selectedFile = event.target.files[0];
+    // const fileReader = new FileReader();
+    // fileReader.readAsText(selectedFile, "UTF-8");
+    // fileReader.onload = () => {
+    //   fileJsonToUpload = JSON.parse(fileReader.result as string)
+    //   console.log('fileJsonToUpload intents', fileJsonToUpload);
+    // }
+    // fileReader.onerror = (error) => {
+    //   console.log(error);
+    // }
+    const fileList: FileList = event.target.files;
+    const file: File = fileList[0];
+    const formData: FormData = new FormData();
+    formData.set('id_faq_kb', this.id_faq_kb);
+    formData.append('uploadFile', file, file.name);
+    console.log('FORM DATA ', formData)
+   
+    this.faqService.importIntentsFromJSON(this.id_faq_kb, formData).subscribe((res: any) => {
+      console.log('[TILEBOT] - IMPORT INTENTS FROM JSON - ', res)
+
+    }, (error) => {
+      this.logger.error('[TILEBOT] -  IMPORT INTENTS FROM JSON- ERROR', error);
+
+      this.notify.showWidgetStyleUpdateNotification("thereHasBeenAnErrorProcessing", 4, 'report_problem');
+    }, () => {
+      this.logger.log('[TILEBOT] - IMPORT INTENTS FROM JSON - COMPLETE');
+    });
+  }
+
+
+
+  
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
     this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
