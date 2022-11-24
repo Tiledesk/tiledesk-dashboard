@@ -133,6 +133,8 @@ import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.compon
 
 /* PRIVATE */
 import { PricingModule } from './pricing/pricing.module';
+import { ChatbotDashboardModule } from './chatbot-dashboard/chatbot-dashboard.module';
+
 import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
 
 
@@ -549,6 +551,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MatTabsModule,
     /* PRIVATE */
     PricingModule,
+    ChatbotDashboardModule,
     /* PRIVATE */
     BrowserModule,
     FormsModule,
