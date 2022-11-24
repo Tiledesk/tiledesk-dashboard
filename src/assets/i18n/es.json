@@ -1030,7 +1030,9 @@
         "TheRequestWillBeAssignedToAHumanAgent": "inserte '\\agent' como la última línea en el área de texto \"Responder\" para mover automáticamente la conversación a un agente humano, siguiendo las reglas del departamento. Más sobre \"handoff\" humano",
         "DisplayTheButtonWithNameButton_1": "sintaxis del botón de visualización: use '*' seguido de un espacio, luego el texto del botón en una nueva línea del texto de respuesta. Ver ejemplo",
         "DisplayTheImageWithTheSpecifiedURL": "mostrar la imagen con la URL especificada. Ver ejemplo",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint": "ilamar al webhook externo al extremo especificado"
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "ilamar al webhook externo al extremo especificado",
+        "MoreOnWebhooks": "Más sobre webhooks <a href='https://developer.tiledesk.com/resolution-bot/quickstart/' target='_blank'> aquí </a>",
+        "InfoAnswer": "Respuesta de chatbot a la pregunta del usuario"
     },
     "FaqTestPage": {
         "Question": "Pregunta",
@@ -2247,6 +2249,36 @@
     "ClosesTheCurrentTicket":"Cierra el ticket actual",
     "ReopenTheCurrentConversation":"Vuelve a abrir la conversación actual",
     "ReopenTheCurrentTicket":"Vuelve a abrir el ticket actual",
+    "AddIntentPage": {
+        "AddForm": "Agregar forma",
+        "SelectTemplateForm": "Seleccione un tipo de formulario entre los sugeridos o cree uno nuevo",
+        "InfoTemplateForm": "El modelo de forma seleccionada '{{SelectedFormName}}' contiene los siguientes campos: {{Descripción_Key}}",
+        "CreateForm": "Crear forma",
+        "NameForm": "Nombre del formulario",
+        "LabelCancel": "Etiqueta cancelar",
+        "LabelReplay": "Etiqueta 'formulario cancelado'",
+        "AddField": "Agregue campo",
+        "FieldName": "Nombre del campo",
+        "ParameterName": "Nombre de parámetro",
+        "Other": "Otro",
+        "FieldTypeText": "Tipo de campo",
+        "AddCustomRegex": "Agregar una regex personalizada",
+        "Label": "Etiqueta",
+        "ErrorMessage": "Mensaje de error",
+        "CancelReply": "Forma eliminada",
+        "DeleteField": "Eliminar campo",
+        "ConfirmDeleteField": "¿Estás seguro de que quieres eliminar el campo?",
+        "DeleteForm": "Eliminar forma",
+        "ConfirmDeleteForm": "¿Estás seguro de que quieres eliminar el formulario?",
+        "MarkbotLabel": "Puede usar <a href='https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/' target='_blank'> Markbot </a> Para formatear sus etiquetas .",
+        "InfoMessages": {
+            "field_name": "Dé un nombre al campo Formulario (Ej: Nombre _ Usuario). El nombre puede contener solo números de letras y _",
+            "field_type": "Seleccione el tipo de dado que se insertará en este campo (Ej: texto).",
+            "field_regex": "Inserte el Regex personalizado para controlar los datos insertados",
+            "field_label": "Escriba una etiqueta clara que ayude a los usuarios a ingresar los datos correctos (por ejemplo: ¿Cuál es su nombre?)",
+            "field_error": "Escriba un mensaje de error si los datos ingresados ​​por el usuario no son correctos"
+        }
+    },
     "SingleConversation":"Conversación única",
     "SingleConversationDescription":"Tiledesk Widget puede manejar solo una conversación a la vez al habilitar la función de conversación única. Esta opción deshabilita la posibilidad de visualizar la casa con la lista de conversaciones abiertas y las ya archivadas. Este cambio hace que las conversaciones sean más un hilo continuo, lo que evita que los clientes se comuniquen con su equipo varias veces, lo que ahorra tiempo y esfuerzo a su equipo.",
     "PrimaryColorGradient":"Gradiente de color primario",

@@ -33,8 +33,9 @@ export class ChatbotConfigurationComponent implements OnInit {
   limitCharsText = 500;
   translateY: string;
 
-  constructor(
-  ) { }
+  constructor() { 
+    // is empty
+  }
 
   ngOnInit() {
     this.init();

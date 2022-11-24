@@ -4,20 +4,26 @@
     <div class="header-buttons-form">
         
         <button *ngIf="displayNewFormButton" class="btn btn-primary add-form" (click)="openBoxNewFormForm()">
-            <span class="icon-label">{{ "AddIntentPage.AddForm" | translate }}</span>
+            <span class="icon-label opened">{{ "AddIntentPage.AddForm" | translate }}</span>
             <span class="icon">
               <i class="material-icons">add_circle</i>
             </span>
         </button>
+        <button *ngIf="!displayNewFormButton && intentForm" class="btn btn-danger add-form" (click)="openDeleteForm()">
+            <span class="icon-label">{{ "AddIntentPage.DeleteForm" | translate }}</span>
+            <span class="icon">
+              <i class="material-icons">delete</i>
+            </span>
+        </button>
 
-        <button *ngIf="displaySettingsButton" class="btn btn-primary add-form" (click)="openSettingsForm()">
+        <button *ngIf="displaySettingsButton" class="btn btn-primary only-icon" (click)="openSettingsForm()">
             <span class="icon-label">{{ "Settings" | translate }}</span>
             <span class="icon">
             <i class="material-icons">settings</i>
             </span>
         </button>
 
-        <button *ngIf="displayCancelButton" class="btn btn-primary add-form" (click)="closeGeneral()">
+        <button *ngIf="displayCancelButton" class="btn btn-primary only-icon" (click)="closeGeneral()">
             <span class="icon-label">{{ "Close" | translate }}</span>
             <span class="icon">
               <i class="material-icons">cancel</i>
@@ -53,7 +59,7 @@
     <!-- SETTINGS FORM -->
     <div *ngIf="intentForm" class="box-settings-form">
         <div *ngIf="displaySettingForm" class="box-setting-form">
-            <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div>
+            <!-- <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div> -->
             <div>{{ "AddIntentPage.LabelCancel" | translate }}: <span class="bold">{{cancelCommandsString}}</span></div>
             <div>{{ "AddIntentPage.LabelReplay" | translate }}: <span class="bold">{{cancelReply}}</span></div>
         </div>
@@ -71,8 +77,12 @@
 
     
     <!-- BUTTON ADD FIELD -->
-    <div *ngIf="!displayAddEditForm && !displaySettingForm && intentForm" class="header-list-form">
-        <button class="btn btn-primary add-field" (click)="eventAddField()">
+    <div class="header-list-form">
+        <button 
+        *ngIf="displayTilebotAddEditForm && intentForm"
+        [disabled]="displayAddForm || displayEditForm || displaySettingForm"
+        class="btn btn-primary add-field" 
+        (click)="eventAddField()">
             <span class="icon">
             <i class="material-icons">add_circle</i>
             </span>
@@ -81,9 +91,11 @@
     </div>
     
 
-    <!-- ADD EDIT FIELD -->
+    <!-- ADD EDIT FIELD    -->
     <appdashboard-tilebot-add-edit-form
-    *ngIf="displayAddEditForm == true"
+    *ngIf="displayAddForm || displayEditForm"
+    [displayAddForm]="displayAddForm"
+    [displayEditForm]="displayEditForm"
     [field]="selectedField"
     (saveAddEditForm)="saveAddEditForm($event)"
     (closeAddEditForm)="closeAddEditForm()"

@@ -1030,7 +1030,9 @@
         "TheRequestWillBeAssignedToAHumanAgent": "infoga '\\agent' som sista raden i \"Svar\"-textområdet för att automatiskt flytta konversationen till en mänsklig agent, enligt avdelningens regler. Mer om mänsklig handoff",
         "DisplayTheButtonWithNameButton_1": "visa knappsyntax: Använd '*' följt av ett blanksteg, sedan knappens text på en ny rad i svarstexten. Se exempel",
         "DisplayTheImageWithTheSpecifiedURL": "visa bilden med den angivna URL:en. Se exempel",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint": "anropa den externa webhook till den angivna slutpunkten"
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "anropa den externa webhook till den angivna slutpunkten",
+        "MoreOnWebhooks": "Mer om webhooks <a href='https://developer.tiledesk.com/resolution-bot/quickstart/' Target='_blank'> här </a>",
+        "InfoAnswer": "Chatbot -svar på användarfrågan"
     },
     "FaqTestPage": {
         "Question": "Fråga",
@@ -2247,6 +2249,36 @@
     "ClosesTheCurrentTicket":"Stänger den aktuella ticket",
     "ReopenTheCurrentConversation":"Öppnar den nuvarande konversationen igen",
     "ReopenTheCurrentTicket":"Öppna den aktuella ticket igen",
+    "AddIntentPage": {
+        "AddForm": "Lägga till formulär",
+        "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",
+        "InfoTemplateForm": "Modellen för vald form '{{SelectedFormName}}' innehåller följande fält: {{beskrivning_key}}",
+        "CreateForm": "Skapa form",
+        "NameForm": "Formnamn",
+        "LabelCancel": "Avbryta etiketten",
+        "LabelReplay": "Etiketten 'Form avbruten'",
+        "AddField": "Lägg till fält",
+        "FieldName": "Fält namn",
+        "ParameterName": "Parameternamn",
+        "Other": "Övrig",
+        "FieldTypeText": "Fälttyp",
+        "AddCustomRegex": "Lägg till en anpassad regex",
+        "Label": "Märka",
+        "ErrorMessage": "Felmeddelande",
+        "CancelReply": "Formad",
+        "DeleteField": "Radera fält",
+        "ConfirmDeleteField": "Är du säker på att du vill ta bort fältet?",
+        "DeleteForm": "Radera formulär",
+        "ConfirmDeleteForm": "Är du säker på att du vill ta bort formuläret?",
+        "MarkbotLabel": "Du kan använda <a href='https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/' Target='_blank'> Markbot </a> för att formatera dina etiketter.",
+        "InfoMessages": {
+            "field_name": "Ge ett namn till formuläret Form (Ex: Namn _ Användare). Namnet kan bara innehålla bokstäver och _",
+            "field_type": "Välj vilken typ av angivet som kommer att infogas i detta fält (ex: text).",
+            "field_regex": "Sätt in den personaliserade regexen för kontroll över de infogade uppgifterna",
+            "field_label": "Skriv en tydlig etikett som hjälper användare att ange rätt data (ex: Vad heter du?)",
+            "field_error": "Skriv ett felmeddelande om data som anges av användaren inte är korrekta"
+        }
+    },
     "SingleConversation":"Singel konversation",
     "SingleConversationDescription":"Tiledesk Widget kan bara hantera en konversation åt gången genom att aktivera funktionen för enstaka konversationer. Det här alternativet inaktiverar möjligheten att visa hemmet med listan över öppna konversationer och de som redan är arkiverade. Denna förändring gör konversationer mer till en kontinuerlig tråd, vilket förhindrar kunder från att nå ut till ditt team flera gånger, vilket sparar ditt team tid och ansträngning.",
     "PrimaryColorGradient":"Primärfärgens gradient",

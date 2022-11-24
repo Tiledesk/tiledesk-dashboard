@@ -18,12 +18,14 @@ export class TilebotListFieldsFormComponent implements OnInit {
 
   // add edit form
   selectedField: any;
-  displayAddEditForm = false;
 
   
-  constructor() { }
+  constructor() { 
+    // void
+  }
 
   ngOnInit(): void {
+    this.selectedObjectId = null;
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -37,17 +39,12 @@ export class TilebotListFieldsFormComponent implements OnInit {
   // EVENTS //
   /** Event modal open delete field */
   deleteFieldModal(index:number) {
-    // console.log('deleteFieldModal:::', index);
-    // this.displayMODAL = true;
-    // this.translateMap["nameField"] =this.fields[index].name; 
-    // this.selectedObjectId = index;
     this.openDeleteFieldModal.emit(index);
   }
 
   /** Event edit field */
   editField(index:number){
-    // this.selectedField = this.fields[i];
-    // this.displayAddEditForm = true;
+    this.selectedObjectId = index;
     this.eventEditField.emit(index);
   }
 

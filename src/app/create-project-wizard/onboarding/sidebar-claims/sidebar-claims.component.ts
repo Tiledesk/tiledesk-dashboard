@@ -16,7 +16,9 @@ export class SidebarClaimsComponent implements OnInit {
  
 
 
-  constructor() { }
+  constructor() { 
+    // is empty
+  }
 
   ngOnInit(): void {
     this.claims = [
@@ -28,14 +30,6 @@ export class SidebarClaimsComponent implements OnInit {
     ];
     this.claimVisible = 0;
     this.stars = Array(this.claims[this.claimVisible].stars);
-
-    // setTimeout(() => {
-    //   this.claimHidden = 0;
-    //   this.claimVisible = 1;
-    //   console.log('-----> sparisci :::: ');
-    // }, 6000);
-
-
     if(this.claims.length > 1 ){
       this.id = setInterval(() => {
         this.randomClaim(); 

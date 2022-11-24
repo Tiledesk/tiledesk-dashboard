@@ -316,6 +316,7 @@ export class FaqEditAddComponent implements OnInit {
     this.faq_webhook_is_enabled = $event.target.checked
   }
 
+
   /**
    * *** ADD FAQ ***
    */
@@ -480,11 +481,11 @@ export class FaqEditAddComponent implements OnInit {
    * GET JSON FORM
    */
    passJsonIntentForm(json){
+    // console.log("-------------------> passJsonIntentForm::: ", json);
     this.intentForm = {};
-    if(json.fields && json.fields.length>0){
+    if(json && json.fields && json.fields.length>0){
       this.intentForm = json;
     }
-    // console.log("-------------------> passJsonIntentForm::: ", this.intentForm);
   }
 
 }

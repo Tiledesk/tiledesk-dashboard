@@ -15,9 +15,12 @@ export class ErrorResultComponent implements OnInit {
   @Input() CREATE_BOT_ERROR: boolean;
   @Input() CREATE_FAQ_ERROR: boolean;
 
-  constructor() { }
+  constructor() { 
+    // is empty
+  }
 
   ngOnInit(): void {
+    // is empty
   }
 
 

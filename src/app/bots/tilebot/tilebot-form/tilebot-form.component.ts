@@ -4,11 +4,28 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 
+
+export interface ModalDeleteModel {
+  deleteField?: string;
+  nameField?: string;
+  confirmDeleteField?: string; 
+  cancel?:string;
+} 
+
+// export interface IntentFormModel {
+//   id?: string;
+//   name?: string;
+//   description_key?: string; 
+//   fields?:string;
+// } 
+
 @Component({
   selector: 'appdashboard-tilebot-form',
   templateUrl: './tilebot-form.component.html',
   styleUrls: ['./tilebot-form.component.scss']
 })
+
+
 export class TilebotFormComponent implements OnInit {
   @Output() passJsonIntentForm = new EventEmitter();
   @Input() intentForm: any;
@@ -17,20 +34,23 @@ export class TilebotFormComponent implements OnInit {
 
   // modal
   displayMODAL = false;
-  translateMap: any;
-  selectedObjectId: number;
+  translateMap: ModalDeleteModel;
+  translations: any;
+
+  selectedObjectId: string;
   
   // add edit form
   selectedField: any;
-  displayAddEditForm = false;
+  displayTilebotAddEditForm = true;
+  displayAddForm = false;
+  displayEditForm = false
   displayBoxNewForm = false;
   displaySettingForm = false;
-
   displayNewFormButton = true;
   displayCancelButton = false;
   displaySettingsButton = false;
-  // intentForm: any;
 
+  idForm: string = "id-form-000";
   selectedForm: any;
   selectedFormId: number;
   modelsOfForm: any[] = [];
@@ -55,19 +75,13 @@ export class TilebotFormComponent implements OnInit {
   ngOnInit(): void {
     this.getCurrentTranslation();
     this.getModelsForm();
-
-    this.translateMap = {
-      "deleteField": "Elimina campo",
-      "confirmDeleteField": "sei sicuro di voler eliminare il campo",
-      "cancel": "annulla"
-    }
+    this.translateMap = {};
+    this.translations = {};
     if(this.intentForm && this.intentForm.fields){
-      // console.log('this.intentForm:::: ', this.intentForm);
       this.displayNewFormButton = false;
       this.displaySettingsButton = true;
-      this.fields = this.intentForm.fields;
+      this.fields = structuredClone(this.intentForm.fields);
     }
-
   }
   
 
@@ -83,6 +97,11 @@ export class TilebotFormComponent implements OnInit {
 
   /** */
   generateJsonIntentForm(){
+    if(this.selectedFormId && !this.selectedForm){
+      this.getFieldFromId(this.selectedFormId);
+    }
+
+    // console.log("generateJsonIntentForm", this.selectedFormId, this.selectedForm);
     if(this.selectedForm){  
       this.intentForm = {};
       this.intentForm.cancelCommands = this.cancelCommands;
@@ -96,12 +115,19 @@ export class TilebotFormComponent implements OnInit {
       }
       if(this.selectedForm.fields){
         this.intentForm.fields = this.selectedForm.fields;
-        this.fields = this.selectedForm.fields;
+        this.fields = structuredClone(this.selectedForm.fields);
       }
       // console.log('generateForm:  ', this.intentForm);
     }
     this.displayCancelButton = false;
     this.displaySettingsButton = true;
+    
+    // se sto creando un form custom che non ha campi
+    if(this.fields.length === 0){
+      this.displayEditForm = false;
+      this.displayAddForm = true;
+      this.openAddEditForm();
+    }
     this.jsonGenerator();
   }
 
@@ -110,8 +136,13 @@ export class TilebotFormComponent implements OnInit {
   getCurrentTranslation() {   
     let jsonWidgetLangURL = 'assets/i18n/'+this.langBot+'.json';
     this.httpClient.get(jsonWidgetLangURL).subscribe(data =>{
-      this.cancelCommands.push(data['Cancel']);
-      this.cancelReply = data['CancelReply'];
+      this.translations = data['AddIntentPage'];
+      let cancel = this.translations['Cancel']? this.translations['Cancel']: 'cancel';
+      this.cancelCommands.push(cancel);
+      this.cancelReply = this.translations['CancelReply']?this.translations['CancelReply']:'';
+      this.translateMap.cancel = cancel;
+
+      // console.log('this.translations:::: ', this.translations);
     })
   }
 
@@ -150,22 +181,9 @@ export class TilebotFormComponent implements OnInit {
   }
 
   /** */
-  // removeField(i: number) {
-  //   this.fields.splice(i, 1);
-  //   console.log('removeField:: ', this.fields.length);
-  //   if(this.fields.length === 0){
-  //     this.intentForm = null;
-  //   }
-  //   this.jsonGenerator();
-  // }
 
   // EVENTS //
-  openBoxNewFormForm(){
-    this.displayBoxNewForm = true;
-    this.displayCancelButton = true;
-    this.displayNewFormButton = false;
-    this.displaySettingsButton = false;
-  }
+  
 
   openSettingsForm(){
     this.displaySettingsButton = false;
@@ -193,46 +211,101 @@ export class TilebotFormComponent implements OnInit {
   }
 
   /** Event modal open delete field */
-  openDeleteFieldModal(index:number) {
+  openDeleteFieldModal(index:string) {
+    // console.log('this.translations:::: ', this.translations);
+    let i: number = +index;
     this.displayMODAL = true;
-    this.translateMap["nameField"] =this.fields[index].name; 
+    this.translateMap.deleteField = this.translations['DeleteField']?this.translations['DeleteField']:'';
+    this.translateMap.confirmDeleteField = this.translations['ConfirmDeleteField']?this.translations['ConfirmDeleteField']:'';
+    this.translateMap.nameField = this.fields[i].name; 
     this.selectedObjectId = index;
   }
 
   /** Event modal confirm delete field */
-  confirmDeleteModal(i:number){
-    this.fields.splice(i, 1);
-    this.displayMODAL = false;
-    if(this.fields.length === 0){
-      this.intentForm = {};
-      this.displayNewFormButton = false;
-      this.displaySettingsButton = true;
+  confirmDeleteModal(index:string){
+    if(index === this.idForm){
+      this.deleteForm();
+    } else {
+      this.displayAddForm = false;
+      this.displayEditForm = false;
+      let i: number = +index;
+      this.fields.splice(i, 1);
+      // console.log('this.fields.length::: 1', this.fields.length);
+      if(this.fields.length === 0){
+        this.deleteForm();
+      }
+      // console.log('this.fields.length::: 2');
     }
-    // console.log('confirmDeleteModal:: ', this.fields);
     this.jsonGenerator();
+    this.displayMODAL = false;
+  }
+
+
+  openBoxNewFormForm(){
+    this.intentForm = null;
+    this.fields = [];
+    this.displayBoxNewForm = true;
+    this.displayTilebotAddEditForm = true;
+    this.displayCancelButton = true;
+    this.displayNewFormButton = false;
+    this.displaySettingsButton = false;
+    this.displayAddForm = false;
+    this.displayEditForm = false;
+    this.displaySettingForm = false;
+    // console.log('openBoxNewFormForm:: ', this.displayBoxNewForm, this.intentForm);
+  }
+
+  private deleteForm(){
+    // console.log('deleteForm:: ');
+    this.displayTilebotAddEditForm = false;
+    this.displayNewFormButton = true;
+    this.displayBoxNewForm = true;
+    this.displaySettingForm = false;
+    this.displayAddForm = false;
+    this.displayEditForm = false
+    this.displayCancelButton = false;
+    this.displaySettingsButton = false;
+    this.intentForm = null;
+    this.fields = [];
+  }
+
+
+  private resetForm(){
+    this.intentForm = {};
+    this.fields = [];
+    this.displayNewFormButton = false;
+    this.displaySettingsButton = true;
+    this.displayAddForm = false;
+    this.displayEditForm = false;
+    this.displayTilebotAddEditForm = false;
   }
 
   /** Event modal close delete field */
   closeDeleteModal(i:number){
-    // console.log('closeDeleteModal: ',i);
     this.displayMODAL = false;
   }
 
   /** Event add field */
   eventAddField(){
+    this.displayEditForm = false;
     this.selectedField = null;
-    this.displayAddEditForm = true;
+    this.displayAddForm = true;
+    this.openAddEditForm();
   }
 
   /** Event edit field */
   eventEditField(i:number){
     this.selectedField = this.fields[i];
-    this.displayAddEditForm = true;
+    this.displayAddForm = false;
+    this.displayEditForm = true;
+    this.openAddEditForm();
   }
 
   /** Event close add/edit form accordion */
   closeAddEditForm(){
-    this.displayAddEditForm = false;
+    this.displayAddForm = false;
+    this.displayEditForm = false;
+    this.displayTilebotAddEditForm = true;
   }
 
   /** Event SAVE field */
@@ -243,9 +316,28 @@ export class TilebotFormComponent implements OnInit {
     } else {
       this.fields.splice(objIndex, 1, event);
     }
-    this.intentForm.fields = this.fields;
-    // console.log('saveAddEditForm', this.intentForm.fields);
-    this.displayAddEditForm = false;
+    if(this.intentForm){
+      this.intentForm.fields = this.fields;
+    }
+    this.displayAddForm = false;
+    this.displayEditForm = false;
+    this.displayTilebotAddEditForm = true;
     this.jsonGenerator();
+  }
+
+  openAddEditForm(){
+    this.displayTilebotAddEditForm = false;
+    setTimeout(() => {
+      this.displayTilebotAddEditForm = true;
+    }, 300);
+  }
+
+  /** */
+  openDeleteForm(){
+    // console.log('this.translations:::: ', this.translations);
+    this.translateMap.deleteField = this.translations['DeleteForm']?this.translations['DeleteForm']:'';
+    this.translateMap.confirmDeleteField = this.translations['ConfirmDeleteForm']?this.translations['ConfirmDeleteForm']:'';
+    this.displayMODAL = true;
+    this.selectedObjectId = this.idForm;
   }
 }
