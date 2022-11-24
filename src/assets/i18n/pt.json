@@ -1030,7 +1030,9 @@
         "TheRequestWillBeAssignedToAHumanAgent": "insira '\\agent' como a última linha na área de texto “Resposta” para mover automaticamente a conversa para um agente humano, seguindo as regras do departamento. Mais sobre transferência humana",
         "DisplayTheButtonWithNameButton_1": "sintaxe do botão de exibição: Use '*' seguido por um espaço e, em seguida, o texto do botão em uma nova linha do texto de resposta. consultar exemplo",
         "DisplayTheImageWithTheSpecifiedURL": "exibir a imagem com o URL especificado. consultar exemplo",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint": "chame o webhook externo para o ponto final especificado"
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "chame o webhook externo para o ponto final especificado",
+        "MoreOnWebhooks": "Mais em webhooks <a href='https://developer.tuiledesk.com/resolution-bot/quickstart/'arget='_blank'> aqui </a>",
+        "InfoAnswer": "Resposta chatbot à pergunta do usuário"
     },
     "FaqTestPage": {
         "Question": "Pergunta",
@@ -2247,6 +2249,36 @@
     "ClosesTheCurrentTicket":"Fecha o Ticket atual",
     "ReopenTheCurrentConversation":"Reabre a conversa atual",
     "ReopenTheCurrentTicket":"Reabre o Ticket atual",
+    "AddIntentPage": {
+        "AddForm": "Adicione o formulário",
+        "SelectTemplateForm": "Selecione um tipo de forma entre os sugeridos ou crie um novo",
+        "InfoTemplateForm": "O modelo da forma selecionada '{{SelectedFormName}}' contém os seguintes campos: {{description_key}}",
+        "CreateForm": "Criar forma",
+        "NameForm": "Nome do formulario",
+        "LabelCancel": "Cancelar o rótulo",
+        "LabelReplay": "Etiqueta 'formulário cancelado'",
+        "AddField": "Adicionar campo",
+        "FieldName": "Nome do campo",
+        "ParameterName": "Nome do parâmetro",
+        "Other": "Outro",
+        "FieldTypeText": "Tipo de campo",
+        "AddCustomRegex": "Adicione um regex personalizado",
+        "Label": "Etiqueta",
+        "ErrorMessage": "Mensagem de erro",
+        "CancelReply": "Forma excluída",
+        "DeleteField": "Excluir campo",
+        "ConfirmDeleteField": "Tem certeza de que deseja excluir o campo?",
+        "DeleteForm": "Excluir forma",
+        "ConfirmDeleteForm": "Tem certeza de que deseja excluir o formulário?",
+        "MarkbotLabel": "Você pode usar <a href='https://gethelp.tuiledesk.com/articles/sending-images-videos-quick-replies-and-more/'arget='_blank'> Markbot </a> Para formatar seus rótulos.",
+        "InfoMessages": {
+            "field_name": "Dê um nome ao campo do formulário (ex: nome _ usuário). O nome pode conter apenas números de letras e _",
+            "field_type": "Selecione o tipo de dado que será inserido neste campo (ex: texto).",
+            "field_regex": "Insira o regex personalizado para controle sobre os dados inseridos",
+            "field_label": "Escreva um rótulo claro que ajude os usuários a inserir os dados corretos (Ex: Qual é o seu nome?)",
+            "field_error": "Escreva uma mensagem de erro se os dados inseridos pelo usuário não estiverem corretos"
+        }
+    },
     "SingleConversation":"Conversa única",
     "SingleConversationDescription":"O Tiledesk Widget pode lidar com apenas uma conversa por vez, habilitando o recurso Single Conversation. Esta opção desativa a possibilidade de visualizar a casa com a lista de conversas abertas e as já arquivadas. Essa mudança torna as conversas mais contínuas, evitando que os clientes entrem em contato com sua equipe várias vezes, o que economiza tempo e esforço de sua equipe.",
     "PrimaryColorGradient":"Gradiente da cor primária",

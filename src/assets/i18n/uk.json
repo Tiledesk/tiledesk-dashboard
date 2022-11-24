@@ -1030,7 +1030,9 @@
         "TheRequestWillBeAssignedToAHumanAgent": "Вставте «\\agent» як останній рядок у текстовій області «Відповідь», щоб автоматично перемістити розмову до людини-агента, дотримуючись правил відділу. Більше про передачу людей",
         "DisplayTheButtonWithNameButton_1": "Синтаксис кнопки зображення: використовуйте '*' з одним пробілом, потім текст кнопки в новому рядку тексту відповіді. Дивіться приклад",
         "DisplayTheImageWithTheSpecifiedURL": "Відобразити зображення за вказаною URL-адресою. Дивіться приклад",
-        "CallTheExternalWebhookToTheSpecifiedEndpoint": "викликати зовнішній вебхук до вказаної кінцевої точки"
+        "CallTheExternalWebhookToTheSpecifiedEndpoint": "викликати зовнішній вебхук до вказаної кінцевої точки",
+        "MoreOnWebhooks": "Детальніше про Webhooks <a href='https://developer.tiledesk.com/resolution-bot/quickstart/'-gary='_blank'> тут </a>",
+        "InfoAnswer": "Відповідь чату на запитання користувача"
     },
     "FaqTestPage": {
         "Question": "Питання",
@@ -2247,6 +2249,36 @@
     "ClosesTheCurrentTicket":"Закриває поточний квиток",
     "ReopenTheCurrentConversation":"Повторно відкриває поточну розмову",
     "ReopenTheCurrentTicket":"Повторно відкрити поточний квиток",
+    "AddIntentPage": {
+        "AddForm": "Додати форму",
+        "SelectTemplateForm": "Виберіть тип форми серед запропонованих або створіть новий",
+        "InfoTemplateForm": "Модель вибраної форми '{{selectedFormName}}' містить такі поля: {{escripe_key}}",
+        "CreateForm": "Створити форму",
+        "NameForm": "Назва форми",
+        "LabelCancel": "Скасувати етикетку",
+        "LabelReplay": "Лейбл \"форма скасована\"",
+        "AddField": "Додати поле",
+        "FieldName": "Назва поля",
+        "ParameterName": "Назва параметрів",
+        "Other": "Інший",
+        "FieldTypeText": "Тип поля",
+        "AddCustomRegex": "Додайте власний регекс",
+        "Label": "Етикетка",
+        "ErrorMessage": "Повідомлення про помилку",
+        "CancelReply": "Форма видалена",
+        "DeleteField": "Поле видалення",
+        "ConfirmDeleteField": "Ви впевнені, що хочете видалити поле?",
+        "DeleteForm": "Видалити форму",
+        "ConfirmDeleteForm": "Ви впевнені, що хочете видалити форму?",
+        "MarkbotLabel": "Ви можете використовувати <a href='https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/'-gary='_blank'> markbot </a>, щоб форматувати свої етикетки.",
+        "InfoMessages": {
+            "field_name": "Дайте ім’я в поле форми (наприклад: Ім'я _ Користувач). Назва може містити лише номери літер і _",
+            "field_type": "Виберіть тип заданого, який буде вставлений у цьому полі (наприклад: текст).",
+            "field_regex": "Вставте персоналізований регекс для контролю над вставленими даними",
+            "field_label": "Напишіть чітку мітку, яка допомагає користувачам ввести правильні дані (наприклад: Як вас звати?)",
+            "field_error": "Напишіть повідомлення про помилку, якщо дані, введені користувачем"
+        }
+    },
     "SingleConversation":"Одиночна бесіда",
     "SingleConversationDescription":"Tiledesk Widget може обробляти лише одну розмову за раз, увімкнувши функцію «Одна розмова». Ця опція вимикає можливість перегляду домашньої сторінки зі списком відкритих і вже заархівованих розмов. Ця зміна робить розмови більш безперервними, не даючи клієнтам звертатися до вашої команди кілька разів, що економить час і зусилля вашої команди.",
     "PrimaryColorGradient":"Градієнт основного кольору",

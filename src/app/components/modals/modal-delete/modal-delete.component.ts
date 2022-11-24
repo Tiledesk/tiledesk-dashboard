@@ -18,7 +18,6 @@ export class ModalDeleteComponent implements OnInit {
 
 
   confirmDelete() {
-    // console.log('confirmDelete: ', this.objectId);
     this.confirmDeleteModal.emit(this.objectId);
   }
 
