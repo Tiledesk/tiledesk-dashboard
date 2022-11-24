@@ -1,0 +1,22 @@
+<div class="navbar-brand">
+    <i class="material-icons btn-back" (click)="goBack()">keyboard_arrow_left</i>
+    <span *ngIf="CREATE_VIEW">
+        <!-- Aggiungi FAQ -->
+        {{ "AddIntent" | translate }}
+    </span>
+    <span *ngIf="EDIT_VIEW">
+        <!-- Modifica FAQ -->
+        {{ "EditIntent" | translate }}
+    </span>
+</div>
+
+
+  
+<div class="chatboat-dashboard">
+    <div class="card-tools">
+        <appdashboard-tools></appdashboard-tools>
+    </div>
+    <div class="card-intent">
+        <appdashboard-intent></appdashboard-intent>
+    </div>
+</div>

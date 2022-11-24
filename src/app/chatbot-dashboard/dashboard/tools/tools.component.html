@@ -1,0 +1,33 @@
+
+<!-- ---------------------------------------------- -->
+<!--  STRUMENTI -->
+<!-- ---------------------------------------------- -->
+<div class="box-sx card-tools2">
+    <div 
+    class="box-responses-type" 
+    cdkDropList
+    [cdkDropListData]="items"
+    cdkDropListSortingDisabled
+    (cdkDropListDropped)="drop($event)"
+    >
+        <p class="card-title">Type response</p>
+        <div data-adding-allowed="true" class="add-responses">
+
+            <div data-add-response-type="text" class="add-response" cdkDrag>
+                <i class="material-icons">text_fields</i><span>Text</span>
+            </div>
+            <div data-add-response-type="randomText" class="add-response" cdkDrag>
+                <i class="material-icons">text_fields</i><span>Random text</span>
+            </div>
+            <div data-add-response-type="image" class="add-response" cdkDrag>
+                <i class="material-icons">image</i><span>Image</span>
+            </div>
+            <div data-add-response-type="cards" class="add-response" cdkDrag>
+                <i class="material-icons">view_module</i><span>Form</span>
+            </div>
+            <div data-add-response-type="button" class="add-response" cdkDrag>
+                <i class="material-icons">play_circle</i><span>Video</span>
+            </div>
+        </div>
+    </div>
+</div>
