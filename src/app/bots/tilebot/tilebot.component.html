@@ -26,7 +26,7 @@
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
         <div class="row">
-          <div class="col-md-12" style="padding-left: 0px; ">
+          <!-- <div class="col-md-12" style="padding-left: 0px; ">
             <div class="chatbot-general-setting-tab-wpr" *ngIf="GENERAL_ROUTE_IS_ACTIVE === true">
               <ul class="bottom-nav" style="margin-bottom: 16px;    box-shadow: 0 2px 0px #00003c14 !important;">
                 <li (click)="toggleTab(details = !details)" class="btn-with-border-effect" [ngClass]="
@@ -47,7 +47,7 @@
                 </li>
               </ul>
             </div>
-          </div>
+          </div> -->
 
           <div class="col-md-8" [ngStyle]="{'display': INTENTS_ROUTE_IS_ACTIVE === true ? 'none' : 'block' }">
             <div class="card custom_card card--no-border"
@@ -61,7 +61,7 @@
                 <!-- General -->
                 <!-- ---------------------------------------------------------- -->
                 <section *ngIf="GENERAL_ROUTE_IS_ACTIVE === true">
-                  <!-- <div class="row">
+                  <div class="row">
                     <div class="col-sm-10 col-md-10">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
@@ -73,28 +73,11 @@
                     <div class="col-sm-10 col-md-10">
                       <div class="section-subtitle"> </div>
                     </div>
-                  </div> -->
-                  <!-- <ul class="bottom-nav" style="margin-bottom: 30px;">
-                    <li (click)="toggleTab(details = !details)" class="btn-with-border-effect" [ngClass]="
-                            { 'disabled-li' :        HAS_SELECTED_BOT_IMPORTEXORT === false, 
-                              'border-from-center' : HAS_SELECTED_BOT_IMPORTEXORT === true,
-                              'li-active' :          HAS_SELECTED_BOT_IMPORTEXORT === false
-                            }">
+                  </div>
+      
 
-                      <a href="javascript:;" role="button"> {{ "BotDetails" | translate }} </a>
-                    </li>
-
-                    <li (click)="toggleTab(details = !details)" class="btn-with-border-effect" [ngClass]="
-                        { 'disabled-li' : HAS_SELECTED_BOT_IMPORTEXORT === true, 
-                          'border-from-center' : HAS_SELECTED_BOT_IMPORTEXORT === false, 
-                          'li-active' : HAS_SELECTED_BOT_IMPORTEXORT === true
-                        }">
-                      <a href="javascript:;" role="button"> FAQ Import Export </a>
-                    </li>
-                  </ul>  -->
-
-                  <div *ngIf="HAS_SELECTED_BOT_DETAILS" class="chatbot-details-wpr">
-                    <div class="row">
+                  <!-- <div *ngIf="HAS_SELECTED_BOT_DETAILS" class="chatbot-details-wpr"> -->
+                    <!-- <div class="row">
                       <div class="col-sm-10 col-md-10">
                         <h3 class="card_title__underlined">
                           <span class="card_title__underline">
@@ -106,7 +89,7 @@
                       <div class="col-sm-10 col-md-10">
                         <div class="section-subtitle"> </div>
                       </div>
-                    </div>
+                    </div> -->
 
 
                     <!--  --------------------------------------------------------------------------------------------------- -->
@@ -318,10 +301,11 @@
                         </span>
                       </div>
                     </div>
-                  </div> <!-- ./ bot details -->
+                  <!-- </div>  -->
+                  <!-- ./ bot details -->
 
 
-                  <div *ngIf="HAS_SELECTED_BOT_IMPORTEXORT" class="chatbot-faq-export-import-wpr">
+                  <div style="display: none;" *ngIf="HAS_SELECTED_BOT_IMPORTEXORT" class="chatbot-faq-export-import-wpr">
                     <div class="row">
                       <div class="col-sm-10 col-md-10">
                         <h3 class="card_title__underlined">
@@ -388,12 +372,6 @@
                         Import Intents from JSON
                       </label>
                     </span>
-
-           
-
-               
-                 
-
                     <div class="row">
                       <div class="col-sm-10 col-md-10">
                         <h3 class="card_title__underlined" style="margin-top: 30px;">
