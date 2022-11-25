@@ -310,6 +310,42 @@
                     <!-- --------------------------------------------------- -->
                     <!-- JSON Section -->
                     <!-- --------------------------------------------------- -->
+                    <!-- --------------------------------------------------- -->
+                    <!-- CSV -->
+                    <!-- --------------------------------------------------- -->
+                    <div class="row">
+                      <div class="col-sm-10 col-md-10">
+                        <h3 class="card_title__underlined" style="margin-top: 30px;">
+                          <span class="card_title__underline">
+
+                            CSV
+                          </span>
+                        </h3>
+                      </div>
+                      <div class="col-sm-10 col-md-10">
+                        <div class="section-subtitle"> </div>
+                      </div>
+                    </div>
+
+                    <!-- --------------------------------------------------- -->
+                    <!-- CSV Section title -->
+                    <!-- --------------------------------------------------- -->
+                    <div class="export-import-section-title">
+                      Frequently Asked Questions
+                    </div>
+
+
+                    <div class="import-faq-from-csv-btn-wpr">
+                      <button class="btn btn-primary export-faq-to-json-btn" (click)="openImportModal()">
+                        <span class="icon" style="padding-right:8px">
+                          <span class="material-icons">
+                            cloud_upload
+                          </span>
+                        </span>
+                        {{'ImportFromCSV' | translate }}
+                      </button>
+                    </div>
+
                     <div class="row">
                       <div class="col-sm-10 col-md-10">
                         <h3 class="card_title__underlined">
@@ -355,7 +391,7 @@
                           cloud_upload
                         </span>
                         <!-- Import Intents from JSON -->
-                        {{'ImportFromJSON' | translate}} 
+                        {{'ImportFromJSON' | translate}}
                       </label>
                     </span>
 
@@ -395,41 +431,7 @@
                         Import Chatbot from JSON
                       </label>
                     </span> -->
-                    <!-- --------------------------------------------------- -->
-                    <!-- CSV -->
-                    <!-- --------------------------------------------------- -->
-                    <div class="row">
-                      <div class="col-sm-10 col-md-10">
-                        <h3 class="card_title__underlined" style="margin-top: 30px;">
-                          <span class="card_title__underline">
 
-                            CSV
-                          </span>
-                        </h3>
-                      </div>
-                      <div class="col-sm-10 col-md-10">
-                        <div class="section-subtitle"> </div>
-                      </div>
-                    </div>
-
-                    <!-- --------------------------------------------------- -->
-                    <!-- CSV Section title -->
-                    <!-- --------------------------------------------------- -->
-                    <div class="export-import-section-title">
-                      Intents
-                    </div>
-
-
-                    <div class="import-faq-from-csv-btn-wpr">
-                      <button class="btn btn-primary export-faq-to-json-btn" (click)="openImportModal()">
-                        <span class="icon" style="padding-right:8px">
-                          <span class="material-icons">
-                            cloud_upload
-                          </span>
-                        </span>
-                        {{'ImportFromCSV' | translate }}
-                      </button>
-                    </div>
 
 
 
