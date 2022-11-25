@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.3.5
+- Deploys in production
+- Adds the "When a chat message is sent by anyone" trigger to the Add Trigger and Edit Trigger pages, and renames the "When a chat message is sent" trigger to "When a chat message is sent by visitor"
+- Adds the "Import and Export" tab to the Tilebot type chatbot edit page
+- Bug fixing and minor improvements
+
 ### 2.3.5-rc3
 - Bug fixes: When creating or editing the "When a chat message is sent from anyone" trigger, the name is missing
 
