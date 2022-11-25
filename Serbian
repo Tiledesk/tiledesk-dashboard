@@ -1293,6 +1293,7 @@
                 "Placeholder": "Изаберите метод активације",
                 "WhenRequestChat": "Када посетилац затражи ћаскање",
                 "WhenMessageIsSent": "Када се пошаље порука за ћаскање",
+                "WhenMessageIsSentFromVisitor": "When a chat message is sent from visitor",
                 "WhenUserIsLogged": "Када се корисник пријави",
                 "NewEvent": "Нови догађај"
             },
