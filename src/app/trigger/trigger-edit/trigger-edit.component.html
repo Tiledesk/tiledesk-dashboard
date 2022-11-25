@@ -85,7 +85,10 @@
                         (change)=onTriggerKey($event) [searchable]="false" [clearable]="false" style="width: 100%;">
                         <!-- <ng-option [value]="'message.received'"> -->
                         <ng-option [value]="'message.create.from.requester'">
-                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenMessageIsSent" | translate }}
+                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenMessageIsSentFromVisitor" | translate }}
+                        </ng-option>
+                        <ng-option [value]="'message.received'">
+                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenMessageIsSentByAnyone" | translate }}
                         </ng-option>
                         <ng-option [value]="'request.create'">
                           {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenRequestChat" | translate }}

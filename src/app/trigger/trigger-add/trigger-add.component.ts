@@ -264,7 +264,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   }
 
   onTriggerKey(value: string) {
-    // this.logger.log('TRIGGER (ADD) - onTriggerKey myselect', this.myselect);
+    this.logger.log('TRIGGER (ADD) - onTriggerKey myselect', this.myselect);
 
     // reset condition formArray value: delete all the index from 1  to conditions.length and
     // finally clear the value of the first index array
@@ -282,8 +282,10 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     this.logger.log('[TRIGGER-ADD] onTriggerKey - Trigger key:', value);
     if (value) {
       this.temp_cond = this.condition.filter(b => b.triggerType === value);
+      this.logger.log('TRIGGER (ADD) - onTriggerKey temp_cond use case if value', this.temp_cond);
     } else {
       this.temp_cond = this.condition.filter(b => b.triggerType === 'message.create.from.requester');
+      this.logger.log('TRIGGER (ADD) - onTriggerKey temp_cond use case else', this.temp_cond);
     }
 
     // ---------------------------------------------------------------------------------------------------------------------

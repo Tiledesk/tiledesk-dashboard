@@ -317,7 +317,7 @@ export class BasetriggerComponent implements OnInit {
         // ******* MESSAGE - When a chat message is sent - START *******
 
 
-        // ******* REQUEST - When a chat message is sent - START *******
+        // ******* REQUEST - When a chat message is sent from visitor- START *******
         {
           groupId: translateConditions.message.groupId.RequestInformation,
           id: 'request.sourcePage',
@@ -326,14 +326,6 @@ export class BasetriggerComponent implements OnInit {
           triggerType: 'message.create.from.requester',
           type: 'string'
         },
-        // {
-        //   groupId: translateConditions.chat.groupId.PageInformation,
-        //   id: 'sourcePage',
-        //   key: 'request.sourcePageTitle',
-        //   label_key: translateConditions.chat.label_key.VisitorPageTitle,
-        //   triggerType: 'request.create',
-        //   type: 'string'
-        // },
         {
           /**
            * NON FUNZIONA
@@ -372,24 +364,6 @@ export class BasetriggerComponent implements OnInit {
           triggerType: 'message.create.from.requester',
           type: 'string'
         },
-        // {
-        //   groupId: translateConditions.chat.groupId.VisitorInformation,
-        //   id: 'lead.attributes.departmentId',
-        //   key: 'request.lead.attributes.departmentId',
-        //   label_key: translateConditions.chat.label_key.VisitorDepartment,
-        //   triggerType: 'request.create',
-        //   type: 'boolean',
-        //   operator: this.departments,
-        //   placeholder: translateConditions.chat.placeholder.SelectDepartment
-        // },
-        // {
-        //   groupId: translateConditions.chat.groupId.VisitorInformation,
-        //   id: 'lead.attributes.client',
-        //   key: 'request.lead.attributes.client',
-        //   label_key: translateConditions.chat.label_key.VisitorReferrer,
-        //   triggerType: 'request.create',
-        //   type: 'string'
-        // },
         {
           groupId: translateConditions.message.groupId.RequestInformation,
           id: 'request.userAgent',
@@ -451,12 +425,6 @@ export class BasetriggerComponent implements OnInit {
           label_key: translateConditions.message.label_key.VisitorCountryRegion,
           triggerType: 'message.create.from.requester',
           type: 'boolean',
-          // operator: [
-          //   { id: 'zh-CN', label_key: 'Chinese' },
-          //   { id: 'en-GB', label_key: 'English' },
-          //   { id: 'fr-FR', label_key: 'French' },
-          //   { id: 'it-IT', label_key: 'Italian' }
-          // ],
           placeholder: translateConditions.message.placeholder.SelectLanguage
         },
         {
@@ -519,7 +487,196 @@ export class BasetriggerComponent implements OnInit {
           triggerType: 'message.create.from.requester',
           type: 'int'
         },
-        // ******* REQUEST - When a chat message is sent - END *******
+        // ******* REQUEST - When a chat message is sent from visitor - END *******
+
+         // ******* REQUEST - When a chat message is sent from anyone - Start *******
+
+         {
+          groupId: translateConditions.message.groupId.MessageInformation,
+          id: 'text',
+          key: 'message.text',
+          label_key: translateConditions.message.label_key.VisitorSearchTerm,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.MessageInformation,
+          id: 'senderFullname',
+          key: 'message.senderFullname',
+          label_key: translateConditions.message.label_key.VisitorName,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+         {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.sourcePage',
+          key: 'message.request.sourcePageUrl',
+          label_key: translateConditions.message.label_key.VisitorURL,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          /**
+           * NON FUNZIONA
+           * Se l'utente è Guest, anche con il pre chat form abilitato, il campo lead.fullname non esiste.
+           * Il nome dell'utente si trova sotto attributes.
+           * Non dovrebbero esserci problemi se l'utente non è guest. (Da verificare)
+           */
+          groupId: translateConditions.message.groupId.RequestInformation,
+          // chiamare contact fullname (label)
+          id: 'request.lead.fullname',
+          key: 'message.request.lead.fullname',
+          label_key: translateConditions.message.label_key.VisitorName,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          /**
+           * NON FUNZIONA
+           * Se l'utente è Guest, anche con il pre chat form abilitato, il campo lead.email non esiste.
+           * L'email dell'utente si trova sotto attributes.
+           * Non dovrebbero esserci problemi se l'utente non è guest. (Da verificare)
+           */
+          groupId: translateConditions.message.groupId.RequestInformation,
+          // chiamare contact email (label)
+          id: 'request.lead.email',
+          key: 'message.request.lead.email',
+          label_key: translateConditions.message.label_key.VisitorMail,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.first_text',
+          key: 'message.request.first_text',
+          label_key: translateConditions.message.label_key.VisitorFirstText,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.userAgent',
+          key: 'message.request.userAgentBrowser',
+          label_key: translateConditions.message.label_key.VisitorBrowser,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.userAgent',
+          key: 'message.request.userAgentPlatform',
+          label_key: translateConditions.message.label_key.VisitorPlatform,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.agents.length',
+          key: 'message.request.agents.length',
+          label_key: translateConditions.message.label_key.VisitoruserAgent,
+          triggerType: 'message.received',
+          type: 'int'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          /**
+           * NON FUNZIONA
+           * Il campo request.availableAgentsCount esiste nella richiesta, ma il trigger non funziona.
+           */
+          // id: 'availableAgents.length',
+          // key: 'request.availableAgents.length',
+          id: 'request.snapshot.availableAgentsCount',
+          key: 'message.request.snapshot.availableAgentsCount',
+          label_key: translateConditions.message.label_key.VisitoruserAgentAvailable,
+          triggerType: 'message.received',
+          type: 'int'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.participatingBots.length',
+          key: 'message.request.participatingBots.length',
+          label_key: translateConditions.message.label_key.NumberOfParticipatingBot,
+          triggerType: 'message.received',
+          type: 'int'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.channel.name',
+          key: 'message.request.channel.name',
+          label_key: translateConditions.message.label_key.ChannelName,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.language',
+          key: 'message.request.language',
+          label_key: translateConditions.message.label_key.VisitorCountryRegion,
+          triggerType: 'message.received',
+          type: 'boolean',
+          placeholder: translateConditions.message.placeholder.SelectLanguage
+        },
+        {
+          /**
+           * NON FUNZIONA
+           * In request.department.name c'è il nome del dipartimento.
+           * Mentre il valore che si imposta al trigger è l'id del dipartimento.
+           * Cambiare path in request.department._id? (Non funziona uguale)
+           */
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.department._id',
+          key: 'message.request.department.name',
+          label_key: translateConditions.message.label_key.Department,
+          triggerType: 'message.received',
+          type: 'boolean',
+          operator: this.departments,
+          placeholder: translateConditions.message.placeholder.SelectDepartment
+        },
+        {
+          /**
+           * NON FUNZIONA
+           * In request.department.hasBot = false. Il valore della condizione del trigger è false, 
+           * ma non funziona ugualmente.
+           */
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.department.hasBot',
+          key: 'message.request.departmentHasBot',
+          label_key: translateConditions.message.label_key.DepartmentHasBot,
+          triggerType: 'message.received',
+          type: 'boolean',
+          placeholder: translateConditions.message.placeholder.SelectStatus
+        },
+        {
+          /**
+           * NON FUNZIONA
+           * Il campo isOpen in request non sembra esserci.
+           */
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.isOpen',
+          key: 'message.request.isOpen',    // ***** NON FUNZIONA
+          label_key: translateConditions.message.label_key.OfficesAreOpen,
+          triggerType: 'message.received',
+          type: 'boolean',
+          placeholder: translateConditions.message.placeholder.SelectStatus
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.status',
+          key: 'message.request.statusVisitorServed',
+          label_key: translateConditions.message.label_key.VisitorServed,
+          triggerType: 'message.received',
+          type: 'boolean',
+          placeholder: translateConditions.message.placeholder.SelectStatus
+        },
+        {
+          groupId: translateConditions.message.groupId.RequestInformation,
+          id: 'request.status',
+          key: 'message.request.statusRequestStatus',
+          label_key: translateConditions.message.label_key.RequestStatus,
+          triggerType: 'message.received',
+          type: 'int'
+        },
+         // ******* REQUEST - When a chat message is sent from anyone - END *******
 
 
         // ******* REQUEST - When a visitor request a chat - START *******
