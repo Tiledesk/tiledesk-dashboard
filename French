@@ -1293,6 +1293,7 @@
                 "Placeholder": "Sélectionnez la méthode d'activation",
                 "WhenRequestChat": "Lorsqu'un visiteur demande un chat",
                 "WhenMessageIsSent": "Lorsqu'un message de chat est envoyé",
+                "WhenMessageIsSentFromVisitor": "When a chat message is sent from visitor",
                 "WhenUserIsLogged": "Lorsque l'utilisateur s'est connecté",
                 "NewEvent": "Nouvel évènement"
             },
