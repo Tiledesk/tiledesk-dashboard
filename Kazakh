@@ -1294,6 +1294,7 @@
                 "WhenRequestChat": "Келуші чатты сұрағанда",
                 "WhenMessageIsSent": "Чат хабары жіберілгенде",
                 "WhenMessageIsSentFromVisitor": "When a chat message is sent from visitor",
+                "WhenMessageIsSentByAnyone": "When a chat message is sent by anyone",
                 "WhenUserIsLogged": "Пайдаланушы жүйеге кірген кезде",
                 "NewEvent": "Жаңа оқиға"
             },
