@@ -1294,6 +1294,7 @@
                 "WhenRequestChat": "عندما يطلب زائر دردشة",
                 "WhenMessageIsSent": "عندما يتم إرسال رسالة دردشة",
                 "WhenMessageIsSentFromVisitor":"عندما يتم إرسال رسالة دردشة من الزائر",
+                "WhenMessageIsSentByAnyone":"عندما يتم إرسال رسالة دردشة من قبل أي شخص",
                 "WhenUserIsLogged": "عندما يقوم المستخدم بتسجيل الدخول",
                 "NewEvent": "حدث جديد"
             },

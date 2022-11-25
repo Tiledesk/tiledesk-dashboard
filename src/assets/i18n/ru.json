@@ -1294,6 +1294,7 @@
                 "WhenRequestChat": "Когда посетитель запрашивает чат",
                 "WhenMessageIsSent": "При отправке сообщения чата",
                 "WhenMessageIsSentFromVisitor":"Когда сообщение чата отправляется от посетителя",
+                "WhenMessageIsSentByAnyone":"Когда сообщение чата отправляется кем-либо",
                 "WhenUserIsLogged": "Когда пользователь вошел в систему",
                 "NewEvent": "Новое событие"
             },

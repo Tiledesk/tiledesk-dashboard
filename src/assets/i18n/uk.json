@@ -1294,6 +1294,7 @@
                 "WhenRequestChat": "Коли відвідувач запитує чат",
                 "WhenMessageIsSent": "Коли надіслано повідомлення чату",
                 "WhenMessageIsSentFromVisitor":"Коли відвідувач надсилає повідомлення чату",
+                "WhenMessageIsSentByAnyone":"Коли хтось надсилає повідомлення в чаті",
                 "WhenUserIsLogged": "Коли користувач увійшов",
                 "NewEvent": "Нова подія"
             },

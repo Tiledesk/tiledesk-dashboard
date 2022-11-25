@@ -1294,6 +1294,7 @@
                 "WhenRequestChat": "Bir ziyaretçi sohbet istediğinde",
                 "WhenMessageIsSent": "Bir sohbet mesajı gönderildiğinde",
                 "WhenMessageIsSentFromVisitor":"Ziyaretçiden bir sohbet mesajı gönderildiğinde",
+                "WhenMessageIsSentByAnyone":"Herhangi biri tarafından bir sohbet mesajı gönderildiğinde",
                 "WhenUserIsLogged": "Kullanıcı oturum açtığında",
                 "NewEvent": "Yeni etkinlik"
             },

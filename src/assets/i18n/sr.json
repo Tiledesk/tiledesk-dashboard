@@ -1294,6 +1294,7 @@
                 "WhenRequestChat": "Када посетилац затражи ћаскање",
                 "WhenMessageIsSent": "Када се пошаље порука за ћаскање",
                 "WhenMessageIsSentFromVisitor":"Када се од посетиоца пошаље порука за ћаскање",
+                "WhenMessageIsSentByAnyone":"Када било ко пошаље поруку ћаскања",
                 "WhenUserIsLogged": "Када се корисник пријави",
                 "NewEvent": "Нови догађај"
             },

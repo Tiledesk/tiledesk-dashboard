@@ -1294,6 +1294,7 @@
                 "WhenRequestChat": "Mehmon suhbatni talab qilganda",
                 "WhenMessageIsSent": "Chat xabari yuborilganda",
                 "WhenMessageIsSentFromVisitor":"Mehmondan chat xabari yuborilganda",
+                "WhenMessageIsSentByAnyone":"Har kim tomonidan chat xabari yuborilganda",
                 "WhenUserIsLogged": "Foydalanuvchi tizimga kirganida",
                 "NewEvent": "Yangi voqea"
             },
