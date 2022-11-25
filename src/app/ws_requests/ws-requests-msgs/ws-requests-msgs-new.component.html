@@ -149,7 +149,7 @@
 
 
 
-            <div #scrollMe id="chat-wpr" class="card-content" (scroll)="onScrollMsgs($event)">
+            <div #scrollMe id="chat-wpr"  class="card-content" (scroll)="onScrollMsgs($event)">
               <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
@@ -422,7 +422,7 @@
                     <div class="col-xs-12  w-100 plr-0">
                       <div class="row w-100">
                         <!-- margin-top: -4px; border-top: 2px solid #3ea9f5; -->
-                        <div class="col-xs-12 h-100 plr-0" style="  margin-bottom: 8px;"
+                        <div class="col-xs-12 h-100 plr-0" style="  margin-bottom: 8px;height:46px"
                           [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
                           <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message" rows="1"
                             placeholder="Write your message" (keydown.enter)="onKeydownEnter($event)"
@@ -1307,7 +1307,9 @@
                         </a>
                         <ul class="dropdown-menu" style="cursor: pointer;"
                           [ngClass]="{'dropdown-menu-working-status-chat': CHAT_PANEL_MODE === true}">
-                          <li (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="conversation-open-assigned"
+                          <li 
+                            [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
+                            (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="conversation-open-assigned"
                             *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{'ConversationBeingProcessed' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
@@ -1317,7 +1319,9 @@
                               </span>
                             </a>
                           </li>
-                          <li (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="ticket-open-assigned"
+                          <li 
+                            [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
+                            (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="ticket-open-assigned"
                             *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{'TicketBeingProcessed' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
@@ -1327,7 +1331,10 @@
                               </span>
                             </a>
                           </li>
-                          <li (click)="hasSelectedPending('updatedWorkingStatus', request)" class="pending"
+                     
+                          <li 
+                            [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
+                            (click)="hasSelectedPending('updatedWorkingStatus', request)" class="pending"
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'WaitingForReplyFromTheRequester' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">

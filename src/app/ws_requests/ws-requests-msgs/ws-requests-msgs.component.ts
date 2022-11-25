@@ -346,6 +346,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   dashboardApps: Array<any>
   webchatApps: Array<any>
   isSafari: any
+  disableReopeRequest: boolean = false;
   serveByTooltipOption: TooltipOptions = {
     'show-delay': 0,
     'tooltip-class': 'served-by-ng2-tooltip',
@@ -1335,7 +1336,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1343,6 +1344,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           if (this.request.subject) {
             this.ticketSubject = this.request.subject
+          }
+
+          if (this.request['closed_at']) {
+            const requestclosedAt = moment(this.request['closed_at']);
+            // console.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
+            const currentTime = moment();
+            this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
+
+
+            const daysDiff = currentTime.diff(requestclosedAt, 'd');
+            // console.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+
+
+            if (daysDiff > 10) {
+              this.disableReopeRequest = true;
+              // console.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - disableReopeRequest ', this.disableReopeRequest)
+            }
           }
 
           // console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
@@ -4554,7 +4572,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] -  UPDATE REQUEST WORKING STATUS  * COMPLETE');
         // if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
-          
+
         // }
       })
   }
@@ -4566,7 +4584,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
     if (calledby === 'updatedWorkingStatus') {
-  
+
       if (request.status === 1000) {
         this.reopenConversation(request.request_id)
       }
@@ -4585,7 +4603,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.HAS_SELECTED_SEND_AS_PENDING = true;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
     if (calledby === 'updatedWorkingStatus') {
-    
+
       if (request.status === 1000) {
         this.reopenConversation(request.request_id)
       }
