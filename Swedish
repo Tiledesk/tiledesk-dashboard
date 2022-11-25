@@ -1293,6 +1293,7 @@
                 "Placeholder": "Välj aktiveringsmetod",
                 "WhenRequestChat": "När en besökare begär en chatt",
                 "WhenMessageIsSent": "När ett chattmeddelande skickas",
+                "WhenMessageIsSentFromVisitor": "When a chat message is sent from visitor",
                 "WhenUserIsLogged": "När användaren har loggat in",
                 "NewEvent": "Nytt event"
             },
