@@ -237,8 +237,8 @@ import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/nati
 import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-select-type.component';
 import { TilebotSidebarComponent } from './bots/tilebot-sidebar/tilebot-sidebar.component';
 import { TilebotComponent } from './bots/tilebot/tilebot.component';
-
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
+import { TemplateComponent } from './bots/template/template.component';
 
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
 
@@ -298,9 +298,11 @@ import { ModalDeleteComponent } from './components/modals/modal-delete/modal-del
 import { TilebotAddEditFormComponent } from './bots/tilebot/tilebot-add-edit-form/tilebot-add-edit-form.component';
 import { TilebotListFieldsFormComponent } from './bots/tilebot/tilebot-list-fields-form/tilebot-list-fields-form.component';
 import { ChatbotSetupComponent } from './create-project-wizard/onboarding/chatbot-setup/chatbot-setup.component';
+
 import { SidebarClaimsComponent } from './create-project-wizard/onboarding/sidebar-claims/sidebar-claims.component';
 import { NetworkOfflineComponent } from './network-offline/network-offline.component';
 import { HomePromoBannerComponent } from './home-promo-banner/home-promo-banner.component';
+
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -524,7 +526,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     PrestashopInstallationComponent,
     JoomlaInstallationComponent,
     TilebotFormComponent, 
-    ModalDeleteComponent, TilebotAddEditFormComponent, TilebotListFieldsFormComponent, ChatbotSetupComponent, SidebarClaimsComponent, NetworkOfflineComponent, HomePromoBannerComponent
+    ModalDeleteComponent, TilebotAddEditFormComponent, TilebotListFieldsFormComponent, ChatbotSetupComponent, SidebarClaimsComponent, NetworkOfflineComponent, HomePromoBannerComponent, TemplateComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
