@@ -1293,6 +1293,7 @@
                 "Placeholder": "Виберіть спосіб активації",
                 "WhenRequestChat": "Коли відвідувач запитує чат",
                 "WhenMessageIsSent": "Коли надіслано повідомлення чату",
+                "WhenMessageIsSentFromVisitor": "When a chat message is sent from visitor",
                 "WhenUserIsLogged": "Коли користувач увійшов",
                 "NewEvent": "Нова подія"
             },
