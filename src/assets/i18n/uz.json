@@ -2249,6 +2249,17 @@
     "ClosesTheCurrentTicket":"Joriy ticket yopadi",
     "ReopenTheCurrentConversation":"Joriy suhbatni qayta ochadi",
     "ReopenTheCurrentTicket":"Joriy chiptani qayta oching",
+    "SingleConversation":"Yagona suhbat",
+    "SingleConversationDescription":"Tiledesk vidjeti Yagona suhbat funksiyasini yoqish orqali bir vaqtning o‘zida faqat bitta suhbatni boshqarishi mumkin. Ushbu parametr uyni ochiq suhbatlar va arxivlanganlar roʻyxati bilan koʻrish imkoniyatini oʻchirib qoʻyadi. Bu oʻzgarish suhbatlarni uzluksiz mavzuga aylantirib, mijozlarning jamoangiz bilan bir necha bor bogʻlanishiga yoʻl qoʻymaydi, bu esa jamoangizning vaqt va kuchini tejaydi.",
+    "PrimaryColorGradient":"Birlamchi rangning gradienti",
+    "EnableDisableprimaryColorGradient":"Vidjetning asosiy rangining gradientini yoqish/o'chirish",
+    "ThereWasSomeTroubleConnectingToNetwork":"Uzr so'raymiz. Tarmoqqa ulanishda muammo yuz berdi",
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv faylida faqat Javob va Savol maydonlari talab qilinadi",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Yuklanishi kerak bo'lgan CSV faylida ustunlar bilan ajratilgan",
+    "ExportAndImport": "Eksport va import",
+    "ExportAsJSON": "JSON sifatida eksport qiling",
+    "ImportFromJSON": "JSON dan import qilish",
+    "ImportFromCSV":"CSV dan import qilish",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",
@@ -2279,13 +2290,6 @@
             "field_error": "Agar foydalanuvchi kiritilmagan ma'lumotlar to'g'ri bo'lmasa, xato xabarini yozing"
         }
     },
-    "SingleConversation":"Yagona suhbat",
-    "SingleConversationDescription":"Tiledesk vidjeti Yagona suhbat funksiyasini yoqish orqali bir vaqtning o‘zida faqat bitta suhbatni boshqarishi mumkin. Ushbu parametr uyni ochiq suhbatlar va arxivlanganlar roʻyxati bilan koʻrish imkoniyatini oʻchirib qoʻyadi. Bu oʻzgarish suhbatlarni uzluksiz mavzuga aylantirib, mijozlarning jamoangiz bilan bir necha bor bogʻlanishiga yoʻl qoʻymaydi, bu esa jamoangizning vaqt va kuchini tejaydi.",
-    "PrimaryColorGradient":"Birlamchi rangning gradienti",
-    "EnableDisableprimaryColorGradient":"Vidjetning asosiy rangining gradientini yoqish/o'chirish",
-    "ThereWasSomeTroubleConnectingToNetwork":"Uzr so'raymiz. Tarmoqqa ulanishda muammo yuz berdi",
-    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv faylida faqat Javob va Savol maydonlari talab qilinadi",
-    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Yuklanishi kerak bo'lgan CSV faylida ustunlar bilan ajratilgan",
     "CHAT_IONIC": {
         "LABEL_TU": "siz: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hali suhbat yo'q",

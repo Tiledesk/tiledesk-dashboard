@@ -2249,6 +2249,17 @@
     "ClosesTheCurrentTicket":"Cierra el ticket actual",
     "ReopenTheCurrentConversation":"Vuelve a abrir la conversación actual",
     "ReopenTheCurrentTicket":"Vuelve a abrir el ticket actual",
+    "SingleConversation":"Conversación única",
+    "SingleConversationDescription":"Tiledesk Widget puede manejar solo una conversación a la vez al habilitar la función de conversación única. Esta opción deshabilita la posibilidad de visualizar la casa con la lista de conversaciones abiertas y las ya archivadas. Este cambio hace que las conversaciones sean más un hilo continuo, lo que evita que los clientes se comuniquen con su equipo varias veces, lo que ahorra tiempo y esfuerzo a su equipo.",
+    "PrimaryColorGradient":"Gradiente de color primario",
+    "EnableDisableprimaryColorGradient":"Habilitar/Deshabilitar el degradado del color primario del widget",
+    "ThereWasSomeTroubleConnectingToNetwork":"Nuestras disculpas. Hubo algunos problemas para conectarse a la red", 
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"En el archivo example.csv solo se requieren los campos Respuesta y Pregunta",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy":"En el archivo CSV que se va a cargar, las columnas están separadas por",
+    "ExportAndImport":"Exportar e Importar",
+    "ExportAsJSON": "Exportar como JSON",
+    "ImportFromJSON": "Importar desde JSON",
+    "ImportFromCSV":"Importar desde CSV",
     "AddIntentPage": {
         "AddForm": "Agregar forma",
         "SelectTemplateForm": "Seleccione un tipo de formulario entre los sugeridos o cree uno nuevo",
@@ -2279,13 +2290,7 @@
             "field_error": "Escriba un mensaje de error si los datos ingresados ​​por el usuario no son correctos"
         }
     },
-    "SingleConversation":"Conversación única",
-    "SingleConversationDescription":"Tiledesk Widget puede manejar solo una conversación a la vez al habilitar la función de conversación única. Esta opción deshabilita la posibilidad de visualizar la casa con la lista de conversaciones abiertas y las ya archivadas. Este cambio hace que las conversaciones sean más un hilo continuo, lo que evita que los clientes se comuniquen con su equipo varias veces, lo que ahorra tiempo y esfuerzo a su equipo.",
-    "PrimaryColorGradient":"Gradiente de color primario",
-    "EnableDisableprimaryColorGradient":"Habilitar/Deshabilitar el degradado del color primario del widget",
-    "ThereWasSomeTroubleConnectingToNetwork":"Nuestras disculpas. Hubo algunos problemas para conectarse a la red", 
-    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"En el archivo example.csv solo se requieren los campos Respuesta y Pregunta",
-    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy":"En el archivo CSV que se va a cargar, las columnas están separadas por",
+ 
     "CHAT_IONIC": {
         "LABEL_TU": "tú: ",
         "LABEL_MSG_PUSH_START_CHAT": "Aún no hay conversación",

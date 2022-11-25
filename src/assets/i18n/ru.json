@@ -2249,6 +2249,17 @@
     "ClosesTheCurrentTicket":"Закрывает текущий билет",
     "ReopenTheCurrentConversation":"Повторно открывает текущий разговор",
     "ReopenTheCurrentTicket":"Повторно открыть текущий билет",
+    "SingleConversation":"Одиночный разговор",
+    "SingleConversationDescription":"Виджет Tiledesk может обрабатывать только один разговор за раз, если включить функцию «Одиночный разговор». Эта опция отключает возможность просмотра дома со списком открытых разговоров и уже заархивированных. Это изменение превращает разговоры в непрерывную нить, не позволяя клиентам обращаться к вашей команде несколько раз, что экономит время и усилия вашей команды.",
+    "PrimaryColorGradient":"Градиент первичного цвета",
+    "EnableDisableprimaryColorGradient":"Включить/отключить градиент основного цвета виджета",
+    "ThereWasSomeTroubleConnectingToNetwork":"Наши извинения. Возникли проблемы с подключением к сети",
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"В файле example.csv обязательны только поля «Ответ» и «Вопрос».",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "В файле CSV, который необходимо загрузить, столбцы разделены",
+    "ExportAndImport":"Экспорт и импорт",
+    "ExportAsJSON": "Экспортировать как JSON",
+    "ImportFromJSON": "Импорт из JSON",
+    "ImportFromCSV":"Импорт из CSV",
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",
@@ -2279,13 +2290,6 @@
             "field_error": "Напишите сообщение об ошибке, если данные, введенные пользователем, не верны"
         }
     },
-    "SingleConversation":"Одиночный разговор",
-    "SingleConversationDescription":"Виджет Tiledesk может обрабатывать только один разговор за раз, если включить функцию «Одиночный разговор». Эта опция отключает возможность просмотра дома со списком открытых разговоров и уже заархивированных. Это изменение превращает разговоры в непрерывную нить, не позволяя клиентам обращаться к вашей команде несколько раз, что экономит время и усилия вашей команды.",
-    "PrimaryColorGradient":"Градиент первичного цвета",
-    "EnableDisableprimaryColorGradient":"Включить/отключить градиент основного цвета виджета",
-    "ThereWasSomeTroubleConnectingToNetwork":"Наши извинения. Возникли проблемы с подключением к сети",
-    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"В файле example.csv обязательны только поля «Ответ» и «Вопрос».",
-    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "В файле CSV, который необходимо загрузить, столбцы разделены",
     "CHAT_IONIC": {
         "LABEL_TU": "ты: ",
         "LABEL_MSG_PUSH_START_CHAT": "Разговора пока нет",

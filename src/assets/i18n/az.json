@@ -2249,6 +2249,17 @@
     "ClosesTheCurrentTicket":"Cari ticket bağlayır",
     "ReopenTheCurrentConversation":"Cari söhbəti yenidən açır",
     "ReopenTheCurrentTicket":"Cari ticket yenidən açır",
+    "SingleConversation":"Tək söhbət",
+    "SingleConversationDescription":"Tiledesk Vidceti Tək Söhbət funksiyasını aktiv etməklə eyni anda yalnız bir söhbəti idarə edə bilər. Bu seçim açıq və artıq arxivləşdirilmiş söhbətlərin siyahısı ilə evə baxmaq imkanını söndürür. Bu dəyişiklik müştərilərin komandanızla dəfələrlə əlaqə saxlamasına mane olmaqla söhbətləri daha çox davamlı mövzu halına gətirir, bu da komandanızın vaxtına və səyinə qənaət edir.",
+    "PrimaryColorGradient":"Əsas rəngin gradienti",
+    "EnableDisableprimaryColorGradient":"Vidcetin əsas rənginin gradientini aktivləşdirin/deaktiv edin",
+    "ThereWasSomeTroubleConnectingToNetwork":"Üzr istəyirik. Şəbəkəyə qoşulma zamanı problem yarandı",
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv faylında yalnız Cavab və Sual sahələri tələb olunur",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy":"Yüklənəcək CSV faylında sütunlar ilə ayrılır",
+    "ExportAndImport":"İxrac və İdxal",
+    "ExportAsJSON": "JSON kimi ixrac edin",
+    "ImportFromJSON": "JSON-dan idxal edin",
+    "ImportFromCSV":"CSV-dən idxal edin",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",
@@ -2279,13 +2290,6 @@
             "field_error": "İstifadəçi tərəfindən daxil olan məlumatlar düzgün deyilsə, səhv mesajı yazın"
         }
     },
-    "SingleConversation":"Tək söhbət",
-    "SingleConversationDescription":"Tiledesk Vidceti Tək Söhbət funksiyasını aktiv etməklə eyni anda yalnız bir söhbəti idarə edə bilər. Bu seçim açıq və artıq arxivləşdirilmiş söhbətlərin siyahısı ilə evə baxmaq imkanını söndürür. Bu dəyişiklik müştərilərin komandanızla dəfələrlə əlaqə saxlamasına mane olmaqla söhbətləri daha çox davamlı mövzu halına gətirir, bu da komandanızın vaxtına və səyinə qənaət edir.",
-    "PrimaryColorGradient":"Əsas rəngin gradienti",
-    "EnableDisableprimaryColorGradient":"Vidcetin əsas rənginin gradientini aktivləşdirin/deaktiv edin",
-    "ThereWasSomeTroubleConnectingToNetwork":"Üzr istəyirik. Şəbəkəyə qoşulma zamanı problem yarandı",
-    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv faylında yalnız Cavab və Sual sahələri tələb olunur",
-    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy":"Yüklənəcək CSV faylında sütunlar ilə ayrılır",
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",
         "LABEL_MSG_PUSH_START_CHAT": "Hələ söhbət yoxdur",

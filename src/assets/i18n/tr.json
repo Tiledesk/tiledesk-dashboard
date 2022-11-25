@@ -2249,6 +2249,17 @@
     "ClosesTheCurrentTicket":"Mevcut ticket kapatır",
     "ReopenTheCurrentConversation":"Mevcut konuşmayı yeniden açar",
     "ReopenTheCurrentTicket":"Geçerli Bileti yeniden aç",
+    "SingleConversation":"Tek konuşma",
+    "SingleConversationDescription": "Tiledesk Widget, Tek Konuşma özelliğini etkinleştirerek aynı anda yalnızca bir konuşmayı işleyebilir. Bu seçenek, açık konuşmaların ve halihazırda arşivlenmiş olanların listesiyle evi görüntüleme olasılığını devre dışı bırakır. Bu değişiklik, konuşmaları daha sürekli bir ileti dizisi haline getirerek müşterilerin ekibinize birden çok kez ulaşmasını engelleyerek ekibinize zaman ve emek tasarrufu sağlar.",
+    "PrimaryColorGradient":"Birincil rengin gradyanı",
+    "EnableDisableprimaryColorGradient":"Widget'ın ana renginin gradyanını etkinleştirin/devre dışı bırakın",
+    "ThereWasSomeTroubleConnectingToNetwork":"Özür dileriz. Ağa bağlanırken bazı sorunlar oluştu",
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv dosyasında sadece Cevap ve Soru alanları gereklidir",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Yüklenecek CSV dosyasında sütunlar şu şekilde ayrılır",
+    "ExportAndImport":"Ihracat ve ithalat",
+    "ExportAsJSON": "JSON olarak dışarı aktar",
+    "ImportFromJSON": "JSON'dan içe aktar",
+    "ImportFromCSV":"CSV'den içe aktar",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",
@@ -2279,13 +2290,6 @@
             "field_error": "Kullanıcı tarafından girilen veriler doğru değilse bir hata mesajı yazın"
         }
     },
-    "SingleConversation":"Tek konuşma",
-    "SingleConversationDescription": "Tiledesk Widget, Tek Konuşma özelliğini etkinleştirerek aynı anda yalnızca bir konuşmayı işleyebilir. Bu seçenek, açık konuşmaların ve halihazırda arşivlenmiş olanların listesiyle evi görüntüleme olasılığını devre dışı bırakır. Bu değişiklik, konuşmaları daha sürekli bir ileti dizisi haline getirerek müşterilerin ekibinize birden çok kez ulaşmasını engelleyerek ekibinize zaman ve emek tasarrufu sağlar.",
-    "PrimaryColorGradient":"Birincil rengin gradyanı",
-    "EnableDisableprimaryColorGradient":"Widget'ın ana renginin gradyanını etkinleştirin/devre dışı bırakın",
-    "ThereWasSomeTroubleConnectingToNetwork":"Özür dileriz. Ağa bağlanırken bazı sorunlar oluştu",
-    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv dosyasında sadece Cevap ve Soru alanları gereklidir",
-    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Yüklenecek CSV dosyasında sütunlar şu şekilde ayrılır",
     "CHAT_IONIC": {
         "LABEL_TU": "sen: ",
         "LABEL_MSG_PUSH_START_CHAT": "Henüz görüşme yok",

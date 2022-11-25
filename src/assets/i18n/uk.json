@@ -2249,6 +2249,17 @@
     "ClosesTheCurrentTicket":"Закриває поточний квиток",
     "ReopenTheCurrentConversation":"Повторно відкриває поточну розмову",
     "ReopenTheCurrentTicket":"Повторно відкрити поточний квиток",
+    "SingleConversation":"Одиночна бесіда",
+    "SingleConversationDescription":"Tiledesk Widget може обробляти лише одну розмову за раз, увімкнувши функцію «Одна розмова». Ця опція вимикає можливість перегляду домашньої сторінки зі списком відкритих і вже заархівованих розмов. Ця зміна робить розмови більш безперервними, не даючи клієнтам звертатися до вашої команди кілька разів, що економить час і зусилля вашої команди.",
+    "PrimaryColorGradient":"Градієнт основного кольору",
+    "EnableDisableprimaryColorGradient":"Увімкнути/вимкнути градієнт основного кольору віджета",
+    "ThereWasSomeTroubleConnectingToNetwork":"Наші вибачення. Виникли проблеми з підключенням до мережі",
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"У файлі example.csv потрібні лише поля «Відповідь» і «Питання».",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "У файлі CSV, який потрібно завантажити, стовпці розділені символом",
+    "ExportAndImport":"Експорт і Імпорт",
+    "ExportAsJSON": "Експорт як JSON",
+    "ImportFromJSON": "Імпорт з JSON",
+    "ImportFromCSV":"Імпортувати з CSV",
     "AddIntentPage": {
         "AddForm": "Додати форму",
         "SelectTemplateForm": "Виберіть тип форми серед запропонованих або створіть новий",
@@ -2279,13 +2290,6 @@
             "field_error": "Напишіть повідомлення про помилку, якщо дані, введені користувачем"
         }
     },
-    "SingleConversation":"Одиночна бесіда",
-    "SingleConversationDescription":"Tiledesk Widget може обробляти лише одну розмову за раз, увімкнувши функцію «Одна розмова». Ця опція вимикає можливість перегляду домашньої сторінки зі списком відкритих і вже заархівованих розмов. Ця зміна робить розмови більш безперервними, не даючи клієнтам звертатися до вашої команди кілька разів, що економить час і зусилля вашої команди.",
-    "PrimaryColorGradient":"Градієнт основного кольору",
-    "EnableDisableprimaryColorGradient":"Увімкнути/вимкнути градієнт основного кольору віджета",
-    "ThereWasSomeTroubleConnectingToNetwork":"Наші вибачення. Виникли проблеми з підключенням до мережі",
-    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"У файлі example.csv потрібні лише поля «Відповідь» і «Питання».",
-    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "У файлі CSV, який потрібно завантажити, стовпці розділені символом",
     "CHAT_IONIC": {
         "LABEL_TU": "ти: ",
         "LABEL_MSG_PUSH_START_CHAT": "Розмови ще немає",

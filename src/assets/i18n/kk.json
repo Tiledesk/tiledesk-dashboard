@@ -2249,6 +2249,17 @@
     "ClosesTheCurrentTicket":"Ағымдағы Ticket жабады",
     "ReopenTheCurrentConversation":"Ағымдағы сөйлесуді қайта ашады",
     "ReopenTheCurrentTicket":"Ағымдағы Ticket қайта ашады",
+    "SingleConversation":"Бірыңғай әңгіме",
+    "SingleConversationDescription":"Tiledesk виджеті Жалғыз сөйлесу мүмкіндігін қосу арқылы бір уақытта тек бір сөйлесуді өңдей алады. Бұл опция ашық сөйлесулер тізімімен және мұрағатталғандармен үйді көру мүмкіндігін өшіреді. Бұл өзгеріс тұтынушылардың сіздің командаңызға бірнеше рет хабарласуына жол бермей, әңгімелерді үздіксіз ағынға айналдырады, бұл сіздің командаңыздың уақыты мен күшін үнемдейді.",
+    "PrimaryColorGradient":"Негізгі түстің градиенті",
+    "EnableDisableprimaryColorGradient":"Виджеттің негізгі түсінің градиентін қосыңыз/өшіріңіз",
+    "ThereWasSomeTroubleConnectingToNetwork":"Nos excuses. Il y a eu des problèmes de connexion au réseau",
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv файлында тек Жауап және Сұрақ өрістері қажет",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Жүктеп салынатын CSV файлында бағандар арқылы бөлінеді",
+    "ExportAndImport":"Экспорт және импорт",
+    "ExportAsJSON": "JSON ретінде экспорттау",
+    "ImportFromJSON": "JSON ішінен импорттау",
+    "ImportFromCSV":"CSV ішінен импорттау",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",
@@ -2279,13 +2290,6 @@
             "field_error": "Қате туралы хабар жазу Егер пайдаланушы енгізген деректер дұрыс болмаса"
         }
     },
-    "SingleConversation":"Бірыңғай әңгіме",
-    "SingleConversationDescription":"Tiledesk виджеті Жалғыз сөйлесу мүмкіндігін қосу арқылы бір уақытта тек бір сөйлесуді өңдей алады. Бұл опция ашық сөйлесулер тізімімен және мұрағатталғандармен үйді көру мүмкіндігін өшіреді. Бұл өзгеріс тұтынушылардың сіздің командаңызға бірнеше рет хабарласуына жол бермей, әңгімелерді үздіксіз ағынға айналдырады, бұл сіздің командаңыздың уақыты мен күшін үнемдейді.",
-    "PrimaryColorGradient":"Негізгі түстің градиенті",
-    "EnableDisableprimaryColorGradient":"Виджеттің негізгі түсінің градиентін қосыңыз/өшіріңіз",
-    "ThereWasSomeTroubleConnectingToNetwork":"Nos excuses. Il y a eu des problèmes de connexion au réseau",
-    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"example.csv файлында тек Жауап және Сұрақ өрістері қажет",
-    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "Жүктеп салынатын CSV файлында бағандар арқылы бөлінеді",
     "CHAT_IONIC": {
         "LABEL_TU": "сен: ",
         "LABEL_MSG_PUSH_START_CHAT": "Әзірге әңгіме жоқ",

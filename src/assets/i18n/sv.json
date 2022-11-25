@@ -2249,6 +2249,17 @@
     "ClosesTheCurrentTicket":"Stänger den aktuella ticket",
     "ReopenTheCurrentConversation":"Öppnar den nuvarande konversationen igen",
     "ReopenTheCurrentTicket":"Öppna den aktuella ticket igen",
+    "SingleConversation":"Singel konversation",
+    "SingleConversationDescription":"Tiledesk Widget kan bara hantera en konversation åt gången genom att aktivera funktionen för enstaka konversationer. Det här alternativet inaktiverar möjligheten att visa hemmet med listan över öppna konversationer och de som redan är arkiverade. Denna förändring gör konversationer mer till en kontinuerlig tråd, vilket förhindrar kunder från att nå ut till ditt team flera gånger, vilket sparar ditt team tid och ansträngning.",
+    "PrimaryColorGradient":"Primärfärgens gradient",
+    "EnableDisableprimaryColorGradient":"Aktivera/avaktivera gradienten för widgetens primärfärg",
+    "ThereWasSomeTroubleConnectingToNetwork":"Våra ursäkter. Det uppstod några problem med att ansluta till nätverket",
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"I example.csv-filen krävs endast fälten Svar och Fråga",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "I CSV-filen som ska laddas upp är kolumnerna åtskilda av",
+    "ExportAndImport":"Exportera och importera",
+    "ExportAsJSON": "Exportera som JSON",
+    "ImportFromJSON": "Importera från JSON",
+    "ImportFromCSV":"Importera från CSV",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",
@@ -2279,13 +2290,6 @@
             "field_error": "Skriv ett felmeddelande om data som anges av användaren inte är korrekta"
         }
     },
-    "SingleConversation":"Singel konversation",
-    "SingleConversationDescription":"Tiledesk Widget kan bara hantera en konversation åt gången genom att aktivera funktionen för enstaka konversationer. Det här alternativet inaktiverar möjligheten att visa hemmet med listan över öppna konversationer och de som redan är arkiverade. Denna förändring gör konversationer mer till en kontinuerlig tråd, vilket förhindrar kunder från att nå ut till ditt team flera gånger, vilket sparar ditt team tid och ansträngning.",
-    "PrimaryColorGradient":"Primärfärgens gradient",
-    "EnableDisableprimaryColorGradient":"Aktivera/avaktivera gradienten för widgetens primärfärg",
-    "ThereWasSomeTroubleConnectingToNetwork":"Våra ursäkter. Det uppstod några problem med att ansluta till nätverket",
-    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"I example.csv-filen krävs endast fälten Svar och Fråga",
-    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy": "I CSV-filen som ska laddas upp är kolumnerna åtskilda av",
     "CHAT_IONIC": {
         "LABEL_TU": "du: ",
         "LABEL_MSG_PUSH_START_CHAT": "Ingen konversation ännu",

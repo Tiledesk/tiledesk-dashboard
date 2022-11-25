@@ -2249,6 +2249,17 @@
     "ClosesTheCurrentTicket":"لإغلاق التذكرة الحالية",
     "ReopenTheCurrentConversation":"يعيد فتح المحادثة الحالية",
     "ReopenTheCurrentTicket":"يعيد فتح التذكرة الحالية",
+    "SingleConversation":"محادثة واحدة",
+    "SingleConversationDescription":"يمكن لأداة Tiledesk Widget التعامل مع محادثة واحدة فقط في كل مرة عن طريق تمكين ميزة المحادثة الفردية. يقوم هذا الخيار بتعطيل إمكانية عرض الصفحة الرئيسية بقائمة المحادثات المفتوحة وتلك المؤرشفة بالفعل. يجعل هذا التغيير المحادثات سلسلة متواصلة ، مما يمنع العملاء من الوصول إلى فريقك عدة مرات ، مما يوفر وقت فريقك وجهده.",
+    "PrimaryColorGradient":"عتامة اللون الأساسي",
+    "EnableDisableprimaryColorGradient":"تمكين / تعطيل التدرج اللوني للون الأساسي لعنصر واجهة المستخدم",
+    "ThereWasSomeTroubleConnectingToNetwork":"اعتذارنا. حدثت مشكلة في الاتصال بالشبكة", 
+    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"في ملف example.csv ، مطلوب حقلا الإجابة والسؤال فقط",
+    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy":"في ملف CSV المراد تحميله ، يتم فصل الأعمدة بـ",
+    "ExportAndImport": "تصدير واستيراد",
+    "ExportAsJSON": "تصدير بتنسيق JSON",
+    "ImportFromJSON": "استيراد من JSON",
+    "ImportFromCSV":"استيراد من CSV", 
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",
@@ -2279,13 +2290,6 @@
             "field_error": "اكتب رسالة خطأ إذا كانت البيانات التي أدخلها المستخدم غير صحيحة"
         }
     },
-    "SingleConversation":"محادثة واحدة",
-    "SingleConversationDescription":"يمكن لأداة Tiledesk Widget التعامل مع محادثة واحدة فقط في كل مرة عن طريق تمكين ميزة المحادثة الفردية. يقوم هذا الخيار بتعطيل إمكانية عرض الصفحة الرئيسية بقائمة المحادثات المفتوحة وتلك المؤرشفة بالفعل. يجعل هذا التغيير المحادثات سلسلة متواصلة ، مما يمنع العملاء من الوصول إلى فريقك عدة مرات ، مما يوفر وقت فريقك وجهده.",
-    "PrimaryColorGradient":"عتامة اللون الأساسي",
-    "EnableDisableprimaryColorGradient":"تمكين / تعطيل التدرج اللوني للون الأساسي لعنصر واجهة المستخدم",
-    "ThereWasSomeTroubleConnectingToNetwork":"اعتذارنا. حدثت مشكلة في الاتصال بالشبكة", 
-    "InTheExampleCsFileTheAnswerAndQuestionAreRequired":"في ملف example.csv ، مطلوب حقلا الإجابة والسؤال فقط",
-    "InTheCSVFileToBeUploadedTheColumnsAreSeparatedBy":"في ملف CSV المراد تحميله ، يتم فصل الأعمدة بـ",
     "CHAT_IONIC": {
         "LABEL_TU": "أنت: ",
         "LABEL_MSG_PUSH_START_CHAT": "لا محادثة حتى الآن",
