@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.3.5-rc2
+- Adds the "When a chat message is sent by anyone" trigger to the Add Trigger and Edit Trigger pages, and renames the "When a chat message is sent" trigger to "When a chat message is sent by visitor"
+- Adds the "Import and Export" tab to the Tilebot type chatbot edit page
+
 ### 2.3.5-rc1
 - Fixes the bug: on Edit Bot page of Tilebot type bot the form builder doesn't work properly
 - Adds the “Import Export" tab to the Tilebot type chatbot edit page (in progress)
