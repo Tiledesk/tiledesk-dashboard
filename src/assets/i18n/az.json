@@ -1293,6 +1293,7 @@
                 "Placeholder": "Aktivləşdirmə üsulunu seçin",
                 "WhenRequestChat": "Ziyarətçi söhbət tələb etdikdə",
                 "WhenMessageIsSent": "Söhbət mesajı göndərildikdə",
+                "WhenMessageIsSentFromVisitor":"Ziyarətçidən söhbət mesajı göndərildikdə",
                 "WhenUserIsLogged": "İstifadəçi daxil olduqda",
                 "NewEvent": "Yeni hadisə"
             },

@@ -1293,6 +1293,7 @@
                 "Placeholder": "حدد طريقة التنشيط",
                 "WhenRequestChat": "عندما يطلب زائر دردشة",
                 "WhenMessageIsSent": "عندما يتم إرسال رسالة دردشة",
+                "WhenMessageIsSentFromVisitor":"عندما يتم إرسال رسالة دردشة من الزائر",
                 "WhenUserIsLogged": "عندما يقوم المستخدم بتسجيل الدخول",
                 "NewEvent": "حدث جديد"
             },

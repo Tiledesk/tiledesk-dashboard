@@ -1293,6 +1293,7 @@
                 "Placeholder": "Faollashtirish usulini tanlang",
                 "WhenRequestChat": "Mehmon suhbatni talab qilganda",
                 "WhenMessageIsSent": "Chat xabari yuborilganda",
+                "WhenMessageIsSentFromVisitor":"Mehmondan chat xabari yuborilganda",
                 "WhenUserIsLogged": "Foydalanuvchi tizimga kirganida",
                 "NewEvent": "Yangi voqea"
             },

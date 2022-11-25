@@ -1295,6 +1295,7 @@
                 "Placeholder": "Seleziona metodo attivazione",
                 "WhenRequestChat": "Quando un visitatore richiede una chat",
                 "WhenMessageIsSent": "All'invio di un nuovo messaggio",
+                "WhenMessageIsSentFromVisitor":"Quando un messaggio di chat viene inviato dal visitatore",
                 "WhenUserIsLogged": "Quando un utente ha effettuato l'accesso",
                 "NewEvent": "Nuovo evento"
             },

@@ -1293,6 +1293,7 @@
                 "Placeholder": "Selecione o método de ativação",
                 "WhenRequestChat": "Quando um visitante solicita um chat",
                 "WhenMessageIsSent": "Quando uma mensagem de bate-papo é enviada",
+                "WhenMessageIsSentFromVisitor":"Quando uma mensagem de bate-papo é enviada pelo visitante",
                 "WhenUserIsLogged": "Quando o usuário estiver logado",
                 "NewEvent": "Novo evento"
             },

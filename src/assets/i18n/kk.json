@@ -1293,6 +1293,7 @@
                 "Placeholder": "Белсендіру әдісін таңдаңыз",
                 "WhenRequestChat": "Келуші чатты сұрағанда",
                 "WhenMessageIsSent": "Чат хабары жіберілгенде",
+                "WhenMessageIsSentFromVisitor":"Келушіден чат хабары жіберілгенде",
                 "WhenUserIsLogged": "Пайдаланушы жүйеге кірген кезде",
                 "NewEvent": "Жаңа оқиға"
             },
