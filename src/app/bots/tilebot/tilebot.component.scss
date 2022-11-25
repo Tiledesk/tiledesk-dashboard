@@ -367,7 +367,7 @@ and also iPads specifically.
 }
 
 .title-attribute {
-    font-family:'Poppins','Roboto', 'Arial', sans-serif;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
     color: #394f5a;
     font-weight: 500;
 }
@@ -378,7 +378,7 @@ and also iPads specifically.
 }
 
 .faq-table-title {
-    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
     color: #394f5a;
     font-weight: 500;
     font-size: 16px;
@@ -426,7 +426,7 @@ and also iPads specifically.
 }
 
 .checkbox-label {
-    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
     color: #394f5a;
     font-weight: 500;
 }
@@ -560,7 +560,6 @@ input[type="text"]:disabled::placeholder {
 }
 
 .webhook-url-errors {
-
     color: #fff !important;
     text-align: left;
     padding: 6px 12px;
@@ -584,7 +583,6 @@ input[type="text"]:disabled::placeholder {
     border-width: 0 6px 6px 6px;
     border-color: transparent transparent #f76949 transparent;
 }
-
 
 .onoffswitch-wrapper {
     float: right;
@@ -683,7 +681,7 @@ input[type="text"]:disabled::placeholder {
     color: #fff !important;
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     border: 1px solid #555555 !important;
@@ -839,7 +837,7 @@ input[type="text"]:disabled::placeholder {
 .answers-count {
     color: #353f45;
     padding: 6px 12px;
-    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
     font-weight: 500;
     margin-left: 9px;
     margin-top: 0px;
@@ -1044,7 +1042,6 @@ input[type="text"]:disabled::placeholder {
     object-fit: cover;
 }
 
-
 // tab in general route
 .btn-with-border-effect {
     background: none;
@@ -1055,52 +1052,52 @@ input[type="text"]:disabled::placeholder {
     //   padding-bottom: 37px;
     font-size: 14px;
     font-weight: 300;
-  
+
     // Required, since we're setting absolute on pseudo-elements
     position: relative;
     vertical-align: middle;
-  
+
     &::before,
     &::after {
-      box-sizing: inherit;
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
+        box-sizing: inherit;
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
     }
-  }
-  
-  .border-from-center {
+}
+
+.border-from-center {
     &:hover {
-      color: $brand-primary;
+        color: $brand-primary;
     }
-  
+
     // Set up base styles, we're going to scale instead of animating width/height
     &::before,
     &::after {
-      //   top: 3px;
-      top: 0px;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      transform-origin: center; // Ensure scaling is done from the center (expands outwards)
+        //   top: 3px;
+        top: 0px;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        transform-origin: center; // Ensure scaling is done from the center (expands outwards)
     }
-  
+
     // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
     &::before {
-      // border-top: 2px solid $purple;
-      border-bottom: 3px solid $brand-primary;
-      transform: scale3d(0, 1, 1); // Shrink only width
+        // border-top: 2px solid $purple;
+        border-bottom: 3px solid $brand-primary;
+        transform: scale3d(0, 1, 1); // Shrink only width
     }
-  
+
     &:hover::before,
     &:hover::after {
-      transform: scale3d(1, 1, 1); // Show full-size
-      transition: transform 0.5s;
+        transform: scale3d(1, 1, 1); // Show full-size
+        transition: transform 0.5s;
     }
-  }
+}
 
-  .bottom-nav {
+.bottom-nav {
     background-color: #fff;
     width: 100%;
     // z-index: 1028;
@@ -1113,9 +1110,9 @@ input[type="text"]:disabled::placeholder {
     padding-left: 0px;
     // display: flex;
     // flex-grow: 1;
-  }
-  
-  .bottom-nav li {
+}
+
+.bottom-nav li {
     float: left;
     padding: 15px;
     list-style: none;
@@ -1123,49 +1120,190 @@ input[type="text"]:disabled::placeholder {
     display: block;
     height: 52px;
     cursor: pointer;
-  }
-  
-  .bottom-nav li a {
+}
+
+.bottom-nav li a {
     padding: 18px 15px;
     color: #797979;
     line-height: 20px;
-  }
-  
-  .bottom-nav li a:hover {
+}
+
+.bottom-nav li a:hover {
     text-decoration: none;
     //  background-color: #eee;
-  }
-  
-  .li-active {
+}
+
+.li-active {
     border-bottom: 3px solid $brand-primary !important;
-  }
-  .li-active a {
+}
+.li-active a {
     color: $brand-primary !important;
-  }
-  .disabled-li {
+}
+.disabled-li {
     pointer-events: none;
-  }
-  
-  
-  @media (max-width: 991px) {
+}
+
+@media (max-width: 991px) {
     .bottom-nav {
-      top: -2px !important;
+        top: -2px !important;
     }
-  
+
     .bottom-nav li {
-      z-index: 1049;
+        z-index: 1049;
     }
-  
-  
-  }
-  
-  @media (max-width: 370px) {
+}
+
+@media (max-width: 370px) {
     .bottom-nav {
-      height: 37px !important;
+        height: 37px !important;
     }
-  
+
     .bottom-nav li {
-      padding: 6px !important;
-      height: 39px;
+        padding: 6px !important;
+        height: 39px;
     }
-  }
+}
+
+/*
+   * Import / Export tab 
+   * -------------------------- */
+.btns-blocks {
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    flex-wrap: wrap;
+    margin: -10px;
+}
+
+@media (min-width: 1601px) {
+    .btns-blocks .btns-blocks-block {
+        width: 300px;
+    }
+}
+
+@media (min-width: 1441px) and (max-width: 1600px) {
+    .btns-blocks .btns-blocks-block {
+        max-width: 300px;
+        width: 25%;
+    }
+}
+@media (min-width: 1281px) and (max-width: 1440px) {
+    .btns-blocks .btns-blocks-block {
+        max-width: 300px;
+        width: 25%;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .btns-blocks .btns-blocks-block {
+        max-width: 280px;
+        width: 33.3333%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .btns-blocks .btns-blocks-block {
+        max-width: 300px;
+        width: 50%;
+    }
+}
+
+
+
+@media (min-width: 641px) and (max-width: 768px) {
+    .btns-blocks .btns-blocks-block {
+        max-width: 340px;
+        width: 50%;
+    }
+}
+
+.btns-blocks .btns-blocks-block {
+    min-width: 225px;
+    padding: 10px;
+    display: flex;
+}
+
+.btns-blocks .btns-blocks-block .btns-blocks-block-inner-wpr {
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(219, 225, 232);
+}
+
+.btn-content-wpr {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-box-pack: justify;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    min-height: 260px;
+    position: relative;
+    width: 100%;
+    border-color: rgb(219, 225, 232);
+    padding: 30px 20px;
+}
+
+.btn--icon {
+    height: 45px;
+    width: 45px;
+}
+
+.btn--title {
+    -webkit-line-clamp: 2;
+    max-height: 46px;
+    -webkit-box-orient: vertical;
+    overflow-wrap: break-word;
+    display: -webkit-box;
+    line-height: 23px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-weight: 600;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.btn--description {
+    -webkit-box-orient: vertical;
+    overflow-wrap: break-word;
+    display: -webkit-box;
+    line-height: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    max-height: 60px;
+    color: rgb(81, 97, 115);
+    font-size: 16px;
+}
+
+.btn-blocks {
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+
+    background: none;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(0, 138, 255);
+    border-image: initial;
+    height: 32px;
+    line-height: 28px;
+    max-width: 100%;
+    width: auto;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    align-items: center;
+    display: inline-flex;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    justify-content: center;
+    text-align: center;
+    user-select: none;
+    border-radius: 4px;
+    padding: 0px 10px;
+    font-size: 15px;
+}
+.export-import-section-title {
+    color: #555;
+    font-size: 16px;
+}
