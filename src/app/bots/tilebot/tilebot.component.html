@@ -1,4 +1,5 @@
-<span class="navbar-brand navbar-brand-sidebar-settings" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
     keyboard_arrow_left
@@ -338,6 +339,43 @@
                     <!-- -------------------------------------------- -->
                     <!-- Export Chatbot to Json Btn-->
                     <!-- -------------------------------------------- -->
+                    <div class="btns-blocks">
+
+                      <div class="btns-blocks-block">
+
+                        <div class="btns-blocks-block-inner-wpr">
+
+                          <div class="btn-content-wpr">
+                            <div class="btn-content">
+                              <div class="btn--icon">
+                                <img src="https://cdn.chatbot.com/templates/customer-satisfaction-bot.png"
+                                  alt="Customer Service Bot">
+                              </div>
+                              <div class="btn--title">
+                                Customer Service Bot
+                              </div>
+
+                              <div class="btn--description">
+                                Automate repetitive queries and give your customers instant answers 24/7/365.
+                              </div>
+
+                              <div class="btn--wpr">
+                                <div class="btn--content"></div>
+                                <button type="button" class="btn-blocks" style="min-width: 80px;">
+                                  Import bot
+                                </button>
+                              </div>
+
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+
                     <span class="export-chatbot-to-json-btn-wpr">
                       <button class="btn btn-primary export-chatbot-to-json-btn" (click)="exportChatbotToJSON()">
                         <span class="icon" style="padding-right:8px">
@@ -365,10 +403,11 @@
 
 
 
-                     <!-- Import Chatbot from Json Btn-->
+                    <!-- Import Chatbot from Json Btn-->
                     <span class="import-chatbot-from-json-btn-wpr" style="margin-left: 16px;">
                       <input style="display:inline" name="upload-chatbot-from-json" id="upload-chatbot-from-json"
-                        class="inputfile" type="file" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".txt" />
+                        class="inputfile" type="file" (change)="fileChangeUploadChatbotFromJSON($event)"
+                        accept=".txt" />
                       <label class="btn btn-primary" for="upload-chatbot-from-json">
                         <span class="material-icons" style="padding-right: 8px;">
                           cloud_upload
@@ -380,7 +419,8 @@
                     <!-- Import Intents from Json Btn-->
                     <span class="import-intents-from-json-btn-wpr" style="margin-left: 16px;">
                       <input style="display:inline" name="upload-intents-from-json" id="upload-intents-from-json"
-                        class="inputfile" type="file" (change)="fileChangeUploadIntentsFromJSON($event)" accept=".txt" />
+                        class="inputfile" type="file" (change)="fileChangeUploadIntentsFromJSON($event)"
+                        accept=".txt" />
                       <label class="btn btn-primary" for="upload-intents-from-json">
                         <span class="material-icons" style="padding-right: 8px;">
                           cloud_upload
@@ -389,10 +429,10 @@
                       </label>
                     </span>
 
-           
 
-               
-                 
+
+
+
 
                     <div class="row">
                       <div class="col-sm-10 col-md-10">
