@@ -1294,6 +1294,7 @@
                 "WhenRequestChat": "Quando um visitante solicita um chat",
                 "WhenMessageIsSent": "Quando uma mensagem de bate-papo é enviada",
                 "WhenMessageIsSentFromVisitor": "When a chat message is sent from visitor",
+                "WhenMessageIsSentByAnyone": "When a chat message is sent by anyone",
                 "WhenUserIsLogged": "Quando o usuário estiver logado",
                 "NewEvent": "Novo evento"
             },
