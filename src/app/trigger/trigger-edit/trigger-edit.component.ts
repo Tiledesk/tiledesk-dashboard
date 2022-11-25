@@ -984,6 +984,10 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       if (this.triggerForm.value.trigger.key === 'message.create.from.requester') {
         this.triggerForm.value.trigger.name = 'message create event';
 
+      } else if (this.triggerForm.value.trigger.key === 'message.received') {
+        this.triggerForm.value.trigger.name = 'message received event';
+      
+
       } else if (this.triggerForm.value.trigger.key === 'request.create') {
         this.triggerForm.value.trigger.name = 'request create event';
       }
