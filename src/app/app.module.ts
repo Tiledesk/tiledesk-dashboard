@@ -238,7 +238,7 @@ import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-s
 import { TilebotSidebarComponent } from './bots/tilebot-sidebar/tilebot-sidebar.component';
 import { TilebotComponent } from './bots/tilebot/tilebot.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
-import { TemplateComponent } from './bots/template/template.component';
+import { TemplatesComponent } from './bots/templates/templates.component';
 
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
 
@@ -526,7 +526,14 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     PrestashopInstallationComponent,
     JoomlaInstallationComponent,
     TilebotFormComponent, 
-    ModalDeleteComponent, TilebotAddEditFormComponent, TilebotListFieldsFormComponent, ChatbotSetupComponent, SidebarClaimsComponent, NetworkOfflineComponent, HomePromoBannerComponent, TemplateComponent
+    ModalDeleteComponent, 
+    TilebotAddEditFormComponent, 
+    TilebotListFieldsFormComponent, 
+    ChatbotSetupComponent, 
+    SidebarClaimsComponent, 
+    NetworkOfflineComponent, 
+    HomePromoBannerComponent, 
+    TemplatesComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

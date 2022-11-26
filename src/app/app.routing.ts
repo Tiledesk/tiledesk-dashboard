@@ -37,7 +37,7 @@ import { BotCreateComponent } from './bots/bot-create/bot-create.component';
 import { FaqComponent } from './bots/faq/faq.component';
 import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component';
 import { FaqTestComponent } from './bots/faq-test/faq-test.component';
-import { TemplateComponent } from './bots/template/template.component';
+import { TemplatesComponent } from './bots/templates/templates.component';
 
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
@@ -240,7 +240,7 @@ const routes: Routes = [
   // { path: 'project/:projectid/bots/createfaqkb', component: BotCreateComponent, canActivate: [AuthGuard] }, // replaced by the bottom path
   { path: 'project/:projectid/bots/create/:type', component: BotCreateComponent, canActivate: [AuthGuard] },
   
-  { path: 'project/:projectid/bots/templates', component: TemplateComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/bots/templates', component: TemplatesComponent, canActivate: [AuthGuard] },
   // rasa bot
   { path: 'project/:projectid/bot/rasa/create', component: RasaBotComponent, canActivate: [AuthGuard] },
 
