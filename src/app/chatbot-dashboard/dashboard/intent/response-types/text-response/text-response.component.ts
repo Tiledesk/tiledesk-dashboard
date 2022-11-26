@@ -1,6 +1,10 @@
+
+import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-// import {CdkTextareaAutosize} from '@angular/cdk/text-field';
-// import {take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
+
+
+/** @title Auto-resizing textarea */
 
 @Component({
   selector: 'appdashboard-text-response',
@@ -9,8 +13,9 @@ import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 })
 export class TextResponseComponent implements OnInit {
 
+
   constructor(private _ngZone: NgZone) { }
-  // @ViewChild('autosize') autosize: CdkTextareaAutosize;
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   ngOnInit(): void {
     // https://material.angular.io/cdk/text-field/examples
@@ -18,7 +23,7 @@ export class TextResponseComponent implements OnInit {
 
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
-    // this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
+    this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
 }

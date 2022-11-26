@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-// import { TextFieldModule } from '@angular/cdk/text-field';
+
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
@@ -11,6 +11,7 @@ import { IntentComponent } from './dashboard/intent/intent.component';
 import { FormsModule } from '@angular/forms';
 import { TextResponseComponent } from './dashboard/intent/response-types/text-response/text-response.component';
 
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { TextResponseComponent } from './dashboard/intent/response-types/text-re
   imports: [
     CommonModule,
     DragDropModule,
-    // CdkTextareaAutosize,
+    TextFieldModule,
     RouterModule,
     TranslateModule,
     SharedModule,
