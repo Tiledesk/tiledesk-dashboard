@@ -1,10 +1,28 @@
-<div class="box-dx card-intent2">
+<div class="box-dx">
     <div class="header">
-        Intent name
+        <div class="form-group" [ngClass]="{'is-error':intentNameResult === false}">
+            <i class="i-priority-color-mark"></i>
+            <label 
+            class="control-label title"
+            [ngClass]="{'noDisplay':intentName.length>0}">
+                {{ 'EnterIntentName' | translate }}
+            </label>
+            <input 
+                type="text" 
+                [(ngModel)]="intentName" 
+                class="input form-control"
+                (blur) = "onBlurIntentName($event)"
+                (change) = "onChangeIntentName($event)">
+            <button class="btn btn-primary btn-save" type="button" (click)="onSaveIntent()">
+                {{ 'Save' | translate }}
+            </button>
+        </div>
     </div>
     <div class="content">
-        content
-    
-        
+        <div *ngFor="let response of arrayResponses; let i = index;">
+
+            <appdashboard-text-response></appdashboard-text-response>
+            <!-- <div *ngIf="response" class="typeText"></div> -->
+        </div>
     </div>
 </div>

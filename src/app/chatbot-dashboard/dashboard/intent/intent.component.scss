@@ -1,19 +1,109 @@
+@import "../../variables";
+
+// local variables //
+$height-header: 50px;
+$width-title: 62%;
+$min-height-content: 376px;
+
+.box-dx {
+    font-family: $mdb-font-family;
+    font-size: 24px;
+}
+
 .header {
-    height: 50px;
-    width: 100%;
-    max-height: 50px;
-    display: block;
     position: absolute;
-    background: yellowgreen;
+    display: block;
+    width: 100%;
+    height: $height-header;
+    max-height: $height-header;
     top: 0;
     left: 0;
+    background: rgb($bg-color-bck-rgb);
+    .i-priority-color-mark {
+        background-color: $color-blue-hex;
+        position: absolute;
+        border-radius: 10px;
+        top: 22px;
+        left: 12px;
+        display: block;
+        width: 8px;
+        height: 8px;
+    }
+
+    .form-group {
+        position: absolute;
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0 30px;
+        .form-control {
+            border: 0;
+            background-size: 0 2px,100% 0px;
+            background-image: linear-gradient($color-light-gray-hex, $color-light-gray-hex);
+            transition-duration: .2s;
+        }
+        label.title {
+            position: absolute;
+            display: block;
+            width: $width-title;
+            top: 0;
+            margin: 0;
+            padding: 0;
+            font-weight: 400;
+            font-size: 1em;
+            line-height: $height-header;
+            color: $color-light-gray-hex;
+            &.noDisplay {
+                display: none;
+            }
+        }
+        input {
+            position: absolute;
+            display: block;
+            width: $width-title;
+            top: 0;
+            left: 30px;
+            margin-top: 6px;
+            padding: 0;
+            color: $color-bck-box-hex;
+            font-size: 1em;
+        }
+        .btn-save {
+            position: absolute;
+            width: calc(100% - $width-title);
+            max-width: 100px;
+            right: 10px;
+            padding: 8px;
+        }
+    } 
+
+    .form-group {
+        &.is-error {
+            .form-control {
+                background-image: linear-gradient($color-red-hex,$color-red-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
+                background-size: 100% 2px,100% 1px;
+                transition-duration: .3s;
+            }
+        }
+        &.is-focused {
+            .form-control {
+                background-image: linear-gradient($color-blue-hex,$color-blue-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
+                background-size: 100% 2px,100% 1px;
+                transition-duration: .3s;
+            }
+        }
+    }
+
 }
 
 .content {
     position: relative;
     display: block;
     height: auto;
-    min-height: 400px;
+    min-height: $min-height-content;
     margin-top: 30px;
     overflow: auto;
+    .typeText{
+        display: block;
+    }
 }
