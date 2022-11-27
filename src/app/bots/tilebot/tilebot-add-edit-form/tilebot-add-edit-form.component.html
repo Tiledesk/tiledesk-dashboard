@@ -28,14 +28,14 @@
                         <ng-select 
                             class = "form-control-select" 
                             [items] = "modelsOfType" 
-                            bindLabel = "item"
-                            bindValue = "item"
+                            bindLabel = "label"
+                            bindValue = "value"
                             [searchable] = false
                             [clearable] = false
                             [(ngModel)] = "fieldType"
                             (blur) = "displayPlaceholder(true)"
                             (focus) = "displayPlaceholder(false); displayMessage('field_type')" 
-                            (change) = "onChange($event)">
+                            (change) = "onChange($event.value)">
                         </ng-select>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div *ngIf="fieldType != 'text'" class="col-md-12">
+            <div *ngIf="fieldType && fieldType != 'text'" class="col-md-12">
                 <div class="form-group" [ngClass]="{'is-error':errorLabelResult === false}">
                     <label class="control-label">
                         {{ 'AddIntentPage.ErrorMessage' | translate }}

@@ -12,7 +12,7 @@
                 "label": "What is your name?"
             }, {
                 "name": "userEmail",
-                "type": "text",
+                "type": "email",
                 "regex": "/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/",
                 "label": "Hi ${userFullname}\n\nJust one last question\n\nYour email 🙂",
                 "errorLabel": "${userFullname} this email address is invalid\n\nCan you insert a correct email address?"
@@ -36,11 +36,12 @@
                 "label": "Thank you ${userFullname}! What is your Company name?"
             }, {
                 "name": "userPhone",
-                "type": "text",
+                "type": "phone",
+                "regex": "/^((?:\\+|00)[17](?: |\\-)?|(?:\\+|00)[1-9]\\d{0,2}(?: |\\-)?|(?:\\+|00)1\\-\\d{3}(?: |\\-)?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:((?: |\\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\\-)[0-9]{3}(?: |\\-)[0-9]{4})|([0-9]{7}))$/",
                 "label": "Thank you ${userFullname}! What is your phone number?"
             },{
                 "name": "userEmail",
-                "type": "text",
+                "type": "email",
                 "regex": "/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/",
                 "label": "Hi ${userFullname} \n\nJust one last question\n\nYour email 🙂",
                 "errorLabel": "${userFullname} this email address is invalid\n\nCan you insert a correct email address?"
