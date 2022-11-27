@@ -1,6 +1,7 @@
 
 
-<!-- 
+
+
 
 <div class="text-response">
    
@@ -9,15 +10,12 @@
         <div class="delay"></div>
         
         <div class="text-editor">
-            <mat-form-field [style.fontSize]="fontSize.value" appearance="fill">
-                <mat-label>Autosize textarea</mat-label>
-                <textarea matInput
-                          cdkTextareaAutosize
-                          #autosize="cdkTextareaAutosize"
-                          cdkAutosizeMinRows="1"
-                          cdkAutosizeMaxRows="5"></textarea>
-              </mat-form-field>
-                  </div>
+            <textarea matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"></textarea>
+        </div>
 
         <div class="editor-utils"></div>
     </div> 
