@@ -69,6 +69,8 @@ export class FaqKbService {
     });
   }
 
+ 
+
   checkIfExistUserAndGetToken() {
     if (this.user) {
       this.TOKEN = this.user.token
@@ -79,7 +81,25 @@ export class FaqKbService {
     }
   }
 
+  installTemplate (botid) {
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + "modules/tilebot/ext/" + botid;
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
+
+    // const body = { 'name': name, 'type': bottype, 'description': description, 'id_project': this.project._id, };
+    // this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
+
+    return this._httpClient
+      .get(url, httpOptions)
+
+  }
   /**
    * READ (GET ALL FAQKB WITH THE CURRENT PROJECT ID)
    * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IT SO NO LONGER NECESSARY TO PASS THE PROJECT 

@@ -108,9 +108,15 @@
     padding: 0 16px;
 }
 
-.btn-primary {
+.btn--primary {
     background-color: #0566ff;
     border-color: #0566ff;
+    color: #fff;
+}
+
+.btn--primary:hover {
+    background-color: #0049bd;
+    border-color: #0049bd;
     color: #fff;
 }
 
