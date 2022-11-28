@@ -81,6 +81,25 @@ export class FaqKbService {
     }
   }
 
+
+  getTemplates() {
+    // 'Authorization': this.TOKEN
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/"
+    
+    console.log('[GET-TMPLT][FAQ-KB.SERV] - GET-TMPLT - URL ', url);
+
+    // const body = { 'name': name, 'type': bottype, 'description': description, 'id_project': this.project._id, };
+    // this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
+
+    return this._httpClient
+      .get(url, httpOptions)
+  }
+
   installTemplate (botid) {
 
     const httpOptions = {

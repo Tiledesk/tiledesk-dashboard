@@ -21,8 +21,10 @@
                                 </linearGradient>
                             </svg>
                             <div class="css-1gzcs7t e18cedto8">
-                                <img style="width: 40px; height: 40px;" src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media">
-                               
+                                <img *ngIf="!template?.bigImage" style="width: 40px; height: 40px;"
+                                    src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media">
+                                <img *ngIf="template?.bigImage" style="width: auto; height: 40px;"
+                                    src="{{template.bigImage}}">
                                 <!-- <svg xmlns="http://www.w3.org/2000/svg"
                                     enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px"
                                     fill="#000000">
@@ -52,21 +54,25 @@
                                 {{template.description}}
                             </p>
                             <div class="css-yzsy5z e18cedto5">
-                                <button type="button"
-                                    class="btn btn-new btn-size-l btn--primary btn-block" (click)="installTemplate(template._id)"> 
+                                <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
+                                    (click)="installTemplate(template._id)">
                                     <span>Use template</span>
                                 </button>
                             </div>
                             <div class="css-ymlisk e18cedto3">
                                 <div class="css-1urzsmt e18cedto2">
-                                    <div class="css-4ls4re e18cedto4">
-                                        <!-- <span aria-label="tag" class="css-1ihuqxv e6hb4333">
-                                            <p weight="normal" class="e6hb4332 css-17ukti4 eimqq0f0">Pre-Sale</p>
+                                    <div class="css-4ls4re e18cedto4" *ngIf="template.certifiedTags">
+
+                                        <span aria-label="tag" class="css-1ihuqxv e6hb4333" *ngFor="let tag of template.certifiedTags">
+                                            <p weight="normal" class="e6hb4332 css-17ukti4 eimqq0f0" [ngStyle]="{'color': tag.color }">
+                                                {{tag.name  }} </p>
+                                               
                                         </span>
-                                        <span aria-label="tag" class="css-xje4ki e6hb4333">
-                                            <p weight="normal" class="e6hb4332 css-17ukti4 eimqq0f0">Smart Popups</p>
-                                        </span>
-                                        <span aria-label="tag" class="css-1vc6g4w e6hb4333">
+                                        <!-- <span aria-label="tag" class="css-xje4ki e6hb4333">
+                                            <p weight="normal" class="e6hb4332 css-17ukti4 eimqq0f0">
+                                                {{template.certifiedTags[0].name}}</p>
+                                        </span> -->
+                                        <!--    <span aria-label="tag" class="css-1vc6g4w e6hb4333">
                                             <p weight="normal" class="e6hb4332 css-17ukti4 eimqq0f0">
                                                 AI
                                             </p>
@@ -111,7 +117,7 @@
                             </svg>
                         </div>
 
-                    
+
                     </div>
                 </div>
             </div>
@@ -1373,6 +1379,6 @@
                 </div>
             </div>
         </div>
-           <!-- -------- ./ fake ---------- -->
+        <!-- -------- ./ fake ---------- -->
     </div>
 </div>

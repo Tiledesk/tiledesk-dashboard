@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { FaqKbService } from '../../services/faq-kb.service';
@@ -56,19 +56,24 @@ export class TemplatesComponent implements OnInit {
   "updatedAt": "2022-10-28T15:00:31.028Z", "__v": 0, 
   "url": "http://localhost:3000/modules/tilebot/ext/635bb2a1bbce590019902024" 
 }, 
-{ "_id": "635bca36bbce59001991a729", 
-"webhook_enabled": false, 
-"type": "tilebot", 
-"language": "en", 
-"public": true, "certified": true, 
-"name": "Lily for Lead Generation", "description": "Boost customer satisfaction while simultaneously generating new qualified leads for your own business.", 
-"id_project": "635b97cc7d7275001a2ab3e0", 
-"trashed": false, 
-"createdBy": "5ede2716cc3cc30019c7011c", 
-"createdAt": "2022-10-28T12:25:26.250Z", 
-"updatedAt": "2022-10-28T18:51:15.659Z", "__v": 0, 
-"url": "http://localhost:3000/modules/tilebot/ext/635bca36bbce59001991a729" 
-}, 
+{"_id":"635bca36bbce59001991a729",
+"webhook_enabled":false,
+"type":"tilebot",
+"language":"en",
+"public":true,
+"certified":true,
+"name":"Lily for Lead Generation",
+"description":"leads",
+"certifiedTags":[{"color":"#00699e","name":"Pre-Sale"},{"color":"#a16300","name":"Lead-Gen"}],
+"bigImage":"https://tiledesk.com/wp-content/uploads/2022/11/Get-Leads.png",
+"id_project":"635b97cc7d7275001a2ab3e0",
+"trashed":false,
+"createdBy":"5ede2716cc3cc30019c7011c",
+"createdAt":"2022-10-28T12:25:26.250Z",
+"updatedAt":"2022-10-28T18:51:15.659Z",
+"__v":0,
+"url":"http://localhost:3000/modules/tilebot/ext/635bca36bbce59001991a729"
+},
 { 
 "_id": "635c02cd2b8e28001c4f51cb", 
 "webhook_enabled": false, "type": "tilebot", 
@@ -188,24 +193,71 @@ export class TemplatesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBrowserVersion();
+    // this.getTemplates()
+    this.generateTagsBackground()
   }
+
+  generateTagsBackground() {
+    this.templates.forEach(template => {
+      console.log('generateTagsBackground template', template) 
+      if (template && template.certifiedTags) {
+        template.certifiedTags.forEach(tag => {
+          console.log('generateTagsBackground tag', tag) 
+
+          const tagbckgnd = this.hexToRgba(tag.color)
+          console.log('generateTagsBackground tagbckgnd ', tagbckgnd) 
+          // template.certifiedTags.push({ 'background': `${tagbckgn}`})
+        });
+      }
+
+    });
+  }
+
+  hexToRgba(hex) {
+    var c;
+    if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+      c = hex.substring(1).split('');
+      if (c.length == 3) {
+        c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+      }
+      c = '0x' + c.join('');
+      return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',0.5)';
+    }
+    throw new Error('Bad Hex');
+  }
+
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
     })
   }
-
-  installTemplate(botid) {
-    this.faqKbService.installTemplate(botid).subscribe((res: any) => {
-      this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID', res);
+  
+  getTemplates() {
+    this.faqKbService.getTemplates().subscribe((res: any) => {
+      console.log('[BOTS-TEMPLATES] - GET TEMPLATES', res);
   
 
     }, (error) => {
-      this.logger.error('[BOTS-TEMPLATES] GET BOTS ERROR ', error);
+      console.error('[BOTS-TEMPLATES] GET TEMPLATES ERROR ', error);
  
     }, () => {
-      this.logger.log('[BOTS-TEMPLATES] GET BOTS COMPLETE');
-      // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
+      console.log('[BOTS-TEMPLATES] GET TEMPLATES COMPLETE');
+     
+    
+    });
+  }
+
+  installTemplate(botid) {
+    this.faqKbService.installTemplate(botid).subscribe((res: any) => {
+      this.logger.log('[BOTS-TEMPLATES] - INSTALL TEMPLATE RES', res);
+  
+
+    }, (error) => {
+      this.logger.error('[BOTS-TEMPLATES] INSTALL TEMPLATE - ERROR ', error);
+ 
+    }, () => {
+      this.logger.log('[BOTS-TEMPLATES] INSTALL TEMPLATE COMPLETE');
+    
     
     });
   }
