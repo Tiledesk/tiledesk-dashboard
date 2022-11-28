@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.3.6
+- Deploys in production
+- Bug fixes: In the Edit Bot > Add/Edit Intent page the "form builder" field types are incorrect
+
 ### 2.3.5
 - Deploys in production
 - Adds the "When a chat message is sent by anyone" trigger to the Add Trigger and Edit Trigger pages, and renames the "When a chat message is sent" trigger to "When a chat message is sent by visitor"
