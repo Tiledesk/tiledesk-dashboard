@@ -295,11 +295,22 @@ export class TilebotFormComponent implements OnInit {
 
   /** Event edit field */
   eventEditField(i:number){
-    this.selectedField = this.fields[i];
-    this.displayAddForm = false;
-    this.displayEditForm = true;
-    this.openAddEditForm();
+    this.closeAddEditForm();
+    setTimeout(() => {
+      this.selectedField = this.fields[i];
+      this.displayAddForm = false;
+      this.displayEditForm = true;
+      this.openAddEditForm();
+    }, 300);
   }
+
+  eventDropField(fields){
+    this.intentForm.fields = fields;
+    this.fields = fields;
+    this.closeAddEditForm();
+    this.selectedField = null;
+  }
+  
 
   /** Event close add/edit form accordion */
   closeAddEditForm(){

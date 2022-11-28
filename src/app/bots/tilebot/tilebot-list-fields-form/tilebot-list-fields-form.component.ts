@@ -9,6 +9,8 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 export class TilebotListFieldsFormComponent implements OnInit {
   @Output() eventEditField = new EventEmitter();
   @Output() openDeleteFieldModal = new EventEmitter();
+  @Output() eventDropField = new EventEmitter();
+  
   @Input() fields: [any];
 
   // modal
@@ -30,6 +32,8 @@ export class TilebotListFieldsFormComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.fields, event.previousIndex, event.currentIndex);
+    this.selectedField = null;
+    this.eventDropField.emit(this.fields);
   }
 
   logValue() {
