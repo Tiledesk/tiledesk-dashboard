@@ -1,0 +1,179 @@
+<!-- <h2 mat-dialog-title>Install Angular</h2> -->
+<mat-dialog-actions align="end" style="min-height: 13px;">
+    <button mat-button mat-dialog-close style="position: relative;top: -16px; min-width: 36px; padding: 0px;border-radius: 50%;">
+        <span class="material-icons">
+            close
+            </span>
+    </button>
+    <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
+</mat-dialog-actions>
+<mat-dialog-content class="mat-typography" style="min-height: 30px;">
+    <div class="css-16tmnh4 e4umgbv2">
+        <div class="css-1sf3bw5 e13c9zit2">
+            <div class="css-5kjnoy e13c9zit0">
+
+                <img *ngIf="!template?.bigImage" style="width: 40px; height: 40px;"
+                    src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media">
+                <img *ngIf="template?.bigImage" style="width: auto; height: 40px;" src="{{template.bigImage}}">
+            </div>
+            <div class="css-1vofa6b e13c9zit1">
+                <h2 weight="bold" class="css-hs92t1 eimqq0f0">{{template?.name}}</h2>
+            </div>
+        </div>
+        <div class="css-1yuymj4 e55hbj51">
+            <button type="button"
+                class=" btn btn-new btn-size-l btn--primary css-1adi3ip e55hbj50">
+                <span>Use template</span>
+            </button>
+            <button type="button" class=" btn btn-new btn-size-l btn--default css-1adi3ip e55hbj50" (click)="openTestSiteInPopupWindow()">
+                <span>Test it out</span>
+            </button>
+        </div>
+        <div class="css-zjik7 em0rbmj1">
+            <div class="css-1w6fvkd em0rbmj3">
+                <p weight="normal" class="em0rbmj0 css-w38ijl eimqq0f0">Categories</p>
+                <div class="css-1buyuap em0rbmj2" *ngIf="template.certifiedTags">
+                    <span aria-label="tag" class="css-1vc6g4w e6hb4333" [ngStyle]="{'color': tag.color, 'background-color':  tag.background}" *ngFor="let tag of template.certifiedTags">
+                        <p weight="normal" class="e6hb4332 css-17ukti4 eimqq0f0">{{ tag.name }}</p>
+                    </span>
+                 
+                </div>
+            </div>
+            <div style="display: none;" class="css-9lc2l4 e1fjvpw20">
+                <p weight="normal" class="em0rbmj0 css-w38ijl eimqq0f0">Works on</p>
+                <div class="css-ur9p5o e15c8v5c0">
+                    <div aria-label="Livechat" class="css-u50zg7 e19qim8b1"><svg xmlns="http://www.w3.org/2000/svg"
+                            height="16" viewBox="0 0 24 24" width="16" class="css-kea2xf e19qim8b0"
+                            style="min-width: 16px; min-height: 16px;">
+                            <path fill="none" d="M0 0h24v24H0V0z"></path>
+                            <path
+                                d="M12 3.7c-5.5 0-10 3.6-10 8 0 1.6.6 3.1 1.6 4.3 0 0 .2.2.2.3l-.1-.1c.1.2.2.4.2.6 0 .1-.9 3-.9 3-.1.2.1.5.4.5h.4l2.6-1.1.5-.2c.2-.1.4-.1.6-.1.2 0 .4 0 .5.1h.1c1.2.4 2.5.5 3.9.5 5.5 0 10-3.3 10-7.8 0-4.4-4.5-8-10-8z">
+                            </path>
+                        </svg></div>
+                    <div aria-label="Instagram" class="css-u50zg7 e19qim8b1"><svg width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            style="min-width: 16px; min-height: 16px;">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M21.475 5.45c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123s-.012 3.056-.06 4.123c-.049 1.064-.218 1.791-.465 2.427a5.112 5.112 0 01-2.925 2.925c-.636.247-1.363.416-2.427.465-1.066.048-1.407.06-4.123.06s-3.056-.012-4.123-.06c-1.064-.049-1.791-.218-2.427-.465a4.9 4.9 0 01-1.771-1.154 4.9 4.9 0 01-1.154-1.77c-.247-.637-.416-1.364-.465-2.428C2.012 15.056 2 14.716 2 12s.012-3.056.06-4.123c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.901 4.901 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.944 2.012 9.284 2 12 2s3.056.012 4.123.06c1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.771 1.153 4.9 4.9 0 011.154 1.772zm-1.68 12.448c.137-.352.3-.882.345-1.857.048-1.055.058-1.37.058-4.041 0-2.67-.01-2.986-.058-4.04-.045-.976-.208-1.505-.345-1.858a3.096 3.096 0 00-.748-1.15 3.1 3.1 0 00-1.15-.748c-.352-.136-.881-.3-1.856-.344-1.055-.048-1.371-.058-4.041-.058-2.67 0-2.986.01-4.04.058-.976.045-1.505.207-1.858.344-.434.16-.827.416-1.15.748a3.1 3.1 0 00-.748 1.15c-.137.353-.3.882-.344 1.857-.048 1.055-.058 1.37-.058 4.041 0 2.67.01 2.987.058 4.041.044.975.207 1.505.344 1.857.16.434.416.827.748 1.15a3.1 3.1 0 001.15.748c.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058 2.67 0 2.987-.01 4.04-.058.976-.044 1.505-.207 1.858-.344a3.311 3.311 0 001.898-1.898z"
+                                fill="url(#instagram-color-24px_svg__paint0_linear_318:2653)"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M6.865 12a5.135 5.135 0 1110.27 0 5.135 5.135 0 01-10.27 0zm1.802 0a3.333 3.333 0 106.667 0 3.333 3.333 0 00-6.667 0z"
+                                fill="url(#instagram-color-24px_svg__paint1_linear_318:2653)"></path>
+                            <path d="M18.539 6.662a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0z"
+                                fill="url(#instagram-color-24px_svg__paint2_linear_318:2653)"></path>
+                            <mask id="instagram-color-24px_svg__a" maskUnits="userSpaceOnUse" x="2" y="2" width="20"
+                                height="20" style="mask-type: alpha;">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M21.475 5.45c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123s-.012 3.056-.06 4.123c-.049 1.064-.218 1.791-.465 2.427a5.112 5.112 0 01-2.925 2.925c-.636.247-1.363.416-2.427.465-1.066.048-1.407.06-4.123.06s-3.056-.012-4.123-.06c-1.064-.049-1.791-.218-2.427-.465a4.9 4.9 0 01-1.771-1.154 4.9 4.9 0 01-1.154-1.77c-.247-.637-.416-1.364-.465-2.428C2.012 15.056 2 14.716 2 12s.012-3.056.06-4.123c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.901 4.901 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.944 2.012 9.284 2 12 2s3.056.012 4.123.06c1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.771 1.153 4.9 4.9 0 011.154 1.772zm-1.68 12.448c.137-.352.3-.882.345-1.857.048-1.055.058-1.37.058-4.041 0-2.67-.01-2.986-.058-4.04-.045-.976-.208-1.505-.345-1.858a3.096 3.096 0 00-.748-1.15 3.1 3.1 0 00-1.15-.748c-.352-.136-.881-.3-1.856-.344-1.055-.048-1.371-.058-4.041-.058-2.67 0-2.986.01-4.04.058-.976.045-1.505.207-1.858.344-.434.16-.827.416-1.15.748a3.1 3.1 0 00-.748 1.15c-.137.353-.3.882-.344 1.857-.048 1.055-.058 1.37-.058 4.041 0 2.67.01 2.987.058 4.041.044.975.207 1.505.344 1.857.16.434.416.827.748 1.15a3.1 3.1 0 001.15.748c.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058 2.67 0 2.987-.01 4.04-.058.976-.044 1.505-.207 1.858-.344a3.311 3.311 0 001.898-1.898zM6.866 12a5.135 5.135 0 1110.27 0 5.135 5.135 0 01-10.27 0zm1.802 0a3.333 3.333 0 106.667 0 3.333 3.333 0 00-6.667 0zm8.672-4.138a1.2 1.2 0 100-2.4 1.2 1.2 0 000 2.4z"
+                                    fill="url(#instagram-color-24px_svg__paint3_linear_318:2653)"></path>
+                            </mask>
+                            <g mask="url(#instagram-color-24px_svg__a)">
+                                <path
+                                    d="M12.003 2c-4.175 0-5.396.004-5.633.024-.857.071-1.39.206-1.97.495-.448.223-.801.48-1.15.842-.634.659-1.019 1.47-1.158 2.433-.068.467-.087.563-.091 2.952-.002.796 0 1.844 0 3.25 0 4.173.004 5.393.024 5.63.07.834.2 1.358.477 1.932a4.213 4.213 0 002.73 2.231c.413.106.868.165 1.452.192.248.011 2.772.019 5.298.019 2.526 0 5.051-.003 5.293-.015.677-.032 1.07-.085 1.504-.197a4.188 4.188 0 002.73-2.236c.272-.56.41-1.105.472-1.895.013-.172.019-2.92.019-5.664 0-2.744-.006-5.486-.02-5.658-.063-.804-.2-1.344-.48-1.914a3.964 3.964 0 00-.857-1.174c-.661-.632-1.47-1.016-2.434-1.155-.468-.068-.56-.088-2.951-.092h-3.255z"
+                                    fill="url(#instagram-color-24px_svg__paint4_radial_318:2653)"></path>
+                                <path
+                                    d="M12.003 2c-4.175 0-5.396.004-5.633.024-.857.071-1.39.206-1.97.495-.448.223-.801.48-1.15.842-.634.659-1.019 1.47-1.158 2.433-.068.467-.087.563-.091 2.952-.002.796 0 1.844 0 3.25 0 4.173.004 5.393.024 5.63.07.834.2 1.358.477 1.932a4.213 4.213 0 002.73 2.231c.413.106.868.165 1.452.192.248.011 2.772.019 5.298.019 2.526 0 5.051-.003 5.293-.015.677-.032 1.07-.085 1.504-.197a4.188 4.188 0 002.73-2.236c.272-.56.41-1.105.472-1.895.013-.172.019-2.92.019-5.664 0-2.744-.006-5.486-.02-5.658-.063-.804-.2-1.344-.48-1.914a3.964 3.964 0 00-.857-1.174c-.661-.632-1.47-1.016-2.434-1.155-.468-.068-.56-.088-2.951-.092h-3.255z"
+                                    fill="url(#instagram-color-24px_svg__paint5_radial_318:2653)"></path>
+                            </g>
+                            <defs>
+                                <linearGradient id="instagram-color-24px_svg__paint0_linear_318:2653" x1="12"
+                                    y1="28.643" x2="28.643" y2="12" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#FFD600"></stop>
+                                    <stop offset="0.5" stop-color="#FF0100"></stop>
+                                    <stop offset="1" stop-color="#D800B9"></stop>
+                                </linearGradient>
+                                <linearGradient id="instagram-color-24px_svg__paint1_linear_318:2653" x1="12"
+                                    y1="19.262" x2="19.262" y2="12" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#FF6400"></stop>
+                                    <stop offset="0.5" stop-color="#FF0100"></stop>
+                                    <stop offset="1" stop-color="#FD0056"></stop>
+                                </linearGradient>
+                                <linearGradient id="instagram-color-24px_svg__paint2_linear_318:2653" x1="17.339"
+                                    y1="8.359" x2="19.036" y2="6.662" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#F30072"></stop>
+                                    <stop offset="1" stop-color="#E50097"></stop>
+                                </linearGradient>
+                                <linearGradient id="instagram-color-24px_svg__paint3_linear_318:2653" x1="17.339"
+                                    y1="8.359" x2="19.036" y2="6.662" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#F30072"></stop>
+                                    <stop offset="1" stop-color="#E50097"></stop>
+                                </linearGradient>
+                                <radialGradient id="instagram-color-24px_svg__paint4_radial_318:2653" cx="0" cy="0"
+                                    r="1" gradientUnits="userSpaceOnUse"
+                                    gradientTransform="matrix(0 -19.8215 18.4355 0 7.313 23.54)">
+                                    <stop stop-color="#FD5"></stop>
+                                    <stop offset="0.1" stop-color="#FD5"></stop>
+                                    <stop offset="0.5" stop-color="#FF543E"></stop>
+                                    <stop offset="1" stop-color="#C837AB"></stop>
+                                </radialGradient>
+                                <radialGradient id="instagram-color-24px_svg__paint5_radial_318:2653" cx="0" cy="0"
+                                    r="1" gradientUnits="userSpaceOnUse"
+                                    gradientTransform="matrix(1.73908 8.68793 -35.81207 7.16857 -1.35 3.44)">
+                                    <stop stop-color="#3771C8"></stop>
+                                    <stop offset="0.128" stop-color="#3771C8"></stop>
+                                    <stop offset="1" stop-color="#60F" stop-opacity="0"></stop>
+                                </radialGradient>
+                            </defs>
+                        </svg></div>
+                    <div aria-label="Messenger" class="css-u50zg7 e19qim8b1"><svg width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            style="min-width: 16px; min-height: 16px;">
+                            <mask id="messenger-color-24px_svg__a" maskUnits="userSpaceOnUse" x="3" y="3" width="18"
+                                height="18" style="mask-type: alpha;">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 3c-5.04 0-9 3.679-9 8.703 0 2.602 1.08 4.845 2.79 6.46.18.09.27.36.27.539l.09 1.615c0 .538.54.807.99.628l1.8-.808c.09-.09.27-.09.45-.09.81.27 1.71.36 2.61.36 5.04 0 9-3.68 9-8.704C21 6.68 17.04 3 12 3z"
+                                    fill="#647491"></path>
+                            </mask>
+                            <g mask="url(#messenger-color-24px_svg__a)">
+                                <path d="M21 3H3v18h18V3z" fill="url(#messenger-color-24px_svg__paint0_radial_121_83)">
+                                </path>
+                            </g>
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M6.6 14.216l2.61-4.217c.45-.628 1.35-.808 1.98-.359l2.07 1.615c.18.18.45.18.63 0l2.88-2.153c.36-.27.9.18.63.538l-2.61 4.217c-.45.628-1.35.808-1.98.359L10.74 12.6a.436.436 0 00-.63 0l-2.88 2.153c-.36.36-.9-.09-.63-.538z"
+                                fill="#fff"></path>
+                            <defs>
+                                <radialGradient id="messenger-color-24px_svg__paint0_radial_121_83" cx="0" cy="0" r="1"
+                                    gradientUnits="userSpaceOnUse"
+                                    gradientTransform="matrix(22.2704 0 0 22.0979 3.143 20.05)">
+                                    <stop stop-color="#09F"></stop>
+                                    <stop offset="0.61" stop-color="#A033FF"></stop>
+                                    <stop offset="0.93" stop-color="#FF5280"></stop>
+                                    <stop offset="1" stop-color="#FF7061"></stop>
+                                </radialGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p weight="normal" class="css-18ca0kp eimqq0f0">
+                {{template.description}}
+            </p>
+            <span size="24" class="css-5ovca5 e1soz8mc0" *ngIf="template.templateFeatures"></span>
+            <p weight="medium" class="css-1qsadq4 eimqq0f0" *ngIf="template.templateFeatures" >Template features:</p>
+            <span size="16" class="css-1pmigyd e1soz8mc0" *ngIf="template.templateFeatures"></span>
+            <div class="css-wydaeg e1fjvpw20" *ngIf="template.templateFeatures" >
+                <div class="css-16le678 e15c8v5c0" *ngFor="let feature of template.templateFeatures">
+                    <div class="css-mx7x3w e1usknts0"></div>
+                    <p weight="normal" class="css-18ca0kp eimqq0f0">{{feature}}</p>
+                </div>
+         
+            </div>
+        </div>
+        <!-- <div class="css-1673xsz e1jquz1y1">
+            <div class="css-1fliiih e15c8v5c0">
+                <div class="css-1g7dzhr e1jquz1y0"><svg width="24" height="24" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg" style="min-width: 24px; min-height: 24px;">
+                        <path
+                            d="M9.857 21.3c0 .35.286.7.714.7h2.858c.428 0 .714-.35.714-.7v-.7H9.857v.7zM12 8c-2.786 0-5 2.17-5 4.9 0 1.68.857 3.15 2.143 3.99v1.61c0 .35.286.7.714.7h4.286c.428 0 .714-.35.714-.7v-1.61C16.143 15.98 17 14.51 17 12.9c0-2.73-2.214-4.9-5-4.9zM19 14h3v-2h-3v2zm-8-8h2V3h-2v3zm-6 8H2v-2h3v2zm1.698-5.395l1.407-1.407-2.12-2.121-1.408 1.407 2.121 2.121zm12.718-2.114l-2.121 2.122-1.407-1.408 2.12-2.12 1.408 1.406z">
+                        </path>
+                    </svg></div>
+                <p weight="normal" class="css-18ca0kp eimqq0f0">You don't have <span weight="medium"
+                        class="css-1qsadq4 eimqq0f0">Instagram integration</span>. If you want to use a chatbot on this
+                    channel, <a href="/panel/settings/instagram">integrate with Instagram.</a></p>
+            </div>
+        </div> -->
+    </div>
+
+</mat-dialog-content>

@@ -267,6 +267,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MomentModule } from 'ngx-moment';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
@@ -302,6 +303,7 @@ import { ChatbotSetupComponent } from './create-project-wizard/onboarding/chatbo
 import { SidebarClaimsComponent } from './create-project-wizard/onboarding/sidebar-claims/sidebar-claims.component';
 import { NetworkOfflineComponent } from './network-offline/network-offline.component';
 import { HomePromoBannerComponent } from './home-promo-banner/home-promo-banner.component';
+import { TemplateDetailComponent } from './bots/templates/template-detail/template-detail.component';
 
 
 
@@ -533,7 +535,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SidebarClaimsComponent, 
     NetworkOfflineComponent, 
     HomePromoBannerComponent, 
-    TemplatesComponent
+    TemplatesComponent, TemplateDetailComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
@@ -556,6 +558,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MatSelectModule,
     MatToolbarModule,
     MatTabsModule,
+    MatDialogModule,
     /* PRIVATE */
     PricingModule,
     /* PRIVATE */
