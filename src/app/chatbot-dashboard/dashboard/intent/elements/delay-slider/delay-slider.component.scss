@@ -1,0 +1,78 @@
+@import "../../../../variables";
+
+
+.delay {
+    align-items: center;
+    background: $color-bck-gray-hex;
+    border-radius: 13px;
+    display: inline-flex;
+    position: relative;
+    height: 26px;
+    padding: 0 9px 0 3px;
+    width: auto;
+    text-align: center;
+    transition: width .3s;
+    .delay-current{
+        display: contents;
+        width: auto;
+        color: #d2d2d2;
+        cursor: pointer;
+        font-size: 0.8em;
+        font-weight: 400;
+    }
+    .delay-slider{
+        display: none;
+    }
+    .delay-range {
+        display: inline-flex;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 600;
+    }
+    &.open {
+        width: 100%;
+        .delay-current{
+            display: none;
+        }
+        .delay-slider{
+            display: inline-block;
+            width: 100%;
+        }
+    }
+}
+
+.delay-button {
+    padding-right: 4px;
+    color: $color-withe-hex;
+    cursor: pointer;
+}
+
+.delay-current {
+    color: $color-withe-hex;
+    cursor: pointer;
+}
+
+.delay-icon {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    margin-right: 9px;
+}
+
+
+
+// slider 
+.vue-slider {
+    margin: 0 5px;
+    position: relative;
+    display: inline-flex;
+    padding: 7px 0;
+    width: 270px;
+    height: 6px;
+}
+
+mat-slider {
+    width: 100%;
+    position: absolute;
+    top: -14px;
+}

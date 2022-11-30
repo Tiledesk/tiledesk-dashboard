@@ -1,5 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+
+export enum TYPE {
+  TEXT = 'text', 
+  RANDOM_TEXT = 'randomText', 
+  IMAGE = 'image', 
+  FORM = 'form', 
+  VIDEO = 'video'
+}
 
 @Component({
   selector: 'appdashboard-tools',
@@ -7,29 +15,35 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
   styleUrls: ['../dashboard.component.scss', './tools.component.scss']
 })
 export class ToolsComponent implements OnInit {
+  @Input() arrayResponses: Array<any>;
+
   items: Array<string> = [];
   showSpinner:boolean = false;
+  Type = TYPE;
+  
   constructor() { 
     // console.log('constructor);
-    // void;
   }
 
   ngOnInit(): void {
     // console.log('ngOnInit);
-    // void;
   }
 
+
+  addElement(type: TYPE){
+    if(type === TYPE.TEXT){
+      this.arrayResponses.push({
+        messages: ["ciao"],
+        delay: 1.5,
+        buttons: []
+      });
+    }
+  }
+
+
+
   drop(event: CdkDragDrop<string[]>) {
-    // if (event.previousContainer === event.container) {
-    //   moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    // } else {
-    //   transferArrayItem(
-    //     event.previousContainer.data,
-    //     event.container.data,
-    //     event.previousIndex,
-    //     event.currentIndex,
-    //   );
-    // }
+    // drag
   }
 
 }

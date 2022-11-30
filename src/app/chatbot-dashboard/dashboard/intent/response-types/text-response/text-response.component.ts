@@ -1,29 +1,67 @@
 
-import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import {take} from 'rxjs/operators';
-
-
-/** @title Auto-resizing textarea */
+import { Answer } from '../../../../../models/intent-model';
 
 @Component({
   selector: 'appdashboard-text-response',
   templateUrl: './text-response.component.html',
   styleUrls: ['./text-response.component.scss']
 })
+
+
 export class TextResponseComponent implements OnInit {
-
-
-  constructor(private _ngZone: NgZone) { }
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
+  @Output() deleteResponse = new EventEmitter();
+  @Input() response: Answer;
+  @Input() index: number;
+
+  // Textarea //
+  limitCharsText: number;
+  leftCharsText: number;
+  textMessage: string;
+  alertCharsText: boolean;
+
+  // Delay //
+  delayTime: number = 2.5;
+
+
+  constructor() { }
+
   ngOnInit(): void {
-    // https://material.angular.io/cdk/text-field/examples
+    this.limitCharsText = 300;
+    this.leftCharsText = this.limitCharsText;
+    this.alertCharsText = false;
+
+    this.delayTime = this.response.delay;
+    this.textMessage = this.response.messages[0];
   }
 
-  triggerResize() {
-    // Wait for changes to be applied, then trigger textarea resize.
-    this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
+
+  
+
+  // EVENTS //
+  onDeleteResponse(){
+    this.deleteResponse.emit(this.index);
   }
+
+
+  onChangeText(text:string) {
+    let numCharsText = text.length;
+    this.leftCharsText = this.limitCharsText - numCharsText;
+    if(this.leftCharsText<(this.limitCharsText/10)){
+      this.alertCharsText = true;
+    } else {
+      this.alertCharsText = false;
+    }
+  }
+
+
+  onChangeDelayTime(value:number){
+    this.delayTime = value;
+    console.log("onChangeDelayTime: ", this.delayTime);
+  }
+
 
 }

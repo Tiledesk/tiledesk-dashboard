@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Intent, Answer } from '../../../models/intent-model';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'appdashboard-intent',
@@ -6,11 +8,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./intent.component.scss']
 })
 export class IntentComponent implements OnInit {
+  @Input() intent: Intent;
+
+  // @Input() arrayResponses: Array<Answer>;
 
   intentName: string;
   intentNameResult: boolean;
 
-  arrayResponses: Array<any>;
+  arrayResponses: Array<Answer>;
 
   constructor() { }
 
@@ -22,7 +27,7 @@ export class IntentComponent implements OnInit {
   private initialize(){
     this.intentName = "";
     this.intentNameResult = true;
-    this.arrayResponses = ['test'];
+    this.arrayResponses = this.intent.answers;
   }
 
   /** */
@@ -40,6 +45,15 @@ export class IntentComponent implements OnInit {
 
 
   // ON EVENT //
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.arrayResponses, event.previousIndex, event.currentIndex);
+  }
+
+
+  onDeleteResponse(index:number){
+    this.arrayResponses.splice(index, 1); 
+  }
 
   /** */
   onChangeIntentName(name: string){

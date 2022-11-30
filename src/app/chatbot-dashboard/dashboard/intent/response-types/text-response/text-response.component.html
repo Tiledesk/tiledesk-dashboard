@@ -1,24 +1,62 @@
+<div class="extensions-response">
+    <div class="delay-wrapper">
+        <appdashboard-delay-slider
+        [delayTime]="delayTime"
+        (changeDelayTime)="onChangeDelayTime($event)"
+        ></appdashboard-delay-slider>
+    </div>
+</div>
 
-
-
-
+<!-- <div class="response-controls">
+    <div data-size="default" class="control-button" drag-move="">
+        <i class="be-icons">move_outline</i>
+    </div> 
+    <div data-size="default" class="control-button" data-remove-response="">
+        <i class="be-icons">trash</i>
+    </div>
+</div> -->
 
 <div class="text-response">
    
     <div class="text-editor-wrapper">
-
-        <div class="delay"></div>
-        
         <div class="text-editor">
-            <textarea matInput
-            cdkTextareaAutosize
-            #autosize="cdkTextareaAutosize"
-            cdkAutosizeMinRows="1"
-            cdkAutosizeMaxRows="5"></textarea>
+
+            <div class="text-editor-delete" (click)="onDeleteResponse()">
+                <em class="material-icons">delete</em>
+            </div> 
+
+            <mat-form-field class="box-textarea" appearance="fill">
+                <!-- <mat-label>Autosize textarea</mat-label> -->
+                <textarea matInput
+                    cdkTextareaAutosize
+                    [(ngModel)]="textMessage"
+                    #autosize="cdkTextareaAutosize"
+                    [maxlength]="limitCharsText"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"
+                    (ngModelChange)="onChangeText($event)">
+                    What brings you here today?
+                </textarea>
+            </mat-form-field>
+            
+            <div class="text-editor-drop">
+                <em class="material-icons">drag_indicator</em>
+            </div> 
         </div>
 
-        <div class="editor-utils"></div>
+        <div class="editor-utils">
+            <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
+            <!-- <div class="text-editor-insert-attribute">
+                <em class="material-icons">code</em>
+            </div> 
+            <div class="emoji-picker">
+                <em class="material-icons">insert_emoticon</em>
+            </div>  -->
+        </div>
+
     </div> 
+
+
 
     <div class="quick-replies">
         <div class="tpl-drop-down"> 
@@ -34,4 +72,4 @@
         + Add button
         </div>
     </div>
-</div> -->
+</div>

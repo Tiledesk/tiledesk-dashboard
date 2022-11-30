@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { FaqService } from '../../services/faq.service';
 import { Project } from '../../models/project-model';
-import { Intent, Message } from '../../models/intent-model';
+
 import { AuthService } from '../../core/auth.service';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,7 +13,23 @@ import { HttpClient } from "@angular/common/http";
 
 
 
+import { Intent, Answer } from '../../models/intent-model';
+
 const swal = require('sweetalert');
+
+// export interface Intent2 {
+//   type?: string;
+//   message?: {
+//       text: string;
+//       type?: string;
+//       attributes?: Attributes;
+//       metadata?: Metadata;
+//   };
+//   time?: number;
+//   waitTime?: number;
+// }
+
+
 
 @Component({
   selector: 'appdashboard-dashboard',
@@ -21,6 +37,12 @@ const swal = require('sweetalert');
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+
+
+  intent: Intent;
+  arrayResponses: Array<Answer> = [];
+
+
 
   question_toUpdate: string;
   answer_toUpdate: string;
@@ -36,8 +58,6 @@ export class DashboardComponent implements OnInit {
   faq_webhook_is_enabled: boolean;
   answerWillBeDeletedMsg: string;
   isChromeVerGreaterThan100: boolean;
-  intent: Intent;
-  message: Message = {};
   commands = [];
   items = ['Carrots', 'Tomatoes', 'Onions', 'Apples', 'Avocados'];
   basket = ['Oranges', 'Bananas', 'Cucumbers'];
@@ -58,12 +78,12 @@ export class DashboardComponent implements OnInit {
     this.auth.checkRoleForCurrentProject();
     this.getUrlParams();
     if (this.router.url.indexOf('/createfaq') !== -1) {
-      this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED CREATE ');
+      console.log('[FAQ-EDIT-ADD] HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       this.showSpinner = false;
       this.getFaqKbId();
     } else {
-      this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED EDIT ');
+      console.log('[FAQ-EDIT-ADD] HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
       if (this.id_faq) {
         this.getFaqById();
@@ -71,9 +91,9 @@ export class DashboardComponent implements OnInit {
       }
     }
     this.getCurrentProject();
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+    // this.arrayResponses = ['test'];
   }
-
 
  
 
@@ -248,50 +268,40 @@ export class DashboardComponent implements OnInit {
    * !!! this function is temporary and will be replaced with a server function 
    */
    MOCK_getFaqById(){
-    let url = 'assets/mock-data/tilebot/faq/intent.json';
+    let url = 'assets/mock-data/tilebot/faq/intents.json';
     this.httpClient.get<Intent>(url).subscribe(data => {
-      // console.log("------------------>", data);
-      this.intent = data;
-      if(this.intent.attributes.commands){
-        this.intent.attributes.commands.forEach(command => {
+      console.log("------------------>", data);
+      this.intent = data[0];
+      if(this.intent.answers){
+        this.arrayResponses = this.intent.answers;
+      }
 
-          if(command.type === 'wait' && command.time){
-            this.message.waitTime = command.time/1000;
-          } else if (command.type === 'message' && command.message){
-            try {
-              if(!this.message.waitTime || this.message.waitTime == null){
-                this.message.waitTime = 0;
-              }
-              this.message.text = command.message.text;
-              this.message.attributes = command.message.attributes;
-              this.message.metadata = command.message.metadata;
-              this.message.buttons = command.message.attributes.attachment.buttons;
-            } catch(e) {
-              console.log(e); 
-            }
-            // if(command.message.text){
-            //   console.log("2 1------------------>message: ", this.message);
-            //   this.message.text = command['message']['text'];
-            // }
-            // if(command['message']['attributes']){
-            //   console.log("3 ------------------>message: ", this.message);
-            //   let attributes = command['message']['attributes'];
-            //   this.message.attributes = attributes;
-            //   if(attributes['attachment']){
-            //     console.log("3 1 ------------------>message: ", this.message);
-            //     let attachment = attributes['attachment'];
-            //     if(attachment['buttons']){
-            //       console.log("3 1 1------------------>message: ", this.message);
-            //       this.message.buttons = attachment['buttons'];
-            //     }
-            //   }
-            // }
 
-            // console.log("------------------> message: ", this.message);
-            this.commands.push(this.message);
-            this.message = {waitTime: 0};
-          }
-        });
+      if(this.intent.questions){
+        
+        // this.intent.attributes.commands.forEach(command => {
+        //   if(command.type === 'wait' && command.time){
+        //     this.message.waitTime = command.time/1000;
+        //   } else if (command.type === 'message' && command.message){
+        //     try {
+        //       if(!this.message.waitTime || this.message.waitTime == null){
+        //         this.message.waitTime = 0;
+        //       }
+        //       this.message.text = command.message.text;
+        //       this.message.attributes = command.message.attributes;
+        //       this.message.metadata = command.message.metadata;
+        //       this.message.buttons = command.message.attributes.attachment.buttons;
+        //     } catch(e) {
+        //       console.log(e); 
+        //     }
+
+
+
+        //     // console.log("------------------> message: ", this.message);
+        //     this.commands.push(this.message);
+        //     this.message = {waitTime: 0};
+        //   }
+        // });
       }
     }); 
   }

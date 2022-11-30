@@ -18,10 +18,13 @@
             </button>
         </div>
     </div>
-    <div class="content">
+    <div class="content" cdkDropList (cdkDropListDropped)="drop($event)">
         <div *ngFor="let response of arrayResponses; let i = index;">
-
-            <appdashboard-text-response></appdashboard-text-response>
+            <appdashboard-text-response
+            [index] = i
+            [response] = response
+            (deleteResponse) = onDeleteResponse($event)
+            ></appdashboard-text-response>
             <!-- <div *ngIf="response" class="typeText"></div> -->
         </div>
     </div>

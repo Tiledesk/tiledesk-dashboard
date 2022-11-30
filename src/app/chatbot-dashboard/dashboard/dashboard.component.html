@@ -14,9 +14,14 @@
   
 <div class="chatboat-dashboard">
     <div class="card-tools">
-        <appdashboard-tools></appdashboard-tools>
+        <appdashboard-tools
+        [arrayResponses]="arrayResponses"
+        ></appdashboard-tools>
     </div>
     <div class="card-intent">
-        <appdashboard-intent></appdashboard-intent>
+        <appdashboard-intent
+            *ngIf = intent
+            [intent]="intent"
+        ></appdashboard-intent>
     </div>
 </div>

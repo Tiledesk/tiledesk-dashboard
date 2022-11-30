@@ -1,3 +1,82 @@
+@import "../../../../variables";
+
+
+mat-form-field.mat-focused ::ng-deep {
+    .mat-form-field-wrapper {
+        .mat-form-field-flex {
+            .mat-form-field-infix {
+                textarea {
+                    border: 1px solid $color-blue-hex!important;
+                    outline: 1px solid $color-blue-hex!important;
+                    transition: border .3s;
+                }
+            }
+        }
+    }
+}
+
+mat-form-field.box-textarea ::ng-deep {
+    .mat-form-field-wrapper {
+        .mat-form-field-flex {
+            border-radius: 4px 4px 0 0;
+            padding: 0 0.75em 0 0.75em;
+            margin: 0;
+        }
+    }
+    .mat-form-field-underline {
+        display: none;
+    }    
+}
+
+
+
+.delay-wrapper {
+    display: block;
+    height: auto;
+    width: auto;
+    margin: 0 20px;
+    padding: 2em 0.75em 0;
+}
+
+
+
+
+
+:host ::ng-deep mat-slider.mat-slider.mat-slider-horizontal .mat-slider-ticks {
+    // make ticks fill full height
+    height: 20px;
+    // this will force show the ticks
+    opacity: 1;
+    background-size: 10.101% 2px !important;
+    transform: translateZ(0px) translateX(5.05051%); // I adjusted my slider to be thicker, so the correct values for you here may be different
+}
+
+.mat-slider-thumb-label {
+    transform: rotate(45deg) !important;
+    border-radius: 50% 50% 0 !important;
+}
+
+.mat-slider-thumb {
+    transform: scale(0) !important;
+}
+
+.mat-slider-thumb-label-text {
+    opacity: 1 !important;
+}
+
+
+
+
+
+.extensions-response {
+    font-size: 14px;
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
 
 .text-response {
     font-size: 14px;
@@ -6,44 +85,74 @@
     height: auto;
     margin: 0;
     padding: 0;
-    .text-editor {
-        margin-bottom: 20px;
-        padding: 0 30px;
-        padding: 20px 20px 0;
-        border-radius: 8px;
-        max-height: 165px;
-        min-height: 65px;
-        background-color: #22272d;
-        border: 1px solid #fff;
-        color:#fff;
-        overflow-x: hidden;
-        overflow-y: auto;
-        transition: border .3s;
-        border-radius: 8px;
-        textarea {
-            background-color: #22272d;
-            resize: vertical;
-            margin: 12px 0;
-            padding: 0 6px 0 0;
-            color: #ffffffde;
-            height: auto;
-            width: 100%;
-            min-width: 0;
-            border-radius: 0;
-            background: none;
-            appearance: none;
-            font-size: 1em;
+    .text-editor-wrapper {
+        .text-editor {
+            position: relative;
+            margin: 0;
+            padding: 0;
+            background-color: #293445;
+            .box-textarea {
+                width: calc(100% - 40px);
+                margin-left: 20px;
+            }
+            textarea {
+                border-radius: 8px;
+                background: #fff;
+                border: 1px solid #fff;
+                overflow-x: hidden;
+                overflow-y: auto;
+                width: calc(100% - 2.5em);
+                padding: 20px 20px;
+                color: #22272d;
+                font-size: 16px;
+                line-height: 25px;
+                resize: vertical;
+            }
+            .text-editor-delete {
+                position: absolute;
+                display: inline-flex;
+                margin: -20px 0;
+                left: 0px;
+                top: 50%;
+                color: #647283;
+                cursor: pointer;
+            }
+            .text-editor-drop {
+                position: absolute;
+                display: inline-flex;
+                margin: -18px 0;
+                right: 0px;
+                top: 50%;
+                color: #647283;
+                cursor: grab;
+            }
         }
 
-        // font-size: 16px;
-        // line-height: 20px;
-        // line-height: 25px;
-        // word-wrap: break-word;
-        // white-space: pre-wrap;
-        // display: flex;
-        // flex-direction: column;
-        // outline: none;
-        // user-select: auto;
+    
+
+        .editor-utils {
+            position: relative;
+            margin: -40px 50px 0px 0px;
+            float: right;
+            .num-chars {
+                background: $color-light-gray-hex;
+                padding: 0px 8px;
+                border-radius: 12px;
+                font-size: 11px;
+                color: $color-text-box-hex;
+                float: right;
+                &.error {
+                    background: $color-orange-hex;
+                }
+            }
+            .text-editor-insert-attribute{
+                float: right;
+            }
+            .moji-picker{
+                float: right;
+            }
+        }
+
     }
 
 }

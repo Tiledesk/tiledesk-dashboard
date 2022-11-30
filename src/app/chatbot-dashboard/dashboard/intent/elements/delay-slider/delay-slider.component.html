@@ -1,0 +1,26 @@
+<div class="delay" 
+    tabindex="1" 
+    (focusout)="onFocusOutDelay()"
+    [ngClass]="{'open': delayOpen}">
+    <em class="delay-button material-icons" (click)="onDelayClick()">timelapse</em>
+    <div class="delay-current" (click)="onDelayClick()">+{{delayTime}}s delay</div>
+    <div class="delay-slider">
+        <div class="delay-range">+{{delayTimeStep}}s</div> 
+        <div class="vue-slider">
+            <mat-slider 
+                min={{delayTimeMin}}
+                max={{delayTimeMax}} 
+                step={{delayTimeStep}}
+                thumbLabel 
+                showTickMarks 
+                discrete 
+                [displayWith]="formatLabel"
+                [(ngModel)]="delayTime"
+                (focus)="onFocusSlider()"
+                (focusout)="onFocusOutSlider()">
+                <input matSliderThumb>
+            </mat-slider>
+        </div>
+        <div class="delay-range">+{{delayTimeMax}}s</div>
+    </div>
+</div>
