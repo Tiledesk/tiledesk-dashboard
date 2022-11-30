@@ -58,6 +58,7 @@ export class AuthService {
   public settingSidebarIsOpned: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
   public nativeBotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public tilebotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  public botsSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public isChromeVerGreaterThan100: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   show_ExpiredSessionPopup: boolean
 
@@ -256,6 +257,10 @@ export class AuthService {
   toggletilebotSidebar(isopened) {
     this.tilebotSidebarIsOpened.next(isopened)
     // console.log('[AUTH-SERV] - TOGGLE NATIVE BOT SIDEBAR IS OPENED ', isopened)
+  }
+
+  togglebotsSidebar(isopened) {
+    this.botsSidebarIsOpened.next(isopened)
   }
   /**
    * // REPLACE getProjectFromLocalStorage()

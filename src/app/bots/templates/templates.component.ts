@@ -218,7 +218,7 @@ export class TemplatesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBrowserVersion();
-    // this.getTemplates()
+    this.getTemplates()
     this.generateTagsBackground()
   }
 

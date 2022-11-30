@@ -1,6 +1,6 @@
 <!-- margin-top:6px; -->
 <p style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand"
-[ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   Bots
 </p>
 <!-- <span class="navbar-brand navbar-brand-sidebar-settings"
@@ -19,11 +19,10 @@
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
-    <!-- <div class="content-wpr" style="display: flex;"> -->
+    <div class="content-wpr" style="display: flex;">
 
-      <!-- <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar> -->
-      <!-- <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;"> -->
-
+      <appdashboard-bots-sidebar style="border-right:1px solid #e5effe !important"></appdashboard-bots-sidebar>
+      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
         <div class="row">
           <div class="col-md-9 col-lg-8">
             <div class="card card--no-border" style="margin-top: 5px;">
@@ -131,13 +130,11 @@
                       <!--  style="width: 1%; white-space: nowrap;" -->
                       <td style="white-space: nowrap; width: 1%; cursor: pointer;">
                         <span class="tool_tip" (click)='goToBotDtls(faqkb?._id, faqkb?.type,  faqkb?.name)'>
-                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                            class="bot--img"
+                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="bot--img"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                            class="bot--img"
+                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot--img"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{faqkb?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
@@ -237,7 +234,7 @@
                     </span> -->
                       </td>
 
-                       
+
                       <!-- ----------------------------------------------------- -->
                       <!-- Bot name & truncated description -->
                       <!-- ----------------------------------------------------- -->
@@ -254,21 +251,23 @@
                       </td>
 
                       <td>
-                        <span *ngIf="faqkb?.type !== 'internal'" style="text-transform: capitalize;font-weight:400;"> 
-                          {{ faqkb?.type}} 
+                        <span *ngIf="faqkb?.type !== 'internal'" style="text-transform: capitalize;font-weight:400;">
+                          {{ faqkb?.type}}
                         </span>
                         <span *ngIf="faqkb?.type === 'internal'" style="text-transform: capitalize;font-weight:400;">
-                          resolution 
+                          resolution
                         </span>
                       </td>
 
-                      <td *ngIf="isVisibleAnalytics" style="text-transform: capitalize;font-weight:400;text-align: center">
+                      <td *ngIf="isVisibleAnalytics"
+                        style="text-transform: capitalize;font-weight:400;text-align: center">
                         <span style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.message_count}} </span>
                       </td>
 
                       <td class="td-actions text-right" style="padding-top:18px !important">
                         <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}"
-                          class="btn btn-primary btn-simple btn-xs" (click)='goToBotDtls(faqkb?._id, faqkb?.type,  faqkb?.name)'>
+                          class="btn btn-primary btn-simple btn-xs"
+                          (click)='goToBotDtls(faqkb?._id, faqkb?.type,  faqkb?.name)'>
                           <i class="material-icons">edit</i>
                         </button>
 
@@ -318,8 +317,9 @@
             </div>
           </div>
         </div>
+      </div>
       <!-- </div> -->
-    <!-- </div> -->
+    </div>
   </div>
 </div>
 
