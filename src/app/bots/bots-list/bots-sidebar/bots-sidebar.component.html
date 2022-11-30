@@ -1,0 +1,83 @@
+<div class="toggle-setting-sidebar-icon-wpr" [ngClass]="{'is_opened': IS_OPEN, 'is_closed':!IS_OPEN }"
+  (click)="toggletBotsSidebar(IS_OPEN = !IS_OPEN)">
+  <span *ngIf="IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
+    chevron_left
+  </span>
+  <span *ngIf="!IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
+    chevron_right
+  </span>
+</div>
+
+<ul class="settings-sidebar" style="padding-left: 0px;list-style: none;">
+
+    <!-- -------------------------------------------------------- -->
+    <!--  @ Bot general settings  -->
+    <!-- -------------------------------------------------------- -->
+    <ng-container *ngIf="USER_ROLE !== 'agent'">
+      <li [ngClass]="{'active-item': BOTS_LIST_ROUTE_IS_ACTIVE}" (click)="goToBotsList()">
+
+        <a>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph" style="position: relative;left: 27px;margin-top: 8px;">
+            MY CHATBOTS
+          </p>
+
+        </a>
+      </li>
+
+    </ng-container>
+
+    <!-- ------------------------------------------------------- -->
+    <!-- @ Bot Intents -->
+    <!-- ------------------------------------------------------- -->
+    <ng-container *ngIf="USER_ROLE !== 'agent'">
+      <li [ngClass]="{'active-item': BOT_TEMPALTE_ROUTE_IS_ACTIVE}" (click)="goToBotTemplates()"
+        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Intents" #tooltip="matTooltip"
+        matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+        <a>
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+            textsms
+          </i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+            TEMPLATES
+          </p>
+        </a>
+      </li>
+    </ng-container>
+
+    <!-- ------------------------------------------------------- -->
+    <!-- @ Bot Fulfillment-->
+    <!-- ------------------------------------------------------- -->
+    <!-- <ng-container>
+      <li [ngClass]="{'active-item': FULFILLMENT_ROUTE_IS_ACTIVE }" (click)="goToTilebotfulfillment()"
+        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Fulfillment" #tooltip="matTooltip"
+        matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+        <a>
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+            offline_bolt
+          </i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+            Fulfillment
+          </p>
+        </a>
+      </li>
+    </ng-container> -->
+
+    <!-- ------------------------------------------------------- -->
+    <!-- Bot Training -->
+    <!-- ------------------------------------------------------- -->
+    <!-- <ng-container>
+      <li [ngClass]="{'active-item': TRAINING_ROUTE_IS_ACTIVE}" (click)="goToBotTraining()"
+        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'Training' | translate}}"
+        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+        <a>
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+            school
+          </i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+            {{'Training' | translate}}
+          </p>
+        </a>
+      </li>
+    </ng-container> -->
+
+  </ul>
