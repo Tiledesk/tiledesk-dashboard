@@ -90,11 +90,35 @@ mat-form-field.box-textarea ::ng-deep {
             position: relative;
             margin: 0;
             padding: 0;
-            background-color: #293445;
+
+            .response-controls{
+                position: absolute;
+                top: 10px;
+                left: 0;
+                .control-button{
+                    cursor: pointer;
+                    color: $color-text-select-hex;
+                    font-size: 18px;
+                    transition: color .3s;
+                    height: 24px;
+                }
+                .control-button:hover{
+                    color: #fff;
+                }
+                .control-button:hover{
+                    &.delete{
+                        color: $color-red-hex;
+                    }
+                    color: #fff;
+                }
+                
+            }
+
             .box-textarea {
                 width: calc(100% - 40px);
                 margin-left: 20px;
             }
+
             textarea {
                 border-radius: 8px;
                 background: #fff;
@@ -124,7 +148,6 @@ mat-form-field.box-textarea ::ng-deep {
                 right: 0px;
                 top: 50%;
                 color: #647283;
-                cursor: grab;
             }
         }
 

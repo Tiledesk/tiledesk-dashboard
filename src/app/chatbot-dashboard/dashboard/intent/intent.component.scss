@@ -5,6 +5,11 @@ $height-header: 50px;
 $width-title: 62%;
 $min-height-content: 376px;
 
+/* customize scrollbar */
+::-webkit-scrollbar {
+    width: 0px;
+}
+
 .box-dx {
     font-family: $mdb-font-family;
     font-size: 24px;
@@ -103,7 +108,111 @@ $min-height-content: 376px;
     min-height: $min-height-content;
     margin-top: 30px;
     overflow: auto;
+    max-height: calc(100vh - 230px);
     .typeText{
         display: block;
     }
+
+    .text-response{
+        display: block;
+        position: relative;
+        height: auto;
+        width: 100%;
+        min-height: 200px;
+        margin: 2px;
+        // background-color: rgba(250, 235, 215, 0.147);
+    }
+    .text-editor-drop {
+        position: absolute;
+        display: flex;
+        align-content: space-around;
+        width: 24px;
+        height: 24px;
+        right: 0;
+        top: 50%;
+        margin: -5px 0 0;
+        color: #647283;
+        cursor: grab;
+        background-color: transparent;
+        z-index: 1; 
+    }
+    .text-editor-drop:hover {
+        color: #fff;
+        cursor: grab;  
+    }
+    .text-editor-drop:hover {
+       
+    }
+
+
+    /** START DRAG AND DROP **/
+    .draggable-list {
+        width: 500px;
+        max-width: 100%;
+        border: solid 1px #ccc;
+        min-height: 60px;
+        display: block;
+        background: white;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+      
+    .draggable-box {
+        // xxx
+    }
+      
+    .cdk-drag-preview {
+        box-sizing: border-box;
+        border-radius: 4px;
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    }
+
+   
+    .cdk-drag-animating {
+        //transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+        //cursor: grabbing;
+    }
+       
+    .draggable-box:last-child {
+        border: none;
+    }
+      
+    .draggable-list.cdk-drop-list-dragging .draggable-box:not(.cdk-drag-placeholder) {
+       transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+       cursor: grabbing;
+    }
+      
+    .draggable-list.cdk-drop-list-dragging {
+        cursor: grabbing!important;
+    }
+
+    .custom-placeholder {
+        opacity: 0.4;
+        background: #ccc;
+        border: dotted 2px #999;
+        min-height: 60px;
+        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    // .draggable-list.cdk-drop-list-dragging .draggable-box {
+    //     background: #999;
+    //     .text-response {
+    //         background-color: aquamarine;
+    //         .textarea-response {
+    //             opacity: 0.0;
+    //             display: none;
+    //         }
+    //     }
+    // }
+        
+   
+        
+       
+    /** END DRAG AND DROP **/
+      
+
 }
+
+

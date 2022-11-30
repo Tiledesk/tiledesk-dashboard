@@ -1,4 +1,5 @@
 <div class="box-dx">
+
     <div class="header">
         <div class="form-group" [ngClass]="{'is-error':intentNameResult === false}">
             <i class="i-priority-color-mark"></i>
@@ -18,14 +19,39 @@
             </button>
         </div>
     </div>
-    <div class="content" cdkDropList (cdkDropListDropped)="drop($event)">
-        <div *ngFor="let response of arrayResponses; let i = index;">
-            <appdashboard-text-response
-            [index] = i
-            [response] = response
-            (deleteResponse) = onDeleteResponse($event)
-            ></appdashboard-text-response>
-            <!-- <div *ngIf="response" class="typeText"></div> -->
+
+    <div cdkDropList class="content draggable-list" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag>
+           
+
+            <div class="custom-placeholder" *cdkDragPlaceholder>
+                <appdashboard-text-response
+                [index] = i
+                [response] = response
+                (moveUpResponse) = onMoveUpResponse($event)
+                (moveDownResponse) = onMoveDownResponse($event)
+                (deleteResponse) = onDeleteResponse($event)
+                ></appdashboard-text-response>
+            </div>
+            
+            <div class="text-response">
+                <div class="text-editor-drop" 
+                [ngClass]="{'grabbing':textGrabbing}"
+                    (mousedown)="mouseDown()" 
+                    (mouseup)="mouseUp()" 
+                    cdkDragHandle>
+                    <!-- <em class="material-icons">drag_indicator</em> -->
+                </div> 
+
+                <appdashboard-text-response
+                [index] = i
+                [response] = response
+                (moveUpResponse) = onMoveUpResponse($event)
+                (moveDownResponse) = onMoveDownResponse($event)
+                (deleteResponse) = onDeleteResponse($event)
+                ></appdashboard-text-response>
+            </div>
+    
         </div>
     </div>
 </div>

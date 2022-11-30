@@ -2,6 +2,7 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Answer } from '../../../../../models/intent-model';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'appdashboard-text-response',
@@ -14,6 +15,8 @@ export class TextResponseComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Output() deleteResponse = new EventEmitter();
+  @Output() moveUpResponse = new EventEmitter();
+  @Output() moveDownResponse = new EventEmitter();
   @Input() response: Answer;
   @Input() index: number;
 
@@ -24,7 +27,7 @@ export class TextResponseComponent implements OnInit {
   alertCharsText: boolean;
 
   // Delay //
-  delayTime: number = 2.5;
+  delayTime: number;
 
 
   constructor() { }
@@ -44,6 +47,13 @@ export class TextResponseComponent implements OnInit {
   // EVENTS //
   onDeleteResponse(){
     this.deleteResponse.emit(this.index);
+  }
+
+  onMoveUpResponse(){
+    this.moveUpResponse.emit(this.index);
+  }
+  onMoveDownResponse(){
+    this.moveDownResponse.emit(this.index);
   }
 
 

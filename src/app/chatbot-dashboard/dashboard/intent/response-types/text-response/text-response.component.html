@@ -7,23 +7,23 @@
     </div>
 </div>
 
-<!-- <div class="response-controls">
-    <div data-size="default" class="control-button" drag-move="">
-        <i class="be-icons">move_outline</i>
-    </div> 
-    <div data-size="default" class="control-button" data-remove-response="">
-        <i class="be-icons">trash</i>
-    </div>
-</div> -->
 
 <div class="text-response">
    
     <div class="text-editor-wrapper">
         <div class="text-editor">
-
-            <div class="text-editor-delete" (click)="onDeleteResponse()">
-                <em class="material-icons">delete</em>
-            </div> 
+        
+            <div class="response-controls">
+                <div class="control-button" (click)="onMoveUpResponse()">
+                    <em class="material-icons">expand_less</em>
+                </div> 
+                <div class="control-button" (click)="onMoveDownResponse()">
+                    <em class="material-icons">expand_more</em>
+                </div>
+                <div class="control-button delete" (click)="onDeleteResponse()">
+                    <em class="material-icons">delete</em>
+                </div>
+            </div>
 
             <mat-form-field class="box-textarea" appearance="fill">
                 <!-- <mat-label>Autosize textarea</mat-label> -->
@@ -35,7 +35,6 @@
                     cdkAutosizeMinRows="1"
                     cdkAutosizeMaxRows="5"
                     (ngModelChange)="onChangeText($event)">
-                    What brings you here today?
                 </textarea>
             </mat-form-field>
             
@@ -59,7 +58,7 @@
 
 
     <div class="quick-replies">
-        <div class="tpl-drop-down"> 
+        <!-- <div class="tpl-drop-down"> 
             <div aria-expanded="false">
                 <div class="quick-reply">
                     <div data-quick-reply-text="Button" class="quick-reply-text">
@@ -70,6 +69,6 @@
         </div> 
         <div class="quick-reply-add">
         + Add button
-        </div>
+        </div> -->
     </div>
 </div>
