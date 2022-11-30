@@ -6,7 +6,8 @@ import { Subscription } from 'rxjs'
 import { LoggerService } from '../services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-
+import { URL_configure_your_first_chatbot, URL_connect_your_dialogflow_agent, URL_rasa_ai_integration, URL_external_chatbot_connect_your_own_chatbot} from './../utils/util';
+import { BrandService } from 'app/services/brand.service';
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-app-store',
@@ -27,6 +28,7 @@ export class AppStoreComponent implements OnInit {
   appHasBeenDeletedMsg: string;
   errorWhileDeletingApp: string;
   done_msg: string;
+  tparams: any;
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
@@ -34,7 +36,11 @@ export class AppStoreComponent implements OnInit {
     private logger: LoggerService,
     private notify: NotifyService,
     private translate: TranslateService,
-  ) { }
+    public brandService: BrandService,
+  ) { 
+    const brand = brandService.getBrand();
+    this.tparams = brand;
+  }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
@@ -364,6 +370,41 @@ export class AppStoreComponent implements OnInit {
 
 
 
+  // ----------------------------------------------------------
+  // Chatbot methods and doc link
+  // ----------------------------------------------------------
 
+  openExternalBotIntegrationTutorial() {
+    const url = URL_external_chatbot_connect_your_own_chatbot;
+    window.open(url, '_blank');
+  }
+
+  openDocsTiledeskDialogflowConnector() {
+    const url = URL_connect_your_dialogflow_agent
+    window.open(url, '_blank');
+  }
+
+  openRasaIntegrationTutorial() {
+    const url = URL_rasa_ai_integration;
+    window.open(url, '_blank');
+  }
+
+  goToCreateBot(type: string) {
+    //  console.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
+    if (type !== 'native' && type !== 'tilebot') {
+      this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
+    } else if (type === 'native') {
+      this.router.navigate(['project/' + this.projectId + '/bots/prebuilt']);
+      // this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
+
+    } else if (type === 'tilebot') {
+      // console.log('[BOT-TYPE-SELECT] HERE Y ')
+      this.router.navigate(['project/' + this.projectId + '/tilebot/prebuilt']);
+    }
+  }
+
+  goToCreateRasaBot() {
+    this.router.navigate(['project/' + this.projectId + '/bot/rasa/create']);
+  }
 
 }
