@@ -1,4 +1,4 @@
-<div class="toggle-setting-sidebar-icon-wpr" [ngClass]="{'is_opened': IS_OPEN, 'is_closed':!IS_OPEN }"
+<!-- <div class="toggle-setting-sidebar-icon-wpr" [ngClass]="{'is_opened': IS_OPEN, 'is_closed':!IS_OPEN }"
   (click)="toggletBotsSidebar(IS_OPEN = !IS_OPEN)">
   <span *ngIf="IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
     chevron_left
@@ -6,48 +6,85 @@
   <span *ngIf="!IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
     chevron_right
   </span>
-</div>
-
+</div> -->
+<!-- class="settings-sidebar" -->
 <ul class="settings-sidebar" style="padding-left: 0px;list-style: none;">
 
-    <!-- -------------------------------------------------------- -->
-    <!--  @ Bot general settings  -->
-    <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': BOTS_LIST_ROUTE_IS_ACTIVE}" (click)="goToBotsList()">
+  <!-- -------------------------------------------------------- -->
+  <!--  @ My Chatbots  -->
+  <!-- -------------------------------------------------------- -->
+  <ng-container *ngIf="USER_ROLE !== 'agent'">
+    <li>
 
-        <a>
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph" style="position: relative;left: 27px;margin-top: 8px;">
-            MY CHATBOTS
-          </p>
+      <a>
+        <p *ngIf="IS_OPEN === true" class="custom_paragraph" style="text-align: center;
+          font-size: 12px;">
+          MY CHATBOTS
+        </p>
 
-        </a>
-      </li>
+      </a>
+    </li>
 
-    </ng-container>
+  </ng-container>
 
-    <!-- ------------------------------------------------------- -->
-    <!-- @ Bot Intents -->
-    <!-- ------------------------------------------------------- -->
-    <ng-container *ngIf="USER_ROLE !== 'agent'">
-      <li [ngClass]="{'active-item': BOT_TEMPALTE_ROUTE_IS_ACTIVE}" (click)="goToBotTemplates()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Intents" #tooltip="matTooltip"
-        matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
-        <a>
-          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
-            textsms
-          </i>
-          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+  <!-- ------------------------------------------------------- -->
+  <!-- @ Template -->
+  <!-- ------------------------------------------------------- -->
+  <ng-container *ngIf="USER_ROLE !== 'agent'">
+    <li class="sidebar-item-wpr-no-link">
+      <a class="sidebar-item-no-link">
+        TEMPLATES
+        <!-- <p *ngIf="IS_OPEN === true" class="custom_paragraph" style="text-align: center;
+          font-size: 12px;">
             TEMPLATES
-          </p>
-        </a>
-      </li>
-    </ng-container>
+          </p> -->
+      </a>
 
-    <!-- ------------------------------------------------------- -->
-    <!-- @ Bot Fulfillment-->
-    <!-- ------------------------------------------------------- -->
-    <!-- <ng-container>
+
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE}" (click)="goToBotAllTemplates()">
+      <a class="sidebar-item">
+        All
+        <span class="sidebar-item-s">{{ allTemplatesCount }}</span>
+      </a>
+
+    </li>
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE}" (click)="goToBotIncreaseSalesTemplates()">
+      <a class="sidebar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="#647491" style="margin-right: 8px;" >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" /></svg>
+
+        Increase Sales
+        <span class="sidebar-item-s">{{ allTemplatesCount }}</span>
+      </a>
+
+    </li>
+
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE}" (click)="goToBotCustomerSatisfactionTemplates()">
+      <a class="sidebar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px" viewBox="0 0 24 24"
+          width="16px" fill="#647491" style="margin-right: 8px;">
+          <g>
+            <rect fill="none" height="24" width="24" />
+          </g>
+          <g>
+            <g />
+            <path
+              d="M11.99,2C6.47,2,2,6.48,2,12c0,5.52,4.47,10,9.99,10C17.52,22,22,17.52,22,12C22,6.48,17.52,2,11.99,2z M8.5,8 C9.33,8,10,8.67,10,9.5S9.33,11,8.5,11S7,10.33,7,9.5S7.67,8,8.5,8z M12,18c-2.28,0-4.22-1.66-5-4h10C16.22,16.34,14.28,18,12,18z M15.5,11c-0.83,0-1.5-0.67-1.5-1.5S14.67,8,15.5,8S17,8.67,17,9.5S16.33,11,15.5,11z" />
+          </g>
+        </svg>
+
+        Customer Satisfaction
+        <span class="sidebar-item-s">{{ allTemplatesCount }}</span>
+      </a>
+
+    </li>
+  </ng-container>
+
+  <!-- ------------------------------------------------------- -->
+  <!-- @ Bot Fulfillment-->
+  <!-- ------------------------------------------------------- -->
+  <!-- <ng-container>
       <li [ngClass]="{'active-item': FULFILLMENT_ROUTE_IS_ACTIVE }" (click)="goToTilebotfulfillment()"
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Fulfillment" #tooltip="matTooltip"
         matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
@@ -62,10 +99,10 @@
       </li>
     </ng-container> -->
 
-    <!-- ------------------------------------------------------- -->
-    <!-- Bot Training -->
-    <!-- ------------------------------------------------------- -->
-    <!-- <ng-container>
+  <!-- ------------------------------------------------------- -->
+  <!-- Bot Training -->
+  <!-- ------------------------------------------------------- -->
+  <!-- <ng-container>
       <li [ngClass]="{'active-item': TRAINING_ROUTE_IS_ACTIVE}" (click)="goToBotTraining()"
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'Training' | translate}}"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
@@ -80,4 +117,4 @@
       </li>
     </ng-container> -->
 
-  </ul>
+</ul>

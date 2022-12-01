@@ -302,3 +302,25 @@
     opacity: 1;
 }
 
+
+.css-18ptkhv {
+    display: flex;
+    flex-direction: row;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.css-18ptkhv > :nth-child(1) {
+    margin-right: auto;
+}
+
+.btn-size-m {
+    border-radius: 4px;
+    font-size: 14px;
+    height: 34px;
+    line-height: 18px;
+    min-width: 64px;
+    padding: 0 14px;
+}
