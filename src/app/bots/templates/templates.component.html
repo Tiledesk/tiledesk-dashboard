@@ -8,27 +8,26 @@
 
 
         <div class="content-wpr" style="display: flex;">
-            <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
+            <appdashboard-bots-sidebar 
+            [allTemplatesCount]="allTemplatesCount"
+            [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
+            [increaseSalesTemplatesCount]="increaseSalesTemplatesCount"
+            [myChatbotOtherCount]="myChatbotOtherCount"
                 style="border-right:1px solid #e5effe !important; padding-right: 10px;">
             </appdashboard-bots-sidebar>
-            <!-- margin-left: 20px; -->
-            <div class="teplate-content" style="flex: 1 1 auto; margin-top: 45px;">
-                <!-- <div class="row">
-                    <div class="col-xs-12">
-                        <button class="btn btn-tdblu-no-boxshadow pull-right" style="" (click)="createBlankTilebot()">
-                        <span> Add from scratch </span>
-                      </button>
-                    </div>
-                </div> -->
-                <!-- real -->
+            
+           
+            <div  class="teplate-content" style="flex: 1 1 auto;">
+
                 <div class="css-vetbs0">
-                    <div class="css-15ho9ci">
+                    <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                    <div *ngIf="!showSpinner" class="css-15ho9ci">
 
                         <div class="css-18ptkhv e15c8v5c0">
                             <div></div>
                             <button type="button"
-                                class=" btn btn-new btn-size-m btn--primary">
-                                <span>Add from  scratch</span>
+                                class="btn btn-new btn-size-m btn--primary" (click)="createBlankTilebot()">
+                                <span>Add from scratch</span>
                             </button>
                         </div>
                         <div class="css-1dra7n8 e1fjvpw20">

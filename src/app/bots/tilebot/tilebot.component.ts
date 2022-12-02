@@ -1158,7 +1158,8 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['project/' + this.project._id + '/bots']);
+    // this.router.navigate(['project/' + this.project._id + '/bots']);
+    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/other']);
   }
 
   // ----------------------------------------------------------------

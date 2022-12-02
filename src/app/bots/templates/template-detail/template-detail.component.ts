@@ -30,10 +30,10 @@ export class TemplateDetailComponent implements OnInit {
     public auth: AuthService,
     private usersService: UsersService
   ) {
-    console.log('TemplateDetailComponent', data) 
+    // console.log('TemplateDetailComponent', data) 
 
     this.template = data.template;
-    console.log('TemplateDetailComponent template ' ,this.template)
+    this.logger.log('TemplateDetailComponent template ' ,this.template)
 
     // this.templateName = data.name
     // console.log('TemplateDetailComponent templateName ' ,this.templateName)

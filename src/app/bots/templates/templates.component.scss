@@ -10,7 +10,7 @@
     -webkit-box-pack: start;
     justify-content: flex-start;
     align-items: normal;
-    padding: 20px;
+    padding: 0px 20px 20px;
     max-width: 1280px;
 }
 
@@ -193,6 +193,7 @@
     transform: translateY(12px);
     z-index: 1;
 }
+
 .btn-new.btn-block {
     // display: inline-flex;
     text-transform: none;
@@ -310,6 +311,7 @@
     justify-content: flex-start;
     -webkit-box-align: center;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .css-18ptkhv > :nth-child(1) {
@@ -323,4 +325,5 @@
     line-height: 18px;
     min-width: 64px;
     padding: 0 14px;
+    text-transform: none;
 }

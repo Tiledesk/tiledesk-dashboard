@@ -18,6 +18,8 @@ export class FaqKbService {
   user: any;
   project: any;
   public $nativeBotName: BehaviorSubject<string> = new BehaviorSubject<string>('')
+
+  
   constructor(
     private auth: AuthService,
     public appConfigService: AppConfigService,
@@ -69,8 +71,6 @@ export class FaqKbService {
     });
   }
 
- 
-
   checkIfExistUserAndGetToken() {
     if (this.user) {
       this.TOKEN = this.user.token
@@ -80,6 +80,7 @@ export class FaqKbService {
       this.logger.log('[FAQ-KB.SERV] No user is signed in');
     }
   }
+
 
 
   getTemplates() {

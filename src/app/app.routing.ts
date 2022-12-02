@@ -236,6 +236,8 @@ const routes: Routes = [
   /* path /faqkb commented and duplicated RENAMED IN /bots */
   // { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots', component: BotListComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/bots/my-chatbots/other', component: BotListComponent, canActivate: [AuthGuard] },
+  
   { path: 'project/:projectid/bots/bot-select-type', component: BotTypeSelectComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/bots/createfaqkb', component: BotCreateComponent, canActivate: [AuthGuard] }, // replaced by the bottom path
   { path: 'project/:projectid/bots/create/:type', component: BotCreateComponent, canActivate: [AuthGuard] },

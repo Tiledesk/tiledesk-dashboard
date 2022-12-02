@@ -275,5 +275,36 @@ input[type="checkbox"]:disabled {
   text-overflow: ellipsis;
 }
 
+.btn-new.btn-block {
+  // display: inline-flex;
+  text-transform: none;
+}
+
+.btn-new span {
+  display: inline-block;
+}
+
+.btn-size-m {
+  border-radius: 4px;
+  font-size: 14px;
+  height: 34px;
+  line-height: 18px;
+  min-width: 64px;
+  padding: 0 14px;
+  text-transform: none;
+}
+
+.btn--primary {
+  background-color: #0566ff;
+  border-color: #0566ff;
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background-color: #0049bd;
+  border-color: #0049bd;
+  color: #fff;
+}
+
 
 

@@ -259,9 +259,7 @@ export class AuthService {
     // console.log('[AUTH-SERV] - TOGGLE NATIVE BOT SIDEBAR IS OPENED ', isopened)
   }
 
-  togglebotsSidebar(isopened) {
-    this.botsSidebarIsOpened.next(isopened)
-  }
+
   /**
    * // REPLACE getProjectFromLocalStorage()
    * IF THE PROJECT RETURNED FROM THE project_bs SUBSCRIPTION IS NULL
