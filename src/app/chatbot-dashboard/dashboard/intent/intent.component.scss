@@ -127,14 +127,17 @@ $min-height-content: 376px;
         display: flex;
         align-content: space-around;
         width: 24px;
-        height: 24px;
-        right: 0;
+        height: 30px;
+        right: -2px;
         top: 50%;
-        margin: -5px 0 0;
+        margin: -8px 0 0 0;
         color: #647283;
         cursor: grab;
         background-color: transparent;
         z-index: 1; 
+
+        
+
     }
     .text-editor-drop:hover {
         color: #fff;
@@ -181,12 +184,8 @@ $min-height-content: 376px;
       
     .draggable-list.cdk-drop-list-dragging .draggable-box:not(.cdk-drag-placeholder) {
        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-       cursor: grabbing;
     }
       
-    .draggable-list.cdk-drop-list-dragging {
-        cursor: grabbing!important;
-    }
 
     .custom-placeholder {
         opacity: 0.4;
@@ -195,20 +194,8 @@ $min-height-content: 376px;
         min-height: 60px;
         transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
-
-    // .draggable-list.cdk-drop-list-dragging .draggable-box {
-    //     background: #999;
-    //     .text-response {
-    //         background-color: aquamarine;
-    //         .textarea-response {
-    //             opacity: 0.0;
-    //             display: none;
-    //         }
-    //     }
-    // }
         
-   
-        
+  
        
     /** END DRAG AND DROP **/
       

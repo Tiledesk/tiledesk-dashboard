@@ -17,6 +17,8 @@ export class TextResponseComponent implements OnInit {
   @Output() deleteResponse = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
+  @Output() openAddButtonPanel = new EventEmitter();
+  
   @Input() response: Answer;
   @Input() index: number;
 
@@ -73,5 +75,8 @@ export class TextResponseComponent implements OnInit {
     console.log("onChangeDelayTime: ", this.delayTime);
   }
 
+  onOpenAddButtonPanel(){
+    this.openAddButtonPanel.emit(this.index);
+  }
 
 }

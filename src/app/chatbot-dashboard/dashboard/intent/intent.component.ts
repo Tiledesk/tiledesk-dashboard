@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Intent, Answer } from '../../../models/intent-model';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
@@ -8,6 +8,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
   styleUrls: ['./intent.component.scss']
 })
 export class IntentComponent implements OnInit {
+  @Output() openAddButtonPanel = new EventEmitter();
   @Input() intent: Intent;
 
   // @Input() arrayResponses: Array<Answer>;
@@ -102,5 +103,10 @@ export class IntentComponent implements OnInit {
   /** */
   onSaveIntent(){
     this.checkIntentName();
+  }
+
+
+  onOpenAddButtonPanel(event){
+    this.openAddButtonPanel.emit(event);
   }
 }

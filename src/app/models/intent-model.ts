@@ -29,7 +29,12 @@
     }
 
     export interface Button {
-        label: string;
+        type: string,
+        value: string,
+        link?: string,
+        target?: string,
+        action?: string,
+        show_echo?: boolean
     }
 
 

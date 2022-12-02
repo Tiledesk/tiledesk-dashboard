@@ -13,7 +13,7 @@ import { HttpClient } from "@angular/common/http";
 
 
 
-import { Intent, Answer } from '../../models/intent-model';
+import { Intent, Answer, Button } from '../../models/intent-model';
 
 const swal = require('sweetalert');
 
@@ -42,6 +42,9 @@ export class DashboardComponent implements OnInit {
   intent: Intent;
   arrayResponses: Array<Answer> = [];
 
+  buttonSelected: Button;
+  arrayActions: Array<string> = [];
+  openCardButton = false;
 
 
   question_toUpdate: string;
@@ -95,6 +98,16 @@ export class DashboardComponent implements OnInit {
     // this.arrayResponses = ['test'];
   }
 
+
+  onCreatedNewButton(button){ 
+    console.log('onCreatedNewButton');
+    this.openCardButton = false;
+  }
+
+  onOpenAddButtonPanel(event){
+    console.log('onOpenAddButtonPanel');
+    this.openCardButton = true;
+  }
  
 
   drop(event: CdkDragDrop<string[]>) {

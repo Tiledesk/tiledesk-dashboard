@@ -9,24 +9,28 @@
     position: relative;
     height: 26px;
     padding: 0 9px 0 3px;
-    width: auto;
+    width: 100px;
     text-align: center;
-    transition: width .3s;
+    transition: width .3s ease-in;
+    font-size: $font-size-base;
     .delay-current{
         display: contents;
         width: auto;
-        color: #d2d2d2;
+        color: $color-light-gray-hex;
         cursor: pointer;
         font-size: 0.8em;
         font-weight: 400;
+        white-space: nowrap;
     }
     .delay-slider{
-        display: none;
+        display: inline-block;
+        opacity: 0;
+        transition: opacity .2s;
     }
     .delay-range {
         display: inline-flex;
-        color: #fff;
-        font-size: 11px;
+        color: $color-withe-hex;
+        font-size: 0.8em;
         font-weight: 600;
     }
     &.open {
@@ -35,8 +39,8 @@
             display: none;
         }
         .delay-slider{
-            display: inline-block;
             width: 100%;
+            opacity: 1;
         }
     }
 }
@@ -47,27 +51,25 @@
     cursor: pointer;
 }
 
-.delay-current {
-    color: $color-withe-hex;
-    cursor: pointer;
-}
+
 
 .delay-icon {
-    color: #fff;
-    font-size: 14px;
+    color: $color-withe-hex;;
+    font-size: 1em;
     font-weight: 700;
     margin-right: 9px;
 }
 
 
 
-// slider 
+/** SLIDER **/ 
 .vue-slider {
     margin: 0 5px;
     position: relative;
     display: inline-flex;
     padding: 7px 0;
-    width: 270px;
+    max-width: 270px;
+    width: calc(100% - 80px);
     height: 6px;
 }
 

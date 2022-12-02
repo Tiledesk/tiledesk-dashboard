@@ -14,14 +14,14 @@
         <div class="text-editor">
         
             <div class="response-controls">
+                 <div class="control-button delete" (click)="onDeleteResponse()">
+                    <em class="material-icons">delete</em>
+                </div>
                 <div class="control-button" (click)="onMoveUpResponse()">
                     <em class="material-icons">expand_less</em>
                 </div> 
                 <div class="control-button" (click)="onMoveDownResponse()">
                     <em class="material-icons">expand_more</em>
-                </div>
-                <div class="control-button delete" (click)="onDeleteResponse()">
-                    <em class="material-icons">delete</em>
                 </div>
             </div>
 
@@ -55,20 +55,19 @@
 
     </div> 
 
+</div>
 
-
-    <div class="quick-replies">
-        <!-- <div class="tpl-drop-down"> 
-            <div aria-expanded="false">
-                <div class="quick-reply">
-                    <div data-quick-reply-text="Button" class="quick-reply-text">
-                        Button
-                    </div>
+<div class="buttons-response quick-replies">
+    <!-- <div class="tpl-drop-down"> 
+        <div aria-expanded="false">
+            <div class="quick-reply">
+                <div data-quick-reply-text="Button" class="quick-reply-text">
+                    Button
                 </div>
             </div>
-        </div> 
-        <div class="quick-reply-add">
-        + Add button
-        </div> -->
+        </div>
+    </div>  -->
+    <div class="quick-reply-add" (click)="onOpenAddButtonPanel()">
+    + Add button
     </div>
 </div>

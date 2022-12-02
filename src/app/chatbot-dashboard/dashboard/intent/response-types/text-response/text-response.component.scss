@@ -1,6 +1,163 @@
 @import "../../../../variables";
 
+.extensions-response {
+    font-size: $font-size-base;
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    .delay-wrapper {
+        display: block;
+        height: auto;
+        width: auto;
+        margin: 0 20px;
+        padding: 2em 0.75em 0;
+    }
+}
 
+.text-response {
+    font-size: $font-size-base;
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    .text-editor-wrapper {
+        .text-editor {
+            position: relative;
+            margin: 0;
+            padding: 0;
+
+            .response-controls {
+                position: absolute;
+                top: 10px;
+                left: 2px;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+                .control-button {
+                    cursor: pointer;
+                    color: $color-bck-gray-hex;
+                    transition: color .3s;
+                    height: 20px;
+                    &.delete{
+                        height: 24px;
+                        width: 24px;
+                        background: $color-bck-gray-hex;
+                        border-radius: 15px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        em {
+                            font-size: 1.15em;
+                            color: $color-withe-hex;
+                            transition: color .3s;
+                        }
+                    }
+                }
+                .control-button:hover{
+                    color: $color-withe-hex;
+                    &.delete{
+                        box-shadow: 0 2px 6px 0 rgb(255 255 255 / 15%);
+                        em {
+                            color: $color-red-hex;
+                        }
+                    }
+                }
+            }
+
+            .box-textarea {
+                width: calc(100% - 40px);
+                margin-left: 20px;
+                textarea {
+                    border-radius: 8px;
+                    background: $color-withe-hex;
+                    border: 1px solid $color-withe-hex;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    width: calc(100% - 2.5em);
+                    padding: 20px 20px;
+                    color: $color-text-dark-hex;
+                    font-size: 1.15em;
+                    line-height: 25px;
+                    resize: vertical;
+                }
+            }
+
+            .text-editor-drop {
+                position: absolute;
+                display: inline-flex;
+                margin: -2% 0 0 0;
+                right: 0;
+                top: 50%;
+                color: $color-bck-gray-hex;
+                cursor: grab;
+            }
+        }
+
+        
+
+        .editor-utils {
+            position: relative;
+            margin: -20px 50px 0px 0px;
+            float: right;
+            .num-chars {
+                background: $color-light-gray-hex;
+                padding: 0px 8px;
+                border-radius: 12px;
+                font-size: 0.8em;
+                color: $color-text-box-hex;
+                float: right;
+                &.error {
+                    background: $color-orange-hex;
+                }
+            }
+            .text-editor-insert-attribute {
+                float: right;
+            }
+            .moji-picker {
+                float: right;
+            }
+        }
+    }
+}
+
+
+.text-response:hover {
+    .text-editor-wrapper .text-editor {
+        .response-controls {
+            opacity: 1;
+        }
+    }
+}
+
+
+.buttons-response {
+    .quick-reply-add {
+        user-select: none;
+        box-sizing: border-box;
+        outline: none;
+        border: 1px dashed #979797;
+        border-radius: 16px;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 400;
+        height: 32px;
+        line-height: 30px;
+        margin: 10px 5px 0;
+        order: 1;
+        padding: 0 16px;
+        transition: all .3s;
+        min-width: 100px;
+        width: fit-content;
+    }
+   
+
+}
+
+
+/** TEXT AREA **/
 mat-form-field.mat-focused ::ng-deep {
     .mat-form-field-wrapper {
         .mat-form-field-flex {
@@ -14,9 +171,9 @@ mat-form-field.mat-focused ::ng-deep {
         }
     }
 }
-
 mat-form-field.box-textarea ::ng-deep {
     .mat-form-field-wrapper {
+        padding-bottom:0;
         .mat-form-field-flex {
             border-radius: 4px 4px 0 0;
             padding: 0 0.75em 0 0.75em;
@@ -26,156 +183,4 @@ mat-form-field.box-textarea ::ng-deep {
     .mat-form-field-underline {
         display: none;
     }    
-}
-
-
-
-.delay-wrapper {
-    display: block;
-    height: auto;
-    width: auto;
-    margin: 0 20px;
-    padding: 2em 0.75em 0;
-}
-
-
-
-
-
-:host ::ng-deep mat-slider.mat-slider.mat-slider-horizontal .mat-slider-ticks {
-    // make ticks fill full height
-    height: 20px;
-    // this will force show the ticks
-    opacity: 1;
-    background-size: 10.101% 2px !important;
-    transform: translateZ(0px) translateX(5.05051%); // I adjusted my slider to be thicker, so the correct values for you here may be different
-}
-
-.mat-slider-thumb-label {
-    transform: rotate(45deg) !important;
-    border-radius: 50% 50% 0 !important;
-}
-
-.mat-slider-thumb {
-    transform: scale(0) !important;
-}
-
-.mat-slider-thumb-label-text {
-    opacity: 1 !important;
-}
-
-
-
-
-
-.extensions-response {
-    font-size: 14px;
-    position: relative;
-    width: 100%;
-    height: auto;
-    margin: 0;
-    padding: 0;
-}
-
-
-.text-response {
-    font-size: 14px;
-    position: relative;
-    width: 100%;
-    height: auto;
-    margin: 0;
-    padding: 0;
-    .text-editor-wrapper {
-        .text-editor {
-            position: relative;
-            margin: 0;
-            padding: 0;
-
-            .response-controls{
-                position: absolute;
-                top: 10px;
-                left: 0;
-                .control-button{
-                    cursor: pointer;
-                    color: $color-text-select-hex;
-                    font-size: 18px;
-                    transition: color .3s;
-                    height: 24px;
-                }
-                .control-button:hover{
-                    color: #fff;
-                }
-                .control-button:hover{
-                    &.delete{
-                        color: $color-red-hex;
-                    }
-                    color: #fff;
-                }
-                
-            }
-
-            .box-textarea {
-                width: calc(100% - 40px);
-                margin-left: 20px;
-            }
-
-            textarea {
-                border-radius: 8px;
-                background: #fff;
-                border: 1px solid #fff;
-                overflow-x: hidden;
-                overflow-y: auto;
-                width: calc(100% - 2.5em);
-                padding: 20px 20px;
-                color: #22272d;
-                font-size: 16px;
-                line-height: 25px;
-                resize: vertical;
-            }
-            .text-editor-delete {
-                position: absolute;
-                display: inline-flex;
-                margin: -20px 0;
-                left: 0px;
-                top: 50%;
-                color: #647283;
-                cursor: pointer;
-            }
-            .text-editor-drop {
-                position: absolute;
-                display: inline-flex;
-                margin: -18px 0;
-                right: 0px;
-                top: 50%;
-                color: #647283;
-            }
-        }
-
-    
-
-        .editor-utils {
-            position: relative;
-            margin: -40px 50px 0px 0px;
-            float: right;
-            .num-chars {
-                background: $color-light-gray-hex;
-                padding: 0px 8px;
-                border-radius: 12px;
-                font-size: 11px;
-                color: $color-text-box-hex;
-                float: right;
-                &.error {
-                    background: $color-orange-hex;
-                }
-            }
-            .text-editor-insert-attribute{
-                float: right;
-            }
-            .moji-picker{
-                float: right;
-            }
-        }
-
-    }
-
 }

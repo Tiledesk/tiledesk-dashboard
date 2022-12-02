@@ -5,9 +5,61 @@ $color-red-hex: #ed2e19;
 $color-orange-hex: #ffbb1c;
 $color-light-gray-hex: #D2D2D2;
 
+
+$color-1-rgb: 206 145 120;
+$color-2-rgb: 181 206 168;
+$color-3-rgb: 156 220 254;
+$color-4-rgb: 106 153 85;
+$color-5-rgb: 247 128 112;
+$color-6-rgb: 226 192 141;
+$color-7-rgb: 204 167 1;
+
+$color-1-hex: #CE9178;
+$color-2-hex: #B5CEA8;
+$color-3-hex: #9CDCFE;
+$color-4-hex: #6A9955;
+$color-5-hex: #F78070;
+$color-6-hex: #E2C08D;
+$color-7-hex: #CCA701;
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+$color-bck-1-hex: #1E1E1E;
+$color-bck-2-hex: #252526;
+$color-bck-3-hex: #2D2D2D;
+$color-bck-4-hex: #333333;
+$color-bck-5-hex: #3D3D3D;
+
+$color-bck-1-rgb: 30 30 30;
+$color-bck-2-rgb: 37 37 38;
+$color-bck-3-rgb: 45 45 45;
+$color-bck-4-rgb: 51 51 51;
+$color-bck-5-rgb: 61 61 61;
+
+
+$color-txt-1-hex: #787878;
+$color-txt-2-hex: #858585;
+$color-txt-3-hex: #CCCCCC;
+$color-txt-4-hex: #ffffff;
+
+$color-txt-1-rgb: 120 120 120;
+$color-txt-2-rgb: 133 133 133;
+$color-txt-3-rgb: 204 204 204;
+$color-txt-4-rgb: 255 255 255;
+
+
+
+
+
 $color-bck-light-gray-hex: #e7f3ff;
 $color-bck-gray-hex: #647283;
 $color-text-box-hex: #566787;
+$color-text-dark-hex: #22272d;
 $color-text-select-hex: #7695A5;
 
 $bg-color-dark-rgb: 15 23 42;
@@ -26,6 +78,7 @@ $bg-opacity-empty: 0.2;
 // Typography elements
 $mdb-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
 $mdb-font-family-poppins: "Poppins", "Roboto", Arial, sans-serif !default;
+$font-size-base: 14px;
 
 $padding-base: 15px !default;
 $margin-base: 15px !default;
