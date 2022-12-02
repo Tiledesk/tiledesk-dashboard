@@ -1289,7 +1289,7 @@
                           'working-status-dropdown-btn-chat': CHAT_PANEL_MODE === true,
                           'btn-deepred' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000,
                           'btn-tdblu' : request?.workingStatus === 'pending' && request?.status !== 1000,
-                          'btn-default' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000)}">
+                          'btn-default' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) || (request?.workingStatus === 'open' && request?.status === 1000)}">
                           <!-- use case: conversation assigned -->
                           <span class="open-conv"
                             *ngIf="(request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000">
