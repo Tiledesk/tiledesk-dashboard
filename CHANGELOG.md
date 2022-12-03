@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.3.6.1
+- Fixes the bug: for old archived conversations the dropdown menu available in the conversation details sidebar to change the conversation status is not populated with "Resolved"
+- Allows, in the conversation detail sidebar, to assign unique tags only
+
 ### 2.3.6
 - Deploys in production
 - Bug fixes: In the Edit Bot > Add/Edit Intent page the "form builder" field types are incorrect
