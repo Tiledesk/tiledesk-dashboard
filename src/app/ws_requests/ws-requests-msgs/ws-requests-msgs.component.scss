@@ -4481,6 +4481,16 @@ label {
   padding-left: 12px !important;
   padding-right: 12px !important;
 }
+
+.invalid--email {
+  color: #f44336;
+  position: relative;
+  top: -8px;
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: 34px;
+  margin-top: 5px;
+}
 //  ----- new tags
 .tag-content-wpr {
   padding: 6px 20px 6px 20px;
@@ -4866,7 +4876,6 @@ label {
   height: 24px;
   box-shadow: none;
   font-size: 11px;
- 
 }
 
 .working-status-dropdown-btn-chat {

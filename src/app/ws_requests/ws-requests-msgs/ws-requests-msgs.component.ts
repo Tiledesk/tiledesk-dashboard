@@ -2199,7 +2199,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ---------------------------------------------------------------------------------------
   toggleAddTagInputAndGetTags() {
     const elem_add_tag_btn = <HTMLElement>document.querySelector('.add_tag_btn');
-    // this.logger.log('% Ws-REQUESTS-Msgs - elem_add_tag_btn ', elem_add_tag_btn);
+    this.logger.log('% Ws-REQUESTS-Msgs - elem_add_tag_btn ', elem_add_tag_btn);
     elem_add_tag_btn.blur();
     this.getTag();
     this.diplayAddTagInput = !this.diplayAddTagInput
@@ -2298,32 +2298,56 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   createNewTag = (newTag: string) => {
     this.logger.log("Create New TAG Clicked : " + newTag)
+    this.logger.log("Create New TAG Clicked - request tag: ", this.request.tags)
 
-    var self = this;
-    this.logger.log(' this.ngSelect', this.ngSelect)
-    this.ngSelect.close()
-    this.ngSelect.blur()
-    this.getTagContainerElementHeight()
+    var index = this.request.tags.findIndex(t => t.tag === newTag);
+    if (index === -1) {
+      this.logger.log("Create New TAG Clicked - Tag NOT exist")
 
-    self.tag_selected_color = '#f0806f'
 
-    self.tagsService.createTag(newTag, this.tag_selected_color)
-      .subscribe((tag: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
+      let self = this;
+      this.logger.log(' this.ngSelect', this.ngSelect)
+      if (this.ngSelect) {
+        this.ngSelect.close()
+        this.ngSelect.blur()
+      }
+      this.getTagContainerElementHeight()
 
-        const tagObject = { tag: tag.tag, color: tag.color }
-        self.tagsArray.push(tagObject);
+      self.tag_selected_color = '#f0806f'
 
-        self.updateRequestTags(this.id_request, this.tagsArray, 'create')
+      self.tagsService.createTag(newTag, this.tag_selected_color)
+        .subscribe((tag: any) => {
+          this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
 
-      }, (error) => {
-        this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
-        self.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
-      }, () => {
-        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
+          const tagObject = { tag: tag.tag, color: tag.color }
+          self.tagsArray.push(tagObject);
 
-      });
+          self.updateRequestTags(this.id_request, this.tagsArray, 'create')
 
+        }, (error) => {
+          this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
+          self.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+        }, () => {
+          this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
+
+        });
+
+    } else {
+      this.logger.log("Create New TAG Clicked - Tag already exist ")
+      this.presentModalTagAlredyAssigned()
+    }
+
+  }
+
+  presentModalTagAlredyAssigned() {
+    swal({
+      title: "Tag already assigned",
+      text: "This tag has been alredy assigned. Please enter a unique tag",
+      icon: "info",
+      buttons: 'OK',
+      dangerMode: false,
+      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    })
   }
 
   removeTag(tag: string) {
@@ -2434,7 +2458,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (this.tag_name.length > 0) {
       // this.createTag();
       const inputElm = <HTMLElement>document.querySelector('.tag-name-in-conv-detail');
-      inputElm.blur();
+      this.logger.log('onPressEnterInIputTypeNewTag inputElm', inputElm)
+      if (inputElm) {
+        inputElm.blur();
+      }
       this.ngselect.close()
 
     }
@@ -2466,8 +2493,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.tagsList = this.tagsList.slice(0)
       }
       const inputElm = <HTMLElement>document.querySelector('.tag-name-in-conv-detail');
-      inputElm.blur()
       this.logger.log(`inputElm`, inputElm);
+      if (inputElm) {
+        inputElm.blur()
+      }
+
     }
   }
 
@@ -4975,6 +5005,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   emailChange(event) {
     this.EMAIL_IS_VALID = this.validateEmail(event)
     this.logger.log('ON EMAIL CHANGE EMAIL_IS_VALID ', this.EMAIL_IS_VALID)
+
+    this.getTagContainerElementHeight()
+
   }
 
 
