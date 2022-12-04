@@ -781,20 +781,18 @@
                           <div role="button" class="td-dropdown__trigger" tabindex="0"
                             (click)="openAddContactNameForm()">
                             <div id="edit-fullname-contact-info-wpr" class="contact-info-wpr">
-                              <h3 *ngIf="request?.lead?.fullname" class="contact-info--name">
-                                {{request?.lead?.fullname}}
+                              <h3 id="edit-fullname-contact-info--name" *ngIf="request?.lead?.fullname" class="contact-info--name" (click)="openAddContactNameForm()">
+                            {{request?.lead?.fullname}}
                               </h3>
-
+                              <!-- -->
                               <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24" class="edit--icon"
-                                (click)="openAddContactNameForm()">
+                                width="24" height="24" viewBox="0 0 24 24" class="edit--icon" (click)="openAddContactNameForm()" >
                                 <path
                                   d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
                                 </path>
                                 <path d="M0 0h24v24H0z" fill="none"></path>
                               </svg>
                             </div>
-
                           </div>
                           <div class="dropdown__menu-form " style="left: -48px;">
                             <div id="edit-fullname-content-form" class="dropdown__content-form">
