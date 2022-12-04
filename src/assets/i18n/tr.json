@@ -2262,6 +2262,12 @@
     "ExportAsJSON": "JSON olarak dışarı aktar",
     "ImportFromJSON": "JSON'dan içe aktar",
     "ImportFromCSV":"CSV'den içe aktar",
+    "ConvertToOffline":"Çevrimdışına dönüştür",
+    "SmartReassignmentForThisConversationWillBeDisabled":"Çevrimdışına dönüştür düğmesine tıklandığında, bu görüşme için akıllı yeniden atama devre dışı bırakılacak",
+    "ConvertToOnline":"Çevrimiçiye dönüştür",
+    "SmartReassignmentForThisConversationWillBeEnabled":"Çevrimiçiye dönüştür düğmesine tıklandığında, bu görüşme için akıllı yeniden atama etkinleştirilecek",
+    "TagAlreadyAssigned":"Etiket zaten atanmış",
+    "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Bu etiket zaten atanmış. Lütfen benzersiz bir etiket girin",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",

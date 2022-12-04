@@ -2262,6 +2262,12 @@
 	"ExportAsJSON": "Als JSON exportieren",
 	"ImportFromJSON": "Aus JSON importieren",
 	"ImportFromCSV":"Import aus CSV",
+	"ConvertToOffline":"Offline konvertieren",
+	"SmartReassignmentForThisConversationWillBeDisabled":"Durch Klicken auf die Schaltfläche In Offline konvertieren wird die intelligente Neuzuweisung für diese Konversation deaktiviert",
+	"ConvertToOnline":"Konvertieren Sie in Online",
+	"SmartReassignmentForThisConversationWillBeEnabled":"Durch Klicken auf die Schaltfläche In Online konvertieren wird die intelligente Neuzuweisung für die aktuelle Konversation aktiviert",
+	"TagAlreadyAssigned":"TAG bereits zugewiesen",
+	"ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Dieses Tag wurde bereits vergeben. Bitte geben Sie ein eindeutiges Tag ein",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",

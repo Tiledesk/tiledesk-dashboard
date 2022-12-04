@@ -2262,6 +2262,12 @@
     "ExportAsJSON": "JSON sifatida eksport qiling",
     "ImportFromJSON": "JSON dan import qilish",
     "ImportFromCSV":"CSV dan import qilish",
+    "ConvertToOffline":"Oflayn rejimga aylantirish",
+    "SmartReassignmentForThisConversationWillBeDisabled":"Oflaynga aylantirish tugmasini bosish orqali joriy suhbat uchun aqlli qayta tayinlash o‘chirib qo‘yiladi",
+    "ConvertToOnline":"Onlaynga aylantiring",
+    "SmartReassignmentForThisConversationWillBeEnabled":"Onlaynga aylantirish tugmasini bosish orqali suhbat uchun aqlli qayta tayinlash yoqiladi",
+    "TagAlreadyAssigned":"Teg allaqachon tayinlangan",
+    "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Bu teg allaqachon tayinlangan. Iltimos, noyob teg kiriting",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

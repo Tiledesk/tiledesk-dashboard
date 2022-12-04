@@ -2262,6 +2262,12 @@
     "ExportAsJSON": "Exporter au format JSON",
     "ImportFromJSON": "Importer depuis JSON",
     "ImportFromCSV":"Importer depuis CSV",
+    "ConvertToOffline":"Convertir hors ligne",
+    "SmartReassignmentForThisConversationWillBeDisabled":"En cliquant sur le bouton Convertir en mode hors connexion, la réaffectation intelligente pour cette conversation sera désactivée",
+    "ConvertToOnline":"Convertir en ligne",
+    "SmartReassignmentForThisConversationWillBeEnabled":"En cliquant sur le bouton Convertir en ligne, la réaffectation intelligente pour la conversation en cours sera activée",
+    "TagAlreadyAssigned":"TAG déjà attribué",
+    "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Ce tag a déjà été attribué. Veuillez entrer une tag unique",
     "AddIntentPage": {
         "AddForm": "Ajouter le formulaire",
         "SelectTemplateForm": "Sélectionnez un type de forme parmi ceux suggérés, ou créez-en un nouveau",

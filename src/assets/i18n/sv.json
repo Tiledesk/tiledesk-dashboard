@@ -2262,6 +2262,12 @@
     "ExportAsJSON": "Exportera som JSON",
     "ImportFromJSON": "Importera från JSON",
     "ImportFromCSV":"Importera från CSV",
+    "ConvertToOffline":"Konvertera till offline",
+    "SmartReassignmentForThisConversationWillBeDisabled":"Genom att klicka på knappen Konvertera till offline kommer smart omtilldelning för denna konversation att inaktiveras",
+    "ConvertToOnline":"Konvertera till online",
+    "SmartReassignmentForThisConversationWillBeEnabled":"Genom att klicka på knappen Konvertera till online aktiveras smart omtilldelning för denna konversation",
+    "TagAlreadyAssigned":"Tagg redan tilldelad",
+    "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Den här taggen har redan tilldelats. Vänligen ange en unik etikett",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

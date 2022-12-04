@@ -357,6 +357,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     'hide-delay': 22222222220,
     'placement': 'left',
   }
+  convertToOffline: string;
+  smartReassignmentForThisConversationWillBeDisabled: string;
+  convertToOnline: string;
+  smartReassignmentForThisConversationWillBeEnabled: string;
+  tagAlreadyAssigned: string
+  thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag: string
   /**
    * Constructor
    * @param router 
@@ -2341,8 +2347,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentModalTagAlredyAssigned() {
     swal({
-      title: "Tag already assigned",
-      text: "This tag has been alredy assigned. Please enter a unique tag",
+      title: this.tagAlreadyAssigned,
+      text: this.thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag,
       icon: "info",
       buttons: 'OK',
       dangerMode: false,
@@ -4276,6 +4282,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.visitorAlreadyBanned = text;
     });
 
+    this.translate.get('SmartReassignmentForThisConversationWillBeDisabled').subscribe((text: string) => {
+      this.smartReassignmentForThisConversationWillBeDisabled = text;
+    });
+
+    this.translate.get('ConvertToOffline').subscribe((text: string) => {
+      this.convertToOffline = text;
+    });
+
+    this.translate.get('ConvertToOnline').subscribe((text: string) => {
+      this.convertToOnline = text;
+    });
+    this.translate.get('SmartReassignmentForThisConversationWillBeEnabled').subscribe((text: string) => {
+      this.smartReassignmentForThisConversationWillBeEnabled = text;
+    });
+
+    this.translate.get('TagAlreadyAssigned').subscribe((text: string) => {
+      this.tagAlreadyAssigned = text;
+    });
+
+    this.translate.get('ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag').subscribe((text: string) => {
+      this.thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag = text;
+    });
 
   }
 
@@ -4731,9 +4759,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   smartAssignmentOff() {
     swal({
       title: this.areYouSureLbl + '?',
-      text: "By clicking the Convert to offline button, smart reassignment for this conversation will be disabled",
+      text: this.smartReassignmentForThisConversationWillBeDisabled,
       icon: "info",
-      buttons: [this.cancelLbl, 'Convert to offline'],
+      buttons: [this.cancelLbl, this.convertToOffline],
       dangerMode: true,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
@@ -4773,9 +4801,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   smartAssignmentOn() {
     swal({
       title: this.areYouSureLbl + '?',
-      text: "By clicking the Convert to online button, smart reassignment for this conversation will be enabled",
+      text: this.smartReassignmentForThisConversationWillBeEnabled,
       icon: "info",
-      buttons: [this.cancelLbl, 'Convert to online'],
+      buttons: [this.cancelLbl, this.convertToOnline],
       dangerMode: true,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })

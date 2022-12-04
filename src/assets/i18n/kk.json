@@ -2262,6 +2262,12 @@
     "ExportAsJSON": "JSON ретінде экспорттау",
     "ImportFromJSON": "JSON ішінен импорттау",
     "ImportFromCSV":"CSV ішінен импорттау",
+    "ConvertToOffline":"Офлайнға түрлендіру",
+    "SmartReassignmentForThisConversationWillBeDisabled":"Офлайнға түрлендіру түймесін басу арқылы осы әңгімеге смарт қайта тағайындау өшіріледі",
+    "ConvertToOnline":"Желіге түрлендіру",
+    "SmartReassignmentForThisConversationWillBeEnabled":"Желіге түрлендіру түймесін басу арқылы осы сөйлесу үшін смарт қайта тағайындау қосылады",
+    "TagAlreadyAssigned":"TAG әлдеқашан тағайындалған",
+    "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Бұл тег әлдеқашан тағайындалған. Бірегей тег енгізіңіз",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",

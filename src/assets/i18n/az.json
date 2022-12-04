@@ -2262,6 +2262,12 @@
     "ExportAsJSON": "JSON kimi ixrac edin",
     "ImportFromJSON": "JSON-dan idxal edin",
     "ImportFromCSV":"CSV-dən idxal edin",
+    "ConvertToOffline":"Oflayna çevirin",
+    "SmartReassignmentForThisConversationWillBeDisabled":"Oflayn rejimə çevir düyməsini klikləməklə, bu söhbət üçün ağıllı təyinat deaktiv ediləcək",
+    "ConvertToOnline":"Onlayn rejimə çevirin",
+    "SmartReassignmentForThisConversationWillBeEnabled":"Onlayn rejimə çevir düyməsinə klikləməklə, cari söhbət üçün ağıllı yenidən təyinat aktiv ediləcək",
+    "TagAlreadyAssigned":"TAG artıq təyin edilib",
+    "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Bu teq artıq təyin edilib. Zəhmət olmasa unikal etiket daxil edin",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

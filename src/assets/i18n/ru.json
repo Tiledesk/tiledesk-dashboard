@@ -2262,6 +2262,12 @@
     "ExportAsJSON": "Экспортировать как JSON",
     "ImportFromJSON": "Импорт из JSON",
     "ImportFromCSV":"Импорт из CSV",
+    "ConvertToOffline":"Преобразовать в автономный режим",
+    "SmartReassignmentForThisConversationWillBeDisabled":"При нажатии кнопки Преобразовать в автономный режим смарт-переназначение для этого разговора будет отключено",
+    "ConvertToOnline":"Преобразовать в онлайн",
+    "SmartReassignmentForThisConversationWillBeEnabled":"Нажав кнопку Преобразовать в онлайн, умное переназначение для этого разговора будет включено",
+    "TagAlreadyAssigned":"Тег уже назначен",
+    "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Этот тег уже присвоен. Пожалуйста, введите уникальный тег",
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",
