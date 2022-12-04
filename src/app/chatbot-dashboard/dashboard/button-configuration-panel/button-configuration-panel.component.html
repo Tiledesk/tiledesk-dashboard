@@ -10,11 +10,10 @@
                 {{ 'Titolo del bottone...' | translate }}
             </label>
             <input 
-                type="text" 
-                [(ngModel)]="buttonLabel" 
-                class="input form-control"
+                type = "text" 
+                [(ngModel)] = "buttonLabel" 
+                class = "input form-control"
                 (blur) = "onBlurButtonLabel($event)"
-                (change) = "onChangeButtonLabel($event)"
             />
         </div>
 
@@ -88,7 +87,8 @@
                         [items] = "arrayActions" 
                         [searchable] = false
                         [clearable] = false
-                        [(ngModel)] = "buttonAction">
+                        [(ngModel)] = "buttonAction"
+                        (change) = "onChangeActionButton($event)">
                     </ng-select>
                 </div>
             </div>

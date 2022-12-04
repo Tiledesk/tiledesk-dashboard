@@ -264,5 +264,77 @@
         }
       ],
       "id": "63872f0d7007d9003df3a71f"
+    }, 
+    {
+      "reply": {
+        "text": "Hello 👋. I'm a bot 🤖 I'm beautiful Do you need help I can really help you with joy!",
+        "attributes": {
+          "commands": [
+            {
+              "type": "message",
+              "message": {
+                "text": "Hello 👋. I'm a bot 🤖",
+                "type": "text"
+              }
+            },
+            {
+              "type": "wait",
+              "time": 500
+            },
+            {
+              "type": "message",
+              "message": {
+                "text": "I'm beautiful",
+                "type": "text"
+              }
+            },
+            {
+              "type": "wait",
+              "time": 1000
+            },
+            {
+              "type": "message",
+              "message": {
+                "text": "Do you need help?",
+                "type": "text"
+              }
+            },
+            {
+              "type": "wait",
+              "time": 2000
+            },
+            {
+              "type": "message",
+              "message": {
+                "text": "I can really help you with joy!",
+                "type": "text",
+                "attributes": {
+                  "attachment": {
+                    "type": "template",
+                    "buttons": [
+                      {
+                        "type": "url",
+                        "value": "Get Help",
+                        "link": "https://gethelp.tiledesk.com/articles/install-widget-on-your-website/",
+                        "target": "self"
+                      },
+                      {
+                        "type": "url",
+                        "value": "Wikipedia",
+                        "link": "https://it.m.wikipedia.org/wiki/E_Street_Band",
+                        "target": "self"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "question": "question test3",
+      "answer": "answer test3",
+      "id_faq_kb": "63862c068aed9b003511cead",
+      "intent_display_name": "Test3"
     }
   ]

@@ -58,16 +58,22 @@
 </div>
 
 <div class="buttons-response quick-replies">
-    <!-- <div class="tpl-drop-down"> 
+    
+    <div *ngFor="let button of buttons; let i = index;" class="tpl-drop-down"> 
         <div aria-expanded="false">
             <div class="quick-reply">
-                <div data-quick-reply-text="Button" class="quick-reply-text">
-                    Button
+                <div 
+                    data-quick-reply-text="Button" 
+                    class="quick-reply-text"
+                    (click)="onOpenButtonPanel(button)">
+                    {{button.value}}
                 </div>
             </div>
         </div>
-    </div>  -->
-    <div class="quick-reply-add" (click)="onOpenAddButtonPanel()">
+    </div>
+
+
+    <div class="quick-reply-add" (click)="onOpenButtonPanel()">
     + Add button
     </div>
 </div>

@@ -1,19 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { Button } from 'app/models/intent-model';
 
-export enum TYPE_BUTTON {
-  TEXT = 'text', 
-  URL = 'url', 
-  ACTION = 'action'
-}
-
-
-export enum TYPE_URL {
-  BLANK = 'blank', 
-  PARENT = 'parent', 
-  SELF = 'self'
-}
-
+import { TYPE_BUTTON, TYPE_URL } from '../../utils';
 
 @Component({
   selector: 'appdashboard-button-configuration-panel',
@@ -23,6 +11,7 @@ export enum TYPE_URL {
 export class ButtonConfigurationPanelComponent implements OnInit {
 
   @Output() createdNewButton = new EventEmitter();
+  @Output() closeButtonPanel = new EventEmitter();
   @Input() arrayActions: Array<string>;
   @Input() button: Button;
 
@@ -40,16 +29,40 @@ export class ButtonConfigurationPanelComponent implements OnInit {
   buttonUrl: string;
   errorUrl: boolean;
 
-  // actions: Array<string>;
   buttonAction: string;
 
+  clickInside: boolean;
 
   constructor() { }
 
+  @HostListener("click")
+  clicked() {
+    this.clickInside = true;
+    console.log('----> click::: ', this.clickInside);
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickedOut(event) {
+    let parentId;
+    try {
+      parentId = event.target.id;
+    } catch (error) {
+      // error
+    }
+   
+    console.log('onCloseButtonPanel ---------------> ', event, event.target, parentId)
+    if(this.clickInside === false && parentId !== "card-buttons-no-close") {
+      this.closeButtonPanel.emit();
+    }
+    this.clickInside = false;
+  }
+
   ngOnInit(): void {
+    this.arrayActions = ['uno', 'due'];
     this.buttonLabelResult = true;
     this.errorUrl = false;
-    
+    console.log('----> this.button::: ', this.button);
+
     this.buttonTypes = [this.typeOfButton.TEXT,this.typeOfButton.URL, this.typeOfButton.ACTION];
     this.urlTypes = [this.typeOfUrl.BLANK,this.typeOfUrl.PARENT, this.typeOfUrl.SELF];
     this.buttonLabel = '';
@@ -63,11 +76,25 @@ export class ButtonConfigurationPanelComponent implements OnInit {
       this.urlType = this.button.target;
       this.buttonUrl = this.button.link;
       this.buttonAction = this.button.action;
+    } else {
+      this.addNewButton();
     }
 
+    // this.clickInside = true; // altrimenti non si apre
   }
 
 
+  private addNewButton(){
+    this.button = {
+      'value': '',
+      'type': this.typeOfButton.TEXT,
+      'target': this.typeOfUrl.BLANK,
+      'link': '',
+      'action': '',
+      'show_echo': true
+    };
+  }
+  
   private checkButtonLabel(): boolean {
     //setTimeout(() => {
       if (!this.buttonLabel || this.buttonLabel.length === 0){
@@ -115,17 +142,20 @@ export class ButtonConfigurationPanelComponent implements OnInit {
 
   /** */
   onSaveButton(){
-    if(this.checkButtonLabel() && this.checkTypeButton()){
+    let checkLabel = this.checkButtonLabel();
+    let checkType = this.checkTypeButton();
+    if(checkLabel && checkType){
+      console.log('----> this.onSaveButton::: ', this.button);
       this.createdNewButton.emit(this.button);
+
     }
-    
   }
 
   /** */
-  onChangeButtonLabel(name: string){
-    name.toString();
-    this.buttonLabel = name.replace(/[^A-Z0-9_]+/ig, "");
-  }
+  // onChangeButtonLabel(name: string){
+  //   name.toString();
+  //   this.buttonLabel = name.replace(/[^A-Z0-9_]+/ig, "");
+  // }
 
   /** */
   onBlurButtonLabel(name: string){
@@ -147,10 +177,19 @@ export class ButtonConfigurationPanelComponent implements OnInit {
 
   /** */
   onChangeTypeButton(typeOfButton) {
+    this.button.type = typeOfButton;
   }
+
+  /** */
+  onChangeActionButton(actionButton) {
+    this.button.action = actionButton;
+  }
+
+  
 
   triggerResize(){}
 
   onBlurIntentName(event){}
   onChangeIntentName(event){}
+
 }

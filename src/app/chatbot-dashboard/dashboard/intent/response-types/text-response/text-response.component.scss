@@ -133,6 +133,54 @@
 
 
 .buttons-response {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    width: 100%;
+    .quick-reply {
+        -webkit-font-smoothing: antialiased!important;
+        font-family: Source Sans Pro,sans-serif;
+        user-select: none;
+        -webkit-box-direction: normal;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        box-sizing: border-box;
+        outline: none;
+        background: #fff;
+        border: 1px solid #006cff;
+        border-radius: 16px;
+        color: #006cff;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        height: 32px;
+        line-height: 30px;
+        margin: 10px 5px 0;
+        min-width: 100px;
+        padding: 0 16px;
+        position: relative;
+        text-align: center;
+        transition: all .3s;
+    }
+    .quick-reply-text {
+        -webkit-font-smoothing: antialiased!important;
+        font-family: Source Sans Pro,sans-serif;
+        user-select: none;
+        -webkit-box-direction: normal;
+        color: #006cff;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 30px;
+        text-align: center;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        box-sizing: border-box;
+        margin: 0;
+        outline: none;
+        padding: 0;
+        overflow: hidden!important;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
     .quick-reply-add {
         user-select: none;
         box-sizing: border-box;

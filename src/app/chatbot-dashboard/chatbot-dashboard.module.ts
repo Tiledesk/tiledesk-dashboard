@@ -37,7 +37,6 @@ import { ButtonConfigurationPanelComponent } from './dashboard/button-configurat
     MatSelectModule,
     RouterModule,
     TranslateModule,
-    // SharedModule,
     FormsModule,
     MatInputModule
   ]

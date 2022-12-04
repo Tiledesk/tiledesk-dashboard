@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Intent, Answer } from '../../../models/intent-model';
+import { Intent, Message } from '../../../models/intent-model';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
@@ -8,7 +8,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
   styleUrls: ['./intent.component.scss']
 })
 export class IntentComponent implements OnInit {
-  @Output() openAddButtonPanel = new EventEmitter();
+  @Output() openButtonPanel = new EventEmitter();
   @Input() intent: Intent;
 
   // @Input() arrayResponses: Array<Answer>;
@@ -18,7 +18,7 @@ export class IntentComponent implements OnInit {
 
   textGrabbing: boolean;
 
-  arrayResponses: Array<Answer>;
+  arrayResponses: Array<Message>;
 
   constructor() { }
 
@@ -28,11 +28,36 @@ export class IntentComponent implements OnInit {
   
   // FUNCTIONS //
   private initialize(){
-    this.intentName = "";
+    this.intentName = this.intent.intent_display_name;
     this.intentNameResult = true;
-    this.arrayResponses = this.intent.answers;
+
+    this.arrayResponses = [];
     this.textGrabbing = false;
+
+    this.generateArrayResponse();
   }
+
+
+  private generateArrayResponse(){
+    let commands = this.intent.reply.attributes.commands;
+    var time = 500;
+    commands.forEach(element => {
+      if(element.type === 'wait') {
+        time = element.time;
+      }
+      if(element.type === 'message'){
+        let response = element.message;
+        response.time = time;
+        this.arrayResponses.push(response);
+        time = 500;
+      }
+    });
+        
+
+    console.log('arrayResponses:: ', this.arrayResponses);
+
+  }
+
 
   /** */
   private checkIntentName() {
@@ -106,7 +131,7 @@ export class IntentComponent implements OnInit {
   }
 
 
-  onOpenAddButtonPanel(event){
-    this.openAddButtonPanel.emit(event);
+  onOpenButtonPanel(event){
+    this.openButtonPanel.emit(event);
   }
 }

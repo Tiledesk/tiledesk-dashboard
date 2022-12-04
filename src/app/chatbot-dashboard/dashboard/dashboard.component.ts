@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { FaqService } from '../../services/faq.service';
 import { Project } from '../../models/project-model';
-
 import { AuthService } from '../../core/auth.service';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,19 +16,6 @@ import { Intent, Answer, Button } from '../../models/intent-model';
 
 const swal = require('sweetalert');
 
-// export interface Intent2 {
-//   type?: string;
-//   message?: {
-//       text: string;
-//       type?: string;
-//       attributes?: Attributes;
-//       metadata?: Metadata;
-//   };
-//   time?: number;
-//   waitTime?: number;
-// }
-
-
 
 @Component({
   selector: 'appdashboard-dashboard',
@@ -38,14 +24,14 @@ const swal = require('sweetalert');
 })
 export class DashboardComponent implements OnInit {
 
-
-  intent: Intent;
+  arrayIntent: Array<Intent> = [];
+  intentSelected: Intent;
   arrayResponses: Array<Answer> = [];
+
 
   buttonSelected: Button;
   arrayActions: Array<string> = [];
   openCardButton = false;
-
 
   question_toUpdate: string;
   answer_toUpdate: string;
@@ -76,38 +62,30 @@ export class DashboardComponent implements OnInit {
     private httpClient: HttpClient
   ) { }
 
+
   ngOnInit() {
     this.getTranslations();
     this.auth.checkRoleForCurrentProject();
     this.getUrlParams();
-    if (this.router.url.indexOf('/createfaq') !== -1) {
-      console.log('[FAQ-EDIT-ADD] HAS CLICKED CREATE ');
-      this.CREATE_VIEW = true;
-      this.showSpinner = false;
-      this.getFaqKbId();
-    } else {
-      console.log('[FAQ-EDIT-ADD] HAS CLICKED EDIT ');
-      this.EDIT_VIEW = true;
-      if (this.id_faq) {
-        this.getFaqById();
-        this.MOCK_getFaqById();
-      }
-    }
+    this.MOCK_getFaqById();
+
+    // if (this.router.url.indexOf('/createfaq') !== -1) {
+    //   console.log('[FAQ-EDIT-ADD] HAS CLICKED CREATE ');
+    //   this.CREATE_VIEW = true;
+    //   this.showSpinner = false;
+    //   this.getFaqKbId();
+    // } else {
+    //   console.log('[FAQ-EDIT-ADD] HAS CLICKED EDIT ');
+    //   this.EDIT_VIEW = true;
+    //   if (this.id_faq) {
+    //     this.getFaqById();
+    //     this.MOCK_getFaqById();
+    //   }
+    // }
     this.getCurrentProject();
     this.getBrowserVersion();
-    // this.arrayResponses = ['test'];
   }
 
-
-  onCreatedNewButton(button){ 
-    console.log('onCreatedNewButton');
-    this.openCardButton = false;
-  }
-
-  onOpenAddButtonPanel(event){
-    console.log('onOpenAddButtonPanel');
-    this.openCardButton = true;
-  }
  
 
   drop(event: CdkDragDrop<string[]>) {
@@ -168,81 +146,6 @@ export class DashboardComponent implements OnInit {
     // this.translateAnswerSuccessfullyDeleted();
   }
 
-  // TRANSLATION
-  // translateCreateFaqSuccessMsg() {
-  //   this.translate.get('CreateFaqSuccessNoticationMsg')
-  //     .subscribe((text: string) => {
-  //       this.createFaqSuccessNoticationMsg = text;
-  //     });
-  // }
-
-  // // TRANSLATION
-  // translateCreateFaqErrorMsg() {
-  //   this.translate.get('CreateFaqErrorNoticationMsg')
-  //     .subscribe((text: string) => {
-  //       this.createFaqErrorNoticationMsg = text;
-  //     });
-  // }
-
-  // // TRANSLATION
-  // translateUpdateFaqSuccessMsg() {
-  //   this.translate.get('UpdateFaqSuccessNoticationMsg')
-  //     .subscribe((text: string) => {
-  //       this.editFaqSuccessNoticationMsg = text;
-  //     });
-  // }
-
-  // // TRANSLATION
-  // translateUpdateFaqErrorMsg() {
-  //   this.translate.get('UpdateFaqErrorNoticationMsg')
-  //     .subscribe((text: string) => {
-  //       this.editFaqErrorNoticationMsg = text;
-  //     });
-  // }
-
-  // // TRANSLATION
-  // translateWarningMsg() {
-  //   this.translate.get('Warning').subscribe((text: string) => {
-  //     this.warningMsg = text;
-  //   });
-  // }
-
-  // // TRANSLATION
-  // translateAreYouSure() {
-  //   this.translate.get('AreYouSure').subscribe((text: string) => {
-  //     this.areYouSureMsg = text;
-  //   });
-  // }
-
-  // // TRANSLATION
-  // translateErrorDeleting() {
-  //   this.translate.get('ErrorDeleting').subscribe((text: string) => {
-  //     this.errorDeleting = text;
-  //   });
-  // }
-
-  // // TRANSLATION
-  // translateDone() {
-  //   this.translate.get('Done').subscribe((text: string) => {
-  //     this.done_msg = text;
-  //   });
-  // }
-
-  // // TRANSLATION
-  // translateErrorOccurredDeletingAnswer() {
-  //   this.translate.get('FaqPage.AnErrorOccurredWhilDeletingTheAnswer').subscribe((text: string) => {
-  //     this.errorDeletingAnswerMsg = text;
-  //   });
-  // }
-
-  // // TRANSLATION
-  // translateAnswerSuccessfullyDeleted() {
-  //   this.translate.get('FaqPage.AnswerSuccessfullyDeleted').subscribe((text: string) => {
-  //     this.answerSuccessfullyDeleted = text;
-  //     // this.logger.log('+ + + AnswerSuccessfullyDeleted', this.answerSuccessfullyDeleted)
-  //   });
-  // }
-  // /. end translations
 
   /** */
   getCurrentProject() {
@@ -251,89 +154,46 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  /**
-  * GET FAQ BY ID (GET THE DATA OF THE FAQ BY THE ID PASSED FROM FAQ LIST)
-  * USED TO SHOW IN THE TEXAREA THE QUESTION AND THE ANSWER THAT USER WANT UPDATE
-  */
-  getFaqById() {
-    this.faqService.getFaqById(this.id_faq).subscribe((faq: any) => {
-      this.logger.log('[FAQ-EDIT-ADD] - FAQ GET BY ID RES', faq);
-      if (faq) {
-        this.question_toUpdate = faq.question;
-        this.answer_toUpdate = faq.answer;
-        this.faq_creationDate = faq.createdAt;
-        this.intent_name = faq.intent_display_name;
-        this.faq_webhook_is_enabled = faq.webhook_enabled;
-        this.logger.log('[FAQ-EDIT-ADD] FAQ QUESTION TO UPDATE', this.question_toUpdate);
-        this.logger.log('[FAQ-EDIT-ADD] FAQ ANSWER TO UPDATE', this.answer_toUpdate);
-      }
-    }, (error) => {
-      this.logger.error('[FAQ-EDIT-ADD] - FAQ GET BY ID - ERROR ', error);
-      this.showSpinner = false;
-    }, () => {
-      this.logger.log('[FAQ-EDIT-ADD] - FAQ GET BY ID - COMPLETE ');
-      this.showSpinner = false;
-      this.translateTheAnswerWillBeDeleted();
-    });
-  }
+
   
   /**
    * !!! this function is temporary and will be replaced with a server function 
    */
    MOCK_getFaqById(){
     let url = 'assets/mock-data/tilebot/faq/intents.json';
-    this.httpClient.get<Intent>(url).subscribe(data => {
-      console.log("------------------>", data);
-      this.intent = data[0];
-      if(this.intent.answers){
-        this.arrayResponses = this.intent.answers;
-      }
-
-
-      if(this.intent.questions){
-        
-        // this.intent.attributes.commands.forEach(command => {
-        //   if(command.type === 'wait' && command.time){
-        //     this.message.waitTime = command.time/1000;
-        //   } else if (command.type === 'message' && command.message){
-        //     try {
-        //       if(!this.message.waitTime || this.message.waitTime == null){
-        //         this.message.waitTime = 0;
-        //       }
-        //       this.message.text = command.message.text;
-        //       this.message.attributes = command.message.attributes;
-        //       this.message.metadata = command.message.metadata;
-        //       this.message.buttons = command.message.attributes.attachment.buttons;
-        //     } catch(e) {
-        //       console.log(e); 
-        //     }
-
-
-
-        //     // console.log("------------------> message: ", this.message);
-        //     this.commands.push(this.message);
-        //     this.message = {waitTime: 0};
-        //   }
-        // });
-      }
+    this.httpClient.get<Intent[]>(url).subscribe(data => {
+      this.arrayIntent = data;
+      this.intentSelected = this.arrayIntent[7];
+      console.log('MOCK_getFaqById::: ', this.arrayIntent);
     }); 
   }
 
 
-  
-  /** */
-  translateTheAnswerWillBeDeleted() {
-    let parameter = { intent_name: this.intent_name };
-    this.translate.get('TheAnswerWillBeDeleted', parameter).subscribe((text: string) => {
-      this.answerWillBeDeletedMsg = text;
-    });
-  }
+
 
   // EVENTS //
 
   /** */
   goBack() {
     this.location.back();
+  }
+
+  onCreatedNewButton(button){ 
+    console.log('onCreatedNewButton');
+    this.openCardButton = false;
+  }
+
+  onOpenButtonPanel(event){
+    console.log('onOpenButtonPanel::: ', event);
+    if(this.openCardButton === true){
+      this.onCloseButtonPanel();
+    }
+    this.buttonSelected = event;
+    this.openCardButton = true;
+  }
+
+  onCloseButtonPanel(){
+    this.openCardButton = false;
   }
 
 }

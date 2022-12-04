@@ -24,18 +24,11 @@
     
     export interface Answer {
         messages: string[];
-        delay: number;
+        time: number;
         buttons: Button[];
     }
 
-    export interface Button {
-        type: string,
-        value: string,
-        link?: string,
-        target?: string,
-        action?: string,
-        show_echo?: boolean
-    }
+    
 
 
     export interface Field {
@@ -57,66 +50,64 @@
     
 
 
-    
-    
-    
-    
-    
-    
-    
-    
-    // export interface Intent {
-    //     text: string;
-    //     attributes: {
-    //         commands: Command[];
-    //     };
-    // }
+    export interface Intent {
+        webhook_enabled: boolean;
+        enabled: boolean;
+        topic: string;
+        status: string;
+        _id: string;
+        id_faq_kb: string;
+        question: string;
+        answer: string;
+        reply: Reply;
+        id_project: string;
+        language: string;
+        intent_display_name: string;
+        createdBy: string;
+        intent_id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        __v: number;
+        id: string;
+    }
 
-    // export interface Command {
-    //     type?: string;
-    //     message?: {
-    //         text: string;
-    //         type?: string;
-    //         attributes?: Attributes;
-    //         metadata?: Metadata;
-    //     };
-    //     time?: number;
-    //     waitTime?: number;
-    // }
+    export interface Reply {
+        text: string;
+        attributes: Attributes;
+    }
 
-    // export interface Button {
-    //     type: string;
-    //     value: string;
-    //     link: string;
-    //     target: string;
-    // }
-    
-    // export interface Metadata {
-    //     src: string;
-    //     width?: number;
-    //     height?: number;
-    // }
+    export interface Attributes {
+        commands: Command[];
+    }
 
-    // export interface Attributes {
-    //     disableInputMessage?: boolean;
-    //     inputMessagePlaceholder?: string;
-    //     updateUserFullname?: string;
-    //     updateUserEmail?: string;
-    //     subtype?: string;
-    //     action?: string;
-    //     attachment?: {
-    //         type: string;
-    //         buttons: Button[];
-    //     }
-    // }
+    export interface Command {
+        type: string;
+        message: Message;
+        time?: number;
+    }
 
+    export interface Message {
+        text: string;
+        type: string;
+        time?: number;
+        attributes?: MessageAttributes;
+    }
 
-    // // CUSTOM MODEL //
-    // /** Class added after Json load */
-    // export interface Message {
-    //     text?: string;
-    //     waitTime?: number;
-    //     attributes?: Attributes;
-    //     metadata?: Metadata;
-    //     buttons?: Button[];
-    // }
+    export interface MessageAttributes {
+        attachment: Attachment;
+    }
+
+    export interface Attachment {
+        type: string;
+        buttons: Button[];
+    }
+
+    export interface Button {
+        type: string,
+        value: string,
+        link?: string,
+        target?: string,
+        action?: string,
+        show_echo?: boolean
+    }
+        

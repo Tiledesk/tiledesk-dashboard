@@ -1,8 +1,9 @@
 
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Answer } from '../../../../../models/intent-model';
+import { Message, Button } from '../../../../../models/intent-model';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { TYPE_BUTTON, TYPE_URL } from '../../../../utils';
 
 @Component({
   selector: 'appdashboard-text-response',
@@ -17,9 +18,9 @@ export class TextResponseComponent implements OnInit {
   @Output() deleteResponse = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
-  @Output() openAddButtonPanel = new EventEmitter();
+  @Output() openButtonPanel = new EventEmitter();
   
-  @Input() response: Answer;
+  @Input() response: Message;
   @Input() index: number;
 
   // Textarea //
@@ -30,8 +31,12 @@ export class TextResponseComponent implements OnInit {
 
   // Delay //
   delayTime: number;
+  buttons: Array<Button>;
 
+  typeOfButton = TYPE_BUTTON;
+  typeOfUrl = TYPE_URL;
 
+ 
   constructor() { }
 
   ngOnInit(): void {
@@ -39,12 +44,30 @@ export class TextResponseComponent implements OnInit {
     this.leftCharsText = this.limitCharsText;
     this.alertCharsText = false;
 
-    this.delayTime = this.response.delay;
-    this.textMessage = this.response.messages[0];
+    this.delayTime = this.response.time/1000;
+    this.textMessage = this.response.text;
+    this.buttons = [];
+    try {
+      this.buttons = this.response.attributes.attachment.buttons;
+    } catch (error) {
+      console.log('non ci sono bottoni');
+    }
+    
   }
 
 
-  
+  private addNewButton(): Button{
+    let button =  {
+      'value': 'Button',
+      'type': this.typeOfButton.TEXT,
+      'target': this.typeOfUrl.BLANK,
+      'link': '',
+      'action': '',
+      'show_echo': true
+    };
+    this.buttons.push(button);
+    return button;
+  }
 
   // EVENTS //
   onDeleteResponse(){
@@ -75,8 +98,9 @@ export class TextResponseComponent implements OnInit {
     console.log("onChangeDelayTime: ", this.delayTime);
   }
 
-  onOpenAddButtonPanel(){
-    this.openAddButtonPanel.emit(this.index);
+  onOpenButtonPanel(button?){
+    if(!button){button = this.addNewButton()}
+    this.openButtonPanel.emit(button);
   }
 
 }
