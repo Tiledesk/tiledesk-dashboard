@@ -3748,7 +3748,8 @@ span .conv-svg-icon {
   padding: 2px 4px;
   -webkit-box-align: center;
   align-items: center;
-  width: calc(100% - 87px);
+  // width: calc(100% - 87px);
+  margin-right: 12px;
   margin-top: 5px;
 }
 
@@ -3767,7 +3768,7 @@ span .conv-svg-icon {
 .contact-info-wpr:hover {
   background-color: rgb(226, 232, 239);
   border-radius: 4px;
-  width: 233px;
+  // width: 233px;
 }
 
 .contact-info-wpr:hover > .edit--icon {

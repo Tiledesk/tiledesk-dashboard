@@ -4819,8 +4819,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openAddContactNameForm() {
     const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
-    this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
-    elemDropDown.classList.add("dropdown__menu-form--active");
+    console.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
+    if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
+
+      elemDropDown.classList.add("dropdown__menu-form--active");
+      console.log('here 1')
+    } else if (elemDropDown.classList.contains("dropdown__menu-form--active")) {
+      elemDropDown.classList.remove("dropdown__menu-form--active");
+      console.log('here 2')
+    }
+
+
     this.contactNewFirstName = undefined;
     this.contactNewLastName = undefined;
   }
@@ -4908,15 +4917,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   @HostListener('document:click', ['$event'])
   clickout(event) {
     // console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-    // console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
+    console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
 
     const clicked_element_id = event.target.id
 
 
     if (clicked_element_id.startsWith("edit-fullname")) {
-      // console.log('>>> click inside')
+      console.log('>>> click inside')
+      const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
+      console.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
+      if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
+  
+        elemDropDown.classList.add("dropdown__menu-form--active");
+        console.log('here 1 A')
+      } else if (elemDropDown.classList.contains("dropdown__menu-form--active")) {
+        elemDropDown.classList.remove("dropdown__menu-form--active");
+        console.log('here 2 A')
+      }
     } else {
-      // console.log('>>> click outside')
+      console.log('>>> click outside')
       this.closeEditContactFullnameDropdown()
     }
   }
