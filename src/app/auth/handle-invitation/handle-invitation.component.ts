@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { ProjectService } from '../../services/project.service';
@@ -48,6 +48,19 @@ export class HandleInvitationComponent implements OnInit {
     this.get_PendingUserById();
     this.getURLParameters();
     this.getBrowserLanguage();
+
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Auth Page, Handle invitation", {
+
+          });
+        } catch (err) {
+          this.logger.error('Auth Page, Handle invitation - error', err);
+        }
+  
+      }
+    }
   }
 
   getBrowserLanguage() {
@@ -107,6 +120,16 @@ export class HandleInvitationComponent implements OnInit {
 
   goToSignupPage() {
     this.router.navigate(['/signup-on-invitation/' + this.pendingInvitationEmail]);
+    try {
+      window['analytics'].track('Handle invitation clicked button Go to Signup', {
+        "type": "organic",
+        "email": this.pendingInvitationEmail,
+        "role": this.pendingInvitationRole
+      });
+    } catch (err) {
+      this.logger.error('track signup event error', err);
+    }
+
   }
 
   goToLoginPage() {
