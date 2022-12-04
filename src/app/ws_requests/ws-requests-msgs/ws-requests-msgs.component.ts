@@ -43,8 +43,6 @@ const swal = require('sweetalert');
   selector: 'appdashboard-ws-requests-msgs',
   templateUrl: './ws-requests-msgs-new.component.html',
   styleUrls: ['./ws-requests-msgs.component.scss']
-  // ,
-  // encapsulation: ViewEncapsulation.None
 })
 export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
   objectKeys = Object.keys;
@@ -347,6 +345,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   webchatApps: Array<any>
   isSafari: any
   disableReopeRequest: boolean = false;
+
+  isOpenEditContactFullnameDropdown: boolean = false;
   serveByTooltipOption: TooltipOptions = {
     'show-delay': 0,
     'tooltip-class': 'served-by-ng2-tooltip',
@@ -4817,23 +4817,58 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // New sidebar method
   // --------------------------------------------------
 
-  openAddContactNameForm() {
+  openAddContactNameForm($event) {
+    $event.stopPropagation();
+    this.isOpenEditContactFullnameDropdown = !this.isOpenEditContactFullnameDropdown
+    this.logger.log('openAddContactNameForm - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
     const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
-    console.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
+    this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
     if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
 
       elemDropDown.classList.add("dropdown__menu-form--active");
-      console.log('here 1')
+      this.logger.log('here 1')
     } else if (elemDropDown.classList.contains("dropdown__menu-form--active")) {
       elemDropDown.classList.remove("dropdown__menu-form--active");
-      console.log('here 2')
+      this.logger.log('here 2')
     }
-
 
     this.contactNewFirstName = undefined;
     this.contactNewLastName = undefined;
   }
 
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+
+    this.logger.log('[WS-REQUESTS-MSGS] clickout event.target.id)', event.target.id)
+
+    const clicked_element_id = event.target.id
+
+
+    if (clicked_element_id.startsWith("edit-fullname")) {
+      this.logger.log('>>> click inside')
+      // const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
+      // // console.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
+      // if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
+
+      //   elemDropDown.classList.add("dropdown__menu-form--active");
+      //   // console.log('here 1 A')
+      // } else if (elemDropDown.classList.contains("dropdown__menu-form--active")) {
+      //   elemDropDown.classList.remove("dropdown__menu-form--active");
+      //   // console.log('here 2 A')
+      // }
+    } else {
+      this.logger.log('[WS-REQUESTS-MSGS] >>> click outside')
+      this.closeEditContactFullnameDropdown()
+    }
+  }
+
+  closeEditContactFullnameDropdown() {
+    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
+    if (elemDropDown && elemDropDown.classList.contains("dropdown__menu-form--active")) {
+      elemDropDown.classList.remove("dropdown__menu-form--active");
+    }
+  }
 
 
   openTabMoreOption(isOpen) {
@@ -4914,38 +4949,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
-  @HostListener('document:click', ['$event'])
-  clickout(event) {
-    // console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-    console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
 
-    const clicked_element_id = event.target.id
-
-
-    if (clicked_element_id.startsWith("edit-fullname")) {
-      console.log('>>> click inside')
-      const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
-      console.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
-      if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
-  
-        elemDropDown.classList.add("dropdown__menu-form--active");
-        console.log('here 1 A')
-      } else if (elemDropDown.classList.contains("dropdown__menu-form--active")) {
-        elemDropDown.classList.remove("dropdown__menu-form--active");
-        console.log('here 2 A')
-      }
-    } else {
-      console.log('>>> click outside')
-      this.closeEditContactFullnameDropdown()
-    }
-  }
-
-  closeEditContactFullnameDropdown() {
-    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
-    if (elemDropDown && elemDropDown.classList.contains("dropdown__menu-form--active")) {
-      elemDropDown.classList.remove("dropdown__menu-form--active");
-    }
-  }
 
   hasSelectedTab0() {
     this.tab0 = true;
