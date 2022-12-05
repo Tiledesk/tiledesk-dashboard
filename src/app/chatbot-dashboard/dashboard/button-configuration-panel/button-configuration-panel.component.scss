@@ -1,10 +1,5 @@
 @import "../../variables";
 
-// local variables //
-$height-header: 50px;
-$width-title: 62%;
-$min-height-content: 376px;
-
 .button-tab {
     z-index: 1;
     height: 100%;
@@ -13,27 +8,16 @@ $min-height-content: 376px;
 }
 
 .button-header-tab {
-    background: rgb(30,41,59);
+    background: $bg-color-bck-hex;
     border-top-left-radius: 1em;
     border-top-right-radius: 1em;
     margin: 0;
     padding: 0;
     font-weight: 400;
-    line-height: 50px;
-    min-height: 50px;
-    color: #d2d2d2;
-    border-bottom: 1px solid #c8d0d847;
-
-    .i-priority-color-mark {
-        background-color: $color-blue-hex;
-        position: absolute;
-        border-radius: 10px;
-        top: 22px;
-        left: 12px;
-        display: block;
-        width: 8px;
-        height: 8px;
-    }
+    line-height: $height-header;
+    min-height: $height-header;
+    color: $color-txt-3-hex;
+    border-bottom: 1px solid $color-txt-3-hex;
 
     .form-group {
         position: absolute;
@@ -41,11 +25,19 @@ $min-height-content: 376px;
         width: 100%;
         margin: 0;
         padding: 0 30px;
-        .form-control {
-            border: 0;
-            background-size: 0 2px,100% 0px;
-            background-image: linear-gradient($color-light-gray-hex, $color-light-gray-hex);
-            transition-duration: .2s;
+        &.is-error {
+            .form-control {
+                background-image: linear-gradient($color-red-hex,$color-red-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
+                background-size: 100% 2px,100% 1px;
+                transition-duration: .3s;
+            }
+        }
+        &.is-focused {
+            .form-control {
+                background-image: linear-gradient($color-blue-hex,$color-blue-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
+                background-size: 100% 2px,100% 1px;
+                transition-duration: .3s;
+            }
         }
         label.title {
             position: absolute;
@@ -64,47 +56,43 @@ $min-height-content: 376px;
                 display: none;
             }
         }
-        input {
-            position: absolute;
-            display: block;
-            top: 0;
-            left: 30px;
-            width: calc(100% - 80px);
-            margin-top: 8px;
-            padding: 0;
-            color: $color-bck-light-gray-hex;
-            font-size: 1em;
+    }
 
-        }
-        .btn-save {
-            position: absolute;
-            width: calc(100% - $width-title);
-            max-width: 100px;
-            right: 10px;
-            padding: 8px;
-        }
-    } 
-    .form-group {
-        &.is-error {
-            .form-control {
-                background-image: linear-gradient($color-red-hex,$color-red-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
-                background-size: 100% 2px,100% 1px;
-                transition-duration: .3s;
-            }
-        }
-        &.is-focused {
-            .form-control {
-                background-image: linear-gradient($color-blue-hex,$color-blue-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
-                background-size: 100% 2px,100% 1px;
-                transition-duration: .3s;
-            }
-        }
+    .i-priority-color-mark {
+        background-color: $color-blue-hex;
+        position: absolute;
+        border-radius: 100%;
+        top: 22px;
+        left: 12px;
+        display: block;
+        width: 8px;
+        height: 8px;
+    }
+
+    
+    input {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 30px;
+        width: calc(100% - 80px);
+        margin-top: 8px;
+        padding: 0;
+        color: $color-bck-light-gray-hex;
+        font-size: 1em;
+    }
+    .btn-save {
+        position: absolute;
+        width: auto;
+        max-width: 80%;
+        right: 10px;
+        padding: 8px;
     }
 }
 
 
 .button-content-tab {
-    background-color: #293445;
+    background-color: $bg-color-card-hex;
     flex: 1;
     min-height: 100px;
     height: auto;
@@ -116,8 +104,8 @@ $min-height-content: 376px;
         transition: height 0.5s ease-out, opacity 0.2s linear;
         .form-group {
             input {
-                background-color: #fff;
-                border: 0px solid #d9d9d9;
+                background-color: $color-withe-hex;
+                border: 0px solid $color-light-gray-hex;
                 padding: 0 6px;
                 border-radius: 4px;
             }
@@ -129,16 +117,13 @@ $min-height-content: 376px;
             overflow: visible;
         }
     }
-
 }
-
-
 
 
 .button-footer-tab {
     min-height: 50px;
-    border-top: 1px solid #c8d0d847;
-    background: rgb(30,41,59);
+    border-top: 1px solid $color-txt-3-hex;
+    background: $bg-color-bck-hex;
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
     button {
@@ -150,11 +135,14 @@ $min-height-content: 376px;
 
 
 
+
+/** NG-SELECT **/
 .ng-select.ng-select-focused>.ng-select-container {
-    border-color: #ed2e19;
+    border-color: $color-red-hex;
     box-shadow: inset 0 1px 1px #00000013,0 0 0 3px #007eff1a;
 }
 
+/** FORM GROUP **/
 .form-group {
     .form-control {
         background-size: 0 2px,0% 1px;
@@ -169,7 +157,7 @@ $min-height-content: 376px;
 .form-group.is-error {
     .form-control {
         outline: none;
-        background-image: linear-gradient(#ed2e19,#ed2e19),linear-gradient(#D2D2D2,#D2D2D2);
+        background-image: linear-gradient($color-red-hex,$color-red-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
         background-size: 100% 2px,100% 1px;
         box-shadow: none;
         transition-duration: .3s;
@@ -178,7 +166,7 @@ $min-height-content: 376px;
         &.form-control-select ::ng-deep .ng-select-container  { 
             display: flex;
             outline: none;
-            background-image: linear-gradient(#ed2e19,#ed2e19),linear-gradient(#D2D2D2,#D2D2D2);
+            background-image: linear-gradient($color-red-hex,$color-red-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
             background-size: 100% 2px,100% 1px;
             box-shadow: none;
             transition-duration: .3s;
@@ -189,7 +177,7 @@ $min-height-content: 376px;
 .form-group label.control-label {
     top: -35px; 
     left: 0;
-    font-size: 11px;
+    font-size: 0.8em;
     line-height: normal;
     position: absolute;
     pointer-events: none;
@@ -200,17 +188,17 @@ $min-height-content: 376px;
 .form-group.is-empty label.control-label {
     top: -6px;
     left: 6px;
-    font-size: 14px;
+    font-size: 1em;
     line-height: normal;
     position: absolute;
-    color: #aaa;
+    color: $color-txt-3-hex;
     z-index:1;
     pointer-events: none;
 }
-.form-group.is-focused label.control-label{
+.form-group.is-focused label.control-label {
     top: -35px; 
     left: 0;
-    font-size: 11px;
+    font-size: 0.8em;
     line-height: normal;
     position: absolute;
     pointer-events: none;

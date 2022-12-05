@@ -1,7 +1,6 @@
 <div class="button-tab">
 
     <div class="button-header-tab">
-
         <div class="form-group" [ngClass]="{'is-error':buttonLabelResult === false}">
             <i class="i-priority-color-mark"></i>
             <label 
@@ -16,11 +15,9 @@
                 (blur) = "onBlurButtonLabel($event)"
             />
         </div>
-
     </div> 
 
     <div class="button-content-tab">
-
        
         <div class="section displayed">
             <div class="form-group ng-select">
@@ -34,17 +31,15 @@
                         [searchable] = false
                         [clearable] = false
                         [(ngModel)] = "buttonType"
-                        (blur) = "displayPlaceholder(true)"
-                        (focus) = "displayPlaceholder(false); displayMessage('field_type')" 
                         (change) = "onChangeTypeButton($event)">
                     </ng-select>
                 </div>
             </div>
         </div>
 
-
         <div class="section"
             [ngClass]="{'displayed':buttonType === typeOfButton.URL}">
+
             <div class="form-group ng-select">
                 <label class="control-label">
                     {{ 'Open in' | translate }}
@@ -59,7 +54,6 @@
                     </ng-select>
                 </div>
             </div>
-
 
             <div class="form-group" [ngClass]="{'is-error':errorUrl === true}">
                 <label class="control-label">
@@ -98,11 +92,13 @@
     </div> 
 
     <div class="button-footer-tab">
-        <button type="button" class="btn btn-primary btn-save" (click)="onSaveButton()">
+        <button 
+            type="button" 
+            class="btn btn-primary btn-save" 
+            (click)="onSaveButton()">
             {{ 'Save button' | translate }}
         </button>
     </div>
-
 
 </div>
 

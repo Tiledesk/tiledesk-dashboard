@@ -26,7 +26,6 @@
             </div>
 
             <mat-form-field class="box-textarea" appearance="fill">
-                <!-- <mat-label>Autosize textarea</mat-label> -->
                 <textarea matInput
                     cdkTextareaAutosize
                     [(ngModel)]="textMessage"
@@ -57,14 +56,13 @@
 
 </div>
 
-<div class="buttons-response quick-replies">
+<div class="buttons-response button-replies">
     
     <div *ngFor="let button of buttons; let i = index;" class="tpl-drop-down"> 
         <div aria-expanded="false">
-            <div class="quick-reply">
+            <div class="button-reply">
                 <div 
-                    data-quick-reply-text="Button" 
-                    class="quick-reply-text"
+                    class="button-reply-text"
                     (click)="onOpenButtonPanel(button)">
                     {{button.value}}
                 </div>
@@ -73,7 +71,7 @@
     </div>
 
 
-    <div class="quick-reply-add" (click)="onOpenButtonPanel()">
+    <div class="button-reply-add" (click)="onOpenButtonPanel()">
     + Add button
     </div>
 </div>

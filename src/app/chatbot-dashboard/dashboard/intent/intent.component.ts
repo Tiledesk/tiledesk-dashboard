@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Intent, Message } from '../../../models/intent-model';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../../utils';
 
 @Component({
   selector: 'appdashboard-intent',
@@ -11,53 +12,44 @@ export class IntentComponent implements OnInit {
   @Output() openButtonPanel = new EventEmitter();
   @Input() intent: Intent;
 
-  // @Input() arrayResponses: Array<Answer>;
-
   intentName: string;
   intentNameResult: boolean;
-
   textGrabbing: boolean;
-
   arrayResponses: Array<Message>;
 
   constructor() { }
 
+  // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.initialize();
   }
   
-  // FUNCTIONS //
+  // CUSTOM FUNCTIONS //
+  /** */
   private initialize(){
     this.intentName = this.intent.intent_display_name;
     this.intentNameResult = true;
-
     this.arrayResponses = [];
     this.textGrabbing = false;
-
     this.generateArrayResponse();
   }
 
-
+  /** */
   private generateArrayResponse(){
     let commands = this.intent.reply.attributes.commands;
-    var time = 500;
+    var time = TIME_WAIT_DEFAULT;
     commands.forEach(element => {
-      if(element.type === 'wait') {
+      if(element.type === TYPE_MESSAGE.WAIT) {
         time = element.time;
       }
-      if(element.type === 'message'){
+      if(element.type === TYPE_MESSAGE.MESSAGE){
         let response = element.message;
         response.time = time;
         this.arrayResponses.push(response);
-        time = 500;
+        time = TIME_WAIT_DEFAULT;
       }
     });
-        
-
-    console.log('arrayResponses:: ', this.arrayResponses);
-
   }
-
 
   /** */
   private checkIntentName() {
@@ -68,34 +60,32 @@ export class IntentComponent implements OnInit {
         this.intentNameResult = true;
       }
     }, 300);
-    
   }
 
 
-
-  // ON EVENT //
-
+  // EVENT FUNCTIONS //
+  /** */
   mouseDown(){
     this.textGrabbing = true;
-    console.log('mouseDown');
   }
 
+  /** */
   mouseUp(){
     this.textGrabbing = false;
-    console.log('mouseUp');
   }
 
+  /** */
   drop(event: CdkDragDrop<string[]>) {
-    console.log('drop');
     this.textGrabbing = false;
     moveItemInArray(this.arrayResponses, event.previousIndex, event.currentIndex);
   }
 
-
+  /** */
   onDeleteResponse(index:number){
     this.arrayResponses.splice(index, 1); 
   }
 
+  /** */
   onMoveUpResponse(index:number){
     if(index>0){
       let to = index-1;
@@ -104,6 +94,7 @@ export class IntentComponent implements OnInit {
     }
   }
 
+  /** */
   onMoveDownResponse(index:number){
     if(index<this.arrayResponses.length-1){
       let to = index+1;
@@ -115,7 +106,11 @@ export class IntentComponent implements OnInit {
   /** */
   onChangeIntentName(name: string){
     name.toString();
-    this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
+    try {
+      this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
+    } catch (error) {
+      console.log('name is not a string')
+    }
   }
 
   /** */
@@ -124,13 +119,12 @@ export class IntentComponent implements OnInit {
     // this.checkIntentName();
   }
  
-
   /** */
   onSaveIntent(){
     this.checkIntentName();
   }
 
-
+  /** */
   onOpenButtonPanel(event){
     this.openButtonPanel.emit(event);
   }

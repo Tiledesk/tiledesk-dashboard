@@ -23,7 +23,6 @@
     <div cdkDropList class="content draggable-list" (cdkDropListDropped)="drop($event)">
         <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag>
            
-
             <div class="custom-placeholder" *cdkDragPlaceholder>
                 <appdashboard-text-response
                 [index] = i
@@ -40,7 +39,6 @@
                     (mousedown)="mouseDown()" 
                     (mouseup)="mouseUp()" 
                     cdkDragHandle>
-                    <!-- <em class="material-icons">drag_indicator</em> -->
                 </div> 
 
                 <appdashboard-text-response

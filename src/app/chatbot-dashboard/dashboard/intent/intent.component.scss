@@ -1,7 +1,6 @@
 @import "../../variables";
 
 // local variables //
-$height-header: 50px;
 $width-title: 62%;
 $min-height-content: 376px;
 
@@ -12,7 +11,6 @@ $min-height-content: 376px;
 
 .box-dx {
     font-family: $mdb-font-family;
-    font-size: 24px;
 }
 
 .header {
@@ -34,7 +32,6 @@ $min-height-content: 376px;
         width: 8px;
         height: 8px;
     }
-
     .form-group {
         position: absolute;
         display: block;
@@ -55,7 +52,7 @@ $min-height-content: 376px;
             margin: 0;
             padding: 0;
             font-weight: 400;
-            font-size: 1em;
+            font-size: 1.4em;
             line-height: $height-header;
             color: $color-light-gray-hex;
             &.noDisplay {
@@ -71,7 +68,7 @@ $min-height-content: 376px;
             margin-top: 6px;
             padding: 0;
             color: $color-bck-light-gray-hex;
-            font-size: 1em;
+            font-size: 1.4em;
         }
         .btn-save {
             position: absolute;
@@ -112,7 +109,6 @@ $min-height-content: 376px;
     .typeText{
         display: block;
     }
-
     .text-response{
         display: block;
         position: relative;
@@ -120,7 +116,6 @@ $min-height-content: 376px;
         width: 100%;
         min-height: 200px;
         margin: 2px;
-        // background-color: rgba(250, 235, 215, 0.147);
     }
     .text-editor-drop {
         position: absolute;
@@ -131,37 +126,26 @@ $min-height-content: 376px;
         right: -2px;
         top: 50%;
         margin: -8px 0 0 0;
-        color: #647283;
+        color: $color-bck-gray-hex;
         cursor: grab;
         background-color: transparent;
         z-index: 1; 
-
-        
-
     }
     .text-editor-drop:hover {
-        color: #fff;
+        color: $color-withe-hex;
         cursor: grab;  
     }
-    .text-editor-drop:hover {
-       
-    }
-
 
     /** START DRAG AND DROP **/
     .draggable-list {
         width: 500px;
         max-width: 100%;
-        border: solid 1px #ccc;
+        border: solid 1px $color-txt-3-hex;
         min-height: 60px;
         display: block;
-        background: white;
+        background: $color-withe-hex;
         border-radius: 4px;
         overflow: hidden;
-    }
-      
-    .draggable-box {
-        // xxx
     }
       
     .cdk-drag-preview {
@@ -170,12 +154,6 @@ $min-height-content: 376px;
         box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
                     0 8px 10px 1px rgba(0, 0, 0, 0.14),
                     0 3px 14px 2px rgba(0, 0, 0, 0.12);
-    }
-
-   
-    .cdk-drag-animating {
-        //transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-        //cursor: grabbing;
     }
        
     .draggable-box:last-child {
@@ -186,20 +164,14 @@ $min-height-content: 376px;
        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
       
-
     .custom-placeholder {
         opacity: 0.4;
-        background: #ccc;
-        border: dotted 2px #999;
+        background: $color-txt-3-hex;
+        border: dotted 2px $color-txt-2-hex;
         min-height: 60px;
         transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
-        
-  
-       
     /** END DRAG AND DROP **/
-      
-
 }
 
 

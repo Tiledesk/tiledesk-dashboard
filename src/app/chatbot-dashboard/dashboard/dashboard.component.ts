@@ -178,8 +178,8 @@ export class DashboardComponent implements OnInit {
     this.location.back();
   }
 
-  onCreatedNewButton(button){ 
-    console.log('onCreatedNewButton');
+  onSaveButton(button){ 
+    console.log('onSaveButton');
     this.openCardButton = false;
   }
 

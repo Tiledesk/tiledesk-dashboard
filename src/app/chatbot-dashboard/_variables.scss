@@ -21,13 +21,6 @@ $color-4-hex: #6A9955;
 $color-5-hex: #F78070;
 $color-6-hex: #E2C08D;
 $color-7-hex: #CCA701;
- 
- 
- 
- 
- 
- 
-
 
 $color-bck-1-hex: #1E1E1E;
 $color-bck-2-hex: #252526;
@@ -51,9 +44,6 @@ $color-txt-1-rgb: 120 120 120;
 $color-txt-2-rgb: 133 133 133;
 $color-txt-3-rgb: 204 204 204;
 $color-txt-4-rgb: 255 255 255;
-
-
-
 
 
 $color-bck-light-gray-hex: #e7f3ff;
@@ -80,5 +70,11 @@ $mdb-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
 $mdb-font-family-poppins: "Poppins", "Roboto", Arial, sans-serif !default;
 $font-size-base: 14px;
 
+$height-header: 50px;
+
 $padding-base: 15px !default;
 $margin-base: 15px !default;
+
+$button-height-base: 32px;
+$button-max-width-base: 240px;
+$button-border-radius-base: 16px;

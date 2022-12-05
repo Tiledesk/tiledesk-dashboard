@@ -44,7 +44,7 @@
                         height: 24px;
                         width: 24px;
                         background: $color-bck-gray-hex;
-                        border-radius: 15px;
+                        border-radius: 50%;
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -95,8 +95,6 @@
             }
         }
 
-        
-
         .editor-utils {
             position: relative;
             margin: -20px 50px 0px 0px;
@@ -131,68 +129,62 @@
     }
 }
 
-
+/** BUTTONS **/
 .buttons-response {
     display: flex;
     flex-wrap: wrap;
     margin: 0;
     width: 100%;
-    .quick-reply {
-        -webkit-font-smoothing: antialiased!important;
-        font-family: Source Sans Pro,sans-serif;
+    font-size: $font-size-base;
+    .button-reply {
+        position: relative;
+        min-width: 100px;
+        height: $button-height-base;
+        margin: 10px 5px 0;
+        padding: 0 16px;
         user-select: none;
-        -webkit-box-direction: normal;
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
         box-sizing: border-box;
         outline: none;
-        background: #fff;
-        border: 1px solid #006cff;
-        border-radius: 16px;
-        color: #006cff;
+        background: $color-withe-hex;
+        border: 1px solid $color-blue-hex;
+        border-radius: $button-border-radius-base;
+        color: $color-blue-hex;
         cursor: pointer;
-        font-size: 16px;
-        font-weight: 600;
-        height: 32px;
-        line-height: 30px;
-        margin: 10px 5px 0;
-        min-width: 100px;
-        padding: 0 16px;
-        position: relative;
+        font-size: 1em;
+        font-weight: 500;
+        line-height: $button-height-base;
         text-align: center;
         transition: all .3s;
     }
-    .quick-reply-text {
-        -webkit-font-smoothing: antialiased!important;
-        font-family: Source Sans Pro,sans-serif;
+    .button-reply-text {
+        max-width: $button-max-width-base;
         user-select: none;
-        -webkit-box-direction: normal;
-        color: #006cff;
+        color: $color-blue-hex;
         cursor: pointer;
-        font-size: 16px;
-        font-weight: 600;
-        line-height: 30px;
+        font-size: 1em;
+        font-weight: 500;
+        line-height: $button-height-base;
         text-align: center;
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
         box-sizing: border-box;
         margin: 0;
-        outline: none;
         padding: 0;
+        outline: none;
         overflow: hidden!important;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    .quick-reply-add {
+    .button-reply-add {
         user-select: none;
         box-sizing: border-box;
         outline: none;
-        border: 1px dashed #979797;
-        border-radius: 16px;
-        color: #ffffff;
+        border: 1px dashed $color-txt-2-hex;
+        border-radius: $button-border-radius-base;
+        color: $color-withe-hex;
         cursor: pointer;
-        font-size: 14px;
+        font-size: 1em;
         font-weight: 400;
-        height: 32px;
-        line-height: 30px;
+        height: $button-height-base;
+        line-height: $button-height-base;
         margin: 10px 5px 0;
         order: 1;
         padding: 0 16px;
@@ -200,8 +192,6 @@
         min-width: 100px;
         width: fit-content;
     }
-   
-
 }
 
 

@@ -2,8 +2,7 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Message, Button } from '../../../../../models/intent-model';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { TYPE_BUTTON, TYPE_URL } from '../../../../utils';
+import { TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT } from '../../../../utils';
 
 @Component({
   selector: 'appdashboard-text-response',
@@ -33,14 +32,16 @@ export class TextResponseComponent implements OnInit {
   delayTime: number;
   buttons: Array<Button>;
 
+  // Buttons //
   typeOfButton = TYPE_BUTTON;
   typeOfUrl = TYPE_URL;
 
  
   constructor() { }
 
+  // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    this.limitCharsText = 300;
+    this.limitCharsText = TEXT_CHARS_LIMIT;
     this.leftCharsText = this.limitCharsText;
     this.alertCharsText = false;
 
@@ -50,12 +51,11 @@ export class TextResponseComponent implements OnInit {
     try {
       this.buttons = this.response.attributes.attachment.buttons;
     } catch (error) {
-      console.log('non ci sono bottoni');
+      console.log('there are no buttons');
     }
-    
   }
 
-
+  // PRIVATE FUNCTIONS //
   private addNewButton(): Button{
     let button =  {
       'value': 'Button',
@@ -69,19 +69,23 @@ export class TextResponseComponent implements OnInit {
     return button;
   }
 
-  // EVENTS //
+  // EVENTS FUNCTIONS //
+  /** */
   onDeleteResponse(){
     this.deleteResponse.emit(this.index);
   }
 
+  /** */
   onMoveUpResponse(){
     this.moveUpResponse.emit(this.index);
   }
+
+  /** */
   onMoveDownResponse(){
     this.moveDownResponse.emit(this.index);
   }
 
-
+  /** */
   onChangeText(text:string) {
     let numCharsText = text.length;
     this.leftCharsText = this.limitCharsText - numCharsText;
@@ -92,12 +96,12 @@ export class TextResponseComponent implements OnInit {
     }
   }
 
-
+  /** */
   onChangeDelayTime(value:number){
     this.delayTime = value;
-    console.log("onChangeDelayTime: ", this.delayTime);
   }
 
+  /** */
   onOpenButtonPanel(button?){
     if(!button){button = this.addNewButton()}
     this.openButtonPanel.emit(button);
