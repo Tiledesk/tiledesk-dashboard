@@ -762,6 +762,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 // tslint:disable-next-line:max-line-length
                 if ((this.route === '/login') ||
                     (this.route === '/signup') ||
+                    (this.route.indexOf('/signup') !== -1) ||
                     (this.route.indexOf('/signup-on-invitation') !== -1) ||
                     (this.route === '/forgotpsw') ||
                     (this.route === '/projects') ||

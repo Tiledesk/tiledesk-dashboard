@@ -43,7 +43,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   terms_and_conditions_url: string;
   privacy_policy_url: string;
   display_terms_and_conditions_link: boolean;
-
+  queryParams: any;
 
   showSpinnerInLoginBtn = false;
   public signin_errormsg = '';
@@ -120,10 +120,47 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.getBrowserLang();
     this.getOSCODE();
 
-    if (!isDevMode()) {
+    this.getQueryParams()
+    // 
+
+  }
+
+  getQueryParams() {
+    this.route.queryParamMap
+      .subscribe(params => {
+        console.log('[SIGN-UP] queryParams', params['params']);
+        this.queryParams = params['params']
+        console.log('segmentsPageAndIdentify queryParams', this.queryParams)
+        var size = Object.keys(this.queryParams).length;
+        console.log('queryParams size ', size)
+        if (size > 0) {
+
+          for (const [key, value] of Object.entries(this.queryParams)) {
+            console.log(`${key}: ${value}`);
+            this.segmentsPageAndIdentify(key + '=' + value)
+          }
+
+        } else {
+          this.segmentsPageAndIdentify()
+        }
+
+      })
+
+  }
+  segmentsPageAndIdentify(queryParams?: any) {
+    // if (!isDevMode()) {
+    setTimeout(() => {
       if (window['analytics']) {
+
+        let page = ''
+        if (queryParams) {
+          page = "Auth Page, Signup" + ' ' + queryParams
+        } else {
+          page = "Auth Page, Signup"
+        }
+
         try {
-          window['analytics'].page("Auth Page, Signup", {
+          window['analytics'].page(page, {
             // "properties": {
             //   "title": 'Signup'
             // }
@@ -138,8 +175,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
         } catch (err) {
           this.logger.error('Signin identify error', err);
         }
+
+
       }
-    }
+    }, 3000);
+    // }
+
   }
 
   getOSCODE() {
