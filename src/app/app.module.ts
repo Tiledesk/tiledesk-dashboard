@@ -305,6 +305,8 @@ import { NetworkOfflineComponent } from './network-offline/network-offline.compo
 import { HomePromoBannerComponent } from './home-promo-banner/home-promo-banner.component';
 import { TemplateDetailComponent } from './bots/templates/template-detail/template-detail.component';
 import { BotsSidebarComponent } from './bots/bots-list/bots-sidebar/bots-sidebar.component';
+import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
+
 
 
 
@@ -538,7 +540,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomePromoBannerComponent, 
     TemplatesComponent, 
     TemplateDetailComponent, 
-    BotsSidebarComponent
+    BotsSidebarComponent, 
+    GetStartChatbotForkComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

@@ -758,10 +758,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
 
-                // this.logger.log('»> ', this.route)
-                // tslint:disable-next-line:max-line-length
+                // (this.route === '/signup') ||
                 if ((this.route === '/login') ||
                     (this.route === '/signup') ||
+                    (this.route.indexOf('/signup') !== -1) ||
                     (this.route.indexOf('/signup-on-invitation') !== -1) ||
                     (this.route === '/forgotpsw') ||
                     (this.route === '/projects') ||

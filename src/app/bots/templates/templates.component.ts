@@ -111,7 +111,7 @@ export class TemplatesComponent implements OnInit {
         this.templates = res
         console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES', this.templates);
         this.allTemplatesCount = this.templates.length;
-        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
+        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
       
         // ---------------------------------------------------------------------
         // Customer Satisfaction templates
@@ -119,10 +119,10 @@ export class TemplatesComponent implements OnInit {
         this.customerSatisfactionTemplates = this.templates.filter((obj) => {
           return obj.mainCategory === "Customer Satisfaction"
         });
-        console.log('[BOTS-TEMPLATES] - Customer Satisfaction TEMPLATES', this.customerSatisfactionTemplates);
+        this.logger.log('[BOTS-TEMPLATES] - Customer Satisfaction TEMPLATES', this.customerSatisfactionTemplates);
         if (this.customerSatisfactionTemplates ) {
           this.customerSatisfactionTemplatesCount = this.customerSatisfactionTemplates.length;
-          console.log('[BOTS-TEMPLATES] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
+          this.logger.log('[BOTS-TEMPLATES] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
         }
 
         // ---------------------------------------------------------------------
@@ -131,34 +131,34 @@ export class TemplatesComponent implements OnInit {
         this.increaseSalesTemplates = this.templates.filter((obj) => {
           return obj.mainCategory === "Increase Sales"
         });
-        console.log('[BOTS-TEMPLATES] - Increase Sales TEMPLATES', this.increaseSalesTemplates);
+        this.logger.log('[BOTS-TEMPLATES] - Increase Sales TEMPLATES', this.increaseSalesTemplates);
         if (this.increaseSalesTemplates ) {
           this.increaseSalesTemplatesCount = this.increaseSalesTemplates.length;
-          console.log('[BOTS-TEMPLATES] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
+          this.logger.log('[BOTS-TEMPLATES] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
         }
 
         this.route = this.router.url
         if (this.route.indexOf('bots/templates/all') !== -1) {
           this.templates = this.templates 
-          console.log('[BOTS-TEMPLATES] ROUTE templates/all');
+          this.logger.log('[BOTS-TEMPLATES] ROUTE templates/all');
         } else if (this.route.indexOf('bots/templates/customer-satisfaction') !== -1) {
           this.templates = this.customerSatisfactionTemplates
-          console.log('[BOTS-TEMPLATES] ROUTE templates/customer-satisfaction templates ', this.templates);
+          this.logger.log('[BOTS-TEMPLATES] ROUTE templates/customer-satisfaction templates ', this.templates);
         } else if (this.route.indexOf('bots/templates/increase-sales') !== -1) {
          
           this.templates = this.increaseSalesTemplates
-          console.log('[BOTS-TEMPLATES] ROUTE templates/increase-sales templates ', this.templates);
+          this.logger.log('[BOTS-TEMPLATES] ROUTE templates/increase-sales templates ', this.templates);
         }
 
-        console.log('[BOTS-TEMPLATES] - GET TEMPLATES - All TEMPLATES COUNT ', this.allTemplatesCount);
+        this.logger.log('[BOTS-TEMPLATES] - GET TEMPLATES - All TEMPLATES COUNT ', this.allTemplatesCount);
         this.generateTagsBackground(this.templates)
       }
 
     }, (error) => {
-      console.error('[BOTS-TEMPLATES] GET TEMPLATES ERROR ', error);
+      this.logger.error('[BOTS-TEMPLATES] GET TEMPLATES ERROR ', error);
       this.showSpinner = false;
     }, () => {
-      console.log('[BOTS-TEMPLATES] GET TEMPLATES COMPLETE');
+      this.logger.log('[BOTS-TEMPLATES] GET TEMPLATES COMPLETE');
       this.showSpinner = false;
       // this.generateTagsBackground(this.templates)
     });

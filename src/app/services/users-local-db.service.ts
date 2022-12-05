@@ -40,7 +40,7 @@ export class LocalDbService {
   saveMembersInStorage(member_id: string, member_object: any, calledBy): void {
     this.logger.log('[USERS-LOCAL-DB] - calledBy ', calledBy);
     if (member_id) {
-      this.logger.log('saveMembersInStorage member_id: ' , member_id , 'member_object: ', member_object) 
+      this.logger.log('saveMembersInStorage member_id: ', member_id, 'member_object: ', member_object)
 
       /**
        * *** OLD: WITHOUT PREFIX ***
@@ -140,6 +140,15 @@ export class LocalDbService {
   getForegrondNotificationsCount() {
     const foregroundcCunt = localStorage.getItem(this.prefix + 'foregroundcount');
     return foregroundcCunt
+  }
+
+  setInStorage(key, value) {
+    localStorage.setItem(this.prefix + key, value);
+  }
+
+  getFromStorage(key) {
+    key = localStorage.getItem(this.prefix + key);
+    return key
   }
 
 

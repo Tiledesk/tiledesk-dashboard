@@ -8,6 +8,7 @@ import { NotifyService } from '../../core/notify.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { LocalDbService } from 'app/services/users-local-db.service';
 
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
@@ -23,6 +24,8 @@ export class SigninComponent implements OnInit {
   // companyLogoAllWithe_Url = brand.company_logo_allwhite__url;
   // company_name = brand.company_name;
   // company_site_url = brand.company_site_url;
+  EXIST_STORED_ROUTE: boolean = false
+  storedRoute: string;
   companyLogoBlack_Url: string;
   companyLogoAllWithe_Url: string;
   company_name: string;
@@ -37,10 +40,7 @@ export class SigninComponent implements OnInit {
   public signin_errormsg = '';
   public signin_error_statusZero: boolean;
   display = 'none';
-
   userForm: FormGroup;
-
-
   public_Key: string;
   SUP: boolean = true;
   isVisibleV1L: boolean = true;
@@ -71,7 +71,8 @@ export class SigninComponent implements OnInit {
     public appConfigService: AppConfigService,
     private notify: NotifyService,
     public brandService: BrandService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private localDbService: LocalDbService
   ) {
     const brand = brandService.getBrand();
 
@@ -84,35 +85,38 @@ export class SigninComponent implements OnInit {
 
   ngOnInit() {
     this.getOSCODE();
-
-
     // this.redirectIfLogged();
     // this.widgetReInit()
-
-
     // this.logger.log('xxxx ', this.userForm)
     this.buildForm();
     this.getWindowWidthAndHeight();
+    this.getWannaGoFromStorage()
+  }
 
-
+  getWannaGoFromStorage() {
+    this.storedRoute = this.localDbService.getFromStorage('wannago')
+    console.log('[SIGN-IN] storedRoute ', this.storedRoute)
+    if (this.storedRoute) {
+      this.EXIST_STORED_ROUTE = true
+    } else {
+      this.EXIST_STORED_ROUTE = false
+    }
   }
 
   redirectIfLogged() {
-
     const storedUser = localStorage.getItem('user')
-
-    if (storedUser) {
+    if (storedUser && !this.EXIST_STORED_ROUTE) {
       this.logger.log('[SIGN-IN] - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
       this.router.navigate(['/projects']);
+    } else if (storedUser && this.EXIST_STORED_ROUTE) {
+      this.router.navigate([this.storedRoute]);
     }
   }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-
     let keys = this.public_Key.split("-");
     // this.logger.log('PUBLIC-KEY (SIGN-IN) - public_Key keys', keys)
-
     keys.forEach(key => {
       if (key.includes("V1L")) {
         // this.logger.log('PUBLIC-KEY (SIGN-IN) - key', key);
@@ -300,8 +304,13 @@ export class SigninComponent implements OnInit {
           }
         }
 
+        if (!this.EXIST_STORED_ROUTE) {
+          this.router.navigate(['/projects']);
+        } else {
+          this.router.navigate([this.storedRoute]);
+        }
 
-        this.router.navigate(['/projects']);
+
 
         // self.widgetReInit();
 

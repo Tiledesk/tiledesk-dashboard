@@ -121,9 +121,9 @@ export class BotListComponent implements OnInit {
 
       if (res) {
         const templates = res
-        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES', templates);
+        console.log('[BOTS-LIST] - GET ALL TEMPLATES', templates);
         this.allTemplatesCount = templates.length;
-        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
+        this.logger.log('[BOTS-LIST] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
       
         // ---------------------------------------------------------------------
         // Customer Satisfaction templates
@@ -131,10 +131,10 @@ export class BotListComponent implements OnInit {
         const customerSatisfactionTemplates = templates.filter((obj) => {
           return obj.mainCategory === "Customer Satisfaction"
         });
-        console.log('[BOTS-TEMPLATES] - Customer Satisfaction TEMPLATES', customerSatisfactionTemplates);
+        this.logger.log('[BOTS-LIST] - Customer Satisfaction TEMPLATES', customerSatisfactionTemplates);
         if (customerSatisfactionTemplates ) {
           this.customerSatisfactionTemplatesCount = customerSatisfactionTemplates.length;
-          console.log('[BOTS-TEMPLATES] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
+          this.logger.log('[BOTS-LIST] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
         }
 
         // ---------------------------------------------------------------------
@@ -143,27 +143,23 @@ export class BotListComponent implements OnInit {
         const  increaseSalesTemplates = templates.filter((obj) => {
           return obj.mainCategory === "Increase Sales"
         });
-        console.log('[BOTS-TEMPLATES] - Increase Sales TEMPLATES', increaseSalesTemplates);
+        console.log('[BOTS-LIST] - Increase Sales TEMPLATES', increaseSalesTemplates);
         if (increaseSalesTemplates ) {
           this.increaseSalesTemplatesCount = increaseSalesTemplates.length;
-          console.log('[BOTS-TEMPLATES] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
+          this.logger.log('[BOTS-LIST] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
         }
       }
 
     }, (error) => {
-      console.error('[BOTS-TEMPLATES] GET TEMPLATES ERROR ', error);
+      this.logger.error('[BOTS-LIST] GET TEMPLATES ERROR ', error);
       this.showSpinner = false;
     }, () => {
-      console.log('[BOTS-TEMPLATES] GET TEMPLATES COMPLETE');
+      this.logger.log('[BOTS-LIST] GET TEMPLATES COMPLETE');
       this.showSpinner = false;
       // this.generateTagsBackground(this.templates)
     });
   }
 
-
-
- 
-  
 
   getTranslations() {
     this.translate.get('BotsPage')

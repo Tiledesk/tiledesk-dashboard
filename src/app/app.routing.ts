@@ -122,6 +122,7 @@ import { WidgetInstallationComponent } from './widget-installation/widget-instal
 import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-select-type.component';
 import { TilebotComponent } from './bots/tilebot/tilebot.component';
 import { OnboardingComponent } from './create-project-wizard/onboarding/onboarding.component';
+import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
 
 
 const routes: Routes = [
@@ -245,6 +246,8 @@ const routes: Routes = [
   { path: 'project/:projectid/bots/templates/all', component: TemplatesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/templates/customer-satisfaction', component: TemplatesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/templates/increase-sales', component: TemplatesComponent, canActivate: [AuthGuard] },
+  { path: 'get-chatbot/:botid', component: GetStartChatbotForkComponent, canActivate: [AuthGuard] },
+
   // rasa bot
   { path: 'project/:projectid/bot/rasa/create', component: RasaBotComponent, canActivate: [AuthGuard] },
 

@@ -37,19 +37,18 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
    
     this.getCurrentProject();
     this.IS_OPEN = true
-    console.log('[BOTS-SIDEBAR] - IS_OPEN ', this.IS_OPEN)
-    // console.log('[BOTS-SIDEBAR] - allTemplatesCount ', this.allTemplatesCount)
-    // this.goToBotAllTemplates()
+    // console.log('[BOTS-SIDEBAR] - IS_OPEN ', this.IS_OPEN)
+
   }
   ngOnChanges() {
-    console.log('[BOTS-SIDEBAR] - allTemplatesCount ', this.allTemplatesCount)
-    console.log('[BOTS-SIDEBAR] - customerSatisfactionTemplatesCount ', this.customerSatisfactionTemplatesCount)
-    console.log('[BOTS-SIDEBAR] - increaseSalesTemplatesCount ', this.increaseSalesTemplatesCount)
-    console.log('[BOTS-SIDEBAR] - myChatbotOtherCount ', this.myChatbotOtherCount)
+    // console.log('[BOTS-SIDEBAR] - allTemplatesCount ', this.allTemplatesCount)
+    // console.log('[BOTS-SIDEBAR] - customerSatisfactionTemplatesCount ', this.customerSatisfactionTemplatesCount)
+    // console.log('[BOTS-SIDEBAR] - increaseSalesTemplatesCount ', this.increaseSalesTemplatesCount)
+    // console.log('[BOTS-SIDEBAR] - myChatbotOtherCount ', this.myChatbotOtherCount)
   }
 
   getCurrentProject() {
-    console.log('[BOTS-SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
+    // console.log('[BOTS-SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
     this.auth.project_bs.subscribe((project) => {
       this.project = project;
     })
@@ -62,32 +61,32 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     this.route = this.router.url
     if (this.route.indexOf('/bots/my-chatbots/other') !== -1) {
       this.BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE = true
-      console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE)
+      // console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE)
     } else {
       this.BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE = false
-      console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE)
+      // console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE)
     }
 
     if (this.route.indexOf('bots/templates/all') !== -1) {
       this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE = true
-      console.log('[BOTS-SIDEBAR] - BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE)
+      // console.log('[BOTS-SIDEBAR] - BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE)
     } else {
       this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE = false
-      console.log('[BOTS-SIDEBAR] - BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE)
+      // console.log('[BOTS-SIDEBAR] - BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE)
     }
     if (this.route.indexOf('bots/templates/customer-satisfaction') !== -1) {
       this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE = true
-      console.log('[BOTS-SIDEBAR] - BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE)
+      // console.log('[BOTS-SIDEBAR] - BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE)
     } else {
       this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE = false
-      console.log('[BOTS-SIDEBAR] - BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE)
+      // console.log('[BOTS-SIDEBAR] - BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE)
     }
     if (this.route.indexOf('bots/templates/increase-sales') !== -1) {
       this.BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE = true
-      console.log('[BOTS-SIDEBAR] - BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE)
+      // console.log('[BOTS-SIDEBAR] - BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE)
     } else {
       this.BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE = false
-      console.log('[BOTS-SIDEBAR] - BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE)
+      // console.log('[BOTS-SIDEBAR] - BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE)
 
     }
   }

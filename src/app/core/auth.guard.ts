@@ -12,6 +12,7 @@ import { UsersService } from '../services/users.service';
 import { Subscription } from 'rxjs';
 
 import { LoggerService } from '../services/logger/logger.service';
+import { LocalDbService } from 'app/services/users-local-db.service';
 // import { RequestsMsgsComponent } from '../requests-msgs/requests-msgs.component';
 // import { HomeComponent } from '../home/home.component';
 
@@ -51,7 +52,8 @@ export class AuthGuard implements CanActivate {
     public location: Location,
     private projectService: ProjectService,
     private usersService: UsersService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public localDbService: LocalDbService
   ) {
     this.logger.log('[AUTH-GUARD] hello !!!')
 
@@ -325,32 +327,32 @@ export class AuthGuard implements CanActivate {
   // canActivate SSO 
   // ------------------------------------------------------------------------
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    this.logger.log('[AUTH-GUARD] - SSO - CAN ACTIVATE AlwaysAuthGuard');
-    this.logger.log('[AUTH-GUARD] - SSO - CAN ACTIVATE user ', this.user);
+    console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE AlwaysAuthGuard');
+    console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE user ', this.user);
 
-    this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE next ', next);
-    this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
+    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE next ', next);
+    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
     const url = state.url;
     const _url = next['_routerState'].url
-    this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE state url  ', url);
-    this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE next _url  ', _url);
+    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state url  ', url);
+    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE next _url  ', _url);
 
     const route = url.substring(0, url.indexOf('?token='));
 
-    this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE route in url ', route);
+    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE route in url ', route);
 
 
     let queryParams = next.queryParams
     // this.logger.log('SSO - CAN ACTIVATE queryParams ', queryParams);
 
     let stringifed_queryParams = JSON.stringify(queryParams)
-    this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams stringified', stringifed_queryParams);
+    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams stringified', stringifed_queryParams);
 
     const HAS_JWT = stringifed_queryParams.includes('JWT');
-    this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
+    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
 
     let token = next.queryParams.token
-    this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT Token ', token);
+    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT Token ', token);
 
 
     // tslint:disable-next-line:max-line-length
@@ -367,9 +369,11 @@ export class AuthGuard implements CanActivate {
 
       if (!HAS_JWT) {
         this.router.navigate(['/login']);
-        this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS  navigate to login ');
+        console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
+        console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
+        this.localDbService.setInStorage('wannago', url)
       } else {
-        this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
+        console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
         this.router.navigate(['/autologin', route, token]);
         return false;
       }
