@@ -1447,6 +1447,7 @@
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "Enviar un mensaje al visitante",
+                    "SendEmailToVisitor": "Send an email to the visitor",
                     "AssignToDep": "Asignar al departamento",
                     "ReAssignToSameDep": "Reasignar al mismo departamento",
                     "RequestUpdateStatus": "Cambia el estado de la conversación",
