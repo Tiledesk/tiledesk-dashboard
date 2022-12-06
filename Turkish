@@ -1447,6 +1447,7 @@
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "Ziyaretçiye bir mesaj gönderin",
+                    "SendEmailToVisitor": "Send an email to the visitor",
                     "AssignToDep": "Departmana atamak",
                     "ReAssignToSameDep": "Aynı departmana yeniden atama",
                     "RequestUpdateStatus": "Görüşmenin durumunu değiştirir",
