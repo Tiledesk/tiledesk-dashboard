@@ -519,7 +519,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       'parameters': {
         'fullName': (action.value.key === 'request.create' || action.value.key === 'request.department.route') ? this.operator[action.value.key][0].id : undefined,
         // 'fullName': undefined,
-        'text': event === 'request.create' || event === 'message.send' ? '' : ' '
+        'text': event === 'request.create' || event === 'message.send' || event === 'email.send' ? '' : ' '
       }
     });
     this.logger.log('[TRIGGER-ADD] action after', action);
@@ -632,9 +632,10 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       // Rename the parameters key 'fullName' in 'sender', and add the string 'bot_' if the select agent is a bot
       // Actions key for which it is made:
       // - 'message.send' (i.e. 'Send message to visitor')
+      // - 'email.send' (i.e. 'Send email to visitor')
       // --------------------------------------------------------------------------------------------------------------------------------------------
       if (
-        (this.triggerForm.value.actions[w].key === 'message.send')
+        (this.triggerForm.value.actions[w].key === 'message.send' || this.triggerForm.value.actions[w].key === 'email.send')
       ) {
         this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
 
@@ -656,7 +657,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
         this.logger.log('[TRIGGER-ADD] ->>>>> onSubmit bots: ', this.bots);
 
         // -------------------------------------------------------
-        // Rename the key fullName in member
+        // Rename the key fullName in sender
         // -------------------------------------------------------
         if (this.triggerForm.value.actions[w].parameters.hasOwnProperty("fullName")) {
           this.renameKey(this.triggerForm.value.actions[w].parameters, 'fullName', 'sender');

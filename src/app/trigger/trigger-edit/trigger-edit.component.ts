@@ -706,7 +706,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       'placeholder': this.action.filter(b => b.key === event)[0].placeholder,
       'parameters': {
         'fullName': (action.value.key === 'request.create' || action.value.key === 'request.department.route') ? this.operator[action.value.key][0].id : undefined,
-        'text': event === 'request.create' || event === 'message.send' ? '' : ' '
+        'text': event === 'request.create' || event === 'message.send' || event === 'email.send' ? '' : ' '
       }
     });
     this.logger.log('[TRIGGER-EDIT] - onSelectedAction ->>>>> action after', action);
@@ -815,7 +815,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       // - 'message.send' (i.e. 'Send message to visitor')
       // --------------------------------------------------------------------------------------------------------------------------------------------
       if (
-        (this.triggerForm.value.actions[w].key === 'message.send')
+        (this.triggerForm.value.actions[w].key === 'message.send' || this.triggerForm.value.actions[w].key === 'email.send')
       ) {
         this.logger.log('[TRIGGER-EDIT] ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
 
@@ -837,7 +837,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
         this.logger.log('[TRIGGER-EDIT] ->>>>> onSubmit bots: ', this.bots);
 
         // -------------------------------------------------------
-        // Rename the key fullName in member
+        // Rename the key fullName in sender
         // -------------------------------------------------------
         if (this.triggerForm.value.actions[w].parameters.hasOwnProperty("fullName")) {
           this.renameKey(this.triggerForm.value.actions[w].parameters, 'fullName', 'sender');

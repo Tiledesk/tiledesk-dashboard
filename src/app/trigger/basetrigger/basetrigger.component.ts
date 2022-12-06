@@ -955,6 +955,12 @@ export class BasetriggerComponent implements OnInit {
           placeholder: translateAction.placeholder.SelectAgent
         },
         {
+          key: 'email.send',
+          label_key: translateAction.label_key.SendEmailToVisitor,
+          type: 'select',
+          placeholder: translateAction.placeholder.SelectAgent
+        },
+        {
           key: 'request.department.route',
           label_key: translateAction.label_key.AssignToDep,
           type: 'select',
@@ -1100,6 +1106,7 @@ export class BasetriggerComponent implements OnInit {
           { id: 'es', label_key: 'Spanish' },
         ],
         'message.send': this.projectUserAndBotsArray,
+        'email.send': this.projectUserAndBotsArray,
         'request.department.route': this.departments,
         'request.department.route.self': [
           { id: true, label_key: 'True' },

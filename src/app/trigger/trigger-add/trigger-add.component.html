@@ -86,7 +86,8 @@
                           {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenMessageIsSentFromVisitor" | translate }}
                         </ng-option>
                         <ng-option [value]="'message.received'">
-                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenMessageIsSentByAnyone" | translate }}</ng-option>
+                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenMessageIsSentByAnyone" | translate }}
+                        </ng-option>
                         <ng-option [value]="'request.create'">
                           {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenRequestChat" | translate }}</ng-option>
                         <!-- <ng-option [value]="'user.login'">
@@ -370,12 +371,13 @@
                     <div formArrayName="actions"
                       *ngFor="let action of triggerForm.get('actions').controls; let j = index; let last = last">
                       <div [formGroupName]="j">
+ 
 
                         <div class="form-group row condition">
 
 
                           <!-- --------------------------- -->
-                          <!-- First condition -->
+                          <!-- First action -->
                           <!-- --------------------------- -->
                           <div class="col-sm-3">
                             <ng-select #myselect class="custom-select" formControlName="key"
@@ -456,6 +458,7 @@
                                 placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
                             </div>
 
+                       
                             <!-- 
                             // --------------------------------------------------------------------
                             //  display the text input if the action key is request.create 
@@ -465,6 +468,12 @@
 
                               <input class="custom-input" formControlName="text" type="text"
                                 placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
+                            </div>
+
+                            <div class="col-sm-3" *ngIf="action.value.key === 'email.send'" style="padding-right: 3px;padding-bottom: 0px;">
+
+                              <textarea class="custom-input" formControlName="text" type="text" style="resize: vertical;"
+                                placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'></textarea>
                             </div>
 
 

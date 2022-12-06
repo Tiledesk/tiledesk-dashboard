@@ -379,7 +379,7 @@
 
                            
                           <!-- --------------------------- -->
-                          <!-- First condition -->
+                          <!-- First Action condition -->
                           <!-- --------------------------- -->
                           <div class="col-sm-3">
                             <ng-select class="custom-select " formControlName="key"
@@ -460,6 +460,12 @@
                               style="padding-right: 3px;">
                               <input class="custom-input" formControlName="text" type="text"
                                 placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
+                            </div>
+
+                            <div class="col-sm-3" *ngIf="action.value.key === 'email.send'" style="padding-right: 3px;padding-bottom: 0px;">
+
+                              <textarea class="custom-input" formControlName="text" type="text" style="resize: vertical;"
+                                placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'></textarea>
                             </div>
                           </div>
 
