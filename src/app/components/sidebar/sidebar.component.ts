@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener, EventEmitter, Output, Input } from '@angular/core';
 
-import { Router, NavigationEnd,  Event as NavigationEvent } from '@angular/router';
+import { Router, NavigationEnd, Event as NavigationEvent } from '@angular/router';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
@@ -1636,7 +1636,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // console.log('SIDEBAR openChat ' )
 
         // --- new 
-        localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+        if (this.current_selected_prjct) {
+            localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+        }
         // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
         // let url = baseUrl
         // const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');

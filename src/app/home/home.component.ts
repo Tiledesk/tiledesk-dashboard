@@ -406,9 +406,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           } catch (err) {
             this.logger.error('group Home error', err);
           }
-        } else {
-          this.logger.error('group Home window[analytics]', window['analytics']);
-        }
+        } 
+        // else {
+        //   this.logger.error('group Home window[analytics]', window['analytics']);
+        // }
       }
 
 
