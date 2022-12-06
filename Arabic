@@ -1447,6 +1447,7 @@
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "إرسال رسالة للزائر",
+                    "SendEmailToVisitor": "Send an email to the visitor",
                     "AssignToDep": "تكليف القسم",
                     "ReAssignToSameDep": "إعادة التعيين إلى نفس القسم",
                     "RequestUpdateStatus": "يغير حالة المحادثة",
