@@ -1447,6 +1447,7 @@
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "Skicka ett meddelande till besökaren",
+                    "SendEmailToVisitor": "Send an email to the visitor",
                     "AssignToDep": "Tilldela avdelningen",
                     "ReAssignToSameDep": "Omplacera till samma avdelning",
                     "RequestUpdateStatus": "Ändrar konversationens status",
