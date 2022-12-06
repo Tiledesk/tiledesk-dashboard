@@ -1447,6 +1447,7 @@
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "Mehmonga xabar yuboring",
+                    "SendEmailToVisitor": "Mehmonga elektron xat yuboring",
                     "AssignToDep": "Bo'limga tayinlang",
                     "ReAssignToSameDep": "Xuddi shu bo'limga qayta tayinlang",
                     "RequestUpdateStatus": "Suhbat holatini o'zgartiradi",

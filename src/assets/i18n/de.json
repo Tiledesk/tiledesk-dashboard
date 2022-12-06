@@ -1448,6 +1448,7 @@
 			"ActionArray": {
 				"label_key": {
 					"SendMessageToVisitor": "Nachricht an Besucher senden",
+					"SendEmailToVisitor": "Senden Sie eine E-Mail an den Besucher",
 					"AssignToDep": "Der Abteilung zuordnen",
 					"ReAssignToSameDep": "Neu zu der selben Abteilung hinzufügen",
 					"RequestUpdateStatus": "Ändern Sie den Status der Konversation",

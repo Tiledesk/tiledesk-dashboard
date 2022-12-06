@@ -1447,6 +1447,7 @@
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "Ziyarətçiyə mesaj göndərin",
+                    "SendEmailToVisitor": "Ziyarətçiyə e-məktub göndərin",
                     "AssignToDep": "Şöbəyə təyin edin",
                     "ReAssignToSameDep": "Eyni şöbəyə yenidən təyin edin",
                     "RequestUpdateStatus": "Söhbətin statusunu dəyişir",

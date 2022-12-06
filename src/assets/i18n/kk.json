@@ -1447,6 +1447,7 @@
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "Келушіге хабарлама жіберіңіз",
+                    "SendEmailToVisitor": "Келушіге электрондық хат жіберіңіз",
                     "AssignToDep": "Бөлімге тапсыру",
                     "ReAssignToSameDep": "Сол бөлімге қайта тағайындау",
                     "RequestUpdateStatus": "Әңгімелесу күйін өзгертеді",
