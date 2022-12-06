@@ -120,66 +120,63 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.getBrowserLang();
     this.getOSCODE();
 
-    this.getQueryParams()
+    this.getQueryParamsAndSegmentRecordPageAndIdentify()
     // 
 
   }
 
-  getQueryParams() {
+  getQueryParamsAndSegmentRecordPageAndIdentify() {
     this.route.queryParamMap
       .subscribe(params => {
-        console.log('[SIGN-UP] queryParams', params['params']);
+        this.logger.log('[SIGN-UP] queryParams', params['params']);
         this.queryParams = params['params']
-        console.log('segmentsPageAndIdentify queryParams', this.queryParams)
+        this.logger.log('segmentsPageAndIdentify queryParams', this.queryParams)
         var size = Object.keys(this.queryParams).length;
-        console.log('queryParams size ', size)
+        this.logger.log('queryParams size ', size)
         if (size > 0) {
 
           for (const [key, value] of Object.entries(this.queryParams)) {
-            console.log(`${key}: ${value}`);
-            this.segmentsPageAndIdentify(key + '=' + value)
+            this.logger.log(`${key}: ${value}`);
+            this.segmentRecordPageAndIdentify(key + '=' + value)
           }
 
         } else {
-          this.segmentsPageAndIdentify()
+          this.segmentRecordPageAndIdentify()
         }
-
       })
 
   }
-  segmentsPageAndIdentify(queryParams?: any) {
-    // if (!isDevMode()) {
-    setTimeout(() => {
-      if (window['analytics']) {
+  segmentRecordPageAndIdentify(queryParams?: any) {
+    if (!isDevMode()) {
+      setTimeout(() => {
+        if (window['analytics']) {
 
-        let page = ''
-        if (queryParams) {
-          page = "Auth Page, Signup" + ' ' + queryParams
-        } else {
-          page = "Auth Page, Signup"
+          let page = ''
+          if (queryParams) {
+            page = "Auth Page, Signup" + ' ' + queryParams
+          } else {
+            page = "Auth Page, Signup"
+          }
+
+          try {
+            window['analytics'].page(page, {
+        
+            });
+          } catch (err) {
+            this.logger.error('Signin page error', err);
+          }
+          try {
+            window['analytics'].identify({
+              createdAt: moment().format("YYYY-MM-DD hh:mm:ss")
+            });
+          } catch (err) {
+            this.logger.error('Signin identify error', err);
+          }
+
+
         }
-
-        try {
-          window['analytics'].page(page, {
-            // "properties": {
-            //   "title": 'Signup'
-            // }
-          });
-        } catch (err) {
-          this.logger.error('Signin page error', err);
-        }
-        try {
-          window['analytics'].identify({
-            createdAt: moment().format("YYYY-MM-DD hh:mm:ss")
-          });
-        } catch (err) {
-          this.logger.error('Signin identify error', err);
-        }
-
-
-      }
-    }, 3000);
-    // }
+      }, 3000);
+    }
 
   }
 
@@ -345,17 +342,29 @@ export class SignupComponent implements OnInit, AfterViewInit {
                 this.logger.error('identify signup event error', err);
               }
 
+              var size = Object.keys(this.queryParams).length;
+              this.logger.log('queryParams size ', size)
+              let event = ''
+              if (size > 0) {
+
+                for (const [key, value] of Object.entries(this.queryParams)) {
+                  this.logger.log(`${key}: ${value}`);
+                  event = "Signed Up button clicked" + ' ' + key + '=' + value
+                }
+
+              } else {
+                event = "Signed Up button clicked"
+              }
+              this.logger.log('[SIGN-UP] Signed Up button clicked event ', event)
+
               try {
-                window['analytics'].track('Signed Up', {
+                window['analytics'].track(event, {
                   "type": "organic",
                   "first_name": signupResponse.user.firstname,
                   "last_name": signupResponse.user.lastname,
                   "email": signupResponse.user.email,
                   "username": signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
                   'userId': signupResponse.user._id
-                  // "properties": {
-
-                  // }
                 });
               } catch (err) {
                 this.logger.error('track signup event error', err);
