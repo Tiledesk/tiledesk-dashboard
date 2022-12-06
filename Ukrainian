@@ -1447,6 +1447,7 @@
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "Надішліть повідомлення відвідувачеві",
+                    "SendEmailToVisitor": "Send an email to the visitor",
                     "AssignToDep": "Призначити на кафедру",
                     "ReAssignToSameDep": "Перепризначити до того ж відділу",
                     "RequestUpdateStatus": "Змінює статус розмови",
