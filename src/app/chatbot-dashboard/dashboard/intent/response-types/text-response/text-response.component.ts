@@ -66,6 +66,12 @@ export class TextResponseComponent implements OnInit {
       'show_echo': true
     };
     this.buttons.push(button);
+    this.response.attributes = {
+      attachment: {
+        type: 'template',
+        buttons: this.buttons
+      }
+    }
     return button;
   }
 
@@ -94,16 +100,20 @@ export class TextResponseComponent implements OnInit {
     } else {
       this.alertCharsText = false;
     }
+    this.response.text = text;
   }
 
   /** */
   onChangeDelayTime(value:number){
     this.delayTime = value;
+    this.response.time = value*1000;
   }
 
   /** */
   onOpenButtonPanel(button?){
-    if(!button){button = this.addNewButton()}
+    if(!button){
+      button = this.addNewButton();
+    }
     this.openButtonPanel.emit(button);
   }
 

@@ -69,30 +69,31 @@ export class ButtonConfigurationPanelComponent implements OnInit {
     this.urlType = this.typeOfUrl.BLANK;
     this.buttonUrl = '';
 
-    if(this.button){
+    try {
       this.buttonLabel = this.button.value;
       this.buttonType = this.button.type;
       this.urlType = this.button.target;
       this.buttonUrl = this.button.link;
       this.buttonAction = this.button.action;
-    } else {
-      this.addNewButton();
+    } catch (error) {
+      // error
     }
+    
   }
 
 
   // PRIVATE FUNCTIONS //  
   /** */
-  private addNewButton(){
-    this.button = {
-      'value': '',
-      'type': this.typeOfButton.TEXT,
-      'target': this.typeOfUrl.BLANK,
-      'link': '',
-      'action': '',
-      'show_echo': true
-    };
-  }
+  // private addNewButton(){
+  //   this.button = {
+  //     'value': '',
+  //     'type': this.typeOfButton.TEXT,
+  //     'target': this.typeOfUrl.BLANK,
+  //     'link': '',
+  //     'action': '',
+  //     'show_echo': true
+  //   };
+  // }
   
   private checkButtonLabel(): boolean {
     //setTimeout(() => {

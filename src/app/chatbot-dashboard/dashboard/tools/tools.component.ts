@@ -1,13 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-
-export enum TYPE {
-  TEXT = 'text', 
-  RANDOM_TEXT = 'randomText', 
-  IMAGE = 'image', 
-  FORM = 'form', 
-  VIDEO = 'video'
-}
+import { Message, Command } from '../../../models/intent-model';
+import { TYPE_MESSAGE, TYPE_RESPONSE, TYPE_BUTTON, TIME_WAIT_DEFAULT } from '../../utils';
 
 @Component({
   selector: 'appdashboard-tools',
@@ -15,11 +9,11 @@ export enum TYPE {
   styleUrls: ['../dashboard.component.scss', './tools.component.scss']
 })
 export class ToolsComponent implements OnInit {
-  @Input() arrayResponses: Array<any>;
+  @Output() addNewResponse = new EventEmitter();
 
   items: Array<string> = [];
   showSpinner:boolean = false;
-  Type = TYPE;
+  Type = TYPE_RESPONSE;
   
   constructor() { 
     // console.log('constructor);
@@ -30,13 +24,18 @@ export class ToolsComponent implements OnInit {
   }
 
 
-  addElement(type: TYPE){
-    if(type === TYPE.TEXT){
-      this.arrayResponses.push({
-        messages: ["ciao"],
-        delay: 1.5,
-        buttons: []
-      });
+  addElement(type: TYPE_RESPONSE){
+    var newElement:Command;
+    if(type === this.Type.TEXT){
+      newElement = {
+        type: TYPE_MESSAGE.MESSAGE,
+        message: {
+          text: '',
+          type: TYPE_BUTTON.TEXT,
+          time: TIME_WAIT_DEFAULT
+        },
+      } 
+      this.addNewResponse.emit(newElement);
     }
   }
 

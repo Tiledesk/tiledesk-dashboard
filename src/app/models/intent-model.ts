@@ -1,88 +1,49 @@
-
-    export interface Intent {
-        webhook_enabled: boolean;
-        enabled: boolean;
-        topic: string;
-        status: string;
-        _id: string;
-        id_faq_kb: string;
-        question: string;
-        questions: string[];
-        answer: string;
-        answers: Answer[];
-        id_project: string;
-        language: string;
-        intent_display_name: string;
-        createdBy: string;
-        intent_id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        __v: number;
-        form: Form;
-        id: string;
-    }
-    
-    export interface Answer {
-        messages: string[];
-        time: number;
-        buttons: Button[];
+    export class Intent {
+        webhook_enabled?: boolean;
+        enabled?: boolean;
+        topic?: string;
+        status?: string;
+        id_faq_kb?: string;
+        question?: string;
+        answer?: string;
+        form?: Form;
+        reply?: Reply;
+        id_project?: string;
+        language?: string;
+        intent_display_name?: string;
+        createdBy?: string;
+        intent_id?: string;
+        createdAt?: Date;
+        updatedAt?: Date;
+        id?: string;
+        constructor() {
+            this.reply = new Reply();
+        }
+        
     }
 
-    
-
-
-    export interface Field {
-        name: string;
-        type: string;
-        label: string;
-        regex: string;
-        errorLabel: string;
-    }
-
-    export interface Form {
-        cancelCommands: string[];
-        cancelReply: string;
-        id: number;
-        name: string;
-        fields: Field[];
-    }
-
-    
-
-
-    export interface Intent {
-        webhook_enabled: boolean;
-        enabled: boolean;
-        topic: string;
-        status: string;
-        _id: string;
-        id_faq_kb: string;
-        question: string;
-        answer: string;
-        reply: Reply;
-        id_project: string;
-        language: string;
-        intent_display_name: string;
-        createdBy: string;
-        intent_id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        __v: number;
-        id: string;
-    }
-
-    export interface Reply {
-        text: string;
+    export class Reply {
+        text?: string;
         attributes: Attributes;
+        constructor(text?: string, attributes?:Attributes) {
+            this.text = text?text:'';
+            this.attributes = attributes?attributes:new Attributes();
+        }
     }
 
-    export interface Attributes {
+    export class Attributes {
         commands: Command[];
+        constructor(commands?: Command[]) {
+            this.commands = [];
+            if(commands && commands.length >0){
+                this.commands = commands;
+            }
+        }
     }
 
-    export interface Command {
+    export class Command {
         type: string;
-        message: Message;
+        message?: Message;
         time?: number;
     }
 
@@ -110,4 +71,21 @@
         action?: string,
         show_echo?: boolean
     }
+
+    export class Form {
+        cancelCommands: string[];
+        cancelReply: string;
+        id: number;
+        name: string;
+        fields: Field[];
+    }
+
+    export class Field {
+        name: string;
+        type: string;
+        label: string;
+        regex: string;
+        errorLabel: string;
+    }
         
+

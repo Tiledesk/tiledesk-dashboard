@@ -15,13 +15,15 @@
 <div class="chatboat-dashboard">
     <div class="card-tools">
         <appdashboard-tools
-        [arrayResponses]="arrayResponses"
+        (addNewResponse) = onAddNewResponse($event)
         ></appdashboard-tools>
     </div>
     <div class="card-intent">
         <appdashboard-intent
             *ngIf = intentSelected
             [intent]="intentSelected"
+            [showSpinner] = "showSpinner"
+            (saveIntent) = onSaveIntent($event)
             (openButtonPanel) = onOpenButtonPanel($event)
         ></appdashboard-intent>
     </div>

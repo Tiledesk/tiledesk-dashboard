@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Intent, Message } from '../../../models/intent-model';
+import { Intent, Message, Command } from '../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../../utils';
 
@@ -10,12 +10,17 @@ import { TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../../utils';
 })
 export class IntentComponent implements OnInit {
   @Output() openButtonPanel = new EventEmitter();
+  @Output() saveIntent = new EventEmitter();
   @Input() intent: Intent;
+  @Input() showSpinner: boolean;
+  
+  // @Input() arrayResponses: Array<Command>;
 
+  typeMessage = TYPE_MESSAGE;
   intentName: string;
   intentNameResult: boolean;
   textGrabbing: boolean;
-  arrayResponses: Array<Message>;
+  arrayResponses: Array<Command>;
 
   constructor() { }
 
@@ -27,39 +32,68 @@ export class IntentComponent implements OnInit {
   // CUSTOM FUNCTIONS //
   /** */
   private initialize(){
-    this.intentName = this.intent.intent_display_name;
+    this.intentName = '';
+    try {
+      this.intentName = this.intent.intent_display_name;
+    } catch (error) {
+      console.log('there is not reply', error);
+    }
     this.intentNameResult = true;
-    this.arrayResponses = [];
+    try {
+      this.arrayResponses = this.intent.reply.attributes.commands;
+    } catch (error) {
+      console.log('error:::', error);
+    }
     this.textGrabbing = false;
     this.generateArrayResponse();
   }
 
   /** */
   private generateArrayResponse(){
-    let commands = this.intent.reply.attributes.commands;
     var time = TIME_WAIT_DEFAULT;
-    commands.forEach(element => {
+    this.arrayResponses.forEach(element => {
       if(element.type === TYPE_MESSAGE.WAIT) {
         time = element.time;
       }
       if(element.type === TYPE_MESSAGE.MESSAGE){
-        let response = element.message;
-        response.time = time;
-        this.arrayResponses.push(response);
+        element.time = time;
         time = TIME_WAIT_DEFAULT;
       }
     });
   }
 
   /** */
-  private checkIntentName() {
-    setTimeout(() => {
-      if (!this.intentName || this.intentName.length === 0){
-        this.intentNameResult = false;
-      } else {
-        this.intentNameResult = true;
+  private updateArrayResponse(){
+    let newArrayCommands = []; 
+    this.arrayResponses.forEach(element => {
+      if(element.type === TYPE_MESSAGE.MESSAGE){
+        let command =  new Command();
+        command.type = TYPE_MESSAGE.WAIT;
+        command.time = element.message.time;
+        newArrayCommands.push(command);
+        command =  new Command();
+        command.type = TYPE_MESSAGE.MESSAGE;
+        element.time = element.message.time;
+        command.message = element.message;
+        newArrayCommands.push(command);
       }
-    }, 300);
+    });
+    this.arrayResponses = newArrayCommands;
+  }
+
+
+  /** */
+  private checkIntentName(): boolean {
+    //setTimeout(() => {
+      if (!this.intentName || this.intentName.length === 0){
+        //this.intentNameResult = false;
+        return false; 
+      } else {
+        this.intent.intent_display_name = this.intentName;
+        //this.intentNameResult = true;
+        return true;
+      }
+    //}, 300);
   }
 
 
@@ -109,19 +143,23 @@ export class IntentComponent implements OnInit {
     try {
       this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
     } catch (error) {
-      console.log('name is not a string')
+      console.log('name is not a string', error)
     }
   }
 
   /** */
   onBlurIntentName(name: string){
     this.intentNameResult = true;
-    // this.checkIntentName();
   }
  
   /** */
   onSaveIntent(){
-    this.checkIntentName();
+    //console.log('onSaveIntent:: ', this.intent, this.arrayResponses);
+    this.intentNameResult = this.checkIntentName();
+    this.updateArrayResponse();
+    if(this.intentNameResult){
+      this.saveIntent.emit(this.intent);
+    }
   }
 
   /** */

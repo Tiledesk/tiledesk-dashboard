@@ -5,7 +5,7 @@
             <i class="i-priority-color-mark"></i>
             <label 
             class="control-label title"
-            [ngClass]="{'noDisplay':intentName.length>0}">
+            [ngClass]="{'noDisplay':(intentName && intentName.length>0)}">
                 {{ 'EnterIntentName' | translate }}
             </label>
             <input 
@@ -14,7 +14,11 @@
                 class="input form-control"
                 (blur) = "onBlurIntentName($event)"
                 (change) = "onChangeIntentName($event)">
-            <button class="btn btn-primary btn-save" type="button" (click)="onSaveIntent()">
+            <button 
+                class="btn btn-primary btn-save" 
+                [disabled]="showSpinner"
+                type="button" 
+                (click)="onSaveIntent()">
                 {{ 'Save' | translate }}
             </button>
         </div>
@@ -22,34 +26,35 @@
 
     <div cdkDropList class="content draggable-list" (cdkDropListDropped)="drop($event)">
         <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag>
-           
-            <div class="custom-placeholder" *cdkDragPlaceholder>
-                <appdashboard-text-response
-                [index] = i
-                [response] = response
-                (moveUpResponse) = onMoveUpResponse($event)
-                (moveDownResponse) = onMoveDownResponse($event)
-                (deleteResponse) = onDeleteResponse($event)
-                ></appdashboard-text-response>
+            <div *ngIf="response.type === typeMessage.MESSAGE && response.message">
+                <div class="custom-placeholder" *cdkDragPlaceholder>
+                    <appdashboard-text-response
+                    [index] = i
+                    [response] = response.message
+                    (moveUpResponse) = onMoveUpResponse($event)
+                    (moveDownResponse) = onMoveDownResponse($event)
+                    (deleteResponse) = onDeleteResponse($event)
+                    ></appdashboard-text-response>
+                </div>
+                
+                <div class="text-response">
+                    <div class="text-editor-drop" 
+                        [ngClass]="{'grabbing':textGrabbing}"
+                        (mousedown)="mouseDown()" 
+                        (mouseup)="mouseUp()" 
+                        cdkDragHandle>
+                    </div> 
+                    <appdashboard-text-response
+                    [index] = i
+                    [response] = response.message
+                    (moveUpResponse) = onMoveUpResponse($event)
+                    (moveDownResponse) = onMoveDownResponse($event)
+                    (deleteResponse) = onDeleteResponse($event)
+                    (openButtonPanel) = onOpenButtonPanel($event)
+                    ></appdashboard-text-response>
+                </div>
             </div>
             
-            <div class="text-response">
-                <div class="text-editor-drop" 
-                [ngClass]="{'grabbing':textGrabbing}"
-                    (mousedown)="mouseDown()" 
-                    (mouseup)="mouseUp()" 
-                    cdkDragHandle>
-                </div> 
-
-                <appdashboard-text-response
-                [index] = i
-                [response] = response
-                (moveUpResponse) = onMoveUpResponse($event)
-                (moveDownResponse) = onMoveDownResponse($event)
-                (deleteResponse) = onDeleteResponse($event)
-                (openButtonPanel) = onOpenButtonPanel($event)
-                ></appdashboard-text-response>
-            </div>
     
         </div>
     </div>

@@ -296,17 +296,83 @@ export class FaqService {
         'Authorization': this.TOKEN
       })
     };
-
     this.logger.log('[FAQ-SERV] UPDATE FAQ - ID ', id);
     let url = this.FAQ_URL + id; 
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT URL ', url);
-
     const body = { 'question': question, 'answer': answer, 'intent_display_name': intentname, 'form':intentform, 'webhook_enabled': faqwebhookenabled };
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT REQUEST BODY ', body);
-
     return this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
   }
+
+
+
+  /**
+   * CREATE FAQ (POST)
+   * @param id_faq_kb 
+   * @param question 
+   * @param answer 
+   * @param intent_display_name 
+   * @param intent_form
+   * @param intent_reply
+   * @param webhook_enabled 
+   * @returns 
+   */
+   public addIntent(id_faq_kb: string, question: string, answer: string, intent_display_name: string, intent_form: any, intent_reply: any, webhook_enabled: boolean) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    const url = this.FAQ_URL;
+    this.logger.log('[FAQ-SERV] ADD FAQ -  PUT URL ', url);
+    const body = { 
+      'id_faq_kb': id_faq_kb, 
+      'question': question, 
+      'answer': answer, 
+      'intent_display_name': intent_display_name, 
+      'form': intent_form,
+      'reply': intent_reply,
+      'webhook_enabled': webhook_enabled 
+    };
+    this.logger.log('[FAQ-SERV] ADD FAQ - POST BODY ', body);
+    return this._httpClient.post(url, JSON.stringify(body), httpOptions)
+  }
+
+  /**
+   * UPDATE FAQ (PUT)
+   * @param id 
+   * @param question 
+   * @param answer 
+   * @param intent_display_name 
+   * @param intent_form 
+   * @param intent_reply 
+   * @param webhook_enabled 
+   * @returns 
+   */
+   public updateIntent(id: string, question: string, answer: string, intent_display_name: string, intent_form: any, intent_reply: any, webhook_enabled: boolean) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    this.logger.log('[FAQ-SERV] UPDATE FAQ - ID ', id);
+    let url = this.FAQ_URL + id; 
+    this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT URL ', url);
+    const body = { 
+      'question': question, 
+      'answer': answer, 
+      'intent_display_name': intent_display_name, 
+      'form': intent_form,
+      'reply': intent_reply,
+      'webhook_enabled': webhook_enabled 
+    };
+    this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT REQUEST BODY ', body);
+    return this._httpClient.put(url, JSON.stringify(body), httpOptions);
+  }
+
 
   /**
    * CREATE TRAIN BOT ANSWER (POST)

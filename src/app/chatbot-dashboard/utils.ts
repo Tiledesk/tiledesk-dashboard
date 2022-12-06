@@ -1,3 +1,11 @@
+export enum TYPE_RESPONSE {
+    TEXT = 'text', 
+    RANDOM_TEXT = 'randomText', 
+    IMAGE = 'image', 
+    FORM = 'form', 
+    VIDEO = 'video'
+}
+
 export enum TYPE_BUTTON {
     TEXT = 'text', 
     URL = 'url', 
