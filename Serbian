@@ -1447,6 +1447,7 @@
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "Пошаљите поруку посетиоцу",
+                    "SendEmailToVisitor": "Send an email to the visitor",
                     "AssignToDep": "Доделите одељењу",
                     "ReAssignToSameDep": "Прераспоредите у исто одељење",
                     "RequestUpdateStatus": "Мења статус разговора",
