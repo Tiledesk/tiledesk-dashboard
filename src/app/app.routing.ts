@@ -139,7 +139,7 @@ const routes: Routes = [
 
   // are used in the left panel of the chat
   { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] },
-
+  { path: 'get-chatbot/:botid', component: GetStartChatbotForkComponent, canActivate: [AuthGuard] },
 
   // **** NEW - WIZARD CREATE PROJECT ****
   // { path: 'project/create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
@@ -246,7 +246,7 @@ const routes: Routes = [
   { path: 'project/:projectid/bots/templates/all', component: TemplatesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/templates/customer-satisfaction', component: TemplatesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/templates/increase-sales', component: TemplatesComponent, canActivate: [AuthGuard] },
-  { path: 'get-chatbot/:botid', component: GetStartChatbotForkComponent, canActivate: [AuthGuard] },
+  
 
   // rasa bot
   { path: 'project/:projectid/bot/rasa/create', component: RasaBotComponent, canActivate: [AuthGuard] },

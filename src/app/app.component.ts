@@ -781,7 +781,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/project-for-panel') !== -1) ||
                     (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
                     (this.route.indexOf('/autologin') !== -1) ||
-                    (this.route.indexOf('/unauthorized_access') !== -1)
+                    (this.route.indexOf('/unauthorized_access') !== -1 ||
+                    (this.route.indexOf('/get-chatbot') !== -1))
 
                 ) {
 

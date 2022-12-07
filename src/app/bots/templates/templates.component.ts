@@ -67,6 +67,8 @@ export class TemplatesComponent implements OnInit {
   // bigImage
   // templateFeatures
 
+  // nameOnSite
+
   // certifiedTags
   // "certifiedTags": [{ "color": "#00699e", "name": "Pre-Sale" }, { "color": "#a16300", "name": "Lead-Gen" }],
 
@@ -216,20 +218,7 @@ export class TemplatesComponent implements OnInit {
   }
 
 
-  installTemplate(botid) {
-    this.faqKbService.installTemplate(botid).subscribe((res: any) => {
-      this.logger.log('[BOTS-TEMPLATES] - INSTALL TEMPLATE RES', res);
 
-
-    }, (error) => {
-      this.logger.error('[BOTS-TEMPLATES] INSTALL TEMPLATE - ERROR ', error);
-
-    }, () => {
-      this.logger.log('[BOTS-TEMPLATES] INSTALL TEMPLATE COMPLETE');
-
-
-    });
-  }
 
   createBlankTilebot() {
     this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);

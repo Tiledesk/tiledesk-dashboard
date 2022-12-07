@@ -321,6 +321,7 @@ export class AuthService {
               url_segments[1] !== 'signup-on-invitation' &&
               url_segments[1] !== 'resetpassword' &&
               url_segments[1] !== 'autologin' &&
+              url_segments[1] !== 'get-chatbot' &&
               current_url !== '/projects'
             ) {
               this.logger.log(

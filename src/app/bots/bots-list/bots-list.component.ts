@@ -229,7 +229,7 @@ export class BotListComponent implements OnInit {
    */
   getAllFaqKbByProjectId() {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+    console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;

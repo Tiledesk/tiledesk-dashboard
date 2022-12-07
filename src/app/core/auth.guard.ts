@@ -105,13 +105,13 @@ export class AuthGuard implements CanActivate {
         const current_url = e.url
         // if (this.location.path() !== '') {
         // const current_url = this.location.path()
-        this.logger.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
+       console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
 
         const url_segments = current_url.split('/');
-        this.logger.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS ', url_segments);
+       console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS ', url_segments);
 
         this.nav_project_id = url_segments[2];
-        this.logger.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
+        console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
 
 
         /**
@@ -139,7 +139,8 @@ export class AuthGuard implements CanActivate {
           url_segments[1] !== 'signup-on-invitation' &&
           url_segments[1] !== 'resetpassword' &&
           url_segments[1] !== 'autologin' &&
-          current_url !== '/projects') {
+          url_segments[1] !== 'get-chatbot' &&
+          current_url !== '/projects' ) {
 
           this.subscription.unsubscribe();
 
@@ -362,7 +363,8 @@ export class AuthGuard implements CanActivate {
       (this.is_reset_psw_page === true) ||
       (this.is_handleinvitation_page === true) ||
       (this.is_signup_on_invitation_page === true)) {
-      // this.router.navigate(['/home']);
+        console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
+        this.localDbService.setInStorage('wannago', url)
       return true;
       // if ((!this.user) || (this.is_verify_email_page === false))
     } else {
