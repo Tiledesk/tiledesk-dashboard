@@ -1,5 +1,7 @@
 # tiledesk-dashboard
 
+### 2.3.7-rc3
+- Replaces in the tilebot form the method to clone the intents
 
 ### 2.3.7-rc2
 - Adds the trigger action "send an email to the visitor"
