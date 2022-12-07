@@ -1,7 +1,15 @@
 # tiledesk-dashboard
 
+### 2.3.7
+- Deploys in production
+- Replaces in the Tilebot form the method to clone the intents
+- Adds the trigger action "send an email to the visitor"
+- Fixes the bug: for old archived conversations the dropdown menu available in the conversation details sidebar to change the conversation status is not populated with "Resolved"
+- Allows, in the conversation detail sidebar, to assign unique tags only
+- Fixes the bug: in the sidebar of the details conversation page the button to toggle the form to change the requester's full name does not work correctly
+
 ### 2.3.7-rc3
-- Replaces in the tilebot form the method to clone the intents
+- Replaces in the Tilebot form the method to clone the intents
 
 ### 2.3.7-rc2
 - Adds the trigger action "send an email to the visitor"
