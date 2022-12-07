@@ -80,7 +80,9 @@ export class TilebotFormComponent implements OnInit {
     if(this.intentForm && this.intentForm.fields){
       this.displayNewFormButton = false;
       this.displaySettingsButton = true;
-      this.fields = structuredClone(this.intentForm.fields);
+      // this.fields = structuredClone(this.intentForm.fields);
+
+      this.fields = JSON.parse(JSON.stringify(this.intentForm.fields));
     }
   }
   
@@ -115,7 +117,8 @@ export class TilebotFormComponent implements OnInit {
       }
       if(this.selectedForm.fields){
         this.intentForm.fields = this.selectedForm.fields;
-        this.fields = structuredClone(this.selectedForm.fields);
+        // this.fields = structuredClone(this.selectedForm.fields);
+        this.fields = JSON.parse(JSON.stringify(this.selectedForm.fields));
       }
       // console.log('generateForm:  ', this.intentForm);
     }
