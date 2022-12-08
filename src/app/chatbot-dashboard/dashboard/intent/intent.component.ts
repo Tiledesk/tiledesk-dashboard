@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Intent, Message, Command } from '../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../../utils';
+import { TYPE_COMMAND, TYPE_RESPONSE, TIME_WAIT_DEFAULT } from '../../utils';
 
 @Component({
   selector: 'appdashboard-intent',
@@ -16,7 +16,8 @@ export class IntentComponent implements OnInit {
   
   // @Input() arrayResponses: Array<Command>;
 
-  typeMessage = TYPE_MESSAGE;
+  typeCommand = TYPE_COMMAND;
+  typeResponse = TYPE_RESPONSE;
   intentName: string;
   intentNameResult: boolean;
   textGrabbing: boolean;
@@ -52,10 +53,10 @@ export class IntentComponent implements OnInit {
   private generateArrayResponse(){
     var time = TIME_WAIT_DEFAULT;
     this.arrayResponses.forEach(element => {
-      if(element.type === TYPE_MESSAGE.WAIT) {
+      if(element.type === TYPE_COMMAND.WAIT) {
         time = element.time;
       }
-      if(element.type === TYPE_MESSAGE.MESSAGE){
+      if(element.type === TYPE_COMMAND.MESSAGE){
         element.time = time;
         time = TIME_WAIT_DEFAULT;
       }
@@ -66,13 +67,13 @@ export class IntentComponent implements OnInit {
   private updateArrayResponse(){
     let newArrayCommands = []; 
     this.arrayResponses.forEach(element => {
-      if(element.type === TYPE_MESSAGE.MESSAGE){
+      if(element.type !== TYPE_COMMAND.WAIT){
         let command =  new Command();
-        command.type = TYPE_MESSAGE.WAIT;
+        command.type = TYPE_COMMAND.WAIT;
         command.time = element.message.time;
         newArrayCommands.push(command);
         command =  new Command();
-        command.type = TYPE_MESSAGE.MESSAGE;
+        command.type = element.type;
         element.time = element.message.time;
         command.message = element.message;
         newArrayCommands.push(command);
@@ -166,4 +167,5 @@ export class IntentComponent implements OnInit {
   onOpenButtonPanel(event){
     this.openButtonPanel.emit(event);
   }
+
 }

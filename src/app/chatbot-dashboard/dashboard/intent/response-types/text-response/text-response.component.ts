@@ -75,7 +75,7 @@ export class TextResponseComponent implements OnInit {
     return button;
   }
 
-  // EVENTS FUNCTIONS //
+  // EVENT FUNCTIONS //
   /** */
   onDeleteResponse(){
     this.deleteResponse.emit(this.index);

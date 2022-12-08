@@ -1,0 +1,105 @@
+<div class="image-tab">
+
+    <div class="image-header-tab">
+    </div> 
+
+    <div class="image-content-tab">
+       
+        <div *ngIf="showAddImage" class="section">
+            <div class="response-image-uploader-overlay">
+                <em class="material-icons">photo_camera</em>
+
+                <div class="form-group">
+                    <label class="control-label">
+                        {{ 'Add path image' | translate }}
+                    </label>
+                    <input 
+                        type = "text" 
+                        [(ngModel)] = "imageUrl"
+                        class="input form-control"
+                    />
+                </div> 
+
+               
+
+                
+                    
+                        <div class="row">
+                            <div class="form-group size col-md-6">
+                                <label class="control-label">
+                                    {{ 'width:' | translate }}
+                                </label>
+                                <input 
+                                    type = "text" 
+                                    [(ngModel)] = "imageWidth"
+                                    class="input form-control"
+                                />
+                            </div>
+                            <div class="form-group size col-md-6">
+                                <label class="control-label">
+                                    {{ 'height:' | translate }}
+                                </label>
+                                <input 
+                                    type = "text" 
+                                    [(ngModel)] = "imageHeight"
+                                    class="input form-control"
+                                />
+                            </div> 
+                  
+                        </div>
+                    
+               
+
+                <button 
+                    type="button" 
+                    class="btn btn-primary btn-save" 
+                    (click)="onCloseImagePanel()">
+                    {{ 'imposta immagine' | translate }}
+                </button>
+            </div>
+        </div>
+        
+
+        <div *ngIf="!showAddImage" class="section removeImage">
+            <div class="response-image-uploader-overlay">
+                <em class="material-icons">photo_camera</em>
+                <button 
+                    type="button" 
+                    class="btn btn-primary btn-save" 
+                    (click)="onRemoveImage()">
+                    {{ 'Remove image' | translate }}
+                </button>
+            </div> 
+            <!-- <div class="form-group">
+                <label class="control-label">
+                    {{ 'width' | translate }}
+                </label>
+                <input 
+                    type = "text" 
+                    [(ngModel)] = "imageWidth"
+                    class="input form-control"
+                />
+                <label class="control-label">
+                    {{ 'height' | translate }}
+                </label>
+                <input 
+                    type = "text" 
+                    [(ngModel)] = "imageHeight"
+                    class="input form-control"
+                />
+            </div>  -->
+
+        </div>
+       
+    </div> 
+
+    <div class="image-footer-tab">
+        
+    </div>
+    
+
+</div>
+
+
+
+

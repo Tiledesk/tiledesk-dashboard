@@ -1,3 +1,5 @@
+import { MetadataOverride } from "@angular/core/testing";
+
     export class Intent {
         webhook_enabled?: boolean;
         enabled?: boolean;
@@ -47,18 +49,29 @@
         time?: number;
     }
 
-    export interface Message {
-        text: string;
+    export class Message {
+        text?: string;
         type: string;
         time?: number;
         attributes?: MessageAttributes;
+        metadata?: Metadata;
     }
 
-    export interface MessageAttributes {
+
+
+    export class MessageAttributes {
         attachment: Attachment;
     }
 
-    export interface Attachment {
+    export class Metadata {
+        name?: string;
+        src: string;
+        width?: string;
+        height?: string;
+        type?: string;
+    }
+
+    export class Attachment {
         type: string;
         buttons: Button[];
     }

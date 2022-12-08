@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
-  showSpinner = true;
+  showSpinner = false;
 
   id_faq_kb: string;
   id_faq: string;
@@ -295,7 +295,7 @@ export class DashboardComponent implements OnInit {
     try {
       this.intentSelected.reply.attributes.commands.push(element);
     } catch (error) {
-      console.log('onAddNewResponse ERROR', error)
+      console.log('onAddNewResponse ERROR', error);
     }
   }
 

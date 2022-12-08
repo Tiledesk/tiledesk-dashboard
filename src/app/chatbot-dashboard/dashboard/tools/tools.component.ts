@@ -1,7 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Message, Command } from '../../../models/intent-model';
-import { TYPE_MESSAGE, TYPE_RESPONSE, TYPE_BUTTON, TIME_WAIT_DEFAULT } from '../../utils';
+import { 
+  TYPE_COMMAND, 
+  TYPE_MESSAGE, 
+  TYPE_BUTTON, 
+  TIME_WAIT_DEFAULT,
+  MESSAGE_METADTA_WIDTH,
+  MESSAGE_METADTA_HEIGHT 
+} from '../../utils';
 
 @Component({
   selector: 'appdashboard-tools',
@@ -13,7 +20,7 @@ export class ToolsComponent implements OnInit {
 
   items: Array<string> = [];
   showSpinner:boolean = false;
-  Type = TYPE_RESPONSE;
+  TypeCommand = TYPE_COMMAND;
   
   constructor() { 
     // console.log('constructor);
@@ -24,19 +31,39 @@ export class ToolsComponent implements OnInit {
   }
 
 
-  addElement(type: TYPE_RESPONSE){
+  addElement(type: TYPE_COMMAND){
+    console.log('addElement---->', type);
     var newElement:Command;
-    if(type === this.Type.TEXT){
-      newElement = {
-        type: TYPE_MESSAGE.MESSAGE,
-        message: {
-          text: '',
-          type: TYPE_BUTTON.TEXT,
-          time: TIME_WAIT_DEFAULT
-        },
-      } 
-      this.addNewResponse.emit(newElement);
+    switch (type) {
+      case this.TypeCommand.MESSAGE:
+        newElement = {
+          type: this.TypeCommand.MESSAGE,
+          message: {
+            text: '',
+            type: TYPE_MESSAGE.TEXT,
+            time: TIME_WAIT_DEFAULT
+          },
+        } 
+      break;
+      case this.TypeCommand.IMAGE:
+          newElement = {
+            type: this.TypeCommand.IMAGE,
+            message: {
+              text: '',
+              type: TYPE_MESSAGE.TEXT,
+              time: TIME_WAIT_DEFAULT,
+              metadata: {
+                src: '',
+                width: MESSAGE_METADTA_WIDTH,
+                height: MESSAGE_METADTA_HEIGHT
+              }
+            },
+          } 
+          break;
+      default:
+        break;
     }
+    this.addNewResponse.emit(newElement);
   }
 
 

@@ -18,10 +18,19 @@ export enum TYPE_URL {
     SELF = 'self'
 }
 
-export enum TYPE_MESSAGE {
+export enum TYPE_COMMAND {
     WAIT = 'wait', 
-    MESSAGE = 'message'
+    MESSAGE = 'message',
+    IMAGE = 'image'
 }
+
+export enum TYPE_MESSAGE {
+    TEXT = 'text', 
+    IMAGE = 'image'
+}
+
+export const MESSAGE_METADTA_WIDTH = '100%';
+export const MESSAGE_METADTA_HEIGHT = '230px';
 
 export const TIME_WAIT_DEFAULT = 500;
 export const TEXT_CHARS_LIMIT = 300;

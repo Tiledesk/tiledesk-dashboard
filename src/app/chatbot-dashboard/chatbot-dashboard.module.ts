@@ -18,6 +18,8 @@ import { IntentComponent } from './dashboard/intent/intent.component';
 import { TextResponseComponent } from './dashboard/intent/response-types/text-response/text-response.component';
 import { DelaySliderComponent } from './dashboard/intent/elements/delay-slider/delay-slider.component';
 import { ButtonConfigurationPanelComponent } from './dashboard/button-configuration-panel/button-configuration-panel.component';
+import { ImageResponseComponent } from './dashboard/intent/response-types/image-response/image-response.component';
+import { ImagePanelComponent } from './dashboard/intent/elements/image-panel/image-panel.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { ButtonConfigurationPanelComponent } from './dashboard/button-configurat
     IntentComponent,
     TextResponseComponent,
     DelaySliderComponent,
-    ButtonConfigurationPanelComponent
+    ButtonConfigurationPanelComponent,
+    ImageResponseComponent,
+    ImagePanelComponent
   ],
   imports: [
     CommonModule,
