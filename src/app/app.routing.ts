@@ -123,6 +123,7 @@ import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-s
 import { TilebotComponent } from './bots/tilebot/tilebot.component';
 import { OnboardingComponent } from './create-project-wizard/onboarding/onboarding.component';
 import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
+import { InstallTemplateComponent } from './create-project-wizard/install-template/install-template.component';
 
 
 const routes: Routes = [
@@ -140,6 +141,8 @@ const routes: Routes = [
   // are used in the left panel of the chat
   { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] },
   { path: 'get-chatbot/:botid', component: GetStartChatbotForkComponent, canActivate: [AuthGuard] },
+  { path: 'install-template/:botid/:projectid', component: InstallTemplateComponent, canActivate: [AuthGuard] },
+  
 
   // **** NEW - WIZARD CREATE PROJECT ****
   // { path: 'project/create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },

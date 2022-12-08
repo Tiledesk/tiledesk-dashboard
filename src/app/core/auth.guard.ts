@@ -71,7 +71,7 @@ export class AuthGuard implements CanActivate {
     this.detectResetPswRoute();
 
 
-   
+
 
     /**
      * !!! having made a change of logic getCurrentProject() is no more used
@@ -105,10 +105,10 @@ export class AuthGuard implements CanActivate {
         const current_url = e.url
         // if (this.location.path() !== '') {
         // const current_url = this.location.path()
-       console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
+        console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
 
         const url_segments = current_url.split('/');
-       console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS ', url_segments);
+        console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS ', url_segments);
 
         this.nav_project_id = url_segments[2];
         console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
@@ -140,7 +140,8 @@ export class AuthGuard implements CanActivate {
           url_segments[1] !== 'resetpassword' &&
           url_segments[1] !== 'autologin' &&
           url_segments[1] !== 'get-chatbot' &&
-          current_url !== '/projects' ) {
+          url_segments[1] !== 'install-template' &&
+          current_url !== '/projects') {
 
           this.subscription.unsubscribe();
 
@@ -363,8 +364,10 @@ export class AuthGuard implements CanActivate {
       (this.is_reset_psw_page === true) ||
       (this.is_handleinvitation_page === true) ||
       (this.is_signup_on_invitation_page === true)) {
-        console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
+      console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
+      if (url.startsWith('/get-chatbot')) {
         this.localDbService.setInStorage('wannago', url)
+      }
       return true;
       // if ((!this.user) || (this.is_verify_email_page === false))
     } else {
@@ -373,7 +376,9 @@ export class AuthGuard implements CanActivate {
         this.router.navigate(['/login']);
         console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
         console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
-        this.localDbService.setInStorage('wannago', url)
+        if (url.startsWith('/get-chatbot')) {
+          this.localDbService.setInStorage('wannago', url)
+        }
       } else {
         console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
         this.router.navigate(['/autologin', route, token]);

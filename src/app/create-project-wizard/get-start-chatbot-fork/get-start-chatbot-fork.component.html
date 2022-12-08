@@ -66,10 +66,10 @@
             <div class="row">
                 <div class="col-sm-12">
 
-                    <button *ngIf="projects && projects?.length > 1" class="btn btn-lg btn-primary" (click)="continueToNextStep()" [disabled]="!selectedProject">
+                    <button *ngIf="projects && projects?.length > 1" class="btn btn-lg btn-primary" (click)="goToInstallTemplate()" [disabled]="!selectedProject">
                         {{ "ProjectsPage.Continue" | translate }}
                     </button>
-                    <button *ngIf="projects && projects?.length === 1" class="btn btn-lg btn-primary" (click)="continueToNextStep()">
+                    <button *ngIf="projects && projects?.length === 1" class="btn btn-lg btn-primary" (click)="goToInstallTemplate()">
                         {{ "ProjectsPage.Continue" | translate }}
                     </button>
                 </div>
@@ -77,7 +77,7 @@
         </div>
     </div>
 
-    <div class="col-right">
+    <div class="col-right" style=" background-image: url(https://tiledesk.com/wp-content/uploads/2022/10/background_arancio.png?id=8843)">
         <div class="bot--image" style="height: auto;
         position: absolute;
         top: 50%;

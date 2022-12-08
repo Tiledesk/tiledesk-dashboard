@@ -82,6 +82,7 @@ export class ProjectPlanService {
           url_segments[1] !== 'resetpassword' &&
           url_segments[1] !== 'autologin' &&
           url_segments[1] !== 'get-chatbot' &&
+          url_segments[1] !== 'install-template' &&
           current_url !== '/projects'
         ) {
           // this.getProjectByIdAndPublish(nav_project_id, calledBy)
