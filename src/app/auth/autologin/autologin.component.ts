@@ -27,6 +27,8 @@ export class AutologinComponent implements OnInit {
   user: any;
   public version: string = environment.VERSION;
 
+
+
   constructor(
     private route: ActivatedRoute,
     public auth: AuthService,
@@ -76,7 +78,8 @@ export class AutologinComponent implements OnInit {
         storedJWT = storedUserParsed.token;
         this.logger.log('[AUTOLOGIN] SSO - autologin page stored TOKEN ', storedJWT);
       } else {
-        storedJWT = localStorage.getItem('chat_sv5__tiledeskToken')
+        const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix
+        storedJWT = localStorage.getItem(chatPrefix + '__tiledeskToken')
       }
 
       this.logger.log('[AUTOLOGIN] SSO - autologin getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
@@ -123,12 +126,12 @@ export class AutologinComponent implements OnInit {
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
-
+    const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
     if (JWT !== storedJWT) {
-      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is equal to params JWT ');
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored', chatPrefix, '__tiledeskToken is equal to params JWT ');
       this.logout();
     } else {
-      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is NOT equal to params JWT ');
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored ', chatPrefix, 'tiledeskToken is NOT equal to params JWT ');
     }
 
     this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
@@ -138,7 +141,7 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
       localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('chat_sv5__tiledeskToken', JWT);
+      localStorage.setItem(chatPrefix + '__tiledeskToken', JWT);
 
       this.auth.publishSSOloggedUser();
 
@@ -239,11 +242,12 @@ export class AutologinComponent implements OnInit {
     // -------------
     // @ Logout
     // -------------
+    const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
     if (JWT !== storedJWT) {
-      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is equal to params JWT ');
+      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored', chatPrefix, '__tiledeskToken is equal to params JWT ');
       this.logout();
     } else {
-      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored chat_sv5__tiledeskToken is NOT equal to params JWT ');
+      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored ', chatPrefix, '__tiledeskToken is NOT equal to params JWT ');
     }
 
     this.sso.chat21CreateFirebaseCustomToken(JWT).subscribe((fbtoken: string) => {
@@ -263,8 +267,8 @@ export class AutologinComponent implements OnInit {
                 // const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
                 const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
                 localStorage.setItem('user', JSON.stringify(user));
-                localStorage.setItem('chat_sv5__tiledeskToken', JWT);
-
+                // localStorage.setItem('chat_sv5__tiledeskToken', JWT);
+                localStorage.setItem(chatPrefix+'__tiledeskToken', JWT);
                 this.auth.publishSSOloggedUser();
 
                 this.router.navigate([route]);

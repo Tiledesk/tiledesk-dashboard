@@ -18,6 +18,7 @@ export const environment = {
     logLevel: 'Info',
     appsUrl: 'CHANGEIT',
     promoBannerUrl: 'CHANGEIT',
+    chatStoragePrefix: "CHANGEIT",
     firebase: {
         apiKey: "CHANGE-IT",
         authDomain: "CHANGE-IT",
