@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.3.8
+- Deploys in production
+- Externalizes the "chatStoragePrefix" variable in environments
+
 ### 2.3.8-rc1
 - Externalizes the "chatStoragePrefix" variable in environments
 
