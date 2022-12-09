@@ -51,24 +51,24 @@
                                     <h2 weight="normal" class="template-name template-card-title">
                                         {{template.name}}
                                     </h2>
-                                    <span size="8" class="css-yn1por"></span>
-                                    <p weight="normal" class="e18cedto7 css-r582ya">
+                                    <span size="8" class="blank-span-h08"></span>
+                                    <p weight="normal" class="template-description">
                                         {{template.description}}
                                     </p>
-                                    <div class="css-yzsy5z e18cedto5">
+                                    <div class="use-template-btn-row use-template-btn-wpr">
                                         <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
                                             (click)="openDialog(template)">
                                             <span>Use template</span>
                                         </button>
                                     </div>
-                                    <div class="css-ymlisk e18cedto3">
-                                        <div class="css-1urzsmt e18cedto2">
-                                            <div class="css-4ls4re e18cedto4" *ngIf="template.certifiedTags">
+                                    <div class="template-card-footer template-footer">
+                                        <div class="template-tags-wpr">
+                                            <div class="template-tags" *ngIf="template.certifiedTags">
 
-                                                <span aria-label="tag" class="css-1ihuqxv e6hb4333"
+                                                <span aria-label="tag" class="template-tag"
                                                     [ngStyle]="{'color': tag.color, 'background-color':  tag.background}"
                                                     *ngFor="let tag of template.certifiedTags">
-                                                    <p weight="normal" class="e6hb4332 css-17ukti4">
+                                                    <p weight="normal" class="template-tag-name">
                                                         {{tag.name  }} </p>
 
                                                 </span>
@@ -78,7 +78,7 @@
                                         <!-- New badge in the top right corner of the card -->
                                         <svg width="92" height="104" viewBox="0 0 92 104" fill="none"
                                             xmlns="http://www.w3.org/2000/svg" aria-label="new template"
-                                            class="css-1xzgfej e18cedto1">
+                                            class="template-card-right-top-corner-badge">
                                             <g filter="url(#filter0_d_1601_21599)">
                                                 <path d="M92 30L62 0H32L92 60V30Z" fill="#34B857"></path>
                                             </g>

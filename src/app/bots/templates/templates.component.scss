@@ -158,61 +158,7 @@
     overflow: hidden;
 }
 
-.template-card:hover {
-    box-shadow: rgb(0 27 71 / 12%) 0px 12px 32px;
-}
-
-.template-card:hover .e18cedto5 {
-    opacity: 1;
-    transform: translateY(0px);
-}
-
-.template-card:hover .template-img {
-    transform: translateY(-12px);
-    opacity: 0;
-}
-.template-card:hover .template-name {
-    transform: translateY(-60px);
-}
-.template-card:hover .e18cedto7 {
-    transform: translateY(-60px);
-}
-
-.template-card:hover .e18cedto5 {
-    opacity: 1;
-    transform: translateY(0px);
-}
-
-.template-card:hover .e18cedto3 {
-    transform: translateY(-12px);
-    opacity: 0;
-}
-
-.css-180zyx9 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 26px;
-    letter-spacing: -0.01em;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.css-yn1por {
+.blank-span-h08{
     display: block;
     width: 8px;
     min-width: 8px;
@@ -220,7 +166,7 @@
     min-height: 8px;
 }
 
-.css-r582ya {
+.template-card-description {
     margin-top: 0px;
     margin-bottom: 0px;
     font-weight: normal;
@@ -237,7 +183,7 @@
     overflow: hidden;
 }
 
-.css-yzsy5z {
+.use-template-btn-row {
     position: absolute;
     display: block;
     width: 100%;
@@ -250,16 +196,14 @@
     z-index: 1;
 }
 
-
-
-.css-ymlisk {
+.template-card-footer {
     flex: 1 1 0%;
     align-items: flex-end;
     transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1) 0s;
     display: flex;
 }
 
-.css-1urzsmt {
+.template-tags-wpr {
     -webkit-box-pack: justify;
     justify-content: space-between;
     -webkit-box-align: center;
@@ -268,7 +212,33 @@
     flex: 1 1 0%;
 }
 
-.css-4ls4re {
+.template-card:hover {
+    box-shadow: rgb(0 27 71 / 12%) 0px 12px 32px;
+}
+
+.template-card:hover .use-template-btn-wpr {
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+.template-card:hover .template-img {
+    transform: translateY(-12px);
+    opacity: 0;
+}
+.template-card:hover .template-name {
+    transform: translateY(-60px);
+}
+.template-card:hover .template-description {
+    transform: translateY(-60px);
+}
+
+
+.template-card:hover .template-footer {
+    transform: translateY(-12px);
+    opacity: 0;
+}
+
+.template-tags{
     display: flex;
     flex-flow: row wrap;
     -webkit-box-align: center;
@@ -279,42 +249,17 @@
     justify-content: flex-start;
     transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1) 0s;
 }
-.css-4ls4re > * {
+.template-tags > * {
     margin: 3px 2px;
 }
 
-
-.css-1ihuqxv {
+.template-tag{
     display: flex;
     border-radius: 4px;
-    background-color: rgb(204, 241, 213);
-    color: rgb(37, 131, 62);
+    
 }
 
-
-
-
-.css-koe97n {
-    display: flex;
-    border-radius: 4px;
-    background-color: rgb(208, 239, 255);
-    color: rgb(0, 105, 158);
-}
-.css-1vc6g4w {
-    display: flex;
-    border-radius: 4px;
-    background-color: rgb(229, 231, 247);
-    color: rgb(48, 63, 159);
-}
-
-.css-2pd8uy {
-    display: flex;
-    border-radius: 4px;
-    background-color: rgb(220, 233, 255);
-    color: rgb(0, 73, 189);
-}
-
-.css-17ukti4 {
+.template-tag-name{
     margin-top: 0px;
     margin-bottom: 0px;
     font-weight: normal;
@@ -325,32 +270,83 @@
     word-break: break-word;
 }
 
-
-
-.css-xje4ki {
-    display: flex;
-    border-radius: 4px;
-    background-color: rgb(255, 221, 167);
-    color: rgb(161, 99, 0);
-}
-.css-17ukti4 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 16px;
-    letter-spacing: -0.01em;
-    padding: 3px 5px;
-    word-break: break-word;
-}
-
-.css-1xzgfej {
+.template-card-right-top-corner-badge {
     position: absolute;
     top: 0px;
     right: 0px;
     transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1) 0s;
     opacity: 1;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// .css-koe97n {
+//     display: flex;
+//     border-radius: 4px;
+//     background-color: rgb(208, 239, 255);
+//     color: rgb(0, 105, 158);
+// }
+// .css-1vc6g4w {
+//     display: flex;
+//     border-radius: 4px;
+//     background-color: rgb(229, 231, 247);
+//     color: rgb(48, 63, 159);
+// }
+
+// .css-2pd8uy {
+//     display: flex;
+//     border-radius: 4px;
+//     background-color: rgb(220, 233, 255);
+//     color: rgb(0, 73, 189);
+// }
+
+
+
+
+
+// .css-xje4ki {
+//     display: flex;
+//     border-radius: 4px;
+//     background-color: rgb(255, 221, 167);
+//     color: rgb(161, 99, 0);
+// }
+
+
+
 
 
 

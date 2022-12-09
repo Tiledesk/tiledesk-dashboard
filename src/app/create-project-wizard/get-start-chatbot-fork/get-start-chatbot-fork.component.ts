@@ -100,9 +100,6 @@ export class GetStartChatbotForkComponent implements OnInit {
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
 
 
-
-
-
         // if (project.id_project) {
         //   const prjct: Project = {
         //     _id: project.id_project._id,
@@ -157,7 +154,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   }
 
   goToInstallTemplate() {
-    this.router.navigate([`install-template/${this.botid}/${this.selectedProjectId}`, {tempalte: JSON.stringify(this.selectedTemplates)}]);
+    this.router.navigate([`install-template/${this.botid}/${this.selectedProjectId}`]);
 
   }
 

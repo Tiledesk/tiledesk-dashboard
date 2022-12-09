@@ -1,42 +1,44 @@
 <!-- <h2 mat-dialog-title>Install Angular</h2> -->
 <mat-dialog-actions align="end" style="min-height: 13px;">
-    <button mat-button mat-dialog-close style="position: relative;top: -16px; min-width: 36px; padding: 0px;border-radius: 50%;">
+    <button mat-button mat-dialog-close
+        style="position: relative;top: -16px; min-width: 36px; padding: 0px;border-radius: 50%;">
         <span class="material-icons">
             close
-            </span>
+        </span>
     </button>
     <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
 </mat-dialog-actions>
 <mat-dialog-content class="mat-typography" style="min-height: 30px;">
-    <div class="css-16tmnh4 e4umgbv2">
-        <div class="css-1sf3bw5 e13c9zit2">
-            <div class="css-5kjnoy e13c9zit0">
+    <div class="template-detail">
+        <div class="template-detail-header">
+            <div class="template-detail-img-wpr">
 
                 <img *ngIf="!template?.bigImage" style="width: 40px; height: 40px;"
                     src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media">
                 <img *ngIf="template?.bigImage" style="width: auto; height: 40px;" src="{{template.bigImage}}">
             </div>
-            <div class="css-1vofa6b e13c9zit1">
-                <h2 weight="bold" class="css-hs92t1 eimqq0f0">{{template?.name}}</h2>
+            <div class="template-detail-name-wpr">
+                <h2 weight="bold" class="template-detail-name">{{template?.name}}</h2>
             </div>
         </div>
-        <div class="css-1yuymj4 e55hbj51">
-            <button type="button"
-                class=" btn btn-new btn-size-l btn--primary css-1adi3ip e55hbj50" (click)="forkTemplate()">
+        <div class="template-detail-btns-wpr">
+            <button type="button" class=" btn btn-new btn-size-l btn--primary" (click)="forkTemplate()">
                 <span>Use template</span>
             </button>
-            <button type="button" class=" btn btn-new btn-size-l btn--default css-1adi3ip e55hbj50" (click)="openTestSiteInPopupWindow()">
+            <button type="button" class=" btn btn-new btn-size-l btn--default" (click)="openTestSiteInPopupWindow()">
                 <span>Test it out</span>
             </button>
         </div>
-        <div class="css-zjik7 em0rbmj1">
-            <div class="css-1w6fvkd em0rbmj3">
-                <p weight="normal" class="em0rbmj0 css-w38ijl eimqq0f0">Categories</p>
-                <div class="css-1buyuap em0rbmj2" *ngIf="template.certifiedTags">
-                    <span aria-label="tag" class="css-1vc6g4w e6hb4333" [ngStyle]="{'color': tag.color, 'background-color':  tag.background}" *ngFor="let tag of template.certifiedTags">
-                        <p weight="normal" class="e6hb4332 css-17ukti4 eimqq0f0">{{ tag.name }}</p>
+        <div class="template-detail-content">
+            <div class="template-detail-tags-wpr">
+                <p weight="normal" class="template-detail-tags-section-name">Categories</p>
+                <div class="template-detail-tags" *ngIf="template.certifiedTags">
+                    <span aria-label="tag" class="template-detail-tag-wpr"
+                        [ngStyle]="{'color': tag.color, 'background-color':  tag.background}"
+                        *ngFor="let tag of template.certifiedTags">
+                        <p weight="normal" class="template-detail-tag-name ">{{ tag.name }}</p>
                     </span>
-                 
+
                 </div>
             </div>
             <div style="display: none;" class="css-9lc2l4">
@@ -147,16 +149,25 @@
             </div>
         </div>
         <div>
-            <p weight="normal" class="css-18ca0kp">
+            <p weight="normal" class="template-detail-description">
                 {{template.description}}
             </p>
-            <span size="24" class="css-5ovca5" *ngIf="template.templateFeatures"></span>
-            <p weight="medium" class="css-1qsadq4" *ngIf="template.templateFeatures" >Template features:</p>
-            <span size="16" class="css-1pmigyd" *ngIf="template.templateFeatures"></span>
-            <div class="css-wydaeg" *ngIf="template.templateFeatures" >
-                <div class="css-16le678" *ngFor="let feature of template.templateFeatures">
-                    <div class="css-mx7x3w e1usknts0"></div>
-                    <p weight="normal" class="css-18ca0kp">{{feature}}</p>
+            <span size="24" class="blank-span-h24 " *ngIf="template.templateFeatures"></span>
+            <p weight="medium" class="template-detail-section-features-name" *ngIf="template.templateFeatures">Template
+                features:</p>
+            <span size="16" class="blank-span-h16 "></span>
+            <!-- <div class="template-detail-feature-wpr" *ngIf="template.templateFeatures" >
+                <div class="template-detail-features" *ngFor="let feature of template.templateFeatures">
+                    <div class="template-detail-feature"></div>
+                    <p weight="normal" class="template-detail-feature-name">{{feature}}</p>
+                </div>
+         
+            </div> -->
+
+            <div class="template-detail-features-wpr" *ngIf="template.templateFeatures">
+                <div class="template-detail-features" *ngFor="let feature of template.templateFeatures">
+                    <div class="template-detail-features-dot"></div>
+                    <p weight="normal" class="template-detail-feature">{{feature}}</p>
                 </div>
          
             </div>
