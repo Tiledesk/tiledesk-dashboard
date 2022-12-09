@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.8-rc1
+- Externalizes the "chatStoragePrefix" variable in environments
+
 ### 2.3.7
 - Deploys in production
 - Replaces in the Tilebot form the method to clone the intents
