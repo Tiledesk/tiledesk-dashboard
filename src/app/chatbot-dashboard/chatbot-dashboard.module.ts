@@ -19,6 +19,7 @@ import { TextResponseComponent } from './dashboard/intent/response-types/text-re
 import { DelaySliderComponent } from './dashboard/intent/elements/delay-slider/delay-slider.component';
 import { ButtonConfigurationPanelComponent } from './dashboard/button-configuration-panel/button-configuration-panel.component';
 import { ImageResponseComponent } from './dashboard/intent/response-types/image-response/image-response.component';
+import { FrameResponseComponent } from './dashboard/intent/response-types/frame-response/frame-response.component';
 import { ImagePanelComponent } from './dashboard/intent/elements/image-panel/image-panel.component';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { ImagePanelComponent } from './dashboard/intent/elements/image-panel/ima
     DelaySliderComponent,
     ButtonConfigurationPanelComponent,
     ImageResponseComponent,
+    FrameResponseComponent,
     ImagePanelComponent
   ],
   imports: [

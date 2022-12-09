@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Intent, Message, Command } from '../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TYPE_COMMAND, TYPE_RESPONSE, TIME_WAIT_DEFAULT } from '../../utils';
+import { TYPE_COMMAND, TYPE_RESPONSE, TIME_WAIT_DEFAULT, TYPE_MESSAGE } from '../../utils';
 
 @Component({
   selector: 'appdashboard-intent',
@@ -18,6 +18,7 @@ export class IntentComponent implements OnInit {
 
   typeCommand = TYPE_COMMAND;
   typeResponse = TYPE_RESPONSE;
+  typeMessage = TYPE_MESSAGE;
   intentName: string;
   intentNameResult: boolean;
   textGrabbing: boolean;
@@ -52,15 +53,20 @@ export class IntentComponent implements OnInit {
   /** */
   private generateArrayResponse(){
     var time = TIME_WAIT_DEFAULT;
-    this.arrayResponses.forEach(element => {
-      if(element.type === TYPE_COMMAND.WAIT) {
-        time = element.time;
-      }
-      if(element.type === TYPE_COMMAND.MESSAGE){
-        element.time = time;
-        time = TIME_WAIT_DEFAULT;
-      }
-    });
+    try {
+      this.arrayResponses.forEach(element => {
+        if(element.type === TYPE_COMMAND.WAIT) {
+          time = element.time;
+        }
+        if(element.type === TYPE_COMMAND.MESSAGE){
+          element.time = time;
+          time = TIME_WAIT_DEFAULT;
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
 
   /** */

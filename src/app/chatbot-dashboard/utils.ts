@@ -21,12 +21,12 @@ export enum TYPE_URL {
 export enum TYPE_COMMAND {
     WAIT = 'wait', 
     MESSAGE = 'message',
-    IMAGE = 'image'
 }
 
 export enum TYPE_MESSAGE {
     TEXT = 'text', 
-    IMAGE = 'image'
+    IMAGE = 'image',
+    FRAME = 'frame'
 }
 
 export const MESSAGE_METADTA_WIDTH = '100%';

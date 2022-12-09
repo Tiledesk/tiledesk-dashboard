@@ -27,7 +27,7 @@
     <div cdkDropList class="content draggable-list" (cdkDropListDropped)="drop($event)">
         <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag>
 
-            <div *ngIf="response.type === typeCommand.MESSAGE && response.message">
+            <div *ngIf="response.message.type === typeMessage.TEXT && response.message">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-text-response
                     [index] = i
@@ -56,7 +56,7 @@
                 </div>
             </div>
             
-            <div *ngIf="response.type === typeCommand.IMAGE">
+            <div *ngIf="response.message.type === typeMessage.IMAGE">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-image-response
                     [index] = i
@@ -82,6 +82,35 @@
                     (deleteResponse) = onDeleteResponse($event)
                     (openButtonPanel) = onOpenButtonPanel($event)
                     ></appdashboard-image-response>
+                </div>
+            </div>
+
+            <div *ngIf="response.message.type === typeMessage.FRAME">
+                <div class="custom-placeholder" *cdkDragPlaceholder>
+                    <appdashboard-frame-response
+                    [index] = i
+                    [response] = response.message
+                    (moveUpResponse) = onMoveUpResponse($event)
+                    (moveDownResponse) = onMoveDownResponse($event)
+                    (deleteResponse) = onDeleteResponse($event)
+                    ></appdashboard-frame-response>
+                </div>
+                
+                <div class="text-response">
+                    <div class="text-editor-drop" 
+                        [ngClass]="{'grabbing':textGrabbing}"
+                        (mousedown)="mouseDown()" 
+                        (mouseup)="mouseUp()" 
+                        cdkDragHandle>
+                    </div> 
+                    <appdashboard-frame-response
+                    [index] = i
+                    [response] = response.message
+                    (moveUpResponse) = onMoveUpResponse($event)
+                    (moveDownResponse) = onMoveDownResponse($event)
+                    (deleteResponse) = onDeleteResponse($event)
+                    (openButtonPanel) = onOpenButtonPanel($event)
+                    ></appdashboard-frame-response>
                 </div>
             </div>
     

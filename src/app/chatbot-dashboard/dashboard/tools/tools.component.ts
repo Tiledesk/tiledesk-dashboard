@@ -20,7 +20,8 @@ export class ToolsComponent implements OnInit {
 
   items: Array<string> = [];
   showSpinner:boolean = false;
-  TypeCommand = TYPE_COMMAND;
+  // TypeCommand = TYPE_COMMAND;
+  TypeMessage = TYPE_MESSAGE;
   
   constructor() { 
     // console.log('constructor);
@@ -31,35 +32,50 @@ export class ToolsComponent implements OnInit {
   }
 
 
-  addElement(type: TYPE_COMMAND){
+  addElement(type: TYPE_MESSAGE){
     console.log('addElement---->', type);
     var newElement:Command;
     switch (type) {
-      case this.TypeCommand.MESSAGE:
+      case TYPE_MESSAGE.TEXT:
         newElement = {
-          type: this.TypeCommand.MESSAGE,
+          type: TYPE_COMMAND.MESSAGE,
           message: {
             text: '',
             type: TYPE_MESSAGE.TEXT,
             time: TIME_WAIT_DEFAULT
           },
         } 
-      break;
-      case this.TypeCommand.IMAGE:
-          newElement = {
-            type: this.TypeCommand.IMAGE,
-            message: {
-              text: '',
-              type: TYPE_MESSAGE.TEXT,
-              time: TIME_WAIT_DEFAULT,
-              metadata: {
-                src: '',
-                width: MESSAGE_METADTA_WIDTH,
-                height: MESSAGE_METADTA_HEIGHT
-              }
-            },
-          } 
-          break;
+        break;
+      case TYPE_MESSAGE.IMAGE:
+        newElement = {
+          type: TYPE_COMMAND.MESSAGE,
+          message: {
+            text: '',
+            type: TYPE_MESSAGE.IMAGE,
+            time: TIME_WAIT_DEFAULT,
+            metadata: {
+              src: '',
+              width: MESSAGE_METADTA_WIDTH,
+              height: MESSAGE_METADTA_HEIGHT
+            }
+          },
+        } 
+        break;
+      case TYPE_MESSAGE.FRAME:
+        newElement = {
+          type: TYPE_COMMAND.MESSAGE,
+          message: {
+            text: '',
+            type: TYPE_MESSAGE.FRAME,
+            time: TIME_WAIT_DEFAULT,
+            metadata: {
+              src: '',
+              width: MESSAGE_METADTA_WIDTH,
+              height: MESSAGE_METADTA_HEIGHT
+            }
+          },
+        } 
+        break;
       default:
         break;
     }

@@ -1,0 +1,97 @@
+<div class="extensions-response">
+    <div class="delay-wrapper">
+        <appdashboard-delay-slider
+        [delayTime]="delayTime"
+        (changeDelayTime)="onChangeDelayTime($event)"
+        ></appdashboard-delay-slider>
+    </div>
+</div>
+
+
+<div class="frame-response">
+    
+    
+    <div class="text-editor-wrapper">
+        <div class="text-editor">
+        
+            <div class="response-frame-uploader-wrapper">
+               
+                <div class="response-frame-uploader" 
+                    [ngStyle] = "{'width': frameWidth, 'height': frameHeight}">
+
+                    <!-- <div class="response-frame-uploader-overlay">
+                        <em class="material-icons">photo_camera</em>
+                        <span>Drag and drop or browse</span>
+                    </div> 
+                    <label>
+                        <input type="file" accept="image/gif,image/jpeg,image/png">
+                    </label> -->
+                    <div *ngIf="response.type === 'image'" class="bck-frame"
+                    [style.background-image]="'url('+framePath+')'" 
+                    ></div>
+                    <iframe  *ngIf="response.type === 'frame'"
+                        id="contentFrame" 
+                        #iframe allowfullscreen 
+                        width = "100%" 
+                        height = "230px" 
+                        style= "border:none;" 
+                        [src] = framePath>
+                    </iframe>
+                    
+
+
+                    <div class="frame-panel">
+                        <appdashboard-image-panel
+                        [metadata] = response.metadata
+                        (closeImagePanel) = onCloseFramePanel($event)
+                        ></appdashboard-image-panel>
+
+                    </div>
+                </div>
+               
+
+            </div>
+
+            <div class="response-controls">
+                 <div class="control-button delete" (click)="onDeleteResponse()">
+                    <em class="material-icons">delete</em>
+                </div>
+                <div class="control-button" (click)="onMoveUpResponse()">
+                    <em class="material-icons">expand_less</em>
+                </div> 
+                <div class="control-button" (click)="onMoveDownResponse()">
+                    <em class="material-icons">expand_more</em>
+                </div>
+            </div>
+
+
+            <mat-form-field class="box-textarea" appearance="fill">
+                <textarea matInput
+                    cdkTextareaAutosize
+                    [(ngModel)]="textMessage"
+                    #autosize="cdkTextareaAutosize"
+                    [maxlength]="limitCharsText"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"
+                    (ngModelChange)="onChangeText($event)">
+                </textarea>
+            </mat-form-field>
+            
+            <div class="text-editor-drop">
+                <em class="material-icons">drag_indicator</em>
+            </div> 
+        </div>
+
+        <div class="editor-utils">
+            <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
+            <!-- <div class="text-editor-insert-attribute">
+                <em class="material-icons">code</em>
+            </div> 
+            <div class="emoji-picker">
+                <em class="material-icons">insert_emoticon</em>
+            </div>  -->
+        </div>
+
+    </div> 
+
+</div>
