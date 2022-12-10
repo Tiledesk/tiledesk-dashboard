@@ -13,15 +13,16 @@ $color-text-box: #566787;
     padding: 10px 0;
 
     .more-info {
-        margin-top: -20px;
         cursor: pointer;
-        font-size: 0.8em;
+        position: absolute;
+        top: -60px;
+        left: 60px;
+        z-index: 2;
         em.material-icons {
             vertical-align: middle;
             display: inline-flex;
             color: #3ea9f5;
             margin-right: 3px;
-            font-size: 1.4em;
         }
     }
     .header-buttons-form {
@@ -68,6 +69,11 @@ $color-text-box: #566787;
                 transition: transform 1s;
                 font-size: 22px;
                 color: $color-blue;
+            }
+            &.btn-settings {
+                position: absolute;
+                top: 40px;
+                left: 0;
             }
         }
         &:hover {

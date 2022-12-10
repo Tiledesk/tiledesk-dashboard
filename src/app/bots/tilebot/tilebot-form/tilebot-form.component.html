@@ -1,8 +1,13 @@
  <div class="box-tilebot-form">
     
-    <div class="more-info" (click)="goToFormMoreInfo()">
-        <em class="material-icons">info</em>
-        <span>{{ "MoreInfo" | translate }}</span>
+    <div class="more-info" 
+        (click)="goToFormMoreInfo()">
+        <em class="material-icons"
+        mat-raised-button
+        matTooltip="{{ 'MoreInfo' | translate }}"
+        aria-label="Button that displays a tooltip when focused or hovered over"
+        >info</em>
+        <!-- <span></span> -->
     </div>
 
     <!-- HEADER BUTTONS -->
@@ -21,14 +26,14 @@
             </span>
         </button>
 
-        <button *ngIf="displaySettingsButton" class="btn btn-primary only-icon" (click)="openSettingsForm()">
+        <button *ngIf="displaySettingsButton" class="btn btn-primary only-icon btn-settings" (click)="openSettingsForm()">
             <span class="icon-label">{{ "Settings" | translate }}</span>
             <span class="icon">
             <i class="material-icons">settings</i>
             </span>
         </button>
 
-        <button *ngIf="displayCancelButton" class="btn btn-primary only-icon" (click)="closeGeneral()">
+        <button *ngIf="displayCancelButton" class="btn btn-primary only-icon btn-settings" (click)="closeGeneral()">
             <span class="icon-label">{{ "Close" | translate }}</span>
             <span class="icon">
               <i class="material-icons">cancel</i>

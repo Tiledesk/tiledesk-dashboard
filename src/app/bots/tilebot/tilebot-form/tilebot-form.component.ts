@@ -207,14 +207,14 @@ export class TilebotFormComponent implements OnInit {
     this.displaySettingsButton = false;
     this.displayCancelButton = true;
     this.displaySettingForm = true;
-    this.cancelCommandsString = this.cancelCommands.toString();
+    // this.cancelCommandsString = this.cancelCommands.toString();
   }
 
   closeSettingsForm(){
     this.displaySettingsButton = true;
     this.displayCancelButton = false;
     this.displaySettingForm = false;
-    this.cancelCommandsString = this.cancelCommands.toString();
+    // this.cancelCommandsString = this.cancelCommands.toString();
   }
 
   closeGeneral(){
