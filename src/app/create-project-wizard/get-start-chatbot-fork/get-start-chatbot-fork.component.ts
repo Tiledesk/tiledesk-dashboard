@@ -155,7 +155,10 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   goToInstallTemplate() {
     this.router.navigate([`install-template/${this.botid}/${this.selectedProjectId}`]);
+  }
 
+  goToYourProject() {
+    this.router.navigate(['/projects']);
   }
 
 }

@@ -629,33 +629,26 @@ pre {
 }
 
 
-// TOOLTIP START
-.widget_design__Tooltip .widget_design__Tooltiptext {
-  visibility: hidden;
-  min-width: 140px;
-  background-color: #394f5a;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 5px;
+.close-wizard-page {
+  text-align: left;
+  height: 66px;
   position: absolute;
-  z-index: 999;
-  bottom: 100%;
-  left: 50%;
-  // margin-left: -60px;
-  margin-left: -67px;
-  height: 41px;
-  line-height: 1.2;
-  border: 1px solid #394f5a;
-  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
-  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
-  opacity: 0;
-  transition: opacity 1s;
-  font-size: 12px;
-}
+  top: 20px;
+  right: 20px;
+  margin-left: -100%;
+  color: $white;
+  z-index: 9999;
 
-.widget_design__Tooltip:hover .widget_design__Tooltiptext {
-  visibility: visible;
-  opacity: 1;
+  .close-btn {
+    font-size: 60px;
+    font-weight: 100;
+    color: $white;
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  .close-btn:hover {
+    opacity: 0.5;
+  }
+
 }
-// TOOLTIP END
