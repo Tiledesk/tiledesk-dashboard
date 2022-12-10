@@ -12,6 +12,18 @@ $color-text-box: #566787;
     top: 0px;
     padding: 10px 0;
 
+    .more-info {
+        margin-top: -20px;
+        cursor: pointer;
+        font-size: 0.8em;
+        em.material-icons {
+            vertical-align: middle;
+            display: inline-flex;
+            color: #3ea9f5;
+            margin-right: 3px;
+            font-size: 1.4em;
+        }
+    }
     .header-buttons-form {
         position: absolute;
         top: -70px;
@@ -96,6 +108,18 @@ $color-text-box: #566787;
         .bold{
             font-weight: bold;
         }
+        .row-info {
+            padding: 10px 0;
+            input {
+                display: block;
+                width: 100%;
+                margin: 0px;
+                background: #ffffffab;
+                border: none;
+                padding: 5px;
+            }
+        }
+        
     }
 
     .box-buttons {

@@ -1,5 +1,10 @@
  <div class="box-tilebot-form">
     
+    <div class="more-info" (click)="goToFormMoreInfo()">
+        <em class="material-icons">info</em>
+        <span>{{ "MoreInfo" | translate }}</span>
+    </div>
+
     <!-- HEADER BUTTONS -->
     <div class="header-buttons-form">
         
@@ -60,8 +65,24 @@
     <div *ngIf="intentForm" class="box-settings-form">
         <div *ngIf="displaySettingForm" class="box-setting-form">
             <!-- <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div> -->
-            <div>{{ "AddIntentPage.LabelCancel" | translate }}: <span class="bold">{{cancelCommandsString}}</span></div>
-            <div>{{ "AddIntentPage.LabelReplay" | translate }}: <span class="bold">{{cancelReply}}</span></div>
+            <div class="row-info">
+                <span class="bold">{{ "AddIntentPage.LabelCancel" | translate }}:</span>
+                <input 
+                    type="text" 
+                    class="input" 
+                    [(ngModel)]="cancelCommandsString" 
+                    (change)="setCancelCommands()"
+                />
+            </div>
+            <div class="row-info">
+                <span class="bold">{{ "AddIntentPage.LabelReplay" | translate }}:</span>
+                <input 
+                    type="text" 
+                    class="input" 
+                    [(ngModel)]="cancelReply" 
+                    (change)="setCancelReplay()"
+                />
+            </div>
         </div>
 
         <div *ngIf="displaySettingForm" class="box-buttons">

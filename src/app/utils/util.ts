@@ -177,3 +177,4 @@ export const URL_install_tiledesk_on_prestashop = 'https://gethelp.tiledesk.com/
 export const URL_install_tiledesk_on_joomla = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-joomla/'
 
 
+export const URL_more_info_chatbot_forms = 'https://gethelp.tiledesk.com/articles/tiledesk-chatbot-forms/';

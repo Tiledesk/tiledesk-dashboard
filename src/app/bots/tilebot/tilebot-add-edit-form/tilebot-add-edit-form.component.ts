@@ -3,6 +3,14 @@ import { HttpClient } from "@angular/common/http";
 import { TranslateService } from '@ngx-translate/core';
 import { ThisReceiver } from '@angular/compiler';
 
+
+export enum TYPE_FIELD {
+  CUSTOM = 'CUSTOM',
+  TEXT = 'TEXT',
+  EMAIL = 'EMAIL',
+  PHONE = 'PHONE'
+}
+
 @Component({
   selector: 'appdashboard-tilebot-add-edit-form',
   templateUrl: './tilebot-add-edit-form.component.html',
@@ -17,6 +25,7 @@ export class TilebotAddEditFormComponent implements OnInit {
   @Input() field: any;
 
 
+  typeField = TYPE_FIELD;
   langDashboard = 'En';
   showForm = false;
   nameResult = true;
@@ -24,9 +33,11 @@ export class TilebotAddEditFormComponent implements OnInit {
   labelResult = true;
   regexResult = true;
   errorLabelResult = true;
-  showRegexField = false;
+  showRegexField = true; //false;
   displayInfoMessage = false;
   inputTypePlaceholderClass = true;
+  
+  panelOpenState = false;
 
 
   customRGEX = /^.{1,}$/;
@@ -35,7 +46,7 @@ export class TilebotAddEditFormComponent implements OnInit {
   nameRGEX = /^[a-zA-Z0-9_]{1,}$/;
   emailRGEX = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/
   // /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/;
-  modelsOfType = [{"label": "Text", "value":"text"}, {"label": "Email", "value":"email"}, {"label": "Phone number", "value":"phone"}, {"label": "Custom", "value":"custom"}];
+  modelsOfType = [{"label": "Text", "value":TYPE_FIELD.TEXT}, {"label": "Email", "value":TYPE_FIELD.EMAIL}, {"label": "Phone number", "value":TYPE_FIELD.PHONE}, {"label": "Custom", "value":TYPE_FIELD.CUSTOM}];
   infoMessages = {}
   infoMessage: string;
   markbotLabel: string;
@@ -53,6 +64,7 @@ export class TilebotAddEditFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.showRegexField = true;
     if(this.displayAddForm){
       this.field = {
         "name": "",
@@ -62,10 +74,11 @@ export class TilebotAddEditFormComponent implements OnInit {
         "errorLabel": ""
       }
     } else if(this.displayEditForm){
-      if(this.field.regex && this.field.type === "custom"){
+      this.field.type = this.field.type.toUpperCase();
+      if(this.field.regex && this.field.type === TYPE_FIELD.CUSTOM){
         this.customRGEX = this.field.regex;
-        this.showRegexField = true;
-      }
+        // this.showRegexField = true;
+      } 
       this.fieldName = this.field.name;
       this.fieldType = this.field.type;
       this.fieldRegex = this.field.regex;
@@ -73,8 +86,10 @@ export class TilebotAddEditFormComponent implements OnInit {
       this.fieldErrorLabel = this.field.errorLabel;
       this.inputTypePlaceholderClass = false;
     }
+    this.setRegex();
     this.getCurrentTranslation();
     this.infoMessage = this.infoMessages['field_name'];
+   
   }
 
   ngAfterViewInit(){
@@ -108,9 +123,8 @@ export class TilebotAddEditFormComponent implements OnInit {
     this.labelResult = true;
     this.errorLabelResult = true;
     let status = true;
-
     this.field.name = this.fieldName?this.fieldName:'';
-    this.field.type = this.fieldType?this.fieldType:null;
+    this.field.type = this.fieldType?this.fieldType.toUpperCase():null;
     this.field.regex = this.fieldRegex?this.fieldRegex:this.customRGEX;
     this.field.label = this.fieldLabel?this.fieldLabel.trim():'';
     this.field.errorLabel = this.fieldErrorLabel?this.fieldErrorLabel.trim():'';
@@ -119,23 +133,7 @@ export class TilebotAddEditFormComponent implements OnInit {
       this.typeResult = false;
       status = false;
     }
-    
-    switch (this.field.type) {
-      case 'text':
-        this.field.regex = this.textRGEX;
-        break;
-      case 'email':
-        this.field.regex = this.emailRGEX;
-        break;
-      case 'phone':
-        this.field.regex = this.phoneRGEX;
-        break;
-      case 'custom':
-          this.field.regex = this.fieldRegex;
-          break;
-      default:
-        this.field.regex = this.textRGEX;
-    }
+    this.setRegex();
     this.nameResult = this.nameRGEX.test(this.field.name);
     if(this.nameResult === false){
       status = false;
@@ -149,7 +147,7 @@ export class TilebotAddEditFormComponent implements OnInit {
       this.labelResult = false;
       status = false;
     }
-    if(this.field.regex.length == 0 && this.field.type === 'custom'){
+    if(this.field.regex.length == 0 && this.field.type === TYPE_FIELD.CUSTOM){
       this.regexResult = false;
       status = false;
     }
@@ -157,6 +155,25 @@ export class TilebotAddEditFormComponent implements OnInit {
     return status;
   }
 
+  private setRegex(){
+    switch (this.field.type) {
+      case TYPE_FIELD.TEXT:
+        this.field.regex = this.textRGEX;
+        break;
+      case TYPE_FIELD.EMAIL:
+        this.field.regex = this.emailRGEX;
+        break;
+      case TYPE_FIELD.PHONE:
+        this.field.regex = this.phoneRGEX;
+        break;
+      case TYPE_FIELD.CUSTOM:
+          this.field.regex = this.fieldRegex;
+          break;
+      default:
+        this.field.regex = this.textRGEX;
+    } 
+    this.fieldRegex = this.field.regex;
+  }
 
   // ON EVENT //
   /** */
@@ -168,12 +185,15 @@ export class TilebotAddEditFormComponent implements OnInit {
   /** */
   onChange(typeFieldValue) {
     // console.log("onChange:: ", typeFieldValue);
-    if(typeFieldValue === 'custom'){
+    if(typeFieldValue === TYPE_FIELD.CUSTOM){
       this.field.regex = this.customRGEX;
-      this.showRegexField = true;
+      // this.showRegexField = true;
     } else {
-      this.showRegexField = false;
+      // this.field.regex = this.customRGEX;
+      // this.showRegexField = false;
     }
+    this.field.type = typeFieldValue;
+    this.setRegex();
   }
 
   displayPlaceholder(event){
