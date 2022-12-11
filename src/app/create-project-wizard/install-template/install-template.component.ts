@@ -41,6 +41,7 @@ export class InstallTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     this.getParamsAndTemplates()
+   
   }
 
   getParamsAndTemplates() {
@@ -65,6 +66,7 @@ export class InstallTemplateComponent implements OnInit {
           return obj._id === botid
         });
         this.templates = selectedTemplate
+        this.openDialog(this.templates[0])
         console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
         this.generateTagsBackground(this.templates)
 
@@ -134,7 +136,8 @@ export class InstallTemplateComponent implements OnInit {
   openDialog(template) {
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
-        template: template
+        template: template,
+        projectId: this.projectId
       },
     });
 

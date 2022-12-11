@@ -119,7 +119,7 @@ export class FaqKbService {
       .get(url, httpOptions)
   }
 
-  installTemplate(botid) {
+  installTemplate(botid, projectid) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ export class FaqKbService {
     console.log('[BOT-CREATE][FAQ-KB.SERV] -  FORK - BOT ID ', botid);
     // / (dovrebbe funzionare anche con POST ../PROJECT_ID/bots/fork/ID_FAQ_FB/)
     // const url = this.SERVER_BASE_PATH + "635b97cc7d7275001a2ab3e0/bots/fork/" + botid;
-    const url = this.SERVER_BASE_PATH + this.project._id + "/faq_kb/fork/" + botid + "?public=true&projectid=" + this.project._id;
+    const url = this.SERVER_BASE_PATH + projectid + "/faq_kb/fork/" + botid + "?public=true&projectid=" + projectid;
 
 
 

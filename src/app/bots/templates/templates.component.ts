@@ -28,6 +28,7 @@ export class TemplatesComponent implements OnInit {
   increaseSalesTemplatesCount: number;
 
   project: any;
+  projectId: string
   route: string
   showSpinner: boolean
   myChatbotOtherCount: number;
@@ -40,17 +41,7 @@ export class TemplatesComponent implements OnInit {
     private router: Router
   ) { }
 
-  openDialog(template) {
-    const dialogRef = this.dialog.open(TemplateDetailComponent, {
-      data: {
-        template: template
-      },
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
 
   ngOnInit(): void {
     this.getBrowserVersion();
@@ -72,6 +63,28 @@ export class TemplatesComponent implements OnInit {
   // certifiedTags
   // "certifiedTags": [{ "color": "#00699e", "name": "Pre-Sale" }, { "color": "#a16300", "name": "Lead-Gen" }],
 
+  getCurrentProject() {
+    // this.project = this.auth.project_bs.value;
+    this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.project = project;
+        this.projectId = project._id;
+      }
+    });
+  }
+
+  openDialog(template) {
+    const dialogRef = this.dialog.open(TemplateDetailComponent, {
+      data: {
+        template: template,
+        projectId: this.projectId
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 
   getAllFaqKbByProjectId() {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
@@ -90,14 +103,7 @@ export class TemplatesComponent implements OnInit {
 
   }
 
-  getCurrentProject() {
-    // this.project = this.auth.project_bs.value;
-    this.auth.project_bs.subscribe((project) => {
-      if (project) {
-        this.project = project;
-      }
-    });
-  }
+ 
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {

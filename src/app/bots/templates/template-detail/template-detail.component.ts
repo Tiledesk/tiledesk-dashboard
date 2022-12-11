@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -28,20 +28,24 @@ export class TemplateDetailComponent implements OnInit {
   public botid: string;
   public botname : string;
   public templateid: string;
+  public projectid: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<TemplateDetailComponent>,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     public auth: AuthService,
     private usersService: UsersService,
     private faqKbService: FaqKbService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog,
   ) {
-    // console.log('TemplateDetailComponent', data) 
-
+    console.log('TemplateDetailComponent', data) 
+    this.projectid = data.projectId
     this.template = data.template;
     console.log('TemplateDetailComponent template ', this.template)
+    console.log('TemplateDetailComponent projectid ', this.projectid)
 if (this.template) {
     this.botname = this.template.name
     this.templateid = this.template._id
@@ -97,9 +101,9 @@ if (this.template) {
   // (dovrebbe funzionare anche con POST ../PROJECT_ID/bots/fork/ID_FAQ_FB/)
   forkTemplate() {
     console.log('[BOTS-TEMPLATES] - FORK TEMPLATE - TEMPLATE ID',  this.templateid);
-    this.faqKbService.installTemplate(this.templateid).subscribe((res: any) => {
+    this.faqKbService.installTemplate(this.templateid,  this.projectid).subscribe((res: any) => {
       console.log('[BOTS-TEMPLATES] - FORK TEMPLATE RES', res);
-      // this.botid = res.bot_id 
+      this.botid = res.bot_id 
       // console.log('[BOTS-TEMPLATES] - FORK TEMPLATE RES - botid ',  this.botid);
     
     }, (error) => {
@@ -108,12 +112,22 @@ if (this.template) {
     }, () => {
       console.log('[BOTS-TEMPLATES] FORK TEMPLATE COMPLETE');
       // this.goToBotDtls(this.botid, 'tilebot', this.botname) 
+      // http://localhost:4200/#/project/625830e51976f200353fce7b/bots/intents/63959c3e7adf790035bbc4aa/native
 
+      this.router.navigate(['project/' + this.projectid + '/bots/intents/', this.botid, 'native']);
+      this.closeDialog()
     });
+  }
+
+  closeDialog() {
+
+    this.dialogRef.close()
   }
 
   // goToBotDtls(idFaqKb: string, botType: string, botname: string) {
   //   this.logger.log('[BOTS-LIST] NAME OF THE BOT SELECTED ', botname);
+  //   this.router.navigate(['project/' + this.projectid + '/bots/intents/', this.botid, 'native']);
+
   //   let _botType = ""
   //   if (botType === 'internal') {
   //     _botType = 'native'
@@ -124,17 +138,16 @@ if (this.template) {
   //     // -------------------------------------------------------------------------------------------
   //     // this.faqKbService.publishBotName(botname)
 
-  //     this.router.navigate(['project/' + this.project._id + '/bots/intents/', idFaqKb, _botType]);
+      
+  //   // } else if (botType === 'tilebot') {
+  //   //   _botType = 'tilebot'
+  //   //   this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
+  //   // } else {
+  //   //   _botType = botType
+  //   //   this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
+  //   // }
 
-  //   } else if (botType === 'tilebot') {
-  //     _botType = 'tilebot'
-  //     this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
-  //   } else {
-  //     _botType = botType
-  //     this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
-  //   }
-
-  //   this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', idFaqKb, 'bot type ', botType);
+  //   // this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', idFaqKb, 'bot type ', botType);
 
   // }
 
