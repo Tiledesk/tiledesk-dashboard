@@ -45,6 +45,7 @@ export class TemplateDetailComponent implements OnInit {
   public HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR: boolean = false;
   public selected_dept_id: string;
   public selected_dept_name: string;
+  translateparamBotName: any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<TemplateDetailComponent>,
@@ -65,6 +66,7 @@ export class TemplateDetailComponent implements OnInit {
     if (this.template) {
       this.botname = this.template.name
       this.templateid = this.template._id
+      this.translateparamBotName = { bot_name: this.botname }
     }
     // this.templateName = data.name
     // console.log('TemplateDetailComponent templateName ' ,this.templateName)
