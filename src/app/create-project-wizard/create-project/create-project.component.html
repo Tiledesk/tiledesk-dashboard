@@ -32,7 +32,7 @@
               <label class="control-label">
                 {{ 'SiteName' | translate }}
               </label>
-              <input [(ngModel)]="project_name" id="projectName" type="text" class="form-control">
+              <input [(ngModel)]="project_name" id="projectName" type="text" class="form-control" style="max-width: 450px;">
             </div>
 
             <div class="msg" style="height:31px">
@@ -55,7 +55,7 @@
 
       <div class="row">
         <div class="col-sm-12">
-          <button [disabled]="project_name?.length < 4" class="btn btn-lg btn-primary" style=""
+          <button [disabled]="project_name?.length < 4" class="btn btn-lg btn-primary"
             (click)="createNewProject()">
             {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }}
           </button>
@@ -107,7 +107,7 @@
           </p>
         </div>
   
-        <button 
+        <button id="continue-btn-after-project-created"
           class="btn btn-lg btn-primary" 
           style="margin-top: 64px;" 
           (click)="continueToConfigureScript()">

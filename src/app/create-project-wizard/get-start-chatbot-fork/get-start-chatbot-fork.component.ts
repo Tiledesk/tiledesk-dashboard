@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
 import { BrandService } from 'app/services/brand.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
@@ -24,6 +25,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   public projects: Project[];
   public botid: string;
   public selectedProjectId: string;
+  public projectname : string;
   constructor(
     public brandService: BrandService,
     private projectService: ProjectService,
@@ -31,6 +33,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     private faqKbService: FaqKbService,
     private localDbService: LocalDbService,
     private router: Router,
+    private auth: AuthService
   ) {
     const brand = brandService.getBrand();
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
@@ -95,6 +98,13 @@ export class GetStartChatbotForkComponent implements OnInit {
 
       if (projects) {
         this.projects = projects;
+        if (this.projects && this.projects.length === 1) {
+          this.projectname = this.projects[0].id_project.name
+          this.selectedProjectId = this.projects[0].id_project._id
+        }
+
+
+
         // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
         // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
@@ -160,5 +170,9 @@ export class GetStartChatbotForkComponent implements OnInit {
   goToYourProject() {
     this.router.navigate(['/projects']);
   }
+
+  starCreateProjectWizard() {
+    this.router.navigate(['/create-project']);
+  } 
 
 }

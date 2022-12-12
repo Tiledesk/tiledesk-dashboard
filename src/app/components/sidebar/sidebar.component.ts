@@ -365,7 +365,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getLoggedUser() {
         this.auth.user_bs.subscribe((user) => {
-            this.logger.log('[SIDEBAR] USER GET IN SIDEBAR ', user)
+            console.log('[SIDEBAR] USER GET IN SIDEBAR ', user)
             // tslint:disable-next-line:no-debugger
             // debugger
             this.user = user;
@@ -1234,7 +1234,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            this.logger.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
+            console.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
 
             if (this.project) {
 

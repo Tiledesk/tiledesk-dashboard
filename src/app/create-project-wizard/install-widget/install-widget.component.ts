@@ -10,6 +10,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { WidgetService } from 'app/services/widget.service';
 import { WidgetSetUpBaseComponent } from '../../widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { TranslateService } from '@ngx-translate/core';
+import { LocalDbService } from 'app/services/users-local-db.service';
 
 @Component({
   selector: 'appdashboard-install-widget',
@@ -36,7 +37,9 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
   // WIDGET_URL = environment.widgetUrl; // now get from appconfig
   WIDGET_URL: string;
   companyLogoBlack_Url: string;
-
+  EXIST_STORED_ROUTE: boolean = false
+  storedRoute: string;
+  botid: string;
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -46,6 +49,7 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
     private route: ActivatedRoute,
     private widgetService: WidgetService,
     public translate: TranslateService,
+    private localDbService: LocalDbService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -57,6 +61,24 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
     this.logger.log('[WIZARD - INSTALL-WIDGET] selectLangCode in the previous step ', selectLangCode)
     this.logger.log('[WIZARD - INSTALL-WIDGET] selectLangName in the previous step ', selectLangName)
     this.addNewLanguage(selectLangCode, selectLangName)
+    this.getStoredRoute()
+  }
+
+  getStoredRoute() {
+    this.storedRoute = this.localDbService.getFromStorage('wannago')
+    console.log('[WIZARD - INSTALL-WIDGET] storedRoute ', this.storedRoute)
+    if (this.storedRoute) {
+
+      this.storedRoute.split('/')
+      const storedRouteSegment = this.storedRoute.split('/')
+      console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegment)
+      this.botid = storedRouteSegment[2]
+
+
+      this.EXIST_STORED_ROUTE = true
+    } else {
+      this.EXIST_STORED_ROUTE = false
+    }
   }
 
   addNewLanguage(selectLangCode: string, selectLangName: string) {
@@ -121,8 +143,20 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
   }
 
 
+  continueToNextStep() {
+    if (!this.EXIST_STORED_ROUTE) {
+      this.continueToHome()
+    } else {
+      this.goToInstallTemplate()
+    }
+  }
+
   continueToHome() {
     this.router.navigate([`/project/${this.projectId}/home`]);
+  }
+
+  goToInstallTemplate() {
+    this.router.navigate([`install-template/${this.botid}/${this.projectId}`]);
   }
 
   ngOnDestroy() {

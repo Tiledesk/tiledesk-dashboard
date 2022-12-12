@@ -8,16 +8,14 @@
 
 
         <div class="content-wpr" style="display: flex;">
-            <appdashboard-bots-sidebar 
-            [allTemplatesCount]="allTemplatesCount"
-            [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
-            [increaseSalesTemplatesCount]="increaseSalesTemplatesCount"
-            [myChatbotOtherCount]="myChatbotOtherCount"
+            <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
+                [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
+                [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
                 style="border-right:1px solid #e5effe !important; padding-right: 10px;">
             </appdashboard-bots-sidebar>
-            
-           
-            <div  class="teplate-content" style="flex: 1 1 auto;">
+
+
+            <div class="teplate-content" style="flex: 1 1 auto;">
 
                 <div class="page-content--wpr">
                     <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -25,8 +23,8 @@
 
                         <div class="button-row">
                             <div></div>
-                            <button type="button"
-                                class="btn btn-new btn-size-m btn--primary" (click)="createBlankTilebot()">
+                            <button type="button" class="btn btn-new btn-size-m btn--primary"
+                                (click)="createBlankTilebot()">
                                 <span>Add from scratch</span>
                             </button>
                         </div>
@@ -116,8 +114,10 @@
                     </div>
 
                     <!-- ./ real -->
-                
+
                 </div>
             </div>
         </div>
     </div>
+</div>
+

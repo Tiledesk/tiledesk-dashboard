@@ -5,6 +5,9 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TemplateDetailComponent } from 'app/bots/templates/template-detail/template-detail.component';
+import { ProjectService } from 'app/services/project.service';
+import { AuthService } from 'app/core/auth.service';
+import { Project } from 'app/models/project-model';
 
 @Component({
   selector: 'appdashboard-install-template',
@@ -30,7 +33,9 @@ export class InstallTemplateComponent implements OnInit {
     private logger: LoggerService,
     public brandService: BrandService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private projectService: ProjectService,
+    public auth: AuthService,
   ) { 
     const brand = brandService.getBrand();
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
@@ -40,18 +45,103 @@ export class InstallTemplateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getParamsAndTemplates()
+    this.getParamsTemplatesAndProjects()
    
   }
 
-  getParamsAndTemplates() {
+  getParamsTemplatesAndProjects() {
     this.route.params.subscribe((params) => {
 
       console.log('[INSTALL-TEMPLATE] params ', params)
       this.projectId = params.projectid;
       this.botId = params.botid;
       this.getTemplates(params['botid'])
+
+  this.getProjects(this.projectId) 
     })
+  }
+
+  getProjects(projectid) {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      console.log('[INSTALL-TEMPLATE] - GET PROJECTS ', projects);
+
+
+
+      if (projects && projects.length > 0) {
+        
+        projects.forEach(project => {
+          console.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
+          if (project.id_project.id ===  projectid)  {
+            console.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
+
+            const selectedProject: Project = {
+              _id: project['id_project']['_id'],
+              name: project['id_project']['name'],
+              operatingHours: project['id_project']['activeOperatingHours'],
+              profile_type: project['id_project']['profile'].type,
+              profile_name: project['id_project']['profile'].name,
+              trial_expired: project['id_project']['trialExpired']
+            }
+
+
+            this.auth.projectSelected(selectedProject)
+          }
+      });
+        
+
+
+
+        // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
+        // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
+        // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
+
+
+        // if (project.id_project) {
+        //   const prjct: Project = {
+        //     _id: project.id_project._id,
+        //     name: project.id_project.name,
+        //     role: project.role,
+        //     profile_name: project.id_project.profile.name,
+        //     trial_expired: project.id_project.trialExpired,
+        //     trial_days_left: project.id_project.trialDaysLeft,
+        //     profile_type: project.id_project.profile.type,
+        //     subscription_is_active: project.id_project.isActiveSubscription,
+        //     operatingHours: project.id_project.activeOperatingHours
+        //   }
+
+        // this.subsTo_WsCurrentUser( project.id_project._id)
+        // this.getProjectUsersIdByCurrentUserId(project.id_project._id)
+
+        /**
+         * project.id_project._id is the id of the project
+         * project._id is the id of the project user
+         */
+        //   if (project.id_project.status !== 0) {
+        //     this.usersService.subscriptionToWsCurrentUser_allProject(project.id_project._id, project._id);
+        //   }
+        //   this.listenTocurrentUserWSAvailabilityAndBusyStatusForProject$()
+
+
+        //   /***  ADDED TO KNOW IF THE CURRENT USER IS AVAILABLE IN SOME PROJECT
+        //    *    ID USED TO DISPLAY OR NOT THE MSG 'Attention, if you don't want to receive requests...' IN THE LOGOUT MODAL  ***/
+        //   if (project.user_available === true) {
+        //     countOfcurrentUserAvailabilityInProjects = countOfcurrentUserAvailabilityInProjects + 1;
+        //   }
+
+        //   localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+      }
+
+      // this.logger.log('[PROJECTS] - GET PROJECTS AFTER', projects);
+      // this.myAvailabilityCount = countOfcurrentUserAvailabilityInProjects;
+      // this.projectService.countOfMyAvailability(this.myAvailabilityCount);
+      // this.logger.log('[PROJECTS] - GET PROJECTS - I AM AVAILABLE IN # ', this.myAvailabilityCount, 'PROJECTS');
+
+    }, error => {
+
+      this.logger.error('[GET START CHATBOT FORK] - GET PROJECTS - ERROR ', error)
+    }, () => {
+      this.logger.log('[GET START CHATBOT FORK] - GET PROJECTS * COMPLETE *')
+    });
   }
 
 

@@ -3,7 +3,7 @@
     <img [src]="companyLogoBlack_Url" class="logo" />
 
     <div class="close-wizard-page">
-        <i  class="material-icons close-btn" (click)="goToYourProject()">clear</i>
+        <i *ngIf="projects && projects?.length !==0 " class="material-icons close-btn" (click)="goToYourProject()">clear</i>
       </div>
 
     <div class="col-left">
@@ -23,39 +23,47 @@
                     <h1 class="title">
                        
                         
-                        <span *ngIf="projects && projects?.length > 1"> Install the template {{ templateNameOnSite}} on
+                        <span *ngIf="projects && projects?.length > 1"> Install  {{ templateNameOnSite}} on
                             one of your projects </span>
-                        <span *ngIf="projects && projects?.length === 1"> Install the template {{ templateNameOnSite}} on
+                        <span *ngIf="projects && projects?.length === 1"> Install {{ templateNameOnSite}} on
                             your project </span>
-                        <span *ngIf="projects && projects?.length === 0"> You don't have any projects yet. Before installing the template  {{ templateNameOnSite }} create a project </span>
+                        <span *ngIf="projects && projects?.length === 0">  Install {{ templateNameOnSite}} on
+                            your new project </span>
                     </h1>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="description">
-                        {{'ThisStepOfTheWizardGuidesYouThroughTheBasicSetup' | translate}}
+                    <div class="description" *ngIf="projects && projects?.length === 0" >
+                        Before installing the {{ templateNameOnSite }}, you must first create a project where the chatbot will be installed. By clicking on Continue you will start a wizard for creating the project and installing the chatbot
+                    </div>
+                    <div class="description" *ngIf="projects && projects?.length === 1" >
+                        Clicking Continue will launch the wizard to install the chatbot on the project {{ projectname }}
+                    </div>
+                    <div class="description" *ngIf="projects && projects?.length > 1" >
+                        Clicking Continue will launch the wizard to install the chatbot on the selected project
                     </div>
                 </div>
             </div>
 
-            <div class="row">
+            <span size="24" class="blank-span-h24"></span>
+            <!-- <div class="row">
                 <div class="col-md-12">
                     <h4 style="font-weight: 400;"> {{'WidgetStyle' | translate}} </h4>
                 </div>
-            </div>
+            </div> -->
 
 
             <!-- -------------------------------------------------------------------------------- -->
-            <!-- Select default language -->
+            <!-- Select a project  -->
             <!-- -------------------------------------------------------------------------------- -->
-            <div class="row">
+            <div class="row" *ngIf="projects && projects?.length > 1">
                 <div class="col-md-12">
-                    <h4 *ngIf="projects && projects?.length > 1" style="font-weight: 400;"> Select a project </h4>
+                    <h4  style="font-weight: 400;"> Select a project </h4>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="projects && projects?.length > 1">
                 <div class="col-md-12">
                     <!-- (clear)="onClearSelectedLanguage()" -->
                     <ng-select class="select-language-in-wizard" id="language_option"
@@ -76,6 +84,10 @@
                     <button *ngIf="projects && projects?.length === 1" class="btn btn-lg btn-primary" (click)="goToInstallTemplate()">
                         {{ "ProjectsPage.Continue" | translate }}
                     </button>
+
+                    <button *ngIf="projects && projects?.length === 0" class="btn btn-lg btn-primary" (click)="starCreateProjectWizard()">
+                        {{ "ProjectsPage.Continue" | translate }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -87,6 +99,9 @@
         position: absolute;
         top: 50%;
         transform: translateY(-50%);">
+        <!-- <blockquote class="oval-thought-border">
+            <p>This is a blockquote that is styled to look like a speech bubble</p>
+          </blockquote> -->
 
             <img style="height: 300px;" [src]="templateImg">
         </div>

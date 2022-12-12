@@ -90,10 +90,10 @@ export class SigninComponent implements OnInit {
     // this.logger.log('xxxx ', this.userForm)
     this.buildForm();
     this.getWindowWidthAndHeight();
-    this.getWannaGoFromStorage()
+    this.getStoredRoute()
   }
 
-  getWannaGoFromStorage() {
+  getStoredRoute() {
     this.storedRoute = this.localDbService.getFromStorage('wannago')
     console.log('[SIGN-IN] storedRoute ', this.storedRoute)
     if (this.storedRoute) {

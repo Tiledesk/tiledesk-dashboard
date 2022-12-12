@@ -11,6 +11,7 @@ import { WidgetService } from '../../services/widget.service';
 import { AppConfigService } from '../../services/app-config.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { Location } from '@angular/common';
+import { LocalDbService } from 'app/services/users-local-db.service';
 
 @Component({
   selector: 'appdashboard-configure-widget',
@@ -76,6 +77,8 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
 
   allDefaultTranslations: any
   HAS_SELECT_STATIC_REPLY_TIME_MSG: boolean = true;
+  EXIST_STORED_ROUTE: boolean = false
+  storedRoute: string;
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -85,7 +88,8 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     private widgetService: WidgetService,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
-    public location: Location
+    public location: Location,
+    private localDbService: LocalDbService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -93,6 +97,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     this.tparams = brand;
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
+    
 
   }
 
@@ -102,6 +107,17 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     this.getCurrentProject();
     // this.checkCurrentUrlAndHideCloseBtn();
     this.getALLDefaultTranslations();
+    this.getStoredRoute()
+  }
+
+  getStoredRoute() {
+    this.storedRoute = this.localDbService.getFromStorage('wannago')
+    console.log('[WIZARD - CONFIGURE-WIDGET] storedRoute ', this.storedRoute)
+    if (this.storedRoute) {
+      this.EXIST_STORED_ROUTE = true
+    } else {
+      this.EXIST_STORED_ROUTE = false
+    }
   }
 
   // checkCurrentUrlAndHideCloseBtn() {
@@ -486,23 +502,29 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
   }
 
   continueToNextStep() {
-    // this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
-    this.router.navigate([`/project/${this.projectId}/onboarding/` + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
+    this.saveWidgetApparance();
+    
+    if (!this.EXIST_STORED_ROUTE) { 
+      this.goToOnboardingChatbotSetUp()
+    } else {
+      this.goToOnboardingInstallScript()
+    }
     // console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
     // console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
     // this.addNewLanguage();
-    this.saveWidgetApparance()
+    
   }
 
+  goToOnboardingChatbotSetUp() {
+    this.router.navigate([`/project/${this.projectId}/onboarding/` + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
+  }
 
-
-  continueToInstallScript() {
+  goToOnboardingInstallScript() {
     // this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
     this.router.navigate([`/project/${this.projectId}/install-widget/` +  this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
     this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
     this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
     // this.addNewLanguage();
-    this.saveWidgetApparance()
   }
 
   saveWidgetApparance() {
