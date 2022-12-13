@@ -32,7 +32,8 @@ export class TemplatesComponent implements OnInit {
   route: string
   showSpinner: boolean
   myChatbotOtherCount: number;
-  
+  customerSatisfactionBotsCount: number;
+  increaseSalesBotsCount: number;
   constructor(
     private auth: AuthService,
     private faqKbService: FaqKbService,
@@ -93,6 +94,25 @@ export class TemplatesComponent implements OnInit {
         this.myChatbotOtherCount = faqKb.length
         console.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount',  this.myChatbotOtherCount);
       }
+
+        const customerSatisfactionBots = faqKb.filter((obj) => {
+        return obj.mainCategory === "Customer Satisfaction"
+      });
+      this.logger.log('[BOTS-TEMPLATES]  - Customer Satisfaction BOTS', customerSatisfactionBots);
+      if (customerSatisfactionBots ) {
+        this.customerSatisfactionBotsCount = customerSatisfactionBots.length;
+        this.logger.log('[BOTS-TEMPLATES]  - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
+      }
+
+      const increaseSalesBots = faqKb.filter((obj) => {
+        return obj.mainCategory === "Increase Sales"
+      });
+      this.logger.log('[BOTS-TEMPLATES]  - Increase Sales BOTS ', increaseSalesBots);
+      if (increaseSalesBots ) {
+        this.increaseSalesBotsCount = increaseSalesBots.length;
+        this.logger.log('[BOTS-TEMPLATES] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
+      }
+      
 
     }, (error) => {
       this.logger.error('[BOTS-TEMPLATES] GET BOTS ERROR ', error);

@@ -8,7 +8,7 @@
   </span>
 </div> -->
 <!-- class="settings-sidebar" -->
-<ul class="settings-sidebar" style="padding-left: 0px;list-style: none;">
+<ul class="settings-sidebar" style="padding-left: 0px;list-style: none;width: 216px; padding-right: 8px; padding-left: 3px;">
 
   <!-- -------------------------------------------------------- -->
   <!--  @ My Chatbots  -->
@@ -26,9 +26,9 @@
       </a>
     </li>
 
-    <!-- [ngClass]="{'active-item': BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE}" -->
-    <li class="sidebar-item-wpr" 
-      (click)="goToBotIncreaseSalesTemplates()">
+    
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_MYCHATBOT_INCREASE_SALES_ROUTE_IS_ACTIVE}"
+      (click)="goToBotIncreaseSalesBots()">
       <a class="sidebar-item">
         <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="#647491"
           style="margin-right: 8px;">
@@ -36,13 +36,13 @@
           <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" /></svg>
 
         Increase Sales
-        <span class="sidebar-item-s"></span>
+        <span class="sidebar-item-s">{{ increaseSalesBotsCount }}</span>
       </a>
     </li>
 
     <!-- [ngClass]="{'active-item': BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE}" -->
-    <li class="sidebar-item-wpr" 
-      (click)="goToBotCustomerSatisfactionTemplates()">
+    <li class="sidebar-item-wpr"  [ngClass]="{'active-item': BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE}"
+      (click)="goToBotCustomerSatisfactionBots()">
       <a class="sidebar-item">
         <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px" viewBox="0 0 24 24"
           width="16px" fill="#647491" style="margin-right: 8px;">
@@ -57,11 +57,11 @@
         </svg>
 
           Customer Satisfaction
-        <span class="sidebar-item-s"></span>
+        <span class="sidebar-item-s">{{ customerSatisfactionBotsCount }}</span>
       </a>
     </li>
 
-    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE}"
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE}"
       (click)="goToOtherMyChatbotOther()">
       <a class="sidebar-item">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104 104"
@@ -90,7 +90,7 @@
           </g>
         </svg>
 
-        Other
+        All
         <span class="sidebar-item-s">{{ myChatbotOtherCount }}</span>
       </a>
     </li>
@@ -123,7 +123,7 @@
       </a>
 
     </li>
-    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE}"
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE}"
       (click)="goToBotIncreaseSalesTemplates()">
       <a class="sidebar-item">
         <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="#647491"

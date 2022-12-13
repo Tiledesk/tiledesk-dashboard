@@ -14,6 +14,8 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   @Input() customerSatisfactionTemplatesCount: number;
   @Input() increaseSalesTemplatesCount: number;
   @Input() myChatbotOtherCount: number;
+  @Input() customerSatisfactionBotsCount: number;
+  @Input() increaseSalesBotsCount: number;
   
 
   USER_ROLE: any
@@ -22,10 +24,13 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   IS_OPEN: boolean 
   private unsubscribe$: Subject<any> = new Subject<any>();
 
-  public BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE: boolean;
+ 
   public BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE: boolean;
   public BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE: boolean;
-  public BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE: boolean;
+  public BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE: boolean;
+  public BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE: boolean;
+  public BOTS_MYCHATBOT_INCREASE_SALES_ROUTE_IS_ACTIVE: boolean;
+  public BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE: boolean;
   constructor(
     private auth: AuthService,
     private logger: LoggerService,
@@ -59,35 +64,50 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
 
   getCurrentRoute() {
     this.route = this.router.url
-    if (this.route.indexOf('/bots/my-chatbots/other') !== -1) {
-      this.BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE = true
-      // console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE)
+    if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
+      this.BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE = true
+      // console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE)
     } else {
-      this.BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE = false
-      // console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_OTHER_ROUTE_IS_ACTIVE)
+      this.BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE = false
+      // console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE)
     }
 
-    if (this.route.indexOf('bots/templates/all') !== -1) {
+    if (this.route.indexOf('/bots/my-chatbots/increase-sales') !== -1) {
+      this.BOTS_MYCHATBOT_INCREASE_SALES_ROUTE_IS_ACTIVE = true
+      // console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_INCREASE_SALES_ROUTE_IS_ACTIVE)
+    } else {
+      this.BOTS_MYCHATBOT_INCREASE_SALES_ROUTE_IS_ACTIVE = false
+      // console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_INCREASE_SALES_ROUTE_IS_ACTIVE)
+    }
+
+    if (this.route.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
+      this.BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE = true
+      // console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE)
+    } else {
+      this.BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE = false
+      // console.log('[BOTS-SIDEBAR] - BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE  ', this.BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE)
+    }
+
+    if (this.route.indexOf('/bots/templates/all') !== -1) {
       this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE = true
       // console.log('[BOTS-SIDEBAR] - BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE)
     } else {
       this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE = false
       // console.log('[BOTS-SIDEBAR] - BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE)
     }
-    if (this.route.indexOf('bots/templates/customer-satisfaction') !== -1) {
+    if (this.route.indexOf('/bots/templates/customer-satisfaction') !== -1) {
       this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE = true
       // console.log('[BOTS-SIDEBAR] - BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE)
     } else {
       this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE = false
       // console.log('[BOTS-SIDEBAR] - BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE)
     }
-    if (this.route.indexOf('bots/templates/increase-sales') !== -1) {
-      this.BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE = true
-      // console.log('[BOTS-SIDEBAR] - BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE)
+    if (this.route.indexOf('/bots/templates/increase-sales') !== -1) {
+      this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE = true
+      // console.log('[BOTS-SIDEBAR] - BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE)
     } else {
-      this.BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE = false
-      // console.log('[BOTS-SIDEBAR] - BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE)
-
+      this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE = false
+      // console.log('[BOTS-SIDEBAR] - BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE)
     }
   }
 
@@ -107,7 +127,15 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   }
 
   goToOtherMyChatbotOther() {
-    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/other']);
+    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
+  }
+
+  goToBotCustomerSatisfactionBots () {
+    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/customer-satisfaction']);
+  }
+
+  goToBotIncreaseSalesBots() {
+    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/increase-sales']);
   }
 
 }

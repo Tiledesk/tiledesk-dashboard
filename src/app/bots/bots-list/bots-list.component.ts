@@ -26,7 +26,7 @@ export class BotListComponent implements OnInit {
   tparams: any;
 
   faqkbList: FaqKb[];
-  myChatbotOtherCount: number;
+  myChatbotAllCount: number;
 
 
   // set to none the property display of the modal
@@ -77,6 +77,12 @@ export class BotListComponent implements OnInit {
   allTemplatesCount: number;
   customerSatisfactionTemplatesCount: number;
   increaseSalesTemplatesCount: number;
+  customerSatisfactionBots: any;
+  customerSatisfactionBotsCount: number;
+  myChatbotOtherCount: number;
+  increaseSalesBots: any;
+  increaseSalesBotsCount: number;
+  route: string
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -234,6 +240,44 @@ export class BotListComponent implements OnInit {
 
         this.faqkbList = faqKb;
         this.myChatbotOtherCount = faqKb.length
+
+        // ---------------------------------------------------------------------
+        // Bot forked from Customer Satisfaction templates
+        // ---------------------------------------------------------------------
+        this.customerSatisfactionBots = this.faqkbList.filter((obj) => {
+          return obj.mainCategory === "Customer Satisfaction"
+        });
+        this.logger.log('[BOTS-LIST] - Customer Satisfaction BOTS', this.customerSatisfactionBots);
+        if (this.customerSatisfactionBots ) {
+          this.customerSatisfactionBotsCount = this.customerSatisfactionBots.length;
+          this.logger.log('[BOTS-LIST] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
+        }
+
+        // ---------------------------------------------------------------------
+        // Bot forked from Customer Increase Sales
+        // ---------------------------------------------------------------------
+        this.increaseSalesBots = this.faqkbList.filter((obj) => {
+          return obj.mainCategory === "Increase Sales"
+        });
+        this.logger.log('[BOTS-LIST] - Increase Sales BOTS ', this.increaseSalesBots);
+        if (this.increaseSalesBots ) {
+          this.increaseSalesBotsCount = this.increaseSalesBots.length;
+          this.logger.log('[BOTS-LIST] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
+        }
+        
+        this.route = this.router.url
+        if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
+          this.faqkbList = this.faqkbList 
+          this.logger.log('[BOTS-LIST] ROUTE my-chatbots/all');
+        } else if (this.route.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
+          this.faqkbList = this.customerSatisfactionBots
+          this.logger.log('[BOTS-LIST] ROUTE my-chatbots/customer-satisfaction faqkbList ', this.faqkbList);
+        } else if (this.route.indexOf('/bots/my-chatbots/increase-sales') !== -1) {
+          this.faqkbList = this.increaseSalesBots
+          this.logger.log('[BOTS-LIST] ROUTE my-chatbots/increase-sales faqkbList ', this.faqkbList);
+        }
+
+
 
         if (this.faqkbList) {
           if (this.faqkbList.length === 0) {

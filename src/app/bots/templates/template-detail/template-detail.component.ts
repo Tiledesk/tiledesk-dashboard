@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -58,7 +59,8 @@ export class TemplateDetailComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private departmentService: DepartmentService,
-    private localDbService: LocalDbService
+    private localDbService: LocalDbService,
+    private botLocalDbService: BotLocalDbService,
   ) {
     console.log('[TEMPLATE DETAIL]', data)
     this.projectid = data.projectId
@@ -170,7 +172,9 @@ export class TemplateDetailComponent implements OnInit {
   }
 
   openTestSiteInPopupWindow() {
-    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&project_name=' + this.projectName + '&role=' + this.USER_ROLE
+    // const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + "6398930f39c57b0035f3025a" + '&tiledesk_participants=bot_' + "6398949939c57b0035f30c63" + "&tiledesk_singleConversation=true"
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_singleConversation=true"
+    // const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&project_name=' + this.projectName + '&role=' + this.USER_ROLE + '&tiledesk_participants=bot_' +this.templateid + "&tiledesk_singleConversation=true"
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
   }
@@ -192,7 +196,7 @@ export class TemplateDetailComponent implements OnInit {
       this.SHOW_CIRCULAR_SPINNER = false;
       this.CREATE_BOT_ERROR = true;
     }, () => {
-      console.log('[TEMPLATE DETAIL]FORK TEMPLATE COMPLETE');
+      console.log('[TEMPLATE DETAIL] FORK TEMPLATE COMPLETE');
       // this.goToBotDtls(this.botid, 'tilebot', this.botname) 
       // http://localhost:4200/#/project/625830e51976f200353fce7b/bots/intents/63959c3e7adf790035bbc4aa/native
 
@@ -201,12 +205,28 @@ export class TemplateDetailComponent implements OnInit {
       // this.router.navigate(['project/' + this.projectid + '/tilebot/general/', this.botid, 'tilebot']);
       // this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
       // this.closeDialog()
-
+      this.getFaqKbById(this.botid)
       const storedRoute = this.localDbService.getFromStorage('wannago')
       if (storedRoute) {
         this.localDbService.removeFromStorage('wannago')
       }
     });
+  }
+
+  getFaqKbById(botid) {
+    this.faqKbService.getFaqKbById(botid).subscribe((faqkb: any) => {
+      console.log('[TEMPLATE DETAIL] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+
+      this.botLocalDbService.saveBotsInStorage(botid, faqkb);
+
+    }, (error) => {
+      this.logger.error('[TEMPLATE DETAIL] GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
+
+    }, () => {
+      this.logger.log('[TEMPLATE DETAIL] GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
+
+    });
+
   }
 
   closeDialog() {

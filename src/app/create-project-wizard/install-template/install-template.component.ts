@@ -36,7 +36,7 @@ export class InstallTemplateComponent implements OnInit {
     private router: Router,
     private projectService: ProjectService,
     public auth: AuthService,
-  ) { 
+  ) {
     const brand = brandService.getBrand();
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.tparams = brand;
@@ -46,7 +46,7 @@ export class InstallTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     this.getParamsTemplatesAndProjects()
-   
+
   }
 
   getParamsTemplatesAndProjects() {
@@ -57,7 +57,7 @@ export class InstallTemplateComponent implements OnInit {
       this.botId = params.botid;
       this.getTemplates(params['botid'])
 
-  this.getProjects(this.projectId) 
+      this.getProjects(this.projectId)
     })
   }
 
@@ -68,10 +68,10 @@ export class InstallTemplateComponent implements OnInit {
 
 
       if (projects && projects.length > 0) {
-        
+
         projects.forEach(project => {
           console.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
-          if (project.id_project.id ===  projectid)  {
+          if (project.id_project.id === projectid) {
             console.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
 
             const selectedProject: Project = {
@@ -86,8 +86,8 @@ export class InstallTemplateComponent implements OnInit {
 
             this.auth.projectSelected(selectedProject)
           }
-      });
-        
+        });
+
 
 
 
@@ -160,8 +160,8 @@ export class InstallTemplateComponent implements OnInit {
         console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
         this.generateTagsBackground(this.templates)
 
-        this.templateImg =  this.templates[0]['bigImage'];
-        this.templateNameOnSite  =  this.templates[0]                                                                                                                               ['nameOnSite'];
+        this.templateImg = this.templates[0]['bigImage'];
+        this.templateNameOnSite = this.templates[0]['nameOnSite'];
         // console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateImg ', this.templateImg)
         // console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateNameOnSite ', this.templateNameOnSite)
       }
@@ -238,7 +238,7 @@ export class InstallTemplateComponent implements OnInit {
 
   goToGetStartChatbot() {
     this.router.navigate([`/get-chatbot/${this.botId}`]);
-  
+
   }
 
 }

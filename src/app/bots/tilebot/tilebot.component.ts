@@ -222,11 +222,6 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
   }
 
-
-
-
-
-
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
@@ -1052,7 +1047,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     this.showSpinnerInUpdateBotCard = true
 
     this.faqKbService.getFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
-      this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      console.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
       this.faq_kb_remoteKey = faqkb.kbkey_remote
       this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
@@ -1159,7 +1154,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
   goBack() {
     // this.router.navigate(['project/' + this.project._id + '/bots']);
-    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/other']);
+    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
   }
 
   // ----------------------------------------------------------------
@@ -1507,7 +1502,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
           this.logger.error('[TILEBOT] UPLOAD CSV - ERROR ', error);
           this.SHOW_CIRCULAR_SPINNER = false;
         }, () => {
-          this.logger.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
+          console.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
           setTimeout(() => {
             this.SHOW_CIRCULAR_SPINNER = false
           }, 300);
