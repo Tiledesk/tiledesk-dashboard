@@ -5,8 +5,7 @@
         <em class="material-icons"
         mat-raised-button
         matTooltip="{{ 'MoreInfo' | translate }}"
-        aria-label="Button that displays a tooltip when focused or hovered over"
-        >info</em>
+        aria-label="Button that displays a tooltip when focused or hovered over">info_outline</em>
         <!-- <span></span> -->
     </div>
 
@@ -102,11 +101,12 @@
     </div>
 
     
-    <!-- BUTTON ADD FIELD -->
+    <!-- BUTTON ADD FIELD  -->
+    <!-- [disabled]="displayAddForm || displayEditForm || displaySettingForm" -->
     <div class="header-list-form">
         <button 
         *ngIf="displayTilebotAddEditForm && intentForm"
-        [disabled]="displayAddForm || displayEditForm || displaySettingForm"
+        [ngClass]="{'hide':(displaySettingForm === true || displayAddForm === true || displaySettingForm === true) }"
         class="btn btn-primary add-field" 
         (click)="eventAddField()">
             <span class="icon">
