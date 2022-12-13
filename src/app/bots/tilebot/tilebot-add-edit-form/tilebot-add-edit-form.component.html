@@ -41,21 +41,6 @@
                 </div>
             </div>
 
-
-            <div *ngIf="showRegexField" class="col-md-12">
-                <div class="form-group" [ngClass]="{'is-error':regexResult === false}">
-                    <label class="control-label">
-                        {{ 'AddIntentPage.AddCustomRegex' | translate }} ex: {{nameRGEX}}
-                    </label>
-                    <input 
-                        type="text" 
-                        class="input form-control" 
-                        [(ngModel)]="fieldRegex" 
-                        (focus)="displayMessage('field_regex')"
-                    />
-                </div>
-            </div>
-
         </div>
 
         <div class="row">
@@ -75,44 +60,75 @@
                     </textarea>
                 </div>
             </div>
+        </div>
 
-            <div *ngIf="fieldType && fieldType != 'text'" class="col-md-12">
-                <div class="form-group" [ngClass]="{'is-error':errorLabelResult === false}">
-                    <label class="control-label">
-                        {{ 'AddIntentPage.ErrorMessage' | translate }}
-                    </label>
-                    <input 
-                        type="text" 
-                        class="input form-control" 
-                        [(ngModel)]="fieldErrorLabel" 
-                        (focus)="displayMessage('field_error')" 
-                    />
+
+        <div class="row">
+            <div class="col-md-12">
+                <mat-accordion>
+                    <mat-expansion-panel 
+                        (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h3 class="card_title__underlined">Validation field</h3>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                            
+                        <div *ngIf="showRegexField" class="col-md-12">
+                            <div class="form-group" [ngClass]="{'is-error':regexResult === false}">
+                                <label class="control-label">
+                                    {{ 'AddIntentPage.AddCustomRegex' | translate }} ex: {{nameRGEX}}
+                                </label>
+                                <input 
+                                    type="text" 
+                                    class="input form-control" 
+                                    [(ngModel)]="fieldRegex" 
+                                    (focus)="displayMessage('field_regex')"
+                                />
+                            </div>
+                        </div>
+            
+                        <div *ngIf="fieldType" class="col-md-12">
+                            <div class="form-group" [ngClass]="{'is-error':errorLabelResult === false}">
+                                <label class="control-label">
+                                    {{ 'AddIntentPage.ErrorMessage' | translate }}
+                                </label>
+                                <input 
+                                    type="text" 
+                                    class="input form-control" 
+                                    [(ngModel)]="fieldErrorLabel" 
+                                    (focus)="displayMessage('field_error')" 
+                                />
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+
+
+        <div *ngIf="displayInfoMessage" class="row input-wrapper">
+            <div class="col-sm-12">
+                <div class="info-message">
+                    <em class="material-icons">info</em>
+                    <span [innerHTML]="infoMessage"></span>
                 </div>
             </div>
         </div>
 
-        <div *ngIf="displayInfoMessage" class="input-wrapper">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="info-message">
-                        <em class="material-icons">info</em>
-                        <span [innerHTML]="infoMessage"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
 
     <div class="form-group form-footer">
-        <button class="btn btn-light" type="button" (click)="close()">
+        <button *ngIf="displayAddForm === true" class="btn btn-light" type="button" (click)="close()">
             {{ 'Cancel' | translate }}
         </button>
         <button *ngIf="displayAddForm === true" class="btn btn-primary" type="submit" (click)="save()">
             {{ 'Add' | translate}}
         </button>
         <button *ngIf="displayEditForm === true" class="btn btn-primary" type="submit" (click)="save()">
-            {{ 'Update' | translate}}
+            {{ 'Close' | translate}}
         </button>
     </div>
 </div>

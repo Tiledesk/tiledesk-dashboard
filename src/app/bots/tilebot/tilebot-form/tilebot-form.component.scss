@@ -12,6 +12,19 @@ $color-text-box: #566787;
     top: 0px;
     padding: 10px 0;
 
+    .more-info {
+        cursor: pointer;
+        position: absolute;
+        top: -60px;
+        left: 60px;
+        z-index: 2;
+        em.material-icons {
+            vertical-align: middle;
+            display: inline-flex;
+            color: #3ea9f5;
+            margin-right: 3px;
+        }
+    }
     .header-buttons-form {
         position: absolute;
         top: -70px;
@@ -57,6 +70,11 @@ $color-text-box: #566787;
                 font-size: 22px;
                 color: $color-blue;
             }
+            &.btn-settings {
+                position: absolute;
+                top: 40px;
+                left: 0;
+            }
         }
         &:hover {
             &.only-icon {
@@ -72,7 +90,8 @@ $color-text-box: #566787;
             border-radius: 20px;
             padding: 0 0 0 0px;
             color: $color-withe;
-            margin: 15px 10px 0 10px;
+            //margin: 15px 10px 0 10px;
+            margin: 7px 10px 0;
             min-height: 30px;
             .material-icons {
                 font-size: 20px;
@@ -96,6 +115,18 @@ $color-text-box: #566787;
         .bold{
             font-weight: bold;
         }
+        .row-info {
+            padding: 10px 0;
+            input {
+                display: block;
+                width: 100%;
+                margin: 0px;
+                background: #ffffffab;
+                border: none;
+                padding: 5px;
+            }
+        }
+        
     }
 
     .box-buttons {
@@ -143,6 +174,9 @@ $color-text-box: #566787;
             margin: 0px;
             span.icon {
                 padding-right:8px;
+            }
+            .hide {
+                display: none;
             }
         }
     }

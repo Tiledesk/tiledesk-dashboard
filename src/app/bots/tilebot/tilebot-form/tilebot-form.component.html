@@ -1,5 +1,14 @@
  <div class="box-tilebot-form">
     
+    <div class="more-info" 
+        (click)="goToFormMoreInfo()">
+        <em class="material-icons"
+        mat-raised-button
+        matTooltip="{{ 'MoreInfo' | translate }}"
+        aria-label="Button that displays a tooltip when focused or hovered over">info_outline</em>
+        <!-- <span></span> -->
+    </div>
+
     <!-- HEADER BUTTONS -->
     <div class="header-buttons-form">
         
@@ -16,14 +25,14 @@
             </span>
         </button>
 
-        <button *ngIf="displaySettingsButton" class="btn btn-primary only-icon" (click)="openSettingsForm()">
+        <button *ngIf="displaySettingsButton" class="btn btn-primary only-icon btn-settings" (click)="openSettingsForm()">
             <span class="icon-label">{{ "Settings" | translate }}</span>
             <span class="icon">
             <i class="material-icons">settings</i>
             </span>
         </button>
 
-        <button *ngIf="displayCancelButton" class="btn btn-primary only-icon" (click)="closeGeneral()">
+        <button *ngIf="displayCancelButton" class="btn btn-primary only-icon btn-settings" (click)="closeGeneral()">
             <span class="icon-label">{{ "Close" | translate }}</span>
             <span class="icon">
               <i class="material-icons">cancel</i>
@@ -60,8 +69,24 @@
     <div *ngIf="intentForm" class="box-settings-form">
         <div *ngIf="displaySettingForm" class="box-setting-form">
             <!-- <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div> -->
-            <div>{{ "AddIntentPage.LabelCancel" | translate }}: <span class="bold">{{cancelCommandsString}}</span></div>
-            <div>{{ "AddIntentPage.LabelReplay" | translate }}: <span class="bold">{{cancelReply}}</span></div>
+            <div class="row-info">
+                <span class="bold">{{ "AddIntentPage.LabelCancel" | translate }}:</span>
+                <input 
+                    type="text" 
+                    class="input" 
+                    [(ngModel)]="cancelCommandsString" 
+                    (change)="setCancelCommands()"
+                />
+            </div>
+            <div class="row-info">
+                <span class="bold">{{ "AddIntentPage.LabelReplay" | translate }}:</span>
+                <input 
+                    type="text" 
+                    class="input" 
+                    [(ngModel)]="cancelReply" 
+                    (change)="setCancelReplay()"
+                />
+            </div>
         </div>
 
         <div *ngIf="displaySettingForm" class="box-buttons">
@@ -76,11 +101,12 @@
     </div>
 
     
-    <!-- BUTTON ADD FIELD -->
+    <!-- BUTTON ADD FIELD  -->
+    <!-- [disabled]="displayAddForm || displayEditForm || displaySettingForm" -->
     <div class="header-list-form">
         <button 
         *ngIf="displayTilebotAddEditForm && intentForm"
-        [disabled]="displayAddForm || displayEditForm || displaySettingForm"
+        [ngClass]="{'hide':(displaySettingForm === true || displayAddForm === true || displaySettingForm === true) }"
         class="btn btn-primary add-field" 
         (click)="eventAddField()">
             <span class="icon">

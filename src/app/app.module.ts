@@ -267,6 +267,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MomentModule } from 'ngx-moment';
 import { NgImageSliderModule } from 'ng-image-slider';
@@ -558,6 +559,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MatSelectModule,
     MatToolbarModule,
     MatTabsModule,
+    MatExpansionModule,
     MatDialogModule,
     /* PRIVATE */
     PricingModule,

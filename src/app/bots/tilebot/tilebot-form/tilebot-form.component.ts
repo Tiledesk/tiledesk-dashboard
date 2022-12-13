@@ -3,7 +3,7 @@ import { Component, OnInit, Output, Input, EventEmitter} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
-
+import { URL_more_info_chatbot_forms } from 'app/utils/util';
 
 export interface ModalDeleteModel {
   deleteField?: string;
@@ -31,6 +31,7 @@ export class TilebotFormComponent implements OnInit {
   @Input() intentForm: any;
   langBot: string; 
   fields: any[] = [];
+  URL_to_form_more_info = URL_more_info_chatbot_forms;
 
   // modal
   displayMODAL = false;
@@ -83,6 +84,9 @@ export class TilebotFormComponent implements OnInit {
       // this.fields = structuredClone(this.intentForm.fields);
 
       this.fields = JSON.parse(JSON.stringify(this.intentForm.fields));
+      this.cancelCommands = this.intentForm.cancelCommands;
+      this.cancelReply = this.intentForm.cancelReply;
+      this.cancelCommandsString = this.cancelCommands.toString();
     }
   }
   
@@ -102,12 +106,17 @@ export class TilebotFormComponent implements OnInit {
     if(this.selectedFormId && !this.selectedForm){
       this.getFieldFromId(this.selectedFormId);
     }
+    this.intentForm = {};
+    this.intentForm.cancelCommands = this.cancelCommands;
+    this.intentForm.cancelReply = this.cancelReply;
 
-    // console.log("generateJsonIntentForm", this.selectedFormId, this.selectedForm);
     if(this.selectedForm){  
-      this.intentForm = {};
-      this.intentForm.cancelCommands = this.cancelCommands;
-      this.intentForm.cancelReply = this.cancelReply;
+      if(this.selectedForm.cancelCommands){
+        this.intentForm.cancelCommands = this.selectedForm.cancelCommands;
+      }
+      if(this.selectedForm.cancelReply){
+        this.intentForm.cancelReply = this.selectedForm.cancelReply;
+      }
       // this.selectedForm = this.modelsOfForm[this.selectedFormId];
       if(this.selectedForm.id){
         this.intentForm.id = this.selectedForm.id;
@@ -120,7 +129,6 @@ export class TilebotFormComponent implements OnInit {
         // this.fields = structuredClone(this.selectedForm.fields);
         this.fields = JSON.parse(JSON.stringify(this.selectedForm.fields));
       }
-      // console.log('generateForm:  ', this.intentForm);
     }
     this.displayCancelButton = false;
     this.displaySettingsButton = true;
@@ -168,21 +176,31 @@ export class TilebotFormComponent implements OnInit {
           this.modelsOfForm.push(item);
         });
       }
-      let item = {"id": "999", "name": "Custom", "description_key": "", "fields": ""};
+      let item = { "id":"custom-model", "name": "Custom", "description_key": "", "fields": ""};
       this.modelsOfForm.push(item);
       //console.log("modelsOfForm : ",this.modelsOfForm);
       this.selectedForm = this.modelsOfForm[0];
-      this.selectedFormId = this.modelsOfForm[0].id;
+      this.selectedFormId = this.modelsOfForm[0].id?this.modelsOfForm[0].id:null;
       this.translateparam = { selectedFormName: this.selectedForm.name, description_key: this.selectedForm.description_key};
     }); 
   }
 
+  setCancelCommands(){
+    this.intentForm.cancelCommands = this.cancelCommandsString;
+    this.jsonGenerator();
+  }
+  
+  setCancelReplay(){
+    this.intentForm.cancelReply = this.cancelReply;
+    this.jsonGenerator();
+  }
   /** */
   jsonGenerator(){
     // console.log('this.intentForm:: ', this.intentForm);
     this.passJsonIntentForm.emit(this.intentForm);
   }
 
+  
   /** */
 
   // EVENTS //
@@ -192,14 +210,14 @@ export class TilebotFormComponent implements OnInit {
     this.displaySettingsButton = false;
     this.displayCancelButton = true;
     this.displaySettingForm = true;
-    this.cancelCommandsString = this.cancelCommands.toString();
+    // this.cancelCommandsString = this.cancelCommands.toString();
   }
 
   closeSettingsForm(){
     this.displaySettingsButton = true;
     this.displayCancelButton = false;
     this.displaySettingForm = false;
-    this.cancelCommandsString = this.cancelCommands.toString();
+    // this.cancelCommandsString = this.cancelCommands.toString();
   }
 
   closeGeneral(){
@@ -353,5 +371,11 @@ export class TilebotFormComponent implements OnInit {
     this.translateMap.confirmDeleteField = this.translations['ConfirmDeleteForm']?this.translations['ConfirmDeleteForm']:'';
     this.displayMODAL = true;
     this.selectedObjectId = this.idForm;
+  }
+
+
+  goToFormMoreInfo(){
+    const url = this.URL_to_form_more_info;
+    window.open(url, '_blank');
   }
 }
