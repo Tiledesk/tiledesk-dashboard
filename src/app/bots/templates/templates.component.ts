@@ -54,6 +54,7 @@ export class TemplatesComponent implements OnInit {
   //  Support -> #25833e
   // Self-serve -> #0049bd
 
+  // certified: true
   // mainCategory
   // bigImage
   // templateFeatures

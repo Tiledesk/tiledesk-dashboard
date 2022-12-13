@@ -152,6 +152,10 @@ export class LocalDbService {
     return key
   }
 
+  removeFromStorage(key) {
+    localStorage.removeItem(this.prefix + key)
+  }
+
 
 }
 

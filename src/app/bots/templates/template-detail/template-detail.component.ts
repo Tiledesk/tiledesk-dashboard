@@ -6,6 +6,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
 
 @Component({
@@ -57,6 +58,7 @@ export class TemplateDetailComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private departmentService: DepartmentService,
+    private localDbService: LocalDbService
   ) {
     console.log('[TEMPLATE DETAIL]', data)
     this.projectid = data.projectId
@@ -197,8 +199,13 @@ export class TemplateDetailComponent implements OnInit {
       this.SHOW_CIRCULAR_SPINNER = false;
       this.CREATE_BOT_ERROR = false;
       // this.router.navigate(['project/' + this.projectid + '/tilebot/general/', this.botid, 'tilebot']);
-      // this.router.navigate(['project/' + this.projectid + '/bots/intents/', this.botid, 'tilebot']);
+      // this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
       // this.closeDialog()
+
+      const storedRoute = this.localDbService.getFromStorage('wannago')
+      if (storedRoute) {
+        this.localDbService.removeFromStorage('wannago')
+      }
     });
   }
 
@@ -214,7 +221,9 @@ export class TemplateDetailComponent implements OnInit {
 
   goToBotDetails() {
     if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === false) {
-      this.router.navigate(['project/' + this.projectid + '/bots/intents/', this.botid, 'tilebot']);
+      this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
+      this.closeDialog();
+      this.closeCreateBotInfoModal();
     } else {
       this.present_modal_attacch_bot_to_dept()
     }
@@ -223,12 +232,12 @@ export class TemplateDetailComponent implements OnInit {
   present_modal_attacch_bot_to_dept() {
     this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
     this.displayModalAttacchBotToDept = 'block'
-    // this.closeCreateBotInfoModal();
+    this.closeCreateBotInfoModal();
   }
 
 
   onSelectDepartment() {
-   console.log('[TEMPLATE DETAIL] - selected_dept_id ', this.selected_dept_id);
+    console.log('[TEMPLATE DETAIL] - selected_dept_id ', this.selected_dept_id);
     this.dept_id = this.selected_dept_id
     const hasFound = this.depts_without_bot_array.filter((obj: any) => {
       return obj.id === this.selected_dept_id;
@@ -241,7 +250,15 @@ export class TemplateDetailComponent implements OnInit {
   }
 
   onCloseModalAttacchBotToDept() {
-    this.router.navigate(['project/' + this.projectid + '/bots/intents/', this.botid, 'tilebot']);
+    this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
+    this.closeDialog();
+    this.displayModalAttacchBotToDept = 'none'
+  }
+
+  hookBotGoToBotDetails() {
+    this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
+    this.closeDialog();
+    this.displayModalAttacchBotToDept = 'none'
   }
 
   hookBotToDept() {

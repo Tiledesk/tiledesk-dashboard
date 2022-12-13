@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
 import { BrandService } from 'app/services/brand.service';
@@ -25,7 +25,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   public projects: Project[];
   public botid: string;
   public selectedProjectId: string;
-  public projectname : string;
+  public projectname: string;
   constructor(
     public brandService: BrandService,
     private projectService: ProjectService,
@@ -33,7 +33,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     private faqKbService: FaqKbService,
     private localDbService: LocalDbService,
     private router: Router,
-    private auth: AuthService
+    private route: ActivatedRoute
   ) {
     const brand = brandService.getBrand();
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
@@ -41,11 +41,23 @@ export class GetStartChatbotForkComponent implements OnInit {
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
 
+
   }
 
   ngOnInit(): void {
     this.getProjects();
     this.getTemplates();
+    this.getQueryParams();
+  }
+
+  getQueryParams() {
+    this.route.queryParams
+      .subscribe(params => {
+        console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - params ', params); 
+        this.templateNameOnSite = params.tn
+        console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - templateNameOnSite ', this.templateNameOnSite); 
+      });
+      
   }
 
   getTemplates() {
@@ -65,15 +77,15 @@ export class GetStartChatbotForkComponent implements OnInit {
       if (res) {
         const templates = res
 
-      const selectedTemplates = templates.filter((obj) => {
+        const selectedTemplates = templates.filter((obj) => {
           return obj._id === bot_ID
         });
         this.selectedTemplates = selectedTemplates[0]
         console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES ', this.selectedTemplates)
 
 
-        this.templateImg =  this.selectedTemplates['bigImage'];
-        this.templateNameOnSite  =  this.selectedTemplates['nameOnSite'];
+        this.templateImg = this.selectedTemplates['bigImage'];
+        // this.templateNameOnSite = this.selectedTemplates['nameOnSite'];
         console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateImg ', this.templateImg)
         console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateNameOnSite ', this.templateNameOnSite)
       }
@@ -169,10 +181,15 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   goToYourProject() {
     this.router.navigate(['/projects']);
+
+    const storedRoute = this.localDbService.getFromStorage('wannago')
+    if (storedRoute) {
+      this.localDbService.removeFromStorage('wannago')
+    }
   }
 
   starCreateProjectWizard() {
     this.router.navigate(['/create-project']);
-  } 
+  }
 
 }

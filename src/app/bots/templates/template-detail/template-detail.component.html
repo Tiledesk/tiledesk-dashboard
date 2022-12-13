@@ -234,14 +234,14 @@
                     <!-- WHEN NO ERROR OCCUR -->
                     <!-- ------------------------------------------------------ -->
                     <div *ngIf="!CREATE_BOT_ERROR && !SHOW_CIRCULAR_SPINNER">
-                        <!-- <div class="success-checkmark">
+                        <div class="success-checkmark">
                             <div class="check-icon">
                                 <span class="success-icon-line success-line-tip"></span>
                                 <span class="success-icon-line success-line-long"></span>
                                 <div class="success-icon-circle"></div>
                                 <div class="success-icon-fix"></div>
                             </div>
-                        </div> -->
+                        </div>
 
                         <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;">
                             {{ "BotsAddEditPage.Completed" | translate }}
@@ -251,7 +251,7 @@
                     <!-- ------------------------------------------------------ -->
                     <!-- ERROR -->
                     <!-- ------------------------------------------------------ -->
-                    <!-- <div *ngIf="CREATE_BOT_ERROR && !SHOW_CIRCULAR_SPINNER">
+                    <div *ngIf="CREATE_BOT_ERROR && !SHOW_CIRCULAR_SPINNER">
 
            
                         <div class="swal2-icon swal2-error swal2-animate-error-icon" style="display: flex;">
@@ -265,7 +265,7 @@
                         <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;">
                             {{ "BotsAddEditPage.AnErrorHasOccurred" | translate }}
                         </h3>
-                    </div> -->
+                    </div>
                 </div>
             </div> 
 
@@ -381,7 +381,7 @@
 
         <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
           <button *ngIf="!selected_dept_id && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
-            class="btn btn-gray-no-boxshadow" (click)="goToBotDetails()" style="margin-right:8px">
+            class="btn btn-gray-no-boxshadow" (click)="hookBotGoToBotDetails()" style="margin-right:8px">
             <span> {{ 'Ignore' | translate}} </span>
           </button>
 
@@ -393,7 +393,7 @@
           </button>
 
           <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === true"
-            class="btn btn-tdblu-no-boxshadow" (click)="goToBotDetails()" style="margin-right: 8px;">
+            class="btn btn-tdblu-no-boxshadow" (click)="hookBotGoToBotDetails()" style="margin-right: 8px;">
             <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
           </button>
 

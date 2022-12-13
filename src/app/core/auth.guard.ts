@@ -366,7 +366,9 @@ export class AuthGuard implements CanActivate {
       (this.is_signup_on_invitation_page === true)) {
       console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
       if (url.startsWith('/get-chatbot')) {
-        this.localDbService.setInStorage('wannago', url)
+        const URLtoStore =  url.split('?')[0];  
+        console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore ', URLtoStore);
+        this.localDbService.setInStorage('wannago', URLtoStore)
       }
       return true;
       // if ((!this.user) || (this.is_verify_email_page === false))
@@ -377,7 +379,9 @@ export class AuthGuard implements CanActivate {
         console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
         console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
         if (url.startsWith('/get-chatbot')) {
-          this.localDbService.setInStorage('wannago', url)
+        const URLtoStore =  url.split('?')[0];  
+        console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore', URLtoStore);
+          this.localDbService.setInStorage('wannago', URLtoStore)
         }
       } else {
         console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
