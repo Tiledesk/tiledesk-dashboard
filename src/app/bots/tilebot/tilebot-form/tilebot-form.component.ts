@@ -74,19 +74,24 @@ export class TilebotFormComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getCurrentTranslation();
+    
     this.getModelsForm();
     this.translateMap = {};
     this.translations = {};
-    if(this.intentForm && this.intentForm.fields){
+    if(this.intentForm){
       this.displayNewFormButton = false;
       this.displaySettingsButton = true;
-      // this.fields = structuredClone(this.intentForm.fields);
+      if(this.intentForm.fields){
+        // this.fields = structuredClone(this.intentForm.fields);
 
       this.fields = JSON.parse(JSON.stringify(this.intentForm.fields));
+      }
       this.cancelCommands = this.intentForm.cancelCommands;
       this.cancelReply = this.intentForm.cancelReply;
       this.cancelCommandsString = this.cancelCommands.toString();
+      // console.log('this.cancelReply::', this.cancelReply);
+    } else {
+      this.getCurrentTranslation();
     }
   }
   
@@ -152,8 +157,7 @@ export class TilebotFormComponent implements OnInit {
       this.cancelCommands.push(cancel);
       this.cancelReply = this.translations['CancelReply']?this.translations['CancelReply']:'';
       this.translateMap.cancel = cancel;
-
-      // console.log('this.translations:::: ', this.translations);
+      // console.log('getCurrentTranslation this.cancelReply::', this.cancelReply);
     })
   }
 
@@ -186,7 +190,12 @@ export class TilebotFormComponent implements OnInit {
   }
 
   setCancelCommands(){
-    this.intentForm.cancelCommands = this.cancelCommandsString;
+    //this.cancelCommandsString.split(",");
+    this.intentForm.cancelCommands = this.cancelCommandsString
+    .split(',')
+    .map(element => element.trim())
+    .filter(element => element !== '');
+
     this.jsonGenerator();
   }
   

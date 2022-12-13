@@ -106,7 +106,7 @@
     <div class="header-list-form">
         <button 
         *ngIf="displayTilebotAddEditForm && intentForm"
-        [ngClass]="{'hide':(displaySettingForm === true || displayAddForm === true || displaySettingForm === true) }"
+        [ngClass]="{'hide':( displaySettingForm || displayAddForm || displayEditForm ) }"
         class="btn btn-primary add-field" 
         (click)="eventAddField()">
             <span class="icon">
