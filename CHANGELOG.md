@@ -1,7 +1,10 @@
 # tiledesk-dashboard
 
+### 2.3.9-rc2
+- Fixes bugs related to form builder on the chatbot details page > Edit Intent
+
 ### 2.3.9-rc1
-- Improves the form builder available on the chatbot details page > Edit Intent
+- Fixes bugs related to form builder on the chatbot details page > Edit Intent
 
 ### 2.3.8
 - Deploys in production
