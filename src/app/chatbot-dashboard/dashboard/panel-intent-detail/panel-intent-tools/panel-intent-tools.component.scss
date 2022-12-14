@@ -1,0 +1,43 @@
+@import "../../../variables";
+
+.box-sx {
+    font-family: $mdb-font-family;
+    font-size: 16px;
+}
+
+.card-title {
+    font-size: 1em;  
+    color: $color-blue-hex;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+.add-responses {
+    grid-gap: 15px;
+    display: grid;
+    .add-response { 
+        text-align: center;
+        cursor: pointer;
+        box-sizing: border-box;
+        outline: none;
+        margin: 0;
+        padding: 0;
+        i {
+            align-items: center;
+            border: 1px solid rgba($color-light-gray-hex, $bg-opacity-empty);
+            border-radius: 4px;
+            color: $color-text-select-hex;
+            display: flex;
+            width: 100%;
+            padding: 8px;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+        span {
+            color:$color-text-select-hex;
+            font-size: 0.8em;
+            font-weight: 600;
+            line-height: 19px;
+        }
+    }
+}

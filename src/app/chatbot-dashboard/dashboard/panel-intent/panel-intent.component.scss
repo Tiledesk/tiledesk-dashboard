@@ -1,0 +1,24 @@
+.button-intent {
+    display: block;
+    text-align: center;
+    user-select: none;
+    box-sizing: border-box;
+    outline: none;
+    border: 0.2em dashed #d2d2d2;
+    border-radius: 16px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: normal;
+    height: auto;
+    line-height: 32px;
+    margin: 10px 5px 0;
+    font-family: 'Poppins';
+    padding: 10px;
+    transition: all .3s;
+    min-width: 100px;
+    &:hover{
+        background-color: #d2d2d2;
+        color: #333333;
+    }
+}

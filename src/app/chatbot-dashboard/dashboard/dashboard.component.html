@@ -13,22 +13,46 @@
 
   
 <div class="chatboat-dashboard">
-    <div class="card-tools">
-        <appdashboard-tools
-        (addNewResponse) = onAddNewResponse($event)
-        ></appdashboard-tools>
-    </div>
-    <div class="card-intent">
-        <appdashboard-intent
-            *ngIf = intentSelected
-            [intent]="intentSelected"
-            [showSpinner] = "showSpinner"
-            (saveIntent) = onSaveIntent($event)
-            (openButtonPanel) = onOpenButtonPanel($event)
-        ></appdashboard-intent>
+
+    <div class="box-left">
+        <appdashboard-panel-intent-list
+            class="panel-intent-list"
+        ></appdashboard-panel-intent-list>
     </div>
 
-    <div class="card-buttons" 
+    <div class="box-right">
+
+        <div class="box-right-header">
+            <appdashboard-panel-intent-header
+            ></appdashboard-panel-intent-header>
+        </div>
+
+        <div class="box-right-content">
+
+            <appdashboard-panel-intent
+                class="panel-intent"
+            ></appdashboard-panel-intent>
+
+            <appdashboard-panel-intent-detail
+                *ngIf = intentSelected
+                class="panel-intent-detail"
+                [intentSelected]="intentSelected"
+                [showSpinner] = "showSpinner"
+            ></appdashboard-panel-intent-detail>
+
+        </div>
+
+
+    </div>
+
+       
+
+        <!-- <appdashboard-panel-actions
+            class="panel-actions"
+        ></appdashboard-panel-actions> -->
+
+
+    <!-- <div class="card-buttons" 
         *ngIf="openCardButton"
         [ngClass]="{'active':openCardButton}"
         cdkDragBoundary=".chatboat-dashboard" cdkDrag>
@@ -44,7 +68,7 @@
         (closeButtonPanel) = onCloseButtonPanel()
         (saveButton) = onSaveButton($event)
         ></appdashboard-button-configuration-panel>
-    </div>
+    </div> -->
     
 </div>
 

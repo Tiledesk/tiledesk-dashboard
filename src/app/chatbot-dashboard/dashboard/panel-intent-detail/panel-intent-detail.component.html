@@ -1,0 +1,30 @@
+
+ <div class="panel-tools">
+    <appdashboard-panel-intent-tools
+    (addNewResponse) = onAddNewResponse($event)
+    ></appdashboard-panel-intent-tools>
+</div>
+
+<div class="panel-intent-type">
+    <appdashboard-panel-response
+        *ngIf = "typeIntentElementSelected === typeIntentElement.RESPONSE"
+        [intent]="intentSelected"
+        [showSpinner] = "showSpinner"
+        (saveIntent) = onSaveIntent($event)
+        (openButtonPanel) = onOpenButtonPanel($event)
+    ></appdashboard-panel-response>
+</div>
+    
+    
+<div *ngIf = "typeIntentElementSelected === typeIntentElement.QUESTION" class="panel-question">
+</div>
+
+<div *ngIf = "typeIntentElementSelected === typeIntentElement.FORM" class="panel-form">
+</div>
+
+<div *ngIf = "typeIntentElementSelected === typeIntentElement.ACTION" class="panel-action">
+</div>
+    
+
+
+ 

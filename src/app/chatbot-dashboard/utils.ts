@@ -1,3 +1,10 @@
+export enum TYPE_INTENT_ELEMENT {
+    QUESTION = 'question',
+    RESPONSE = 'response', 
+    FORM = 'form', 
+    ACTION = 'action'
+}
+
 export enum TYPE_RESPONSE {
     TEXT = 'text', 
     RANDOM_TEXT = 'randomText', 

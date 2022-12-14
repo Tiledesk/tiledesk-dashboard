@@ -1,0 +1,38 @@
+@import "../../variables";
+
+$margin-left: 10px;
+$padding: 10px;
+
+.panel-tools {
+    position: relative;
+    display: inline-flex;
+    vertical-align: top;
+    width: auto;
+    max-height: 100%;
+    height: fit-content;
+    overflow: hidden;
+    border-radius: 0.6em;
+    background-color: rgb($bg-color-card-rgb);
+    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    color: #394f5a;
+    font-size: 1em;
+    padding: $padding;
+}
+
+.panel-intent-type {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: auto;
+    flex-grow: 1;
+    max-height: 100%;
+    height: auto;
+    overflow: hidden;
+    border-radius: 0.6em;
+    background-color: rgb($bg-color-card-rgb);
+    margin-left: $margin-left;
+    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    color: #394f5a; 
+    font-size: 1em;
+    padding: $padding;
+}
