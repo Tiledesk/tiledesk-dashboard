@@ -174,11 +174,13 @@ textarea {
 input#intent-name {
   background-size: 100% 2px,100% 0px;
   border: 0px!important;
-  border-bottom: 2px solid #d9d9d9!important;
+  // border-bottom: 2px solid #d9d9d9!important;
   background-repeat: no-repeat;
   background-position: center bottom,center calc(100% - 1px);
   margin-bottom: 3px;
   border-radius: 0px;
+  background-image: linear-gradient(#ed2e19,#ed2e19),linear-gradient(#D2D2D2,#D2D2D2);
+  background-color: #eeeeee69!important;
 }
 
 .card_title__underlined{
@@ -203,11 +205,12 @@ input#intent-name {
   font-size: 1em;
   line-height: normal;
   &.intentTitle {
-    font-weight: 400;
+    font-weight: 200;
     font-size: 24px;
     line-height: 36px;
     margin: 0;
     padding: 0 10px;
+    color: #d2d2d2;
   }
 }
 
@@ -227,6 +230,7 @@ input#intent-name {
   }
   input#intent-name {
     border: 0!important;
+    background-image: linear-gradient(#ed2e19,#ed2e19),linear-gradient(#D2D2D2,#D2D2D2);
   }
 }
 
