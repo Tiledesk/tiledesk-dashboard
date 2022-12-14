@@ -168,7 +168,7 @@ export class FaqService {
         'Authorization': this.TOKEN
       })
     };
-   
+
     let url = this.FAQ_URL + '?id_faq_kb=' + id_faq_kb;
     this.logger.log('[FAQ-SERV] - GET FAQ BY FAQ-KB ID (BOT-ID) - URL', url);
 
@@ -225,7 +225,7 @@ export class FaqService {
       }),
       // responseType: 'text' as 'json'
     };
-    
+
     const url = this.SERVER_BASE_PATH + this.project._id + "/faq_kb/exportjson/" + id_faq_kb;
     this.logger.log('[FAQ-SERV] - EXPORT FAQS AS JSON - URL', url);
 
@@ -241,7 +241,7 @@ export class FaqService {
       }),
       // responseType: 'text' as 'json'
     };
-    
+
     const url = this.SERVER_BASE_PATH + this.project._id + "/faq_kb/exportjson/" + id_faq_kb + "?intentsOnly=true";
     this.logger.log('[FAQ-SERV] - EXPORT FAQS AS JSON - URL', url);
 
@@ -257,7 +257,7 @@ export class FaqService {
         'Authorization': this.TOKEN
       })
     };
-    
+
 
     const url = this.SERVER_BASE_PATH + this.project._id + "/faq_kb/importjson/" + id_faq_kb
     this.logger.log('[FAQ-SERV] UPLOAD FAQS CSV - URL ', url);
@@ -266,16 +266,22 @@ export class FaqService {
       .post(url, jsonfile, options)
   }
 
-  public importIntentsFromJSON(id_faq_kb: string, jsonfile) {
+  public importIntentsFromJSON(id_faq_kb: string, jsonfile, action: string) {
     const options = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Authorization': this.TOKEN
       })
     };
-    
 
-    const url = this.SERVER_BASE_PATH + this.project._id + "/faq_kb/importjson/" + id_faq_kb + "?intentsOnly=true"
+    let qsaction = ''
+    if (action === "add") {
+      qsaction = "&overwrite=false"
+    } else if (action === "overwrite") {
+      qsaction = "&overwrite=true"
+    }
+
+    const url = this.SERVER_BASE_PATH + this.project._id + "/faq_kb/importjson/" + id_faq_kb + "?intentsOnly=true" + qsaction
     this.logger.log('[FAQ-SERV] UPLOAD FAQS CSV - URL ', url);
 
     return this._httpClient
@@ -303,7 +309,7 @@ export class FaqService {
     const url = this.FAQ_URL;
     this.logger.log('[FAQ-SERV] ADD FAQ -  PUT URL ', url);
     const body = { 'question': question, 'answer': answer, 'id_faq_kb': id_faq_kb, 'intent_display_name': intentname, 'webhook_enabled': faqwebhookenabled };
-    if(intentform && intentform.fields && intentform.fields.length>0){
+    if (intentform && intentform.fields && intentform.fields.length > 0) {
       body['form'] = intentform;
     }
     this.logger.log('[FAQ-SERV] ADD FAQ - POST BODY ', body);
@@ -330,10 +336,10 @@ export class FaqService {
     };
 
     this.logger.log('[FAQ-SERV] UPDATE FAQ - ID ', id);
-    let url = this.FAQ_URL + id; 
+    let url = this.FAQ_URL + id;
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT URL ', url);
 
-    const body = { 'question': question, 'answer': answer, 'intent_display_name': intentname, 'form':intentform, 'webhook_enabled': faqwebhookenabled };
+    const body = { 'question': question, 'answer': answer, 'intent_display_name': intentname, 'form': intentform, 'webhook_enabled': faqwebhookenabled };
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT REQUEST BODY ', body);
 
     return this._httpClient
@@ -374,7 +380,7 @@ export class FaqService {
     // const headers = new Headers();
     /** No need to include Content-Type in Angular 4 */
     // headers.append('Content-Type', 'multipart/form-data');
-   
+
     // headers.append('Accept', 'text/csv');
     // headers.append('Authorization', this.TOKEN);
     // const options = new RequestOptions({ headers: headers });
@@ -385,7 +391,7 @@ export class FaqService {
         'Authorization': this.TOKEN
       })
     };
-  
+
     const url = this.FAQ_URL + 'uploadcsv';
     this.logger.log('[FAQ-SERV] UPLOAD FAQS CSV - URL ', url);
 
@@ -405,7 +411,7 @@ export class FaqService {
         'Authorization': this.TOKEN
       })
     };
-    
+
     let url = this.FAQ_URL + id;
     this.logger.log('[FAQ-SERV] DELETE FAQ URL ', url);
 
@@ -457,10 +463,10 @@ export class FaqService {
         'Authorization': this.TOKEN
       })
     };
- 
+
     const url = this.SERVER_BASE_PATH + this.project._id + '/faq_kb/' + 'askbot';
     const body = { 'id_faq_kb': botId, 'question': question };
-    
+
     return this._httpClient
       .post(url, JSON.stringify(body), httpOptions)
   }

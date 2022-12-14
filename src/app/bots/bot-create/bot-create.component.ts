@@ -557,9 +557,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-
-
-
     this.logger.log('[BOT-CREATE] ----> FILE - event.target.files ', event.target.files);
     this.logger.log('[BOT-CREATE] ----> FILE - event.target.files.length ', event.target.files.length);
     if (event.target.files && event.target.files.length) {

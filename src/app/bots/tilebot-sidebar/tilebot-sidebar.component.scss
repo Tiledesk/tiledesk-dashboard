@@ -106,17 +106,27 @@ li > a {
     border-radius: 0px;
 }
 
+
+.bot--name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 130px;
+    display: inline-block;
+}
 .bot-lang-badge {
     // font-weight: 400;
     background-color: #3ea9f5;
     /* border-color: #e3e7fa; */
-    padding: 1px 6px;
+    padding: 1px 4px 1px 2px;
     border-radius: 4px;
     font-size: 10px;
     color: #fff;
     position: relative;
     // top: -1px;
     text-transform: uppercase;
+    left: 0px;
+    top: -3px;
 }
 
 .toggle-setting-sidebar-icon-wpr {
