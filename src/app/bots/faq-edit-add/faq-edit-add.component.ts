@@ -358,7 +358,7 @@ export class FaqEditAddComponent implements OnInit {
 
        
         // this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb, this.botType]);
-        this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.id_faq_kb + "/" + this.botType]);
+        this.router.navigate(['project/' + this.project._id + '/tilebot/intents/' + this.id_faq_kb + "/" + this.botType]);
       });
 
   }
