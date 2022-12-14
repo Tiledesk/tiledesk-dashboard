@@ -88,9 +88,8 @@ export class TilebotFormComponent implements OnInit {
       this.cancelReply = this.intentForm.cancelReply;
       this.cancelCommandsString = this.cancelCommands.toString();
       // console.log('this.cancelReply::', this.cancelReply);
-    } else {
-      this.getCurrentTranslation();
-    }
+    } 
+    this.getCurrentTranslation();
   }
   
 
@@ -151,9 +150,11 @@ export class TilebotFormComponent implements OnInit {
     this.httpClient.get(jsonWidgetLangURL).subscribe(data =>{
       this.translations = data['AddIntentPage'];
       let cancel = this.translations['Cancel']? this.translations['Cancel']: 'cancel';
-      this.cancelCommands.push(cancel);
-      this.cancelReply = this.translations['CancelReply']?this.translations['CancelReply']:'';
       this.translateMap.cancel = cancel;
+      if(!this.intentForm){
+        this.cancelCommands.push(cancel);
+        this.cancelReply = this.translations['CancelReply']?this.translations['CancelReply']:'';
+      }
       // console.log('getCurrentTranslation this.cancelReply::', this.cancelReply);
     })
   }
@@ -192,7 +193,6 @@ export class TilebotFormComponent implements OnInit {
     .split(',')
     .map(element => element.trim())
     .filter(element => element !== '');
-
     this.jsonGenerator();
   }
   
@@ -257,11 +257,11 @@ export class TilebotFormComponent implements OnInit {
       this.displayEditForm = false;
       let i: number = +index;
       this.fields.splice(i, 1);
-      // console.log('this.fields.length::: 1', this.fields.length);
       if(this.fields.length === 0){
         this.deleteForm();
       }
-      // console.log('this.fields.length::: 2');
+      this.intentForm.fields = this.fields;
+      // console.log('confirmDeleteModal::: ', this.intentForm, this.fields);
     }
     this.jsonGenerator();
     this.displayMODAL = false;
@@ -283,7 +283,6 @@ export class TilebotFormComponent implements OnInit {
   }
 
   private deleteForm(){
-    // console.log('deleteForm:: ');
     this.displayTilebotAddEditForm = false;
     this.displayNewFormButton = true;
     this.displayBoxNewForm = true;
@@ -292,7 +291,7 @@ export class TilebotFormComponent implements OnInit {
     this.displayEditForm = false
     this.displayCancelButton = false;
     this.displaySettingsButton = false;
-    this.intentForm = null;
+    this.intentForm = {};
     this.fields = [];
   }
 

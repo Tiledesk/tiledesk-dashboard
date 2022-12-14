@@ -35,7 +35,7 @@
                             [(ngModel)] = "fieldType"
                             (blur) = "displayPlaceholder(true)"
                             (focus) = "displayPlaceholder(false); displayMessage('field_type')" 
-                            (change) = "onChange($event.value)">
+                            (change) = "onChangeTypeField($event.value)">
                         </ng-select>
                     </div>
                 </div>
@@ -127,8 +127,9 @@
         <button *ngIf="displayAddForm === true" class="btn btn-primary" type="submit" (click)="save()">
             {{ 'Add' | translate}}
         </button>
+
         <button *ngIf="displayEditForm === true" class="btn btn-primary" type="submit" (click)="save()">
-            {{ 'Close' | translate}}
+            {{ 'Edit' | translate}}
         </button>
     </div>
 </div>
