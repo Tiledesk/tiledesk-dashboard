@@ -481,11 +481,10 @@ export class FaqEditAddComponent implements OnInit {
    * GET JSON FORM
    */
    passJsonIntentForm(json){
-    
-    this.intentForm = {};
+    // this.intentForm = {};
     //if(json && json.fields && json.fields.length>0){
-      this.intentForm = json;
     //}
+    this.intentForm = json;
     // console.log("-------------------> passJsonIntentForm::: ", this.intentForm);
   }
 

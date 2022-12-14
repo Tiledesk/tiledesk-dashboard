@@ -2293,7 +2293,7 @@
         "MarkbotLabel": "Puoi usare il <a href='https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/' target='_blank'>Markbot</a> per formattare il testo",
 
         "InfoMessages": {
-            "field_name": "field_name",
+            "field_name": "Assegna un nome al campo (es: nome _utente). Il nome può contenere solo lettere numeri e _",
             "field_type": "Seleziona il tipo di dato che verrà inserito in questo campo (Ex: Text).",
             "field_regex": "Inserisci il Regex personalizzato per il controllo sul dato inserito",
             "field_label": "Scrivi una label chiara che aiuti gli utenti ad inserire i dati corretti (Ex: Come ti chiami?)",
