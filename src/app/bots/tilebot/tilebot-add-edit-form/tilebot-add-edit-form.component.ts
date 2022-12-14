@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { TranslateService } from '@ngx-translate/core';
-import { ThisReceiver } from '@angular/compiler';
 
 
 export enum TYPE_FIELD {
@@ -14,7 +13,8 @@ export enum TYPE_FIELD {
 export enum TYPE_REGEX {
   customRGEX = '/^.{1,}$/',
   textRGEX = '/^.{1,}$/',
-  phoneRGEX = "/^((?:\\+|00)[17](?: |\\-)?|(?:\\+|00)[1-9]\\d{0,2}(?: |\\-)?|(?:\\+|00)1\\-\\d{3}(?: |\\-)?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:((?: |\\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\\-)[0-9]{3}(?: |\\-)[0-9]{4})|([0-9]{7}))$/",
+  // phoneRGEX = "/^((?:\\+|00)[17](?: |\\-)?|(?:\\+|00)[1-9]\\d{0,2}(?: |\\-)?|(?:\\+|00)1\\-\\d{3}(?: |\\-)?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:((?: |\\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\\-)[0-9]{3}(?: |\\-)[0-9]{4})|([0-9]{7}))$/",
+  phoneRGEX = '/^.{1,}$/',
   nameRGEX = '/^[a-zA-Z0-9_]{1,}$/',
   emailRGEX = "/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/"
 }
@@ -174,6 +174,7 @@ export class TilebotAddEditFormComponent implements OnInit {
         break;
       case TYPE_FIELD.PHONE:
         this.field.regex = TYPE_REGEX.phoneRGEX;
+        
         break;
       case TYPE_FIELD.CUSTOM:
           this.field.regex = TYPE_REGEX.customRGEX;
