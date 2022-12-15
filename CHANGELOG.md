@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.3.9-rc3
+- Disables the installation of the "Whatsapp app with Twilio" on the app store page
+- Improve the form builder validation regex expressions on the chatbot details page > Edit Intent
+
 ### 2.3.9-rc2
 - Fixes bugs related to form builder on the chatbot details page > Edit Intent
 
