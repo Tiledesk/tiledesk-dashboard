@@ -133,3 +133,9 @@
     padding-top: 8px !important;
     padding-bottom: 8px !important;
 }
+
+
+.div-disabled {
+    pointer-events:none;
+    background: #eee;
+}

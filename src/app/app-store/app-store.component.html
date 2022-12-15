@@ -85,10 +85,10 @@
 
               <!-- app.installed {{app.installed }}  app.version {{app.version }} -->
               <!-- app.where.appsstore >  {{app.where.appsstore }}  -->
-              <div *ngIf="!app.installed && app.version === 'v1'" class="col-xs-6 app-store-right-col-btn"
+              <div *ngIf="!app.installed && app.version === 'v1'" [ngClass]="{'div-disabled': app._id === '5fecb0d08b2c259c6e4a9706' }" class="col-xs-6 app-store-right-col-btn"
                 (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
                 <a>
-                  {{'Install' | translate}}
+                 {{'Install' | translate}}
                 </a>
               </div>
 
