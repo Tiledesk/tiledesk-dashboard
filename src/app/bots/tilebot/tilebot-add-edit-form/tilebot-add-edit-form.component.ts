@@ -97,7 +97,7 @@ export class TilebotAddEditFormComponent implements OnInit {
     // this.setRegex();
     this.getCurrentTranslation();
     this.infoMessage = this.infoMessages['field_name'];
-    console.log() 
+   
   }
 
   ngAfterViewInit(){
@@ -126,31 +126,31 @@ export class TilebotAddEditFormComponent implements OnInit {
 
   /** */
   checkFields(){
-    console.log('checkFields') 
+    // console.log('checkFields') 
     this.nameResult = true;
     this.typeResult = true;
     this.labelResult = true;
     this.errorLabelResult = true;
     let status = true;
     this.field.name = this.fieldName?this.fieldName:'';
-    console.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
+    // console.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
     this.field.type = this.fieldType?this.fieldType.toUpperCase():null;
-    console.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
+    // console.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
     this.field.regex = this.fieldRegex?this.fieldRegex:TYPE_REGEX.customRGEX;
-    console.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
+    // console.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
     this.field.label = this.fieldLabel?this.fieldLabel.trim():'';
-    console.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
+    // console.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
     this.field.errorLabel = this.fieldErrorLabel?this.fieldErrorLabel.trim():'';
-    console.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
+    // console.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
     if(this.fieldType == null){
       this.typeResult = false;
       status = false;
     }
     
     let REGEX = new RegExp(TYPE_REGEX.nameRGEX.replace(/\//gi, ''));
-    console.log('[TILEBOT-EDIT-ADD] checkFields nameRGEX REGEX ', REGEX)
+    // console.log('[TILEBOT-EDIT-ADD] checkFields nameRGEX REGEX ', REGEX)
     this.nameResult = REGEX.test(this.field.name);
-    console.log('[TILEBOT-EDIT-ADD] nameResult',this.nameResult,' REGEX.test - field.name', this.field.name )
+    // console.log('[TILEBOT-EDIT-ADD] nameResult',this.nameResult,' REGEX.test - field.name', this.field.name )
     if(this.nameResult === false){
       status = false;
     }
@@ -168,9 +168,9 @@ export class TilebotAddEditFormComponent implements OnInit {
       status = false;
     }
     // this.field.regex = this.field.regex.replace(/\//gi, '');
-    console.log('[TILEBOT-EDIT-ADD] checkFields this.field.regex 1 ', this.field.regex)
+    // console.log('[TILEBOT-EDIT-ADD] checkFields this.field.regex 1 ', this.field.regex)
     this.field.regex = this.field.regex.toString();
-    console.log('[TILEBOT-EDIT-ADD] checkFields this.field.regex 2 ', this.field.regex)
+    // console.log('[TILEBOT-EDIT-ADD] checkFields this.field.regex 2 ', this.field.regex)
     return status;
 
   }
@@ -242,9 +242,9 @@ export class TilebotAddEditFormComponent implements OnInit {
   }
 
   save(){
-    console.log('[TILEBOT-EDIT-ADD] save ')
+    // console.log('[TILEBOT-EDIT-ADD] save ')
     if(this.checkFields()){
-      console.log('[TILEBOT-EDIT-ADD] save checkFields ', this.checkFields())
+      // console.log('[TILEBOT-EDIT-ADD] save checkFields ', this.checkFields())
       this.displayInfoMessage = false;
       this.showForm = false;
       this.saveAddEditForm.emit(this.field);
