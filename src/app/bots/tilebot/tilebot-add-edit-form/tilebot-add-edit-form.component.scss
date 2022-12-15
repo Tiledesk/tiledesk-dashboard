@@ -1,3 +1,5 @@
+
+
 .tilebot-add-edit-form {
     height: auto; 
     max-height: 0;
@@ -194,4 +196,16 @@ input.form-control {
         }
     }
 } 
+
+.input-prefix {
+    position: absolute;
+    top: 29px;
+    left: 8px;
+}
+
+.input-suffix {
+    position: absolute;
+    top: 29px;
+    right: 8px;
+}
 

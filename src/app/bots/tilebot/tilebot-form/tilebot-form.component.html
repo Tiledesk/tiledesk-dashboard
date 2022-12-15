@@ -1,43 +1,42 @@
- <div class="box-tilebot-form">
-    
-    <div class="more-info" 
-        (click)="goToFormMoreInfo()">
-        <em class="material-icons"
-        mat-raised-button
-        matTooltip="{{ 'MoreInfo' | translate }}"
-        aria-label="Button that displays a tooltip when focused or hovered over">info_outline</em>
-        <!-- <span></span> -->
-    </div>
+<div class="box-tilebot-form">
+
+    <!-- <div class="more-info" (click)="goToFormMoreInfo()">
+        <em class="material-icons" mat-raised-button matTooltip="{{ 'MoreInfo' | translate }}"
+            aria-label="Button that displays a tooltip when focused or hovered over">info_outline</em>
+      
+    </div> -->
 
     <!-- HEADER BUTTONS -->
     <div class="header-buttons-form">
-        
+
         <button *ngIf="displayNewFormButton" class="btn btn-primary add-form" (click)="openBoxNewFormForm()">
             <span class="icon-label opened">{{ "AddIntentPage.AddForm" | translate }}</span>
             <span class="icon">
-              <i class="material-icons">add_circle</i>
+                <i class="material-icons">add_circle</i>
             </span>
         </button>
         <button *ngIf="!displayNewFormButton && intentForm" class="btn btn-danger add-form" (click)="openDeleteForm()">
             <span class="icon-label">{{ "AddIntentPage.DeleteForm" | translate }}</span>
             <span class="icon">
-              <i class="material-icons">delete</i>
+                <i class="material-icons">delete</i>
             </span>
         </button>
-
-        <button *ngIf="displaySettingsButton" class="btn btn-primary only-icon btn-settings" (click)="openSettingsForm()">
+        <!-- only-icon btn-settings -->
+        <button *ngIf="displaySettingsButton" class="btn btn-primary add-form"
+            (click)="openSettingsForm()">
             <span class="icon-label">{{ "Settings" | translate }}</span>
             <span class="icon">
-            <i class="material-icons">settings</i>
+                <i class="material-icons">settings</i>
             </span>
         </button>
 
-        <button *ngIf="displayCancelButton" class="btn btn-primary only-icon btn-settings" (click)="closeGeneral()">
-            <span class="icon-label">{{ "Close" | translate }}</span>
+        <!-- only-icon btn-settings -->
+        <button *ngIf="displayCancelButton" class="btn btn-default add-form" (click)="closeGeneral()">
+            <span class="icon-label opened" >{{ "Close" | translate }}</span>
             <span class="icon">
-              <i class="material-icons">cancel</i>
+                <i class="material-icons">cancel</i>
             </span>
-        </button>  
+        </button>
 
     </div>
 
@@ -49,12 +48,8 @@
             {{ "AddIntentPage.SelectTemplateForm" | translate }}
         </div>
         <div class="selectFormModel">
-            <ng-select [items]="modelsOfForm" 
-                        bindLabel="name" 
-                        bindValue="id" 
-                        [clearable] = false
-                        [(ngModel)]="selectedFormId"
-                        (change)="getFieldFromId(selectedFormId)">
+            <ng-select [items]="modelsOfForm" bindLabel="name" bindValue="id" [clearable]=false
+                [(ngModel)]="selectedFormId" (change)="getFieldFromId(selectedFormId)">
             </ng-select>
             <p *ngIf=selectedForm.fields>{{ "AddIntentPage.InfoTemplateForm" | translate: translateparam }}</p>
         </div>
@@ -71,21 +66,11 @@
             <!-- <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div> -->
             <div class="row-info">
                 <span class="bold">{{ "AddIntentPage.LabelCancel" | translate }}:</span>
-                <input 
-                    type="text" 
-                    class="input" 
-                    [(ngModel)]="cancelCommandsString" 
-                    (change)="setCancelCommands()"
-                />
+                <input type="text" class="input" [(ngModel)]="cancelCommandsString" (change)="setCancelCommands()" />
             </div>
             <div class="row-info">
                 <span class="bold">{{ "AddIntentPage.LabelReplay" | translate }}:</span>
-                <input 
-                    type="text" 
-                    class="input" 
-                    [(ngModel)]="cancelReply" 
-                    (change)="setCancelReplay()"
-                />
+                <input type="text" class="input" [(ngModel)]="cancelReply" (change)="setCancelReplay()" />
             </div>
         </div>
 
@@ -100,52 +85,35 @@
 
     </div>
 
-    
+
     <!-- BUTTON ADD FIELD  -->
     <!-- [disabled]="displayAddForm || displayEditForm || displaySettingForm" -->
-    <div class="header-list-form">
-        <button 
-        *ngIf="displayTilebotAddEditForm && intentForm"
-        [ngClass]="{'hide':( displaySettingForm || displayAddForm || displayEditForm ) }"
-        class="btn btn-primary add-field" 
-        (click)="eventAddField()">
+    <div class="header-list-form" style="margin-top: 12px;">
+        <button *ngIf="displayTilebotAddEditForm && intentForm"
+            [ngClass]="{'hide':( displaySettingForm || displayAddForm || displayEditForm ) }"
+            class="btn btn-primary add-field" (click)="eventAddField()">
             <span class="icon">
-            <i class="material-icons">add_circle</i>
+                <i class="material-icons">add_circle</i>
             </span>
             <span>{{ "AddIntentPage.AddField" | translate }}</span>
         </button>
     </div>
-    
 
-    <!-- ADD EDIT FIELD    -->
-    <appdashboard-tilebot-add-edit-form
-    *ngIf="displayAddForm || displayEditForm"
-    [displayAddForm]="displayAddForm"
-    [displayEditForm]="displayEditForm"
-    [field]="selectedField"
-    (saveAddEditForm)="saveAddEditForm($event)"
-    (closeAddEditForm)="closeAddEditForm()"
-    ></appdashboard-tilebot-add-edit-form> 
-    
 
     <!-- LIST FIELDS -->
-    <appdashboard-tilebot-list-fields-form
-    *ngIf="intentForm"
-    [fields]="fields"
-    (eventEditField)="eventEditField($event)"
-    (eventDropField)="eventDropField($event)"
-    (openDeleteFieldModal)="openDeleteFieldModal($event)"
-    ></appdashboard-tilebot-list-fields-form> 
-    
+    <appdashboard-tilebot-list-fields-form *ngIf="intentForm" [fields]="fields"
+        (eventEditField)="eventEditField($event)" (eventDropField)="eventDropField($event)"
+        (openDeleteFieldModal)="openDeleteFieldModal($event)"></appdashboard-tilebot-list-fields-form>
+
+    <!-- ADD EDIT FIELD    -->
+    <appdashboard-tilebot-add-edit-form *ngIf="displayAddForm || displayEditForm" [displayAddForm]="displayAddForm"
+        [displayEditForm]="displayEditForm" [field]="selectedField" (saveAddEditForm)="saveAddEditForm($event)"
+        (closeAddEditForm)="closeAddEditForm()"></appdashboard-tilebot-add-edit-form>
+
 
     <!-- DELETE MODAL -->
-    <appdashboard-modal-delete
-    *ngIf="displayMODAL"
-    [translateMap]="translateMap" 
-    [objectId]="selectedObjectId"
-    (confirmDeleteModal)="confirmDeleteModal($event)"
-    (closeDeleteModal)="closeDeleteModal($event)"
-    ></appdashboard-modal-delete>
+    <appdashboard-modal-delete *ngIf="displayMODAL" [translateMap]="translateMap" [objectId]="selectedObjectId"
+        (confirmDeleteModal)="confirmDeleteModal($event)" (closeDeleteModal)="closeDeleteModal($event)">
+    </appdashboard-modal-delete>
 
- </div>
- 
+</div>

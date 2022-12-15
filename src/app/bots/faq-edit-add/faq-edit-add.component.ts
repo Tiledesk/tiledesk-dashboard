@@ -12,10 +12,11 @@ import {
   URL_styling_your_chatbot_replies,
   URL_response_bot_images_buttons_videos_and_more,
   URL_handoff_to_human_agents, 
-  URL_advanced_chatbot_styling_buttons
+  URL_advanced_chatbot_styling_buttons,
+  URL_more_info_chatbot_forms
 } from '../../utils/util';
 const swal = require('sweetalert');
-
+import {  } from 'app/utils/util';
 @Component({
   selector: 'faq-edit-add',
   templateUrl: './faq-edit-add.component.html',
@@ -486,6 +487,11 @@ export class FaqEditAddComponent implements OnInit {
     //}
     this.intentForm = json;
     // console.log("-------------------> passJsonIntentForm::: ", this.intentForm);
+  }
+
+  goToFormMoreInfo(){
+    const url = URL_more_info_chatbot_forms;
+    window.open(url, '_blank');
   }
 
 }

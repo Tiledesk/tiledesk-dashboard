@@ -13,7 +13,7 @@
             }, {
                 "name": "userEmail",
                 "type": "email",
-                "regex": "/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/",
+                "regex": "^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$",
                 "label": "Hi ${userFullname}\n\nJust one last question\n\nYour email 🙂",
                 "errorLabel": "${userFullname} this email address is invalid\n\nCan you insert a correct email address?"
             }
@@ -37,12 +37,12 @@
             }, {
                 "name": "userPhone",
                 "type": "phone",
-                "regex": "/^.{1,}$/",
+                "regex": "^.{1,}$",
                 "label": "Thank you ${userFullname}! What is your phone number?"
             },{
                 "name": "userEmail",
                 "type": "email",
-                "regex": "/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/",
+                "regex": "^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$",
                 "label": "Hi ${userFullname} \n\nJust one last question\n\nYour email 🙂",
                 "errorLabel": "${userFullname} this email address is invalid\n\nCan you insert a correct email address?"
             }
