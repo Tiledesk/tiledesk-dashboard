@@ -2272,7 +2272,7 @@
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",
-        "InfoTemplateForm": "Tanlangan shaklning modeli quyidagi maydonlarni o'z ichiga oladi: {Ratsion_key}}",
+        "InfoTemplateForm": "Tanlangan shakl {{selectedFormName}} modeli quyidagi maydonlarni oʻz ichiga oladi: {{description_key}}",
         "CreateForm": "Shaklni yaratish",
         "NameForm": "Forma nomi",
         "LabelCancel": "Yorliqni bekor qilish",

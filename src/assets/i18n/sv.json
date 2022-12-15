@@ -2272,7 +2272,7 @@
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",
-        "InfoTemplateForm": "Modellen för vald form '{{SelectedFormName}}' innehåller följande fält: {{beskrivning_key}}",
+        "InfoTemplateForm": "Modellen för vald form '{{selectedFormName}}' innehåller följande fält: {{description_key}}",
         "CreateForm": "Skapa form",
         "NameForm": "Formnamn",
         "LabelCancel": "Avbryta etiketten",

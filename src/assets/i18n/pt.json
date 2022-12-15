@@ -2272,7 +2272,7 @@
     "AddIntentPage": {
         "AddForm": "Adicione o formulário",
         "SelectTemplateForm": "Selecione um tipo de forma entre os sugeridos ou crie um novo",
-        "InfoTemplateForm": "O modelo da forma selecionada '{{SelectedFormName}}' contém os seguintes campos: {{description_key}}",
+        "InfoTemplateForm": "O modelo da forma selecionada '{{selectedFormName}}' contém os seguintes campos: {{description_key}}",
         "CreateForm": "Criar forma",
         "NameForm": "Nome do formulario",
         "LabelCancel": "Cancelar o rótulo",

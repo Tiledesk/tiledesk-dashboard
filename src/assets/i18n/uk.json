@@ -2272,7 +2272,7 @@
     "AddIntentPage": {
         "AddForm": "Додати форму",
         "SelectTemplateForm": "Виберіть тип форми серед запропонованих або створіть новий",
-        "InfoTemplateForm": "Модель вибраної форми '{{selectedFormName}}' містить такі поля: {{escripe_key}}",
+        "InfoTemplateForm": "Модель вибраної форми '{{selectedFormName}}' містить такі поля: {{description_key}}",
         "CreateForm": "Створити форму",
         "NameForm": "Назва форми",
         "LabelCancel": "Скасувати етикетку",

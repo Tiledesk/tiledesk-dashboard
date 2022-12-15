@@ -2272,7 +2272,7 @@
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",
-        "InfoTemplateForm": "'{{Seçilmiş formadam}} seçilmiş formanın modeli' aşağıdakı sahələri ehtiva edir: {{Təsvir_Key}}",
+        "InfoTemplateForm": "{{selectedFormName}} seçilmiş formanın modeli aşağıdakı sahələri ehtiva edir: {{description_key}}",
         "CreateForm": "Forma yaratmaq",
         "NameForm": "Mətbuat qoymaq",
         "LabelCancel": "Etiketi ləğv edin",

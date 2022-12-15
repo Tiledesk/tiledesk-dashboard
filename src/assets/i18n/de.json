@@ -2272,7 +2272,7 @@
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",
-		"InfoTemplateForm": "Das Modell der ausgewählten Form '{{{SelectedFormName}}' enthält die folgenden Felder: {{Beschreibung_key}}",
+		"InfoTemplateForm": "Das Modell der ausgewählten Form {{selectedFormName}} enthält die folgenden Felder: {{description_key}}",
 		"CreateForm": "Form erstellen",
 		"NameForm": "Formularname",
 		"LabelCancel": "Label abbrechen",

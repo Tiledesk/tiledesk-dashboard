@@ -2272,7 +2272,7 @@
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",
-        "InfoTemplateForm": "Таңдалған форманың үлгісі '{{DesignName}}' '' келесі өрістерді қамтиды: {{{{QISACTINE_KEY}}",
+        "InfoTemplateForm": "Таңдалған форманың үлгісі '{{selectedFormName}}' келесі өрістерді қамтиды: {{description_key}}",
         "CreateForm": "Пішін жасаңыз",
         "NameForm": "Пішін атауы",
         "LabelCancel": "Жапсырманы болдырмаңыз",

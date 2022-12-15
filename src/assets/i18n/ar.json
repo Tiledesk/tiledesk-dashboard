@@ -2272,7 +2272,7 @@
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",
-        "InfoTemplateForm": "يحتوي نموذج النموذج المحدد '{{selectFormName}}' على الحقول التالية: {{description_key}}",
+        "InfoTemplateForm": "يحتوي نموذج النموذج المحدد '{{selectedFormName}}' على الحقول التالية: {{description_key}}",
         "CreateForm": "إنشاء نموذج",
         "NameForm": "اسم النموذج",
         "LabelCancel": "إلغاء التسمية",
