@@ -22,8 +22,7 @@
             </span>
         </button>
         <!-- only-icon btn-settings -->
-        <button *ngIf="displaySettingsButton" class="btn btn-primary add-form"
-            (click)="openSettingsForm()">
+        <button *ngIf="displaySettingsButton" class="btn btn-primary add-form" (click)="openSettingsForm()">
             <span class="icon-label">{{ "Settings" | translate }}</span>
             <span class="icon">
                 <i class="material-icons">settings</i>
@@ -32,7 +31,7 @@
 
         <!-- only-icon btn-settings -->
         <button *ngIf="displayCancelButton" class="btn btn-default add-form" (click)="closeGeneral()">
-            <span class="icon-label opened" >{{ "Close" | translate }}</span>
+            <span class="icon-label opened">{{ "Close" | translate }}</span>
             <span class="icon">
                 <i class="material-icons">cancel</i>
             </span>
@@ -86,32 +85,40 @@
     </div>
 
 
-    <!-- BUTTON ADD FIELD  -->
+
+
+    <!-- ------------------------------ -->
+    <!-- @ LIST FIELDS -->
+    <!-- ------------------------------ -->
+    <appdashboard-tilebot-list-fields-form *ngIf="intentForm" [fields]="fields"
+        (eventEditField)="eventEditField($event)" (eventDropField)="eventDropField($event)"
+        (openDeleteFieldModal)="openDeleteFieldModal($event)"></appdashboard-tilebot-list-fields-form>
+
+    <!-- ------------------------------ -->
+    <!-- @ BUTTON ADD FIELD  -->
+    <!-- ------------------------------ -->
     <!-- [disabled]="displayAddForm || displayEditForm || displaySettingForm" -->
     <div class="header-list-form" style="margin-top: 12px;">
         <button *ngIf="displayTilebotAddEditForm && intentForm"
             [ngClass]="{'hide':( displaySettingForm || displayAddForm || displayEditForm ) }"
-            class="btn btn-primary add-field" (click)="eventAddField()">
-            <span class="icon">
+            class="btn btn-primary add-field btn-only-string" (click)="eventAddField()">
+            <span class="icon" style="padding-right: 4px;">
                 <i class="material-icons">add_circle</i>
             </span>
             <span>{{ "AddIntentPage.AddField" | translate }}</span>
         </button>
     </div>
 
-
-    <!-- LIST FIELDS -->
-    <appdashboard-tilebot-list-fields-form *ngIf="intentForm" [fields]="fields"
-        (eventEditField)="eventEditField($event)" (eventDropField)="eventDropField($event)"
-        (openDeleteFieldModal)="openDeleteFieldModal($event)"></appdashboard-tilebot-list-fields-form>
-
-    <!-- ADD EDIT FIELD    -->
+    <!-- ------------------------------ -->
+    <!-- @ ADD EDIT FIELD -->
+    <!-- ------------------------------ -->
     <appdashboard-tilebot-add-edit-form *ngIf="displayAddForm || displayEditForm" [displayAddForm]="displayAddForm"
         [displayEditForm]="displayEditForm" [field]="selectedField" (saveAddEditForm)="saveAddEditForm($event)"
         (closeAddEditForm)="closeAddEditForm()"></appdashboard-tilebot-add-edit-form>
 
-
-    <!-- DELETE MODAL -->
+    <!-- ------------------------------ -->
+    <!-- @ DELETE MODAL -->
+    <!-- ------------------------------ -->
     <appdashboard-modal-delete *ngIf="displayMODAL" [translateMap]="translateMap" [objectId]="selectedObjectId"
         (confirmDeleteModal)="confirmDeleteModal($event)" (closeDeleteModal)="closeDeleteModal($event)">
     </appdashboard-modal-delete>

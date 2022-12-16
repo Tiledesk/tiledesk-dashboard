@@ -7,7 +7,8 @@
                         {{ 'AddIntentPage.ParameterName' | translate }}
                     </label>
                     <input type="text" class="input form-control" [(ngModel)]="fieldName"
-                        (ngModelChange)="onChangeParameterName($event)" (focus)="displayMessage('field_name')" style="border-radius: 5px;"/>
+                        (ngModelChange)="onChangeParameterName($event)" (focus)="displayMessage('field_name')"
+                        style="border-radius: 5px;" />
                 </div>
             </div>
 
@@ -38,7 +39,8 @@
                         {{ 'AddIntentPage.Label' | translate }}
                     </label>
                     <textarea name="field_label" [(ngModel)]="fieldLabel" rows="3" style="resize: vertical;"
-                        class="form-control" type="text" (focus)="displayMessage('field_label')" style="border-radius: 5px;line-height: 14px;">
+                        class="form-control" type="text" (focus)="displayMessage('field_label')"
+                        style="border-radius: 5px;line-height: 14px;">
                     </textarea>
                 </div>
             </div>
@@ -56,16 +58,18 @@
                                 </h4>
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                 
+
                         <div *ngIf="showRegexField" class="col-md-12">
-                            <div class="form-group" style="position: relative;" [ngClass]="{'is-error':regexResult === false}">
-                             <label>
+                            <div class="form-group" style="position: relative;"
+                                [ngClass]="{'is-error':regexResult === false}">
+                                <label>
                                     {{ 'AddIntentPage.AddCustomRegex' | translate }}
-                                </label> 
-                                <div  class="input-prefix"> / </div>
+                                </label>
+                                <div class="input-prefix"> / </div>
                                 <input type="text" class="input form-control" [(ngModel)]="fieldRegex"
-                                    (focus)="displayMessage('field_regex')" placeholder="{{ 'AddIntentPage.AddCustomRegex' | translate }}" style="padding-left: 18px;
-                                    padding-right: 18px; border-radius: 5px;" >
+                                    (focus)="displayMessage('field_regex')"
+                                    placeholder="{{ 'AddIntentPage.AddCustomRegex' | translate }}" style="padding-left: 18px;
+                                    padding-right: 18px; border-radius: 5px;">
                                 <div class="input-suffix"> / </div>
                             </div>
                         </div>
@@ -75,8 +79,8 @@
                                 <label class="control-label">
                                     {{ 'AddIntentPage.ErrorMessage' | translate }}
                                 </label>
-                                <input type="text" class="input form-control" [(ngModel)]="fieldErrorLabel"
-                                    (focus)="displayMessage('field_error')" style="border-radius: 5px;"/>
+                                <textarea type="text" class="input form-control" [(ngModel)]="fieldErrorLabel"
+                                    (focus)="displayMessage('field_error')" style="border-radius: 5px;line-height: 14px;" rows="3"></textarea>
                             </div>
                         </div>
                     </mat-expansion-panel>
@@ -84,7 +88,7 @@
             </div>
         </div>
 
-      
+
         <div *ngIf="displayInfoMessage" class="row input-wrapper">
             <div class="col-sm-12">
                 <div class="info-message">
@@ -105,9 +109,24 @@
             {{ 'Add' | translate}}
         </button>
 
-        <button id="edit-form-builder-field" *ngIf="displayEditForm === true" class="btn btn-primary" type="submit"
-            (click)="save()">
-            {{ 'Edit' | translate}}
+        <button id="edit-form-builder-field" *ngIf="displayEditForm === true" class="btn btn-primary edit-form"
+            type="submit" (click)="save()">
+            <!-- {{ 'Edit' | translate}} -->
+            <span class="icon-label">Done</span>
+            <span class="icon">
+                <i class="material-icons">
+                    done
+                </i>
+            </span>
         </button>
+
+        <!-- <button class="btn btn-primary edit-form">
+            <span class="icon-label">Done</span>
+            <span class="icon">
+                <i class="material-icons">
+                    done
+                </i>
+            </span>
+        </button> -->
     </div>
 </div>

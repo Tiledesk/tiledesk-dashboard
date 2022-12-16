@@ -201,13 +201,41 @@ input.form-control {
 
 .input-prefix {
     position: absolute;
-    top: 29px;
+    top: 30px;
     left: 8px;
+    color: #7d7d7d;
+    font-weight: 800;
 }
 
 .input-suffix {
     position: absolute;
     top: 29px;
     right: 8px;
+    color: #7d7d7d;
+    font-weight: 800;
+}
+
+.edit-form{
+    border-radius: 20px;
+    padding-right: 8.5px !important;
+    padding-left: 8.5px !important;;
+    color: #fff;
+    min-height: 30px;
+}
+
+.edit-form .icon-label {
+    vertical-align: text-top;
+    display: inline-block;
+    overflow: hidden;
+    margin-left: 0;
+    width: auto;
+    max-width: 0px;
+}
+
+.edit-form:hover .icon-label{
+    transition: max-width .1s ease-in;
+    margin-right: 3px;
+    max-width: 100px;
+    margin-left: 5px;
 }
 

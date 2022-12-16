@@ -74,7 +74,7 @@ export class TilebotFormComponent implements OnInit {
 
 
   ngOnInit(): void {
-    
+    this.getCurrentTranslation();
     this.getModelsForm();
     this.translateMap = {};
     this.translations = {};
@@ -89,9 +89,9 @@ export class TilebotFormComponent implements OnInit {
       this.cancelCommands = this.intentForm.cancelCommands;
       this.cancelReply = this.intentForm.cancelReply;
       this.cancelCommandsString = this.cancelCommands.toString();
-      // console.log('this.cancelReply::', this.cancelReply);
+    
     } 
-    this.getCurrentTranslation();
+   
   }
   
 
@@ -115,9 +115,11 @@ export class TilebotFormComponent implements OnInit {
     this.intentForm.cancelReply = this.cancelReply;
 
     if(this.selectedForm){  
+      // there not in v 3.2.8
       if(this.selectedForm.cancelCommands){
         this.intentForm.cancelCommands = this.selectedForm.cancelCommands;
       }
+      // there not in v 3.2.8
       if(this.selectedForm.cancelReply){
         this.intentForm.cancelReply = this.selectedForm.cancelReply;
       }
@@ -154,7 +156,7 @@ export class TilebotFormComponent implements OnInit {
       this.translations = data['AddIntentPage'];
       let cancel = this.translations['Cancel']? this.translations['Cancel']: 'cancel';
       this.translateMap.cancel = cancel;
-      if(!this.intentForm){
+      if(!this.intentForm){ // there not in v 3.2.8
         this.cancelCommands.push(cancel);
         this.cancelReply = this.translations['CancelReply']?this.translations['CancelReply']:'';
       }
@@ -190,6 +192,8 @@ export class TilebotFormComponent implements OnInit {
     }); 
   }
 
+
+
   setCancelCommands(){
     //this.cancelCommandsString.split(",");
     this.intentForm.cancelCommands = this.cancelCommandsString
@@ -203,30 +207,29 @@ export class TilebotFormComponent implements OnInit {
     this.intentForm.cancelReply = this.cancelReply;
     this.jsonGenerator();
   }
-  /** */
+
   jsonGenerator(){
     // console.log('this.intentForm:: ', this.intentForm);
     this.passJsonIntentForm.emit(this.intentForm);
   }
 
   
-  /** */
+
 
   // EVENTS //
-  
 
   openSettingsForm(){
     this.displaySettingsButton = false;
     this.displayCancelButton = true;
     this.displaySettingForm = true;
-    // this.cancelCommandsString = this.cancelCommands.toString();
+    this.cancelCommandsString = this.cancelCommands.toString(); // this was commented - not commented in v 3.2.8
   }
 
   closeSettingsForm(){
     this.displaySettingsButton = true;
     this.displayCancelButton = false;
     this.displaySettingForm = false;
-    // this.cancelCommandsString = this.cancelCommands.toString();
+    this.cancelCommandsString = this.cancelCommands.toString(); // this was commented - not commented in v 3.2.8
   }
 
   closeGeneral(){
