@@ -1,6 +1,19 @@
 
 @import "./src/assets/sass/md/_variables.scss";
 
+.nav-container {
+  height: 100%;
+}
+
+.nav {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .sidebar-wrapper {
   transition-property: top, bottom, width;
   transition-duration: 0.2s, 0.2s, 0.35s;
@@ -1372,4 +1385,5 @@ li:hover > a > .realtime-icon-wpr > svg > path {
   position: relative;
   margin-top: auto;
   z-index: 4;
+  margin-bottom: 18px;
 }
