@@ -47,14 +47,21 @@ export class GetStartChatbotForkComponent implements OnInit {
   ngOnInit(): void {
     this.getProjects();
     this.getTemplates();
-    this.getQueryParams();
+    this.getTemplateNameOnSite();
   }
 
-  getQueryParams() {
+  getTemplateNameOnSite() {
     this.route.queryParams
       .subscribe(params => {
         console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - params ', params); 
         this.templateNameOnSite = params.tn
+        if (this.templateNameOnSite) {
+          const storedtemplateNameOnSite = this.localDbService.getFromStorage('wannago')
+          console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - storedtemplateNameOnSite ', storedtemplateNameOnSite);
+          if (!storedtemplateNameOnSite) {
+            this.templateNameOnSite = storedtemplateNameOnSite
+          }
+        }
         console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - templateNameOnSite ', this.templateNameOnSite); 
       });
       
@@ -68,7 +75,8 @@ export class GetStartChatbotForkComponent implements OnInit {
       storedRoute.split('/')
       const storedRouteSegment = storedRoute.split('/')
       console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegment)
-      bot_ID = storedRouteSegment[2]
+     const  secondStoredRouteSegment = storedRouteSegment[2].split('%3Ftn%3D')
+     console.log('[GET START CHATBOT FORK] secondStoredRouteSegment ', secondStoredRouteSegment)
       this.botid = bot_ID
     }
 
