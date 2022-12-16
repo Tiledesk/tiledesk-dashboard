@@ -1,18 +1,12 @@
 <!-- *ngIf="project"  -->
 <div class="logo">
-  <!-- <a class="logo-img-wpr" [ngClass]="{'small-sidebar-logo-img-wpr' : SIDEBAR_IS_SMALL === true }">
-    <div class="logo-img" (click)="goToHome()" style="cursor: pointer;">
-
-      <img class="small-sidebar__logo" [src]="sidebarLogoNoText" />
-    </div>
-  </a> -->
+ 
   <div id="sidebaravatar-img-wpr" class="avatar-container tiledesk-nav-avatar" (click)="openUserDetailSidePanel()"
     [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
     <img id="sidebaravatar-img" class="avatar"
       *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
       onerror="this.src='assets/img/no_image_user.png'" />
-    <!-- [ngStyle]="{'background-color': user?.fillColour }" -->
-
+   
     <div id="sidebaravatar-no-img" class="avatar"
       *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
       [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
@@ -20,138 +14,31 @@
         {{ user?.fullname_initial }}
       </span>
     </div>
-
-    <!-- <img id="sidebaravatar-no-img" class="avatar"
-    *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
-    src="assets/img/no_image_user.png" /> -->
-
     <div id="teammate-status-icon" *ngIf="project" class="status-icon" [ngClass]="{
       'is-user-online' : IS_AVAILABLE === true && IS_INACTIVE === false, 
       'is-user-offline' : IS_AVAILABLE === false && IS_INACTIVE === false, 
       'is-user-inactive': IS_AVAILABLE === false && IS_INACTIVE === true, 
       'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
-  </div>
-
+    </div>
     <div id="sidebaravatar-isbusy" class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer">
       <span class="material-icons sidebar-is-busy-icon">
         access_time
       </span>
     </div>
-
   </div>
-
 </div>
 
 
-
-
-<!-- background-color: #191919 -->
 <div id="sidebar_wrapper" class="sidebar-wrapper" (scroll)="onScroll($event)">
 
-  <!-- // NK start NEW: AVATAR ON THE SIDEBAR  -->
-  <!-- <div class="user tiledesk-nav-user" [ngClass]="{'small-sidebar-tiledesk-nav-user' : SIDEBAR_IS_SMALL === true }"
-    fxlayout="column" style="flex-direction: column; box-sizing: border-box; display: flex;">
-    <div *ngIf="user" class="h3 username" style="font-size: 16px;font-weight: 400;margin-top: 15px; margin-bottom: 5px;"
-      [ngClass]="{'small-sidebar-userfullname' : SIDEBAR_IS_SMALL === true }">
-
-      {{ user.firstname }} {{ user.lastname }}
-    </div>
-    <div *ngIf="user" class="h5 email hint-text mt-8"
-      style="color: rgba(255,255,255,.5)!important;font-size: 13px;margin-top: 0px!important;font-weight: 400;"
-      [ngClass]="{'small-sidebar-email' : SIDEBAR_IS_SMALL === true }">
-      {{ user.email }}
-    </div>
-
-    <div id="sidebaravatar-img-wpr" class="avatar-container tiledesk-nav-avatar" (click)="openUserDetailSidePanel()"
-      [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
-      <img id="sidebaravatar-img" class="avatar"
-        *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
-        onerror="this.src='assets/img/no_image_user.png'" />
-     
-      <div id="sidebaravatar-no-img" class="avatar"
-        *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
-        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
-        <span id="sidebaravatar-altenative-user-avatar" class="sidebar-altenative-user-avatar">
-          {{ user?.fullname_initial }}
-        </span>
-      </div>
-      <div id="sidebaravatar-status-icon" *ngIf="project" class="status-icon"
-        [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
-      </div>
-
-    </div>
-    <div id="sidebaravatar-isbusy" class="sidebar--isBusy-icon-wpr" *ngIf="IS_BUSY === true" style="cursor:pointer">
-      <span class="material-icons sidebar-is-busy-icon">
-        access_time
-      </span>
-    </div>
-  </div> -->
-
-  <!-- // NK end NEW: AVATAR ON THE SIDEBAR  -->
-
-  <!-- ---------------------------------------- -->
-  <!-- Nav mobile menu -->
-  <!-- ---------------------------------------- -->
-  <!-- <ul class="nav nav-mobile-menu" *ngIf="isMobileMenu()">
-    <li *ngIf="user" style="display: inline">
-      <a class="nav-mobile-menu-user-profile" style="margin-top:0px; margin-bottom:0px; text-align: center; color: #fff"
-        routerLink="/user-profile">
-        {{ "SideBar.UserProfile" | translate }}
-      </a>
-    </li>
-
-    <li *ngIf="project">
-      <a class="nav-mobile-menu-language" routerLink="project/{{ project._id }}/user-profile" fragment="language">
-
-        <img [src]="flag_url" style="width: auto;height: 19px; position: relative;top: -1px;">
-      </a>
-    </li>
-    <li *ngIf="!project">
-      <a class="nav-mobile-menu-language" routerLink="/user-profile" fragment="language">
-
-        <img [src]="flag_url" style="width: auto;height: 19px; position: relative;top: -1px;">
-      </a>
-    </li>
-
-    <li *ngIf="project">
-      <a style="text-align: center; color: #fff" (click)="goToProjects()">
-        {{ "SideBar.ViewAllProjects" | translate }}
-      </a>
-    </li>
-
-      <li (click)="openLogoutModal()" style="background-color: #1e2129 !important;
-      text-align: center;
-      margin-left: 15px;
-      margin-right: 15px;
-      border-radius: 10px;
-      margin-top: 25px;">
-        <a class="customAncor nav-mobile-menu-logout" style="cursor: pointer;">
-          <i class="material-icons sidebar-icons" style="color:#fff; margin-right: 0px;">exit_to_app</i>
-          <p class="onBlackBckgrnd" style="color:#fff"> {{ 'NavBar.LogOut' | translate }}</p>
-        </a>
-      </li>
-  </ul> -->
-  <!-- ./end Nav mobile menu -->
-
   <div class="nav-container">
-    <!-- [ngClass]="{'is-desktop-menu' : IS_MOBILE_MENU === false, 'is-mobile-menu' : IS_MOBILE_MENU === true  }" -->
-    <!-- padding-bottom: 65px;  -->
     <ul style="margin-top: 0px;" class="nav">
-
 
       <!-- CHAT  {{'Chat' | translate}}-->
       <li id="openchat-a" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
         matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
-
-        <!-- <a class="customAncor" routerLink="/chat"> -->
-        <!-- <a class="customAncor" routerLink="project/{{ project._id }}/chat"> -->
-        <!-- (click)="openChat()" target="_blank"  href="{{ CHAT_BASE_URL }}"  (click)="removeChatBtnFocus()" -->
         <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}"
           (click)="openChat()" style="cursor: pointer; text-align: center;height: 40px;">
-          <!-- <i id="openchat-i" class="material-icons sidebar-icons">chat</i> -->
-          <!-- <p class="onBlackBckgrnd">Chat</p> -->
-
-
           <span id="openchat-span" style="position: relative;top: 3px;vertical-align: middle;">
             <svg id="openchat-svg" version="1.1" xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 23 21"
@@ -162,8 +49,8 @@
               c1.9,0,3.6-1.2,4.2-2.1c0.5,0.2,0.9,0.6,1.4,0.9C16.1,15.8,14,17.2,11.5,17.2z" />
             </svg>
           </span>
-
-          <span *ngIf="new_messages_count !== null && new_messages_count > 0 " class="new-messages-count">{{new_messages_count}} </span>
+          <span *ngIf="new_messages_count !== null && new_messages_count > 0 "
+            class="new-messages-count">{{new_messages_count}} </span>
         </a>
       </li>
 
@@ -173,11 +60,10 @@
       <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Home"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
         <a #homebtn class="customAncor" routerLink="project/{{ project._id }}/home">
-          <i class="material-icons sidebar-icons" [ngStyle]="{'color':HOME_ROUTE_IS_ACTIVE === true ? '#fff' : '#647491' }">
+          <i class="material-icons sidebar-icons"
+            [ngStyle]="{'color':HOME_ROUTE_IS_ACTIVE === true ? '#fff' : '#647491' }">
             home
           </i>
-
-          <!-- <p class="onBlackBckgrnd">Home</p> -->
         </a>
       </li>
 
@@ -209,38 +95,23 @@
                 </g>
               </svg>
             </span>
-
-            <!-- <p class="onBlackBckgrnd">Home</p> -->
           </a>
         </li>
       </ng-container>
 
-      <!-- Conversation list {{ 'Requests' | translate }} *ngIf="USER_ROLE !== 'agent'" -->
       <ng-container>
-        <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
-          matTooltip="Monitor" #tooltip="matTooltip" matTooltipPosition='right'
-          matTooltipHideDelay="100" [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center;">
-          <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests"  style="height: 40px;">
-            <!-- <i class="material-icons sidebar-icons">forum</i> -->
-            <!-- <p class="onBlackBckgrnd">{{ 'Requests' | translate }}</p> -->
-            <span  class="realtime-icon-wpr" style="width: 30px;">
+        <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Monitor"
+          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+          [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center;">
+          <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests" style="height: 40px;">
+            <span class="realtime-icon-wpr" style="width: 30px;">
+              <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+                style="enable-background:new 0 0 24 24;width: 30px;height: 30px;" xml:space="preserve">
 
-              <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;width: 30px;height: 30px;" xml:space="preserve">
-            
-              <path class="realtime-icon-st3" d="M17.9,11.6l-1.4,1.9l-3.2-5.6l-1-2l-0.2,0.2l-3.7,6.4l-3-4.8L2.7,9.9v2.4l2.4-1.8L9,16.2l3.3-6.2l4,6.7l2.7-3.3
-                l0.9,0c0.5-0.7,1-1.4,1.4-2L17.9,11.6z"/>
+                <path class="realtime-icon-st3" d="M17.9,11.6l-1.4,1.9l-3.2-5.6l-1-2l-0.2,0.2l-3.7,6.4l-3-4.8L2.7,9.9v2.4l2.4-1.8L9,16.2l3.3-6.2l4,6.7l2.7-3.3
+                l0.9,0c0.5-0.7,1-1.4,1.4-2L17.9,11.6z" />
               </svg>
-
-              <!-- <svg  viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve" style="width: 25px;">
-                <rect y="0" class="convs-monitor--st0" width="24" height="24"/>
-                <g>
-                  <path class="convs-monitor--st1" d="M19.9,18.5c0.4-0.7,0.7-1.5,0.7-2.4c0-2.5-2-4.5-4.5-4.5s-4.5,2-4.5,4.5s2,4.5,4.5,4.5c0.9,0,1.7-0.3,2.4-0.7
-                    l3.1,3.1l1.4-1.4L19.9,18.5z M16.1,18.6c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5s2.5,1.1,2.5,2.5S17.5,18.6,16.1,18.6z M15.7,10.1
-                    c-0.7,0-1.4,0.2-2.1,0.4l-0.6-0.8l-3.8,6.2l-3-3.5l-3.6,5.8L1,17l5-8l3,3.5L13,6L15.7,10.1z M18.3,10.6c-0.6-0.3-1.3-0.4-2-0.5
-                    L21.4,2L23,3.2L18.3,10.6z"/>
-                </g>
-                </svg> -->
             </span>
           </a>
         </li>
@@ -253,7 +124,6 @@
         [ngClass]="{'menu_item_active': CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE}">
         <a class="customAncor" routerLink="project/{{ project._id }}/contacts">
           <i class="material-icons sidebar-icons">contacts</i>
-          <!-- <p class="onBlackBckgrnd">{{ 'Contacts' | translate }}</p> -->
         </a>
       </li>
 
@@ -263,22 +133,11 @@
           matTooltip="{{ 'Apps' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
           matTooltipHideDelay="100">
           <a class="customAncor" routerLink="project/{{ project._id }}/app-store">
-            <!-- <span class="_badge" style="font-size: 9px;"
-              [ngClass]="{'change-badge-bckgrnd' : APPS_ROUTE_IS_ACTIVE === true}">NEW</span> -->
-            <!-- <i class="material-icons sidebar-icons">apps</i> -->
             <i class="material-icons sidebar-icons">dashboard_customize</i>
-            <!-- <p class="onBlackBckgrnd">Apps</p> -->
+           
           </a>
         </li>
       </ng-container>
-
-      <!-- CHAT AS TARGET BLANK // SEE ABOVE: IS NO MORE NECESSARY TO LINK THE CHAT IN A EXTERNAL PAGE-->
-      <!-- <li>
-            <a target="_blank" href="http://support.tiledesk.com/web/">
-                <i class="material-icons">chat</i>
-                <p>Chat</p>
-            </a>
-        </li> -->
 
       <!-- ANALYTICS -->
       <ng-container *ngIf="isVisibleANA">
@@ -287,14 +146,7 @@
           matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}"
           #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
           <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
-            <!-- <i class="material-icons sidebar-icons">trending_up</i> -->
-            <!-- <i class="material-icons sidebar-icons"> analytics </i> -->
-            <i class="material-icons sidebar-icons">  bar_chart </i>
-              
-            <!-- <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : ANALITYCS_ROUTE_IS_ACTIVE === true}">New</span> -->
-            <!-- <p class="onBlackBckgrnd">
-              {{ 'Analytics.AnalyticsTITLE' | translate }}
-            </p> -->
+            <i class="material-icons sidebar-icons"> bar_chart </i>
           </a>
         </li>
       </ng-container>
@@ -306,10 +158,7 @@
           matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Activities' | translate }}" #tooltip="matTooltip"
           matTooltipPosition='right' matTooltipHideDelay="100">
           <a class="customAncor" routerLink="project/{{ project._id }}/activities">
-            <!-- <i class="material-icons sidebar-icons">view_list</i> -->
             <i class="material-icons sidebar-icons">assignment</i>
-            <!-- <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : ACTIVITIES_ROUTE_IS_ACTIVE === true}">New</span> -->
-            <!-- <p class="onBlackBckgrnd">{{ 'Activities' | translate }}</p> -->
           </a>
         </li>
       </ng-container>
@@ -320,9 +169,9 @@
         matTooltipHideDelay="100">
         <a class="customAncor" routerLink="project/{{ project._id }}/history">
           <i class="material-icons sidebar-icons">history</i>
-          <!-- <p class="onBlackBckgrnd">{{ 'History' | translate }}</p> -->
         </a>
       </li>
+
       <!-- && USER_ROLE !== 'agent' -->
       <li *ngIf="project && USER_ROLE !== 'agent'" [ngClass]="{'active': 
       TRIGGER_ROUTE_IS_ACTIVE || 
@@ -345,16 +194,29 @@
       EDIT_GROUP_ROUTE_IS_ACTIVE }" (click)="goToWidgetSetUpOrToCannedResponses()" style="cursor:pointer"
         matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Settings' | translate }}" #tooltip="matTooltip"
         matTooltipPosition='right' matTooltipHideDelay="100">
-        <!-- routerLink="/settings" -->
+  
         <a class="customAncor">
           <i class="material-icons sidebar-icons">settings</i>
-          <!-- <p class="onBlackBckgrnd">
-            {{ 'Settings' | translate }}
-             <b class="caret" style="position: absolute;right: 18px; margin-top: 13px"
-              [ngStyle]="{'transform': trasform}"></b> 
-          </p> -->
         </a>
       </li>
+
+      <li class="tiledesk-logo"  matTooltipClass="custom-mat-tooltip" matTooltip="Tiledesk" #tooltip="matTooltip"
+      matTooltipPosition='right' matTooltipHideDelay="100">
+        <a  class="customAncor"
+        target="_blank" href="https://www.tiledesk.com">
+        <svg xml:space="preserve"
+          xmlns:xlink="http://www.w3.org/1999/xlink" height="40px" viewBox="0 0 60 60" width="60px" x="0px"
+          xmlns="http://www.w3.org/2000/svg" y="0px" style="    position: relative; left: -15px;">
+          <path
+            d="M51.8,28.2h-19c-1.7,0-3-1.3-3-3V6.4c0-1.7-1.3-3-3-3H8c-1.7,0-3,1.3-3,3v22v22c0,1.7,1.3,3,3,3H6.7h3.4  c0.8,0,1.3,0.2,1.9,0.8l2.3,2.3l2.1,2.1c0.8,0.8,1.7,0.8,2.4,0l2.1-2.1l2.3-2.3c0.6-0.6,1.1-0.8,1.9-0.8H52c1.7,0,3-1.3,3-3V31.2  C54.8,29.5,53.5,28.2,51.8,28.2"
+            fill="#F18876"></path>
+          <path 
+            d="M52,24.2H36.8c-1.5,0-2.8-1.3-2.8-2.8V6.2c0-1.5,1.3-2.8,2.8-2.8H52c1.5,0,2.8,1.3,2.8,2.8v15.2  C54.8,22.9,53.5,24.2,52,24.2"
+            fill="#E5BBAD"></path>
+        </svg>
+      </a>
+    </li>
+
 
 
 
@@ -387,29 +249,20 @@
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/labels">
             <p class="onBlackBckgrnd">
               <i class="fa fa-tag sidebar-icons" style="font-size: 18px !important;"></i>
-              <!-- <span class="sidebar-mini">
-                T
-              </span> -->
               {{'Tags.Tags' | translate}}
             </p>
           </a>
         </li>
       </ng-container>
 
-
-
       <!-- ------------------------------------------------------- -->
-      <!-- New:MERGE ROUTING / DEPT - Routing & depts -->
+      <!-- New: MERGE ROUTING / DEPT - Routing & depts -->
       <!-- ------------------------------------------------------- -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
           <i class="fa fa-university sidebar-icons" style="font-size:16px !important"></i>
           <p class="onBlackBckgrnd">
-            <!-- <span class="sidebar-mini">
-
-              <span *ngIf="isVisibleDEP"> {{'RoutingAndDeptsInitials' | translate}} </span>
-              <span *ngIf="!isVisibleDEP"> R </span>
-            </span> -->
+ 
             <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
             <span *ngIf="!isVisibleDEP"> Routing </span>
 
@@ -432,7 +285,6 @@
             <span class="_badge" style="font-size: 9px;"
               [ngClass]="{'change-badge-bckgrnd' : TRIGGER_ROUTE_IS_ACTIVE === true}">BETA</span>
             <p class="onBlackBckgrnd">
-              <!-- <span class="sidebar-mini">T </span> -->
               {{ 'Trigger.Trigger' | translate }}
             </p>
           </a>
@@ -466,22 +318,13 @@
       <!-- ------------------------------------------------------- -->
       <!-- FAQ (alias FAQKB) HAS BEEN RENAMED IN BOT (BOT - see above - IS CURRENTLY COMMENTED) -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-        <!-- routerLink="project/{{ project._id }}/faqkb" -->
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/bots">
           <i class="material-icons sidebar-icons">
             smart_toy
           </i>
           <p class="onBlackBckgrnd">
-            <!-- <span class="sidebar-mini">B </span> -->
             Bots
           </p>
-
-          <!-- <span class="sidebar-mini">
-                B 
-              </span>
-              <span class="sidebar-normal">
-                Bots
-              </span>  -->
         </a>
       </li>
 
@@ -492,50 +335,28 @@
       <li style="display: block;" *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active"
         (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/widget-set-up">
-          <!-- <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : WIDGET_ROUTE_IS_ACTIVE === true}">New</span> -->
           <i class="material-icons sidebar-icons">
             chat_bubble
           </i>
 
-
           <p class="onBlackBckgrnd">
-            <!-- <span class="sidebar-mini">W </span> -->
             Widget
           </p>
-
-          <!-- <span class="sidebar-mini">
-                W
-              </span>
-              <span class="sidebar-normal"> 
-                Widget 
-              </span>  -->
         </a>
       </li>
-
-
 
       <!-- -------------------------------------------------------- -->
       <!--  Operatinf Hours  -->
       <!-- -------------------------------------------------------- -->
       <ng-container *ngIf="isVisibleOPH">
-
         <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
           <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/hours">
             <i class="material-icons sidebar-icons">
               watch_later
             </i>
             <p class="onBlackBckgrnd">
-              <!-- <span class="sidebar-mini">O </span> -->
-
               {{ 'Hours' | translate }}
             </p>
-
-            <!-- <span class="sidebar-mini">
-                  O
-                </span>
-                <span class="sidebar-normal"> 
-                  {{ 'Hours' | translate }}
-                </span>  -->
           </a>
         </li>
       </ng-container>
@@ -546,78 +367,21 @@
       <!-- -------------------------------------------------------- -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
         <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/project-settings/general">
-          <!-- <i class="material-icons sidebar-icons" >
-            miscellaneous_services
-          </i> -->
+        
           <i class="material-icons sidebar-icons">
             construction
           </i>
           <p class="onBlackBckgrnd">
-            <!-- <span class="sidebar-mini">
-              {{ 'ProjectSettings_Initials' | translate }}
-             </span>  -->
+         
             {{ 'ProjectSettings' | translate }}
           </p>
 
-          <!-- <i class="material-icons sidebar-icons">settings</i>
-              <p class="onBlackBckgrnd">
-                {{ 'NavBar.ProjectSettings' | translate }}
-              </p> -->
+   
         </a>
       </li>
-
-      <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU"></li> -->
-
-      <!-- // SCRIPT -->
-      <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
-              <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/script">
-                  <span class="sidebar-mini">
-                      S
-                  </span>
-                  <span class="sidebar-normal">Script</span> 
-              </a>
-          </li> -->
-
-      <!-- /// CHANNELS -->
-      <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
-              <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/channels">
-                  <span class="sidebar-mini">
-                      C
-                  </span>
-                  <span class="sidebar-normal">Channels</span> 
-              </a>
-          </li> -->
-
-      <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
-              <a routerLink="project/{{ projectid }}/social">
-                  <span class="sidebar-mini">
-                      S
-                  </span>
-                  <span class="sidebar-normal">Social</span> 
-              </a>
-          </li> -->
-
-      <!-- </span> -->
-      <!-- <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
-              <a  [routerLink]="[menuItem.path]">
-                  <i class="material-icons">{{menuItem.icon}}</i>
-                  <p>{{menuItem.title}}</p>
-              </a>
-          </li> -->
     </ul>
   </div>
 </div>
-<!--  -->
-
-<!-- <appdashboard-sidebar-user-details 
-  [HAS_CLICKED_OPEN_USER_DETAIL]='HAS_CLICKED_OPEN_USER_DETAIL'
-  [_prjct_profile_name]="_prjct_profile_name" [plan_subscription_is_active]="plan_subscription_is_active"
-  [plan_name]="plan_name"
-  [plan_type]="plan_type"
-  [isVisiblePAY]="isVisiblePAY"
-  [prjct_name]="prjct_name"
-  (onCloseUserDetailsSidebar)='onCloseUserDetailsSidebar($event)'>
-</appdashboard-sidebar-user-details> -->
 
 
 
