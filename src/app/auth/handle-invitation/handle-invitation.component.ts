@@ -96,14 +96,9 @@ export class HandleInvitationComponent implements OnInit {
     });
   }
 
-
-
-
   goToProject() {
     this.router.navigate(['/project/' + this.projectid + '/home']);
-
   }
-
 
   goToSignupPage() {
     this.router.navigate(['/signup-on-invitation/' + this.pendingInvitationEmail]);

@@ -215,7 +215,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   checkCurrentUrlAndSkipWizard() {
 
     this.storedRoute = this.localDbService.getFromStorage('wannago')
-    console.log('[SIGN-IN] storedRoute ', this.storedRoute)
+    console.log('[SIGN-UP] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
       this.EXIST_STORED_ROUTE = true
     } else {
@@ -416,6 +416,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
             self.router.navigate(['/projects']);
           }
         } else {
+          // self.localDbService.removeFromStorage('wannago')
           self.router.navigate([self.storedRoute]);
         }
 

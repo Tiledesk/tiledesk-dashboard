@@ -22,13 +22,12 @@
                 <div class="col-md-12">
                     <h1 class="title">
                        
-                        
-                        <span *ngIf="projects && projects?.length > 1"> Install  {{ templateNameOnSite}} on
-                            one of your projects </span>
-                        <span *ngIf="projects && projects?.length === 1"> Install {{ templateNameOnSite}} on
-                            your project </span>
-                        <span *ngIf="projects && projects?.length === 0">  Install {{ templateNameOnSite}} on
-                            your new project </span>
+                        <!-- on one of your projects -->
+                        <!-- on your project -->
+                        <!-- on your new project  -->
+                        <span *ngIf="projects && projects?.length > 1"> Install  {{ templateNameOnSite}} </span>
+                        <span *ngIf="projects && projects?.length === 1"> Install {{ templateNameOnSite}} </span>
+                        <span *ngIf="projects && projects?.length === 0">  Install {{ templateNameOnSite}} </span>
                     </h1>
                 </div>
             </div>
@@ -36,14 +35,14 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="description" *ngIf="projects && projects?.length === 0" >
-                        Before installing the {{ templateNameOnSite }}, you must first create a project where the chatbot will be installed. By clicking on Continue you will start a wizard for creating the project and installing the chatbot
+                        Before installing the {{ templateNameOnSite }}, you must first create a project where the chatbot will be installed
                     </div>
-                    <div class="description" *ngIf="projects && projects?.length === 1" >
+                    <!-- <div class="description" *ngIf="projects && projects?.length === 1" >
                         Clicking Continue will launch the wizard to install the chatbot on the project {{ projectname }}
                     </div>
                     <div class="description" *ngIf="projects && projects?.length > 1" >
                         Clicking Continue will launch the wizard to install the chatbot on the selected project
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -60,7 +59,7 @@
             <!-- -------------------------------------------------------------------------------- -->
             <div class="row" *ngIf="projects && projects?.length > 1">
                 <div class="col-md-12">
-                    <h4  style="font-weight: 400;"> Select a project </h4>
+                    <h4  style="font-weight: 400;"> Choose which project you want to install the chatbot on </h4>
                 </div>
             </div>
             <div class="row" *ngIf="projects && projects?.length > 1">
@@ -85,7 +84,7 @@
                         {{ "ProjectsPage.Continue" | translate }}
                     </button>
 
-                    <button *ngIf="projects && projects?.length === 0" class="btn btn-lg btn-primary" (click)="starCreateProjectWizard()">
+                    <button *ngIf="projects && projects?.length === 0" class="btn btn-lg btn-primary" (click)="goToCreateProject()">
                         {{ "ProjectsPage.Continue" | translate }}
                     </button>
                 </div>

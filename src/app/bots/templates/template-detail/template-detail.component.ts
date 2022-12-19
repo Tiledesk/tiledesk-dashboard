@@ -32,22 +32,24 @@ export class TemplateDetailComponent implements OnInit {
   public botname: string;
   public templateid: string;
   public projectid: string;
-  public depts_length: number;
-  public DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
-  public dept_id: string;
-  public PRESENTS_MODAL_ATTACH_BOT_TO_DEPT: boolean = false;
-  public depts_without_bot_array = [];
-  public displayInfoModal = 'none';
-  public SHOW_CIRCULAR_SPINNER = false;
-  public CREATE_BOT_ERROR: boolean;
-  public displayModalAttacchBotToDept: string;
-  public HAS_CLICKED_HOOK_BOOT_TO_DEPT: boolean = false;
-  public HAS_COMPLETED_HOOK_BOOT_TO_DEPT: boolean = false;
-  public HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS: boolean = false;
-  public HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR: boolean = false;
-  public selected_dept_id: string;
-  public selected_dept_name: string;
-  translateparamBotName: any;
+  public _newlyCreatedProject: boolean;
+  public defaultDeptID: string;
+  // public depts_length: number;
+  // public DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
+  // public dept_id: string;
+  // public PRESENTS_MODAL_ATTACH_BOT_TO_DEPT: boolean = false;
+  // public depts_without_bot_array = [];
+  // public displayInfoModal = 'none';
+  // public SHOW_CIRCULAR_SPINNER = false;
+  // public CREATE_BOT_ERROR: boolean;
+  // public displayModalAttacchBotToDept: string;
+  // public HAS_CLICKED_HOOK_BOOT_TO_DEPT: boolean = false;
+  // public HAS_COMPLETED_HOOK_BOOT_TO_DEPT: boolean = false;
+  // public HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS: boolean = false;
+  // public HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR: boolean = false;
+  // public selected_dept_id: string;
+  // public selected_dept_name: string;
+  // translateparamBotName: any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<TemplateDetailComponent>,
@@ -62,15 +64,16 @@ export class TemplateDetailComponent implements OnInit {
     private localDbService: LocalDbService,
     private botLocalDbService: BotLocalDbService,
   ) {
-    console.log('[TEMPLATE DETAIL]', data)
+    console.log('[TEMPLATE DETAIL] data ', data)
     this.projectid = data.projectId
     this.template = data.template;
+    this._newlyCreatedProject =  data.newlyCreatedProject
     console.log('[TEMPLATE DETAIL] template ', this.template)
     console.log('[TEMPLATE DETAIL] projectid ', this.projectid)
     if (this.template) {
       this.botname = this.template.name
       this.templateid = this.template._id
-      this.translateparamBotName = { bot_name: this.botname }
+      // this.translateparamBotName = { bot_name: this.botname }
     }
     // this.templateName = data.name
     // console.log('TemplateDetailComponent templateName ' ,this.templateName)
@@ -79,9 +82,22 @@ export class TemplateDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTestSiteUrl()
-    this.getCurrentProject()
+    this.getCurrentProjectAndThenGetDeptsByProjectId()
     this.getProjectUserRole()
-    this.getDeptsByProjectId()
+    
+  }
+
+  getCurrentProjectAndThenGetDeptsByProjectId() {
+    // this.project = this.auth.project_bs.value;
+    this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.project = project
+        console.log('[TEMPLATE DETAIL] project from AUTH service subscription ', this.project);
+        this.projectId = project._id;
+        this.projectName = project.name;
+        this.getDeptsByProjectId()
+      }
+    });
   }
 
   getDeptsByProjectId() {
@@ -89,47 +105,8 @@ export class TemplateDetailComponent implements OnInit {
 
       console.log('[TEMPLATE DETAIL] - DEPTS RES ', departments);
 
-      if (departments) {
-        this.depts_length = departments.length
-        console.log('[TEMPLATE DETAIL] - DEPTS LENGHT ', this.depts_length);
-
-        if (this.depts_length === 1) {
-          this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = false
-          this.dept_id = departments[0]['_id']
-
-          console.log('[TEMPLATE DETAIL] - DEFAULT DEPT HAS BOT ', departments[0].hasBot);
-          if (departments[0].hasBot === true) {
-
-            console.log('[TEMPLATE DETAIL] - DEFAULT DEPT HAS BOT ');
-            console.log('[TEMPLATE DETAIL] - DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
-          } else {
-
-            this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
-            console.log('[TEMPLATE DETAIL] - DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
-          }
-        }
-
-        if (this.depts_length > 1) {
-          this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = true;
-          departments.forEach(dept => {
-
-            if (dept.hasBot === true) {
-              console.log('[TEMPLATE DETAIL] - DEPT HAS BOT ');
-
-              console.log('[TEMPLATE DETAIL] - DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
-            } else {
-
-              this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
-
-              console.log('[TEMPLATE DETAIL] - DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
-
-              this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
-            }
-          });
-
-          console.log('[TEMPLATE DETAIL] - DEPT ARRAY OF DEPT WITHOUT BOT ', this.depts_without_bot_array);
-        }
-
+      if (departments && departments.length === 1) {
+        this.defaultDeptID = departments[0]._id
       }
     }, error => {
 
@@ -153,18 +130,7 @@ export class TemplateDetailComponent implements OnInit {
       });
   }
 
-  getCurrentProject() {
-    // this.project = this.auth.project_bs.value;
-    this.auth.project_bs.subscribe((project) => {
-      if (project) {
-        this.project = project
-        console.log('[TEMPLATE DETAIL] project from AUTH service subscription ', this.project);
-        this.projectId = project._id;
-        this.projectName = project.name;
 
-      }
-    });
-  }
 
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
@@ -172,8 +138,13 @@ export class TemplateDetailComponent implements OnInit {
   }
 
   openTestSiteInPopupWindow() {
+    console.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
+    const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
+    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+    console.log('openTestSiteInPopupWindow testItOutBaseUrl' , testItOutBaseUrl )  
     // const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + "6398930f39c57b0035f3025a" + '&tiledesk_participants=bot_' + "6398949939c57b0035f30c63" + "&tiledesk_singleConversation=true"
-    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_singleConversation=true"
+    const url = testItOutUrl + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=635b97cc7d7275001a2ab3e4"
+    console.log('openTestSiteInPopupWindow URL ', url) 
     // const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&project_name=' + this.projectName + '&role=' + this.USER_ROLE + '&tiledesk_participants=bot_' +this.templateid + "&tiledesk_singleConversation=true"
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
@@ -181,8 +152,8 @@ export class TemplateDetailComponent implements OnInit {
 
   // (dovrebbe funzionare anche con POST ../PROJECT_ID/bots/fork/ID_FAQ_FB/)
   forkTemplate() {
-    this.displayInfoModal = 'block'
-    this.SHOW_CIRCULAR_SPINNER = true;
+    // this.displayInfoModal = 'block'
+    // this.SHOW_CIRCULAR_SPINNER = true;
 
     console.log('[TEMPLATE DETAIL] - FORK TEMPLATE - TEMPLATE ID', this.templateid);
     this.faqKbService.installTemplate(this.templateid, this.projectid).subscribe((res: any) => {
@@ -193,23 +164,38 @@ export class TemplateDetailComponent implements OnInit {
     }, (error) => {
       console.error('[TEMPLATE DETAIL] FORK TEMPLATE - ERROR ', error);
 
-      this.SHOW_CIRCULAR_SPINNER = false;
-      this.CREATE_BOT_ERROR = true;
+      // this.SHOW_CIRCULAR_SPINNER = false;
+      // this.CREATE_BOT_ERROR = true;
     }, () => {
       console.log('[TEMPLATE DETAIL] FORK TEMPLATE COMPLETE');
+
+      if (this._newlyCreatedProject) {
+        this.hookBotToDept()
+      }
       // this.goToBotDtls(this.botid, 'tilebot', this.botname) 
       // http://localhost:4200/#/project/625830e51976f200353fce7b/bots/intents/63959c3e7adf790035bbc4aa/native
 
-      this.SHOW_CIRCULAR_SPINNER = false;
-      this.CREATE_BOT_ERROR = false;
+      // this.SHOW_CIRCULAR_SPINNER = false;
+      // this.CREATE_BOT_ERROR = false;
       // this.router.navigate(['project/' + this.projectid + '/tilebot/general/', this.botid, 'tilebot']);
       // this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
       // this.closeDialog()
-      this.getFaqKbById(this.botid)
-      const storedRoute = this.localDbService.getFromStorage('wannago')
-      if (storedRoute) {
-        this.localDbService.removeFromStorage('wannago')
-      }
+      this.getFaqKbById(this.botid);
+      this.goToBotDetails()
+      // const storedRoute = this.localDbService.getFromStorage('wannago')
+      // if (storedRoute) {
+      //   this.localDbService.removeFromStorage('wannago')
+      // }
+    });
+  }
+
+   hookBotToDept() {
+    this.departmentService.updateExistingDeptWithSelectedBot(this.defaultDeptID, this.botid).subscribe((res) => {
+      console.log('[TEMPLATE DETAIL] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - RES ', res);
+    }, (error) => {
+      console.error('[TEMPLATE DETAIL] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - ERROR ', error);
+    }, () => {
+      console.log('[TEMPLATE DETAIL] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - COMPLETE ');
     });
   }
 
@@ -229,77 +215,62 @@ export class TemplateDetailComponent implements OnInit {
 
   }
 
+
+  goToBotDetails() {
+    // if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === false) {
+      this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
+      this.closeDialog();
+      // this.closeCreateBotInfoModal();
+    // } else {
+    //   this.present_modal_attacch_bot_to_dept()
+    // }
+  }
+
   closeDialog() {
     this.dialogRef.close()
   }
 
-  closeCreateBotInfoModal() {
-    this.displayInfoModal = 'none';
-    this.CREATE_BOT_ERROR = null;
-  }
+  // closeCreateBotInfoModal() {
+  //   this.displayInfoModal = 'none';
+  //   this.CREATE_BOT_ERROR = null;
+  // }
 
 
-  goToBotDetails() {
-    if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === false) {
-      this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
-      this.closeDialog();
-      this.closeCreateBotInfoModal();
-    } else {
-      this.present_modal_attacch_bot_to_dept()
-    }
-  }
-
-  present_modal_attacch_bot_to_dept() {
-    this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
-    this.displayModalAttacchBotToDept = 'block'
-    this.closeCreateBotInfoModal();
-  }
 
 
-  onSelectDepartment() {
-    console.log('[TEMPLATE DETAIL] - selected_dept_id ', this.selected_dept_id);
-    this.dept_id = this.selected_dept_id
-    const hasFound = this.depts_without_bot_array.filter((obj: any) => {
-      return obj.id === this.selected_dept_id;
-    });
-    console.log('[TEMPLATE DETAIL] private logger: LoggerService --->  onSelectBotId dept found', hasFound);
+  // present_modal_attacch_bot_to_dept() {
+  //   this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
+  //   this.displayModalAttacchBotToDept = 'block'
+  //   this.closeCreateBotInfoModal();
+  // }
 
-    if (hasFound.length > 0) {
-      this.selected_dept_name = hasFound[0]['name']
-    }
-  }
 
-  onCloseModalAttacchBotToDept() {
-    this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
-    this.closeDialog();
-    this.displayModalAttacchBotToDept = 'none'
-  }
+  // onSelectDepartment() {
+  //   console.log('[TEMPLATE DETAIL] - selected_dept_id ', this.selected_dept_id);
+  //   this.dept_id = this.selected_dept_id
+  //   const hasFound = this.depts_without_bot_array.filter((obj: any) => {
+  //     return obj.id === this.selected_dept_id;
+  //   });
+  //   console.log('[TEMPLATE DETAIL] private logger: LoggerService --->  onSelectBotId dept found', hasFound);
 
-  hookBotGoToBotDetails() {
-    this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
-    this.closeDialog();
-    this.displayModalAttacchBotToDept = 'none'
-  }
+  //   if (hasFound.length > 0) {
+  //     this.selected_dept_name = hasFound[0]['name']
+  //   }
+  // }
 
-  hookBotToDept() {
-    this.HAS_CLICKED_HOOK_BOOT_TO_DEPT = true;
-    this.departmentService.updateExistingDeptWithSelectedBot(this.dept_id, this.botid).subscribe((res) => {
-      console.log('[TEMPLATE DETAIL] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
-    }, (error) => {
-      console.error('[TEMPLATE DETAIL] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
+  // onCloseModalAttacchBotToDept() {
+  //   this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
+  //   this.closeDialog();
+  //   this.displayModalAttacchBotToDept = 'none'
+  // }
 
-      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
-      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR = true;
+  // hookBotGoToBotDetails() {
+  //   this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
+  //   this.closeDialog();
+  //   this.displayModalAttacchBotToDept = 'none'
+  // }
 
-      console.log('[TEMPLATE DETAIL] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
-    }, () => {
-      console.log('[TEMPLATE DETAIL] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE ');
-
-      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
-      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS = true;
-      console.log('[TEMPLATE DETAIL] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
-    });
-  }
+ 
 
 
 }

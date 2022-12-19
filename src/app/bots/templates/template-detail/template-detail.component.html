@@ -190,7 +190,7 @@
 </mat-dialog-content>
 
 <!-- MODAL - CREATE BOT INFO WINDOWS -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayInfoModal }"
+<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayInfoModal }"
     style="background-color: rgba(90,90,90,0.5);">
     <div class="modal-dialog" role="document">
 
@@ -230,9 +230,7 @@
                         </div>
                     </div>
 
-                    <!-- ------------------------------------------------------ -->
-                    <!-- WHEN NO ERROR OCCUR -->
-                    <!-- ------------------------------------------------------ -->
+          
                     <div *ngIf="!CREATE_BOT_ERROR && !SHOW_CIRCULAR_SPINNER">
                         <div class="success-checkmark">
                             <div class="check-icon">
@@ -248,9 +246,7 @@
                         </h3>
                     </div>
 
-                    <!-- ------------------------------------------------------ -->
-                    <!-- ERROR -->
-                    <!-- ------------------------------------------------------ -->
+                   
                     <div *ngIf="CREATE_BOT_ERROR && !SHOW_CIRCULAR_SPINNER">
 
            
@@ -287,12 +283,12 @@
             </div>
         </div> 
     </div> 
-</div> 
+</div>  -->
 
 <!-- ----------------------------------------- -->
 <!-- MODAL - ATTACH_BOT_TO_DEPT -->
 <!-- ----------------------------------------- -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalAttacchBotToDept }"
+<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalAttacchBotToDept }"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -375,7 +371,7 @@
             <h5 style="color:#D06079;"> {{'AnErroOccurredWhileActivatingTheBot' | translate }}</h5>
           </span>
         </div>
-      </div> <!-- /.modal-body -->
+      </div>
 
       <div class="modal-footer modal-footer-no-bkgrnd">
 
@@ -421,17 +417,8 @@
             class="btn btn-tdblu-no-boxshadow" (click)="goToBotDetails()" style="margin-right: 8px;">
             <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
           </button>
-
-
         </span>
-
       </div>
-
-
-
-    </div> <!-- /.modal-content -->
-
-
-
-  </div> <!-- /.modal-dialog -->
-</div> <!-- /.modal -->
+    </div>
+  </div>
+</div>  -->

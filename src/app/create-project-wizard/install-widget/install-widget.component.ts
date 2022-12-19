@@ -144,20 +144,20 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
 
 
   continueToNextStep() {
-    if (!this.EXIST_STORED_ROUTE) {
+   
       this.continueToHome()
-    } else {
-      this.goToInstallTemplate()
-    }
+    // } else {
+    //   this.goToInstallTemplate()
+    // }
   }
 
   continueToHome() {
     this.router.navigate([`/project/${this.projectId}/home`]);
   }
 
-  goToInstallTemplate() {
-    this.router.navigate([`install-template/${this.botid}/${this.projectId}`]);
-  }
+  // goToInstallTemplate() {
+  //   this.router.navigate([`install-template/${this.botid}/${this.projectId}`]);
+  // }
 
   ngOnDestroy() {
     this.sub.unsubscribe();

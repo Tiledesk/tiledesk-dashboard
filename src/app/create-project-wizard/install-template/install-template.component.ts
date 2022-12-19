@@ -8,13 +8,16 @@ import { TemplateDetailComponent } from 'app/bots/templates/template-detail/temp
 import { ProjectService } from 'app/services/project.service';
 import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
+import { WidgetService } from 'app/services/widget.service';
+import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'appdashboard-install-template',
   templateUrl: './install-template.component.html',
   styleUrls: ['./install-template.component.scss']
 })
-export class InstallTemplateComponent implements OnInit {
+export class InstallTemplateComponent extends WidgetSetUpBaseComponent implements OnInit {
 
   projectId: string;
   botId: string;
@@ -26,7 +29,10 @@ export class InstallTemplateComponent implements OnInit {
   public company_site_url: any;
   public templateImg: string;
   public templateNameOnSite: string;
-  templates: any;
+  public langCode: string;
+  public langName: string;
+  public templates: any;
+  public newlyCreatedProject = false
   constructor(
     private route: ActivatedRoute,
     private faqKbService: FaqKbService,
@@ -36,7 +42,10 @@ export class InstallTemplateComponent implements OnInit {
     private router: Router,
     private projectService: ProjectService,
     public auth: AuthService,
+    private widgetService: WidgetService,
+    public translate: TranslateService,
   ) {
+    super(translate);
     const brand = brandService.getBrand();
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.tparams = brand;
@@ -46,7 +55,6 @@ export class InstallTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     this.getParamsTemplatesAndProjects()
-
   }
 
   getParamsTemplatesAndProjects() {
@@ -55,20 +63,54 @@ export class InstallTemplateComponent implements OnInit {
       console.log('[INSTALL-TEMPLATE] params ', params)
       this.projectId = params.projectid;
       this.botId = params.botid;
+      this.langCode = params.langcode;
+      this.langName = params.langname;
+      console.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
+      if (this.langCode &&  this.langName) {
+      this.addNewLanguage(this.langCode,  this.langName)
+      this.newlyCreatedProject = true
+      }
+
       this.getTemplates(params['botid'])
 
       this.getProjects(this.projectId)
     })
   }
 
+  addNewLanguage(langCode: string, langName: string) {
+  
+    console.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationCode', langCode);
+    console.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationLabel', langName);
+
+    // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
+    this.widgetService.cloneLabel(langCode.toUpperCase())
+      .subscribe((res: any) => {
+      
+        console.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG (clone-label) RES ', res.data);
+
+        // if (res) {
+        //   // UPDATE THE ARRAY TRANSLATION CREATED ON INIT
+        // }
+
+      }, error => {
+        this.logger.error('[INSTALL-TEMPLATE] ADD-NEW-LANG (clone-label) - ERROR ', error)
+      }, () => {
+        console.log('[INSTALL-TEMPLATE] ADD-NEW-LANG (clone-label) * COMPLETE *')
+
+      });
+
+    // // ADD THE NEW LANGUAGE TO BOTTOM NAV
+    const newLang = { code: langCode, name: langName };
+    this.logger.log('[INSTALL-TEMPLATE] Multilanguage saveNewLanguage newLang objct ', newLang);
+
+    this.availableTranslations.push(newLang)
+    this.logger.log('[INSTALL-TEMPLATE] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
+  }
+
   getProjects(projectid) {
     this.projectService.getProjects().subscribe((projects: any) => {
       console.log('[INSTALL-TEMPLATE] - GET PROJECTS ', projects);
-
-
-
       if (projects && projects.length > 0) {
-
         projects.forEach(project => {
           console.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
           if (project.id_project.id === projectid) {
@@ -82,60 +124,10 @@ export class InstallTemplateComponent implements OnInit {
               profile_name: project['id_project']['profile'].name,
               trial_expired: project['id_project']['trialExpired']
             }
-
-
             this.auth.projectSelected(selectedProject)
           }
-        });
-
-
-
-
-        // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
-        // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
-        // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
-
-
-        // if (project.id_project) {
-        //   const prjct: Project = {
-        //     _id: project.id_project._id,
-        //     name: project.id_project.name,
-        //     role: project.role,
-        //     profile_name: project.id_project.profile.name,
-        //     trial_expired: project.id_project.trialExpired,
-        //     trial_days_left: project.id_project.trialDaysLeft,
-        //     profile_type: project.id_project.profile.type,
-        //     subscription_is_active: project.id_project.isActiveSubscription,
-        //     operatingHours: project.id_project.activeOperatingHours
-        //   }
-
-        // this.subsTo_WsCurrentUser( project.id_project._id)
-        // this.getProjectUsersIdByCurrentUserId(project.id_project._id)
-
-        /**
-         * project.id_project._id is the id of the project
-         * project._id is the id of the project user
-         */
-        //   if (project.id_project.status !== 0) {
-        //     this.usersService.subscriptionToWsCurrentUser_allProject(project.id_project._id, project._id);
-        //   }
-        //   this.listenTocurrentUserWSAvailabilityAndBusyStatusForProject$()
-
-
-        //   /***  ADDED TO KNOW IF THE CURRENT USER IS AVAILABLE IN SOME PROJECT
-        //    *    ID USED TO DISPLAY OR NOT THE MSG 'Attention, if you don't want to receive requests...' IN THE LOGOUT MODAL  ***/
-        //   if (project.user_available === true) {
-        //     countOfcurrentUserAvailabilityInProjects = countOfcurrentUserAvailabilityInProjects + 1;
-        //   }
-
-        //   localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+        }); 
       }
-
-      // this.logger.log('[PROJECTS] - GET PROJECTS AFTER', projects);
-      // this.myAvailabilityCount = countOfcurrentUserAvailabilityInProjects;
-      // this.projectService.countOfMyAvailability(this.myAvailabilityCount);
-      // this.logger.log('[PROJECTS] - GET PROJECTS - I AM AVAILABLE IN # ', this.myAvailabilityCount, 'PROJECTS');
-
     }, error => {
 
       this.logger.error('[GET START CHATBOT FORK] - GET PROJECTS - ERROR ', error)
@@ -161,9 +153,8 @@ export class InstallTemplateComponent implements OnInit {
         this.generateTagsBackground(this.templates)
 
         this.templateImg = this.templates[0]['bigImage'];
-        this.templateNameOnSite = this.templates[0]['nameOnSite'];
+  
         // console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateImg ', this.templateImg)
-        // console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateNameOnSite ', this.templateNameOnSite)
       }
 
     }, (error) => {
@@ -196,15 +187,9 @@ export class InstallTemplateComponent implements OnInit {
             console.log('generateTagsBackground tagbckgnd ', tagbckgnd)
           }
 
-          // let b = {background : tagbckgnd}
-
           tag.background = tagbckgnd
-          // template.certifiedTags.find(t => t.color === t.background).background = tagbckgnd;
-
-          // if (tag.color === tag.background) {
-          //   // template.certifiedTags.push({ 'background': `${tagbckgnd}` })
-          //   template.certifiedTags['background']=  tagbckgnd
-          // }
+        
+          
         });
       }
     });
@@ -227,7 +212,9 @@ export class InstallTemplateComponent implements OnInit {
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
-        projectId: this.projectId
+        projectId: this.projectId,
+        newlyCreatedProject: this.newlyCreatedProject
+
       },
     });
 

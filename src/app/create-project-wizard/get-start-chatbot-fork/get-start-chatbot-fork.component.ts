@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
@@ -7,6 +8,9 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { CreateProjectComponent } from '../create-project/create-project.component';
+
+
 
 @Component({
   selector: 'appdashboard-get-start-chatbot-fork',
@@ -33,7 +37,9 @@ export class GetStartChatbotForkComponent implements OnInit {
     private faqKbService: FaqKbService,
     private localDbService: LocalDbService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+
+
   ) {
     const brand = brandService.getBrand();
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
@@ -47,37 +53,54 @@ export class GetStartChatbotForkComponent implements OnInit {
   ngOnInit(): void {
     this.getProjects();
     this.getTemplates();
-    this.getTemplateNameOnSite();
+    // this.getTemplateNameOnSite();
   }
 
   getTemplateNameOnSite() {
     this.route.queryParams
       .subscribe(params => {
-        console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - params ', params); 
+        console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - params ', params);
         this.templateNameOnSite = params.tn
-        if (this.templateNameOnSite) {
-          const storedtemplateNameOnSite = this.localDbService.getFromStorage('wannago')
-          console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - storedtemplateNameOnSite ', storedtemplateNameOnSite);
-          if (!storedtemplateNameOnSite) {
-            this.templateNameOnSite = storedtemplateNameOnSite
-          }
-        }
-        console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - templateNameOnSite ', this.templateNameOnSite); 
+
+
+        console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - templateNameOnSite ', this.templateNameOnSite);
       });
-      
+
   }
 
   getTemplates() {
-    const storedRoute = this.localDbService.getFromStorage('wannago')
-    console.log('[GET START CHATBOT FORK] storedRoute ', storedRoute)
-    let bot_ID = ''
+
+   
+    // const storedRoute = this.localDbService.getFromStorage('wannago')
+    // console.log('[GET START CHATBOT FORK] storedRoute ', storedRoute)
+
+    const storedRoute = decodeURIComponent(this.router.url);
+    console.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
+ 
+
     if (storedRoute) {
       storedRoute.split('/')
-      const storedRouteSegment = storedRoute.split('/')
-      console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegment)
-     const  secondStoredRouteSegment = storedRouteSegment[2].split('%3Ftn%3D')
-     console.log('[GET START CHATBOT FORK] secondStoredRouteSegment ', secondStoredRouteSegment)
-      this.botid = bot_ID
+      let storedRouteSegments = storedRoute.split('/')
+
+      console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegments)
+      let secondStoredRouteSegment = storedRouteSegments[2]
+
+      console.log('[GET START CHATBOT FORK] secondStoredRouteSegment ', secondStoredRouteSegment)
+      // && (!storedRouteSegments.includes("?tn=")) && (!storedRouteSegments.includes("%253Ftn%253D"))
+      if (secondStoredRouteSegment.includes("?")) {
+
+        const secondStoredRouteSegments = storedRouteSegments[2].split('?tn=')
+
+        console.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
+        this.botid = secondStoredRouteSegments[0]
+        const _templateNameOnSite = secondStoredRouteSegments[1];
+        try {
+          this.templateNameOnSite = decodeURI(_templateNameOnSite)
+        } catch (e) { // catches a malformed URI
+          console.error(e);
+        }
+      }
+
     }
 
     this.faqKbService.getTemplates().subscribe((res: any) => {
@@ -86,7 +109,7 @@ export class GetStartChatbotForkComponent implements OnInit {
         const templates = res
 
         const selectedTemplates = templates.filter((obj) => {
-          return obj._id === bot_ID
+          return obj._id === this.botid
         });
         this.selectedTemplates = selectedTemplates[0]
         console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES ', this.selectedTemplates)
@@ -95,7 +118,7 @@ export class GetStartChatbotForkComponent implements OnInit {
         this.templateImg = this.selectedTemplates['bigImage'];
         // this.templateNameOnSite = this.selectedTemplates['nameOnSite'];
         console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateImg ', this.templateImg)
-        console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateNameOnSite ', this.templateNameOnSite)
+
       }
 
     }, (error) => {
@@ -113,18 +136,12 @@ export class GetStartChatbotForkComponent implements OnInit {
   getProjects() {
     this.projectService.getProjects().subscribe((projects: any) => {
       console.log('[GET START CHATBOT FORK] - GET PROJECTS ', projects);
-
-
-
       if (projects) {
         this.projects = projects;
         if (this.projects && this.projects.length === 1) {
           this.projectname = this.projects[0].id_project.name
           this.selectedProjectId = this.projects[0].id_project._id
         }
-
-
-
         // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
         // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
@@ -184,20 +201,23 @@ export class GetStartChatbotForkComponent implements OnInit {
   }
 
   goToInstallTemplate() {
+    console.log('[GET START CHATBOT FORK] goToInstallTemplate botid', this.botid , ' - selectedProjectId ', this.selectedProjectId)
     this.router.navigate([`install-template/${this.botid}/${this.selectedProjectId}`]);
   }
 
   goToYourProject() {
     this.router.navigate(['/projects']);
 
-    const storedRoute = this.localDbService.getFromStorage('wannago')
-    if (storedRoute) {
-      this.localDbService.removeFromStorage('wannago')
-    }
+    // const storedRoute = this.localDbService.getFromStorage('wannago')
+    // if (storedRoute) {
+    //   this.localDbService.removeFromStorage('wannago')
+    // }
   }
 
-  starCreateProjectWizard() {
-    this.router.navigate(['/create-project']);
+  goToCreateProject() {
+    console.log('[GET START CHATBOT FORK] goToCreateProject (create-project-itw)  botid', this.botid )
+    this.router.navigate([`/create-project-itw/${this.botid}`]);
   }
+
 
 }
