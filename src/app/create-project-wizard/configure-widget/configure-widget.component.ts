@@ -11,7 +11,6 @@ import { WidgetService } from '../../services/widget.service';
 import { AppConfigService } from '../../services/app-config.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { Location } from '@angular/common';
-import { LocalDbService } from 'app/services/users-local-db.service';
 import { tranlatedLanguage } from 'app/utils/util';
 
 @Component({
@@ -98,8 +97,6 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     this.tparams = brand;
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
-
-
   }
 
   ngOnInit() {

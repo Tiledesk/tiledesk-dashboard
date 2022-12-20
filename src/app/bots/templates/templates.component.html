@@ -10,11 +10,9 @@
         <div class="content-wpr" style="display: flex;">
             <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
                 [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
-                [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
-                [myChatbotOtherCount]="myChatbotOtherCount"
-                [customerSatisfactionBotsCount]="customerSatisfactionBotsCount" 
-                [increaseSalesBotsCount]="increaseSalesBotsCount"
-                style="border-right:1px solid #e5effe !important;">
+                [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
+                [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
+                [increaseSalesBotsCount]="increaseSalesBotsCount" style="border-right:1px solid #e5effe !important;">
             </appdashboard-bots-sidebar>
 
 
@@ -33,6 +31,51 @@
                         </div>
                         <div class="template-cards-wpr">
                             <div class="template-cards">
+
+                                <!-- <div class="cards"> -->
+
+                                <div class="t-card">
+
+
+                                    <div style="padding: 26px;
+                                        color: #3c4858;">
+                                        <div>
+                                            <img style="width: auto; height: 40px;"
+                                                src="https://tiledesk.com/wp-content/uploads/2022/11/IVR-Menu.png">
+                                        </div>
+                                        <span size="20" class="blank-span-h20"></span>
+                                        <span>This chatbot can help customers with problems without needing human touch,
+                                            like
+                                            changing passwords or displaying product prices.
+                                        </span>
+                                    </div>
+
+                                    <div class="card__overlay">
+                                        <div class="card__header">
+                                            <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z" />
+                                            </svg>
+                                            <!-- <img class="card__thumb"
+                                                src="https://tiledesk.com/wp-content/uploads/2022/11/IVR-Menu.png"
+                                                alt="" /> -->
+                                            <div class="card__header-text template-card-title">
+                                                <h3 class="card__title"> Dean for Quick Replies </h3>
+                                                <!-- <span class="card__status">1 hour ago</span> -->
+                                            </div>
+                                        </div>
+                                        <div class="card__description">
+
+                                            <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
+                                                (click)="openDialog(template)">
+                                                <span>Use template</span>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+
+
                                 <div class="template-card" *ngFor="let template of templates">
                                     <!-- <svg aria-hidden="true" focusable="false"
                                         style="width: 0px; height: 0px; position: absolute;">
@@ -123,4 +166,3 @@
         </div>
     </div>
 </div>
-
