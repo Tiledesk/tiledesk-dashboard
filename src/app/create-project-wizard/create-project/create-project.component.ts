@@ -79,6 +79,10 @@ export class CreateProjectComponent implements OnInit {
       console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
       this.temp_SelectedLangName = 'English';
       this.temp_SelectedLangCode = 'en'
+
+
+
+      
     }  else if (this.router.url === '/create-project') {
       this.CLOSE_BTN_IS_HIDDEN = true;
       this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
