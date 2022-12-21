@@ -14,6 +14,7 @@ export const environment = {
   chatEngine: 'mqtt',
   firebaseAuth: false,
   uploadEngine: 'native',
+  baseImageUrl: 'CHANGEIT',
   pushEngine: 'none',
   logLevel: 'Info',
   appsUrl: 'CHANGEIT',

@@ -14,6 +14,7 @@ export const environment = {
   firebaseAuth: false,
   uploadEngine: 'native',
   pushEngine: 'none',
+  baseImageUrl: 'CHANGEIT',
   logLevel: 'Info',
   appsUrl: 'CHANGEIT',
   promoBannerUrl: 'CHANGEIT',
