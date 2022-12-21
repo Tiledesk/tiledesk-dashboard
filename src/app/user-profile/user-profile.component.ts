@@ -18,6 +18,7 @@ import { tranlatedLanguage, avatarPlaceholder, getColorBck } from 'app/utils/uti
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { DomSanitizer} from '@angular/platform-browser';
 const swal = require('sweetalert');
 
 
@@ -168,7 +169,8 @@ export class UserProfileComponent implements OnInit {
     private logger: LoggerService,
     private route: ActivatedRoute,
     private usersLocalDbService: LocalDbService,
-    private prjctPlanService: ProjectPlanService
+    private prjctPlanService: ProjectPlanService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -439,15 +441,21 @@ export class UserProfileComponent implements OnInit {
       // const userImageExist = this.usersService.userProfileImageExist.getValue()
       // this.logger.log('USER PROFILE IMAGE (USER-PROFILE ) upload with native service userImageExist ', userImageExist);
 
-      this.uploadImageNativeService.uploadUserPhotoProfile_Native(file).subscribe((downoloadurl) => {
-
+      this.uploadImageNativeService.uploadUserPhotoProfile_Native(file).subscribe((downloadurl) => {
+        this.logger.log('[USER-PROFILE] downloadurl ', downloadurl)
         this.userProfileImageurl = ''
-        if (environment.production && environment.production === true) {
+
+        if (environment.production && environment.production === true && this.appConfigService.getConfig().baseImageUrl === "https://api.tiledesk.com/v2/") {
           // console.log('upload env prod? ', environment.production)
           this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
+          // this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+
+          this.logger.log('[USER-PROFILE] userProfileImageurl ', this.userProfileImageurl)
+        } else if (environment.production && environment.production === true && this.appConfigService.getConfig().baseImageUrl !== "https://api.tiledesk.com/v2/") {
+          this.userProfileImageurl = downloadurl;
         } else if (!environment.production) {
           // console.log('upload env prod? ', environment.production)
-          this.userProfileImageurl = downoloadurl
+          this.userProfileImageurl = downloadurl;
         }
         // console.log('[USER-PROFILE] IMAGE upload with native service - RES downoloadurl', this.userProfileImageurl);
         this.timeStamp = (new Date()).getTime();
@@ -517,15 +525,18 @@ export class UserProfileComponent implements OnInit {
   }
 
   setImageProfileUrl_Native(baseUrl) {
+    this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    // this.timeStamp = (new Date()).getTime();
 
-    this.userProfileImageurl = ''
-    if (environment.production && environment.production === true) {
-      // console.log('setImageProfileUrl_Native env prod ', environment.production)
-      this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
+    // this.userProfileImageurl = ''
+    // if (environment.production && environment.production === true) {
+    //   // console.log('setImageProfileUrl_Native env prod ', environment.production)
+    //   this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
 
-    } else if (!environment.production) {
-      this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    }
+    // } else if (!environment.production) {
+    //   this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    // }
 
     // console.log('setImageProfileUrl_Native userProfileImageurl ', this.userProfileImageurl)
     // this.logger.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
@@ -563,12 +574,12 @@ export class UserProfileComponent implements OnInit {
 
   getUserProfileImage() {
     if (this.timeStamp) {
-      // this.logger.log('PROFILE IMAGE (USER-IMG IN USER-LOG) - getUserProfileImage ', this.userProfileImageurl);
+      this.logger.log('PROFILE IMAGE (USER-IMG IN USER-LOG) - getUserProfileImage ', this.userProfileImageurl);
       // setTimeout(() => {
-      return this.userProfileImageurl + '&' + this.timeStamp;
+      return  this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl + '&' + this.timeStamp);
       // }, 200);
     }
-    return this.userProfileImageurl
+    return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl)
   }
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {

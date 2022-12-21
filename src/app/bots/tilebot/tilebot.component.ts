@@ -30,6 +30,7 @@ import {
   avatarPlaceholder, 
   getColorBck
 } from '../../utils/util';
+import { DomSanitizer } from '@angular/platform-browser';
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-tilebot',
@@ -100,7 +101,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
   botImageHasBeenUploaded = false;
 
-  botProfileImageurl: string;
+  botProfileImageurl: any;
   timeStamp: any;
   botType: string;
   botTypeForInput: string;
@@ -196,7 +197,8 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     private usersService: UsersService,
     public brandService: BrandService,
     private departmentService: DepartmentService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private sanitizer: DomSanitizer
   ) {
     super();
     const brand = brandService.getBrand();
@@ -747,10 +749,10 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     } else {
 
       // Native upload
-      this.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) upload with native service')
+      this.logger.log('[TILEBOT] BOT PROFILE IMAGE upload with native service')
 
       this.uploadImageNativeService.uploadBotPhotoProfile_Native(file, this.id_faq_kb).subscribe((downoloadurl) => {
-        this.logger.log('[TILEBOT] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - RES downoloadurl', downoloadurl);
+        this.logger.log('[TILEBOT] BOT PROFILE IMAGE upload with native service - RES downoloadurl', downoloadurl);
 
         this.botProfileImageurl = downoloadurl
 
@@ -890,9 +892,9 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
   getBotProfileImage() {
     if (this.timeStamp) {
-      return this.botProfileImageurl + '&' + this.timeStamp;
+      return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl + '&' + this.timeStamp);
     }
-    return this.botProfileImageurl
+    return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl)
   }
 
   getBrowserLang() {

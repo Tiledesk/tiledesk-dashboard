@@ -31,6 +31,7 @@ import {
   URL_configure_your_first_chatbot,
   URL_dialogflow_connector
 } from '../../utils/util';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 const swal = require('sweetalert');
@@ -197,8 +198,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     private usersService: UsersService,
     public brandService: BrandService,
     private departmentService: DepartmentService,
-    private logger: LoggerService
-
+    private logger: LoggerService,
+    private sanitizer: DomSanitizer
   ) {
     super();
 
@@ -796,9 +797,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   getBotProfileImage() {
     if (this.timeStamp) {
-      return this.botProfileImageurl + '&' + this.timeStamp;
+      return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl + '&' + this.timeStamp);
     }
-    return this.botProfileImageurl
+    return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl)
   }
 
   getBrowserLang() {

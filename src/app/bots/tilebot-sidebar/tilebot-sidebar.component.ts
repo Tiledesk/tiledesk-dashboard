@@ -9,13 +9,14 @@ import { UsersService } from 'app/services/users.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service'
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'appdashboard-tilebot-sidebar',
   templateUrl: './tilebot-sidebar.component.html',
   styleUrls: ['./tilebot-sidebar.component.scss']
 })
-export class TilebotSidebarComponent implements OnInit {
+export class TilebotSidebarComponent implements OnInit , OnChanges{
 
   @Input() faqKb_name: string;
   @Input() botDefaultSelectedLang: string;
@@ -23,7 +24,7 @@ export class TilebotSidebarComponent implements OnInit {
   @Input() id_faq_kb: string;
   @Input() botProfileImageExist: boolean;
   @Input() botImageHasBeenUploaded: boolean;
-  @Input() botProfileImageurl: string;
+  @Input() botProfileImageurl: any;
   public faqKb_name_truncated: string;
 
   public botTypeForInput: string;
@@ -48,7 +49,8 @@ export class TilebotSidebarComponent implements OnInit {
     public location: Location,
     private translate: TranslateService,
     private usersService: UsersService,
-    private faqKbService: FaqKbService
+    private faqKbService: FaqKbService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -92,6 +94,8 @@ export class TilebotSidebarComponent implements OnInit {
     if (this.botType && this.botType === 'tilebot') {
       this.botTypeForInput = 'Tilebot'
     }
+
+    this.botProfileImageurl = this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl)
   }
 
   ngAfterContentInit() {

@@ -1,7 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.3.9-rc4
-- Externalizes the "baseImageUrl" variable in environments
+- Externalizes the "baseImageUrl" variable in the environments
 
 ### 2.3.9-rc3
 - Disables the installation of the "Whatsapp app with Twilio" on the app store page

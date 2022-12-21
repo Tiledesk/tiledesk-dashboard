@@ -29,7 +29,7 @@ export class UploadImageNativeService {
     this.getToken()
 
     this.files = [];
-    this.BASE_URL = this.appConfigService.getConfig().SERVER_BASE_URL
+    this.BASE_URL = this.appConfigService.getConfig().baseImageUrl
     this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - BASE URL ', this.BASE_URL)
   }
 
@@ -55,7 +55,7 @@ export class UploadImageNativeService {
   // : Promise<any>
   
   uploadUserPhotoProfile_Native(file: File): Observable<any> {
-    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD USER PHOTO PROFILE - file ', file)
+    console.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD USER PHOTO PROFILE - file ', file)
     const headers = new HttpHeaders({
       Authorization: this.TOKEN,
       // 'Content-Type': 'multipart/form-data',
@@ -71,6 +71,7 @@ export class UploadImageNativeService {
 
     // USE IMAGE API
     const BASE_URL_IMAGES = this.BASE_URL + 'images'
+    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] BASE_URL_IMAGES ', BASE_URL_IMAGES) 
     return this._httpClient
       .put<any>(BASE_URL_IMAGES + '/users/photo?force=true', formData, requestOptions)
       .pipe(map((res: any) => {

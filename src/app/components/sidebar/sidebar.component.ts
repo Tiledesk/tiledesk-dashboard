@@ -28,10 +28,10 @@ import { DepartmentService } from '../../services/department.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { WsRequestsService } from './../../services/websocket/ws-requests.service';
-import { WsMsgsService } from './../../services/websocket/ws-msgs.service';
-
 import { LoggerService } from './../../services/logger/logger.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util'
+import { DomSanitizer } from '@angular/platform-browser';
+
 declare const $: any;
 
 declare interface RouteInfo {
@@ -242,7 +242,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         public brandService: BrandService,
         public wsRequestsService: WsRequestsService,
         private logger: LoggerService,
-        private wsMsgsService: WsMsgsService
+        private sanitizer: DomSanitizer
     ) {
         this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
@@ -997,9 +997,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getUserProfileImage() {
         if (this.timeStamp) {
             // this.logger.log('PROFILE IMAGE (USER-PROFILE IN SIDEBAR-COMP) - getUserProfileImage ', this.userProfileImageurl);
-            return this.userProfileImageurl + '&' + this.timeStamp;
+            return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl + '&' + this.timeStamp);
         }
-        return this.userProfileImageurl
+        return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl)
     }
 
 
