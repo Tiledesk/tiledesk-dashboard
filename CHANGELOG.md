@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.9-rc4
+- Externalizes the "baseImageUrl" variable in environments
+
 ### 2.3.9-rc3
 - Disables the installation of the "Whatsapp app with Twilio" on the app store page
 - Improve the form builder validation regex expressions on the chatbot details page > Edit Intent
