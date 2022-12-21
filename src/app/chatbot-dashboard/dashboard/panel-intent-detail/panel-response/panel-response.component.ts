@@ -35,19 +35,22 @@ export class PanelResponseComponent implements OnInit {
   // CUSTOM FUNCTIONS //
   /** */
   private initialize(){
+    this.arrayResponses = [];
     this.intentName = '';
+    this.intentNameResult = true;
+    this.textGrabbing = false;
     try {
       this.intentName = this.intent.intent_display_name;
     } catch (error) {
       console.log('there is not reply', error);
     }
-    this.intentNameResult = true;
-    try {
-      this.arrayResponses = this.intent.reply.attributes.commands;
-    } catch (error) {
-      console.log('error:::', error);
+    if(this.intent.reply){
+      try {
+        this.arrayResponses = this.intent.reply.attributes.commands;
+      } catch (error) {
+        console.log('error:::', error);
+      }
     }
-    this.textGrabbing = false;
     this.generateArrayResponse();
   }
 

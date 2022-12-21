@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Intent } from '../../../models/intent-model';
 import { TYPE_INTENT_ELEMENT } from '../../utils';
 
@@ -9,6 +9,7 @@ import { TYPE_INTENT_ELEMENT } from '../../utils';
   styleUrls: ['./panel-intent-detail.component.scss']
 })
 export class PanelIntentDetailComponent implements OnInit {
+  @Output() openButtonPanel = new EventEmitter();
   @Input() intentSelected: Intent;
   @Input() showSpinner: boolean;
 
@@ -18,33 +19,26 @@ export class PanelIntentDetailComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.typeIntentElement = TYPE_INTENT_ELEMENT;
     this.typeIntentElementSelected = TYPE_INTENT_ELEMENT.RESPONSE;
   }
 
   // EVENT FUNCTIONS //
-  /** */
-  onSaveIntent(){
-    // this.intentNameResult = this.checkIntentName();
-    // this.updateArrayResponse();
-    // if(this.intentNameResult){
-    //   this.saveIntent.emit(this.intent);
-    // }
-  }
 
   /** */
   onOpenButtonPanel(event){
-    // this.openButtonPanel.emit(event);
+    this.openButtonPanel.emit(event);
   }
 
-    /** appdashboard-tools: add new response **/
-    onAddNewResponse(element){
-      try {
-        // this.intentSelected.reply.attributes.commands.push(element);
-        // console.log('onAddNewResponse---->', this.intentSelected.reply.attributes.commands);
-      } catch (error) {
-        console.log('onAddNewResponse ERROR', error);
-      }
+
+  
+  /** appdashboard-tools: add new response **/
+  onAddNewResponse(element){
+    try {
+      this.intentSelected.reply.attributes.commands.push(element);
+      // console.log('onAddNewResponse---->', this.intentSelected.reply.attributes.commands);
+    } catch (error) {
+      console.log('onAddNewResponse ERROR', error);
     }
+  }
 
 }

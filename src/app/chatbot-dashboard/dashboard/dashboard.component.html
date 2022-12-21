@@ -24,6 +24,9 @@
 
         <div class="box-right-header">
             <appdashboard-panel-intent-header
+            *ngIf = intentSelected
+            [intentSelected] = "intentSelected"
+            (saveIntent) = onSaveIntent($event)
             ></appdashboard-panel-intent-header>
         </div>
 

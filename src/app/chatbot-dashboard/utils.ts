@@ -38,7 +38,14 @@ export enum TYPE_MESSAGE {
 
 export const MESSAGE_METADTA_WIDTH = '100%';
 export const MESSAGE_METADTA_HEIGHT = '230px';
-
 export const TIME_WAIT_DEFAULT = 500;
 export const TEXT_CHARS_LIMIT = 300;
 export const classCardButtonNoClose = 'card-buttons-no-close';
+
+
+
+export function calculatingRemainingCharacters(text: string) {
+    let numCharsText = text.length;
+    let leftCharsText = TEXT_CHARS_LIMIT - numCharsText;
+    return leftCharsText;
+}

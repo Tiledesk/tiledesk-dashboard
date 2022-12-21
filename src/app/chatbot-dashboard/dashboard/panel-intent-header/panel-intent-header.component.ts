@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Intent } from '../../../models/intent-model';
 
 @Component({
   selector: 'appdashboard-panel-intent-header',
@@ -6,38 +7,59 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./panel-intent-header.component.scss']
 })
 export class PanelIntentHeaderComponent implements OnInit {
-
+  @Output() saveIntent = new EventEmitter();
+  @Input() intentSelected: Intent;
+  @Input() showSpinner: boolean;
+  
+  intentName: string;
   intentNameResult = true;
-  intentName = "intent name ...";
-  showSpinner = false;
+
   constructor() { }
 
+  // SYSTEM FUNCTIONS //
   ngOnInit(): void {
+    this.showSpinner = false;
+    try {
+      this.intentName = this.intentSelected.intent_display_name;
+    } catch (error) {
+      console.log('intent selected ', error);
+    }
   }
 
-    /** */
-    onChangeIntentName(name: string){
-      name.toString();
-      try {
-        this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
-      } catch (error) {
-        console.log('name is not a string', error)
-      }
+  // CUSTOM FUNCTIONS //
+  /** */
+  private checkIntentName(): boolean {
+    if (!this.intentName || this.intentName.length === 0){
+      return false; 
+    } else {
+      return true;
     }
-  
-    /** */
-    onBlurIntentName(name: string){
-      this.intentNameResult = true;
-    }
+  }
 
-    /** */
-  onSaveIntent(){
-    //console.log('onSaveIntent:: ', this.intent, this.arrayResponses);
-    // this.intentNameResult = this.checkIntentName();
-    // this.updateArrayResponse();
-    // if(this.intentNameResult){
-    //   this.saveIntent.emit(this.intent);
+
+  // EVENT FUNCTIONS //
+  /** */
+  onChangeIntentName(name: string){
+    // name.toString();
+    // try {
+    //   this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
+    // } catch (error) {
+    //   console.log('name is not a string', error);
     // }
+  }
+
+  /** */
+  onBlurIntentName(name: string){
+    this.intentNameResult = true;
+  }
+
+  /** */
+  onSaveIntent(){
+    this.intentNameResult = this.checkIntentName();
+    if(this.intentNameResult){
+      this.intentSelected.intent_display_name = this.intentName;
+      this.saveIntent.emit(this.intentSelected);
+    }
   }
 
 }

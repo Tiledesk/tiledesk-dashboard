@@ -126,12 +126,14 @@ export class DashboardComponent implements OnInit {
    * USED TO SHOW IN THE TEXAREA THE QUESTION AND THE ANSWER THAT USER WANT UPDATE
   */
   private getFaqById() {
+    console.log('getFaqById');
     this.showSpinner = true;
     this.faqService.getFaqById(this.id_faq).subscribe((faq: any) => {
       this.logger.log('[FAQ-EDIT-ADD] - FAQ GET BY ID RES', faq);
       if (faq) {
         this.intentSelected = faq;
       }
+      console.log('faq', faq);
       this.showSpinner = false;
     }, (error) => {
       this.logger.error('[FAQ-EDIT-ADD] - FAQ GET BY ID - ERROR ', error);
@@ -239,6 +241,7 @@ export class DashboardComponent implements OnInit {
 
   /** EDIT INTENT  */
   private editIntent() {
+    console.log('editIntent');
     this.showSpinner = true;
     let id = this.intentSelected.id;
     let questionIntentSelected = this.intentSelected.question; 
@@ -302,6 +305,7 @@ export class DashboardComponent implements OnInit {
 
   /** appdashboard-intent: Save intent */
   onSaveIntent(intent: Intent){
+    console.log('onSaveIntent 2 :: ', intent);
     this.intentSelected = intent;
     if(this.CREATE_VIEW){
       this.creatIntent();

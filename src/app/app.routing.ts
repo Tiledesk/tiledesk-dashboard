@@ -35,7 +35,7 @@ import { BotListComponent } from './bots/bots-list/bots-list.component';
 import { BotTypeSelectComponent } from './bots/bot-create/bot-type-select/bot-type-select.component';
 import { BotCreateComponent } from './bots/bot-create/bot-create.component';
 import { FaqComponent } from './bots/faq/faq.component';
-// import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component';
+import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component';
 import { DashboardComponent } from './chatbot-dashboard/dashboard/dashboard.component';
 import { FaqTestComponent } from './bots/faq-test/faq-test.component';
 

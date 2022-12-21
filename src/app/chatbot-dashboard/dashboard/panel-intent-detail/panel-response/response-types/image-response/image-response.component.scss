@@ -94,7 +94,7 @@ $max-height: 230px;
             .response-controls {
                 position: absolute;
                 top: 10px;
-                left: 2px;
+                left: 0px;
                 opacity: 1;
                 transition: opacity 0.3s ease-in-out;
                 .control-button {
@@ -149,9 +149,12 @@ $max-height: 230px;
             .text-editor-drop {
                 position: absolute;
                 display: inline-flex;
-                margin: -2% 0 0 0;
-                right: 0;
-                top: 50%;
+                // margin: -2% 0 0 0;
+                // right: 0;
+                // top: 50%;
+                margin: 0;
+                left: 0;
+                top: -30px;
                 color: $color-bck-gray-hex;
                 cursor: grab;
             }

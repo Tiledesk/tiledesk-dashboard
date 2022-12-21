@@ -106,6 +106,7 @@ $min-height-content: 376px;
     margin-top: 0px;
     overflow: auto;
     max-height: calc(100vh - 230px);
+
     .typeText{
         display: block;
     }
@@ -122,10 +123,13 @@ $min-height-content: 376px;
         display: flex;
         align-content: space-around;
         width: 24px;
-        height: 30px;
-        right: -2px;
-        top: 50%;
-        margin: -8px 0 0 0;
+        height: 26px;
+        // right: -2px;
+        // top: 50%;
+        // margin: -8px 0 0 0;
+        left: 0px;
+        top: 30px;
+        margin: 0;
         color: $color-bck-gray-hex;
         cursor: grab;
         background-color: transparent;

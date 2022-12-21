@@ -2,7 +2,7 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Message, Button } from '../../../../../../models/intent-model';
-import { TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT } from '../../../../../utils';
+import { TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../utils';
 
 @Component({
   selector: 'appdashboard-text-response',
@@ -42,11 +42,16 @@ export class TextResponseComponent implements OnInit {
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.limitCharsText = TEXT_CHARS_LIMIT;
-    this.leftCharsText = this.limitCharsText;
-    this.alertCharsText = false;
-
     this.delayTime = this.response.time/1000;
     this.textMessage = this.response.text;
+
+    this.leftCharsText = calculatingRemainingCharacters(this.textMessage);
+    if(this.leftCharsText<(TEXT_CHARS_LIMIT/10)){
+      this.alertCharsText = true;
+    } else {
+      this.alertCharsText = false;
+    }
+   
     this.buttons = [];
     try {
       this.buttons = this.response.attributes.attachment.buttons;
@@ -93,9 +98,8 @@ export class TextResponseComponent implements OnInit {
 
   /** */
   onChangeText(text:string) {
-    let numCharsText = text.length;
-    this.leftCharsText = this.limitCharsText - numCharsText;
-    if(this.leftCharsText<(this.limitCharsText/10)){
+    this.leftCharsText = calculatingRemainingCharacters(this.textMessage);
+    if(this.leftCharsText<(TEXT_CHARS_LIMIT/10)){
       this.alertCharsText = true;
     } else {
       this.alertCharsText = false;
