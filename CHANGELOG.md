@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.9-rc5
+- Adds chatbot templates
+
 ### 2.3.9-rc4
 - Externalizes the "baseImageUrl" variable in the environments
 
