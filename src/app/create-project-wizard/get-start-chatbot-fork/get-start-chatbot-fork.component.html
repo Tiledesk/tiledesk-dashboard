@@ -1,0 +1,109 @@
+
+<div class="css-get-start-chatbotfork">
+    <img [src]="companyLogoBlack_Url" class="logo" />
+
+    <div class="close-wizard-page">
+        <i *ngIf="projects && projects?.length !==0 " class="material-icons close-btn" (click)="goToYourProject()">clear</i>
+      </div>
+
+    <div class="col-left">
+
+        <div class="fade-in-left lft-col-left">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="pre-title">
+                        We are ready to go
+                    </h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="title">
+                       
+                        <!-- on one of your projects -->
+                        <!-- on your project -->
+                        <!-- on your new project  -->
+                        <span *ngIf="projects && projects?.length > 1"> Install  {{ templateNameOnSite}} </span>
+                        <span *ngIf="projects && projects?.length === 1"> Install {{ templateNameOnSite}} </span>
+                        <span *ngIf="projects && projects?.length === 0">  Install {{ templateNameOnSite}} </span>
+                    </h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="description" *ngIf="projects && projects?.length === 0" >
+                        Before installing the {{ templateNameOnSite }}, you must first create a project where the chatbot will be installed
+                    </div>
+                    <!-- <div class="description" *ngIf="projects && projects?.length === 1" >
+                        Clicking Continue will launch the wizard to install the chatbot on the project {{ projectname }}
+                    </div>
+                    <div class="description" *ngIf="projects && projects?.length > 1" >
+                        Clicking Continue will launch the wizard to install the chatbot on the selected project
+                    </div> -->
+                </div>
+            </div>
+
+            <span size="24" class="blank-span-h24"></span>
+            <!-- <div class="row">
+                <div class="col-md-12">
+                    <h4 style="font-weight: 400;"> {{'WidgetStyle' | translate}} </h4>
+                </div>
+            </div> -->
+
+
+            <!-- -------------------------------------------------------------------------------- -->
+            <!-- Select a project  -->
+            <!-- -------------------------------------------------------------------------------- -->
+            <div class="row" *ngIf="projects && projects?.length > 1">
+                <div class="col-md-12">
+                    <h4  style="font-weight: 400;"> Choose which project you want to install the chatbot on </h4>
+                </div>
+            </div>
+            <div class="row" *ngIf="projects && projects?.length > 1">
+                <div class="col-md-12">
+                    <!-- (clear)="onClearSelectedLanguage()" -->
+                    <ng-select class="select-language-in-wizard" id="language_option"
+                        style="margin-top: 0px; max-width: 500px;" [clearable]="false" [(ngModel)]="selectedProject"
+                        [items]="projects" bindLabel="id_project.name" bindValue="id_project._id" groupBy="type"
+                        placeholder="Choose a project" (change)="onSelectProject(selectedProject)">
+                    </ng-select>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <button *ngIf="projects && projects?.length > 1" class="btn btn-lg btn-primary" (click)="goToInstallTemplate()" [disabled]="!selectedProject">
+                        {{ "ProjectsPage.Continue" | translate }}
+                    </button>
+                    <button *ngIf="projects && projects?.length === 1" class="btn btn-lg btn-primary" (click)="goToInstallTemplate()">
+                        {{ "ProjectsPage.Continue" | translate }}
+                    </button>
+
+                    <button *ngIf="projects && projects?.length === 0" class="btn btn-lg btn-primary" (click)="goToCreateProject()">
+                        {{ "ProjectsPage.Continue" | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- background-image: url(https://tiledesk.com/wp-content/uploads/2022/10/background_arancio.png?id=8843); -->
+    <div class="col-right" style="  background-image: linear-gradient(to bottom, #1a73e8 0%, #3ea9f5 100%), linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);">
+        <div class="bot--image" style="height: auto;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);">
+        <!-- <blockquote class="oval-thought-border">
+            <p>This is a blockquote that is styled to look like a speech bubble</p>
+          </blockquote> -->
+
+            <img style="height: 300px;" [src]="templateImg">
+        </div>
+
+    </div>
+</div>

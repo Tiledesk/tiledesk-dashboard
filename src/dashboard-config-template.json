@@ -10,7 +10,7 @@
   "wsUrlRel": "${WS_URL_RELATIVE}",
   "brandSrc": "${BRAND_SRC}",
   "globalRemoteJSSrc": "${REMOTE_JS_SRC}",
-  "chatEngine": "${CHAT21_ENGINE}",
+  "chatEngine": "${CHA21_ENGINE}",
   "firebaseAuth": "${FIREBASE_AUTH}",
   "uploadEngine": "${UPLOAD_ENGINE}",
   "baseImageUrl": "${BASE_IMAGE_URL}",

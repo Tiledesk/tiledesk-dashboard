@@ -352,7 +352,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     // ------------------------------------------------------------------------------------------------------------------------------
     this.faqKbService.createFaqKb(this.faqKbName, this.faqKbUrl, _botType, this.bot_description, this.language, this.template)
       .subscribe((faqKb) => {
-        this.logger.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
+        console.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
 
         if (faqKb) {
           this.newBot_name = faqKb['name'];
@@ -557,9 +557,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-
-
-
     this.logger.log('[BOT-CREATE] ----> FILE - event.target.files ', event.target.files);
     this.logger.log('[BOT-CREATE] ----> FILE - event.target.files.length ', event.target.files.length);
     if (event.target.files && event.target.files.length) {

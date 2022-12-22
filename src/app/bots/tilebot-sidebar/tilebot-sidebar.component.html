@@ -30,7 +30,7 @@
         </div>
         <a>
           <p *ngIf="IS_OPEN === true" class="custom_paragraph" style="position: relative;left: 27px;margin-top: 8px;">
-            {{ faqKb_name_truncated }}
+           <span class="bot--name"> {{ faqKb_name }} </span> 
             <!-- matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'BotLanguage' | translate}}"
           #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" -->
             <span class="bot-lang-badge">
@@ -39,8 +39,8 @@
           </p>
 
           <div class="settings-icon-wpr" style="float: right;height: 30px;
-        width: 30px; position: relative;top: 5px;">
-            <i *ngIf="IS_OPEN === true" class="material-icons settings-sidebar-icons">
+               width: 30px; position: relative;top: 5px;">
+            <i *ngIf="IS_OPEN === true" class="material-icons settings-sidebar-icons"  style="position: relative; left: 12px;">
               settings
             </i>
           </div>

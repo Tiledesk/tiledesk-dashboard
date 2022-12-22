@@ -13,5 +13,6 @@ export interface FaqKb {
     external?: boolean;
     type?: string;
     description?: string;
-    message_count?: number
+    message_count?: number;
+    mainCategory?: any
 }

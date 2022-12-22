@@ -11,6 +11,7 @@ import { WidgetService } from '../../services/widget.service';
 import { AppConfigService } from '../../services/app-config.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { Location } from '@angular/common';
+import { tranlatedLanguage } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-configure-widget',
@@ -76,6 +77,9 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
 
   allDefaultTranslations: any
   HAS_SELECT_STATIC_REPLY_TIME_MSG: boolean = true;
+  // EXIST_STORED_ROUTE: boolean = false
+  storedRoute: string;
+  browser_lang: string;
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -93,7 +97,6 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     this.tparams = brand;
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
-
   }
 
   ngOnInit() {
@@ -102,16 +105,11 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     this.getCurrentProject();
     // this.checkCurrentUrlAndHideCloseBtn();
     this.getALLDefaultTranslations();
+
+    // this.getStoredRoute()
   }
 
-  // checkCurrentUrlAndHideCloseBtn() {
-  //   this.logger.log('[WIZARD - CREATE-PRJCT] this.router.url  ', this.router.url)
-  //   if (this.router.url === '/create-project') {
-  //     this.CLOSE_BTN_IS_HIDDEN = true;
-  //   } else {
-  //     this.CLOSE_BTN_IS_HIDDEN = false;
-  //   }
-  // }
+
 
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -151,7 +149,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
 
   getProjectById() {
     this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
-      // this.logger.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+      console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
 
       this.logger.log('[WIZARD - CONFIGURE-WIDGET] - PRJCT-WIDGET (onInit): ', project.widget);
 
@@ -412,15 +410,22 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
 
 
   getALLDefaultTranslations() {
-
-    // USED TO PRESELECT ENGLISH LANGUAGE VALUE IN THE SELECT LANGUAGE COMBO BOX
-    this.selectedLang = 'English'
-    // this.selectedTranslationLabel = 'en'
-
-
-    // ENGLISH ARE USED AS DEFAULT IF THE USER DOESN'T SELECT ANY OTHER ONE LANGUAGE
-    this.temp_SelectedLangName = 'English';
-    this.temp_SelectedLangCode = 'en'
+    this.browser_lang = this.translate.getBrowserLang();
+    console.log('[WIZARD - CONFIGURE-WIDGET] - browser_lang ', this.browser_lang)
+    if (tranlatedLanguage.includes(this.browser_lang)) {
+      const langName = this.getLanguageNameFromCode(this.browser_lang)
+      console.log('[WIZARD - CONFIGURE-WIDGET] - langName ', langName)
+      this.selectedLang = langName
+      this.temp_SelectedLangName = langName;
+      this.temp_SelectedLangCode = this.browser_lang
+    } else {
+      // USED TO PRESELECT ENGLISH LANGUAGE VALUE IN THE SELECT LANGUAGE COMBO BOX
+      this.selectedLang = 'English'
+      // this.selectedTranslationLabel = 'en'
+      // ENGLISH ARE USED AS DEFAULT IF THE USER DOESN'T SELECT ANY OTHER ONE LANGUAGE
+      this.temp_SelectedLangName = 'English';
+      this.temp_SelectedLangCode = 'en'
+    }
 
     this.widgetService.getAllDefaultLabels().subscribe((translations: any) => {
 
@@ -428,7 +433,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
         this.allDefaultTranslations = translations;
         this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** GET * ALL * TRANSLATIONS ***** - RES', translations);
 
-        this.setCurrentTranslation('en')
+        this.setCurrentTranslation(this.temp_SelectedLangCode)
 
       }
     })
@@ -486,23 +491,28 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
   }
 
   continueToNextStep() {
-    // this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
-    this.router.navigate([`/project/${this.projectId}/onboarding/` + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
+    this.saveWidgetApparance();
+
+
+    // this.goToOnboardingInstallScript()
+    this.goToOnboardingChatbotSetUp()
+
     // console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
     // console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
     // this.addNewLanguage();
-    this.saveWidgetApparance()
+
   }
 
+  goToOnboardingChatbotSetUp() {
+    this.router.navigate([`/project/${this.projectId}/onboarding/` + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
+  }
 
-
-  continueToInstallScript() {
-    // this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
-    this.router.navigate([`/project/${this.projectId}/install-widget/` +  this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
-    this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
-    this.logger.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
+  goToOnboardingInstallScript() {
+    console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE projectId', this.projectId)
+    this.router.navigate([`/project/${this.projectId}/install-widget/` + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
+    console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
+    console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
     // this.addNewLanguage();
-    this.saveWidgetApparance()
   }
 
   saveWidgetApparance() {
@@ -540,7 +550,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     this.logger.log('[WIZARD - CONFIGURE-WIDGET] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
   }
 
-    // -----------------------------------------------------
+  // -----------------------------------------------------
   // Select default language
   // -----------------------------------------------------
   getEnDefaultTranslation() {

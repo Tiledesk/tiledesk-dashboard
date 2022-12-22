@@ -11,6 +11,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import moment from 'moment';
+import { LocalDbService } from 'app/services/users-local-db.service';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -54,6 +55,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   hide_left_panel: boolean;
   bckgndImageSize = 60 + '%'
+  EXIST_STORED_ROUTE: boolean = false
+  storedRoute: string;
 
   public_Key: string;
   MT: boolean;
@@ -98,7 +101,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private notify: NotifyService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private localDbService: LocalDbService
   ) {
 
     const brand = brandService.getBrand();
@@ -247,6 +251,17 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
 
   checkCurrentUrlAndSkipWizard() {
+
+    this.storedRoute = this.localDbService.getFromStorage('wannago')
+    console.log('[SIGN-UP] storedRoute ', this.storedRoute)
+    if (this.storedRoute) {
+      this.EXIST_STORED_ROUTE = true
+    } else {
+      this.EXIST_STORED_ROUTE = false
+    }
+
+
+
     this.logger.log('[SIGN-UP] checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
 
     // (this.router.url === '/signup-on-invitation')
@@ -441,10 +456,18 @@ export class SignupComponent implements OnInit, AfterViewInit {
           window['tiledesk_widget_login']();
         }
 
-        if (self.SKIP_WIZARD === false) {
-          self.router.navigate(['/create-project']);
+        console.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
+        console.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
+
+        if (!self.EXIST_STORED_ROUTE) {
+          if (self.SKIP_WIZARD === false) {
+            self.router.navigate(['/create-project']);
+          } else {
+            self.router.navigate(['/projects']);
+          }
         } else {
-          self.router.navigate(['/projects']);
+          // self.localDbService.removeFromStorage('wannago')
+          self.router.navigate([self.storedRoute]);
         }
 
       } else {

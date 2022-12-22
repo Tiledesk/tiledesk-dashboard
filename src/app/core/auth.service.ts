@@ -58,6 +58,7 @@ export class AuthService {
   public settingSidebarIsOpned: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
   public nativeBotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public tilebotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  public botsSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public isChromeVerGreaterThan100: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   show_ExpiredSessionPopup: boolean
 
@@ -236,7 +237,7 @@ export class AuthService {
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project) {
     // PUBLISH THE project
-    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED ', project)
+    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED ', project)
 
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
@@ -257,6 +258,8 @@ export class AuthService {
     this.tilebotSidebarIsOpened.next(isopened)
     // console.log('[AUTH-SERV] - TOGGLE NATIVE BOT SIDEBAR IS OPENED ', isopened)
   }
+
+
   /**
    * // REPLACE getProjectFromLocalStorage()
    * IF THE PROJECT RETURNED FROM THE project_bs SUBSCRIPTION IS NULL
@@ -318,6 +321,10 @@ export class AuthService {
               url_segments[1] !== 'signup-on-invitation' &&
               url_segments[1] !== 'resetpassword' &&
               url_segments[1] !== 'autologin' &&
+              url_segments[1] !== 'get-chatbot' &&
+              url_segments[1] !== 'install-template' &&
+              url_segments[1] !== 'create-project-itw' &&
+              url_segments[1] !== 'install-template-np' &&
               current_url !== '/projects'
             ) {
               this.logger.log(

@@ -18,6 +18,8 @@ export class FaqKbService {
   user: any;
   project: any;
   public $nativeBotName: BehaviorSubject<string> = new BehaviorSubject<string>('')
+
+
   constructor(
     private auth: AuthService,
     public appConfigService: AppConfigService,
@@ -69,8 +71,6 @@ export class FaqKbService {
     });
   }
 
- 
-
   checkIfExistUserAndGetToken() {
     if (this.user) {
       this.TOKEN = this.user.token
@@ -82,6 +82,7 @@ export class FaqKbService {
   }
 
 
+
   getTemplates() {
     // 'Authorization': this.TOKEN
     const httpOptions = {
@@ -90,8 +91,13 @@ export class FaqKbService {
       })
     };
     const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/"
+<<<<<<< HEAD
     
     // console.log('[GET-TMPLT][FAQ-KB.SERV] - GET-TMPLT - URL ', url);
+=======
+
+    console.log('[GET-TMPLT][FAQ-KB.SERV] - GET-TMPLT - URL ', url);
+>>>>>>> features/bot-templates
 
     // const body = { 'name': name, 'type': bottype, 'description': description, 'id_project': this.project._id, };
     // this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
@@ -100,23 +106,45 @@ export class FaqKbService {
       .get(url, httpOptions)
   }
 
-  installTemplate (botid) {
-
+  getTemplateById(botid) {
+    // 'Authorization': this.TOKEN
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
       })
     };
+    const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/" + botid
 
-    const url = this.SERVER_BASE_PATH + "modules/tilebot/ext/" + botid;
-    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
+    console.log('[GET-TMPLT][FAQ-KB.SERV] - GET-TMPLT BY ID - URL ', url);
 
     // const body = { 'name': name, 'type': bottype, 'description': description, 'id_project': this.project._id, };
     // this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 
     return this._httpClient
       .get(url, httpOptions)
+  }
+
+  installTemplate(botid, projectid) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    console.log('[BOT-CREATE][FAQ-KB.SERV] -  FORK - BOT ID ', botid);
+    // / (dovrebbe funzionare anche con POST ../PROJECT_ID/bots/fork/ID_FAQ_FB/)
+    // const url = this.SERVER_BASE_PATH + "635b97cc7d7275001a2ab3e0/bots/fork/" + botid;
+    const url = this.SERVER_BASE_PATH + projectid + "/faq_kb/fork/" + botid + "?public=true&projectid=" + projectid;
+
+
+
+    console.log('[BOT-CREATE][FAQ-KB.SERV] - FORK - URL ', url);
+
+    // const body = { 'name': name, 'type': bottype, 'description': description, 'id_project': this.project._id, };
+    // this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
+
+    return this._httpClient
+      .post(url, null, httpOptions)
 
   }
   /**

@@ -1,0 +1,198 @@
+<!-- <div class="toggle-setting-sidebar-icon-wpr" [ngClass]="{'is_opened': IS_OPEN, 'is_closed':!IS_OPEN }"
+  (click)="toggletBotsSidebar(IS_OPEN = !IS_OPEN)">
+  <span *ngIf="IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
+    chevron_left
+  </span>
+  <span *ngIf="!IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
+    chevron_right
+  </span>
+</div> -->
+<!-- class="settings-sidebar" -->
+<ul class="settings-sidebar" style="padding-left: 0px;list-style: none;width: 216px; padding-right: 8px; padding-left: 3px;">
+
+  <!-- -------------------------------------------------------- -->
+  <!--  @ My Chatbots  -->
+  <!-- -------------------------------------------------------- -->
+  <ng-container *ngIf="USER_ROLE !== 'agent'">
+    <li class="sidebar-item-wpr-no-link">
+      <a class="sidebar-item-no-link">
+
+        MY CHATBOTS
+        <!-- <p *ngIf="IS_OPEN === true" class="custom_paragraph" style="text-align: center;
+          font-size: 12px;">
+          MY CHATBOTS
+        </p> -->
+
+      </a>
+    </li>
+
+    
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_MYCHATBOT_INCREASE_SALES_ROUTE_IS_ACTIVE}"
+      (click)="goToBotIncreaseSalesBots()">
+      <a class="sidebar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="#647491"
+          style="margin-right: 8px;">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" /></svg>
+
+        Increase Sales
+        <span class="sidebar-item-s">{{ increaseSalesBotsCount }}</span>
+      </a>
+    </li>
+
+    <!-- [ngClass]="{'active-item': BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE}" -->
+    <li class="sidebar-item-wpr"  [ngClass]="{'active-item': BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE}"
+      (click)="goToBotCustomerSatisfactionBots()">
+      <a class="sidebar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px" viewBox="0 0 24 24"
+          width="16px" fill="#647491" style="margin-right: 8px;">
+          <g>
+            <rect fill="none" height="24" width="24" />
+          </g>
+          <g>
+            <g />
+            <path
+              d="M11.99,2C6.47,2,2,6.48,2,12c0,5.52,4.47,10,9.99,10C17.52,22,22,17.52,22,12C22,6.48,17.52,2,11.99,2z M8.5,8 C9.33,8,10,8.67,10,9.5S9.33,11,8.5,11S7,10.33,7,9.5S7.67,8,8.5,8z M12,18c-2.28,0-4.22-1.66-5-4h10C16.22,16.34,14.28,18,12,18z M15.5,11c-0.83,0-1.5-0.67-1.5-1.5S14.67,8,15.5,8S17,8.67,17,9.5S16.33,11,15.5,11z" />
+          </g>
+        </svg>
+
+          Customer Satisfaction
+        <span class="sidebar-item-s">{{ customerSatisfactionBotsCount }}</span>
+      </a>
+    </li>
+
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE}"
+      (click)="goToOtherMyChatbotOther()">
+      <a class="sidebar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104 104"
+          style="height: 21px; margin-left: -2px;margin-right: 5px;">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #647491;
+              }
+
+              .cls-2 {
+                fill: none;
+              }
+            </style>
+          </defs>
+          <title>ic_widget_bot_gray_03</title>
+          <g id="Livello_1" data-name="Livello 1">
+            <circle class="cls-1" cx="41.6" cy="41.9" r="3" />
+            <circle class="cls-1" cx="61.9" cy="41.9" r="3" />
+            <path class="cls-1" d="M61.5,87.5H42.4a9.8,9.8,0,0,0,9,7.2h1.1A9.8,9.8,0,0,0,61.5,87.5Z" />
+            <path class="cls-1"
+              d="M55.9,13.2a4,4,0,0,0-4-3.9A3.9,3.9,0,0,0,48,13.2a4.2,4.2,0,0,0,1.9,3.5v4.4h4V16.7A4,4,0,0,0,55.9,13.2Z" />
+            <path class="cls-1"
+              d="M81.8,77.9V59.2a6,6,0,0,0-6-5.9h-.1V45.9h0a23.8,23.8,0,0,0-47.5,0h0v7.4a6,6,0,0,0-6,5.9V77.9A4,4,0,0,0,20.3,82a4,4,0,0,0,3.4,3.3,4.1,4.1,0,0,0,4.5-4,4,4,0,0,0-2-3.4V66H27a1.2,1.2,0,0,1,1.2,1.1v5.3A13.4,13.4,0,0,0,41.5,85.8H62.3A13.4,13.4,0,0,0,75.7,72.4V67.1A1.1,1.1,0,0,1,76.8,66h1V77.9A4,4,0,0,0,75.9,82a4,4,0,0,0,3.4,3.3,4.1,4.1,0,0,0,4.5-4A4,4,0,0,0,81.8,77.9ZM56.6,62a2,2,0,1,1,2-2A2,2,0,0,1,56.6,62Zm4.9,0a2,2,0,1,1,2-2A2,2,0,0,1,61.5,62ZM39.9,49a4.1,4.1,0,0,1-4.1-4.1V43.8A13.9,13.9,0,0,1,49.6,29.9h4.6A14,14,0,0,1,68.1,43.8v1.1A4.2,4.2,0,0,1,64,49ZM66.3,62a2,2,0,1,1,2-2A2,2,0,0,1,66.3,62Z" />
+            <rect class="cls-2" width="104" height="104" />
+          </g>
+        </svg>
+
+        All
+        <span class="sidebar-item-s">{{ myChatbotOtherCount }}</span>
+      </a>
+    </li>
+
+  </ng-container>
+
+  <!-- ------------------------------------------------------- -->
+  <!-- @ Template -->
+  <!-- ------------------------------------------------------- -->
+  <ng-container *ngIf="USER_ROLE !== 'agent'">
+    <li class="sidebar-item-wpr-no-link" style="margin-top: 16px;">
+      <a class="sidebar-item-no-link">
+        TEMPLATES
+
+      </a>
+    </li>
+
+
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE}"
+      (click)="goToBotAllTemplates()">
+
+      <a class="sidebar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="#647491" style="margin-right: 8px;">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M14 2H4c-1.11 0-2 .9-2 2v10h2V4h10V2zm4 4H8c-1.11 0-2 .9-2 2v10h2V8h10V6zm2 4h-8c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h8c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2z" />
+        </svg>
+        All
+        <span class="sidebar-item-s">{{ allTemplatesCount }}</span>
+      </a>
+
+    </li>
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE}"
+      (click)="goToBotIncreaseSalesTemplates()">
+      <a class="sidebar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="#647491"
+          style="margin-right: 8px;">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" /></svg>
+
+        Increase Sales
+        <span class="sidebar-item-s">{{ increaseSalesTemplatesCount }}</span>
+      </a>
+
+    </li>
+
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE}"
+      (click)="goToBotCustomerSatisfactionTemplates()">
+      <a class="sidebar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px" viewBox="0 0 24 24"
+          width="16px" fill="#647491" style="margin-right: 8px;">
+          <g>
+            <rect fill="none" height="24" width="24" />
+          </g>
+          <g>
+            <g />
+            <path
+              d="M11.99,2C6.47,2,2,6.48,2,12c0,5.52,4.47,10,9.99,10C17.52,22,22,17.52,22,12C22,6.48,17.52,2,11.99,2z M8.5,8 C9.33,8,10,8.67,10,9.5S9.33,11,8.5,11S7,10.33,7,9.5S7.67,8,8.5,8z M12,18c-2.28,0-4.22-1.66-5-4h10C16.22,16.34,14.28,18,12,18z M15.5,11c-0.83,0-1.5-0.67-1.5-1.5S14.67,8,15.5,8S17,8.67,17,9.5S16.33,11,15.5,11z" />
+          </g>
+        </svg>
+
+        Customer Satisfaction
+        <span class="sidebar-item-s">{{ customerSatisfactionTemplatesCount }}</span>
+      </a>
+
+    </li>
+  </ng-container>
+
+  <!-- ------------------------------------------------------- -->
+  <!-- @ Bot Fulfillment-->
+  <!-- ------------------------------------------------------- -->
+  <!-- <ng-container>
+      <li [ngClass]="{'active-item': FULFILLMENT_ROUTE_IS_ACTIVE }" (click)="goToTilebotfulfillment()"
+        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Fulfillment" #tooltip="matTooltip"
+        matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+        <a>
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+            offline_bolt
+          </i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+            Fulfillment
+          </p>
+        </a>
+      </li>
+    </ng-container> -->
+
+  <!-- ------------------------------------------------------- -->
+  <!-- Bot Training -->
+  <!-- ------------------------------------------------------- -->
+  <!-- <ng-container>
+      <li [ngClass]="{'active-item': TRAINING_ROUTE_IS_ACTIVE}" (click)="goToBotTraining()"
+        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'Training' | translate}}"
+        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+        <a>
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+            school
+          </i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+            {{'Training' | translate}}
+          </p>
+        </a>
+      </li>
+    </ng-container> -->
+
+</ul>

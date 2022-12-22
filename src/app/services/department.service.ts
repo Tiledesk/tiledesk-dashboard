@@ -150,6 +150,21 @@ export class DepartmentService {
       .get<Department[]>(url, httpOptions)
   }
 
+  public getDeptsByProjectIdToHookTemplates(projectid): Observable<Department[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    // const url = this.DEPTS_URL + 'allstatus';
+    const url = this.SERVER_BASE_PATH + projectid + '/departments/';
+    this.logger.log('[DEPTS-SERV] GET DEPTS ALL STATUS - DEPTS URL', url);
+    return this.httpClient
+      .get<Department[]>(url, httpOptions)
+  }
+
   public getDeptsByProjectIdToPromise(): any {
     const httpOptions = {
       headers: new HttpHeaders({

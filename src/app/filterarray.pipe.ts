@@ -22,10 +22,6 @@ export class FilterArrayPipe implements PipeTransform {
 
             return array.filter((item: any) => !item.type)
         }
-        // args = args.toLowerCase();
-
-        // return value.filter(function(item){
-        //     return JSON.stringify(item).toLowerCase().includes(args);
-        // });
+    
     }
 }

@@ -2,13 +2,16 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 // import { slideInAnimation } from '../../_animations/index';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import moment from 'moment';
+import { tranlatedLanguage } from 'app/utils/util';
+import { TranslateService } from '@ngx-translate/core';
+import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 
 @Component({
   selector: 'appdashboard-create-project',
@@ -19,7 +22,7 @@ import moment from 'moment';
 })
 
 
-export class CreateProjectComponent implements OnInit {
+export class CreateProjectComponent extends WidgetSetUpBaseComponent implements OnInit {
   // company_logo_in_spinner = brand.wizard_create_project_page.company_logo_in_spinner; // no more used - removed from brand
   // logo_x_rocket = brand.wizard_create_project_page.logo_x_rocket
   logo_x_rocket: string;
@@ -33,6 +36,12 @@ export class CreateProjectComponent implements OnInit {
   new_project: any;
   user: any;
   companyLogoBlack_Url: string;
+  CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION: boolean = false;
+
+  temp_SelectedLangName: string;
+  temp_SelectedLangCode: string;
+  botid: string;
+  browser_lang: string;
 
   constructor(
     private projectService: ProjectService,
@@ -40,11 +49,15 @@ export class CreateProjectComponent implements OnInit {
     private router: Router,
     public location: Location,
     public brandService: BrandService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private route: ActivatedRoute,
+    public translate: TranslateService,
   ) {
+    super(translate);
     const brand = brandService.getBrand();
     this.logo_x_rocket = brand['wizard_create_project_page']['logo_x_rocket'];
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
+    this.botid = this.route.snapshot.params['botid'];
   }
 
   ngOnInit() {
@@ -65,12 +78,38 @@ export class CreateProjectComponent implements OnInit {
   }
 
   checkCurrentUrlAndHideCloseBtn() {
-    this.logger.log('[WIZARD - CREATE-PRJCT] this.router.url  ', this.router.url)
+    console.log('[WIZARD - CREATE-PRJCT] this.router.url  ', this.router.url)
+    if (this.router.url.startsWith('/create-project-itw/')) {
+      
+      this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = true
+      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
+      this.browser_lang = this.translate.getBrowserLang();
+      
+      if (tranlatedLanguage.includes(this.browser_lang)) {
+        const langName = this.getLanguageNameFromCode(this.browser_lang)
+        console.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
+       
+        this.temp_SelectedLangName = langName;
+        this.temp_SelectedLangCode = this.browser_lang
+      } else {
+      
+        // this.selectedTranslationLabel = 'en'
+        // ENGLISH ARE USED AS DEFAULT IF THE USER DOESN'T SELECT ANY OTHER ONE LANGUAGE
+        this.temp_SelectedLangName = 'English';
+        this.temp_SelectedLangCode = 'en'
+      }
 
-    if (this.router.url === '/create-project') {
+
+
+      
+    }  else if (this.router.url === '/create-project') {
       this.CLOSE_BTN_IS_HIDDEN = true;
-    } else {
+      this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
+      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
+    } else if (this.router.url === '/create-new-project') {
       this.CLOSE_BTN_IS_HIDDEN = false;
+      this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false
+      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
     }
   }
 
@@ -228,8 +267,22 @@ export class CreateProjectComponent implements OnInit {
     });
   }
 
-  continueToConfigureScript() {
+  continueToNextStep() {
+    if (this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION === false) {
+      this.goToConfigureWidget()
+      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION',  this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION, ' - goToConfigureWidget') 
+    } else {
+      this.goToInstallTemplate()
+      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION',  this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION, ' - goToInstallTemplate') 
+    }
+  }
+
+  goToConfigureWidget() {
     this.router.navigate([`/project/${this.id_project}/configure-widget`]);
+  }
+
+  goToInstallTemplate() {
+    this.router.navigate([`install-template-np/${this.botid}/${this.id_project}` + '/' + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
   }
 
 }

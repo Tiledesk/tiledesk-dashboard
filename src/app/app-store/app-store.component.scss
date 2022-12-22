@@ -3,6 +3,11 @@
     height: 50px;
 }
 
+.app-icon svg {
+    width: auto;
+    height: 50px;
+}
+
 .card-app-store {
     box-shadow: unset;
     border: 1px solid #e5effe;
@@ -129,7 +134,7 @@
     background-color: #2d323e !important;
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: "Poppins","Roboto", "Arial", sans-serif !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
 }
@@ -138,4 +143,44 @@
 .div-disabled {
     pointer-events:none;
     background: #eee;
+}
+.card-create-app-icon-wpr {
+    color: #f0806f;
+    text-align: center;
+    padding-top: 25px;
+}
+
+.card-create-app-text {
+    color: #f0806f;
+    text-align: center;
+    margin-bottom: 15px;
+    font-family: "Poppins", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+}
+
+.create-app-card {
+    cursor: pointer;
+}
+
+.create-app-card:hover {
+    box-shadow: 0 7px 8px -4px rgb(0 0 0 / 20%), 0 12px 17px 2px rgb(0 0 0 / 14%), 0 5px 22px 4px rgb(0 0 0 / 12%) !important;
+}
+
+.section-title {
+    width: 100%;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 42px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 18px;
+    font-size: 18px;
+    line-height: 23px;
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid rgb(239, 242, 246);
+    color: #080f1a;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }

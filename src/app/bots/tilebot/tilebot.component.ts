@@ -27,7 +27,7 @@ import {
   URL_handoff_to_human_agents,
   URL_configure_your_first_chatbot,
   URL_dialogflow_connector,
-  avatarPlaceholder, 
+  avatarPlaceholder,
   getColorBck
 } from '../../utils/util';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -39,7 +39,7 @@ const swal = require('sweetalert');
 })
 export class TilebotComponent extends BotsBaseComponent implements OnInit {
   @ViewChild('editbotbtn', { static: false }) private elementRef: ElementRef;
-
+  @ViewChild('filechangeuploadCSV', { static: false }) private filechangeuploadCSV: ElementRef;
   faq: Faq[];
   question: string;
   answer: string;
@@ -179,6 +179,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   public TRAINING_ROUTE_IS_ACTIVE: boolean = false
   isChromeVerGreaterThan100: boolean;
   thereHasBeenAnErrorProcessing: string;
+  displayImportJSONModal = 'none'
   @ViewChild('fileInputBotProfileImage', { static: false }) fileInputBotProfileImage: any;
 
   constructor(
@@ -223,11 +224,6 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     this.getBrowserVersion()
 
   }
-
-
-
-
-
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -348,6 +344,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       this.logger.error('[TILEBOT] - EXPORT BOT TO JSON - ERROR', error);
     }, () => {
       this.logger.log('[TILEBOT] - EXPORT BOT TO JSON - COMPLETE');
+
     });
   }
 
@@ -362,9 +359,10 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
   // --------------------------------------------------------------------------
-  // @ Import chatbot from json
+  // @ Import chatbot from json ! NOT USED
   // --------------------------------------------------------------------------
-  fileChangeUploadChatbotFromJSON(event){
+  fileChangeUploadChatbotFromJSON(event) {
+
     this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event ', event);
     let fileJsonToUpload = ''
     // console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
@@ -395,28 +393,27 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   // --------------------------------------------------------------------------
   // @ Import Itents from JSON
   // --------------------------------------------------------------------------
-  fileChangeUploadIntentsFromJSON(event) {
-    this.logger.log('[TILEBOT] - fileChangeUploadJSON $event ', event);
-    // let fileJsonToUpload = ''
-    // console.log('[TILEBOT] - fileChangeUploadJSON $event  target', event.target);
-    // const selectedFile = event.target.files[0];
-    // const fileReader = new FileReader();
-    // fileReader.readAsText(selectedFile, "UTF-8");
-    // fileReader.onload = () => {
-    //   fileJsonToUpload = JSON.parse(fileReader.result as string)
-    //   console.log('fileJsonToUpload intents', fileJsonToUpload);
-    // }
-    // fileReader.onerror = (error) => {
-    //   console.log(error);
-    // }
+  presentModalImportIntentsFromJson() {
+    this.displayImportJSONModal = "block"
+  }
+
+  onCloseImportJSONModal() {
+    this.displayImportJSONModal = "none"
+  }
+
+
+
+  fileChangeUploadIntentsFromJSON(event, action) {
+    console.log('[TILEBOT] - fileChangeUploadJSON event ', event);
+    console.log('[TILEBOT] - fileChangeUploadJSON action ', action);
     const fileList: FileList = event.target.files;
     const file: File = fileList[0];
     const formData: FormData = new FormData();
     formData.set('id_faq_kb', this.id_faq_kb);
     formData.append('uploadFile', file, file.name);
     this.logger.log('FORM DATA ', formData)
-   
-    this.faqService.importIntentsFromJSON(this.id_faq_kb, formData).subscribe((res: any) => {
+
+    this.faqService.importIntentsFromJSON(this.id_faq_kb, formData ,action).subscribe((res: any) => {
       this.logger.log('[TILEBOT] - IMPORT INTENTS FROM JSON - ', res)
 
     }, (error) => {
@@ -424,13 +421,18 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
       this.notify.showWidgetStyleUpdateNotification("thereHasBeenAnErrorProcessing", 4, 'report_problem');
     }, () => {
-      this.logger.log('[TILEBOT] - IMPORT INTENTS FROM JSON - COMPLETE');
+      console.log('[TILEBOT] - IMPORT INTENTS FROM JSON - * COMPLETE *');
+      this.notify.showWidgetStyleUpdateNotification("File was uploaded succesfully", 2, 'done');
+
+      this.onCloseImportJSONModal();
+      
     });
   }
 
 
 
-  
+
+
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
     this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
@@ -729,11 +731,10 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       icon: "success",
       button: "OK",
       dangerMode: false,
+    }).then((WillUpdated) => {
+      this.getDeptsByProjectId()
+      this.depts_without_bot_array = []
     })
-      .then((WillUpdated) => {
-        this.getDeptsByProjectId()
-        this.depts_without_bot_array = []
-      })
   }
 
   // ---------------------------------------------------
@@ -1054,7 +1055,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     this.showSpinnerInUpdateBotCard = true
 
     this.faqKbService.getFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
-      this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      console.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
       this.faq_kb_remoteKey = faqkb.kbkey_remote
       this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
@@ -1160,7 +1161,8 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['project/' + this.project._id + '/bots']);
+    // this.router.navigate(['project/' + this.project._id + '/bots']);
+    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
   }
 
   // ----------------------------------------------------------------
@@ -1456,8 +1458,8 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
   onCloseInfoModalHandledSuccess() {
     this.logger.log('[TILEBOT] onCloseInfoModalHandledSuccess')
-    this.displayInfoModal = 'none';
-    this.ngOnInit();
+    // this.displayInfoModal = 'none';
+    // this.ngOnInit();
   }
   onCloseInfoModalHandledError() {
     this.logger.log('[TILEBOT] onCloseInfoModalHandledError')
@@ -1480,7 +1482,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   // UPLOAD FAQ FROM CSV
   fileChangeUploadCSV(event) {
     this.displayImportModal = 'none';
-    this.displayInfoModal = 'block';
+    // this.displayInfoModal = 'block';
 
     this.SHOW_CIRCULAR_SPINNER = true;
 
@@ -1508,10 +1510,13 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
           this.logger.error('[TILEBOT] UPLOAD CSV - ERROR ', error);
           this.SHOW_CIRCULAR_SPINNER = false;
         }, () => {
-          this.logger.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
-          setTimeout(() => {
-            this.SHOW_CIRCULAR_SPINNER = false
-          }, 300);
+          console.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
+          // setTimeout(() => {
+          // this.SHOW_CIRCULAR_SPINNER = false
+          this.filechangeuploadCSV.nativeElement.value = '';
+          this.displayImportModal = 'none';
+          this.notify.showWidgetStyleUpdateNotification("File was uploaded succesfully", 2, 'done');
+          // }, 300);
         });
 
     }
