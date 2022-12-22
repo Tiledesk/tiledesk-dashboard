@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.3.9
+- Deploys in production
+- Adds chatbot templates
+- Fixes bugs related to form builder on the chatbot details page > Edit Intent
+- Externalizes the "baseImageUrl" variable in the environments
+- Disables the installation of the "Whatsapp app with Twilio" on the app store page
+
 ### 2.3.9-rc5
 - Adds chatbot templates
 
