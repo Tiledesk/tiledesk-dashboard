@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PanelIntentToolsComponent } from './panel-intent-tools.component';
+import { PanelReplyToolsComponent } from './panel-reply-tools.component';
 
 describe('ToolsComponent', () => {
-  let component: PanelIntentToolsComponent;
-  let fixture: ComponentFixture<PanelIntentToolsComponent>;
+  let component: PanelReplyToolsComponent;
+  let fixture: ComponentFixture<PanelReplyToolsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PanelIntentToolsComponent ]
+      declarations: [ PanelReplyToolsComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PanelIntentToolsComponent);
+    fixture = TestBed.createComponent(PanelReplyToolsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

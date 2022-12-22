@@ -2,7 +2,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { Button } from 'app/models/intent-model';
 
-import { TYPE_BUTTON, TYPE_URL, classCardButtonNoClose } from '../../../utils';
+import { TYPE_BUTTON, TYPE_URL, classCardButtonNoClose } from '../../../../utils';
 
 @Component({
   selector: 'appdashboard-panel-button-configuration',

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Metadata } from '../../../../../../models/intent-model';
-import { MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT } from '../../../../../utils';
+import { Metadata } from '../../../../../../../models/intent-model';
+import { MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT } from '../../../../../../utils';
 
 @Component({
   selector: 'appdashboard-image-panel',

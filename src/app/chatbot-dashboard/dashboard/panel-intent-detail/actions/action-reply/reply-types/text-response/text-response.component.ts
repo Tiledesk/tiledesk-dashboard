@@ -1,9 +1,9 @@
 
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Message, Button } from '../../../../../../models/intent-model';
+import { Message, Button } from '../../../../../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../utils';
+import { TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
 
 @Component({
   selector: 'appdashboard-text-response',

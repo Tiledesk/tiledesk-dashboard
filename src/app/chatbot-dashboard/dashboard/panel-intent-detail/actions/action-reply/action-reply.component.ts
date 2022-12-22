@@ -1,14 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Intent, Command } from '../../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TYPE_COMMAND, TYPE_RESPONSE, TIME_WAIT_DEFAULT, TYPE_MESSAGE } from '../../../utils';
+import { Intent, Command } from '../../../../../models/intent-model';
+import { TYPE_COMMAND, TYPE_RESPONSE, TIME_WAIT_DEFAULT, TYPE_MESSAGE } from '../../../../utils';
 
 @Component({
-  selector: 'appdashboard-panel-response',
-  templateUrl: './panel-response.component.html',
-  styleUrls: ['./panel-response.component.scss']
+  selector: 'appdashboard-action-reply',
+  templateUrl: './action-reply.component.html',
+  styleUrls: ['./action-reply.component.scss']
 })
-export class PanelResponseComponent implements OnInit {
+export class ActionReplyComponent implements OnInit {
   @Output() openButtonPanel = new EventEmitter();
   @Output() saveIntent = new EventEmitter();
   @Input() intent: Intent;

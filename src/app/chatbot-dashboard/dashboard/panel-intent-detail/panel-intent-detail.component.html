@@ -3,17 +3,19 @@
 
 <div *ngIf = "typeIntentElementSelected === typeIntentElement.RESPONSE">
     
-    <appdashboard-panel-response
+    <appdashboard-action-reply
         class="panel-response"
         [intent]="intentSelected"
         [showSpinner] = "showSpinner"
         (openButtonPanel) = onOpenButtonPanel($event)
-    ></appdashboard-panel-response>
+    ></appdashboard-action-reply>
 
-    <appdashboard-panel-intent-tools
+    <appdashboard-panel-reply-tools
         class="panel-tools-response"
         (addNewResponse) = onAddNewResponse($event)
-    ></appdashboard-panel-intent-tools>
+    ></appdashboard-panel-reply-tools>
+
+
 
 </div>
     
@@ -29,6 +31,10 @@
 </div>
         
  
+
+
+
+
 
 <div class="card-buttons" 
     *ngIf="openCardButton"
