@@ -31,12 +31,11 @@
                         </div>
                         <div class="template-cards-wpr">
                             <div class="template-cards">
-
-                                <!-- <div class="cards"> -->
-
-                                <div class="t-card">
-
-
+                                
+                                <!-- ---------------------------------------------- -->
+                                <!-- @ New card -->
+                                <!-- ---------------------------------------------- -->
+                                <div style="display: none;" class="t-card">
                                     <div style="padding: 26px;
                                         color: #3c4858;">
                                         <div>
@@ -49,7 +48,11 @@
                                             changing passwords or displaying product prices.
                                         </span>
 
-                                        
+                                        <span aria-label="tag" class="template-tag"
+                                            style="color: rgb(0, 73, 189); background-color: rgb(220, 233, 255); width: fit-content; margin-top: 10px;" >
+                                            <p weight="normal" class="template-tag-name">
+                                                Self-serve </p>
+                                        </span>
                                     </div>
 
                                     <div class="card__overlay">
@@ -61,22 +64,19 @@
                                                 src="https://tiledesk.com/wp-content/uploads/2022/11/IVR-Menu.png"
                                                 alt="" /> -->
                                             <div class="card__header-text template-card-title">
-                                                <h3 class="card__title"> Dean for Quick Replies </h3>
+                                                <h3 class="card__title">
+                                                    Tommy for Customer Service </h3>
                                                 <!-- <span class="card__status">1 hour ago</span> -->
                                             </div>
                                         </div>
                                         <div class="card__description">
-
                                             <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
                                                 (click)="openDialog(template)">
                                                 <span>Use template</span>
                                             </button>
-
                                         </div>
                                     </div>
                                 </div>
-                                <!-- </div> -->
-
 
                                 <div class="template-card" *ngFor="let template of templates">
                                     <!-- <svg aria-hidden="true" focusable="false"
