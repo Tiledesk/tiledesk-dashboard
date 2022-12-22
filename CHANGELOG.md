@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.3.9.1
+### 2.3.10
 - Fixes the bugs: In the Import/Export tab available on the Intents detail page the "Import intents from JSON file" button is duplicated
 
 ### 2.3.9
