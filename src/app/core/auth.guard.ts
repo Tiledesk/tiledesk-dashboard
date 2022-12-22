@@ -104,15 +104,14 @@ export class AuthGuard implements CanActivate {
     this.subscription = this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         const current_url = e.url
-        // if (this.location.path() !== '') {
-        // const current_url = this.location.path()
-        console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
+  
+        // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
 
         const url_segments = current_url.split('/');
-        console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS ', url_segments);
+        // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS ', url_segments);
 
         this.nav_project_id = url_segments[2];
-        console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
+        // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
 
 
         /**
@@ -332,107 +331,76 @@ export class AuthGuard implements CanActivate {
   // canActivate SSO 
   // ------------------------------------------------------------------------
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE AlwaysAuthGuard');
-    console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE user ', this.user);
+    // console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE AlwaysAuthGuard');
+    // console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE user ', this.user);
 
-    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE next ', next);
-    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
+    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE next ', next);
+    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
     const url = state.url;
     const _url = next['_routerState'].url
-    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state url  ', url);
-    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE next _url  ', _url);
+    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state url  ', url);
+    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE next _url  ', _url);
 
     // ----------------------------------------
     // Check if a wannaurl is stored and remove it when the _decodeCurrentUrl is equal to it
     // ----------------------------------------
     const decodeCurrentUrl = decodeURIComponent(url)
-    console.log('[AUTH-GUARD] _decodeCurrentUrl ', decodeCurrentUrl)
+    // console.log('[AUTH-GUARD] _decodeCurrentUrl ', decodeCurrentUrl)
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
-    console.log('[AUTH-GUARD] storedRoute ', storedRoute)
+    // console.log('[AUTH-GUARD] storedRoute ', storedRoute)
 
     if (decodeCurrentUrl === storedRoute ) { 
       this.localDbService.removeFromStorage('wannago')
-      console.log('Hey baby - I removes the wannago stored url')
+      // console.log('Hey baby - I removes the wannago stored url')
     }
-
-
 
     // ----------------------------------------
     // Check if the url has the JWT token
     // ----------------------------------------
     const route = url.substring(0, url.indexOf('?token='));
-    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE route in url ', route);
+    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE route in url ', route);
     let queryParams = next.queryParams
     // this.logger.log('SSO - CAN ACTIVATE queryParams ', queryParams);
 
     let stringifed_queryParams = JSON.stringify(queryParams)
-    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams stringified', stringifed_queryParams);
+    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams stringified', stringifed_queryParams);
 
     const HAS_JWT = stringifed_queryParams.includes('JWT');
-    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
+    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
 
     let token = next.queryParams.token
-    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT Token ', token);
+    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT Token ', token);
 
-
-    // tslint:disable-next-line:max-line-length
     if ((this.user && !HAS_JWT) ||
       (this.is_verify_email_page === true) ||
       (this.is_signup_page === true) ||
       (this.is_reset_psw_page === true) ||
       (this.is_handleinvitation_page === true) ||
       (this.is_signup_on_invitation_page === true)) {
-      console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
-      // if (url.startsWith('/get-chatbot')) {
-      // const URLtoStore = url.split('?')[0];
-      // const URLtoStore = url;
-      // const URLQueryString = url.split('?')[1];
-      // let URLQueryStringToStore = ''
-      // if (URLQueryString) {
-      //   URLQueryStringToStore = URLQueryString.replace('tn=', '');
-      // }
-      // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore ', URLtoStore);
-      // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLQueryString ', URLQueryString);
-      // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLQueryStringToStore ', URLQueryStringToStore);
-      // this.localDbService.setInStorage('wannago', URLtoStore)
-      // this.localDbService.setInStorage('wannagoqs', URLQueryStringToStore)
-      // }
+    
       return true;
-      // if ((!this.user) || (this.is_verify_email_page === false))
+   
     } else {
 
       if (!HAS_JWT) {
         this.router.navigate(['/login']);
-        console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
-        console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
+        // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
+        // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
         const storedRoute = this.localDbService.getFromStorage('wannago')
-        console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url storedRoute', storedRoute);
+        // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url storedRoute', storedRoute);
 
         if (!storedRoute) {
-          // const URLtoStore = url.split('?')[0];
-          const URLtoStore = url
-          // const URLQueryString = url.split('?')[1];
-          // let URLQueryStringToStore = ''
-          // if (URLQueryString) {
-          //   URLQueryStringToStore = URLQueryString.replace('tn=', '');
-          // }
-          console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore', URLtoStore);
-          // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLQueryString ', URLQueryString);
-          // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLQueryStringToStore ', URLQueryStringToStore);
-          this.localDbService.setInStorage('wannago', URLtoStore)
-          // this.localDbService.setInStorage('wannagoqs', URLQueryStringToStore)
+          const URLtoStore = url;
+          // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore', URLtoStore);
+          this.localDbService.setInStorage('wannago', URLtoStore);
         }
       } else {
-        console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
+        // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
         this.router.navigate(['/autologin', route, token]);
         return false;
       }
     }
-    // else if ((this.is_verify_email_page === false)) {
-    //   this.router.navigate(['verify/email/']);
-    //   return false;
-    // }
   }
 
   // ------------------------------------------------------------------------
@@ -441,7 +409,6 @@ export class AuthGuard implements CanActivate {
   _canActivate() {
     this.logger.log('!! AUTH WF in auth.guard - CAN ACTIVATE AlwaysAuthGuard');
 
-    // tslint:disable-next-line:max-line-length
     if ((this.user) ||
       (this.is_verify_email_page === true) ||
       (this.is_signup_page === true) ||
@@ -450,19 +417,13 @@ export class AuthGuard implements CanActivate {
       (this.is_signup_on_invitation_page === true)) {
       // this.router.navigate(['/home']);
       return true;
-      // if ((!this.user) || (this.is_verify_email_page === false))
+      
     } else {
-      // tslint:disable-next-line:no-debugger
-      // debugger
+  
       this.router.navigate(['/login']);
       return false;
     }
-    // else if ((this.is_verify_email_page === false)) {
-    //   this.router.navigate(['verify/email/']);
-    //   return false;
-    // }
   }
-
 
   // ------------------------------------
   // Already commented

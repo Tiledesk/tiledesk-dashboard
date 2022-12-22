@@ -127,7 +127,7 @@ export class BotListComponent implements OnInit {
 
       if (res) {
         const templates = res
-        console.log('[BOTS-LIST] - GET ALL TEMPLATES', templates);
+        // console.log('[BOTS-LIST] - GET ALL TEMPLATES', templates);
         this.allTemplatesCount = templates.length;
         this.logger.log('[BOTS-LIST] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
       
@@ -149,7 +149,7 @@ export class BotListComponent implements OnInit {
         const  increaseSalesTemplates = templates.filter((obj) => {
           return obj.mainCategory === "Increase Sales"
         });
-        console.log('[BOTS-LIST] - Increase Sales TEMPLATES', increaseSalesTemplates);
+        // console.log('[BOTS-LIST] - Increase Sales TEMPLATES', increaseSalesTemplates);
         if (increaseSalesTemplates ) {
           this.increaseSalesTemplatesCount = increaseSalesTemplates.length;
           this.logger.log('[BOTS-LIST] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
@@ -235,7 +235,7 @@ export class BotListComponent implements OnInit {
    */
   getAllFaqKbByProjectId() {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
-    console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+    // console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;

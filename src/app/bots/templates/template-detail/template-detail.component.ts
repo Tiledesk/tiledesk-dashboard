@@ -64,12 +64,12 @@ export class TemplateDetailComponent implements OnInit {
     private localDbService: LocalDbService,
     private botLocalDbService: BotLocalDbService,
   ) {
-    console.log('[TEMPLATE DETAIL] data ', data)
+    // console.log('[TEMPLATE DETAIL] data ', data)
     this.projectid = data.projectId
     this.template = data.template;
     this._newlyCreatedProject =  data.newlyCreatedProject
-    console.log('[TEMPLATE DETAIL] template ', this.template)
-    console.log('[TEMPLATE DETAIL] projectid ', this.projectid)
+    // console.log('[TEMPLATE DETAIL] template ', this.template)
+    // console.log('[TEMPLATE DETAIL] projectid ', this.projectid)
     if (this.template) {
       this.botname = this.template.name
       this.templateid = this.template._id
@@ -92,7 +92,7 @@ export class TemplateDetailComponent implements OnInit {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.project = project
-        console.log('[TEMPLATE DETAIL] project from AUTH service subscription ', this.project);
+        // console.log('[TEMPLATE DETAIL] project from AUTH service subscription ', this.project);
         this.projectId = project._id;
         this.projectName = project.name;
         this.getDeptsByProjectId()
@@ -103,7 +103,7 @@ export class TemplateDetailComponent implements OnInit {
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      console.log('[TEMPLATE DETAIL] - DEPTS RES ', departments);
+      // console.log('[TEMPLATE DETAIL] - DEPTS RES ', departments);
 
       if (departments && departments.length === 1) {
         this.defaultDeptID = departments[0]._id
@@ -120,17 +120,13 @@ export class TemplateDetailComponent implements OnInit {
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs
-
       .subscribe((user_role) => {
-
         if (user_role) {
           this.USER_ROLE = user_role
-          console.log('[TEMPLATE DETAIL] user_role ', user_role);
+          // console.log('[TEMPLATE DETAIL] user_role ', user_role);
         }
       });
   }
-
-
 
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
@@ -138,81 +134,57 @@ export class TemplateDetailComponent implements OnInit {
   }
 
   openTestSiteInPopupWindow() {
-    console.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
+    // console.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-    console.log('openTestSiteInPopupWindow testItOutBaseUrl' , testItOutBaseUrl )  
-    // const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + "6398930f39c57b0035f3025a" + '&tiledesk_participants=bot_' + "6398949939c57b0035f30c63" + "&tiledesk_singleConversation=true"
     const url = testItOutUrl + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=635b97cc7d7275001a2ab3e4"
-    console.log('openTestSiteInPopupWindow URL ', url) 
-    // const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&project_name=' + this.projectName + '&role=' + this.USER_ROLE + '&tiledesk_participants=bot_' +this.templateid + "&tiledesk_singleConversation=true"
+    // console.log('openTestSiteInPopupWindow URL ', url)
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
   }
 
-  // (dovrebbe funzionare anche con POST ../PROJECT_ID/bots/fork/ID_FAQ_FB/)
+ 
   forkTemplate() {
-    // this.displayInfoModal = 'block'
-    // this.SHOW_CIRCULAR_SPINNER = true;
-
-    console.log('[TEMPLATE DETAIL] - FORK TEMPLATE - TEMPLATE ID', this.templateid);
     this.faqKbService.installTemplate(this.templateid, this.projectid).subscribe((res: any) => {
-      console.log('[TEMPLATE DETAIL] - FORK TEMPLATE RES', res);
+      this.logger.log('[TEMPLATE DETAIL] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
-      // console.log('[BOTS-TEMPLATES] - FORK TEMPLATE RES - botid ',  this.botid);
-
+    
     }, (error) => {
-      console.error('[TEMPLATE DETAIL] FORK TEMPLATE - ERROR ', error);
+      this.logger.error('[TEMPLATE DETAIL] FORK TEMPLATE - ERROR ', error);
 
-      // this.SHOW_CIRCULAR_SPINNER = false;
-      // this.CREATE_BOT_ERROR = true;
     }, () => {
-      console.log('[TEMPLATE DETAIL] FORK TEMPLATE COMPLETE');
-
+      this.logger.log('[TEMPLATE DETAIL] FORK TEMPLATE COMPLETE');
       if (this._newlyCreatedProject) {
         this.hookBotToDept()
       }
-      // this.goToBotDtls(this.botid, 'tilebot', this.botname) 
-      // http://localhost:4200/#/project/625830e51976f200353fce7b/bots/intents/63959c3e7adf790035bbc4aa/native
-
-      // this.SHOW_CIRCULAR_SPINNER = false;
-      // this.CREATE_BOT_ERROR = false;
-      // this.router.navigate(['project/' + this.projectid + '/tilebot/general/', this.botid, 'tilebot']);
-      // this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
-      // this.closeDialog()
+    
       this.getFaqKbById(this.botid);
       this.goToBotDetails()
-      // const storedRoute = this.localDbService.getFromStorage('wannago')
-      // if (storedRoute) {
-      //   this.localDbService.removeFromStorage('wannago')
-      // }
+    
     });
   }
 
    hookBotToDept() {
     this.departmentService.updateExistingDeptWithSelectedBot(this.defaultDeptID, this.botid).subscribe((res) => {
-      console.log('[TEMPLATE DETAIL] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - RES ', res);
+      this.logger.log('[TEMPLATE DETAIL] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - RES ', res);
     }, (error) => {
-      console.error('[TEMPLATE DETAIL] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - ERROR ', error);
+      this.logger.error('[TEMPLATE DETAIL] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - ERROR ', error);
     }, () => {
-      console.log('[TEMPLATE DETAIL] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - COMPLETE ');
+      this.logger.log('[TEMPLATE DETAIL] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - COMPLETE ');
     });
   }
 
   getFaqKbById(botid) {
     this.faqKbService.getFaqKbById(botid).subscribe((faqkb: any) => {
-      console.log('[TEMPLATE DETAIL] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      this.logger.log('[TEMPLATE DETAIL] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
       this.botLocalDbService.saveBotsInStorage(botid, faqkb);
 
     }, (error) => {
       this.logger.error('[TEMPLATE DETAIL] GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
-
     }, () => {
       this.logger.log('[TEMPLATE DETAIL] GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
-
     });
-
   }
 
 

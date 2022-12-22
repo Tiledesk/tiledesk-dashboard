@@ -143,7 +143,7 @@ export class LocalDbService {
   }
 
   setInStorage(key, value) {
-    console.log('[local-db-service] setInStorage key', key , ' value: ', value)
+    // console.log('[local-db-service] setInStorage key', key , ' value: ', value)
     localStorage.setItem(this.prefix + key, value);
   }
 

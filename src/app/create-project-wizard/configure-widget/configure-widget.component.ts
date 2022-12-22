@@ -149,15 +149,11 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
 
   getProjectById() {
     this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
-      console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
-
+      // console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
       this.logger.log('[WIZARD - CONFIGURE-WIDGET] - PRJCT-WIDGET (onInit): ', project.widget);
 
       if (project.widget) {
         this.widgetObj = project.widget;
-
-
-
         // ------------------------------------------------------------------------
         // @ Logochat
         // case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
@@ -411,10 +407,10 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
 
   getALLDefaultTranslations() {
     this.browser_lang = this.translate.getBrowserLang();
-    console.log('[WIZARD - CONFIGURE-WIDGET] - browser_lang ', this.browser_lang)
+    // console.log('[WIZARD - CONFIGURE-WIDGET] - browser_lang ', this.browser_lang)
     if (tranlatedLanguage.includes(this.browser_lang)) {
       const langName = this.getLanguageNameFromCode(this.browser_lang)
-      console.log('[WIZARD - CONFIGURE-WIDGET] - langName ', langName)
+      // console.log('[WIZARD - CONFIGURE-WIDGET] - langName ', langName)
       this.selectedLang = langName
       this.temp_SelectedLangName = langName;
       this.temp_SelectedLangCode = this.browser_lang
@@ -508,10 +504,10 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
   }
 
   goToOnboardingInstallScript() {
-    console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE projectId', this.projectId)
+    // console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE projectId', this.projectId)
     this.router.navigate([`/project/${this.projectId}/install-widget/` + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
-    console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
-    console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
+    // console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
+    // console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
     // this.addNewLanguage();
   }
 

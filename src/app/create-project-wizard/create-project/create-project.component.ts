@@ -78,38 +78,34 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   }
 
   checkCurrentUrlAndHideCloseBtn() {
-    console.log('[WIZARD - CREATE-PRJCT] this.router.url  ', this.router.url)
+    // console.log('[WIZARD - CREATE-PRJCT] this.router.url  ', this.router.url)
     if (this.router.url.startsWith('/create-project-itw/')) {
       
       this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = true
-      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
+      // console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
       this.browser_lang = this.translate.getBrowserLang();
       
       if (tranlatedLanguage.includes(this.browser_lang)) {
         const langName = this.getLanguageNameFromCode(this.browser_lang)
-        console.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
+        // console.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
        
         this.temp_SelectedLangName = langName;
         this.temp_SelectedLangCode = this.browser_lang
       } else {
-      
         // this.selectedTranslationLabel = 'en'
         // ENGLISH ARE USED AS DEFAULT IF THE USER DOESN'T SELECT ANY OTHER ONE LANGUAGE
         this.temp_SelectedLangName = 'English';
         this.temp_SelectedLangCode = 'en'
       }
 
-
-
-      
     }  else if (this.router.url === '/create-project') {
       this.CLOSE_BTN_IS_HIDDEN = true;
       this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
-      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
+      // console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
     } else if (this.router.url === '/create-new-project') {
       this.CLOSE_BTN_IS_HIDDEN = false;
       this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false
-      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
+      // console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
     }
   }
 

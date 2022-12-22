@@ -55,7 +55,7 @@ export class UploadImageNativeService {
   // : Promise<any>
   
   uploadUserPhotoProfile_Native(file: File): Observable<any> {
-    console.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD USER PHOTO PROFILE - file ', file)
+    // console.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD USER PHOTO PROFILE - file ', file)
     const headers = new HttpHeaders({
       Authorization: this.TOKEN,
       // 'Content-Type': 'multipart/form-data',

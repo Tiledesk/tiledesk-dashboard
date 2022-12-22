@@ -403,11 +403,9 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     this.displayImportJSONModal = "none"
   }
 
-
-
   fileChangeUploadIntentsFromJSON(event, action) {
-    console.log('[TILEBOT] - fileChangeUploadJSON event ', event);
-    console.log('[TILEBOT] - fileChangeUploadJSON action ', action);
+    // console.log('[TILEBOT] - fileChangeUploadJSON event ', event);
+    // console.log('[TILEBOT] - fileChangeUploadJSON action ', action);
     const fileList: FileList = event.target.files;
     const file: File = fileList[0];
     const formData: FormData = new FormData();
@@ -423,7 +421,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
 
       this.notify.showWidgetStyleUpdateNotification("thereHasBeenAnErrorProcessing", 4, 'report_problem');
     }, () => {
-      console.log('[TILEBOT] - IMPORT INTENTS FROM JSON - * COMPLETE *');
+      this.logger.log('[TILEBOT] - IMPORT INTENTS FROM JSON - * COMPLETE *');
       this.notify.showWidgetStyleUpdateNotification("File was uploaded succesfully", 2, 'done');
 
       this.onCloseImportJSONModal();
@@ -588,11 +586,11 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
         let countOfVisibleDepts = 0;
 
         departments.forEach((dept: any) => {
-          console.log('[TILEBOT] - DEPT', dept);
+          // console.log('[TILEBOT] - DEPT', dept);
 
           if (dept.default === true) {
             this.defaultDepartmentId = dept._id;
-            console.log('[TILEBOT] - DEFAULT DEPT ID ',  this.defaultDepartmentId);
+            this.logger.log('[TILEBOT] - DEFAULT DEPT ID ',  this.defaultDepartmentId);
           }
 
           if (dept.hasBot === true) {
@@ -600,15 +598,11 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
               this.logger.log('[TILEBOT] - DEPT DEPT WITH CURRENT BOT ', dept);
 
               count = count + 1;
-
-
               // -------------------------------------------------------------------
               // Dept's avatar
               // -------------------------------------------------------------------
               let newInitials = '';
               let newFillColour = '';
-
-
               if (dept.name) {
                 newInitials = avatarPlaceholder(dept.name);
                 if (dept.default !== true) {
@@ -1055,7 +1049,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     this.showSpinnerInUpdateBotCard = true
 
     this.faqKbService.getFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
-      console.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
       this.faq_kb_remoteKey = faqkb.kbkey_remote
       this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
@@ -1166,12 +1160,12 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
   openTestSiteInPopupWindow() {
-    console.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
+    // console.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-    console.log('openTestSiteInPopupWindow testItOutBaseUrl' , testItOutBaseUrl )  
+    // console.log('openTestSiteInPopupWindow testItOutBaseUrl' , testItOutBaseUrl )  
     const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId
-    console.log('openTestSiteInPopupWindow URL ', url) 
+    // console.log('openTestSiteInPopupWindow URL ', url) 
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
   }
@@ -1526,7 +1520,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
           this.logger.error('[TILEBOT] UPLOAD CSV - ERROR ', error);
           this.SHOW_CIRCULAR_SPINNER = false;
         }, () => {
-          console.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
+          this.logger.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
           // setTimeout(() => {
           // this.SHOW_CIRCULAR_SPINNER = false
           this.filechangeuploadCSV.nativeElement.value = '';

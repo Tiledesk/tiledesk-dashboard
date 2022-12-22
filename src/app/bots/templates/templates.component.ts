@@ -84,7 +84,7 @@ export class TemplatesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      // console.log(`Dialog result: ${result}`);
     });
   }
 
@@ -92,7 +92,7 @@ export class TemplatesComponent implements OnInit {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
       if (faqKb) {
         this.myChatbotOtherCount = faqKb.length
-        console.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount',  this.myChatbotOtherCount);
+        // console.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount',  this.myChatbotOtherCount);
       }
 
         const customerSatisfactionBots = faqKb.filter((obj) => {
@@ -138,7 +138,7 @@ export class TemplatesComponent implements OnInit {
 
       if (res) {
         this.templates = res
-        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES', this.templates);
+        // console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES', this.templates);
         this.allTemplatesCount = this.templates.length;
         this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
       
@@ -213,7 +213,7 @@ export class TemplatesComponent implements OnInit {
           } else if (tag.color !== "#a16300" && tag.color !== "#A16300" && tag.color !== "#00699E" && tag.color !== "#00699e" && tag.color !== "#25833e" && tag.color !== "#25833E" && tag.color !== "#0049bd" && tag.color !== "#0049BD") {
 
             tagbckgnd = this.hexToRgba(tag.color)
-            console.log('generateTagsBackground tagbckgnd ', tagbckgnd)
+            // console.log('generateTagsBackground tagbckgnd ', tagbckgnd)
           }
 
           // let b = {background : tagbckgnd}

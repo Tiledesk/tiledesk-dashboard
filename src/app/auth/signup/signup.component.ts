@@ -253,7 +253,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   checkCurrentUrlAndSkipWizard() {
 
     this.storedRoute = this.localDbService.getFromStorage('wannago')
-    console.log('[SIGN-UP] storedRoute ', this.storedRoute)
+    // console.log('[SIGN-UP] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
       this.EXIST_STORED_ROUTE = true
     } else {
@@ -456,8 +456,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
           window['tiledesk_widget_login']();
         }
 
-        console.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
-        console.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
+        // console.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
+        // console.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
 
         if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {

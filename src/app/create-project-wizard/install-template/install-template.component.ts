@@ -60,12 +60,12 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   getParamsTemplatesAndProjects() {
     this.route.params.subscribe((params) => {
 
-      console.log('[INSTALL-TEMPLATE] params ', params)
+      this.logger.log('[INSTALL-TEMPLATE] params ', params)
       this.projectId = params.projectid;
       this.botId = params.botid;
       this.langCode = params.langcode;
       this.langName = params.langname;
-      console.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
+      this.logger.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
       if (this.langCode &&  this.langName) {
       this.addNewLanguage(this.langCode,  this.langName)
       this.newlyCreatedProject = true
@@ -79,23 +79,21 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
 
   addNewLanguage(langCode: string, langName: string) {
   
-    console.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationCode', langCode);
-    console.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationLabel', langName);
+    this.logger.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationCode', langCode);
+    this.logger.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationLabel', langName);
 
     // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
     this.widgetService.cloneLabel(langCode.toUpperCase())
       .subscribe((res: any) => {
       
-        console.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG (clone-label) RES ', res.data);
+        this.logger.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG (clone-label) RES ', res.data);
 
-        // if (res) {
-        //   // UPDATE THE ARRAY TRANSLATION CREATED ON INIT
-        // }
+  
 
       }, error => {
         this.logger.error('[INSTALL-TEMPLATE] ADD-NEW-LANG (clone-label) - ERROR ', error)
       }, () => {
-        console.log('[INSTALL-TEMPLATE] ADD-NEW-LANG (clone-label) * COMPLETE *')
+        this.logger.log('[INSTALL-TEMPLATE] ADD-NEW-LANG (clone-label) * COMPLETE *')
 
       });
 
@@ -109,12 +107,12 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
 
   getProjects(projectid) {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[INSTALL-TEMPLATE] - GET PROJECTS ', projects);
+      this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS ', projects);
       if (projects && projects.length > 0) {
         projects.forEach(project => {
-          console.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
+          // console.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
           if (project.id_project.id === projectid) {
-            console.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
+            this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
 
             const selectedProject: Project = {
               _id: project['id_project']['_id'],
@@ -142,19 +140,17 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
       if (res) {
-        console.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
+        this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
 
         const selectedTemplate = res.filter((obj) => {
           return obj._id === botid
         });
         this.templates = selectedTemplate
         this.openDialog(this.templates[0])
-        console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
+        this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
         this.generateTagsBackground(this.templates)
 
         this.templateImg = this.templates[0]['bigImage'];
-  
-        // console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateImg ', this.templateImg)
       }
 
     }, (error) => {
@@ -184,12 +180,9 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
           } else if (tag.color !== "#a16300" && tag.color !== "#A16300" && tag.color !== "#00699E" && tag.color !== "#00699e" && tag.color !== "#25833e" && tag.color !== "#25833E" && tag.color !== "#0049bd" && tag.color !== "#0049BD") {
 
             tagbckgnd = this.hexToRgba(tag.color)
-            console.log('generateTagsBackground tagbckgnd ', tagbckgnd)
+            // console.log('generateTagsBackground tagbckgnd ', tagbckgnd)
           }
-
-          tag.background = tagbckgnd
-        
-          
+          tag.background = tagbckgnd;
         });
       }
     });
@@ -219,7 +212,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      // console.log(`Dialog result: ${result}`);
     });
   }
 

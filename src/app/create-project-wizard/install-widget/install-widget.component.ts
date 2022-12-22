@@ -66,18 +66,16 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
 
   getStoredRoute() {
     this.storedRoute = this.localDbService.getFromStorage('wannago')
-    console.log('[WIZARD - INSTALL-WIDGET] storedRoute ', this.storedRoute)
+    this.logger.log('[WIZARD - INSTALL-WIDGET] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
 
       this.storedRoute.split('/')
       const storedRouteSegment = this.storedRoute.split('/')
-      console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegment)
-      this.botid = storedRouteSegment[2]
-
-
-      this.EXIST_STORED_ROUTE = true
+      this.logger.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegment)
+      this.botid = storedRouteSegment[2];
+      this.EXIST_STORED_ROUTE = true;
     } else {
-      this.EXIST_STORED_ROUTE = false
+      this.EXIST_STORED_ROUTE = false;
     }
   }
 

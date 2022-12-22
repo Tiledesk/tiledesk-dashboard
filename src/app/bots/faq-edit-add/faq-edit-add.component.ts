@@ -114,14 +114,14 @@ export class FaqEditAddComponent implements OnInit {
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      console.log('[FAQ-EDIT-ADD] - DEPT - GET DEPTS  - RES', departments);
+      // console.log('[FAQ-EDIT-ADD] - DEPT - GET DEPTS  - RES', departments);
       if (departments) {
         departments.forEach((dept: any) => {
-          console.log('[FAQ-EDIT-ADD] - DEPT', dept);
+          // console.log('[FAQ-EDIT-ADD] - DEPT', dept);
 
           if (dept.default === true) {
             this.defaultDepartmentId = dept._id;
-            console.log('[FAQ-EDIT-ADD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
+            // console.log('[FAQ-EDIT-ADD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
           }
         });
       }
@@ -526,12 +526,12 @@ export class FaqEditAddComponent implements OnInit {
   }
 
   openTestSiteInPopupWindow() {
-    console.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
+    // console.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-    console.log('openTestSiteInPopupWindow testItOutBaseUrl', testItOutBaseUrl)
+    // console.log('openTestSiteInPopupWindow testItOutBaseUrl', testItOutBaseUrl)
     const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId
-    console.log('openTestSiteInPopupWindow URL ', url)
+    // console.log('openTestSiteInPopupWindow URL ', url)
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
   }

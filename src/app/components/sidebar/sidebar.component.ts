@@ -347,13 +347,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         }).catch((error: any) => {
                             this.logger.log('[APP-COMP] ***soundMessage error*', error);
                         });
-
                     }
-
                 }
-
-
-
             }, error => {
                 this.logger.error('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT * ERROR * ', error)
             }, () => {
@@ -365,11 +360,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getLoggedUser() {
         this.auth.user_bs.subscribe((user) => {
-            console.log('[SIDEBAR] USER GET IN SIDEBAR ', user)
-            // tslint:disable-next-line:no-debugger
-            // debugger
+            // console.log('[SIDEBAR] USER GET IN SIDEBAR ', user)
             this.user = user;
-
             if (user) {
                 this.createUserAvatar(user)
                 this.currentUserId = user._id;
@@ -1234,12 +1226,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            console.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
-
+            // console.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
             if (this.project) {
-
-                // this.getDeptsAndFilterDefaultDept();
-
                 this.projectId = this.project._id
                 this.getProjectUserRole(this.projectId);
                 this.findCurrentProjectAmongAll(this.projectId)
