@@ -1207,8 +1207,6 @@ input[type="text"]:disabled::placeholder {
     }
 }
 
-
-
 @media (min-width: 641px) and (max-width: 768px) {
     .btns-blocks .btns-blocks-block {
         max-width: 340px;
@@ -1308,13 +1306,40 @@ input[type="text"]:disabled::placeholder {
     font-size: 16px;
 }
 
-
 .import-json-modal-body {
-    padding-bottom: 20px !important; 
-    padding-top: 20px !important; 
+    padding-bottom: 20px !important;
+    padding-top: 20px !important;
     font-size: 16px !important;
-    color: rgba(0,0,0,.64) !important;
+    color: rgba(0, 0, 0, 0.64) !important;
     font-weight: 400 !important;
     text-align: center;
     margin-top: 12px;
+}
+
+.btn-new span {
+    display: inline-block;
+}
+
+.btn-size-l {
+    border-radius: 4px;
+    font-size: 16px;
+    height: 38px;
+    line-height: 20px;
+    min-width: 80px;
+    padding: 0 16px;
+}
+
+.btn--default {
+    background-color: transparent;
+    border: 1px solid #d1d9e0;
+    color: #333;
+    box-shadow: none;
+    text-transform: none;
+    min-width: 160px;
+}
+
+.btn--default:hover {
+    background-color: #eff2f6;
+    border: 1px solid #acb8cb;
+    color: #333;
 }

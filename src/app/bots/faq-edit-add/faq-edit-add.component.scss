@@ -72,7 +72,7 @@ textarea {
   font-size: 12px;
   color: #394f5a;
   font-weight: 400;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
 .faq-right-sidebar-attribute-value {
@@ -102,7 +102,6 @@ textarea {
 .faq-related-knowledge-base-right-sidebar-link:hover {
   text-decoration: underline;
 }
-
 
 // -------------------------
 // Placeholder cusrom color
@@ -140,8 +139,6 @@ textarea {
   cursor: pointer;
 }
 
-
-
 @media (max-width: 768px) {
   .div-spacer {
     height: 90px !important;
@@ -169,21 +166,20 @@ textarea {
   width: 100%;
   padding-left: 5px;
   padding-top: 7px;
-
 }
 input#intent-name {
-  background-size: 100% 2px,100% 0px;
-  border: 0px!important;
+  background-size: 100% 2px, 100% 0px;
+  border: 0px !important;
   // border-bottom: 2px solid #d9d9d9!important;
   background-repeat: no-repeat;
-  background-position: center bottom,center calc(100% - 1px);
+  background-position: center bottom, center calc(100% - 1px);
   margin-bottom: 3px;
   border-radius: 0px;
-  background-image: linear-gradient(#ed2e19,#ed2e19),linear-gradient(#D2D2D2,#D2D2D2);
-  background-color: #eeeeee69!important;
+  background-image: linear-gradient(#ed2e19, #ed2e19), linear-gradient(#d2d2d2, #d2d2d2);
+  background-color: #eeeeee69 !important;
 }
 
-.card_title__underlined{
+.card_title__underlined {
   height: initial;
   min-height: 30px;
   margin-top: 5px;
@@ -216,7 +212,7 @@ input#intent-name {
 
 .form-group.label-floating.is-focused {
   label.control-label {
-    top: -28px; 
+    top: -28px;
     left: 0;
     font-size: 11px;
     line-height: normal;
@@ -225,19 +221,18 @@ input#intent-name {
       font-size: 14px;
       top: -20px;
       left: 12px;
-      display: none; 
+      display: none;
     }
   }
   input#intent-name {
-    border: 0!important;
-    background-image: linear-gradient(#ed2e19,#ed2e19),linear-gradient(#D2D2D2,#D2D2D2);
+    border: 0 !important;
+    background-image: linear-gradient(#ed2e19, #ed2e19), linear-gradient(#d2d2d2, #d2d2d2);
   }
 }
 
-
 .form-group.label-floating:not(.is-empty) {
   label.control-label {
-    top: -28px; 
+    top: -28px;
     left: 0;
     font-size: 11px;
     line-height: normal;
@@ -246,29 +241,29 @@ input#intent-name {
       font-size: 14px;
       top: -20px;
       left: 12px;
-      display: none; 
+      display: none;
     }
   }
   input#intent-name {
     font-size: 16px;
-    border: 0px!important;
-    background-image: linear-gradient(#3ea9f5,#3ea9f5),linear-gradient(#D2D2D2,#D2D2D2);
+    border: 0px !important;
+    background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d2, #d2d2d2);
     //border-bottom: 2px solid #3ea9f5!important;
   }
 }
 
-.form-control, .form-group .form-control {
-  background-size: 0 2px,100% 0px;
+.form-control,
+.form-group .form-control {
+  background-size: 0 2px, 100% 0px;
   border: 1px solid #d9d9d9;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
 }
 
-.form-group.label-floating.is-focused  .form-control{
-  background-size: 100% 2px,100% 1px;
+.form-group.label-floating.is-focused .form-control {
+  background-size: 100% 2px, 100% 1px;
 }
-
 
 // --------------------
 // SWITCH BTN
@@ -324,7 +319,6 @@ input#intent-name {
 }
 // --------- ./end new on-off btn logo ---------
 
-
 .link-to-chatbot-form-doc {
   color: #03a5e8;
   cursor: pointer;
@@ -332,4 +326,17 @@ input#intent-name {
 
 .link-to-chatbot-form-doc:hover {
   text-decoration: underline;
+}
+.btn-light-blu {
+  padding: 8px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  background: #e7f3ff;
+  color: #1876f2;
+  box-shadow: unset !important;
+}
+
+.btn-light-blu:hover {
+  background: #d3e0ef;
+  box-shadow: unset !important;
 }

@@ -11,12 +11,14 @@ import { LoggerService } from '../../services/logger/logger.service';
 import {
   URL_styling_your_chatbot_replies,
   URL_response_bot_images_buttons_videos_and_more,
-  URL_handoff_to_human_agents, 
+  URL_handoff_to_human_agents,
   URL_advanced_chatbot_styling_buttons,
   URL_more_info_chatbot_forms
 } from '../../utils/util';
 const swal = require('sweetalert');
-import {  } from 'app/utils/util';
+import { } from 'app/utils/util';
+import { AppConfigService } from 'app/services/app-config.service';
+import { DepartmentService } from 'app/services/department.service';
 @Component({
   selector: 'faq-edit-add',
   templateUrl: './faq-edit-add.component.html',
@@ -61,6 +63,8 @@ export class FaqEditAddComponent implements OnInit {
   errorDeletingAnswerMsg: string;
   answerSuccessfullyDeleted: string;
   isChromeVerGreaterThan100: boolean;
+  public TESTSITE_BASE_URL: string;
+  public defaultDepartmentId: string;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -69,7 +73,9 @@ export class FaqEditAddComponent implements OnInit {
     private notify: NotifyService,
     public location: Location,
     private translate: TranslateService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public appConfigService: AppConfigService,
+    private departmentService: DepartmentService
   ) { }
 
   ngOnInit() {
@@ -100,16 +106,41 @@ export class FaqEditAddComponent implements OnInit {
       }
     }
     this.getCurrentProject();
+    this.getBrowserVersion();
+    this.getDeptsByProjectId();
+    this.getTestSiteUrl();
+  }
 
-    this.getBrowserVersion()
+  getDeptsByProjectId() {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+
+      console.log('[FAQ-EDIT-ADD] - DEPT - GET DEPTS  - RES', departments);
+      if (departments) {
+        departments.forEach((dept: any) => {
+          console.log('[FAQ-EDIT-ADD] - DEPT', dept);
+
+          if (dept.default === true) {
+            this.defaultDepartmentId = dept._id;
+            console.log('[FAQ-EDIT-ADD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
+          }
+        });
+      }
+
+    }, error => {
+
+      this.logger.error('[FAQ-EDIT-ADD] - DEPT - GET DEPTS  - ERROR', error);
+    }, () => {
+      this.logger.log('[FAQ-EDIT-ADD] - DEPT - GET DEPTS - COMPLETE')
+
+    });
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   } 
+  }
 
 
   // GET FROM ROUTE PARAMS (PASSED FROM FAQ COMPONENT):
@@ -357,7 +388,7 @@ export class FaqEditAddComponent implements OnInit {
         // this.notify.showNotification('FAQ successfully created', 2, 'done');
         this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
 
-       
+
         // this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb, this.botType]);
         this.router.navigate(['project/' + this.project._id + '/tilebot/intents/' + this.id_faq_kb + "/" + this.botType]);
       });
@@ -481,7 +512,7 @@ export class FaqEditAddComponent implements OnInit {
   /**
    * GET JSON FORM
    */
-   passJsonIntentForm(json){
+  passJsonIntentForm(json) {
     // this.intentForm = {};
     //if(json && json.fields && json.fields.length>0){
     //}
@@ -489,7 +520,23 @@ export class FaqEditAddComponent implements OnInit {
     // console.log("-------------------> passJsonIntentForm::: ", this.intentForm);
   }
 
-  goToFormMoreInfo(){
+  getTestSiteUrl() {
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.logger.log('[TEMPLATE DETAIL] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+  }
+
+  openTestSiteInPopupWindow() {
+    console.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
+    const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
+    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+    console.log('openTestSiteInPopupWindow testItOutBaseUrl', testItOutBaseUrl)
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId
+    console.log('openTestSiteInPopupWindow URL ', url)
+    let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
+    window.open(url, '_blank', params);
+  }
+
+  goToFormMoreInfo() {
     const url = URL_more_info_chatbot_forms;
     window.open(url, '_blank');
   }

@@ -172,11 +172,13 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   HAS_SELECTED_BOT_DETAILS: boolean = true;
   HAS_SELECTED_BOT_IMPORTEXORT: boolean = false;
-  _route: string
-  public GENERAL_ROUTE_IS_ACTIVE: boolean = false
-  public INTENTS_ROUTE_IS_ACTIVE: boolean = false
-  public FULFILLMENT_ROUTE_IS_ACTIVE: boolean = false
-  public TRAINING_ROUTE_IS_ACTIVE: boolean = false
+  _route: string;
+  public GENERAL_ROUTE_IS_ACTIVE: boolean = false;
+  public INTENTS_ROUTE_IS_ACTIVE: boolean = false;
+  public FULFILLMENT_ROUTE_IS_ACTIVE: boolean = false;
+  public TRAINING_ROUTE_IS_ACTIVE: boolean = false;
+  public TESTSITE_BASE_URL: string;
+  public defaultDepartmentId: string;
   isChromeVerGreaterThan100: boolean;
   thereHasBeenAnErrorProcessing: string;
   displayImportJSONModal = 'none'
@@ -221,8 +223,8 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     this.getTranslations();
     // this.getDeptsByProjectId();
     this.listenSidebarIsOpened();
-    this.getBrowserVersion()
-
+    this.getBrowserVersion();
+    this.getTestSiteUrl();
   }
 
   getBrowserVersion() {
@@ -430,10 +432,6 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   }
 
 
-
-
-
-
   onSelectBotDefaultlang(selectedDefaultBotLang) {
     this.logger.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
     if (selectedDefaultBotLang) {
@@ -590,7 +588,12 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
         let countOfVisibleDepts = 0;
 
         departments.forEach((dept: any) => {
-          this.logger.log('[TILEBOT] - DEPT', dept);
+          console.log('[TILEBOT] - DEPT', dept);
+
+          if (dept.default === true) {
+            this.defaultDepartmentId = dept._id;
+            console.log('[TILEBOT] - DEFAULT DEPT ID ',  this.defaultDepartmentId);
+          }
 
           if (dept.hasBot === true) {
             if (this.id_faq_kb === dept.id_bot) {
@@ -972,12 +975,9 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
         this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
       }
     }, error => {
-
       this.logger.error('[TILEBOT] - getProjectPlan - ERROR', error);
     }, () => {
-
       this.logger.log('[TILEBOT] - getProjectPlan - COMPLETE')
-
     });
   }
 
@@ -1158,6 +1158,22 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   goToEditAddPage_EDIT(faq_id: string) {
     this.logger.log('[TILEBOT] ID OF FAQ ', faq_id);
     this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id, this.botType]);
+  }
+
+  getTestSiteUrl() {
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.logger.log('[TEMPLATE DETAIL] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+  }
+
+  openTestSiteInPopupWindow() {
+    console.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
+    const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
+    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+    console.log('openTestSiteInPopupWindow testItOutBaseUrl' , testItOutBaseUrl )  
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId
+    console.log('openTestSiteInPopupWindow URL ', url) 
+    let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
+    window.open(url, '_blank', params);
   }
 
   goBack() {
