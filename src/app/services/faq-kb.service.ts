@@ -91,13 +91,8 @@ export class FaqKbService {
       })
     };
     const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/"
-<<<<<<< HEAD
-    
-    // console.log('[GET-TMPLT][FAQ-KB.SERV] - GET-TMPLT - URL ', url);
-=======
 
     console.log('[GET-TMPLT][FAQ-KB.SERV] - GET-TMPLT - URL ', url);
->>>>>>> features/bot-templates
 
     // const body = { 'name': name, 'type': bottype, 'description': description, 'id_project': this.project._id, };
     // this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
