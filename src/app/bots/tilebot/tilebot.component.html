@@ -383,20 +383,20 @@
                     <!-- ------------------------------------------ -->
                     <!-- Import Intents from Json Btn (change)="fileChangeUploadIntentsFromJSON($event)"-->
                     <!-- ------------------------------------------ -->
-                    <span class="import-intents-from-json-btn-wpr">
-                      <button class="btn btn-primary export-intents-to-json-btn"
+                    <span class="import-intents-from-json-btn-wpr" style="margin-left: 16px;">
+                      <button class="btn btn-primary import-intents-from-json-btn"
                         (click)="presentModalImportIntentsFromJson()">
                         <span class="icon" style="padding-right:8px">
                           <span class="material-icons">
                             cloud_upload
                           </span>
                         </span>
-                        {{'ImportFromJSON' | translate}} 2
+                        {{'ImportFromJSON' | translate}}
                       </button>
                     </span>
 
 
-                    <span #importIntentsFromJson class="import-intents-from-json-btn-wpr" style="margin-left: 16px;">
+                    <!-- <span #importIntentsFromJson class="import-intents-from-json-btn-wpr" style="margin-left: 16px;">
                       <input style="display:inline" name="upload-intents-from-json" id="upload-intents-from-json"
                         class="inputfile" type="file" (change)="fileChangeUploadIntentsFromJSON($event)"
                         accept=".json" />
@@ -404,10 +404,10 @@
                         <span class="material-icons" style="padding-right: 8px;">
                           cloud_upload
                         </span>
-                        <!-- Import Intents from JSON -->
+                        <!- - Import Intents from JSON - ->
                         {{'ImportFromJSON' | translate}}
                       </label>
-                    </span>
+                    </span> -->
 
                     <!-- --------------------------------------------------- -->
                     <!-- JSON Section tiltle-->
