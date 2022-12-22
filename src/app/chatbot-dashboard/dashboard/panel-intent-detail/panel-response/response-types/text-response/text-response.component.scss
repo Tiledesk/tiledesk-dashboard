@@ -140,6 +140,7 @@
     width: 100%;
     font-size: $font-size-base;
     padding: 0 25px;
+}
     .button-reply {
         position: relative;
         min-width: 100px;
@@ -159,6 +160,11 @@
         line-height: $button-height-base;
         text-align: center;
         transition: all .3s;
+    }
+    .button-reply:hover {
+        .button-controls {
+            opacity: 1;
+        }
     }
     .button-reply-text {
         max-width: $button-max-width-base;
@@ -196,7 +202,7 @@
         min-width: 100px;
         width: fit-content;
     }
-}
+
 
 
 /** TEXT AREA **/
@@ -226,3 +232,62 @@ mat-form-field.box-textarea ::ng-deep {
         display: none;
     }    
 }
+ 
+
+
+.button-controls {
+    display: inline-flex;
+    height: 24px;
+    position: absolute;
+    right: 0;
+    top: -50%;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    .control-button {
+        cursor: pointer;
+        background: $color-bck-gray-hex;
+        color: $color-bck-gray-hex;
+        transition: color .3s;
+        height: 24px;
+        width: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        em {
+            font-size: 1.15em;
+            color: $color-withe-hex;
+            transition: color .3s;
+        }
+    }
+    .control-button:hover{
+        color: $color-withe-hex;
+        box-shadow: 0 2px 6px 0 rgb(255 255 255 / 15%);
+        em {
+            color: $color-red-hex;
+        }
+        &.delete{
+            em {
+                color: $color-red-hex;
+            }
+        }
+    }
+}
+// .custom-placeholder {
+//     opacity: 0.4;
+//     background: $color-txt-3-hex;
+//     border: dotted 2px $color-txt-2-hex;
+//     min-height: 60px;
+//     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+// }
+
+// .draggable-list.cdk-drop-list-dragging .button-reply {
+//     opacity: 0;
+// }
+
+.custom-placeholder {
+    background: #ccc;
+    border: dotted 3px #999;
+    height: $button-height-base;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }

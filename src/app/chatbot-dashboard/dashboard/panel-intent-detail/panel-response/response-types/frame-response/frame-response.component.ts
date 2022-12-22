@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser'
 import { Message } from '../../../../../../models/intent-model';
-import { TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT } from '../../../../../utils';
+import { TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT, calculatingRemainingCharacters } from '../../../../../utils';
 
 @Component({
   selector: 'appdashboard-frame-response',
@@ -37,17 +37,20 @@ export class FrameResponseComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src?this.response.metadata.src:'');
+    this.frameWidth = this.response.metadata.width?this.response.metadata.width:MESSAGE_METADTA_WIDTH;
+    this.frameHeight = this.response.metadata.height?this.response.metadata.height:MESSAGE_METADTA_HEIGHT;
+
     this.limitCharsText = TEXT_CHARS_LIMIT;
-    this.leftCharsText = this.limitCharsText;
-    this.alertCharsText = false;
     this.delayTime = this.response.time/1000;
     this.textMessage = this.response.text;
-    
-    
-      this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src?this.response.metadata.src:'');
-      this.frameWidth = this.response.metadata.width?this.response.metadata.width:MESSAGE_METADTA_WIDTH;
-      this.frameHeight = this.response.metadata.height?this.response.metadata.height:MESSAGE_METADTA_HEIGHT;
-    
+    this.leftCharsText = calculatingRemainingCharacters(this.textMessage);
+    if(this.leftCharsText<(TEXT_CHARS_LIMIT/10)){
+      this.alertCharsText = true;
+    } else {
+      this.alertCharsText = false;
+    }
+     
   }
 
   // EVENT FUNCTIONS //

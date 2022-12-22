@@ -30,10 +30,12 @@
                     [style.background-image]="'url('+imagePath+')'" 
                     ></div>
                     <div class="image-panel">
+
                         <appdashboard-image-panel
-                        [metadata] = response.metadata
-                        (closeImagePanel) = onCloseImagePanel($event)
+                            [metadata] = response.metadata
+                            (closeImagePanel) = onCloseImagePanel($event)
                         ></appdashboard-image-panel>
+                        
 
                     </div>
                 </div>

@@ -41,6 +41,7 @@
                 class="panel-intent-detail"
                 [intentSelected]="intentSelected"
                 [showSpinner] = "showSpinner"
+                (openButtonPanel) = onOpenButtonPanel($event)
             ></appdashboard-panel-intent-detail>
 
         </div>
@@ -66,10 +67,10 @@
             </svg>
         </div>
         <appdashboard-button-configuration-panel
-        [button] = buttonSelected
-        [arrayActions] = arrayActions
-        (closeButtonPanel) = onCloseButtonPanel()
-        (saveButton) = onSaveButton($event)
+            [button] = buttonSelected
+            [arrayActions] = arrayActions
+            (closeButtonPanel) = onCloseButtonPanel()
+            (saveButton) = onSaveButton($event)
         ></appdashboard-button-configuration-panel>
     </div> -->
     

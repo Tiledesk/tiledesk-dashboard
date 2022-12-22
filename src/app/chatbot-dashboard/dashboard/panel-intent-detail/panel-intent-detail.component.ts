@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Intent } from '../../../models/intent-model';
+import { Intent, Button } from '../../../models/intent-model';
 import { TYPE_INTENT_ELEMENT } from '../../utils';
 
 
@@ -16,6 +16,9 @@ export class PanelIntentDetailComponent implements OnInit {
   typeIntentElement = TYPE_INTENT_ELEMENT;
   typeIntentElementSelected: string;
 
+  openCardButton = false;
+  buttonSelected: Button;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -24,10 +27,6 @@ export class PanelIntentDetailComponent implements OnInit {
 
   // EVENT FUNCTIONS //
 
-  /** */
-  onOpenButtonPanel(event){
-    this.openButtonPanel.emit(event);
-  }
 
 
   
@@ -40,5 +39,27 @@ export class PanelIntentDetailComponent implements OnInit {
       console.log('onAddNewResponse ERROR', error);
     }
   }
+
+
+
+    /** appdashboard-intent: Open button panel */
+    onOpenButtonPanel(event){
+      console.log('onOpenButtonPanel :: ', event);
+      if(this.openCardButton === true){
+        this.onCloseButtonPanel();
+      }
+      this.buttonSelected = event;
+      this.openCardButton = true;
+    }
+  
+    /** appdashboard-button-configuration-panel: Save button */
+    onSaveButton(button){ 
+      this.openCardButton = false;
+    }
+  
+    /** appdashboard-button-configuration-panel: Close button panel */
+    onCloseButtonPanel(){
+      this.openCardButton = false;
+    }
 
 }

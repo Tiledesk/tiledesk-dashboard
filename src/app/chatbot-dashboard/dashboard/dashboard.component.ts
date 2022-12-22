@@ -35,9 +35,9 @@ export class DashboardComponent implements OnInit {
 
   botType: string;
   project: Project;
-  openCardButton = false;
+  // openCardButton = false;
 
-  buttonSelected: Button;
+  // buttonSelected: Button;
   isChromeVerGreaterThan100: boolean;
 
   constructor(
@@ -314,23 +314,24 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  /** appdashboard-intent: Open button panel */
-  onOpenButtonPanel(event){
-    if(this.openCardButton === true){
-      this.onCloseButtonPanel();
-    }
-    this.buttonSelected = event;
-    this.openCardButton = true;
-  }
+  // /** appdashboard-intent: Open button panel */
+  // onOpenButtonPanel(event){
+  //   console.log('onOpenButtonPanel :: ', event);
+  //   if(this.openCardButton === true){
+  //     this.onCloseButtonPanel();
+  //   }
+  //   this.buttonSelected = event;
+  //   this.openCardButton = true;
+  // }
 
-  /** appdashboard-button-configuration-panel: Save button */
-  onSaveButton(button){ 
-    this.openCardButton = false;
-  }
+  // /** appdashboard-button-configuration-panel: Save button */
+  // onSaveButton(button){ 
+  //   this.openCardButton = false;
+  // }
 
-  /** appdashboard-button-configuration-panel: Close button panel */
-  onCloseButtonPanel(){
-    this.openCardButton = false;
-  }
+  // /** appdashboard-button-configuration-panel: Close button panel */
+  // onCloseButtonPanel(){
+  //   this.openCardButton = false;
+  // }
 
 }

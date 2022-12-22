@@ -2,6 +2,7 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Message, Button } from '../../../../../../models/intent-model';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../utils';
 
 @Component({
@@ -82,6 +83,12 @@ export class TextResponseComponent implements OnInit {
 
   // EVENT FUNCTIONS //
   /** */
+  drop(event: CdkDragDrop<string[]>) {
+    // this.textGrabbing = false;
+    moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
+    console.log(this.buttons, event.previousIndex, event.currentIndex);
+  }
+  /** */
   onDeleteResponse(){
     this.deleteResponse.emit(this.index);
   }
@@ -119,6 +126,11 @@ export class TextResponseComponent implements OnInit {
       button = this.addNewButton();
     }
     this.openButtonPanel.emit(button);
+  }
+
+  onDeleteButton(index){
+    console.log('onDeleteButton::: ', index);
+    this.buttons.splice(index, 1); 
   }
 
 }

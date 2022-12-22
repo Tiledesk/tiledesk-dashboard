@@ -56,20 +56,33 @@
 
 </div>
 
-<div class="buttons-response button-replies">
+<div class="buttons-response button-replies" cdkDropListOrientation="horizontal" cdkDropList (cdkDropListDropped)="drop($event)" >
     
-    <div *ngFor="let button of buttons; let i = index;" class="tpl-drop-down"> 
-        <div aria-expanded="false">
-            <div class="button-reply">
-                <div 
-                    class="button-reply-text"
-                    (click)="onOpenButtonPanel(button)">
-                    {{button.value}}
-                </div>
+    <div *ngFor="let button of buttons; let i = index;" class="tpl-drop-down" cdkDragBoundary=".button-replies" cdkDrag> 
+   
+        <div class="button-reply custom-placeholder" *cdkDragPlaceholder>
+            <div class="button-reply-text">
+                {{button.value}}
             </div>
         </div>
-    </div>
 
+        <div class="button-reply">
+            <div class="button-reply-text"
+                (click)="onOpenButtonPanel(button)">
+                {{button.value}}
+            </div>
+            <div class="button-controls">
+                <div class="control-button delete" (click)="onDeleteButton(i)">
+                   <em class="material-icons">delete</em>
+               </div>
+               <div class="control-button" cdkDragHandle>
+                   <em class="material-icons">compare_arrows</em>
+               </div> 
+           </div>
+        </div>
+        
+
+    </div>
 
     <div class="button-reply-add" (click)="onOpenButtonPanel()">
     + Add button
