@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.9.1
+- Fixes the bugs: In the Import/Export tab available on the Intents detail page the "Import intents from JSON file" button is duplicated
+
 ### 2.3.9
 - Deploys in production
 - Adds chatbot templates
