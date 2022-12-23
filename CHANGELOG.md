@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.11-rc1
+- Renames in "apiBaseImageUrl" the "baseImageUrl" environment variable
+
 ### 2.3.10
 - Fixes the bugs: In the Import/Export tab available on the Intents detail page the "Import intents from JSON file" button is duplicated
 
