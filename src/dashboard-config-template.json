@@ -13,7 +13,7 @@
   "chatEngine": "${CHA21_ENGINE}",
   "firebaseAuth": "${FIREBASE_AUTH}",
   "uploadEngine": "${UPLOAD_ENGINE}",
-  "baseImageUrl": "${BASE_IMAGE_URL}",
+  "apiBaseImageUrl": "${API_BASEIMAGE_URL}",
   "pushEngine": "${PUSH_ENGINE}",
   "logLevel": "${LOG_LEVEL}",
   "appsUrl":  "${APPS_URL}",

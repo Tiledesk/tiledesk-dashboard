@@ -124,6 +124,17 @@ $color-text-box: #566787;
                 padding: 5px;
             }
         }
+        .row-info {
+            padding: 10px 0;
+            textarea {
+                display: block;
+                width: 100%;
+                margin: 0px;
+                background: #ffffffab;
+                border: none;
+                padding: 5px;
+            }
+        }
     }
 
     .box-buttons {

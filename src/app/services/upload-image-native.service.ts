@@ -29,7 +29,7 @@ export class UploadImageNativeService {
     this.getToken()
 
     this.files = [];
-    this.BASE_URL = this.appConfigService.getConfig().baseImageUrl
+    this.BASE_URL = this.appConfigService.getConfig().apiBaseImageUrl
     this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - BASE URL ', this.BASE_URL)
   }
 

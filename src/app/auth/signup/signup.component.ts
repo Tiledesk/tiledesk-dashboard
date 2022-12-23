@@ -356,25 +356,34 @@ export class SignupComponent implements OnInit, AfterViewInit {
               } catch (err) {
                 this.logger.error('identify signup event error', err);
               }
-
+              let  utm_source_value = undefined;
+              let  su = undefined;
               var size = Object.keys(this.queryParams).length;
-              this.logger.log('queryParams size ', size)
-              let event = ''
+              console.log('queryParams size ', size)
+              // let event = ''
               if (size > 0) {
-
+             
                 for (const [key, value] of Object.entries(this.queryParams)) {
-                  this.logger.log(`${key}: ${value}`);
-                  event = "Signed Up button clicked" + ' ' + key + '=' + value
+                  console.log(`${key}: ${value}`);
+                  // event = "Signed Up button clicked" + ' ' + key + '=' + value
+                  if (key === 'utm_source') {
+                    utm_source_value = value
+                  }
+                  if (key === 'su') {
+                    su = value
+                  }
                 }
-
-              } else {
-                event = "Signed Up button clicked"
               }
-              this.logger.log('[SIGN-UP] Signed Up button clicked event ', event)
+              // } else {
+              //   event = "Signed Up button clicked"
+              // }
+              // this.logger.log('[SIGN-UP] Signed Up button clicked event ', event)
 
               try {
-                window['analytics'].track(event, {
+                window['analytics'].track("Signed Up", {
                   "type": "organic",
+                  "utm_source": utm_source_value,
+                  "signupButton": su,
                   "first_name": signupResponse.user.firstname,
                   "last_name": signupResponse.user.lastname,
                   "email": signupResponse.user.email,

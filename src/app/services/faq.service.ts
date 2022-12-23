@@ -266,6 +266,23 @@ export class FaqService {
       .post(url, jsonfile, options)
   }
 
+  // ( POST ../PROJECT_ID/bots/importjson/null/?create=true)
+  public importChatbotFromJSONFromScratch(jsonfile) {
+    const options = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+
+    const url = this.SERVER_BASE_PATH + this.project._id + "/faq_kb/importjson/null/?create=true"
+    this.logger.log('[FAQ-SERV] UPLOAD FAQS CSV - URL ', url);
+
+    return this._httpClient
+      .post(url, jsonfile, options)
+  }
+
   public importIntentsFromJSON(id_faq_kb: string, jsonfile, action: string) {
     const options = {
       headers: new HttpHeaders({

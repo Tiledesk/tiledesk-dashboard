@@ -14,7 +14,7 @@
   "firebaseAuth": "${FIREBASE_AUTH}",
   "uploadEngine": "${UPLOAD_ENGINE}",
   "pushEngine": "${PUSH_ENGINE}",
-  "baseImageUrl": "${BASE_IMAGE_URL}",
+  "apiBaseImageUrl": "${API_BASEIMAGE_URL}",
   "logLevel": "${LOG_LEVEL}",
   "appsUrl":  "${APPS_URL}",
   "promoBannerUrl": "${PROMO_BANNER_URL}",
