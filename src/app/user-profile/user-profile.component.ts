@@ -445,13 +445,13 @@ export class UserProfileComponent implements OnInit {
         this.logger.log('[USER-PROFILE] downloadurl ', downloadurl)
         this.userProfileImageurl = ''
 
-        if (environment.production && environment.production === true && this.appConfigService.getConfig().apiBaseImageUrl === "https://api.tiledesk.com/v2/") {
+        if (environment.production && environment.production === true && this.appConfigService.getConfig().baseImageUrl === "https://api.tiledesk.com/v2/") {
           // console.log('upload env prod? ', environment.production)
           this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
           // this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
 
           this.logger.log('[USER-PROFILE] userProfileImageurl ', this.userProfileImageurl)
-        } else if (environment.production && environment.production === true && this.appConfigService.getConfig().apiBaseImageUrl !== "https://api.tiledesk.com/v2/") {
+        } else if (environment.production && environment.production === true && this.appConfigService.getConfig().baseImageUrl !== "https://api.tiledesk.com/v2/") {
           this.userProfileImageurl = downloadurl;
         } else if (!environment.production) {
           // console.log('upload env prod? ', environment.production)
