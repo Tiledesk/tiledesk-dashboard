@@ -359,12 +359,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
               let  utm_source_value = undefined;
               let  su = undefined;
               var size = Object.keys(this.queryParams).length;
-              console.log('queryParams size ', size)
+              // console.log('queryParams size ', size)
               // let event = ''
               if (size > 0) {
              
                 for (const [key, value] of Object.entries(this.queryParams)) {
-                  console.log(`${key}: ${value}`);
+                  // console.log(`${key}: ${value}`);
                   // event = "Signed Up button clicked" + ' ' + key + '=' + value
                   if (key === 'utm_source') {
                     utm_source_value = value
