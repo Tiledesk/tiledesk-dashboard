@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.3.12
+- Deploys in production
+- Renames in "baseImageUrl" the "apiBaseImageUrl" environment variable
+
+### 2.3.11
+- Deploys in production
+- Renames in "apiBaseImageUrl" the "baseImageUrl" environment variable
+
 ### 2.3.11-rc1
 - Renames in "apiBaseImageUrl" the "baseImageUrl" environment variable
 
