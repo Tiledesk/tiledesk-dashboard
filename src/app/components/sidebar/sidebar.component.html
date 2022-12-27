@@ -58,7 +58,7 @@
       <!-- HOME  -->
       <!-- WITHOUT THE CONDITION *ngIf="projectid" THE MENU ITEM 'HOME' IT IS NOT RENDERED AS ACTIVE -->
       <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Home"
-        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" style="height:50px !important">
         <a #homebtn class="customAncor" routerLink="project/{{ project._id }}/home">
           <i class="material-icons sidebar-icons"
             [ngStyle]="{'color':HOME_ROUTE_IS_ACTIVE === true ? '#fff' : '#647491' }">
@@ -72,7 +72,7 @@
       <!-- ---------------------------------- -->
       <ng-container *ngIf="USER_ROLE !== 'agent'">
         <li id="bot-anchor-wpr" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
-          matTooltip="Bots" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+          matTooltip="Bots" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" style="height: 50px !important;"
           [ngClass]="{'active': CHATBOT_ROUTE_IS_ACTIVE || EDIT_FAQ_ROUTE_IS_ACTIVE, 'menu_item_active': CREATE_FAQ_ROUTE_IS_ACTIVE || BOT_TEST_ROUTE_IS_ACTIVE}">
           <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}//bots/templates/all"  
             style="height: 40px;">
@@ -102,7 +102,7 @@
       <ng-container>
         <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Monitor"
           #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
-          [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center;">
+          [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center; height: 50px !important;">
           <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests" style="height: 40px;">
             <span class="realtime-icon-wpr" style="width: 30px;">
               <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
