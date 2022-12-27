@@ -36,7 +36,7 @@ import { BotTypeSelectComponent } from './bots/bot-create/bot-type-select/bot-ty
 import { BotCreateComponent } from './bots/bot-create/bot-create.component';
 import { FaqComponent } from './bots/faq/faq.component';
 import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component';
-import { DashboardComponent } from './chatbot-dashboard/dashboard/dashboard.component';
+
 import { FaqTestComponent } from './bots/faq-test/faq-test.component';
 
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
@@ -122,6 +122,7 @@ import { WidgetInstallationComponent } from './widget-installation/widget-instal
 import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-select-type.component';
 import { TilebotComponent } from './bots/tilebot/tilebot.component';
 import { OnboardingComponent } from './create-project-wizard/onboarding/onboarding.component';
+import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component';
 
 
 const routes: Routes = [
@@ -267,8 +268,8 @@ const routes: Routes = [
   { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: CdsDashboardComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: CdsDashboardComponent, canActivate: [AuthGuard] },
 
   // TEST-FAQ PAGE
   // { path: 'project/:projectid/faq/test/:remoteFaqKbKey/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },

@@ -17,11 +17,11 @@ const swal = require('sweetalert');
 
 
 @Component({
-  selector: 'appdashboard-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: 'appdashboard-cds-dashboard',
+  templateUrl: './cds-dashboard.component.html',
+  styleUrls: ['./cds-dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class CdsDashboardComponent implements OnInit {
 
   listOfIntents: Array<Intent>;
   intentSelected: Intent;
