@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import { Message, Command } from '../../../../../models/intent-model';
+import { Message, Command } from '../../../../../../models/intent-model';
 import { 
   TYPE_COMMAND, 
   TYPE_MESSAGE, 
@@ -8,7 +8,7 @@ import {
   TIME_WAIT_DEFAULT,
   MESSAGE_METADTA_WIDTH,
   MESSAGE_METADTA_HEIGHT 
-} from '../../../../utils';
+} from '../../../../../utils';
 
 @Component({
   selector: 'appdashboard-panel-reply-tools',

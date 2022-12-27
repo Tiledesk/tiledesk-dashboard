@@ -13,7 +13,7 @@ import { MatSliderModule } from '@angular/material/slider';
 
 // import { SharedModule } from '../shared/shared.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { PanelReplyToolsComponent } from './dashboard/panel-intent-detail/actions/panel-reply-tools/panel-reply-tools.component';
+import { PanelReplyToolsComponent } from './dashboard/panel-intent-detail/actions/action-reply/panel-reply-tools/panel-reply-tools.component';
 import { ActionReplyComponent } from './dashboard/panel-intent-detail/actions/action-reply/action-reply.component';
 import { TextResponseComponent } from './dashboard/panel-intent-detail/actions/action-reply/reply-types/text-response/text-response.component';
 import { DelaySliderComponent } from './dashboard/panel-intent-detail/actions/action-reply/elements/delay-slider/delay-slider.component';
@@ -26,7 +26,7 @@ import { PanelIntentComponent } from './dashboard/panel-intent/panel-intent.comp
 import { PanelActionsComponent } from './dashboard/panel-actions/panel-actions.component';
 import { PanelIntentDetailComponent } from './dashboard/panel-intent-detail/panel-intent-detail.component';
 import { PanelIntentHeaderComponent } from './dashboard/panel-intent-header/panel-intent-header.component';
-import { PanelButtonConfigurationComponent } from './dashboard/panel-intent-detail/actions/panel-button-configuration/panel-button-configuration.component';
+import { PanelButtonConfigurationComponent } from './dashboard/panel-intent-detail/actions/action-reply/panel-button-configuration/panel-button-configuration.component';
 
 @NgModule({
   declarations: [
