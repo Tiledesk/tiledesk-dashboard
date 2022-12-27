@@ -266,10 +266,10 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   continueToNextStep() {
     if (this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION === false) {
       this.goToConfigureWidget()
-      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION',  this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION, ' - goToConfigureWidget') 
+      this.logger.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION',  this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION, ' - goToConfigureWidget') 
     } else {
       this.goToInstallTemplate()
-      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION',  this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION, ' - goToInstallTemplate') 
+      this.logger.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION',  this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION, ' - goToInstallTemplate') 
     }
   }
 
