@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.13-rc1
+- Fixes the bug: sidebar icons are not aligned correctly
+
 ### 2.3.12
 - Deploys in production
 - Renames in "baseImageUrl" the "apiBaseImageUrl" environment variable
