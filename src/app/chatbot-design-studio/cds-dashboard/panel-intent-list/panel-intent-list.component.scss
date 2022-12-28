@@ -1,0 +1,274 @@
+.content {
+    //padding: 5px 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #728087;
+    // height: 400px;
+    // background-color: grey;
+}
+
+.botname-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .botname {
+        font-size: 14px;
+    }
+}
+
+.title-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .title {
+        color: white;
+        font-weight: 500;
+    }
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    .custom-divider {
+        background-color: #334754;
+        width: 80%;
+        height: 1px;
+        box-shadow: 0px 0px 10px #334754;
+        margin: 6px 0px;
+    }
+}
+
+.single-faq {
+    width: 100%;
+    min-height: 30px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 6px;
+    padding: 8px 0px;
+
+    p {
+        color: white;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    .bolt-icon {
+        color: #ffd200;
+        font-size: 20px;
+    }
+
+    .faq-display-name {
+        margin-bottom: 0px;
+    }
+
+    .faq-display-name:hover {
+        margin-bottom: 0px;
+        cursor: pointer;
+    }
+
+    .icons-list {
+        display: flex;
+        flex-direction: row;
+
+        .circle {
+            margin: 0px 2px;
+            border: solid 1px;
+            border-radius: 8px;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            p {
+                font-size: 11px;
+            }
+        }
+
+        .circle.ai {
+            // background-color: white;
+            // color: orange;
+        }
+
+        .circle.actions {
+            // background-color: white;
+            // color: red;
+        }
+
+        .webhook-icon {
+            font-size: 16px;
+            margin: 0px 2px;
+            color: green;
+        }
+
+        .minimal-icon {
+            font-size: 16px;
+            margin: 0px 2px;
+        }
+
+        .form-icon {
+            font-size: 16px;
+            margin: 0px 2px;
+            color: rgb(0, 157, 255);
+        }
+    }
+}
+
+.single-faq:hover {
+    background-color: #e9f1ef78;
+    font-weight: 400;
+    cursor: pointer;
+
+    .faq-display-name {
+        color: black;
+    }
+}
+
+.single-faq:active {
+    border-right: solid 2px #7a8890;
+    border-radius: 8px;
+    color: white;
+    background-color: #e9f1ef21;
+}
+
+.single-faq-default {
+    width: 100%;
+    min-height: 30px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-bottom: 6px;
+    cursor: pointer;
+    //padding: 8px 0px;
+
+    p {
+        color: white;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        margin-bottom: 0px;
+    }
+
+    .rocket-launch-icon {
+        color: #4ecb53;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .undo-icon {
+        color: #ff4000;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .ai-icon {
+        margin-bottom: 0px;
+        color: #8c989e;
+        font-size: 12px;
+        margin-top: -5px;
+        margin-right: 3px;
+    }
+
+    .webhook-icon {
+        color: #8c989e;
+        font-size: 12px;
+        margin-right: 3px;
+    }
+
+    .list-alt-icon {
+        color: #8c989e;
+        font-size: 12px;
+        margin-right: 3px;
+    }
+
+    .bolt-icon {
+        color: #8c989e;
+        font-size: 12px;
+        margin-right: -2px;
+        font-weight: 600;
+    }
+
+    .actions {
+        display: flex;
+    }
+
+    .action-counter {
+        font-size: 10px;
+        padding: 0px;
+        margin: 0px;
+        margin-top: -4px;
+        color: #8c989e;
+    }
+}
+
+.single-faq-default:hover {
+    background-color: #728087;
+}
+
+.icon-container {
+    width: 38px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.icon-list {
+    display: flex;
+    flex-direction: row;
+}
+
+.faq-container {
+
+}
+
+
+
+
+
+// second version
+
+.custom-divider {
+    background-color: #334754;
+    width: 80%;
+    height: 1px;
+    box-shadow: 0px 0px 10px #334754;
+    margin: 6px 0px;
+}
+
+.intent-list {
+
+}
+
+.intent-list:hover {
+    
+}
+
+.intent-list:active {
+
+}
+
+.default-intent {
+    background-color: red;
+    border-radius: 6px;
+    min-height: 36px;
+}
+
+.default-intent:hover {
+    
+}
+
+.default-intent:active {
+    
+}
