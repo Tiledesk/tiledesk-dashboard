@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.3.13
+- Deploys in production
+- Fixes the bug: sidebar icons are not aligned correctly
+- Adds the ability on the Create Bot page to create a chatbot by importing it from a JSON file
+
 ### 2.3.13-rc1
 - Fixes the bug: sidebar icons are not aligned correctly
 - Adds the ability on the Create Bot page to create a chatbot by importing it from a JSON file
