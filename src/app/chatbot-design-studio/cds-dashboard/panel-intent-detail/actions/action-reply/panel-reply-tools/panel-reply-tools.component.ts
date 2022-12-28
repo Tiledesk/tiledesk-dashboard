@@ -13,7 +13,7 @@ import {
 @Component({
   selector: 'appdashboard-panel-reply-tools',
   templateUrl: './panel-reply-tools.component.html',
-  styleUrls: ['../../dashboard.component.scss', './panel-reply-tools.component.scss']
+  styleUrls: ['./panel-reply-tools.component.scss']
 })
 export class PanelReplyToolsComponent implements OnInit {
   @Output() addNewResponse = new EventEmitter();
