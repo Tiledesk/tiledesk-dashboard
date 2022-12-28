@@ -22,6 +22,7 @@ export class ImageResponseComponent implements OnInit {
   imageHeight: string;
   isHovering: boolean = false;
   dropEvent: any;
+  fileSelected: any;
 
   // Textarea //
   limitCharsText: number;
@@ -96,6 +97,102 @@ export class ImageResponseComponent implements OnInit {
   }
 
 
+
+
+
+  // private async presentModal(e: any): Promise<any> {
+  //   let dataFiles = " "
+  //   if (e.type === 'change') {
+  //     console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal change e', e);
+  //     console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal change e.target ', e.target);
+  //     console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal change e.target.files', e.target.files);
+  //     dataFiles = e.target.files;
+  //   } else if (e.type === 'drop') {
+  //     dataFiles = e.dataTransfer.files
+  //     console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal drop e.dataTransfer.files', e.dataTransfer.files);
+  //   } else {
+  //     dataFiles = e.files
+  //     console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal dataFiles when paste', dataFiles);
+  //   }
+  //   const attributes = { files: dataFiles, enableBackdropDismiss: false };
+  //   console.log('[CONVS-DETAIL][MSG-TEXT-AREA] attributes', attributes);
+  // }
+
+  readAsDataURL(e: any) {
+    
+    let dataFiles = " "
+      if (e.type === 'change') {
+        console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal change e', e);
+        console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal change e.target ', e.target);
+        console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal change e.target.files', e.target.files);
+        dataFiles = e.target.files;
+      } else if (e.type === 'drop') {
+        dataFiles = e.dataTransfer.files
+        console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal drop e.dataTransfer.files', e.dataTransfer.files);
+      } else {
+        dataFiles = e.files
+        console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal dataFiles when paste', dataFiles);
+      }
+      const attributes = { files: dataFiles, enableBackdropDismiss: false };
+      console.log('[CONVS-DETAIL][MSG-TEXT-AREA] attributes', attributes);
+      console.log('[LOADER-PREVIEW-PAGE] readAsDataURL file', dataFiles)
+    // ---------------------------------------------------------------------
+    // USE CASE IMAGE
+    // ---------------------------------------------------------------------
+    let file:any = dataFiles[0];
+    if (file.type.startsWith('image') && !file.type.includes('svg')) {
+      console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE IMAGE file TYPE',file.type)
+      const reader = new FileReader()
+      reader.onloadend = (evt) => {
+        const img = reader.result.toString()
+        console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success ',img)
+        // this.arrayFiles.push(img)
+        // if (!this.fileSelected) {
+        this.fileSelected = img
+        // }
+      }
+
+      reader.readAsDataURL(file)
+      // ---------------------------------------------------------------------
+      // USE CASE SVG
+      // ---------------------------------------------------------------------
+    } else if (file.type.startsWith('image') && file.type.includes('svg')) {
+      console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file TYPE',file.type)
+      console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file ', file)
+      const preview = document.querySelector('#img-preview') as HTMLImageElement
+
+      const reader = new FileReader()
+      const that = this
+      reader.addEventListener('load',function () {
+          // convert image file to base64 string
+          // const img = reader.result as string;
+          const img = reader.result.toString()
+          console.log('FIREBASE-UPLOAD USE CASE SVG LoaderPreviewPage readAsDataURL img ',img)
+          // that.arrayFiles.push(that.sanitizer.bypassSecurityTrustResourceUrl(img))
+          // if (!that.fileSelected) {
+          //   that.fileSelected = that.sanitizer.bypassSecurityTrustResourceUrl(img)
+          // }
+      },false)
+
+      if (file) {
+        reader.readAsDataURL(file)
+      }
+
+      // ---------------------------------------------------------------------
+      // USE CASE FILE
+      // ---------------------------------------------------------------------
+    } else {
+      console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE ',file)
+      console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE TYPE',file.type)
+      let file_extension =  file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length) || file.name
+      console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE EXTENSION', file_extension)
+      let file_name = file.name
+      console.log( '[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE NAME', file_name)
+      // this.createFile()
+    }
+  }
+
+
  // -------------------------------------------------------------
   // DRAG FILE
   // -------------------------------------------------------------
@@ -119,6 +216,7 @@ export class ImageResponseComponent implements OnInit {
 
   handleDropEvent(ev) {
     this.dropEvent = ev
+    this.readAsDataURL(ev);
   }
 
   // DRAG OVER (WHEN HOVER OVER ON THE "DROP ZONE")

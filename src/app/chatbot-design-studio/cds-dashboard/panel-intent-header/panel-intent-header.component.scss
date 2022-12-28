@@ -1,6 +1,4 @@
-// @import "../../variables";
 @import "./src/assets/sass/cds/_variables.scss";
-// local variables //
 $width-title: 80%;
 
 .header {
@@ -11,7 +9,6 @@ $width-title: 80%;
     max-height: $height-header;
     top: 0;
     left: 0;
-    // background: rgb($bg-color-bck-rgb);
     .i-priority-color-mark {
         background-color: $color-blue-hex;
         position: absolute;
