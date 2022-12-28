@@ -22,6 +22,7 @@ import {
   URL_handoff_to_human_agents, URL_configure_your_first_chatbot,
   URL_connect_your_dialogflow_agent
 } from '../../utils/util';
+import { FaqService } from 'app/services/faq.service';
 
 @Component({
   selector: 'bot-create',
@@ -109,6 +110,10 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   language: string;
   template: string;
   isChromeVerGreaterThan100: boolean;
+  HAS_SELECTED_CREATE_BOT: boolean = true;
+  public create: boolean = true
+  thereHasBeenAnErrorProcessing: string;
+  importedChatbotid: string;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -120,7 +125,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     private notify: NotifyService,
     public brandService: BrandService,
     private departmentService: DepartmentService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private faqService: FaqService,
   ) {
     super();
 
@@ -136,7 +142,65 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.getCurrentProject();
     this.getParamsBotTypeAndDepts();
     this.translateFileTypeNotSupported();
+    this.getTranslations();
+  }
 
+  getTranslations() {
+    this.translate.get('ThereHasBeenAnErrorProcessing')
+    .subscribe((translation: any) => {
+      this.thereHasBeenAnErrorProcessing = translation;
+    });
+  }
+
+  toggleTabCreateImport(tabcreate ) {
+  //  console.log("[BOT-CREATE] toggleTabCreateImport tabcreate", tabcreate);
+   this.HAS_SELECTED_CREATE_BOT = tabcreate
+  //  console.log("[BOT-CREATE] toggleTabCreateImport HAS_SELECTED_CREATE_BOT",  this.HAS_SELECTED_CREATE_BOT );
+  }
+
+   // --------------------------------------------------------------------------
+  // @ Import chatbot from json 
+  // --------------------------------------------------------------------------
+  fileChangeUploadChatbotFromJSON(event) {
+
+    this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event ', event);
+    // let fileJsonToUpload = ''
+    // // console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
+    // const selectedFile = event.target.files[0];
+    // const fileReader = new FileReader();
+    // fileReader.readAsText(selectedFile, "UTF-8");
+    // fileReader.onload = () => {
+    //   fileJsonToUpload = JSON.parse(fileReader.result as string)
+    //   this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
+    // }
+    // fileReader.onerror = (error) => {
+    //   this.logger.log(error);
+    // }
+    const fileList: FileList = event.target.files;
+    const file: File = fileList[0];
+    const formData: FormData = new FormData();
+    formData.set('id_faq_kb', this.id_faq_kb);
+    formData.append('uploadFile', file, file.name);
+    this.logger.log('FORM DATA ', formData)
+
+    this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
+      this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      if (faqkb){
+        this.importedChatbotid = faqkb._id
+        this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - importedChatbotid ', this.importedChatbotid)
+        this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
+
+        this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
+      }
+
+    }, (error) => {
+      this.logger.error('[TILEBOT] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+
+      this.notify.showWidgetStyleUpdateNotification(this.thereHasBeenAnErrorProcessing, 4, 'report_problem');
+    }, () => {
+      this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
+    });
   }
 
   getBrowserVersion() {

@@ -7,6 +7,35 @@
   {{ "BotsAddEditPage.AddBot" | translate }}
 </div>
 
+
+<div class="row" *ngIf="botType === 'tilebot'" class="bot-create-bottom-nav-wpr" style="margin-top: 60px;">
+
+  <div class="col-md-12">
+
+    <ul class="bottom-nav" style="margin-bottom: 16px;    box-shadow: 0 2px 0px #00003c14 !important;">
+      <li (click)="toggleTabCreateImport(create = !create)" class="btn-with-border-effect" [ngClass]="
+              { 'disabled-li' :        HAS_SELECTED_CREATE_BOT === true, 
+                'border-from-center' : HAS_SELECTED_CREATE_BOT === false,
+                'li-active' :          HAS_SELECTED_CREATE_BOT === true
+              }">
+
+        <a href="javascript:;" role="button"> {{'Create' | translate}} </a>
+      </li>
+
+      <li (click)="toggleTabCreateImport(create = !create)" class="btn-with-border-effect" [ngClass]="
+          { 'disabled-li' : HAS_SELECTED_CREATE_BOT === false, 
+            'border-from-center' : HAS_SELECTED_CREATE_BOT === true, 
+            'li-active' : HAS_SELECTED_CREATE_BOT === false
+          }">
+        <a href="javascript:;" role="button"> Import </a>
+      </li>
+    </ul>
+
+  </div>
+
+</div>
+
+
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
@@ -91,8 +120,13 @@
                   <div class="col-md-12">
                     <h3 class="card_title__underlined">
                       <span class="card_title__underline">
-                        <span *ngIf="botType !== 'external'">
+                        <span
+                          *ngIf="(botType === 'tilebot' || botType === 'resolution') &&  HAS_SELECTED_CREATE_BOT === true">
                           {{ 'CreateA' | translate: translateparam }}
+                        </span>
+                        <span
+                          *ngIf="(botType === 'tilebot' || botType === 'resolution') &&  HAS_SELECTED_CREATE_BOT === false">
+                          Import from JSON
                         </span>
 
                         <span *ngIf="botType === 'external'">
@@ -112,7 +146,9 @@
             <!-- ------------------------------------------------------ -->
             <!-- Bot name - common for native, external and identity -->
             <!-- ------------------------------------------------------ -->
-            <div class="row" *ngIf="botType !== 'dialogflow'" style="margin-top: 18px;">
+            <div class="row"
+              *ngIf="(botType === 'resolution' || botType === 'tilebot' || botType === 'external') && HAS_SELECTED_CREATE_BOT === true"
+              style="margin-top: 18px;">
               <label class="col-sm-2 custom-label">
 
                 {{ "BotsAddEditPage.BotName" | translate }}
@@ -125,9 +161,9 @@
             </div>
 
             <!-- ------------------------------------------------------ -->
-            <!-- Resolution bot (i.e. native bot) - language -->
+            <!-- Resolution bot (i.e. native bot) or Tilebot - language -->
             <!-- ------------------------------------------------------ -->
-            <section *ngIf="botType === 'resolution' || botType === 'tilebot'">
+            <section *ngIf="(botType === 'resolution' || botType === 'tilebot') && HAS_SELECTED_CREATE_BOT === true">
               <div class="row" style="margin-bottom: 8px;">
                 <!-- style="padding-top: 0px; line-height: 1.2;" -->
                 <label class="col-sm-2 custom-label">
@@ -160,7 +196,8 @@
             <!-- ------------------------------------------------------  -->
             <!-- Bot description - common for native and external -->
             <!-- ------------------------------------------------------ -->
-            <div class="row" *ngIf="botType !== 'dialogflow'" style="margin-top: 4px;">
+            <div class="row"
+              *ngIf="(botType === 'resolution' || botType === 'tilebot' || botType === 'external') && HAS_SELECTED_CREATE_BOT === true">
               <label class="col-sm-2 custom-label">
 
                 {{ "Description" | translate }}
@@ -315,9 +352,11 @@
               </div>
 
             </section>
-
-
-            <div class="row">
+            <!-- ------------------------------------------------------------------- -->
+            <!-- @ Button create bot (tilebot - dialogflow - external)  -->
+            <!-- ------------------------------------------------------------------- -->
+            <div class="row"
+              *ngIf="(botType === 'tilebot' && HAS_SELECTED_CREATE_BOT === true) || (botType === 'dialogflow') || (botType === 'external')">
               <!-- SPACER -->
               <div class="col-sm-12" style="height:10px"></div>
               <label class="col-sm-2" *ngIf="botType !== 'dialogflow'"></label>
@@ -330,6 +369,23 @@
                 </button>
               </div>
             </div>
+
+            <div class="row" *ngIf="(botType === 'tilebot' && HAS_SELECTED_CREATE_BOT === false)">
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:10px"></div>
+              <span class="import-chatbot-from-json-btn-wpr" style="margin-left: 16px;">
+                <input style="display:inline" name="upload-chatbot-from-json" id="upload-chatbot-from-json"
+                  class="inputfile" type="file" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json" />
+                <label class="btn btn-primary" for="upload-chatbot-from-json">
+                  <span class="material-icons" style="padding-right: 8px;">
+                    cloud_upload
+                  </span>
+                  Import Chatbot from JSON
+                </label>
+              </span>
+            </div>
+
+
           </div>
         </div>
       </div>
