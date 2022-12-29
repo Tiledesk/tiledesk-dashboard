@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, isDevMode } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
@@ -34,6 +34,7 @@ export class TemplateDetailComponent implements OnInit {
   public projectid: string;
   public _newlyCreatedProject: boolean;
   public defaultDeptID: string;
+  public user: any
   // public depts_length: number;
   // public DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
   // public dept_id: string;
@@ -67,7 +68,7 @@ export class TemplateDetailComponent implements OnInit {
     // console.log('[TEMPLATE DETAIL] data ', data)
     this.projectid = data.projectId
     this.template = data.template;
-    this._newlyCreatedProject =  data.newlyCreatedProject
+    this._newlyCreatedProject = data.newlyCreatedProject
     // console.log('[TEMPLATE DETAIL] template ', this.template)
     // console.log('[TEMPLATE DETAIL] projectid ', this.projectid)
     if (this.template) {
@@ -84,8 +85,21 @@ export class TemplateDetailComponent implements OnInit {
     this.getTestSiteUrl()
     this.getCurrentProjectAndThenGetDeptsByProjectId()
     this.getProjectUserRole()
-    
+    this.getLoggedUser();
   }
+
+
+  getLoggedUser() {
+    this.auth.user_bs
+      .subscribe((user) => {
+        if (user) {
+          this.user = user;
+          // console.log('[TEMPLATE DETAIL]  - user ', this.user)
+        }
+      });
+  }
+
+
 
   getCurrentProjectAndThenGetDeptsByProjectId() {
     // this.project = this.auth.project_bs.value;
@@ -143,12 +157,12 @@ export class TemplateDetailComponent implements OnInit {
     window.open(url, '_blank', params);
   }
 
- 
+
   forkTemplate() {
     this.faqKbService.installTemplate(this.templateid, this.projectid).subscribe((res: any) => {
       this.logger.log('[TEMPLATE DETAIL] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
-    
+
     }, (error) => {
       this.logger.error('[TEMPLATE DETAIL] FORK TEMPLATE - ERROR ', error);
 
@@ -157,14 +171,48 @@ export class TemplateDetailComponent implements OnInit {
       if (this._newlyCreatedProject) {
         this.hookBotToDept()
       }
-    
+
       this.getFaqKbById(this.botid);
       this.goToBotDetails()
-    
+      if (!isDevMode()) {
+        if (window['analytics']) {
+          try {
+            window['analytics'].track('Use template', {
+              "username": this.user.firstname + ' ' + this.user.lastname,
+              "userId": this.user._id,
+              "chatbotName": this.botname
+            });
+          } catch (err) {
+            this.logger.error('track signin event error', err);
+          }
+
+          try {
+            window['analytics'].identify(this.user._id, {
+              name: this.user.firstname + ' ' + this.user.lastname,
+              email: this.user.email,
+              logins: 5,
+
+            });
+          } catch (err) {
+            this.logger.error('Identify template details event error', err);
+          }
+
+          try {
+            window['analytics'].group(this.projectId, {
+              name: this.projectName,
+
+            });
+          } catch (err) {
+            this.logger.error('Group template details error', err);
+          }
+
+        }
+      }
+
     });
   }
 
-   hookBotToDept() {
+  hookBotToDept() {
     this.departmentService.updateExistingDeptWithSelectedBot(this.defaultDeptID, this.botid).subscribe((res) => {
       this.logger.log('[TEMPLATE DETAIL] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - RES ', res);
     }, (error) => {
@@ -190,9 +238,9 @@ export class TemplateDetailComponent implements OnInit {
 
   goToBotDetails() {
     // if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === false) {
-      this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
-      this.closeDialog();
-      // this.closeCreateBotInfoModal();
+    this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
+    this.closeDialog();
+    // this.closeCreateBotInfoModal();
     // } else {
     //   this.present_modal_attacch_bot_to_dept()
     // }
@@ -242,7 +290,7 @@ export class TemplateDetailComponent implements OnInit {
   //   this.displayModalAttacchBotToDept = 'none'
   // }
 
- 
+
 
 
 }
