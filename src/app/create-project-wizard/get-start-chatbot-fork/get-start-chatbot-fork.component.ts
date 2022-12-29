@@ -116,7 +116,7 @@ export class GetStartChatbotForkComponent implements OnInit {
         }
       }
 
-      // if (!isDevMode()) {
+      if (!isDevMode()) {
         if (window['analytics']) {
           try {
             window['analytics'].page("Wizard, Get start chatbot fork", {
@@ -126,8 +126,7 @@ export class GetStartChatbotForkComponent implements OnInit {
             this.logger.error('Get start chatbot page error', err);
           }
         }
-      // }
-
+      }
     }
 
     this.faqKbService.getTemplates().subscribe((res: any) => {
