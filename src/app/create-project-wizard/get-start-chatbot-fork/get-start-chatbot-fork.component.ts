@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
@@ -30,12 +30,14 @@ export class GetStartChatbotForkComponent implements OnInit {
   public botid: string;
   public selectedProjectId: string;
   public projectname: string;
+  public user: any;
+  public projectId: any;
   constructor(
     public brandService: BrandService,
     private projectService: ProjectService,
     private logger: LoggerService,
     private faqKbService: FaqKbService,
-    private localDbService: LocalDbService,
+    private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
 
@@ -46,14 +48,33 @@ export class GetStartChatbotForkComponent implements OnInit {
     this.tparams = brand;
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
-
-
   }
 
   ngOnInit(): void {
     this.getProjects();
     this.getTemplates();
     // this.getTemplateNameOnSite();
+    this.getLoggedUser();
+    // this.getCurrentProject();
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs
+      .subscribe((user) => {
+        if (user) {
+          this.user = user;
+          console.log('[GET START CHATBOT FORK]  - user ', this.user)
+        }
+      });
+  }
+
+  getCurrentProject() {
+   this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.projectId = project._id
+        console.log('[GET START CHATBOT FORK]  - projectId ', this.projectId)
+      }
+    });
   }
 
   getTemplateNameOnSite() {
@@ -73,10 +94,10 @@ export class GetStartChatbotForkComponent implements OnInit {
     const storedRoute = decodeURIComponent(this.router.url);
     // console.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
     if (storedRoute) {
-      storedRoute.split('/')
+      // storedRoute.split('/')
       let storedRouteSegments = storedRoute.split('/')
 
-      // console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegments)
+      console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegments)
       let secondStoredRouteSegment = storedRouteSegments[2]
 
       // console.log('[GET START CHATBOT FORK] secondStoredRouteSegment ', secondStoredRouteSegment)
@@ -85,7 +106,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
         const secondStoredRouteSegments = storedRouteSegments[2].split('?tn=')
 
-        // console.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
+        console.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
         this.botid = secondStoredRouteSegments[0]
         const _templateNameOnSite = secondStoredRouteSegments[1];
         try {
@@ -94,6 +115,18 @@ export class GetStartChatbotForkComponent implements OnInit {
           console.error(e);
         }
       }
+
+      // if (!isDevMode()) {
+        if (window['analytics']) {
+          try {
+            window['analytics'].page("Wizard, Get start chatbot fork", {
+              template: this.templateNameOnSite
+            });
+          } catch (err) {
+            this.logger.error('Get start chatbot page error', err);
+          }
+        }
+      // }
 
     }
 
