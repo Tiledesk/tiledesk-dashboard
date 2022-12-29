@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BrandService } from 'app/services/brand.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
@@ -20,6 +20,8 @@ import { TranslateService } from '@ngx-translate/core';
 export class InstallTemplateComponent extends WidgetSetUpBaseComponent implements OnInit {
 
   projectId: string;
+  projectName: string;
+  projectPlan: string;
   botId: string;
   selectedTemplate: string;
 
@@ -33,6 +35,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   public langName: string;
   public templates: any;
   public newlyCreatedProject = false
+  public user: any
   constructor(
     private route: ActivatedRoute,
     private faqKbService: FaqKbService,
@@ -44,6 +47,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     public auth: AuthService,
     private widgetService: WidgetService,
     public translate: TranslateService,
+
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -55,6 +59,17 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
 
   ngOnInit(): void {
     this.getParamsTemplatesAndProjects()
+    this.getLoggedUser();
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs
+      .subscribe((user) => {
+        if (user) {
+          this.user = user;
+          // console.log('[INSTALL-TEMPLATE]  - user ', this.user)
+        }
+      });
   }
 
   getParamsTemplatesAndProjects() {
@@ -62,13 +77,14 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
 
       this.logger.log('[INSTALL-TEMPLATE] params ', params)
       this.projectId = params.projectid;
+      // console.log('[INSTALL-TEMPLATE] projectId ', this.projectId)
       this.botId = params.botid;
       this.langCode = params.langcode;
       this.langName = params.langname;
       this.logger.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
-      if (this.langCode &&  this.langName) {
-      this.addNewLanguage(this.langCode,  this.langName)
-      this.newlyCreatedProject = true
+      if (this.langCode && this.langName) {
+        this.addNewLanguage(this.langCode, this.langName)
+        this.newlyCreatedProject = true
       }
 
       this.getTemplates(params['botid'])
@@ -78,17 +94,17 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   }
 
   addNewLanguage(langCode: string, langName: string) {
-  
+
     this.logger.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationCode', langCode);
     this.logger.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationLabel', langName);
 
     // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
     this.widgetService.cloneLabel(langCode.toUpperCase())
       .subscribe((res: any) => {
-      
+
         this.logger.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG (clone-label) RES ', res.data);
 
-  
+
 
       }, error => {
         this.logger.error('[INSTALL-TEMPLATE] ADD-NEW-LANG (clone-label) - ERROR ', error)
@@ -112,7 +128,10 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
         projects.forEach(project => {
           // console.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
           if (project.id_project.id === projectid) {
-            this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
+            // console.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
+
+            this.projectName = project.id_project.name;
+            this.projectPlan = project.id_project.profile.name
 
             const selectedProject: Project = {
               _id: project['id_project']['_id'],
@@ -124,7 +143,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
             }
             this.auth.projectSelected(selectedProject)
           }
-        }); 
+        });
       }
     }, error => {
 
@@ -147,10 +166,43 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
         });
         this.templates = selectedTemplate
         this.openDialog(this.templates[0])
-        this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
+        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
         this.generateTagsBackground(this.templates)
 
         this.templateImg = this.templates[0]['bigImage'];
+
+        if (!isDevMode()) {
+          if (window['analytics']) {
+            try {
+              window['analytics'].page("Wizard, Install chatbot", {
+                "chatbotName": this.templates[0]['name']
+              });
+            } catch (err) {
+              this.logger.error('Wizard Install template page error', err);
+            }
+
+
+            try {
+              window['analytics'].identify(this.user._id, {
+                name: this.user.firstname + ' ' + this.user.lastname,
+                email: this.user.email,
+                logins: 5,
+
+              });
+            } catch (err) {
+              this.logger.error('Identify Install template event error', err);
+            }
+
+            try {
+              window['analytics'].group(this.projectId, {
+                name: this.projectName,
+                plan: this.projectPlan,
+              });
+            } catch (err) {
+              this.logger.error('Group Install template group error', err);
+            }
+          }
+        }
       }
 
     }, (error) => {
