@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.3.14
+- Deploys in production
+- Adds "lazy loading" for contacts route
+- Fixes the bug: sidebar icons are not aligned correctly
+
 ### 2.3.14-rc1
 - Adds "lazy loading" for contacts route
 - Fixes the bug: sidebar icons are not aligned correctly
