@@ -15,7 +15,7 @@ import { CoreModule } from './core/core.module';
 import { HomeComponent } from './home/home.component';
 
 // NK
-import { ContactsComponent } from './contacts/contacts.component';
+
 import { VisitorsComponent } from './visitors/visitors.component';
 import { EventsComponent } from './events/events.component';
 
@@ -125,8 +125,22 @@ import { OnboardingComponent } from './create-project-wizard/onboarding/onboardi
 import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
 import { InstallTemplateComponent } from './create-project-wizard/install-template/install-template.component';
 
+// Lazy loading
+// import { ContactsComponent } from './contacts/contacts.component';
+// import { ContactsModule } from './contacts/contacts.module';
+
 
 const routes: Routes = [
+
+// Lazy loading
+  // { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard] },
+  
+  {
+    canActivate: [AuthGuard],
+    path: 'project/:projectid/contacts',
+    loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
+  },
+
 
   /* PRIVATE */
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
@@ -386,7 +400,7 @@ const routes: Routes = [
   { path: 'forgotpsw', component: ResetPswComponent },
   { path: 'resetpassword/:resetpswrequestid', component: ResetPswComponent },
 
-  { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard] },
+  
   { path: 'project/:projectid/visitors', component: VisitorsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/events/:requesterid', component: EventsComponent, canActivate: [AuthGuard] },
 

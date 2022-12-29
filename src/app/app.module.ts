@@ -34,7 +34,7 @@ import { ChatComponent } from './chat/chat.component';
 
 import { UsersService } from './services/users.service';
 import { ContactsService } from './services/contacts.service';
-import { ContactsComponent } from './contacts/contacts.component';
+// import { ContactsComponent } from './contacts/contacts.component';
 import { DepartmentService } from './services/department.service';
 import { DepartmentsComponent } from './departments/departments.component';
 
@@ -393,7 +393,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AppComponent,
     UserProfileComponent,
     HomeComponent,
-    ContactsComponent,
+    // ContactsComponent,
     ChatComponent,
     DepartmentsComponent,
     FaqComponent,
