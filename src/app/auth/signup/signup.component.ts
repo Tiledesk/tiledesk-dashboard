@@ -60,6 +60,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   public_Key: string;
   MT: boolean;
+  templateName: string;
   userForm: FormGroup;
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -136,7 +137,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.queryParams = params['params']
         this.logger.log('segmentsPageAndIdentify queryParams', this.queryParams)
         var size = Object.keys(this.queryParams).length;
-        this.logger.log('queryParams size ', size)
+        // console.log('queryParams size ', size)
+        const storedRoute = this.localDbService.getFromStorage('wannago')
+        // console.log('[SIGN-UP] storedRoute', storedRoute)
         if (size > 0) {
 
           for (const [key, value] of Object.entries(this.queryParams)) {
@@ -144,7 +147,23 @@ export class SignupComponent implements OnInit, AfterViewInit {
             this.segmentRecordPageAndIdentify(key + '=' + value)
           }
 
-        } else {
+        } else if (size === 0 && storedRoute) {
+
+          let storedRouteSegments = storedRoute.split('/')
+
+          // console.log('[SIGN-UP] storedRouteSegments', storedRouteSegments)
+          let secondStoredRouteSegment = storedRouteSegments[2]
+          // console.log('[SIGN-UP] secondStoredRouteSegment', storedRouteSegments)
+          if (secondStoredRouteSegment.includes("?")) {
+
+            const secondStoredRouteSegments = storedRouteSegments[2].split('?tn=')
+            // console.log('[SIGN-UP] secondStoredRouteSegments', secondStoredRouteSegments)
+            this.templateName = decodeURIComponent(secondStoredRouteSegments[1])
+            // console.log('[SIGN-UP] secondStoredRouteSegments templateName', this.templateName)
+          }
+          this.segmentRecordPageAndIdentify(this.templateName)
+
+        } else if (size === 0 && !storedRoute) {
           this.segmentRecordPageAndIdentify()
         }
       })
@@ -154,7 +173,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
     if (!isDevMode()) {
       setTimeout(() => {
         if (window['analytics']) {
-
           let page = ''
           if (queryParams) {
             page = "Auth Page, Signup" + ' ' + queryParams
@@ -164,20 +182,18 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
           try {
             window['analytics'].page(page, {
-        
+
             });
           } catch (err) {
-            this.logger.error('Signin page error', err);
+            this.logger.error('SiSignupgnin page error', err);
           }
           try {
             window['analytics'].identify({
               createdAt: moment().format("YYYY-MM-DD hh:mm:ss")
             });
           } catch (err) {
-            this.logger.error('Signin identify error', err);
+            this.logger.error('Signup identify error', err);
           }
-
-
         }
       }, 3000);
     }
@@ -356,13 +372,13 @@ export class SignupComponent implements OnInit, AfterViewInit {
               } catch (err) {
                 this.logger.error('identify signup event error', err);
               }
-              let  utm_source_value = undefined;
-              let  su = undefined;
+              let utm_source_value = undefined;
+              let su = undefined;
               var size = Object.keys(this.queryParams).length;
               // console.log('queryParams size ', size)
               // let event = ''
               if (size > 0) {
-             
+
                 for (const [key, value] of Object.entries(this.queryParams)) {
                   // console.log(`${key}: ${value}`);
                   // event = "Signed Up button clicked" + ' ' + key + '=' + value
@@ -373,6 +389,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
                     su = value
                   }
                 }
+              } else if (size === 0 && this.templateName) {
+                su = this.templateName
               }
               // } else {
               //   event = "Signed Up button clicked"
