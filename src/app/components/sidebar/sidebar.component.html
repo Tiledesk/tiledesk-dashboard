@@ -100,7 +100,7 @@
       </ng-container>
 
       <ng-container>
-        <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Monitor"
+        <li id="monitor" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Monitor"
           #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
           [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center; height: 50px !important;">
           <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests" style="height: 40px;">
@@ -118,9 +118,9 @@
       </ng-container>
 
       <!-- CONTACTS (LEADS)  -->
-      <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
+      <li id="contacts" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
         matTooltip="{{ 'Contacts' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100"
+        matTooltipHideDelay="100" style="height: 50px !important;"
         [ngClass]="{'menu_item_active': CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE}">
         <a class="customAncor" routerLink="project/{{ project._id }}/contacts">
           <i class="material-icons sidebar-icons">contacts</i>
@@ -129,9 +129,9 @@
 
       <!-- APPS  -->
       <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
-        <li *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
+        <li id="apps" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
           matTooltip="{{ 'Apps' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-          matTooltipHideDelay="100">
+          matTooltipHideDelay="100" style="height: 50px !important;">
           <a class="customAncor" routerLink="project/{{ project._id }}/app-store">
             <i class="material-icons sidebar-icons">dashboard_customize</i>
            
@@ -141,10 +141,10 @@
 
       <!-- ANALYTICS -->
       <ng-container *ngIf="isVisibleANA">
-        <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active"
+        <li id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active"
           [ngClass]="{'active' : ANALYTICS_DEMO_ROUTE_IS_ACTIVE === true}" (click)="stopScroll()"
           matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}"
-          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" style="height: 50px !important;">
           <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
             <i class="material-icons sidebar-icons"> bar_chart </i>
           </a>
@@ -153,10 +153,10 @@
 
       <!-- ACTIVITIES -->
       <ng-container *ngIf="isVisibleACT">
-        <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active"
+        <li id="activities"  *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active"
           [ngClass]="{'active' : ACTIVITIES_DEMO_ROUTE_IS_ACTIVE === true}" (click)="stopScroll()"
           matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Activities' | translate }}" #tooltip="matTooltip"
-          matTooltipPosition='right' matTooltipHideDelay="100">
+          matTooltipPosition='right' matTooltipHideDelay="100" style="height: 50px !important;">
           <a class="customAncor" routerLink="project/{{ project._id }}/activities">
             <i class="material-icons sidebar-icons">assignment</i>
           </a>
@@ -164,16 +164,16 @@
       </ng-container>
 
       <!-- REQUESTS HISTORY -->
-      <li *ngIf="project" routerLinkActive="active" (click)="stopScroll()" matTooltipClass="custom-mat-tooltip"
+      <li  id="history" *ngIf="project" routerLinkActive="active" (click)="stopScroll()" matTooltipClass="custom-mat-tooltip"
         matTooltip="{{ 'History' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-        matTooltipHideDelay="100">
+        matTooltipHideDelay="100" style="height: 50px !important;">
         <a class="customAncor" routerLink="project/{{ project._id }}/history">
           <i class="material-icons sidebar-icons">history</i>
         </a>
       </li>
 
       <!-- && USER_ROLE !== 'agent' -->
-      <li *ngIf="project && USER_ROLE !== 'agent'" [ngClass]="{'active': 
+      <li id="settings" *ngIf="project && USER_ROLE !== 'agent'" [ngClass]="{'active': 
       TRIGGER_ROUTE_IS_ACTIVE || 
       TAG_ROUTE_IS_ACTIVE || 
       CANNED_RESPONSES_ROUTE_IS_ACTIVE || 
@@ -191,7 +191,7 @@
       EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ||
       EDIT_DEPT_ROUTE_IS_ACTIVE ||
       CREATE_GROUP_ROUTE_IS_ACTIVE ||
-      EDIT_GROUP_ROUTE_IS_ACTIVE }" (click)="goToWidgetSetUpOrToCannedResponses()" style="cursor:pointer"
+      EDIT_GROUP_ROUTE_IS_ACTIVE }" (click)="goToWidgetSetUpOrToCannedResponses()" style="cursor:pointer; height: 50px !important;"
         matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Settings' | translate }}" #tooltip="matTooltip"
         matTooltipPosition='right' matTooltipHideDelay="100">
   
@@ -205,8 +205,8 @@
         <a  class="customAncor"
         target="_blank" href="https://www.tiledesk.com">
         <svg xml:space="preserve"
-          xmlns:xlink="http://www.w3.org/1999/xlink" height="40px" viewBox="0 0 60 60" width="60px" x="0px"
-          xmlns="http://www.w3.org/2000/svg" y="0px" style="    position: relative; left: -15px;">
+          xmlns:xlink="http://www.w3.org/1999/xlink" height="30px" viewBox="0 0 60 60" width="30px" x="0px"
+          xmlns="http://www.w3.org/2000/svg" y="0px" style="    position: relative; left: -1px;">
           <path
             d="M51.8,28.2h-19c-1.7,0-3-1.3-3-3V6.4c0-1.7-1.3-3-3-3H8c-1.7,0-3,1.3-3,3v22v22c0,1.7,1.3,3,3,3H6.7h3.4  c0.8,0,1.3,0.2,1.9,0.8l2.3,2.3l2.1,2.1c0.8,0.8,1.7,0.8,2.4,0l2.1-2.1l2.3-2.3c0.6-0.6,1.1-0.8,1.9-0.8H52c1.7,0,3-1.3,3-3V31.2  C54.8,29.5,53.5,28.2,51.8,28.2"
             fill="#F18876"></path>
