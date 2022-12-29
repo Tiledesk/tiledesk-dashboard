@@ -294,7 +294,7 @@ export class SigninComponent implements OnInit {
 
               });
             } catch (err) {
-              this.logger.error('track signin event error', err);
+              this.logger.error('identify signin event error', err);
             }
             // Segments
             try {
