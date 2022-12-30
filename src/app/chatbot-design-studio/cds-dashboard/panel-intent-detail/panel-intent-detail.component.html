@@ -6,14 +6,15 @@
     <appdashboard-action-reply
         class="panel-response"
         [intent]="intentSelected"
+        [reply]="actionReplay"
         [showSpinner] = "showSpinner"
         (openButtonPanel) = onOpenButtonPanel($event)
     ></appdashboard-action-reply>
 
-    <appdashboard-panel-reply-tools
+    <!-- <appdashboard-panel-reply-tools
         class="panel-tools-response"
         (addNewResponse) = onAddNewResponse($event)
-    ></appdashboard-panel-reply-tools>
+    ></appdashboard-panel-reply-tools> -->
 
 
 

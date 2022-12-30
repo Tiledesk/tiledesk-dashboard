@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Intent, Button } from '../../../models/intent-model';
+import { Intent, Button, ActionReply, Action } from '../../../models/intent-model';
 import { TYPE_INTENT_ELEMENT } from '../../utils';
 
 
@@ -19,10 +19,26 @@ export class PanelIntentDetailComponent implements OnInit {
   openCardButton = false;
   buttonSelected: Button;
 
+  actionReplay: ActionReply;
+
+
   constructor() { }
 
   ngOnInit(): void {
     this.typeIntentElementSelected = TYPE_INTENT_ELEMENT.RESPONSE;
+
+    // this.intentSelected.actions.forEach(element => {
+    //   if(element.type === 'reply'){
+    //     this.actionReplay = element.content;
+    //   }
+    // });
+
+    this.actionReplay = new ActionReply();
+    let action = new Action();
+    action.type = 'reply';
+    action.content = this.actionReplay;
+    this.intentSelected.actions = [action];
+    console.log('ngOnInit Actions ---->', this.intentSelected.actions);
   }
 
   // EVENT FUNCTIONS //
@@ -31,14 +47,16 @@ export class PanelIntentDetailComponent implements OnInit {
 
   
   /** appdashboard-tools: add new response **/
-  onAddNewResponse(element){
-    try {
-      this.intentSelected.reply.attributes.commands.push(element);
-      console.log('onAddNewResponse---->', this.intentSelected.reply.attributes.commands);
-    } catch (error) {
-      console.log('onAddNewResponse ERROR', error);
-    }
-  }
+  // onAddNewResponse(element){
+  //   try {
+      
+  //     // this.intentSelected.reply.attributes.commands.push(element);
+  //     this.intentSelected.actions.push(element);
+  //     console.log('onAddNewResponse---->', this.intentSelected.actions);
+  //   } catch (error) {
+  //     console.log('onAddNewResponse ERROR', error);
+  //   }
+  // }
 
 
 

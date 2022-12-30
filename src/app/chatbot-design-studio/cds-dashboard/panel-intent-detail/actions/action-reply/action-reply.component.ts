@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Intent, Command } from '../../../../../models/intent-model';
+import { Intent, Command, ActionReply } from '../../../../../models/intent-model';
 import { TYPE_COMMAND, TYPE_RESPONSE, TIME_WAIT_DEFAULT, TYPE_MESSAGE } from '../../../../utils';
 
 @Component({
@@ -11,7 +11,8 @@ import { TYPE_COMMAND, TYPE_RESPONSE, TIME_WAIT_DEFAULT, TYPE_MESSAGE } from '..
 export class ActionReplyComponent implements OnInit {
   @Output() openButtonPanel = new EventEmitter();
   @Output() saveIntent = new EventEmitter();
-  @Input() intent: Intent;
+  //@Input() intent: Intent;
+  @Input() reply: ActionReply;
   @Input() showSpinner: boolean;
   
   // @Input() arrayResponses: Array<Command>;
@@ -24,11 +25,12 @@ export class ActionReplyComponent implements OnInit {
   textGrabbing: boolean;
   arrayResponses: Array<Command>;
 
+
   constructor() { }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    console.log('ngOnInit panel-response', this.intent);
+    console.log('ngOnInit panel-response', this.reply);
     this.initialize();
   }
   
@@ -39,14 +41,14 @@ export class ActionReplyComponent implements OnInit {
     this.intentName = '';
     this.intentNameResult = true;
     this.textGrabbing = false;
-    try {
-      this.intentName = this.intent.intent_display_name;
-    } catch (error) {
-      console.log('there is not reply', error);
-    }
-    if(this.intent.reply){
+    // try {
+    //   this.intentName = this.intent.intent_display_name;
+    // } catch (error) {
+    //   console.log('there is not reply', error);
+    // }
+    if(this.reply){
       try {
-        this.arrayResponses = this.intent.reply.attributes.commands;
+        this.arrayResponses = this.reply.commands;
       } catch (error) {
         console.log('error:::', error);
       }
@@ -93,20 +95,30 @@ export class ActionReplyComponent implements OnInit {
     this.arrayResponses = newArrayCommands;
   }
 
+  onAddNewResponse(element){
+    try {
+      // this.intentSelected.reply.attributes.commands.push(element);
+      this.reply.commands.push(element);
+      console.log('onAddNewResponse---->', this.reply.commands);
+    } catch (error) {
+      console.log('onAddNewResponse ERROR', error);
+    }
+  }
+
 
   // /** */
-  private checkIntentName(): boolean {
-    //setTimeout(() => {
-      if (!this.intentName || this.intentName.length === 0){
-        //this.intentNameResult = false;
-        return false; 
-      } else {
-        this.intent.intent_display_name = this.intentName;
-        //this.intentNameResult = true;
-        return true;
-      }
-    //}, 300);
-  }
+  // private checkIntentName(): boolean {
+  //   //setTimeout(() => {
+  //     if (!this.intentName || this.intentName.length === 0){
+  //       //this.intentNameResult = false;
+  //       return false; 
+  //     } else {
+  //       this.intent.intent_display_name = this.intentName;
+  //       //this.intentNameResult = true;
+  //       return true;
+  //     }
+  //   //}, 300);
+  // }
 
 
   // EVENT FUNCTIONS //
@@ -165,14 +177,14 @@ export class ActionReplyComponent implements OnInit {
   }
  
   /** */
-  onSaveIntent(){
-    //console.log('onSaveIntent:: ', this.intent, this.arrayResponses);
-    this.intentNameResult = this.checkIntentName();
-    this.updateArrayResponse();
-    if(this.intentNameResult){
-      this.saveIntent.emit(this.intent);
-    }
-  }
+  // onSaveIntent(){
+  //   //console.log('onSaveIntent:: ', this.intent, this.arrayResponses);
+  //   this.intentNameResult = this.checkIntentName();
+  //   this.updateArrayResponse();
+  //   if(this.intentNameResult){
+  //     this.saveIntent.emit(this.intent);
+  //   }
+  // }
 
   /** */
   onOpenButtonPanel(event){

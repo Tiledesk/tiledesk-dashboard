@@ -204,7 +204,7 @@ export class CdsDashboardComponent implements OnInit {
     let answerIntentSelected = this.intentSelected.answer;
     let displayNameIntentSelected = this.intentSelected.intent_display_name;
     let formIntentSelected = this.intentSelected.form;
-    let replyIntentSelected = this.intentSelected.reply;
+    let actionsIntentSelected = this.intentSelected.actions;
     let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
     this.faqService.addIntent(
       id_faq_kb,
@@ -212,7 +212,7 @@ export class CdsDashboardComponent implements OnInit {
       answerIntentSelected, 
       displayNameIntentSelected, 
       formIntentSelected, 
-      replyIntentSelected, 
+      actionsIntentSelected, 
       webhookEnabledIntentSelected
     ).subscribe((faq) => {
         this.showSpinner = false;
@@ -248,7 +248,7 @@ export class CdsDashboardComponent implements OnInit {
     let answerIntentSelected = this.intentSelected.answer;
     let displayNameIntentSelected = this.intentSelected.intent_display_name;
     let formIntentSelected = this.intentSelected.form;
-    let replyIntentSelected = this.intentSelected.reply;
+    let actionsIntentSelected = this.intentSelected.actions;
     let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;   
     this.faqService.updateIntent(
       id, 
@@ -256,7 +256,7 @@ export class CdsDashboardComponent implements OnInit {
       answerIntentSelected,
       displayNameIntentSelected,
       formIntentSelected,
-      replyIntentSelected,
+      actionsIntentSelected,
       webhookEnabledIntentSelected
     ).subscribe((data) => {
         this.showSpinner = false;
@@ -296,8 +296,8 @@ export class CdsDashboardComponent implements OnInit {
   /** appdashboard-tools: add new response **/
   onAddNewResponse(element){
     try {
-      this.intentSelected.reply.attributes.commands.push(element);
-      console.log('onAddNewResponse---->', this.intentSelected.reply.attributes.commands);
+      this.intentSelected.actions.push(element);
+      console.log('onAddNewResponse---->', this.intentSelected.actions);
     } catch (error) {
       console.log('onAddNewResponse ERROR', error);
     }

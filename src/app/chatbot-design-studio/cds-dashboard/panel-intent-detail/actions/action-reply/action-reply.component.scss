@@ -3,6 +3,9 @@
 $width-title: 62%;
 $min-height-content: 376px;
 
+$margin-left: 10px;
+$padding: 10px; 
+
 /* customize scrollbar */
 ::-webkit-scrollbar {
     width: 0px;
@@ -10,6 +13,23 @@ $min-height-content: 376px;
 
 .box-dx {
     font-family: $mdb-font-family;
+}
+
+.panel-tools-response {
+    position: relative;
+    display: inline-flex;
+    vertical-align: top;
+    width: auto;
+    margin-left: 10px;
+    max-height: 100%;
+    height: fit-content;
+    overflow: hidden;
+    border-radius: 0.6em;
+    background-color: rgb($bg-color-card-rgb);
+    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    color: #394f5a;
+    font-size: 1em;
+    padding: $padding;
 }
 
 .header {
