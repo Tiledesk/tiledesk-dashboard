@@ -1,35 +1,23 @@
-
-
-
-<div *ngIf = "typeIntentElementSelected === typeIntentElement.RESPONSE">
+<div *ngIf = "elementIntentSelectedType === typeIntentElement.ACTION">
     
     <appdashboard-action-reply
+        *ngIf = "elementSelected.type === 'reply'"
         class="panel-response"
-        [intent]="intentSelected"
-        [reply]="actionReplay"
+        [reply]="elementSelected.content"
         [showSpinner] = "showSpinner"
         (openButtonPanel) = onOpenButtonPanel($event)
     ></appdashboard-action-reply>
 
-    <!-- <appdashboard-panel-reply-tools
-        class="panel-tools-response"
-        (addNewResponse) = onAddNewResponse($event)
-    ></appdashboard-panel-reply-tools> -->
-
-
-
 </div>
     
 
 
-<div *ngIf = "typeIntentElementSelected === typeIntentElement.QUESTION" class="panel-question">
+<div *ngIf = "elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
 </div>
 
-<div *ngIf = "typeIntentElementSelected === typeIntentElement.FORM" class="panel-form">
+<div *ngIf = "elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">
 </div>
 
-<div *ngIf = "typeIntentElementSelected === typeIntentElement.ACTION" class="panel-action">
-</div>
         
  
 

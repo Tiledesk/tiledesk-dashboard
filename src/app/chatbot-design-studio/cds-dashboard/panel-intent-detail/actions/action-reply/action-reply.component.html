@@ -3,7 +3,7 @@
     <div cdkDropList class="content draggable-list" (cdkDropListDropped)="drop($event)">
         <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag>
 
-            <div *ngIf="response.message.type === typeMessage.TEXT && response.message">
+            <div *ngIf="response.message && response.message.type === typeMessage.TEXT ">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-text-response
                     [index] = i
@@ -32,7 +32,7 @@
                 </div>
             </div>
             
-            <div *ngIf="response.message.type === typeMessage.IMAGE">
+            <div *ngIf="response.message && response.message.type === typeMessage.IMAGE">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-image-response
                     [index] = i
@@ -61,7 +61,7 @@
                 </div>
             </div>
 
-            <div *ngIf="response.message.type === typeMessage.FRAME">
+            <div *ngIf="response.message && response.message.type === typeMessage.FRAME">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-frame-response
                     [index] = i
@@ -94,9 +94,11 @@
     </div>
 
 
+</div>
+
+<div class="box-sx">
     <appdashboard-panel-reply-tools
         class="panel-tools-response"
         (addNewResponse) = onAddNewResponse($event)
     ></appdashboard-panel-reply-tools>
-
 </div>

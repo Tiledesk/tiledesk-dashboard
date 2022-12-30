@@ -11,9 +11,32 @@ $padding: 10px;
     width: 0px;
 }
 
-.box-dx {
+.box-dx2 {
     font-family: $mdb-font-family;
 }
+
+
+.box-dx {
+    position: relative;
+    display: inline-flex;
+    vertical-align: top;
+    width: calc(100% - 100px);
+    max-height: 100%;
+    height: auto;
+    overflow: hidden;
+    border-radius: 0.6em;
+    background-color: rgb($bg-color-card-rgb);
+    margin-left: $margin-left;
+    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    color: #394f5a; 
+    font-size: 1em;
+    padding: $padding;
+}
+
+.box-sx {
+    display: inline-flex;
+}
+
 
 .panel-tools-response {
     position: relative;
@@ -121,6 +144,7 @@ $padding: 10px;
     position: relative;
     display: block;
     height: auto;
+    width: 100%;
     min-height: $min-height-content;
     margin-top: 0px;
     overflow: auto;

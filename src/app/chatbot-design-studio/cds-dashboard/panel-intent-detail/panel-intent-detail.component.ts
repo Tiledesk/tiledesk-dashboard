@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { AnyARecord } from 'dns';
 import { Intent, Button, ActionReply, Action } from '../../../models/intent-model';
 import { TYPE_INTENT_ELEMENT } from '../../utils';
 
@@ -10,35 +11,29 @@ import { TYPE_INTENT_ELEMENT } from '../../utils';
 })
 export class PanelIntentDetailComponent implements OnInit {
   @Output() openButtonPanel = new EventEmitter();
-  @Input() intentSelected: Intent;
+  @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
 
   typeIntentElement = TYPE_INTENT_ELEMENT;
-  typeIntentElementSelected: string;
+  elementSelected: any;
+  elementIntentSelectedType: string;
+
 
   openCardButton = false;
   buttonSelected: Button;
 
-  actionReplay: ActionReply;
+
 
 
   constructor() { }
 
   ngOnInit(): void {
-    this.typeIntentElementSelected = TYPE_INTENT_ELEMENT.RESPONSE;
-
-    // this.intentSelected.actions.forEach(element => {
-    //   if(element.type === 'reply'){
-    //     this.actionReplay = element.content;
-    //   }
-    // });
-
-    this.actionReplay = new ActionReply();
-    let action = new Action();
-    action.type = 'reply';
-    action.content = this.actionReplay;
-    this.intentSelected.actions = [action];
-    console.log('ngOnInit Actions ---->', this.intentSelected.actions);
+    try {
+      this.elementIntentSelectedType = this.elementIntentSelected.type;
+      this.elementSelected = this.elementIntentSelected.element;
+    } catch (error) {
+      console.log('onAddNewResponse ERROR', error);
+    }
   }
 
   // EVENT FUNCTIONS //

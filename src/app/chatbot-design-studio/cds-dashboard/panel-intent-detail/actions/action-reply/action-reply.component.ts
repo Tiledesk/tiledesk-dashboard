@@ -11,7 +11,6 @@ import { TYPE_COMMAND, TYPE_RESPONSE, TIME_WAIT_DEFAULT, TYPE_MESSAGE } from '..
 export class ActionReplyComponent implements OnInit {
   @Output() openButtonPanel = new EventEmitter();
   @Output() saveIntent = new EventEmitter();
-  //@Input() intent: Intent;
   @Input() reply: ActionReply;
   @Input() showSpinner: boolean;
   
@@ -97,7 +96,6 @@ export class ActionReplyComponent implements OnInit {
 
   onAddNewResponse(element){
     try {
-      // this.intentSelected.reply.attributes.commands.push(element);
       this.reply.commands.push(element);
       console.log('onAddNewResponse---->', this.reply.commands);
     } catch (error) {
