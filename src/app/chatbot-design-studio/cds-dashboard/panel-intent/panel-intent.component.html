@@ -1,4 +1,34 @@
-<div class="button-intent"> + Question </div>
-<div class="button-intent"> + Form </div>
-<!-- <div class="button-intent"> + Answer </div> -->
-<div class="button-intent"> + Actions </div>
+<div [ngClass]="{'intent-two-columns-wpr': displayActions, 'intent--column-wpr':  !displayActions}">
+    <div [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}">
+        <div class="button-intent">   
+            <span class="material-icons">
+                question_mark
+                </span>
+                <span> Question </span>
+        </div>
+        <div class="button-intent"> 
+            <span class="material-icons">
+                list_alt
+                </span>
+                <span> Form </span>
+        </div>
+        <!-- <div class="button-intent"> + Answer </div> -->
+        <div class="button-intent" (click)="toggleActions(displayActions = !displayActions) "> 
+            <span class="material-icons">
+                bolt
+                </span>
+                
+          <span> Actions </span>   
+        </div>
+    </div>
+    <div  [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}">
+        <div *ngIf="actions && displayActions">
+
+            <div *ngFor="let actions of actions">
+                <div>
+                    {{ actions.type  }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
