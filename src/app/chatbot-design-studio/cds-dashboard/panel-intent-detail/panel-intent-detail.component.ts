@@ -34,7 +34,7 @@ export class PanelIntentDetailComponent implements OnInit {
   onAddNewResponse(element){
     try {
       this.intentSelected.reply.attributes.commands.push(element);
-      // console.log('onAddNewResponse---->', this.intentSelected.reply.attributes.commands);
+      console.log('onAddNewResponse---->', this.intentSelected.reply.attributes.commands);
     } catch (error) {
       console.log('onAddNewResponse ERROR', error);
     }

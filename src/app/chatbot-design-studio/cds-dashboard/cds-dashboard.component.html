@@ -35,7 +35,9 @@
         <div class="box-right-content">
 
             <appdashboard-panel-intent
+                *ngIf = intentSelected
                 class="panel-intent"
+                [intentSelected]="intentSelected"
             ></appdashboard-panel-intent>
 
             <appdashboard-panel-intent-detail
