@@ -32,37 +32,7 @@ import { MetadataOverride } from "@angular/core/testing";
         content: any;
     }
 
-    // actions: [
-    //     {
-    //         type: 'reply',
-    //         content: {
-    //             text: '',
-    //             commands: [
-    //                 {
-    //                     type: 'text',
-    //                     message: 'ciao',
-    //                     time: 2000
-    //                 }
 
-    //             ]
-    //         }
-    //     },
-    //     {
-    //         type: 'agent',
-    //         content: {
-    //             goto: '\agent'
-    //         }
-    //     },
-    //     {
-    //         type: 'senmail',
-    //         content: {
-    //             recipient: '',
-    //             goto: '\agent'
-    //         }
-    //     },
-
-
-    // ]
     export class ActionReply {
         text?: string;
         //attributes: Attributes;
