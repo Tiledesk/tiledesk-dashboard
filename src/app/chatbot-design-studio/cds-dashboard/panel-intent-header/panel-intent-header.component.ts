@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Intent } from '../../../models/intent-model';
 
 @Component({
@@ -6,7 +6,7 @@ import { Intent } from '../../../models/intent-model';
   templateUrl: './panel-intent-header.component.html',
   styleUrls: ['./panel-intent-header.component.scss']
 })
-export class PanelIntentHeaderComponent implements OnInit {
+export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   @Output() saveIntent = new EventEmitter();
   @Input() intentSelected: Intent;
   @Input() showSpinner: boolean;
@@ -19,6 +19,17 @@ export class PanelIntentHeaderComponent implements OnInit {
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.showSpinner = false;
+    console.log("header --> intentSelected: ", this.intentSelected)
+    try {
+      this.intentName = this.intentSelected.intent_display_name;
+    } catch (error) {
+      console.log('intent selected ', error);
+    }
+  }
+
+  ngOnChanges() {
+    this.showSpinner = false;
+    console.log("header --> intentSelected: ", this.intentSelected)
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {

@@ -1,5 +1,5 @@
 import { FaqService } from './../../../services/faq.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Faq } from 'app/models/faq-model';
 
 @Component({
@@ -10,9 +10,13 @@ import { Faq } from 'app/models/faq-model';
 export class PanelIntentListComponent implements OnInit {
 
   @Input() id_faq_kb: string;
+  @Output() selected_intent = new EventEmitter();
 
+  intent_start: any;
+  intent_defaultFallback: any;
   predefined_faqs = [];
-  faqs = [];
+  filtered_intents = [];
+  intents = [];
 
   constructor(private faqService: FaqService) { }
 
@@ -26,18 +30,45 @@ export class PanelIntentListComponent implements OnInit {
   getAllIntents(id_faq_kb) {
 
     this.faqService.getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: any) => {
-      console.log("faqs: ", faqs);
-      this.faqs = faqs;
+      this.intents = faqs;
 
-      let faq_start = faqs.find(o => o.name === '//start');
-      console.log("faq_start: ", faq_start)
 
+      this.intent_start = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'start')), 1)[0]
+      console.log("intent_start: ", this.intent_start);
+      this.intent_defaultFallback = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'defaultFallback')), 1)[0]
+      console.log("intent_defaultFallback: ", this.intent_defaultFallback);
+      this.filtered_intents = this.intents;
+
+      console.log("others: ", this.intents);
+
+      // this.faq_start = faqs.find(o => o.intent_display_name === 'start');
+      // let s_index = this.faqs.indexOf(faqs.find(o => o.intent_display_name === 'start'))
+      // this.intents.splice(s_index, 1)
+      // this.all_faqs.splice(s_index, 1)
+
+      // this.faq_defaultFallback = faqs.find(o => o.intent_display_name === 'defaultFallback')
+      // let df_index = this.faqs.indexOf(faqs.find(o => o.intent_display_name === 'defaultFallback'))
+      // this.faqs.splice(df_index, 1)
+      // this.all_faqs.splice(s_index, 1)
+
+      //console.log("faqs: ", faqs)
 
     }), (error) => {
       console.error("error: ", error)
     }, () => {
       console.log("End.")
     }
+  }
+
+  livesearch(text: string) {
+    this.filtered_intents = this.intents;
+    this.filtered_intents = this.filtered_intents.filter(element => element.intent_display_name.toLowerCase().includes(text.toLowerCase()));
+    //console.log("found those: ", this.filtered_intents)
+  }
+
+  selectIntent(intent) {
+    console.log("intent selected: ", intent);
+    this.selected_intent.emit(intent);
   }
 
 }

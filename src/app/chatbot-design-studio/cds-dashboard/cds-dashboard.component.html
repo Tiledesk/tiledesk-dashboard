@@ -16,7 +16,9 @@
 
     <div class="box-left">
         <appdashboard-panel-intent-list
-            class="panel-intent-list" [id_faq_kb] = "id_faq_kb">
+            class="panel-intent-list" 
+            [id_faq_kb] = "id_faq_kb"
+            (selected_intent) = onSelectIntent($event)>
         </appdashboard-panel-intent-list>
     </div>
 

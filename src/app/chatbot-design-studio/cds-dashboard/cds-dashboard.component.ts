@@ -314,6 +314,11 @@ export class CdsDashboardComponent implements OnInit {
     }
   }
 
+  onSelectIntent(intent: Intent) {
+    this.intentSelected = intent;
+    console.log("dashboard --> onSelectIntent: ", this.intentSelected);
+  }
+
   // /** appdashboard-intent: Open button panel */
   // onOpenButtonPanel(event){
   //   console.log('onOpenButtonPanel :: ', event);

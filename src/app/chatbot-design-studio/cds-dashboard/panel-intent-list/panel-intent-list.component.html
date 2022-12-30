@@ -1,7 +1,13 @@
 <div class="content">
 
     <div class="botname-box">
-        <p class="botname">searchbar</p>
+
+        <div class="input-box">
+            <input class="custom-input" placeholder="search an intent..." (input)="livesearch($event.target.value);">
+        </div>
+        <!-- <mat-form-field appearance="fill">
+        </mat-form-field> -->
+        
     </div>
 
     <div class="title-box">
@@ -12,18 +18,35 @@
 
         <div class="default-intents">
 
-            <div class="default-intent">
+            <div *ngIf="intent_start" class="intent">
                 <div class="icon-container">
                     <span class="material-icons rocket-launch-icon">rocket_launch</span>
                 </div>
                 <div>
-                    <p class="faq-display-name">start</p>
+                    <p class="intent-display-name">{{ intent_start.intent_display_name }}</p>
                     <div class="icon-list">
-                        <p class="ai-icon" style="margin-bottom: 0px">Ai</p>
-                        <span class="material-icons webhook-icon">webhook</span>
-                        <span class="material-icons list-alt-icon">list_alt</span>
-                        <div class="actions"><span class="material-icons bolt-icon">bolt</span>
-                            <p class="action-counter">3</p>
+                        <p class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
+                        <span class="material-icons icon webhook-icon">webhook</span>
+                        <span class="material-icons icon list-alt-icon">list_alt</span>
+                        <div class="actions"><span class="material-icons icon bolt-icon">bolt</span>
+                            <p class="action-counter icon">3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="intent_defaultFallback" class="intent">
+                <div class="icon-container">
+                    <span class="material-icons undo-icon">undo</span>
+                </div>
+                <div>
+                    <p class="intent-display-name">{{ intent_defaultFallback.intent_display_name }}</p>
+                    <div class="icon-list">
+                        <p class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
+                        <span class="material-icons icon webhook-icon">webhook</span>
+                        <span class="material-icons icon list-alt-icon">list_alt</span>
+                        <div class="actions"><span class="material-icons icon bolt-icon">bolt</span>
+                            <p class="action-counter icon">3</p>
                         </div>
                     </div>
                 </div>
@@ -31,83 +54,29 @@
 
         </div>
 
-        <div class="custom-divider"></div>
+        <div style="width: 100%; display: flex; justify-content: center;">
+            <div *ngIf="intent_start || intent_defaultFallback" class="custom-divider"></div>
+        </div>
 
 
         <div class="intents">
 
-            <div class="default-intent">
-                ciao
+            <div *ngFor="let intent of filtered_intents" class="intent" style="padding-left: 10px;" value="intent.id" (click)="selectIntent(intent)">
+                <div>
+                    <p class="intent-display-name">{{intent.intent_display_name}}</p>
+                    <div class="icon-list">
+                        <p class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
+                        <span class="material-icons icon webhook-icon">webhook</span>
+                        <span class="material-icons icon list-alt-icon">list_alt</span>
+                        <div class="actions"><span class="material-icons icon bolt-icon">bolt</span>
+                            <p class="action-counter icon">3</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
 
     </div>
-
-
-
-    <!-- <div class="faq-list">
-
-        <div class="faq-default-container">
-
-            <div class="single-faq-default">
-                <div class="icon-container">
-                    <span class="material-icons rocket-launch-icon">rocket_launch</span>
-    
-                </div>
-                <div>
-                    <p class="faq-display-name">start</p>
-                    <div class="icon-list">
-                        <p class="ai-icon" style="margin-bottom: 0px">Ai</p>
-                        <span class="material-icons webhook-icon">webhook</span>
-                        <span class="material-icons list-alt-icon">list_alt</span>
-                        <div class="actions"><span class="material-icons bolt-icon">bolt</span>
-                            <p class="action-counter">3</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="single-faq-default">
-                <div class="icon-container">
-                    <span class="material-icons undo-icon">call_missed_outgoing</span>
-                </div>
-                <div>
-                    <p class="faq-display-name">defaultFallback</p>
-                    <div class="icon-list">
-                        <p class="ai-icon" style="margin-bottom: 0px">Ai</p>
-                        <span class="material-icons webhook-icon">webhook</span>
-                        <span class="material-icons list-alt-icon">list_alt</span>
-                        <div class="actions"><span class="material-icons bolt-icon">bolt</span>
-                            <p class="action-counter">3</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-
-        <div class="custom-divider"></div>
-
-        <div class="faq-container">
-
-            <div *ngFor="let faq of faqs" class="single-faq-default" value="faq.id">
-                <div>
-                    <p class="faq-display-name">{{ faq.intent_display_name }}</p>
-                    <div class="icon-list">
-                        <p class="ai-icon" style="margin-bottom: 0px">Ai</p>
-                        <span class="material-icons webhook-icon">webhook</span>
-                        <span class="material-icons list-alt-icon">list_alt</span>
-                        <div class="actions"><span class="material-icons bolt-icon">bolt</span>
-                            <p class="action-counter">3</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div> -->
 
 </div>

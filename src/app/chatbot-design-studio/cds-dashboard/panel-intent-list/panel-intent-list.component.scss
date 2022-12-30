@@ -5,6 +5,7 @@
     flex-direction: column;
     justify-content: center;
     color: #728087;
+    padding: 4px;
     // height: 400px;
     // background-color: grey;
 }
@@ -174,28 +175,28 @@
         font-weight: 600;
     }
 
+    .icon {
+        color: #8c989e;
+    }
+
     .ai-icon {
         margin-bottom: 0px;
-        color: #8c989e;
         font-size: 12px;
         margin-top: -5px;
         margin-right: 3px;
     }
 
     .webhook-icon {
-        color: #8c989e;
         font-size: 12px;
         margin-right: 3px;
     }
 
     .list-alt-icon {
-        color: #8c989e;
         font-size: 12px;
         margin-right: 3px;
     }
 
     .bolt-icon {
-        color: #8c989e;
         font-size: 12px;
         margin-right: -2px;
         font-weight: 600;
@@ -210,7 +211,6 @@
         padding: 0px;
         margin: 0px;
         margin-top: -4px;
-        color: #8c989e;
     }
 }
 
@@ -230,12 +230,7 @@
 }
 
 .faq-container {
-
 }
-
-
-
-
 
 // second version
 
@@ -244,31 +239,151 @@
     width: 80%;
     height: 1px;
     box-shadow: 0px 0px 10px #334754;
-    margin: 6px 0px;
+    margin: 6px 0px 14px 0px;
 }
 
 .intent-list {
-
 }
 
 .intent-list:hover {
-    
 }
 
 .intent-list:active {
+}
+
+.intent {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border-radius: 6px;
+    min-height: 36px;
+    padding-left: 6px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    .rocket-launch-icon {
+        margin-top: 5px;
+        color: #0aae10;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .undo-icon {
+        margin-top: 5px;
+        color: #ff4000;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .intent-display-name {
+        color: white;
+        font-weight: 500;
+        margin-bottom: 0px;
+        font-size: 14px;
+    }
+
+    .icon-list {
+        display: flex;
+        flex-direction: row;
+
+        .icon {
+            color: #8c989e;
+        }
+
+        .ai-icon {
+            margin-bottom: 0px;
+            font-size: 12px;
+            margin-top: -5px;
+            margin-right: 3px;
+        }
+
+        .webhook-icon {
+            font-size: 12px;
+            margin-right: 3px;
+        }
+
+        .list-alt-icon {
+            font-size: 12px;
+            margin-right: 3px;
+        }
+
+        .bolt-icon {
+            font-size: 12px;
+            margin-right: -2px;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+        }
+
+        .action-counter {
+            font-size: 10px;
+            padding: 0px;
+            margin: 0px;
+            margin-top: -4px;
+        }
+    }
+}
+
+.intent:hover {
+    background-color: #d2d2d2;
+
+    .intent-display-name {
+        color: #333;
+        font-weight: 500;
+        margin-bottom: 0px;
+        font-size: 14px;
+    }
+
+    .icon-list {
+        .icon {
+            color: #333;
+        }
+    }
 
 }
 
-.default-intent {
-    background-color: red;
-    border-radius: 6px;
-    min-height: 36px;
+.intent:active {
+    background-color: #d2d2d2;
+    border-right: solid 5px #0049bd;
+    border-radius: 6px 10px 10px 6px;
+
+    .intent-display-name {
+        color: #333;
+        font-weight: 500;
+        margin-bottom: 0px;
+        font-size: 16px;
+    }
+
+    .icon-list {
+        .icon {
+            color: #333;
+        }
+    }
 }
 
 .default-intent:hover {
-    
 }
 
 .default-intent:active {
-    
+}
+
+.input-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+
+    .custom-input {
+        background-color: transparent;
+        border-radius: 6px;
+        border: none;
+        color: #d2cfcf;
+        text-align: center;
+    }
+
 }

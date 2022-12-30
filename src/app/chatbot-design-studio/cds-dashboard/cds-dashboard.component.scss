@@ -27,7 +27,7 @@ $margin-top-card: 30px;
         display: inline-flex;
         // width: 90%;
         width: 100%;
-        height: auto;
+        height: 100vh;
         max-height: 100%;
         background-color: rgb($bg-color-bck-rgb);
         border-radius: 0em;
@@ -35,6 +35,7 @@ $margin-top-card: 30px;
         margin: 0px;
         padding: 10px 2px;
         align-items: flex-start;
+        overflow-y: scroll;
     }
 }
 
