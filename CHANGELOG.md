@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.3.15
+- Deploys in production
+- Changes the dashbord widget project id
+- Changes the 'appUrl' endpoint url for the 'v3' dashboard
+
 ### 2.3.15-rc1
 - Changes the 'appUrl' endpoint url for the 'v3' dashboard
 
