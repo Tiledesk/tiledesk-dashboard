@@ -303,6 +303,8 @@ import { NetworkOfflineComponent } from './network-offline/network-offline.compo
 import { HomePromoBannerComponent } from './home-promo-banner/home-promo-banner.component';
 
 import { ChatbotDesignStudioModule } from './chatbot-design-studio/chatbot-design-studio.module';
+import { ActionSendEmailComponent } from './chatbot-design-studio/cds-dashboard/panel-intent-detail/actions/action-send-email/action-send-email.component';
+
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -526,7 +528,14 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     PrestashopInstallationComponent,
     JoomlaInstallationComponent,
     TilebotFormComponent, 
-    ModalDeleteComponent, TilebotAddEditFormComponent, TilebotListFieldsFormComponent, ChatbotSetupComponent, SidebarClaimsComponent, NetworkOfflineComponent, HomePromoBannerComponent
+    ModalDeleteComponent, 
+    TilebotAddEditFormComponent, 
+    TilebotListFieldsFormComponent, 
+    ChatbotSetupComponent, 
+    SidebarClaimsComponent, 
+    NetworkOfflineComponent, 
+    HomePromoBannerComponent, 
+    ActionSendEmailComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
