@@ -1,5 +1,6 @@
 import { MetadataOverride } from "@angular/core/testing";
 
+
     export class Intent {
         webhook_enabled?: boolean;
         enabled?: boolean;
@@ -9,7 +10,8 @@ import { MetadataOverride } from "@angular/core/testing";
         question?: string;
         answer?: string;
         form?: Form;
-        reply?: Reply;
+        actions?:Action[];
+        // reply?: Reply;
         id_project?: string;
         language?: string;
         intent_display_name?: string;
@@ -19,29 +21,53 @@ import { MetadataOverride } from "@angular/core/testing";
         updatedAt?: Date;
         id?: string;
         constructor() {
-            this.reply = new Reply();
+            this.actions = [];
+            //this.reply = new Reply();
         }
         
     }
 
-    export class Reply {
-        text?: string;
-        attributes: Attributes;
-        constructor(text?: string, attributes?:Attributes) {
-            this.text = text?text:'';
-            this.attributes = attributes?attributes:new Attributes();
-        }
+    export class Action {
+        type: string;
+        content: any;
     }
 
-    export class Attributes {
+
+    export class ActionReply {
+        text?: string;
+        //attributes: Attributes;
         commands: Command[];
-        constructor(commands?: Command[]) {
+        constructor(text?: string, commands?: Command[]) {
+            this.text = text?text:'';
             this.commands = [];
             if(commands && commands.length >0){
                 this.commands = commands;
             }
+            // this.attributes = attributes?attributes:new Attributes();
         }
     }
+
+    export class ActionEmail {
+        to: string;
+        subject: string;
+        text: string;
+    }
+
+    export class ActionAgent {
+        goto: string;
+    }
+
+
+
+    // export class Attributes {
+    //     commands: Command[];
+    //     constructor(commands?: Command[]) {
+    //         this.commands = [];
+    //         if(commands && commands.length >0){
+    //             this.commands = commands;
+    //         }
+    //     }
+    // }
 
     export class Command {
         type: string;

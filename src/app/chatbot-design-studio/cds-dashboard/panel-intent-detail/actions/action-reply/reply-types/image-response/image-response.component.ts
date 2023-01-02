@@ -119,7 +119,6 @@ export class ImageResponseComponent implements OnInit {
   // }
 
   readAsDataURL(e: any) {
-    
     let dataFiles = " "
       if (e.type === 'change') {
         console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal change e', e);

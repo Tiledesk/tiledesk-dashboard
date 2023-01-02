@@ -318,7 +318,7 @@ export class FaqService {
    * @param webhook_enabled 
    * @returns 
    */
-   public addIntent(id_faq_kb: string, question: string, answer: string, intent_display_name: string, intent_form: any, intent_reply: any, webhook_enabled: boolean) {
+   public addIntent(id_faq_kb: string, question: string, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -333,7 +333,7 @@ export class FaqService {
       'answer': answer, 
       'intent_display_name': intent_display_name, 
       'form': intent_form,
-      'reply': intent_reply,
+      'actions': intent_actions,
       'webhook_enabled': webhook_enabled 
     };
     this.logger.log('[FAQ-SERV] ADD FAQ - POST BODY ', body);
@@ -351,7 +351,7 @@ export class FaqService {
    * @param webhook_enabled 
    * @returns 
    */
-   public updateIntent(id: string, question: string, answer: string, intent_display_name: string, intent_form: any, intent_reply: any, webhook_enabled: boolean) {
+   public updateIntent(id: string, question: string, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -366,9 +366,10 @@ export class FaqService {
       'answer': answer, 
       'intent_display_name': intent_display_name, 
       'form': intent_form,
-      'reply': intent_reply,
+      'actions': intent_actions,
       'webhook_enabled': webhook_enabled 
     };
+    console.log('----------->>>', intent_actions, body);
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT REQUEST BODY ', body);
     return this._httpClient.put(url, JSON.stringify(body), httpOptions);
   }

@@ -25,6 +25,7 @@ export class CdsDashboardComponent implements OnInit {
 
   listOfIntents: Array<Intent>;
   intentSelected: Intent;
+  elementIntentSelected: any;
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
@@ -188,12 +189,25 @@ export class CdsDashboardComponent implements OnInit {
   /**
    * !!! this function is temporary and will be replaced with a server function 
   */
-  MOCK_getFaqById(){
+  MOCK_getFaqIntents(){
     let url = 'assets/mock-data/tilebot/faq/intents.json';
     this.httpClient.get<Intent[]>(url).subscribe(data => {
       this.listOfIntents = data;
       this.intentSelected = this.listOfIntents[0];
     }); 
+  }
+
+  MOCK_getFaqIntent(){
+    let url = 'assets/mock-data/tilebot/faq/intent.json';
+    this.httpClient.get<Intent>(url).subscribe(data => {
+     
+      this.intentSelected = data;
+      this.elementIntentSelected = {};
+      this.elementIntentSelected['type'] = 'action';
+      this.elementIntentSelected['element'] = this.intentSelected.actions[0];
+      console.log('MOCK_getFaqIntent',  this.elementIntentSelected);
+    }); 
+    
   }
 
   /** ADD INTENT  */
@@ -204,7 +218,7 @@ export class CdsDashboardComponent implements OnInit {
     let answerIntentSelected = this.intentSelected.answer;
     let displayNameIntentSelected = this.intentSelected.intent_display_name;
     let formIntentSelected = this.intentSelected.form;
-    let replyIntentSelected = this.intentSelected.reply;
+    let actionsIntentSelected = this.intentSelected.actions;
     let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
     this.faqService.addIntent(
       id_faq_kb,
@@ -212,7 +226,7 @@ export class CdsDashboardComponent implements OnInit {
       answerIntentSelected, 
       displayNameIntentSelected, 
       formIntentSelected, 
-      replyIntentSelected, 
+      actionsIntentSelected, 
       webhookEnabledIntentSelected
     ).subscribe((faq) => {
         this.showSpinner = false;
@@ -248,7 +262,7 @@ export class CdsDashboardComponent implements OnInit {
     let answerIntentSelected = this.intentSelected.answer;
     let displayNameIntentSelected = this.intentSelected.intent_display_name;
     let formIntentSelected = this.intentSelected.form;
-    let replyIntentSelected = this.intentSelected.reply;
+    let actionsIntentSelected = this.intentSelected.actions;
     let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;   
     this.faqService.updateIntent(
       id, 
@@ -256,7 +270,7 @@ export class CdsDashboardComponent implements OnInit {
       answerIntentSelected,
       displayNameIntentSelected,
       formIntentSelected,
-      replyIntentSelected,
+      actionsIntentSelected,
       webhookEnabledIntentSelected
     ).subscribe((data) => {
         this.showSpinner = false;
@@ -293,19 +307,9 @@ export class CdsDashboardComponent implements OnInit {
     this.location.back();
   }
 
-  /** appdashboard-tools: add new response **/
-  onAddNewResponse(element){
-    try {
-      this.intentSelected.reply.attributes.commands.push(element);
-      console.log('onAddNewResponse---->', this.intentSelected.reply.attributes.commands);
-    } catch (error) {
-      console.log('onAddNewResponse ERROR', error);
-    }
-  }
-
   /** appdashboard-intent: Save intent */
   onSaveIntent(intent: Intent){
-    console.log('onSaveIntent 2 :: ', intent);
+    console.log('onSaveIntent :: ', intent);
     this.intentSelected = intent;
     if(this.CREATE_VIEW){
       this.creatIntent();
@@ -314,29 +318,11 @@ export class CdsDashboardComponent implements OnInit {
     }
   }
 
+  /** appdashboard-intent-list: Select intent */
   onSelectIntent(intent: Intent) {
-    this.intentSelected = intent;
+    //this.intentSelected = intent;
+    this.MOCK_getFaqIntent();
     console.log("dashboard --> onSelectIntent: ", this.intentSelected);
   }
-
-  // /** appdashboard-intent: Open button panel */
-  // onOpenButtonPanel(event){
-  //   console.log('onOpenButtonPanel :: ', event);
-  //   if(this.openCardButton === true){
-  //     this.onCloseButtonPanel();
-  //   }
-  //   this.buttonSelected = event;
-  //   this.openCardButton = true;
-  // }
-
-  // /** appdashboard-button-configuration-panel: Save button */
-  // onSaveButton(button){ 
-  //   this.openCardButton = false;
-  // }
-
-  // /** appdashboard-button-configuration-panel: Close button panel */
-  // onCloseButtonPanel(){
-  //   this.openCardButton = false;
-  // }
 
 }
