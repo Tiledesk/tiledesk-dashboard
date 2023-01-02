@@ -66,8 +66,18 @@ export class PanelIntentListComponent implements OnInit {
     //console.log("found those: ", this.filtered_intents)
   }
 
-  selectIntent(intent) {
+  selectIntent(intent, index) {
     console.log("intent selected: ", intent);
+    console.log("index: ", index)
+
+    let elements = Array.from(document.getElementsByClassName('intent active'));
+    elements.forEach((el) => {
+      el.classList.remove('active');
+    })
+
+    const element = document.getElementById('intent_' + index);
+    element.classList.toggle("active")
+
     this.selected_intent.emit(intent);
   }
 

@@ -1,23 +1,16 @@
 .content {
-    //padding: 5px 10px;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     color: #728087;
     padding: 4px;
-    // height: 400px;
-    // background-color: grey;
 }
 
-.botname-box {
+.search-box {
     width: 100%;
     display: flex;
     justify-content: center;
-
-    .botname {
-        font-size: 14px;
-    }
 }
 
 .title-box {
@@ -31,193 +24,6 @@
     }
 }
 
-.faq-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-
-    .custom-divider {
-        background-color: #334754;
-        width: 80%;
-        height: 1px;
-        box-shadow: 0px 0px 10px #334754;
-        margin: 6px 0px;
-    }
-}
-
-.single-faq {
-    width: 100%;
-    min-height: 30px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 6px;
-    padding: 8px 0px;
-
-    p {
-        color: white;
-        font-size: 13px;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-    }
-
-    .bolt-icon {
-        color: #ffd200;
-        font-size: 20px;
-    }
-
-    .faq-display-name {
-        margin-bottom: 0px;
-    }
-
-    .faq-display-name:hover {
-        margin-bottom: 0px;
-        cursor: pointer;
-    }
-
-    .icons-list {
-        display: flex;
-        flex-direction: row;
-
-        .circle {
-            margin: 0px 2px;
-            border: solid 1px;
-            border-radius: 8px;
-            width: 16px;
-            height: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            p {
-                font-size: 11px;
-            }
-        }
-
-        .circle.ai {
-            // background-color: white;
-            // color: orange;
-        }
-
-        .circle.actions {
-            // background-color: white;
-            // color: red;
-        }
-
-        .webhook-icon {
-            font-size: 16px;
-            margin: 0px 2px;
-            color: green;
-        }
-
-        .minimal-icon {
-            font-size: 16px;
-            margin: 0px 2px;
-        }
-
-        .form-icon {
-            font-size: 16px;
-            margin: 0px 2px;
-            color: rgb(0, 157, 255);
-        }
-    }
-}
-
-.single-faq:hover {
-    background-color: #e9f1ef78;
-    font-weight: 400;
-    cursor: pointer;
-
-    .faq-display-name {
-        color: black;
-    }
-}
-
-.single-faq:active {
-    border-right: solid 2px #7a8890;
-    border-radius: 8px;
-    color: white;
-    background-color: #e9f1ef21;
-}
-
-.single-faq-default {
-    width: 100%;
-    min-height: 30px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-bottom: 6px;
-    cursor: pointer;
-    //padding: 8px 0px;
-
-    p {
-        color: white;
-        font-size: 13px;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        margin-bottom: 0px;
-    }
-
-    .rocket-launch-icon {
-        color: #4ecb53;
-        font-size: 20px;
-        font-weight: 600;
-    }
-
-    .undo-icon {
-        color: #ff4000;
-        font-size: 20px;
-        font-weight: 600;
-    }
-
-    .icon {
-        color: #8c989e;
-    }
-
-    .ai-icon {
-        margin-bottom: 0px;
-        font-size: 12px;
-        margin-top: -5px;
-        margin-right: 3px;
-    }
-
-    .webhook-icon {
-        font-size: 12px;
-        margin-right: 3px;
-    }
-
-    .list-alt-icon {
-        font-size: 12px;
-        margin-right: 3px;
-    }
-
-    .bolt-icon {
-        font-size: 12px;
-        margin-right: -2px;
-        font-weight: 600;
-    }
-
-    .actions {
-        display: flex;
-    }
-
-    .action-counter {
-        font-size: 10px;
-        padding: 0px;
-        margin: 0px;
-        margin-top: -4px;
-    }
-}
-
-.single-faq-default:hover {
-    background-color: #728087;
-}
-
 .icon-container {
     width: 38px;
     display: flex;
@@ -229,11 +35,6 @@
     flex-direction: row;
 }
 
-.faq-container {
-}
-
-// second version
-
 .custom-divider {
     background-color: #334754;
     width: 80%;
@@ -243,35 +44,28 @@
 }
 
 .intent-list {
-}
 
-.intent-list:hover {
-}
-
-.intent-list:active {
 }
 
 .intent {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     border-radius: 6px;
-    min-height: 36px;
+    min-height: 38px;
     padding-left: 6px;
     margin-bottom: 8px;
     cursor: pointer;
     transition: all 0.3s;
 
     .rocket-launch-icon {
-        margin-top: 5px;
         color: #0aae10;
         font-size: 20px;
         font-weight: 600;
     }
 
     .undo-icon {
-        margin-top: 5px;
         color: #ff4000;
         font-size: 20px;
         font-weight: 600;
@@ -349,13 +143,32 @@
 .intent:active {
     background-color: #d2d2d2;
     border-right: solid 5px #0049bd;
+    border-right: solid 5px #3ea9f5;
     border-radius: 6px 10px 10px 6px;
 
     .intent-display-name {
         color: #333;
         font-weight: 500;
         margin-bottom: 0px;
-        font-size: 16px;
+    }
+
+    .icon-list {
+        .icon {
+            color: #333;
+        }
+    }
+}
+
+.active {
+    background-color: #d2d2d2;
+    //border-right: solid 5px #0049bd;
+    border-right: solid 5px #3ea9f5;
+    border-radius: 6px 10px 10px 6px;
+
+    .intent-display-name {
+        color: #333;
+        font-weight: 500;
+        margin-bottom: 0px;
     }
 
     .icon-list {

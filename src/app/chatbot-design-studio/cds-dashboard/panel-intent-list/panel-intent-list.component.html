@@ -1,12 +1,10 @@
 <div class="content">
 
-    <div class="botname-box">
+    <div class="search-box">
 
         <div class="input-box">
             <input class="custom-input" placeholder="search an intent..." (input)="livesearch($event.target.value);">
         </div>
-        <!-- <mat-form-field appearance="fill">
-        </mat-form-field> -->
         
     </div>
 
@@ -18,35 +16,35 @@
 
         <div class="default-intents">
 
-            <div *ngIf="intent_start" class="intent">
+            <div id="intent_-1" *ngIf="intent_start" class="intent" (click)="selectIntent(intent_start, -1)">
                 <div class="icon-container">
                     <span class="material-icons rocket-launch-icon">rocket_launch</span>
                 </div>
                 <div>
                     <p class="intent-display-name">{{ intent_start.intent_display_name }}</p>
                     <div class="icon-list">
-                        <p class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
-                        <span class="material-icons icon webhook-icon">webhook</span>
-                        <span class="material-icons icon list-alt-icon">list_alt</span>
-                        <div class="actions"><span class="material-icons icon bolt-icon">bolt</span>
-                            <p class="action-counter icon">3</p>
+                        <p *ngIf="intent_start.questions" class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
+                        <span *ngIf="intent_start.webhook_enabled" class="material-icons icon webhook-icon">webhook</span>
+                        <span *ngIf="intent_start.form" class="material-icons icon list-alt-icon">list_alt</span>
+                        <div *ngIf="intent_start.actions && intent.actions.length > 0" class="actions"><span class="material-icons icon bolt-icon">bolt</span>
+                            <p class="action-counter icon">{{ intent_start.actions.length }}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div *ngIf="intent_defaultFallback" class="intent">
+            <div id="intent_-2" *ngIf="intent_defaultFallback" class="intent" (click)="selectIntent(intent_defaultFallback, -2)">
                 <div class="icon-container">
                     <span class="material-icons undo-icon">undo</span>
                 </div>
                 <div>
                     <p class="intent-display-name">{{ intent_defaultFallback.intent_display_name }}</p>
                     <div class="icon-list">
-                        <p class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
-                        <span class="material-icons icon webhook-icon">webhook</span>
-                        <span class="material-icons icon list-alt-icon">list_alt</span>
-                        <div class="actions"><span class="material-icons icon bolt-icon">bolt</span>
-                            <p class="action-counter icon">3</p>
+                        <p *ngIf="intent_defaultFallback.questions" class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
+                        <span *ngIf="intent_defaultFallback.webhook_enabled" class="material-icons icon webhook-icon">webhook</span>
+                        <span *ngIf="intent_defaultFallback.form" class="material-icons icon list-alt-icon">list_alt</span>
+                        <div *ngIf="intent_defaultFallback.actions && intent.actions.length > 0" class="actions"><span class="material-icons icon bolt-icon">bolt</span>
+                            <p class="action-counter icon">{{ intent_defaultFallback.actions.length }}</p>
                         </div>
                     </div>
                 </div>
@@ -61,15 +59,15 @@
 
         <div class="intents">
 
-            <div *ngFor="let intent of filtered_intents" class="intent" style="padding-left: 10px;" value="intent.id" (click)="selectIntent(intent)">
+            <div *ngFor="let intent of filtered_intents; let id = index" id="intent_{{id}}" class="intent" style="padding-left: 10px;" value="intent.id" (click)="selectIntent(intent, id)">
                 <div>
                     <p class="intent-display-name">{{intent.intent_display_name}}</p>
                     <div class="icon-list">
-                        <p class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
-                        <span class="material-icons icon webhook-icon">webhook</span>
-                        <span class="material-icons icon list-alt-icon">list_alt</span>
-                        <div class="actions"><span class="material-icons icon bolt-icon">bolt</span>
-                            <p class="action-counter icon">3</p>
+                        <p *ngIf="intent.questions" class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
+                        <span *ngIf="intent.webhook_enabled" class="material-icons icon webhook-icon">webhook</span>
+                        <span *ngIf="intent.form" class="material-icons icon list-alt-icon">list_alt</span>
+                        <div *ngIf="intent.actions && intent.actions.length > 0" class="actions"><span class="material-icons icon bolt-icon">bolt</span>
+                            <p class="action-counter icon">{{ intent.actions.length }}</p>
                         </div>
                     </div>
                 </div>
