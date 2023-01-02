@@ -10,7 +10,7 @@
     "actions": [
       { 
         "type": "reply",
-        "content": {
+        "body": {
             "text": "Hello 👋. I'm a bot 🤖 I'm beautiful Do you need help I can really help you with joy!",
             "commands": [
               {
@@ -100,7 +100,7 @@
       },
       {
         "type": "email",
-        "content": {
+        "body": {
           "recipient": ""
         }
       }

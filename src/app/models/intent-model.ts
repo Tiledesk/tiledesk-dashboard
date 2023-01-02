@@ -29,7 +29,7 @@ import { MetadataOverride } from "@angular/core/testing";
 
     export class Action {
         type: string;
-        content: any;
+        body: any;
     }
 
 
