@@ -97,6 +97,12 @@
               }
             ]
           }
+      },
+      {
+        "type": "email",
+        "content": {
+          "recipient": ""
+        }
       }
     ],
     "form": {

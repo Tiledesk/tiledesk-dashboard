@@ -47,6 +47,11 @@ import { MetadataOverride } from "@angular/core/testing";
         }
     }
 
+    export class ActionEmail {
+        to: string;
+        subject: string;
+        text: string;
+    }
 
     export class ActionAgent {
         goto: string;
