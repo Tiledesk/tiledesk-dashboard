@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -52,6 +53,7 @@ import { PanelButtonConfigurationComponent } from './cds-dashboard/panel-intent-
     NgSelectModule,
     TextFieldModule,
     MatSliderModule,
+    MatSidenavModule,
     MatSelectModule,
     RouterModule,
     TranslateModule,

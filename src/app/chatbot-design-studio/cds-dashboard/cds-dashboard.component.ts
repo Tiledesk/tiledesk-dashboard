@@ -7,12 +7,13 @@ import { AuthService } from '../../core/auth.service';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { HttpClient } from "@angular/common/http";
 
 
 import { Intent, Button } from '../../models/intent-model';
 import { TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
+import { Subject } from 'rxjs';
 const swal = require('sweetalert');
 
 
@@ -40,7 +41,8 @@ export class CdsDashboardComponent implements OnInit {
 
   // buttonSelected: Button;
   isChromeVerGreaterThan100: boolean;
-
+  isOpenActionDrawer: boolean;
+  eventsSubject: Subject<void> = new Subject<void>();
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -109,14 +111,14 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** */
-  private createNewEmptyIntent(){
+  private createNewEmptyIntent() {
     this.intentSelected = new Intent();
   }
 
   /**
    * GET THE ID OF FAQ-KB PASSED BY FAQ PAGE (AND THAT FAQ PAGE HAS RECEIVED FROM FAQ-KB)
   */
-   private getFaqKbId() {
+  private getFaqKbId() {
     this.id_faq_kb = this.route.snapshot.params['faqkbid'];
     this.intentSelected.id_faq_kb = this.id_faq_kb;
     this.logger.log('[FAQ-EDIT-ADD] FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
@@ -145,7 +147,7 @@ export class CdsDashboardComponent implements OnInit {
       //this.translateTheAnswerWillBeDeleted();
     });
   }
- 
+
   // translateTheAnswerWillBeDeleted() {
   //   let parameter = { intent_name: this.intent_name };
   //   this.translate.get('TheAnswerWillBeDeleted', parameter).subscribe((text: string) => {
@@ -162,10 +164,10 @@ export class CdsDashboardComponent implements OnInit {
 
   /** */
   private getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
     });
-  } 
+  }
 
 
 
@@ -185,36 +187,36 @@ export class CdsDashboardComponent implements OnInit {
 
 
   // SERVICE FUNCTIONS //
-  
+
   /**
    * !!! this function is temporary and will be replaced with a server function 
   */
-  MOCK_getFaqIntents(){
+  MOCK_getFaqIntents() {
     let url = 'assets/mock-data/tilebot/faq/intents.json';
     this.httpClient.get<Intent[]>(url).subscribe(data => {
       this.listOfIntents = data;
       this.intentSelected = this.listOfIntents[0];
-    }); 
+    });
   }
 
-  MOCK_getFaqIntent(){
+  MOCK_getFaqIntent() {
     let url = 'assets/mock-data/tilebot/faq/intent.json';
     this.httpClient.get<Intent>(url).subscribe(data => {
-     
+
       this.intentSelected = data;
       this.elementIntentSelected = {};
       this.elementIntentSelected['type'] = 'action';
       this.elementIntentSelected['element'] = this.intentSelected.actions[0];
-      console.log('MOCK_getFaqIntent',  this.elementIntentSelected);
-    }); 
-    
+      console.log('MOCK_getFaqIntent', this.elementIntentSelected);
+    });
+
   }
 
   /** ADD INTENT  */
   private creatIntent() {
     this.showSpinner = true;
     let id_faq_kb = this.intentSelected.id_faq_kb;
-    let questionIntentSelected = this.intentSelected.question; 
+    let questionIntentSelected = this.intentSelected.question;
     let answerIntentSelected = this.intentSelected.answer;
     let displayNameIntentSelected = this.intentSelected.intent_display_name;
     let formIntentSelected = this.intentSelected.form;
@@ -222,34 +224,34 @@ export class CdsDashboardComponent implements OnInit {
     let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
     this.faqService.addIntent(
       id_faq_kb,
-      questionIntentSelected, 
-      answerIntentSelected, 
-      displayNameIntentSelected, 
-      formIntentSelected, 
-      actionsIntentSelected, 
+      questionIntentSelected,
+      answerIntentSelected,
+      displayNameIntentSelected,
+      formIntentSelected,
+      actionsIntentSelected,
       webhookEnabledIntentSelected
     ).subscribe((faq) => {
-        this.showSpinner = false;
-        this.logger.log('[FAQ-EDIT-ADD] CREATED FAQ RES ', faq);
-      }, (error) => {
-        this.showSpinner = false;
-        this.logger.error('[FAQ-EDIT-ADD] CREATED FAQ - ERROR ', error);
-        // if (error && error['status']) {
-        //   this.error_status = error['status']
-        //   if (this.error_status === 409) {
-        //     this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
-        //     this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
-        //   }
-        // }
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showWidgetStyleUpdateNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
-      }, () => {
-        this.showSpinner = false;
-        this.logger.log('[FAQ-EDIT-ADD] CREATED FAQ * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
-        this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.id_faq_kb + "/" + this.botType]);
-      });
+      this.showSpinner = false;
+      this.logger.log('[FAQ-EDIT-ADD] CREATED FAQ RES ', faq);
+    }, (error) => {
+      this.showSpinner = false;
+      this.logger.error('[FAQ-EDIT-ADD] CREATED FAQ - ERROR ', error);
+      // if (error && error['status']) {
+      //   this.error_status = error['status']
+      //   if (this.error_status === 409) {
+      //     this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
+      //     this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
+      //   }
+      // }
+      // =========== NOTIFY ERROR ===========
+      // this.notify.showWidgetStyleUpdateNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
+    }, () => {
+      this.showSpinner = false;
+      this.logger.log('[FAQ-EDIT-ADD] CREATED FAQ * COMPLETE *');
+      // =========== NOTIFY SUCCESS===========
+      // this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
+      this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.id_faq_kb + "/" + this.botType]);
+    });
 
   }
 
@@ -258,14 +260,14 @@ export class CdsDashboardComponent implements OnInit {
     console.log('editIntent');
     this.showSpinner = true;
     let id = this.intentSelected.id;
-    let questionIntentSelected = this.intentSelected.question; 
+    let questionIntentSelected = this.intentSelected.question;
     let answerIntentSelected = this.intentSelected.answer;
     let displayNameIntentSelected = this.intentSelected.intent_display_name;
     let formIntentSelected = this.intentSelected.form;
     let actionsIntentSelected = this.intentSelected.actions;
-    let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;   
+    let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
     this.faqService.updateIntent(
-      id, 
+      id,
       questionIntentSelected,
       answerIntentSelected,
       displayNameIntentSelected,
@@ -273,30 +275,30 @@ export class CdsDashboardComponent implements OnInit {
       actionsIntentSelected,
       webhookEnabledIntentSelected
     ).subscribe((data) => {
-        this.showSpinner = false;
-        this.logger.log('[FAQ-EDIT-ADD] UPDATE FAQ RES', data);
-      }, (error) => {
-        this.showSpinner = false;
-        this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showWidgetStyleUpdateNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
+      this.showSpinner = false;
+      this.logger.log('[FAQ-EDIT-ADD] UPDATE FAQ RES', data);
+    }, (error) => {
+      this.showSpinner = false;
+      this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR ', error);
+      // =========== NOTIFY ERROR ===========
+      // this.notify.showWidgetStyleUpdateNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
 
-        // if (error && error['status']) {
-        //   this.error_status = error['status']
-        //   this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
+      // if (error && error['status']) {
+      //   this.error_status = error['status']
+      //   this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
 
-        //   if (this.error_status === 409) {
-        //     this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
-        //     this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
-        //   }
-        // }
+      //   if (this.error_status === 409) {
+      //     this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
+      //     this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
+      //   }
+      // }
 
-      }, () => {
-        this.showSpinner = false;
-        this.logger.log('[FAQ-EDIT-ADD] UPDATE FAQ * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showWidgetStyleUpdateNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
-      });
+    }, () => {
+      this.showSpinner = false;
+      this.logger.log('[FAQ-EDIT-ADD] UPDATE FAQ * COMPLETE *');
+      // =========== NOTIFY SUCCESS===========
+      // this.notify.showWidgetStyleUpdateNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
+    });
   }
 
 
@@ -308,12 +310,12 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** appdashboard-intent: Save intent */
-  onSaveIntent(intent: Intent){
+  onSaveIntent(intent: Intent) {
     console.log('onSaveIntent :: ', intent);
     this.intentSelected = intent;
-    if(this.CREATE_VIEW){
+    if (this.CREATE_VIEW) {
       this.creatIntent();
-    } else if(this.EDIT_VIEW){
+    } else if (this.EDIT_VIEW) {
       this.editIntent();
     }
   }
@@ -323,6 +325,11 @@ export class CdsDashboardComponent implements OnInit {
     //this.intentSelected = intent;
     this.MOCK_getFaqIntent();
     console.log("dashboard --> onSelectIntent: ", this.intentSelected);
+  }
+
+  onOpenActionDrawer(_isOpenActioDrawer: boolean) {
+    console.log('[CDS DSBRD] onOpenActionDrawer - isOpenActioDrawer ', _isOpenActioDrawer)
+    this.isOpenActionDrawer = _isOpenActioDrawer
   }
 
 }
