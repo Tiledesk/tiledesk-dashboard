@@ -1,11 +1,72 @@
-<div class="image-tab">
+<!-- <div class="response-image-uploader" [ngStyle] = "{'width': imageWidth, 'height': imageHeight}">
+    <div class="bck-image" [style.background-image]="'url('+imagePath+')'"></div>
+    <div class="image-panel">
+        
+    </div>
+</div> -->
+<div *ngIf="!preview" 
+    class="dropUploadImage"
+    [ngClass]="{'is-in-drop-event': isHovering === true}"
+    (drop)="drop($event)"
+    (dragover)="allowDrop($event)" 
+    (dragleave)="drag($event)">    
+
+    <label class="inputUploadImage" for="uploadImage">
+        <em class="material-icons">photo_camera</em>
+        <input style="display:none" type="file" id="uploadImage" accept="image/*" (change)="selectFile($event)" />
+    </label>
+
+    <div class="labelDropUploadImage">
+        <span *ngIf="isHovering === false">
+            trascina qui un'immagine o clicca per selezionarla
+        </span>
+        <span *ngIf="isHovering === true">
+            trascinamento
+        </span>
+    </div>
+    
+</div>
+<img *ngIf="preview" #imageUploaded id="imageUploaded" [src]="preview" (change)="getDimensionImage()">
+
+
+
+
+<!-- <div class="image-tab">
 
     <div class="image-header-tab">
     </div> 
 
     <div class="image-content-tab">
+
+
+        <div 
+            style="height: 100%" 
+            [ngClass]="{'is-in-drop-event': isHovering === true}" 
+            (drop)="drop($event)"
+            (dragover)="allowDrop($event)" 
+            (dragleave)="drag($event)">
+            <div *ngIf="isHovering === false"
+                class="ion-justify-content-center ion-align-items-center xxx" 
+                style="height: 100%; flex-direction: column">
+                <span style="color: #92949c; font-size: 16px;line-height: 18px;margin-top: -160px;">
+                {{ 'LABEL_NO_MSG_HERE' | translate }}
+                </span>
+            </div>
+
+            <div *ngIf="isHovering === true"
+                class="ion-justify-content-center ion-align-items-center xxx" 
+                style="height: 100%; flex-direction: column; border-radius: 6px;border: 2px dashed #a4acb3; padding: 5px">
+                <em name="image-outline" style="font-size: 51px;color: #a4acb3;margin-bottom: 15px;"></em>
+                <span style="color: #a4acb3; font-size: 18px;line-height: 18px;font-weight: 500;">
+                    {{ 'DROP_IMAGE_HERE_TO_SEND_IT' | translate }}
+                </span>
+            </div>
+        </div>
+  
+
+        <img [src]="fileSelected">
        
-        <div *ngIf="showAddImage" class="section">
+        <!- <div *ngIf="showAddImage" class="section">
             <div class="response-image-uploader-overlay">
                 <em class="material-icons">photo_camera</em>
 
@@ -20,35 +81,28 @@
                     />
                 </div> 
 
-               
-
-                
-                    
-                        <div class="row">
-                            <div class="form-group size col-md-6">
-                                <label class="control-label">
-                                    {{ 'width:' | translate }}
-                                </label>
-                                <input 
-                                    type = "text" 
-                                    [(ngModel)] = "imageWidth"
-                                    class="input form-control"
-                                />
-                            </div>
-                            <div class="form-group size col-md-6">
-                                <label class="control-label">
-                                    {{ 'height:' | translate }}
-                                </label>
-                                <input 
-                                    type = "text" 
-                                    [(ngModel)] = "imageHeight"
-                                    class="input form-control"
-                                />
-                            </div> 
-                  
-                        </div>
-                    
-               
+                <div class="row">
+                    <div class="form-group size col-md-6">
+                        <label class="control-label">
+                            {{ 'width:' | translate }}
+                        </label>
+                        <input 
+                            type = "text" 
+                            [(ngModel)] = "imageWidth"
+                            class="input form-control"
+                        />
+                    </div>
+                    <div class="form-group size col-md-6">
+                        <label class="control-label">
+                            {{ 'height:' | translate }}
+                        </label>
+                        <input 
+                            type = "text" 
+                            [(ngModel)] = "imageHeight"
+                            class="input form-control"
+                        />
+                    </div> 
+                </div>
 
                 <button 
                     type="button" 
@@ -70,31 +124,11 @@
                     {{ 'Remove image' | translate }}
                 </button>
             </div> 
-            <!-- <div class="form-group">
-                <label class="control-label">
-                    {{ 'width' | translate }}
-                </label>
-                <input 
-                    type = "text" 
-                    [(ngModel)] = "imageWidth"
-                    class="input form-control"
-                />
-                <label class="control-label">
-                    {{ 'height' | translate }}
-                </label>
-                <input 
-                    type = "text" 
-                    [(ngModel)] = "imageHeight"
-                    class="input form-control"
-                />
-            </div>  -->
-
-        </div>
+        </div> ->
        
     </div> 
 
     <div class="image-footer-tab">
-        
     </div>
     
 
@@ -102,4 +136,4 @@
 
 
 
-
+ -->

@@ -3,7 +3,7 @@
     <appdashboard-action-reply
         *ngIf = "elementSelected.type === 'reply'"
         class="panel-response"
-        [reply]="elementSelected.content"
+        [reply]="elementSelected.body"
         [showSpinner] = "showSpinner"
         (openButtonPanel) = onOpenButtonPanel($event)
     ></appdashboard-action-reply>

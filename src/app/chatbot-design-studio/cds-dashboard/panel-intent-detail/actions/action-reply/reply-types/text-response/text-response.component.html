@@ -8,53 +8,53 @@
 </div>
 
 
-<div class="text-response">
-   
-    <div class="text-editor-wrapper">
-        <div class="text-editor">
+
+<div class="text-editor-wrapper">
+
+    <div class="text-editor">
         
-            <div class="response-controls">
-                 <div class="control-button delete" (click)="onDeleteResponse()">
-                    <em class="material-icons">delete</em>
-                </div>
-                <div class="control-button" (click)="onMoveUpResponse()">
-                    <em class="material-icons">expand_less</em>
-                </div> 
-                <div class="control-button" (click)="onMoveDownResponse()">
-                    <em class="material-icons">expand_more</em>
-                </div>
+        <div class="response-controls">
+                <div class="control-button delete" (click)="onDeleteResponse()">
+                <em class="material-icons">delete</em>
             </div>
-
-            <mat-form-field class="box-textarea" appearance="fill">
-                <textarea matInput
-                    cdkTextareaAutosize
-                    [(ngModel)]="textMessage"
-                    #autosize="cdkTextareaAutosize"
-                    [maxlength]="limitCharsText"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5"
-                    (ngModelChange)="onChangeText($event)">
-                </textarea>
-            </mat-form-field>
-            
-            <div class="text-editor-drop">
-                <em class="material-icons">drag_indicator</em>
+            <div class="control-button" (click)="onMoveUpResponse()">
+                <em class="material-icons">expand_less</em>
             </div> 
+            <div class="control-button" (click)="onMoveDownResponse()">
+                <em class="material-icons">expand_more</em>
+            </div>
         </div>
 
-        <div class="editor-utils">
-            <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
-            <!-- <div class="text-editor-insert-attribute">
-                <em class="material-icons">code</em>
-            </div> 
-            <div class="emoji-picker">
-                <em class="material-icons">insert_emoticon</em>
-            </div>  -->
+        <mat-form-field class="box-textarea" appearance="fill">
+            <textarea matInput
+                cdkTextareaAutosize
+                [(ngModel)]="textMessage"
+                #autosize="cdkTextareaAutosize"
+                [maxlength]="limitCharsText"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+                (ngModelChange)="onChangeText($event)">
+            </textarea>
+        </mat-form-field>
+        
+        <div class="text-editor-drop">
+            <em class="material-icons">drag_indicator</em>
         </div>
+    </div>
 
-    </div> 
+    <div class="editor-utils">
+        <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
+        <!-- <div class="text-editor-insert-attribute">
+            <em class="material-icons">code</em>
+        </div> 
+        <div class="emoji-picker">
+            <em class="material-icons">insert_emoticon</em>
+        </div>  -->
+    </div>
 
-</div>
+</div> 
+
+
 
 <div class="buttons-response button-replies" cdkDropListOrientation="horizontal" cdkDropList (cdkDropListDropped)="drop($event)" >
     

@@ -1,4 +1,4 @@
-<div class="box-dx">
+<div class="box-sx">
 
     <div cdkDropList class="content draggable-list" (cdkDropListDropped)="drop($event)">
         <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag>
@@ -14,8 +14,8 @@
                     ></appdashboard-text-response>
                 </div>
                 
-                <div class="text-response">
-                    <div class="text-editor-drop" 
+                <div class="response">
+                    <div class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 
                         (mouseup)="mouseUp()" 
@@ -43,8 +43,8 @@
                     ></appdashboard-image-response>
                 </div>
                 
-                <div class="text-response">
-                    <div class="text-editor-drop" 
+                <div class="response">
+                    <div class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 
                         (mouseup)="mouseUp()" 
@@ -72,8 +72,8 @@
                     ></appdashboard-frame-response>
                 </div>
                 
-                <div class="text-response">
-                    <div class="text-editor-drop" 
+                <div class="response">
+                    <div class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 
                         (mouseup)="mouseUp()" 
@@ -96,7 +96,7 @@
 
 </div>
 
-<div class="box-sx">
+<div class="box-dx">
     <appdashboard-panel-reply-tools
         class="panel-tools-response"
         (addNewResponse) = onAddNewResponse($event)
