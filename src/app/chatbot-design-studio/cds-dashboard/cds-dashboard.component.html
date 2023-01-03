@@ -37,13 +37,23 @@
                 *ngIf = intentSelected
                 class="panel-intent"
                 [intentSelected]="intentSelected"
+                [actionDrawerIsOpen]="actionDrawerIsOpen"
+                (openActionDrawer)= onOpenActionDrawer($event)
+                [isOpenActionDrawer]="isOpenActionDrawer"
             ></appdashboard-panel-intent>
+
+
+            <appdashboard-panel-actions [isOpenActionDrawer]="isOpenActionDrawer">
+
+            </appdashboard-panel-actions>
+
             <appdashboard-panel-intent-detail
                 *ngIf = elementIntentSelected
                 class="panel-intent-detail"
                 [elementIntentSelected]="elementIntentSelected"
                 [showSpinner] = "showSpinner"
                 (openButtonPanel) = onOpenButtonPanel($event)
+             
             ></appdashboard-panel-intent-detail>
         </div>
 
