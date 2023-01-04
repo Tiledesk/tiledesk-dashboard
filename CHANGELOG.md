@@ -1,5 +1,15 @@
 # tiledesk-dashboard
 
+### 2.3.18-rc1
+- Externalizes the "templatesUrl" variable in the environments
+
+### 2.3.16
+- Deploys in production
+- Fixes the bug: Contact page does not display the contacts list
+
+### 2.3.16-rc1
+- Fixes the bug: Contact page does not display the contacts list
+
 ### 2.3.15
 - Deploys in production
 - Changes the 'appUrl' endpoint url for the 'v3' dashboard
