@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators';
 export class FaqKbService {
 
   SERVER_BASE_PATH: string;
+  TEMPLATES_URL: string;
   DLGFLW_BOT_CREDENTIAL_BASE_URL: string;
   RASA_BOT_CREDENTIAL_BASE_URL: string;
   FAQKB_URL: any;
@@ -46,7 +47,7 @@ export class FaqKbService {
   getAppConfig() {
     // this.DLGFLW_BOT_CREDENTIAL_BASE_URL = this.appConfigService.getConfig().botcredendialsURL;
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
-
+    this.TEMPLATES_URL = this.appConfigService.getConfig().templatesUrl
     this.logger.log('AppConfigService getAppConfig (FAQ-KB SERV.) DLGFLW_BOT_CREDENTIAL_BASE_URL ', this.DLGFLW_BOT_CREDENTIAL_BASE_URL);
     this.logger.log('AppConfigService getAppConfig (FAQ-KB SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
   }
@@ -90,7 +91,8 @@ export class FaqKbService {
         'Content-Type': 'application/json',
       })
     };
-    const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/"
+    // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/"
+     const url = this.TEMPLATES_URL
 
     this.logger.log('[GET-TMPLT][FAQ-KB.SERV] - GET-TMPLT - URL ', url);
     return this._httpClient
@@ -104,7 +106,8 @@ export class FaqKbService {
         'Content-Type': 'application/json',
       })
     };
-    const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/" + botid
+    // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/" + botid
+    const url = this.TEMPLATES_URL + botid
     return this._httpClient
       .get(url, httpOptions)
   }

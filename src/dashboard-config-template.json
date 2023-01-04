@@ -16,6 +16,7 @@
   "baseImageUrl": "${API_BASEIMAGE_URL}",
   "pushEngine": "${PUSH_ENGINE}",
   "logLevel": "${LOG_LEVEL}",
+  "templatesUrl": "${TEMPLATES_URL}",
   "appsUrl":  "${APPS_URL}",
   "promoBannerUrl": "${PROMO_BANNER_URL}",
   "chatStoragePrefix": "${CHAT_STORAGE_PREFIX}",
