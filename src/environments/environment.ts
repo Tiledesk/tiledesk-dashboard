@@ -17,6 +17,7 @@ export const environment = {
   baseImageUrl: 'CHANGEIT',
   pushEngine: 'none',
   logLevel: 'Info',
+  templatesUrl: 'CHANGEIT',
   appsUrl: 'CHANGEIT',
   promoBannerUrl: 'CHANGEIT',
   chatStoragePrefix: "CHANGEIT",
@@ -31,6 +32,10 @@ export const environment = {
       vapidKey: 'CHANGEIT'
   }
 };
+
+
+
+
 
 
 

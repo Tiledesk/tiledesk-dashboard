@@ -13,9 +13,10 @@ export const environment = {
   chatEngine: 'mqtt',
   firebaseAuth: false,
   uploadEngine: 'native',
-  pushEngine: 'none',
   baseImageUrl: 'CHANGEIT',
+  pushEngine: 'none',
   logLevel: 'Info',
+  templatesUrl: 'CHANGEIT',
   appsUrl: 'CHANGEIT',
   promoBannerUrl: 'CHANGEIT',
   chatStoragePrefix: "CHANGEIT",
@@ -30,7 +31,6 @@ export const environment = {
       vapidKey: 'CHANGEIT'
   }
 };
-
 
 
 

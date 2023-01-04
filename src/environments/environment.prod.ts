@@ -1,4 +1,3 @@
-
 export const environment = {
     production: true,
     t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:T-ANA:T-ACT:T-TRI:T-GRO:T-DEP:T-OPH:T-MTL:T-DGF:T-NAT:T-CAR:T-V1L:T-PSA:T-MTT:T-SUP:T-LBS:T-APP:T-DEV:T-NOT:T-RAS:T',
@@ -13,10 +12,11 @@ export const environment = {
     wsUrl: 'wss://eu.rtm.tiledesk.com/v2/ws/',
     chatEngine: 'mqtt',
     firebaseAuth: false,
-    uploadEngine: 'native',
+    uploadEngine: 'native', 
+    baseImageUrl: "CHANGEIT",
     pushEngine: 'none',
-    baseImageUrl: 'CHANGEIT',
     logLevel: 'Info',
+    templatesUrl: 'CHANGEIT',
     appsUrl: 'CHANGEIT',
     promoBannerUrl: 'CHANGEIT',
     chatStoragePrefix: "CHANGEIT",
