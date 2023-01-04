@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.3.18
+- Deploys in production
+- Externalizes the "templatesUrl" variable in the environments
+
 ### 2.3.18-rc1
 - Externalizes the "templatesUrl" variable in the environments
 
