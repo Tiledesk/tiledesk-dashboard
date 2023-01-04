@@ -124,6 +124,7 @@ import { TilebotComponent } from './bots/tilebot/tilebot.component';
 import { OnboardingComponent } from './create-project-wizard/onboarding/onboarding.component';
 import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
 import { InstallTemplateComponent } from './create-project-wizard/install-template/install-template.component';
+import { ContactsComponent } from './contacts/contacts.component';
 
 // Lazy loading
 // import { ContactsComponent } from './contacts/contacts.component';
@@ -133,13 +134,13 @@ import { InstallTemplateComponent } from './create-project-wizard/install-templa
 const routes: Routes = [
 
 // Lazy loading
-  // { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard] },
   
-  {
-    canActivate: [AuthGuard],
-    path: 'project/:projectid/contacts',
-    loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
-  },
+  // {
+  //   canActivate: [AuthGuard],
+  //   path: 'project/:projectid/contacts',
+  //   loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
+  // },
 
 
   /* PRIVATE */
