@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -21,13 +21,14 @@ import { DelaySliderComponent } from './cds-dashboard/panel-intent-detail/action
 // import { ButtonConfigurationPanelComponent } from './dashboard/button-configuration-panel/button-configuration-panel.component';
 import { ImageResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/image-response/image-response.component';
 import { FrameResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/frame-response/frame-response.component';
-import { ImagePanelComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/image-panel/image-panel.component';
+import { ImageUploadComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/image-upload/image-upload.component';
 import { PanelIntentListComponent } from './cds-dashboard/panel-intent-list/panel-intent-list.component';
 import { PanelIntentComponent } from './cds-dashboard/panel-intent/panel-intent.component';
 import { PanelActionsComponent } from './cds-dashboard/panel-actions/panel-actions.component';
 import { PanelIntentDetailComponent } from './cds-dashboard/panel-intent-detail/panel-intent-detail.component';
 import { PanelIntentHeaderComponent } from './cds-dashboard/panel-intent-header/panel-intent-header.component';
 import { PanelButtonConfigurationComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/panel-button-configuration/panel-button-configuration.component';
+import { ElementFromUrlComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-from-url/element-from-url.component';
 
 @NgModule({
   declarations: [
@@ -39,13 +40,14 @@ import { PanelButtonConfigurationComponent } from './cds-dashboard/panel-intent-
     // ButtonConfigurationPanelComponent,
     ImageResponseComponent,
     FrameResponseComponent,
-    ImagePanelComponent,
+    ImageUploadComponent,
     PanelIntentListComponent,
     PanelIntentComponent,
     PanelActionsComponent,
     PanelIntentDetailComponent,
     PanelIntentHeaderComponent,
-    PanelButtonConfigurationComponent
+    PanelButtonConfigurationComponent,
+    ElementFromUrlComponent
   ],
   imports: [
     CommonModule,

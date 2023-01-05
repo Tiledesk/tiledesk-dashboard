@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImagePanelComponent } from './image-panel.component';
+import { ElementFromUrlComponent } from './element-from-url.component';
 
-describe('ImagePanelComponent', () => {
-  let component: ImagePanelComponent;
-  let fixture: ComponentFixture<ImagePanelComponent>;
+describe('ElementFromUrlComponent', () => {
+  let component: ElementFromUrlComponent;
+  let fixture: ComponentFixture<ElementFromUrlComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImagePanelComponent ]
+      declarations: [ ElementFromUrlComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ImagePanelComponent);
+    fixture = TestBed.createComponent(ElementFromUrlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

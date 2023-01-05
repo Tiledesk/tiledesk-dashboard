@@ -16,7 +16,19 @@
           {
             "type": "message",
             "message": {
-              "text": "Hello 👋. I'm a bot 🤖",
+              "type": "image",
+              "text": "Hello with image",
+              "metadata": {
+                  "src": "https://www.e-goo.it/wp-content/uploads/2015/01/trad_befana3.jpg",
+                  "width": 200,
+                  "height": 200
+              }
+            }
+          },
+          {
+            "type": "message",
+            "message": {
+              "text": "Hello 👋. I'm a bot 🤖 2",
               "type": "text",
               "time": 1800,
               "attributes": {

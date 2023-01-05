@@ -40,11 +40,6 @@ export class ActionReplyComponent implements OnInit {
     this.intentName = '';
     this.intentNameResult = true;
     this.textGrabbing = false;
-    // try {
-    //   this.intentName = this.intent.intent_display_name;
-    // } catch (error) {
-    //   console.log('there is not reply', error);
-    // }
     if(this.reply){
       try {
         this.arrayResponses = this.reply.commands;
@@ -60,19 +55,19 @@ export class ActionReplyComponent implements OnInit {
     var time = TIME_WAIT_DEFAULT;
     try {
       this.arrayResponses.forEach(element => {
-        if(element.type === TYPE_COMMAND.WAIT) {
+        if(element.type === TYPE_COMMAND.WAIT){
           time = element.time;
         }
         if(element.type === TYPE_COMMAND.MESSAGE){
           element.time = time;
+          element.message.time = time;
           time = TIME_WAIT_DEFAULT;
         }
       });
     } catch (error) {
       console.log(error);
     }
-    
-    console.log('generateArrayResponse:::', this.arrayResponses);
+    // console.log('generateArrayResponse:::', this.arrayResponses);
   }
 
   /** */

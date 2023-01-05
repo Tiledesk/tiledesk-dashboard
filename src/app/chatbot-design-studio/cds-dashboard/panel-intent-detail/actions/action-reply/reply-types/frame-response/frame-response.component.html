@@ -10,22 +10,14 @@
 
 <div class="frame-response">
     
-    
     <div class="text-editor-wrapper">
         <div class="text-editor">
         
             <div class="response-frame-uploader-wrapper">
-               
+               FRAME-----
                 <div class="response-frame-uploader" 
                     [ngStyle] = "{'width': frameWidth, 'height': frameHeight}">
 
-                    <!-- <div class="response-frame-uploader-overlay">
-                        <em class="material-icons">photo_camera</em>
-                        <span>Drag and drop or browse</span>
-                    </div> 
-                    <label>
-                        <input type="file" accept="image/gif,image/jpeg,image/png">
-                    </label> -->
                     <div *ngIf="response.type === 'image'" class="bck-frame"
                     [style.background-image]="'url('+framePath+')'" 
                     ></div>
@@ -41,13 +33,21 @@
 
 
                     <div class="frame-panel">
-                        <appdashboard-image-panel
-                        [metadata] = response.metadata
-                        (closeImagePanel) = onCloseFramePanel($event)
-                        ></appdashboard-image-panel>
-
+                        <appdashboard-element-from-url
+                        ></appdashboard-element-from-url>
                     </div>
                 </div>
+
+
+                <!-- 
+                <div class="response-image-uploader" [ngStyle] = "{'width': imageWidth, 'height': imageHeight}">
+                    <div class="bck-image" [style.background-image]="'url('+imagePath+')'"></div>
+                    <div class="image-panel"> 
+                    </div>
+                </div>
+                -->
+
+
                
 
             </div>

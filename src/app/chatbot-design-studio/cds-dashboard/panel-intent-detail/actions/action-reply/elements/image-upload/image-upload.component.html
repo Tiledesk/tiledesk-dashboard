@@ -1,0 +1,23 @@
+<div *ngIf="!previewImage" 
+    class="dropUploadImage"
+    [ngClass]="{'is-in-drop-event': isHovering === true}"
+    (drop)="drop($event)"
+    (dragover)="allowDrop($event)" 
+    (dragleave)="drag($event)">    
+
+    <label class="inputUploadImage" for="uploadImage">
+        <em class="material-icons">photo_camera</em>
+        <input style="display:none" type="file" id="uploadImage" accept="image/*" (change)="selectFile($event)" />
+    </label>
+
+    <div class="labelDropUploadImage">
+        <span *ngIf="isHovering === false">
+            trascina qui un'immagine o clicca per selezionarla
+        </span>
+        <span *ngIf="isHovering === true">
+            trascinamento
+        </span>
+    </div>
+    
+</div>
+<img *ngIf="previewImage" #imageUploaded id="imageUploaded" [src]="previewImage" (change)="getDimensionImage()">

@@ -3,124 +3,109 @@ import { Metadata } from '../../../../../../../models/intent-model';
 import { MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT } from '../../../../../../utils';
 
 @Component({
-  selector: 'appdashboard-image-panel',
-  templateUrl: './image-panel.component.html',
-  styleUrls: ['./image-panel.component.scss']
+  selector: 'appdashboard-image-upload',
+  templateUrl: './image-upload.component.html',
+  styleUrls: ['./image-upload.component.scss']
 })
-export class ImagePanelComponent implements OnInit {
-  @Output() closeImagePanel = new EventEmitter();
+export class ImageUploadComponent implements OnInit {
+  // @Output() closeImagePanel = new EventEmitter();
   @Input() metadata: Metadata;
   @ViewChild('imageUploaded', { static: false }) myIdentifier: ElementRef;
   
   imageUrl: string;
   imageWidth: string;
   imageHeight: string;
-  showAddImage: boolean;
 
   isHovering: boolean = false;
   dropEvent: any;
-  fileSelected: any;
+  previewImage: string;
 
-
-  selectedFiles?: FileList;
-  currentFile?: File;
-  progress = 0;
-  message = '';
-  preview = '';
-
-  // imageInfos?: Observable<any>;
 
   constructor() { }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    this.showAddImage = true;
-    this.imageUrl = this.metadata.src;
-    this.imageWidth = this.metadata.width;
-    this.imageHeight = this.metadata.height;
-    if(this.imageUrl && this.imageUrl.length>0){
-      this.showAddImage = false;
+   
+    if(this.metadata.src){
+      this.imageUrl = this.metadata.src;
+      this.imageWidth = this.metadata.width;
+      this.imageHeight = this.metadata.height;
+      this.previewImage = this.imageUrl;
+      this.setImageSize();
     }
-
-    //this.fileSelected = document.querySelector("#fileSelected");
-
   }
 
 
-
+  // CUSTOM FUNCTIONS //
   selectFile(event: any): void {
-    this.message = '';
-    this.preview = '';
-    this.progress = 0;
-    this.selectedFiles = event.target.files;
-    console.log("this.selectedFiles: ", this.selectedFiles);
-    if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0);
+    let selectedFiles = event.target.files;
+    if (selectedFiles) {
+      const file: File | null = selectedFiles.item(0);
       if (file) {
-        this.preview = '';
-        this.currentFile = file;
+        let currentFile = file;
+        let that = this;
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          console.log(e.target.result);
-          this.preview = e.target.result;
+          this.previewImage = e.target.result;
+          that.setImageSize();
         };
-        reader.readAsDataURL(this.currentFile);
+        reader.readAsDataURL(currentFile);
       }
     }
   }
 
   // EVENT FUNCTIONS //
   /** */
-  onCloseImagePanel(){
-    let image = {
-      url: this.imageUrl,
-      width: this.imageWidth,
-      height: this.imageHeight,
-    }
-    if(this.imageUrl){
-      this.showAddImage = false;
-    } else {
-      this.showAddImage = true;
-    }
-    console.log('onCloseImagePanel:: ', image, this.imageUrl);
-    this.closeImagePanel.emit(image);
-  }
+  // onCloseImagePanel(){
+  //   let image = {
+  //     url: this.imageUrl,
+  //     width: this.imageWidth,
+  //     height: this.imageHeight,
+  //   }
+  //   if(this.imageUrl){
+  //     this.showAddImage = false;
+  //   } else {
+  //     this.showAddImage = true;
+  //   }
+  //   console.log('onCloseImagePanel:: ', image, this.imageUrl);
+  //   this.closeImagePanel.emit(image);
+  // }
 
-  onRemoveImage(){
-    this.imageUrl = null;
-    this.imageWidth = MESSAGE_METADTA_WIDTH;
-    this.imageHeight = MESSAGE_METADTA_HEIGHT;
-    this.onCloseImagePanel();
-  }
+  // onRemoveImage(){
+  //   this.imageUrl = null;
+  //   this.imageWidth = MESSAGE_METADTA_WIDTH;
+  //   this.imageHeight = MESSAGE_METADTA_HEIGHT;
+  //   this.onCloseImagePanel();
+  // }
 
 
-  getDimensionImage(){
+  private setImageSize(){
     setTimeout(() => {
       try {
-        console.log('this.myIdentifier:' + this.myIdentifier);
-        var width = this.myIdentifier.nativeElement .offsetWidth;
+        var width = this.myIdentifier.nativeElement.offsetWidth;
         var height = this.myIdentifier.nativeElement.offsetHeight;
-        console.log('Width:' + width);
-        console.log('Height: ' + height);
+        this.myIdentifier.nativeElement.setAttribute("width", width);
+        this.myIdentifier.nativeElement.setAttribute("height", height);
+        this.metadata.src = this.previewImage;
+        this.metadata.width = width;
+        this.metadata.height = height;
       } catch (error) {
-        console.log('this.myIdentifier:' + error);
+        console.log('myIdentifier:' + error);
       }
     }, 0);
-    
-    
   }
+
 
   readAsDataURL(e: any) {
     let dataFiles = " "
-      if (e.type === 'change') {
-        dataFiles = e.target.files;
-      } else if (e.type === 'drop') {
-        dataFiles = e.dataTransfer.files
-      } else {
-        dataFiles = e.files
-      }
-      const attributes = { files: dataFiles, enableBackdropDismiss: false };
-      console.log('[LOADER-PREVIEW-PAGE] readAsDataURL file', dataFiles)
+    if (e.type === 'change') {
+      dataFiles = e.target.files;
+    } else if (e.type === 'drop') {
+      dataFiles = e.dataTransfer.files
+    } else {
+      dataFiles = e.files
+    }
+    const attributes = { files: dataFiles, enableBackdropDismiss: false };
     // ---------------------------------------------------------------------
     // USE CASE IMAGE
     // ---------------------------------------------------------------------
@@ -130,26 +115,17 @@ export class ImagePanelComponent implements OnInit {
       let that = this;
       reader.onload = (e: any) => {
         console.log("CARICATA IMMAGINE::: ", e.target.result);
-        this.preview = e.target.result;
+        this.previewImage = e.target.result;
         var img = new Image();
         img.onload = function() {
-            // the image is ready
-            console.log("onload IMMAGINE::: ");
-            that.getDimensionImage();
+            that.setImageSize();
         };
         img.onerror = function(e) {
-            // the image has failed
-            console.log("onerror IMMAGINE::: ", e);
+            console.log("ERROR ::: ", e);
         };
-        img.src = this.preview;
+        img.src = this.previewImage;
       }
       reader.readAsDataURL(file);
-
-      // reader.onloadend = (e: any) => {
-
-      //   this.getDimensionImage();
-      // }
-      
       // ---------------------------------------------------------------------
       // USE CASE SVG
       // ---------------------------------------------------------------------

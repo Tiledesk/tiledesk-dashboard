@@ -92,54 +92,54 @@
     padding: 0px;
     background: rgba(255, 255, 255, 0.383);
     overflow: hidden;
-    max-width: calc(100% - 40px);
+    max-width: calc(100% - 60px);
     width: auto;
     height: auto;
 }
 
 
 
-// .editor-utils {
-//     position: relative;
-//     margin: -20px 50px 0px 0px;
-//     float: right;
-//     .num-chars {
-//         background: $color-light-gray-hex;
-//         padding: 0px 8px;
-//         border-radius: 12px;
-//         font-size: 0.8em;
-//         color: $color-text-box-hex;
-//         float: right;
-//         &.error {
-//             background: $color-orange-hex;
-//         }
-//     }
-//     .text-editor-insert-attribute {
-//         float: right;
-//     }
-//     .moji-picker {
-//         float: right;
-//     }
-// }
+.editor-utils {
+    position: relative;
+    margin: -20px 50px 0px 0px;
+    float: right;
+    .num-chars {
+        background: $color-light-gray-hex;
+        padding: 0px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        color: $color-text-box-hex;
+        float: right;
+        &.error {
+            background: $color-orange-hex;
+        }
+    }
+    .text-editor-insert-attribute {
+        float: right;
+    }
+    .moji-picker {
+        float: right;
+    }
+}
 
 
-// .box-textarea {
-//     width: calc(100% - 40px);
-//     margin-left: 20px;
-//     textarea {
-//         border-radius: 8px;
-//         background: $color-withe-hex;
-//         border: 1px solid $color-withe-hex;
-//         overflow-x: hidden;
-//         overflow-y: auto;
-//         width: calc(100% - 2.5em);
-//         padding: 20px 20px;
-//         color: $color-text-dark-hex;
-//         font-size: 1.15em;
-//         line-height: 25px;
-//         resize: vertical;
-//     }
-// }
+.box-textarea {
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    textarea {
+        border-radius: 8px;
+        background: $color-withe-hex;
+        border: 1px solid $color-withe-hex;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: calc(100% - 2.5em);
+        padding: 20px 20px;
+        color: $color-text-dark-hex;
+        font-size: 1.15em;
+        line-height: 25px;
+        resize: vertical;
+    }
+}
 
 .text-editor-drop {
     position: absolute;
