@@ -960,7 +960,7 @@
                                 <!-- (mouseenter)="agentntimg.open()" -->
                                 <img *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                  class="served-by-avatar--img" (click)="goToMemberProfile( agent?._id )"
+                                  class="served-by-avatar--img"
                                   [satPopoverAnchor]="agentntimg" (click)="agentntimg.toggle()"
                                   (click)="$event.stopPropagation()" (document:click)="agentntimg.close()"
                                   matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}}
@@ -1017,7 +1017,7 @@
                                 <!-- ---------------------------------------------------------------------------- -->
                                 <!-- @ Bot agent photo - USE CASE: BOT HAS IMAGE & UPLOAD ENGINE IS FIREBASE -->
                                 <!-- ---------------------------------------------------------------------------- -->
-                                <!-- (mouseenter)="botfbengine.open()" -->
+                                
                                 <img *ngIf="agent.isBot === true && UPLOAD_ENGINE_IS_FIREBASE"
                                   class="served-by-avatar--img"
                                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4}}%2Fthumb_photo.jpg?alt=media"
@@ -1036,29 +1036,25 @@
                                     <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
-                                    <!-- <button class="sat-popover-chat-with"
-                                      (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
-
-                                      {{'ChatWith' | translate }}
-                                    </button> -->
                                   </div>
                                 </sat-popover>
 
                                 <!-- ---------------------------------------------------------------------------- -->
                                 <!-- @ Bot agent photo - USE CASE: BOT HAS IMAGE & UPLOAD ENGINE IS NATIVE -->
                                 <!-- ---------------------------------------------------------------------------- -->
-                                <!-- (mouseenter)="botntengine.open()" -->
+                                <!-- satPopoverAnchor]="botntengine" (click)="botntengine.toggle()" (document:click)="botntengine.close()" {{'ClickToDisplayActions' | translate}}-->
                                 <img *ngIf="agent.isBot === true && !UPLOAD_ENGINE_IS_FIREBASE"
                                   class="served-by-avatar--img"
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
-                                  satPopoverAnchor]="botntengine" (click)="botntengine.toggle()"
-                                  (click)="$event.stopPropagation()" (document:click)="botntengine.close()"
-                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)
-                                  {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
+                                  
+                                  (click)="goToMemberProfile( agent?._id )" 
+                                  matTooltipClass="custom-mat-tooltip" 
+                                  matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)" 
+                                  #tooltip="matTooltip"
                                   matTooltipPosition='left' matTooltipHideDelay="100" />
 
-                                <sat-popover #botntengine horizontalAlign="before">
+                                <!-- <sat-popover #botntengine horizontalAlign="before">
                                   <div class="popover-wrapper">
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}} (bot)
@@ -1066,13 +1062,8 @@
                                     <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
-                                    <!-- <button class="sat-popover-chat-with"
-                                        (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
-  
-                                        {{'ChatWith' | translate }}
-                                      </button> -->
                                   </div>
-                                </sat-popover>
+                                </sat-popover> -->
 
                               </li>
                               <!-- ------------------------------------- -->
