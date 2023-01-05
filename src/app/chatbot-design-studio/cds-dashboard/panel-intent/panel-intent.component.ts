@@ -10,24 +10,30 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 export class PanelIntentComponent implements OnInit, OnChanges {
   @Input() intentSelected: Intent;
+  @Input() isOpenActionDrawer: boolean = false;
 
-  @Input() isOpenActionDrawer: boolean;
   @Output() openActionDrawer = new EventEmitter();
   actions: Array<any>
-  displayActions: boolean = false
+  displayActions: boolean = true
 
 
   constructor() { }
 
   ngOnInit(): void {
-    this.actions = this.intentSelected.actions
+
+    // this.actions = this.intentSelected.actions
   }
 
   ngOnChanges() {
-    this.actions = this.intentSelected.actions
+    if (this.intentSelected) {
+      this.actions = this.intentSelected.actions
+      console.log('PANEL INTENT actions', this.actions)
+    } else {
+      console.log('PANEL INTENT actions - OPS! intentSelected ', this.intentSelected)
+    }
     console.log('PANEL INTENT actions', this.actions)
     console.log('PANEL INTENT intentSelected', this.intentSelected)
-    console.log('PANEL INTENT isOpenActionDrawer', this.isOpenActionDrawer)
+    console.log('PANEL INTENT *** ->  isOpenActionDrawer', this.isOpenActionDrawer)
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -39,9 +45,14 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     console.log('PANEL INTENT displayActions', this.displayActions)
   }
 
-  openActionsDrawer(actionDrawerIsOpen: boolean) {
-    console.log('PANEL INTENT openDrawerAddAction', actionDrawerIsOpen)
-    this.openActionDrawer.emit(actionDrawerIsOpen);
+  openActionsDrawer() {
+    this.isOpenActionDrawer = !this.isOpenActionDrawer 
+    console.log('PANEL INTENT isOpenActionDrawer', this.isOpenActionDrawer)
+    this.openActionDrawer.emit(this.isOpenActionDrawer);
+  }
+
+  onDeleteAction() {
+    console.log('PANEL INTENT onDeleteAction')
   }
 
 }

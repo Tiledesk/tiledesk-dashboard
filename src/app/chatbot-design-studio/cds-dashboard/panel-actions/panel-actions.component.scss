@@ -16,11 +16,14 @@
 //   }
 .actions-drawer {
   position: fixed;
-  left: -417px;
+  left: -477px;
   top: 60px;
-  bottom: 43px;
+  // bottom: 43px;
+  bottom: 0px;
   width: 477px;
-  background-color: rgb(255, 255, 255);
+  // background-color: rgb(255, 255, 255);
+  background-color: #1e293b;
+
   margin-bottom: 0px;
   z-index: 7;
   overflow-y: auto;
@@ -31,12 +34,13 @@
 .actions-drawer-active {
   transform: translate(0);
   display: block;
-  left: 60px !important;
+  // left: 60px !important;
+  left: 0px !important;
 }
 
 .actions-drawer-close-btn-wpr {
   position: absolute;
-  top: 7px;
+  top: -5px;
   right: 10px;
   z-index: 2;
 }
@@ -55,8 +59,8 @@
   cursor: pointer;
   border-radius: 4px;
   color: currentcolor;
-  width: 24px;
-  height: 24px;
+  width: 35px;
+  height: 35px;
   flex: 0 0 24px;
 }
 
@@ -98,6 +102,7 @@
   padding-bottom: 6px;
   font-size: 18px;
   font-weight: 400;
+  color: #9aa0a6;
 }
 
 .actions-drawer-content {

@@ -7,10 +7,12 @@ $margin-top-card: 30px;
     background-color: rgb($bg-color-dark-rgb);
     position: relative;
     display: flex;
-    margin-top: 60px;
+    // margin-top: 60px;
+    margin-top: 0px;
     padding: 0px;
     width: 100%;
-    height: calc(100vh - 102px);
+    // height: calc(100vh - 102px);
+    height: calc(100vh - 0px);
     overflow-x: hidden;
     overflow-y: auto;
 

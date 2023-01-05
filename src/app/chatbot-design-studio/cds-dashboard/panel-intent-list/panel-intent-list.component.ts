@@ -21,8 +21,8 @@ export class PanelIntentListComponent implements OnInit {
   constructor(private faqService: FaqService) { }
 
   ngOnInit(): void {
-    console.log("Panel-intent-list ngOnInit()")
-    console.log("Selected chatbot: ", this.id_faq_kb);
+    console.log("[PANEL-INTENT-LIST] ngOnInit()")
+    console.log("[PANEL-INTENT-LIST] - Selected chatbot ID: ", this.id_faq_kb);
     this.getAllIntents(this.id_faq_kb);
 
   }
@@ -34,12 +34,12 @@ export class PanelIntentListComponent implements OnInit {
 
 
       this.intent_start = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'start')), 1)[0]
-      console.log("intent_start: ", this.intent_start);
+      console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_start: ", this.intent_start);
       this.intent_defaultFallback = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'defaultFallback')), 1)[0]
-      console.log("intent_defaultFallback: ", this.intent_defaultFallback);
+      console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_defaultFallback: ", this.intent_defaultFallback);
       this.filtered_intents = this.intents;
 
-      console.log("others: ", this.intents);
+      console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - others INTENTS: ", this.intents);
 
       // this.faq_start = faqs.find(o => o.intent_display_name === 'start');
       // let s_index = this.faqs.indexOf(faqs.find(o => o.intent_display_name === 'start'))
@@ -54,9 +54,9 @@ export class PanelIntentListComponent implements OnInit {
       //console.log("faqs: ", faqs)
 
     }), (error) => {
-      console.error("error: ", error)
+      console.error("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - ERROR: ", error)
     }, () => {
-      console.log("End.")
+      console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID * COMPLETE")
     }
   }
 
@@ -67,8 +67,8 @@ export class PanelIntentListComponent implements OnInit {
   }
 
   selectIntent(intent, index) {
-    console.log("intent selected: ", intent);
-    console.log("index: ", index)
+    console.log("[PANEL-INTENT-LIST] selectIntent - intent selected: ", intent);
+    console.log("[PANEL-INTENT-LIST] selectIntent - index: ", index)
 
     let elements = Array.from(document.getElementsByClassName('intent active'));
     elements.forEach((el) => {

@@ -1,18 +1,31 @@
-<div class="navbar-brand">
+<!-- <div class="navbar-brand">
     <i class="material-icons btn-back" (click)="goBack()">keyboard_arrow_left</i>
     <span *ngIf="CREATE_VIEW">
-        <!-- Aggiungi FAQ -->
+       
         {{ "AddIntent" | translate }}
     </span>
     <span *ngIf="EDIT_VIEW">
-        <!-- Modifica FAQ -->
+       
         {{ "EditIntent" | translate }}
     </span>
+</div> -->
+
+
+<div class="cds-header" style="height: 60px;
+font-family: 'Poppins';
+line-height: 60px;
+font-size: 21px;
+color: #fff;
+    background: #1e293b;">
+     <i class="material-icons btn-back" (click)="goBack()" style="position: relative;
+     top: 10px;
+     padding-left: 6px;
+     font-size: 33px;">keyboard_arrow_left</i>
+    Chatbot design studio
 </div>
 
-
-  
 <div class="chatboat-dashboard">
+ 
 
     <div class="box-left">
         <appdashboard-panel-intent-list
@@ -40,10 +53,13 @@
                 [actionDrawerIsOpen]="actionDrawerIsOpen"
                 (openActionDrawer)= onOpenActionDrawer($event)
                 [isOpenActionDrawer]="isOpenActionDrawer"
+            
             ></appdashboard-panel-intent>
 
 
-            <appdashboard-panel-actions [isOpenActionDrawer]="isOpenActionDrawer">
+            <appdashboard-panel-actions 
+                [isOpenActionDrawer]="isOpenActionDrawer" 
+                (openActionDrawer)= onOpenActionDrawer($event)>
 
             </appdashboard-panel-actions>
 
