@@ -25,20 +25,20 @@
 
             <span> Actions ({{actions?.length}}) </span>
         </div> -->
-        <div class="header__center" *ngIf="!answer">Actions</div>
+        <div class="header__center" *ngIf="actions && actions?.length > 0">Actions</div>
       
     </div>
     <!-- [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}" -->
 
-    <div class="action-list-wpr" *ngIf="actions?.length > 0">
+    <div class="action-list-wpr" *ngIf="actions && actions?.length > 0">
 
         <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
             <div class="example-box" *ngFor="let action of actions" cdkDrag>
                 <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
-                <div>
+                <div (click)="onActionSelected(action)">
                     {{action.type }}
                 </div>
-                <div class="example-handle" cdkDragHandle style="    margin-bottom: 20px;">
+                <div class="example-handle" cdkDragHandle style="margin-bottom: 20px;">
                   
                     
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
@@ -56,14 +56,14 @@
         </div>
      
     </div>
-    <div *ngIf="!answer" class="button-intent" (click)="openActionsDrawer()">
+    <div *ngIf="actions && actions?.length > 0" class="button-intent" (click)="openActionsDrawer()">
         <span class="material-icons ">
             add
         </span>
         <span> Action </span>
     </div>
 
-    <div *ngIf="answer" class="button-intent" (click)="openActionsDrawer()">
+    <div *ngIf="!actions" class="button-intent" (click)="onSelectAnswer()">
         <span class="material-icons ">
             message
         </span>

@@ -22,13 +22,11 @@ export class PanelIntentDetailComponent implements OnInit {
   openCardButton = false;
   buttonSelected: Button;
 
-
-
-
   constructor() { }
 
   ngOnInit(): void {
     try {
+   
       this.elementIntentSelectedType = this.elementIntentSelected.type;
       this.elementSelected = this.elementIntentSelected.element;
     } catch (error) {

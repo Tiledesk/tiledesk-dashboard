@@ -11,7 +11,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { HttpClient } from "@angular/common/http";
 
 
-import { Intent, Button } from '../../models/intent-model';
+import { Intent, Button, Action } from '../../models/intent-model';
 import { TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
 import { Subject } from 'rxjs';
 const swal = require('sweetalert');
@@ -62,7 +62,7 @@ export class CdsDashboardComponent implements OnInit {
     if (this.router.url.indexOf('/createfaq') !== -1) {
       this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
-      this.createNewEmptyIntent();
+      // this.createNewEmptyIntent();
       // this.getFaqKbId();
     } else {
       this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED EDIT ');
@@ -333,5 +333,44 @@ export class CdsDashboardComponent implements OnInit {
     console.log('[CDS DSBRD] onOpenActionDrawer - isOpenActioDrawer ', _isOpenActioDrawer)
     this.isOpenActionDrawer = _isOpenActioDrawer
   }
+
+  onAnswerSelected(answer: string) {
+    console.log('[CDS DSBRD] onAnswerSelected - answer ', answer)
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = 'answer'
+    this.elementIntentSelected['element'] = answer
+  }
+
+  onActionSelected(action: string) {
+    console.log('[CDS DSBRD] onActionSelected - action ', action)
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = 'action'
+    this.elementIntentSelected['element'] = action
+  }
+
+  addNewIntent() {
+    console.log('[CDS DSBRD] addNewIntent  ')
+    this.intentSelected = new Intent();
+    let action = new Action()
+    action.type = 'reply'
+    action.body = {
+      text: '',
+      commands: [
+        {
+          type: 'message',
+          message: {
+            text: 'Ciao',
+            type: 'text'
+          }
+        }
+      ]
+    }
+
+    this.intentSelected.actions.push(action)
+    console.log('[CDS DSBRD] addNewIntent intentSelected ', this.intentSelected)
+  }
+
+
+
 
 }

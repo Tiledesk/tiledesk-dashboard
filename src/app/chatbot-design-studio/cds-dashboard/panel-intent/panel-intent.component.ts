@@ -13,6 +13,9 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   @Input() isOpenActionDrawer: boolean = false;
 
   @Output() openActionDrawer = new EventEmitter();
+  @Output() answerSelected = new EventEmitter();
+  @Output() actionSelected = new EventEmitter();
+
   actions: Array<any>
   question: string;
   answer: string;
@@ -61,6 +64,18 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     console.log('[PANEL INTENT] isOpenActionDrawer', this.isOpenActionDrawer)
     this.openActionDrawer.emit(this.isOpenActionDrawer);
   }
+
+  onSelectAnswer() {
+    this.answerSelected.emit(this.answer);
+  }
+
+  onActionSelected(action) {
+    console.log('[PANEL INTENT] onActionSelected ', action)
+    this.actionSelected.emit(action);
+  }
+    
+
+ 
 
   onDeleteAction() {
     console.log('[PANEL INTENT] onDeleteAction')
