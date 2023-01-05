@@ -74,12 +74,17 @@
         line-height: normal;
         padding: 0 10px;
         height: 30px;
+        width: 80%;
+        margin: auto;
+        position: relative;
+        display: flex;
     }
     &.size {
         input {
             width: 60px;
             display: block;
             margin: 0 auto;
+            text-align: center;
         }
         label.control-label {
             margin: 0px;

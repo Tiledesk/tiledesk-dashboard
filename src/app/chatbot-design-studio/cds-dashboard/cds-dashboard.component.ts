@@ -200,18 +200,17 @@ export class CdsDashboardComponent implements OnInit {
   //   });
   // }
 
-  // MOCK_getFaqIntent() {
-  //   let url = 'assets/mock-data/tilebot/faq/intent.json';
-  //   this.httpClient.get<Intent>(url).subscribe(data => {
+  MOCK_getFaqIntent() {
+    let url = 'assets/mock-data/tilebot/faq/intent.json';
+    this.httpClient.get<Intent>(url).subscribe(data => {
 
-  //     this.intentSelected = data;
-  //     this.elementIntentSelected = {};
-  //     this.elementIntentSelected['type'] = 'action';
-  //     this.elementIntentSelected['element'] = this.intentSelected.actions[0];
-  //     console.log('MOCK_getFaqIntent', this.elementIntentSelected);
-  //   });
-
-  // }
+      this.intentSelected = data;
+      this.elementIntentSelected = {};
+      this.elementIntentSelected['type'] = 'action';
+      this.elementIntentSelected['element'] = this.intentSelected.actions[0];
+      console.log('MOCK_getFaqIntent', this.elementIntentSelected);
+    });
+  }
 
   /** ADD INTENT  */
   private creatIntent() {
@@ -323,8 +322,8 @@ export class CdsDashboardComponent implements OnInit {
 
   /** appdashboard-intent-list: Select intent */
   onSelectIntent(intent: Intent) {
-    this.intentSelected = intent;
-    // this.MOCK_getFaqIntent();
+    // this.intentSelected = intent;
+    this.MOCK_getFaqIntent();
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", this.intentSelected);
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", intent);
   }

@@ -10,15 +10,15 @@
 
         <div *ngIf="showAddImage" class="section">
             <div class="response-image-uploader-overlay">
-                <em class="material-icons">photo_camera</em>
+                <!-- <em class="material-icons">photo_camera</em> -->
 
                 <div class="form-group">
                     <label class="control-label">
-                        {{ 'Add path image' | translate }}
+                        {{ 'Add path' | translate }}
                     </label>
                     <input 
                         type = "text" 
-                        [(ngModel)] = "imageUrl"
+                        [(ngModel)] = "pathElement"
                         class="input form-control"
                     />
                 </div> 
@@ -30,7 +30,7 @@
                         </label>
                         <input 
                             type = "text" 
-                            [(ngModel)] = "imageWidth"
+                            [(ngModel)] = "widthElement"
                             class="input form-control"
                         />
                     </div>
@@ -40,7 +40,7 @@
                         </label>
                         <input 
                             type = "text" 
-                            [(ngModel)] = "imageHeight"
+                            [(ngModel)] = "heightElement"
                             class="input form-control"
                         />
                     </div> 
@@ -50,7 +50,7 @@
                     type="button" 
                     class="btn btn-primary btn-save" 
                     (click)="onCloseImagePanel()">
-                    {{ 'imposta immagine' | translate }}
+                    {{ 'carica video' | translate }}
                 </button>
             </div>
         </div>
@@ -66,6 +66,22 @@
                     {{ 'Remove image' | translate }}
                 </button>
             </div> 
+
+            <!-- <div *ngIf="pathElement" class="response-image-uploader" [ngStyle] = "{'width': widthElement, 'height': heightElement}">
+                <div class="bck-image" [style.background-image]="'url('+pathElement+')'"></div>
+                <div class="image-panel"> 
+                </div>
+            </div> -->
+            <iframe 
+                *ngIf="pathElement"
+                id="contentFrame" 
+                #iframe allowfullscreen
+                width="420" 
+                height="345"
+                style= "border:none;"
+                [src] = "pathElement">
+            </iframe>
+
         </div>
        
     </div> 

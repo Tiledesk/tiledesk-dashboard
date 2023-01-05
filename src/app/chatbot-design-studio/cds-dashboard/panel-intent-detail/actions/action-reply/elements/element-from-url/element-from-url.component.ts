@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser'
 
 @Component({
   selector: 'appdashboard-element-from-url',
@@ -7,19 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ElementFromUrlComponent implements OnInit {
 
-  showAddImage = false;
-  imageUrl: string;
-  imageWidth: string;
-  imageHeight: string;
+  showAddImage = true;
+  pathElement: string;
+  widthElement: string;
+  heightElement: string;
 
-  constructor() { }
+  constructor(
+    private sanitizer: DomSanitizer
+  ) { }
 
   ngOnInit(): void {
+    this.pathElement = "https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1&mute=0";
+    this.sanitizer.bypassSecurityTrustResourceUrl(this.pathElement);
   }
 
 
   onCloseImagePanel(){
-
+    this.showAddImage = false;
   }
 
   onRemoveImage(){
