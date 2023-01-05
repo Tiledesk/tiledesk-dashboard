@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.18-rc1
+- Fixes the bug: the avatar of the bot serving the conversation is not displayed in the conversation details if the profile's image  is "native"
+
 ### 2.3.18
 - Deploys in production
 - Externalizes the "templatesUrl" variable in the environments
