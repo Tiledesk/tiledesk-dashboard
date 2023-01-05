@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.3.19
+- Deploys in production
+- Fixed the bug: in the conversation details page,  the form for changing the requester's full name redirects the user to the contact details
+- Fixes the bug: the avatar of the bot serving the conversation is not displayed in the conversation details if the profile's image  is "native"
+
 ### 2.3.19-rc2
 - Fixed the bug: in the conversation details page,  the form for changing the requester's full name redirects the user to the contact details
 
