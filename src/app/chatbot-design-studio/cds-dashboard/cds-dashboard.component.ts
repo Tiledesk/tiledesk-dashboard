@@ -11,7 +11,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { HttpClient } from "@angular/common/http";
 
 
-import { Intent, Button, Action } from '../../models/intent-model';
+import { Intent, Button, Action, Form } from '../../models/intent-model';
 import { TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
 import { Subject } from 'rxjs';
 const swal = require('sweetalert');
@@ -354,7 +354,10 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['type'] = 'action'
     this.elementIntentSelected['element'] = action
   }
+  
+  
 
+ 
   addNewIntent() {
     this.CREATE_VIEW = true;
     console.log('[CDS DSBRD] addNewIntent  ')
