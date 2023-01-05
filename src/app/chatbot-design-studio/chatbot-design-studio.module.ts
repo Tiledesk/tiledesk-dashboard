@@ -29,6 +29,11 @@ import { PanelIntentDetailComponent } from './cds-dashboard/panel-intent-detail/
 import { PanelIntentHeaderComponent } from './cds-dashboard/panel-intent-header/panel-intent-header.component';
 import { PanelButtonConfigurationComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/panel-button-configuration/panel-button-configuration.component';
 import { ElementFromUrlComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-from-url/element-from-url.component';
+import { ActionSendEmailComponent } from './cds-dashboard/panel-intent-detail/actions/action-send-email/action-send-email.component';
+import { PanelQuestionComponent } from './cds-dashboard/panel-question/panel-question.component';
+import { PanelAnswerComponent } from './cds-dashboard/panel-answer/panel-answer.component';
+import { PanelFormComponent } from './cds-dashboard/panel-form/panel-form.component';
+
 
 @NgModule({
   declarations: [
@@ -47,7 +52,11 @@ import { ElementFromUrlComponent } from './cds-dashboard/panel-intent-detail/act
     PanelIntentDetailComponent,
     PanelIntentHeaderComponent,
     PanelButtonConfigurationComponent,
-    ElementFromUrlComponent
+    ElementFromUrlComponent,
+    ActionSendEmailComponent, 
+    PanelQuestionComponent,
+    PanelAnswerComponent, 
+    PanelFormComponent
   ],
   imports: [
     CommonModule,

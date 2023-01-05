@@ -303,8 +303,8 @@ import { NetworkOfflineComponent } from './network-offline/network-offline.compo
 import { HomePromoBannerComponent } from './home-promo-banner/home-promo-banner.component';
 
 import { ChatbotDesignStudioModule } from './chatbot-design-studio/chatbot-design-studio.module';
-import { ActionSendEmailComponent } from './chatbot-design-studio/cds-dashboard/panel-intent-detail/actions/action-send-email/action-send-email.component';
-import { PanelQuestionComponent } from './chatbot-design-studio/cds-dashboard/panel-question/panel-question.component';
+
+
 
 
 
@@ -536,9 +536,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ChatbotSetupComponent, 
     SidebarClaimsComponent, 
     NetworkOfflineComponent, 
-    HomePromoBannerComponent, 
-    ActionSendEmailComponent, 
-    PanelQuestionComponent
+    HomePromoBannerComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

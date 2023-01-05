@@ -14,6 +14,9 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
   @Output() openActionDrawer = new EventEmitter();
   actions: Array<any>
+  question: string;
+  answer: string;
+  webhook_enabled: boolean;
   displayActions: boolean = true
 
 
@@ -27,13 +30,14 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.intentSelected) {
       this.actions = this.intentSelected.actions
-      console.log('PANEL INTENT actions', this.actions)
+      console.log('[PANEL INTENT] actions', this.actions)
+
     } else {
-      console.log('PANEL INTENT actions - OPS! intentSelected ', this.intentSelected)
+      console.log('[PANEL INTENT] actions - OPS! intentSelected ', this.intentSelected)
     }
-    console.log('PANEL INTENT actions', this.actions)
-    console.log('PANEL INTENT intentSelected', this.intentSelected)
-    console.log('PANEL INTENT *** ->  isOpenActionDrawer', this.isOpenActionDrawer)
+    console.log('[PANEL INTENT] actions', this.actions)
+    console.log('[PANEL INTENT] intentSelected', this.intentSelected)
+    console.log('[PANEL INTENT] *** ->  isOpenActionDrawer', this.isOpenActionDrawer)
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -42,17 +46,17 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
   toggleActions(_displayActions: boolean) {
     this.displayActions = _displayActions
-    console.log('PANEL INTENT displayActions', this.displayActions)
+    console.log('[PANEL INTENT] displayActions', this.displayActions)
   }
 
   openActionsDrawer() {
     this.isOpenActionDrawer = !this.isOpenActionDrawer 
-    console.log('PANEL INTENT isOpenActionDrawer', this.isOpenActionDrawer)
+    console.log('[PANEL INTENT] isOpenActionDrawer', this.isOpenActionDrawer)
     this.openActionDrawer.emit(this.isOpenActionDrawer);
   }
 
   onDeleteAction() {
-    console.log('PANEL INTENT onDeleteAction')
+    console.log('[PANEL INTENT] onDeleteAction')
   }
 
 }
