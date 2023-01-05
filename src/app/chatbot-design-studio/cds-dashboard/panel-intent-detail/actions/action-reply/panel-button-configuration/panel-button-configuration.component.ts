@@ -13,7 +13,8 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
   @Output() saveButton = new EventEmitter();
   @Output() closeButtonPanel = new EventEmitter();
-  @Input() arrayActions: Array<string>;
+
+  @Input() listOfActions: Array<string>;
   @Input() button: Button;
 
   buttonLabelResult: boolean;
@@ -60,7 +61,6 @@ export class PanelButtonConfigurationComponent implements OnInit {
   // SYSTEM FUNCTIONS //  
   /** */
   ngOnInit(): void {
-    this.arrayActions = ['action1', 'action2'];
     this.buttonLabelResult = true;
     this.errorUrl = false;
     this.buttonTypes = [this.typeOfButton.TEXT,this.typeOfButton.URL, this.typeOfButton.ACTION];

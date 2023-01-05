@@ -11,6 +11,8 @@ import { TYPE_INTENT_ELEMENT } from '../../utils';
 })
 export class PanelIntentDetailComponent implements OnInit {
   @Output() openButtonPanel = new EventEmitter();
+
+  @Input() listOfActions: Array<string>;
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
 
@@ -26,12 +28,13 @@ export class PanelIntentDetailComponent implements OnInit {
 
   ngOnInit(): void {
     try {
-   
       this.elementIntentSelectedType = this.elementIntentSelected.type;
       this.elementSelected = this.elementIntentSelected.element;
     } catch (error) {
       console.log('onAddNewResponse ERROR', error);
     }
+
+    
   }
 
   // EVENT FUNCTIONS //

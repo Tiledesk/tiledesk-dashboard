@@ -25,6 +25,7 @@ const swal = require('sweetalert');
 export class CdsDashboardComponent implements OnInit {
 
   listOfIntents: Array<Intent>;
+  listOfActions: Array<string>;
   intentSelected: Intent;
   elementIntentSelected: any;
 
@@ -322,6 +323,12 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** appdashboard-intent-list: Select intent */
+  onReturnListOfIntents(intents) {
+    this.listOfIntents = intents;
+    this.listOfActions = intents.map(a => a.intent_display_name);
+    console.log('onReturnListOfIntents::', this.listOfActions);
+  }
+
   onSelectIntent(intent: Intent) {
     this.intentSelected = intent;
     // this.MOCK_getFaqIntent();

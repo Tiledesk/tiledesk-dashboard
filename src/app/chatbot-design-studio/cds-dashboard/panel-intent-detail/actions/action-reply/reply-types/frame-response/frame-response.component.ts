@@ -37,9 +37,11 @@ export class FrameResponseComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src?this.response.metadata.src:'');
     this.frameWidth = this.response.metadata.width?this.response.metadata.width:MESSAGE_METADTA_WIDTH;
     this.frameHeight = this.response.metadata.height?this.response.metadata.height:MESSAGE_METADTA_HEIGHT;
+    if(this.response.metadata.src){
+      this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src?this.response.metadata.src:null);
+    }
 
     this.limitCharsText = TEXT_CHARS_LIMIT;
     this.delayTime = this.response.time/1000;
@@ -51,6 +53,10 @@ export class FrameResponseComponent implements OnInit {
       this.alertCharsText = false;
     }
      
+    // this.pathElementUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.pathElement);
+    // console.log(this.pathElementUrl);
+    // this.showAddImage = false;
+
   }
 
   // EVENT FUNCTIONS //
@@ -95,6 +101,14 @@ export class FrameResponseComponent implements OnInit {
       this.response.metadata.height = event.height;
     //}
     console.log('onCloseframePanel:: ', event);
+  }
+
+  onLoadPathElement(){
+    try {
+      this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src);
+    } catch (error) {
+      console.log('error:: ', error);
+    }
   }
 
 }

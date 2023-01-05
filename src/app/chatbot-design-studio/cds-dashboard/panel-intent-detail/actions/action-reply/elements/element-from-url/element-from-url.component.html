@@ -1,12 +1,12 @@
 
 
 
-<div class="image-tab">
+<div class="image-tab2">
 
-    <div class="image-header-tab">
+    <div class="image-header-tab2">
     </div> 
 
-    <div class="image-content-tab">
+    <div class="image-content-tab2">
 
         <div *ngIf="showAddImage" class="section">
             <div class="response-image-uploader-overlay">
@@ -49,7 +49,7 @@
                 <button 
                     type="button" 
                     class="btn btn-primary btn-save" 
-                    (click)="onCloseImagePanel()">
+                    (click)="onLoadPathElement()">
                     {{ 'carica video' | translate }}
                 </button>
             </div>
@@ -72,22 +72,19 @@
                 <div class="image-panel"> 
                 </div>
             </div> -->
-            <iframe 
-                *ngIf="pathElement"
+            <!-- <iframe 
+                *ngIf="pathElementUrl"
                 id="contentFrame" 
                 #iframe allowfullscreen
                 width="420" 
                 height="345"
                 style= "border:none;"
-                [src] = "pathElement">
-            </iframe>
+                [src]="pathElementUrl">
+            </iframe> -->
 
         </div>
        
     </div> 
-
-    <div class="image-footer-tab">
-    </div>
     
 
 </div>

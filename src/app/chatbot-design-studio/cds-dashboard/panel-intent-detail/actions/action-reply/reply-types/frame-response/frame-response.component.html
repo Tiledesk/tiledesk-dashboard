@@ -13,29 +13,28 @@
     <div class="text-editor-wrapper">
         <div class="text-editor">
         
-            <div class="response-frame-uploader-wrapper">
+            <div class="response-frame-wrapper">
 
-                <div class="response-frame-uploader" 
-                    [ngStyle] = "{'width': frameWidth, 'height': frameHeight}">
-
-                    <div *ngIf="response.type === 'image'" class="bck-frame"
-                    [style.background-image]="'url('+framePath+')'" 
-                    ></div>
-                    <iframe  *ngIf="response.type === 'frame'"
-                        id="contentFrame" 
-                        #iframe allowfullscreen 
-                        width = "100%" 
-                        height = "230px" 
-                        style= "border:none;" 
-                        [src] = framePath>
-                    </iframe>
-                    
-
-
+                <div *ngIf="!framePath" class="response-frame-panel">              
                     <div class="frame-panel">
                         <appdashboard-element-from-url
+                        [metadata] = response.metadata
+                        (loadPathElement)="onLoadPathElement()"
                         ></appdashboard-element-from-url>
                     </div>
+                </div>
+
+
+                <div *ngIf="response.type === 'frame'" class="content-frame">
+                    <iframe 
+                        *ngIf="framePath"
+                        id="contentFrame" 
+                        #iframe allowfullscreen
+                        style= "border:none;"
+                        [width]="frameWidth"
+                        [height]="frameHeight"
+                        [src]="framePath">
+                    </iframe>
                 </div>
 
 

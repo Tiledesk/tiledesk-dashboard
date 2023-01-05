@@ -11,6 +11,7 @@ export class PanelIntentListComponent implements OnInit {
 
   @Input() id_faq_kb: string;
   @Output() selected_intent = new EventEmitter();
+  @Output() returnListOfIntents = new EventEmitter();
 
   intent_start: any;
   intent_defaultFallback: any;
@@ -52,6 +53,7 @@ export class PanelIntentListComponent implements OnInit {
       // this.all_faqs.splice(s_index, 1)
 
       //console.log("faqs: ", faqs)
+      this.returnListOfIntents.emit(this.intents);
 
     }), (error) => {
       console.error("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - ERROR: ", error)
