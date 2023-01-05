@@ -29,14 +29,21 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.intentSelected) {
-      this.actions = this.intentSelected.actions
-      console.log('[PANEL INTENT] actions', this.actions)
+      this.actions = this.intentSelected.actions;
+      console.log('[PANEL INTENT] actions', this.actions);
+      this.question = this.intentSelected.question;
+      console.log('[PANEL INTENT] question', this.question);
+      this.answer = this.intentSelected.answer;
+      console.log('[PANEL INTENT] answer', this.answer);
+      this.webhook_enabled = this.intentSelected.webhook_enabled;
+      console.log('[PANEL INTENT] webhook_enabled', this.webhook_enabled);
+      
 
     } else {
       console.log('[PANEL INTENT] actions - OPS! intentSelected ', this.intentSelected)
     }
-    console.log('[PANEL INTENT] actions', this.actions)
-    console.log('[PANEL INTENT] intentSelected', this.intentSelected)
+    // console.log('[PANEL INTENT] actions', this.actions)
+    // console.log('[PANEL INTENT] intentSelected', this.intentSelected)
     console.log('[PANEL INTENT] *** ->  isOpenActionDrawer', this.isOpenActionDrawer)
   }
 

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PanelFormComponent } from './panel-form.component';
+import { AnswerComponent } from './answer.component';
 
-describe('PanelFormComponent', () => {
-  let component: PanelFormComponent;
-  let fixture: ComponentFixture<PanelFormComponent>;
+describe('PanelAnswerComponent', () => {
+  let component: AnswerComponent;
+  let fixture: ComponentFixture<AnswerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PanelFormComponent ]
+      declarations: [ AnswerComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PanelFormComponent);
+    fixture = TestBed.createComponent(AnswerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

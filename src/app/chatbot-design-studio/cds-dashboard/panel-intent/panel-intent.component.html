@@ -25,7 +25,7 @@
 
             <span> Actions ({{actions?.length}}) </span>
         </div> -->
-        <div class="header__center">Actions</div>
+        <div class="header__center" *ngIf="!answer">Actions</div>
       
     </div>
     <!-- [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}" -->
@@ -56,11 +56,18 @@
         </div>
      
     </div>
-    <div class="button-intent" (click)="openActionsDrawer()">
+    <div *ngIf="!answer" class="button-intent" (click)="openActionsDrawer()">
         <span class="material-icons ">
             add
         </span>
         <span> Action </span>
+    </div>
+
+    <div *ngIf="answer" class="button-intent" (click)="openActionsDrawer()">
+        <span class="material-icons ">
+            message
+        </span>
+        <span> Answer </span>
     </div>
 
 </div>
