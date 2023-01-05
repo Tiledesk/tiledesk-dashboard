@@ -59,6 +59,7 @@ export class CdsDashboardComponent implements OnInit {
     this.getTranslations();
     this.auth.checkRoleForCurrentProject();
     this.getUrlParams();
+    this.getFaqKbId();
     if (this.router.url.indexOf('/createfaq') !== -1) {
       this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
@@ -104,7 +105,7 @@ export class CdsDashboardComponent implements OnInit {
       this.id_faq_kb = params.faqkbid;
       this.id_faq = params.faqid;
       this.botType = params.bottype
-      this.logger.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) PARAMS', params);
+     console.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) PARAMS', params);
       this.logger.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) BOT ID ', this.id_faq_kb);
       this.logger.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) FAQ ID ', this.id_faq);
     });
@@ -121,7 +122,7 @@ export class CdsDashboardComponent implements OnInit {
   private getFaqKbId() {
     this.id_faq_kb = this.route.snapshot.params['faqkbid'];
     this.intentSelected.id_faq_kb = this.id_faq_kb;
-    this.logger.log('[FAQ-EDIT-ADD] FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
+    console.log('[FAQ-EDIT-ADD] FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
   }
 
   /**
@@ -224,7 +225,7 @@ export class CdsDashboardComponent implements OnInit {
     let actionsIntentSelected = this.intentSelected.actions;
     let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
     this.faqService.addIntent(
-      id_faq_kb,
+      this.id_faq_kb,
       questionIntentSelected,
       answerIntentSelected,
       displayNameIntentSelected,
@@ -349,6 +350,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   addNewIntent() {
+    this.CREATE_VIEW = true;
     console.log('[CDS DSBRD] addNewIntent  ')
     this.intentSelected = new Intent();
     let action = new Action()
