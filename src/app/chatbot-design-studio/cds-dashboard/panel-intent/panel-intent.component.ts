@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { Intent } from '../../../models/intent-model';
+import { Form, Intent } from '../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'appdashboard-panel-intent',
@@ -72,6 +72,15 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   onActionSelected(action) {
     console.log('[PANEL INTENT] onActionSelected ', action)
     this.actionSelected.emit(action);
+  }
+
+
+  displayForm() {
+   if (this.intentSelected && !this.intentSelected.form ) {
+    let newForm = new Form()
+    this.intentSelected.form  = newForm;
+   }
+
   }
     
   onDeleteAction() {
