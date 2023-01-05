@@ -304,6 +304,8 @@ import { HomePromoBannerComponent } from './home-promo-banner/home-promo-banner.
 
 import { ChatbotDesignStudioModule } from './chatbot-design-studio/chatbot-design-studio.module';
 import { ActionSendEmailComponent } from './chatbot-design-studio/cds-dashboard/panel-intent-detail/actions/action-send-email/action-send-email.component';
+import { PanelQuestionComponent } from './chatbot-design-studio/cds-dashboard/panel-question/panel-question.component';
+
 
 
 
@@ -535,7 +537,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SidebarClaimsComponent, 
     NetworkOfflineComponent, 
     HomePromoBannerComponent, 
-    ActionSendEmailComponent
+    ActionSendEmailComponent, 
+    PanelQuestionComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
