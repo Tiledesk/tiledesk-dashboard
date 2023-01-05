@@ -730,10 +730,10 @@
 
 
                     <!-- *ngIf="!showSpinner" -->
-                    <div class="conv-info-sidebar-header-contact-info-wpr" (click)="goToContactDetails()">
+                    <div class="conv-info-sidebar-header-contact-info-wpr">
                       <div role="button" tabindex="-1" class="avatar"
                         [ngClass]="{'chat-avatar': CHAT_PANEL_MODE === true}"
-                        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}">
+                        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"  (click)="goToContactDetails()">
                         {{ requester_fullname_initial }}
                       </div>
                       <!-- ----------------------------------- -->
