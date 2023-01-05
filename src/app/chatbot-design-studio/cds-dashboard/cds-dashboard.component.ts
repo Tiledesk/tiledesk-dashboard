@@ -11,7 +11,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { HttpClient } from "@angular/common/http";
 
 
-import { Intent, Button } from '../../models/intent-model';
+import { Intent, Button, Action } from '../../models/intent-model';
 import { TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
 import { Subject } from 'rxjs';
 const swal = require('sweetalert');
@@ -59,10 +59,11 @@ export class CdsDashboardComponent implements OnInit {
     this.getTranslations();
     this.auth.checkRoleForCurrentProject();
     this.getUrlParams();
+    this.getFaqKbId();
     if (this.router.url.indexOf('/createfaq') !== -1) {
       this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
-      this.createNewEmptyIntent();
+      // this.createNewEmptyIntent();
       // this.getFaqKbId();
     } else {
       this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED EDIT ');
@@ -104,7 +105,7 @@ export class CdsDashboardComponent implements OnInit {
       this.id_faq_kb = params.faqkbid;
       this.id_faq = params.faqid;
       this.botType = params.bottype
-      this.logger.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) PARAMS', params);
+     console.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) PARAMS', params);
       this.logger.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) BOT ID ', this.id_faq_kb);
       this.logger.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) FAQ ID ', this.id_faq);
     });
@@ -121,7 +122,7 @@ export class CdsDashboardComponent implements OnInit {
   private getFaqKbId() {
     this.id_faq_kb = this.route.snapshot.params['faqkbid'];
     this.intentSelected.id_faq_kb = this.id_faq_kb;
-    this.logger.log('[FAQ-EDIT-ADD] FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
+    console.log('[FAQ-EDIT-ADD] FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
   }
 
   /**
@@ -223,7 +224,7 @@ export class CdsDashboardComponent implements OnInit {
     let actionsIntentSelected = this.intentSelected.actions;
     let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
     this.faqService.addIntent(
-      id_faq_kb,
+      this.id_faq_kb,
       questionIntentSelected,
       answerIntentSelected,
       displayNameIntentSelected,
@@ -332,5 +333,45 @@ export class CdsDashboardComponent implements OnInit {
     console.log('[CDS DSBRD] onOpenActionDrawer - isOpenActioDrawer ', _isOpenActioDrawer)
     this.isOpenActionDrawer = _isOpenActioDrawer
   }
+
+  onAnswerSelected(answer: string) {
+    console.log('[CDS DSBRD] onAnswerSelected - answer ', answer)
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = 'answer'
+    this.elementIntentSelected['element'] = answer
+  }
+
+  onActionSelected(action: string) {
+    console.log('[CDS DSBRD] onActionSelected - action ', action)
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = 'action'
+    this.elementIntentSelected['element'] = action
+  }
+
+  addNewIntent() {
+    this.CREATE_VIEW = true;
+    console.log('[CDS DSBRD] addNewIntent  ')
+    this.intentSelected = new Intent();
+    let action = new Action()
+    action.type = 'reply'
+    action.body = {
+      text: '',
+      commands: [
+        {
+          type: 'message',
+          message: {
+            text: 'Ciao',
+            type: 'text'
+          }
+        }
+      ]
+    }
+
+    this.intentSelected.actions.push(action)
+    console.log('[CDS DSBRD] addNewIntent intentSelected ', this.intentSelected)
+  }
+
+
+
 
 }

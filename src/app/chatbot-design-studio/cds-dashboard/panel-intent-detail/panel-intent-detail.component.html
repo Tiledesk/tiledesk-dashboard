@@ -13,9 +13,25 @@
 
 
 <div *ngIf = "elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
+    <appdashboard-question>
+
+    </appdashboard-question>
 </div>
 
 <div *ngIf = "elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">
+    <appdashboard-form>
+
+    </appdashboard-form>
+</div>
+
+ 
+<div *ngIf = "elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">
+    <appdashboard-answer
+     [answer]="elementSelected">
+
+    </appdashboard-answer>
+
+  
 </div>
 
         

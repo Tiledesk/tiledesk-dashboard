@@ -326,7 +326,7 @@ export class FaqService {
       })
     };
     const url = this.FAQ_URL;
-    this.logger.log('[FAQ-SERV] ADD FAQ -  PUT URL ', url);
+    console.log('[FAQ-SERV] ADD FAQ -  PUT URL ', url);
     const body = { 
       'id_faq_kb': id_faq_kb, 
       'question': question, 

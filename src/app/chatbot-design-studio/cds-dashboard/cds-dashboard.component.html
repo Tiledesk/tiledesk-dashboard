@@ -22,6 +22,14 @@ color: #fff;
      padding-left: 6px;
      font-size: 33px;">keyboard_arrow_left</i>
     Chatbot design studio
+
+
+    <button
+    class="btn btn-tdblu-no-boxshadow pull-right" (click)="addNewIntent()" >
+   
+        Add new intent
+  </button>
+
 </div>
 
 <div class="chatboat-dashboard">
@@ -52,6 +60,8 @@ color: #fff;
                 [intentSelected]="intentSelected"
                 [actionDrawerIsOpen]="actionDrawerIsOpen"
                 (openActionDrawer)= onOpenActionDrawer($event)
+                (answerSelected)= onAnswerSelected($event)
+                (actionSelected)= onActionSelected($event)
                 [isOpenActionDrawer]="isOpenActionDrawer"
             ></appdashboard-panel-intent>
 

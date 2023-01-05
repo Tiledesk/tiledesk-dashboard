@@ -2,7 +2,8 @@ export enum TYPE_INTENT_ELEMENT {
     QUESTION = 'question',
     RESPONSE = 'response', 
     FORM = 'form', 
-    ACTION = 'action'
+    ACTION = 'action',
+    ANSWER = 'answer'
 }
 
 export enum TYPE_RESPONSE {
