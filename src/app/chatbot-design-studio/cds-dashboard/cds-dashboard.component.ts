@@ -323,8 +323,8 @@ export class CdsDashboardComponent implements OnInit {
 
   /** appdashboard-intent-list: Select intent */
   onSelectIntent(intent: Intent) {
-    // this.intentSelected = intent;
-    this.MOCK_getFaqIntent();
+    this.intentSelected = intent;
+    // this.MOCK_getFaqIntent();
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", this.intentSelected);
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", intent);
   }

@@ -74,9 +74,6 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     this.actionSelected.emit(action);
   }
     
-
- 
-
   onDeleteAction() {
     console.log('[PANEL INTENT] onDeleteAction')
   }
