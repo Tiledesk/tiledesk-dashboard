@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.20-rc1 
+- Fixes the bug: the end user already logged in the dashboard is anonymous for the new version of the widget
+
 ### 2.3.19
 - Deploys in production
 - Fixed the bug: in the conversation details page,  the form for changing the requester's full name redirects the user to the contact details
