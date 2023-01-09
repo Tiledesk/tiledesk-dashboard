@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.3.20
+- Deploys in production
+- Fixes the bug: the end user already logged in the dashboard is anonymous for the new version of the widget
+
 ### 2.3.20-rc1 
 - Fixes the bug: the end user already logged in the dashboard is anonymous for the new version of the widget
 
