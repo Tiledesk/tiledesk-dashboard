@@ -167,14 +167,17 @@ export class AuthService {
     if (storedUser !== null) {
       this.user_bs.next(JSON.parse(storedUser))
 
-      try {
-        if (window && window['tiledesk_widget_login']) {
-          // console.log('window', window)
-          window['tiledesk_widget_login']()
+      window.addEventListener('load', () => {
+        try {
+          this.logger.log('[AUTH-SERV] Calling tiledesk_widget_login ')
+          if (window && window['tiledesk_widget_login']) {
+            // console.log('window', window)
+            window['tiledesk_widget_login']()
+          }
+        } catch (err) {
+          this.logger.error('[AUTH-SERV] Calling tiledesk_widget_login err', err)
         }
-      } catch (err) {
-        this.logger.error('[AUTH-SERVICE] tiledesk_widget_login error', err)
-      }
+      })
 
       // /**
       //  * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
