@@ -62,12 +62,12 @@ export class CdsDashboardComponent implements OnInit {
     this.getUrlParams();
     this.getFaqKbId();
     if (this.router.url.indexOf('/createfaq') !== -1) {
-      this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED CREATE ');
+      this.logger.log('[CDS DSHBRD] HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       // this.createNewEmptyIntent();
       // this.getFaqKbId();
     } else {
-      this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED EDIT ');
+      this.logger.log('[CDS DSHBRD] HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
       if (this.id_faq) {
         // this.getFaqById();
@@ -106,9 +106,9 @@ export class CdsDashboardComponent implements OnInit {
       this.id_faq_kb = params.faqkbid;
       this.id_faq = params.faqid;
       this.botType = params.bottype
-     console.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) PARAMS', params);
-      this.logger.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) BOT ID ', this.id_faq_kb);
-      this.logger.log('[FAQ-EDIT-ADD] getUrlParams (FaqEditAddComponent) FAQ ID ', this.id_faq);
+     console.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
+     console.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
+     console.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
     });
   }
 
@@ -122,8 +122,12 @@ export class CdsDashboardComponent implements OnInit {
   */
   private getFaqKbId() {
     this.id_faq_kb = this.route.snapshot.params['faqkbid'];
-    this.intentSelected.id_faq_kb = this.id_faq_kb;
-    console.log('[FAQ-EDIT-ADD] FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
+    if (this.intentSelected  ) {
+    this.intentSelected.id_faq_kb = this.id_faq_kb; 
+    console.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
+  } else {
+    console.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
+  }
   }
 
   /**
@@ -134,17 +138,17 @@ export class CdsDashboardComponent implements OnInit {
     console.log('getFaqById');
     this.showSpinner = true;
     this.faqService.getFaqById(this.id_faq).subscribe((faq: any) => {
-      this.logger.log('[FAQ-EDIT-ADD] - FAQ GET BY ID RES', faq);
+      this.logger.log('[CDS DSHBRD] - FAQ GET BY ID RES', faq);
       if (faq) {
         this.intentSelected = faq;
       }
       console.log('faq', faq);
       this.showSpinner = false;
     }, (error) => {
-      this.logger.error('[FAQ-EDIT-ADD] - FAQ GET BY ID - ERROR ', error);
+      this.logger.error('[CDS DSHBRD] - FAQ GET BY ID - ERROR ', error);
       this.showSpinner = false;
     }, () => {
-      this.logger.log('[FAQ-EDIT-ADD] - FAQ GET BY ID - COMPLETE ');
+      this.logger.log('[CDS DSHBRD] - FAQ GET BY ID - COMPLETE ');
       this.showSpinner = false;
       //this.translateTheAnswerWillBeDeleted();
     });
@@ -234,14 +238,14 @@ export class CdsDashboardComponent implements OnInit {
       webhookEnabledIntentSelected
     ).subscribe((faq) => {
       this.showSpinner = false;
-      this.logger.log('[FAQ-EDIT-ADD] CREATED FAQ RES ', faq);
+      this.logger.log('[CDS DSHBRD] CREATED FAQ RES ', faq);
     }, (error) => {
       this.showSpinner = false;
-      this.logger.error('[FAQ-EDIT-ADD] CREATED FAQ - ERROR ', error);
+      this.logger.error('[CDS DSHBRD] CREATED FAQ - ERROR ', error);
       // if (error && error['status']) {
       //   this.error_status = error['status']
       //   if (this.error_status === 409) {
-      //     this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
+      //     this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
       //     this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
       //   }
       // }
@@ -249,7 +253,7 @@ export class CdsDashboardComponent implements OnInit {
       // this.notify.showWidgetStyleUpdateNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
     }, () => {
       this.showSpinner = false;
-      this.logger.log('[FAQ-EDIT-ADD] CREATED FAQ * COMPLETE *');
+      this.logger.log('[CDS DSHBRD] CREATED FAQ * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
       // this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
       this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.id_faq_kb + "/" + this.botType]);
@@ -278,26 +282,26 @@ export class CdsDashboardComponent implements OnInit {
       webhookEnabledIntentSelected
     ).subscribe((data) => {
       this.showSpinner = false;
-      this.logger.log('[FAQ-EDIT-ADD] UPDATE FAQ RES', data);
+      this.logger.log('[CDS DSHBRD] UPDATE FAQ RES', data);
     }, (error) => {
       this.showSpinner = false;
-      this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR ', error);
+      this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR ', error);
       // =========== NOTIFY ERROR ===========
       // this.notify.showWidgetStyleUpdateNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
 
       // if (error && error['status']) {
       //   this.error_status = error['status']
-      //   this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
+      //   this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
 
       //   if (this.error_status === 409) {
-      //     this.logger.error('[FAQ-EDIT-ADD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
+      //     this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
       //     this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
       //   }
       // }
 
     }, () => {
       this.showSpinner = false;
-      this.logger.log('[FAQ-EDIT-ADD] UPDATE FAQ * COMPLETE *');
+      this.logger.log('[CDS DSHBRD] UPDATE FAQ * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
       // this.notify.showWidgetStyleUpdateNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
     });
@@ -349,10 +353,19 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   onActionSelected(action: string) {
-    console.log('[CDS DSBRD] onActionSelected - action ', action)
+    console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', action)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = 'action'
     this.elementIntentSelected['element'] = action
+    console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+  }
+
+  onIntentFormSelected (intentform: any) {
+    console.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT intentform ', intentform)
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = 'form'
+    this.elementIntentSelected['element'] = intentform
+    console.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
   }
   
   

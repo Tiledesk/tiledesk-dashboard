@@ -15,6 +15,8 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   @Output() openActionDrawer = new EventEmitter();
   @Output() answerSelected = new EventEmitter();
   @Output() actionSelected = new EventEmitter();
+  @Output() intentForm = new EventEmitter();
+  
 
   actions: Array<any>
   question: string;
@@ -40,7 +42,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
       console.log('[PANEL INTENT] answer', this.answer);
       this.webhook_enabled = this.intentSelected.webhook_enabled;
       console.log('[PANEL INTENT] webhook_enabled', this.webhook_enabled);
-      
+
 
     } else {
       console.log('[PANEL INTENT] actions - OPS! intentSelected ', this.intentSelected)
@@ -60,7 +62,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   }
 
   openActionsDrawer() {
-    this.isOpenActionDrawer = !this.isOpenActionDrawer 
+    this.isOpenActionDrawer = !this.isOpenActionDrawer
     console.log('[PANEL INTENT] isOpenActionDrawer', this.isOpenActionDrawer)
     this.openActionDrawer.emit(this.isOpenActionDrawer);
   }
@@ -76,13 +78,17 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
 
   displayForm() {
-   if (this.intentSelected && !this.intentSelected.form ) {
-    let newForm = new Form()
-    this.intentSelected.form  = newForm;
-   }
+    console.log('[PANEL INTENT] displayForm ' )
+
+    if (this.intentSelected && !this.intentSelected.form) {
+      let newForm = new Form()
+      this.intentSelected.form = newForm;
+     
+    }
+    this.intentForm.emit(this.intentSelected.form);
 
   }
-    
+
   onDeleteAction() {
     console.log('[PANEL INTENT] onDeleteAction')
   }

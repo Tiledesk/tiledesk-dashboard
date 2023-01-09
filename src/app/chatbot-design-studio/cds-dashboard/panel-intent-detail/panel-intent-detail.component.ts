@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { AnyARecord } from 'dns';
 import { Intent, Button, ActionReply, Action } from '../../../models/intent-model';
 import { TYPE_INTENT_ELEMENT } from '../../utils';
@@ -9,7 +9,7 @@ import { TYPE_INTENT_ELEMENT } from '../../utils';
   templateUrl: './panel-intent-detail.component.html',
   styleUrls: ['./panel-intent-detail.component.scss']
 })
-export class PanelIntentDetailComponent implements OnInit {
+export class PanelIntentDetailComponent implements OnInit, OnChanges {
   @Output() openButtonPanel = new EventEmitter();
 
   @Input() listOfActions: Array<string>;
@@ -30,22 +30,31 @@ export class PanelIntentDetailComponent implements OnInit {
     try {
       this.elementIntentSelectedType = this.elementIntentSelected.type;
       this.elementSelected = this.elementIntentSelected.element;
+      console.log('[PANEL-INTENT-DETAIL] (OnInit) elementIntentSelectedType ', this.elementIntentSelectedType);
+      console.log('[PANEL-INTENT-DETAIL] (OnInit) elementSelected ', this.elementSelected);
     } catch (error) {
-      console.log('onAddNewResponse ERROR', error);
+      console.log('[PANEL-INTENT-DETAIL] (OnInit) ERROR', error);
     }
-
-    
   }
 
+  ngOnChanges() {
+    console.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.elementIntentSelected);
+   
+    this.elementIntentSelectedType = this.elementIntentSelected.type;
+    this.elementSelected = this.elementIntentSelected.element;
+    console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
+    console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
+    
+  }
   // EVENT FUNCTIONS //
 
 
 
-  
+
   /** appdashboard-tools: add new response **/
   // onAddNewResponse(element){
   //   try {
-      
+
   //     // this.intentSelected.reply.attributes.commands.push(element);
   //     this.intentSelected.actions.push(element);
   //     console.log('onAddNewResponse---->', this.intentSelected.actions);
@@ -56,24 +65,24 @@ export class PanelIntentDetailComponent implements OnInit {
 
 
 
-    /** appdashboard-intent: Open button panel */
-    onOpenButtonPanel(event){
-      console.log('onOpenButtonPanel :: ', event);
-      if(this.openCardButton === true){
-        this.onCloseButtonPanel();
-      }
-      this.buttonSelected = event;
-      this.openCardButton = true;
+  /** appdashboard-intent: Open button panel */
+  onOpenButtonPanel(event) {
+    console.log('onOpenButtonPanel :: ', event);
+    if (this.openCardButton === true) {
+      this.onCloseButtonPanel();
     }
-  
-    /** appdashboard-button-configuration-panel: Save button */
-    onSaveButton(button){ 
-      this.openCardButton = false;
-    }
-  
-    /** appdashboard-button-configuration-panel: Close button panel */
-    onCloseButtonPanel(){
-      this.openCardButton = false;
-    }
+    this.buttonSelected = event;
+    this.openCardButton = true;
+  }
+
+  /** appdashboard-button-configuration-panel: Save button */
+  onSaveButton(button) {
+    this.openCardButton = false;
+  }
+
+  /** appdashboard-button-configuration-panel: Close button panel */
+  onCloseButtonPanel() {
+    this.openCardButton = false;
+  }
 
 }
