@@ -80,7 +80,7 @@ export class FaqEditAddComponent implements OnInit {
     // if (this.router.url === '/createfaq') {
     this.getUrlParams();
 
-    if (this.router.url.indexOf('/createfaq') !== -1) {
+    if (this.router.url.indexOf('/createfaq') !== -1 || this.router.url.indexOf('/_createfaq') !== -1) {
       this.logger.log('[FAQ-EDIT-ADD] HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       this.showSpinner = false;

@@ -77,11 +77,12 @@ $margin-top-card: 30px;
             height: auto;
             max-height: 100%;
             /* background-color: rgb($bg-color-bck-rgb); */
-            border-radius: 1em;
+            border-radius: 3px;
             overflow: hidden;
             margin: 0 10px;
             padding: 0px;
-            background-color: #293445;  // cdsnk
+            background-color: #293445; // cdsnk
+            margin-top: 10px;
         }
     }
 }
@@ -95,4 +96,32 @@ $margin-top-card: 30px;
         vertical-align: middle;
         cursor: pointer;
     }
+}
+.cds-btn-back {
+    font-size: 33px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+#cds-add-new-intent-btn {
+    background: #8ab4f8 !important;
+    color: #202124 !important;
+    box-shadow: none !important;
+    font-weight: 500 !important;
+    font-family: 'Poppins', Roboto, Arial, sans-serif !important;
+    text-transform: capitalize !important;
+    font-size: 14px !important;
+}
+#cds-add-new-intent-btn:hover {
+    background: rgba(138, 180, 248, 0.8) !important;
+}
+
+.cds-header {
+    height: 60px;
+    font-family: 'Poppins', Roboto, Arial, sans-serif !important;
+    line-height: 60px;
+    font-size: 21px;
+    color: #fff;
+    background: #1e293b;
+    padding: 0px 10px;
 }

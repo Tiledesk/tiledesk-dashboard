@@ -7,22 +7,23 @@
     </div> -->
 
     <!-- HEADER BUTTONS -->
+   <!-- > {{ displayNewFormButton }} -->
     <div class="header-buttons--form">
-
-        <button *ngIf="displayNewFormButton" class="btn btn-primary add-form" (click)="openBoxNewFormForm()">
+     
+        <button id="add-form-btn" *ngIf="displayNewFormButton" class="btn btn-primary add-form" (click)="openBoxNewFormForm()">
             <span class="icon-label opened">{{ "AddIntentPage.AddForm" | translate }}</span>
             <span class="icon">
                 <i class="material-icons">add_circle</i>
             </span>
         </button>
-        <button *ngIf="!displayNewFormButton && intentForm" class="btn btn-danger add-form" (click)="openDeleteForm()">
+        <button id="delete-form-btn" *ngIf="!displayNewFormButton && intentFormSize > 0" class="btn btn-danger add-form" (click)="openDeleteForm()">
             <span class="icon-label">{{ "AddIntentPage.DeleteForm" | translate }}</span>
             <span class="icon">
                 <i class="material-icons">delete</i>
             </span>
         </button>
         <!-- only-icon btn-settings -->
-        <button *ngIf="displaySettingsButton" class="btn btn-primary add-form" (click)="openSettingsForm()">
+        <button id="open-setting-btn" *ngIf="displaySettingsButton" class="btn btn-primary add-form" (click)="openSettingsForm()">
             <span class="icon-label">{{ "Settings" | translate }}</span>
             <span class="icon">
                 <i class="material-icons">settings</i>
@@ -30,7 +31,7 @@
         </button>
 
         <!-- only-icon btn-settings -->
-        <button *ngIf="displayCancelButton" class="btn btn-default add-form" (click)="closeGeneral()">
+        <button id="close-general-btn" *ngIf="displayCancelButton" class="btn btn-default add-form" (click)="closeGeneral()">
             <span class="icon-label opened">{{ "Close" | translate }}</span>
             <span class="icon">
                 <i class="material-icons">cancel</i>
@@ -42,7 +43,9 @@
 
 
     <!-- NEW FORM -->
-    <div *ngIf="displayBoxNewForm && !intentForm">
+    <!-- intentForm > {{ intentForm | json }} -->
+    <!-- <div *ngIf="displayBoxNewForm && !intentForm"> -->
+    <div *ngIf="displayBoxNewForm && intentFormSize === 0">
         <div class="box--setting-form">
             {{ "AddIntentPage.SelectTemplateForm" | translate }}
         </div>
@@ -53,15 +56,16 @@
             <p *ngIf=selectedForm.fields>{{ "AddIntentPage.InfoTemplateForm" | translate: translateparam }}</p>
         </div>
         <div class="box-buttons">
-            <button class="btn btn-primary" (click)="generateJsonIntentForm()">
+            <button id="create-intent-form" class="btn btn-primary" (click)="generateJsonIntentForm()">
                 <span>{{ "AddIntentPage.CreateForm" | translate }}</span>
             </button>
         </div>
     </div>
 
     <!-- SETTINGS FORM -->
-    <div *ngIf="intentForm" class="box-settings-form">
-        <div *ngIf="displaySettingForm" class="box-setting-form">
+    <!-- <div *ngIf="intentForm" class="box-settings-form"> -->
+    <div *ngIf="intentFormSize > 0" class="box-settings-form">
+        <div *ngIf="displaySettingForm" class="box--setting-form">
             <!-- <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div> -->
             <div class="row-info">
                 <span class="bold">{{ "AddIntentPage.LabelCancel" | translate }}:</span>
@@ -69,37 +73,44 @@
             </div>
             <div class="row-info">
                 <span class="bold">{{ "AddIntentPage.LabelReplay" | translate }}:</span>
-                <textarea type="text" class="input" [(ngModel)]="cancelReply" (change)="setCancelReplay()" rows="2"> </textarea>
+                <textarea type="text" class="input" [(ngModel)]="cancelReply" (change)="setCancelReplay()"
+                    rows="2"> </textarea>
             </div>
         </div>
 
-        <div *ngIf="displaySettingForm" class="box-buttons">
-            <!-- <button class="btn btn-default" (click)="closeSettingsForm()">
+        <!-- <div *ngIf="displaySettingForm" class="box-buttons"> -->
+        <!-- <button class="btn btn-default" (click)="closeSettingsForm()">
                 <span>{{ "Cancel" | translate }}</span>
             </button> -->
-            <!-- <button class="btn btn-primary" >
+        <!-- <button class="btn btn-primary" >
                 <span>{{ "Save" | translate }}</span>
             </button> -->
-        </div>
+        <!-- </div> -->
 
     </div>
 
 
+    <!-- ------------------------------ -->
+    <!-- @ FIELDS LIST -->
+    <!-- ------------------------------ -->
+    
 
 
-    <!-- ------------------------------ -->
-    <!-- @ LIST FIELDS -->
-    <!-- ------------------------------ -->
-    <appdashboard-tilebot-list-fields-form *ngIf="intentForm" [fields]="fields"
+    <!-- <appdashboard-tilebot-list-fields-form *ngIf="intentForm"  -->
+        <!-- intentFormSize >  {{intentFormSize }}  -->
+     
+    <appdashboard-form-field *ngIf="intentFormSize > 0" [fields]="fields"
         (eventEditField)="eventEditField($event)" (eventDropField)="eventDropField($event)"
-        (openDeleteFieldModal)="openDeleteFieldModal($event)"></appdashboard-tilebot-list-fields-form>
+        (openDeleteFieldModal)="openDeleteFieldModal($event)">
+    </appdashboard-form-field>
 
     <!-- ------------------------------ -->
     <!-- @ BUTTON ADD FIELD  -->
     <!-- ------------------------------ -->
     <!-- [disabled]="displayAddForm || displayEditForm || displaySettingForm" -->
-    <div class="header-list-form" style="margin-top: 12px;">
-        <button *ngIf="displayTilebotAddEditForm && intentForm"
+
+    <div class="header-list-form">
+        <button *ngIf="displayTilebotAddEditForm && intentFormSize > 0"
             [ngClass]="{'hide':( displaySettingForm || displayAddForm || displayEditForm ) }"
             class="btn btn-primary add-field btn-only-string" (click)="eventAddField()">
             <span class="icon" style="padding-right: 4px;">
@@ -109,18 +120,22 @@
         </button>
     </div>
 
+
     <!-- ------------------------------ -->
     <!-- @ ADD EDIT FIELD -->
     <!-- ------------------------------ -->
-    <appdashboard-tilebot-add-edit-form *ngIf="displayAddForm || displayEditForm" [displayAddForm]="displayAddForm"
-        [displayEditForm]="displayEditForm" [field]="selectedField" (saveAddEditForm)="saveAddEditForm($event)"
-        (closeAddEditForm)="closeAddEditForm()"></appdashboard-tilebot-add-edit-form>
+    <appdashboard-form-edit-add 
+    *ngIf="displayAddForm || displayEditForm" 
+    [displayAddForm]="displayAddForm"
+    [displayEditForm]="displayEditForm" [field]="selectedField" (saveAddEditForm)="saveAddEditForm($event)"
+    (closeAddEditForm)="closeAddEditForm()">
+    </appdashboard-form-edit-add>
 
     <!-- ------------------------------ -->
     <!-- @ DELETE MODAL -->
     <!-- ------------------------------ -->
-    <appdashboard-modal-delete *ngIf="displayMODAL" [translateMap]="translateMap" [objectId]="selectedObjectId"
+    <appdashboard-modal-window *ngIf="displayMODAL" [translateMap]="translateMap" [objectId]="selectedObjectId"
         (confirmDeleteModal)="confirmDeleteModal($event)" (closeDeleteModal)="closeDeleteModal($event)">
-    </appdashboard-modal-delete>
+    </appdashboard-modal-window>
 
 </div>

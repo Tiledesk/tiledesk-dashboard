@@ -11,6 +11,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -33,6 +34,9 @@ import { ActionSendEmailComponent } from './cds-dashboard/panel-intent-detail/ac
 import { QuestionComponent } from './cds-dashboard/panel-intent-detail/question/question.component';
 import { AnswerComponent } from './cds-dashboard/panel-intent-detail/answer/answer.component';
 import { FormComponent } from './cds-dashboard/panel-intent-detail/form/form.component';
+import { FormFieldComponent } from './cds-dashboard/panel-intent-detail/form/form-field/form-field.component';
+import { FormEditAddComponent } from './cds-dashboard/panel-intent-detail/form/form-edit-add/form-edit-add.component';
+import { ModalWindowComponent } from './cds-dashboard/panel-intent-detail/form/modal-window/modal-window.component';
 
 
 
@@ -57,7 +61,10 @@ import { FormComponent } from './cds-dashboard/panel-intent-detail/form/form.com
     ActionSendEmailComponent, 
     QuestionComponent,
     AnswerComponent, 
-    FormComponent
+    FormComponent,
+    FormFieldComponent,
+    FormEditAddComponent,
+    ModalWindowComponent
   ],
   imports: [
     CommonModule,
@@ -70,7 +77,8 @@ import { FormComponent } from './cds-dashboard/panel-intent-detail/form/form.com
     RouterModule,
     TranslateModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    MatExpansionModule,
   ]
 })
 export class ChatbotDesignStudioModule { }

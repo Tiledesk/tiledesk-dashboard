@@ -206,17 +206,17 @@ export class CdsDashboardComponent implements OnInit {
   //   });
   // }
 
-  MOCK_getFaqIntent() {
-    let url = 'assets/mock-data/tilebot/faq/intent.json';
-    this.httpClient.get<Intent>(url).subscribe(data => {
+  // MOCK_getFaqIntent() {
+  //   let url = 'assets/mock-data/tilebot/faq/intent.json';
+  //   this.httpClient.get<Intent>(url).subscribe(data => {
 
-      this.intentSelected = data;
-      this.elementIntentSelected = {};
-      this.elementIntentSelected['type'] = 'action';
-      this.elementIntentSelected['element'] = this.intentSelected.actions[0];
-      console.log('MOCK_getFaqIntent', this.elementIntentSelected);
-    });
-  }
+  //     this.intentSelected = data;
+  //     this.elementIntentSelected = {};
+  //     this.elementIntentSelected['type'] = 'action';
+  //     this.elementIntentSelected['element'] = this.intentSelected.actions[0];
+  //     console.log('MOCK_getFaqIntent', this.elementIntentSelected);
+  //   });
+  // }
 
   /** ADD INTENT  */
   private creatIntent() {
@@ -226,7 +226,9 @@ export class CdsDashboardComponent implements OnInit {
     let answerIntentSelected = this.intentSelected.answer;
     let displayNameIntentSelected = this.intentSelected.intent_display_name;
     let formIntentSelected = this.intentSelected.form;
+    console.log('[CDS DSHBRD] creatIntent formIntentSelected ', formIntentSelected)
     let actionsIntentSelected = this.intentSelected.actions;
+    console.log('[CDS DSHBRD] creatIntent actionsIntentSelected ', actionsIntentSelected)
     let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
     this.faqService.addIntent(
       this.id_faq_kb,
@@ -238,7 +240,7 @@ export class CdsDashboardComponent implements OnInit {
       webhookEnabledIntentSelected
     ).subscribe((faq) => {
       this.showSpinner = false;
-      this.logger.log('[CDS DSHBRD] CREATED FAQ RES ', faq);
+      this.logger.log('[CDS DSHBRD] creatIntent RES ', faq);
     }, (error) => {
       this.showSpinner = false;
       this.logger.error('[CDS DSHBRD] CREATED FAQ - ERROR ', error);
@@ -256,7 +258,7 @@ export class CdsDashboardComponent implements OnInit {
       this.logger.log('[CDS DSHBRD] CREATED FAQ * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
       // this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
-      this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.id_faq_kb + "/" + this.botType]);
+      // this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.id_faq_kb + "/" + this.botType]);
     });
 
   }
@@ -317,7 +319,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** appdashboard-intent: Save intent */
   onSaveIntent(intent: Intent) {
-    console.log('onSaveIntent :: ', intent);
+    console.log('[CDS DSHBRD] onSaveIntent :: ', intent);
     this.intentSelected = intent;
     if (this.CREATE_VIEW) {
       this.creatIntent();
@@ -330,7 +332,8 @@ export class CdsDashboardComponent implements OnInit {
   onReturnListOfIntents(intents) {
     this.listOfIntents = intents;
     this.listOfActions = intents.map(a => a.intent_display_name);
-    console.log('onReturnListOfIntents::', this.listOfActions);
+    console.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
+    console.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
   }
 
   onSelectIntent(intent: Intent) {

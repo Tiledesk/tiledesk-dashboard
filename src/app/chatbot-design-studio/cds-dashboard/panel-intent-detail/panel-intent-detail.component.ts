@@ -85,4 +85,11 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
     this.openCardButton = false;
   }
 
+  passJsonIntentForm(json) {
+    console.log('[PANEL-INTENT-DETAIL] passJsonIntentForm ', json);
+    if(json && json.fields && json.fields.length>0){
+      // this.intentForm = json;
+    }
+  }
+
 }

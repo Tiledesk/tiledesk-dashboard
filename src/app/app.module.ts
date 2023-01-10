@@ -309,6 +309,9 @@ import { ChatbotDesignStudioModule } from './chatbot-design-studio/chatbot-desig
 
 
 
+
+
+
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
 
 // console.log('************** APPMODULE ******************');
@@ -536,7 +539,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ChatbotSetupComponent, 
     SidebarClaimsComponent, 
     NetworkOfflineComponent, 
-    HomePromoBannerComponent
+    HomePromoBannerComponent, 
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

@@ -84,3 +84,17 @@ $width-title: 80%;
     }
 
 }
+
+#cds-save-intent-btn {
+    background: #8ab4f8 !important;
+    color: #202124 !important;
+    box-shadow: none !important;
+    font-weight: 500 !important;
+    font-family: 'Poppins', 'Roboto',  'Arial', sans-serif !important;
+    text-transform: capitalize!important;
+    font-size: 14px !important;
+}
+
+#cds-save-intent-btn:hover {
+    background: rgb(138, 180, 248, .8) !important;
+}

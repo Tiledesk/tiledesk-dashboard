@@ -11,23 +11,15 @@
 </div> -->
 
 
-<div class="cds-header" style="height: 60px;
-font-family: 'Poppins';
-line-height: 60px;
-font-size: 21px;
-color: #fff;
-    background: #1e293b;">
-     <i class="material-icons btn-back" (click)="goBack()" style="position: relative;
-     top: 10px;
-     padding-left: 6px;
-     font-size: 33px;">keyboard_arrow_left</i>
+<div class="cds-header">
+     <i class="material-icons cds-btn-back" (click)="goBack()">keyboard_arrow_left</i>
     Chatbot design studio
 
 
-    <button
-    class="btn btn-tdblu-no-boxshadow pull-right" (click)="addNewIntent()" >
+    <button id="cds-add-new-intent-btn"
+    class="btn btn-primary pull-right" (click)="addNewIntent()" >
    
-        Add new intent
+       {{'AddIntent' | translate}}
   </button>
 
 </div>
@@ -80,6 +72,7 @@ color: #fff;
                 [elementIntentSelected]="elementIntentSelected"
                 [showSpinner] = "showSpinner"
                 (openButtonPanel) = onOpenButtonPanel($event)
+                
             ></appdashboard-panel-intent-detail>
         </div>
 

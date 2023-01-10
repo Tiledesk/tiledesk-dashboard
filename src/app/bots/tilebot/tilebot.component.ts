@@ -1118,6 +1118,14 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id, this.botType]);
   }
 
+  // old
+  goToOLDEditAddPage_EDIT(faq_id) {
+    this.router.navigate(['project/' + this.project._id + '/_editfaq', this.id_faq_kb, faq_id, this.botType]);
+  }
+  goOLDToEditAddPage_CREATE () {
+    this.router.navigate(['project/' + this.project._id + '/_createfaq', this.id_faq_kb, this.botType, this.faqkb_language]);
+  }
+
   goBack() {
     this.router.navigate(['project/' + this.project._id + '/bots']);
   }

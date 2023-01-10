@@ -14,7 +14,7 @@ $color-text-box: #566787;
     .more-info {
         cursor: pointer;
         position: absolute;
-        // top: -60px;
+        top: -60px;
         left: 60px;
         z-index: 2;
         em.material-icons {
@@ -25,9 +25,9 @@ $color-text-box: #566787;
         }
     }
     .header-buttons--form {
-        // position: absolute;
+        position: absolute;
         // top: -70px;
-        // right: 0;
+        right: 0;
         min-height: 50px;
         width: 100%;
         text-align: end;
@@ -101,17 +101,17 @@ $color-text-box: #566787;
     }
 
     .box--setting-form {
-        margin: 0px;
+        margin-top: 45px;
         font-family: "Poppins", "Roboto", Arial, sans-serif;
-        color: #f1f3f4;
+        color: #e8eaed;
         text-align: left;
         padding: 6px 12px;
         // background: $color-bck-box;
         font-weight: 400;
         line-height: 20px;
-        font-size: 16px;
+        font-size: 14px;
         .bold {
-            font-weight: bold;
+            font-weight: 300;
         }
         .row-info {
             padding: 10px 0;
@@ -119,9 +119,10 @@ $color-text-box: #566787;
                 display: block;
                 width: 100%;
                 margin: 0px;
-                background: #ffffffab;
+                background: #1e293b;
                 border: none;
                 padding: 5px;
+                border-radius: 4px;
             }
         }
         .row-info {
@@ -130,23 +131,24 @@ $color-text-box: #566787;
                 display: block;
                 width: 100%;
                 margin: 0px;
-                background: #ffffffab;
+                background: #1e293b;
                 border: none;
                 padding: 5px;
+                border-radius: 4px;
             }
         }
     }
 
     .box-buttons {
         text-align: end;
-        padding: 10px;
+        padding: 5px 10px;
     }
 
     .selectFormModel {
         margin: 10px;
         p {
-            color: #e8eaed;
-            font-size: 11px;
+            color: #f1f3f4;
+            font-size: 12px;
             font-weight: 400;
         }
     }
@@ -174,6 +176,7 @@ $color-text-box: #566787;
     .header-list-form {
         width: 100%;
         text-align: left;
+        padding: 0px 23px;
         .add-field {
             text-align: left;
             padding: 8px 16px;
@@ -190,7 +193,7 @@ $color-text-box: #566787;
 
 .btn-only-string {
     background: transparent !important;
-    color: #0f62ff !important;
+    color: #8ab4f8 !important;
     border: unset !important;
     box-shadow: unset !important;
     // background-color: #dce9ff !important;
@@ -199,7 +202,29 @@ $color-text-box: #566787;
     padding-right: 0px !important;
 }
 .btn-only-string:hover {
-    color:  rgba(15, 98, 255, 0.6) !important;
+    color: rgba(138, 180, 248, .8) !important;
     // background-color: #9ac1ff  !important;
     // border-color: #9ac1ff  !important;
+}
+
+#create-intent-form {
+    background: #8ab4f8 !important;
+    color: #202124 !important;
+    box-shadow: none !important;
+    font-weight: 500 !important;
+    font-family: Poppins, Roboto, Arial, sans-serif !important;
+    text-transform: capitalize !important;
+    font-size: 14px !important;
+}
+#create-intent-form:hover {
+    background: rgba(138, 180, 248, 0.8) !important;
+}
+
+#open-setting-btn {
+    background: #8ab4f8 !important;
+    box-shadow: none !important;
+}
+
+#open-setting-btn:hover {
+    background: rgba(138, 180, 248, 0.8) !important;
 }

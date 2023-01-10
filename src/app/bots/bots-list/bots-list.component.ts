@@ -543,7 +543,10 @@ export class BotListComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/bots/bot-select-type']);
   }
 
-
+  // goToEditAddPage_EDIT(faq_id: string) {
+  //   this.logger.log('[TILEBOT] ID OF FAQ ', faq_id);
+  //   this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id, this.botType]);
+  // }
   // ---------------------------------------------------------------------------
   // Go to faq.component to: Add / Edit FAQ, Edit Bot name
   // ---------------------------------------------------------------------------
@@ -564,6 +567,7 @@ export class BotListComponent implements OnInit {
     } else if (botType === 'tilebot') {
       _botType = 'tilebot'
       this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
+
     } else {
       _botType = botType
       this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
