@@ -13,7 +13,8 @@
 
 
 <div *ngIf = "elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
-    <appdashboard-question>
+    <appdashboard-question
+        [intentSelected]="intentSelected">
 
     </appdashboard-question>
 </div>

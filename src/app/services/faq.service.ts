@@ -318,7 +318,7 @@ export class FaqService {
    * @param webhook_enabled 
    * @returns 
    */
-   public addIntent(id_faq_kb: string, question: string, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
+   public addIntent(id_faq_kb: string, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -351,7 +351,7 @@ export class FaqService {
    * @param webhook_enabled 
    * @returns 
    */
-   public updateIntent(id: string, question: string, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
+   public updateIntent(id: string, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

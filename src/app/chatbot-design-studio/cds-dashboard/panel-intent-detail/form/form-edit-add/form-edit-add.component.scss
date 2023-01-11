@@ -34,7 +34,7 @@
         padding: 0px 0px 0px !important;
     }
 
-    #mat-expansion-panel-header-1 > span.mat-expansion-indicator::after  {
+    #mat-expansion-panel-header-1 > span.mat-expansion-indicator:after  {
         color: #8ab4f8;
     }
 
@@ -197,7 +197,7 @@ input.form-control {
 
 .input-prefix {
     position: absolute;
-    top: 30px;
+    top: 8px;
     left: 8px;
     color: #7d7d7d;
     font-weight: 800;
@@ -205,7 +205,7 @@ input.form-control {
 
 .input-suffix {
     position: absolute;
-    top: 29px;
+    top: 8px;
     right: 8px;
     color: #7d7d7d;
     font-weight: 800;
@@ -233,4 +233,13 @@ input.form-control {
     margin-right: 3px;
     max-width: 100px;
     margin-left: 5px;
+}
+
+
+.control-label {
+    top: -37px !important;
+    transition: unset;
+    font-size: 15px !important;
+    color: #aaa !important;
+    left: 6px !important;
 }

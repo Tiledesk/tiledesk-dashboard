@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 import { Form } from 'app/models/intent-model';
 // import { URL_more_info_chatbot_forms } from 'app/utils/util';
 
@@ -21,7 +21,7 @@ export interface ModalDeleteModel {
 })
 export class FormComponent implements OnInit, OnChanges {
   @Output() passJsonIntentForm = new EventEmitter();
-  @Input() intentForm: any;
+  @Input() intentForm: Form;
   langBot: string;
   fields: any[] = [];
   // URL_to_form_more_info = URL_more_info_chatbot_forms;
@@ -89,7 +89,11 @@ export class FormComponent implements OnInit, OnChanges {
       console.log('[FORM-COMP] cancelCommands ', this.cancelCommands)
       console.log('[FORM-COMP] cancelReply ', this.cancelReply)
       console.log('[FORM-COMP] cancelCommandsString ', this.cancelCommandsString)
-    }
+    } 
+    // else {
+    //   // this.displayNewFormButton = true;
+    //   this.openBoxNewFormForm()
+    // }
   }
 
   ngOnChanges() {
@@ -158,7 +162,10 @@ export class FormComponent implements OnInit, OnChanges {
       this.translations = data['AddIntentPage'];
       let cancel = this.translations['Cancel'] ? this.translations['Cancel'] : 'cancel';
       this.translateMap.cancel = cancel;
-      if (!this.intentForm) { // there not in v 3.2.8
+      console.log('[FORM-COMP]  getCurrentTranslation intentForm 1', this.intentForm);
+      this.intentFormSize = Object.keys(this.intentForm).length;
+      if (this.intentFormSize === 0) {
+        console.log('[FORM-COMP] getCurrentTranslation intentForm 2' , this.intentForm) 
         this.cancelCommands.push(cancel);
         this.cancelReply = this.translations['CancelReply'] ? this.translations['CancelReply'] : '';
       }

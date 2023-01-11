@@ -15,6 +15,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   @Input() listOfActions: Array<string>;
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
+  @Input() intentSelected: Intent
 
   typeIntentElement = TYPE_INTENT_ELEMENT;
   elementSelected: any;
@@ -44,6 +45,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
     this.elementSelected = this.elementIntentSelected.element;
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
+    console.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
     
   }
   // EVENT FUNCTIONS //

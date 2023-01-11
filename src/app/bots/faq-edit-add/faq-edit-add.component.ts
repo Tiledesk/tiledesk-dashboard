@@ -271,7 +271,7 @@ export class FaqEditAddComponent implements OnInit {
   */
   getFaqById() {
     this.faqService.getFaqById(this.id_faq).subscribe((faq: any) => {
-      this.logger.log('[FAQ-EDIT-ADD] - FAQ GET BY ID RES', faq);
+      console.log('[FAQ-EDIT-ADD] - FAQ GET BY ID RES', faq);
       if (faq) {
         this.question_toUpdate = faq.question;
         this.answer_toUpdate = faq.answer;

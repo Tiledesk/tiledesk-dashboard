@@ -1,11 +1,8 @@
-
-    <div class="content">
-        <div class="response">
-            <mat-form-field class="box-textarea" appearance="fill">
-                <textarea matInput cdkTextareaAutosize [(ngModel)]="answer" #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" (ngModelChange)="onChangeText($event)">
+<div class="box--textarea-wpr">
+    <!-- appearance="fill" -->
+    <mat-form-field class="box--textarea" >
+        <textarea matInput cdkTextareaAutosize [(ngModel)]="answer" #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1" cdkAutosizeMaxRows="8" (ngModelChange)="onChangeText($event)">
         </textarea>
-            </mat-form-field>
-        </div>
-    </div>
-
+    </mat-form-field>
+</div>

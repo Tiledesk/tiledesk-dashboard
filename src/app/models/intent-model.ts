@@ -27,6 +27,13 @@ import { MetadataOverride } from "@angular/core/testing";
         
     }
 
+    // export class Question {
+    //     split(arg0: string) {
+    //       throw new Error('Method not implemented.');
+    //     }
+    //     type: string;
+    // }
+
     export class Action {
         type: string;
         body: any;
@@ -112,11 +119,11 @@ import { MetadataOverride } from "@angular/core/testing";
     }
 
     export class Form {
-        cancelCommands: string[];
-        cancelReply: string;
-        id: number;
-        name: string;
-        fields: Field[];
+        cancelCommands?: string[];
+        cancelReply?: string;
+        id?: number;
+        name?: string;
+        fields?: Field[];
     }
 
     export class Field {

@@ -1,1 +1,8 @@
-<p>panel-question works!</p>
+<div class="box--textarea-wpr">
+    <!-- appearance="fill" -->
+    <mat-form-field class="box--textarea" >
+        <textarea matInput cdkTextareaAutosize [(ngModel)]="question" #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1" cdkAutosizeMaxRows="8" (ngModelChange)="onChangeText($event)">
+        </textarea>
+    </mat-form-field>
+</div>

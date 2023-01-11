@@ -2,19 +2,22 @@
 <div>
     <!-- [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}" -->
     <div>
-        <div class="button-intent">
+        <div class="button-intent" (click)="onSelectQuestion()"
+        [ngStyle]="{'border':answer ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
+        [ngClass]="{'button-intent-active': HAS_SELECTED_QUESTION }">
             <span class="material-icons ">
                 question_mark
             </span>
             <span> Question </span>
         </div>
-        <div class="button-intent" (click)="displayForm()" >
+        
+        <div class="button-intent" (click)="displayForm()">
             <span class="material-icons">
                 list_alt
             </span>
             <span> Form </span>
         </div>
-      
+
 
         <!-- <div [ngStyle]="{'border':actions?.length > 0 ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
             [ngClass]="{'actions-btn-active': displayActions}" class="button-intent"
@@ -26,7 +29,7 @@
             <span> Actions ({{actions?.length}}) </span>
         </div> -->
         <div class="header__center" *ngIf="actions && actions?.length > 0">Actions</div>
-      
+
     </div>
     <!-- [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}" -->
 
@@ -39,8 +42,6 @@
                     {{action.type }}
                 </div>
                 <div class="example-handle" cdkDragHandle style="margin-bottom: 20px;">
-                  
-                    
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
                         fill="currentColor">
                         <path d="M0 0h24v24H0V0z" fill="none" />
@@ -52,9 +53,7 @@
                     <em class="material-icons">delete</em>
                 </div>
             </div>
-           
         </div>
-     
     </div>
     <div *ngIf="actions && actions?.length > 0" class="button-intent" (click)="openActionsDrawer()">
         <span class="material-icons ">
@@ -63,7 +62,9 @@
         <span> Action </span>
     </div>
 
-    <div *ngIf="!actions" class="button-intent" (click)="onSelectAnswer()">
+    <div *ngIf="answer" class="button-intent" (click)="onSelectAnswer()"
+        [ngStyle]="{'border':answer ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
+        [ngClass]="{'button-intent-active': HAS_SELECTED_ANSWER }">
         <span class="material-icons ">
             message
         </span>

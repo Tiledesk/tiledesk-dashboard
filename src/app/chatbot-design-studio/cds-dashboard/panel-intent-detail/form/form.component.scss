@@ -223,8 +223,29 @@ $color-text-box: #566787;
 #open-setting-btn {
     background: #8ab4f8 !important;
     box-shadow: none !important;
+    color: #202124;
+    font-weight: 500;
 }
 
 #open-setting-btn:hover {
     background: rgba(138, 180, 248, 0.8) !important;
+}
+
+#close-general-btn > span {
+    vertical-align: middle;
+}
+ 
+#add-form-btn {
+    background: #8ab4f8 !important;
+    box-shadow: none !important;
+    color: #202124;
+    font-weight: 500;
+}
+
+#add-form-btn:hover {
+    background: rgba(138, 180, 248, 0.8) !important;
+}
+
+#add-form-btn > span { 
+    vertical-align: middle;
 }

@@ -55,6 +55,7 @@
                 (openActionDrawer)= onOpenActionDrawer($event)
                 (answerSelected)= onAnswerSelected($event)
                 (actionSelected)= onActionSelected($event)
+                (questionSelected) = onQuestionSelected($event)
                 (intentForm)= onIntentFormSelected($event)
                 [isOpenActionDrawer]="isOpenActionDrawer"
             ></appdashboard-panel-intent>
@@ -72,7 +73,7 @@
                 [elementIntentSelected]="elementIntentSelected"
                 [showSpinner] = "showSpinner"
                 (openButtonPanel) = onOpenButtonPanel($event)
-                
+                [intentSelected]="intentSelected"
             ></appdashboard-panel-intent-detail>
         </div>
 
