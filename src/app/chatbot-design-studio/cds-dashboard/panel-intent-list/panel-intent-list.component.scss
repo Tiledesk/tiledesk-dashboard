@@ -16,11 +16,50 @@
 .title-box {
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0px 6px;
 
     .title {
         color: white;
         font-weight: 500;
+        font-size: 14px;
+    }
+
+    .new-intent-button {
+        display: flex;
+        flex-direction: row;
+        font-size: 12px;
+        align-items: center;
+        border: dashed 1px;
+        padding: 0px 14px 0px 10px;
+        border-radius: 16px;
+        cursor: pointer;
+
+        .plus-icon {
+            font-size: 16px;
+            color: white;
+        }
+
+        .button-text {
+            margin-bottom: 0px;
+            color: white;
+        }
+    }
+
+    .new-intent-button:hover {
+
+        background-color: white;
+        border: 1px solid white;
+
+        .plus-icon {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .button-text {
+            color: #333;
+        }
     }
 }
 

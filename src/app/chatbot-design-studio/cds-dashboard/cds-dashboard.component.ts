@@ -38,6 +38,7 @@ export class CdsDashboardComponent implements OnInit {
 
   botType: string;
   project: Project;
+  projectID: string;
   // openCardButton = false;
 
   // buttonSelected: Button;
@@ -106,9 +107,9 @@ export class CdsDashboardComponent implements OnInit {
       this.id_faq_kb = params.faqkbid;
       this.id_faq = params.faqid;
       this.botType = params.bottype
-     console.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
-     console.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
-     console.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
+      console.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
+      console.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
+      console.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
     });
   }
 
@@ -122,12 +123,12 @@ export class CdsDashboardComponent implements OnInit {
   */
   private getFaqKbId() {
     this.id_faq_kb = this.route.snapshot.params['faqkbid'];
-    if (this.intentSelected  ) {
-    this.intentSelected.id_faq_kb = this.id_faq_kb; 
-    console.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
-  } else {
-    console.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
-  }
+    if (this.intentSelected) {
+      this.intentSelected.id_faq_kb = this.id_faq_kb;
+      console.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
+    } else {
+      console.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
+    }
   }
 
   /**
@@ -164,7 +165,10 @@ export class CdsDashboardComponent implements OnInit {
   /** */
   private getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      this.project = project;
+      if (project) {
+        this.project = project;
+        this.projectID = project._id
+      }
     });
   }
 
@@ -220,6 +224,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** ADD INTENT  */
   private creatIntent() {
+    console.log('creatIntent')
     this.showSpinner = true;
     let id_faq_kb = this.intentSelected.id_faq_kb;
     let questionIntentSelected = this.intentSelected.question;
@@ -240,7 +245,7 @@ export class CdsDashboardComponent implements OnInit {
       webhookEnabledIntentSelected
     ).subscribe((faq) => {
       this.showSpinner = false;
-      this.logger.log('[CDS DSHBRD] creatIntent RES ', faq);
+      console.log('[CDS DSHBRD] creatIntent RES ', faq);
     }, (error) => {
       this.showSpinner = false;
       this.logger.error('[CDS DSHBRD] CREATED FAQ - ERROR ', error);
@@ -265,7 +270,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** EDIT INTENT  */
   private editIntent() {
-    console.log('editIntent');
+    console.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
     this.showSpinner = true;
     let id = this.intentSelected.id;
     let questionIntentSelected = this.intentSelected.question;
@@ -284,7 +289,7 @@ export class CdsDashboardComponent implements OnInit {
       webhookEnabledIntentSelected
     ).subscribe((data) => {
       this.showSpinner = false;
-      this.logger.log('[CDS DSHBRD] UPDATE FAQ RES', data);
+      console.log('[CDS DSHBRD] UPDATE FAQ RES', data);
     }, (error) => {
       this.showSpinner = false;
       this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR ', error);
@@ -371,18 +376,16 @@ export class CdsDashboardComponent implements OnInit {
     console.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
   }
 
-  onIntentFormSelected (intentform: any) {
+  onIntentFormSelected(intentform: Form) {
     console.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT intentform ', intentform)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = 'form'
     this.elementIntentSelected['element'] = intentform
     console.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
   }
-  
-  
 
- 
-  addNewIntent() {
+
+  onCreateIntentBtnClicked() {
     this.CREATE_VIEW = true;
     console.log('[CDS DSBRD] addNewIntent  ')
     this.intentSelected = new Intent();
@@ -402,6 +405,8 @@ export class CdsDashboardComponent implements OnInit {
     }
 
     this.intentSelected.actions.push(action)
+    // this.elementIntentSelected = {};
+    // this.elementIntentSelected['type'] = 'new'
     console.log('[CDS DSBRD] addNewIntent intentSelected ', this.intentSelected)
   }
 

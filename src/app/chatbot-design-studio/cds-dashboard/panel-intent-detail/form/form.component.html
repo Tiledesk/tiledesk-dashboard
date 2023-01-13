@@ -16,7 +16,8 @@
                 <i class="material-icons">add_circle</i>
             </span>
         </button>
-        <button id="delete-form-btn" *ngIf="!displayNewFormButton && intentFormSize > 0" class="btn btn-danger add-form" (click)="openDeleteForm()">
+        <button id="delete-form-btn" *ngIf="!displayNewFormButton && intentFormSize > 0" class="btn btn-danger add-form" 
+            (click)="openDeleteForm()">
             <span class="icon-label">{{ "AddIntentPage.DeleteForm" | translate }}</span>
             <span class="icon">
                 <i class="material-icons">delete</i>
@@ -53,7 +54,7 @@
             <ng-select [items]="modelsOfForm" bindLabel="name" bindValue="id" [clearable]=false
                 [(ngModel)]="selectedFormId" (change)="getFieldFromId(selectedFormId)">
             </ng-select>
-            <p *ngIf=selectedForm.fields>{{ "AddIntentPage.InfoTemplateForm" | translate: translateparam }}</p>
+            <p *ngIf=selectedForm?.fields>{{ "AddIntentPage.InfoTemplateForm" | translate: translateparam }}</p>
         </div>
         <div class="box-buttons">
             <button id="create-intent-form" class="btn btn-primary" (click)="generateJsonIntentForm()">
@@ -93,12 +94,6 @@
     <!-- ------------------------------ -->
     <!-- @ FIELDS LIST -->
     <!-- ------------------------------ -->
-    
-
-
-    <!-- <appdashboard-tilebot-list-fields-form *ngIf="intentForm"  -->
-        <!-- intentFormSize >  {{intentFormSize }}  -->
-     
     <appdashboard-form-field *ngIf="intentFormSize > 0" [fields]="fields"
         (eventEditField)="eventEditField($event)" (eventDropField)="eventDropField($event)"
         (openDeleteFieldModal)="openDeleteFieldModal($event)">
@@ -108,7 +103,6 @@
     <!-- @ BUTTON ADD FIELD  -->
     <!-- ------------------------------ -->
     <!-- [disabled]="displayAddForm || displayEditForm || displaySettingForm" -->
-
     <div class="header-list-form">
         <button *ngIf="displayTilebotAddEditForm && intentFormSize > 0"
             [ngClass]="{'hide':( displaySettingForm || displayAddForm || displayEditForm ) }"
@@ -119,7 +113,6 @@
             <span>{{ "AddIntentPage.AddField" | translate }}</span>
         </button>
     </div>
-
 
     <!-- ------------------------------ -->
     <!-- @ ADD EDIT FIELD -->

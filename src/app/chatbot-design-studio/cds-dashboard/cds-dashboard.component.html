@@ -16,11 +16,11 @@
     Chatbot design studio
 
 
-    <button id="cds-add-new-intent-btn"
+    <!-- <button id="cds-add-new-intent-btn"
     class="btn btn-primary pull-right" (click)="addNewIntent()" >
    
        {{'AddIntent' | translate}}
-  </button>
+  </button> -->
 
 </div>
 
@@ -31,8 +31,10 @@
         <appdashboard-panel-intent-list
             class="panel-intent-list" 
             [id_faq_kb] = "id_faq_kb"
+            [projectID] = "projectID"
             (selected_intent) = onSelectIntent($event)
-            (returnListOfIntents) = onReturnListOfIntents($event)>
+            (returnListOfIntents) = onReturnListOfIntents($event)
+            (createIntent)="onCreateIntentBtnClicked()" >
         </appdashboard-panel-intent-list>
     </div>
 

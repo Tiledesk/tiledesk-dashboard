@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
@@ -6,7 +6,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
   templateUrl: './form-field.component.html',
   styleUrls: ['./form-field.component.scss']
 })
-export class FormFieldComponent implements OnInit {
+export class FormFieldComponent implements OnInit, OnChanges {
 
   @Output() eventEditField = new EventEmitter();
   @Output() openDeleteFieldModal = new EventEmitter();
@@ -29,6 +29,10 @@ export class FormFieldComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedObjectId = null;
+  }
+
+  ngOnChanges() {
+    console.log('[FORM-FIELD] fields ', this.fields)
   }
 
   drop(event: CdkDragDrop<string[]>) {

@@ -1,6 +1,9 @@
 import { FaqService } from './../../../services/faq.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Faq } from 'app/models/faq-model';
+import { Router } from '@angular/router';
+import { Intent } from 'app/models/intent-model';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'appdashboard-panel-intent-list',
@@ -10,16 +13,21 @@ import { Faq } from 'app/models/faq-model';
 export class PanelIntentListComponent implements OnInit {
 
   @Input() id_faq_kb: string;
+  @Input() projectID: string;
   @Output() selected_intent = new EventEmitter();
   @Output() returnListOfIntents = new EventEmitter();
+  @Output() createIntent = new EventEmitter();
 
   intent_start: any;
   intent_defaultFallback: any;
   predefined_faqs = [];
   filtered_intents = [];
-  intents = [];
+  intents: Intent[];
 
-  constructor(private faqService: FaqService) { }
+  constructor(
+    private faqService: FaqService,
+    private router: Router
+    ) { }
 
   ngOnInit(): void {
     console.log("[PANEL-INTENT-LIST] ngOnInit()")
@@ -30,7 +38,7 @@ export class PanelIntentListComponent implements OnInit {
 
   getAllIntents(id_faq_kb) {
 
-    this.faqService.getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: any) => {
+    this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
       this.intents = faqs;
 
 
@@ -41,6 +49,7 @@ export class PanelIntentListComponent implements OnInit {
       this.filtered_intents = this.intents;
 
       console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - others INTENTS: ", this.intents);
+      console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - others  typeof INTENTS: ",typeof this.intents[0]);
 
       // this.faq_start = faqs.find(o => o.intent_display_name === 'start');
       // let s_index = this.faqs.indexOf(faqs.find(o => o.intent_display_name === 'start'))
@@ -68,9 +77,13 @@ export class PanelIntentListComponent implements OnInit {
     //console.log("found those: ", this.filtered_intents)
   }
 
-  selectIntent(intent, index) {
+  selectIntent(intent: Intent, index: number) {
     console.log("[PANEL-INTENT-LIST] selectIntent - intent selected: ", intent);
     console.log("[PANEL-INTENT-LIST] selectIntent - index: ", index)
+
+    this.router.navigate(['project/' + intent.id_project + '/editfaq', this.id_faq_kb, intent.id, 'tilebot']);
+    // this.router.navigate(['project/' + intent.id_project + '/createfaq', this.id_faq_kb, 'tilebot', intent.language]);
+    
 
     let elements = Array.from(document.getElementsByClassName('intent active'));
     elements.forEach((el) => {
@@ -81,6 +94,13 @@ export class PanelIntentListComponent implements OnInit {
     element.classList.toggle("active")
 
     this.selected_intent.emit(intent);
+  }
+
+  addNewIntent() {
+
+    this.createIntent.emit(true);
+    this.router.navigate(['project/' + this.projectID  + '/createfaq', this.id_faq_kb, 'tilebot', 'en']);
+    
   }
 
 }

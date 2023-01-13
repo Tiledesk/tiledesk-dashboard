@@ -3,7 +3,10 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Form } from 'app/models/intent-model';
+import { Field, Form, Intent } from 'app/models/intent-model';
+
+import { FormModelsFactory } from './form-models-factory';
+
 // import { URL_more_info_chatbot_forms } from 'app/utils/util';
 
 
@@ -22,8 +25,9 @@ export interface ModalDeleteModel {
 export class FormComponent implements OnInit, OnChanges {
   @Output() passJsonIntentForm = new EventEmitter();
   @Input() intentForm: Form;
+  @Input() intentSelected: Intent;
   langBot: string;
-  fields: any[] = [];
+  fields = new Array() as Field[];;
   // URL_to_form_more_info = URL_more_info_chatbot_forms;
   URL_to_form_more_info = "https://gethelp.tiledesk.com/articles/tiledesk-chatbot-forms/";
 
@@ -35,7 +39,7 @@ export class FormComponent implements OnInit, OnChanges {
   selectedObjectId: string;
 
   // add edit form
-  selectedField: any;
+  selectedField: Field;
   displayTilebotAddEditForm = true;
   displayAddForm = false;
   displayEditForm = false
@@ -46,13 +50,14 @@ export class FormComponent implements OnInit, OnChanges {
   displaySettingsButton = false;
 
   idForm: string = "id-form-000";
-  selectedForm: any;
+  selectedForm: Form;
   selectedFormId: number;
-  modelsOfForm: any[] = [];
+  modelsOfForm: Form[] = [];
   cancelCommands: string[] = [];
   cancelCommandsString: string;
   cancelReply: string;
   intentFormSize: number
+
 
   translateparam = { selectedFormName: "", description_key: "" };
 
@@ -61,6 +66,7 @@ export class FormComponent implements OnInit, OnChanges {
     private route: ActivatedRoute,
     private httpClient: HttpClient
   ) {
+
     this.langBot = this.route.snapshot.params['botlang'];
     if (!this.langBot || this.langBot === undefined) {
       this.langBot = 'en';
@@ -68,8 +74,33 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    let modelsFactory = new FormModelsFactory()
+
+    this.modelsOfForm = modelsFactory.getModels();
+    console.log('[FORM-COMP] (OnInit) modelsOfForm ', this.modelsOfForm)
+
+    this.selectedForm = this.modelsOfForm[0];
+    console.log('[FORM-COMP] (OnInit) selectedForm ', this.selectedForm)
+
+    this.selectedFormId = this.modelsOfForm[0].id ? this.modelsOfForm[0].id : null;
+    console.log('[FORM-COMP] (OnInit) selectedFormId ', this.selectedFormId)
+  
+
+    // this.selectedForm = new Form()
+    //   this.selectedForm.to_JSON()
+    //   console.log('[FORM-COMP] (OnInit) this.selectedForm.to_JSON() ',this.selectedForm.to_JSON())
+    // this.selectedForm = modelsFactory.getModels()[0];
+    // console.log('[FORM-COMP] (OnInit) selectedForm ', this.selectedForm)
+    // this.modelsOfForm = modelsFactory.getModels();
+    // //this.modelsOfForm.push(modelsFactory.getModels());
+    // console.log('[FORM-COMP] (OnInit) modelsOfForm ', this.modelsOfForm)
+    // this.selectedForm = this.modelsOfForm[0];
+    // console.log('[FORM-COMP] (OnInit) selectedForm 2 ', this.selectedForm)
+    // this.selectedFormId = this.modelsOfForm[0].id ? this.modelsOfForm[0].id : null;
+    // console.log('[FORM-COMP] (OnInit) selectedFormId ', this.selectedFormId)
+
     this.getCurrentTranslation();
-    this.getModelsForm();
+    // this.getModelsForm();
     this.translateMap = {};
     this.translations = {};
     this.intentFormSize = Object.keys(this.intentForm).length;
@@ -78,7 +109,7 @@ export class FormComponent implements OnInit, OnChanges {
     if (this.intentFormSize > 0) {
       this.displayNewFormButton = false;
       this.displaySettingsButton = true;
-      if (this.intentForm.fields) {
+      if (this.intentForm && this.intentForm.fields) {
         this.fields = JSON.parse(JSON.stringify(this.intentForm.fields));
         console.log('[FORM-COMP] OnInit intentForm.fields ', this.fields)
       }
@@ -89,7 +120,7 @@ export class FormComponent implements OnInit, OnChanges {
       console.log('[FORM-COMP] cancelCommands ', this.cancelCommands)
       console.log('[FORM-COMP] cancelReply ', this.cancelReply)
       console.log('[FORM-COMP] cancelCommandsString ', this.cancelCommandsString)
-    } 
+    }
     // else {
     //   // this.displayNewFormButton = true;
     //   this.openBoxNewFormForm()
@@ -98,51 +129,40 @@ export class FormComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     console.log('[FORM-COMP] (OnChanges) intentForm ', this.intentForm)
-
+    console.log('[FORM-COMP] (OnChanges) intentSelected ', this.intentSelected)
   }
 
   getFieldFromId(idForm: number) {
     console.log('[FORM-COMP] getFieldFromId idForm ', idForm)
-    this.selectedForm = this.modelsOfForm.find(({ id }) => id === idForm);
-    console.log('[FORM-COMP] getFieldFromId selectedForm ', this.selectedForm)
-    this.translateparam = { selectedFormName: this.selectedForm.name, description_key: this.selectedForm.description_key };
-  }
+    // this.selectedForm = new FormModelsFactory().getModels()[0]
 
+    this.selectedForm = new FormModelsFactory().getModels().find(({ id }) => id === idForm);
+    console.log('[FORM-COMP] getFieldFromId selectedForm ', this.selectedForm)
+    
+    // this.translateparam = { selectedFormName: this.selectedForm.name, description_key: this.selectedForm.description_key };
+  }
 
   generateJsonIntentForm() {
     console.log('[FORM-COMP] generateJsonIntentForm')
     if (this.selectedFormId && !this.selectedForm) {
       this.getFieldFromId(this.selectedFormId);
     }
-    this.intentForm = {};
-    this.intentForm.cancelCommands = this.cancelCommands;
-    this.intentForm.cancelReply = this.cancelReply;
-    console.log('[FORM-COMP] generateJsonIntentForm selectedForm ', this.selectedForm)
+
+    console.log('[FORM-COMP] selectedForm ', this.selectedForm)
+
     if (this.selectedForm) {
-      // there not in v 3.2.8
-      if (this.selectedForm.cancelCommands) {
-        this.intentForm.cancelCommands = this.selectedForm.cancelCommands;
-      }
-      // there not in v 3.2.8
-      if (this.selectedForm.cancelReply) {
-        this.intentForm.cancelReply = this.selectedForm.cancelReply;
-      }
-      // this.selectedForm = this.modelsOfForm[this.selectedFormId];
-      if (this.selectedForm.id) {
-        this.intentForm.id = this.selectedForm.id;
-      }
-      if (this.selectedForm.name) {
-        this.intentForm.name = this.selectedForm.name;
-      }
-      if (this.selectedForm.fields) {
-        this.intentForm.fields = this.selectedForm.fields;
-        // this.fields = structuredClone(this.selectedForm.fields);
-        this.fields = JSON.parse(JSON.stringify(this.selectedForm.fields));
-        console.log('[FORM-COMP] generateJsonIntentForm selectedForm.fields ', this.fields)
-        console.log('[FORM-COMP] generateJsonIntentForm intentForm ', this.intentForm)
-        this.intentFormSize = Object.keys(this.intentForm).length;
-      }
+      // this.selectedForm = new Form()
+      this.selectedForm.to_JSON()
+      this.intentForm = this.selectedForm;
+      this.intentForm.cancelCommands = this.cancelCommands;
+      this.intentForm.cancelReply = this.cancelReply;
+      this.intentForm.to_JSON()
+      // this.fields = JSON.parse(JSON.stringify(this.selectedForm.fields));
+      this.fields = this.selectedForm.fields;
+      this.intentFormSize = Object.keys(this.intentForm).length;
+      console.log('[FORM-COMP] generateJsonIntentForm ', this.intentForm)
     }
+
     this.displayCancelButton = false;
     this.displaySettingsButton = true;
     console.log('[FORM-COMP] generateJsonIntentForm displaySettingsButton:', this.displaySettingsButton, ' displayCancelButton', this.displayCancelButton)
@@ -156,6 +176,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.jsonGenerator();
   }
 
+
   getCurrentTranslation() {
     let jsonWidgetLangURL = 'assets/i18n/' + this.langBot + '.json';
     this.httpClient.get(jsonWidgetLangURL).subscribe(data => {
@@ -165,53 +186,16 @@ export class FormComponent implements OnInit, OnChanges {
       console.log('[FORM-COMP]  getCurrentTranslation intentForm 1', this.intentForm);
       this.intentFormSize = Object.keys(this.intentForm).length;
       if (this.intentFormSize === 0) {
-        console.log('[FORM-COMP] getCurrentTranslation intentForm 2' , this.intentForm) 
+        console.log('[FORM-COMP] getCurrentTranslation intentForm 2', this.intentForm)
         this.cancelCommands.push(cancel);
         this.cancelReply = this.translations['CancelReply'] ? this.translations['CancelReply'] : '';
       }
-      console.log('[FORM-COMP]  getCurrentTranslation this.cancelReply::', this.cancelReply);
+      console.log('[FORM-COMP] getCurrentTranslation this.cancelReply::', this.cancelReply);
+      console.log('[FORM-COMP] getCurrentTranslation cancel::', cancel);
+      console.log('[FORM-COMP] getCurrentTranslation cancelCommands::', this.cancelCommands);
     })
   }
 
-  /**
- * !!! this function is temporary and will be replaced with a function 
- * that calls an external service by passing the bot language !!!
- */
-  getModelsForm() {
-    let tilebotModelFormURL = 'assets/bots/tilebot/modelsForm.json';
-    console.log()
-    let jsonModel: any;
-    this.httpClient.get(tilebotModelFormURL).subscribe(data => {
-
-      console.log('[FORM-COMP] getModelsForm data', data)
-      if (data) {
-        jsonModel = data;
-        jsonModel.forEach(element => {
-          let item = { "id": "", "name": "", "description_key": "", "fields": "" };
-          if (element.id) {
-            item.id = element.id
-          };
-          if (element.name) {
-            item.name = element.name
-          };
-          if (element.description_key) {
-            item.description_key = element.description_key
-          };
-          if (element.fields) {
-            item.fields = element.fields
-          };
-          this.modelsOfForm.push(item);
-        });
-      }
-      let item = { "id": "custom-model", "name": "Custom", "description_key": "", "fields": "" };
-      this.modelsOfForm.push(item);
-      //console.log("modelsOfForm : ",this.modelsOfForm);
-      this.selectedForm = this.modelsOfForm[0];
-      this.selectedFormId = this.modelsOfForm[0].id ? this.modelsOfForm[0].id : null;
-      this.translateparam = { selectedFormName: this.selectedForm.name, description_key: this.selectedForm.description_key };
-     
-    });
-  }
 
   setCancelCommands() {
     //this.cancelCommandsString.split(",");
@@ -229,9 +213,13 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   jsonGenerator() {
-    // console.log('this.intentForm:: ', this.intentForm);
+    // this.intentForm = new Form();
+    // this.intentForm = this.selectedForm
+    // this.intentForm.to_JSON()
+    console.log('this.intentForm:: ', this.intentForm);
     this.passJsonIntentForm.emit(this.intentForm);
     // this.intentForm.push(this.intentForm)
+    this.intentSelected.form = this.intentForm
   }
 
   openSettingsForm() {
@@ -309,7 +297,7 @@ export class FormComponent implements OnInit, OnChanges {
 
   openBoxNewFormForm() {
     // this.intentForm = null;
-    this.intentForm = {};
+    // this.intentForm = new Form();
     this.fields = [];
     this.displayBoxNewForm = true;
     this.displayTilebotAddEditForm = true;
@@ -326,13 +314,13 @@ export class FormComponent implements OnInit, OnChanges {
   private deleteForm() {
     this.displayTilebotAddEditForm = false;
     this.displayNewFormButton = true;
-    this.displayBoxNewForm = true;
+    this.displayBoxNewForm = false;
     this.displaySettingForm = false;
     this.displayAddForm = false;
     this.displayEditForm = false
     this.displayCancelButton = false;
     this.displaySettingsButton = false;
-    this.intentForm = {};
+    //this.intentForm = new Form();
     this.fields = [];
     this.intentFormSize = 0;
     console.log('[FORM-COM] deleteForm - displayBoxNewForm ', this.displayBoxNewForm, 'intentForm', this.intentForm);
@@ -340,7 +328,7 @@ export class FormComponent implements OnInit, OnChanges {
 
 
   private resetForm() {
-    this.intentForm = {};
+    this.intentForm = new Form();
     this.fields = [];
     this.displayNewFormButton = false;
     this.displaySettingsButton = true;
@@ -363,9 +351,9 @@ export class FormComponent implements OnInit, OnChanges {
     this.selectedField = null;
     this.displayAddForm = true;
     this.openAddEditForm();
-    console.log('[FORM-COMP] eventAddField displayEditForm ', this.displayEditForm) 
-    console.log('[FORM-COMP] eventAddField selectedField ', this.selectedField) 
-    console.log('[FORM-COMP] eventAddField displayAddForm ', this.displayAddForm) 
+    console.log('[FORM-COMP] eventAddField displayEditForm ', this.displayEditForm)
+    console.log('[FORM-COMP] eventAddField selectedField ', this.selectedField)
+    console.log('[FORM-COMP] eventAddField displayAddForm ', this.displayAddForm)
   }
 
   /** Event edit field */
@@ -377,9 +365,9 @@ export class FormComponent implements OnInit, OnChanges {
       this.displayEditForm = true;
       this.openAddEditForm();
     }, 300);
-    console.log('[FORM-COMP] eventEditField selectedField ', this.selectedField) 
-    console.log('[FORM-COMP] eventEditField displayAddForm ', this.displayAddForm) 
-    console.log('[FORM-COMP] eventEditField displayEditForm ', this.displayEditForm) 
+    console.log('[FORM-COMP] eventEditField selectedField ', this.selectedField)
+    console.log('[FORM-COMP] eventEditField displayAddForm ', this.displayAddForm)
+    console.log('[FORM-COMP] eventEditField displayEditForm ', this.displayEditForm)
   }
 
   eventDropField(fields) {
@@ -395,9 +383,9 @@ export class FormComponent implements OnInit, OnChanges {
     this.displayAddForm = false;
     this.displayEditForm = false;
     this.displayTilebotAddEditForm = true;
-    console.log('[FORM-COMP] closeAddEditForm displayAddForm ', this.displayAddForm) 
-    console.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayEditForm) 
-    console.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayTilebotAddEditForm) 
+    console.log('[FORM-COMP] closeAddEditForm displayAddForm ', this.displayAddForm)
+    console.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayEditForm)
+    console.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayTilebotAddEditForm)
   }
 
   /** Event SAVE field */
@@ -410,7 +398,7 @@ export class FormComponent implements OnInit, OnChanges {
     }
     if (this.intentForm) {
       this.intentForm.fields = this.fields;
-      console.log('[FORM-COMP] saveAddEditForm intentForm ', this.intentForm) 
+      console.log('[FORM-COMP] saveAddEditForm intentForm ', this.intentForm)
     }
     this.displayAddForm = false;
     this.displayEditForm = false;

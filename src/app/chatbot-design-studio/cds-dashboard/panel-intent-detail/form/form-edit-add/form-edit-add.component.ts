@@ -52,7 +52,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   // nameRGEX = /^[a-zA-Z0-9_]{1,}$/;
   // emailRGEX = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/
   // /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/;
-  modelsOfType = [{"label": "Text", "value":TYPE_FIELD.TEXT}, {"label": "Email", "value":TYPE_FIELD.EMAIL}, {"label": "Phone number", "value":TYPE_FIELD.PHONE}, {"label": "Custom", "value":TYPE_FIELD.CUSTOM}];
+  modelsOfType = [{ "label": "Text", "value": TYPE_FIELD.TEXT }, { "label": "Email", "value": TYPE_FIELD.EMAIL }, { "label": "Phone number", "value": TYPE_FIELD.PHONE }, { "label": "Custom", "value": TYPE_FIELD.CUSTOM }];
   infoMessages = {}
   infoMessage: string;
   markbotLabel: string;
@@ -62,7 +62,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   fieldRegex: string = '';
   fieldLabel: string = '';
   fieldErrorLabel: string = '';
-  
+
   constructor(
     private translate: TranslateService,
     private httpClient: HttpClient
@@ -70,7 +70,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.showRegexField = true;
-    if(this.displayAddForm){
+    if (this.displayAddForm) {
       this.field = {
         "name": "",
         "type": "",
@@ -78,7 +78,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
         "label": "",
         "errorLabel": ""
       }
-    } else if(this.displayEditForm){
+    } else if (this.displayEditForm) {
       this.field.type = this.field.type.toUpperCase();
       // if(this.field.regex && this.field.type === TYPE_FIELD.CUSTOM){
       //   this.customRGEX = this.field.regex;
@@ -87,7 +87,8 @@ export class FormEditAddComponent implements OnInit, OnChanges {
       this.fieldName = this.field.name;
       this.fieldType = this.field.type;
       console.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
-      this.fieldRegex = this.field.regex;
+      // this.fieldRegex = this.field.regex;
+      this.fieldRegex = '^.{1,}$'
       this.fieldLabel = this.field.label;
       this.fieldErrorLabel = this.field.errorLabel;
       this.inputTypePlaceholderClass = false;
@@ -95,73 +96,75 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     // this.setRegex();
     this.getCurrentTranslation();
     this.infoMessage = this.infoMessages['field_name'];
-   
+
   }
 
   ngOnChanges() {
     this.fieldType = "TEXT";
+    this.fieldRegex = '^.{1,}$'
+    
     console.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.showForm = false;
-    if(this.displayAddForm || this.displayEditForm){
+    if (this.displayAddForm || this.displayEditForm) {
       setTimeout(() => {
         this.showForm = true;
       }, 100);
     }
   }
 
-  getCurrentTranslation() {   
-    if(this.translate.currentLang){
+  getCurrentTranslation() {
+    if (this.translate.currentLang) {
       this.langDashboard = this.translate.currentLang;
     }
-    let jsonWidgetLangURL = 'assets/i18n/'+this.langDashboard+'.json';
-    this.httpClient.get(jsonWidgetLangURL).subscribe(data =>{
+    let jsonWidgetLangURL = 'assets/i18n/' + this.langDashboard + '.json';
+    this.httpClient.get(jsonWidgetLangURL).subscribe(data => {
       this.infoMessages = data['AddIntentPage'].InfoMessages;
       this.markbotLabel = data['AddIntentPage']['MarkbotLabel'];
     })
   }
 
-  checkFields(){
+  checkFields() {
     // console.log('checkFields') 
     this.nameResult = true;
     this.typeResult = true;
     this.labelResult = true;
     this.errorLabelResult = true;
     let status = true;
-    this.field.name = this.fieldName?this.fieldName:'';
+    this.field.name = this.fieldName ? this.fieldName : '';
     // console.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
-    this.field.type = this.fieldType?this.fieldType.toUpperCase():null;
+    this.field.type = this.fieldType ? this.fieldType.toUpperCase() : null;
     // console.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
-    this.field.regex = this.fieldRegex?this.fieldRegex:TYPE_REGEX.customRGEX;
+    this.field.regex = this.fieldRegex ? this.fieldRegex : TYPE_REGEX.customRGEX;
     // console.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
-    this.field.label = this.fieldLabel?this.fieldLabel.trim():'';
+    this.field.label = this.fieldLabel ? this.fieldLabel.trim() : '';
     // console.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
-    this.field.errorLabel = this.fieldErrorLabel?this.fieldErrorLabel.trim():'';
+    this.field.errorLabel = this.fieldErrorLabel ? this.fieldErrorLabel.trim() : '';
     // console.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
-    if(this.fieldType == null){
+    if (this.fieldType == null) {
       this.typeResult = false;
       status = false;
     }
-    
+
     let REGEX = new RegExp(TYPE_REGEX.nameRGEX.replace(/\//gi, ''));
     // console.log('[TILEBOT-EDIT-ADD] checkFields nameRGEX REGEX ', REGEX)
     this.nameResult = REGEX.test(this.field.name);
     // console.log('[TILEBOT-EDIT-ADD] nameResult',this.nameResult,' REGEX.test - field.name', this.field.name )
-    if(this.nameResult === false){
+    if (this.nameResult === false) {
       status = false;
     }
-    
-    if(this.field.name.length == 0){
+
+    if (this.field.name.length == 0) {
       this.nameResult = false;
       status = false;
     }
-    if(this.field.label.length == 0){
+    if (this.field.label.length == 0) {
       this.labelResult = false;
       status = false;
     }
-    if(this.field.regex.length == 0 && this.field.type === TYPE_FIELD.CUSTOM){
+    if (this.field.regex.length == 0 && this.field.type === TYPE_FIELD.CUSTOM) {
       this.regexResult = false;
       status = false;
     }
@@ -173,7 +176,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
 
   }
 
-  private setRegex(){
+  private setRegex() {
     switch (this.field.type) {
       case TYPE_FIELD.TEXT:
         this.field.regex = TYPE_REGEX.textRGEX;
@@ -183,20 +186,20 @@ export class FormEditAddComponent implements OnInit, OnChanges {
         break;
       case TYPE_FIELD.PHONE:
         this.field.regex = TYPE_REGEX.phoneRGEX;
-        
+
         break;
       case TYPE_FIELD.CUSTOM:
-          this.field.regex = TYPE_REGEX.customRGEX;
-          break;
+        this.field.regex = TYPE_REGEX.customRGEX;
+        break;
       default:
         this.field.regex = TYPE_REGEX.textRGEX;
-    } 
+    }
     this.fieldRegex = this.field.regex;
   }
 
-    // ON EVENT //
+  // ON EVENT //
   /** */
-  onChangeParameterName(parameterName){
+  onChangeParameterName(parameterName) {
     parameterName.toString();
     this.fieldName = parameterName.replace(/[^A-Z0-9_]+/ig, "");
   }
@@ -204,7 +207,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   /** */
   onChangeTypeField(typeFieldValue) {
     console.log("onChange:: ", typeFieldValue);
-    if(typeFieldValue === TYPE_FIELD.CUSTOM){
+    if (typeFieldValue === TYPE_FIELD.CUSTOM) {
       this.field.regex = TYPE_REGEX.customRGEX;
       // this.showRegexField = true;
     } else {
@@ -216,31 +219,31 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   }
 
 
-  displayPlaceholder(event){
-    if(event === true && this.fieldType){
+  displayPlaceholder(event) {
+    if (event === true && this.fieldType) {
       this.inputTypePlaceholderClass = false;
-    } else if(event === false){
+    } else if (event === false) {
       this.inputTypePlaceholderClass = false;
     } else {
       this.inputTypePlaceholderClass = true;
     }
   }
 
-  displayMessage(field){
-    if(this.infoMessages[field]){
+  displayMessage(field) {
+    if (this.infoMessages[field]) {
       this.infoMessage = this.infoMessages[field];
       this.displayInfoMessage = true;
     }
-    if(field === 'field_label'){
-      this.infoMessage += " "+this.markbotLabel;
+    if (field === 'field_label') {
+      this.infoMessage += " " + this.markbotLabel;
       // "You can use markbot to format your labels (https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/)";
     }
 
   }
 
-  save(){
+  save() {
     // console.log('[TILEBOT-EDIT-ADD] save ')
-    if(this.checkFields()){
+    if (this.checkFields()) {
       // console.log('[TILEBOT-EDIT-ADD] save checkFields ', this.checkFields())
       this.displayInfoMessage = false;
       this.showForm = false;

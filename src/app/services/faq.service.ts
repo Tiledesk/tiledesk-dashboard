@@ -5,6 +5,7 @@ import { Faq } from '../models/faq-model';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { Intent } from 'app/models/intent-model';
 @Injectable()
 export class FaqService {
 
@@ -160,6 +161,22 @@ export class FaqService {
  * @param id_faq_kb 
  * @returns 
  */
+
+public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
+
+  const httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': this.TOKEN
+    })
+  };
+ 
+  let url = this.FAQ_URL + '?id_faq_kb=' + id_faq_kb;
+  this.logger.log('[FAQ-SERV] - GET FAQ BY FAQ-KB ID (BOT-ID) - URL', url);
+
+  return this._httpClient
+    .get<Intent[]>(url, httpOptions)
+}
   public getAllFaqByFaqKbId(id_faq_kb: string): Observable<Faq[]> {
 
     const httpOptions = {
