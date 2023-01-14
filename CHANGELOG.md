@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.3.21-rc1
+- Fixes bug: when a project is selected from the project selection navbar combobox > "Other projects" section, the path is incorrect
+- Changes the page displayed when clicking on the "Bots" menu item of the sidebar by displaying the bots created by the user and no longer the templates
+
 ### 2.3.20
 - Deploys in production
 - Fixes the bug: the end user already logged in the dashboard is anonymous for the new version of the widget
