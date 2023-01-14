@@ -68,13 +68,13 @@
       </li>
 
       <!-- ---------------------------------- -->
-      <!-- Bot  project/{{ project._id }}/bots  -->
+      <!-- Bot  "project/{{ project._id }}//bots/templates/all" -->
       <!-- ---------------------------------- -->
       <ng-container *ngIf="USER_ROLE !== 'agent'">
         <li id="bot-anchor-wpr" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
           matTooltip="Bots" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" style="height: 50px !important;"
           [ngClass]="{'active': CHATBOT_ROUTE_IS_ACTIVE || EDIT_FAQ_ROUTE_IS_ACTIVE, 'menu_item_active': CREATE_FAQ_ROUTE_IS_ACTIVE || BOT_TEST_ROUTE_IS_ACTIVE}">
-          <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}//bots/templates/all"  
+          <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}/bots/my-chatbots/all"   
             style="height: 40px;">
             <span class="bot-icon-wpr">
               <svg version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg"

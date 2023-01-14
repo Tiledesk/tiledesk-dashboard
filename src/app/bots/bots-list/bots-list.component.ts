@@ -110,7 +110,7 @@ export class BotListComponent implements OnInit {
     this.getCurrentProject();
     this.getOSCODE();
     // this.getFaqKb();
-    this.getAllFaqKbByProjectId();
+    this.getFaqKbByProjectId();
     this.getTranslations();
     this.getTemplates()
   }
@@ -233,8 +233,9 @@ export class BotListComponent implements OnInit {
    * GETS ONLY THE FAQ-KB WITH THE CURRENT PROJECT ID
    * NOTE: THE CURRENT PROJECT-ID IS OBTAINED IN THE FAQ-KB SERVICE
    */
-  getAllFaqKbByProjectId() {
-    this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
+  getFaqKbByProjectId() {
+    // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
     // console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
@@ -599,7 +600,7 @@ export class BotListComponent implements OnInit {
       // this.notify.showNotification('bot successfully deleted', 2, 'done');
       this.notify.showWidgetStyleUpdateNotification(this.trashBotSuccessNoticationMsg, 2, 'done');
 
-      this.getAllFaqKbByProjectId();
+      this.getFaqKbByProjectId();
 
       this.displayDeleteBotModal = 'none';
       setTimeout(() => {
