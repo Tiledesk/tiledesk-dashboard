@@ -299,7 +299,13 @@
 
               <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" -->
               <li *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" style="cursor: pointer">
-                <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)">
+                <a (click)="goToHome(
+                  prjct,
+                  prjct?.id_project?._id, prjct?.id_project?.name,
+                  prjct?.id_project?.profile?.name, 
+                  prjct?.id_project?.trialExpired, 
+                  prjct?.id_project?.trialDaysLeft, 
+                  prjct?.id_project?.activeOperatingHours)">
                   {{ prjct?.id_project?.name }}
                 </a>
               </li>
