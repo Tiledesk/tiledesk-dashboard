@@ -11,7 +11,9 @@
             <span> Question </span>
         </div>
         
-        <div class="button-intent" (click)="displayForm()">
+        <div class="button-intent" (click)="displayForm()"
+        [ngStyle]="{'border':formSize > 0 ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
+        [ngClass]="{'button-intent-active': HAS_SELECTED_FORM }">
             <span class="material-icons">
                 list_alt
             </span>

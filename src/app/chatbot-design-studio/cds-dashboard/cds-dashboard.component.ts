@@ -325,6 +325,7 @@ export class CdsDashboardComponent implements OnInit {
   /** appdashboard-intent: Save intent */
   onSaveIntent(intent: Intent) {
     console.log('[CDS DSHBRD] onSaveIntent :: ', intent);
+    console.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
     this.intentSelected = intent;
     if (this.CREATE_VIEW) {
       this.creatIntent();
@@ -346,6 +347,11 @@ export class CdsDashboardComponent implements OnInit {
     // this.MOCK_getFaqIntent();
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", this.intentSelected);
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", intent);
+
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = ''
+    this.elementIntentSelected['element'] = null
+    console.log('[CDS DSBRD] onSelectIntent elementIntentSelected', this.elementIntentSelected)
   }
 
   onOpenActionDrawer(_isOpenActioDrawer: boolean) {
