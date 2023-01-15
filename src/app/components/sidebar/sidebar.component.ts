@@ -31,6 +31,7 @@ import { WsRequestsService } from './../../services/websocket/ws-requests.servic
 import { LoggerService } from './../../services/logger/logger.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util'
 import { DomSanitizer } from '@angular/platform-browser';
+import { FaqKbService } from 'app/services/faq-kb.service';
 
 declare const $: any;
 
@@ -225,6 +226,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     hasPlayed = false
     currentUrl: string;
     audio: any;
+    myChatbotCount: number;
     constructor(
         private router: Router,
         public location: Location,
@@ -238,11 +240,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private uploadImageNativeService: UploadImageNativeService,
         private translate: TranslateService,
         public appConfigService: AppConfigService,
-        private deptService: DepartmentService,
+
         public brandService: BrandService,
         public wsRequestsService: WsRequestsService,
         private logger: LoggerService,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private faqKbService: FaqKbService,
     ) {
         this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
@@ -257,7 +260,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.getLoggedUser();
-        this.getCurrentProject_andThenDepts();
+        this.getCurrentProjectProjectUsersProjectBots();
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
         this.getProfileImageStorage();
@@ -281,7 +284,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.listenSoundPreference();
         this.getNotificationSoundPreferences();
         this.getWsCurrentUserAvailability$();
+        // this.listenToMyChatbotCount()
+
     }
+
+    // listenToMyChatbotCount() {
+
+    // }
+
+
 
 
 
@@ -422,13 +433,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // this.logger.log('[SIDEBAR] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
     }
 
-    // getHasOpenBlogKey() {
-    //     const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
-    //     this.logger.log('[SIDEBAR] »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
-    //     if (hasOpenedBlog === true) {
-    //         this.hidechangelogrocket = true;
-    //     }
-    // }
 
     brandLog() {
         // this.logger.log('BRAND_JSON - SIDEBAR ', brand);
@@ -1222,7 +1226,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     // GET CURRENT PROJECT - IF IS DEFINED THE CURRENT PROJECT GET THE PROJECTUSER
-    getCurrentProject_andThenDepts() {
+    getCurrentProjectProjectUsersProjectBots() {
         this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
         this.auth.project_bs.subscribe((project) => {
             this.project = project
@@ -1248,7 +1252,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 // this.logger.log('[SIDEBAR] project trial days left % rounded', this.prjc_trial_days_left_percentage);
 
                 this.getProjectUser();
+                // this.getFaqKbByProjectId()
             }
+        });
+    }
+
+    getFaqKbByProjectId() {
+        this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+            if (faqKb) {
+                this.myChatbotCount = faqKb.length
+                this.logger.log('[SIDEBAR] - GET BOTS BY PROJECT ID - myChatbotCount', this.myChatbotCount);
+            }
+        }, (error) => {
+            this.logger.error('[SIDEBAR] GET BOTS ERROR ', error);
+
+        }, () => {
+            this.logger.log('[SIDEBAR] GET BOTS COMPLETE');
         });
     }
 
@@ -1350,26 +1369,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             });
     }
 
-    // getDeptsAndFilterDefaultDept() {
-    //     this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
-    //         //   this.logger.log('[SIDEBAR] - DEPTS (FILTERED FOR PROJECT ID)', departments);
 
-    //         if (departments) {
-    //             departments.forEach(dept => {
-    //                 if (dept.default === true) {
-    //                     // this.logger.log('[SIDEBAR] - GET DEPTS - DEFAULT DEPT ', dept);
-    //                     this.default_dept_id = dept._id;
-    //                     // this.logger.log('[SIDEBAR] - GET DEPTS - DEFAULT DEPT ID: ', this.default_dept_id);
-    //                 }
-    //             })
-    //         }
-    //     }, error => {
-    //         this.logger.error('[SIDEBAR] - GET DEPTS ERR', error);
-    //     }, () => {
-    //         this.logger.log('[SIDEBAR] - GET DEPTS COMPLETE');
-    //     });
-
-    // }
 
     round5(x) {
         // const percentageRounded = Math.ceil(x / 5) * 5;

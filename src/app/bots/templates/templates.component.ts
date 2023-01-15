@@ -48,7 +48,8 @@ export class TemplatesComponent implements OnInit {
     this.getBrowserVersion();
     this.getTemplates()
     this.getCurrentProject()
-    this.getAllFaqKbByProjectId()
+    // this.getAllFaqKbByProjectId();
+    this.getFaqKbByProjectId()
   }
   // Lead-gen ->  #a16300
   // Pre-sale -> #00699e
@@ -88,8 +89,8 @@ export class TemplatesComponent implements OnInit {
     });
   }
 
-  getAllFaqKbByProjectId() {
-    this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
+  getFaqKbByProjectId() {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       if (faqKb) {
         this.myChatbotOtherCount = faqKb.length
         // console.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount',  this.myChatbotOtherCount);

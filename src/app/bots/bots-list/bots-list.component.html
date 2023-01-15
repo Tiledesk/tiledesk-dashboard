@@ -21,14 +21,11 @@
 
     <div class="content-wpr" style="display: flex;">
 
-      <appdashboard-bots-sidebar 
-      [allTemplatesCount]="allTemplatesCount" 
-      [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
-      [increaseSalesTemplatesCount]="increaseSalesTemplatesCount"
-      [myChatbotOtherCount]="myChatbotOtherCount" 
-      [customerSatisfactionBotsCount]="customerSatisfactionBotsCount" 
-      [increaseSalesBotsCount]="increaseSalesBotsCount" 
-      style="border-right:1px solid #e5effe !important;">
+      <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
+        [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
+        [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
+        [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
+        [increaseSalesBotsCount]="increaseSalesBotsCount" style="border-right:1px solid #e5effe !important;">
       </appdashboard-bots-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
@@ -43,8 +40,8 @@
               Add from template
             </button>
           </div>
-
         </div>
+
 
         <div class="row">
           <div class="col-xs-12">
@@ -132,15 +129,29 @@
 
                   <tbody>
                     <!-- IF THERE ISN'T BOT -->
-                    <tr *ngIf="faqkbList && faqkbList?.length === 0">
-                      <td colspan="4" style="text-align: center; padding-top: 16px;">
-                        <!-- color: #ff5252   -->
-                        <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
-                          <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
+                    <tr *ngIf="faqkbList && faqkbList?.length === 0" class="no-bot-tr-msg-wpr">
+                      <td colspan="5" style="text-align: center; padding-top: 16px;">
+                        <p class="no-bot-msg">
+                          <!-- <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
                             info
                           </i>
-                          {{ 'BotsPage.NoBot' | translate }}
+                          {{ 'BotsPage.NoBot' | translate }} -->
+
+                          <span style="display: block;">
+                            You don't have Chatbots.
+                          </span>
+                          <span style="display: block;">
+                            Get you started with a <span class="btn---link" (click)="goToBotAllTemplates()"> chatbot
+                              template </span> or
+                          </span>
+                          <span style="display: block;">
+                            <span class="btn---link" (click)="createBlankTilebot()"> create a new one from scratch
+                            </span>
+                          </span>
+
+
                         </p>
+
                       </td>
                     </tr>
 
