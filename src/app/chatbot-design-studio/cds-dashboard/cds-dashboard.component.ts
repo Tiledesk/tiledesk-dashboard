@@ -451,7 +451,7 @@ export class CdsDashboardComponent implements OnInit {
         {
           type: 'message',
           message: {
-            text: 'Ciao',
+            text: 'A chat message will be sent to the visitor',
             type: 'text'
           }
         }

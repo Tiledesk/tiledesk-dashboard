@@ -85,7 +85,7 @@
 
 
                 <appdashboard-panel-actions [isOpenActionDrawer]="isOpenActionDrawer"
-                    (openActionDrawer)=onOpenActionDrawer($event)>
+                    (openActionDrawer)=onOpenActionDrawer($event) [intentSelected]="intentSelected">
                 </appdashboard-panel-actions>
 
                 <appdashboard-panel-intent-detail *ngIf=elementIntentSelected class="panel-intent-detail"

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Action, Intent } from 'app/models/intent-model';
 
 
 @Component({
@@ -10,6 +11,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
  
 
   @Input() isOpenActionDrawer: boolean;
+  @Input() intentSelected: Intent
   @Output() openActionDrawer = new EventEmitter();
 
   // @ViewChild('drawer' ,{ static: false }) drawer: MatDrawer
@@ -29,6 +31,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     }
 
      console.log('[PANEL ACTION] isOpenActionDrawer ',this.isOpenActionDrawer)
+     console.log('[PANEL ACTION] intentSelected ',this.intentSelected)
     // if (this.isOpenActionDrawer === true)  {
     //   this.drawer.open()
     // } else if (this.isOpenActionDrawer === false)  {
@@ -43,6 +46,22 @@ export class PanelActionsComponent implements OnInit, OnChanges {
 
   actionSelected(action: string) {
     console.log('[PANEL ACTION] actionSelected ', action)
+    if (action === 'reply') {
+      let action = new Action()
+      action.type = 'reply'
+      action.body = {
+        text: '',
+        commands: [
+          {
+            type: 'message',
+            message: {
+              text: 'A chat message will be sent to the visitor',
+              type: 'text'
+            }
+          }
+        ]
+      }
+    }
   }
 
 
