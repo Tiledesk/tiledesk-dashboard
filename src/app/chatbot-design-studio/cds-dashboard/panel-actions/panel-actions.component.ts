@@ -61,6 +61,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
           }
         ]
       }
+      this.intentSelected.actions.push(action)
     }
   }
 

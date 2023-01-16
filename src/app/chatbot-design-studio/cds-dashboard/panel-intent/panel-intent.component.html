@@ -37,13 +37,10 @@
 
     <div class="action-list-wpr" *ngIf="actions && actions?.length > 0">
 
-        <div cdkDropList class="action-list" (cdkDropListDropped)="drop($event)">
-            <div class="action-box" *ngFor="let action of actions" cdkDrag>
+        <div cdkDropList class="action--list" (cdkDropListDropped)="drop($event)">
+            <div class="action--box" *ngFor="let action of actions" cdkDrag>
                 <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
-                <div (click)="onActionSelected(action)">
-                    {{action.type }}
-                </div>
-                <div class="action-handle" cdkDragHandle style="margin-bottom: 20px;">
+                <div class="action--handle" cdkDragHandle style="margin-bottom: 20px;">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
                         fill="currentColor">
                         <path d="M0 0h24v24H0V0z" fill="none" />
@@ -51,7 +48,11 @@
                             d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
                     </svg>
                 </div>
-                <div class="control-button delete" (click)="onDeleteAction()">
+                <div (click)="onActionSelected(action)">
+                    {{action.type }}
+                </div>
+   
+                <div class="control-button delete-action" (click)="onDeleteAction()">
                     <em class="material-icons">delete</em>
                 </div>
             </div>
