@@ -51,6 +51,8 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   // EVENT FUNCTIONS //
   /** */
   onChangeIntentName(name: string){
+    console.log('name is not a string', name);
+
     // name.toString();
     // try {
     //   this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");

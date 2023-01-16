@@ -783,7 +783,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/autologin') !== -1) ||
                     (this.route.indexOf('/unauthorized_access') !== -1) ||
                     (this.route.indexOf('/editfaq') !== -1) ||
-                    (this.route.indexOf('/createfaq') !== -1)
+                    (this.route.indexOf('/createfaq') !== -1) ||
+                    (this.route.indexOf('/cds') !== -1)
 
                 ) {
 
@@ -905,7 +906,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/autologin') !== -1) ||
                     (this.route.indexOf('/unauthorized_access') !== -1) ||
                     (this.route.indexOf('/editfaq') !== -1) ||
-                    (this.route.indexOf('/createfaq') !== -1)
+                    (this.route.indexOf('/createfaq') !== -1) ||
+                    (this.route.indexOf('/cds') !== -1)
 
                 ) {
                     elemFooter.setAttribute('style', 'display:none;');

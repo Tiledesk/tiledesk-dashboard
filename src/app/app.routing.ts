@@ -270,6 +270,11 @@ const routes: Routes = [
   { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: CdsDashboardComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: CdsDashboardComponent, canActivate: [AuthGuard] },
 
+  // -----------------------------------------
+  // NEW  replace the path ...createfaq and ...editfaq
+  // -----------------------------------------
+  { path: 'project/:projectid/cds/:faqkbid', component: CdsDashboardComponent, canActivate: [AuthGuard] },
+  
   { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
 
   // old

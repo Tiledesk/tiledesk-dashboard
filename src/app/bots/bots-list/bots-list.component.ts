@@ -566,7 +566,9 @@ export class BotListComponent implements OnInit {
 
     } else if (botType === 'tilebot') {
       _botType = 'tilebot'
-      this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
+      // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
+      // this.router.navigate(['project/' + this.project._id + '/createfaq', idFaqKb, _botType, 'en']);
+      this.router.navigate(['project/' + this.project._id + '/cds/', idFaqKb]);
 
     } else {
       _botType = botType

@@ -4,6 +4,7 @@ import { Faq } from 'app/models/faq-model';
 import { Router } from '@angular/router';
 import { Intent } from 'app/models/intent-model';
 import { Action } from 'rxjs/internal/scheduler/Action';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-panel-intent-list',
@@ -14,6 +15,8 @@ export class PanelIntentListComponent implements OnInit {
 
   @Input() id_faq_kb: string;
   @Input() projectID: string;
+  @Input() events: Observable<any>;
+  private eventsSubscription: Subscription;
   @Output() selected_intent = new EventEmitter();
   @Output() returnListOfIntents = new EventEmitter();
   @Output() createIntent = new EventEmitter();
@@ -33,8 +36,16 @@ export class PanelIntentListComponent implements OnInit {
     console.log("[PANEL-INTENT-LIST] ngOnInit()")
     console.log("[PANEL-INTENT-LIST] - Selected chatbot ID: ", this.id_faq_kb);
     this.getAllIntents(this.id_faq_kb);
-
+    this.listeToNewIntentCreated()
   }
+
+  listeToNewIntentCreated() {
+    console.log("[PANEL-INTENT-LIST] listeToNewIntentCreated")
+    this.eventsSubscription = this.events.subscribe(() => {
+      this.getAllIntents(this.id_faq_kb)
+    })
+  }
+  
 
   getAllIntents(id_faq_kb) {
 
@@ -81,7 +92,7 @@ export class PanelIntentListComponent implements OnInit {
     console.log("[PANEL-INTENT-LIST] selectIntent - intent selected: ", intent);
     console.log("[PANEL-INTENT-LIST] selectIntent - index: ", index)
 
-    this.router.navigate(['project/' + intent.id_project + '/editfaq', this.id_faq_kb, intent.id, 'tilebot']);
+    // this.router.navigate(['project/' + intent.id_project + '/editfaq', this.id_faq_kb, intent.id, 'tilebot']);
     // this.router.navigate(['project/' + intent.id_project + '/createfaq', this.id_faq_kb, 'tilebot', intent.language]);
     
 
@@ -99,7 +110,7 @@ export class PanelIntentListComponent implements OnInit {
   addNewIntent() {
 
     this.createIntent.emit(true);
-    this.router.navigate(['project/' + this.projectID  + '/createfaq', this.id_faq_kb, 'tilebot', 'en']);
+    // this.router.navigate(['project/' + this.projectID  + '/createfaq', this.id_faq_kb, 'tilebot', 'en']);
     
   }
 

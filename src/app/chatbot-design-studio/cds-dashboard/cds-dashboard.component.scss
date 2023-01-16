@@ -21,6 +21,19 @@ $margin-top-card: 30px;
     font-size: 16px;
 }
 
+.cds-sidebar{
+    border-right: 2px solid #394f5a;
+    width: 40px;
+    &.is_opened{
+        width: 140px;
+    }
+}
+
+.cds-content{
+    display: flex;
+    width: 100%;
+}
+
 .box-left {
     width: 200px;
     background-color: #394f5a;
@@ -123,5 +136,65 @@ $margin-top-card: 30px;
     font-size: 21px;
     color: #fff;
     background: #1e293b;
-    padding: 0px 10px;
+    // padding: 0px 10px;
+    display: flex;
+
+    
+
+    .header-left{
+        border-right: 2px solid #394f5a;
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img{
+            width: 15px;
+        }
+
+        &.is_opened{
+            width: 140px;
+            img{
+                width: 100px;
+            }
+        }
+    }
+
+    .header-right{
+        display: flex;
+        align-items: center;
+
+        .toggle-setting-sidebar-icon-wpr {
+            position: absolute;
+            z-index: 1050;
+            width: 22px;
+            height: 22px;
+            background: #1e293b;
+            left: 29px;
+
+            &.is_opened {
+                left: 130px;
+            }
+        } 
+        
+        
+        .toggle-setting-sidebar-icon {
+            background: #1e293b;;
+            border: 1px solid #394f5a !important;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 18px;
+            display: block;
+        }
+        
+        .toggle-setting-sidebar-icon:hover {
+            background: #f5f8fa;
+        }
+
+        .header-title{
+
+        }
+    }
 }

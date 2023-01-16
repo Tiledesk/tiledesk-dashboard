@@ -37,6 +37,8 @@ import { FormComponent } from './cds-dashboard/panel-intent-detail/form/form.com
 import { FormFieldComponent } from './cds-dashboard/panel-intent-detail/form/form-field/form-field.component';
 import { FormEditAddComponent } from './cds-dashboard/panel-intent-detail/form/form-edit-add/form-edit-add.component';
 import { ModalWindowComponent } from './cds-dashboard/panel-intent-detail/form/modal-window/modal-window.component';
+import { CdsSidebarComponent } from './cds-sidebar/cds-sidebar.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -64,7 +66,8 @@ import { ModalWindowComponent } from './cds-dashboard/panel-intent-detail/form/m
     FormComponent,
     FormFieldComponent,
     FormEditAddComponent,
-    ModalWindowComponent
+    ModalWindowComponent,
+    CdsSidebarComponent
   ],
   imports: [
     CommonModule,
@@ -74,6 +77,7 @@ import { ModalWindowComponent } from './cds-dashboard/panel-intent-detail/form/m
     MatSliderModule,
     MatSidenavModule,
     MatSelectModule,
+    MatTooltipModule,
     RouterModule,
     TranslateModule,
     FormsModule,

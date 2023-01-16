@@ -14,6 +14,8 @@ import { HttpClient } from "@angular/common/http";
 import { Intent, Button, Action, Form } from '../../models/intent-model';
 import { TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
 import { Subject } from 'rxjs';
+import { FaqKbService } from 'app/services/faq-kb.service';
+import { Chatbot } from 'app/models/faq_kb-model';
 const swal = require('sweetalert');
 
 
@@ -44,7 +46,11 @@ export class CdsDashboardComponent implements OnInit {
   // buttonSelected: Button;
   isChromeVerGreaterThan100: boolean;
   isOpenActionDrawer: boolean;
-  eventsSubject: Subject<void> = new Subject<void>();
+  eventsSubject: Subject<any> = new Subject<any>();
+  selectedChatbot: Chatbot
+  activeSidebarSection: string;
+  IS_OPEN: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -52,7 +58,8 @@ export class CdsDashboardComponent implements OnInit {
     private auth: AuthService,
     public location: Location,
     private logger: LoggerService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private faqKbService: FaqKbService,
   ) { }
 
 
@@ -61,7 +68,7 @@ export class CdsDashboardComponent implements OnInit {
     this.getTranslations();
     this.auth.checkRoleForCurrentProject();
     this.getUrlParams();
-    this.getFaqKbId();
+    // this.getFaqKbId();
     if (this.router.url.indexOf('/createfaq') !== -1) {
       this.logger.log('[CDS DSHBRD] HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
@@ -104,7 +111,11 @@ export class CdsDashboardComponent implements OnInit {
   */
   private getUrlParams() {
     this.route.params.subscribe((params) => {
+
       this.id_faq_kb = params.faqkbid;
+      if (this.id_faq_kb) {
+        this.getBotById(this.id_faq_kb)
+      }
       this.id_faq = params.faqid;
       this.botType = params.bottype
       console.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
@@ -118,42 +129,61 @@ export class CdsDashboardComponent implements OnInit {
     this.intentSelected = new Intent();
   }
 
+  getBotById(botid: string) {
+    console.log('getFaqById');
+    this.showSpinner = true;
+    this.faqKbService.getBotById(botid).subscribe((chatbot: Chatbot) => {
+      console.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
+      if (chatbot) {
+        this.selectedChatbot = chatbot
+      }
+
+    }, (error) => {
+      this.logger.error('[CDS DSHBRD] - GET BOT BY ID RES - ERROR ', error);
+
+    }, () => {
+      console.log('[CDS DSHBRD] - GET BOT BY ID RES - COMPLETE ');
+
+    });
+  }
+
+
   /**
    * GET THE ID OF FAQ-KB PASSED BY FAQ PAGE (AND THAT FAQ PAGE HAS RECEIVED FROM FAQ-KB)
   */
-  private getFaqKbId() {
-    this.id_faq_kb = this.route.snapshot.params['faqkbid'];
-    if (this.intentSelected) {
-      this.intentSelected.id_faq_kb = this.id_faq_kb;
-      console.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
-    } else {
-      console.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
-    }
-  }
+  // private getFaqKbId() {
+  //   this.id_faq_kb = this.route.snapshot.params['faqkbid'];
+  //   if (this.intentSelected) {
+  //     this.intentSelected.id_faq_kb = this.id_faq_kb;
+  //     console.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
+  //   } else {
+  //     console.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
+  //   }
+  // }
 
   /**
    * GET FAQ BY ID (GET THE DATA OF THE FAQ BY THE ID PASSED FROM FAQ LIST)
    * USED TO SHOW IN THE TEXAREA THE QUESTION AND THE ANSWER THAT USER WANT UPDATE
   */
-  private getFaqById() {
-    console.log('getFaqById');
-    this.showSpinner = true;
-    this.faqService.getFaqById(this.id_faq).subscribe((faq: any) => {
-      this.logger.log('[CDS DSHBRD] - FAQ GET BY ID RES', faq);
-      if (faq) {
-        this.intentSelected = faq;
-      }
-      console.log('faq', faq);
-      this.showSpinner = false;
-    }, (error) => {
-      this.logger.error('[CDS DSHBRD] - FAQ GET BY ID - ERROR ', error);
-      this.showSpinner = false;
-    }, () => {
-      this.logger.log('[CDS DSHBRD] - FAQ GET BY ID - COMPLETE ');
-      this.showSpinner = false;
-      //this.translateTheAnswerWillBeDeleted();
-    });
-  }
+  // private getFaqById() {
+  //   console.log('getFaqById');
+  //   this.showSpinner = true;
+  //   this.faqService.getFaqById(this.id_faq).subscribe((faq: any) => {
+  //     this.logger.log('[CDS DSHBRD] - FAQ GET BY ID RES', faq);
+  //     if (faq) {
+  //       this.intentSelected = faq;
+  //     }
+  //     console.log('faq', faq);
+  //     this.showSpinner = false;
+  //   }, (error) => {
+  //     this.logger.error('[CDS DSHBRD] - FAQ GET BY ID - ERROR ', error);
+  //     this.showSpinner = false;
+  //   }, () => {
+  //     this.logger.log('[CDS DSHBRD] - FAQ GET BY ID - COMPLETE ');
+  //     this.showSpinner = false;
+  //     //this.translateTheAnswerWillBeDeleted();
+  //   });
+  // }
 
   // translateTheAnswerWillBeDeleted() {
   //   let parameter = { intent_name: this.intent_name };
@@ -243,9 +273,12 @@ export class CdsDashboardComponent implements OnInit {
       formIntentSelected,
       actionsIntentSelected,
       webhookEnabledIntentSelected
-    ).subscribe((faq) => {
+    ).subscribe((intent) => {
       this.showSpinner = false;
-      console.log('[CDS DSHBRD] creatIntent RES ', faq);
+      console.log('[CDS DSHBRD] creatIntent RES ', intent);
+      if (intent) {
+        this.eventsSubject.next(intent);
+      }
     }, (error) => {
       this.showSpinner = false;
       this.logger.error('[CDS DSHBRD] CREATED FAQ - ERROR ', error);
@@ -317,6 +350,18 @@ export class CdsDashboardComponent implements OnInit {
 
   // EVENTS //
 
+  /** SIDEBAR OUTPUT EVENTS */
+  onClickItemList(event: string) {
+    console.log('active section-->', event)
+    this.activeSidebarSection = event;
+  }
+
+  toggleSidebarWith(IS_OPEN) {
+    // console.log('[SETTINGS-SIDEBAR] IS_OPEN ', IS_OPEN)
+    this.IS_OPEN = IS_OPEN;
+  }
+
+
   /** Go back to previous page */
   goBack() {
     this.location.back();
@@ -327,6 +372,7 @@ export class CdsDashboardComponent implements OnInit {
     console.log('[CDS DSHBRD] onSaveIntent :: ', intent);
     console.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
     this.intentSelected = intent;
+    console.log
     if (this.CREATE_VIEW) {
       this.creatIntent();
     } else if (this.EDIT_VIEW) {
@@ -343,6 +389,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   onSelectIntent(intent: Intent) {
+    this.EDIT_VIEW = true;
     this.intentSelected = intent;
     // this.MOCK_getFaqIntent();
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", this.intentSelected);
@@ -383,6 +430,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   onIntentFormSelected(intentform: Form) {
+
     console.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT intentform ', intentform)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = 'form'

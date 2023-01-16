@@ -15,3 +15,7 @@ export interface FaqKb {
     description?: string;
     message_count?: number
 }
+
+export interface Chatbot extends FaqKb {
+   
+}
