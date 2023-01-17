@@ -1,10 +1,11 @@
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatInputModule } from '@angular/material/input';
 import { TextFieldModule } from '@angular/cdk/text-field';
@@ -12,6 +13,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatChipsModule } from '@angular/material/chips';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -39,8 +44,10 @@ import { FormEditAddComponent } from './cds-dashboard/panel-intent-detail/form/f
 import { ModalWindowComponent } from './cds-dashboard/panel-intent-detail/form/modal-window/modal-window.component';
 import { CdsSidebarComponent } from './cds-sidebar/cds-sidebar.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.component';
-
+import { RulesComponent } from './cds-rules/rules/rules.component';
+import { RulesAddComponent } from './cds-rules/rules-add/rules-add.component';
+import { TextComponent } from './cds-rules/rules-add/text/text.component';
+import { ConditionComponent } from './cds-rules/rules-add/condition/condition.component';
 
 
 @NgModule({
@@ -69,7 +76,10 @@ import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.compo
     FormEditAddComponent,
     ModalWindowComponent,
     CdsSidebarComponent,
-    CdsFulfillmentComponent
+    RulesComponent,
+    RulesAddComponent,
+    TextComponent,
+    ConditionComponent
   ],
   imports: [
     CommonModule,
@@ -80,11 +90,17 @@ import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.compo
     MatSidenavModule,
     MatSelectModule,
     MatTooltipModule,
+    MatRadioModule,
+    MatChipsModule,
+    MatGridListModule,
+    MatListModule,
     RouterModule,
     TranslateModule,
     FormsModule,
     MatInputModule,
     MatExpansionModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ChatbotDesignStudioModule { }

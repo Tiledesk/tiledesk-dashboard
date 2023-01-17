@@ -1,0 +1,21 @@
+<div class="section" [formGroup]="conditionsForm">
+    <label class="section-label">Url:</label>
+    <mat-radio-group (change)="onRadioButtonChange($event)">
+        <!-- <mat-grid-list cols="2"> -->
+            <!-- <mat-grid-title> -->
+                <mat-radio-button [checked]="condition.checked" [value]="condition.value" *ngFor="let condition of conditions">{{condition.name}}</mat-radio-button>
+            <!-- </mat-grid-title> -->
+        <!-- </mat-grid-list> -->
+    </mat-radio-group>
+    <rule-text
+        [customPrefix]="regexOption ==='custom'"
+        [textMessage]="text"
+        (onChange)="onChangeText($event)">
+    </rule-text>
+</div>
+<div class="section" [formGroup]="conditionsForm">
+    <label class="section-label">Every:</label>
+    <mat-chip-list aria-label="hours" [formControl]="condition">
+            <mat-chip matInput [selected]="chip.selected" *ngFor="let chip of chips; let i = index" (click)="onClickChip(chip, i)">{{chip.name}}</mat-chip>   
+    </mat-chip-list>
+</div>

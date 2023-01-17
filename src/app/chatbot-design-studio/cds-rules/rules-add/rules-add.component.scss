@@ -1,0 +1,59 @@
+.card-wrp{
+    width: 100%;
+    min-width: 400px;
+    height: auto;
+    max-height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 10px;
+    padding: 0;
+    background-color: #293445;
+
+    .card-item{
+        margin:20px 15px;
+    }
+
+    .card-title{
+        width: calc(100% - 40px);
+        margin-left: 20px;
+        color: white;
+        font-size: 20px;
+    }
+
+    .card-subtitle{
+        width: calc(100% - 40px);
+        margin-left: 30px;
+        color: white;
+    }
+
+    .delay-wrapper {
+        display: block;
+        height: auto;
+        width: auto;
+        margin: 20px 0px 0px 20px;
+        padding: 0em 0.75em 0;
+    }
+
+}
+
+.box-buttons {
+    text-align: end;
+    padding: 5px 10px;
+}
+
+#create-rule-form {
+    background: #8ab4f8 !important;
+    color: #202124 !important;
+    box-shadow: none !important;
+    font-weight: 500 !important;
+    font-family: Poppins, Roboto, Arial, sans-serif !important;
+    text-transform: capitalize !important;
+    font-size: 14px !important;
+}
+#create-rule-form:hover {
+    background: rgba(138, 180, 248, 0.8) !important;
+}
+
+.card-item #text::ng-deep {
+   
+}

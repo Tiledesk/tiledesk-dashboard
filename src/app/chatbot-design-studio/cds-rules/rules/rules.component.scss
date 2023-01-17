@@ -1,0 +1,51 @@
+
+.rules-container{
+    display: flex;
+    flex-direction: column;
+
+    .new-rules-box{
+        display: flex;
+        align-self: flex-end;
+        margin: 30px; 
+    }
+
+    .new-rules-button {
+        display: flex;
+        flex-direction: row;
+        font-size: 12px;
+        align-items: center;
+        border: dashed 1px;
+        padding: 0px 14px 0px 10px;
+        border-radius: 16px;
+        cursor: pointer;
+    
+        .plus-icon {
+            font-size: 16px;
+            color: white;
+        }
+    
+        .button-text {
+            margin-bottom: 0px;
+            color: white;
+        }
+    }
+
+    .new-rules-button:hover {
+
+        background-color: white;
+        border: 1px solid white;
+
+        .plus-icon {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .button-text {
+            color: #333;
+        }
+    }
+
+    cds-rules-add{
+        display: flex;
+    }
+}

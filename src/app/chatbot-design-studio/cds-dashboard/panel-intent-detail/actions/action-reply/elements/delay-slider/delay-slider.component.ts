@@ -9,20 +9,17 @@ export class DelaySliderComponent implements OnInit {
   
   @Output() changeDelayTime = new EventEmitter();
   @Input() delayTime: number;
+  @Input() step : number = 0.1;
+  @Input() min: number = 0;
+  @Input() max: number = 10;
 
   delayOpen: boolean;
-  delayTimeMin: number;
-  delayTimeMax: number;
-  delayTimeStep: number;
   focusSlider: boolean;
 
   constructor() { }
 
   ngOnInit(): void {
     this.delayOpen = false;
-    this.delayTimeMin = 0;
-    this.delayTimeMax = 10;
-    this.delayTimeStep = 0.1;
     this.focusSlider = true;
   }
 

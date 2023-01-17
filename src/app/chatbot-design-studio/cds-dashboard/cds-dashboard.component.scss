@@ -37,6 +37,10 @@ $margin-top-card: 30px;
     display: flex;
     width: 100%;
     overflow-y: auto;
+
+    cds-rules {
+        width: 100%;
+    }
 }
 
 .box-left {
