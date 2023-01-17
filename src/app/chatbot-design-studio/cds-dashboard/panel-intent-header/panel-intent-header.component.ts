@@ -10,6 +10,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   @Output() saveIntent = new EventEmitter();
   @Input() intentSelected: Intent;
   @Input() showSpinner: boolean;
+  @Input() listOfIntents: Intent[];
   
   intentName: string;
   intentNameResult = true;
@@ -29,11 +30,12 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.showSpinner = false;
-    console.log("header --> intentSelected: ", this.intentSelected)
+    console.log("[PANEL-INTENT-HEADER] header --> intentSelected: ", this.intentSelected)
+    console.log("[PANEL-INTENT-HEADER] header --> listOfIntents: ", this.listOfIntents)
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {
-      console.log('intent selected ', error);
+      console.log('[PANEL-INTENT-HEADER] intent selected ', error);
     }
   }
 
@@ -51,8 +53,14 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   // EVENT FUNCTIONS //
   /** */
   onChangeIntentName(name: string){
-    console.log('name is not a string', name);
-
+    console.log('[PANEL-INTENT-HEADER] onChangeIntentName', name);
+  
+    
+   
+    // var isPresent = this.listOfIntents.some((el) => {
+    //    return el.id === 2
+    //   });
+    // console.log(isPresent);
     // name.toString();
     // try {
     //   this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");

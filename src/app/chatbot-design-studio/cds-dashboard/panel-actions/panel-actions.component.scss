@@ -16,7 +16,7 @@
 //   }
 .actions-drawer {
   position: fixed;
-  left: -477px;
+  right: -477px;
   // top: 60px;
 
   top: 0px;
@@ -37,7 +37,7 @@
   transform: translate(0);
   display: block;
   // left: 60px !important;
-  left: 0px !important;
+  right: 0px !important;
 }
 
 .actions-drawer-close-btn-wpr {
@@ -99,6 +99,7 @@
   -webkit-box-align: center;
   align-items: center;
   flex: 1 1 0%;
+  color: #e8eaed;
 }
 
 .actions-drawer-title {
@@ -136,6 +137,7 @@
 .action-btn {
   padding: 12px 12px !important;
   border-radius: 15px !important;
+  background: #8ab4f8 !important;
 }
 
 .action-btn-text {

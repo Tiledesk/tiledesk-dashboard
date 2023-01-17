@@ -451,7 +451,7 @@ export class CdsDashboardComponent implements OnInit {
         {
           type: 'message',
           message: {
-            text: 'Ciao',
+            text: 'A chat message will be sent to the visitor',
             type: 'text'
           }
         }
@@ -462,6 +462,9 @@ export class CdsDashboardComponent implements OnInit {
     // this.elementIntentSelected = {};
     // this.elementIntentSelected['type'] = 'new'
     console.log('[CDS DSBRD] addNewIntent intentSelected ', this.intentSelected)
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = ''
+    this.elementIntentSelected['element'] = null
   }
 
 

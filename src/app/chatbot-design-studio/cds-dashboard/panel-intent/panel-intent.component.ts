@@ -42,23 +42,26 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('[PANEL INTENT] (ngOnChanges) changes', changes);
-    console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected currentValue', changes.intentSelected.currentValue);
-    console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected previousValue', changes.intentSelected.previousValue);
-    console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected firstChange', changes.intentSelected.firstChange);
 
-    if (changes.intentSelected.firstChange === false) {
-      if (changes.intentSelected.previousValue._id !== changes.intentSelected.currentValue._id) {
-        this.HAS_SELECTED_ANSWER = false
-        this.HAS_SELECTED_QUESTION = false
-        this.HAS_SELECTED_FORM = false
-        this.HAS_SELECTED_ACTION = false
+    if (changes.intentSelected) {
+      if (changes.intentSelected.firstChange === false) {
+        console.log('[PANEL INTENT] (ngOnChanges) changes', changes);
+        console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected currentValue', changes.intentSelected.currentValue);
+        console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected previousValue', changes.intentSelected.previousValue);
+        console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected firstChange', changes.intentSelected.firstChange);
+        if (changes.intentSelected.previousValue._id !== changes.intentSelected.currentValue._id) {
+          this.HAS_SELECTED_ANSWER = false
+          this.HAS_SELECTED_QUESTION = false
+          this.HAS_SELECTED_FORM = false
+          this.HAS_SELECTED_ACTION = false
+        }
       }
     }
 
     if (this.intentSelected) {
       console.log('[PANEL INTENT] (ngOnChanges) intentSelected', this.intentSelected);
       this.actions = this.intentSelected.actions;
+      
       console.log('[PANEL INTENT] (ngOnChanges) actions', this.actions);
       if (this.intentSelected && this.intentSelected.question) {
         const question_segment = this.intentSelected.question.split('\\n');
@@ -75,7 +78,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
       //   this.onSelectAnswer()
       // }
       this.form = this.intentSelected.form;
-      if (this.form !== undefined) {
+      if (this.form && this.form !== undefined) {
         this.formSize = Object.keys(this.form).length;
       } else {
         this.formSize = 0;
@@ -157,8 +160,10 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
   }
 
-  onDeleteAction() {
-    console.log('[PANEL INTENT] onDeleteAction')
+  onDeleteAction(actionindex) {
+    console.log('[PANEL INTENT] onDeleteAction index', actionindex);
+    console.log('[PANEL INTENT] onDeleteAction intentSelected', this.intentSelected);
+    this.intentSelected.actions.splice(actionindex, 1); 
   }
 
 }

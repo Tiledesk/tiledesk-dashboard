@@ -1,4 +1,3 @@
-
 <div [ngClass]="{'actions-drawer-active': isOpenActionDrawer}" class="actions-drawer">
   <div class="actions-drawer-close-btn-wpr">
     <button type="button" size="35" aria-label="Close" class="actions-drawer-close-btn" (click)="closeActionsDrawer()">
@@ -29,8 +28,8 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('reply')">
-              <svg aria-label="Reply" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff"
-                style="transform: rotate(-36deg);position: relative;top: -2px;left: 2px;">
+              <svg aria-label="Reply" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                fill="#fff" style="transform: rotate(-36deg);position: relative;top: -2px;left: 2px;">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
               </svg>
@@ -44,8 +43,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('condition')">
-              <svg aria-label="Condition" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('condition')" disabled>
+              <svg aria-label="Condition" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                width="24px" fill="#fff">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path d="M0 0h24v24H0V0z" fill="none" />
                 <path
@@ -65,8 +65,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('connectintent')">
-              <svg aria-label="ConnectIntent" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('connectintent')" disabled>
+              <svg aria-label="ConnectIntent" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                width="24px" fill="#fff">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path
                   d="M16.01 7L16 3h-2v4h-4V3H8v4h-.01C7 6.99 6 7.99 6 8.99v5.49L9.5 18v3h5v-3l3.5-3.51v-5.5c0-1-1-2-1.99-1.99z" />
@@ -82,8 +83,8 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('agenthandoff')">
-              <svg aria-label="AgentHandoff" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
-                viewBox="0 0 24 24" width="24px" fill="#fff">
+              <svg aria-label="AgentHandoff" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
                 <g>
                   <rect fill="none" height="24" width="24" />
                 </g>
@@ -110,9 +111,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('helpcenter')">
-              <svg aria-label="HelpCenter" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
-                viewBox="0 0 24 24" width="24px" fill="#fff">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('helpcenter')" disabled>
+              <svg aria-label="HelpCenter" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
                 <g>
                   <rect fill="none" height="24" width="24" />
                 </g>
@@ -130,9 +131,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
-              <svg aria-label="ChangeDepartment" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
-                viewBox="0 0 24 24" width="24px" fill="#fff">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="ChangeDepartment" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
                 <g>
                   <rect fill="none" height="24" width="24" />
                   <path
@@ -154,8 +155,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
-              <svg aria-label="DisableInput" width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="DisableInput" width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF"
+                xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd"
                   d="M6.58594 5H4C2.89543 5 2 5.89543 2 7V17C2 18.1046 2.89543 19 4 19H20C20.1792 19 20.3529 18.9764 20.5182 18.9322L18.5859 17H4V7L8.58594 7L6.58594 5ZM20 15.5856V7L11.4144 7L9.41436 5H20C21.1046 5 22 5.89543 22 7V17C22 17.1791 21.9765 17.3527 21.9323 17.5179L20 15.5856ZM10.5859 9H6V11H8V15H10V11H12V10.4141L10.5859 9Z" />
                 <rect x="2" y="3" width="2" height="26.2817" transform="rotate(-45 2 3)" />
@@ -170,8 +172,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
-              <svg aria-label="EnableInput" width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="EnableInput" width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF"
+                xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd"
                   d="M4 5C2.89543 5 2 5.89543 2 7V17C2 18.1046 2.89543 19 4 19H20C21.1046 19 22 18.1046 22 17V7C22 5.89543 21.1046 5 20 5H4ZM4 7L20 7V17H4V7ZM6 9H12V11H10V15H8V11H6V9Z" />
               </svg>
@@ -189,8 +192,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
-              <svg aria-label="ReplaceBot" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="ReplaceBot" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                width="24px" fill="#FFFFFF">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path
                   d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z" />
@@ -205,8 +209,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
-              <svg aria-label="HTTP" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="HTTP" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                fill="#FFFFFF">
                 <path
                   d="M4.5 11h-2V9H1v6h1.5v-2.5h2V15H6V9H4.5v2zm2.5-.5h1.5V15H10v-4.5h1.5V9H7v1.5zm5.5 0H14V15h1.5v-4.5H17V9h-4.5v1.5zm9-1.5H18v6h1.5v-2h2c.8 0 1.5-.7 1.5-1.5v-1c0-.8-.7-1.5-1.5-1.5zm0 2.5h-2v-1h2v1z" />
                 <path d="M24 24H0V0h24v24z" fill="none" /></svg>
@@ -224,8 +229,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
-              <svg aria-label="VarA" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="VarA" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                fill="#FFFFFF">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path d="M18 4H6v2l6.5 6L6 18v2h12v-3h-7l5-5-5-5h7z" /></svg>
             </button>
@@ -238,9 +244,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
-              <svg aria-label="TiledeskAPI" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
-                viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="TiledeskAPI" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
                 <g>
                   <rect fill="none" height="24" width="24" />
                   <path
@@ -262,8 +268,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
-              <svg aria-label="AddTag" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="AddTag" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                fill="#FFFFFF">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path
                   d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" />
@@ -278,8 +285,9 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
-              <svg aria-label="SendEmail" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="SendEmail" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                width="24px" fill="#FFFFFF">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path
                   d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
@@ -298,7 +306,7 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
               <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
                 viewBox="0 0 24 24" width="24px" fill="#fff">
                 <g>
@@ -322,9 +330,21 @@
       </div>
 
       <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('close')">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 12 16 9.41 14.59 8zM12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Close </div>
+        </div>
       </div>
 
     </div>
   </div>
- 
+
 </div>
