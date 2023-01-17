@@ -25,9 +25,9 @@ export class TextResponseComponent implements OnInit {
 
   // Textarea //
   limitCharsText: number;
-  leftCharsText: number;
   textMessage: string;
-  alertCharsText: boolean;
+  // leftCharsText: number;
+  // alertCharsText: boolean;
 
   // Delay //
   delayTime: number;
@@ -43,15 +43,16 @@ export class TextResponseComponent implements OnInit {
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.limitCharsText = TEXT_CHARS_LIMIT;
+    // this.textMessage = this.response.text;
     this.delayTime = this.response.time/1000;
-    this.textMessage = this.response.text;
+    // this.textMessage = this.response.text;
 
-    this.leftCharsText = calculatingRemainingCharacters(this.textMessage);
-    if(this.leftCharsText<(TEXT_CHARS_LIMIT/10)){
-      this.alertCharsText = true;
-    } else {
-      this.alertCharsText = false;
-    }
+    // this.leftCharsText = calculatingRemainingCharacters(this.textMessage);
+    // if(this.leftCharsText<(TEXT_CHARS_LIMIT/10)){
+    //   this.alertCharsText = true;
+    // } else {
+    //   this.alertCharsText = false;
+    // }
    
     this.buttons = [];
     try {
@@ -104,13 +105,7 @@ export class TextResponseComponent implements OnInit {
   }
 
   /** */
-  onChangeText(text:string) {
-    this.leftCharsText = calculatingRemainingCharacters(this.textMessage);
-    if(this.leftCharsText<(TEXT_CHARS_LIMIT/10)){
-      this.alertCharsText = true;
-    } else {
-      this.alertCharsText = false;
-    }
+  onChangeTextarea(text:string) {
     this.response.text = text;
   }
 

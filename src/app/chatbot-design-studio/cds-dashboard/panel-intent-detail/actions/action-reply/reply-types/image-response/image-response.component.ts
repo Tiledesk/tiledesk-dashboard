@@ -102,6 +102,17 @@ export class ImageResponseComponent implements OnInit {
 
 
 
+  /** */
+  onDeletePathElement(){
+    this.response.metadata.src = '';
+  }
+
+  /** */
+  onChangeTextarea(text:string) {
+    this.response.text = text;
+  }
+
+
 
   // private async presentModal(e: any): Promise<any> {
   //   let dataFiles = " "

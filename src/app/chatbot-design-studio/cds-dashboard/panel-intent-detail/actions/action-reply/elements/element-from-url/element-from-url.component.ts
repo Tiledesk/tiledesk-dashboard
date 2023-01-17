@@ -12,7 +12,7 @@ export class ElementFromUrlComponent implements OnInit {
   @Output() loadPathElement = new EventEmitter();
   @Input() metadata: Metadata;
 
-  showAddImage = true;
+  showAddImage = false;
   pathElement: string;
   pathElementUrl: any;
   widthElement: string;
@@ -23,6 +23,9 @@ export class ElementFromUrlComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if(this.metadata.src == ''){
+      this.showAddImage = true;
+    }
     // this.pathElement = "https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1&mute=0";
     // this.sanitizer.bypassSecurityTrustResourceUrl(this.pathElement);
   }

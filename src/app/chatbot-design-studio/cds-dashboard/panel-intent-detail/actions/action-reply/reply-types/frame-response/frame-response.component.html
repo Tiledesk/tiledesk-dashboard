@@ -18,12 +18,11 @@
                 <div *ngIf="!framePath" class="response-frame-panel">              
                     <div class="frame-panel">
                         <appdashboard-element-from-url
-                        [metadata] = response.metadata
-                        (loadPathElement)="onLoadPathElement()"
+                            [metadata] = response.metadata
+                            (loadPathElement)="onLoadPathElement()"
                         ></appdashboard-element-from-url>
                     </div>
                 </div>
-
 
                 <div *ngIf="response.type === 'frame'" class="content-frame">
                     <iframe 
@@ -35,19 +34,13 @@
                         [height]="frameHeight"
                         [src]="framePath">
                     </iframe>
-                </div>
 
-
-                <!-- 
-                <div class="response-image-uploader" [ngStyle] = "{'width': imageWidth, 'height': imageHeight}">
-                    <div class="bck-image" [style.background-image]="'url('+imagePath+')'"></div>
-                    <div class="image-panel"> 
+                    <div class="control-button delete" (click)="onDeletePathElement()">
+                        <em class="material-icons">delete</em>
                     </div>
                 </div>
-                -->
 
-
-               
+                
 
             </div>
 
@@ -63,33 +56,26 @@
                 </div>
             </div>
 
-
-            <mat-form-field class="box-textarea" appearance="fill">
-                <textarea matInput
-                    cdkTextareaAutosize
-                    [(ngModel)]="textMessage"
-                    #autosize="cdkTextareaAutosize"
-                    [maxlength]="limitCharsText"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5"
-                    (ngModelChange)="onChangeText($event)">
-                </textarea>
-            </mat-form-field>
+            <appdashboard-element-textarea
+                [limitCharsText]="limitCharsText"
+                [textMessage]="response.text"
+                (changeTextarea)="onChangeTextarea($event)"
+            ></appdashboard-element-textarea>
             
             <div class="text-editor-drop">
                 <em class="material-icons">drag_indicator</em>
             </div> 
         </div>
-
+        <!-- 
         <div class="editor-utils">
             <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
-            <!-- <div class="text-editor-insert-attribute">
+            <!- <div class="text-editor-insert-attribute">
                 <em class="material-icons">code</em>
             </div> 
             <div class="emoji-picker">
                 <em class="material-icons">insert_emoticon</em>
-            </div>  -->
-        </div>
+            </div>  ->
+        </div> -->
 
     </div> 
 

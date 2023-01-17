@@ -39,6 +39,7 @@ import { FormEditAddComponent } from './cds-dashboard/panel-intent-detail/form/f
 import { ModalWindowComponent } from './cds-dashboard/panel-intent-detail/form/modal-window/modal-window.component';
 import { CdsSidebarComponent } from './cds-sidebar/cds-sidebar.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ElementTextareaComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-textarea/element-textarea.component';
 
 
 
@@ -67,7 +68,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormFieldComponent,
     FormEditAddComponent,
     ModalWindowComponent,
-    CdsSidebarComponent
+    CdsSidebarComponent,
+    ElementTextareaComponent
   ],
   imports: [
     CommonModule,

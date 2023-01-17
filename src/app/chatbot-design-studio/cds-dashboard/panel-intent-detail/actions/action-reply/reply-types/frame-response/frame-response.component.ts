@@ -61,6 +61,11 @@ export class FrameResponseComponent implements OnInit {
 
   // EVENT FUNCTIONS //
   /** */
+  onChangeTextarea(text:string) {
+    this.response.text = text;
+  }
+
+  /** */
   onDeleteResponse(){
     this.deleteResponse.emit(this.index);
   }
@@ -103,6 +108,13 @@ export class FrameResponseComponent implements OnInit {
     console.log('onCloseframePanel:: ', event);
   }
 
+  /** */
+  onDeletePathElement(){
+    this.framePath = null;
+    this.response.metadata.src = '';
+  }
+
+  /** */
   onLoadPathElement(){
     try {
       this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src);
