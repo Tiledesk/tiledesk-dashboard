@@ -61,6 +61,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     if (this.intentSelected) {
       console.log('[PANEL INTENT] (ngOnChanges) intentSelected', this.intentSelected);
       this.actions = this.intentSelected.actions;
+      
       console.log('[PANEL INTENT] (ngOnChanges) actions', this.actions);
       if (this.intentSelected && this.intentSelected.question) {
         const question_segment = this.intentSelected.question.split('\\n');
@@ -159,8 +160,10 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
   }
 
-  onDeleteAction() {
-    console.log('[PANEL INTENT] onDeleteAction')
+  onDeleteAction(actionindex) {
+    console.log('[PANEL INTENT] onDeleteAction index', actionindex);
+    console.log('[PANEL INTENT] onDeleteAction intentSelected', this.intentSelected);
+    this.intentSelected.actions.splice(actionindex, 1); 
   }
 
 }

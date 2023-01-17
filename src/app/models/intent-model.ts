@@ -58,7 +58,7 @@ export class Intent {
 
 export class Action {
     type: string;
-    body: any;
+    body?: any;
 }
 
 
@@ -77,13 +77,20 @@ export class ActionReply {
 }
 
 export class ActionEmail {
-    to: string;
-    subject: string;
-    text: string;
+    type: "email"
+    body: {
+        to: string;
+        subject: string;
+        text: string;
+    }
 }
 
 export class ActionAgent {
-    goto: string;
+    type: 'agent';
+}
+
+export class ActionClose {
+    type: 'close';
 }
 
 
@@ -166,9 +173,9 @@ export class Form {
         }
 
         return json;
-   
+
     }
-  
+
 }
 
 export class Field {
