@@ -76,7 +76,12 @@ import { ConditionComponent } from './cds-rules/rules-add/condition/condition.co
     FormFieldComponent,
     FormEditAddComponent,
     ModalWindowComponent,
-    CdsSidebarComponent
+    CdsSidebarComponent,
+    ElementTextareaComponent,
+    RulesComponent,
+    RulesAddComponent,
+    TextComponent,
+    ConditionComponent
   ],
   imports: [
     CommonModule,
