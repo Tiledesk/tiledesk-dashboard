@@ -73,21 +73,26 @@
         </div>
 
 
-        <div class="intents">
+        <div class="intents" id="intents-list">
 
             <div *ngFor="let intent of filtered_intents; let id = index" id="intent_{{id}}" class="intent"
                 style="padding-left: 10px;" value="intent.id" (click)="selectIntent(intent, id)">
 
-                <div>
-                    <p class="intent-display-name">{{intent?.intent_display_name}}</p>
-                    <div class="icon-list">
-                        <p *ngIf="intent.questions" class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
-                        <span *ngIf="intent.webhook_enabled" class="material-icons icon webhook-icon">webhook</span>
-                        <span *ngIf="intent.form" class="material-icons icon list-alt-icon">list_alt</span>
-                        <div *ngIf="intent?.actions && intent?.actions?.length > 0" class="actions"><span
-                                class="material-icons icon bolt-icon">bolt</span>
-                            <p class="action-counter icon">{{ intent?.actions?.length }}</p>
+                <div class="item-box">
+                    <div>
+                        <p class="intent-display-name">{{intent?.intent_display_name}}</p>
+                        <div class="icon-list">
+                            <p *ngIf="intent.questions" class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
+                            <span *ngIf="intent.webhook_enabled" class="material-icons icon webhook-icon">webhook</span>
+                            <span *ngIf="intent.form" class="material-icons icon list-alt-icon">list_alt</span>
+                            <div *ngIf="intent?.actions && intent?.actions?.length > 0" class="actions"><span
+                                    class="material-icons icon bolt-icon">bolt</span>
+                                <p class="action-counter icon">{{ intent?.actions?.length }}</p>
+                            </div>
                         </div>
+                    </div>
+                    <div class="delete-box">
+                        <span class="material-icons delete-icon" (click)="$event.stopPropagation();onDeleteButtonClicked(intent)">delete</span>
                     </div>
                 </div>
             </div>

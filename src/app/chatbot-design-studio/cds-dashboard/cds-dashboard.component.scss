@@ -21,12 +21,16 @@ $margin-top-card: 30px;
     font-size: 16px;
 }
 
-.cds-sidebar{
+.cds-sidebar {
     border-right: 2px solid #394f5a;
     width: 40px;
     &.is_opened{
         width: 140px;
     }
+}
+
+.cds-fulfillment {
+    width: 100%;
 }
 
 .cds-content{

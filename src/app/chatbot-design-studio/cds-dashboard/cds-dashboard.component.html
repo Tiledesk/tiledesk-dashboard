@@ -98,7 +98,8 @@
 
     </ng-template>
     <ng-template #fulfillment [ngOutletContext]="context">
-        ... choice fulfillment...
+        <appdashboard-cds-fulfillment class="cds-fulfillment"
+            [chatbot]="selectedChatbot"></appdashboard-cds-fulfillment>
     </ng-template>
     <ng-template #training [ngOutletContext]="context">
         ... choice training...

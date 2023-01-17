@@ -1,10 +1,12 @@
+import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from './../../../services/logger/logger.service';
 import { FaqService } from './../../../services/faq.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Faq } from 'app/models/faq-model';
 import { Router } from '@angular/router';
 import { Intent } from 'app/models/intent-model';
-import { Action } from 'rxjs/internal/scheduler/Action';
 import { Observable, Subscription } from 'rxjs';
+
+const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-panel-intent-list',
@@ -26,60 +28,64 @@ export class PanelIntentListComponent implements OnInit {
   predefined_faqs = [];
   filtered_intents = [];
   intents: Intent[];
+  selectedIntent: Intent;
 
   constructor(
     private faqService: FaqService,
+    private logger: LoggerService,
+    private translate: TranslateService,
     private router: Router
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     console.log("[PANEL-INTENT-LIST] ngOnInit()")
     console.log("[PANEL-INTENT-LIST] - Selected chatbot ID: ", this.id_faq_kb);
     this.getAllIntents(this.id_faq_kb);
-    this.listeToNewIntentCreated()
+    this.onNewIntentListener()
   }
 
-  listeToNewIntentCreated() {
-    console.log("[PANEL-INTENT-LIST] listeToNewIntentCreated")
-    this.eventsSubscription = this.events.subscribe(() => {
-      this.getAllIntents(this.id_faq_kb)
+  onNewIntentListener() {
+    console.log("[PANEL-INTENT-LIST] onNewIntentListener")
+    this.eventsSubscription = this.events.subscribe((intent: Intent) => {
+      console.log("---> ONNEWINTENTLISTENER: ", intent)
+      this.getAllIntents(this.id_faq_kb).then((length: number) => {
+        console.log("intents length: ", length);
+        this.selectIntent(intent, length - 1);
+      })
     })
   }
-  
 
   getAllIntents(id_faq_kb) {
 
-    this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
-      this.intents = faqs;
+    let promise = new Promise((resolve, reject) => {
 
+      this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
+        this.intents = faqs;
 
-      this.intent_start = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'start')), 1)[0]
-      console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_start: ", this.intent_start);
-      this.intent_defaultFallback = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'defaultFallback')), 1)[0]
-      console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_defaultFallback: ", this.intent_defaultFallback);
-      this.filtered_intents = this.intents;
+        this.intent_start = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'start')), 1)[0]
+        console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_start: ", this.intent_start);
+        this.intent_defaultFallback = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'defaultFallback')), 1)[0]
+        console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_defaultFallback: ", this.intent_defaultFallback);
+        this.filtered_intents = this.intents;
+        let element = document.getElementById('intent_' + (this.filtered_intents.length - 2));
+        console.log("element: ", element);
 
-      console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - others INTENTS: ", this.intents);
-      console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - others  typeof INTENTS: ",typeof this.intents[0]);
+        console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - others INTENTS: ", this.intents);
+        console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - others  typeof INTENTS: ", typeof this.intents[0]);
 
-      // this.faq_start = faqs.find(o => o.intent_display_name === 'start');
-      // let s_index = this.faqs.indexOf(faqs.find(o => o.intent_display_name === 'start'))
-      // this.intents.splice(s_index, 1)
-      // this.all_faqs.splice(s_index, 1)
+        this.returnListOfIntents.emit(this.intents);
+        resolve(this.filtered_intents.length);
 
-      // this.faq_defaultFallback = faqs.find(o => o.intent_display_name === 'defaultFallback')
-      // let df_index = this.faqs.indexOf(faqs.find(o => o.intent_display_name === 'defaultFallback'))
-      // this.faqs.splice(df_index, 1)
-      // this.all_faqs.splice(s_index, 1)
+      }), (error) => {
+        console.error("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - ERROR: ", error)
+        reject(error);
+      }, () => {
+        console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID * COMPLETE")
+      }
 
-      //console.log("faqs: ", faqs)
-      this.returnListOfIntents.emit(this.intents);
+    })
+    return promise
 
-    }), (error) => {
-      console.error("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - ERROR: ", error)
-    }, () => {
-      console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID * COMPLETE")
-    }
   }
 
   livesearch(text: string) {
@@ -92,26 +98,68 @@ export class PanelIntentListComponent implements OnInit {
     console.log("[PANEL-INTENT-LIST] selectIntent - intent selected: ", intent);
     console.log("[PANEL-INTENT-LIST] selectIntent - index: ", index)
 
-    // this.router.navigate(['project/' + intent.id_project + '/editfaq', this.id_faq_kb, intent.id, 'tilebot']);
-    // this.router.navigate(['project/' + intent.id_project + '/createfaq', this.id_faq_kb, 'tilebot', intent.language]);
-    
-
     let elements = Array.from(document.getElementsByClassName('intent active'));
     elements.forEach((el) => {
       el.classList.remove('active');
     })
 
-    const element = document.getElementById('intent_' + index);
-    element.classList.toggle("active")
-
-    this.selected_intent.emit(intent);
+    // Issue: the intent is not ready on DOM and is not possible to select it without timeout.
+    // Warning: delete the timeout ASAP
+    // Try to use MutationObserver for detect changes in the list.
+    setTimeout(() => {
+      const element = document.getElementById('intent_' + index);
+      console.log("element: ", element);
+      if (element) {
+        element.classList.toggle("active")
+        element.scrollIntoView();
+      }
+  
+      if (!this.selectedIntent || this.selectedIntent.id != intent.id) {
+        console.log("select intent emit");
+        this.selectedIntent = intent;
+        this.selected_intent.emit(intent);
+      }
+    }, 200);
   }
 
   addNewIntent() {
-
+    let elements = Array.from(document.getElementsByClassName('intent active'));
+    elements.forEach((el) => {
+      el.classList.remove('active');
+    })
     this.createIntent.emit(true);
     // this.router.navigate(['project/' + this.projectID  + '/createfaq', this.id_faq_kb, 'tilebot', 'en']);
-    
   }
+
+  onDeleteButtonClicked(intent) {
+    swal({
+      title: this.translate.instant('AreYouSure'),
+      text: this.translate.instant('TheAnswerWillBeDeleted', { intent_name: intent.intent_display_name }),
+      icon: "warning",
+      buttons: ["Cancel", "Delete"],
+      dangerMode: true,
+    }).then((WillDelete) => {
+      if (WillDelete) {
+        this.faqService.deleteFaq(intent.id).subscribe((data) => {
+          this.logger.log('[PANEL-INTENT-LIST] delete intent swal RES ', data)
+          this.getAllIntents(this.id_faq_kb);
+        }, (error) => {
+          swal(this.translate.instant('AnErrorOccurredWhilDeletingTheAnswer'), {
+            icon: "error"
+          })
+          this.logger.log('[PANEL-INTENT-LIST] delete intent ERROR ', error)
+        }, () => {
+          this.logger.log('[PANEL-INTENT-LIST] delete intent * COMPLETE *');
+          swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
+            icon: "success",
+          }).then((okpressed) => {
+            console.log("ok pressed")
+          })
+        })
+      }
+    })
+  }
+
+
 
 }
