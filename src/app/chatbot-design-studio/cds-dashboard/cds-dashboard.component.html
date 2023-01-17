@@ -63,17 +63,25 @@
 
     <ng-template #intents [ngOutletContext]="context">
         <div class="box-left">
-            <appdashboard-panel-intent-list class="panel-intent-list" [id_faq_kb]="id_faq_kb" [projectID]="projectID"
-                (selected_intent)=onSelectIntent($event) (returnListOfIntents)=onReturnListOfIntents($event)
-                (createIntent)="onCreateIntentBtnClicked()" [events]="eventsSubject.asObservable()">
+            <appdashboard-panel-intent-list class="panel-intent-list" 
+                [id_faq_kb]="id_faq_kb" 
+                [projectID]="projectID"
+                (selected_intent)=onSelectIntent($event) 
+                (returnListOfIntents)=onReturnListOfIntents($event)
+                (createIntent)="onCreateIntentBtnClicked()" 
+                [events]="eventsSubject.asObservable()">
             </appdashboard-panel-intent-list>
         </div>
 
         <div class="box-right">
 
             <div class="box-right-header">
-                <appdashboard-panel-intent-header *ngIf=intentSelected [intentSelected]="intentSelected"
-                    (saveIntent)=onSaveIntent($event)></appdashboard-panel-intent-header>
+                <appdashboard-panel-intent-header 
+                    *ngIf=intentSelected 
+                    [intentSelected]="intentSelected"
+                    (saveIntent)=onSaveIntent($event)
+                    [listOfIntents]="listOfIntents">
+                </appdashboard-panel-intent-header>
             </div>
 
             <div class="box-right-content">
@@ -98,13 +106,14 @@
 
     </ng-template>
     <ng-template #fulfillment [ngOutletContext]="context">
-        ... choice fulfillment...
+        <appdashboard-cds-fulfillment class="cds-fulfillment"
+            [chatbot]="selectedChatbot"></appdashboard-cds-fulfillment>
     </ng-template>
     <ng-template #training [ngOutletContext]="context">
         ... choice training...
     </ng-template>
     <ng-template #rules [ngOutletContext]="context">
-        ... choice rules...
+        <cds-rules></cds-rules>
     </ng-template>
 
 </div>

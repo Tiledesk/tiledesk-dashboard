@@ -1,0 +1,10 @@
+<div class="rules-container">
+    <div class="new-rules-box">
+        <div class="new-rules-button" (click)="addNew()">
+            <span class="material-icons icon plus-icon">add</span>
+            <p class="button-text">Add</p>
+        </div>
+    </div>
+    <cds-rules-add *ngIf="addClicked"></cds-rules-add>
+</div>
+

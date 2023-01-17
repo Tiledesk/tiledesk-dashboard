@@ -1,3 +1,4 @@
+import { Chatbot } from 'app/models/faq_kb-model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -406,6 +407,23 @@ export class FaqKbService {
 
     return this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
+  }
+
+  public updateChatbot(chatbot: Chatbot) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    let url = this.FAQKB_URL + chatbot._id;
+    this.logger.log('update BOT - URL ', url);
+    this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', chatbot);
+
+    return this._httpClient
+      .put(url, JSON.stringify(chatbot), httpOptions)
   }
 
 

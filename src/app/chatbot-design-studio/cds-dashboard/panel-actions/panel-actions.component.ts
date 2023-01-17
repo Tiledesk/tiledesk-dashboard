@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { Action, Intent } from 'app/models/intent-model';
+import { Action, ActionAgent, Intent } from 'app/models/intent-model';
 
 
 @Component({
@@ -63,6 +63,20 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       }
       this.intentSelected.actions.push(action)
     }
+    if (action === 'agenthandoff') {
+      let action = new Action()
+      action.type = 'agent'
+      this.intentSelected.actions.push(action)
+    }
+
+    if (action === 'close') {
+      let action = new Action()
+      action.type = 'close'
+      this.intentSelected.actions.push(action)
+    }
+
+    
+
   }
 
 

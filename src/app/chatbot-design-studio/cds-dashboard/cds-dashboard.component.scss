@@ -21,7 +21,7 @@ $margin-top-card: 30px;
     font-size: 16px;
 }
 
-.cds-sidebar{
+.cds-sidebar {
     border-right: 2px solid #394f5a;
     width: 40px;
     &.is_opened{
@@ -29,10 +29,18 @@ $margin-top-card: 30px;
     }
 }
 
+.cds-fulfillment {
+    width: 100%;
+}
+
 .cds-content{
     display: flex;
     width: 100%;
     overflow-y: auto;
+
+    cds-rules {
+        width: 100%;
+    }
 }
 
 .box-left {

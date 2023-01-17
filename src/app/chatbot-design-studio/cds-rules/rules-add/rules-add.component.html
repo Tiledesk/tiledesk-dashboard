@@ -1,0 +1,51 @@
+<div class="card-wrp" [formGroup]="ruleFormGroup">
+    <div class="card-item">
+        <div class="card-title">Name:</div>
+        <rule-text
+            [textMessage]="ruleFormGroup.value.name"
+            (onChange)="onChangeTextValue('name', $event)">
+        </rule-text>
+    </div>
+
+    <div class="card-item">
+        <div class="card-title">Condition:</div>
+        <rule-condition
+            [condition]="ruleFormGroup.controls['when']"
+            (onChangeValue)="onConditionChange($event)">
+        </rule-condition>
+    </div>
+
+    <div class="card-item">
+        <div class="card-title">Action:</div>
+        <div style="margin: 10px;">
+            <div class="card-subtitle">Wait time:</div>
+            <div class="delay-wrapper">
+                <appdashboard-delay-slider
+                    [delayTime]="ruleFormGroup.value['do'][0].wait"
+                    [step]="1"
+                    (changeDelayTime)="onChangeDelayTime($event)">
+                </appdashboard-delay-slider>
+            </div>
+        </div>
+    
+        <div style="margin: 10px;">
+            <div class="card-subtitle">Message:</div>
+            <rule-text id="text"
+                [textMessage]="ruleFormGroup.value['do'][1].message.text"
+                (onChangeValue)="onChangeTextValue('message', $event)">
+            </rule-text>
+            <mat-list role="list">
+                <mat-list-item role="listitem">Item 1</mat-list-item>
+                <mat-list-item role="listitem">Item 2</mat-list-item>
+                <mat-list-item role="listitem">Item 3</mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+
+    <!-- <div class="box-buttons">
+        <button id="create-rule-form" class="btn btn-primary" (click)="submitForm()">
+            <span>Add Rule</span>
+        </button>
+    </div> -->
+    
+</div>

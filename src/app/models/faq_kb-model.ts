@@ -4,6 +4,8 @@ export interface FaqKb {
     createdAt?: any;
     name?: string;
     url?: string;
+    webhook_enabled?: boolean;
+    webhook_url?: string;
     kbkey_remote?: string;
     id_project?: string;
     createdBy?: string;

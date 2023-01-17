@@ -10,9 +10,11 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   @Output() saveIntent = new EventEmitter();
   @Input() intentSelected: Intent;
   @Input() showSpinner: boolean;
-  
+  @Input() listOfIntents: Intent[];
+
   intentName: string;
   intentNameResult = true;
+  intentNameAlreadyExist = false
 
   constructor() { }
 
@@ -29,19 +31,20 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.showSpinner = false;
-    console.log("header --> intentSelected: ", this.intentSelected)
+    console.log("[PANEL-INTENT-HEADER] header --> intentSelected: ", this.intentSelected)
+    console.log("[PANEL-INTENT-HEADER] header --> listOfIntents: ", this.listOfIntents)
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {
-      console.log('intent selected ', error);
+      console.log('[PANEL-INTENT-HEADER] intent selected ', error);
     }
   }
 
   // CUSTOM FUNCTIONS //
   /** */
   private checkIntentName(): boolean {
-    if (!this.intentName || this.intentName.length === 0){
-      return false; 
+    if (!this.intentName || this.intentName.length === 0) {
+      return false;
     } else {
       return true;
     }
@@ -50,9 +53,14 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   // EVENT FUNCTIONS //
   /** */
-  onChangeIntentName(name: string){
-    console.log('name is not a string', name);
+  onChangeIntentName(name: string) {
+    console.log('[PANEL-INTENT-HEADER] onChangeIntentName', name);
+    this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
+      return el.intent_display_name === name
+    });
 
+    // console.log('[PANEL-INTENT-HEADER] intent name already exist', this.intentNameAlreadyExist);
+    this.intentNameResult = this.checkIntentName();
     // name.toString();
     // try {
     //   this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
@@ -62,14 +70,14 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   }
 
   /** */
-  onBlurIntentName(name: string){
+  onBlurIntentName(name: string) {
     this.intentNameResult = true;
   }
 
   /** */
-  onSaveIntent(){
+  onSaveIntent() {
     this.intentNameResult = this.checkIntentName();
-    if(this.intentNameResult){
+    if (this.intentNameResult && !this.intentNameAlreadyExist) {
       this.intentSelected.intent_display_name = this.intentName;
       this.saveIntent.emit(this.intentSelected);
     }

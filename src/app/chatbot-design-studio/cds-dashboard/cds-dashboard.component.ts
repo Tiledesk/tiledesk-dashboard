@@ -369,11 +369,17 @@ export class CdsDashboardComponent implements OnInit {
 
   /** appdashboard-intent: Save intent */
   onSaveIntent(intent: Intent) {
-    console.log('[CDS DSHBRD] onSaveIntent :: ', intent);
+    console.log('[CDS DSHBRD] onSaveIntent intent:: ', intent);
     console.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
     this.intentSelected = intent;
-    console.log
-    if (this.CREATE_VIEW) {
+    const intentNameAlreadyCreated = this.listOfIntents.some((el) => {
+      return el.id ===  this.intentSelected.id
+    });
+    console.log('[CDS DSHBRD]  intent name already saved', intentNameAlreadyCreated);
+    // console.log
+    if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
+
+
       this.creatIntent();
     } else if (this.EDIT_VIEW) {
       this.editIntent();
@@ -462,6 +468,9 @@ export class CdsDashboardComponent implements OnInit {
     // this.elementIntentSelected = {};
     // this.elementIntentSelected['type'] = 'new'
     console.log('[CDS DSBRD] addNewIntent intentSelected ', this.intentSelected)
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = ''
+    this.elementIntentSelected['element'] = null
   }
 
 
