@@ -53,7 +53,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     console.log('[PANEL ACTION] actionSelected ', action)
   
   
-    if (action === 'reply') {
+    if (action === 'message') {
       let action = new ActionReply();
       action.commands = [
         {
