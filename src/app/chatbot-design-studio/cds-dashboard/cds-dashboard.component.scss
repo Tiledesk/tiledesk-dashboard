@@ -23,9 +23,10 @@ $margin-top-card: 30px;
 
 .cds-sidebar {
     border-right: 2px solid #394f5a;
-    width: 40px;
+    width: 60px;
+    transition: .3s;
     &.is_opened{
-        width: 140px;
+        width: 175px;
     }
 }
 
@@ -164,17 +165,18 @@ $margin-top-card: 30px;
 
     .header-left{
         border-right: 2px solid #394f5a;
-        width: 40px;
+        width: 60px;
         display: flex;
         justify-content: center;
         align-items: center;
+        transition: .3s;
 
         img{
             width: 15px;
         }
 
         &.is_opened{
-            width: 140px;
+            width: 161px;
             img{
                 width: 100px;
             }
@@ -191,10 +193,11 @@ $margin-top-card: 30px;
             width: 22px;
             height: 22px;
             background: #1e293b;
-            left: 29px;
+            left: 49px;
+            transition: .3s;
 
             &.is_opened {
-                left: 130px;
+                left: 150px;
             }
         } 
         

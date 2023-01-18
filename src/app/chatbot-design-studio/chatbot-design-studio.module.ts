@@ -49,6 +49,7 @@ import { RulesComponent } from './cds-rules/rules/rules.component';
 import { RulesAddComponent } from './cds-rules/rules-add/rules-add.component';
 import { TextComponent } from './cds-rules/rules-add/text/text.component';
 import { ConditionComponent } from './cds-rules/rules-add/condition/condition.component';
+import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.component';
 
 
 @NgModule({
@@ -80,6 +81,7 @@ import { ConditionComponent } from './cds-rules/rules-add/condition/condition.co
     ElementTextareaComponent,
     RulesComponent,
     RulesAddComponent,
+    CdsFulfillmentComponent,
     TextComponent,
     ConditionComponent
   ],
