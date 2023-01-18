@@ -32,11 +32,15 @@ export class ConditionComponent implements OnInit {
     {name: 'custom', value: 'custom',checked: false},
   ]
 
+  keywords = ['angular', 'how-to', 'tutorial', 'accessibility'];
+  formControl = new FormControl(['angular']);
+
   constructor(private rootFormGroup: FormGroupDirective,) { }
 
   ngOnInit(): void {
     this.conditionsForm = this.rootFormGroup.control.get('when') as FormGroup;
     console.log('changessss', this.conditionsForm)
+
   }
 
   onRadioButtonChange(event){
@@ -52,11 +56,11 @@ export class ConditionComponent implements OnInit {
       this.text = text;
       this.conditionsForm.patchValue({'urlMatches': this.buildRegex(this.regexOption, text)})
     }
+    console.log('onChangeText form', this.conditionsForm)
   }
 
 
   onClickChip(chip, index: number){
-    console.log('chip selected-->', chip, index)
     this.chips.forEach(el => {
       if(el.name === chip.name)
         el.selected = true
@@ -64,6 +68,7 @@ export class ConditionComponent implements OnInit {
         el.selected = false
     })
     this.conditionsForm.patchValue({'triggerEvery': chip.value})
+    console.log('onClickChip form', this.conditionsForm)
   }
 
 

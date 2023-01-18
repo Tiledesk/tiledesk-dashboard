@@ -16,7 +16,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -51,6 +52,7 @@ import { TextComponent } from './cds-rules/rules-add/text/text.component';
 import { ConditionComponent } from './cds-rules/rules-add/condition/condition.component';
 import { CdsChatbotDetailsComponent } from './cds-chatbot-details/cds-chatbot-details.component';
 import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.component';
+import { RulesListComponent } from './cds-rules/rules-list/rules-list.component';
 
 
 @NgModule({
@@ -71,9 +73,9 @@ import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.compo
     PanelIntentHeaderComponent,
     PanelButtonConfigurationComponent,
     ElementFromUrlComponent,
-    ActionSendEmailComponent, 
+    ActionSendEmailComponent,
     QuestionComponent,
-    AnswerComponent, 
+    AnswerComponent,
     FormComponent,
     FormFieldComponent,
     FormEditAddComponent,
@@ -82,9 +84,11 @@ import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.compo
     ElementTextareaComponent,
     RulesComponent,
     RulesAddComponent,
+    RulesListComponent,
     CdsFulfillmentComponent,
     TextComponent,
     ConditionComponent,
+
     CdsChatbotDetailsComponent,
   ],
   imports: [
@@ -99,6 +103,7 @@ import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.compo
     MatRadioModule,
     MatChipsModule,
     MatGridListModule,
+    MatAutocompleteModule,
     MatListModule,
     RouterModule,
     TranslateModule,

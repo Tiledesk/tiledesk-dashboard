@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Intent } from 'app/models/intent-model';
+import { Chatbot } from './../../../models/faq_kb-model';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { FaqKbService } from 'app/services/faq-kb.service';
+import { Rule } from 'app/models/rule-model';
 
 @Component({
   selector: 'cds-rules',
@@ -7,11 +11,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RulesComponent implements OnInit {
 
+  @Input() selectedChatbot: Chatbot;
+  @Input() listOfIntents: Intent[];
+
   addClicked: boolean = false;
-  constructor() { }
+  listOfRules: Rule[]=[];
+  constructor(private faqkbService: FaqKbService) { }
 
   ngOnInit(): void {
 
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    this.getAllRules();
   }
 
   addNew(){
@@ -21,6 +33,13 @@ export class RulesComponent implements OnInit {
 
   ngOnDestroy(){
     this.addClicked = false;
+  }
+
+  getAllRules(){
+    console.log('rulessss', this.selectedChatbot)
+    if(this.selectedChatbot.attributes && this.selectedChatbot.attributes['rules']){
+      this.listOfRules = this.selectedChatbot.attributes['rules'] as Rule[]
+    }
   }
 
 }
