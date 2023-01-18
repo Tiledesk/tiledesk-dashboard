@@ -49,6 +49,7 @@ import { RulesComponent } from './cds-rules/rules/rules.component';
 import { RulesAddComponent } from './cds-rules/rules-add/rules-add.component';
 import { TextComponent } from './cds-rules/rules-add/text/text.component';
 import { ConditionComponent } from './cds-rules/rules-add/condition/condition.component';
+import { CdsChatbotDetailsComponent } from './cds-chatbot-details/cds-chatbot-details.component';
 
 
 @NgModule({
@@ -81,7 +82,8 @@ import { ConditionComponent } from './cds-rules/rules-add/condition/condition.co
     RulesComponent,
     RulesAddComponent,
     TextComponent,
-    ConditionComponent
+    ConditionComponent,
+    CdsChatbotDetailsComponent,
   ],
   imports: [
     CommonModule,
