@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { FaqKb } from '../../models/faq_kb-model';
 import { Router, RoutesRecognized } from '@angular/router';
@@ -72,6 +72,7 @@ export class BotListComponent implements OnInit {
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
+  dev_mode: boolean;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -88,6 +89,9 @@ export class BotListComponent implements OnInit {
 
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.dev_mode = isDevMode()
+    console.log('BOTS-LIST] is dev mode ', this.dev_mode) 
+   
   }
 
   ngOnInit() {
@@ -187,7 +191,7 @@ export class BotListComponent implements OnInit {
    */
   getAllFaqKbByProjectId() {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+      console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       this.faqkbList = faqKb;
 
       if (this.faqkbList) {
@@ -566,9 +570,9 @@ export class BotListComponent implements OnInit {
 
     } else if (botType === 'tilebot') {
       _botType = 'tilebot'
-      // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
+      this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
       // this.router.navigate(['project/' + this.project._id + '/createfaq', idFaqKb, _botType, 'en']);
-      this.router.navigate(['project/' + this.project._id + '/cds/', idFaqKb]);
+      
 
     } else {
       _botType = botType
@@ -577,6 +581,10 @@ export class BotListComponent implements OnInit {
 
     this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', idFaqKb, 'bot type ', botType);
 
+  }
+
+  goToCDS(idFaqKb: string, botType: string, botname: string) {
+  this.router.navigate(['project/' + this.project._id + '/cds/', idFaqKb]);
   }
 
 

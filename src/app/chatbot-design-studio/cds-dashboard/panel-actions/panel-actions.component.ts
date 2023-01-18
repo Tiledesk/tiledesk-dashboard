@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { Action, ActionAgent, Intent } from 'app/models/intent-model';
+import { Action, ActionAgent, ActionClose, ActionReply, Intent } from 'app/models/intent-model';
 
 
 @Component({
@@ -8,7 +8,7 @@ import { Action, ActionAgent, Intent } from 'app/models/intent-model';
   styleUrls: ['./panel-actions.component.scss']
 })
 export class PanelActionsComponent implements OnInit, OnChanges {
- 
+
 
   @Input() isOpenActionDrawer: boolean;
   @Input() intentSelected: Intent
@@ -19,7 +19,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit(): void {
-  
+
   }
 
   ngOnChanges() {
@@ -30,8 +30,8 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       this.isOpenActionDrawer = false
     }
 
-     console.log('[PANEL ACTION] isOpenActionDrawer ',this.isOpenActionDrawer)
-     console.log('[PANEL ACTION] intentSelected ',this.intentSelected)
+    console.log('[PANEL ACTION] isOpenActionDrawer ', this.isOpenActionDrawer)
+    console.log('[PANEL ACTION] intentSelected ', this.intentSelected)
     // if (this.isOpenActionDrawer === true)  {
     //   this.drawer.open()
     // } else if (this.isOpenActionDrawer === false)  {
@@ -44,41 +44,41 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     this.openActionDrawer.emit(this.isOpenActionDrawer);
   }
 
+
+
+
+
+
   actionSelected(action: string) {
     console.log('[PANEL ACTION] actionSelected ', action)
-    if (action === 'reply') {
-      let action = new Action()
-      action.type = 'reply'
-      action.body = {
-        text: '',
-        commands: [
-          {
-            type: 'message',
-            message: {
-              text: 'A chat message will be sent to the visitor',
-              type: 'text'
-            }
+  
+  
+    if (action === 'message') {
+      let action = new ActionReply();
+      action.commands = [
+        {
+          type: 'message',
+          message: {
+            text: 'A chat message will be sent to the visitor',
+            type: 'text'
           }
-        ]
-      }
+        }
+      ]
       this.intentSelected.actions.push(action)
     }
+   
+
     if (action === 'agenthandoff') {
-      let action = new Action()
-      action.type = 'agent'
+      let action = new ActionAgent()
+    
       this.intentSelected.actions.push(action)
     }
 
     if (action === 'close') {
-      let action = new Action()
-      action.type = 'close'
+      let action = new ActionClose()
+     
       this.intentSelected.actions.push(action)
     }
-
-    
-
   }
-
-
 
 }

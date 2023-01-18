@@ -37,6 +37,12 @@ export enum TYPE_MESSAGE {
     FRAME = 'frame'
 }
 
+export enum TYPE_ACTION {
+    REPLY = 'message', 
+    AGENT = 'agent',
+    CLOSE = 'close'
+}
+
 export const MESSAGE_METADTA_WIDTH = '100%';
 export const MESSAGE_METADTA_HEIGHT = '230px';
 export const TIME_WAIT_DEFAULT = 500;

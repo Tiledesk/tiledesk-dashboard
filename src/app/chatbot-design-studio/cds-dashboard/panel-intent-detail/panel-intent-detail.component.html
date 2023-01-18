@@ -1,7 +1,7 @@
 <div *ngIf = "elementIntentSelectedType === typeIntentElement?.ACTION">
     
     <appdashboard-action-reply
-        *ngIf = "elementSelected.type === 'reply'"
+        *ngIf = "elementSelected.type === 'message'"
         class="panel-response"
         [reply]="elementSelected.body"
         [showSpinner] = "showSpinner"

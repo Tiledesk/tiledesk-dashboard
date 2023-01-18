@@ -11,7 +11,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { HttpClient } from "@angular/common/http";
 
 
-import { Intent, Button, Action, Form } from '../../models/intent-model';
+import { Intent, Button, Action, Form, ActionReply } from '../../models/intent-model';
 import { TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
 import { Subject } from 'rxjs';
 import { FaqKbService } from 'app/services/faq-kb.service';
@@ -373,7 +373,7 @@ export class CdsDashboardComponent implements OnInit {
     console.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
     this.intentSelected = intent;
     const intentNameAlreadyCreated = this.listOfIntents.some((el) => {
-      return el.id ===  this.intentSelected.id
+      return el.id === this.intentSelected.id
     });
     console.log('[CDS DSHBRD]  intent name already saved', intentNameAlreadyCreated);
     // console.log
@@ -449,20 +449,16 @@ export class CdsDashboardComponent implements OnInit {
     this.CREATE_VIEW = true;
     console.log('[CDS DSBRD] addNewIntent  ')
     this.intentSelected = new Intent();
-    let action = new Action()
-    action.type = 'reply'
-    action.body = {
-      text: '',
-      commands: [
-        {
-          type: 'message',
-          message: {
-            text: 'A chat message will be sent to the visitor',
-            type: 'text'
-          }
+    let action = new ActionReply();
+    action.commands = [
+      {
+        type: 'message',
+        message: {
+          text: 'A chat message will be sent to the visitor',
+          type: 'text'
         }
-      ]
-    }
+      }
+    ]
 
     this.intentSelected.actions.push(action)
     // this.elementIntentSelected = {};

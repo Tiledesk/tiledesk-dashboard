@@ -58,16 +58,18 @@ export class Intent {
 
 export class Action {
     type: string;
-    body?: any;
+    // body?: any;
 }
 
 
-export class ActionReply {
+export class ActionReply extends Action {
     text?: string;
     //attributes: Attributes;
     commands: Command[];
     constructor(text?: string, commands?: Command[]) {
+        super();
         this.text = text ? text : '';
+        this.type = "message";
         this.commands = [];
         if (commands && commands.length > 0) {
             this.commands = commands;
@@ -76,21 +78,29 @@ export class ActionReply {
     }
 }
 
-export class ActionEmail {
-    type: "email"
-    body: {
-        to: string;
-        subject: string;
-        text: string;
+export class ActionEmail extends Action {
+    to: string;
+    subject: string;
+    text: string;
+    constructor(text?: string,) {
+        super();
+        this.text = text ? text : '';
+        this.type = "email";
     }
 }
 
-export class ActionAgent {
-    type: 'agent';
+export class ActionAgent extends Action{
+    constructor() {
+        super();
+        this.type = "agent";
+    }
 }
 
-export class ActionClose {
-    type: 'close';
+export class ActionClose extends Action{
+    constructor() {
+        super()
+        this.type = "close";
+    }
 }
 
 
