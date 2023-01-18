@@ -15,6 +15,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   intentName: string;
   intentNameResult = true;
   intentNameAlreadyExist = false
+ 
 
   constructor() { }
 
