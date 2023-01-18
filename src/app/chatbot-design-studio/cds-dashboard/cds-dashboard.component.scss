@@ -30,16 +30,14 @@ $margin-top-card: 30px;
     }
 }
 
-.cds-fulfillment {
-    width: 100%;
-}
-
 .cds-content {
     display: flex;
     width: 100%;
     overflow-y: auto;
 
-    cds-rules {
+    cds-rules,
+    cds-chatbot-details,
+    cds-fulfillment {
         width: 100%;
     }
 }

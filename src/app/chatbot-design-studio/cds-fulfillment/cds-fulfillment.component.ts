@@ -7,7 +7,7 @@ import { LoggerService } from './../../services/logger/logger.service';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'appdashboard-cds-fulfillment',
+  selector: 'cds-fulfillment',
   templateUrl: './cds-fulfillment.component.html',
   styleUrls: ['./cds-fulfillment.component.scss']
 })

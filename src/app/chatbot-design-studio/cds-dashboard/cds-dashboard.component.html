@@ -60,9 +60,9 @@
     </div>
 
     <ng-template #settings [ngOutletContext]="context">
-        <appdashboard-cds-chatbot-details [selectedChatbot]="selectedChatbot">
-
-        </appdashboard-cds-chatbot-details>
+        <cds-chatbot-details 
+            [selectedChatbot]="selectedChatbot">
+        </cds-chatbot-details>
     </ng-template>
 
     <ng-template #intents [ngOutletContext]="context">
@@ -110,9 +110,9 @@
     </ng-template>
 
     <ng-template #fulfillment [ngOutletContext]="context">
-        <appdashboard-cds-fulfillment class="cds-fulfillment"
+        <cds-fulfillment
             [chatbot]="selectedChatbot">
-        </appdashboard-cds-fulfillment>
+        </cds-fulfillment>
     </ng-template>
     <ng-template #training [ngOutletContext]="context">
         ... choice training...

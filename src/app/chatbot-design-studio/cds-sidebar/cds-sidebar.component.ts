@@ -30,6 +30,7 @@ export class CdsSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserRole();
+    this.goTo('intents')
   }
 
 

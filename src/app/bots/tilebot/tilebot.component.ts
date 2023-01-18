@@ -97,7 +97,6 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   storageBucket: string;
   showSpinnerInUploadImageBtn = false;
   botProfileImageExist: boolean;
-
   botImageHasBeenUploaded = false;
 
   botProfileImageurl: string;
