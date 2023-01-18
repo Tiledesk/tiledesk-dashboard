@@ -6,19 +6,23 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
   styleUrls: ['./answer.component.scss']
 })
 export class AnswerComponent implements OnInit , OnChanges{
-  @Input() answer: any;
+  @Input() intentSelected: any;
+  public answer: string;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.answer = this.intentSelected.answer
   }
 
   ngOnChanges() {
-    console.log('[INTENT-ANSWER] answer ' ,this.answer) 
+    console.log('[INTENT-ANSWER] intentSelected ' ,this.intentSelected) 
 
   }
 
-  onChangeText(text:string) { 
-    console.log('[INTENT-ANSWER] onChangeText text' , text) 
+  onChangeText(_answer:string) { 
+    // console.log('[INTENT-ANSWER] onChangeText text' , _answer) 
+    this.intentSelected.answer = _answer
   }
 
 }

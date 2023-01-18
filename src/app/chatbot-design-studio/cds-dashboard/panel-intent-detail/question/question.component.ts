@@ -9,7 +9,7 @@ import { Intent } from 'app/models/intent-model';
 })
 export class QuestionComponent implements OnInit, OnChanges {
   @Input() intentSelected: Intent;
-  question: string
+  public question: string
 
   constructor() { }
 
@@ -23,7 +23,7 @@ export class QuestionComponent implements OnInit, OnChanges {
   }
 
   onChangeText(_question:string) { 
-    console.log('[INTENT-QUESTION] onChangeText _question' , _question) 
+    // console.log('[INTENT-QUESTION] onChangeText _question' , _question) 
     this.intentSelected.question = _question
   }
 
