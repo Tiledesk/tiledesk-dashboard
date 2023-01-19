@@ -25,6 +25,7 @@ $margin-top-card: 30px;
     border-right: 2px solid #394f5a;
     width: 60px;
     transition: .3s;
+    display: flex;
     &.is_opened{
         width: 175px;
     }
@@ -166,12 +167,12 @@ $margin-top-card: 30px;
         justify-content: center;
         align-items: center;
         transition: .3s;
-
+        background-color: #0f172a;
         img {
             width: 15px;
         }
         &.is_opened{
-            width: 161px;
+            width: 175px;
             img{
                 width: 100px;
             }
@@ -187,12 +188,12 @@ $margin-top-card: 30px;
             z-index: 1050;
             width: 22px;
             height: 22px;
-            background: #1e293b;
+            // background: #1e293b;
             left: 49px;
             transition: .3s;
 
             &.is_opened {
-                left: 150px;
+                left: 164px;
             }
         }
 

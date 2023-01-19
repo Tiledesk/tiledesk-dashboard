@@ -36,10 +36,14 @@ export class RulesComponent implements OnInit {
   }
 
   getAllRules(){
-    console.log('rulessss', this.selectedChatbot)
     if(this.selectedChatbot.attributes && this.selectedChatbot.attributes['rules']){
       this.listOfRules = this.selectedChatbot.attributes['rules'] as Rule[]
     }
+  }
+
+  onRuleAdded(rule: Rule){
+    this.listOfRules.unshift(rule)
+    this.addClicked = false;
   }
 
 }

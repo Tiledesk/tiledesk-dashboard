@@ -451,7 +451,8 @@ export class FaqKbService {
 
   }
 
-  addRuleToChatbot(idBot: string, rule: any){
+
+  addRuleToChatbot(idBot: string, rule: any[]){
     this.logger.log('[FAQ-KB.SERV] - addRuleToChatbot idBot ', idBot)
     const httpOptions = {
       headers: new HttpHeaders({
@@ -464,7 +465,7 @@ export class FaqKbService {
     let url = this.SERVER_BASE_PATH + this.project._id + '/bots/'+idBot +'/attributes';
     this.logger.log('addRuleToChatbot BOT - URL ', url);
 
-    let body = {"rules": [rule]}
+    let body = {"rules": rule}
     this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
     console.log('[FAQ-KB.SERV] updateFaqKb - BODY ', url, body);
     return this._httpClient.patch(url, body, httpOptions)

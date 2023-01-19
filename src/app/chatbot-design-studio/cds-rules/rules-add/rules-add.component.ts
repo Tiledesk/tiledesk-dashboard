@@ -1,6 +1,3 @@
-import { Message } from './../../../services/websocket/ws-requests.service';
-import { query } from '@angular/animations';
-import { ProjectService } from 'app/services/project.service';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { Component, Input, OnInit, SimpleChanges, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,6 +5,7 @@ import { Intent } from 'app/models/intent-model';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Rule } from 'app/models/rule-model';
+
 @Component({
   selector: 'cds-rules-add',
   templateUrl: './rules-add.component.html',
@@ -21,7 +19,6 @@ export class RulesAddComponent implements OnInit {
   @Input() addMode: boolean = true
   @Output() onRuleAdded = new EventEmitter<Rule>();
 
-  @ViewChild('#create-rule-form', {static: false}) button: ElementRef
   
   ruleFormGroup: FormGroup
   autocompleteOptions: Array<string> = [];
@@ -116,26 +113,26 @@ export class RulesAddComponent implements OnInit {
     const failClassName    = 'loading-btn--fail';
     const stateDuration = 1500;
     if(this.ruleFormGroup.valid){
-      let rule = this.ruleFormGroup.value
-
-      // const rules = [ ...this.selectedChatbot.attributes['rules'], ...rule]
-      // console.log('rulessss', rules)
+      const rule = [this.ruleFormGroup.value]
+      const rules: Rule[] = [ ...this.selectedChatbot.attributes['rules'] as Rule[], ...rule]
       const button = this.el.nativeElement.querySelector('#create-rule-form')
+     
       //PENDING STATE
       button.classList.add(pendingClassName)
 
-      this.faqkbService.addRuleToChatbot(this.selectedChatbot._id, rule).subscribe((data)=> {
-        this.onRuleAdded.emit(rule)
-        //SUCCESS STATE
-        setTimeout(() => {
-          button.classList.remove(pendingClassName);
-          button.classList.add(successClassName);
+      this.faqkbService.addRuleToChatbot(this.selectedChatbot._id, rules).subscribe((data)=> {
         
-          window.setTimeout(() => button.classList.remove(successClassName), stateDuration);
-        }, stateDuration);
+        if(data){
+          //SUCCESS STATE
+          setTimeout(() => {
+            button.classList.remove(pendingClassName);
+            button.classList.add(successClassName);
+          
+            window.setTimeout(() => button.classList.remove(successClassName), stateDuration);
+          }, stateDuration);
 
-        console.log('rules added sucessfully-->', data)
-
+          this.onRuleAdded.emit(rule[0])
+        }
 
       }, (error)=> {
         //FAIL STATE
