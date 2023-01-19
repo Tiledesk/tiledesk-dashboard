@@ -299,8 +299,8 @@ const routes: Routes = [
 
   { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: CdsDashboardComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: CdsDashboardComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
   // -----------------------------------------
   // NEW  replace the path ...createfaq and ...editfaq

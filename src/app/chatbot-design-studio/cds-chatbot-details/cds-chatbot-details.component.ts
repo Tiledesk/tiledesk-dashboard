@@ -558,21 +558,21 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
 
 
   // Section Import /  export method
-  exportFaqToJSON() {
-    const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-faq-to-json-btn');
-    exportFaqToJsonBtnEl.blur();
-    this.faqService.exportFaqsToJSON(this.id_faq_kb).subscribe((faq: any) => {
-      console.log('[CDS-CHATBOT-DTLS] - EXPORT BOT TO JSON - FAQS', faq)
-      // console.log('[CDS-CHATBOT-DTLS] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
-      if (faq) {
-        this.downloadObjectAsJson(faq, faq.name);
-      }
-    }, (error) => {
-      console.error('[CDS-CHATBOT-DTLS] - EXPORT BOT TO JSON - ERROR', error);
-    }, () => {
-      console.log('[CDS-CHATBOT-DTLS] - EXPORT BOT TO JSON - COMPLETE');
-    });
-  }
+  // exportFaqToJSON() {
+  //   const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-faq-to-json-btn');
+  //   exportFaqToJsonBtnEl.blur();
+  //   this.faqService.exportFaqsToJSON(this.id_faq_kb).subscribe((faq: any) => {
+  //     console.log('[CDS-CHATBOT-DTLS] - EXPORT BOT TO JSON - FAQS', faq)
+  //     // console.log('[CDS-CHATBOT-DTLS] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
+  //     if (faq) {
+  //       this.downloadObjectAsJson(faq, faq.name);
+  //     }
+  //   }, (error) => {
+  //     console.error('[CDS-CHATBOT-DTLS] - EXPORT BOT TO JSON - ERROR', error);
+  //   }, () => {
+  //     console.log('[CDS-CHATBOT-DTLS] - EXPORT BOT TO JSON - COMPLETE');
+  //   });
+  // }
 
   downloadObjectAsJson(exportObj, exportName) {
     var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
@@ -584,35 +584,35 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     downloadAnchorNode.remove();
   }
 
-  fileChangeUploadJSON(event) {
-    console.log('[CDS-CHATBOT-DTLS] - fileChangeUploadJSON $event ', event);
-    let fileJsonToUpload = ''
-    console.log('[CDS-CHATBOT-DTLS] - fileChangeUploadJSON $event  target', event.target);
-    const selectedFile = event.target.files[0];
-    const fileReader = new FileReader();
-    fileReader.readAsText(selectedFile, "UTF-8");
-    fileReader.onload = () => {
-      fileJsonToUpload = JSON.parse(fileReader.result as string)
-      console.log('fileJsonToUpload intents', fileJsonToUpload['intents']);
-    }
-    fileReader.onerror = (error) => {
-      console.log(error);
-    }
+  // fileChangeUploadJSON(event) {
+  //   console.log('[CDS-CHATBOT-DTLS] - fileChangeUploadJSON $event ', event);
+  //   let fileJsonToUpload = ''
+  //   console.log('[CDS-CHATBOT-DTLS] - fileChangeUploadJSON $event  target', event.target);
+  //   const selectedFile = event.target.files[0];
+  //   const fileReader = new FileReader();
+  //   fileReader.readAsText(selectedFile, "UTF-8");
+  //   fileReader.onload = () => {
+  //     fileJsonToUpload = JSON.parse(fileReader.result as string)
+  //     console.log('fileJsonToUpload intents', fileJsonToUpload['intents']);
+  //   }
+  //   fileReader.onerror = (error) => {
+  //     console.log(error);
+  //   }
 
-    this.faqService.importFaqFromJSON(this.id_faq_kb, fileJsonToUpload).subscribe((res: any) => {
-      console.log('[CDS-CHATBOT-DTLS] - IMPORT BOT FROM JSON - ', res)
+  //   this.faqService.importFaqFromJSON(this.id_faq_kb, fileJsonToUpload).subscribe((res: any) => {
+  //     console.log('[CDS-CHATBOT-DTLS] - IMPORT BOT FROM JSON - ', res)
 
-      // if (faq) {
-      //   this.downloadFile(faq, 'faqs.json');
-      // }
-    }, (error) => {
-      console.error('[CDS-CHATBOT-DTLS] -  IMPORT BOT FROM JSON- ERROR', error);
+  //     // if (faq) {
+  //     //   this.downloadFile(faq, 'faqs.json');
+  //     // }
+  //   }, (error) => {
+  //     console.error('[CDS-CHATBOT-DTLS] -  IMPORT BOT FROM JSON- ERROR', error);
 
-      this.notify.showWidgetStyleUpdateNotification("thereHasBeenAnErrorProcessing", 4, 'report_problem');
-    }, () => {
-      console.log('[CDS-CHATBOT-DTLS] - IMPORT BOT FROM JSON - COMPLETE');
-    });
-  }
+  //     this.notify.showWidgetStyleUpdateNotification("thereHasBeenAnErrorProcessing", 4, 'report_problem');
+  //   }, () => {
+  //     console.log('[CDS-CHATBOT-DTLS] - IMPORT BOT FROM JSON - COMPLETE');
+  //   });
+  // }
 
 
   exportFaqsToCsv() {
