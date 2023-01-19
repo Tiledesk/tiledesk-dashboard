@@ -1,3 +1,4 @@
+import { Chatbot } from 'app/models/faq_kb-model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -225,6 +226,22 @@ export class FaqKbService {
       .get<FaqKb[]>(url, httpOptions)
   }
 
+  public getBotById(id: string): Observable<FaqKb> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.FAQKB_URL + id;
+    this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID - URL', url);
+
+    return this._httpClient
+      .get<FaqKb>(url, httpOptions)
+  }
+
 
   public createRasaBot(name: string, bottype: string, description: string) {
     const httpOptions = {
@@ -441,6 +458,23 @@ export class FaqKbService {
       .put(url, JSON.stringify(body), httpOptions)
   }
 
+  public updateChatbot(chatbot: Chatbot) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    let url = this.FAQKB_URL + chatbot._id;
+    this.logger.log('update BOT - URL ', url);
+    this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', chatbot);
+
+    return this._httpClient
+      .put(url, JSON.stringify(chatbot), httpOptions)
+  }
+
 
 
   getNumberOfMessages(idBot, bottype) {
@@ -464,6 +498,26 @@ export class FaqKbService {
 
     return this._httpClient.get(this.SERVER_BASE_PATH + this.project._id + "/analytics/messages/count", { headers: headers, params: params })
 
+  }
+
+
+  addRuleToChatbot(idBot: string, rule: any[]){
+    this.logger.log('[FAQ-KB.SERV] - addRuleToChatbot idBot ', idBot)
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + this.project._id + '/bots/'+idBot +'/attributes';
+    this.logger.log('addRuleToChatbot BOT - URL ', url);
+
+    let body = {"rules": rule}
+    this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
+    console.log('[FAQ-KB.SERV] updateFaqKb - BODY ', url, body);
+    return this._httpClient.patch(url, body, httpOptions)
   }
 
 

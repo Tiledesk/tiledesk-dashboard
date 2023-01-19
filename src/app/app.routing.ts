@@ -36,6 +36,7 @@ import { BotTypeSelectComponent } from './bots/bot-create/bot-type-select/bot-ty
 import { BotCreateComponent } from './bots/bot-create/bot-create.component';
 import { FaqComponent } from './bots/faq/faq.component';
 import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component';
+
 import { FaqTestComponent } from './bots/faq-test/faq-test.component';
 import { TemplatesComponent } from './bots/templates/templates.component';
 
@@ -129,6 +130,7 @@ import { ContactsComponent } from './contacts/contacts.component';
 // Lazy loading
 // import { ContactsComponent } from './contacts/contacts.component';
 // import { ContactsModule } from './contacts/contacts.module';
+import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component';
 
 
 const routes: Routes = [
@@ -291,13 +293,26 @@ const routes: Routes = [
   { path: 'project/:projectid/bots/prebuilt', component: NativeBotSelectTypeComponent, canActivate: [AuthGuard] },
   
   { path: 'project/:projectid/tilebot/general/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
+ 
   { path: 'project/:projectid/tilebot/fulfillment/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/tilebot/prebuilt', component: TilebotSelectTypeComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+
+  { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: CdsDashboardComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: CdsDashboardComponent, canActivate: [AuthGuard] },
+
+  // -----------------------------------------
+  // NEW  replace the path ...createfaq and ...editfaq
+  // -----------------------------------------
+  { path: 'project/:projectid/cds/:faqkbid', component: CdsDashboardComponent, canActivate: [AuthGuard] },
+  
+  { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
+
+  // old
+  // { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/_createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/_editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
   // TEST-FAQ PAGE
   // { path: 'project/:projectid/faq/test/:remoteFaqKbKey/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },

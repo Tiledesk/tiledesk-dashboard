@@ -1,0 +1,50 @@
+<div class="extensions-response">
+    <div class="delay-wrapper">
+        <appdashboard-delay-slider
+        [delayTime]="delayTime"
+        (changeDelayTime)="onChangeDelayTime($event)"
+        ></appdashboard-delay-slider>
+    </div>
+</div>
+
+
+    
+<div class="image-editor-wrapper">
+        
+        <div class="image-editor">
+        
+            <div class="response-controls">
+                <div class="control-button delete" (click)="onDeleteResponse()">
+                   <em class="material-icons">delete</em>
+               </div>
+               <div class="control-button" (click)="onMoveUpResponse()">
+                   <em class="material-icons">expand_less</em>
+               </div> 
+               <div class="control-button" (click)="onMoveDownResponse()">
+                   <em class="material-icons">expand_more</em>
+               </div>
+            </div>
+
+            <div class="response-image-uploader-wrapper">
+                <appdashboard-image-upload
+                    class="image-upload"
+                    [metadata] = response.metadata
+                ></appdashboard-image-upload>
+                <div *ngIf="response.metadata.src" class="control-button delete" (click)="onDeletePathElement()">
+                    <em class="material-icons">clear</em>
+                </div>
+            </div>
+
+            <div class="text-editor-drop">
+                <em class="material-icons">drag_indicator</em>
+            </div> 
+
+            <appdashboard-element-textarea
+                [limitCharsText]="limitCharsText"
+                [textMessage]="response.text"
+                (changeTextarea)="onChangeTextarea($event)"
+            ></appdashboard-element-textarea>
+
+        </div> 
+
+</div>

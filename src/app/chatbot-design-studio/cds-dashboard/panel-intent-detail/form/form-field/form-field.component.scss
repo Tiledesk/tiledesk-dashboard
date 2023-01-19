@@ -1,0 +1,121 @@
+/** LOCAL COLORS **/
+$color-withe: #ffffff;
+$color-blue: #3ea9f5;
+$color-light-gray: #d3d3d3;
+$color-text-select: rgb(118, 149, 165);
+$color-bck-box: #e7f3ff;
+$color-text-box: #566787;
+
+.card-content {
+    padding: 15px 0px;
+}
+
+// form.container {
+//     width: 100%;
+// }
+.form-fields {
+    padding: 10px 24px;
+    margin-top: 25px;
+}
+
+.form-fields-table > tbody > tr:hover {
+    background-color: rgba(30, 41, 59, 0.5) !important;
+}
+
+.form-fields-table tr.selected {
+    background-color: rgba(30, 41, 59, 0.5) !important;
+    border: 1px solid #5f6368!important;
+}
+
+.form-fields-table>thead>tr>th {
+    padding-bottom: 4px!important;
+}
+
+.form-fields-table {
+    display: table;
+    .label-field {
+        font-weight: 400;
+        font-size: 13px;
+        white-space: normal;
+        word-wrap: break-word;
+        color: #e8eaed;
+    }
+    thead {
+        width: 100%;
+        tr {
+            width: 100%;
+        }
+        .ff--column-th-span {
+            font-weight: 300;
+            color: #e8eaed;
+        }
+    }
+    tr.selected {
+        background-color: #f5f5f5;
+    }
+
+    .td-order {
+        margin: 0;
+        padding: 1px;
+        max-width: 20px;
+        width: 20px;
+        display: inline-block;
+        .material-icons {
+            font-size: 18px;
+            vertical-align: middle;
+            color: #3ea9f5;
+        }
+    }
+    .td-actions {
+        text-align: right;
+        padding: 0px;
+    }
+}
+
+.cdk-drag-preview {
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 16px;
+    position: relative;
+    height: inherit;
+
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    // background-color: yellowgreen;
+
+    .label-field {
+        font-weight: 400;
+        font-size: 13px;
+        white-space: normal;
+        word-wrap: break-word;
+        color: #e8eaed;
+    }
+
+    td {
+        margin: 0px;
+        padding: 0px;
+        vertical-align: top;
+    }
+    .td-actions {
+        display: none;
+    }
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-box:last-child {
+    border: none;
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

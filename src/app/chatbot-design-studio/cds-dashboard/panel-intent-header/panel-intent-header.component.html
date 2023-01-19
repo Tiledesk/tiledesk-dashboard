@@ -1,0 +1,25 @@
+<div class="header">
+    <div class="form-group" [ngClass]="{'is-error':intentNameResult === false || intentNameAlreadyExist}">
+        <i class="i-priority-color-mark" [ngClass]="{'has--error': intentNameResult === false || intentNameAlreadyExist }"></i>
+        <label 
+            class="control-label title"
+            [ngClass]="{'noDisplay':(intentName && intentName.length>0)}">
+            {{ 'EnterIntentName' | translate }}
+        </label>
+        <input 
+            type="text" 
+            [(ngModel)]="intentName" 
+            class="input form-control"
+            (blur) = "onBlurIntentName($event)"
+            (ngModelChange) = "onChangeIntentName($event)">
+            <div *ngIf="intentNameAlreadyExist" class="error---msg" > The intent name must be unique </div>
+        <button 
+            id="cds-save-intent-btn"
+            class="btn btn-primary btn-save" 
+            [disabled]="showSpinner"
+            type="button" 
+            (click)="onSaveIntent()">
+            {{ 'Save' | translate }}
+        </button>
+    </div>
+</div>

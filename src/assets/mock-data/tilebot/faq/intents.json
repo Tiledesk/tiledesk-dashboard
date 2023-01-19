@@ -1,0 +1,340 @@
+[
+    {
+      "webhook_enabled": false,
+      "enabled": true,
+      "topic": "default",
+      "status": "live",
+      "_id": "63862c078aed9b003511ceba",
+      "id_faq_kb": "63862c068aed9b003511cead",
+      "question": "\\start",
+      "answer": "Hello 👋🏻 I'm your virtual assistant 🤖 How can I help?\n* 💳 How to update my credit card?\n*  ✉️ How to change my email?\n* 📦 Returning\n* 🧑 Talk to agent",
+      "answers": [
+        {
+          "messages": ["answer 1"],
+          "delay": 0.8,
+          "buttons": []
+        }
+      ],
+      "intent_id": "",
+      "intent_display_name": "start",
+      "language": "en",
+      "id_project": "63862bf78aed9b003511ce20",
+      "createdBy": "5ab0f3fa57066e0014bfd71e",
+      "createdAt": "2022-11-29T15:57:59.020Z",
+      "updatedAt": "2022-11-29T15:57:59.020Z",
+      "__v": 0,
+      "faq_kb": [
+        {
+          "webhook_enabled": false,
+          "type": "tilebot",
+          "language": "en",
+          "public": false,
+          "_id": "63862c068aed9b003511cead",
+          "name": "29 nov 16:57",
+          "description": "",
+          "url": "https://tiledesk-server-pre.herokuapp.com/modules/tilebot/ext/63862c068aed9b003511cead",
+          "id_project": "63862bf78aed9b003511ce20",
+          "trashed": false,
+          "createdBy": "5ab0f3fa57066e0014bfd71e",
+          "createdAt": "2022-11-29T15:57:58.252Z",
+          "updatedAt": "2022-11-29T15:57:58.279Z",
+          "__v": 0
+        }
+      ],
+      "id": "63862c078aed9b003511ceba"
+    },
+    {
+      "webhook_enabled": false,
+      "enabled": true,
+      "topic": "default",
+      "status": "live",
+      "_id": "63862c078aed9b003511cebc",
+      "id_faq_kb": "63862c068aed9b003511cead",
+      "question": "defaultFallback",
+      "answer": "Can you please rephrase your question using keywords in the same message? Otherwise go back to the main menu. \n* Back to top tdAction:start\n* 🧑 Talk to agent",
+      "intent_id": "",
+      "intent_display_name": "defaultFallback",
+      "language": "en",
+      "id_project": "63862bf78aed9b003511ce20",
+      "createdBy": "5ab0f3fa57066e0014bfd71e",
+      "createdAt": "2022-11-29T15:57:59.025Z",
+      "updatedAt": "2022-11-29T15:57:59.025Z",
+      "__v": 0,
+      "faq_kb": [
+        {
+          "webhook_enabled": false,
+          "type": "tilebot",
+          "language": "en",
+          "public": false,
+          "_id": "63862c068aed9b003511cead",
+          "name": "29 nov 16:57",
+          "description": "",
+          "url": "https://tiledesk-server-pre.herokuapp.com/modules/tilebot/ext/63862c068aed9b003511cead",
+          "id_project": "63862bf78aed9b003511ce20",
+          "trashed": false,
+          "createdBy": "5ab0f3fa57066e0014bfd71e",
+          "createdAt": "2022-11-29T15:57:58.252Z",
+          "updatedAt": "2022-11-29T15:57:58.279Z",
+          "__v": 0
+        }
+      ],
+      "id": "63862c078aed9b003511cebc"
+    },
+    {
+      "webhook_enabled": false,
+      "enabled": true,
+      "topic": "default",
+      "status": "live",
+      "_id": "63862c078aed9b003511cebe",
+      "id_faq_kb": "63862c068aed9b003511cead",
+      "question": " ✉️ How to change my email?",
+      "answer": "Select Change my email button from your Account Settings - you'll be asked to provide your password and new email address. Then, verify your email to confirm your request\n* ↩️ Menu tdIntent:start",
+      "intent_id": "",
+      "intent_display_name": "1_️_how_to_change_my_email?",
+      "language": "en",
+      "id_project": "63862bf78aed9b003511ce20",
+      "createdBy": "5ab0f3fa57066e0014bfd71e",
+      "createdAt": "2022-11-29T15:57:59.025Z",
+      "updatedAt": "2022-11-29T15:57:59.025Z",
+      "__v": 0,
+      "faq_kb": [
+        {
+          "webhook_enabled": false,
+          "type": "tilebot",
+          "language": "en",
+          "public": false,
+          "_id": "63862c068aed9b003511cead",
+          "name": "29 nov 16:57",
+          "description": "",
+          "url": "https://tiledesk-server-pre.herokuapp.com/modules/tilebot/ext/63862c068aed9b003511cead",
+          "id_project": "63862bf78aed9b003511ce20",
+          "trashed": false,
+          "createdBy": "5ab0f3fa57066e0014bfd71e",
+          "createdAt": "2022-11-29T15:57:58.252Z",
+          "updatedAt": "2022-11-29T15:57:58.279Z",
+          "__v": 0
+        }
+      ],
+      "id": "63862c078aed9b003511cebe"
+    },
+    {
+      "webhook_enabled": false,
+      "enabled": true,
+      "topic": "default",
+      "status": "live",
+      "_id": "63862c078aed9b003511cebd",
+      "id_faq_kb": "63862c068aed9b003511cead",
+      "question": "💳 How to update my credit card?",
+      "answer": "You can update your billing info in the Subscription section of your account\n* ↩️ Menu tdIntent:start",
+      "intent_id": "",
+      "intent_display_name": "0_how_to_update_my_credit_card?",
+      "language": "en",
+      "id_project": "63862bf78aed9b003511ce20",
+      "createdBy": "5ab0f3fa57066e0014bfd71e",
+      "createdAt": "2022-11-29T15:57:59.025Z",
+      "updatedAt": "2022-11-29T15:57:59.025Z",
+      "__v": 0,
+      "faq_kb": [
+        {
+          "webhook_enabled": false,
+          "type": "tilebot",
+          "language": "en",
+          "public": false,
+          "_id": "63862c068aed9b003511cead",
+          "name": "29 nov 16:57",
+          "description": "",
+          "url": "https://tiledesk-server-pre.herokuapp.com/modules/tilebot/ext/63862c068aed9b003511cead",
+          "id_project": "63862bf78aed9b003511ce20",
+          "trashed": false,
+          "createdBy": "5ab0f3fa57066e0014bfd71e",
+          "createdAt": "2022-11-29T15:57:58.252Z",
+          "updatedAt": "2022-11-29T15:57:58.279Z",
+          "__v": 0
+        }
+      ],
+      "id": "63862c078aed9b003511cebd"
+    },
+    {
+      "webhook_enabled": false,
+      "enabled": true,
+      "topic": "default",
+      "status": "live",
+      "_id": "63862c078aed9b003511cebf",
+      "id_faq_kb": "63862c068aed9b003511cead",
+      "question": "📦 Returning",
+      "answer": "We accept returns of unopened products up to 30 days following the purchase date\n* ↩️ Menu tdIntent:start",
+      "intent_id": "",
+      "intent_display_name": "2_returning",
+      "language": "en",
+      "id_project": "63862bf78aed9b003511ce20",
+      "createdBy": "5ab0f3fa57066e0014bfd71e",
+      "createdAt": "2022-11-29T15:57:59.025Z",
+      "updatedAt": "2022-11-29T15:57:59.025Z",
+      "__v": 0,
+      "faq_kb": [
+        {
+          "webhook_enabled": false,
+          "type": "tilebot",
+          "language": "en",
+          "public": false,
+          "_id": "63862c068aed9b003511cead",
+          "name": "29 nov 16:57",
+          "description": "",
+          "url": "https://tiledesk-server-pre.herokuapp.com/modules/tilebot/ext/63862c068aed9b003511cead",
+          "id_project": "63862bf78aed9b003511ce20",
+          "trashed": false,
+          "createdBy": "5ab0f3fa57066e0014bfd71e",
+          "createdAt": "2022-11-29T15:57:58.252Z",
+          "updatedAt": "2022-11-29T15:57:58.279Z",
+          "__v": 0
+        }
+      ],
+      "id": "63862c078aed9b003511cebf"
+    },
+    {
+      "webhook_enabled": false,
+      "enabled": true,
+      "topic": "default",
+      "status": "live",
+      "_id": "63862c078aed9b003511cec0",
+      "id_faq_kb": "63862c068aed9b003511cead",
+      "question": "🧑 Talk to agent",
+      "answer": "We are connecting you with an operator 🧑🏼‍🦰⏱\n\\agent",
+      "intent_id": "",
+      "intent_display_name": "3_talk_to_agent",
+      "language": "en",
+      "id_project": "63862bf78aed9b003511ce20",
+      "createdBy": "5ab0f3fa57066e0014bfd71e",
+      "createdAt": "2022-11-29T15:57:59.025Z",
+      "updatedAt": "2022-11-29T15:57:59.025Z",
+      "__v": 0,
+      "faq_kb": [
+        {
+          "webhook_enabled": false,
+          "type": "tilebot",
+          "language": "en",
+          "public": false,
+          "_id": "63862c068aed9b003511cead",
+          "name": "29 nov 16:57",
+          "description": "",
+          "url": "https://tiledesk-server-pre.herokuapp.com/modules/tilebot/ext/63862c068aed9b003511cead",
+          "id_project": "63862bf78aed9b003511ce20",
+          "trashed": false,
+          "createdBy": "5ab0f3fa57066e0014bfd71e",
+          "createdAt": "2022-11-29T15:57:58.252Z",
+          "updatedAt": "2022-11-29T15:57:58.279Z",
+          "__v": 0
+        }
+      ],
+      "id": "63862c078aed9b003511cec0"
+    },
+    {
+      "webhook_enabled": false,
+      "enabled": true,
+      "topic": "default",
+      "status": "live",
+      "_id": "63872f0d7007d9003df3a71f",
+      "id_faq_kb": "63862c068aed9b003511cead",
+      "question": "domanda",
+      "answer": "risposta",
+      "id_project": "63862bf78aed9b003511ce20",
+      "language": "en",
+      "intent_display_name": "nomeintent",
+      "createdBy": "5ab0f3fa57066e0014bfd71e",
+      "intent_id": "2f4c40a9-f436-4556-b1b1-593ab2876fff",
+      "createdAt": "2022-11-30T10:23:09.934Z",
+      "updatedAt": "2022-11-30T10:23:09.934Z",
+      "__v": 0,
+      "faq_kb": [
+        {
+          "webhook_enabled": false,
+          "type": "tilebot",
+          "language": "en",
+          "public": false,
+          "_id": "63862c068aed9b003511cead",
+          "name": "29 nov 16:57",
+          "description": "",
+          "url": "https://tiledesk-server-pre.herokuapp.com/modules/tilebot/ext/63862c068aed9b003511cead",
+          "id_project": "63862bf78aed9b003511ce20",
+          "trashed": false,
+          "createdBy": "5ab0f3fa57066e0014bfd71e",
+          "createdAt": "2022-11-29T15:57:58.252Z",
+          "updatedAt": "2022-11-29T15:57:58.279Z",
+          "__v": 0
+        }
+      ],
+      "id": "63872f0d7007d9003df3a71f"
+    }, 
+    {
+      "reply": {
+        "text": "Hello 👋. I'm a bot 🤖 I'm beautiful Do you need help I can really help you with joy!",
+        "attributes": {
+          "commands": [
+            {
+              "type": "message",
+              "message": {
+                "text": "Hello 👋. I'm a bot 🤖",
+                "type": "text"
+              }
+            },
+            {
+              "type": "wait",
+              "time": 500
+            },
+            {
+              "type": "message",
+              "message": {
+                "text": "I'm beautiful",
+                "type": "text"
+              }
+            },
+            {
+              "type": "wait",
+              "time": 1000
+            },
+            {
+              "type": "message",
+              "message": {
+                "text": "Do you need help?",
+                "type": "text"
+              }
+            },
+            {
+              "type": "wait",
+              "time": 2000
+            },
+            {
+              "type": "message",
+              "message": {
+                "text": "I can really help you with joy!",
+                "type": "text",
+                "attributes": {
+                  "attachment": {
+                    "type": "template",
+                    "buttons": [
+                      {
+                        "type": "url",
+                        "value": "Get Help",
+                        "link": "https://gethelp.tiledesk.com/articles/install-widget-on-your-website/",
+                        "target": "self"
+                      },
+                      {
+                        "type": "url",
+                        "value": "Wikipedia",
+                        "link": "https://it.m.wikipedia.org/wiki/E_Street_Band",
+                        "target": "self"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "question": "question test3",
+      "answer": "answer test3",
+      "id_faq_kb": "63862c068aed9b003511cead",
+      "intent_display_name": "Test3"
+    }
+  ]

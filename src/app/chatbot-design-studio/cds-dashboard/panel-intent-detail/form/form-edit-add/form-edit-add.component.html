@@ -1,0 +1,153 @@
+<div class="tilebot-add-edit-form" [ngClass]="{'active':showForm}">
+    <div class="form-field container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" [ngClass]="{'is-error':nameResult === false}">
+                    <label class="control-label">
+                        {{ 'AddIntentPage.ParameterName' | translate }}
+                    </label>
+                    <input type="text" class="input form-control" [(ngModel)]="fieldName"
+                        (ngModelChange)="onChangeParameterName($event)" (focus)="displayMessage('field_name')"
+                        style="border-radius: 5px;" />
+                </div>
+            </div>
+
+            <!-- <div style="display: none;" class="col-md-6">
+
+                <div class="form-group ng-select"
+                    [ngClass]="{'is-error':typeResult === false, 'is-placeholder':inputTypePlaceholderClass === true}">
+                    <label class="control-label">
+                        {{ 'Type' | translate }}
+                    </label>
+                    <div class="selectFormModel">
+                        <ng-select class="form-control-select" [items]="modelsOfType" bindLabel="label"
+                            bindValue="value" [searchable]=false [clearable]=false [(ngModel)]="fieldType"
+                            (blur)="displayPlaceholder(true)"
+                            (focus)="displayPlaceholder(false); displayMessage('field_type')"
+                            (change)="onChangeTypeField($event.value)">
+                        </ng-select>
+                    </div>
+                </div>
+            </div> -->
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" [ngClass]="{'is-error':labelResult === false}">
+                    <label class="control-label">
+                        {{ 'AddIntentPage.Label' | translate }}
+                    </label>
+                    <textarea name="field_label" [(ngModel)]="fieldLabel" rows="3" style="resize: vertical;"
+                        class="form-control" type="text" (focus)="displayMessage('field_label')"
+                        style="border-radius: 5px;line-height: 14px;">
+                    </textarea>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <mat-accordion>
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header style="height: 40px !important;">
+                            <mat-panel-title>
+                                <h4 style="color: #8ab4f8;">
+                                    Validation field
+                                </h4>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div *ngIf="showRegexField" class="field-validation" style="margin-top: 16px;">
+                            <div  class="col-md-4">
+
+                                <div class="form-group ng-select"
+                                [ngClass]="{'is-error':typeResult === false, 'is-placeholder':inputTypePlaceholderClass === true}">
+                                <label class="control-label custom-control-label">
+                                    {{ 'Type' | translate }}
+                                </label>
+                                <div class="selectFormModel">
+                                    <ng-select class="form-control-select" [items]="modelsOfType" bindLabel="label"
+                                        bindValue="value" [searchable]=false [clearable]=false [(ngModel)]="fieldType"
+                                        (blur)="displayPlaceholder(true)"
+                                        (focus)="displayPlaceholder(false); displayMessage('field_type')"
+                                        (change)="onChangeTypeField($event.value)" placeholder="Select field type">
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            </div>
+                            <div  class="col-md-8">
+                                <div class="form-group"
+                                    [ngClass]="{'is-error':regexResult === false}">
+                                    <label class="control-label custom-control-label">
+                                        {{ 'AddIntentPage.AddCustomRegex' | translate }}
+                                    </label>
+                                    <div class="input-prefix"> / </div>
+                                    <input type="text" class="input form-control" [(ngModel)]="fieldRegex"
+                                        (focus)="displayMessage('field_regex')"
+                                        placeholder="{{ 'AddIntentPage.AddCustomRegex' | translate }}" style="padding-left: 18px;
+                                    padding-right: 18px; border-radius: 5px;">
+                                    <div class="input-suffix"> / </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div *ngIf="fieldType" class="col-md-12">
+                            <div class="form-group" [ngClass]="{'is-error':errorLabelResult === false}">
+                                <label class="control-label custom-control-label">
+                                    {{ 'AddIntentPage.ErrorMessage' | translate }}
+                                </label>
+                                <textarea type="text" class="input form-control" [(ngModel)]="fieldErrorLabel"
+                                    (focus)="displayMessage('field_error')"
+                                    style="border-radius: 5px;line-height: 14px;" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+
+
+        <div *ngIf="displayInfoMessage" class="row input-wrapper">
+            <div class="col-sm-12">
+                <div class="info-message">
+                    <em class="material-icons">info</em>
+                    <span [innerHTML]="infoMessage"></span>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="form-group form-footer">
+        <button *ngIf="displayAddForm === true" class="btn btn-light" type="button" (click)="close()">
+            {{ 'Cancel' | translate }}
+        </button>
+        <button *ngIf="displayAddForm === true" class="btn btn-primary" type="submit" (click)="save()">
+            {{ 'Add' | translate}}
+        </button>
+
+        <button id="edit-form-builder-field" *ngIf="displayEditForm === true" class="btn btn-primary edit-form"
+            type="submit" (click)="save()">
+            <!-- {{ 'Edit' | translate}} -->
+            <span class="icon-label">Done</span>
+            <span class="icon">
+                <i class="material-icons">
+                    done
+                </i>
+            </span>
+        </button>
+
+        <!-- <button class="btn btn-primary edit-form">
+            <span class="icon-label">Done</span>
+            <span class="icon">
+                <i class="material-icons">
+                    done
+                </i>
+            </span>
+        </button> -->
+    </div>
+</div>
