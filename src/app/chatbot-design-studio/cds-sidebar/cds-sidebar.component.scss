@@ -1,4 +1,5 @@
 @import "./src/assets/sass/md/_variables.scss";
+@import "./src/assets/sass/cds/_variables.scss";
 
 .settings-sidebar-wpr {
     position: relative;
@@ -207,7 +208,7 @@ li > a {
     }
 
     .item-icon {
-        color: #ecb606b0;
+        color: $icon-color;
     }
 
 }
@@ -217,7 +218,7 @@ li > a {
 }
 
 .section:active {
-    background-color: #ecb606b0;
+    background-color: $icon-color;
 
     .item-icon {
         color: white;
@@ -225,7 +226,7 @@ li > a {
 }
 
 .is_active {
-    background-color: #ecb606b0;
+    background-color: $icon-color;
 
     .item-icon {
         color: white;

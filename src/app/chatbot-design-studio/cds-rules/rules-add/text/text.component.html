@@ -18,9 +18,8 @@
             <div class="input-prefix" *ngIf="customPrefix"> / </div>
             <input matInput
                 [class.customPrefix]="customPrefix"
-                [formControl]="myControl"
+                [formControl]="control"
                 cdkTextareaAutosize
-                [(ngModel)]="textMessage"
                 [maxlength]="limitCharsText"
                 cdkAutosizeMinRows="1"
                 cdkAutosizeMaxRows="5"

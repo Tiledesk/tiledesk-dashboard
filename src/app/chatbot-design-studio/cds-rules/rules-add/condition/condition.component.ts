@@ -8,7 +8,6 @@ import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular
 })
 export class ConditionComponent implements OnInit {
 
-  // @Input() condition: string;
   @Input() condition: FormControl;
   @Output() onChangeCondtion = new EventEmitter<string>();
 
@@ -32,60 +31,11 @@ export class ConditionComponent implements OnInit {
     {name: 'custom', value: 'custom',checked: false},
   ]
 
-  keywords = ['angular', 'how-to', 'tutorial', 'accessibility'];
-  formControl = new FormControl(['angular']);
-
   constructor(private rootFormGroup: FormGroupDirective,) { }
 
   ngOnInit(): void {
     this.conditionsForm = this.rootFormGroup.control.get('when') as FormGroup;
-    console.log('changessss', this.conditionsForm)
 
-  }
-
-  onRadioButtonChange(event){
-    console.log('radio selectedddd-->', event)
-    this.regexOption = event.value
-    this.conditionsForm.patchValue({'urlMatches': this.buildRegex(this.regexOption, this.text)})
-    // this.onChangeCondtion.next(event.value)
-  }
-
-  onChangeText(text: string){
-    console.log('text changedd-->', text)
-    if(text){
-      this.text = text;
-      this.conditionsForm.patchValue({'urlMatches': this.buildRegex(this.regexOption, text)})
-    }
-    console.log('onChangeText form', this.conditionsForm)
-  }
-
-
-  onClickChip(chip, index: number){
-    this.chips.forEach(el => {
-      if(el.name === chip.name)
-        el.selected = true
-      else
-        el.selected = false
-    })
-    this.conditionsForm.patchValue({'triggerEvery': chip.value})
-    console.log('onClickChip form', this.conditionsForm)
-  }
-
-
-
-  buildRegex(option: string, text: string): string{
-    let regex = text
-    if(option === 'starts'){
-      regex = '^(' + text + ').*' 
-    }else if (option === 'ends'){
-      regex = '^.*(' + text + ')$'
-    }else if(option === 'contains'){
-      regex = '^.*(' + text + ').*$'
-    }else if(option === 'custom'){
-      regex = text
-    }
-
-    return regex
   }
 
 }

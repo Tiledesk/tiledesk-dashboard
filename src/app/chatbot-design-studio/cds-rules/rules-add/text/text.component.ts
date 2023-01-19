@@ -1,6 +1,6 @@
 import { Form } from './../../../../models/intent-model';
 import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroupDirective } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -11,25 +11,25 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class TextComponent implements OnInit {
 
-  @Input() textMessage: string;
+  // @Input() textMessage: string;
+  @Input() control: FormControl;
   @Input() customPrefix: string;
   @Input() limitCharsText: number = 200;
   @Input() autocompleteOptions: string[] = [];
   @Output() onChange = new EventEmitter<string>();
   
   filteredOptions: Observable<string[]>;
-  myControl = new FormControl('');
-  constructor(private rootFormGroup: FormGroupDirective) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredOptions = this.control.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || ''))
     );
   }
 
   onChangeText(text: string){
-    this.textMessage = text
+    // this.textMessage = text
     this.onChange.emit(text)
   }
 

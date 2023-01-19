@@ -12,7 +12,7 @@
 
 
 <div class="cds-header">
-    <div class="header-left" [class.is_opened]="IS_OPEN" (click)="goBack()">
+    <div class="header-left" [class.is_opened]="IS_OPEN">
         <img *ngIf="!IS_OPEN" src="/assets/img/logos/tiledesk_logo_white_small.svg">
         <img *ngIf="IS_OPEN" src="/assets/img/logos/tiledesk-logo_new_white.svg">
     </div>
@@ -27,7 +27,14 @@
             </span>
         </div>
         <!-- <i class="material-icons cds-btn-back" (click)="goBack()">keyboard_arrow_left</i> -->
-        <div class="header-title">Chatbot design studio</div>
+        <div class="header-title">{{ selectedChatbot?.name }}</div>
+        <div class="cds-close-btn-wpr">
+            <button class="btn pull-right cds-close-btn" (click)="goBack()">
+                <span class="material-icons cds-close-btn-icon">
+                    clear
+                </span>
+            </button>
+        </div>
     </div>
 
 
@@ -57,10 +64,7 @@
         </ng-container>
     </div>
 
-    <ng-template #settings [ngOutletContext]="context">
-        <cds-chatbot-details [selectedChatbot]="selectedChatbot">
-        </cds-chatbot-details>
-    </ng-template>
+
 
     <ng-template #intents [ngOutletContext]="context">
         <div class="box-left">
@@ -90,15 +94,10 @@
                     (openActionDrawer)=onOpenActionDrawer($event) [intentSelected]="intentSelected">
                 </appdashboard-panel-actions>
 
-                <appdashboard-panel-intent-detail 
-                    *ngIf=elementIntentSelected 
-                    class="panel-intent-detail"
-                    [listOfActions]="listOfActions" 
-                    [elementIntentSelected]="elementIntentSelected"
-                    [intentSelected]="intentSelected"
-                    [showSpinner]="showSpinner" 
-                    (openButtonPanel)=onOpenButtonPanel($event)
-                ></appdashboard-panel-intent-detail>
+                <appdashboard-panel-intent-detail *ngIf=elementIntentSelected class="panel-intent-detail"
+                    [listOfActions]="listOfActions" [elementIntentSelected]="elementIntentSelected"
+                    [intentSelected]="intentSelected" [showSpinner]="showSpinner"
+                    (openButtonPanel)=onOpenButtonPanel($event)></appdashboard-panel-intent-detail>
             </div>
 
         </div>
@@ -112,10 +111,13 @@
         ... choice training...
     </ng-template>
     <ng-template #rules [ngOutletContext]="context">
-        <cds-rules 
-            [listOfIntents]="listOfIntents" 
-            [selectedChatbot]="selectedChatbot">
+        <cds-rules [listOfIntents]="listOfIntents" [selectedChatbot]="selectedChatbot">
         </cds-rules>
+    </ng-template>
+
+    <ng-template #settings [ngOutletContext]="context">
+        <cds-chatbot-details [selectedChatbot]="selectedChatbot">
+        </cds-chatbot-details>
     </ng-template>
 
 </div>

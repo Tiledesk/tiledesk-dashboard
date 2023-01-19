@@ -303,7 +303,7 @@
                         
                       <button *ngIf="faqkb?.type === 'tilebot' && dev_mode === true" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}"
                         class="btn btn-primary btn-simple btn-xs" (click)='goToCDS(faqkb?._id, faqkb?.type,  faqkb?.name)'>
-                        <i class="material-icons">rocket_launch</i>
+                        <i class="material-icons" style="color: rgb(0, 0, 0);">rocket_launch</i>
                       </button>
 
                         <button *ngIf="!faqkb?.is_system_identity_bot" type="button" rel="tooltip"

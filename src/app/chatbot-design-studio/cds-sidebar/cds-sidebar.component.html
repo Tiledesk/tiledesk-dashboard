@@ -1,43 +1,7 @@
 <div *ngIf="projectID" class="settings-sidebar-wpr" [class.is_opened]="extendedWidth">
     <ul class="settings-sidebar" style="padding-left: 0px;list-style: none;">
 
-        <!-- -------------------------------------------------------- -->
-        <!--  @ Bot general settings  -->
-        <!-- -------------------------------------------------------- -->
-        <ng-container *ngIf="USER_ROLE !== 'agent'">
-            <li [ngClass]="{'active-item': GENERAL_ROUTE_IS_ACTIVE}" (click)="goTo('settings')"
-                matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'General' | translate}}"
-                #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
-
-                <div class="sidebar-bot-profile-img-wpr" style="width: 0%;">
-                    <img *ngIf="botProfileImageExist === true || botImageHasBeenUploaded === true"
-                        class="sidebar-bot-profile-img" [src]="botProfileImageurl"
-                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
-
-                    <img *ngIf="botProfileImageExist === false && botImageHasBeenUploaded !== true"
-                        class="sidebar-bot-profile-img" src="assets/img/avatar_bot_tiledesk.svg" />
-                </div>
-                <a>
-                    <p *ngIf="extendedWidth === true" class="custom_paragraph"
-                        style="position: relative;left: 27px;margin-top: 8px;">
-                        {{ faqKb_name_truncated }}
-                        <!-- matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'BotLanguage' | translate}}"
-                        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" -->
-                        <span class="bot-lang-badge">
-                            {{ bot_lang_in_badge }}
-                        </span>
-                    </p>
-
-                    <div class="settings-icon-wpr"
-                        style="float: right;height: 30px; width: 30px; position: relative;top: 5px;">
-                        <i *ngIf="extendedWidth === true" class="material-icons-outlined settings-sidebar-icons">
-                            settings
-                        </i>
-                    </div>
-                </a>
-            </li>
-
-        </ng-container>
+        
 
         <!-- ------------------------------------------------------- -->
         <!-- @ Bot Intents -->
@@ -113,6 +77,45 @@
                     </p>
                 </a>
             </li>
+        </ng-container>
+
+
+        <!-- -------------------------------------------------------- -->
+        <!--  @ Bot general settings  -->
+        <!-- -------------------------------------------------------- -->
+        <ng-container *ngIf="USER_ROLE !== 'agent'">
+            <li [ngClass]="{'active-item': GENERAL_ROUTE_IS_ACTIVE}" (click)="goTo('settings')"
+                matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'General' | translate}}"
+                #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+
+                <div class="sidebar-bot-profile-img-wpr" style="width: 0%;">
+                    <img *ngIf="botProfileImageExist === true || botImageHasBeenUploaded === true"
+                        class="sidebar-bot-profile-img" [src]="botProfileImageurl"
+                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                    <img *ngIf="botProfileImageExist === false && botImageHasBeenUploaded !== true"
+                        class="sidebar-bot-profile-img" src="assets/img/avatar_bot_tiledesk.svg" />
+                </div>
+                <a>
+                    <p *ngIf="extendedWidth === true" class="custom_paragraph"
+                        style="position: relative;left: 27px;margin-top: 8px;">
+                        {{ faqKb_name_truncated }}
+                        <!-- matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'BotLanguage' | translate}}"
+                        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" -->
+                        <span class="bot-lang-badge">
+                            {{ bot_lang_in_badge }}
+                        </span>
+                    </p>
+
+                    <div class="settings-icon-wpr"
+                        style="float: right;height: 30px; width: 30px; position: relative;top: 5px;">
+                        <i *ngIf="extendedWidth === true" class="material-icons-outlined settings-sidebar-icons">
+                            settings
+                        </i>
+                    </div>
+                </a>
+            </li>
+
         </ng-container>
 
     </ul>

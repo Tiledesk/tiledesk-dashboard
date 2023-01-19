@@ -1,3 +1,4 @@
+import { LoggerService } from 'app/services/logger/logger.service';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { Component, Input, OnInit, SimpleChanges, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
@@ -22,14 +23,21 @@ export class RulesAddComponent implements OnInit {
   
   ruleFormGroup: FormGroup
   autocompleteOptions: Array<string> = [];
-
   constructor(private formBuilder: FormBuilder,
+              private logger: LoggerService,
               private el: ElementRef,
               private faqkbService: FaqKbService) { }
 
   ngOnInit(): void {
     this.ruleFormGroup = this.buildForm();
+    this.ruleFormGroup.valueChanges.subscribe(form => {
+      this.logger.debug('[RULES-ADD] ruleFormGroup changed-->', form)
+      if(form && (form.when.regexOption !== '' || form.when.text !== '')){
+        this.ruleFormGroup.controls['when'].patchValue({'urlMatches': this.buildRegex(form.when.regexOption, form.when.text)}, {emitEvent: false})
+      }
+    })
     if(this.selectedRule){
+      this.logger.debug('[RULES-ADD] selectedRule-->', this.selectedRule)
       this.setFormValue()
     }
   }
@@ -46,6 +54,8 @@ export class RulesAddComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.nullValidator],
       when: this.formBuilder.group({
+        regexOption: ['starts', Validators.required],
+        text: ['', Validators.required],
         urlMatches: ['', Validators.required],
         triggerEvery: ['', Validators.required]
       }),
@@ -64,12 +74,28 @@ export class RulesAddComponent implements OnInit {
     })
   }
 
+  buildRegex(option: string, text: string): string{
+    let regex = text
+    if(option === 'starts'){
+      regex = '^(' + text + ').*' 
+    }else if (option === 'ends'){
+      regex = '^.*(' + text + ')$'
+    }else if(option === 'contains'){
+      regex = '^.*(' + text + ').*$'
+    }else if(option === 'custom'){
+      regex = '/' + text + '/'
+    }
+    return regex
+  }
+
   setFormValue(){
     this.ruleFormGroup.patchValue({
       uid: this.selectedRule.uid,
       name: this.selectedRule.name,
       description: this.selectedRule.description,
       when: {
+        regexOption: this.selectedRule.when.regexOption,
+        text: this.selectedRule.when.text,
         urlMatches : this.selectedRule.when.urlMatches,
         triggerEvery: this.selectedRule.when.triggerEvery
       },
@@ -83,30 +109,13 @@ export class RulesAddComponent implements OnInit {
     })
   }
 
-  onChangeDelayTime(number: number){
-    console.log('onChangeDelayTime-->', number)
-    let array = this.ruleFormGroup.controls['do'] as FormArray;
-    array.at(0).patchValue({wait: number})
-
-  }
-
   onConditionChange(event){
     console.log('onConditionChange-->', event)
     
   }
 
-  onChangeTextValue(element: string, text: string){
-    if(element === 'name')
-      this.ruleFormGroup.patchValue({name: text})
-    else if(element ==='message'){
-      let array = this.ruleFormGroup.controls['do'] as FormArray;
-      array.at(1).patchValue({message: { text: text}})
-      // <FormArray>this.ruleFormGroup.controls['do'][1].patchValue({message: {text: text}})
-    }
-  }
-
   submitForm(){
-    console.log('formrrrrr', this.ruleFormGroup)
+    this.logger.debug('[RULES-ADD] submitForm-->', this.ruleFormGroup)
 
     const pendingClassName = 'loading-btn--pending';
     const successClassName = 'loading-btn--success';
@@ -142,38 +151,21 @@ export class RulesAddComponent implements OnInit {
         
           window.setTimeout(() => button.classList.remove(failClassName), stateDuration);
         }, stateDuration);
-
+        this.logger.debug('[RULES-ADD] faqkbService addRuleToChatbot - ERROR:', error)
       }, ()=>{
-
+        this.logger.debug('[RULES-ADD] faqkbService addRuleToChatbot - COMPLETE')
       })
     }
-    
-    
-
-   
-
-   
-
-    
-    
-
-    
-
-    
+        
   }
 
   closePanel(event){
-    console.log('clonsePanellll', event)
     event.stopPropagation();
     event.preventDefault();
   }
 
   openPanel(event){
-
+    // console.log('opennnn', event)
   }
-
-  // getAllIntents(){
-
-  // }
 
 }

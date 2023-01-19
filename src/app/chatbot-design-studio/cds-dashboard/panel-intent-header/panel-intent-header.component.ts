@@ -1,4 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { AuthService } from 'app/core/auth.service';
+import { Project } from 'app/models/project-model';
+import { AppConfigService } from 'app/services/app-config.service';
+import { DepartmentService } from 'app/services/department.service';
 import { Intent } from '../../../models/intent-model';
 
 @Component({
@@ -15,9 +19,16 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   intentName: string;
   intentNameResult = true;
   intentNameAlreadyExist = false
- 
+  project: Project;
+  public TESTSITE_BASE_URL: string;
+  id_faq_kb: string;
+  public defaultDepartmentId: string;
 
-  constructor() { }
+  constructor(
+    private auth: AuthService,
+    public appConfigService: AppConfigService,
+    private departmentService: DepartmentService,
+  ) { }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
@@ -28,12 +39,18 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     } catch (error) {
       console.log('intent selected ', error);
     }
+
+    this.getCurrentProject();
+    this.getDeptsByProjectId();
+    this.getTestSiteUrl();
   }
 
   ngOnChanges() {
     this.showSpinner = false;
     console.log("[PANEL-INTENT-HEADER] header --> intentSelected: ", this.intentSelected)
     console.log("[PANEL-INTENT-HEADER] header --> listOfIntents: ", this.listOfIntents)
+
+    this.id_faq_kb = this.intentSelected['faq_kb'][0]._id
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {
@@ -82,6 +99,54 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
       this.intentSelected.intent_display_name = this.intentName;
       this.saveIntent.emit(this.intentSelected);
     }
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project;
+      console.log('[PANEL-INTENT-HEADER] project from AUTH service subscription  ', this.project)
+    });
+  }
+
+  getDeptsByProjectId() {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+      console.log('[PANEL-INTENT-HEADER] - DEPT GET DEPTS ', departments);
+      console.log('[PANEL-INTENT-HEADER] - DEPT BOT ID ', this.id_faq_kb);
+
+      if (departments) {
+        departments.forEach((dept: any) => {
+          // console.log('[PANEL-INTENT-HEADER] - DEPT', dept);
+
+          if (dept.default === true) {
+            this.defaultDepartmentId = dept._id;
+            console.log('[PANEL-INTENT-HEADER] - DEFAULT DEPT ID ',  this.defaultDepartmentId);
+          }
+
+        })     
+      }
+    }, error => {
+
+      console.error('[PANEL-INTENT-HEADER] - DEPT - GET DEPTS  - ERROR', error);
+    }, () => {
+      console.log('[PANEL-INTENT-HEADER] - DEPT - GET DEPTS - COMPLETE')
+
+    });
+  }
+
+  getTestSiteUrl() {
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+   console.log('[PANEL-INTENT-HEADER] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+  }
+
+  openTestSiteInPopupWindow() {
+
+    const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
+    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId
+   
+    let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
+    window.open(url, '_blank', params);
   }
 
 }
