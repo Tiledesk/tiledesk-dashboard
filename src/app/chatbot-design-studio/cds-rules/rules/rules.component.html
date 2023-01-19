@@ -7,7 +7,8 @@
     </div>
     <cds-rules-add *ngIf="addClicked"
         [listOfIntents]="listOfIntents"
-        [selectedChatbot]="selectedChatbot">
+        [selectedChatbot]="selectedChatbot"
+        (onRuleAdded)="onRuleAdded($event)">
     </cds-rules-add>
 
     <cds-rules-list
