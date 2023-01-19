@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <div *ngIf="response.type === 'frame'" class="content-frame">
+                <div *ngIf="response.type === typeMessage.FRAME" class="content-frame">
                     <iframe 
                         *ngIf="framePath"
                         id="contentFrame" 
@@ -36,7 +36,7 @@
                     </iframe>
 
                     <div class="control-button delete" (click)="onDeletePathElement()">
-                        <em class="material-icons">delete</em>
+                        <em class="material-icons">clear</em>
                     </div>
                 </div>
 

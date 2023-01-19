@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Intent, Command, ActionReply } from '../../../../../models/intent-model';
 import { TYPE_COMMAND, TYPE_RESPONSE, TIME_WAIT_DEFAULT, TYPE_MESSAGE } from '../../../../utils';
@@ -9,12 +9,13 @@ import { TYPE_COMMAND, TYPE_RESPONSE, TIME_WAIT_DEFAULT, TYPE_MESSAGE } from '..
   styleUrls: ['./action-reply.component.scss']
 })
 export class ActionReplyComponent implements OnInit {
+  @ViewChild('scrollMe', { static: false }) scrollContainer: ElementRef;
+  translateY: string;
+
   @Output() openButtonPanel = new EventEmitter();
   @Output() saveIntent = new EventEmitter();
   @Input() reply: ActionReply;
   @Input() showSpinner: boolean;
-  
-  // @Input() arrayResponses: Array<Command>;
 
   typeCommand = TYPE_COMMAND;
   typeResponse = TYPE_RESPONSE;
@@ -48,6 +49,7 @@ export class ActionReplyComponent implements OnInit {
       }
     }
     this.generateArrayResponse();
+    this.scrollToBottom();
   }
 
   /** */
@@ -89,10 +91,43 @@ export class ActionReplyComponent implements OnInit {
     this.arrayResponses = newArrayCommands;
   }
 
+
+  /** */
+  scrollToBottom(): void {
+
+    setTimeout(() => {
+      try {
+        this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+        this.scrollContainer.nativeElement.animate({scrollTop:0}, '500');
+      } catch(error) { 
+        console.log('scrollToBottom ERROR: ', error);
+      }    
+    }, 300);      
+
+    // setTimeout(() => {
+    //   this.translateY = "0px";
+    //   try {
+    //     let scrollHeight = this.scrollContainer.nativeElement.scrollHeight;
+    //     console.log('scrollHeight:', scrollHeight);
+    //     let elementPosition = this.scrollContainer.nativeElement.offsetHeight; //  .getBoundingClientRect().top;
+    //     console.log('elementPosition:', elementPosition);
+    //     let distance = elementPosition - scrollHeight;
+    //     if (distance < 0) {
+    //       this.translateY = 'translateY('+distance+'px)';
+    //       console.log('scrollDistance:', this.translateY);
+    //     }
+    //   } catch(error) { 
+    //     console.log('scrollToBottom ERROR: ', error);
+    //   }    
+    // }, 300);       
+  }
+
+
   onAddNewResponse(element){
     try {
       this.reply.commands.push(element);
-      console.log('onAddNewResponse---->', this.reply.commands);
+      this.scrollToBottom();
+      // console.log('onAddNewResponse---->', this.reply.commands);
     } catch (error) {
       console.log('onAddNewResponse ERROR', error);
     }

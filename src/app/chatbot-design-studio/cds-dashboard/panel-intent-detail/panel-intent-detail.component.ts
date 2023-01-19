@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { AnyARecord } from 'dns';
 import { Intent, Button, ActionReply, Action } from '../../../models/intent-model';
-import { TYPE_INTENT_ELEMENT } from '../../utils';
+import { TYPE_INTENT_ELEMENT, TYPE_ACTION } from '../../utils';
 
 
 @Component({
@@ -18,6 +18,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   @Input() intentSelected: Intent
 
   typeIntentElement = TYPE_INTENT_ELEMENT;
+  typeAction = TYPE_ACTION;
   elementSelected: any;
   elementIntentSelectedType: string;
 
@@ -40,7 +41,6 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.elementIntentSelected);
-   
     this.elementIntentSelectedType = this.elementIntentSelected.type;
     this.elementSelected = this.elementIntentSelected.element;
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);

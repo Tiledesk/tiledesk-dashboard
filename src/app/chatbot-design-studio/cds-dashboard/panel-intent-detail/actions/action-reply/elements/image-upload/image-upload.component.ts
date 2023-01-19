@@ -8,29 +8,17 @@ import { MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT } from '../../../../../..
   styleUrls: ['./image-upload.component.scss']
 })
 export class ImageUploadComponent implements OnInit {
-  // @Output() closeImagePanel = new EventEmitter();
   @Input() metadata: Metadata;
   @ViewChild('imageUploaded', { static: false }) myIdentifier: ElementRef;
-  
-  imageUrl: string;
-  imageWidth: string;
-  imageHeight: string;
 
   isHovering: boolean = false;
   dropEvent: any;
-  previewImage: string;
-
-
+  
   constructor() { }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-   
     if(this.metadata.src){
-      this.imageUrl = this.metadata.src;
-      this.imageWidth = this.metadata.width;
-      this.imageHeight = this.metadata.height;
-      this.previewImage = this.imageUrl;
       this.setImageSize();
     }
   }
@@ -46,7 +34,7 @@ export class ImageUploadComponent implements OnInit {
         let that = this;
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          this.previewImage = e.target.result;
+          this.metadata.src = e.target.result;
           that.setImageSize();
         };
         reader.readAsDataURL(currentFile);
@@ -55,29 +43,6 @@ export class ImageUploadComponent implements OnInit {
   }
 
   // EVENT FUNCTIONS //
-  /** */
-  // onCloseImagePanel(){
-  //   let image = {
-  //     url: this.imageUrl,
-  //     width: this.imageWidth,
-  //     height: this.imageHeight,
-  //   }
-  //   if(this.imageUrl){
-  //     this.showAddImage = false;
-  //   } else {
-  //     this.showAddImage = true;
-  //   }
-  //   console.log('onCloseImagePanel:: ', image, this.imageUrl);
-  //   this.closeImagePanel.emit(image);
-  // }
-
-  // onRemoveImage(){
-  //   this.imageUrl = null;
-  //   this.imageWidth = MESSAGE_METADTA_WIDTH;
-  //   this.imageHeight = MESSAGE_METADTA_HEIGHT;
-  //   this.onCloseImagePanel();
-  // }
-
 
   private setImageSize(){
     setTimeout(() => {
@@ -86,7 +51,6 @@ export class ImageUploadComponent implements OnInit {
         var height = this.myIdentifier.nativeElement.offsetHeight;
         this.myIdentifier.nativeElement.setAttribute("width", width);
         this.myIdentifier.nativeElement.setAttribute("height", height);
-        this.metadata.src = this.previewImage;
         this.metadata.width = width;
         this.metadata.height = height;
       } catch (error) {
@@ -115,15 +79,16 @@ export class ImageUploadComponent implements OnInit {
       let that = this;
       reader.onload = (e: any) => {
         console.log("CARICATA IMMAGINE::: ", e.target.result);
-        this.previewImage = e.target.result;
+        this.metadata.src = e.target.result;
         var img = new Image();
+        img.src = this.metadata.src;
         img.onload = function() {
             that.setImageSize();
         };
         img.onerror = function(e) {
             console.log("ERROR ::: ", e);
         };
-        img.src = this.previewImage;
+        
       }
       reader.readAsDataURL(file);
       // ---------------------------------------------------------------------

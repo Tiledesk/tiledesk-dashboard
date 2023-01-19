@@ -12,7 +12,7 @@ import { HttpClient } from "@angular/common/http";
 
 
 import { Intent, Button, Action, Form, ActionReply } from '../../models/intent-model';
-import { TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
+import { TYPE_ACTION, TYPE_INTENT_ELEMENT, TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
 import { Subject } from 'rxjs';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Chatbot } from 'app/models/faq_kb-model';
@@ -415,14 +415,14 @@ export class CdsDashboardComponent implements OnInit {
   onAnswerSelected(answer: string) {
     console.log('[CDS DSBRD] onAnswerSelected - answer ', answer)
     this.elementIntentSelected = {};
-    this.elementIntentSelected['type'] = 'answer'
+    this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ANSWER;
     this.elementIntentSelected['element'] = answer
   }
 
   onActionSelected(action: string) {
     console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', action)
     this.elementIntentSelected = {};
-    this.elementIntentSelected['type'] = 'action'
+    this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
     this.elementIntentSelected['element'] = action
     console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
   }
@@ -430,7 +430,7 @@ export class CdsDashboardComponent implements OnInit {
   onQuestionSelected(intent) {
     console.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - intent ', intent)
     this.elementIntentSelected = {};
-    this.elementIntentSelected['type'] = 'question'
+    this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.QUESTION;
     this.elementIntentSelected['element'] = intent
     console.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
   }
@@ -439,7 +439,7 @@ export class CdsDashboardComponent implements OnInit {
 
     console.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT intentform ', intentform)
     this.elementIntentSelected = {};
-    this.elementIntentSelected['type'] = 'form'
+    this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.FORM;
     this.elementIntentSelected['element'] = intentform
     console.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
   }
@@ -452,7 +452,7 @@ export class CdsDashboardComponent implements OnInit {
     let action = new ActionReply();
     action.commands = [
       {
-        type: 'message',
+        type: TYPE_ACTION.REPLY,
         message: {
           text: 'A chat message will be sent to the visitor',
           type: 'text'

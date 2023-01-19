@@ -132,7 +132,7 @@
     display: inline-flex;
     margin: 0;
     left: 0;
-    top: -40px;
+    top: -30px;
     color: $color-bck-gray-hex;
     cursor: grab;
 }
@@ -203,13 +203,18 @@
     background: rgba(255, 255, 255, 0.383);
     overflow: visible;
     max-width: calc(100% - 60px);
-    width: auto;
+    width: 100%;
     height: auto;
+    .image-upload {
+        border-radius: 6px;
+        display: block;
+        overflow: hidden;
+    }
     .control-button {
         &.delete {
             color: $color-withe-hex;
             position: absolute;
-            top: 10px;
+            top: 0px;
             right: 0px;
             margin-right: 0px;
             opacity: 0;
@@ -220,7 +225,7 @@
     &:hover{
         .control-button {
             &.delete {
-                margin-right: -30px;
+                margin-right: -24px;
                 opacity: 1;
             }
         }

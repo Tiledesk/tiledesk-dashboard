@@ -96,10 +96,15 @@
                     (openActionDrawer)=onOpenActionDrawer($event) [intentSelected]="intentSelected">
                 </appdashboard-panel-actions>
 
-                <appdashboard-panel-intent-detail *ngIf=elementIntentSelected class="panel-intent-detail"
-                    [listOfActions]="listOfActions" [elementIntentSelected]="elementIntentSelected"
-                    [showSpinner]="showSpinner" (openButtonPanel)=onOpenButtonPanel($event)
-                    [intentSelected]="intentSelected"></appdashboard-panel-intent-detail>
+                <appdashboard-panel-intent-detail 
+                    *ngIf=elementIntentSelected 
+                    class="panel-intent-detail"
+                    [listOfActions]="listOfActions" 
+                    [elementIntentSelected]="elementIntentSelected"
+                    [intentSelected]="intentSelected"
+                    [showSpinner]="showSpinner" 
+                    (openButtonPanel)=onOpenButtonPanel($event)
+                ></appdashboard-panel-intent-detail>
             </div>
 
         </div>

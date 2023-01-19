@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Message } from '../../../../../../../models/intent-model';
-import { TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT, calculatingRemainingCharacters } from '../../../../../../utils';
+import { TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
 
 @Component({
   selector: 'appdashboard-image-response',
@@ -16,11 +16,6 @@ export class ImageResponseComponent implements OnInit {
   @Input() response: Message;
   @Input() index: number;
 
-  // Image //
-  imagePath: string;
-  imageWidth: string;
-  imageHeight: string;
-
 
   // Textarea //
   limitCharsText: number;
@@ -35,10 +30,6 @@ export class ImageResponseComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.imagePath = this.response.metadata.src?this.response.metadata.src:'';
-    this.imageWidth = this.response.metadata.width?this.response.metadata.width:MESSAGE_METADTA_WIDTH;
-    this.imageHeight = this.response.metadata.height?this.response.metadata.height:MESSAGE_METADTA_HEIGHT;
-    
     this.limitCharsText = TEXT_CHARS_LIMIT;
     this.delayTime = this.response.time/1000;
     this.textMessage = this.response.text;
@@ -81,15 +72,15 @@ export class ImageResponseComponent implements OnInit {
   onCloseImagePanel(event){
     
     //if(event.url){
-      this.imagePath = event.url;
+      //this.imagePath = event.url;
       this.response.metadata.src = event.url;
     //}
     //if(event.width){
-      this.imageWidth = event.width;
+      //this.imageWidth = event.width;
       this.response.metadata.width = event.width;
     //}
     //if(event.height){
-      this.imageHeight = event.height;
+      //this.imageHeight = event.height;
       this.response.metadata.height = event.height;
     //}
     console.log('onCloseImagePanel:: ', event);
@@ -104,7 +95,8 @@ export class ImageResponseComponent implements OnInit {
 
   /** */
   onDeletePathElement(){
-    this.response.metadata.src = '';
+    this.response.metadata.src = null;
+    console.log('onDeletePathElement::: ', this.response.metadata);
   }
 
   /** */

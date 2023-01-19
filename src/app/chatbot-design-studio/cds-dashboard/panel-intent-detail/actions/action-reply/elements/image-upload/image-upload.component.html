@@ -1,4 +1,4 @@
-<div *ngIf="!previewImage" 
+<div *ngIf="!metadata.src" 
     class="dropUploadImage"
     [ngClass]="{'is-in-drop-event': isHovering === true}"
     (drop)="drop($event)"
@@ -20,4 +20,4 @@
     </div>
     
 </div>
-<img *ngIf="previewImage" #imageUploaded id="imageUploaded" [src]="previewImage" (change)="getDimensionImage()">
+<img *ngIf="metadata.src" #imageUploaded id="imageUploaded" [src]="metadata.src" (change)="getDimensionImage()">

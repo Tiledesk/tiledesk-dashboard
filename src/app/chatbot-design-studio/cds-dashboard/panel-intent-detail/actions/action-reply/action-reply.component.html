@@ -1,6 +1,10 @@
 <div class="box-sx">
-
-    <div cdkDropList class="content draggable-list" (cdkDropListDropped)="drop($event)">
+    <!-- [ngStyle]="{'transform': translateY}" -->
+    <div #scrollMe id="scrollMe" 
+        class="content draggable-list" 
+        cdkDropList 
+        (cdkDropListDropped)="drop($event)"
+        >
         <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag>
 
             <div *ngIf="response.message && response.message.type === typeMessage.TEXT ">

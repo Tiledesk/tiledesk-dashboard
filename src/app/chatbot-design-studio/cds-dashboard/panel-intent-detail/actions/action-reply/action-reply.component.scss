@@ -47,7 +47,10 @@ $padding: 10px;
     }
 }
 
-
+#scrollMe {
+    // transition: 1s all ease;
+    scroll-behavior: smooth;
+}
 .content {
     position: relative;
     display: block;
@@ -57,7 +60,6 @@ $padding: 10px;
     margin-top: 0px;
     overflow: auto;
     max-height: calc(100vh - 230px);
-
     .response {
         display: block;
         position: relative;
