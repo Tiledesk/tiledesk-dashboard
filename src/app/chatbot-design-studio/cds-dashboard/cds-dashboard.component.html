@@ -64,6 +64,10 @@
         </ng-container>
     </div>
 
+    <ng-template #settings [ngOutletContext]="context">
+        <cds-chatbot-details [selectedChatbot]="selectedChatbot">
+        </cds-chatbot-details>
+    </ng-template>
 
 
     <ng-template #intents [ngOutletContext]="context">
@@ -115,9 +119,5 @@
         </cds-rules>
     </ng-template>
 
-    <ng-template #settings [ngOutletContext]="context">
-        <cds-chatbot-details [selectedChatbot]="selectedChatbot">
-        </cds-chatbot-details>
-    </ng-template>
-
+   
 </div>

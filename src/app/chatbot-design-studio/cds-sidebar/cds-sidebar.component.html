@@ -125,14 +125,7 @@
 
 <div class="content" [class.is_opened]="extendedWidth">
 
-    <div id="settings" name="settings" class="section" (click)="goTo('settings')">
-        <i *ngIf="extendedWidth === true || extendedWidth === false" class="material-icons-outlined item-icon">
-            settings
-        </i>
-        <p *ngIf="extendedWidth === true" class="item-label">
-            Settings
-        </p>
-    </div>
+
 
     <div id="intents" name="intents" class="section" (click)="goTo('intents')">
         <i *ngIf="extendedWidth === true || extendedWidth === false" class="material-icons-outlined item-icon">
@@ -159,6 +152,15 @@
         </i>
         <p *ngIf="extendedWidth === true" class="item-label">
             {{'Rules' | translate}}
+        </p>
+    </div>
+
+    <div id="settings" name="settings" class="section" (click)="goTo('settings')">
+        <i *ngIf="extendedWidth === true || extendedWidth === false" class="material-icons-outlined item-icon">
+            settings
+        </i>
+        <p *ngIf="extendedWidth === true" class="item-label">
+            Settings
         </p>
     </div>
 
