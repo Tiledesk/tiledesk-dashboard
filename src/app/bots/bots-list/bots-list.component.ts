@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { FaqKb } from '../../models/faq_kb-model';
 import { Router, RoutesRecognized } from '@angular/router';
@@ -83,6 +83,7 @@ export class BotListComponent implements OnInit {
   increaseSalesBots: any;
   increaseSalesBotsCount: number;
   route: string
+  dev_mode: boolean;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -99,6 +100,9 @@ export class BotListComponent implements OnInit {
 
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.dev_mode = isDevMode()
+    console.log('BOTS-LIST] is dev mode ', this.dev_mode) 
+   
   }
 
   ngOnInit() {
@@ -253,6 +257,7 @@ export class BotListComponent implements OnInit {
           this.customerSatisfactionBotsCount = this.customerSatisfactionBots.length;
           this.logger.log('[BOTS-LIST] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
         }
+
 
         // ---------------------------------------------------------------------
         // Bot forked from Customer Increase Sales
@@ -643,6 +648,10 @@ export class BotListComponent implements OnInit {
   }
 
 
+  // goToEditAddPage_EDIT(faq_id: string) {
+  //   this.logger.log('[TILEBOT] ID OF FAQ ', faq_id);
+  //   this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id, this.botType]);
+  // }
   // ---------------------------------------------------------------------------
   // Go to faq.component to: Add / Edit FAQ, Edit Bot name
   // ---------------------------------------------------------------------------
@@ -663,6 +672,9 @@ export class BotListComponent implements OnInit {
     } else if (botType === 'tilebot') {
       _botType = 'tilebot'
       this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
+      // this.router.navigate(['project/' + this.project._id + '/createfaq', idFaqKb, _botType, 'en']);
+      
+
     } else {
       _botType = botType
       this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
@@ -670,6 +682,10 @@ export class BotListComponent implements OnInit {
 
     this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', idFaqKb, 'bot type ', botType);
 
+  }
+
+  goToCDS(idFaqKb: string, botType: string, botname: string) {
+  this.router.navigate(['project/' + this.project._id + '/cds/', idFaqKb]);
   }
 
 

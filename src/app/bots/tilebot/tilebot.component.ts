@@ -98,7 +98,6 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
   storageBucket: string;
   showSpinnerInUploadImageBtn = false;
   botProfileImageExist: boolean;
-
   botImageHasBeenUploaded = false;
 
   botProfileImageurl: any;
@@ -1168,6 +1167,13 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     // console.log('openTestSiteInPopupWindow URL ', url) 
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
+  }
+  // old
+  goToOLDEditAddPage_EDIT(faq_id) {
+    this.router.navigate(['project/' + this.project._id + '/_editfaq', this.id_faq_kb, faq_id, this.botType]);
+  }
+  goOLDToEditAddPage_CREATE () {
+    this.router.navigate(['project/' + this.project._id + '/_createfaq', this.id_faq_kb, this.botType, this.faqkb_language]);
   }
 
   goBack() {

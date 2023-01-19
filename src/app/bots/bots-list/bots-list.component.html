@@ -292,13 +292,19 @@
                         style="text-transform: capitalize;font-weight:400;text-align: center">
                         <span style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.message_count}} </span>
                       </td>
-
+                  
                       <td class="td-actions text-right" style="padding-top:18px !important">
                         <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}"
                           class="btn btn-primary btn-simple btn-xs"
                           (click)='goToBotDtls(faqkb?._id, faqkb?.type,  faqkb?.name)'>
                           <i class="material-icons">edit</i>
                         </button>
+
+                        
+                      <button *ngIf="faqkb?.type === 'tilebot' && dev_mode === true" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}"
+                        class="btn btn-primary btn-simple btn-xs" (click)='goToCDS(faqkb?._id, faqkb?.type,  faqkb?.name)'>
+                        <i class="material-icons">rocket_launch</i>
+                      </button>
 
                         <button *ngIf="!faqkb?.is_system_identity_bot" type="button" rel="tooltip"
                           title="{{ 'BotsPage.tooltipDeleteBot' | translate }}" class="btn btn-danger btn-simple btn-xs"

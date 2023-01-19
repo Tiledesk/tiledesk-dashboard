@@ -1,0 +1,98 @@
+<div class="extensions-response">
+    <div class="delay-wrapper">
+        <appdashboard-delay-slider
+        [delayTime]="delayTime"
+        (changeDelayTime)="onChangeDelayTime($event)"
+        ></appdashboard-delay-slider>
+    </div>
+</div>
+
+
+
+<div class="text-editor-wrapper">
+
+    <div class="text-editor">
+        
+        <div class="response-controls">
+                <div class="control-button delete" (click)="onDeleteResponse()">
+                <em class="material-icons">delete</em>
+            </div>
+            <div class="control-button" (click)="onMoveUpResponse()">
+                <em class="material-icons">expand_less</em>
+            </div> 
+            <div class="control-button" (click)="onMoveDownResponse()">
+                <em class="material-icons">expand_more</em>
+            </div>
+        </div>
+
+        <appdashboard-element-textarea
+            [limitCharsText]="limitCharsText"
+            [textMessage]="response.text"
+            (changeTextarea)="onChangeTextarea($event)"
+        ></appdashboard-element-textarea>
+        <!-- 
+        <mat-form-field class="box-textarea" appearance="fill">
+            <textarea matInput
+                cdkTextareaAutosize
+                [(ngModel)]="textMessage"
+                #autosize="cdkTextareaAutosize"
+                [maxlength]="limitCharsText"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+                (ngModelChange)="onChangeText($event)">
+            </textarea>
+        </mat-form-field> 
+        -->
+        
+        <div class="text-editor-drop">
+            <em class="material-icons">drag_indicator</em>
+        </div>
+
+    </div>
+
+    <!-- <div class="editor-utils">
+        <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
+        <div class="text-editor-insert-attribute">
+            <em class="material-icons">code</em>
+        </div> 
+        <div class="emoji-picker">
+            <em class="material-icons">insert_emoticon</em>
+        </div> 
+    </div> -->
+
+</div> 
+
+
+
+<div class="buttons-response button-replies" cdkDropListOrientation="horizontal" cdkDropList (cdkDropListDropped)="drop($event)" >
+    
+    <div *ngFor="let button of buttons; let i = index;" class="tpl-drop-down" cdkDragBoundary=".button-replies" cdkDrag> 
+   
+        <div class="button-reply custom-placeholder" *cdkDragPlaceholder>
+            <div class="button-reply-text">
+                {{button.value}}
+            </div>
+        </div>
+
+        <div class="button-reply">
+            <div class="button-reply-text"
+                (click)="onOpenButtonPanel(button)">
+                {{button.value}}
+            </div>
+            <div class="button-controls">
+                <div class="control-button delete" (click)="onDeleteButton(i)">
+                   <em class="material-icons">delete</em>
+               </div>
+               <div class="control-button" cdkDragHandle>
+                   <em class="material-icons">compare_arrows</em>
+               </div> 
+           </div>
+        </div>
+        
+
+    </div>
+
+    <div class="button-reply-add" (click)="onOpenButtonPanel()">
+    + Add button
+    </div>
+</div>

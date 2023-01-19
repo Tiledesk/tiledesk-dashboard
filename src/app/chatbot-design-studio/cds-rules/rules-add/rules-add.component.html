@@ -1,0 +1,73 @@
+<mat-accordion class="rules-list">
+    <div class="card-wrp" [formGroup]="ruleFormGroup">
+        <mat-expansion-panel
+            [expanded]="addMode"
+            [hideToggle]="addMode"
+            (opened)="openPanel($event)"
+            (click)="closePanel($event)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <div class="card-item">
+                        <div class="card-title">Name:</div>
+                        <rule-text
+                            [textMessage]="ruleFormGroup.value.name"
+                            (onChange)="onChangeTextValue('name', $event)">
+                        </rule-text>
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+      
+            <div class="card-item">
+                <div class="card-title">Condition</div>
+                <rule-condition
+                    [condition]="ruleFormGroup.controls['when']"
+                    (onChangeValue)="onConditionChange($event)">
+                </rule-condition>
+            </div>
+    
+            <div class="card-item">
+                <div class="card-title">Action</div>
+                <div class="item-action-content">
+                    <div class="item-action-element">
+                        <div class="card-subtitle">Wait time:</div>
+                        <div class="delay-wrapper">
+                            <appdashboard-delay-slider
+                                [delayTime]="ruleFormGroup.value['do'][0].wait"
+                                [step]="1"
+                                (changeDelayTime)="onChangeDelayTime($event)">
+                            </appdashboard-delay-slider>
+                        </div>
+                    </div>
+                
+                    <div class="item-action-element">
+                        <div class="card-subtitle">Message:</div>
+                        <div style="width: 100%;">
+                            <rule-text id="text"
+                                [autocompleteOptions]="autocompleteOptions"
+                                [textMessage]="ruleFormGroup.value['do'][1].message.text"
+                                (onChange)="onChangeTextValue('message', $event)">
+                            </rule-text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="card-item box-buttons">
+                <div class="loading-btn-wrapper" *ngIf="addMode">
+                    <button id="create-rule-form" class="btn btn-primary loading-btn" (click)="submitForm()">
+                        <span class="loading-btn__text">Add Rule</span>
+                    </button>
+                </div>
+                <div class="loading-btn-wrapper" *ngIf="!addMode">
+                    <button id="create-rule-form" class="btn btn-primary loading-btn" (click)="submitForm()">
+                        <span class="loading-btn__text">Update Rule</span>
+                    </button>
+                </div>
+            </div>
+          <!-- <mat-action-row>
+            <button mat-button color="warn" *ngIf="i>0"(click)="prevStep()">Previous</button>
+            <button mat-button color="primary" (click)="nextStep()">Next</button>
+          </mat-action-row> -->
+        </mat-expansion-panel>          
+    </div>
+</mat-accordion> 

@@ -1,0 +1,77 @@
+<!-- [ngClass]="{'intent-two-columns-wpr': displayActions, 'intent--column-wpr':  !displayActions}" -->
+<div id="panel-intent-content">
+    <!-- [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}" -->
+    <div>
+        <div class="button-intent" (click)="onSelectQuestion()"
+        [ngStyle]="{'border':question ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
+        [ngClass]="{'button-intent-active': HAS_SELECTED_QUESTION }">
+            <span class="material-icons ">
+                question_mark
+            </span>
+            <span> Question </span>
+        </div>
+        
+        <div class="button-intent" (click)="displayForm()"
+        [ngStyle]="{'border':formSize > 0 ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
+        [ngClass]="{'button-intent-active': HAS_SELECTED_FORM }">
+            <span class="material-icons">
+                list_alt
+            </span>
+            <span> Form </span>
+        </div>
+
+
+        <!-- <div [ngStyle]="{'border':actions?.length > 0 ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
+            [ngClass]="{'actions-btn-active': displayActions}" class="button-intent"
+            (click)="toggleActions(displayActions = !displayActions) ">
+            <span class="material-icons">
+                bolt
+            </span>
+
+            <span> Actions ({{actions?.length}}) </span>
+        </div> -->
+        <div class="header__center" *ngIf="actions && actions?.length > 0">Actions</div>
+
+    </div>
+    <!-- [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}" -->
+
+    <div class="action-list-wpr" *ngIf="actions && actions?.length > 0">
+
+        <div cdkDropList class="action--list" (cdkDropListDropped)="drop($event)">
+            <div class="action--box" *ngFor="let action of actions; let i = index;" cdkDrag cdkDragLockAxis="y" (click)="onActionSelected(action)">
+                <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
+                <div class="action--handle" cdkDragHandle>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                        fill="#647283">
+                        <path d="M0 0h24v24H0V0z" fill="none" />
+                        <path
+                            d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                    </svg>
+                </div>
+                <div>
+                    {{action.type }}
+                </div>
+   
+                <div class="control-button delete-action" (click)="onDeleteAction(i)">
+                    <em class="material-icons">delete</em>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="actions && !answer" class="button-intent" (click)="openActionsDrawer()">
+        <span class="material-icons ">
+            add
+        </span>
+        <span> Action </span>
+    </div>
+
+    <div *ngIf="answer" class="button-intent" (click)="onSelectAnswer()"
+        [ngStyle]="{'border':answer ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
+        [ngClass]="{'button-intent-active': HAS_SELECTED_ANSWER }">
+        <span class="material-icons ">
+            message
+        </span>
+        <span> Answer </span>
+    </div>
+
+</div>

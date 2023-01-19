@@ -133,8 +133,8 @@ import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.compon
 
 /* PRIVATE */
 import { PricingModule } from './pricing/pricing.module';
-import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
 
+import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
 
 import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
 
@@ -308,9 +308,7 @@ import { TemplateDetailComponent } from './bots/templates/template-detail/templa
 import { BotsSidebarComponent } from './bots/bots-list/bots-sidebar/bots-sidebar.component';
 import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
 import { InstallTemplateComponent } from './create-project-wizard/install-template/install-template.component';
-
-
-
+import { ChatbotDesignStudioModule } from './chatbot-design-studio/chatbot-design-studio.module';
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -572,6 +570,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MatDialogModule,
     /* PRIVATE */
     PricingModule,
+    ChatbotDesignStudioModule,
     /* PRIVATE */
     BrowserModule,
     FormsModule,

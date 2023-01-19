@@ -1,0 +1,160 @@
+{
+  "webhook_enabled": false,
+  "enabled": true,
+  "topic": "default",
+  "status": "live",
+  "_id": "6390c97a076de00035517c2e",
+  "id_faq_kb": "63862c068aed9b003511cead",
+  "question": "form",
+  "answer": "ciao",
+  "actions": [
+    {
+      "type": "reply",
+      "body": {
+        "text": "Hello 👋. I'm a bot 🤖 I'm beautiful Do you need help I can really help you with joy!",
+        "commands": [
+          {
+            "type": "message",
+            "message": {
+              "type": "image",
+              "text": "Hello with image",
+              "metadata": {
+                  "src": "https://www.e-goo.it/wp-content/uploads/2015/01/trad_befana3.jpg",
+                  "width": 200,
+                  "height": 200
+              }
+            }
+          },
+          {
+            "type": "message",
+            "message": {
+              "text": "Hello 👋. I'm a bot 🤖 2",
+              "type": "text",
+              "time": 1800,
+              "attributes": {
+                "attachment": {
+                  "type": "template",
+                  "buttons": [
+                    {
+                      "value": "Button1",
+                      "type": "url",
+                      "target": "blank",
+                      "link": "www",
+                      "action": "",
+                      "show_echo": true
+                    }
+                  ]
+                }
+              }
+            },
+            "time": 1800
+          },
+          {
+            "type": "wait",
+            "time": 500
+          },
+          {
+            "type": "message",
+            "message": {
+              "text": "Do you need help?",
+              "type": "text",
+              "time": 1000
+            },
+            "time": 1000
+          },
+          {
+            "type": "message",
+            "message": {
+              "text": "I can really help you with joy!",
+              "type": "text",
+              "attributes": {
+                "attachment": {
+                  "type": "template",
+                  "buttons": [
+                    {
+                      "type": "url",
+                      "value": "Get Help",
+                      "link": "https://gethelp.tiledesk.com/articles/install-widget-on-your-website/",
+                      "target": "self"
+                    },
+                    {
+                      "type": "url",
+                      "value": "Wikipedia",
+                      "link": "https://it.m.wikipedia.org/wiki/E_Street_Band",
+                      "target": "self"
+                    }
+                  ]
+                }
+              },
+              "time": 2000
+            },
+            "time": 2000
+          },
+          {
+            "type": "message",
+            "message": {
+              "text": "I'm beautiful",
+              "type": "text",
+              "time": 1700
+            },
+            "time": 1700
+          },
+          {
+            "type": "wait",
+            "time": 500
+          },
+          {
+            "type": "wait",
+            "time": 500
+          }
+        ]
+      }
+    },
+    {
+      "type": "email",
+      "body": {
+        "recipient": ""
+      }
+    },
+    {
+      "type": "agent",
+      "body": {}
+    }
+  ],
+  "form": {
+    "cancelCommands": [
+      "cancel1",
+      "cancel2",
+      "cancel3",
+      "cancel4"
+    ],
+    "cancelReply": "Form deleted, ciao",
+    "id": 1,
+    "name": "Base",
+    "fields": [
+      {
+        "name": "userFullname",
+        "type": "TEXT",
+        "label": "What is your name?",
+        "regex": "/^.{1,}$/",
+        "errorLabel": ""
+      },
+      {
+        "name": "userEmail",
+        "type": "text",
+        "regex": "/^.{1,}$/",
+        "label": "Hi ${userFullname}\n\nJust one last question\n\nYour email 🙂",
+        "errorLabel": "${userFullname} this email address is invalid\n\nCan you insert a correct email address?"
+      }
+    ]
+  },
+  "id_project": "63862bf78aed9b003511ce20",
+  "language": "en",
+  "intent_display_name": "Form",
+  "createdBy": "5ab0f3fa57066e0014bfd71e",
+  "intent_id": "f96cd486-9b69-4471-8d68-fed2c724824b",
+  "createdAt": "2022-12-07T17:12:26.697Z",
+  "updatedAt": "2022-12-13T10:34:24.435Z",
+  "__v": 0,
+  "id": "6390c97a076de00035517c2e"
+}
