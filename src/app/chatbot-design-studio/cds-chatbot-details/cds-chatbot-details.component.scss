@@ -543,7 +543,8 @@ input[type="text"]:disabled::placeholder {
     padding-top: 5px;
     padding-bottom: 3px;
     display: inline-block;
-    width: 32px;
+    // width: 32px;
+    width: fit-content;
     height: 32px;
     line-height: 22px;
     position: relative;
@@ -551,6 +552,8 @@ input[type="text"]:disabled::placeholder {
     color: #fff;
     cursor: pointer;
     margin-right: 4px;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
 .dept-name-in-bot-dtl {
@@ -1186,7 +1189,7 @@ input[type="text"]:disabled::placeholder {
 #csd-upload-bot-image-btn {
     padding-left: 15px;
     padding-right: 15px;
-    text-transform: none;
+   
     color: #202124;
     background: #8ab4f8 !important;
     box-shadow: none !important;
@@ -1213,5 +1216,17 @@ input[type="text"]:disabled::placeholder {
 }
 #cds-delete-bot-img-btn:hover {
     background: rgba(244, 67, 54, 0.8) !important;
-    
+}
+
+#hook-to-dept-btn {
+    margin-top: 0px;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 0px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    font-family: Poppins, Roboto, Arial, sans-serif !important;
+    text-transform: capitalize !important;
+    color: #202124;
+    background: #8ab4f8 !important;
 }

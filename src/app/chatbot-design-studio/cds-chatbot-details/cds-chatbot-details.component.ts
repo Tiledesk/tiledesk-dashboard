@@ -119,7 +119,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   destructureSelectedChatbot(selectedChatbot: Chatbot) {
     this.faqKb_id = selectedChatbot._id;
     console.log('[CDS-CHATBOT-DTLS] - BOT ID', this.faqKb_id)
-
+    this.id_faq_kb = selectedChatbot._id;
     if (this.faqKb_id) {
       this.checkBotImageExist()
     }
