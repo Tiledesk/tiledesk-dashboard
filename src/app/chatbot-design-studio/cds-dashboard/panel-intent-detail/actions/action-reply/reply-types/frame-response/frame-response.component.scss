@@ -39,7 +39,7 @@ $max-height: 230px;
     background: rgba(255,255,255,.383);
     overflow: visible;
     max-width: calc(100% - 60px);
-    width: 100%;
+    width: auto;
     height: auto;
 }
 
@@ -57,8 +57,8 @@ $max-height: 230px;
     position: relative;
     width: calc(100% - 30px);
     height: calc(100% - 30px);
-    min-height: 200px;
-    min-width: 300px;
+    min-height: 210px;
+    min-width: 280px;
 }
 
 
