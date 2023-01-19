@@ -177,9 +177,10 @@ li > a {
     
     &.is_opened {
 
-        display: block;
+        // display: block;
         // padding-left: 5px;
         // padding-right: 5px;
+        width: 175px;;
 
         .section {
             width: 100%;
