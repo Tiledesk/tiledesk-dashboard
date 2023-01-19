@@ -23,22 +23,22 @@ $margin-top-card: 30px;
 
 .cds-sidebar {
     border-right: 2px solid #394f5a;
-    width: 40px;
+    width: 60px;
+    transition: .3s;
+    display: flex;
     &.is_opened{
-        width: 140px;
+        width: 175px;
     }
 }
 
-.cds-fulfillment {
-    width: 100%;
-}
-
-.cds-content{
+.cds-content {
     display: flex;
     width: 100%;
     overflow-y: auto;
 
-    cds-rules {
+    cds-rules,
+    cds-chatbot-details,
+    cds-fulfillment {
         width: 100%;
     }
 }
@@ -142,7 +142,7 @@ $margin-top-card: 30px;
     color: #202124 !important;
     box-shadow: none !important;
     font-weight: 500 !important;
-    font-family: 'Poppins', Roboto, Arial, sans-serif !important;
+    font-family: "Poppins", Roboto, Arial, sans-serif !important;
     text-transform: capitalize !important;
     font-size: 14px !important;
 }
@@ -152,7 +152,7 @@ $margin-top-card: 30px;
 
 .cds-header {
     height: 60px;
-    font-family: 'Poppins', Roboto, Arial, sans-serif !important;
+    font-family: "Poppins", Roboto, Arial, sans-serif !important;
     line-height: 60px;
     font-size: 21px;
     color: #fff;
@@ -160,28 +160,26 @@ $margin-top-card: 30px;
     // padding: 0px 10px;
     display: flex;
 
-    
-
-    .header-left{
+    .header-left {
         border-right: 2px solid #394f5a;
-        width: 40px;
+        width: 60px;
         display: flex;
         justify-content: center;
         align-items: center;
-
-        img{
+        transition: .3s;
+        background-color: #0f172a;
+        img {
             width: 15px;
         }
-
         &.is_opened{
-            width: 140px;
+            width: 175px;
             img{
                 width: 100px;
             }
         }
     }
 
-    .header-right{
+    .header-right {
         display: flex;
         align-items: center;
 
@@ -190,17 +188,17 @@ $margin-top-card: 30px;
             z-index: 1050;
             width: 22px;
             height: 22px;
-            background: #1e293b;
-            left: 29px;
+            // background: #1e293b;
+            left: 49px;
+            transition: .3s;
 
             &.is_opened {
-                left: 130px;
+                left: 164px;
             }
-        } 
-        
-        
+        }
+
         .toggle-setting-sidebar-icon {
-            background: #1e293b;;
+            background: #1e293b;
             border: 1px solid #394f5a !important;
             border-radius: 50%;
             width: 20px;
@@ -209,13 +207,13 @@ $margin-top-card: 30px;
             font-size: 18px;
             display: block;
         }
-        
+
         .toggle-setting-sidebar-icon:hover {
             background: #f5f8fa;
         }
 
-        .header-title{
-
+        .header-title {
+            margin-left: 20px;
         }
     }
 }

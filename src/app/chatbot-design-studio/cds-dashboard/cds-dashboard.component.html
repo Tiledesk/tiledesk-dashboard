@@ -12,7 +12,7 @@
 
 
 <div class="cds-header">
-    <div class="header-left" [class.is_opened]="IS_OPEN">
+    <div class="header-left" [class.is_opened]="IS_OPEN" (click)="goBack()">
         <img *ngIf="!IS_OPEN" src="/assets/img/logos/tiledesk_logo_white_small.svg">
         <img *ngIf="IS_OPEN" src="/assets/img/logos/tiledesk-logo_new_white.svg">
     </div>
@@ -58,29 +58,23 @@
     </div>
 
     <ng-template #settings [ngOutletContext]="context">
-        ... choice settings...
+        <cds-chatbot-details [selectedChatbot]="selectedChatbot">
+        </cds-chatbot-details>
     </ng-template>
 
     <ng-template #intents [ngOutletContext]="context">
         <div class="box-left">
-            <appdashboard-panel-intent-list class="panel-intent-list" 
-                [id_faq_kb]="id_faq_kb" 
-                [projectID]="projectID"
-                (selected_intent)=onSelectIntent($event) 
-                (returnListOfIntents)=onReturnListOfIntents($event)
-                (createIntent)="onCreateIntentBtnClicked()" 
-                [events]="eventsSubject.asObservable()">
+            <appdashboard-panel-intent-list class="panel-intent-list" [id_faq_kb]="id_faq_kb" [projectID]="projectID"
+                (selected_intent)=onSelectIntent($event) (returnListOfIntents)=onReturnListOfIntents($event)
+                (createIntent)="onCreateIntentBtnClicked()" [events]="eventsSubject.asObservable()">
             </appdashboard-panel-intent-list>
         </div>
 
         <div class="box-right">
 
             <div class="box-right-header">
-                <appdashboard-panel-intent-header 
-                    *ngIf=intentSelected 
-                    [intentSelected]="intentSelected"
-                    (saveIntent)=onSaveIntent($event)
-                    [listOfIntents]="listOfIntents">
+                <appdashboard-panel-intent-header *ngIf=intentSelected [intentSelected]="intentSelected"
+                    (saveIntent)=onSaveIntent($event) [listOfIntents]="listOfIntents">
                 </appdashboard-panel-intent-header>
             </div>
 
@@ -108,17 +102,20 @@
             </div>
 
         </div>
-
     </ng-template>
+
     <ng-template #fulfillment [ngOutletContext]="context">
-        <appdashboard-cds-fulfillment class="cds-fulfillment"
-            [chatbot]="selectedChatbot"></appdashboard-cds-fulfillment>
+        <cds-fulfillment [chatbot]="selectedChatbot">
+        </cds-fulfillment>
     </ng-template>
     <ng-template #training [ngOutletContext]="context">
         ... choice training...
     </ng-template>
     <ng-template #rules [ngOutletContext]="context">
-        <cds-rules></cds-rules>
+        <cds-rules 
+            [listOfIntents]="listOfIntents" 
+            [selectedChatbot]="selectedChatbot">
+        </cds-rules>
     </ng-template>
 
 </div>

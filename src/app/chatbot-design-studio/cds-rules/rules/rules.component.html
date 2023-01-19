@@ -5,6 +5,17 @@
             <p class="button-text">Add</p>
         </div>
     </div>
-    <cds-rules-add *ngIf="addClicked"></cds-rules-add>
+    <cds-rules-add *ngIf="addClicked"
+        [listOfIntents]="listOfIntents"
+        [selectedChatbot]="selectedChatbot"
+        (onRuleAdded)="onRuleAdded($event)">
+    </cds-rules-add>
+
+    <cds-rules-list
+        [listOfIntents]="listOfIntents"
+        [listOfRules]="listOfRules"
+        [selectedChatbot]="selectedChatbot">
+    </cds-rules-list>
+      
 </div>
 

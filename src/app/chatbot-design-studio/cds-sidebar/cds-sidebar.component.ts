@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -29,6 +30,7 @@ export class CdsSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserRole();
+    this.goTo('intents')
   }
 
 
@@ -54,8 +56,30 @@ export class CdsSidebarComponent implements OnInit {
     this.auth.toggletilebotSidebar(IS_OPEN)
   }
 
-  goTo(section: "settings"|"intents"|"fulfillment"|"training"|"rules"){
+
+  goTo(section) {
+    this.logger.log('[NATIVE-BOT-SIDEBAR] goTo ', section)
+    console.log("goTo: ", section);
+
+    let elements = Array.from(document.getElementsByClassName('section is_active'));
+    if (elements.length != 0) {
+      console.log("almeno un elemento active")
+      elements.forEach((el) => {
+        console.log("el: ", el);
+        el.classList.remove('is_active');
+      })
+    }
+
+    const element = document.getElementById(section);
+    console.log("element: ", element);
+    element.classList.toggle("is_active");
+
+    this.onClickItemList.emit(section)
+  }
+
+  _goTo(section: "settings" | "intents" | "fulfillment" | "training" | "rules") {
     this.logger.log('[NATIVE-BOT-SIDEBAR] goTo item ', section)
+
     this.onClickItemList.emit(section)
   }
 
