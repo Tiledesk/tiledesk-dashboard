@@ -8,13 +8,13 @@ import { TYPE_ACTION } from '../../utils';
   styleUrls: ['./panel-actions.component.scss']
 })
 export class PanelActionsComponent implements OnInit, OnChanges {
-
-
   @Input() isOpenActionDrawer: boolean;
   @Input() intentSelected: Intent
   @Output() openActionDrawer = new EventEmitter();
 
   // @ViewChild('drawer' ,{ static: false }) drawer: MatDrawer
+
+  typeAction = TYPE_ACTION;
 
   constructor() { }
 
@@ -30,8 +30,10 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       this.isOpenActionDrawer = false
     }
 
-    console.log('[PANEL ACTION] isOpenActionDrawer ', this.isOpenActionDrawer)
-    console.log('[PANEL ACTION] intentSelected ', this.intentSelected)
+    // console.log('[PANEL ACTION] isOpenActionDrawer ', this.isOpenActionDrawer)
+    // console.log('[PANEL ACTION] intentSelected ', this.intentSelected)
+
+
     // if (this.isOpenActionDrawer === true)  {
     //   this.drawer.open()
     // } else if (this.isOpenActionDrawer === false)  {
@@ -49,28 +51,25 @@ export class PanelActionsComponent implements OnInit, OnChanges {
 
 
 
-  actionSelected(action: string) {
-    console.log('[PANEL ACTION] actionSelected ', action)
-  
-    if (action === 'message') {
+  actionSelected(typeAction: string) {
+    console.log('[PANEL ACTION] actionSelected ', typeAction);
+    if(typeAction === TYPE_ACTION.REPLY){
       let action = new ActionReply();
-      let command = new Command(TYPE_ACTION.REPLY);
+      let command = new Command('message');
       command.message = new Message('text', 'A chat message will be sent to the visitor');
+      console.log('1 action:  ', action)
+      console.log('2 command:  ', command)
       action.attributes.commands.push(command);
-      this.intentSelected.actions.push(action)
+      this.intentSelected.actions.push(action);
+      console.log('2 ', action)
     }
-   
-
-    if (action === 'agenthandoff') {
-      let action = new ActionAgent()
-    
-      this.intentSelected.actions.push(action)
+    if(typeAction === TYPE_ACTION.AGENT){
+      let action = new ActionAgent();
+      this.intentSelected.actions.push(action);
     }
-
-    if (action === 'close') {
-      let action = new ActionClose()
-     
-      this.intentSelected.actions.push(action)
+    if(typeAction === TYPE_ACTION.CLOSE){
+      let action = new ActionClose();
+      this.intentSelected.actions.push(action);
     }
   }
 

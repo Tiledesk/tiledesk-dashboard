@@ -2,9 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-
 import { Field, Form, Intent } from 'app/models/intent-model';
-
 import { FormModelsFactory } from './form-models-factory';
 
 // import { URL_more_info_chatbot_forms } from 'app/utils/util';
@@ -74,6 +72,9 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    console.log('[FORM-COMP] (OnInit) intentSelected ', this.intentSelected)
+    console.log('[FORM-COMP] (OnInit) intentForm ', this.intentForm)
+
     let modelsFactory = new FormModelsFactory()
 
     this.modelsOfForm = modelsFactory.getModels();
