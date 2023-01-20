@@ -1,0 +1,24 @@
+.item-action-content{
+    display: flex;
+    width: 100%;
+
+    .item-action-element{
+        display: flex;
+        align-items: center;
+        width: 70%;
+    }
+
+    .card-subtitle{
+        // width: calc(100% - 40px);
+        margin-left: 30px;
+        color: white;
+    }
+
+    .delay-wrapper {
+        display: block;
+        height: auto;
+        width: 80%;
+        // margin: 20px 0px 0px 20px;
+        padding: 0em 0.75em 0;
+    }
+}

@@ -111,7 +111,7 @@ $margin-top-card: 30px;
             height: auto;
             max-height: 100%;
             /* background-color: rgb($bg-color-bck-rgb); */
-            border-radius: 3px;
+            border-radius: $panel-border-radius;
             overflow: hidden;
             margin: 0 10px;
             padding: 0px;
@@ -173,6 +173,7 @@ $margin-top-card: 30px;
         }
         &.is_opened{
             width: 175px;
+            transition: .3s;
             img{
                 width: 100px;
             }
@@ -182,7 +183,7 @@ $margin-top-card: 30px;
     .header-right {
         display: flex;
         align-items: center;
-
+        width: calc(100% - 50px);
         .toggle-setting-sidebar-icon-wpr {
             position: absolute;
             z-index: 1050;
@@ -194,6 +195,7 @@ $margin-top-card: 30px;
 
             &.is_opened {
                 left: 164px;
+                transition: .3s;
             }
         }
 
@@ -216,4 +218,24 @@ $margin-top-card: 30px;
             margin-left: 20px;
         }
     }
+}
+.cds-close-btn-wpr {
+    position: absolute;
+    right: 11px;
+}
+
+.cds-close-btn {
+    padding: 3px !important;
+    border-radius: 50% !important;
+    background-color: transparent !important;
+    box-shadow: unset !important;
+    color:#e8eaed !important; 
+}
+
+.cds-close-btn:hover { 
+    color:#9aa0a6 !important; 
+}
+
+.cds-close-btn-icon {
+    font-size: 40px !important;
 }

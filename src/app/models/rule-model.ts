@@ -6,6 +6,13 @@ export interface Rule {
     uid: string,
     name: string,
     description?: string,
-    when: { urlMatches: string, triggerEvery: number},
-    do: [{wait: number},{message: any}]
+    when: {
+        regexOption: string,
+        text: string, 
+        urlMatches: string, 
+        triggerEvery: number},
+    do: [
+        {wait: number},
+        {message: any}
+    ]
 }

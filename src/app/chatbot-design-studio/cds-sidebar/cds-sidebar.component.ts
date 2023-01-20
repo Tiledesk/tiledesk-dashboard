@@ -34,8 +34,6 @@ export class CdsSidebarComponent implements OnInit {
   }
 
 
-
-
   getUserRole() {
     this.usersService.project_user_role_bs.pipe( takeUntil(this.unsubscribe$)).subscribe((userRole) => {
          console.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
@@ -56,29 +54,18 @@ export class CdsSidebarComponent implements OnInit {
     this.auth.toggletilebotSidebar(IS_OPEN)
   }
 
-
-  goTo(section) {
-    this.logger.log('[NATIVE-BOT-SIDEBAR] goTo ', section)
-    console.log("goTo: ", section);
+  goTo(section: "settings" | "intents" | "fulfillment" | "training" | "rules") {
+    this.logger.log('[NATIVE-BOT-SIDEBAR] goTo item ', section)
 
     let elements = Array.from(document.getElementsByClassName('section is_active'));
     if (elements.length != 0) {
-      console.log("almeno un elemento active")
       elements.forEach((el) => {
-        console.log("el: ", el);
         el.classList.remove('is_active');
       })
     }
 
     const element = document.getElementById(section);
-    console.log("element: ", element);
     element.classList.toggle("is_active");
-
-    this.onClickItemList.emit(section)
-  }
-
-  _goTo(section: "settings" | "intents" | "fulfillment" | "training" | "rules") {
-    this.logger.log('[NATIVE-BOT-SIDEBAR] goTo item ', section)
 
     this.onClickItemList.emit(section)
   }

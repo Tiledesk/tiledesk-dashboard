@@ -1,0 +1,22 @@
+<div class="item-action-content">
+    <div class="item-action-element">
+        <div class="card-subtitle">Wait time:</div>
+        <div class="delay-wrapper">
+            <appdashboard-delay-slider
+                [delayTime]="actionForm.controls[0].get('wait').value"
+                [step]="1"
+                (changeDelayTime)="onChangeDelayTime($event)">
+            </appdashboard-delay-slider>
+        </div>
+    </div>
+
+    <div class="item-action-element">
+        <div class="card-subtitle">Message:</div>
+        <div style="width: 100%;">
+            <rule-text id="text"
+                [control]="actionForm.controls[1].get('message.text')"
+                [autocompleteOptions]="autocompleteOptions">
+            </rule-text>
+        </div>
+    </div>
+</div>

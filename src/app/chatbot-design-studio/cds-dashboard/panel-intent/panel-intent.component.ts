@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Form, Intent } from '../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Observable, Subscription } from 'rxjs';
 @Component({
   selector: 'appdashboard-panel-intent',
   templateUrl: './panel-intent.component.html',
@@ -12,7 +13,8 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   // objectKeys = Object.keys;
   @Input() intentSelected: Intent;
   @Input() isOpenActionDrawer: boolean = false;
-
+  @Input() events: Observable<any>;
+  private updatedIntentSubscription: Subscription;
   @Output() openActionDrawer = new EventEmitter();
   @Output() answerSelected = new EventEmitter();
   @Output() actionSelected = new EventEmitter();
@@ -37,9 +39,19 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit(): void {
-
+// this.listenToIntentUpdates();
     // this.actions = this.intentSelected.actions
   }
+
+  listenToIntentUpdates(){
+   
+    this.events.subscribe((intent: Intent) => {
+      console.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
+      
+    
+    })
+  }
+
 
   ngOnChanges(changes: SimpleChanges) {
 
@@ -64,7 +76,10 @@ export class PanelIntentComponent implements OnInit, OnChanges {
       
       console.log('[PANEL INTENT] (ngOnChanges) actions', this.actions);
       if (this.intentSelected && this.intentSelected.question) {
-        const question_segment = this.intentSelected.question.split('\\n');
+        // const question_segment = this.intentSelected.question.split(\n);
+        // https://bobbyhadz.com/blog/javascript-split-string-by-newline
+        const question_segment = this.intentSelected.question.split(/\r?\n/).filter(element => element);
+       
         console.log('[PANEL INTENT] question_segment', question_segment);
       }
       this.question = this.intentSelected.question;

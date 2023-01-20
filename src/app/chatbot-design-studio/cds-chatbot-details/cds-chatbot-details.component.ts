@@ -86,6 +86,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   botTypeForInput: string;
   details: any
   displayDeleteFaqModal = 'none';
+  displayImportJSONModal = 'none'
   constructor(
     private logger: LoggerService,
     public appConfigService: AppConfigService,
@@ -557,62 +558,125 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
 
 
 
-  // Section Import /  export method
-  // exportFaqToJSON() {
-  //   const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-faq-to-json-btn');
-  //   exportFaqToJsonBtnEl.blur();
-  //   this.faqService.exportFaqsToJSON(this.id_faq_kb).subscribe((faq: any) => {
-  //     console.log('[CDS-CHATBOT-DTLS] - EXPORT BOT TO JSON - FAQS', faq)
-  //     // console.log('[CDS-CHATBOT-DTLS] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
-  //     if (faq) {
-  //       this.downloadObjectAsJson(faq, faq.name);
-  //     }
-  //   }, (error) => {
-  //     console.error('[CDS-CHATBOT-DTLS] - EXPORT BOT TO JSON - ERROR', error);
-  //   }, () => {
-  //     console.log('[CDS-CHATBOT-DTLS] - EXPORT BOT TO JSON - COMPLETE');
-  //   });
-  // }
+ // -------------------------------------------------------------------------------------- 
+  // Export chatbot to JSON
+  // -------------------------------------------------------------------------------------- 
+  exportChatbotToJSON() {
+    const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
+    exportFaqToJsonBtnEl.blur();
+    this.faqService.exportChatbotToJSON(this.id_faq_kb).subscribe((faq: any) => {
+      // console.log('[TILEBOT] - EXPORT CHATBOT TO JSON - FAQS', faq)
+      // console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
+      if (faq) {
+        this.downloadObjectAsJson(faq, faq.name);
+      }
+    }, (error) => {
+      this.logger.error('[TILEBOT] - EXPORT BOT TO JSON - ERROR', error);
+    }, () => {
+      this.logger.log('[TILEBOT] - EXPORT BOT TO JSON - COMPLETE');
+    });
+  }
+
+
+  // -------------------------------------------------------------------------------------- 
+  // Export intents to JSON
+  // -------------------------------------------------------------------------------------- 
+  exportIntentsToJSON() {
+    const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-intents-to-json-btn');
+    exportFaqToJsonBtnEl.blur();
+    this.faqService.exportIntentsToJSON(this.id_faq_kb).subscribe((faq: any) => {
+      // console.log('[TILEBOT] - EXPORT BOT TO JSON - FAQS', faq)
+      // console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
+      if (faq) {
+        this.downloadObjectAsJson(faq, this.faqKb_name + ' intents');
+      }
+    }, (error) => {
+      this.logger.error('[TILEBOT] - EXPORT BOT TO JSON - ERROR', error);
+    }, () => {
+      this.logger.log('[TILEBOT] - EXPORT BOT TO JSON - COMPLETE');
+
+    });
+  }
 
   downloadObjectAsJson(exportObj, exportName) {
     var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
     var downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", exportName + ".txt");
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
     document.body.appendChild(downloadAnchorNode); // required for firefox
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
   }
 
-  // fileChangeUploadJSON(event) {
-  //   console.log('[CDS-CHATBOT-DTLS] - fileChangeUploadJSON $event ', event);
-  //   let fileJsonToUpload = ''
-  //   console.log('[CDS-CHATBOT-DTLS] - fileChangeUploadJSON $event  target', event.target);
-  //   const selectedFile = event.target.files[0];
-  //   const fileReader = new FileReader();
-  //   fileReader.readAsText(selectedFile, "UTF-8");
-  //   fileReader.onload = () => {
-  //     fileJsonToUpload = JSON.parse(fileReader.result as string)
-  //     console.log('fileJsonToUpload intents', fileJsonToUpload['intents']);
-  //   }
-  //   fileReader.onerror = (error) => {
-  //     console.log(error);
-  //   }
+   // --------------------------------------------------------------------------
+  // @ Import chatbot from json ! NOT USED
+  // --------------------------------------------------------------------------
+  fileChangeUploadChatbotFromJSON(event) {
 
-  //   this.faqService.importFaqFromJSON(this.id_faq_kb, fileJsonToUpload).subscribe((res: any) => {
-  //     console.log('[CDS-CHATBOT-DTLS] - IMPORT BOT FROM JSON - ', res)
+    this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event ', event);
+    let fileJsonToUpload = ''
+    // console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
+    const selectedFile = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.readAsText(selectedFile, "UTF-8");
+    fileReader.onload = () => {
+      fileJsonToUpload = JSON.parse(fileReader.result as string)
+      this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
+    }
+    fileReader.onerror = (error) => {
+      this.logger.log(error);
+    }
 
-  //     // if (faq) {
-  //     //   this.downloadFile(faq, 'faqs.json');
-  //     // }
-  //   }, (error) => {
-  //     console.error('[CDS-CHATBOT-DTLS] -  IMPORT BOT FROM JSON- ERROR', error);
+    this.faqService.importChatbotFromJSON(this.id_faq_kb, fileJsonToUpload).subscribe((res: any) => {
+      this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - ', res)
 
-  //     this.notify.showWidgetStyleUpdateNotification("thereHasBeenAnErrorProcessing", 4, 'report_problem');
-  //   }, () => {
-  //     console.log('[CDS-CHATBOT-DTLS] - IMPORT BOT FROM JSON - COMPLETE');
-  //   });
-  // }
+    }, (error) => {
+      this.logger.error('[TILEBOT] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+
+      this.notify.showWidgetStyleUpdateNotification("thereHasBeenAnErrorProcessing", 4, 'report_problem');
+    }, () => {
+      this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - COMPLETE');
+    });
+  }
+
+
+    // --------------------------------------------------------------------------
+  // @ Import Itents from JSON
+  // --------------------------------------------------------------------------
+  presentModalImportIntentsFromJson() {
+    this.displayImportJSONModal = "block"
+  }
+
+  onCloseImportJSONModal() {
+    this.displayImportJSONModal = "none"
+  }
+
+  fileChangeUploadIntentsFromJSON(event, action) {
+    // console.log('[TILEBOT] - fileChangeUploadJSON event ', event);
+    // console.log('[TILEBOT] - fileChangeUploadJSON action ', action);
+    const fileList: FileList = event.target.files;
+    const file: File = fileList[0];
+    const formData: FormData = new FormData();
+    formData.set('id_faq_kb', this.id_faq_kb);
+    formData.append('uploadFile', file, file.name);
+    this.logger.log('FORM DATA ', formData)
+
+    this.faqService.importIntentsFromJSON(this.id_faq_kb, formData ,action).subscribe((res: any) => {
+      this.logger.log('[TILEBOT] - IMPORT INTENTS FROM JSON - ', res)
+
+    }, (error) => {
+      this.logger.error('[TILEBOT] -  IMPORT INTENTS FROM JSON- ERROR', error);
+
+      this.notify.showWidgetStyleUpdateNotification("thereHasBeenAnErrorProcessing", 4, 'report_problem');
+    }, () => {
+      this.logger.log('[TILEBOT] - IMPORT INTENTS FROM JSON - * COMPLETE *');
+      this.notify.showWidgetStyleUpdateNotification("File was uploaded succesfully", 2, 'done');
+
+      this.onCloseImportJSONModal();
+      
+    });
+  }
+
 
 
   exportFaqsToCsv() {

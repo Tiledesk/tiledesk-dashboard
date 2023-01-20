@@ -1,3 +1,4 @@
+import { LoggerService } from 'app/services/logger/logger.service';
 import { Intent } from 'app/models/intent-model';
 import { Chatbot } from './../../../models/faq_kb-model';
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
@@ -16,7 +17,7 @@ export class RulesComponent implements OnInit {
 
   addClicked: boolean = false;
   listOfRules: Rule[]=[];
-  constructor(private faqkbService: FaqKbService) { }
+  constructor(private logger: LoggerService) { }
 
   ngOnInit(): void {
 
@@ -25,17 +26,17 @@ export class RulesComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges){
     this.getAllRules();
   }
-
-  addNew(){
-    console.log('add Ruless')
-    this.addClicked = true;
-  }
-
+  
   ngOnDestroy(){
     this.addClicked = false;
   }
 
+  addNew(){
+    this.addClicked = true;
+  }
+
   getAllRules(){
+    this.logger.debug('[RULES] getAllRules: selectedChatbot-->', this.selectedChatbot)
     if(this.selectedChatbot.attributes && this.selectedChatbot.attributes['rules']){
       this.listOfRules = this.selectedChatbot.attributes['rules'] as Rule[]
     }

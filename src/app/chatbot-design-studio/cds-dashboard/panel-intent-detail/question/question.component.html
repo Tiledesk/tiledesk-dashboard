@@ -7,17 +7,32 @@
     </mat-form-field>
 </div> -->
 
-<div class="text-editor-wrapper">
+<!-- <div class="text-editor-wrapper">
     <div class="text-editor">
         <mat-form-field class="box-textarea" appearance="fill">
-            <textarea matInput
-                cdkTextareaAutosize
-                [(ngModel)]="question"
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"
-                (ngModelChange)="onChangeText($event)">
+            <textarea matInput cdkTextareaAutosize [(ngModel)]="question" #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" (ngModelChange)="onChangeText($event)">
             </textarea>
         </mat-form-field>
     </div>
-</div> 
+
+</div> -->
+
+
+<div class="text-editor-wrapper">
+    <div class="text-editor">
+
+
+
+        <div *ngFor="let q of questions_array">
+            <mat-form-field class="box-textarea" appearance="fill">
+
+                <input matInput value="{{q}}" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+                    (ngModelChange)="onChangeText($event)" />
+
+
+            </mat-form-field>
+        </div>
+    </div>
+
+</div>

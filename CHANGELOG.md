@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc2
+- Adds the "attribute" property to the "reply action" model
+
+### 2.3.22-rc1
+- Chatbot design studio first commmit
+
 ### 2.3.21
 - Deploys in production
 - Fixes the bug: when a project is selected from the project selection navbar combobox > "Other projects" section, the path is incorrect

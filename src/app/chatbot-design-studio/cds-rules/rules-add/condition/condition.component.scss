@@ -20,6 +20,14 @@
         // &.mat-radio-checked .mat-radio-inner-circle{
         //     background-color: rgb(202,132,0);
         // }
+        .mat-accent.mat-radio-checked .mat-radio-outer-circle {
+            border-color: blue;
+          }
+       
+          // For inner circle
+        .mat-radio-checked .mat-radio-inner-circle {
+              background-color: blue;
+        }
 
         
     }
@@ -54,4 +62,13 @@ mat-radio-button ::ng-deep {
     .mat-accent .mat-radio-ripple .mat-ripple-element {
           background-color:rgb(255, 37, 37,.26);
     }
+}
+
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: rgb(66, 134, 244);
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: rgb(66, 134, 244);
 }
