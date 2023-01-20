@@ -19,12 +19,13 @@
             <input matInput
                 [class.customPrefix]="customPrefix"
                 [formControl]="control"
-                cdkTextareaAutosize
+                [matAutocomplete]="auto"
                 [maxlength]="limitCharsText"
+                cdkTextareaAutosize
                 cdkAutosizeMinRows="1"
                 cdkAutosizeMaxRows="5"
-                (ngModelChange)="onChangeText($event)"
-                [matAutocomplete]="auto"/>
+                [(ngModel)]="text"
+                (ngModelChange)="onChangeText($event)"/>
             <div class="input-suffix" *ngIf="customPrefix"> / </div>
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">

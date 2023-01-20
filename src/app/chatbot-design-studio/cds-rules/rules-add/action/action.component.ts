@@ -14,7 +14,6 @@ export class ActionComponent implements OnInit {
 
   ngOnInit(): void {
     this.actionForm = this.rootFormGroup.control.get('do') as FormGroup;
-    
   }
 
   onChangeDelayTime(number){

@@ -1,27 +1,28 @@
-import { Form } from './../../../../models/intent-model';
 import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
-  selector: 'rule-text',
+  selector: 'cds-text',
   templateUrl: './text.component.html',
   styleUrls: ['./text.component.scss']
 })
-export class TextComponent implements OnInit {
+export class CDSTextComponent implements OnInit {
 
   // @Input() textMessage: string;
-  @Input() control: FormControl;
+  @Input() control: FormControl = new FormControl()
+  @Input() text: string;
   @Input() customPrefix: string;
   @Input() limitCharsText: number = 200;
   @Input() autocompleteOptions: string[] = [];
-  @Output() onChange = new EventEmitter<string>();
+  @Output() change = new EventEmitter<string>();
   
   filteredOptions: Observable<string[]>;
   constructor() { }
 
   ngOnInit(): void {
+    this.text = this.control.value
     this.filteredOptions = this.control.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || ''))
@@ -29,8 +30,8 @@ export class TextComponent implements OnInit {
   }
 
   onChangeText(text: string){
-    // this.textMessage = text
-    this.onChange.emit(text)
+    this.text = text
+    this.change.emit(text)
   }
 
   private _filter(value: string): string[] {

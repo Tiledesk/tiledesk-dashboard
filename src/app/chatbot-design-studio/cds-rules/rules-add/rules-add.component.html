@@ -8,16 +8,15 @@
 
             <div class="card-item">
                 <div class="card-title">Name:</div>
-                <rule-text
+                <cds-text
                     [control]="ruleFormGroup.controls['name']">
-                </rule-text>
+                </cds-text>
             </div>
       
             <div class="card-item">
                 <div class="card-title">Condition</div>
                 <rule-condition
-                    [condition]="ruleFormGroup.controls['when']"
-                    (onChangeValue)="onConditionChange($event)">
+                    [condition]="ruleFormGroup.controls['when']">
                 </rule-condition>
             </div>
     
@@ -43,7 +42,7 @@
     <mat-accordion class="rules-list">
         <div class="card-wrp" [formGroup]="ruleFormGroup">
             <mat-expansion-panel
-                [expanded]="false"
+                [expanded]="isPanelExpanded"
                 (opened)="openPanel($event)"
                 (click)="closePanel($event)">
                 <mat-expansion-panel-header>
@@ -57,16 +56,15 @@
 
                 <div class="card-item">
                     <div class="card-title">Name:</div>
-                    <rule-text
+                    <cds-text
                         [control]="ruleFormGroup.controls['name']">
-                    </rule-text>
+                    </cds-text>
                 </div>
           
                 <div class="card-item">
                     <div class="card-title">Condition</div>
                     <rule-condition
-                        [condition]="ruleFormGroup.controls['when']"
-                        (onChangeValue)="onConditionChange($event)">
+                        [condition]="ruleFormGroup.controls['when']">
                     </rule-condition>
                 </div>
         

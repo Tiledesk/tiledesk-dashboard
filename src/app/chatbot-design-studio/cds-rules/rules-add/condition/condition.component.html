@@ -3,10 +3,10 @@
     <mat-radio-group [formControl]="conditionsForm.controls['regexOption']">
         <mat-radio-button [value]="condition.value" *ngFor="let condition of conditions">{{condition.name}}</mat-radio-button>
     </mat-radio-group>
-    <rule-text
+    <cds-text
         [control]="conditionsForm.controls['text']"
         [customPrefix]="regexOption ==='custom'">
-    </rule-text>
+    </cds-text>
 </div>
 <div class="section">
     <label class="section-label">Every:</label>

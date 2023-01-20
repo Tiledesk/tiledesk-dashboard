@@ -57,10 +57,10 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
     if (changes.intentSelected) {
       if (changes.intentSelected.firstChange === false) {
-        console.log('[PANEL INTENT] (ngOnChanges) changes', changes);
-        console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected currentValue', changes.intentSelected.currentValue);
-        console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected previousValue', changes.intentSelected.previousValue);
-        console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected firstChange', changes.intentSelected.firstChange);
+        // console.log('[PANEL INTENT] (ngOnChanges) changes', changes);
+        // console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected currentValue', changes.intentSelected.currentValue);
+        // console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected previousValue', changes.intentSelected.previousValue);
+        // console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected firstChange', changes.intentSelected.firstChange);
         if (changes.intentSelected.previousValue._id !== changes.intentSelected.currentValue._id) {
           this.HAS_SELECTED_ANSWER = false
           this.HAS_SELECTED_QUESTION = false
@@ -71,10 +71,10 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     }
 
     if (this.intentSelected) {
-      console.log('[PANEL INTENT] (ngOnChanges) intentSelected', this.intentSelected);
+      // console.log('[PANEL INTENT] (ngOnChanges) intentSelected', this.intentSelected);
       this.actions = this.intentSelected.actions;
       
-      console.log('[PANEL INTENT] (ngOnChanges) actions', this.actions);
+      // console.log('[PANEL INTENT] (ngOnChanges) actions', this.actions);
       if (this.intentSelected && this.intentSelected.question) {
         // const question_segment = this.intentSelected.question.split(\n);
         // https://bobbyhadz.com/blog/javascript-split-string-by-newline
@@ -84,12 +84,12 @@ export class PanelIntentComponent implements OnInit, OnChanges {
         // console.log('[PANEL INTENT] question_segment', question_segment);
       }
       this.question = this.intentSelected.question;
-      console.log('[PANEL INTENT] (ngOnChanges) question: ', this.question);
+      // console.log('[PANEL INTENT] (ngOnChanges) question: ', this.question);
       // if (this.HAS_SELECTED_QUESTION) {
       //   this.onSelectQuestion()
       // }
       this.answer = this.intentSelected.answer;
-      console.log('[PANEL INTENT] (ngOnChanges) answer: ', this.answer);
+      // console.log('[PANEL INTENT] (ngOnChanges) answer: ', this.answer);
       // if (this.HAS_SELECTED_ANSWER) {
       //   this.onSelectAnswer()
       // }
@@ -100,22 +100,22 @@ export class PanelIntentComponent implements OnInit, OnChanges {
         this.formSize = 0;
       }
 
-      console.log('[PANEL INTENT] (ngOnChanges) form: ', this.form);
-      console.log('[PANEL INTENT] (ngOnChanges) form size: ', this.formSize);
+      // console.log('[PANEL INTENT] (ngOnChanges) form: ', this.form);
+      // console.log('[PANEL INTENT] (ngOnChanges) form size: ', this.formSize);
       // if (this.HAS_SELECTED_ANSWER) {
       //   this.onSelectAnswer()
       // }
 
       this.webhook_enabled = this.intentSelected.webhook_enabled;
-      console.log('[PANEL INTENT] webhook_enabled: ', this.webhook_enabled);
+      // console.log('[PANEL INTENT] webhook_enabled: ', this.webhook_enabled);
 
 
     } else {
-      console.log('[PANEL INTENT] actions - OPS! intentSelected ', this.intentSelected)
+      // console.log('[PANEL INTENT] actions - OPS! intentSelected ', this.intentSelected)
     }
     // console.log('[PANEL INTENT] actions', this.actions)
     // console.log('[PANEL INTENT] intentSelected', this.intentSelected)
-    console.log('[PANEL INTENT] *** ->  isOpenActionDrawer', this.isOpenActionDrawer)
+    // console.log('[PANEL INTENT] *** ->  isOpenActionDrawer', this.isOpenActionDrawer)
   }
 
   drop(event: CdkDragDrop<string[]>) {
