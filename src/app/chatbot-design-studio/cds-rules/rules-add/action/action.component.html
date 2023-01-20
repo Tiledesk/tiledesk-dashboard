@@ -1,6 +1,6 @@
 <div class="item-action-content">
     <div class="item-action-element">
-        <div class="card-subtitle">Wait time:</div>
+        <label class="card-subtitle">Wait time:</label>
         <div class="delay-wrapper">
             <cds-delay-slider
                 [step]="1"
@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="item-action-element">
-        <div class="card-subtitle">Message:</div>
+        <label class="card-subtitle">Message:</label>
         <div style="width: 100%;">
             <cds-text id="text"
                 [control]="actionForm.controls[1].get('message.text')"
