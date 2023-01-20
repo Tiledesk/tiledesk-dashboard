@@ -1,7 +1,10 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc2
+- Adds the "attribute" property to the "reply action" model
+
 ### 2.3.22-rc1
-- Chatbot design studio (in progress)
+- Chatbot design studio first commmit
 
 ### 2.3.21
 - Deploys in production
