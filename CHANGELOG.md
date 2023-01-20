@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc3
+- Replaces the type "message" with the type "reply"
+
 ### 2.3.22-rc2
 - Adds the "attribute" property to the "reply action" model
 

@@ -1,5 +1,5 @@
 @import "./src/assets/sass/cds/_variables.scss";
-    
+
 .text-editor-wrapper:hover {
     .text-editor {
         .response-controls {
@@ -28,9 +28,9 @@
             .control-button {
                 cursor: pointer;
                 color: $color-bck-gray-hex;
-                transition: color .3s;
+                transition: color 0.3s;
                 height: 20px;
-                &.delete{
+                &.delete {
                     height: 24px;
                     width: 24px;
                     background: $color-bck-gray-hex;
@@ -41,13 +41,13 @@
                     em {
                         font-size: 1.15em;
                         color: $color-withe-hex;
-                        transition: color .3s;
+                        transition: color 0.3s;
                     }
                 }
             }
-            .control-button:hover{
+            .control-button:hover {
                 color: $color-withe-hex;
-                &.delete{
+                &.delete {
                     box-shadow: 0 2px 6px 0 rgb(255 255 255 / 15%);
                     em {
                         color: $color-red-hex;
@@ -72,7 +72,7 @@
                 line-height: 25px;
                 resize: vertical;
 
-                &.customPrefix{
+                &.customPrefix {
                     padding-left: 20px;
                     width: calc(100% - 2.5em - 20px);
                 }
@@ -85,7 +85,7 @@
                 color: #7d7d7d;
                 font-weight: 800;
             }
-            
+
             .input-suffix {
                 position: absolute;
                 top: 14px;
@@ -129,8 +129,6 @@
             float: right;
         }
     }
-
-    
 }
 
 .text-editor-wrapper:hover .text-editor {
@@ -145,9 +143,9 @@ mat-form-field.mat-focused ::ng-deep {
         .mat-form-field-flex {
             .mat-form-field-infix {
                 input {
-                    border: 1px solid $icon-color!important;
-                    outline: 1px solid $icon-color!important;
-                    transition: border .3s;
+                    border: 1px solid $icon-color !important;
+                    outline: 1px solid $icon-color !important;
+                    transition: border 0.3s;
                 }
             }
         }
@@ -155,7 +153,7 @@ mat-form-field.mat-focused ::ng-deep {
 }
 mat-form-field.box-textarea ::ng-deep {
     .mat-form-field-wrapper {
-        padding-bottom:0;
+        padding-bottom: 0;
         .mat-form-field-flex {
             border-radius: 4px 4px 0 0;
             padding: 0 0.75em 0 0.75em;
@@ -165,5 +163,31 @@ mat-form-field.box-textarea ::ng-deep {
     }
     .mat-form-field-underline {
         display: none;
-    }    
+    }
+}
+
+.cds-questions-main-content {
+    padding: 25px;
+    width: 100%;
+}
+
+.cds-questions-container {
+    width: 100%;
+}
+.cds-input-group {
+    margin-bottom: 1px;
+}
+
+.cds-question-input {
+    border: 1px solid #fff;
+    height: 47px;
+    width: 100%;
+}
+.cds-group-addon {
+    background: #fff;
+    height: 47px;
+    border-radius: 0;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 4px;
 }

@@ -11,7 +11,7 @@ export class QuestionComponent implements OnInit, OnChanges {
   @Input() intentSelected: Intent;
 
   public question: string
-  questions_array: any
+  questions_array: string[]
 
   constructor() { }
 
@@ -40,5 +40,9 @@ export class QuestionComponent implements OnInit, OnChanges {
   saveQuestion(){
     console.log('[INTENT-QUESTION] saveQuestion intentSelected > question' , this.intentSelected.question) 
   } 
+
+  trackByIndex(index: number, obj: any): any {
+    return index;
+  }
 
 }

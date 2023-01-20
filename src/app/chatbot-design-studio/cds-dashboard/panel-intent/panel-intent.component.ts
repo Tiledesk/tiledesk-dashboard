@@ -78,7 +78,8 @@ export class PanelIntentComponent implements OnInit, OnChanges {
       if (this.intentSelected && this.intentSelected.question) {
         // const question_segment = this.intentSelected.question.split(\n);
         // https://bobbyhadz.com/blog/javascript-split-string-by-newline
-        const question_segment = this.intentSelected.question.split(/\r?\n/).filter(element => element);
+        
+        // const question_segment = this.intentSelected.question.split(/\r?\n/).filter(element => element);
        
         // console.log('[PANEL INTENT] question_segment', question_segment);
       }
