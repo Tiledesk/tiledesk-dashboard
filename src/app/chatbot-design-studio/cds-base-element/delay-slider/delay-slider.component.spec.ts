@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TextComponent } from './text.component';
+import { CDSDelaySliderComponent } from './delay-slider.component';
 
-describe('TextComponent', () => {
-  let component: TextComponent;
-  let fixture: ComponentFixture<TextComponent>;
+describe('DelaySliderComponent', () => {
+  let component: CDSDelaySliderComponent;
+  let fixture: ComponentFixture<CDSDelaySliderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TextComponent ]
+      declarations: [ CDSDelaySliderComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TextComponent);
+    fixture = TestBed.createComponent(CDSDelaySliderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

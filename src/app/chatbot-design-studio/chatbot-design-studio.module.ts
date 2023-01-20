@@ -46,13 +46,19 @@ import { ModalWindowComponent } from './cds-dashboard/panel-intent-detail/form/m
 import { CdsSidebarComponent } from './cds-sidebar/cds-sidebar.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ElementTextareaComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-textarea/element-textarea.component';
-import { RulesComponent } from './cds-rules/rules/rules.component';
-import { RulesAddComponent } from './cds-rules/rules-add/rules-add.component';
-import { TextComponent } from './cds-rules/rules-add/text/text.component';
-import { ConditionComponent } from './cds-rules/rules-add/condition/condition.component';
 import { CdsChatbotDetailsComponent } from './cds-chatbot-details/cds-chatbot-details.component';
 import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.component';
+
+//BASE-ELEMENT
+import { CDSTextComponent } from './cds-base-element/text/text.component';
+import { CDSDelaySliderComponent } from './cds-base-element/delay-slider/delay-slider.component';
+import { CDSTextareaComponent } from './cds-base-element/textarea/textarea.component';
+
+//RULES COMPONENT
+import { RulesComponent } from './cds-rules/rules/rules.component';
+import { RulesAddComponent } from './cds-rules/rules-add/rules-add.component';
 import { RulesListComponent } from './cds-rules/rules-list/rules-list.component';
+import { ConditionComponent } from './cds-rules/rules-add/condition/condition.component';
 import { ActionComponent } from './cds-rules/rules-add/action/action.component';
 
 
@@ -87,10 +93,14 @@ import { ActionComponent } from './cds-rules/rules-add/action/action.component';
     RulesAddComponent,
     RulesListComponent,
     CdsFulfillmentComponent,
-    TextComponent,
     ConditionComponent,
     ActionComponent,
     CdsChatbotDetailsComponent,
+
+    //BASE-ELEMENT
+    CDSTextComponent,
+    CDSDelaySliderComponent,
+    CDSTextareaComponent
   ],
   imports: [
     CommonModule,

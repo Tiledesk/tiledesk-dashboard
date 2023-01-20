@@ -1,0 +1,22 @@
+<mat-form-field class="box-textarea" appearance="fill">
+    <textarea matInput
+        #autosize="cdkTextareaAutosize"
+        [maxlength]="limitCharsText"
+        [formControl]="control"
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+        [(ngModel)]="text"
+        (ngModelChange)="onChangeTextarea($event)">
+    </textarea>
+</mat-form-field>
+
+<div class="editor-utils">
+    <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
+    <!-- <div class="text-editor-insert-attribute">
+        <em class="material-icons">code</em>
+    </div> 
+    <div class="emoji-picker">
+        <em class="material-icons">insert_emoticon</em>
+    </div>  -->
+</div>
