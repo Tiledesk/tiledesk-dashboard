@@ -19,20 +19,35 @@
 </div> -->
 
 
-<div class="text-editor-wrapper">
-    <div class="text-editor">
+<div class="cds-questions-main-content">
 
 
 
-        <div *ngFor="let q of questions_array">
-            <mat-form-field class="box-textarea" appearance="fill">
 
-                <input matInput value="{{q}}" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
-                    (ngModelChange)="onChangeText($event)" />
+    <div class="cds-questions-container" *ngFor="let q of questions_array;let index = index;trackBy:trackByIndex;">
+        <!-- <mat-form-field class="box-textarea" appearance="fill"> -->
 
+        <!-- <input   class="cds-question" value="{{q}}"
+                    (ngModelChange)="onChangeText($event)" /> -->
 
-            </mat-form-field>
+        <div class="input-group cds-input-group">
+            <span class="input-group-addon cds-group-addon">
+                <span class="material-icons">
+                    format_quote
+                </span>
+            </span>
+            <!-- -->
+            <!-- (ngModelChange)="onChangeText($event)"  [(ngModel)]="questions_array[index]" -->
+            <input [value]="q" (change)="onChangeText($event)" type="text" class="cds-question-input"
+                aria-label="question">
+            <span class="input-group-addon cds-group-addon">
+                <span class="material-icons">
+                    delete
+                </span>
+            </span>
         </div>
+        <!-- </mat-form-field> -->
+
     </div>
 
 </div>
