@@ -1,11 +1,12 @@
 import { LoggerService } from 'app/services/logger/logger.service';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-import { Component, Input, OnInit, SimpleChanges, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core';
+import { FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { Component, Input, OnInit, SimpleChanges, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import { Intent } from 'app/models/intent-model';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Rule } from 'app/models/rule-model';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
   selector: 'cds-rules-add',
@@ -14,6 +15,8 @@ import { Rule } from 'app/models/rule-model';
 })
 export class RulesAddComponent implements OnInit {
 
+  @ViewChild(MatExpansionPanel) pannel?: MatExpansionPanel; 
+  
   @Input() listOfIntents: Array<Intent>;
   @Input() selectedRule: Rule
   @Input() selectedChatbot: Chatbot;
@@ -23,6 +26,8 @@ export class RulesAddComponent implements OnInit {
   
   ruleFormGroup: FormGroup
   autocompleteOptions: Array<string> = [];
+  isPanelExpanded: false;
+
   constructor(private formBuilder: FormBuilder,
               private logger: LoggerService,
               private el: ElementRef,
@@ -109,10 +114,10 @@ export class RulesAddComponent implements OnInit {
     })
   }
 
-  onConditionChange(event){
-    console.log('onConditionChange-->', event)
-    
+  private addOrReplace(array: Rule[], newObj: Rule): Rule[]{ 
+    return [...array.filter((obj) => obj.uid !== newObj.uid), {...newObj}];
   }
+    
 
   submitForm(){
     this.logger.debug('[RULES-ADD] submitForm-->', this.ruleFormGroup)
@@ -122,13 +127,16 @@ export class RulesAddComponent implements OnInit {
     const failClassName    = 'loading-btn--fail';
     const stateDuration = 1500;
     if(this.ruleFormGroup.valid){
-      const rule = [this.ruleFormGroup.value]
-      const rules: Rule[] = [ ...this.selectedChatbot.attributes['rules'] as Rule[], ...rule]
+      let rules: Rule[] = [this.ruleFormGroup.value]
+      if(this.selectedChatbot.attributes && this.selectedChatbot.attributes['rules']){
+        rules = this.addOrReplace(this.selectedChatbot.attributes['rules'], this.ruleFormGroup.value)
+      }
+      this.logger.debug('[RULES-ADD] add Rules to bot-->', rules)
       const button = this.el.nativeElement.querySelector('#create-rule-form')
      
       //PENDING STATE
       button.classList.add(pendingClassName)
-
+      const that = this
       this.faqkbService.addRuleToChatbot(this.selectedChatbot._id, rules).subscribe((data)=> {
         
         if(data){
@@ -137,10 +145,13 @@ export class RulesAddComponent implements OnInit {
             button.classList.remove(pendingClassName);
             button.classList.add(successClassName);
           
-            window.setTimeout(() => button.classList.remove(successClassName), stateDuration);
+            window.setTimeout(() => {
+              button.classList.remove(successClassName)
+              that.onRuleAdded.emit(this.ruleFormGroup.value)
+              that.isPanelExpanded = false;
+            }, stateDuration);
           }, stateDuration);
-
-          this.onRuleAdded.emit(rule[0])
+          
         }
 
       }, (error)=> {
