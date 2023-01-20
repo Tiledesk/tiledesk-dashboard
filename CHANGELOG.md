@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc5
+- Fixes the bug: the first rule is not added if at least one doesn't exist
+
 ### 2.3.22-rc4
 - Renames the action "type" in "to _tdActionType"
 
