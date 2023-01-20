@@ -55,7 +55,7 @@ export class Intent {
 // }
 
 export class Action {
-    type: string;
+    _tdActionType: string;
 }
 
 
@@ -65,7 +65,7 @@ export class ActionReply extends Action {
     constructor(text?: string, attributes?: Attributes) {
         super();
         this.text = text ? text : '';
-        this.type = TYPE_ACTION.REPLY;
+        this._tdActionType = TYPE_ACTION.REPLY;
         this.attributes = new Attributes();
         if (attributes){
             this.attributes = attributes;
@@ -90,21 +90,21 @@ export class ActionEmail extends Action {
     constructor(text?: string,) {
         super();
         this.text = text ? text : '';
-        this.type = TYPE_ACTION.EMAIL;
+        this._tdActionType = TYPE_ACTION.EMAIL;
     }
 }
 
 export class ActionAgent extends Action{
     constructor() {
         super();
-        this.type = TYPE_ACTION.AGENT;
+        this._tdActionType = TYPE_ACTION.AGENT;
     }
 }
 
 export class ActionClose extends Action{
     constructor() {
         super()
-        this.type = TYPE_ACTION.CLOSE;
+        this._tdActionType = TYPE_ACTION.CLOSE;
     }
 }
 
