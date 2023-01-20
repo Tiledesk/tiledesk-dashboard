@@ -160,8 +160,8 @@ export class RulesAddComponent implements OnInit {
   }
 
   closePanel(event){
-    event.stopPropagation();
-    event.preventDefault();
+    // event.stopPropagation();
+    // event.preventDefault();
   }
 
   openPanel(event){
