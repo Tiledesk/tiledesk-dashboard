@@ -49,8 +49,9 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     this.showSpinner = false;
     console.log("[PANEL-INTENT-HEADER] header --> intentSelected: ", this.intentSelected)
     console.log("[PANEL-INTENT-HEADER] header --> listOfIntents: ", this.listOfIntents)
-
-    this.id_faq_kb = this.intentSelected['faq_kb'][0]._id
+    if (this.intentSelected && this.intentSelected['faq_kb']) {
+      this.id_faq_kb = this.intentSelected['faq_kb'][0]._id;
+    }
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {
@@ -119,10 +120,10 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
           if (dept.default === true) {
             this.defaultDepartmentId = dept._id;
-            console.log('[PANEL-INTENT-HEADER] - DEFAULT DEPT ID ',  this.defaultDepartmentId);
+            console.log('[PANEL-INTENT-HEADER] - DEFAULT DEPT ID ', this.defaultDepartmentId);
           }
 
-        })     
+        })
       }
     }, error => {
 
@@ -135,7 +136,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
-   console.log('[PANEL-INTENT-HEADER] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+    console.log('[PANEL-INTENT-HEADER] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
 
   openTestSiteInPopupWindow() {
@@ -144,7 +145,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
 
     const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId
-   
+
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
   }
