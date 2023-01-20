@@ -1,62 +1,66 @@
+<div class="section">
+    <div class="response-image-uploader-overlay">
+        <!-- <em class="material-icons">photo_camera</em> -->
+        <div class="form-group">
+            <label class="control-label">
+                {{ 'Add path' | translate }}
+            </label>
+            <input 
+                type = "text" 
+                [(ngModel)] = "pathElement"
+                class="input form-control"
+            />
+        </div> 
+
+        <button 
+            type="button" 
+            class="btn btn-primary btn-save" 
+            (click)="onLoadPathElement()">
+            {{ 'carica video' | translate }}
+        </button>
+    </div>
+
+</div>
 
 
 
-<div class="image-tab2">
 
-    <div class="image-header-tab2">
-    </div> 
+<div class="col-dimension">
 
-    <div class="image-content-tab2">
+    <div class="row-info">
+        <span class="control-label">{{ 'width' | translate }}:</span>
+        <input [(ngModel)] = "widthElement" type="text" class="input ng-untouched ng-pristine ng-valid">
+    </div>
+    <div class="row-info">
+        <span class="control-label">{{ 'height' | translate }}:</span>
+        <input [(ngModel)] = "heightElement" type="text" class="input ng-untouched ng-pristine ng-valid">
+    </div>
 
-        <div *ngIf="showAddImage" class="section">
-            <div class="response-image-uploader-overlay">
-                <!-- <em class="material-icons">photo_camera</em> -->
+    <!-- <div class="form-group size">
+        <label class="control-label">
+            {{ 'width:' | translate }}
+        </label>
+        <input 
+            type = "text" 
+            [(ngModel)] = "widthElement"
+            class="input form-control"
+        />
+    </div>
+    <div class="form-group size">
+        <label class="control-label">
+            {{ 'height:' | translate }}
+        </label>
+        <input 
+            type = "text" 
+            [(ngModel)] = "heightElement"
+            class="input form-control"
+        />
+    </div>  -->
+</div>
 
-                <div class="form-group">
-                    <label class="control-label">
-                        {{ 'Add path' | translate }}
-                    </label>
-                    <input 
-                        type = "text" 
-                        [(ngModel)] = "pathElement"
-                        class="input form-control"
-                    />
-                </div> 
-
-                <div class="row">
-                    <div class="form-group size col-md-6">
-                        <label class="control-label">
-                            {{ 'width:' | translate }}
-                        </label>
-                        <input 
-                            type = "text" 
-                            [(ngModel)] = "widthElement"
-                            class="input form-control"
-                        />
-                    </div>
-                    <div class="form-group size col-md-6">
-                        <label class="control-label">
-                            {{ 'height:' | translate }}
-                        </label>
-                        <input 
-                            type = "text" 
-                            [(ngModel)] = "heightElement"
-                            class="input form-control"
-                        />
-                    </div> 
-                </div>
-
-                <button 
-                    type="button" 
-                    class="btn btn-primary btn-save" 
-                    (click)="onLoadPathElement()">
-                    {{ 'carica video' | translate }}
-                </button>
-            </div>
-        </div>
         
 
-        <div *ngIf="!showAddImage" class="section removeImage">
+        <!-- <div *ngIf="!showAddImage" class="section removeImage">
             <div class="response-image-uploader-overlay">
                 <em class="material-icons">photo_camera</em>
                 <button 
@@ -66,26 +70,4 @@
                     {{ 'Remove image' | translate }}
                 </button>
             </div> 
-
-            <!-- <div *ngIf="pathElement" class="response-image-uploader" [ngStyle] = "{'width': widthElement, 'height': heightElement}">
-                <div class="bck-image" [style.background-image]="'url('+pathElement+')'"></div>
-                <div class="image-panel"> 
-                </div>
-            </div> -->
-            <!-- <iframe 
-                *ngIf="pathElementUrl"
-                id="contentFrame" 
-                #iframe allowfullscreen
-                width="420" 
-                height="345"
-                style= "border:none;"
-                [src]="pathElementUrl">
-            </iframe> -->
-
-        </div>
-       
-    </div> 
-    
-
-</div>
-
+        </div> -->

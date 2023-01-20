@@ -30,7 +30,8 @@ export class ActionReplyComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    console.log('ngOnInit panel-response', this.reply);
+    console.log('ngOnInit panel-response');
+    console.log(this.reply);
     this.initialize();
   }
   
@@ -43,7 +44,7 @@ export class ActionReplyComponent implements OnInit {
     this.textGrabbing = false;
     if(this.reply){
       try {
-        this.arrayResponses = this.reply.commands;
+        this.arrayResponses = this.reply.attributes.commands;
       } catch (error) {
         console.log('error:::', error);
       }
@@ -77,12 +78,10 @@ export class ActionReplyComponent implements OnInit {
     let newArrayCommands = []; 
     this.arrayResponses.forEach(element => {
       if(element.type !== TYPE_COMMAND.WAIT){
-        let command =  new Command();
-        command.type = TYPE_COMMAND.WAIT;
+        let command =  new Command(TYPE_COMMAND.WAIT);
         command.time = element.message.time;
         newArrayCommands.push(command);
-        command =  new Command();
-        command.type = element.type;
+        command =  new Command(element.type);
         element.time = element.message.time;
         command.message = element.message;
         newArrayCommands.push(command);
@@ -125,7 +124,7 @@ export class ActionReplyComponent implements OnInit {
 
   onAddNewResponse(element){
     try {
-      this.reply.commands.push(element);
+      this.reply.attributes.commands.push(element);
       this.scrollToBottom();
       // console.log('onAddNewResponse---->', this.reply.commands);
     } catch (error) {

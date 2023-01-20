@@ -13,8 +13,8 @@
     <div class="text-editor-wrapper">
         <div class="text-editor">
         
-            <div class="response-frame-wrapper">
-
+            <div class="response-frame-wrapper"
+                [ngStyle]="{'width':framePath? 'auto' : '100%' }">
                 <div *ngIf="!framePath" class="response-frame-panel">              
                     <div class="frame-panel">
                         <appdashboard-element-from-url

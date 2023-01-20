@@ -12,7 +12,7 @@ export class ElementFromUrlComponent implements OnInit {
   @Output() loadPathElement = new EventEmitter();
   @Input() metadata: Metadata;
 
-  showAddImage = false;
+  // showAddImage = false;
   pathElement: string;
   pathElementUrl: any;
   widthElement: string;
@@ -24,7 +24,7 @@ export class ElementFromUrlComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.metadata.src == ''){
-      this.showAddImage = true;
+      // this.showAddImage = true;
     }
     // this.pathElement = "https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1&mute=0";
     // this.sanitizer.bypassSecurityTrustResourceUrl(this.pathElement);
@@ -48,7 +48,7 @@ export class ElementFromUrlComponent implements OnInit {
   // }
 
   onCloseImagePanel(){
-    this.showAddImage = false;
+    // this.showAddImage = false;
   }
 
   onRemoveImage(){
@@ -56,12 +56,10 @@ export class ElementFromUrlComponent implements OnInit {
   }
 
   onLoadPathElement(){
-    //this.pathElement = "https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1&mute=0";
-    this.metadata.width = this.widthElement;
-    this.metadata.height = this.heightElement;
+    // this.metadata.width = this.widthElement;
+    // this.metadata.height = this.heightElement;
     this.metadata.src = this.pathElement;
-    //console.log(this.pathElementUrl);
-    this.showAddImage = false;
+
     this.loadPathElement.emit();
   }
 }

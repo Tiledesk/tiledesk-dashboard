@@ -58,23 +58,41 @@ export class Intent {
 
 export class Action {
     type: string;
-    // body?: any;
 }
 
 
 export class ActionReply extends Action {
     text?: string;
-    //attributes: Attributes;
-    commands: Command[];
-    constructor(text?: string, commands?: Command[]) {
+    attributes: Attributes;
+    // commands: Command[];
+    // constructor(text?: string, commands?: Command[]) {
+    //     super();
+    //     this.text = text ? text : '';
+    //     this.type = "message";
+    //     this.commands = [];
+    //     if (commands && commands.length > 0) {
+    //         this.commands = commands;
+    //     }
+    //     // this.attributes = attributes?attributes:new Attributes();
+    // }
+    constructor(text?: string, attributes?: Attributes) {
         super();
         this.text = text ? text : '';
         this.type = "message";
+        this.attributes = new Attributes();
+        if (attributes){
+            this.attributes = attributes;
+        }
+    }
+}
+
+export class Attributes {
+    commands: Command[];
+    constructor(commands?: Command[]) {
         this.commands = [];
-        if (commands && commands.length > 0) {
+        if(commands && commands.length >0){
             this.commands = commands;
         }
-        // this.attributes = attributes?attributes:new Attributes();
     }
 }
 
@@ -104,29 +122,25 @@ export class ActionClose extends Action{
 }
 
 
-
-// export class Attributes {
-//     commands: Command[];
-//     constructor(commands?: Command[]) {
-//         this.commands = [];
-//         if(commands && commands.length >0){
-//             this.commands = commands;
-//         }
-//     }
-// }
-
 export class Command {
     type: string;
     message?: Message;
     time?: number;
+    constructor(type: string) {
+        this.type = type;
+    }
 }
 
 export class Message {
-    text?: string;
+    text: string;
     type: string;
     time?: number;
     attributes?: MessageAttributes;
     metadata?: Metadata;
+    constructor(type: string, text: string) {
+        this.type = type;
+        this.text = text;
+    }
 }
 
 

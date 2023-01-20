@@ -1,46 +1,7 @@
 @import "./src/assets/sass/cds/_variables.scss";
-// .image-tab {
-//     border: 2px dashed #eeeef1;
-//     border-radius: 6px;
-//     display: flex;
-//     flex-direction: column;
-//     font-size: 16px;
-//     height: 170px;
-//     justify-content: flex-end;
-//     padding: 30px 20px;
-//     text-align: center;
-//     width: calc(100% - 30px);
-//     height: calc(100% - 30px);
-//     margin: 15px;
-//     .removeImage {
-//         opacity: 0;
-//         transition: opacity 0.3s ease-in;
-//     }
-//     &:hover{
-//         .response-image-uploader-overlay {
-//             opacity: 1;
-//         }
-//         .removeImage {
-//             opacity: 1;
-//         }
-//     }
-// }
-
-// .image-content-tab {
-//     align-items: center;
-//     margin: 0;
-//     position: absolute;
-//     top: 50%;
-//     left: 50%;
-//     transform: translate(-50%, -50%);
-//     width: 100%;
-//     height: auto;
-// }
-
-
 
 .response-image-uploader-overlay {
-    text-align: center;
+    text-align: left;
     color: white;
     max-height: 260px;
     opacity: 1;
@@ -59,13 +20,17 @@
 }
 
 .form-group {
-    margin: 0px;
+    margin: 20px;
+    text-align: left;
+    width: calc(100% - 160px);
+    display: inline-block;
+    position: relative;
     label.control-label {
-        font-size: 16px;
+        font-size: 14px;
         line-height: normal;
-        color: #fff;
+        color: #aaa;
         font-weight: 400;
-        margin: 0px 0 10px 0;
+        margin: 7px 0;
     }
     input {
         border-radius: 8px;
@@ -73,7 +38,7 @@
         line-height: normal;
         padding: 0 10px;
         height: 30px;
-        width: 80%;
+        width: 100%;
         margin: auto;
         position: relative;
         display: flex;
@@ -85,8 +50,49 @@
             margin: 0 auto;
             text-align: center;
         }
-        label.control-label {
-            margin: 0px;
-        }
+        // label.control-label {
+        //     margin: 0px;
+        // }
     }
+}
+
+.control-label{
+    font-family: 'Poppins','Roboto',Arial,sans-serif;
+    color: #e8eaed;
+    text-align: left;
+    line-height: 20px;
+    font-size: 14px;
+    box-sizing: border-box;
+    font-weight: 300;
+}
+
+.col-dimension{
+    display: inline-block;
+    position: absolute;
+    width: 52px;
+    right: 0;
+    top: 0;
+    margin-right: -70px;
+}
+
+.row-info{
+    margin-bottom: 8px;
+    
+    input {
+        box-sizing: border-box;
+        font: inherit;
+        color: #e8eaed;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        display: block;
+        width: 100%;
+        margin: 0;
+        background: #1e293b;
+        border: none;
+        padding: 5px;
+        border-radius: 4px;
+        text-align: right;
+    }
+    
 }

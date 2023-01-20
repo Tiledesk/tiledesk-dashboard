@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { Action, ActionAgent, ActionClose, ActionReply, Intent } from 'app/models/intent-model';
-
+import { Action, ActionAgent, ActionClose, ActionReply, Intent, Command, Message } from 'app/models/intent-model';
+import { TYPE_ACTION } from '../../utils';
 
 @Component({
   selector: 'appdashboard-panel-actions',
@@ -52,18 +52,11 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   actionSelected(action: string) {
     console.log('[PANEL ACTION] actionSelected ', action)
   
-  
     if (action === 'message') {
       let action = new ActionReply();
-      action.commands = [
-        {
-          type: 'message',
-          message: {
-            text: 'A chat message will be sent to the visitor',
-            type: 'text'
-          }
-        }
-      ]
+      let command = new Command(TYPE_ACTION.REPLY);
+      command.message = new Message('text', 'A chat message will be sent to the visitor');
+      action.attributes.commands.push(command);
       this.intentSelected.actions.push(action)
     }
    

@@ -12,13 +12,13 @@ $max-height: 230px;
     border-radius: 8px;
     margin: 0px;
     padding: 0;
-    &:hover{
-        background-color: #006cffc9;
-        transition: background-color 0.3s ease-in;
-        .frame-response {
-            display: inline-block;
-        }
-    }
+    // &:hover{
+    //     background-color: #006cffc9;
+    //     transition: background-color 0.3s ease-in;
+    //     .frame-response {
+    //         display: inline-block;
+    //     }
+    // }
 }
 .bck-frame{
     background-color: #006cffc9;
@@ -36,11 +36,10 @@ $max-height: 230px;
     margin-left: 30px;
     margin-top: 10px;
     padding: 0;
-    background: rgba(255,255,255,.383);
     overflow: visible;
-    max-width: calc(100% - 60px);
+    max-width: calc(100% - 120px);
     width: auto;
-    height: auto;
+    min-height: 140px;
 }
 
 
@@ -53,11 +52,11 @@ $max-height: 230px;
     justify-content: center;
     padding: 30px 20px;
     text-align: center;
-    margin: 15px;
+    margin: 0 15px;
     position: relative;
     width: calc(100% - 30px);
     height: calc(100% - 30px);
-    min-height: 210px;
+    min-height: 140px;
     min-width: 280px;
 }
 
