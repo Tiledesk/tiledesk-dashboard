@@ -41,6 +41,7 @@ export class ActionReplyComponent implements OnInit {
     this.initialize();
     //this.elementIntentSelectedType = this.elementIntentSelected.type;
   }
+  
   // CUSTOM FUNCTIONS //
   /** */
   private initialize(){
