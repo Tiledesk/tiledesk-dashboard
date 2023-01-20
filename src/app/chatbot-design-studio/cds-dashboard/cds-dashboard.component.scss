@@ -78,6 +78,11 @@ $margin-top-card: 30px;
 .box-right {
     /* background-color: bisque; */
     flex-grow: 1;
+    height: 100vh;
+    overflow: hidden;
+    overflow-y: scroll;
+    max-height: 100%;
+
     .box-right-header {
         width: 100%;
         height: 50px;
@@ -86,6 +91,7 @@ $margin-top-card: 30px;
     .box-right-content {
         width: 100%;
         display: flex;
+        padding-bottom: 15px;
         .panel-intent {
             position: relative;
             display: inline-block;
@@ -162,17 +168,18 @@ $margin-top-card: 30px;
 
     .header-left {
         border-right: 2px solid #394f5a;
-        width: 60px;
+        max-width: 60px;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         transition: .3s;
         background-color: #0f172a;
         img {
-            width: 15px;
+            width: 30px;
         }
         &.is_opened{
-            width: 175px;
+            max-width: 175px;
             transition: .3s;
             img{
                 width: 100px;
@@ -183,7 +190,8 @@ $margin-top-card: 30px;
     .header-right {
         display: flex;
         align-items: center;
-        width: calc(100% - 50px);
+        justify-content: space-between;
+        width: 100%;
         .toggle-setting-sidebar-icon-wpr {
             position: absolute;
             z-index: 1050;
@@ -218,10 +226,6 @@ $margin-top-card: 30px;
             margin-left: 20px;
         }
     }
-}
-.cds-close-btn-wpr {
-    position: absolute;
-    right: 11px;
 }
 
 .cds-close-btn {
