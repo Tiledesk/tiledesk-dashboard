@@ -30,11 +30,17 @@ export class ActionReplyComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    console.log('ngOnInit panel-response');
-    console.log(this.reply);
-    this.initialize();
+    // console.log('ngOnInit panel-response');
+    // console.log(this.reply);
+    // this.initialize();
   }
-  
+
+  // ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
+    // console.log('ngOnChanges', this.reply);
+    this.initialize();
+    //this.elementIntentSelectedType = this.elementIntentSelected.type;
+  }
   // CUSTOM FUNCTIONS //
   /** */
   private initialize(){
