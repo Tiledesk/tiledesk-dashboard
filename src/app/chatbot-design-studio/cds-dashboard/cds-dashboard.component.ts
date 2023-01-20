@@ -47,6 +47,7 @@ export class CdsDashboardComponent implements OnInit {
   isChromeVerGreaterThan100: boolean;
   isOpenActionDrawer: boolean;
   eventsSubject: Subject<any> = new Subject<any>();
+  upadatedIntent: Subject<Intent> = new Subject<Intent>();
   selectedChatbot: Chatbot
   activeSidebarSection: string;
   IS_OPEN: boolean = false;
@@ -278,6 +279,7 @@ export class CdsDashboardComponent implements OnInit {
       console.log('[CDS DSHBRD] creatIntent RES ', intent);
       if (intent) {
         this.eventsSubject.next(intent);
+        this.upadatedIntent.next(intent);
       }
     }, (error) => {
       this.showSpinner = false;
@@ -320,9 +322,12 @@ export class CdsDashboardComponent implements OnInit {
       formIntentSelected,
       actionsIntentSelected,
       webhookEnabledIntentSelected
-    ).subscribe((data) => {
+    ).subscribe((upadatedIntent) => {
       this.showSpinner = false;
-      console.log('[CDS DSHBRD] UPDATE FAQ RES', data);
+      console.log('[CDS DSHBRD] UPDATE FAQ RES', upadatedIntent);
+      if (upadatedIntent)  {
+        this.upadatedIntent.next(upadatedIntent);
+      }
     }, (error) => {
       this.showSpinner = false;
       this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR ', error);
