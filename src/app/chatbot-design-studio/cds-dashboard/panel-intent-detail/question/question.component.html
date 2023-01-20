@@ -22,7 +22,7 @@
 <div class="cds-questions-main-content">
 
 
-    <div class="cds-questions-container">
+    <div class="cds-add-question-container">
         <!-- <mat-form-field class="box-textarea" appearance="fill"> -->
 
         <!-- <input   class="cds-question" value="{{q}}"
@@ -36,13 +36,9 @@
             </span>
             <!-- -->
             <!-- (ngModelChange)="onChangeText($event)"  [(ngModel)]="questions_array[index]" -->
-            <input [(ngModel)]="question" type="text" class="cds-question-input"
+            <input [(ngModel)]="newQuestion" type="text" class="cds-question-input"
                 aria-label="question">
-            <span class="input-group-addon cds-group-addon">
-                <span class="material-icons">
-                    delete
-                </span>
-            </span>
+          
         </div>
         <!-- </mat-form-field> -->
 

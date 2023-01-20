@@ -12,6 +12,7 @@ export class QuestionComponent implements OnInit, OnChanges {
 
   public question: string
   questions_array: string[]
+  newQuestion: string
 
   constructor() { }
 
