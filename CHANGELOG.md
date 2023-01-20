@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc4
+- Remames the action "type" in "to _tdActionType"
+
 ### 2.3.22-rc3
 - Replaces the type "message" with the type "reply"
 
