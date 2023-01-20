@@ -1,6 +1,4 @@
-import { MetadataOverride } from "@angular/core/testing";
-import { elementAt } from 'rxjs/operators';
-
+import { TYPE_ACTION } from '../chatbot-design-studio/utils';
 
 export class Intent {
     webhook_enabled?: boolean;
@@ -64,21 +62,10 @@ export class Action {
 export class ActionReply extends Action {
     text?: string;
     attributes: Attributes;
-    // commands: Command[];
-    // constructor(text?: string, commands?: Command[]) {
-    //     super();
-    //     this.text = text ? text : '';
-    //     this.type = "message";
-    //     this.commands = [];
-    //     if (commands && commands.length > 0) {
-    //         this.commands = commands;
-    //     }
-    //     // this.attributes = attributes?attributes:new Attributes();
-    // }
     constructor(text?: string, attributes?: Attributes) {
         super();
         this.text = text ? text : '';
-        this.type = "message";
+        this.type = TYPE_ACTION.REPLY;
         this.attributes = new Attributes();
         if (attributes){
             this.attributes = attributes;
@@ -90,7 +77,7 @@ export class Attributes {
     commands: Command[];
     constructor(commands?: Command[]) {
         this.commands = [];
-        if(commands && commands.length >0){
+        if(commands && commands.length>0){
             this.commands = commands;
         }
     }
@@ -103,21 +90,21 @@ export class ActionEmail extends Action {
     constructor(text?: string,) {
         super();
         this.text = text ? text : '';
-        this.type = "email";
+        this.type = TYPE_ACTION.EMAIL;
     }
 }
 
 export class ActionAgent extends Action{
     constructor() {
         super();
-        this.type = "agent";
+        this.type = TYPE_ACTION.AGENT;
     }
 }
 
 export class ActionClose extends Action{
     constructor() {
         super()
-        this.type = "close";
+        this.type = TYPE_ACTION.CLOSE;
     }
 }
 

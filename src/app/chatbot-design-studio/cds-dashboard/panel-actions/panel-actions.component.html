@@ -27,7 +27,7 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('message')">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.REPLY)">
               <svg aria-label="Reply" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
                 fill="#fff" style="transform: rotate(-36deg);position: relative;top: -2px;left: 2px;">
                 <path d="M0 0h24v24H0z" fill="none" />
@@ -82,7 +82,7 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('agenthandoff')">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.AGENT)">
               <svg aria-label="AgentHandoff" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
                 height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
                 <g>
@@ -332,7 +332,7 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('close')">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.CLOSE)">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path
