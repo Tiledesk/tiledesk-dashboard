@@ -22,6 +22,7 @@ export class RulesAddComponent implements OnInit {
   @Input() selectedChatbot: Chatbot;
   @Input() addMode: boolean = true
   @Output() onRuleAdded = new EventEmitter<Rule>();
+  @Output() onRuleDeleted = new EventEmitter<Rule>();
 
   
   ruleFormGroup: FormGroup
@@ -168,6 +169,54 @@ export class RulesAddComponent implements OnInit {
       })
     }
         
+  }
+
+
+  removeRule(){
+    this.logger.debug('[RULES-ADD] removeRule-->', this.selectedChatbot.attributes)
+
+    const pendingClassName = 'loading-btn--pending';
+    const successClassName = 'loading-btn--success';
+    const failClassName    = 'loading-btn--fail';
+    const stateDuration = 1500;
+    let rules: Rule[] = this.selectedChatbot.attributes['rules'].filter(el => el.uid !== this.ruleFormGroup.value.uid)
+    
+    this.logger.debug('[RULES-ADD] add Rules to bot-->', rules)
+    const button = this.el.nativeElement.querySelector('#delete-rule-form')
+    
+    //PENDING STATE
+    button.classList.add(pendingClassName)
+    const that = this
+
+    this.faqkbService.addRuleToChatbot(this.selectedChatbot._id, rules).subscribe((data)=> {
+        
+      if(data){
+        //SUCCESS STATE
+        setTimeout(() => {
+          button.classList.remove(pendingClassName);
+          button.classList.add(successClassName);
+        
+          window.setTimeout(() => {
+            button.classList.remove(successClassName)
+            that.onRuleDeleted.emit(this.ruleFormGroup.value)
+            that.isPanelExpanded = false;
+          }, stateDuration);
+        }, stateDuration);
+        
+      }
+
+    }, (error)=> {
+      //FAIL STATE
+      setTimeout(() => {
+        button.classList.remove(pendingClassName);
+        button.classList.add(failClassName);
+      
+        window.setTimeout(() => button.classList.remove(failClassName), stateDuration);
+      }, stateDuration);
+      this.logger.debug('[RULES-ADD] faqkbService addRuleToChatbot - ERROR:', error)
+    }, ()=>{
+      this.logger.debug('[RULES-ADD] faqkbService addRuleToChatbot - COMPLETE')
+    })
   }
 
   closePanel(event){

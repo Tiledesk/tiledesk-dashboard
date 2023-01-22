@@ -32,4 +32,9 @@ export class RulesListComponent implements OnInit {
     this.step--;
   }
 
+  onRuleDeleted(event: Rule){
+    this.listOfRules = this.listOfRules.filter(el => el.uid !== event.uid)
+    console.log('EVENT: onRemoveRule-->', event, this.listOfRules)
+  }
+
 }
