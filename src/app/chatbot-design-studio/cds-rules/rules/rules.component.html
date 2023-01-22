@@ -6,8 +6,13 @@
         </div>
     </div>
 
-    <div class="welcome_message_wrp">
-            Add a rule to start
+    <div class="welcome_message_wrp" *ngIf="showWelcome">
+            <div class="welcome_title">You have no rules set for this Chatbot</div>
+            <div class="welcome_subtitle">Rules allow your Chatbot to proactively write to your visitor based on specific events (i.e. visitor lands on a specific page)</div>
+            <div class="new-rules-button" (click)="addNew()">
+                <span class="material-icons icon plus-icon">add</span>
+                <p class="button-text">Add</p>
+            </div>
     </div>
     <cds-rules-add *ngIf="addClicked"
         [listOfIntents]="listOfIntents"
@@ -18,7 +23,8 @@
     <cds-rules-list
         [listOfIntents]="listOfIntents"
         [listOfRules]="listOfRules"
-        [selectedChatbot]="selectedChatbot">
+        [selectedChatbot]="selectedChatbot"
+        (onRuleDeleted)="onRuleDeleted($event)">
     </cds-rules-list>
       
 </div>
