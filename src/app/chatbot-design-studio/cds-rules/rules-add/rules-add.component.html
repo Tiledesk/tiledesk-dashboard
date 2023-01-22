@@ -4,7 +4,7 @@
 </ng-container>
 
 <ng-template #addNewRule [ngOutletContext]="context">
-    <div class="card-wrp" [formGroup]="ruleFormGroup">
+    <div class="card-wrp new-rule" [formGroup]="ruleFormGroup">
 
             <div class="card-item">
                 <div class="card-title">Name:</div>
@@ -77,6 +77,11 @@
                 </div>
         
                 <div class="card-item box-buttons">
+                    <div class="loading-btn-wrapper">
+                        <button id="delete-rule-form" class="btn btn-primary loading-btn" (click)="removeRule()">
+                            <span class="loading-btn__text">Delete Rule</span>
+                        </button>
+                    </div>
                     <div class="loading-btn-wrapper">
                         <button id="create-rule-form" class="btn btn-primary loading-btn" (click)="submitForm()">
                             <span class="loading-btn__text">Update Rule</span>
