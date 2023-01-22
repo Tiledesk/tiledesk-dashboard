@@ -69,6 +69,7 @@
     "ng2-tooltip-directive": "^2.10.3",
     "ng2-tooltip-directive-ng13fix": "^2.10.2",
     "ngx-color-picker": "^12.0.1",
+    "ngx-logger": "^5.0.11",
     "ngx-mat-timepicker": "^14.0.2",
     "ngx-moment": "^6.0.2",
     "ngx-skeleton-loader": "^6.0.0",
