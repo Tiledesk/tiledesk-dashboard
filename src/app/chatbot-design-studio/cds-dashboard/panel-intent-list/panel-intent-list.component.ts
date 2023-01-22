@@ -119,14 +119,14 @@ export class PanelIntentListComponent implements OnInit {
         console.log("select intent emit");
         this.selectedIntent = intent;
         this.selected_intent.emit(intent);
-
+        
         // this.router.navigate(
-        //   ['.'], 
+        //   ['project/'+this.projectID+'/cds/'+this.id_faq_kb+'/intent/'+this.selectedIntent.id], 
         //   {
         //     relativeTo: this.activatedRoute,
         //     skipLocationChange: true,
-        //     queryParams: { intent: this.selectedIntent.id },
-        //     queryParamsHandling: 'preserve',
+        //     // fragment: this.selectedIntent.id,
+        //     // queryParamsHandling: 'merge',
         //   });
       }
 
