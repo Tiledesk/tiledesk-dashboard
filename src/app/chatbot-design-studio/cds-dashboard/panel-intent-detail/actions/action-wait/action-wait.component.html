@@ -1,0 +1,17 @@
+<div class="action-wait-main">
+    <div class="action-wait-content">
+        <!-- tickInterval="1000" -->
+        <div class="action-wait-slider">
+            <div class="action-wait-range">500ms</div> 
+            <mat-slider class="wait-slider" thumbLabel [displayWith]="formatLabel" 
+                (change)="updateSetting($event)"
+                step="0.5"
+                min="0.5" 
+                max="15" 
+                aria-label="units">
+            </mat-slider>
+
+            <div class="actio-wait-range">15000ms</div>
+        </div>
+    </div>
+</div>
