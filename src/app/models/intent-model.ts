@@ -108,6 +108,17 @@ export class ActionClose extends Action{
     }
 }
 
+export class ActionWait extends Action{
+    millis:number = 500
+    constructor() {
+        super()
+        this._tdActionType = TYPE_ACTION.WAIT;
+    
+    }
+
+   
+}
+
 
 export class Command {
     type: string;

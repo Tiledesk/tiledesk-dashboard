@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { Action, ActionAgent, ActionClose, ActionReply, Intent, Command, Message } from 'app/models/intent-model';
+import { Action, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionWait } from 'app/models/intent-model';
 import { TYPE_ACTION } from '../../utils';
 
 @Component({
@@ -69,6 +69,11 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     }
     if(typeAction === TYPE_ACTION.CLOSE){
       let action = new ActionClose();
+      this.intentSelected.actions.push(action);
+    }
+
+    if(typeAction === TYPE_ACTION.WAIT){
+      let action = new ActionWait();
       this.intentSelected.actions.push(action);
     }
   }

@@ -41,7 +41,8 @@ export enum TYPE_ACTION {
     REPLY = 'reply', 
     AGENT = 'agent',
     CLOSE = 'close',
-    EMAIL = 'email'
+    EMAIL = 'email',
+    WAIT = 'wait'
 }
 
 export const MESSAGE_METADTA_WIDTH = '100%';

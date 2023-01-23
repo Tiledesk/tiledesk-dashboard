@@ -8,27 +8,32 @@ import { ActionWait } from 'app/models/intent-model';
 })
 export class ActionWaitComponent implements OnInit, OnChanges {
   @Input() actionwait: ActionWait;
+  
+  delayTime: number;
+
   constructor() { }
 
   ngOnInit(): void {
   }
   ngOnChanges() {
-    console.log('[ACTION-WAIT] wait ', this.actionwait.millis = 500)
+    console.log('[ACTION-WAIT] wait this.actionwait.millis ', this.actionwait.millis)
+    const waitInSec = this.actionwait.millis / 1000
+    this.delayTime = waitInSec
   }
 
   formatLabel(value: number) {
-    let self = this
+    
     console.log('[ACTION-WAIT] formatLabel value ', value)
-
+    
     return value + 's';
   }
 
-  updateSetting(event) {
+  updateWaitValue(event) {
     console.log('[ACTION-WAIT] formatLabel updateSetting ', event.value)
     const msvalue = event.value * 1000
 
     this.actionwait.millis = msvalue
-
+    // this.delayTime  = msvalue
     console.log('[ACTION-WAIT] formatLabel msvalue ', msvalue)
   }
 }

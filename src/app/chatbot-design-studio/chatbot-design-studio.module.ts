@@ -60,6 +60,7 @@ import { RulesAddComponent } from './cds-rules/rules-add/rules-add.component';
 import { RulesListComponent } from './cds-rules/rules-list/rules-list.component';
 import { ConditionComponent } from './cds-rules/rules-add/condition/condition.component';
 import { ActionComponent } from './cds-rules/rules-add/action/action.component';
+import { ActionWaitComponent } from './cds-dashboard/panel-intent-detail/actions/action-wait/action-wait.component';
 
 
 @NgModule({
@@ -96,7 +97,7 @@ import { ActionComponent } from './cds-rules/rules-add/action/action.component';
     ConditionComponent,
     ActionComponent,
     CdsChatbotDetailsComponent,
-
+    ActionWaitComponent,
     //BASE-ELEMENT
     CDSTextComponent,
     CDSDelaySliderComponent,
