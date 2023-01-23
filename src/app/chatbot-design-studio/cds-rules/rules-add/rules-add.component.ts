@@ -27,7 +27,7 @@ export class RulesAddComponent implements OnInit {
   
   ruleFormGroup: FormGroup
   autocompleteOptions: Array<string> = [];
-  isPanelExpanded: false;
+  isPanelExpanded: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private logger: LoggerService,
@@ -199,7 +199,7 @@ export class RulesAddComponent implements OnInit {
           window.setTimeout(() => {
             button.classList.remove(successClassName)
             that.onRuleDeleted.emit(this.ruleFormGroup.value)
-            that.isPanelExpanded = false;
+            that.isPanelExpanded = true;
           }, stateDuration);
         }, stateDuration);
         
