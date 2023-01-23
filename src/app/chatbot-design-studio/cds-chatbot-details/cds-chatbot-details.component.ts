@@ -466,6 +466,9 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     this.faqKbService.updateFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, this.botType, this.faqKb_description, this.webhook_is_enabled, this.webhookUrl, this.language)
       .subscribe((faqKb) => {
         console.log('[CDS-CHATBOT-DTLS] EDIT BOT - FAQ KB UPDATED ', faqKb);
+        if (faqKb) {
+          this.selectedChatbot.name = faqKb['name']
+        }
       }, (error) => {
         console.error('[CDS-CHATBOT-DTLS] EDIT BOT -  ERROR ', error);
 
@@ -477,6 +480,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
         console.log('[CDS-CHATBOT-DTLS] EDIT BOT - * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
+        this.selectedChatbot.name
       });
   }
 

@@ -167,7 +167,10 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
         this.templates = selectedTemplate
         this.openDialog(this.templates[0])
         // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
-        this.generateTagsBackground(this.templates)
+
+        if (this.templates) {
+          this.generateTagsBackground(this.templates)
+        }
 
         this.templateImg = this.templates[0]['bigImage'];
 
