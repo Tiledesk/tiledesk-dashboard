@@ -86,6 +86,21 @@ export class CdsDashboardComponent implements OnInit {
     }
     this.getCurrentProject();
     this.getBrowserVersion();
+    this.hideWidget()
+    
+  }
+
+  private hideWidget(){
+    try{
+      if (window && window['tiledesk']) {
+        this.logger.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
+  
+        window['tiledesk'].hide();
+        // alert('signin reinit');
+      }
+    }catch(error){
+      this.logger.error('tiledesk_widget_hide ERROR', error)
+    }
   }
 
 
