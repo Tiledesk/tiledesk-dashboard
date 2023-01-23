@@ -8,8 +8,13 @@
         (openButtonPanel) = onOpenButtonPanel($event)
     ></appdashboard-action-reply>
 
+    <appdashboard-action-condition
+        *ngIf = "elementSelected._tdActionType === typeAction.CONDITION"
+        (listOfActions) = "listOfActions"
+    ></appdashboard-action-condition>
+
 </div>
-    
+
 
 
 <div *ngIf = "elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">

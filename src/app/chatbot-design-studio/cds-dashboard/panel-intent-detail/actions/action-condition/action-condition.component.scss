@@ -1,0 +1,47 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
+.action-condition{
+
+
+}
+
+.row-condition {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.label-condition {
+    user-select: none;
+    box-sizing: border-box;
+    outline: none;
+    border: 1px dashed $color-txt-2-hex;
+    border-radius: $button-border-radius-base;
+    color: $color-withe-hex;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: $label-height-base;
+    margin: 20px 0px 20px 20px;
+    padding: 0 16px;
+    transition: all .3s;
+    min-width: 200px;
+    width: fit-content;
+    text-align: center;
+    // position: relative;
+    // float: left;
+}
+
+
+.content-condition {
+    margin-top: 10px;
+    height: 50px;
+    // float: left;
+    width: calc(100% - 250px);
+}
+
+
+
+.text-editor-wrapper .text-editor .box-textarea input {
+    width: 100%!important;
+}
