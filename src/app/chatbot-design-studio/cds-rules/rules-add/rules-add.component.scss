@@ -48,15 +48,6 @@
 .box-buttons {
     text-align: end;
     padding: 5px 10px;
-
-    $circle-size: 40px;
-    .loading-btn-wrapper{
-        display: inline-block;
-        width: 240px;
-        height: $circle-size;
-        
-        text-align: center;
-    }
 }
 
 
@@ -103,7 +94,6 @@ $circle-size: 40px;
   display: inline-block;
   width: 240px;
   height: $circle-size;
-  
   text-align: center;
 }
 
@@ -117,26 +107,36 @@ $circle-size: 40px;
   
   &#create-rule-form{
     background: #8ab4f8;
+    border: 1px solid #8ab4f8;
+    box-shadow: none;
   }
 
   &#delete-rule-form{
     background: #f88a99;
+    border: 1px solid #f88a99;
+    box-shadow: none;
   }
   
-  border: 0px;
+  
   margin: 0px;
-  border-radius: 24px;
-  
+  border-radius: 16px;
+
   cursor: pointer;
-  
+
   transition: all .33s ease-in-out;
   
   &#create-rule-form:hover {
     background: rgba(138, 180, 248, 0.8);
+    box-shadow: none;
+    background-color: #1e293b;
+    border: 1px solid white;
   }
 
   &#delete-rule-form:hover{
     background-color: rgba(248,138,153,0.8);
+    box-shadow: none;
+    background-color: #1e293b;
+    border: 1px solid white;
   }
   
   &, &:focus {
@@ -186,10 +186,10 @@ $circle-size: 40px;
     
   // Success state - show check icon
   &--success {
-    background: #8bc34a !important;
     // Different background color (also on hover)
     &, &:hover {
       background: #8bc34a !important;
+      border: 1px solid #8bc34a;
     }
 
     // Use "after" pseudo to trigger new fade in animation, as "before" is already used on "--pending"
@@ -208,7 +208,7 @@ $circle-size: 40px;
       border: 3px solid #fff;
       border-top-width: 0;
       border-right-width: 0;
-
+      outline: none;
       transform: translate(-50%, -75%) rotate(-45deg);
 
       animation: 
@@ -222,6 +222,7 @@ $circle-size: 40px;
     // Different background color (also on hover)
     &, &:hover {
       background: #ff5722;
+      border: 1px solid #ff5722;
     }
 
     // Use "after" pseudo to trigger new fade in animation, as "before" is already used on "--pending"

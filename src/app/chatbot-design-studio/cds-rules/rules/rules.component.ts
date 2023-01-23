@@ -55,7 +55,7 @@ export class RulesComponent implements OnInit {
   }
 
   onRuleDeleted(event: Rule){
-    console.log('EVENT: onRemoveRule-->', event, this.listOfRules)
+    this.logger.log('[RULES]: onRemoveRule-->', event, this.listOfRules)
     this.listOfRules = this.listOfRules.filter(el => el.uid !== event.uid)
     if(this.listOfRules && this.listOfRules.length ==0)
       this.showWelcome = true

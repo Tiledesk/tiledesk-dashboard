@@ -11,7 +11,7 @@ import { map, startWith } from 'rxjs/operators';
 export class CDSTextComponent implements OnInit {
 
   // @Input() textMessage: string;
-  @Input() control: FormControl = new FormControl()
+  @Input() control: FormControl<string> = new FormControl()
   @Input() text: string;
   @Input() customPrefix: string;
   @Input() limitCharsText: number = 200;
@@ -22,7 +22,11 @@ export class CDSTextComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.text = this.control.value
+    if(this.text){
+      this.control.patchValue(this.text)
+    }else{
+      this.text = this.control.value
+    }
     this.filteredOptions = this.control.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || ''))
