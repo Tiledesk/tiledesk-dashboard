@@ -1,24 +1,39 @@
 <div class="button-tab">
 
     <div class="button-header-tab">
-        <div class="form-group" [ngClass]="{'is-error':buttonLabelResult === false}">
-            <i class="i-priority-color-mark"></i>
-            <label 
-            class="control-label title"
-            [ngClass]="{'noDisplay':buttonLabel.length>0}">
-                {{ 'Titolo del bottone...' | translate }}
-            </label>
-            <input 
-                type = "text" 
-                [(ngModel)] = "buttonLabel" 
-                class = "input form-control"
-                (blur) = "onBlurButtonLabel($event)"
-            />
+
+        <div class="buttons-drawer-title">
+            Button
         </div>
+        <div class="control-button" (click)="onCloseButtonPanel()">
+            <em class="material-icons">close</em>
+        </div> 
+        
     </div> 
 
     <div class="button-content-tab">
        
+        <div class="section displayed titleField">
+
+            <div class="form-group" [ngClass]="{'is-error':buttonLabelResult === false}">
+               <label 
+                    class="control-label title"
+                    [ngClass]="{'noDisplay':buttonLabel.length>0}">
+                    {{ 'Titolo del bottone...' | translate }}
+                </label>
+                <input 
+                    type="text" 
+                    [(ngModel)] = "buttonLabel"
+                    class="input form-control"
+                    (blur) = "onBlurButtonLabel($event)"
+                />
+            </div> 
+
+            <!-- <div class="titleField form-group" [ngClass]="{'is-error':buttonLabelResult === false}">
+                
+            </div> -->
+        </div>
+        
         <div class="section displayed">
             <div class="form-group ng-select">
                 <label class="control-label">

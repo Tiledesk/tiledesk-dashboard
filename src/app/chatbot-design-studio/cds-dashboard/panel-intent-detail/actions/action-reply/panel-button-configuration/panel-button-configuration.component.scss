@@ -5,10 +5,52 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: #1e293b;
+    border-left: solid 2px #3ea9f5;
+}
+.button-header-tab:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    height: 1px;
+    background-color: #6474913d;
+}
+
+
+.buttons-drawer-title{
+    font-size: 18px;
+    font-weight: 400;
+    color: #9aa0a6;
+    text-align: left;
+    padding-left: 20px;
+    cursor: default;
+}
+
+.control-button {
+    display: flex;
+    justify-content: right;
+    margin: 12px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    em {
+        background: #1e293b;
+        border: 1px solid #394f5a!important;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        font-size: 18px;
+        display: block;
+    }
 }
 
 .button-header-tab {
-    background: $bg-color-bck-hex;
+    position: relative;
     border-top-left-radius: 1em;
     border-top-right-radius: 1em;
     margin: 0;
@@ -17,86 +59,16 @@
     line-height: $height-header;
     min-height: $height-header;
     color: $color-txt-3-hex;
-    border-bottom: 1px solid $color-txt-3-hex;
-
-    .form-group {
-        position: absolute;
-        display: block;
-        width: 100%;
-        margin: 0;
-        padding: 0 30px;
-        &.is-error {
-            .form-control {
-                background-image: linear-gradient($color-red-hex,$color-red-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
-                background-size: 100% 2px,100% 1px;
-                transition-duration: .3s;
-            }
-        }
-        &.is-focused {
-            .form-control {
-                background-image: linear-gradient($color-blue-hex,$color-blue-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
-                background-size: 100% 2px,100% 1px;
-                transition-duration: .3s;
-            }
-        }
-        label.title {
-            position: absolute;
-            display: block;
-            top: 0;
-            left: 30px;
-            width: calc(100% - 80px);
-            margin: 0;
-            padding: 0;
-            text-align: left;
-            font-weight: 400;
-            font-size: 1em;
-            line-height: $height-header;
-            color: $color-light-gray-hex;
-            &.noDisplay {
-                display: none;
-            }
-        }
-    }
-
-    .i-priority-color-mark {
-        background-color: $color-blue-hex;
-        position: absolute;
-        border-radius: 100%;
-        top: 22px;
-        left: 12px;
-        display: block;
-        width: 8px;
-        height: 8px;
-    }
-
-    
-    input {
-        position: absolute;
-        display: block;
-        top: 0;
-        left: 30px;
-        width: calc(100% - 80px);
-        margin-top: 8px;
-        padding: 0;
-        color: $color-bck-light-gray-hex;
-        font-size: 1em;
-    }
-    .btn-save {
-        position: absolute;
-        width: auto;
-        max-width: 80%;
-        right: 10px;
-        padding: 8px;
-    }
 }
 
 
 .button-content-tab {
-    background-color: $bg-color-card-hex;
+    position: relative;
     flex: 1;
     min-height: 100px;
     height: auto;
-    .section{
+
+    .section {
         padding: 0 3em;
         opacity: 0;
         height: 0;
@@ -116,14 +88,26 @@
             opacity: 1;
             overflow: visible;
         }
+        &.titleField{
+            padding: 0em 3em;
+        }
     }
+}
+.button-content-tab::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    height: 1px;
+    background-color: #6474913d;
 }
 
 
 .button-footer-tab {
     min-height: 50px;
-    border-top: 1px solid $color-txt-3-hex;
-    background: $bg-color-bck-hex;
+    border-top: 0px solid $color-txt-3-hex;
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
     button {
@@ -186,7 +170,7 @@
 
 }
 .form-group.is-empty label.control-label {
-    top: -6px;
+    top: -10px;
     left: 6px;
     font-size: 1em;
     line-height: normal;
@@ -204,5 +188,13 @@
     pointer-events: none;
     transition: .3s ease all;
     color: $color-txt-4-hex;
-  }
+}
 
+
+::ng-deep .ng-dropdown-panel {
+    .ng-dropdown-panel-items {
+        max-height: 130px;
+        overflow: scroll;
+    }
+}
+  

@@ -80,12 +80,25 @@
                 {{button.value}}
             </div>
             <div class="button-controls">
-                <div class="control-button delete" (click)="onDeleteButton(i)">
-                   <em class="material-icons">delete</em>
-               </div>
-               <div class="control-button" cdkDragHandle>
+                
+                <!-- <div class="control-button" cdkDragHandle>
                    <em class="material-icons">compare_arrows</em>
-               </div> 
+                </div>  -->
+                
+                <div class="buttonsToMove">
+                    <div class="control-button" (click)="onMoveLeftButton(i)">
+                        <em class="material-icons">chevron_left</em>
+                    </div> 
+                    <div class="control-button" (click)="onMoveRightButton(i)">
+                        <em class="material-icons">chevron_right</em>
+                    </div>
+                </div>
+
+                <div class="control-button delete" (click)="onDeleteButton(i)">
+                    <em class="material-icons">delete</em>
+                </div>
+
+                
            </div>
         </div>
         
