@@ -14,7 +14,7 @@
             <div class="template-detail-img-wpr">
 
                 <img *ngIf="!template?.bigImage" style="width: 40px; height: 40px;"
-                    src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media">
+                    src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media"  onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
                 <img *ngIf="template?.bigImage" style="width: auto; height: 40px;" src="{{template.bigImage}}">
             </div>
             <div class="template-detail-name-wpr">
@@ -23,7 +23,8 @@
         </div>
         <div class="template-detail-btns-wpr">
             <button type="button" class=" btn btn-new btn-size-l btn--primary" (click)="forkTemplate()">
-                <span>Use template</span>
+                <span *ngIf="template?.certified === true" >Use template</span>
+                <span *ngIf="template?.certified === false" >Import Chatbot</span>
             </button>
             <button type="button" class=" btn btn-new btn-size-l btn--default" (click)="openTestSiteInPopupWindow()">
                 <span>Test it out</span>

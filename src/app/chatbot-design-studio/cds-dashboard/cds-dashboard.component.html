@@ -28,6 +28,26 @@
         </div>
         <!-- <i class="material-icons cds-btn-back" (click)="goBack()">keyboard_arrow_left</i> -->
         <div class="header-title">{{ selectedChatbot?.name }}</div>
+        <div class="cds-community-btn-wpr">
+            <button *ngIf="selectedChatbot?.public === false" id="cds-community-btn" class="btn btn-primary  pull-right" type="button"
+                (click)="publishOnCommunity()">
+                Publish on community
+            </button>
+            <button *ngIf="selectedChatbot?.public === true" id="cds-community-btn" class="btn btn-primary  pull-right" type="button"
+                (click)="removeFromCommunity()">
+                Remove from community
+            </button>
+
+        </div>
+       
+           
+      
+        <div class="cds-testitout-btn-wpr">
+            <button id="cds-test-it-out-btn" class="btn btn-primary  pull-right" type="button"
+                (click)="openTestSiteInPopupWindow()">
+                Test it out
+            </button>
+        </div>
         <div class="cds-close-btn-wpr">
             <button class="btn pull-right cds-close-btn" (click)="goBack()">
                 <span class="material-icons cds-close-btn-icon">
@@ -72,37 +92,26 @@
 
     <ng-template #intents [ngOutletContext]="context">
         <div class="box-left">
-            <appdashboard-panel-intent-list class="panel-intent-list" 
-                [id_faq_kb]="id_faq_kb" 
-                [projectID]="projectID"
-                (selected_intent)=onSelectIntent($event) 
-                (returnListOfIntents)=onReturnListOfIntents($event)
-                (createIntent)="onCreateIntentBtnClicked()" 
-                [events]="eventsSubject.asObservable()">
+            <appdashboard-panel-intent-list class="panel-intent-list" [id_faq_kb]="id_faq_kb" [projectID]="projectID"
+                (selected_intent)=onSelectIntent($event) (returnListOfIntents)=onReturnListOfIntents($event)
+                (createIntent)="onCreateIntentBtnClicked()" [events]="eventsSubject.asObservable()">
             </appdashboard-panel-intent-list>
         </div>
 
         <div class="box-right">
 
             <div class="box-right-header">
-                <appdashboard-panel-intent-header *ngIf=intentSelected 
-                    [intentSelected]="intentSelected"
-                    (saveIntent)=onSaveIntent($event) 
-                    [listOfIntents]="listOfIntents">
+                <appdashboard-panel-intent-header *ngIf=intentSelected [intentSelected]="intentSelected"
+                    (saveIntent)=onSaveIntent($event) [listOfIntents]="listOfIntents">
                 </appdashboard-panel-intent-header>
             </div>
 
             <div class="box-right-content">
-                <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent"
-                    [intentSelected]="intentSelected"
-                    [actionDrawerIsOpen]="actionDrawerIsOpen" 
-                    (openActionDrawer)=onOpenActionDrawer($event)
-                    (answerSelected)=onAnswerSelected($event) 
-                    (actionSelected)=onActionSelected($event)
-                    (questionSelected)=onQuestionSelected($event)
-                     (intentForm)=onIntentFormSelected($event)
-                    [isOpenActionDrawer]="isOpenActionDrawer"
-                    [events]="upadatedIntent.asObservable()">
+                <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent" [intentSelected]="intentSelected"
+                    [actionDrawerIsOpen]="actionDrawerIsOpen" (openActionDrawer)=onOpenActionDrawer($event)
+                    (answerSelected)=onAnswerSelected($event) (actionSelected)=onActionSelected($event)
+                    (questionSelected)=onQuestionSelected($event) (intentForm)=onIntentFormSelected($event)
+                    [isOpenActionDrawer]="isOpenActionDrawer" [events]="upadatedIntent.asObservable()">
                 </appdashboard-panel-intent>
 
 
@@ -131,5 +140,5 @@
         </cds-rules>
     </ng-template>
 
-   
+
 </div>

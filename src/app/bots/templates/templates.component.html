@@ -8,27 +8,32 @@
 
 
         <div class="content-wpr" style="display: flex;">
-            <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
+            <appdashboard-bots-sidebar 
+                [allTemplatesCount]="allTemplatesCount"
+                [allCommunityTemplatesCount]="allCommunityTemplatesCount"
                 [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
-                [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
+                [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
+                [myChatbotOtherCount]="myChatbotOtherCount"
                 [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
                 [increaseSalesBotsCount]="increaseSalesBotsCount" style="border-right:1px solid #e5effe !important;">
             </appdashboard-bots-sidebar>
 
 
             <div class="teplate-content" style="flex: 1 1 auto;">
+                
+                <div class="button-row">
+                    <div></div>
+                    <button type="button" class="btn btn-new btn-size-m btn--primary"
+                        (click)="createBlankTilebot()">
+                        <span>Add from scratch</span>
+                    </button>
+                </div>
 
                 <div class="page-content--wpr">
                     <loading-spinner *ngIf="showSpinner"></loading-spinner>
                     <div *ngIf="!showSpinner" class="page-content">
 
-                        <div class="button-row">
-                            <div></div>
-                            <button type="button" class="btn btn-new btn-size-m btn--primary"
-                                (click)="createBlankTilebot()">
-                                <span>Add from scratch</span>
-                            </button>
-                        </div>
+                   
                         <div class="template-cards-wpr">
                             <div class="template-cards">
                                 
@@ -78,7 +83,7 @@
                                     </div>
                                 </div>
 
-                                <div class="template-card" *ngFor="let template of templates">
+                                <div class="template-card" *ngFor="let template of templates" [ngClass]="{'template-card-one-template': templates?.length === 1}">
                                     <!-- <svg aria-hidden="true" focusable="false"
                                         style="width: 0px; height: 0px; position: absolute;">
                                         <linearGradient id="bot-cool-gradient" x2="1" y2="1">
@@ -88,7 +93,7 @@
                                     </svg> -->
                                     <div class="template-card-img-row template-img">
                                         <img *ngIf="!template?.bigImage" style="width: 40px; height: 40px;"
-                                            src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media">
+                                            src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media"  onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
                                         <img *ngIf="template?.bigImage" style="width: auto; height: 40px;"
                                             src="{{template.bigImage}}">
 
@@ -100,11 +105,15 @@
                                     <span size="8" class="blank-span-h08"></span>
                                     <p weight="normal" class="template-description">
                                         {{template.description}}
+                                        <span *ngIf="template?.certified === false"  class="template-author">
+                                            Author:  {{template.createdBy}}
+                                        </span>
                                     </p>
                                     <div class="use-template-btn-row use-template-btn-wpr">
                                         <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
                                             (click)="openDialog(template)">
-                                            <span>Use template</span>
+                                            <span *ngIf="template?.certified === true" >Use template</span>
+                                            <span *ngIf="template?.certified === false" >Import Chatbot</span>
                                         </button>
                                     </div>
                                     <div class="template-card-footer template-footer">
@@ -121,8 +130,8 @@
 
                                             </div>
                                         </div>
-                                        <!-- New badge in the top right corner of the card -->
-                                        <svg width="92" height="104" viewBox="0 0 92 104" fill="none"
+                                        <!--  badge "New" in the top right corner of the card -->
+                                        <svg *ngIf="template?.certified === true"  width="92" height="104" viewBox="0 0 92 104" fill="none"
                                             xmlns="http://www.w3.org/2000/svg" aria-label="new template"
                                             class="template-card-right-top-corner-badge">
                                             <g filter="url(#filter0_d_1601_21599)">

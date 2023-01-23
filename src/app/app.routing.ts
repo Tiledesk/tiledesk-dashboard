@@ -271,6 +271,7 @@ const routes: Routes = [
   { path: 'project/:projectid/bots/templates/all', component: TemplatesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/templates/customer-satisfaction', component: TemplatesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/templates/increase-sales', component: TemplatesComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/bots/templates/community', component: TemplatesComponent, canActivate: [AuthGuard] },
   
 
   // rasa bot

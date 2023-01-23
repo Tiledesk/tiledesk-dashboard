@@ -16,8 +16,8 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   @Input() myChatbotOtherCount: number;
   @Input() customerSatisfactionBotsCount: number;
   @Input() increaseSalesBotsCount: number;
+  @Input() allCommunityTemplatesCount: number;
   
-
   USER_ROLE: any
   project: any
   route: string
@@ -31,6 +31,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   public BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE: boolean;
   public BOTS_MYCHATBOT_INCREASE_SALES_ROUTE_IS_ACTIVE: boolean;
   public BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE: boolean;
+  public BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE: boolean;
   constructor(
     private auth: AuthService,
     private logger: LoggerService,
@@ -109,6 +110,17 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
       this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE = false
       // console.log('[BOTS-SIDEBAR] - BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE)
     }
+
+    if (this.route.indexOf('/bots/templates/community') !== -1) {
+      this. BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE = true
+      // console.log('[BOTS-SIDEBAR] - BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE)
+    } else {
+      this. BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE = false
+      // console.log('[BOTS-SIDEBAR] - BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE)
+    }
+
+
+   
   }
 
 
@@ -116,6 +128,10 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
 
   goToBotAllTemplates() {
     this.router.navigate(['project/' + this.project._id + '/bots/templates/all']);
+  }
+
+  goToBotCommunityTemplates() {
+    this.router.navigate(['project/' + this.project._id + '/bots/templates/community']);
   }
 
   goToBotIncreaseSalesTemplates() {

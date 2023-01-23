@@ -75,6 +75,7 @@ export class BotListComponent implements OnInit {
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   allTemplatesCount: number;
+  allCommunityTemplatesCount: number;
   customerSatisfactionTemplatesCount: number;
   increaseSalesTemplatesCount: number;
   customerSatisfactionBots: any;
@@ -101,8 +102,8 @@ export class BotListComponent implements OnInit {
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.dev_mode = isDevMode()
-    console.log('BOTS-LIST] is dev mode ', this.dev_mode) 
-   
+    this.logger.log('BOTS-LIST] is dev mode ', this.dev_mode)
+
   }
 
   ngOnInit() {
@@ -117,6 +118,7 @@ export class BotListComponent implements OnInit {
     this.getFaqKbByProjectId();
     this.getTranslations();
     this.getTemplates()
+    this.getCommunityTemplates()
   }
 
   getBrowserVersion() {
@@ -125,7 +127,30 @@ export class BotListComponent implements OnInit {
       //  console.log("[BOTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
+
+  getCommunityTemplates () {
+
+    this.faqKbService.getCommunityTemplates().subscribe((res: any) => {
+
+      if (res) {
+        const communityTemplates = res
+        this.logger.log('[BOTS-LIST] - GET COMMUNITY TEMPLATES', communityTemplates);
+        this.allCommunityTemplatesCount = communityTemplates.length;
+        this.logger.log('[[BOTS-LIST] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
+
+
+      }
+
+    }, (error) => {
+      this.logger.error('[BOTS-LIST]  GET COMMUNITY TEMPLATES ERROR ', error);
   
+    }, () => {
+      this.logger.log('[BOTS-LIST]  GET COMMUNITY TEMPLATES COMPLETE');
+   
+    });
+
+  }
+
   getTemplates() {
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
@@ -134,7 +159,7 @@ export class BotListComponent implements OnInit {
         // console.log('[BOTS-LIST] - GET ALL TEMPLATES', templates);
         this.allTemplatesCount = templates.length;
         this.logger.log('[BOTS-LIST] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
-      
+
         // ---------------------------------------------------------------------
         // Customer Satisfaction templates
         // ---------------------------------------------------------------------
@@ -142,7 +167,7 @@ export class BotListComponent implements OnInit {
           return obj.mainCategory === "Customer Satisfaction"
         });
         this.logger.log('[BOTS-LIST] - Customer Satisfaction TEMPLATES', customerSatisfactionTemplates);
-        if (customerSatisfactionTemplates ) {
+        if (customerSatisfactionTemplates) {
           this.customerSatisfactionTemplatesCount = customerSatisfactionTemplates.length;
           this.logger.log('[BOTS-LIST] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
         }
@@ -150,11 +175,11 @@ export class BotListComponent implements OnInit {
         // ---------------------------------------------------------------------
         // Customer Increase Sales
         // ---------------------------------------------------------------------
-        const  increaseSalesTemplates = templates.filter((obj) => {
+        const increaseSalesTemplates = templates.filter((obj) => {
           return obj.mainCategory === "Increase Sales"
         });
         // console.log('[BOTS-LIST] - Increase Sales TEMPLATES', increaseSalesTemplates);
-        if (increaseSalesTemplates ) {
+        if (increaseSalesTemplates) {
           this.increaseSalesTemplatesCount = increaseSalesTemplates.length;
           this.logger.log('[BOTS-LIST] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
         }
@@ -240,7 +265,7 @@ export class BotListComponent implements OnInit {
   getFaqKbByProjectId() {
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-    // console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+      // console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;
@@ -253,7 +278,7 @@ export class BotListComponent implements OnInit {
           return obj.mainCategory === "Customer Satisfaction"
         });
         this.logger.log('[BOTS-LIST] - Customer Satisfaction BOTS', this.customerSatisfactionBots);
-        if (this.customerSatisfactionBots ) {
+        if (this.customerSatisfactionBots) {
           this.customerSatisfactionBotsCount = this.customerSatisfactionBots.length;
           this.logger.log('[BOTS-LIST] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
         }
@@ -266,14 +291,14 @@ export class BotListComponent implements OnInit {
           return obj.mainCategory === "Increase Sales"
         });
         this.logger.log('[BOTS-LIST] - Increase Sales BOTS ', this.increaseSalesBots);
-        if (this.increaseSalesBots ) {
+        if (this.increaseSalesBots) {
           this.increaseSalesBotsCount = this.increaseSalesBots.length;
           this.logger.log('[BOTS-LIST] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
         }
-        
+
         this.route = this.router.url
         if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
-          this.faqkbList = this.faqkbList 
+          this.faqkbList = this.faqkbList
           this.logger.log('[BOTS-LIST] ROUTE my-chatbots/all');
         } else if (this.route.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
           this.faqkbList = this.customerSatisfactionBots
@@ -673,7 +698,7 @@ export class BotListComponent implements OnInit {
       _botType = 'tilebot'
       this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
       // this.router.navigate(['project/' + this.project._id + '/createfaq', idFaqKb, _botType, 'en']);
-      
+
 
     } else {
       _botType = botType
@@ -685,7 +710,7 @@ export class BotListComponent implements OnInit {
   }
 
   goToCDS(idFaqKb: string, botType: string, botname: string) {
-  this.router.navigate(['project/' + this.project._id + '/cds/', idFaqKb]);
+    this.router.navigate(['project/' + this.project._id + '/cds/', idFaqKb]);
   }
 
 

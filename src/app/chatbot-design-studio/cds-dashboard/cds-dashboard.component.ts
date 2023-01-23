@@ -16,6 +16,8 @@ import { TYPE_ACTION, TYPE_INTENT_ELEMENT, TYPE_MESSAGE, TIME_WAIT_DEFAULT } fro
 import { Subject } from 'rxjs';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Chatbot } from 'app/models/faq_kb-model';
+import { AppConfigService } from 'app/services/app-config.service';
+import { DepartmentService } from 'app/services/department.service';
 
 const swal = require('sweetalert');
 
@@ -52,7 +54,8 @@ export class CdsDashboardComponent implements OnInit {
   selectedChatbot: Chatbot
   activeSidebarSection: string;
   IS_OPEN: boolean = false;
-
+  public TESTSITE_BASE_URL: string;
+  public defaultDepartmentId: string;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -62,6 +65,8 @@ export class CdsDashboardComponent implements OnInit {
     private logger: LoggerService,
     private httpClient: HttpClient,
     private faqKbService: FaqKbService,
+    public appConfigService: AppConfigService,
+    private departmentService: DepartmentService
   ) { }
 
 
@@ -86,6 +91,8 @@ export class CdsDashboardComponent implements OnInit {
     }
     this.getCurrentProject();
     this.getBrowserVersion();
+    this.getTestSiteUrl();
+    this.getDeptsByProjectId();
   }
 
 
@@ -326,7 +333,7 @@ export class CdsDashboardComponent implements OnInit {
     ).subscribe((upadatedIntent) => {
       this.showSpinner = false;
       console.log('[CDS DSHBRD] UPDATE FAQ RES', upadatedIntent);
-      if (upadatedIntent)  {
+      if (upadatedIntent) {
         this.upadatedIntent.next(upadatedIntent);
       }
     }, (error) => {
@@ -406,10 +413,17 @@ export class CdsDashboardComponent implements OnInit {
     // this.MOCK_getFaqIntent();
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", this.intentSelected);
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", intent);
+    console.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions: ", this.intentSelected.actions);
+    console.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions length: ", this.intentSelected.actions.length);
+    // if (this.intentSelected && this.intentSelected.actions && this.intentSelected.actions.length > 0) {
+    //   console.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0])
+      
+    // } else {
 
-    this.elementIntentSelected = {};
-    this.elementIntentSelected['type'] = ''
-    this.elementIntentSelected['element'] = null
+      this.elementIntentSelected = {};
+      this.elementIntentSelected['type'] = ''
+      this.elementIntentSelected['element'] = null
+    // }
     console.log('[CDS DSBRD] onSelectIntent elementIntentSelected', this.elementIntentSelected)
   }
 
@@ -459,7 +473,7 @@ export class CdsDashboardComponent implements OnInit {
     let command = new Command(TYPE_ACTION.REPLY);
     command.message = new Message('text', 'A chat message will be sent to the visitor');
     action.attributes.commands.push(command);
-    
+
     // = [
     //   {
     //     type: TYPE_ACTION.REPLY,
@@ -479,7 +493,114 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = null
   }
 
+  getDeptsByProjectId() {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+      console.log('[CDS DSBRD] - DEPT GET DEPTS ', departments);
+      console.log('[CDS DSBRD] - DEPT BOT ID ', this.id_faq_kb);
 
+      if (departments) {
+        departments.forEach((dept: any) => {
+          // console.log('[PANEL-INTENT-HEADER] - DEPT', dept);
+
+          if (dept.default === true) {
+            this.defaultDepartmentId = dept._id;
+            console.log('[CDS DSBRD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
+          }
+
+        })
+      }
+    }, error => {
+
+      console.error('[CDS DSBRD] - DEPT - GET DEPTS  - ERROR', error);
+    }, () => {
+      console.log('[CDS DSBRD] - DEPT - GET DEPTS - COMPLETE')
+
+    });
+  }
+
+  getTestSiteUrl() {
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    console.log('[CDS DSBRD] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+  }
+
+  openTestSiteInPopupWindow() {
+
+    const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
+    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId
+
+    let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
+    window.open(url, '_blank', params);
+  }
+
+  publishOnCommunity() {
+    swal({
+      title: "Publish the chatbot",
+      text: 'You are about to publish the chatbot in the community',
+      icon: "info",
+      buttons: ["Cancel", 'Publish'],
+      dangerMode: false,
+    })
+      .then((WillPublish) => {
+        if (WillPublish) {
+          this.logger.log('[CDS DSBRD] publishOnCommunity swal WillPublish', WillPublish)
+          this.selectedChatbot.public = true
+          this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((data) => {
+            console.log('[CDS DSBRD] publishOnCommunity - RES ', data)
+          }, (error) => {
+            swal('An error has occurred', {
+              icon: "error",
+            });
+            console.error('[CDS DSBRD] publishOnCommunity ERROR ', error);
+          }, () => {
+            console.log('[CDS DSBRD] publishOnCommunity * COMPLETE *');
+            swal("Done!", "The Chatbot has been published in the community", {
+              icon: "success",
+            }).then((okpressed) => {
+             
+            });
+          });
+        } else {
+          console.log('[CDS DSBRD] publishOnCommunity (else)')
+        }
+      });
+  }
+
+  removeFromCommunity() {
+
+    swal({
+      title: "Are you sure",
+      text: 'You are about to remove the chatbot from the community',
+      icon: "warning",
+      buttons: ["Cancel", 'Remove'],
+      dangerMode: false,
+    })
+      .then((WillRemove) => {
+        if (WillRemove) {
+          this.logger.log('[CDS DSBRD] removeFromCommunity swal WillRemove', WillRemove)
+          this.selectedChatbot.public = false
+          this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((data) => {
+            console.log('[CDS DSBRD] removeFromCommunity - RES ', data)
+          }, (error) => {
+            swal('An error has occurred', {
+              icon: "error",
+            });
+            console.error('[CDS DSBRD] removeFromCommunity ERROR ', error);
+          }, () => {
+            console.log('[CDS DSBRD] removeFromCommunity * COMPLETE *');
+            swal("Done!", "The Chatbot has been removed from the community", {
+              icon: "success",
+            }).then((okpressed) => {
+             
+            });
+          });
+        } else {
+          console.log('[CDS DSBRD] removeFromCommunity (else)')
+        }
+      });
+
+  }
 
 
 }

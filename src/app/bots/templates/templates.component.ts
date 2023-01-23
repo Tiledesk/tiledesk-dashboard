@@ -1,4 +1,4 @@
-import { Component, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { FaqKbService } from '../../services/faq-kb.service';
@@ -19,7 +19,10 @@ import { Router } from '@angular/router';
 export class TemplatesComponent implements OnInit {
   isChromeVerGreaterThan100: boolean;
   templates: Array<any>
+  communityTemplates: Array<any>;
+  certfifiedTemplates:Array<any>;
   allTemplatesCount: number;
+  allCommunityTemplatesCount: number;
 
   customerSatisfactionTemplates: Array<any>
   customerSatisfactionTemplatesCount: number;
@@ -47,10 +50,13 @@ export class TemplatesComponent implements OnInit {
   ngOnInit(): void {
     this.getBrowserVersion();
     this.getTemplates()
+    this.getCommunityTemplates()
     this.getCurrentProject()
     // this.getAllFaqKbByProjectId();
     this.getFaqKbByProjectId()
   }
+
+
   // Lead-gen ->  #a16300
   // Pre-sale -> #00699e
   //  Support -> #25833e
@@ -133,20 +139,59 @@ export class TemplatesComponent implements OnInit {
     })
   }
 
+
+  getCommunityTemplates () {
+    this.showSpinner = true;
+    this.faqKbService.getCommunityTemplates().subscribe((res: any) => {
+
+      if (res) {
+        this.communityTemplates = res
+        this.logger.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES', this.communityTemplates);
+        this.allCommunityTemplatesCount = this.communityTemplates.length;
+        this.logger.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
+
+        this.route = this.router.url
+        if (this.route.indexOf('bots/templates/community') !== -1) {
+          this.templates = this.communityTemplates 
+          this.logger.log('[BOTS-TEMPLATES] ROUTE templates/community');
+        } 
+     
+        // this.generateTagsBackground(this.templates)
+      }
+
+    }, (error) => {
+      this.logger.error('[BOTS-TEMPLATES] GET TEMPLATES ERROR ', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[BOTS-TEMPLATES] GET TEMPLATES COMPLETE');
+      this.showSpinner = false;
+      // this.generateTagsBackground(this.templates)
+    });
+
+  }
+
   getTemplates() {
     this.showSpinner = true;
+    this.route = this.router.url
+    this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES route', this.route);
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
       if (res) {
-        this.templates = res
+        this.certfifiedTemplates = res
+        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
+        // this.templates = res
         // console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES', this.templates);
-        this.allTemplatesCount = this.templates.length;
+        // this.allTemplatesCount = this.templates.length;
+        this.allTemplatesCount = this.certfifiedTemplates.length;
         this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
+        if (this.route.indexOf('bots/templates/all') !== -1) { 
+          this.templates = this.certfifiedTemplates 
+        }
       
         // ---------------------------------------------------------------------
         // Customer Satisfaction templates
         // ---------------------------------------------------------------------
-        this.customerSatisfactionTemplates = this.templates.filter((obj) => {
+        this.customerSatisfactionTemplates = this.certfifiedTemplates.filter((obj) => {
           return obj.mainCategory === "Customer Satisfaction"
         });
         this.logger.log('[BOTS-TEMPLATES] - Customer Satisfaction TEMPLATES', this.customerSatisfactionTemplates);
@@ -158,7 +203,7 @@ export class TemplatesComponent implements OnInit {
         // ---------------------------------------------------------------------
         // Customer Increase Sales
         // ---------------------------------------------------------------------
-        this.increaseSalesTemplates = this.templates.filter((obj) => {
+        this.increaseSalesTemplates = this.certfifiedTemplates.filter((obj) => {
           return obj.mainCategory === "Increase Sales"
         });
         this.logger.log('[BOTS-TEMPLATES] - Increase Sales TEMPLATES', this.increaseSalesTemplates);
@@ -168,10 +213,13 @@ export class TemplatesComponent implements OnInit {
         }
 
         this.route = this.router.url
-        if (this.route.indexOf('bots/templates/all') !== -1) {
-          this.templates = this.templates 
-          this.logger.log('[BOTS-TEMPLATES] ROUTE templates/all');
-        } else if (this.route.indexOf('bots/templates/customer-satisfaction') !== -1) {
+        // if (this.route.indexOf('bots/templates/all') !== -1) {
+        //   this.templates = this.templates 
+        //   console.log('[BOTS-TEMPLATES] ROUTE templates/all');
+        //   this.allTemplatesCount = this.templates.length;
+        //   console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
+        // } else 
+        if (this.route.indexOf('bots/templates/customer-satisfaction') !== -1) {
           this.templates = this.customerSatisfactionTemplates
           this.logger.log('[BOTS-TEMPLATES] ROUTE templates/customer-satisfaction templates ', this.templates);
         } else if (this.route.indexOf('bots/templates/increase-sales') !== -1) {
