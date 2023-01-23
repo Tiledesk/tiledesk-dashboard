@@ -365,7 +365,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** SIDEBAR OUTPUT EVENTS */
   onClickItemList(event: string) {
-    console.log('active section-->', event)
+    console.log('[CDS DSHBRD] active section-->', event)
     this.activeSidebarSection = event;
   }
 
@@ -415,15 +415,16 @@ export class CdsDashboardComponent implements OnInit {
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", intent);
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions: ", this.intentSelected.actions);
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions length: ", this.intentSelected.actions.length);
-    // if (this.intentSelected && this.intentSelected.actions && this.intentSelected.actions.length > 0) {
-    //   console.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0])
-      
-    // } else {
+    if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
+      console.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0])
+      this.onActionSelected(this.intentSelected.actions[0])
+    } 
+   else {
 
       this.elementIntentSelected = {};
       this.elementIntentSelected['type'] = ''
       this.elementIntentSelected['element'] = null
-    // }
+    }
     console.log('[CDS DSBRD] onSelectIntent elementIntentSelected', this.elementIntentSelected)
   }
 
@@ -439,7 +440,7 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = answer
   }
 
-  onActionSelected(action: string) {
+  onActionSelected(action: Action) {
     console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', action)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
