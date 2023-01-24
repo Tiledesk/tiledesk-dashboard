@@ -61,7 +61,8 @@ export class PanelIntentListComponent implements OnInit {
     let promise = new Promise((resolve, reject) => {
 
       this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
-        this.intents = faqs;
+        this.intents = JSON.parse(JSON.stringify(faqs));
+        this.returnListOfIntents.emit(faqs);
 
         this.intent_start = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'start')), 1)[0]
         console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_start: ", this.intent_start);
@@ -73,8 +74,7 @@ export class PanelIntentListComponent implements OnInit {
 
         console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - others INTENTS: ", this.intents);
         console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - others  typeof INTENTS: ", typeof this.intents[0]);
-
-        this.returnListOfIntents.emit(this.intents);
+        
         resolve(this.filtered_intents.length);
 
       }), (error) => {
@@ -112,7 +112,7 @@ export class PanelIntentListComponent implements OnInit {
       console.log("element: ", element);
       if (element) {
         element.classList.toggle("active")
-        element.scrollIntoView();
+        //element.scrollIntoView();
       }
   
       if (!this.selectedIntent || this.selectedIntent.id != intent.id) {

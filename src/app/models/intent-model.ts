@@ -92,13 +92,21 @@ export class Attributes {
     }
 }
 
+export class ActionIntentConnected extends Action {
+    intentName: string;
+    json_payload?: Object;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.INTENT;
+    }
+}
+
 export class ActionEmail extends Action {
     to: string;
     subject: string;
     text: string;
-    constructor(text?: string,) {
+    constructor() {
         super();
-        this.text = text ? text : '';
         this._tdActionType = TYPE_ACTION.EMAIL;
     }
 }

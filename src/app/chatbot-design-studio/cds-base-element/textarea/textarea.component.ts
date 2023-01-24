@@ -15,7 +15,9 @@ export class CDSTextareaComponent implements OnInit {
 
   @Input() text: string;
   @Input() limitCharsText: number;
-  @Input() control: FormControl = new FormControl;
+  @Input() textMessage: string;
+  @Input() control: FormControl = new FormControl();
+  @Input() showUtils: boolean = true;
   @Output() change = new EventEmitter();
 
   // Textarea //
@@ -25,6 +27,9 @@ export class CDSTextareaComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log("limitCharsText: ", this.limitCharsText)
+    console.log("showUtils: ", this.showUtils)
+
     this.leftCharsText = calculatingRemainingCharacters(this.text);
     if(this.leftCharsText<(this.limitCharsText/10)){
       this.alertCharsText = true;

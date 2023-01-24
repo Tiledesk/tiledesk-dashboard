@@ -1,0 +1,107 @@
+<div class="content">
+
+
+    <div class="text-editor-wrapper">
+        <div class="text-editor">
+            <div class="email-field-box">
+                <label class="title-label">To</label>
+                <mat-form-field class="box-textarea" appearance="fill">
+                    <input matInput type="email" placeholder="Destinatary" [(ngModel)]="action.to">
+                    <mat-hint *ngIf="email_error">Email must be valid</mat-hint>
+                </mat-form-field>
+                <!-- <input class="cds-input" type="email" placeholder="Destinatary" [(ngModel)]="action.to"> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="text-editor-wrapper">
+        <div class="text-editor">
+            <div class="email-field-box">
+                <label class="title-label">Subject</label>
+                <mat-form-field class="box-textarea" appearance="fill">
+                    <input matInput type="text" placeholder="Destinatary" [(ngModel)]="action.subject">
+                </mat-form-field>
+                <!-- <input class="cds-input" type="email" placeholder="Destinatary" [(ngModel)]="action.to"> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="email-field-box">
+        <label class="title-label">Email body</label>
+        <mat-form-field class="box-textarea" appearance="fill">
+            <textarea matInput type="text" placeholder="Destinatary" rows="10" [(ngModel)]="action.text"></textarea>
+        </mat-form-field>
+        <!-- <input class="cds-input" type="email" placeholder="Destinatary" [(ngModel)]="action.to"> -->
+    </div>
+
+
+
+
+    <!-- <div>
+            <label class="title-label">
+                To
+            </label>
+            <cds-text [placeholder]="'Destinatary'" [text]="'ciao'" (change)="onToChange($event)"></cds-text>
+        </div>
+
+
+        <div>
+            <label class="title-label">
+                Subject
+            </label>
+            <cds-text [placeholder]="'Destinatary'" [text]="'ciao'" (change)="onTextChange($event)"></cds-text>
+        </div> -->
+
+
+    <!-- <div style="margin-top: 30px;">
+            <label class="title-label"></label>
+            <input type="email" required>
+        </div> -->
+
+
+    <!-- <label class="title-label">
+            Go to Intent
+        </label>
+
+        <div class="">
+            <ng-select 
+                class = "form-control-select" 
+                [items] = "intents" 
+                [searchable] = true
+                [editableSearchTerm]= true
+                [clearable] = false
+                [(ngModel)] = "buttonAction"
+                (change) = "onChangeActionButton($event)">
+            </ng-select>
+        </div> -->
+
+
+
+    <!-- <div class="form-group ng-select" style="width: 500px;">
+        <label class="control-label">
+            Go to Intent
+        </label>
+        <div class="selectFormModel">
+            <ng-select 
+                class = "form-control-select" 
+                [items] = "intents" 
+                [searchable] = true
+                [clearable] = false
+                [(ngModel)] = "buttonAction"
+                (change) = "onChangeActionButton($event)">
+            </ng-select>
+        </div>
+    </div> -->
+
+    <!-- <div class="form-group json-payload-textaread">
+        <label class="control-label">
+            JSON Payload
+        </label>
+        <mat-form-field class="box-textarea" appearance="fill">
+            <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5">
+              </textarea>
+        </mat-form-field>
+    </div> -->
+
+</div>

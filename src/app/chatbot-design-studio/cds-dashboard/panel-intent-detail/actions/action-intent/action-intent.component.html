@@ -1,0 +1,59 @@
+<div class="content">
+
+    <div class="select-intent-box">
+
+        <div>
+            <label class="title-label">
+                Go to Intent
+            </label>
+            <cds-text [autocompleteOptions]="intents" [placeholder]="'Type to search an intent'" [text]="elementSelected.intentName" (change)="onTextChange($event)"></cds-text>
+        </div>
+
+
+        <!-- <label class="title-label">
+            Go to Intent
+        </label>
+
+        <div class="">
+            <ng-select 
+                class = "form-control-select" 
+                [items] = "intents" 
+                [searchable] = true
+                [editableSearchTerm]= true
+                [clearable] = false
+                [(ngModel)] = "buttonAction"
+                (change) = "onChangeActionButton($event)">
+            </ng-select>
+        </div> -->
+
+    </div>
+
+
+    <!-- <div class="form-group ng-select" style="width: 500px;">
+        <label class="control-label">
+            Go to Intent
+        </label>
+        <div class="selectFormModel">
+            <ng-select 
+                class = "form-control-select" 
+                [items] = "intents" 
+                [searchable] = true
+                [clearable] = false
+                [(ngModel)] = "buttonAction"
+                (change) = "onChangeActionButton($event)">
+            </ng-select>
+        </div>
+    </div> -->
+
+    <!-- <div class="form-group json-payload-textaread">
+        <label class="control-label">
+            JSON Payload
+        </label>
+        <mat-form-field class="box-textarea" appearance="fill">
+            <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5">
+              </textarea>
+        </mat-form-field>
+    </div> -->
+
+</div>
