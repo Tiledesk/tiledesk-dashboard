@@ -13,8 +13,8 @@
 
 <div class="cds-header">
     <div class="header-left" [class.is_opened]="IS_OPEN">
-        <img *ngIf="!IS_OPEN" src="/assets/img/logos/tiledesk_logo_white_small.svg">
-        <img *ngIf="IS_OPEN" src="/assets/img/logos/tiledesk-logo_new_white.svg">
+        <img *ngIf="!IS_OPEN" src="assets/img/logos/tiledesk_logo_white_small.svg">
+        <img *ngIf="IS_OPEN" src="assets/img/logos/tiledesk-logo_new_white.svg">
     </div>
     <div class="header-right">
         <div class="toggle-setting-sidebar-icon-wpr" [class.is_opened]="IS_OPEN"
@@ -49,6 +49,7 @@
             </button>
         </div>
         <div class="cds-close-btn-wpr">
+       
             <button class="btn pull-right cds-close-btn" (click)="goBack()">
                 <span class="material-icons cds-close-btn-icon">
                     clear
@@ -136,7 +137,9 @@
         ... choice training...
     </ng-template>
     <ng-template #rules [ngOutletContext]="context">
-        <cds-rules [listOfIntents]="listOfIntents" [selectedChatbot]="selectedChatbot">
+        <cds-rules 
+            [listOfIntents]="listOfIntents" 
+            [selectedChatbot]="selectedChatbot">
         </cds-rules>
     </ng-template>
 

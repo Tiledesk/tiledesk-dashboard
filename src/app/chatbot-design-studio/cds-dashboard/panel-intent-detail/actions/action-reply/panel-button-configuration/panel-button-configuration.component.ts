@@ -166,4 +166,9 @@ export class PanelButtonConfigurationComponent implements OnInit {
     this.button.action = actionButton;
   }
 
+  /** */
+  onCloseButtonPanel(){
+    this.closeButtonPanel.emit();
+  }
+
 }

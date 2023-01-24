@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { Action, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionWait } from 'app/models/intent-model';
+import { ActionCondition, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionWait} from 'app/models/intent-model';
 import { TYPE_ACTION } from '../../utils';
 
 @Component({
@@ -46,11 +46,6 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     this.openActionDrawer.emit(this.isOpenActionDrawer);
   }
 
-
-
-
-
-
   actionSelected(typeAction: string) {
     console.log('[PANEL ACTION] actionSelected ', typeAction);
     if(typeAction === TYPE_ACTION.REPLY){
@@ -74,6 +69,10 @@ export class PanelActionsComponent implements OnInit, OnChanges {
 
     if(typeAction === TYPE_ACTION.WAIT){
       let action = new ActionWait();
+    }
+
+    if(typeAction === TYPE_ACTION.CONDITION){
+      let action = new ActionCondition();
       this.intentSelected.actions.push(action);
     }
   }

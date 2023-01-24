@@ -2,7 +2,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from './../../../services/logger/logger.service';
 import { FaqService } from './../../../services/faq.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Intent } from 'app/models/intent-model';
 import { Observable, Subscription } from 'rxjs';
 
@@ -34,7 +34,8 @@ export class PanelIntentListComponent implements OnInit {
     private faqService: FaqService,
     private logger: LoggerService,
     private translate: TranslateService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -118,7 +119,17 @@ export class PanelIntentListComponent implements OnInit {
         console.log("select intent emit");
         this.selectedIntent = intent;
         this.selected_intent.emit(intent);
+        
+        // this.router.navigate(
+        //   ['project/'+this.projectID+'/cds/'+this.id_faq_kb+'/intent/'+this.selectedIntent.id], 
+        //   {
+        //     relativeTo: this.activatedRoute,
+        //     skipLocationChange: true,
+        //     // fragment: this.selectedIntent.id,
+        //     // queryParamsHandling: 'merge',
+        //   });
       }
+
     }, 200);
   }
 

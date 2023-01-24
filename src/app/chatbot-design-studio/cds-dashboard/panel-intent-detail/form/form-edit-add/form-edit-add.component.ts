@@ -133,15 +133,16 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.labelResult = true;
     this.errorLabelResult = true;
     let status = true;
-    this.field.name = this.fieldName ? this.fieldName : '';
-    // console.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
-    this.field.type = this.fieldType ? this.fieldType.toUpperCase() : null;
-    // console.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
-    this.field.regex = this.fieldRegex ? this.fieldRegex : TYPE_REGEX.customRGEX;
-    // console.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
-    this.field.label = this.fieldLabel ? this.fieldLabel.trim() : '';
-    // console.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
-    this.field.errorLabel = this.fieldErrorLabel ? this.fieldErrorLabel.trim() : '';
+    
+    // this.field.name = this.fieldName ? this.fieldName : '';
+    // // console.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
+    // this.field.type = this.fieldType ? this.fieldType.toUpperCase() : null;
+    // // console.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
+    // this.field.regex = this.fieldRegex ? this.fieldRegex : TYPE_REGEX.customRGEX;
+    // // console.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
+    // this.field.label = this.fieldLabel ? this.fieldLabel.trim() : '';
+    // // console.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
+    // this.field.errorLabel = this.fieldErrorLabel ? this.fieldErrorLabel.trim() : '';
     // console.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
     if (this.fieldType == null) {
       this.typeResult = false;
@@ -150,27 +151,26 @@ export class FormEditAddComponent implements OnInit, OnChanges {
 
     let REGEX = new RegExp(TYPE_REGEX.nameRGEX.replace(/\//gi, ''));
     // console.log('[TILEBOT-EDIT-ADD] checkFields nameRGEX REGEX ', REGEX)
-    this.nameResult = REGEX.test(this.field.name);
+    this.nameResult = REGEX.test(this.fieldName);
     // console.log('[TILEBOT-EDIT-ADD] nameResult',this.nameResult,' REGEX.test - field.name', this.field.name )
     if (this.nameResult === false) {
       status = false;
     }
-
-    if (this.field.name.length == 0) {
+    if (this.fieldName.length == 0) {
       this.nameResult = false;
       status = false;
     }
-    if (this.field.label.length == 0) {
+    if (this.fieldLabel.length == 0) {
       this.labelResult = false;
       status = false;
     }
-    if (this.field.regex.length == 0 && this.field.type === TYPE_FIELD.CUSTOM) {
+    if (this.fieldRegex.length == 0 && this.fieldType === TYPE_FIELD.CUSTOM) {
       this.regexResult = false;
       status = false;
     }
     // this.field.regex = this.field.regex.replace(/\//gi, '');
     // console.log('[TILEBOT-EDIT-ADD] checkFields this.field.regex 1 ', this.field.regex)
-    this.field.regex = this.field.regex.toString();
+    // this.fieldRegex = this.field.regex.toString();
     // console.log('[TILEBOT-EDIT-ADD] checkFields this.field.regex 2 ', this.field.regex)
     return status;
 
@@ -247,6 +247,19 @@ export class FormEditAddComponent implements OnInit, OnChanges {
       // console.log('[TILEBOT-EDIT-ADD] save checkFields ', this.checkFields())
       this.displayInfoMessage = false;
       this.showForm = false;
+      this.field.name = this.fieldName ? this.fieldName : '';
+      // console.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
+      this.field.type = this.fieldType ? this.fieldType.toUpperCase() : null;
+      // console.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
+      this.field.regex = this.fieldRegex ? this.fieldRegex : TYPE_REGEX.customRGEX;
+      // console.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
+      this.field.label = this.fieldLabel ? this.fieldLabel.trim() : '';
+      // console.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
+      this.field.errorLabel = this.fieldErrorLabel ? this.fieldErrorLabel.trim() : '';
+
+      this.fieldRegex = this.field.regex.toString();
+      console.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
+        
       this.saveAddEditForm.emit(this.field);
     }
   }

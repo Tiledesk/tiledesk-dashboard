@@ -13,9 +13,13 @@
         [actionwait]="elementSelected">
     </appdashboard-action-wait>
  
+    <appdashboard-action-condition
+        *ngIf = "elementSelected._tdActionType === typeAction.CONDITION"
+        (listOfActions) = "listOfActions"
+    ></appdashboard-action-condition>
 
 </div>
-    
+
 
 
 <div *ngIf = "elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
@@ -48,7 +52,7 @@
 
 
 
-<div class="card-buttons" 
+<!-- <div class="card-buttons" 
     *ngIf="openCardButton"
     [ngClass]="{'active':openCardButton}"
     cdkDragBoundary=".panel-response" cdkDrag>
@@ -58,6 +62,17 @@
             <path d="M0 0h24v24H0z" fill="none"></path>
         </svg>
     </div>
+    <appdashboard-panel-button-configuration
+        [button] = buttonSelected
+        [listOfActions] = listOfActions
+        (closeButtonPanel) = onCloseButtonPanel()
+        (saveButton) = onSaveButton($event)
+    ></appdashboard-panel-button-configuration>
+</div> -->
+
+<div class="card-buttons" 
+    *ngIf="openCardButton"
+    [ngClass]="{'active':openCardButton}">
     <appdashboard-panel-button-configuration
         [button] = buttonSelected
         [listOfActions] = listOfActions

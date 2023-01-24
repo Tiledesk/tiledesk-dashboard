@@ -21,6 +21,7 @@
                 [formControl]="control"
                 [matAutocomplete]="auto"
                 [maxlength]="limitCharsText"
+                type="text"
                 cdkTextareaAutosize
                 cdkAutosizeMinRows="1"
                 cdkAutosizeMaxRows="5"
@@ -31,7 +32,7 @@
                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                   {{option}}
                 </mat-option>
-              </mat-autocomplete>
+            </mat-autocomplete>
         </mat-form-field>
         
     </div>

@@ -48,7 +48,7 @@
 
 .delay-button {
     padding-right: 4px;
-    color: $color-withe-hex;
+    color: $icon-color;
     cursor: pointer;
 }
 
@@ -77,4 +77,18 @@ mat-slider {
     width: 100%;
     position: absolute;
     top: -14px;
+
+}
+
+.vue-slider ::ng-deep{
+    .mat-accent .mat-slider-track-fill {
+        background-color: $icon-color !important;
+    }
+    .mat-slider-thumb-label {
+        background-color: $icon-color !important;
+
+    }
+    .mat-slider-thumb {
+        background-color: $icon-color !important;
+    }
 }

@@ -73,7 +73,7 @@
                 <a>
                     <i *ngIf="extendedWidth === true || extendedWidth === false"
                         class="material-icons-outlined settings-sidebar-icons">
-                        subject
+                        <span class="material-icons">format_list_bulleted_add </span>
                     </i>
                     <p *ngIf="extendedWidth === true" class="custom_paragraph">
                         {{'Rules' | translate}}
@@ -166,7 +166,7 @@
         matTooltipHideDelay="100"
         [matTooltipDisabled]="extendedWidth">
         <i *ngIf="extendedWidth === true || extendedWidth === false" class="material-icons-outlined item-icon">
-            subject
+            <span class="material-icons">format_list_bulleted_add</span>
         </i>
         <p *ngIf="extendedWidth === true" class="item-label">
             {{'Rules' | translate}}
