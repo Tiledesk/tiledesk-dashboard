@@ -472,12 +472,18 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   onIntentFormSelected(intentform: Form) {
-
     console.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT intentform ', intentform)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.FORM;
     this.elementIntentSelected['element'] = intentform
     console.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+  }
+
+  onActionDeleted(event) {
+    console.log('[CDS DSBRD] onActionDeleted - from PANEL INTENT event ', event)
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = ''
+    this.elementIntentSelected['element'] = null
   }
 
 

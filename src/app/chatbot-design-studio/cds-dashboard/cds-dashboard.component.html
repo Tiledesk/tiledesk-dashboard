@@ -93,50 +93,72 @@
 
     <ng-template #intents [ngOutletContext]="context">
         <div class="box-left">
-            <appdashboard-panel-intent-list class="panel-intent-list" [id_faq_kb]="id_faq_kb" [projectID]="projectID"
-                (selected_intent)=onSelectIntent($event) (returnListOfIntents)=onReturnListOfIntents($event)
-                (createIntent)="onCreateIntentBtnClicked()" [events]="eventsSubject.asObservable()">
+            <appdashboard-panel-intent-list class="panel-intent-list" 
+                [id_faq_kb]="id_faq_kb" 
+                [projectID]="projectID"
+                (selected_intent)=onSelectIntent($event) 
+                (returnListOfIntents)=onReturnListOfIntents($event)
+                (createIntent)="onCreateIntentBtnClicked()" 
+                [events]="eventsSubject.asObservable()">
             </appdashboard-panel-intent-list>
         </div>
 
         <div class="box-right">
 
             <div class="box-right-header">
-                <appdashboard-panel-intent-header *ngIf=intentSelected [intentSelected]="intentSelected"
-                    (saveIntent)=onSaveIntent($event) [listOfIntents]="listOfIntents">
+                <appdashboard-panel-intent-header *ngIf=intentSelected 
+                    [intentSelected]="intentSelected"
+                    (saveIntent)=onSaveIntent($event) 
+                    [listOfIntents]="listOfIntents">
                 </appdashboard-panel-intent-header>
             </div>
 
             <div class="box-right-content">
-                <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent" [intentSelected]="intentSelected"
-                    [actionDrawerIsOpen]="actionDrawerIsOpen" (openActionDrawer)=onOpenActionDrawer($event)
-                    (answerSelected)=onAnswerSelected($event) (actionSelected)=onActionSelected($event)
-                    (questionSelected)=onQuestionSelected($event) (intentForm)=onIntentFormSelected($event)
-                    [isOpenActionDrawer]="isOpenActionDrawer" [events]="upadatedIntent.asObservable()">
+                <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent" 
+                    [intentSelected]="intentSelected"
+                    [actionDrawerIsOpen]="actionDrawerIsOpen" 
+                    (openActionDrawer)=onOpenActionDrawer($event)
+                    (answerSelected)=onAnswerSelected($event) 
+                    (actionSelected)=onActionSelected($event)
+                    (questionSelected)=onQuestionSelected($event) 
+                    (actionDeleted)=onActionDeleted($event) 
+                    (intentForm)=onIntentFormSelected($event)
+                    [isOpenActionDrawer]="isOpenActionDrawer" 
+                    [events]="upadatedIntent.asObservable()">
                 </appdashboard-panel-intent>
 
 
-                <appdashboard-panel-actions [isOpenActionDrawer]="isOpenActionDrawer"
-                    (openActionDrawer)=onOpenActionDrawer($event) [intentSelected]="intentSelected">
+                <appdashboard-panel-actions 
+                    [isOpenActionDrawer]="isOpenActionDrawer"
+                    (openActionDrawer)=onOpenActionDrawer($event) 
+                    [intentSelected]="intentSelected">
                 </appdashboard-panel-actions>
 
                 <appdashboard-panel-intent-detail *ngIf=elementIntentSelected class="panel-intent-detail"
-                    [listOfActions]="listOfActions" [elementIntentSelected]="elementIntentSelected"
-                    [intentSelected]="intentSelected" [showSpinner]="showSpinner"
-                    (openButtonPanel)=onOpenButtonPanel($event)></appdashboard-panel-intent-detail>
+                    [listOfActions]="listOfActions" 
+                    [elementIntentSelected]="elementIntentSelected"
+                    [intentSelected]="intentSelected" 
+                    [showSpinner]="showSpinner"
+                    (openButtonPanel)=onOpenButtonPanel($event)>
+                </appdashboard-panel-intent-detail>
             </div>
 
         </div>
     </ng-template>
 
     <ng-template #fulfillment [ngOutletContext]="context">
-        <cds-fulfillment [chatbot]="selectedChatbot">
+        <cds-fulfillment 
+            [chatbot]="selectedChatbot">
         </cds-fulfillment>
     </ng-template>
-    <ng-template #training [ngOutletContext]="context">
+
+    <ng-template #training 
+        [ngOutletContext]="context">
         ... choice training...
     </ng-template>
-    <ng-template #rules [ngOutletContext]="context">
+
+    <ng-template #rules 
+        [ngOutletContext]="context">
         <cds-rules 
             [listOfIntents]="listOfIntents" 
             [selectedChatbot]="selectedChatbot">

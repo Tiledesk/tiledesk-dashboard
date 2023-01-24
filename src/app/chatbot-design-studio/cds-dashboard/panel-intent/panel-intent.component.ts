@@ -20,6 +20,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   @Output() actionSelected = new EventEmitter();
   @Output() intentForm = new EventEmitter();
   @Output() questionSelected = new EventEmitter();
+  @Output() actionDeleted = new EventEmitter();
 
   actions: Array<any>
   question: any
@@ -180,6 +181,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     console.log('[PANEL INTENT] onDeleteAction index', actionindex);
     console.log('[PANEL INTENT] onDeleteAction intentSelected', this.intentSelected);
     this.intentSelected.actions.splice(actionindex, 1); 
+    this.actionDeleted.emit(true);
   }
 
 }
