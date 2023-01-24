@@ -1,4 +1,4 @@
-import { ActionAssignVariable, ActionDeleteVariable, ActionOnlineAgent, ActionOpenHours } from './../../../models/intent-model';
+import { ActionAssignVariable, ActionDeleteVariable, ActionHideMessage, ActionOnlineAgent, ActionOpenHours } from './../../../models/intent-model';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 
 import { ActionCondition, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionIntentConnected, ActionEmail, ActionWait } from 'app/models/intent-model';
@@ -67,22 +67,18 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       let action = new ActionClose();
       this.intentSelected.actions.push(action);
     }
-
     if(typeAction === TYPE_ACTION.WAIT){
       let action = new ActionWait();
       this.intentSelected.actions.push(action);
     }
-
     if(typeAction === TYPE_ACTION.INTENT) {
       let action = new ActionIntentConnected()
       this.intentSelected.actions.push(action)
     }
-    
     if(typeAction === TYPE_ACTION.EMAIL) {
       let action = new ActionEmail()
       this.intentSelected.actions.push(action);
     }
-
     if(typeAction === TYPE_ACTION.CONDITION){
       let action = new ActionCondition();
       this.intentSelected.actions.push(action);
@@ -95,12 +91,16 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       let action = new ActionDeleteVariable();
       this.intentSelected.actions.push(action);
     }
-    if(typeAction === TYPE_ACTION.ONLINE_AGENGS){
+    if(typeAction === TYPE_ACTION.ONLINE_AGENTS){
       let action = new ActionOnlineAgent();
       this.intentSelected.actions.push(action);
     }
     if(typeAction === TYPE_ACTION.OPEN_HOURS){
       let action = new ActionOpenHours();
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.HIDE_MESSSAGE){
+      let action = new ActionHideMessage();
       this.intentSelected.actions.push(action);
     }
     

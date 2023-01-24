@@ -1,17 +1,17 @@
-<div *ngIf = "elementIntentSelectedType === typeIntentElement.ACTION">
+<div *ngIf = "elementIntentSelectedType === typeIntentElement.ACTION" [ngSwitch]="elementSelected._tdActionType">
     
-    <cds-action-reply *ngIf = "elementSelected._tdActionType === typeAction.REPLY"
+    <cds-action-reply *ngSwitchCase="typeAction.REPLY"
         class="panel-response"
         [reply]="elementSelected"
         [showSpinner] = "showSpinner"
         (openButtonPanel) = onOpenButtonPanel($event)>
     </cds-action-reply>
 
-    <cds-action-wait *ngIf = "elementSelected._tdActionType === typeAction.WAIT"
+    <cds-action-wait *ngSwitchCase="typeAction.WAIT"
         [actionwait]="elementSelected">
     </cds-action-wait>
  
-    <cds-action-intent *ngIf = "elementSelected._tdActionType === typeAction.INTENT"
+    <cds-action-intent *ngSwitchCase="typeAction.INTENT"
         class="panel-response"
         [elementSelected]="elementSelected"
         [intents]="listOfActions"
@@ -19,25 +19,40 @@
         (openButtonPanel) = onOpenButtonPanel($event)>
     </cds-action-intent>
 
-    <cds-action-email *ngIf = "elementSelected._tdActionType === typeAction.EMAIL"
+    <cds-action-email *ngSwitchCase="typeAction.EMAIL"
         class="panel-response"
         [action]="elementSelected"
         [showSpinner] = "showSpinner"
         (openButtonPanel) = onOpenButtonPanel($event)>
     </cds-action-email>
 
-    <cds-action-condition
-        *ngIf = "elementSelected._tdActionType === typeAction.CONDITION"
+    <cds-action-condition *ngSwitchCase="typeAction.CONDITION"
         [listOfActions] = "listOfActions"
         [action]="elementSelected">
     </cds-action-condition>
 
-    <cds-action-assign-variable *ngIf = "elementSelected._tdActionType === typeAction.ASSIGN_VARIABLE"
+    <cds-action-assign-variable *ngSwitchCase="typeAction.ASSIGN_VARIABLE"
         [action]="elementSelected">
     </cds-action-assign-variable>
 
-</div>
+    <cds-action-delete-variable *ngSwitchCase="typeAction.DELETE_VARIABLE"
+        [action]="elementSelected">
+    </cds-action-delete-variable>
 
+    <cds-action-online-agents *ngSwitchCase="typeAction.ONLINE_AGENTS"
+        [listOfActions] = "listOfActions"    
+        [action]="elementSelected">
+    </cds-action-online-agents>
+
+    <cds-action-open-hours *ngSwitchCase="typeAction.OPEN_HOURS"
+        [listOfActions] = "listOfActions"
+        [action]="elementSelected">
+    </cds-action-open-hours>
+
+    <cds-action-hide-message *ngSwitchCase="typeAction.HIDE_MESSSAGE"
+        [action]="elementSelected">
+    </cds-action-hide-message>
+</div>
 
 
 <div *ngIf = "elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">

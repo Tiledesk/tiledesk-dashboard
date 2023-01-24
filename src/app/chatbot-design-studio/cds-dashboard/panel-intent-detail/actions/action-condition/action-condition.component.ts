@@ -12,7 +12,7 @@ import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
 })
 export class ActionConditionComponent implements OnInit {
   
-  @Input() listOfActions: Array<any>;
+  @Input() listOfActions: string[];
   @Input() action: ActionCondition;
 
   actionConditionFormGroup: FormGroup;
@@ -35,7 +35,7 @@ export class ActionConditionComponent implements OnInit {
     }
     
   }
-
+  
 
   buildForm(): FormGroup{
     return this.formBuilder.group({

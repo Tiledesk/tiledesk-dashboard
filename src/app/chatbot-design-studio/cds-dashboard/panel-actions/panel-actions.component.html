@@ -111,7 +111,7 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('hours')">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.OPEN_HOURS)">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFF">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path
@@ -126,7 +126,7 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled (click)="actionSelected(typeAction.CHANGE_DEPARTMENT)">
               <svg aria-label="ChangeDepartment" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
                 height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
                 <g>
@@ -168,24 +168,19 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.DELETE_VARIABLE)">
               <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1024 1024"
                 style="enable-background:new 0 0 1024 1024;width: 24px; height: 24px;vertical-align: middle;fill: #FFFFFF;overflow: hidden; padding: 3px;"
                 xml:space="preserve">
-                <style type="text/css">
-                  .delete_var {
-                    fill: #FFFFFF;
-                  }
-                </style>
                 <g>
-                  <path class="delete_var" d="M850.7,760.1c-11.7,0-23.4,3.9-33.2,7.8l102.9,100.9c4.5-9.8,7.1-20.5,7.1-31.9
+                  <path fill="#FFFFFF" d="M850.7,760.1c-11.7,0-23.4,3.9-33.2,7.8l102.9,100.9c4.5-9.8,7.1-20.5,7.1-31.9
 		C927.5,795.6,894,760.1,850.7,760.1z" />
                   <path class="delete_var" d="M860.6,51.2c-55.1,0-110.3,39.4-159.5,124.1c-49.2,86.6-104.4,179.2-104.4,179.2h-2
 		c-11.8-61-21.7-110.3-25.6-131.9c-9.8-53.2-70.9-165.4-195-165.4c-93.6,0-180.8,40.2-219.3,60.9l125,122.6
 		c20.1-1.8,38.9,3.1,47.1,23.3c4,10.6,8,22.2,12,34.6l312.9,306.8c-10.9-51.2-23.1-110.4-35.3-168.1L701,315.1
 		c-2,2,90.6,35.4,137.8,35.4l0,0c47.3,0,141.8-39.4,141.8-165.4S890.1,51.2,860.6,51.2z" />
-                  <path class="delete_var"
+                  <path fill="#FFFFFF"
                     d="M872.3,912.2L749.5,791.8c-0.2,0-0.4,0-0.5,0.1l-62.4-61.2c-0.1-0.3-0.2-0.6-0.3-0.9L372.9,422.5
 		c0.1,0.3,0.1,0.5,0.2,0.8L210.6,263.9c0,0,0.1,0,0.1,0c0,0,0.1-0.1,0.3-0.2L107.4,162.2c-0.1,0.1-0.1,0.3-0.2,0.4L75,130.9
 		l-45.3,46.2l371,363.9c3.1,14.2,6.1,28.2,8.9,41.9L326.9,701c0,0-92.6-33.5-139.8-33.5S45.3,707,45.3,833s90.6,133.9,120.1,133.9
@@ -209,12 +204,10 @@
     <!-- ---------------------------------- -->
     <div class="actions-btns-wpr">
 
-      <!--  -->
-
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.HIDE_MESSSAGE)">
 
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
                 <path d="M0 0h24v24H0z" fill="none" />
@@ -231,7 +224,7 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('email')">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.EMAIL)">
               <svg aria-label="SendEmail" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
                 width="24px" fill="#FFFFFF">
                 <path d="M0 0h24v24H0z" fill="none" />
@@ -252,7 +245,7 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.ONLINE_AGENTS)">
               <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
                 viewBox="0 0 24 24" width="24px" fill="#FFF">
                 <g>

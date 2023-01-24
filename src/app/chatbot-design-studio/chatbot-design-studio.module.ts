@@ -59,12 +59,18 @@ import { RulesAddComponent } from './cds-rules/rules-add/rules-add.component';
 import { RulesListComponent } from './cds-rules/rules-list/rules-list.component';
 import { ConditionComponent } from './cds-rules/rules-add/condition/condition.component';
 import { ActionComponent } from './cds-rules/rules-add/action/action.component';
+
+
+//intent ACTIONS
 import { ActionWaitComponent } from './cds-dashboard/panel-intent-detail/actions/action-wait/action-wait.component';
 import { ActionEmailComponent } from './cds-dashboard/panel-intent-detail/actions/action-email/action-email.component';
 import { ActionIntentComponent } from './cds-dashboard/panel-intent-detail/actions/action-intent/action-intent.component'
 import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-condition/action-condition.component';
 import { ActionDeleteVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-delete-variable/action-delete-variable.component';
 import { ActionAssignVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/action-assign-variable.component';
+import { ActionOnlineAgentsComponent } from './cds-dashboard/panel-intent-detail/actions/action-online-agents/action-online-agents.component';
+import { ActionOpenHoursComponent } from './cds-dashboard/panel-intent-detail/actions/action-open-hours/action-open-hours.component';
+import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/actions/action-hide-message/action-hide-message.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +115,10 @@ import { ActionAssignVariableComponent } from './cds-dashboard/panel-intent-deta
     ActionAssignVariableComponent,
     ActionIntentComponent,
     ActionEmailComponent,
-    ActionConditionComponent
+    ActionConditionComponent,
+    ActionOnlineAgentsComponent,
+    ActionOpenHoursComponent,
+    ActionHideMessageComponent
   ],
   imports: [
     CommonModule,
