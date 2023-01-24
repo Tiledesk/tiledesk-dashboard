@@ -11,7 +11,7 @@
     </textarea>
 </mat-form-field>
 
-<div class="editor-utils">
+<div *ngIf="showUtils === true" class="editor-utils">
     <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
     <!-- <div class="text-editor-insert-attribute">
         <em class="material-icons">code</em>
