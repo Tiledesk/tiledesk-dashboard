@@ -12,7 +12,7 @@ import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
 })
 export class ActionConditionComponent implements OnInit {
   
-  @Input() listOfActions: Array<any>;
+  @Input() listOfActions: string[];
   @Input() action: ActionCondition;
 
   actionConditionFormGroup: FormGroup;
@@ -23,7 +23,7 @@ export class ActionConditionComponent implements OnInit {
   ngOnInit(): void {
     this.actionConditionFormGroup.valueChanges.subscribe(form => {
       console.log('[ACTION-CONDITION] form valueChanges-->', form)
-      if(form && (form.condition !== '' || form.trueIntent !=='' || form.falseIntent !== ''))
+      if(form && (form.condition !== '' || form.trueIntent !==''))
         this.action = Object.assign(this.action, this.actionConditionFormGroup.value);
     })
   }
@@ -32,6 +32,7 @@ export class ActionConditionComponent implements OnInit {
     this.actionConditionFormGroup = this.buildForm();
     if(this.action && this.action.condition){
       this.setFormValue()
+      this.ngOnInit()
     }
     
   }

@@ -1,8 +1,5 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
-<<<<<<< HEAD
-.row-condition {
-=======
 .content-action {
     margin-top: 10px;
     height: 50px;
@@ -25,7 +22,6 @@
 }
 
 .field-box {
->>>>>>> d09c97a282c07a02e426a25e2c166a9aeaf7a007
     display: flex;
     flex-direction: column;
     width: 70%;
@@ -41,44 +37,44 @@
 
 
 ul {
-  text-align: justify;
-  position: relative;
-  overflow: hidden;
-  padding-top: 10px;
-  height: 50px;
+    text-align: justify;
+    position: relative;
+    overflow: hidden;
+    padding-top: 10px;
+    height: 50px;
 }
 ul:before, .active:after {
-  content: '';
-  width: 70%;
-  border: 3px solid white;
-  position: absolute;
-  top: 22px;
-  z-index: 0;
+    content: '';
+    width: 70%;
+    border: 3px solid white;
+    position: absolute;
+    top: 22px;
+    z-index: 0;
 }
 .active:after {
-  border-color: lightblue;
+    border-color: lightblue;
 }
 ul:after {
-  content: "";
-  display: inline-block;
-  width: 100%;
-}
+content: "";
+    display: inline-block;
+    width: 100%;
+    }
 li {
-  width: 2em;
-  height: 2em;
-  text-align: center;
-  line-height: 2em;
-  border-radius: 50%;
-  background: green;
-  margin: 0 0em;
-  display: inline-block;
-  color: white;
-  border: 2px white solid;
-  z-index: 0;
-  position: fixed;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    line-height: 2em;
+    border-radius: 50%;
+    background: green;
+    margin: 0 0em;
+    display: inline-block;
+    color: white;
+    border: 2px white solid;
+    z-index: 0;
+    position: fixed;
 }
-
-
+  
+  
 #text-condition{
     position: relative;
     top: -18px;

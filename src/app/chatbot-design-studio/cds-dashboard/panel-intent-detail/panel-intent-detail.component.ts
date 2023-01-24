@@ -77,6 +77,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
     this.openCardButton = true;
   }
 
+  
   /** appdashboard-button-configuration-panel: Save button */
   onSaveButton(button) {
     this.openCardButton = false;

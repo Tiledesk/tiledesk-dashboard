@@ -47,8 +47,10 @@ export enum TYPE_ACTION {
     CONDITION = 'condition',
     ASSIGN_VARIABLE = 'assign',
     DELETE_VARIABLE = 'delete',
-    ONLINE_AGENGS = 'ifonlineagents',
-    OPEN_HOURS = 'ifopnehours'
+    ONLINE_AGENTS = 'ifonlineagents',
+    OPEN_HOURS = 'ifopenhours',
+    HIDE_MESSSAGE = 'hmessage',
+    CHANGE_DEPARTMENT = 'change_department'
 
 
 }

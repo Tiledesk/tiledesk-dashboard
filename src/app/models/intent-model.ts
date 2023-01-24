@@ -60,7 +60,7 @@ export class ActionOnlineAgent extends Action {
     falseIntent: string;
     constructor() {
         super();
-        this._tdActionType = TYPE_ACTION.ONLINE_AGENGS;
+        this._tdActionType = TYPE_ACTION.ONLINE_AGENTS;
     }
 }
 
@@ -70,6 +70,14 @@ export class ActionOpenHours extends Action {
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.OPEN_HOURS;
+    }
+}
+
+export class ActionHideMessage extends Action {
+  text: string;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.HIDE_MESSSAGE;
     }
 }
 

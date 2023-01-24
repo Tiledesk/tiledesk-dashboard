@@ -99,6 +99,10 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     }
   }
 
+  toggleIntentWebhook($event) {
+    console.log('[PANEL-INTENT-HEADER] toggleWebhook ', $event.target.checked);
+    this.intentSelected.webhook_enabled = $event.target.checked
+  }
   // getCurrentProject() {
   //   this.auth.project_bs.subscribe((project) => {
   //     this.project = project;

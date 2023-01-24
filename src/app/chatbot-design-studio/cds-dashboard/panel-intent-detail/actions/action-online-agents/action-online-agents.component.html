@@ -2,20 +2,11 @@
 
     <div class="text-editor-wrapper">
         <div class="field-box">
-            <label class="title-label">Expression:</label>
-            <cds-text
-                [control]="actionConditionFormGroup.controls['condition']">
-            </cds-text>
-        </div>
-    </div>
-
-    <div class="text-editor-wrapper">
-        <div class="field-box">
             <label class="title-label">if <b style="color: green">TRUE</b> go to:</label>
             <ul>
                 <li style="background-color: green;"></li>
                 <cds-text id="text-condition"
-                    [control]="actionConditionFormGroup.controls['trueIntent']"
+                    [control]="actionOnlineAgentsFormGroup.controls['trueIntent']"
                     [autocompleteOptions]="listOfActions">
                 </cds-text>
             </ul> 
@@ -28,12 +19,12 @@
             <ul>
                 <li style="background-color: red;"></li>
                 <cds-text id="text-condition"
-                    [control]="actionConditionFormGroup.controls['falseIntent']"
+                    [control]="actionOnlineAgentsFormGroup.controls['falseIntent']"
                     [autocompleteOptions]="listOfActions">
                 </cds-text>
             </ul>
         </div>
     </div>
-
+    
 </div>
 

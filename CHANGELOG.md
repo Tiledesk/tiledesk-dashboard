@@ -1,5 +1,16 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc9
+- Add the ability to enable/disable the intent webhook
+- Fixes action bugs
+
+### 2.3.22-rc8
+- Adds the "delete variable" action
+- Adds the "assign variable" action
+- Adds the "open hours" action
+- Adds the "online agent" action
+- Adds the "hide message" action
+
 ### 2.3.22-rc7
 - Fixes the bug: can't add questions on a new intent
 
