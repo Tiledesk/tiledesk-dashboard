@@ -14,7 +14,7 @@
         </div> -->
 
 
-        <!-- <mat-form-field class="box-textarea" appearance="fill">
+        <mat-form-field class="box-textarea" appearance="fill">
             <div class="input-prefix" *ngIf="customPrefix"> / </div>
             <input matInput
                 [class.customPrefix]="customPrefix"
@@ -34,23 +34,6 @@
                   {{option}}
                 </mat-option>
               </mat-autocomplete>
-        </mat-form-field> -->
-
-        <mat-form-field class="box-textarea" appearance="fill">
-            <div class="input-prefix" *ngIf="customPrefix"> / </div>
-            <input matInput
-                [class.customPrefix]="customPrefix"
-                [formControl]="control"
-                [maxlength]="limitCharsText"
-                type="text"
-                [placeholder]="placeholder"
-                cdkTextareaAutosize
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"
-                [(ngModel)]="text"
-                (change)="onChangeText(text)"/>
-            <div class="input-suffix" *ngIf="customPrefix"> / </div>
-           
         </mat-form-field>
         
     </div>

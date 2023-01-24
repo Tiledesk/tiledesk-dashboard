@@ -61,6 +61,7 @@ import { ConditionComponent } from './cds-rules/rules-add/condition/condition.co
 import { ActionComponent } from './cds-rules/rules-add/action/action.component';
 import { ActionIntentComponent } from './cds-dashboard/panel-intent-detail/actions/action-intent/action-intent.component';
 import { ActionEmailComponent } from './cds-dashboard/panel-intent-detail/actions/action-email/action-email.component';
+import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-condition/action-condition.component';
 
 
 @NgModule({
@@ -102,7 +103,8 @@ import { ActionEmailComponent } from './cds-dashboard/panel-intent-detail/action
     CDSDelaySliderComponent,
     CDSTextareaComponent,
     ActionIntentComponent,
-    ActionEmailComponent
+    ActionEmailComponent,
+    ActionConditionComponent
   ],
   imports: [
     CommonModule,

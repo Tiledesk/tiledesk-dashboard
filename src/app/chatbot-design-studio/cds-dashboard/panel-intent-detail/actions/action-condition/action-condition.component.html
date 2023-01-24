@@ -1,0 +1,42 @@
+<div class="action-condition">
+
+    <div class="row-condition">
+        <div class="label-condition">
+            Condition:
+        </div>
+    
+        <div class="content-condition">
+            <cds-text id="text-condition"
+                [control]="actionConditionFormGroup.controls['condition']">
+            </cds-text>
+        </div>
+    </div>
+    
+
+    <div class="row-condition">
+        <div class="label-condition">
+            se <b>vero</b> vai qui:
+        </div>
+    
+        <div class="content-condition">
+            <cds-text id="text-true"
+                [control]="actionConditionFormGroup.controls['trueIntent']"
+                [autocompleteOptions]="listOfActions">
+            </cds-text>
+        </div>
+    </div>
+    
+    <div class="row-condition">
+        <div class="label-condition">
+            se <b>falso</b> vai qui:
+        </div>
+    
+        <div class="content-condition">
+            <cds-text id="text-false"
+                [control]="actionConditionFormGroup.controls['falseIntent']"
+                [autocompleteOptions]="listOfActions">
+            </cds-text>
+        </div>
+    </div>
+    
+</div>

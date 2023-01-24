@@ -111,9 +111,12 @@
                 </appdashboard-panel-actions>
 
                 <appdashboard-panel-intent-detail *ngIf=elementIntentSelected class="panel-intent-detail"
-                    [listOfActions]="listOfActions" [elementIntentSelected]="elementIntentSelected"
-                    [intentSelected]="intentSelected" [showSpinner]="showSpinner"
-                    (openButtonPanel)=onOpenButtonPanel($event)></appdashboard-panel-intent-detail>
+                    [listOfActions]="listOfActions" 
+                    [elementIntentSelected]="elementIntentSelected"
+                    [intentSelected]="intentSelected" 
+                    [showSpinner]="showSpinner"
+                    (openButtonPanel)=onOpenButtonPanel($event)>
+                </appdashboard-panel-intent-detail>
             </div>
 
         </div>
@@ -127,7 +130,9 @@
         ... choice training...
     </ng-template>
     <ng-template #rules [ngOutletContext]="context">
-        <cds-rules [listOfIntents]="listOfIntents" [selectedChatbot]="selectedChatbot">
+        <cds-rules 
+            [listOfIntents]="listOfIntents" 
+            [selectedChatbot]="selectedChatbot">
         </cds-rules>
     </ng-template>
 

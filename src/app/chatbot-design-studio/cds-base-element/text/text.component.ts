@@ -11,7 +11,7 @@ import { map, startWith } from 'rxjs/operators';
 export class CDSTextComponent implements OnInit {
 
   // @Input() textMessage: string;
-  @Input() control: FormControl = new FormControl()
+  @Input() control: FormControl<string> = new FormControl()
   @Input() text: string;
   @Input() placeholder: string;
   @Input() customPrefix: string;

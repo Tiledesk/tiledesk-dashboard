@@ -63,6 +63,14 @@ export class TextResponseComponent implements OnInit {
   }
 
   // PRIVATE FUNCTIONS //
+  /** */
+  private arraymove(buttons, fromIndex, toIndex) {
+    var element = buttons[fromIndex];
+    buttons.splice(fromIndex, 1);
+    buttons.splice(toIndex, 0, element);
+  }
+
+  /** */
   private addNewButton(): Button{
     let button =  {
       'value': 'Button',
@@ -124,8 +132,24 @@ export class TextResponseComponent implements OnInit {
   }
 
   onDeleteButton(index){
-    console.log('onDeleteButton::: ', index);
     this.buttons.splice(index, 1); 
   }
 
+  onMoveLeftButton(fromIndex){
+    let toIndex = fromIndex-1;
+    if(toIndex<0){
+      toIndex = 0;
+    }
+    this.arraymove(this.buttons, fromIndex, toIndex);
+  }
+
+  onMoveRightButton(fromIndex){
+    let toIndex = fromIndex+1;
+    if(toIndex>this.buttons.length-1){
+      toIndex = this.buttons.length-1;
+    }
+    this.arraymove(this.buttons, fromIndex, toIndex);
+  }
+
+  
 }

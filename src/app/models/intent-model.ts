@@ -58,13 +58,22 @@ export class Action {
     _tdActionType: string;
 }
 
+export class ActionCondition extends Action {
+    condition: string;
+    trueIntent: string;
+    falseIntent: string;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.CONDITION;
+    }
+}
 
 export class ActionReply extends Action {
     text?: string;
     attributes: Attributes;
     constructor(text?: string, attributes?: Attributes) {
         super();
-        this.text = text ? text : '';
+        this.text = text ? text : '...';
         this._tdActionType = TYPE_ACTION.REPLY;
         this.attributes = new Attributes();
         if (attributes){
