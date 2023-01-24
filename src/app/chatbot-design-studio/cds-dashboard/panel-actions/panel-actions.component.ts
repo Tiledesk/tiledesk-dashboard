@@ -69,6 +69,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
 
     if(typeAction === TYPE_ACTION.WAIT){
       let action = new ActionWait();
+      this.intentSelected.actions.push(action);
     }
 
     if(typeAction === TYPE_ACTION.CONDITION){
