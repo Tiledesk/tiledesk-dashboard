@@ -30,9 +30,9 @@ $width-title: 80%;
         padding: 0 30px;
         .form-control {
             border: 0;
-            background-size: 0 2px,100% 0px;
+            background-size: 0 2px, 100% 0px;
             background-image: linear-gradient($color-light-gray-hex, $color-light-gray-hex);
-            transition-duration: .2s;
+            transition-duration: 0.2s;
         }
         label.title {
             position: absolute;
@@ -67,25 +67,26 @@ $width-title: 80%;
             right: 10px;
             padding: 8px;
         }
-    } 
+    }
 
     .form-group {
         &.is-error {
             .form-control {
-                background-image: linear-gradient($color-red-hex,$color-red-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
-                background-size: 100% 2px,100% 1px;
-                transition-duration: .3s;
+                background-image: linear-gradient($color-red-hex, $color-red-hex),
+                    linear-gradient($color-light-gray-hex, $color-light-gray-hex);
+                background-size: 100% 2px, 100% 1px;
+                transition-duration: 0.3s;
             }
         }
         &.is-focused:not(.is-error) {
             .form-control {
-                background-image: linear-gradient($color-blue-hex,$color-blue-hex),linear-gradient($color-light-gray-hex,$color-light-gray-hex);
-                background-size: 100% 2px,100% 1px;
-                transition-duration: .3s;
+                background-image: linear-gradient($color-blue-hex, $color-blue-hex),
+                    linear-gradient($color-light-gray-hex, $color-light-gray-hex);
+                background-size: 100% 2px, 100% 1px;
+                transition-duration: 0.3s;
             }
         }
     }
-
 }
 
 #cds-save-intent-btn {
@@ -93,13 +94,13 @@ $width-title: 80%;
     color: #202124 !important;
     box-shadow: none !important;
     font-weight: 500 !important;
-    font-family: 'Poppins', 'Roboto',  'Arial', sans-serif !important;
-    text-transform: capitalize!important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    text-transform: capitalize !important;
     font-size: 14px !important;
 }
 
 #cds-save-intent-btn:hover {
-    background: rgb(138, 180, 248, .8) !important;
+    background: rgb(138, 180, 248, 0.8) !important;
 }
 
 .error---msg {
@@ -108,4 +109,73 @@ $width-title: 80%;
     font-size: 11px;
     color: #ed2e19;
     font-weight: 500;
+}
+
+/* intent webhook swicth */
+.intent-webhook-switch {
+    position: relative;
+    width: 30px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.intent-webhook-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+.intent-webhook-switch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    height: 14px;
+    padding: 0;
+    line-height: 14px;
+    border: 0px solid #ffffff;
+    border-radius: 20px;
+    background-color: #9e9e9e;
+}
+.intent-webhook-switch-label:before {
+    content: "";
+    display: block;
+    width: 20px;
+    margin: -3px;
+    background: #ffffff;
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    right: 14px;
+    border-radius: 20px;
+    // box-shadow: 0 6px 12px 0px #757575;
+    height: 20px;
+}
+.intent-webhook-checkbox:checked + .intent-webhook-switch-label {
+    background-color: #9e9e9e;
+}
+.intent-webhook-checkbox:checked + .intent-webhook-switch-label,
+.intent-webhook-checkbox:checked + .intent-webhook-switch-label:before {
+    border-color: #9e9e9e;
+}
+.intent-webhook-checkbox:checked + .intent-webhook-switch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.intent-webhook-checkbox:checked + .intent-webhook-switch-label:before {
+    right: 0px;
+    background-color: #ecb606;
+    box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
+}
+
+.onff-intent-webhook {
+    position: absolute;
+    right: 180px;
+    top: 22px;
+}
+
+.switch-label {
+    position: relative;
+    top: -22px;
+    right: -40px;
+    font-size: 14px;
+    color: #e8eaed;
+
 }
