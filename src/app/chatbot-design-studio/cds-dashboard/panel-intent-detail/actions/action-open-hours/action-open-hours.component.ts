@@ -21,7 +21,7 @@ export class ActionOpenHoursComponent implements OnInit {
   ngOnInit(): void {
     this.actionOpenHoursFormGroup.valueChanges.subscribe(form => {
       console.log('[ACTION-OPEN-HOURS] form valueChanges-->', form)
-      if(form && (form.trueIntent !=='' || form.falseIntent !== ''))
+      if(form && (form.trueIntent !==''))
         this.action = Object.assign(this.action, this.actionOpenHoursFormGroup.value);
     })
   }
@@ -30,6 +30,7 @@ export class ActionOpenHoursComponent implements OnInit {
     this.actionOpenHoursFormGroup = this.buildForm();
     if(this.action && this.action.trueIntent){
       this.setFormValue()
+      this.ngOnInit();
     }
     
   }
