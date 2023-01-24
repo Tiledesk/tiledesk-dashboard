@@ -13,9 +13,27 @@
         [actionwait]="elementSelected">
     </appdashboard-action-wait>
  
+    <cds-action-intent
+        *ngIf = "elementSelected._tdActionType === typeAction.INTENT"
+        class="panel-response"
+        [elementSelected]="elementSelected"
+        [intents]="listOfActions"
+        [showSpinner] = "showSpinner"
+        (openButtonPanel) = onOpenButtonPanel($event)
+    ></cds-action-intent>
+
+    <cds-action-email
+        *ngIf = "elementSelected._tdActionType === typeAction.EMAIL"
+        class="panel-response"
+        [action]="elementSelected"
+        [showSpinner] = "showSpinner"
+        (openButtonPanel) = onOpenButtonPanel($event)
+    ></cds-action-email>
+
     <appdashboard-action-condition
         *ngIf = "elementSelected._tdActionType === typeAction.CONDITION"
-        (listOfActions) = "listOfActions"
+        [listOfActions] = "listOfActions"
+        [action]="elementSelected"
     ></appdashboard-action-condition>
 
 </div>

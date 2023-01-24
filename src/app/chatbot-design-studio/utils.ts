@@ -43,6 +43,7 @@ export enum TYPE_ACTION {
     CLOSE = 'close',
     EMAIL = 'email',
     WAIT = 'wait',
+    INTENT = 'intent',
     CONDITION = 'condition'
 }
 

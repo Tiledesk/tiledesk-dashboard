@@ -82,7 +82,9 @@ export class RulesAddComponent implements OnInit {
 
   buildRegex(option: string, text: string): string{
     let regex = text
-    if(option === 'starts'){
+    if(option === 'always'){
+      regex = '^.*$'
+    }else if(option === 'starts'){
       regex = '^(' + text + ').*' 
     }else if (option === 'ends'){
       regex = '^.*(' + text + ')$'

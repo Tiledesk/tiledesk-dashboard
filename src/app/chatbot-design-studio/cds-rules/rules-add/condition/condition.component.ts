@@ -25,6 +25,7 @@ export class ConditionComponent implements OnInit {
   ];
 
   conditions: Array<{name: string, value: string, checked: boolean}> = [
+    {name: 'always', value: 'always',checked: false},
     {name: 'starts', value: 'starts', checked: true},
     {name: 'ends', value: 'ends',checked: false},
     {name: 'contains', value: 'contains',checked: false},

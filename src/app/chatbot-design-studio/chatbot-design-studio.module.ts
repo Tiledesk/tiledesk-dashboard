@@ -36,7 +36,6 @@ import { PanelIntentDetailComponent } from './cds-dashboard/panel-intent-detail/
 import { PanelIntentHeaderComponent } from './cds-dashboard/panel-intent-header/panel-intent-header.component';
 import { PanelButtonConfigurationComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/panel-button-configuration/panel-button-configuration.component';
 import { ElementFromUrlComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-from-url/element-from-url.component';
-import { ActionSendEmailComponent } from './cds-dashboard/panel-intent-detail/actions/action-send-email/action-send-email.component';
 import { QuestionComponent } from './cds-dashboard/panel-intent-detail/question/question.component';
 import { AnswerComponent } from './cds-dashboard/panel-intent-detail/answer/answer.component';
 import { FormComponent } from './cds-dashboard/panel-intent-detail/form/form.component';
@@ -61,6 +60,8 @@ import { RulesListComponent } from './cds-rules/rules-list/rules-list.component'
 import { ConditionComponent } from './cds-rules/rules-add/condition/condition.component';
 import { ActionComponent } from './cds-rules/rules-add/action/action.component';
 import { ActionWaitComponent } from './cds-dashboard/panel-intent-detail/actions/action-wait/action-wait.component';
+import { ActionEmailComponent } from './cds-dashboard/panel-intent-detail/actions/action-email/action-email.component';
+import { ActionIntentComponent } from './cds-dashboard/panel-intent-detail/actions/action-intent/action-intent.component'
 import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-condition/action-condition.component';
 
 
@@ -82,7 +83,6 @@ import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/ac
     PanelIntentHeaderComponent,
     PanelButtonConfigurationComponent,
     ElementFromUrlComponent,
-    ActionSendEmailComponent,
     QuestionComponent,
     AnswerComponent,
     FormComponent,
@@ -103,6 +103,8 @@ import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/ac
     CDSTextComponent,
     CDSDelaySliderComponent,
     CDSTextareaComponent,
+    ActionIntentComponent,
+    ActionEmailComponent,
     ActionConditionComponent
   ],
   imports: [

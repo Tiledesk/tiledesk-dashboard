@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { ActionCondition, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionWait} from 'app/models/intent-model';
+
+import { ActionCondition, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionIntentConnected, ActionEmail, ActionWait } from 'app/models/intent-model';
 import { TYPE_ACTION } from '../../utils';
 
 @Component({
@@ -56,7 +57,6 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       console.log('2 command:  ', command)
       action.attributes.commands.push(command);
       this.intentSelected.actions.push(action);
-      console.log('2 ', action)
     }
     if(typeAction === TYPE_ACTION.AGENT){
       let action = new ActionAgent();
@@ -69,6 +69,16 @@ export class PanelActionsComponent implements OnInit, OnChanges {
 
     if(typeAction === TYPE_ACTION.WAIT){
       let action = new ActionWait();
+      this.intentSelected.actions.push(action);
+    }
+
+    if(typeAction === TYPE_ACTION.INTENT) {
+      let action = new ActionIntentConnected()
+      this.intentSelected.actions.push(action)
+    }
+    
+    if(typeAction === TYPE_ACTION.EMAIL) {
+      let action = new ActionEmail()
       this.intentSelected.actions.push(action);
     }
 
