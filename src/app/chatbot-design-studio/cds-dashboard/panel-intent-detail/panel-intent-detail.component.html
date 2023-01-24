@@ -10,7 +10,8 @@
 
     <appdashboard-action-condition
         *ngIf = "elementSelected._tdActionType === typeAction.CONDITION"
-        (listOfActions) = "listOfActions"
+        [listOfActions] = "listOfActions"
+        [action]="elementSelected"
     ></appdashboard-action-condition>
 
 </div>

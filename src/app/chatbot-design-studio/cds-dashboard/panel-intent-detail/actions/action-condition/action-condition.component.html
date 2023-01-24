@@ -7,7 +7,7 @@
     
         <div class="content-condition">
             <cds-text id="text-condition"
-                [control]="listOfActions">
+                [control]="actionConditionFormGroup.controls['condition']">
             </cds-text>
         </div>
     </div>
@@ -20,7 +20,7 @@
     
         <div class="content-condition">
             <cds-text id="text-true"
-                [control]=""
+                [control]="actionConditionFormGroup.controls['trueIntent']"
                 [autocompleteOptions]="listOfActions">
             </cds-text>
         </div>
@@ -33,7 +33,7 @@
     
         <div class="content-condition">
             <cds-text id="text-false"
-                [control]=""
+                [control]="actionConditionFormGroup.controls['falseIntent']"
                 [autocompleteOptions]="listOfActions">
             </cds-text>
         </div>
