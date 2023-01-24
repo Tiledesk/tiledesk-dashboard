@@ -1230,109 +1230,131 @@ input[type="text"]:disabled::placeholder {
     text-transform: capitalize !important;
     color: #202124;
     background: #8ab4f8 !important;
-    font-weight: 500!important;
+    font-weight: 500 !important;
 }
-#hook-to-dept-btn:hover { 
+#hook-to-dept-btn:hover {
     background: rgba(138, 180, 248, 0.8) !important;
 }
 
-#upload-csv-choose-file{
+#upload-csv-choose-file {
     padding-left: 15px !important;
     padding-right: 15px !important;
-    background: #8ab4f8!important;
+    background: #8ab4f8 !important;
     box-shadow: unset !important;
     color: #202124;
-    font-weight: 500!important;
+    font-weight: 500 !important;
 }
 
-#upload-csv-choose-file:hover { 
+#upload-csv-choose-file:hover {
     background: rgba(138, 180, 248, 0.8) !important;
 }
+
+#activate-bot {
+    margin-top: 0px;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 0px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    background: #8ab4f8 !important;
+    box-shadow: unset !important;
+    color: #202124;
+    font-weight: 500 !important;
+}
+#activate-bot:hover {
+    background: rgba(138, 180, 248, 0.8) !important;
+}
+
 .export-import-section-title {
     margin-left: 15px;
-    color:#9aa0a6;
+    color: #9aa0a6;
 }
 
 .inport-faq-from-csv {
-    box-shadow: unset!important;
-    text-transform: unset!important;
+    box-shadow: unset !important;
+    text-transform: unset !important;
     color: #202124 !important;
-    font-weight: 500!important;
-    background: #8ab4f8!important;
+    font-weight: 500 !important;
+    background: #8ab4f8 !important;
     margin-left: 15px;
 }
 
-.inport-faq-from-csv:hover  { 
+.inport-faq-from-csv:hover {
     background: rgba(138, 180, 248, 0.8) !important;
 }
 
 .export-import-section-title {
     margin-left: 15px;
-    color:#9aa0a6;
+    color: #9aa0a6;
 }
 
 .export-intents-to-json-btn {
-    box-shadow: unset!important;
-    text-transform: unset!important;
-    color: #202124!important;
-    font-weight: 500!important;
+    box-shadow: unset !important;
+    text-transform: unset !important;
+    color: #202124 !important;
+    font-weight: 500 !important;
     background: #8ab4f8;
     margin-left: 15px;
 }
-.export-intents-to-json-btn:hover   { 
+.export-intents-to-json-btn:hover {
     background: rgba(138, 180, 248, 0.8) !important;
 }
 
 .import-intents-from-json-btn {
     box-shadow: unset !important;
-    text-transform: unset!important;
-    color: #202124!important;
-    font-weight: 500!important;
-    background: #8ab4f8!important;
-    margin-left: 15px!important;
+    text-transform: unset !important;
+    color: #202124 !important;
+    font-weight: 500 !important;
+    background: #8ab4f8 !important;
+    margin-left: 15px !important;
 }
 
-.import-intents-from-json-btn:hover   { 
+.import-intents-from-json-btn:hover {
     background: rgba(138, 180, 248, 0.8) !important;
 }
 
 .export-import-section-title {
     margin-left: 15px;
-    color:#9aa0a6;
+    color: #9aa0a6;
 }
 
 .export-chatbot-to-json-btn {
-    box-shadow: unset!important;
-    text-transform: unset!important;
-    color: #202124!important;
-    font-weight: 500!important;
-    background: #8ab4f8!important;
-    margin-left: 15px!important;
+    box-shadow: unset !important;
+    text-transform: unset !important;
+    color: #202124 !important;
+    font-weight: 500 !important;
+    background: #8ab4f8 !important;
+    margin-left: 15px !important;
 }
 
-.export-chatbot-to-json-btn:hover { 
+.export-chatbot-to-json-btn:hover {
     background: rgba(138, 180, 248, 0.8) !important;
 }
 
 #upload-intents-from-json-overwrite {
-    box-shadow: unset!important;
-    text-transform: unset!important;
-    color: #202124!important;
-    font-weight: 500!important;
-    background: #8ab4f8!important;
+    box-shadow: unset !important;
+    text-transform: unset !important;
+    color: #202124 !important;
+    font-weight: 500 !important;
+    background: #8ab4f8 !important;
 }
 
-#upload-intents-from-json-overwrite:hover { 
+#upload-intents-from-json-overwrite:hover {
     background: rgba(138, 180, 248, 0.8) !important;
 }
 
 #upload-intents-from-json-add {
-    box-shadow: unset!important;
-    text-transform: unset!important;
-    color: #202124!important;
-    background: #8ab4f8!important;
+    box-shadow: unset !important;
+    text-transform: unset !important;
+    color: #202124 !important;
+    background: #8ab4f8 !important;
 }
 
-#upload-intents-from-json-add :hover { 
+#upload-intents-from-json-add :hover {
     background: rgba(138, 180, 248, 0.8) !important;
+}
+
+
+.csd-chatbot-dtls-input {
+    max-width: 400px;
 }

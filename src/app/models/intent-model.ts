@@ -126,6 +126,14 @@ export class Attributes {
         }
     }
 }
+export class Command {
+    type: string;
+    message?: Message;
+    time?: number = 500;
+    constructor(type: string) {
+        this.type = type;
+    }
+}
 
 export class ActionIntentConnected extends Action {
     intentName: string;
@@ -160,15 +168,17 @@ export class ActionClose extends Action{
     }
 }
 
-
-export class Command {
-    type: string;
-    message?: Message;
-    time?: number;
-    constructor(type: string) {
-        this.type = type;
+export class ActionWait extends Action{
+    millis:number = 500
+    constructor() {
+        super()
+        this._tdActionType = TYPE_ACTION.WAIT;
+    
     }
 }
+
+
+
 
 export class Message {
     text: string;

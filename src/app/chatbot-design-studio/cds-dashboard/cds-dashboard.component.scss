@@ -24,9 +24,9 @@ $margin-top-card: 30px;
 .cds-sidebar {
     border-right: 2px solid #394f5a;
     width: 60px;
-    transition: .3s;
+    transition: 0.3s;
     display: flex;
-    &.is_opened{
+    &.is_opened {
         width: 175px;
     }
 }
@@ -58,7 +58,8 @@ $margin-top-card: 30px;
         border-radius: 0em;
         overflow: hidden;
         margin: 0px;
-        padding: 10px 2px;
+        // padding: 10px 2px;
+        padding: 0px 2px 10px 2px;
         align-items: flex-start;
         overflow-y: scroll;
     }
@@ -173,14 +174,14 @@ $margin-top-card: 30px;
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: .3s;
+        transition: 0.3s;
         background-color: #0f172a;
         img {
             width: 30px;
         }
         &.is_opened{
             max-width: 175px;
-            transition: .3s;
+            transition: 0.3s;
             img{
                 width: 100px;
             }
@@ -199,11 +200,11 @@ $margin-top-card: 30px;
             height: 22px;
             // background: #1e293b;
             left: 49px;
-            transition: .3s;
+            transition: 0.3s;
 
             &.is_opened {
                 left: 164px;
-                transition: .3s;
+                transition: 0.3s;
             }
         }
 
@@ -233,13 +234,63 @@ $margin-top-card: 30px;
     border-radius: 50% !important;
     background-color: transparent !important;
     box-shadow: unset !important;
-    color:#e8eaed !important; 
+    color: #e8eaed !important;
 }
 
-.cds-close-btn:hover { 
-    color:#9aa0a6 !important; 
+.cds-close-btn:hover {
+    color: #9aa0a6 !important;
 }
 
 .cds-close-btn-icon {
     font-size: 40px !important;
 }
+
+#cds-test-it-out-btn {
+    background: #8ab4f8 !important;
+    color: #202124 !important;
+    box-shadow: none !important;
+    font-weight: 500 !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    text-transform: capitalize !important;
+    font-size: 14px !important;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+#cds-test-it-out-btn:hover {
+    background: rgb(138, 180, 248, 0.8) !important;
+}
+
+.cds-testitout-btn-wpr {
+    position: absolute;
+    right: 66px;
+    // top: -1px;
+}
+
+#cds-community-btn {
+    background: #8ab4f8 !important;
+    color: #202124 !important;
+    box-shadow: none !important;
+    font-weight: 500 !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    text-transform: capitalize !important;
+    font-size: 14px !important;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+#cds-community-btn:hover  { 
+    background: rgb(138, 180, 248, 0.8) !important;
+}
+
+.cds-community-btn-wpr {
+    position: absolute;
+    right: 170px;
+}
+
+
+

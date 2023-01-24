@@ -1,0 +1,20 @@
+<div class="action-wait-main">
+    <h4 class="wait-action-title"> Delay Time: {{delayTime}}s</h4>
+    <div class="action-wait-content">
+       
+        <!-- tickInterval="1000" -->
+        <div class="action-wait-slider">
+            <div class="action-wait-range">0.1s</div> 
+            <mat-slider class="wait-slider" thumbLabel [displayWith]="formatLabel" 
+                (change)="updateWaitValue($event)"
+                step="0.5"
+                min="0.5" 
+                max="15" 
+                [(ngModel)]="delayTime"
+                aria-label="units">
+            </mat-slider>
+
+            <div class="action-wait-range">15s</div>
+        </div>
+    </div>
+</div>

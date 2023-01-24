@@ -28,7 +28,28 @@
         </div>
         <!-- <i class="material-icons cds-btn-back" (click)="goBack()">keyboard_arrow_left</i> -->
         <div class="header-title">{{ selectedChatbot?.name }}</div>
-        <div >
+        <div class="cds-community-btn-wpr">
+            <button *ngIf="selectedChatbot?.public === false" id="cds-community-btn" class="btn btn-primary  pull-right" type="button"
+                (click)="publishOnCommunity()">
+                Publish on community
+            </button>
+            <button *ngIf="selectedChatbot?.public === true" id="cds-community-btn" class="btn btn-primary  pull-right" type="button"
+                (click)="removeFromCommunity()">
+                Remove from community
+            </button>
+
+        </div>
+       
+           
+      
+        <div class="cds-testitout-btn-wpr">
+            <button id="cds-test-it-out-btn" class="btn btn-primary  pull-right" type="button"
+                (click)="openTestSiteInPopupWindow()">
+                Test it out
+            </button>
+        </div>
+        <div class="cds-close-btn-wpr">
+       
             <button class="btn pull-right cds-close-btn" (click)="goBack()">
                 <span class="material-icons cds-close-btn-icon">
                     clear
@@ -55,11 +76,11 @@
     </div>
     <div class="cds-content">
         <ng-container [ngSwitch]="activeSidebarSection">
-            <ng-container *ngSwitchCase="'settings'" [ngTemplateOutlet]="settings"></ng-container>
-            <ng-container *ngSwitchCase="'intents'" [ngTemplateOutlet]="intents"></ng-container>
-            <ng-container *ngSwitchCase="'fulfillment'" [ngTemplateOutlet]="fulfillment"></ng-container>
-            <ng-container *ngSwitchCase="'training'" [ngTemplateOutlet]="training"></ng-container>
-            <ng-container *ngSwitchCase="'rules'" [ngTemplateOutlet]="rules"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-settings'" [ngTemplateOutlet]="settings"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-intents'" [ngTemplateOutlet]="intents"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-fulfillment'" [ngTemplateOutlet]="fulfillment"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-training'" [ngTemplateOutlet]="training"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-rules'" [ngTemplateOutlet]="rules"></ng-container>
             <ng-container *ngSwitchDefault [ngTemplateOutlet]="intents"></ng-container>
         </ng-container>
     </div>
@@ -93,21 +114,24 @@
             </div>
 
             <div class="box-right-content">
-                <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent"
+                <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent" 
                     [intentSelected]="intentSelected"
                     [actionDrawerIsOpen]="actionDrawerIsOpen" 
                     (openActionDrawer)=onOpenActionDrawer($event)
                     (answerSelected)=onAnswerSelected($event) 
                     (actionSelected)=onActionSelected($event)
-                    (questionSelected)=onQuestionSelected($event)
-                     (intentForm)=onIntentFormSelected($event)
-                    [isOpenActionDrawer]="isOpenActionDrawer"
+                    (questionSelected)=onQuestionSelected($event) 
+                    (actionDeleted)=onActionDeleted($event) 
+                    (intentForm)=onIntentFormSelected($event)
+                    [isOpenActionDrawer]="isOpenActionDrawer" 
                     [events]="upadatedIntent.asObservable()">
                 </appdashboard-panel-intent>
 
 
-                <appdashboard-panel-actions [isOpenActionDrawer]="isOpenActionDrawer"
-                    (openActionDrawer)=onOpenActionDrawer($event) [intentSelected]="intentSelected">
+                <appdashboard-panel-actions 
+                    [isOpenActionDrawer]="isOpenActionDrawer"
+                    (openActionDrawer)=onOpenActionDrawer($event) 
+                    [intentSelected]="intentSelected">
                 </appdashboard-panel-actions>
 
                 <appdashboard-panel-intent-detail *ngIf=elementIntentSelected class="panel-intent-detail"
@@ -123,18 +147,23 @@
     </ng-template>
 
     <ng-template #fulfillment [ngOutletContext]="context">
-        <cds-fulfillment [chatbot]="selectedChatbot">
+        <cds-fulfillment 
+            [chatbot]="selectedChatbot">
         </cds-fulfillment>
     </ng-template>
-    <ng-template #training [ngOutletContext]="context">
+
+    <ng-template #training 
+        [ngOutletContext]="context">
         ... choice training...
     </ng-template>
-    <ng-template #rules [ngOutletContext]="context">
+
+    <ng-template #rules 
+        [ngOutletContext]="context">
         <cds-rules 
             [listOfIntents]="listOfIntents" 
             [selectedChatbot]="selectedChatbot">
         </cds-rules>
     </ng-template>
 
-   
+
 </div>

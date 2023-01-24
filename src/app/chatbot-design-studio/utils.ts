@@ -42,6 +42,7 @@ export enum TYPE_ACTION {
     AGENT = 'agent',
     CLOSE = 'close',
     EMAIL = 'email',
+    WAIT = 'wait',
     INTENT = 'intent',
     CONDITION = 'condition',
     ASSIGN_VARIABLE = 'assign',

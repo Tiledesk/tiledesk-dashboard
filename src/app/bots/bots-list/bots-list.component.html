@@ -21,7 +21,9 @@
 
     <div class="content-wpr" style="display: flex;">
 
-      <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
+      <appdashboard-bots-sidebar 
+        [allTemplatesCount]="allTemplatesCount"
+        [allCommunityTemplatesCount]="allCommunityTemplatesCount"
         [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
         [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
         [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
@@ -101,13 +103,13 @@
                       </span> 
                     </th> -->
 
-                      <!-- <th>
-                      <span style="color: #566787">
-                        <strong>
+                      <th>
+                        <span class="column-th-span">
+                       
                           {{ "BotsPage.CreationDate" | translate }} 
-                        </strong>
-                      </span>  
-                    </th> -->
+                        
+                      </span>
+                    </th>
 
                       <th>
                         <span class="column-th-span">
@@ -130,7 +132,7 @@
                   <tbody>
                     <!-- IF THERE ISN'T BOT -->
                     <tr *ngIf="faqkbList && faqkbList?.length === 0" class="no-bot-tr-msg-wpr">
-                      <td colspan="5" style="text-align: center; padding-top: 16px;">
+                      <td colspan="6" style="text-align: center; padding-top: 16px;">
                         <p class="no-bot-msg">
                           <!-- <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
                             info
@@ -292,6 +294,10 @@
                         style="text-transform: capitalize;font-weight:400;text-align: center">
                         <span style="text-transform: capitalize;font-weight:400;"> {{ faqkb?.message_count}} </span>
                       </td>
+
+                      <td>
+                        {{ faqkb?.createdAt | date: 'd/M/y'}}
+                      </td> 
                   
                       <td class="td-actions text-right" style="padding-top:18px !important">
                         <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}"

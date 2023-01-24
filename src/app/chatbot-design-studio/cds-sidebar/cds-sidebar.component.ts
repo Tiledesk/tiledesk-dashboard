@@ -30,20 +30,20 @@ export class CdsSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserRole();
-    this.goTo('intents')
+    this.goTo('cds-sb-intents')
   }
 
 
   getUserRole() {
     this.usersService.project_user_role_bs.pipe( takeUntil(this.unsubscribe$)).subscribe((userRole) => {
-         console.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+         console.log('[CDS-SIDEBAR] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
 
   listenSidebarIsOpened() {
     this.auth.tilebotSidebarIsOpened.subscribe((isopened) => {
-      this.logger.log('[NATIVE-BOT-SIDEBAR] NATIVE-BOT-SIDEBAR is opened (FROM SUBSCRIPTION) ', isopened)
+      this.logger.log('[CDS-SIDEBAR] CDS-SIDEBAR is opened (FROM SUBSCRIPTION) ', isopened)
       this.IS_OPEN = isopened
     })
   }
@@ -53,9 +53,9 @@ export class CdsSidebarComponent implements OnInit {
     this.IS_OPEN = IS_OPEN;
     this.auth.toggletilebotSidebar(IS_OPEN)
   }
-
-  goTo(section: "settings" | "intents" | "fulfillment" | "training" | "rules") {
-    this.logger.log('[NATIVE-BOT-SIDEBAR] goTo item ', section)
+  // "intents" | "fulfillment" | "training" | "rules" | "settings"
+  goTo(section: string) {
+    console.log('[CDS-SIDEBAR] goTo item ', section)
 
     let elements = Array.from(document.getElementsByClassName('section is_active'));
     if (elements.length != 0) {
@@ -65,6 +65,7 @@ export class CdsSidebarComponent implements OnInit {
     }
 
     const element = document.getElementById(section);
+    console.log('[CDS-SIDEBAR] go to element ', element) 
     element.classList.toggle("is_active");
 
     this.onClickItemList.emit(section)

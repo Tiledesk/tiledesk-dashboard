@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { AnyARecord } from 'dns';
+
 import { Intent, Button, ActionReply, Action } from '../../../models/intent-model';
 import { TYPE_INTENT_ELEMENT, TYPE_ACTION } from '../../utils';
 

@@ -18,9 +18,11 @@ export interface FaqKb {
     message_count?: number;
     mainCategory?: any
     language?: string;
-    
+  
 }
 
 export interface Chatbot extends FaqKb {
     attributes?: any
+    public?: boolean;
+    certified?: boolean;
 }

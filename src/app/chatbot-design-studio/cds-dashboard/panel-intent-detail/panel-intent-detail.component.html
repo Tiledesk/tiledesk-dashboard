@@ -8,6 +8,11 @@
         (openButtonPanel) = onOpenButtonPanel($event)
     ></appdashboard-action-reply>
 
+    <appdashboard-action-wait  
+        *ngIf = "elementSelected._tdActionType === typeAction.WAIT"
+        [actionwait]="elementSelected">
+    </appdashboard-action-wait>
+ 
     <cds-action-intent
         *ngIf = "elementSelected._tdActionType === typeAction.INTENT"
         class="panel-response"
@@ -38,7 +43,6 @@
 <div *ngIf = "elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
     <appdashboard-question
         [intentSelected]="intentSelected">
-
     </appdashboard-question>
 </div>
 <!-- (passJsonIntentForm)="passJsonIntentForm($event)" -->

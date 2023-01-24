@@ -1,6 +1,7 @@
 import { ActionAssignVariable, ActionDeleteVariable, ActionOnlineAgent, ActionOpenHours } from './../../../models/intent-model';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { ActionCondition, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionIntentConnected, ActionEmail } from 'app/models/intent-model';
+
+import { ActionCondition, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionIntentConnected, ActionEmail, ActionWait } from 'app/models/intent-model';
 import { TYPE_ACTION } from '../../utils';
 
 @Component({
@@ -47,11 +48,6 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     this.openActionDrawer.emit(this.isOpenActionDrawer);
   }
 
-
-
-
-
-
   actionSelected(typeAction: string) {
     console.log('[PANEL ACTION] actionSelected ', typeAction);
     if(typeAction === TYPE_ACTION.REPLY){
@@ -71,14 +67,22 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       let action = new ActionClose();
       this.intentSelected.actions.push(action);
     }
+
+    if(typeAction === TYPE_ACTION.WAIT){
+      let action = new ActionWait();
+      this.intentSelected.actions.push(action);
+    }
+
     if(typeAction === TYPE_ACTION.INTENT) {
       let action = new ActionIntentConnected()
       this.intentSelected.actions.push(action)
     }
+    
     if(typeAction === TYPE_ACTION.EMAIL) {
       let action = new ActionEmail()
       this.intentSelected.actions.push(action);
     }
+
     if(typeAction === TYPE_ACTION.CONDITION){
       let action = new ActionCondition();
       this.intentSelected.actions.push(action);
