@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc7
+- Fixes the bug: can't add questions on a new intent
+
 ### 2.3.22-rc6
 - Adds Community Chatbots (v0.1)
 - Adds the "wait" action
