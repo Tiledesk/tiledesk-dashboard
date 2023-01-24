@@ -19,8 +19,8 @@ export class ActionHideMessageComponent implements OnInit {
 
   ngOnInit(): void {
     this.actionHideMessageFormGroup.valueChanges.subscribe(form => {
-      console.log('[ACTION-HIDE-MESSAGE] form valueChanges-->', form)
-      if(form && (form.text !== '' || form.text !==''))
+      // console.log('[ACTION-HIDE-MESSAGE] form valueChanges-->', form)
+      if(form && (form.text !== ''))
         this.action = Object.assign(this.action, this.actionHideMessageFormGroup.value);
     })
   }
@@ -35,13 +35,13 @@ export class ActionHideMessageComponent implements OnInit {
 
   buildForm(): FormGroup{
     return this.formBuilder.group({
-      variableName: ['', Validators.required]
+      text: ['', Validators.required]
     })
   }
 
   setFormValue(){
     this.actionHideMessageFormGroup.patchValue({
-      variableName: this.action.text,
+      text: this.action.text,
     })
   }
 

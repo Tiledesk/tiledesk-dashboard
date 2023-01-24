@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+<<<<<<< HEAD
+=======
+### 2.3.22-rc9
+- Add the ability to enable/disable the intent webhook
+- Fixes action bugs
+
+>>>>>>> chatbot-dashboard-2
 ### 2.3.22-rc8
 - Adds the "delete variable" action
 - Adds the "assign variable" action
