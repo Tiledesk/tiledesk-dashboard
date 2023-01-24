@@ -22,9 +22,7 @@ export class ActionWaitComponent implements OnInit, OnChanges {
   }
 
   formatLabel(value: number) {
-    
-    console.log('[ACTION-WAIT] formatLabel value ', value)
-    
+    // console.log('[ACTION-WAIT] formatLabel value ', value)
     return value + 's';
   }
 
