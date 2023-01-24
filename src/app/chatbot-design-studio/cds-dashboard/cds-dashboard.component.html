@@ -75,11 +75,11 @@
     </div>
     <div class="cds-content">
         <ng-container [ngSwitch]="activeSidebarSection">
-            <ng-container *ngSwitchCase="'settings'" [ngTemplateOutlet]="settings"></ng-container>
-            <ng-container *ngSwitchCase="'intents'" [ngTemplateOutlet]="intents"></ng-container>
-            <ng-container *ngSwitchCase="'fulfillment'" [ngTemplateOutlet]="fulfillment"></ng-container>
-            <ng-container *ngSwitchCase="'training'" [ngTemplateOutlet]="training"></ng-container>
-            <ng-container *ngSwitchCase="'rules'" [ngTemplateOutlet]="rules"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-settings'" [ngTemplateOutlet]="settings"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-intents'" [ngTemplateOutlet]="intents"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-fulfillment'" [ngTemplateOutlet]="fulfillment"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-training'" [ngTemplateOutlet]="training"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-rules'" [ngTemplateOutlet]="rules"></ng-container>
             <ng-container *ngSwitchDefault [ngTemplateOutlet]="intents"></ng-container>
         </ng-container>
     </div>

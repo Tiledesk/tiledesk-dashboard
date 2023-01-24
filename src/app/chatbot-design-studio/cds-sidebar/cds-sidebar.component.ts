@@ -30,7 +30,7 @@ export class CdsSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserRole();
-    this.goTo('intents')
+    this.goTo('cds-sb-intents')
   }
 
 
@@ -53,9 +53,9 @@ export class CdsSidebarComponent implements OnInit {
     this.IS_OPEN = IS_OPEN;
     this.auth.toggletilebotSidebar(IS_OPEN)
   }
-
-  goTo(section: "intents" | "fulfillment" | "training" | "rules" | "settings") {
-    this.logger.log('[CDS-SIDEBAR] goTo item ', section)
+  // "intents" | "fulfillment" | "training" | "rules" | "settings"
+  goTo(section: string) {
+    console.log('[CDS-SIDEBAR] goTo item ', section)
 
     let elements = Array.from(document.getElementsByClassName('section is_active'));
     if (elements.length != 0) {

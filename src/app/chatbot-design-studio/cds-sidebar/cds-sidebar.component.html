@@ -64,8 +64,11 @@
         <!-- ------------------------------------------------------- -->
         <ng-container>
             <li [ngClass]="{'active-item': TRAINING_ROUTE_IS_ACTIVE}" (click)="goTo('rules')"
-                matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'Rules' | translate}}"
-                #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 
+                matTooltip="{{'Rules' | translate}}"
+                #tooltip="matTooltip" 
+                matTooltipPosition='right' 
+                matTooltipHideDelay="100"
                 [matTooltipDisabled]="extendedWidth">
                 <a>
                     <i *ngIf="extendedWidth === true || extendedWidth === false"
@@ -85,8 +88,11 @@
         <!-- -------------------------------------------------------- -->
         <ng-container *ngIf="USER_ROLE !== 'agent'">
             <li [ngClass]="{'active-item': GENERAL_ROUTE_IS_ACTIVE}" (click)="goTo('settings')"
-                matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{'General' | translate}}"
-                #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 
+                matTooltip="{{'General' | translate}}"
+                #tooltip="matTooltip" 
+                matTooltipPosition='right' 
+                matTooltipHideDelay="100">
 
                 <div class="sidebar-bot-profile-img-wpr" style="width: 0%;">
                     <img *ngIf="botProfileImageExist === true || botImageHasBeenUploaded === true"
@@ -115,19 +121,20 @@
                     </div>
                 </a>
             </li>
-
         </ng-container>
-
     </ul>
-
 </div>
 
 
 <div class="content" [class.is_opened]="extendedWidth">
 
-
-
-    <div id="intents" name="intents" class="section" (click)="goTo('intents')">
+    <div id="cds-sb-intents" name="intents" class="section" (click)="goTo('cds-sb-intents')"
+        matTooltipClass="cds-mat-tooltip" 
+        matTooltip="Intents" 
+        #tooltip="matTooltip"
+        matTooltipPosition='right' 
+        matTooltipHideDelay="100" 
+        [matTooltipDisabled]="extendedWidth">
         <i *ngIf="extendedWidth === true || extendedWidth === false" class="material-icons-outlined item-icon">
             sms
         </i>
@@ -136,8 +143,13 @@
         </p>
     </div>
 
-
-    <div id="fulfillment" name="fulfillment" class="section" (click)="goTo('fulfillment')">
+    <div id="cds-sb-fulfillment" name="fulfillment" class="section" (click)="goTo('cds-sb-fulfillment')"
+            matTooltipClass="cds-mat-tooltip" 
+            matTooltip="Fulfillment" 
+            #tooltip="matTooltip"
+            matTooltipPosition='right' 
+            matTooltipHideDelay="100" 
+            [matTooltipDisabled]="extendedWidth">
         <i *ngIf="extendedWidth === true || extendedWidth === false" class="material-icons-outlined item-icon">
             offline_bolt
         </i>
@@ -146,7 +158,13 @@
         </p>
     </div>
 
-    <div id="rules" name="rules" class="section" (click)="goTo('rules')">
+    <div id="cds-sb-rules" name="rules" class="section" (click)="goTo('cds-sb-rules')"
+        matTooltipClass="cds-mat-tooltip" 
+        matTooltip="{{'Rules' | translate}}"
+        #tooltip="matTooltip" 
+        matTooltipPosition='right' 
+        matTooltipHideDelay="100"
+        [matTooltipDisabled]="extendedWidth">
         <i *ngIf="extendedWidth === true || extendedWidth === false" class="material-icons-outlined item-icon">
             subject
         </i>
@@ -155,7 +173,13 @@
         </p>
     </div>
 
-    <div id="settings" name="settings" class="section" (click)="goTo('settings')">
+    <div id="cds-sb-settings" name="settings" class="section" (click)="goTo('cds-sb-settings')"
+        matTooltipClass="cds-mat-tooltip" 
+        matTooltip="{{'General' | translate}}"
+        #tooltip="matTooltip" 
+        matTooltipPosition='right' 
+        matTooltipHideDelay="100"
+        [matTooltipDisabled]="extendedWidth">
         <i *ngIf="extendedWidth === true || extendedWidth === false" class="material-icons-outlined item-icon">
             settings
         </i>
