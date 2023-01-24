@@ -12,15 +12,7 @@
             class="input form-control"
             (blur) = "onBlurIntentName($event)"
             (ngModelChange) = "onChangeIntentName($event)">
-            <div *ngIf="intentNameAlreadyExist" class="error---msg" > The intent name must be unique </div>
-        <button 
-            id="cds-save-intent-btn"
-            class="btn btn-primary btn-save" 
-            [disabled]="showSpinner"
-            type="button" 
-            (click)="onSaveIntent()">
-            {{ 'Save' | translate }}
-        </button>
+        <div *ngIf="intentNameAlreadyExist" class="error---msg" > The intent name must be unique </div>
 
         <!-- <button 
         id="cds-save-intent-btn"
@@ -31,4 +23,16 @@
         Test it out
     </button> -->
     </div>
+
+    <div class="loading-btn-wrapper">
+        <button 
+            id="cds-save-intent-btn"
+            class="btn btn-primary btn-save loading-btn" 
+            [disabled]="showSpinner"
+            type="button" 
+            (click)="onSaveIntent()">
+            <span class="loading-btn__text"> {{ 'Save' | translate }}</span>
+        </button>
+    </div>
+    
 </div>
