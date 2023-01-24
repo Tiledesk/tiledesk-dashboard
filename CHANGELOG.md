@@ -3,9 +3,10 @@
 ### 2.3.22-rc6
 - Adds Community Chatbots (v0.1)
 - Adds the "wait" action
-- Adds the ability to publish a chatnot on the community
-- Adds the ability to remove a chatnot from the community
+- Adds the ability to publish a chatbot on the community
+- Adds the ability to remove a chatbot from the community
 - Adds the display of questions divided by fields
+- Improves the "reply" action
 
 ### 2.3.22-rc5
 - Fixes the bug: the first rule is not added if at least one doesn't exist
