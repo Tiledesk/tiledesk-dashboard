@@ -1,7 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.3.22-rc9
-- Add the ability to enable/disable the intent webhook
+- Add the ability to enable/disable the intent's webhook
 - Fixes action bugs
 
 ### 2.3.22-rc8
