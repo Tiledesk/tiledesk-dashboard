@@ -6,7 +6,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
 
 @Component({
-  selector: 'appdashboard-action-condition',
+  selector: 'cds-action-condition',
   templateUrl: './action-condition.component.html',
   styleUrls: ['./action-condition.component.scss']
 })

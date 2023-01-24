@@ -4,7 +4,7 @@ import { Intent, Command, ActionReply } from '../../../../../models/intent-model
 import { TYPE_COMMAND, TYPE_RESPONSE, TIME_WAIT_DEFAULT, TYPE_MESSAGE } from '../../../../utils';
 
 @Component({
-  selector: 'appdashboard-action-reply',
+  selector: 'cds-action-reply',
   templateUrl: './action-reply.component.html',
   styleUrls: ['./action-reply.component.scss']
 })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'appdashboard-action-assign-variable',
+  selector: 'cds-action-assign-variable',
   templateUrl: './action-assign-variable.component.html',
   styleUrls: ['./action-assign-variable.component.scss']
 })

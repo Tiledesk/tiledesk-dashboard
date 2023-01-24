@@ -1,40 +1,40 @@
 <div *ngIf = "elementIntentSelectedType === typeIntentElement.ACTION">
     
-    <appdashboard-action-reply
-        *ngIf = "elementSelected._tdActionType === typeAction.REPLY"
+    <cds-action-reply *ngIf = "elementSelected._tdActionType === typeAction.REPLY"
         class="panel-response"
         [reply]="elementSelected"
         [showSpinner] = "showSpinner"
-        (openButtonPanel) = onOpenButtonPanel($event)
-    ></appdashboard-action-reply>
+        (openButtonPanel) = onOpenButtonPanel($event)>
+    </cds-action-reply>
 
-    <appdashboard-action-wait  
-        *ngIf = "elementSelected._tdActionType === typeAction.WAIT"
+    <cds-action-wait *ngIf = "elementSelected._tdActionType === typeAction.WAIT"
         [actionwait]="elementSelected">
-    </appdashboard-action-wait>
+    </cds-action-wait>
  
-    <cds-action-intent
-        *ngIf = "elementSelected._tdActionType === typeAction.INTENT"
+    <cds-action-intent *ngIf = "elementSelected._tdActionType === typeAction.INTENT"
         class="panel-response"
         [elementSelected]="elementSelected"
         [intents]="listOfActions"
         [showSpinner] = "showSpinner"
-        (openButtonPanel) = onOpenButtonPanel($event)
-    ></cds-action-intent>
+        (openButtonPanel) = onOpenButtonPanel($event)>
+    </cds-action-intent>
 
-    <cds-action-email
-        *ngIf = "elementSelected._tdActionType === typeAction.EMAIL"
+    <cds-action-email *ngIf = "elementSelected._tdActionType === typeAction.EMAIL"
         class="panel-response"
         [action]="elementSelected"
         [showSpinner] = "showSpinner"
-        (openButtonPanel) = onOpenButtonPanel($event)
-    ></cds-action-email>
+        (openButtonPanel) = onOpenButtonPanel($event)>
+    </cds-action-email>
 
-    <appdashboard-action-condition
+    <cds-action-condition
         *ngIf = "elementSelected._tdActionType === typeAction.CONDITION"
         [listOfActions] = "listOfActions"
-        [action]="elementSelected"
-    ></appdashboard-action-condition>
+        [action]="elementSelected">
+    </cds-action-condition>
+
+    <cds-action-assign-variable *ngIf = "elementSelected._tdActionType === typeAction.ASSIGN_VARIABLE"
+        [action]="elementSelected">
+    </cds-action-assign-variable>
 
 </div>
 
