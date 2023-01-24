@@ -65,7 +65,7 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('intent')">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.INTENT)">
               <svg aria-label="ConnectIntent" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
                 width="24px" fill="#fff">
                 <path d="M0 0h24v24H0z" fill="none" />
@@ -229,7 +229,7 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.ASSIGN_VARIABLE)">
               <svg aria-label="VarA" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
                 fill="#FFFFFF">
                 <path d="M0 0h24v24H0z" fill="none" />

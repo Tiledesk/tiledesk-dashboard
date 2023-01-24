@@ -1,3 +1,4 @@
+import { ActionAssignVariable, ActionDeleteVariable, ActionOnlineAgent, ActionOpenHours } from './../../../models/intent-model';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { ActionCondition, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionIntentConnected, ActionEmail } from 'app/models/intent-model';
 import { TYPE_ACTION } from '../../utils';
@@ -82,6 +83,23 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       let action = new ActionCondition();
       this.intentSelected.actions.push(action);
     }
+    if(typeAction === TYPE_ACTION.ASSIGN_VARIABLE){
+      let action = new ActionAssignVariable();
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.DELETE_VARIABLE){
+      let action = new ActionDeleteVariable();
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.ONLINE_AGENGS){
+      let action = new ActionOnlineAgent();
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.OPEN_HOURS){
+      let action = new ActionOpenHours();
+      this.intentSelected.actions.push(action);
+    }
+    
   }
 
 }

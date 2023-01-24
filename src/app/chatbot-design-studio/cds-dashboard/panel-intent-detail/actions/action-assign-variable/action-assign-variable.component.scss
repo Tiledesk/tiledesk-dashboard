@@ -1,0 +1,68 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
+.content {
+    //padding: 10px 30px;
+    padding: 20px 0px;
+}
+
+.text-editor-wrapper:hover {
+    .text-editor {
+        .response-controls {
+            opacity: 1;
+        }
+    }
+}
+
+.text-editor-wrapper {
+    font-size: $font-size-base;
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 30px;
+    .text-editor {
+        position: relative;
+        margin: 0;
+        padding: 0;
+
+    }
+
+    .editor-utils {
+        position: relative;
+        margin: -20px 50px 0px 0px;
+        float: right;
+        .num-chars {
+            background: $color-light-gray-hex;
+            padding: 0px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            color: $color-text-box-hex;
+            float: right;
+            &.error {
+                background: $color-orange-hex;
+            }
+        }
+        .text-editor-insert-attribute {
+            float: right;
+        }
+        .moji-picker {
+            float: right;
+        }
+    }
+    
+}
+
+.email-field-box {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    min-width: 90px;
+}
+
+.title-label {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 0px;
+    margin-left: 30px;
+}

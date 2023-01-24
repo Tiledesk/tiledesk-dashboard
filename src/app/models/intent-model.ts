@@ -68,6 +68,41 @@ export class ActionCondition extends Action {
     }
 }
 
+export class ActionAssignVariable extends Action {
+    expression: string;
+    assignTo: string;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.ASSIGN_VARIABLE;
+    }
+}
+
+export class ActionDeleteVariable extends Action {
+    variableName: string
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.DELETE_VARIABLE;
+    }
+}
+
+export class ActionOnlineAgent extends Action {
+    trueIntent: string;
+    falseIntent: string;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.ONLINE_AGENGS;
+    }
+}
+
+export class ActionOpenHours extends Action {
+    trueIntent: string;
+    falseIntent: string;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.OPEN_HOURS;
+    }
+}
+
 export class ActionReply extends Action {
     text?: string;
     attributes: Attributes;

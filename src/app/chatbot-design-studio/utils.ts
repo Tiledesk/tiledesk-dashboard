@@ -43,7 +43,13 @@ export enum TYPE_ACTION {
     CLOSE = 'close',
     EMAIL = 'email',
     INTENT = 'intent',
-    CONDITION = 'condition'
+    CONDITION = 'condition',
+    ASSIGN_VARIABLE = 'assign',
+    DELETE_VARIABLE = 'delete',
+    ONLINE_AGENGS = 'ifonlineagents',
+    OPEN_HOURS = 'ifopnehours'
+
+
 }
 
 export const MESSAGE_METADTA_WIDTH = '100%';
