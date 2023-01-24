@@ -82,6 +82,14 @@ export class Attributes {
         }
     }
 }
+export class Command {
+    type: string;
+    message?: Message;
+    time?: number = 500;
+    constructor(type: string) {
+        this.type = type;
+    }
+}
 
 export class ActionEmail extends Action {
     to: string;
@@ -115,19 +123,10 @@ export class ActionWait extends Action{
         this._tdActionType = TYPE_ACTION.WAIT;
     
     }
-
-   
 }
 
 
-export class Command {
-    type: string;
-    message?: Message;
-    time?: number;
-    constructor(type: string) {
-        this.type = type;
-    }
-}
+
 
 export class Message {
     text: string;
