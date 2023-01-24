@@ -61,7 +61,8 @@ import { RulesListComponent } from './cds-rules/rules-list/rules-list.component'
 import { ConditionComponent } from './cds-rules/rules-add/condition/condition.component';
 import { ActionComponent } from './cds-rules/rules-add/action/action.component';
 import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-condition/action-condition.component';
-
+import { ActionDeleteVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-delete-variable/action-delete-variable.component';
+import { ActionAssignVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/action-assign-variable.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +103,9 @@ import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/ac
     CDSTextComponent,
     CDSDelaySliderComponent,
     CDSTextareaComponent,
-    ActionConditionComponent
+    ActionConditionComponent,
+    ActionDeleteVariableComponent,
+    ActionAssignVariableComponent
   ],
   imports: [
     CommonModule,
