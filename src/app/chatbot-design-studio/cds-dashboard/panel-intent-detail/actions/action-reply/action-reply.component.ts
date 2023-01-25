@@ -77,7 +77,6 @@ export class ActionReplyComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
-    // console.log('generateArrayResponse:::', this.arrayResponses);
   }
 
   /** */
