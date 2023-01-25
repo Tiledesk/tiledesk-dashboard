@@ -2,6 +2,7 @@
 
 ### 2.3.22-rc10
 - Adds a check that saves the intent if it has no special characters
+- Replaces the name of actions with their icon
 
 ### 2.3.22-rc9
 - Add the ability to enable/disable the intent webhook
