@@ -117,6 +117,22 @@ export class ActionReply extends Action {
     }
 }
 
+export class ActionReplaceBot extends Action {
+    botName: string;
+    constructor(){
+        super();
+        this._tdActionType = TYPE_ACTION.REPLACE_BOT;
+    }
+}
+
+export class ActionChangeDepartment extends Action {
+    depName: string;
+    constructor(){
+        super();
+        this._tdActionType = TYPE_ACTION.CHANGE_DEPARTMENT;
+    }
+}
+
 export class Attributes {
     commands: Command[];
     constructor(commands?: Command[]) {

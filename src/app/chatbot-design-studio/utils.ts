@@ -48,9 +48,9 @@ export enum TYPE_ACTION {
     ASSIGN_VARIABLE = 'assign',
     DELETE_VARIABLE = 'delete',
     ONLINE_AGENGS = 'ifonlineagents',
-    OPEN_HOURS = 'ifopnehours'
-
-
+    OPEN_HOURS = 'ifopnehours',
+    REPLACE_BOT = 'replacebot',
+    CHANGE_DEPARTMENT = 'department'
 }
 
 export const MESSAGE_METADTA_WIDTH = '100%';

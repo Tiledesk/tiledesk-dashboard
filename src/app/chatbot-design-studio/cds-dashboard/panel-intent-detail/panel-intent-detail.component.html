@@ -1,70 +1,62 @@
-<div *ngIf = "elementIntentSelectedType === typeIntentElement.ACTION">
-    
-    <cds-action-reply *ngIf = "elementSelected._tdActionType === typeAction.REPLY"
-        class="panel-response"
-        [reply]="elementSelected"
-        [showSpinner] = "showSpinner"
-        (openButtonPanel) = onOpenButtonPanel($event)>
+<div *ngIf="elementIntentSelectedType === typeIntentElement.ACTION">
+
+    <cds-action-reply *ngIf="elementSelected._tdActionType === typeAction.REPLY" class="panel-response"
+        [reply]="elementSelected" [showSpinner]="showSpinner" (openButtonPanel)=onOpenButtonPanel($event)>
     </cds-action-reply>
 
-    <cds-action-wait *ngIf = "elementSelected._tdActionType === typeAction.WAIT"
-        [actionwait]="elementSelected">
+    <cds-action-wait *ngIf="elementSelected._tdActionType === typeAction.WAIT" [actionwait]="elementSelected">
     </cds-action-wait>
- 
-    <cds-action-intent *ngIf = "elementSelected._tdActionType === typeAction.INTENT"
-        class="panel-response"
-        [elementSelected]="elementSelected"
-        [intents]="listOfActions"
-        [showSpinner] = "showSpinner"
-        (openButtonPanel) = onOpenButtonPanel($event)>
+
+    <cds-action-intent *ngIf="elementSelected._tdActionType === typeAction.INTENT" class="panel-response"
+        [elementSelected]="elementSelected" [intents]="listOfActions" [showSpinner]="showSpinner"
+        (openButtonPanel)=onOpenButtonPanel($event)>
     </cds-action-intent>
 
-    <cds-action-email *ngIf = "elementSelected._tdActionType === typeAction.EMAIL"
-        class="panel-response"
-        [action]="elementSelected"
-        [showSpinner] = "showSpinner"
-        (openButtonPanel) = onOpenButtonPanel($event)>
+    <cds-action-email *ngIf="elementSelected._tdActionType === typeAction.EMAIL" class="panel-response"
+        [action]="elementSelected" [showSpinner]="showSpinner" (openButtonPanel)=onOpenButtonPanel($event)>
     </cds-action-email>
 
-    <cds-action-condition
-        *ngIf = "elementSelected._tdActionType === typeAction.CONDITION"
-        [listOfActions] = "listOfActions"
+    <cds-action-condition *ngIf="elementSelected._tdActionType === typeAction.CONDITION" [listOfActions]="listOfActions"
         [action]="elementSelected">
     </cds-action-condition>
 
-    <cds-action-assign-variable *ngIf = "elementSelected._tdActionType === typeAction.ASSIGN_VARIABLE"
+    <cds-action-assign-variable *ngIf="elementSelected._tdActionType === typeAction.ASSIGN_VARIABLE"
         [action]="elementSelected">
     </cds-action-assign-variable>
 
+    <cds-action-replace-bot *ngIf="elementSelected._tdActionType === typeAction.REPLACE_BOT"
+        [action]="elementSelected">
+    </cds-action-replace-bot>
+
+    <cds-action-change-department *ngIf="elementSelected._tdActionType === typeAction.CHANGE_DEPARTMENT"
+        [action]="elementSelected">
+    </cds-action-change-department>
+
 </div>
 
 
 
-<div *ngIf = "elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
-    <appdashboard-question
-        [intentSelected]="intentSelected">
+<div *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
+    <appdashboard-question [intentSelected]="intentSelected">
     </appdashboard-question>
 </div>
 <!-- (passJsonIntentForm)="passJsonIntentForm($event)" -->
-<div *ngIf = "elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">
-    <appdashboard-form 
-        [intentForm]="elementSelected"
-        [intentSelected]="intentSelected">
+<div *ngIf="elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">
+    <appdashboard-form [intentForm]="elementSelected" [intentSelected]="intentSelected">
     </appdashboard-form>
 </div>
 
- 
-<div *ngIf = "elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">
-    <appdashboard-answer
-     [intentSelected]="intentSelected">
+
+<div *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">
+    <appdashboard-answer [intentSelected]="intentSelected">
 
     </appdashboard-answer>
 
-  
+
 </div>
 
-        
- 
+
+
 
 
 
@@ -88,13 +80,8 @@
     ></appdashboard-panel-button-configuration>
 </div> -->
 
-<div class="card-buttons" 
-    *ngIf="openCardButton"
-    [ngClass]="{'active':openCardButton}">
-    <appdashboard-panel-button-configuration
-        [button] = buttonSelected
-        [listOfActions] = listOfActions
-        (closeButtonPanel) = onCloseButtonPanel()
-        (saveButton) = onSaveButton($event)
-    ></appdashboard-panel-button-configuration>
+<div class="card-buttons" *ngIf="openCardButton" [ngClass]="{'active':openCardButton}">
+    <appdashboard-panel-button-configuration [button]=buttonSelected [listOfActions]=listOfActions
+        (closeButtonPanel)=onCloseButtonPanel()
+        (saveButton)=onSaveButton($event)></appdashboard-panel-button-configuration>
 </div>

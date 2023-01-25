@@ -65,6 +65,8 @@ import { ActionIntentComponent } from './cds-dashboard/panel-intent-detail/actio
 import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-condition/action-condition.component';
 import { ActionDeleteVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-delete-variable/action-delete-variable.component';
 import { ActionAssignVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/action-assign-variable.component';
+import { ActionReplaceBotComponent } from './cds-dashboard/panel-intent-detail/actions/action-replace-bot/action-replace-bot.component';
+import { ActionChangeDepartmentComponent } from './cds-dashboard/panel-intent-detail/actions/action-change-department/action-change-department.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +111,9 @@ import { ActionAssignVariableComponent } from './cds-dashboard/panel-intent-deta
     ActionAssignVariableComponent,
     ActionIntentComponent,
     ActionEmailComponent,
-    ActionConditionComponent
+    ActionConditionComponent,
+    ActionReplaceBotComponent,
+    ActionChangeDepartmentComponent
   ],
   imports: [
     CommonModule,
