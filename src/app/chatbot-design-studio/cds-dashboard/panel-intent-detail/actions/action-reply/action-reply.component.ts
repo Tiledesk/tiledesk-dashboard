@@ -26,7 +26,7 @@ export class ActionReplyComponent implements OnInit {
   arrayResponses: Array<Command>;
 
 
-
+  
   constructor() { }
 
   // SYSTEM FUNCTIONS //
