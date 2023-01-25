@@ -175,7 +175,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
     this.actionSelected.emit(action);
     console.log('[PANEL INTENT] onActionSelected ', action)
-    this.actionSelected.emit({action: action, index: index});
+    this.actionSelected.emit({action: action, index: index, maxLength: this.actions.length});
   }
 
 
