@@ -19,20 +19,22 @@ export class ActionOpenHoursComponent implements OnInit {
               private logger: LoggerService,) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(){
+    this.initialize()
+    if(this.action && this.action.trueIntent){
+      this.setFormValue()
+    }  
+  }
+
+  private initialize(){
+    this.actionOpenHoursFormGroup = this.buildForm();
     this.actionOpenHoursFormGroup.valueChanges.subscribe(form => {
       console.log('[ACTION-OPEN-HOURS] form valueChanges-->', form)
       if(form && (form.trueIntent !==''))
         this.action = Object.assign(this.action, this.actionOpenHoursFormGroup.value);
     })
-  }
-
-  ngOnChanges(){
-    this.actionOpenHoursFormGroup = this.buildForm();
-    if(this.action && this.action.trueIntent){
-      this.setFormValue()
-      this.ngOnInit();
-    }
-    
   }
 
 

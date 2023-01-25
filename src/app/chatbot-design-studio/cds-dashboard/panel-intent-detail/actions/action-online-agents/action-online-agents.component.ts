@@ -19,20 +19,22 @@ export class ActionOnlineAgentsComponent implements OnInit {
               private logger: LoggerService,) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(){
+    this.initialize()
+    if(this.action && this.action.trueIntent){
+      this.setFormValue();
+    }
+  }
+
+  private initialize(){
+    this.actionOnlineAgentsFormGroup = this.buildForm();
     this.actionOnlineAgentsFormGroup.valueChanges.subscribe(form => {
       console.log('[ACTION-ONLINE-AGENT] form valueChanges-->', form)
       if(form && (form.trueIntent !==''))
         this.action = Object.assign(this.action, this.actionOnlineAgentsFormGroup.value);
     })
-  }
-
-  ngOnChanges(){
-    this.actionOnlineAgentsFormGroup = this.buildForm();
-    if(this.action && this.action.trueIntent){
-      this.setFormValue();
-      this.ngOnInit();
-    }
-    
   }
 
 
