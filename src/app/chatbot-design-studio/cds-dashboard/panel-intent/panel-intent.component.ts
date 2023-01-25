@@ -151,12 +151,27 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     this.answerSelected.emit(this.answer);
   }
 
-  onActionSelected(action) {
+  onActionSelected(action, index) {
     this.HAS_SELECTED_ANSWER = false
     this.HAS_SELECTED_QUESTION = false
     this.HAS_SELECTED_FORM = false
     this.HAS_SELECTED_ACTION = true
-    console.log('[PANEL INTENT] onActionSelected ', action)
+    console.log('[PANEL INTENT] onActionSelected action: ', action)
+    console.log('[PANEL INTENT] onActionSelected index', index)
+    
+    let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
+    console.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
+    if (elementsWithActiveClass.length != 0) {
+      elementsWithActiveClass.forEach((el) => {
+        el.classList.remove('cds-action-active');
+      })
+    }
+
+    const actionElement =  <HTMLElement>document.querySelector(`#action_${index}`);
+    console.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
+    actionElement.classList.add("cds-action-active");
+
+
     this.actionSelected.emit(action);
   }
 
