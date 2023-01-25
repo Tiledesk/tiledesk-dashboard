@@ -1,0 +1,27 @@
+<div class="content">
+
+    <div class="action-title">
+        <span class="material-icons custom-icon">change_circle</span>
+        <p class="text-action">Action: </p>
+        <p class="action-type">Change department</p>
+    </div>
+
+    <div class="title-box">
+        <p>Choose a department to replace the current one in the conversation</p>
+    </div>
+
+    <label class="title-label">Choose a department</label>
+
+    <div class="select-bot-box">
+        <ng-select 
+            class = "form-control-select" 
+            [items] = "deps_name_list" 
+            [searchable] = true
+            [editableSearchTerm]= false
+            [clearable] = false
+            [(ngModel)] = "action.depName"
+            (change) = "onChangeActionButton($event)">
+        </ng-select>
+    </div>
+
+</div>

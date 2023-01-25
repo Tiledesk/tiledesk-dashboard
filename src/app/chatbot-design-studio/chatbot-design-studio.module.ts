@@ -69,6 +69,8 @@ import { ActionIntentComponent } from './cds-dashboard/panel-intent-detail/actio
 import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-condition/action-condition.component';
 import { ActionDeleteVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-delete-variable/action-delete-variable.component';
 import { ActionAssignVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/action-assign-variable.component';
+import { ActionReplaceBotComponent } from './cds-dashboard/panel-intent-detail/actions/action-replace-bot/action-replace-bot.component';
+import { ActionChangeDepartmentComponent } from './cds-dashboard/panel-intent-detail/actions/action-change-department/action-change-department.component';
 import { ActionOnlineAgentsComponent } from './cds-dashboard/panel-intent-detail/actions/action-online-agents/action-online-agents.component';
 import { ActionOpenHoursComponent } from './cds-dashboard/panel-intent-detail/actions/action-open-hours/action-open-hours.component';
 import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/actions/action-hide-message/action-hide-message.component';
@@ -116,6 +118,8 @@ import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/
     ActionIntentComponent,
     ActionEmailComponent,
     ActionConditionComponent,
+    ActionReplaceBotComponent,
+    ActionChangeDepartmentComponent,
     ActionOnlineAgentsComponent,
     ActionOpenHoursComponent,
     ActionHideMessageComponent
