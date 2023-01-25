@@ -1,5 +1,5 @@
 import { element } from 'protractor';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ElementRef } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
@@ -26,6 +26,7 @@ export class CdsSidebarComponent implements OnInit {
     private logger: LoggerService,
     private auth: AuthService,
     private usersService: UsersService,
+    private el: ElementRef
   ) { }
 
   ngOnInit(): void {
@@ -53,19 +54,20 @@ export class CdsSidebarComponent implements OnInit {
     this.IS_OPEN = IS_OPEN;
     this.auth.toggletilebotSidebar(IS_OPEN)
   }
-  // "intents" | "fulfillment" | "training" | "rules" | "settings"
-  goTo(section: string) {
+
+
+  goTo(section: "cds-sb-intents" | "cds-sb-fulfillment" | "cds-sb-training" | "cds-sb-rules" | "cds-sb-settings") {
     console.log('[CDS-SIDEBAR] goTo item ', section)
 
-    let elements = Array.from(document.getElementsByClassName('section is_active'));
+    // let elements = Array.from(document.getElementsByClassName('section is_active'));
+    let elements = this.el.nativeElement.querySelectorAll('.section.is_active')
     if (elements.length != 0) {
       elements.forEach((el) => {
         el.classList.remove('is_active');
       })
     }
 
-    const element = document.getElementById(section);
-    console.log('[CDS-SIDEBAR] go to element ', element) 
+    const element = this.el.nativeElement.querySelector('#'+section);
     element.classList.toggle("is_active");
 
     this.onClickItemList.emit(section)

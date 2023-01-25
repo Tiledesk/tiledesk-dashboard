@@ -47,10 +47,11 @@ export enum TYPE_ACTION {
     CONDITION = 'condition',
     ASSIGN_VARIABLE = 'assign',
     DELETE_VARIABLE = 'delete',
-    ONLINE_AGENGS = 'ifonlineagents',
-    OPEN_HOURS = 'ifopnehours',
     REPLACE_BOT = 'replacebot',
-    CHANGE_DEPARTMENT = 'department'
+    CHANGE_DEPARTMENT = 'department',
+    ONLINE_AGENTS = 'ifonlineagents',
+    OPEN_HOURS = 'ifopenhours',
+    HIDE_MESSSAGE = 'hmessage',
 }
 
 export const MESSAGE_METADTA_WIDTH = '100%';

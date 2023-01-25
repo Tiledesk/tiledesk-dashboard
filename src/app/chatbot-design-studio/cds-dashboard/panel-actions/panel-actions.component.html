@@ -111,27 +111,23 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('helpcenter')" disabled>
-              <svg aria-label="HelpCenter" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
-                height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
-                <g>
-                  <rect fill="none" height="24" width="24" />
-                </g>
-                <g>
-                  <path
-                    d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M19.46,9.12l-2.78,1.15 c-0.51-1.36-1.58-2.44-2.95-2.94l1.15-2.78C16.98,5.35,18.65,7.02,19.46,9.12z M12,15c-1.66,0-3-1.34-3-3s1.34-3,3-3s3,1.34,3,3 S13.66,15,12,15z M9.13,4.54l1.17,2.78c-1.38,0.5-2.47,1.59-2.98,2.97L4.54,9.13C5.35,7.02,7.02,5.35,9.13,4.54z M4.54,14.87 l2.78-1.15c0.51,1.38,1.59,2.46,2.97,2.96l-1.17,2.78C7.02,18.65,5.35,16.98,4.54,14.87z M14.88,19.46l-1.15-2.78 c1.37-0.51,2.45-1.59,2.95-2.97l2.78,1.17C18.65,16.98,16.98,18.65,14.88,19.46z" />
-                </g>
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.OPEN_HOURS)">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFF">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
+                <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
               </svg>
             </button>
           </div>
-          <div class="action-btn-text"> Help center </div>
+          <div class="action-btn-text"> Operating Hours </div>
         </div>
       </div>
 
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.CHANGE_DEPARTMENT)" >
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.CHANGE_DEPARTMENT)">
               <svg aria-label="ChangeDepartment" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
                 height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
                 <g>
@@ -148,10 +144,189 @@
 
     </div>
 
+
     <!-- ---------------------------------- -->
-    <!-- Fourth row -->
+    <!--  Sixth row -->
     <!-- ---------------------------------- -->
     <div class="actions-btns-wpr">
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.ASSIGN_VARIABLE)">
+
+              <svg aria-label="AddVariable" class="svg-icon"
+                style="width: 24px; height: 24px;vertical-align: middle;fill: #FFFFFF;overflow: hidden; padding: 3px;"
+                viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M838.892308 350.523077c47.261538 0 141.784615-39.384615 141.784615-165.415385s-90.584615-133.907692-120.123077-133.907692c-55.138462 0-110.276923 39.384615-159.507692 124.061538-49.230769 86.646154-104.369231 179.2-104.369231 179.2h-1.969231c-11.815385-61.046154-21.661538-110.276923-25.6-131.938461-9.846154-53.169231-70.892308-165.415385-194.953846-165.415385-126.030769 0-240.246154 72.861538-240.246154 72.861539-19.692308 13.784615-33.476923 37.415385-33.476923 64.984615 0 41.353846 33.476923 76.8 76.8 76.8 11.815385 0 23.630769-3.938462 33.476923-7.876923 0 0 94.523077-53.169231 116.184616 0 5.907692 15.753846 11.815385 33.476923 17.723077 53.169231 23.630769 82.707692 47.261538 179.2 64.984615 265.846154l-82.707692 118.153846s-92.553846-33.476923-139.815385-33.476923-141.784615 39.384615-141.784615 165.415384 90.584615 133.907692 120.123077 133.907693c55.138462 0 110.276923-39.384615 159.507692-124.061539 49.230769-86.646154 104.369231-179.2 104.369231-179.2 15.753846 78.769231 29.538462 139.815385 37.415384 167.384616 31.507692 88.615385 104.369231 141.784615 198.892308 141.784615 0 0 98.461538 0 214.646154-64.984615 27.569231-11.815385 47.261538-39.384615 47.261538-70.892308 0-41.353846-33.476923-76.8-76.8-76.8-11.815385 0-23.630769 3.938462-33.476923 7.876923 0 0-82.707692 47.261538-110.276923 9.846154-19.692308-39.384615-37.415385-90.584615-51.2-153.6-11.815385-55.138462-25.6-122.092308-39.384615-187.076923l84.676923-122.092308c-1.969231 1.969231 90.584615 35.446154 137.846154 35.446154z" />
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Add var </div>
+        </div>
+      </div>
+
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.DELETE_VARIABLE)">
+              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1024 1024"
+                style="enable-background:new 0 0 1024 1024;width: 24px; height: 24px;vertical-align: middle;fill: #FFFFFF;overflow: hidden; padding: 3px;"
+                xml:space="preserve">
+                <g>
+                  <path fill="#FFFFFF" d="M850.7,760.1c-11.7,0-23.4,3.9-33.2,7.8l102.9,100.9c4.5-9.8,7.1-20.5,7.1-31.9
+		C927.5,795.6,894,760.1,850.7,760.1z" />
+                  <path class="delete_var" d="M860.6,51.2c-55.1,0-110.3,39.4-159.5,124.1c-49.2,86.6-104.4,179.2-104.4,179.2h-2
+		c-11.8-61-21.7-110.3-25.6-131.9c-9.8-53.2-70.9-165.4-195-165.4c-93.6,0-180.8,40.2-219.3,60.9l125,122.6
+		c20.1-1.8,38.9,3.1,47.1,23.3c4,10.6,8,22.2,12,34.6l312.9,306.8c-10.9-51.2-23.1-110.4-35.3-168.1L701,315.1
+		c-2,2,90.6,35.4,137.8,35.4l0,0c47.3,0,141.8-39.4,141.8-165.4S890.1,51.2,860.6,51.2z" />
+                  <path fill="#FFFFFF"
+                    d="M872.3,912.2L749.5,791.8c-0.2,0-0.4,0-0.5,0.1l-62.4-61.2c-0.1-0.3-0.2-0.6-0.3-0.9L372.9,422.5
+		c0.1,0.3,0.1,0.5,0.2,0.8L210.6,263.9c0,0,0.1,0,0.1,0c0,0,0.1-0.1,0.3-0.2L107.4,162.2c-0.1,0.1-0.1,0.3-0.2,0.4L75,130.9
+		l-45.3,46.2l371,363.9c3.1,14.2,6.1,28.2,8.9,41.9L326.9,701c0,0-92.6-33.5-139.8-33.5S45.3,707,45.3,833s90.6,133.9,120.1,133.9
+		c55.1,0,110.3-39.4,159.5-124.1c49.2-86.6,104.4-179.2,104.4-179.2c15.8,78.8,29.5,139.8,37.4,167.4
+		c31.5,88.6,104.4,141.8,198.9,141.8c0,0,60.8,0,143.3-31.6l56.2,55.1l45.3-46.2l-38.5-37.8C872,912.3,872.1,912.3,872.3,912.2z" />
+                </g>
+              </svg>
+
+            </button>
+          </div>
+          <div class="action-btn-text"> Delete var </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+    <!-- ---------------------------------- -->
+    <!-- Sixth row -->
+    <!-- ---------------------------------- -->
+    <div class="actions-btns-wpr">
+
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.HIDE_MESSSAGE)">
+
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M10.54 11l-.54-.54L7.54 8 6 6.46 2.38 2.84 1.27 1.73 0 3l2.01 2.01L2 22l4-4h9l5.73 5.73L22 22.46 17.54 18l-7-7zM8 14H6v-2h2v2zm-2-3V9l2 2H6zm14-9H4.08L10 7.92V6h8v2h-7.92l1 1H18v2h-4.92l6.99 6.99C21.14 17.95 22 17.08 22 16V4c0-1.1-.9-2-2-2z" />
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Hide message </div>
+        </div>
+      </div>
+
+
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.EMAIL)">
+              <svg aria-label="SendEmail" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                width="24px" fill="#FFFFFF">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Send email </div>
+        </div>
+      </div>
+    </div>
+    <!-- ---------------------------------- -->
+    <!-- Seventh row -->
+    <!-- ---------------------------------- -->
+    <div class="actions-btns-wpr">
+
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.ONLINE_AGENTS)">
+              <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
+                viewBox="0 0 24 24" width="24px" fill="#FFF">
+                <g>
+                  <rect fill="none" height="24" width="24" />
+                </g>
+                <g>
+                  <g>
+                    <circle cx="10" cy="9" r="4" />
+                    <path
+                      d="M16.39,15.56C14.71,14.7,12.53,14,10,14c-2.53,0-4.71,0.7-6.39,1.56C2.61,16.07,2,17.1,2,18.22V21h16v-2.78 C18,17.1,17.39,16.07,16.39,15.56z" />
+                    <path d="M20.36,1l-1.41,1.41c2.73,2.73,2.73,7.17,0,9.9l1.41,1.41C23.88,10.21,23.88,4.51,20.36,1z" />
+                    <path
+                      d="M17.54,10.9c1.95-1.95,1.95-5.12,0-7.07l-1.41,1.41c1.17,1.17,1.17,3.07,0,4.24L17.54,10.9z" />
+                  </g>
+                </g>
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Online Agent </div>
+        </div>
+      </div>
+
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.CLOSE)">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 12 16 9.41 14.59 8zM12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Close </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ---------------------------------- -->
+    <!-- Eighth row -->
+    <!-- ---------------------------------- -->
+    <div class="actions-btns-wpr">
+
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.WAIT)">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M16.24 7.76C15.07 6.59 13.54 6 12 6v6l-4.24 4.24c2.34 2.34 6.14 2.34 8.49 0 2.34-2.34 2.34-6.14-.01-8.48zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Wait </div>
+        </div>
+      </div>
+
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.REPLACE_BOT)">
+              <svg aria-label="ReplaceBot" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                <path d="M0 0h24v24H0z" fill="none"></path>
+                <path
+                  d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Replace bot </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ---------------------------------- -->
+    <!-- Not used -->
+    <!-- ---------------------------------- -->
+    <!-- <div style="display: none;" class="actions-btns-wpr">
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
@@ -183,65 +358,11 @@
           <div class="action-btn-text"> Enable input </div>
         </div>
       </div>
-    </div>
-
-    <!-- ---------------------------------- -->
-    <!-- Fifth row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.REPLACE_BOT)">
-              <svg aria-label="ReplaceBot" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
-                width="24px" fill="#FFFFFF">
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path
-                  d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z" />
-              </svg>
-            </button>
-          </div>
-          <div class="action-btn-text"> Replace bot </div>
-        </div>
-      </div>
+    </div> -->
 
 
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
-              <svg aria-label="HTTP" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
-                fill="#FFFFFF">
-                <path
-                  d="M4.5 11h-2V9H1v6h1.5v-2.5h2V15H6V9H4.5v2zm2.5-.5h1.5V15H10v-4.5h1.5V9H7v1.5zm5.5 0H14V15h1.5v-4.5H17V9h-4.5v1.5zm9-1.5H18v6h1.5v-2h2c.8 0 1.5-.7 1.5-1.5v-1c0-.8-.7-1.5-1.5-1.5zm0 2.5h-2v-1h2v1z" />
-                <path d="M24 24H0V0h24v24z" fill="none" /></svg>
-            </button>
-          </div>
-          <div class="action-btn-text"> HTTP </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ---------------------------------- -->
-    <!--  Sixth row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.ASSIGN_VARIABLE)">
-              <svg aria-label="VarA" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
-                fill="#FFFFFF">
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path d="M18 4H6v2l6.5 6L6 18v2h12v-3h-7l5-5-5-5h7z" /></svg>
-            </button>
-          </div>
-          <div class="action-btn-text"> var a = </div>
-        </div>
-      </div>
-
-
-      <div class="action-box-wpr">
+    <!-- <div style="display: none;" class="actions-btns-wpr">
+        <div style="display: none;" class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
@@ -257,15 +378,9 @@
           </div>
           <div class="action-btn-text"> Tiledesk API </div>
         </div>
-      </div>
-    </div>
-
-    <!-- ---------------------------------- -->
-    <!-- Seventh row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
-
-      <div class="action-box-wpr">
+      </div> 
+   
+      <div style="display: none;" class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
@@ -280,31 +395,31 @@
           <div class="action-btn-text"> Add a tag </div>
         </div>
       </div>
+   </div> -->
 
-
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('email')">
-              <svg aria-label="SendEmail" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
-                width="24px" fill="#FFFFFF">
-                <path d="M0 0h24v24H0z" fill="none" />
+    <!-- <div class="actions-btns-wpr">
+    <div class="action-box-wpr">
+      <div class="action-box">
+        <div class="action-btn-icon">
+          <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('helpcenter')" disabled>
+            <svg aria-label="HelpCenter" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+              height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
+              <g>
+                <rect fill="none" height="24" width="24" />
+              </g>
+              <g>
                 <path
-                  d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-              </svg>
-            </button>
-          </div>
-          <div class="action-btn-text"> Send email </div>
+                  d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M19.46,9.12l-2.78,1.15 c-0.51-1.36-1.58-2.44-2.95-2.94l1.15-2.78C16.98,5.35,18.65,7.02,19.46,9.12z M12,15c-1.66,0-3-1.34-3-3s1.34-3,3-3s3,1.34,3,3 S13.66,15,12,15z M9.13,4.54l1.17,2.78c-1.38,0.5-2.47,1.59-2.98,2.97L4.54,9.13C5.35,7.02,7.02,5.35,9.13,4.54z M4.54,14.87 l2.78-1.15c0.51,1.38,1.59,2.46,2.97,2.96l-1.17,2.78C7.02,18.65,5.35,16.98,4.54,14.87z M14.88,19.46l-1.15-2.78 c1.37-0.51,2.45-1.59,2.95-2.97l2.78,1.17C18.65,16.98,16.98,18.65,14.88,19.46z" />
+              </g>
+            </svg>
+          </button>
         </div>
+        <div class="action-btn-text"> Help center </div>
       </div>
     </div>
-    <!-- ---------------------------------- -->
-    <!-- Eighth row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
+    
 
-      <div class="action-box-wpr">
-        <div class="action-box">
+     <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
               <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
@@ -327,49 +442,12 @@
           </div>
           <div class="action-btn-text"> Deflect to help center </div>
         </div>
-      </div>
-
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.CLOSE)">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path
-                  d="M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 12 16 9.41 14.59 8zM12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-              </svg>
-            </button>
-          </div>
-          <div class="action-btn-text"> Close </div>
-        </div>
-      </div>
-    </div>
 
 
-    <!-- ---------------------------------- -->
-    <!-- Ninth row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
+  </div> -->
 
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.WAIT)">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path
-                  d="M16.24 7.76C15.07 6.59 13.54 6 12 6v6l-4.24 4.24c2.34 2.34 6.14 2.34 8.49 0 2.34-2.34 2.34-6.14-.01-8.48zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
-                </svg>
-            </button>
-          </div>
-          <div class="action-btn-text"> Wait </div>
-        </div>
-      </div>
 
-      <div class="action-box-wpr">
 
-      </div>
-    </div>
 
   </div>
 

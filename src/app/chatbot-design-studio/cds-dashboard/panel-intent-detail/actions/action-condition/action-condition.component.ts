@@ -1,6 +1,6 @@
 import { ActionCondition } from './../../../../../models/intent-model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Console } from 'console';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
@@ -12,7 +12,7 @@ import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
 })
 export class ActionConditionComponent implements OnInit {
   
-  @Input() listOfActions: Array<any>;
+  @Input() listOfActions: string[];
   @Input() action: ActionCondition;
 
   actionConditionFormGroup: FormGroup;
@@ -20,20 +20,27 @@ export class ActionConditionComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private logger: LoggerService,) { }
 
-  ngOnInit(): void {
-    this.actionConditionFormGroup.valueChanges.subscribe(form => {
-      console.log('[ACTION-CONDITION] form valueChanges-->', form)
-      if(form && (form.condition !== '' || form.trueIntent !=='' || form.falseIntent !== ''))
-        this.action = Object.assign(this.action, this.actionConditionFormGroup.value);
-    })
+  ngOnInit(): void {  
   }
 
   ngOnChanges(){
-    this.actionConditionFormGroup = this.buildForm();
+    this.initialize()
     if(this.action && this.action.condition){
       this.setFormValue()
     }
-    
+  }
+
+  ngOnDestroy(){
+    console.log('component destroyeddddd')
+  }
+
+  private initialize(){
+    this.actionConditionFormGroup = this.buildForm();
+    this.actionConditionFormGroup.valueChanges.subscribe(form => {
+      console.log('[ACTION-CONDITION] form valueChanges-->', form)
+      if(form && (form.condition !== '' || form.trueIntent !==''))
+        this.action = Object.assign(this.action, this.actionConditionFormGroup.value);
+    })
   }
 
 

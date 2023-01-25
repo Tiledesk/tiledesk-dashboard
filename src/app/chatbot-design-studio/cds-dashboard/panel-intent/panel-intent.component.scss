@@ -106,12 +106,22 @@
   justify-content: center;
   box-sizing: border-box;
   cursor: pointer;
-  background: white;
+  // background: white;
+  background: #8ab4f8;
   font-size: 14px;
   margin: 5px 5px;
   border-radius: 20px;
-  width: 90px;
+  // min-width: 90px;
+  min-width: 60px;
+  max-width: 120px;
 
+}
+
+.cds-action-active {
+  // background: #8ab4f8 !important;
+  // color: #202124 !important;
+  border: 3px solid #0f172a !important;
+    outline: 2px solid #ecb606 !important;
 }
 
 // .cdk-drag-preview {
@@ -161,7 +171,7 @@
 
 .action--handle {
   position: absolute;
-  right: 124px;
+  left: 0px;
   // position: absolute;
   // left: -11px;
   // margin-top: 20px;
@@ -186,20 +196,20 @@
 
 .delete-action {
   position: absolute;
-  left: 118px;
-  margin-top: -5px;
+  right: 0px;
+  // margin-top: -5px;
   align-items: center;
   // background-color: #dde2ea;
   border: 0;
   border-radius: 20px;
   display: flex;
-  height: 36px;
+  // height: 36px;
   justify-content: center;
   opacity: 0;
   outline: 0;
   // transform: translateX(60px);
   transition: all 0.2s ease-in-out;
-  width: 36px;
+  // width: 36px;
 }
 
 .action--box:hover > .delete-action {
@@ -235,3 +245,5 @@
   font-size: 21px;
   color: #ff4000;
 }
+
+

@@ -6,7 +6,7 @@
         (cdkDropListDropped)="drop($event)"
         >
         <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag>
-
+            
             <div *ngIf="response.message && response.message.type === typeMessage.TEXT ">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-text-response
@@ -97,6 +97,17 @@
         </div>
     </div>
 
+
+    <div class="disable-input-message">
+        <section class="disable-input-message-section">
+            <mat-checkbox 
+                [checked]="reply.attributes.disableInputMessage"
+                (change)="onDisableInputMessage()">
+                {{"Disable input box" | translate}}
+            </mat-checkbox>
+        </section>
+    </div>
+    
 
 </div>
 

@@ -11,7 +11,7 @@ export class QuestionComponent implements OnInit, OnChanges {
   @Input() intentSelected: Intent;
 
   public question: string
-  questions_array: string[]
+  questions_array: string[] = []
   newQuestion: string
 
   constructor() { }
@@ -39,6 +39,7 @@ export class QuestionComponent implements OnInit, OnChanges {
     console.log('[INTENT-QUESTION] ADD QUESTION questions_array ', this.questions_array)
     const questionArrayJoinedWithNewLine = this.questions_array.join('\n')
     this.intentSelected.question = questionArrayJoinedWithNewLine.toString();
+    this.newQuestion = ''
   }
 
 

@@ -1,5 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { ActionCondition, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionIntentConnected, ActionEmail, ActionWait, ActionAssignVariable, ActionDeleteVariable, ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, ActionChangeDepartment } from 'app/models/intent-model';
+import { ActionCondition, ActionAgent, ActionClose, 
+         ActionReply, Intent, Command, 
+         Message, ActionIntentConnected, ActionEmail, 
+         ActionWait, ActionAssignVariable, ActionDeleteVariable, 
+         ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
+         ActionChangeDepartment, ActionHideMessage } from 'app/models/intent-model';
 import { TYPE_ACTION } from '../../utils';
 
 @Component({
@@ -65,22 +70,18 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       let action = new ActionClose();
       this.intentSelected.actions.push(action);
     }
-
     if(typeAction === TYPE_ACTION.WAIT){
       let action = new ActionWait();
       this.intentSelected.actions.push(action);
     }
-
     if(typeAction === TYPE_ACTION.INTENT) {
       let action = new ActionIntentConnected()
       this.intentSelected.actions.push(action)
     }
-    
     if(typeAction === TYPE_ACTION.EMAIL) {
       let action = new ActionEmail()
       this.intentSelected.actions.push(action);
     }
-
     if(typeAction === TYPE_ACTION.CONDITION){
       let action = new ActionCondition();
       this.intentSelected.actions.push(action);
@@ -93,7 +94,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       let action = new ActionDeleteVariable();
       this.intentSelected.actions.push(action);
     }
-    if(typeAction === TYPE_ACTION.ONLINE_AGENGS){
+    if(typeAction === TYPE_ACTION.ONLINE_AGENTS){
       let action = new ActionOnlineAgent();
       this.intentSelected.actions.push(action);
     }
@@ -107,6 +108,10 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     }
     if(typeAction === TYPE_ACTION.CHANGE_DEPARTMENT) {
       let action = new  ActionChangeDepartment();
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.HIDE_MESSSAGE){
+      let action = new ActionHideMessage();
       this.intentSelected.actions.push(action);
     }
     
