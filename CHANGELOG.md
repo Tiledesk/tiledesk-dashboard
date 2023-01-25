@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc10
+- Adds a check that saves the intent if it has no special characters
+
 ### 2.3.22-rc9
 - Add the ability to enable/disable the intent webhook
 - Fixes action bugs
