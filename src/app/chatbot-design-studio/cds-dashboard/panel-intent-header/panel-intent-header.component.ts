@@ -17,15 +17,12 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   intentName: string;
   intentNameResult = true;
   intentNameAlreadyExist = false
-
+  intentNameNotHasSpecialCharacters: boolean;
  
   id_faq_kb: string;
 
 
-  constructor(
-  
-    
-  ) { }
+  constructor() { }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
@@ -57,13 +54,20 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   }
 
   // CUSTOM FUNCTIONS //
-  /** */
+  /** /^[ _0-9a-zA-Z]+$/ */
   private checkIntentName(): boolean {
     if (!this.intentName || this.intentName.length === 0) {
       return false;
     } else {
       return true;
     }
+  }
+  checkIntentNameMachRegex(intentname) {
+
+    const regex = /^[ _0-9a-zA-Z]+$/
+
+    
+    return regex.test(intentname);
   }
 
 
@@ -75,8 +79,12 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
       return el.intent_display_name === name
     });
 
-    // console.log('[PANEL-INTENT-HEADER] intent name already exist', this.intentNameAlreadyExist);
+   this.intentNameNotHasSpecialCharacters = this.checkIntentNameMachRegex(name) 
+   console.log('[PANEL-INTENT-HEADER] checkIntentNameMachRegex intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters);
+
+    console.log('[PANEL-INTENT-HEADER] intent name already exist', this.intentNameAlreadyExist);
     this.intentNameResult = this.checkIntentName();
+    console.log('[PANEL-INTENT-HEADER] this.intentNameResult ', this.intentNameResult) 
     // name.toString();
     // try {
     //   this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
@@ -93,7 +101,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   /** */
   onSaveIntent() {
     this.intentNameResult = this.checkIntentName();
-    if (this.intentNameResult && !this.intentNameAlreadyExist) {
+    if (this.intentNameResult && !this.intentNameAlreadyExist && this.intentNameNotHasSpecialCharacters === true) {
       this.intentSelected.intent_display_name = this.intentName;
       this.saveIntent.emit(this.intentSelected);
     }

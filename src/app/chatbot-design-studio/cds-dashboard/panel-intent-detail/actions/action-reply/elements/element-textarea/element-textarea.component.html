@@ -1,14 +1,22 @@
-<mat-form-field class="box-textarea" appearance="fill">
-    <textarea matInput
-        cdkTextareaAutosize
-        [(ngModel)]="textMessage"
-        #autosize="cdkTextareaAutosize"
-        [maxlength]="limitCharsText"
-        cdkAutosizeMinRows="1"
-        cdkAutosizeMaxRows="5"
-        (ngModelChange)="onChangeTextarea($event)">
-    </textarea>
-</mat-form-field>
+<div 
+    cdkTrapFocus 
+    [cdkTrapFocusAutoCapture]="textMessage.length>0?false:true">
+    <mat-form-field 
+        class="box-textarea" 
+        appearance="fill">
+        <textarea
+            matInput
+            cdkFocusInitial
+            cdkTextareaAutosize
+            [(ngModel)]="textMessage"
+            #autosize="cdkTextareaAutosize"
+            [maxlength]="limitCharsText"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+            (ngModelChange)="onChangeTextarea($event)">
+        </textarea>
+    </mat-form-field>
+</div>
 
 <div class="editor-utils">
     <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>

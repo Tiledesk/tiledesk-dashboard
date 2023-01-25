@@ -8,6 +8,7 @@
         <input type="text" [(ngModel)]="intentName" class="input form-control" (blur)="onBlurIntentName($event)"
             (ngModelChange)="onChangeIntentName($event)">
         <div *ngIf="intentNameAlreadyExist" class="error---msg"> The intent name must be unique </div>
+        <div *ngIf="intentNameNotHasSpecialCharacters === false" class="error---msg"> The intent name cannot contain special characters </div>
 
         <div class="onff-intent-webhook">
             <div class="intent-webhook-switch">
@@ -16,9 +17,10 @@
                 <label class="intent-webhook-switch-label" for="intent-webhook-switch"> </label>
                 
             </div>
-            <div class="switch-label"> 
-                <span *ngIf="intentSelected.webhook_enabled === true">Webhook enabled </span>
-                <span *ngIf="intentSelected.webhook_enabled === false">Webhook disabled </span>
+            <div class="switch-label">
+                Webhook 
+                <!-- <span *ngIf="intentSelected.webhook_enabled === true">Webhook enabled </span>
+                <span *ngIf="intentSelected.webhook_enabled === false">Webhook disabled </span> -->
             </div>
             
         </div>

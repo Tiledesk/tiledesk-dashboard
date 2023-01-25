@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-
+import { A11yModule } from '@angular/cdk/a11y';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -68,6 +69,8 @@ import { ActionIntentComponent } from './cds-dashboard/panel-intent-detail/actio
 import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-condition/action-condition.component';
 import { ActionDeleteVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-delete-variable/action-delete-variable.component';
 import { ActionAssignVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/action-assign-variable.component';
+import { ActionReplaceBotComponent } from './cds-dashboard/panel-intent-detail/actions/action-replace-bot/action-replace-bot.component';
+import { ActionChangeDepartmentComponent } from './cds-dashboard/panel-intent-detail/actions/action-change-department/action-change-department.component';
 import { ActionOnlineAgentsComponent } from './cds-dashboard/panel-intent-detail/actions/action-online-agents/action-online-agents.component';
 import { ActionOpenHoursComponent } from './cds-dashboard/panel-intent-detail/actions/action-open-hours/action-open-hours.component';
 import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/actions/action-hide-message/action-hide-message.component';
@@ -79,7 +82,6 @@ import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/
     ActionReplyComponent,
     TextResponseComponent,
     DelaySliderComponent,
-    // ButtonConfigurationPanelComponent,
     ImageResponseComponent,
     FrameResponseComponent,
     ImageUploadComponent,
@@ -116,11 +118,14 @@ import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/
     ActionIntentComponent,
     ActionEmailComponent,
     ActionConditionComponent,
+    ActionReplaceBotComponent,
+    ActionChangeDepartmentComponent,
     ActionOnlineAgentsComponent,
     ActionOpenHoursComponent,
     ActionHideMessageComponent
   ],
   imports: [
+    A11yModule,
     CommonModule,
     DragDropModule,
     NgSelectModule,
@@ -130,6 +135,7 @@ import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/
     MatSelectModule,
     MatTooltipModule,
     MatRadioModule,
+    MatCheckboxModule,
     MatChipsModule,
     MatGridListModule,
     MatAutocompleteModule,

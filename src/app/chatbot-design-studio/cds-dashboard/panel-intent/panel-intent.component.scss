@@ -106,13 +106,22 @@
   justify-content: center;
   box-sizing: border-box;
   cursor: pointer;
-  background: white;
+  // background: white;
+  background: #8ab4f8;
   font-size: 14px;
   margin: 5px 5px;
   border-radius: 20px;
-  min-width: 90px;
+  // min-width: 90px;
+  min-width: 60px;
   max-width: 120px;
 
+}
+
+.cds-action-active {
+  // background: #8ab4f8 !important;
+  // color: #202124 !important;
+  border: 3px solid #0f172a !important;
+    outline: 2px solid #ecb606 !important;
 }
 
 // .cdk-drag-preview {
@@ -236,3 +245,5 @@
   font-size: 21px;
   color: #ff4000;
 }
+
+

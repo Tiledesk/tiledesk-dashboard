@@ -17,7 +17,18 @@ export class ActionHideMessageComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private logger: LoggerService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
+  }
+
+  ngOnChanges(){
+    this.initialize()
+    if(this.action && this.action.text){
+      this.setFormValue()
+    }
+  }
+
+  private initialize(){
+    this.actionHideMessageFormGroup = this.buildForm();
     this.actionHideMessageFormGroup.valueChanges.subscribe(form => {
       // console.log('[ACTION-HIDE-MESSAGE] form valueChanges-->', form)
       if(form && (form.text !== ''))
@@ -25,13 +36,6 @@ export class ActionHideMessageComponent implements OnInit {
     })
   }
 
-  ngOnChanges(){
-    this.actionHideMessageFormGroup = this.buildForm();
-    if(this.action && this.action.text){
-      this.setFormValue()
-    }
-
-  }
 
   buildForm(): FormGroup{
     return this.formBuilder.group({

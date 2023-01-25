@@ -26,6 +26,7 @@ export class ActionReplyComponent implements OnInit {
   arrayResponses: Array<Command>;
 
 
+
   constructor() { }
 
   // SYSTEM FUNCTIONS //
@@ -77,7 +78,6 @@ export class ActionReplyComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
-    // console.log('generateArrayResponse:::', this.arrayResponses);
   }
 
   /** */
@@ -223,6 +223,15 @@ export class ActionReplyComponent implements OnInit {
   /** */
   onOpenButtonPanel(event){
     this.openButtonPanel.emit(event);
+  }
+
+  /** */
+  onDisableInputMessage(){
+    try {
+      this.reply.attributes.disableInputMessage = !this.reply.attributes.disableInputMessage;
+    } catch (error) {
+      console.log("Error: ", error);
+    }
   }
 
 }
