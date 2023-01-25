@@ -505,7 +505,7 @@ export class CdsDashboardComponent implements OnInit {
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions length: ", this.intentSelected.actions.length);
     if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
       console.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0])
-      this.onActionSelected(this.intentSelected.actions[0])
+      this.onActionSelected({ action: this.intentSelected.actions[0], index: 0})
     } 
    else {
 
@@ -528,11 +528,11 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = answer
   }
 
-  onActionSelected(action: Action) {
-    console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', action)
+  onActionSelected(event: {action: Action, index: number}) {
+    console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
-    this.elementIntentSelected['element'] = action
+    this.elementIntentSelected['element'] = event.action
     console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
   }
 
@@ -566,6 +566,7 @@ export class CdsDashboardComponent implements OnInit {
     this.intentSelected = new Intent();
     let action = new ActionReply();
     let command = new Command(TYPE_ACTION.REPLY);
+    console.log('commmmmmmm', command)
     command.message = new Message('text', 'A chat message will be sent to the visitor');
     action.attributes.commands.push(command);
 
