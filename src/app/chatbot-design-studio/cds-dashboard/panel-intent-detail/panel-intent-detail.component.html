@@ -59,31 +59,27 @@
 </div>
 
 
-<div *ngIf = "elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
-    <appdashboard-question
-        [intentSelected]="intentSelected">
+<div *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
+    <appdashboard-question [intentSelected]="intentSelected">
     </appdashboard-question>
 </div>
 <!-- (passJsonIntentForm)="passJsonIntentForm($event)" -->
-<div *ngIf = "elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">
-    <appdashboard-form 
-        [intentForm]="elementSelected"
-        [intentSelected]="intentSelected">
+<div *ngIf="elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">
+    <appdashboard-form [intentForm]="elementSelected" [intentSelected]="intentSelected">
     </appdashboard-form>
 </div>
 
- 
-<div *ngIf = "elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">
-    <appdashboard-answer
-     [intentSelected]="intentSelected">
+
+<div *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">
+    <appdashboard-answer [intentSelected]="intentSelected">
 
     </appdashboard-answer>
 
-  
+
 </div>
 
-        
- 
+
+
 
 
 
@@ -107,13 +103,8 @@
     ></appdashboard-panel-button-configuration>
 </div> -->
 
-<div class="card-buttons" 
-    *ngIf="openCardButton"
-    [ngClass]="{'active':openCardButton}">
-    <appdashboard-panel-button-configuration
-        [button] = buttonSelected
-        [listOfActions] = listOfActions
-        (closeButtonPanel) = onCloseButtonPanel()
-        (saveButton) = onSaveButton($event)
-    ></appdashboard-panel-button-configuration>
+<div class="card-buttons" *ngIf="openCardButton" [ngClass]="{'active':openCardButton}">
+    <appdashboard-panel-button-configuration [button]=buttonSelected [listOfActions]=listOfActions
+        (closeButtonPanel)=onCloseButtonPanel()
+        (saveButton)=onSaveButton($event)></appdashboard-panel-button-configuration>
 </div>

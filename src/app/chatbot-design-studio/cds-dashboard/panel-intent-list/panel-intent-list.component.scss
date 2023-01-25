@@ -19,8 +19,9 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    padding: 0px 6px;
+    //justify-content: space-between;
+    justify-content: flex-end;
+    padding: 10px 0px;
 
     .title {
         color: white;
@@ -31,9 +32,9 @@
     .new-intent-button {
         display: flex;
         flex-direction: row;
-        font-size: 12px;
+        font-size: 14px;
         align-items: center;
-        border: dashed 1px;
+        //border: dashed 1px;
         padding: 0px 14px 0px 10px;
         border-radius: 16px;
         cursor: pointer;
@@ -51,7 +52,7 @@
 
     .new-intent-button:hover {
         background-color: white;
-        border: 1px solid white;
+        //border: 1px solid white;
 
         .plus-icon {
             font-size: 16px;
@@ -128,7 +129,7 @@
         font-size: 14px;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 180px;
+        max-width: 150px;
     }
 
     .icon-list {

@@ -116,7 +116,8 @@
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path
                   d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
-                <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" /></svg>
+                <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+              </svg>
             </button>
           </div>
           <div class="action-btn-text"> Operating Hours </div>
@@ -126,7 +127,7 @@
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled (click)="actionSelected(typeAction.CHANGE_DEPARTMENT)">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.CHANGE_DEPARTMENT)">
               <svg aria-label="ChangeDepartment" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
                 height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
                 <g>
@@ -306,8 +307,20 @@
       </div>
 
       <div class="action-box-wpr">
-
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(typeAction.REPLACE_BOT)">
+              <svg aria-label="ReplaceBot" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                <path d="M0 0h24v24H0z" fill="none"></path>
+                <path
+                  d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Replace bot </div>
+        </div>
       </div>
+
     </div>
 
     <!-- ---------------------------------- -->
