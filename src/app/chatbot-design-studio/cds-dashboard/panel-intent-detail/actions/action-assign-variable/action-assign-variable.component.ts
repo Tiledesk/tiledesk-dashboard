@@ -18,19 +18,23 @@ export class ActionAssignVariableComponent implements OnInit {
               private logger: LoggerService,) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(){
+    this.initialize()
+    if(this.action && this.action.assignTo){
+      this.setFormValue()
+    }
+    
+  }
+
+  private initialize(){
+    this.actionAssignFormGroup = this.buildForm();
     this.actionAssignFormGroup.valueChanges.subscribe(form => {
       console.log('[ACTION-ASSIGN-VARIABLE] form valueChanges-->', form)
       if(form && (form.assignTo !== '' || form.expression !==''))
         this.action = Object.assign(this.action, this.actionAssignFormGroup.value);
     })
-  }
-
-  ngOnChanges(){
-    this.actionAssignFormGroup = this.buildForm();
-    if(this.action && this.action.assignTo){
-      this.setFormValue()
-    }
-    
   }
   
   buildForm(): FormGroup{

@@ -40,6 +40,7 @@
         <div cdkDropList class="action--list" (cdkDropListDropped)="drop($event)">
             <div id="action_{{i}}" class="action--box" *ngFor="let action of actions; let i = index;" cdkDrag
                 cdkDragLockAxis="y" (click)="onActionSelected(action, i)">
+           
                 <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
                 <div class="action--handle" cdkDragHandle>
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"

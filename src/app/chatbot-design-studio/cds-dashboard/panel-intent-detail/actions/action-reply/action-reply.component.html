@@ -6,7 +6,7 @@
         (cdkDropListDropped)="drop($event)"
         >
         <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag>
-
+            
             <div *ngIf="response.message && response.message.type === typeMessage.TEXT ">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-text-response

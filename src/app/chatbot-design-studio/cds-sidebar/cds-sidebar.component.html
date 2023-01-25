@@ -7,7 +7,7 @@
         <!-- @ Bot Intents -->
         <!-- ------------------------------------------------------- -->
         <ng-container *ngIf="USER_ROLE !== 'agent'">
-            <li [ngClass]="{'active-item': INTENTS_ROUTE_IS_ACTIVE}" (click)="goTo('intents')"
+            <li [ngClass]="{'active-item': INTENTS_ROUTE_IS_ACTIVE}" (click)="goTo('cds-sb-intents')"
                 matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Intents" #tooltip="matTooltip"
                 matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="extendedWidth">
                 <a>
@@ -26,7 +26,7 @@
         <!-- @ Bot Fulfillment-->
         <!-- ------------------------------------------------------- -->
         <ng-container *ngIf="USER_ROLE !== 'agent'">
-            <li [ngClass]="{'active-item': FULFILLMENT_ROUTE_IS_ACTIVE }" (click)="goTo('fulfillment')"
+            <li [ngClass]="{'active-item': FULFILLMENT_ROUTE_IS_ACTIVE }" (click)="goTo('cds-sb-fulfillment')"
                 matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Fulfillment" #tooltip="matTooltip"
                 matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="extendedWidth">
                 <a>
@@ -63,7 +63,7 @@
         <!-- Bot Rules -->
         <!-- ------------------------------------------------------- -->
         <ng-container>
-            <li [ngClass]="{'active-item': TRAINING_ROUTE_IS_ACTIVE}" (click)="goTo('rules')"
+            <li [ngClass]="{'active-item': TRAINING_ROUTE_IS_ACTIVE}" (click)="goTo('cds-sb-rules')"
                 matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 
                 matTooltip="{{'Rules' | translate}}"
                 #tooltip="matTooltip" 
@@ -87,7 +87,7 @@
         <!--  @ Bot general settings  -->
         <!-- -------------------------------------------------------- -->
         <ng-container *ngIf="USER_ROLE !== 'agent'">
-            <li [ngClass]="{'active-item': GENERAL_ROUTE_IS_ACTIVE}" (click)="goTo('settings')"
+            <li [ngClass]="{'active-item': GENERAL_ROUTE_IS_ACTIVE}" (click)="goTo('cds-sb-settings')"
                 matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 
                 matTooltip="{{'General' | translate}}"
                 #tooltip="matTooltip" 
@@ -158,7 +158,7 @@
         </p>
     </div>
 
-    <div id="cds-sb-rules" name="rules" class="section" (click)="goTo('settings')"
+    <div id="cds-sb-rules" name="rules" class="section" (click)="goTo('cds-sb-rules')"
         matTooltipClass="cds-mat-tooltip" 
         matTooltip="{{'Rules' | translate}}"
         #tooltip="matTooltip" 
