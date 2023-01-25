@@ -9,6 +9,20 @@ $padding: 10px;
     width: 0px;
 }
 
+.disable-input-message {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+}
+
+::ng-deep .mat-checkbox.mat-accent .mat-checkbox-inner-container {
+    background-color: $icon-color!important;
+}
+::ng-deep .mat-checkbox.mat-accent .mat-checkbox-frame {
+    border-color: $icon-color!important;
+}
+
 
 .box-sx {
     position: relative;
@@ -48,8 +62,10 @@ $padding: 10px;
 }
 
 #scrollMe {
-    // transition: 1s all ease;
     scroll-behavior: smooth;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 30px;
 }
 .content {
     position: relative;
@@ -59,7 +75,7 @@ $padding: 10px;
     min-height: $min-height-content;
     margin-top: 0px;
     overflow: auto;
-    max-height: calc(100vh - 230px);
+    max-height: calc(100vh - 180px);
     .response {
         display: block;
         position: relative;

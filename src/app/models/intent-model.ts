@@ -10,7 +10,6 @@ export class Intent {
     answer?: string;
     form?: Form;
     actions?: Action[];
-    // reply?: Reply;
     id_project?: string;
     language?: string;
     intent_display_name?: string;
@@ -21,38 +20,9 @@ export class Intent {
     id?: string;
     constructor() {
         this.actions = [];
-        //this.reply = new Reply();
     }
-
 }
 
-// export interface iIntent {
-//     webhook_enabled?: boolean;
-//     enabled?: boolean;
-//     topic?: string;
-//     status?: string;
-//     id_faq_kb?: string;
-//     question?: string;
-//     answer?: string;
-//     // form?: Form;
-//     // actions?: Action[];
-//     // reply?: Reply;
-//     id_project?: string;
-//     language?: string;
-//     intent_display_name?: string;
-//     createdBy?: string;
-//     intent_id?: string;
-//     createdAt?: Date;
-//     updatedAt?: Date;
-//     id?: string;
-// }
-
-// export class Question {
-//     split(arg0: string) {
-//       throw new Error('Method not implemented.');
-//     }
-//     type: string;
-// }
 
 export class Action {
     _tdActionType: string;
@@ -126,8 +96,10 @@ export class ActionReply extends Action {
 }
 
 export class Attributes {
+    disableInputMessage: boolean;
     commands: Command[];
     constructor(commands?: Command[]) {
+        this.disableInputMessage = false;
         this.commands = [];
         if(commands && commands.length>0){
             this.commands = commands;
