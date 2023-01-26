@@ -18,7 +18,7 @@
             <div class="form-group" [ngClass]="{'is-error':buttonLabelResult === false}">
                <label 
                     class="control-label title"
-                    [ngClass]="{'noDisplay':buttonLabel.length>0}">
+                    [ngClass]="{'noDisplay':!buttonLabel}">
                     {{ 'Titolo del bottone...' | translate }}
                 </label>
                 <input 
@@ -88,17 +88,29 @@
             [ngClass]="{'displayed':buttonType === typeOfButton.ACTION}">
             <div class="form-group ng-select">
                 <label class="control-label">
-                    {{ 'Actions' | translate }}
+                    {{ 'Go to intent' | translate }}
                 </label>
                 <div class="selectFormModel">
-                    <ng-select 
+
+                    <!-- <cds-text id="text-condition"
+                        [control]="actionConditionFormGroup.controls['trueIntent']"
+                        [autocompleteOptions]="listOfActions">
+                    </cds-text> -->
+                    <ng-select [items]="listOfActions"
+                        placeholder="Select intent"
+                        [(ngModel)]="buttonAction"
+                        (change) = "onChangeActionButton($event)">
+                    </ng-select>
+
+                    <!-- <ng-select 
                         class = "form-control-select" 
                         [items] = "listOfActions" 
                         [searchable] = false
                         [clearable] = false
                         [(ngModel)] = "buttonAction"
                         (change) = "onChangeActionButton($event)">
-                    </ng-select>
+                    </ng-select> -->
+
                 </div>
             </div>
 

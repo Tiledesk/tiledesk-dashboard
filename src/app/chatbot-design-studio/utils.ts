@@ -17,7 +17,7 @@ export enum TYPE_RESPONSE {
 export enum TYPE_BUTTON {
     TEXT = 'text', 
     URL = 'url', 
-    ACTION = 'action'
+    ACTION = 'go to intent'
 }
 
 export enum TYPE_URL {
@@ -51,8 +51,13 @@ export enum TYPE_ACTION {
     CHANGE_DEPARTMENT = 'department',
     ONLINE_AGENTS = 'ifonlineagents',
     OPEN_HOURS = 'ifopenhours',
-    HIDE_MESSSAGE = 'hmessage',
+    HIDE_MESSSAGE = 'hmessage'
 }
+
+export enum TYPE_ATTACHMENT {
+    TEMPLATE = "template"
+}
+
 
 export const MESSAGE_METADTA_WIDTH = '100%';
 export const MESSAGE_METADTA_HEIGHT = '230px';

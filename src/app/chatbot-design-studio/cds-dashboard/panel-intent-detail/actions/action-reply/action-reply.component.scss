@@ -30,7 +30,7 @@ $padding: 10px;
     vertical-align: top;
     width: calc(100% - 100px);
     max-height: 100%;
-    height: auto;
+    height: calc(100vh - 130px);
     overflow: hidden;
     border-radius: 0.6em;
     background-color: rgb($bg-color-card-rgb);
@@ -144,3 +144,28 @@ $padding: 10px;
 }
 
 
+
+.card-buttons {
+    position: absolute;
+    display: none;
+    top: 0;
+    right: 0;
+    margin: 0;
+    outline: none;
+    width: 380px;
+    height: 100%;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: transparent;
+    overflow: visible;
+    z-index: 14;
+    border-radius: 1em;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+                0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    &.active{
+        display: block;
+    }
+}

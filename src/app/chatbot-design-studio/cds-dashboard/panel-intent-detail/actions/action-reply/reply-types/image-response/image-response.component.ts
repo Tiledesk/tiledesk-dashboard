@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Message } from '../../../../../../../models/intent-model';
+import { MessageWithWait } from '../../../../../../../models/intent-model';
 import { TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
 
 @Component({
@@ -8,12 +8,13 @@ import { TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../..
   styleUrls: ['./image-response.component.scss']
 })
 export class ImageResponseComponent implements OnInit {
+  @Output() changeDelayTimeReplyElement = new EventEmitter();
   @Output() deleteResponse = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
   @Output() openButtonPanel = new EventEmitter();
   
-  @Input() response: Message;
+  @Input() response: MessageWithWait;
   @Input() index: number;
 
 
@@ -64,8 +65,9 @@ export class ImageResponseComponent implements OnInit {
 
   /** */
   onChangeDelayTime(value:number){
-    //this.delayTime = value;
+    this.delayTime = value;
     this.response.time = value*1000;
+    this.changeDelayTimeReplyElement.emit();
   }
 
   /** */

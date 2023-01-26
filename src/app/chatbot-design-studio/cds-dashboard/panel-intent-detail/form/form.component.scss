@@ -10,6 +10,11 @@ $color-text-box: #566787;
     position: relative;
     top: 0px;
     padding: 10px 0;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    height: 100%;
+    // border: 1px solid green;
 
     .more-info {
         cursor: pointer;

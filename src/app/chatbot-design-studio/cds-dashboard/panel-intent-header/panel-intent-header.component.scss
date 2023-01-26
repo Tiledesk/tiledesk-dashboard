@@ -2,13 +2,14 @@
 $width-title: 80%;
 
 .header {
-    position: relative;
-    display: block;
+    // position: relative;
+    display: flex;
     width: 100%;
     height: $height-header;
     max-height: $height-header;
-    top: 0;
-    left: 0;
+    // top: 0;
+    // left: 0;
+    margin-top: 10px;
     .i-priority-color-mark {
         background-color: $color-blue-hex;
         position: absolute;
@@ -23,8 +24,8 @@ $width-title: 80%;
         background-color: #ed2e19;
     }
     .form-group {
-        position: absolute;
-        display: block;
+        // position: absolute;
+        // display: block;
         width: 100%;
         margin: 0;
         padding: 0 30px;
@@ -45,20 +46,23 @@ $width-title: 80%;
             font-size: 1.4em;
             line-height: $height-header;
             color: $color-light-gray-hex;
+            z-index: 1;
             &.noDisplay {
                 display: none;
             }
         }
         input {
-            position: absolute;
+            // position: absolute;
             display: block;
-            width: $width-title;
+            // width: $width-title;
             top: 0;
-            left: 30px;
+            // left: 30px;
             margin-top: 6px;
             padding: 0;
             color: $color-bck-light-gray-hex;
             font-size: 1.4em;
+            z-index: 2;
+            position: relative;
         }
         .btn-save {
             position: absolute;
@@ -111,64 +115,14 @@ $width-title: 80%;
     font-weight: 500;
 }
 
-/* intent webhook swicth */
-.intent-webhook-switch {
-    position: relative;
-    width: 30px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-.intent-webhook-checkbox {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-.intent-webhook-switch-label {
-    display: block;
-    overflow: hidden;
-    cursor: pointer;
-    height: 14px;
-    padding: 0;
-    line-height: 14px;
-    border: 0px solid #ffffff;
-    border-radius: 20px;
-    background-color: #9e9e9e;
-}
-.intent-webhook-switch-label:before {
-    content: "";
-    display: block;
-    width: 20px;
-    margin: -3px;
-    background: #ffffff;
-    position: absolute;
-    top: 0px;
-    bottom: 0;
-    right: 14px;
-    border-radius: 20px;
-    // box-shadow: 0 6px 12px 0px #757575;
-    height: 20px;
-}
-.intent-webhook-checkbox:checked + .intent-webhook-switch-label {
-    background-color: #9e9e9e;
-}
-.intent-webhook-checkbox:checked + .intent-webhook-switch-label,
-.intent-webhook-checkbox:checked + .intent-webhook-switch-label:before {
-    border-color: #9e9e9e;
-}
-.intent-webhook-checkbox:checked + .intent-webhook-switch-label .onoffswitch-inner {
-    margin-left: 0;
-}
-.intent-webhook-checkbox:checked + .intent-webhook-switch-label:before {
-    right: 0px;
-    background-color: #ecb606;
-    box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
-}
 
 .onff-intent-webhook {
-    position: absolute;
-    right: 180px;
-    top: 22px;
+    // position: absolute;
+    // right: 180px;
+    // top: 22px;
+    align-self: center;
+    margin-top: 8px;
+
 }
 
 .switch-label {
@@ -191,8 +145,8 @@ $circle-size: 40px;
     height: $circle-size;
     text-align: center;
     right: 0px;
-    position: absolute;
-    margin: 5px;
+    // position: absolute;
+    margin: 5px 10px 5px 5px;
 }
 
 .loading-btn {

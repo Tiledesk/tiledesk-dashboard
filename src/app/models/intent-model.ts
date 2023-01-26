@@ -1,4 +1,4 @@
-import { TYPE_ACTION } from '../chatbot-design-studio/utils';
+import { TYPE_ACTION, TYPE_ATTACHMENT } from '../chatbot-design-studio/utils';
 
 export class Intent {
     webhook_enabled?: boolean;
@@ -125,7 +125,7 @@ export class Attributes {
 export class Command {
     type: string;
     message?: Message;
-    time?: number = 500;
+    time?: number;
     constructor(type: string) {
         this.type = type;
     }
@@ -164,7 +164,7 @@ export class ActionClose extends Action{
     }
 }
 
-export class ActionWait extends Action{
+export class ActionWait extends Action {
     millis:number = 500
     constructor() {
         super()
@@ -179,7 +179,7 @@ export class ActionWait extends Action{
 export class Message {
     text: string;
     type: string;
-    time?: number;
+    // time?: number;
     attributes?: MessageAttributes;
     metadata?: Metadata;
     constructor(type: string, text: string) {
@@ -188,10 +188,21 @@ export class Message {
     }
 }
 
+export class MessageWithWait extends Message {
+    time?: number = 0;
+    constructor(type: string, text: string, time: number) {
+        super(type,text);
+        this.time = time?time:0;
+    }
+}
+
 
 
 export class MessageAttributes {
     attachment: Attachment;
+    constructor() {
+        this.attachment = new Attachment();
+    }
 }
 
 export class Metadata {
@@ -205,6 +216,10 @@ export class Metadata {
 export class Attachment {
     type: string;
     buttons: Button[];
+    constructor() {
+        this.type = TYPE_ATTACHMENT.TEMPLATE;
+        this.buttons = [];
+    }
 }
 
 export interface Button {
