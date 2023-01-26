@@ -4,6 +4,8 @@ $width-title: 80%;
 .header {
     // position: relative;
     display: flex;
+    justify-content: space-between;
+    gap: 10px;
     width: 100%;
     height: $height-header;
     max-height: $height-header;
@@ -121,7 +123,7 @@ $width-title: 80%;
     // right: 180px;
     // top: 22px;
     align-self: center;
-    margin-top: 8px;
+    // margin-top: 8px;
 
 }
 
