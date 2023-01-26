@@ -2,13 +2,14 @@
 $width-title: 80%;
 
 .header {
-    position: relative;
+    // position: relative;
     display: flex;
     width: 100%;
     height: $height-header;
     max-height: $height-header;
-    top: 0;
-    left: 0;
+    // top: 0;
+    // left: 0;
+    margin-top: 10px;
     .i-priority-color-mark {
         background-color: $color-blue-hex;
         position: absolute;
@@ -25,7 +26,7 @@ $width-title: 80%;
     .form-group {
         // position: absolute;
         // display: block;
-        width: 70%;
+        width: 100%;
         margin: 0;
         padding: 0 30px;
         .form-control {
@@ -45,6 +46,7 @@ $width-title: 80%;
             font-size: 1.4em;
             line-height: $height-header;
             color: $color-light-gray-hex;
+            z-index: 1;
             &.noDisplay {
                 display: none;
             }
@@ -54,11 +56,13 @@ $width-title: 80%;
             display: block;
             // width: $width-title;
             top: 0;
-            left: 30px;
+            // left: 30px;
             margin-top: 6px;
             padding: 0;
             color: $color-bck-light-gray-hex;
             font-size: 1.4em;
+            z-index: 2;
+            position: relative;
         }
         .btn-save {
             position: absolute;
@@ -117,6 +121,8 @@ $width-title: 80%;
     // right: 180px;
     // top: 22px;
     align-self: center;
+    margin-top: 8px;
+
 }
 
 .switch-label {
@@ -140,7 +146,7 @@ $circle-size: 40px;
     text-align: center;
     right: 0px;
     // position: absolute;
-    margin: 5px;
+    margin: 5px 10px 5px 5px;
 }
 
 .loading-btn {
