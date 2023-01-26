@@ -18,19 +18,22 @@ export class ActionDeleteVariableComponent implements OnInit {
               private logger: LoggerService) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(){
+    this.initialize();
+    if(this.action && this.action.variableName){
+      this.setFormValue();
+    }
+  }
+
+  private initialize(){
+    this.actionDeleteFormGroup = this.buildForm();
     this.actionDeleteFormGroup.valueChanges.subscribe(form => {
       console.log('[ACTION-DELETE-VARIABLE] form valueChanges-->', form)
       if(form && (form.assignTo !== '' || form.variableName !==''))
         this.action = Object.assign(this.action, this.actionDeleteFormGroup.value);
     })
-  }
-
-  ngOnChanges(){
-    this.actionDeleteFormGroup = this.buildForm();
-    if(this.action && this.action.variableName){
-      this.setFormValue()
-    }
-
   }
 
   buildForm(): FormGroup{

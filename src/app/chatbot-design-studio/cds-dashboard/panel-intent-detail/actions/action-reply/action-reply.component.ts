@@ -36,7 +36,7 @@ export class ActionReplyComponent implements OnInit {
 
 
 
-
+  
   constructor() { }
 
   // SYSTEM FUNCTIONS //
@@ -142,7 +142,6 @@ export class ActionReplyComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
-    console.log('generateArrayResponse:::', this.arrayMessagesWithWait);
   }
 
   /** */

@@ -27,8 +27,11 @@ export class CDSTextareaComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log("limitCharsText: ", this.limitCharsText)
-    console.log("showUtils: ", this.showUtils)
+    if(this.text){
+      this.control.patchValue(this.text)
+    }else{
+      this.text = this.control.value
+    }
 
     this.leftCharsText = calculatingRemainingCharacters(this.text);
     if(this.leftCharsText<(this.limitCharsText/10)){

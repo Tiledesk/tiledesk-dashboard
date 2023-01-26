@@ -1,8 +1,13 @@
-import { ActionAssignVariable, ActionDeleteVariable, ActionHideMessage, ActionOnlineAgent, ActionOpenHours } from './../../../models/intent-model';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 
-import { ActionCondition, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionIntentConnected, ActionEmail, ActionWait } from 'app/models/intent-model';
 import { TYPE_ACTION, TYPE_COMMAND } from '../../utils';
+import { ActionCondition, ActionAgent, ActionClose, 
+         ActionReply, Intent, Command, 
+         Message, ActionIntentConnected, ActionEmail, 
+         ActionWait, ActionAssignVariable, ActionDeleteVariable, 
+         ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
+         ActionChangeDepartment, ActionHideMessage } from 'app/models/intent-model';
+
 
 @Component({
   selector: 'appdashboard-panel-actions',
@@ -99,6 +104,14 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     }
     if(typeAction === TYPE_ACTION.OPEN_HOURS){
       let action = new ActionOpenHours();
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.REPLACE_BOT){
+      let action = new  ActionReplaceBot();
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.CHANGE_DEPARTMENT) {
+      let action = new  ActionChangeDepartment();
       this.intentSelected.actions.push(action);
     }
     if(typeAction === TYPE_ACTION.HIDE_MESSSAGE){

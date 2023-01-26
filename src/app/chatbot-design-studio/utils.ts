@@ -47,10 +47,11 @@ export enum TYPE_ACTION {
     CONDITION = 'condition',
     ASSIGN_VARIABLE = 'assign',
     DELETE_VARIABLE = 'delete',
+    REPLACE_BOT = 'replacebot',
+    CHANGE_DEPARTMENT = 'department',
     ONLINE_AGENTS = 'ifonlineagents',
     OPEN_HOURS = 'ifopenhours',
-    HIDE_MESSSAGE = 'hmessage',
-    CHANGE_DEPARTMENT = 'change_department'
+    HIDE_MESSSAGE = 'hmessage'
 }
 
 export enum TYPE_ATTACHMENT {

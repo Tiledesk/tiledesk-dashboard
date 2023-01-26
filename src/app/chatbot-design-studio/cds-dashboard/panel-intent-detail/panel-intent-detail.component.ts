@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, TemplateRef, ViewContainerRef } from '@angular/core';
 
 import { Intent, Button, ActionReply, Action } from '../../../models/intent-model';
 import { TYPE_INTENT_ELEMENT, TYPE_ACTION } from '../../utils';
@@ -20,6 +20,8 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   typeIntentElement = TYPE_INTENT_ELEMENT;
   typeAction = TYPE_ACTION;
   elementSelected: any;
+  elementSelectedIndex: number;
+  elementSelectedMaxLength: number[] = [];
   elementIntentSelectedType: string;
 
 
@@ -43,6 +45,8 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.elementIntentSelected);
     this.elementIntentSelectedType = this.elementIntentSelected.type;
     this.elementSelected = this.elementIntentSelected.element;
+    this.elementSelectedIndex = this.elementIntentSelected.index
+    this.elementSelectedMaxLength = [...Array(10).keys()]
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);

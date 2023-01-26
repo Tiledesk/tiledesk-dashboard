@@ -8,22 +8,6 @@
         <input type="text" [(ngModel)]="intentName" class="input form-control" (blur)="onBlurIntentName($event)"
             (ngModelChange)="onChangeIntentName($event)">
         <div *ngIf="intentNameAlreadyExist" class="error---msg"> The intent name must be unique </div>
-
-        <div class="onff-intent-webhook">
-            <div class="intent-webhook-switch">
-                <input (change)="toggleIntentWebhook($event)" type="checkbox" name="intent-webhook-switch" class="intent-webhook-checkbox"
-                    id="intent-webhook-switch" tabindex="0" [checked]="intentSelected.webhook_enabled === true">
-                <label class="intent-webhook-switch-label" for="intent-webhook-switch"> </label>
-                
-            </div>
-            <div class="switch-label"> 
-                <span *ngIf="intentSelected.webhook_enabled === true">Webhook enabled </span>
-                <span *ngIf="intentSelected.webhook_enabled === false">Webhook disabled </span>
-            </div>
-            
-        </div>
-
-
         <!-- <button 
         id="cds-save-intent-btn"
         class="btn btn-primary btn-save" 
@@ -33,6 +17,21 @@
         Test it out
     </button> -->
     </div>
+
+    <div class="onff-intent-webhook">
+        <div class="intent-webhook-switch">
+            <input (change)="toggleIntentWebhook($event)" type="checkbox" name="intent-webhook-switch" class="intent-webhook-checkbox"
+                id="intent-webhook-switch" tabindex="0" [checked]="intentSelected.webhook_enabled === true">
+            <label class="intent-webhook-switch-label" for="intent-webhook-switch"> </label>
+            
+        </div>
+        <div class="switch-label"> 
+            <span *ngIf="intentSelected.webhook_enabled === true">Webhook enabled </span>
+            <span *ngIf="intentSelected.webhook_enabled === false">Webhook disabled </span>
+        </div>
+        
+    </div>
+
 
     <div class="loading-btn-wrapper">
         <button 
@@ -44,5 +43,5 @@
             <span class="loading-btn__text"> {{ 'Save' | translate }}</span>
         </button>
     </div>
-    
+
 </div>

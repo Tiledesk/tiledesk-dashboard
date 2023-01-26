@@ -18,7 +18,6 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
-import { throwMatDuplicatedDrawerError } from '@angular/material/sidenav';
 
 const swal = require('sweetalert');
 
@@ -505,7 +504,7 @@ export class CdsDashboardComponent implements OnInit {
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions length: ", this.intentSelected.actions.length);
     if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
       console.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0])
-      this.onActionSelected(this.intentSelected.actions[0])
+      this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1})
     } 
    else {
 
@@ -528,11 +527,13 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = answer
   }
 
-  onActionSelected(action: Action) {
-    console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', action)
+  onActionSelected(event: {action: Action, index: number, maxLength: number}) {
+    console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
-    this.elementIntentSelected['element'] = action
+    this.elementIntentSelected['element'] = event.action
+    this.elementIntentSelected['index'] = event.index
+    this.elementIntentSelected['maxLength'] = event.maxLength
     console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
   }
 

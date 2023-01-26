@@ -3,17 +3,17 @@
     <!-- [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}" -->
     <div>
         <div class="button-intent" (click)="onSelectQuestion()"
-        [ngStyle]="{'border':question ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
-        [ngClass]="{'button-intent-active': HAS_SELECTED_QUESTION }">
+            [ngStyle]="{'border':question ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
+            [ngClass]="{'button-intent-active': HAS_SELECTED_QUESTION }">
             <span class="material-icons ">
                 question_mark
             </span>
             <span> Question </span>
         </div>
-        
+
         <div class="button-intent" (click)="displayForm()"
-        [ngStyle]="{'border':formSize > 0 ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
-        [ngClass]="{'button-intent-active': HAS_SELECTED_FORM }">
+            [ngStyle]="{'border':formSize > 0 ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
+            [ngClass]="{'button-intent-active': HAS_SELECTED_FORM }">
             <span class="material-icons">
                 list_alt
             </span>
@@ -38,7 +38,9 @@
     <div class="action-list-wpr" *ngIf="actions && actions?.length > 0">
 
         <div cdkDropList class="action--list" (cdkDropListDropped)="drop($event)">
-            <div class="action--box" *ngFor="let action of actions; let i = index;" cdkDrag cdkDragLockAxis="y" (click)="onActionSelected(action)">
+            <div id="action_{{i}}" class="action--box" *ngFor="let action of actions; let i = index;let last = last"
+                cdkDrag cdkDragLockAxis="y" (click)="onActionSelected(action, i)">
+
                 <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
                 <div class="action--handle" cdkDragHandle>
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
@@ -48,10 +50,433 @@
                             d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
                     </svg>
                 </div>
-                <div>
-                    {{action._tdActionType }}
+
+
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Reply -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'reply'">
+
+                    <div class="cds-action-icon-wpr">
+                        <svg aria-label="Reply" xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24"
+                            width="18px" fill="#fff"
+                            style="transform: rotate(-36deg);position: relative;top: -2px;left: 2px;">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                        </svg>
+                    </div>
+
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Reply
+                    </div>
+
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
                 </div>
-   
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Condition -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'condition'">
+                    <div class="cds-action-icon-wpr">
+                        <svg aria-label="Condition" xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24"
+                            width="18px" fill="#fff">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path d="M0 0h24v24H0V0z" fill="none" />
+                            <path
+                                d="M17 16l-4-4V8.82C14.16 8.4 15 7.3 15 6c0-1.66-1.34-3-3-3S9 4.34 9 6c0 1.3.84 2.4 2 2.82V12l-4 4H3v5h5v-3.05l4-4.2 4 4.2V21h5v-5h-4z" />
+                        </svg>
+                    </div>
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Condition
+                    </div>
+                    <!-- 
+                    <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Connect Intent -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'intent'">
+                    <div class="cds-action-icon-wpr">
+                        <svg aria-label="ConnectIntent" xmlns="http://www.w3.org/2000/svg" height="18px"
+                            viewBox="0 0 24 24" width="18px" fill="#fff">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M16.01 7L16 3h-2v4h-4V3H8v4h-.01C7 6.99 6 7.99 6 8.99v5.49L9.5 18v3h5v-3l3.5-3.51v-5.5c0-1-1-2-1.99-1.99z" />
+                        </svg>
+                    </div>
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Connect Intent
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Agent handoff -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'agent'">
+                    <div class="cds-action-icon-wpr">
+                        <svg aria-label="AgentHandoff" xmlns="http://www.w3.org/2000/svg"
+                            enable-background="new 0 0 24 24" height="18px" viewBox="0 0 24 24" width="18px"
+                            fill="#fff">
+                            <g>
+                                <rect fill="none" height="18" width="18" />
+                            </g>
+                            <g>
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M23,5.5V20c0,2.2-1.8,4-4,4h-7.3c-1.08,0-2.1-0.43-2.85-1.19L1,14.83c0,0,1.26-1.23,1.3-1.25 c0.22-0.19,0.49-0.29,0.79-0.29c0.22,0,0.42,0.06,0.6,0.16C3.73,13.46,8,15.91,8,15.91V4c0-0.83,0.67-1.5,1.5-1.5S11,3.17,11,4v7 h1V1.5C12,0.67,12.67,0,13.5,0S15,0.67,15,1.5V11h1V2.5C16,1.67,16.67,1,17.5,1S19,1.67,19,2.5V11h1V5.5C20,4.67,20.67,4,21.5,4 S23,4.67,23,5.5z" />
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Agent Handoff
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Operating Hours -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'ifopenhours'">
+                    <div class="cds-action-icon-wpr">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px"
+                            fill="#FFF">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
+                            <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+                        </svg>
+                    </div>
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        If open hours
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                            /* position: absolute; */
+                            transform: rotate(-90deg);
+                            top: 52px;
+                            color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Add var -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'assign'">
+                    <div class="cds-action-icon-wpr">
+                        <svg aria-label="AddVariable" class="svg-icon"
+                            style="width: 18px; height: 18px;vertical-align: middle;fill: #FFFFFF;overflow: hidden; padding: 3px;"
+                            viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M838.892308 350.523077c47.261538 0 141.784615-39.384615 141.784615-165.415385s-90.584615-133.907692-120.123077-133.907692c-55.138462 0-110.276923 39.384615-159.507692 124.061538-49.230769 86.646154-104.369231 179.2-104.369231 179.2h-1.969231c-11.815385-61.046154-21.661538-110.276923-25.6-131.938461-9.846154-53.169231-70.892308-165.415385-194.953846-165.415385-126.030769 0-240.246154 72.861538-240.246154 72.861539-19.692308 13.784615-33.476923 37.415385-33.476923 64.984615 0 41.353846 33.476923 76.8 76.8 76.8 11.815385 0 23.630769-3.938462 33.476923-7.876923 0 0 94.523077-53.169231 116.184616 0 5.907692 15.753846 11.815385 33.476923 17.723077 53.169231 23.630769 82.707692 47.261538 179.2 64.984615 265.846154l-82.707692 118.153846s-92.553846-33.476923-139.815385-33.476923-141.784615 39.384615-141.784615 165.415384 90.584615 133.907692 120.123077 133.907693c55.138462 0 110.276923-39.384615 159.507692-124.061539 49.230769-86.646154 104.369231-179.2 104.369231-179.2 15.753846 78.769231 29.538462 139.815385 37.415384 167.384616 31.507692 88.615385 104.369231 141.784615 198.892308 141.784615 0 0 98.461538 0 214.646154-64.984615 27.569231-11.815385 47.261538-39.384615 47.261538-70.892308 0-41.353846-33.476923-76.8-76.8-76.8-11.815385 0-23.630769 3.938462-33.476923 7.876923 0 0-82.707692 47.261538-110.276923 9.846154-19.692308-39.384615-37.415385-90.584615-51.2-153.6-11.815385-55.138462-25.6-122.092308-39.384615-187.076923l84.676923-122.092308c-1.969231 1.969231 90.584615 35.446154 137.846154 35.446154z" />
+                        </svg>
+                    </div>
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Assign var
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Delete var -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'delete'">
+                    <div class="cds-action-icon-wpr">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1024 1024"
+                            style="enable-background:new 0 0 1024 1024;width: 18px; height: 18px;vertical-align: middle;fill: #FFFFFF;overflow: hidden; padding: 3px;"
+                            xml:space="preserve">
+                            <g>
+                                <path fill="#FFFFFF" d="M850.7,760.1c-11.7,0-23.4,3.9-33.2,7.8l102.9,100.9c4.5-9.8,7.1-20.5,7.1-31.9
+            C927.5,795.6,894,760.1,850.7,760.1z" />
+                                <path class="delete_var" d="M860.6,51.2c-55.1,0-110.3,39.4-159.5,124.1c-49.2,86.6-104.4,179.2-104.4,179.2h-2
+            c-11.8-61-21.7-110.3-25.6-131.9c-9.8-53.2-70.9-165.4-195-165.4c-93.6,0-180.8,40.2-219.3,60.9l125,122.6
+            c20.1-1.8,38.9,3.1,47.1,23.3c4,10.6,8,22.2,12,34.6l312.9,306.8c-10.9-51.2-23.1-110.4-35.3-168.1L701,315.1
+            c-2,2,90.6,35.4,137.8,35.4l0,0c47.3,0,141.8-39.4,141.8-165.4S890.1,51.2,860.6,51.2z" />
+                                <path fill="#FFFFFF"
+                                    d="M872.3,912.2L749.5,791.8c-0.2,0-0.4,0-0.5,0.1l-62.4-61.2c-0.1-0.3-0.2-0.6-0.3-0.9L372.9,422.5
+            c0.1,0.3,0.1,0.5,0.2,0.8L210.6,263.9c0,0,0.1,0,0.1,0c0,0,0.1-0.1,0.3-0.2L107.4,162.2c-0.1,0.1-0.1,0.3-0.2,0.4L75,130.9
+            l-45.3,46.2l371,363.9c3.1,14.2,6.1,28.2,8.9,41.9L326.9,701c0,0-92.6-33.5-139.8-33.5S45.3,707,45.3,833s90.6,133.9,120.1,133.9
+            c55.1,0,110.3-39.4,159.5-124.1c49.2-86.6,104.4-179.2,104.4-179.2c15.8,78.8,29.5,139.8,37.4,167.4
+            c31.5,88.6,104.4,141.8,198.9,141.8c0,0,60.8,0,143.3-31.6l56.2,55.1l45.3-46.2l-38.5-37.8C872,912.3,872.1,912.3,872.3,912.2z" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Delete var
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Hide message -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'hmessage'">
+                    <div class="cds-action-icon-wpr">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px"
+                            fill="#fff">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M10.54 11l-.54-.54L7.54 8 6 6.46 2.38 2.84 1.27 1.73 0 3l2.01 2.01L2 22l4-4h9l5.73 5.73L22 22.46 17.54 18l-7-7zM8 14H6v-2h2v2zm-2-3V9l2 2H6zm14-9H4.08L10 7.92V6h8v2h-7.92l1 1H18v2h-4.92l6.99 6.99C21.14 17.95 22 17.08 22 16V4c0-1.1-.9-2-2-2z" />
+                        </svg>
+                    </div>
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Hide message
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Send email -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'email'">
+                    <div class="cds-action-icon-wpr">
+                        <svg aria-label="SendEmail" xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24"
+                            width="18px" fill="#FFFFFF">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                        </svg>
+                    </div>
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Send email
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Online Agent -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'ifonlineagents'">
+                    <div class="cds-action-icon-wpr">
+                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="18px"
+                            viewBox="0 0 24 24" width="18px" fill="#FFF">
+                            <g>
+                                <rect fill="none" height="18" width="18" />
+                            </g>
+                            <g>
+                                <g>
+                                    <circle cx="10" cy="9" r="4" />
+                                    <path
+                                        d="M16.39,15.56C14.71,14.7,12.53,14,10,14c-2.53,0-4.71,0.7-6.39,1.56C2.61,16.07,2,17.1,2,18.22V21h16v-2.78 C18,17.1,17.39,16.07,16.39,15.56z" />
+                                    <path
+                                        d="M20.36,1l-1.41,1.41c2.73,2.73,2.73,7.17,0,9.9l1.41,1.41C23.88,10.21,23.88,4.51,20.36,1z" />
+                                    <path
+                                        d="M17.54,10.9c1.95-1.95,1.95-5.12,0-7.07l-1.41,1.41c1.17,1.17,1.17,3.07,0,4.24L17.54,10.9z" />
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        If online agents
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Close -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'close'">
+                    <div class="cds-action-icon-wpr">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px"
+                            fill="#fff">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 12 16 9.41 14.59 8zM12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                        </svg>
+                    </div>
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Close
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Wait -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'wait'">
+                    <div class="cds-action-icon-wpr">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px"
+                            fill="#fff">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M16.24 7.76C15.07 6.59 13.54 6 12 6v6l-4.24 4.24c2.34 2.34 6.14 2.34 8.49 0 2.34-2.34 2.34-6.14-.01-8.48zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
+                        </svg>
+                    </div>
+
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Wait
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Replace bot -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'replacebot'">
+                    <div class="cds-action-icon-wpr">
+                        <svg aria-label="ReplaceBot" xmlns="http://www.w3.org/2000/svg" height="18px"
+                            viewBox="0 0 24 24" width="18px" fill="#FFFFFF">
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <path
+                                d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Replace bot
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Change department -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'department'">
+                    <div class="cds-action-icon-wpr">
+                        <svg aria-label="ChangeDepartment" xmlns="http://www.w3.org/2000/svg"
+                            enable-background="new 0 0 24 24" height="18px" viewBox="0 0 24 24" width="18px"
+                            fill="#fff">
+                            <g>
+                                <rect fill="none" height="24" width="24" />
+                                <path
+                                    d="M9.78,11.16l-1.42,1.42c-0.68-0.69-1.34-1.58-1.79-2.94l1.94-0.49C8.83,10.04,9.28,10.65,9.78,11.16z M11,6L7,2L3,6h3.02 C6.04,6.81,6.1,7.54,6.21,8.17l1.94-0.49C8.08,7.2,8.03,6.63,8.02,6H11z M21,6l-4-4l-4,4h2.99c-0.1,3.68-1.28,4.75-2.54,5.88 c-0.5,0.44-1.01,0.92-1.45,1.55c-0.34-0.49-0.73-0.88-1.13-1.24L9.46,13.6C10.39,14.45,11,15.14,11,17c0,0,0,0,0,0h0v5h2v-5 c0,0,0,0,0,0c0-2.02,0.71-2.66,1.79-3.63c1.38-1.24,3.08-2.78,3.2-7.37H21z" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="cds-action-name-wpr">
+                        <!-- {{action._tdActionType }} -->
+                        Change dept
+                    </div>
+                    <!-- <div class="cds-action-arrow">
+                        <span class="material-icons" style="
+                        /* position: absolute; */
+                        transform: rotate(-90deg);
+                        top: 52px;
+                        color: #fff;">
+                            keyboard_backspace
+                        </span>
+                    </div> -->
+                </div>
+
                 <div class="control-button delete-action" (click)="onDeleteAction(i)">
                     <em class="material-icons">delete</em>
                 </div>
