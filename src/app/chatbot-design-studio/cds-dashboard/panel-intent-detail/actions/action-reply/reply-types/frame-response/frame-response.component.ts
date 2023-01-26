@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser'
-import { Message } from '../../../../../../../models/intent-model';
+import { MessageWithWait } from '../../../../../../../models/intent-model';
 import { TYPE_MESSAGE, TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT, calculatingRemainingCharacters } from '../../../../../../utils';
 
 @Component({
@@ -9,12 +9,13 @@ import { TYPE_MESSAGE, TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_
   styleUrls: ['./frame-response.component.scss']
 })
 export class FrameResponseComponent implements OnInit {
+  @Output() changeDelayTimeReplyElement = new EventEmitter();
   @Output() deleteResponse = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
   @Output() openButtonPanel = new EventEmitter();
   
-  @Input() response: Message;
+  @Input() response: MessageWithWait;
   @Input() index: number;
 
   // frame //
@@ -88,8 +89,9 @@ export class FrameResponseComponent implements OnInit {
 
   /** */
   onChangeDelayTime(value:number){
-    //this.delayTime = value;
+    this.delayTime = value;
     this.response.time = value*1000;
+    this.changeDelayTimeReplyElement.emit();
   }
 
   /** */

@@ -101,9 +101,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   /** */
   onSaveIntent() {
     this.intentNameResult = this.checkIntentName();
-    console.log('sav intentttt', this.intentNameResult);
     if (this.intentNameResult && !this.intentNameAlreadyExist && this.intentNameNotHasSpecialCharacters === true) {
-      console.log('sav intentttt innnnn', this.intentNameAlreadyExist);
       this.intentSelected.intent_display_name = this.intentName;
       this.saveIntent.emit(this.intentSelected);
     }

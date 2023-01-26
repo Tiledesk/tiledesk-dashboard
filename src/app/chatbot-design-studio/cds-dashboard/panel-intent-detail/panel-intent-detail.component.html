@@ -5,8 +5,7 @@
             <cds-action-reply *ngSwitchCase="typeAction.REPLY"
                 class="panel-response"
                 [reply]="elementSelected"
-                [showSpinner] = "showSpinner"
-                (openButtonPanel) = onOpenButtonPanel($event)>
+                [listOfActions]="listOfActions">
             </cds-action-reply>
 
             <cds-action-wait *ngSwitchCase="typeAction.WAIT"
@@ -69,13 +68,11 @@
     </appdashboard-form>
 </div>
 
-
-<div *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">
-    <appdashboard-answer [intentSelected]="intentSelected">
-
+ 
+<div *ngIf = "elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">
+    <appdashboard-answer
+     [intentSelected]="intentSelected">
     </appdashboard-answer>
-
-
 </div>
 
 
@@ -103,8 +100,13 @@
     ></appdashboard-panel-button-configuration>
 </div> -->
 
-<div class="card-buttons" *ngIf="openCardButton" [ngClass]="{'active':openCardButton}">
-    <appdashboard-panel-button-configuration [button]=buttonSelected [listOfActions]=listOfActions
-        (closeButtonPanel)=onCloseButtonPanel()
-        (saveButton)=onSaveButton($event)></appdashboard-panel-button-configuration>
-</div>
+<!-- <div class="card-buttons" 
+    *ngIf="openCardButton"
+    [ngClass]="{'active':openCardButton}">
+    <appdashboard-panel-button-configuration
+        [button] = buttonSelected
+        [listOfActions] = listOfActions
+        (closeButtonPanel) = onCloseButtonPanel()
+        (saveButton) = onSaveButton($event)
+    ></appdashboard-panel-button-configuration>
+</div> -->
