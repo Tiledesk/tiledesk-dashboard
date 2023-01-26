@@ -19,6 +19,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -139,6 +140,7 @@ import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/
     MatChipsModule,
     MatGridListModule,
     MatAutocompleteModule,
+    MatSlideToggleModule,
     MatListModule,
     RouterModule,
     TranslateModule,

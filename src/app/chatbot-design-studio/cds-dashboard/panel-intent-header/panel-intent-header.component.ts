@@ -101,15 +101,17 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   /** */
   onSaveIntent() {
     this.intentNameResult = this.checkIntentName();
+    console.log('sav intentttt', this.intentNameResult);
     if (this.intentNameResult && !this.intentNameAlreadyExist && this.intentNameNotHasSpecialCharacters === true) {
+      console.log('sav intentttt innnnn', this.intentNameAlreadyExist);
       this.intentSelected.intent_display_name = this.intentName;
       this.saveIntent.emit(this.intentSelected);
     }
   }
 
-  toggleIntentWebhook($event) {
-    console.log('[PANEL-INTENT-HEADER] toggleWebhook ', $event.target.checked);
-    this.intentSelected.webhook_enabled = $event.target.checked
+  toggleIntentWebhook(event) {
+    console.log('[PANEL-INTENT-HEADER] toggleWebhook ', event.checked);
+    this.intentSelected.webhook_enabled = event.checked
   }
   // getCurrentProject() {
   //   this.auth.project_bs.subscribe((project) => {
