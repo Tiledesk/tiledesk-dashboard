@@ -64,9 +64,9 @@ export class PanelIntentListComponent implements OnInit {
         this.intents = JSON.parse(JSON.stringify(faqs));
         this.returnListOfIntents.emit(faqs);
 
-        this.intent_start = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'start')), 1)[0]
+        this.intent_start = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name.trim() === 'start')), 1)[0]
         console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_start: ", this.intent_start);
-        this.intent_defaultFallback = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'defaultFallback')), 1)[0]
+        this.intent_defaultFallback = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name.trim() === 'defaultFallback')), 1)[0]
         console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_defaultFallback: ", this.intent_defaultFallback);
         this.filtered_intents = this.intents;
         let element = document.getElementById('intent_' + (this.filtered_intents.length - 2));
