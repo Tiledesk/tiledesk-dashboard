@@ -48,9 +48,9 @@ export class PanelIntentListComponent implements OnInit {
   onNewIntentListener() {
     console.log("[PANEL-INTENT-LIST] onNewIntentListener")
     this.eventsSubscription = this.events.subscribe((intent: Intent) => {
-      console.log("---> ONNEWINTENTLISTENER: ", intent)
+      console.log("[PANEL-INTENT-LIST] ---> ONNEWINTENTLISTENER: ", intent)
       this.getAllIntents(this.id_faq_kb).then((length: number) => {
-        console.log("intents length: ", length);
+        console.log("[PANEL-INTENT-LIST] intents length: ", length);
         this.selectIntent(intent, length - 1);
       })
     })
@@ -109,14 +109,14 @@ export class PanelIntentListComponent implements OnInit {
     // Try to use MutationObserver for detect changes in the list.
     setTimeout(() => {
       const element = document.getElementById('intent_' + index);
-      console.log("element: ", element);
+      console.log("[PANEL-INTENT-LIST] element: ", element);
       if (element) {
         element.classList.toggle("active")
         //element.scrollIntoView();
       }
   
       if (!this.selectedIntent || this.selectedIntent.id != intent.id) {
-        console.log("select intent emit");
+        console.log("[PANEL-INTENT-LIST]  select intent emit");
         this.selectedIntent = intent;
         this.selected_intent.emit(intent);
         
