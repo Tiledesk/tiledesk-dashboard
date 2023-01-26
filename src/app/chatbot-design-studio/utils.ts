@@ -17,7 +17,7 @@ export enum TYPE_RESPONSE {
 export enum TYPE_BUTTON {
     TEXT = 'text', 
     URL = 'url', 
-    ACTION = 'go to intent'
+    ACTION = 'action'
 }
 
 export enum TYPE_URL {
