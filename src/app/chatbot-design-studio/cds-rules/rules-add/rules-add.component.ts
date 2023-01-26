@@ -60,7 +60,7 @@ export class RulesAddComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.nullValidator],
       when: this.formBuilder.group({
-        regexOption: ['starts', Validators.required],
+        regexOption: ['always', Validators.required],
         text: ['', Validators.required],
         urlMatches: ['', Validators.required],
         triggerEvery: ['', Validators.required]
