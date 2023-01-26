@@ -1,7 +1,7 @@
 
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, Attribute } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Message, Button } from '../../../../../../../models/intent-model';
+import { MessageWithWait, Button, MessageAttributes } from '../../../../../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
 
@@ -14,13 +14,18 @@ import { TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT, calculatingRemainingCharacters
 
 export class TextResponseComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
-
+  
+  @Output() changeDelayTimeReplyElement = new EventEmitter();
+  @Output() changeTextareaReplyElement = new EventEmitter();
+  
   @Output() deleteResponse = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
   @Output() openButtonPanel = new EventEmitter();
   
-  @Input() response: Message;
+  
+  
+  @Input() response: MessageWithWait;
   @Input() index: number;
 
   // Textarea //
@@ -62,24 +67,24 @@ export class TextResponseComponent implements OnInit {
   }
 
   /** */
-  private addNewButton(): Button{
-    let button =  {
-      'value': 'Button',
-      'type': this.typeOfButton.TEXT,
-      'target': this.typeOfUrl.BLANK,
-      'link': '',
-      'action': '',
-      'show_echo': true
-    };
-    this.buttons.push(button);
-    this.response.attributes = {
-      attachment: {
-        type: 'template',
-        buttons: this.buttons
-      }
-    }
-    return button;
-  }
+  // private addNewButton(): Button{
+  //   let button =  {
+  //     'value': '',
+  //     'type': this.typeOfButton.TEXT,
+  //     'target': this.typeOfUrl.BLANK,
+  //     'link': '',
+  //     'action': '',
+  //     'show_echo': true
+  //   };
+  //   this.buttons.push(button);
+  //   // this.response.attributes = {
+  //   //   attachment: {
+  //   //     type: 'template',
+  //   //     buttons: this.buttons
+  //   //   }
+  //   // }
+  //   return button;
+  // }
 
   // EVENT FUNCTIONS //
   /** */
@@ -106,20 +111,33 @@ export class TextResponseComponent implements OnInit {
   /** */
   onChangeTextarea(text:string) {
     this.response.text = text;
+    setTimeout(() => {
+      this.changeTextareaReplyElement.emit();
+    }, 500);
   }
 
   /** */
   onChangeDelayTime(value:number){
     this.delayTime = value;
     this.response.time = value*1000;
+    this.changeDelayTimeReplyElement.emit();
   }
 
   /** */
   onOpenButtonPanel(button?){
-    if(!button){
-      button = this.addNewButton();
+    // if(!button){
+    //   button = this.addNewButton();
+    // }
+    try {
+      if(!this.response.attributes || !this.response.attributes.attachment.buttons){
+        this.response.attributes = new MessageAttributes();
+        this.buttons = this.response.attributes.attachment.buttons;
+      }
+    } catch (error) {
+      
     }
-    this.openButtonPanel.emit(button);
+    
+    this.openButtonPanel.emit({button: button, refResponse: this.response});
   }
 
   onDeleteButton(index){

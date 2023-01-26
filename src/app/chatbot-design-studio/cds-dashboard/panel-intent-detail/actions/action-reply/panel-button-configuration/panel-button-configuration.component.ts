@@ -71,14 +71,16 @@ export class PanelButtonConfigurationComponent implements OnInit {
     this.buttonUrl = '';
 
     try {
-      this.buttonLabel = this.button.value;
-      this.buttonType = this.button.type;
-      this.urlType = this.button.target;
-      this.buttonUrl = this.button.link;
-      this.buttonAction = this.button.action;
+      this.buttonLabel = this.button.value?this.button.value:null;
+      this.buttonType = this.button.type?this.button.type:null;
+      this.urlType = this.button.target?this.button.target:null;
+      this.buttonUrl = this.button.link?this.button.link:null;
+      this.buttonAction = this.button.action?this.button.action:null;
     } catch (error) {
       // error
     }
+
+    console.log('PanelButtonConfigurationComponent', this.button, this.buttonTypes);
     
   }
 
@@ -95,6 +97,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
   //     'show_echo': true
   //   };
   // }
+
   
   private checkButtonLabel(): boolean {
     //setTimeout(() => {

@@ -30,20 +30,7 @@
             [textMessage]="response.text"
             (changeTextarea)="onChangeTextarea($event)"
         ></appdashboard-element-textarea>
-        <!-- 
-        <mat-form-field class="box-textarea" appearance="fill">
-            <textarea matInput
-                cdkTextareaAutosize
-                [(ngModel)]="textMessage"
-                #autosize="cdkTextareaAutosize"
-                [maxlength]="limitCharsText"
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"
-                (ngModelChange)="onChangeText($event)">
-            </textarea>
-        </mat-form-field> 
-        -->
-        
+             
         <div class="text-editor-drop">
             <em class="material-icons">drag_indicator</em>
         </div>
@@ -81,10 +68,6 @@
             </div>
             <div class="button-controls">
                 
-                <!-- <div class="control-button" cdkDragHandle>
-                   <em class="material-icons">compare_arrows</em>
-                </div>  -->
-                
                 <div class="buttonsToMove">
                     <div class="control-button" (click)="onMoveLeftButton(i)">
                         <em class="material-icons">chevron_left</em>
@@ -98,7 +81,6 @@
                     <em class="material-icons">delete</em>
                 </div>
 
-                
            </div>
         </div>
         

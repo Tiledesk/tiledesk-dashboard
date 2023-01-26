@@ -24,7 +24,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
 
 
   openCardButton = false;
-  buttonSelected: Button;
+  // buttonSelected: Button;
 
   constructor() { }
 
@@ -70,23 +70,25 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   /** appdashboard-intent: Open button panel */
   onOpenButtonPanel(event) {
     console.log('onOpenButtonPanel :: ', event);
-    if (this.openCardButton === true) {
-      this.onCloseButtonPanel();
-    }
-    this.buttonSelected = event;
-    this.openCardButton = true;
+    // if (this.openCardButton === true) {
+    //   this.onCloseButtonPanel();
+    // }
+    // this.buttonSelected = event;
+    // this.openCardButton = true;
   }
 
   
   /** appdashboard-button-configuration-panel: Save button */
-  onSaveButton(button) {
-    this.openCardButton = false;
-  }
+  // onSaveButton(button) {
+  //   console.log('onSaveButton :: ', this.elementSelected);
+  //   this.elementSelected.text = "...";
+  //   this.openCardButton = false;
+  // }
 
-  /** appdashboard-button-configuration-panel: Close button panel */
-  onCloseButtonPanel() {
-    this.openCardButton = false;
-  }
+  // /** appdashboard-button-configuration-panel: Close button panel */
+  // onCloseButtonPanel() {
+  //   this.openCardButton = false;
+  // }
 
   passJsonIntentForm(json) {
     console.log('[PANEL-INTENT-DETAIL] passJsonIntentForm ', json);

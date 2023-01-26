@@ -32,9 +32,12 @@ export class DelaySliderComponent implements OnInit {
 
   closeDelaySlider(){
     this.delayOpen = false;
-    this.changeDelayTime.emit(this.delayTime);
+    // this.changeDelayTime.emit(this.delayTime);
   }
 
+  onValueChange(){
+    this.changeDelayTime.emit(this.delayTime);
+  }
 
   onFocusOutDelay(){
     if( this.focusSlider === false){

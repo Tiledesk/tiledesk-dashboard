@@ -17,6 +17,7 @@
                 [displayWith]="formatLabel"
                 [(ngModel)]="delayTime"
                 (focus)="onFocusSlider()"
+                (valueChange)="onValueChange()"
                 (focusout)="onFocusOutSlider()">
                 <input matSliderThumb>
             </mat-slider>

@@ -12,7 +12,7 @@ import { HttpClient } from "@angular/common/http";
 
 
 import { Intent, Button, Action, Form, ActionReply, Command, Message } from '../../models/intent-model';
-import { TYPE_ACTION, TYPE_INTENT_ELEMENT, TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
+import { TYPE_COMMAND, TYPE_INTENT_ELEMENT, TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
 import { Subject } from 'rxjs';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Chatbot } from 'app/models/faq_kb-model';
@@ -565,23 +565,12 @@ export class CdsDashboardComponent implements OnInit {
     console.log('[CDS DSBRD] addNewIntent  ')
     this.intentSelected = new Intent();
     let action = new ActionReply();
-    let command = new Command(TYPE_ACTION.REPLY);
+    let commandWait = new Command(TYPE_COMMAND.WAIT);
+    action.attributes.commands.push(commandWait);
+    let command = new Command(TYPE_COMMAND.MESSAGE);
     command.message = new Message('text', 'A chat message will be sent to the visitor');
     action.attributes.commands.push(command);
-
-    // = [
-    //   {
-    //     type: TYPE_ACTION.REPLY,
-    //     message: {
-    //       text: 'A chat message will be sent to the visitor',
-    //       type: 'text'
-    //     }
-    //   }
-    // ]
-
     this.intentSelected.actions.push(action)
-    // this.elementIntentSelected = {};
-    // this.elementIntentSelected['type'] = 'new'
     console.log('[CDS DSBRD] addNewIntent intentSelected ', this.intentSelected)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = ''

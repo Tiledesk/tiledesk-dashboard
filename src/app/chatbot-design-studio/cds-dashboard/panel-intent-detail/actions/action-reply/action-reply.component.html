@@ -5,16 +5,13 @@
         cdkDropList 
         (cdkDropListDropped)="drop($event)"
         >
-        <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag>
-
-            <div *ngIf="response.message && response.message.type === typeMessage.TEXT ">
+        <!-- <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag> -->
+        <div *ngFor="let message of arrayMessagesWithWait; let i = index;" class="draggable-box" cdkDrag>
+            <div *ngIf="message.type === typeMessage.TEXT ">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-text-response
                     [index] = i
-                    [response] = response.message
-                    (moveUpResponse) = onMoveUpResponse($event)
-                    (moveDownResponse) = onMoveDownResponse($event)
-                    (deleteResponse) = onDeleteResponse($event)
+                    [response] = message
                     ></appdashboard-text-response>
                 </div>
                 
@@ -27,23 +24,22 @@
                     </div> 
                     <appdashboard-text-response
                     [index] = i
-                    [response] = response.message
+                    [response] = message
                     (moveUpResponse) = onMoveUpResponse($event)
                     (moveDownResponse) = onMoveDownResponse($event)
                     (deleteResponse) = onDeleteResponse($event)
                     (openButtonPanel) = onOpenButtonPanel($event)
+                    (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                    (changeTextareaReplyElement) = onChangeTextareaReplyElement()
                     ></appdashboard-text-response>
                 </div>
             </div>
             
-            <div *ngIf="response.message && response.message.type === typeMessage.IMAGE">
+            <div *ngIf="message.type === typeMessage.IMAGE">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-image-response
                     [index] = i
-                    [response] = response.message
-                    (moveUpResponse) = onMoveUpResponse($event)
-                    (moveDownResponse) = onMoveDownResponse($event)
-                    (deleteResponse) = onDeleteResponse($event)
+                    [response] = message
                     ></appdashboard-image-response>
                 </div>
                 
@@ -56,23 +52,22 @@
                     </div> 
                     <appdashboard-image-response
                     [index] = i
-                    [response] = response.message
+                    [response] = message
                     (moveUpResponse) = onMoveUpResponse($event)
                     (moveDownResponse) = onMoveDownResponse($event)
                     (deleteResponse) = onDeleteResponse($event)
                     (openButtonPanel) = onOpenButtonPanel($event)
+                    (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                    (changeTextareaReplyElement) = onChangeTextareaReplyElement()
                     ></appdashboard-image-response>
                 </div>
             </div>
 
-            <div *ngIf="response.message && response.message.type === typeMessage.FRAME">
+            <div *ngIf="message.type === typeMessage.FRAME">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-frame-response
                     [index] = i
-                    [response] = response.message
-                    (moveUpResponse) = onMoveUpResponse($event)
-                    (moveDownResponse) = onMoveDownResponse($event)
-                    (deleteResponse) = onDeleteResponse($event)
+                    [response] = message
                     ></appdashboard-frame-response>
                 </div>
                 
@@ -85,11 +80,13 @@
                     </div> 
                     <appdashboard-frame-response
                     [index] = i
-                    [response] = response.message
+                    [response] = message
                     (moveUpResponse) = onMoveUpResponse($event)
                     (moveDownResponse) = onMoveDownResponse($event)
                     (deleteResponse) = onDeleteResponse($event)
                     (openButtonPanel) = onOpenButtonPanel($event)
+                    (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                    (changeTextareaReplyElement) = onChangeTextareaReplyElement()
                     ></appdashboard-frame-response>
                 </div>
             </div>
@@ -116,4 +113,16 @@
         class="panel-tools-response"
         (addNewResponse) = onAddNewResponse($event)
     ></appdashboard-panel-reply-tools>
+</div>
+
+
+<div class="card-buttons" 
+    [ngClass]="{'active':openCardButton}">
+    <appdashboard-panel-button-configuration
+        *ngIf="openCardButton"
+        [button] = buttonSelected
+        [listOfActions] = listOfActions
+        (closeButtonPanel) = onCloseButtonPanel()
+        (saveButton) = onSaveButton($event)
+    ></appdashboard-panel-button-configuration>
 </div>

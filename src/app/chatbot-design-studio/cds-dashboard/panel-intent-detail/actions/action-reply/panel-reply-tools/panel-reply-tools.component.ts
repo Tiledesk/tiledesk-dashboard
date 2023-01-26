@@ -41,8 +41,7 @@ export class PanelReplyToolsComponent implements OnInit {
           type: TYPE_COMMAND.MESSAGE,
           message: {
             text: '',
-            type: TYPE_MESSAGE.TEXT,
-            time: TIME_WAIT_DEFAULT
+            type: TYPE_MESSAGE.TEXT
           },
         } 
         break;
@@ -52,7 +51,6 @@ export class PanelReplyToolsComponent implements OnInit {
           message: {
             text: '',
             type: TYPE_MESSAGE.IMAGE,
-            time: TIME_WAIT_DEFAULT,
             metadata: {
               src: '',
               width: MESSAGE_METADTA_WIDTH,
@@ -67,7 +65,6 @@ export class PanelReplyToolsComponent implements OnInit {
           message: {
             text: '',
             type: TYPE_MESSAGE.FRAME,
-            time: TIME_WAIT_DEFAULT,
             metadata: {
               src: '',
               width: MESSAGE_METADTA_WIDTH,

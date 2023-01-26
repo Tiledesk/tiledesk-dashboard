@@ -2,7 +2,7 @@ import { ActionAssignVariable, ActionDeleteVariable, ActionHideMessage, ActionOn
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 
 import { ActionCondition, ActionAgent, ActionClose, ActionReply, Intent, Command, Message, ActionIntentConnected, ActionEmail, ActionWait } from 'app/models/intent-model';
-import { TYPE_ACTION } from '../../utils';
+import { TYPE_ACTION, TYPE_COMMAND } from '../../utils';
 
 @Component({
   selector: 'appdashboard-panel-actions',
@@ -52,7 +52,9 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     console.log('[PANEL ACTION] actionSelected ', typeAction);
     if(typeAction === TYPE_ACTION.REPLY){
       let action = new ActionReply();
-      let command = new Command('message');
+      let commandWait = new Command(TYPE_COMMAND.WAIT);
+      action.attributes.commands.push(commandWait);
+      let command = new Command(TYPE_COMMAND.MESSAGE);
       command.message = new Message('text', 'A chat message will be sent to the visitor');
       console.log('1 action:  ', action)
       console.log('2 command:  ', command)

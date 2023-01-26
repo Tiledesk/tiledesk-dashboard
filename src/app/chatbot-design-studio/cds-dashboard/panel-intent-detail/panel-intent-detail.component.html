@@ -3,8 +3,7 @@
     <cds-action-reply *ngSwitchCase="typeAction.REPLY"
         class="panel-response"
         [reply]="elementSelected"
-        [showSpinner] = "showSpinner"
-        (openButtonPanel) = onOpenButtonPanel($event)>
+        [listOfActions]="listOfActions">
     </cds-action-reply>
 
     <cds-action-wait *ngSwitchCase="typeAction.WAIT"
@@ -72,10 +71,7 @@
 <div *ngIf = "elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">
     <appdashboard-answer
      [intentSelected]="intentSelected">
-
     </appdashboard-answer>
-
-  
 </div>
 
         
@@ -103,7 +99,7 @@
     ></appdashboard-panel-button-configuration>
 </div> -->
 
-<div class="card-buttons" 
+<!-- <div class="card-buttons" 
     *ngIf="openCardButton"
     [ngClass]="{'active':openCardButton}">
     <appdashboard-panel-button-configuration
@@ -112,4 +108,4 @@
         (closeButtonPanel) = onCloseButtonPanel()
         (saveButton) = onSaveButton($event)
     ></appdashboard-panel-button-configuration>
-</div>
+</div> -->
