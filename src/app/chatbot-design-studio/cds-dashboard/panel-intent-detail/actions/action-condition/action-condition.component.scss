@@ -9,6 +9,7 @@
 .content {
     //padding: 10px 30px;
     padding: 20px 0px;
+    margin-left: 30px;
 }
 
 .text-editor-wrapper {
@@ -32,7 +33,7 @@
     color: white;
     font-size: 18px;
     margin-bottom: 0px;
-    margin-left: 30px;
+    // margin-left: 30px;
 }
 
 
@@ -41,6 +42,7 @@ ul {
   position: relative;
   overflow: hidden;
   padding-top: 10px;
+  padding-inline-start: 0px;
   height: 50px;
 }
 ul:before, .active:after {
@@ -78,5 +80,7 @@ li {
 #text-condition{
     position: relative;
     top: -18px;
-    right: -5px;
+    right: -50px;
+    width: 90%;
+    display: block;
 }

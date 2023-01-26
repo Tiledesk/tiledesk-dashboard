@@ -48,9 +48,9 @@ export class PanelIntentListComponent implements OnInit {
   onNewIntentListener() {
     console.log("[PANEL-INTENT-LIST] onNewIntentListener")
     this.eventsSubscription = this.events.subscribe((intent: Intent) => {
-      console.log("---> ONNEWINTENTLISTENER: ", intent)
+      console.log("[PANEL-INTENT-LIST] ---> ONNEWINTENTLISTENER: ", intent)
       this.getAllIntents(this.id_faq_kb).then((length: number) => {
-        console.log("intents length: ", length);
+        console.log("[PANEL-INTENT-LIST] intents length: ", length);
         this.selectIntent(intent, length - 1);
       })
     })
@@ -64,9 +64,9 @@ export class PanelIntentListComponent implements OnInit {
         this.intents = JSON.parse(JSON.stringify(faqs));
         this.returnListOfIntents.emit(faqs);
 
-        this.intent_start = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'start')), 1)[0]
+        this.intent_start = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name.trim() === 'start')), 1)[0]
         console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_start: ", this.intent_start);
-        this.intent_defaultFallback = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name === 'defaultFallback')), 1)[0]
+        this.intent_defaultFallback = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name.trim() === 'defaultFallback')), 1)[0]
         console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_defaultFallback: ", this.intent_defaultFallback);
         this.filtered_intents = this.intents;
         let element = document.getElementById('intent_' + (this.filtered_intents.length - 2));
@@ -109,14 +109,14 @@ export class PanelIntentListComponent implements OnInit {
     // Try to use MutationObserver for detect changes in the list.
     setTimeout(() => {
       const element = document.getElementById('intent_' + index);
-      console.log("element: ", element);
+      console.log("[PANEL-INTENT-LIST] element: ", element);
       if (element) {
         element.classList.toggle("active")
         //element.scrollIntoView();
       }
   
       if (!this.selectedIntent || this.selectedIntent.id != intent.id) {
-        console.log("select intent emit");
+        console.log("[PANEL-INTENT-LIST]  select intent emit");
         this.selectedIntent = intent;
         this.selected_intent.emit(intent);
         
@@ -138,6 +138,7 @@ export class PanelIntentListComponent implements OnInit {
     elements.forEach((el) => {
       el.classList.remove('active');
     })
+    this.selectedIntent = null;
     this.createIntent.emit(true);
     // this.router.navigate(['project/' + this.projectID  + '/createfaq', this.id_faq_kb, 'tilebot', 'en']);
   }

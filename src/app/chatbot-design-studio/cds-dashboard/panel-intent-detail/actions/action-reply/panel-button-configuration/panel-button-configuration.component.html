@@ -43,6 +43,8 @@
                     <ng-select 
                         class = "form-control-select" 
                         [items] = "buttonTypes" 
+                        bindLabel="label"
+                        bindValue="value"
                         [searchable] = false
                         [clearable] = false
                         [(ngModel)] = "buttonType"
@@ -63,6 +65,8 @@
                     <ng-select 
                         class = "form-control-select" 
                         [items] = "urlTypes" 
+                        bindLabel="label"
+                        bindValue="value"
                         [searchable] = false
                         [clearable] = false
                         [(ngModel)] = "urlType">

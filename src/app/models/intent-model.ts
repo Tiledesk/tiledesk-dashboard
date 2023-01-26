@@ -74,10 +74,12 @@ export class ActionOpenHours extends Action {
 }
 
 export class ActionHideMessage extends Action {
-  text: string;
+    text: string;
+    attributes: {};
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.HIDE_MESSSAGE;
+        this.attributes = {  subtype: "info"}
     }
 }
 
@@ -189,10 +191,10 @@ export class Message {
 }
 
 export class MessageWithWait extends Message {
-    time?: number = 0;
+    time?: number = 500;
     constructor(type: string, text: string, time: number) {
         super(type,text);
-        this.time = time?time:0;
+        this.time = time?time:500;
     }
 }
 

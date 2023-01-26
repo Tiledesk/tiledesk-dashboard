@@ -21,11 +21,11 @@ export class PanelButtonConfigurationComponent implements OnInit {
   buttonLabel: string;
 
   typeOfButton = TYPE_BUTTON;
-  buttonTypes: Array<string>;
+  buttonTypes: Array<{label: string, value: TYPE_BUTTON}>;
   buttonType: string;
 
   typeOfUrl = TYPE_URL;
-  urlTypes: Array<string>;
+  urlTypes: Array<{label: string, value: TYPE_URL}>;
   urlType: string;
 
   buttonUrl: string;
@@ -63,13 +63,21 @@ export class PanelButtonConfigurationComponent implements OnInit {
   ngOnInit(): void {
     this.buttonLabelResult = true;
     this.errorUrl = false;
-    this.buttonTypes = [this.typeOfButton.TEXT,this.typeOfButton.URL, this.typeOfButton.ACTION];
-    this.urlTypes = [this.typeOfUrl.BLANK,this.typeOfUrl.PARENT, this.typeOfUrl.SELF];
+    this.buttonTypes = [
+      {label: "text", value: this.typeOfButton.TEXT},
+      {label: "url", value: this.typeOfButton.URL}, 
+      {label: "go to intent", value: this.typeOfButton.ACTION}
+    ];
+    this.urlTypes = [
+      {label: "blank", value: this.typeOfUrl.BLANK},
+      {label: "parent", value: this.typeOfUrl.PARENT},
+      {label: "self", value: this.typeOfUrl.SELF},
+    ];
     this.buttonLabel = '';
     this.buttonType = this.typeOfButton.TEXT;
     this.urlType = this.typeOfUrl.BLANK;
     this.buttonUrl = '';
-
+    
     try {
       this.buttonLabel = this.button.value?this.button.value:null;
       this.buttonType = this.button.type?this.button.type:null;
@@ -160,8 +168,8 @@ export class PanelButtonConfigurationComponent implements OnInit {
   }
 
   /** */
-  onChangeTypeButton(typeOfButton: string) {
-    this.button.type = typeOfButton;
+  onChangeTypeButton(typeOfButton: {label:string, value: TYPE_BUTTON}) {
+    this.button.type = typeOfButton.value;
   }
 
   /** */

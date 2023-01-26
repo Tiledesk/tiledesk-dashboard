@@ -120,7 +120,7 @@ export class ActionReplyComponent implements OnInit {
 
   /** */
   private generateCommandsOfElements(){
-    var time = 0;
+    var time = 500;
     try {
       this.arrayResponses.forEach(element => {
         if(element.type === TYPE_COMMAND.WAIT){

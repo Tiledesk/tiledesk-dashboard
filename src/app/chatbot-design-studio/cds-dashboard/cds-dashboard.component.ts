@@ -329,8 +329,9 @@ export class CdsDashboardComponent implements OnInit {
         
           window.setTimeout(() => {
             button.classList.remove(successClassName)
+            console.log('[CDS DSHBRD] HERE YES  ');
             that.eventsSubject.next(intent);
-            that.eventsSubject.next(intent);
+            that.upadatedIntent.next(intent);
           }, stateDuration);
         }, stateDuration);
 
