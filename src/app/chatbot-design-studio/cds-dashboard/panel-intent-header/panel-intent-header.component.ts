@@ -36,13 +36,38 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
+    console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
+    console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intentSelected.intent_display_name)
+    console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
+
+    const untitledIntents = this.listOfIntents.filter((el) => {
+      return el.intent_display_name.indexOf('untitled_intent') > -1;
+    });
+
+    console.log("[PANEL-INTENT-HEADER] OnChanges untitledIntents: ", untitledIntents)
+    if (this.intentSelected.intent_display_name === undefined && untitledIntents.length === 0) {
+      this.intentSelected.intent_display_name = 'untitled_intent_1';
+      this.saveIntent.emit(this.intentSelected);
+    } else if (this.intentSelected.intent_display_name === undefined && untitledIntents.length > 0) {
+      let lastUntitledIntent = untitledIntents[untitledIntents.length - 1].intent_display_name
+      console.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntent: ", lastUntitledIntent)
+     
+      const lastUntitledIntentSegment =  lastUntitledIntent.split("_")
+      console.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentSegment: ", lastUntitledIntentSegment)
+      const lastUntitledIntentNumb = +lastUntitledIntentSegment[2]
+      console.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentNumb: ", lastUntitledIntentNumb)
+      const nextUntitledIntentNumb = lastUntitledIntentNumb + 1
+      console.log("[PANEL-INTENT-HEADER] OnChanges nextUntitledIntentNumb: ", nextUntitledIntentNumb)
+      this.intentSelected.intent_display_name = 'untitled_intent_'+ nextUntitledIntentNumb;
+      this.saveIntent.emit(this.intentSelected);
+    }
+
+
     this.intentName = this.intentSelected.intent_display_name;
     this.showSpinner = false;
     this.intentNameAlreadyExist = false;
     this.intentNameNotHasSpecialCharacters = true;
-    console.log("[PANEL-INTENT-HEADER] header --> intentSelected: ", this.intentSelected)
-    console.log("[PANEL-INTENT-HEADER] header --> listOfIntents: ", this.listOfIntents)
+
     if (this.intentSelected && this.intentSelected['faq_kb']) {
       this.id_faq_kb = this.intentSelected['faq_kb'][0]._id;
     }
