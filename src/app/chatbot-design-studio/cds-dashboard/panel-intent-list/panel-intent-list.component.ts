@@ -138,6 +138,7 @@ export class PanelIntentListComponent implements OnInit {
     elements.forEach((el) => {
       el.classList.remove('active');
     })
+    this.selectedIntent = null;
     this.createIntent.emit(true);
     // this.router.navigate(['project/' + this.projectID  + '/createfaq', this.id_faq_kb, 'tilebot', 'en']);
   }

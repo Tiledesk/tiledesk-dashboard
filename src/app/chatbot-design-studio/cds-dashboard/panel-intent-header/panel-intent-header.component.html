@@ -8,6 +8,7 @@
         <input type="text" [(ngModel)]="intentName" class="input form-control" (blur)="onBlurIntentName($event)"
             (ngModelChange)="onChangeIntentName($event)">
         <div *ngIf="intentNameAlreadyExist" class="error---msg"> The intent name must be unique </div>
+        <div *ngIf="intentNameNotHasSpecialCharacters === false" class="error---msg"> The intent name cannot contain special characters </div>
         <!-- <button 
         id="cds-save-intent-btn"
         class="btn btn-primary btn-save" 

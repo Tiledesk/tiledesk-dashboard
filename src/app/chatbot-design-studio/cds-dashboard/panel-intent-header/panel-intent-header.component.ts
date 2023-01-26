@@ -15,10 +15,10 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   @Input() listOfIntents: Intent[];
 
   intentName: string;
-  intentNameResult = true;
-  intentNameAlreadyExist = false
-  intentNameNotHasSpecialCharacters: boolean;
- 
+  intentNameResult: boolean = true;
+  intentNameAlreadyExist: boolean = false
+  intentNameNotHasSpecialCharacters: boolean = true;
+
   id_faq_kb: string;
 
 
@@ -27,20 +27,20 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.showSpinner = false;
-    console.log("header --> intentSelected: ", this.intentSelected)
+    console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {
       console.log('intent selected ', error);
     }
-
-    // this.getCurrentProject();
-    // this.getDeptsByProjectId();
-    // this.getTestSiteUrl();
   }
 
   ngOnChanges() {
+    console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
+    this.intentName = this.intentSelected.intent_display_name;
     this.showSpinner = false;
+    this.intentNameAlreadyExist = false;
+    this.intentNameNotHasSpecialCharacters = true;
     console.log("[PANEL-INTENT-HEADER] header --> intentSelected: ", this.intentSelected)
     console.log("[PANEL-INTENT-HEADER] header --> listOfIntents: ", this.listOfIntents)
     if (this.intentSelected && this.intentSelected['faq_kb']) {
@@ -62,35 +62,28 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
       return true;
     }
   }
+
   checkIntentNameMachRegex(intentname) {
-
     const regex = /^[ _0-9a-zA-Z]+$/
-
-    
     return regex.test(intentname);
   }
 
-
   // EVENT FUNCTIONS //
-  /** */
   onChangeIntentName(name: string) {
-    console.log('[PANEL-INTENT-HEADER] onChangeIntentName', name);
-    this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
-      return el.intent_display_name === name
-    });
+    console.log('[PANEL-INTENT-HEADER] onChangeIntentName name', name);
+    console.log('[PANEL-INTENT-HEADER] onChangeIntentName this.intentSelected.intent_display_name ', this.intentSelected.intent_display_name);
+    if (name !== this.intentSelected.intent_display_name) {
+      this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
+        return el.intent_display_name === name
+      });
+    }
 
-   this.intentNameNotHasSpecialCharacters = this.checkIntentNameMachRegex(name) 
-   console.log('[PANEL-INTENT-HEADER] checkIntentNameMachRegex intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters);
+    this.intentNameNotHasSpecialCharacters = this.checkIntentNameMachRegex(name)
+    console.log('[PANEL-INTENT-HEADER] checkIntentNameMachRegex intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters);
 
     console.log('[PANEL-INTENT-HEADER] intent name already exist', this.intentNameAlreadyExist);
     this.intentNameResult = this.checkIntentName();
-    console.log('[PANEL-INTENT-HEADER] this.intentNameResult ', this.intentNameResult) 
-    // name.toString();
-    // try {
-    //   this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
-    // } catch (error) {
-    //   console.log('name is not a string', error);
-    // }
+    console.log('[PANEL-INTENT-HEADER] this.intentNameResult ', this.intentNameResult)
   }
 
   /** */
@@ -100,6 +93,10 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** */
   onSaveIntent() {
+    console.log('[PANEL-INTENT-HEADER] this.intentName ', this.intentName)
+    console.log('[PANEL-INTENT-HEADER] intentNameResult ', this.intentNameResult)
+    console.log('[PANEL-INTENT-HEADER] intentNameAlreadyExist ', this.intentNameAlreadyExist)
+    console.log('[PANEL-INTENT-HEADER] intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters)
     this.intentNameResult = this.checkIntentName();
     if (this.intentNameResult && !this.intentNameAlreadyExist && this.intentNameNotHasSpecialCharacters === true) {
       this.intentSelected.intent_display_name = this.intentName;
