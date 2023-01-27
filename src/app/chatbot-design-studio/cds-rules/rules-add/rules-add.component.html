@@ -30,10 +30,16 @@
     
             <div class="card-item box-buttons">
                 <div class="loading-btn-wrapper">
+                    <button id="retun-rule-form" class="btn btn-primary loading-btn" (click)="returnBack()">
+                        <span class="loading-btn__text"><span class="material-icons">keyboard_return</span> Return</span>
+                    </button>
+                </div>
+                <div class="loading-btn-wrapper">
                     <button id="create-rule-form" class="btn btn-primary loading-btn" (click)="submitForm()">
                         <span class="loading-btn__text">Add Rule</span>
                     </button>
                 </div>
+                
             </div>         
     </div>
 </ng-template>
