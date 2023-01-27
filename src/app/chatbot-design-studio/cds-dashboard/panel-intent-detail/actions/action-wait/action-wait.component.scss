@@ -1,3 +1,5 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
 .action-wait-main {
     padding: 100px 100px;
     // padding-top: 100px;
@@ -41,4 +43,18 @@
 .wait-action-title {
     font-family: "Poppins","Roboto", "Arial", sans-serif;
     color: #e8eaed;
+}
+
+
+.action-wait-slider ::ng-deep{
+    .mat-accent .mat-slider-track-fill {
+        background-color: $icon-color !important;
+    }
+    .mat-slider-thumb-label {
+        background-color: $icon-color !important;
+
+    }
+    .mat-slider-thumb {
+        background-color: $icon-color !important;
+    }
 }
