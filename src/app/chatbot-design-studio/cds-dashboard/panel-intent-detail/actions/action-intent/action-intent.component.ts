@@ -1,3 +1,4 @@
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActionIntentConnected } from 'app/models/intent-model';
 import { Component, OnInit, Input } from '@angular/core';
 import { TEXT_CHARS_LIMIT } from './../../../../utils';
@@ -9,37 +10,71 @@ import { TEXT_CHARS_LIMIT } from './../../../../utils';
 })
 export class ActionIntentComponent implements OnInit {
 
-  @Input() intents: Array<any>;
-  @Input() elementSelected: ActionIntentConnected;
+  //@Input() intents: Array<any>;
+  @Input() intents: string[];
+  @Input() action: ActionIntentConnected;
 
-  filtered_intents = [];
-  limitCharsText = TEXT_CHARS_LIMIT;
+  actionIntentFormGroup: FormGroup;
+
+  //filtered_intents = []; 
+  //limitCharsText = TEXT_CHARS_LIMIT;
 
   // to delete
-  buttonAction: any;
+  //buttonAction: any;
 
-  constructor() { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    console.log("[ACTION-INTENT] intents: ", this.intents)
-    this.filtered_intents = this.intents;
-    console.log("[ACTION-INTENT] elementSelected: ", this.elementSelected)
+    //console.log("[ACTION-INTENT] intents: ", this.intents)
+    //this.filtered_intents = this.intents;
+    console.log("[ACTION-INTENT] elementSelected: ", this.action)
   }
 
-  onKey(event) {
-    console.log("[ACTION-INTENT] onKey event: ", event);
-    this.filtered_intents = this.intents;
-    this.filtered_intents = this.filtered_intents.filter(intent => intent.toLowerCase().includes(event.toLowerCase()));
+  ngOnChanges() {
+    this.initialize();
+    if(this.action && this.action.intentName) {
+      
+    }
   }
 
-  onChangeActionButton(event) {
-    //console.log("event: ", event)
+  private initialize() {
+    this.actionIntentFormGroup = this.buildForm();
+    this.actionIntentFormGroup.valueChanges.subscribe(form => {
+      console.log('[ACTION-INTENT] form valueChanges-->', form)
+      if (form && (form.intentName !== '')) {
+        this.action = Object.assign(this.action, this.actionIntentFormGroup.value)
+      }
+    })
   }
 
-  onTextChange(event) {
-    console.log("[ACTION-INTENT] onTextChange event: ", event);
-    this.elementSelected.intentName = event;
+  buildForm(): FormGroup {
+    return this.formBuilder.group({
+      intentName: ['', Validators.required]
+      //json_paylaod: ['', Validators.required]
+    })
   }
+
+  setFormValue() {
+    this.actionIntentFormGroup.patchValue({
+      intentName: this.action.intentName
+      //json_paylaod: this.action.json_payload
+    })
+  }
+
+  // onKey(event) {
+  //   console.log("[ACTION-INTENT] onKey event: ", event);
+  //   this.filtered_intents = this.intents;
+  //   this.filtered_intents = this.filtered_intents.filter(intent => intent.toLowerCase().includes(event.toLowerCase()));
+  // }
+
+  // onChangeActionButton(event) {
+  //   //console.log("event: ", event)
+  // }
+
+  // onTextChange(event) {
+  //   console.log("[ACTION-INTENT] onTextChange event: ", event);
+  //   this.action.intentName = event;
+  // }
 
 
 

@@ -153,8 +153,41 @@ mat-form-field.box-textarea ::ng-deep {
     // min-width: 900px;
 }
 
+.action-title {
+    display: flex;
+    align-items: center;
+    //margin-left: 28px;
+    margin-bottom: 40px;
+    justify-content: flex-start;
+}
+
+// .title-label {
+//     color: white;
+//     margin-bottom: 0px;
+//     // margin-left: 30px;
+// }
+
 .title-label {
     color: white;
+    font-size: 18px;
     margin-bottom: 0px;
     // margin-left: 30px;
+}
+
+
+.text-action {
+    color: $icon-color;
+    margin-right: 10px;
+    margin-bottom: 0px;
+}
+
+.custom-icon {
+    color: $icon-color;
+    margin-right: 6px;
+}
+
+
+.action-type {
+    margin-bottom: 0px;
+    color: white;
 }
