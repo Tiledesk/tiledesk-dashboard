@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, Form, Intent } from 'app/models/intent-model';
 import { FormModelsFactory } from './form-models-factory';
-
+const swal = require('sweetalert');
 // import { URL_more_info_chatbot_forms } from 'app/utils/util';
 
 
@@ -85,7 +85,7 @@ export class FormComponent implements OnInit, OnChanges {
 
     this.selectedFormId = this.modelsOfForm[0].id ? this.modelsOfForm[0].id : null;
     console.log('[FORM-COMP] (OnInit) selectedFormId ', this.selectedFormId)
-  
+
 
     // this.selectedForm = new Form()
     //   this.selectedForm.to_JSON()
@@ -139,7 +139,7 @@ export class FormComponent implements OnInit, OnChanges {
 
     this.selectedForm = new FormModelsFactory().getModels().find(({ id }) => id === idForm);
     console.log('[FORM-COMP] getFieldFromId selectedForm ', this.selectedForm)
-    
+
     // this.translateparam = { selectedFormName: this.selectedForm.name, description_key: this.selectedForm.description_key };
   }
 
@@ -209,7 +209,7 @@ export class FormComponent implements OnInit, OnChanges {
 
   setCancelReplay() {
     this.intentForm.cancelReply = this.cancelReply;
-    console.log('[FORM-COM]  setCancelReplay this.intentForm.cancelReply', this.intentForm.cancelReply)
+    console.log('[FORM-COMP]  setCancelReplay this.intentForm.cancelReply', this.intentForm.cancelReply)
     this.jsonGenerator();
   }
 
@@ -217,10 +217,12 @@ export class FormComponent implements OnInit, OnChanges {
     // this.intentForm = new Form();
     // this.intentForm = this.selectedForm
     // this.intentForm.to_JSON()
-    console.log('this.intentForm:: ', this.intentForm);
+    console.log('[FORM-COMP] jsonGenerator this.intentForm:: ', this.intentForm);
     this.passJsonIntentForm.emit(this.intentForm);
     // this.intentForm.push(this.intentForm)
+    
     this.intentSelected.form = this.intentForm
+    console.log('[FORM-COMP] jsonGenerator this.intentSelected:: ', this.intentSelected);
   }
 
   openSettingsForm() {
@@ -276,9 +278,42 @@ export class FormComponent implements OnInit, OnChanges {
     this.selectedObjectId = index;
   }
 
+
+
+  // presenModalDeleteForm() {
+  // swal({
+  //   title: "Are you sure",
+  //   text: "this.youAreAboutToJoinMsg + ': ' + chatAgent",
+
+  //   icon: "info",
+  //   buttons: {
+  //     cancel: "this.cancelMs"g,
+  //     catch: {
+  //       text: this.joinToChatMsg,
+  //       value: "catch",
+  //     },
+  //   },
+
+  //   // `"Cancel", ${this.goToMultilanguagePageMsg}`],
+  //   dangerMode: false,
+  // })
+  //   .then((value) => {
+  //     this.logger.log('[WS-REQUESTS-LIST][SERVED] ARE YOU SURE TO JOIN THIS CHAT ... value', value)
+
+  //     if (value === 'catch') {
+  //       this.onJoinHandled(request_id, this.currentUserID);
+  //     }
+  //   })
+  // }
+
+
   /** Event modal confirm delete field */
   confirmDeleteModal(index: string) {
+    console.log('[FORM-COMP] confirmDeleteModal index ', index) 
+    console.log('[FORM-COMP] confirmDeleteModal this.idForm ', this.idForm) 
     if (index === this.idForm) {
+    // if (index === this.selectedFormId) {
+
       this.deleteForm();
     } else {
       this.displayAddForm = false;
@@ -289,7 +324,7 @@ export class FormComponent implements OnInit, OnChanges {
         this.deleteForm();
       }
       this.intentForm.fields = this.fields;
-      // console.log('confirmDeleteModal::: ', this.intentForm, this.fields);
+      console.log('confirmDeleteModal::: ', this.intentForm, this.fields);
     }
     this.jsonGenerator();
     this.displayMODAL = false;
@@ -322,9 +357,12 @@ export class FormComponent implements OnInit, OnChanges {
     this.displayCancelButton = false;
     this.displaySettingsButton = false;
     //this.intentForm = new Form();
+    this.intentForm = null;
     this.fields = [];
     this.intentFormSize = 0;
     console.log('[FORM-COM] deleteForm - displayBoxNewForm ', this.displayBoxNewForm, 'intentForm', this.intentForm);
+   
+    console.log('[FORM-COMP] deleteForm this.intentSelected:: ', this.intentSelected);
   }
 
 
