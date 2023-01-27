@@ -21,6 +21,7 @@ export class PanelIntentListComponent implements OnInit {
   @Output() selected_intent = new EventEmitter();
   @Output() returnListOfIntents = new EventEmitter();
   @Output() createIntent = new EventEmitter();
+  @Output() deleteSelectedIntent = new EventEmitter();
   private eventsSubscription: Subscription;
 
   intent_start: Intent;
@@ -173,6 +174,13 @@ export class PanelIntentListComponent implements OnInit {
           this.logger.log('[PANEL-INTENT-LIST] delete intent ERROR ', error)
         }, () => {
           this.logger.log('[PANEL-INTENT-LIST] delete intent * COMPLETE *');
+          // this.selectedIntent = null
+          console.log('[PANEL-INTENT-LIST] delete  this.selectedIntent ',  this.selectedIntent);
+          console.log('[PANEL-INTENT-LIST] delete  intent ',  intent);
+          if (this.selectedIntent.id === intent.id) {
+            this.deleteSelectedIntent.emit(true);
+          }
+          
           swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
             icon: "success",
           }).then((okpressed) => {

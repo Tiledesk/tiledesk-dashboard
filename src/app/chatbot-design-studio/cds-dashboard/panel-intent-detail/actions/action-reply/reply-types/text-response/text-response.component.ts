@@ -141,7 +141,11 @@ export class TextResponseComponent implements OnInit {
   }
 
   onDeleteButton(index){
-    this.buttons.splice(index, 1); 
+    this.buttons.splice(index, 1);
+    //REMOVE ATTRIBUTES OBJ IF NO BUTTONS EXIST
+    if(this.buttons.length === 0){
+      delete this.response.attributes.attachment
+    } 
   }
 
   onMoveLeftButton(fromIndex){

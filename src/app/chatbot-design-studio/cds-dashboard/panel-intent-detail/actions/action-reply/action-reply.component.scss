@@ -16,12 +16,29 @@ $padding: 10px;
     color: white;
 }
 
-::ng-deep .mat-checkbox.mat-accent .mat-checkbox-inner-container {
-    background-color: $icon-color!important;
-}
 ::ng-deep .mat-checkbox.mat-accent .mat-checkbox-frame {
     border-color: $icon-color!important;
 }
+
+// overwrite the checkbox background
+::ng-deep .mat-checkbox-checked .mat-checkbox-background, 
+.mat-checkbox-indeterminate .mat-checkbox-background {
+    background-color: $icon-color!important;
+    .mat-checkbox-checkmark {
+        background: $icon-color!important;;
+        .mat-checkbox-checkmark-path {
+          stroke: white;
+          stroke-width: 5px;
+        }
+      }
+
+}
+
+// // overwrite the ripple overlay on hover and click
+// ::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+//   background-color: black !important;
+// }
+
 
 
 .box-sx {

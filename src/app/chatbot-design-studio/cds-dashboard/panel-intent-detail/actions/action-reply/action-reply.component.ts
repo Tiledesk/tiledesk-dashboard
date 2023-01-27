@@ -126,7 +126,6 @@ export class ActionReplyComponent implements OnInit {
   private generateCommandsOfElements(){
     var time = 500;
     try {
-      console.log('arrayyyy', this.arrayResponses, this.reply)
       this.arrayResponses.forEach(element => {
         if(element.type === TYPE_COMMAND.WAIT){
           time = element.time;
