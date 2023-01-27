@@ -14,7 +14,7 @@
      
             <cds-action-intent *ngSwitchCase="typeAction.INTENT"
                 class="panel-response"
-                [elementSelected]="elementSelected"
+                [action]="elementSelected"
                 [intents]="listOfActions"
                 [showSpinner] = "showSpinner"
                 (openButtonPanel) = onOpenButtonPanel($event)>
