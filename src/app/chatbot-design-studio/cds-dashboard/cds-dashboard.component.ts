@@ -95,18 +95,18 @@ export class CdsDashboardComponent implements OnInit {
     this.getTestSiteUrl();
     this.getDeptsByProjectId();
     this.hideWidget()
-    
+
   }
 
-  private hideWidget(){
-    try{
+  private hideWidget() {
+    try {
       if (window && window['tiledesk']) {
         this.logger.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
-  
+
         window['tiledesk'].hide();
         // alert('signin reinit');
       }
-    }catch(error){
+    } catch (error) {
       this.logger.error('tiledesk_widget_hide ERROR', error)
     }
   }
@@ -290,17 +290,17 @@ export class CdsDashboardComponent implements OnInit {
     let actionsIntentSelected = this.intentSelected.actions;
     console.log('[CDS DSHBRD] creatIntent actionsIntentSelected ', actionsIntentSelected)
     let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
-    
+
     const pendingClassName = 'loading-btn--pending';
     const successClassName = 'loading-btn--success';
-    const failClassName    = 'loading-btn--fail';
+    const failClassName = 'loading-btn--fail';
     const stateDuration = 1500;
     const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
 
     //PENDING STATE
     button.classList.add(pendingClassName)
     const that = this
-    
+
     this.faqService.addIntent(
       this.id_faq_kb,
       questionIntentSelected,
@@ -310,10 +310,10 @@ export class CdsDashboardComponent implements OnInit {
       actionsIntentSelected,
       webhookEnabledIntentSelected
     ).subscribe((intent) => {
-      
+
       const pendingClassName = 'loading-btn--pending';
       const successClassName = 'loading-btn--success';
-      const failClassName    = 'loading-btn--fail';
+      const failClassName = 'loading-btn--fail';
       const stateDuration = 1500;
       const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
       console.log('buttonnnn', button)
@@ -326,7 +326,7 @@ export class CdsDashboardComponent implements OnInit {
         setTimeout(() => {
           button.classList.remove(pendingClassName);
           button.classList.add(successClassName);
-        
+
           window.setTimeout(() => {
             button.classList.remove(successClassName)
             console.log('[CDS DSHBRD] HERE YES  ');
@@ -348,15 +348,15 @@ export class CdsDashboardComponent implements OnInit {
       // }
       // =========== NOTIFY ERROR ===========
       // this.notify.showWidgetStyleUpdateNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
-      
+
       //FAIL STATE
       setTimeout(() => {
         button.classList.remove(pendingClassName);
         button.classList.add(failClassName);
-      
+
         window.setTimeout(() => button.classList.remove(failClassName), stateDuration);
       }, stateDuration);
-      
+
     }, () => {
       this.showSpinner = false;
       this.logger.log('[CDS DSHBRD] CREATED FAQ * COMPLETE *');
@@ -375,13 +375,17 @@ export class CdsDashboardComponent implements OnInit {
     let questionIntentSelected = this.intentSelected.question;
     let answerIntentSelected = this.intentSelected.answer;
     let displayNameIntentSelected = this.intentSelected.intent_display_name;
-    let formIntentSelected = this.intentSelected.form;
+    let formIntentSelected = {}
+    if (this.intentSelected.form !== null) {
+      formIntentSelected = this.intentSelected.form
+    }
+    console.log('[CDS DSHBRD] editIntent formIntentSelected', formIntentSelected)
     let actionsIntentSelected = this.intentSelected.actions;
     let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
-    
+
     const pendingClassName = 'loading-btn--pending';
     const successClassName = 'loading-btn--success';
-    const failClassName    = 'loading-btn--fail';
+    const failClassName = 'loading-btn--fail';
     const stateDuration = 1500;
     const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
 
@@ -389,7 +393,7 @@ export class CdsDashboardComponent implements OnInit {
     button.classList.add(pendingClassName)
     const that = this
 
-    
+
     this.faqService.updateIntent(
       id,
       questionIntentSelected,
@@ -400,16 +404,16 @@ export class CdsDashboardComponent implements OnInit {
       webhookEnabledIntentSelected
     ).subscribe((upadatedIntent) => {
 
-      
+
 
       this.showSpinner = false;
-      console.log('[CDS DSHBRD] UPDATE FAQ RES', upadatedIntent);
+      console.log('[CDS DSHBRD] editIntent - RES upadatedIntent', upadatedIntent);
       if (upadatedIntent) {
         //SUCCESS STATE
         setTimeout(() => {
           button.classList.remove(pendingClassName);
           button.classList.add(successClassName);
-        
+
           window.setTimeout(() => {
             button.classList.remove(successClassName)
             that.upadatedIntent.next(upadatedIntent);
@@ -436,7 +440,7 @@ export class CdsDashboardComponent implements OnInit {
       setTimeout(() => {
         button.classList.remove(pendingClassName);
         button.classList.add(failClassName);
-      
+
         window.setTimeout(() => button.classList.remove(failClassName), stateDuration);
       }, stateDuration);
 
@@ -505,9 +509,9 @@ export class CdsDashboardComponent implements OnInit {
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions length: ", this.intentSelected.actions.length);
     if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
       console.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0])
-      this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1})
-    } 
-   else {
+      this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1 })
+    }
+    else {
 
       this.elementIntentSelected = {};
       this.elementIntentSelected['type'] = ''
@@ -528,7 +532,7 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = answer
   }
 
-  onActionSelected(event: {action: Action, index: number, maxLength: number}) {
+  onActionSelected(event: { action: Action, index: number, maxLength: number }) {
     console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
@@ -644,7 +648,7 @@ export class CdsDashboardComponent implements OnInit {
             swal("Done!", "The Chatbot has been published in the community", {
               icon: "success",
             }).then((okpressed) => {
-             
+
             });
           });
         } else {
@@ -678,7 +682,7 @@ export class CdsDashboardComponent implements OnInit {
             swal("Done!", "The Chatbot has been removed from the community", {
               icon: "success",
             }).then((okpressed) => {
-             
+
             });
           });
         } else {
