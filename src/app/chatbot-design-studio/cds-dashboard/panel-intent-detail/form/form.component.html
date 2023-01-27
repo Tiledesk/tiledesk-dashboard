@@ -16,6 +16,7 @@
                 <i class="material-icons">add_circle</i>
             </span>
         </button>
+        <!-- (click)="openDeleteForm()" presenModalDeleteForm -->
         <button id="delete-form-btn" *ngIf="!displayNewFormButton && intentFormSize > 0" class="btn btn-danger add-form" 
             (click)="openDeleteForm()">
             <span class="icon-label">{{ "AddIntentPage.DeleteForm" | translate }}</span>
