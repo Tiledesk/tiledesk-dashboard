@@ -126,10 +126,13 @@ export class BotListComponent implements OnInit {
 
   getNavigationBaseUrl() {
     const href = window.location.href;
-    this.logger.log('[BOTS-LIST] href ', href)
+    console.log('[BOTS-LIST] href ', href)
     const hrefArray = href.split('/#/');
+  
     this.navigationBaseUrl = hrefArray[0];
-    if (this.navigationBaseUrl === "https://panel.tiledesk.com/v3/dashboard/") {
+    
+    console.log('[BOTS-LIST] navigationBaseUrl ', this.navigationBaseUrl)
+    if (this.navigationBaseUrl === "https://panel.tiledesk.com/v3/dashboard") {
       this.isPanelRoute = true
     }
   }
