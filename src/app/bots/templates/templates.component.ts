@@ -300,6 +300,8 @@ export class TemplatesComponent implements OnInit {
 
   createBlankTilebot() {
     this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+    // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+   
   }
 
 }

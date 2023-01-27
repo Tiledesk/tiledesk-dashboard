@@ -27,6 +27,7 @@ export class BotListComponent implements OnInit {
 
   faqkbList: FaqKb[];
   myChatbotAllCount: number;
+  navigationBaseUrl: string;
 
 
   // set to none the property display of the modal
@@ -85,6 +86,7 @@ export class BotListComponent implements OnInit {
   increaseSalesBotsCount: number;
   route: string
   dev_mode: boolean;
+  isPanelRoute: boolean = false;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -102,7 +104,7 @@ export class BotListComponent implements OnInit {
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.dev_mode = isDevMode()
-    this.logger.log('BOTS-LIST] is dev mode ', this.dev_mode)
+    this.logger.log('[BOTS-LIST] is dev mode ', this.dev_mode)
 
   }
 
@@ -119,6 +121,17 @@ export class BotListComponent implements OnInit {
     this.getTranslations();
     this.getTemplates()
     this.getCommunityTemplates()
+    this.getNavigationBaseUrl()
+  }
+
+  getNavigationBaseUrl() {
+    const href = window.location.href;
+    this.logger.log('[BOTS-LIST] href ', href)
+    const hrefArray = href.split('/#/');
+    this.navigationBaseUrl = hrefArray[0];
+    if (this.navigationBaseUrl === "https://panel.tiledesk.com/v3/dashboard/") {
+      this.isPanelRoute = true
+    }
   }
 
   getBrowserVersion() {
@@ -670,6 +683,8 @@ export class BotListComponent implements OnInit {
 
   createBlankTilebot() {
     this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+      // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+   
   }
 
 
@@ -681,6 +696,14 @@ export class BotListComponent implements OnInit {
   // Go to faq.component to: Add / Edit FAQ, Edit Bot name
   // ---------------------------------------------------------------------------
   goToBotDtls(idFaqKb: string, botType: string, botname: string) {
+    if (this.isPanelRoute === false) {
+      this.goToOldBotDtls(idFaqKb, botType, botname)
+    } else {
+      this.goToCDS(idFaqKb, botType, botname) 
+    }
+  }
+
+  goToOldBotDtls(idFaqKb: string, botType: string, botname: string) {
     this.logger.log('[BOTS-LIST] NAME OF THE BOT SELECTED ', botname);
     let _botType = ""
     if (botType === 'internal') {
