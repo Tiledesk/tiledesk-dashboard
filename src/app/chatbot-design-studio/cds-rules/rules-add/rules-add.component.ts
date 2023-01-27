@@ -23,6 +23,7 @@ export class RulesAddComponent implements OnInit {
   @Input() addMode: boolean = true
   @Output() onRuleAdded = new EventEmitter<Rule>();
   @Output() onRuleDeleted = new EventEmitter<Rule>();
+  @Output() onBack = new EventEmitter<boolean>();
 
   
   ruleFormGroup: FormGroup
@@ -60,15 +61,15 @@ export class RulesAddComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.nullValidator],
       when: this.formBuilder.group({
-        regexOption: ['always', Validators.required],
+        regexOption: ['any', Validators.required],
         text: ['', Validators.required],
         urlMatches: ['', Validators.required],
         triggerEvery: ['', Validators.required]
       }),
       do: this.formBuilder.array([
-        this.formBuilder.group({
-          wait: [2, Validators.required]
-        }),
+        // this.formBuilder.group({
+        //   wait: [2, Validators.required]
+        // }),
         this.formBuilder.group({
           message: this.formBuilder.group({
             text: ['', Validators.required],
@@ -82,7 +83,7 @@ export class RulesAddComponent implements OnInit {
 
   buildRegex(option: string, text: string): string{
     let regex = text
-    if(option === 'always'){
+    if(option === 'any'){
       regex = '^.*$'
     }else if(option === 'starts'){
       regex = '^(' + text + ').*' 
@@ -108,9 +109,9 @@ export class RulesAddComponent implements OnInit {
         triggerEvery: this.selectedRule.when.triggerEvery
       },
       do: [
-        { wait: this.selectedRule.do[0].wait},
+        // { wait: this.selectedRule.do[0].wait},
         { message: {
-            text: this.selectedRule.do[1].message['text']
+            text: this.selectedRule.do[0].message['text']
           }
         }
       ]
@@ -124,7 +125,7 @@ export class RulesAddComponent implements OnInit {
 
   submitForm(){
     this.logger.debug('[RULES-ADD] submitForm-->', this.ruleFormGroup)
-
+    console.log('submitForm-->', this.ruleFormGroup)
     const pendingClassName = 'loading-btn--pending';
     const successClassName = 'loading-btn--success';
     const failClassName    = 'loading-btn--fail';
@@ -219,6 +220,11 @@ export class RulesAddComponent implements OnInit {
     }, ()=>{
       this.logger.debug('[RULES-ADD] faqkbService addRuleToChatbot - COMPLETE')
     })
+  }
+
+  returnBack(){
+    this.logger.debug('[RULES-ADD] returnBack-->', this.selectedChatbot.attributes)
+    this.onBack.emit(true)
   }
 
   closePanel(event){

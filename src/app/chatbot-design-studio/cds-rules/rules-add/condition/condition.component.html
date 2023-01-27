@@ -5,6 +5,7 @@
     </mat-radio-group>
     <cds-text
         [control]="conditionsForm.controls['text']"
+        [disabled]="conditionsForm.controls['regexOption'].value ==='any'"
         [customPrefix]="conditionsForm.controls['regexOption'].value ==='custom'">
     </cds-text>
 </div>

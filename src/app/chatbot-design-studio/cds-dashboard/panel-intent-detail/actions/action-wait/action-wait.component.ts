@@ -7,6 +7,7 @@ import { ActionWait } from 'app/models/intent-model';
   styleUrls: ['./action-wait.component.scss']
 })
 export class ActionWaitComponent implements OnInit, OnChanges {
+
   @Input() actionwait: ActionWait;
   
   delayTime: number;

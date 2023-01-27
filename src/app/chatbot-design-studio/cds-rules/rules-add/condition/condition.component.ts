@@ -25,7 +25,7 @@ export class ConditionComponent implements OnInit {
   ];
 
   conditions: Array<{name: string, value: string, checked: boolean}> = [
-    {name: 'always', value: 'always',checked: true},
+    {name: 'any', value: 'any',checked: true},
     {name: 'starts', value: 'starts', checked: false},
     {name: 'ends', value: 'ends',checked: false},
     {name: 'contains', value: 'contains',checked: false},
@@ -35,7 +35,12 @@ export class ConditionComponent implements OnInit {
   constructor(private rootFormGroup: FormGroupDirective,) { }
 
   ngOnInit(): void {
-    this.conditionsForm = this.rootFormGroup.control.get('when') as FormGroup;
+    this.conditionsForm = this.rootFormGroup.control.get('when') as FormGroup; 
+    // this.conditionsForm.valueChanges.subscribe((whenForm)=>{
+    //   if(whenForm && whenForm.regexOption === 'any'){
+    //     this.conditionsForm.controls['text'].setValidators([Validators.nullValidator])
+    //   }
+    // })
 
   }
 

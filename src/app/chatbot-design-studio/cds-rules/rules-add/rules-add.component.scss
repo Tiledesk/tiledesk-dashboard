@@ -278,6 +278,12 @@ $circle-size: 40px;
     color: #fff;
     
     transition: inherit;
+
+    .material-icons{
+      float: left;
+      margin-right: 10px;
+      top: 0px;
+    }
   }
 }
 

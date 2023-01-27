@@ -1,5 +1,5 @@
 <div class="item-action-content">
-    <div class="item-action-element">
+    <!-- <div class="item-action-element">
         <label class="card-subtitle" style="width: 20%;">Wait time:</label>
         <div class="delay-wrapper">
             <cds-delay-slider
@@ -7,12 +7,12 @@
                 [control]="actionForm.controls[0].get('wait')">
             </cds-delay-slider>
         </div>
-    </div>
+    </div> -->
     <div class="item-action-element">
         <label class="card-subtitle">Message:</label>
         <div style="width: 100%;">
             <cds-text id="text"
-                [control]="actionForm.controls[1].get('message.text')"
+                [control]="actionForm.controls[0].get('message.text')"
                 [autocompleteOptions]="autocompleteOptions">
             </cds-text>
         </div>

@@ -33,7 +33,7 @@ export class ActionIntentComponent implements OnInit {
   ngOnChanges() {
     this.initialize();
     if(this.action && this.action.intentName) {
-      
+      this.setFormValue()
     }
   }
 

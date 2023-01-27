@@ -17,7 +17,8 @@
     <cds-rules-add *ngIf="addClicked"
         [listOfIntents]="listOfIntents"
         [selectedChatbot]="selectedChatbot"
-        (onRuleAdded)="onRuleAdded($event)">
+        (onRuleAdded)="onRuleAdded($event)"
+        (onBack)="onBack($event)">
     </cds-rules-add>
 
     <cds-rules-list

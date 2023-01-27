@@ -12,16 +12,15 @@
                 <em class="material-icons">expand_more</em>
             </div>
         </div> -->
-
+        
         <mat-form-field class="box-input" appearance="fill">
             <div class="input-prefix" *ngIf="customPrefix"> / </div>
             <input matInput
                 [class.customPrefix]="customPrefix"
                 [formControl]="control"
                 [matAutocomplete]="auto"
-                [maxlength]="limitCharsText"
-                type="text"
                 [placeholder]="placeholder"
+                type="text"
                 cdkTextareaAutosize
                 cdkAutosizeMinRows="1"
                 cdkAutosizeMaxRows="5"

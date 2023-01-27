@@ -12,7 +12,7 @@ export interface Rule {
         urlMatches: string, 
         triggerEvery: number},
     do: [
-        {wait: number},
+        // {wait: number},
         {message: any}
     ]
 }

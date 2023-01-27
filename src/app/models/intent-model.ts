@@ -88,7 +88,7 @@ export class ActionReply extends Action {
     attributes: Attributes;
     constructor(text?: string, attributes?: Attributes) {
         super();
-        this.text = text ? text : '...';
+        // this.text = text ? text : '...';
         this._tdActionType = TYPE_ACTION.REPLY;
         this.attributes = new Attributes();
         if (attributes){
