@@ -584,6 +584,14 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = null
   }
 
+  onDeleteSelectedIntent() {
+    console.log('[CDS DSBRD] onDeleteSelectedIntent  ')
+    this.intentSelected = null;
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = ''
+    this.elementIntentSelected['element'] = null
+  }
+
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
       console.log('[CDS DSBRD] - DEPT GET DEPTS ', departments);
