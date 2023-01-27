@@ -49,7 +49,7 @@ export class CdsDashboardComponent implements OnInit {
   // buttonSelected: Button;
   isChromeVerGreaterThan100: boolean;
   isOpenActionDrawer: boolean;
-  eventsSubject: Subject<any> = new Subject<any>();
+  //eventsSubject: Subject<any> = new Subject<any>();
   upadatedIntent: Subject<Intent> = new Subject<Intent>();
   selectedChatbot: Chatbot
   activeSidebarSection: string;
@@ -330,7 +330,7 @@ export class CdsDashboardComponent implements OnInit {
           window.setTimeout(() => {
             button.classList.remove(successClassName)
             console.log('[CDS DSHBRD] HERE YES  ');
-            that.eventsSubject.next(intent);
+            //that.eventsSubject.next(intent);
             that.upadatedIntent.next(intent);
           }, stateDuration);
         }, stateDuration);

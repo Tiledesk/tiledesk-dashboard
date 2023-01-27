@@ -733,7 +733,7 @@ export class BotListComponent implements OnInit {
   }
 
   goToCDS(idFaqKb: string, botType: string, botname: string) {
-    this.router.navigate(['project/' + this.project._id + '/cds/', idFaqKb]);
+    this.router.navigate(['project/' + this.project._id + '/cds/', idFaqKb, 'intent', '0']);
   }
 
 
