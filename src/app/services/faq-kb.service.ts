@@ -100,7 +100,8 @@ export class FaqKbService {
       .get(url, httpOptions)
   }
 
-
+    // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/"
+    // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/community"
   getCommunityTemplates() {
     // 'Authorization': this.TOKEN
     const httpOptions = {
@@ -108,9 +109,8 @@ export class FaqKbService {
         'Content-Type': 'application/json',
       })
     };
-    // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/"
-    // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/community"
-    const url = "https://chatbot-templates-v2-pre.herokuapp.com/chatbots/public/community"
+
+    const url = "https://chatbot-templates-v2-pre.herokuapp.com/chatbots/public/community" //"https://chatbot-templates-app-v3.herokuapp.com/chatbots/public/community" 
 
     this.logger.log('[GET-TMPLT][FAQ-KB.SERV] - GET-TMPLT - URL ', url);
     return this._httpClient
