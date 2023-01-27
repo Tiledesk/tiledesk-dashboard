@@ -15,7 +15,7 @@ export class CDSTextComponent implements OnInit {
   @Input() text: string;
   @Input() placeholder: string;
   @Input() customPrefix: boolean;
-  @Input() limitCharsText: number = 200;
+  @Input() disabled: boolean = false;
   @Input() autocompleteOptions: string[] = [];
   @Output() change = new EventEmitter<string>();
   
@@ -35,6 +35,7 @@ export class CDSTextComponent implements OnInit {
   }
 
   onChangeText(text: string){
+    if(this.disabled) this.text = ' '
     this.text = text
     this.change.emit(text)
   }
