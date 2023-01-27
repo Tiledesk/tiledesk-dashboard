@@ -53,6 +53,14 @@
             <cds-action-hide-message *ngSwitchCase="typeAction.HIDE_MESSSAGE"
                 [action]="elementSelected">
             </cds-action-hide-message>
+
+            <cds-action-replace-bot *ngSwitchCase="typeAction.REPLACE_BOT"
+                [action]="elementSelected">
+            </cds-action-replace-bot>
+
+            <cds-action-change-department *ngSwitchCase="typeAction.CHANGE_DEPARTMENT"
+                [action]="elementSelected">
+            </cds-action-change-department>
         </div>
     </div>
 </div>

@@ -99,7 +99,7 @@
                 (selected_intent)=onSelectIntent($event) 
                 (returnListOfIntents)=onReturnListOfIntents($event)
                 (createIntent)="onCreateIntentBtnClicked()" 
-                [events]="eventsSubject.asObservable()">
+                [events]="upadatedIntent.asObservable()">
             </appdashboard-panel-intent-list>
         </div>
 

@@ -16,6 +16,7 @@
   "pushEngine": "${PUSH_ENGINE}",
   "baseImageUrl": "${API_BASEIMAGE_URL}",
   "logLevel": "${LOG_LEVEL}",
+  "communityTemplatesUrl": "${COMMUNITY_TEMPLATES_URL}",
   "templatesUrl": "${TEMPLATES_URL}",
   "appsUrl":  "${APPS_URL}",
   "promoBannerUrl": "${PROMO_BANNER_URL}",

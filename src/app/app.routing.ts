@@ -131,6 +131,7 @@ import { ContactsComponent } from './contacts/contacts.component';
 // import { ContactsComponent } from './contacts/contacts.component';
 // import { ContactsModule } from './contacts/contacts.module';
 import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component';
+import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
 
 
 const routes: Routes = [
@@ -267,6 +268,7 @@ const routes: Routes = [
   { path: 'project/:projectid/bots/bot-select-type', component: BotTypeSelectComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/bots/createfaqkb', component: BotCreateComponent, canActivate: [AuthGuard] }, // replaced by the bottom path
   { path: 'project/:projectid/bots/create/:type', component: BotCreateComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/chatbot/create', component: CreateChatbotComponent, canActivate: [AuthGuard] },
   
   { path: 'project/:projectid/bots/templates/all', component: TemplatesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/templates/customer-satisfaction', component: TemplatesComponent, canActivate: [AuthGuard] },
@@ -307,6 +309,7 @@ const routes: Routes = [
   // NEW  replace the path ...createfaq and ...editfaq
   // -----------------------------------------
   { path: 'project/:projectid/cds/:faqkbid', component: CdsDashboardComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id', component: CdsDashboardComponent, canActivate: [AuthGuard] },
   
   { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
 

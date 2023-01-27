@@ -18,13 +18,13 @@ export class PanelIntentListComponent implements OnInit {
   @Input() id_faq_kb: string;
   @Input() projectID: string;
   @Input() events: Observable<any>;
-  private eventsSubscription: Subscription;
   @Output() selected_intent = new EventEmitter();
   @Output() returnListOfIntents = new EventEmitter();
   @Output() createIntent = new EventEmitter();
+  private eventsSubscription: Subscription;
 
-  intent_start: any;
-  intent_defaultFallback: any;
+  intent_start: Intent;
+  intent_defaultFallback: Intent;
   predefined_faqs = [];
   filtered_intents = [];
   intents: Intent[];
@@ -64,16 +64,25 @@ export class PanelIntentListComponent implements OnInit {
         this.intents = JSON.parse(JSON.stringify(faqs));
         this.returnListOfIntents.emit(faqs);
 
-        this.intent_start = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name.trim() === 'start')), 1)[0]
-        console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_start: ", this.intent_start);
-        this.intent_defaultFallback = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name.trim() === 'defaultFallback')), 1)[0]
-        console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_defaultFallback: ", this.intent_defaultFallback);
-        this.filtered_intents = this.intents;
-        let element = document.getElementById('intent_' + (this.filtered_intents.length - 2));
-        console.log("element: ", element);
+        this.intent_start = null;
+        this.intent_defaultFallback = null;
 
-        console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - others INTENTS: ", this.intents);
-        console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - others  typeof INTENTS: ", typeof this.intents[0]);
+        let start_index = this.intents.indexOf(this.intents.find(o => o.intent_display_name.trim() === 'start'));
+        console.log("start index: ", start_index);
+        if (start_index != -1) {
+          this.intent_start = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name.trim() === 'start')), 1)[0]
+          console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_start: ", this.intent_start);
+        }
+
+        let default_index = this.intents.indexOf(this.intents.find(o => o.intent_display_name.trim() === 'defaultFallback'));
+        console.log("defaultFallback index: ", default_index);
+        if (default_index != -1) {
+          this.intent_defaultFallback = this.intents.splice(this.intents.indexOf(this.intents.find(o => o.intent_display_name.trim() === 'defaultFallback')), 1)[0]
+          console.log("[PANEL-INTENT-LIST] - GET ALL FAQ BY BOT ID - intent_defaultFallback: ", this.intent_defaultFallback);
+        }
+        this.filtered_intents = this.intents;
+        //let element = document.getElementById('intent_' + (this.filtered_intents.length - 2));
+        //console.log("element: ", element);
         
         resolve(this.filtered_intents.length);
 
@@ -119,6 +128,8 @@ export class PanelIntentListComponent implements OnInit {
         console.log("[PANEL-INTENT-LIST]  select intent emit");
         this.selectedIntent = intent;
         this.selected_intent.emit(intent);
+
+        this.router.navigate(['project/'+this.projectID+'/cds/'+this.id_faq_kb+'/intent/'+this.selectedIntent.id], {replaceUrl: true})
         
         // this.router.navigate(
         //   ['project/'+this.projectID+'/cds/'+this.id_faq_kb+'/intent/'+this.selectedIntent.id], 
