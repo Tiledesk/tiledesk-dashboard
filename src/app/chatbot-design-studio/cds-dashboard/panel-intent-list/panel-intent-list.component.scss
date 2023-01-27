@@ -263,3 +263,13 @@
         text-align: center;
     }
 }
+
+.add-start {
+    width: 100%;
+    border: dashed 1px grey;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0px 15px;
+    border-radius: 10px;
+}
