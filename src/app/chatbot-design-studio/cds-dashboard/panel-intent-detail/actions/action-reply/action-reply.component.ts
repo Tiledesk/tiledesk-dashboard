@@ -98,6 +98,7 @@ export class ActionReplyComponent implements OnInit {
   /** */
   private generateCommandsWithWaitOfElements(){
     let replyArrayElements: Array<Command> = [];
+    let textConversation: string = ''
     this.arrayMessagesWithWait.forEach(el => {
       if(el.time && el.time > 0){
         let elementWait = new Command(TYPE_COMMAND.WAIT);
@@ -112,8 +113,11 @@ export class ActionReplyComponent implements OnInit {
       if(el.metadata){
         elementMessage.message.metadata = el.metadata;
       }
+      
       replyArrayElements.push(elementMessage);
+      textConversation += el.text +'\r\n'
     });
+    this.reply.text = textConversation;
     this.reply.attributes.commands = replyArrayElements;
     console.log("replyArrayElements", replyArrayElements);
   }
@@ -122,6 +126,7 @@ export class ActionReplyComponent implements OnInit {
   private generateCommandsOfElements(){
     var time = 500;
     try {
+      console.log('arrayyyy', this.arrayResponses, this.reply)
       this.arrayResponses.forEach(element => {
         if(element.type === TYPE_COMMAND.WAIT){
           time = element.time;

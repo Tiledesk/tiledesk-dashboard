@@ -571,6 +571,7 @@ export class CdsDashboardComponent implements OnInit {
     action.attributes.commands.push(commandWait);
     let command = new Command(TYPE_COMMAND.MESSAGE);
     command.message = new Message('text', 'A chat message will be sent to the visitor');
+    action.text = command.message.text; //Set default reply global text
     action.attributes.commands.push(command);
     this.intentSelected.actions.push(action)
     console.log('[CDS DSBRD] addNewIntent intentSelected ', this.intentSelected)
