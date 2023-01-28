@@ -54,6 +54,7 @@ export class RulesComponent implements OnInit {
 
   onRuleAdded(rule: Rule){
     this.listOfRules.unshift(rule)
+    this.selectedChatbot.attributes['rules']= this.listOfRules
     this.addClicked = false;
   }
 
@@ -68,6 +69,7 @@ export class RulesComponent implements OnInit {
       this.showWelcome = true
     else
       this.showWelcome = false
+    this.selectedChatbot.attributes['rules']= this.listOfRules
   }
 
 }
