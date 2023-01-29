@@ -36,11 +36,13 @@ export class ConditionComponent implements OnInit {
 
   ngOnInit(): void {
     this.conditionsForm = this.rootFormGroup.control.get('when') as FormGroup; 
-    // this.conditionsForm.valueChanges.subscribe((whenForm)=>{
-    //   if(whenForm && whenForm.regexOption === 'any'){
-    //     this.conditionsForm.controls['text'].setValidators([Validators.nullValidator])
-    //   }
-    // })
+    this.conditionsForm.valueChanges.subscribe((whenForm)=>{
+      if(whenForm && whenForm.regexOption === 'any'){
+        let textControl = this.conditionsForm.controls['text']
+        textControl.setValidators([Validators.nullValidator])
+        textControl.updateValueAndValidity({emitEvent : false})
+      }
+    })
 
   }
 

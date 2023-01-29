@@ -32,6 +32,7 @@ export class TemplateDetailComponent implements OnInit {
   public botname: string;
   public templateid: string;
   public projectid: string;
+  public templateProjectId: string;
   public _newlyCreatedProject: boolean;
   public defaultDeptID: string;
   public user: any
@@ -65,7 +66,7 @@ export class TemplateDetailComponent implements OnInit {
     private localDbService: LocalDbService,
     private botLocalDbService: BotLocalDbService,
   ) {
-    // console.log('[TEMPLATE DETAIL] data ', data)
+    console.log('[TEMPLATE DETAIL] data ', data)
     this.projectid = data.projectId
     this.template = data.template;
     this._newlyCreatedProject = data.newlyCreatedProject
@@ -74,6 +75,7 @@ export class TemplateDetailComponent implements OnInit {
     if (this.template) {
       this.botname = this.template.name
       this.templateid = this.template._id
+      this.templateProjectId = this.template.id_project
       // this.translateparamBotName = { bot_name: this.botname }
     }
     // this.templateName = data.name
@@ -87,6 +89,8 @@ export class TemplateDetailComponent implements OnInit {
     this.getProjectUserRole()
     this.getLoggedUser();
   }
+
+  
 
 
   getLoggedUser() {
@@ -114,19 +118,43 @@ export class TemplateDetailComponent implements OnInit {
     });
   }
 
+  // getDeptsByProjectId() {
+  //   this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+
+  //     // console.log('[TEMPLATE DETAIL] - DEPTS RES ', departments);
+
+  //     if (departments && departments.length === 1) {
+  //       this.defaultDeptID = departments[0]._id
+  //     }
+  //   }, error => {
+
+  //     this.logger.error('[TEMPLATE DETAIL] - DEPTS RES - ERROR', error);
+  //   }, () => {
+  //     this.logger.log('[TEMPLATE DETAIL] - DEPTS RES * COMPLETE *')
+
+  //   });
+  // }
+
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      // console.log('[TEMPLATE DETAIL] - DEPTS RES ', departments);
+      // console.log('[FAQ-EDIT-ADD] - DEPT - GET DEPTS  - RES', departments);
+      if (departments) {
+        departments.forEach((dept: any) => {
+          // console.log('[FAQ-EDIT-ADD] - DEPT', dept);
 
-      if (departments && departments.length === 1) {
-        this.defaultDeptID = departments[0]._id
+          if (dept.default === true) {
+            this.defaultDeptID = dept._id;
+            // console.log('[FAQ-EDIT-ADD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
+          }
+        });
       }
+
     }, error => {
 
-      this.logger.error('[TEMPLATE DETAIL] - DEPTS RES - ERROR', error);
+      this.logger.error('[FAQ-EDIT-ADD] - DEPT - GET DEPTS  - ERROR', error);
     }, () => {
-      this.logger.log('[TEMPLATE DETAIL] - DEPTS RES * COMPLETE *')
+      this.logger.log('[FAQ-EDIT-ADD] - DEPT - GET DEPTS - COMPLETE')
 
     });
   }
@@ -151,8 +179,11 @@ export class TemplateDetailComponent implements OnInit {
     // console.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-    const url = testItOutUrl + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=635b97cc7d7275001a2ab3e4"
+    // const url = testItOutUrl + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=635b97cc7d7275001a2ab3e4"
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.templateProjectId + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID="+ this.defaultDeptID
     // console.log('openTestSiteInPopupWindow URL ', url)
+
+    
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
   }

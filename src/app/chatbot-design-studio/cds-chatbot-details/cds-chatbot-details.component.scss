@@ -1214,6 +1214,7 @@ input[type="text"]:disabled::placeholder {
     text-transform: capitalize !important;
     font-size: 14px !important;
     height: 44px;
+    margin-left: 6px;
 }
 #cds-delete-bot-img-btn:hover {
     background: rgba(244, 67, 54, 0.8) !important;
@@ -1357,4 +1358,21 @@ input[type="text"]:disabled::placeholder {
 
 .csd-chatbot-dtls-input {
     max-width: 400px;
+}
+
+
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #8ab4f8;
+    display: inline-block;
+    padding: 11px 12px;
+    cursor: pointer;
+    background: #8ab4f8!important;
+    color: #000;
+    border-radius: 4px;
+    font-weight: 500;
+    margin-top: 14px;
+    width: 145px;
 }
