@@ -104,8 +104,9 @@
                                     </h2>
                                     <span size="8" class="blank-span-h08"></span>
                                     <p weight="normal" class="template-description">
-                                        {{template.description}}
-                                        <span *ngIf="template?.certified === false"  class="template-author">
+                                        <!-- {{template.description}} -->
+                                        {{template.shortDescription}}
+                                        <span style="display: block; margin-top: 6px;" *ngIf="template?.certified === false"  class="template-author">
                                             Author:  {{template.createdBy}}
                                         </span>
                                     </p>

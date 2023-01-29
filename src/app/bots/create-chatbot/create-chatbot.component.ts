@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./create-chatbot.component.scss']
 })
 export class CreateChatbotComponent implements OnInit {
-  startChatBotArray: [] = []
+  startChatBotArray: any = []
   showSpinner = false;
   isChromeVerGreaterThan100: boolean;
   project: Project;
@@ -46,9 +46,9 @@ export class CreateChatbotComponent implements OnInit {
 
   getTranslations() {
     this.translate.get('ThereHasBeenAnErrorProcessing')
-    .subscribe((translation: any) => {
-      this.thereHasBeenAnErrorProcessing = translation;
-    });
+      .subscribe((translation: any) => {
+        this.thereHasBeenAnErrorProcessing = translation;
+      });
   }
 
   getCurrentProject() {
@@ -72,6 +72,13 @@ export class CreateChatbotComponent implements OnInit {
 
         this.startChatBotArray = communityTemplates.filter((el) => {
           return el.mainCategory === "System" && el.tags.includes('start-chatbot')
+        });
+        let stripHere = 115;
+        this.startChatBotArray.forEach(startChatBot => {
+          console.log('[CREATE-CHATBOT] startChatBot', startChatBot);
+          if (startChatBot['description']) {
+            startChatBot['shortDescription'] = startChatBot['description'].substring(0, stripHere) + '...';
+          }
         });
 
         console.log('[CREATE-CHATBOT] startChatBotArray', this.startChatBotArray);
@@ -183,14 +190,14 @@ export class CreateChatbotComponent implements OnInit {
   }
 
 
-  toggleTabCreateImport(tabcreate ) {
-     console.log("[CREATE-CHATBOT] toggleTabCreateImport tabcreate", tabcreate);
-     this.HAS_SELECTED_CREATE_BOT = tabcreate
+  toggleTabCreateImport(tabcreate) {
+    console.log("[CREATE-CHATBOT] toggleTabCreateImport tabcreate", tabcreate);
+    this.HAS_SELECTED_CREATE_BOT = tabcreate
     //  console.log("[BOT-CREATE] toggleTabCreateImport HAS_SELECTED_CREATE_BOT",  this.HAS_SELECTED_CREATE_BOT );
-    }
+  }
 
 
-      // --------------------------------------------------------------------------
+  // --------------------------------------------------------------------------
   // @ Import chatbot from json 
   // --------------------------------------------------------------------------
   fileChangeUploadChatbotFromJSON(event) {
@@ -217,13 +224,13 @@ export class CreateChatbotComponent implements OnInit {
 
     this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
       console.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - ', faqkb)
-      if (faqkb){
+      if (faqkb) {
         this.importedChatbotid = faqkb._id
         console.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - importedChatbotid ', this.importedChatbotid)
         this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
-       
+
         this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
-       
+
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
       }
 
