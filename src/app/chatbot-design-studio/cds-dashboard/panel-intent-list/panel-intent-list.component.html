@@ -16,9 +16,10 @@
     <div class="title-box">
         <!-- <p class="title">Intents</p> -->
         <div class="new-intent-box">
-            <div class="new-intent-button" (click)="addNewIntent()">
-                <span class="material-icons icon plus-icon">add</span>
-                <p class="button-text">Add</p>
+            <div class="new-intent-button" [ngClass]="{'disable-add-intent-btn': addBtnDisabled === true}" (click)="addNewIntent()">
+                <span class="material-icons icon plus-icon" *ngIf="addBtnDisabled === false">add</span>
+                <p class="button-text" *ngIf="addBtnDisabled === false">Add</p>
+                <p class="button-text"  *ngIf="addBtnDisabled === true">Updating ...</p>
             </div>
         </div>
     </div>
