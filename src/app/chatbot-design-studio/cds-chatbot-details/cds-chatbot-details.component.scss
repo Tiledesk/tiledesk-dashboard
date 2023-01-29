@@ -1358,3 +1358,20 @@ input[type="text"]:disabled::placeholder {
 .csd-chatbot-dtls-input {
     max-width: 400px;
 }
+
+
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #8ab4f8;
+    display: inline-block;
+    padding: 11px 12px;
+    cursor: pointer;
+    background: #8ab4f8!important;
+    color: #000;
+    border-radius: 4px;
+    font-weight: 500;
+    margin-top: 14px;
+    width: 145px;
+}
