@@ -269,11 +269,11 @@ export class TemplateDetailComponent implements OnInit {
 
   goToBotDetails() {
     this.logger.log('[TEMPLATE DETAIL] GO TO  BOT DETAILS - isDevMode() ', isDevMode());
-      if (isDevMode() === false) { 
-        this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
-      } else {
+      // if (isDevMode() === false) { 
+      //   this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
+      // } else {
         this.router.navigate(['project/' + this.project._id + '/cds/', this.botid]);
-      }
+      // }
     
     this.closeDialog();
     // this.closeCreateBotInfoModal();
