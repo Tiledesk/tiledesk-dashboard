@@ -1,1 +1,212 @@
-<p>create-chatbot works!</p>
+<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px"
+    [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
+        keyboard_arrow_left
+    </i>
+    {{ "BotsAddEditPage.AddBot" | translate }}
+</div>
+
+<div  class="row" class="chatbot-create-bottom-nav-wpr">
+
+    <div class="col-md-12">
+
+        <ul class="bottom-nav" style="margin-bottom: 16px;    box-shadow: 0 2px 0px #00003c14 !important;">
+            <li (click)="toggleTabCreateImport(create = !create)" class="btn-with-border-effect" [ngClass]="
+                { 'disabled-li' :        HAS_SELECTED_CREATE_BOT === true, 
+                  'border-from-center' : HAS_SELECTED_CREATE_BOT === false,
+                  'li-active' :          HAS_SELECTED_CREATE_BOT === true
+                }">
+
+                <a href="javascript:;" role="button"> {{'Create' | translate}} </a>
+            </li>
+
+            <li (click)="toggleTabCreateImport(create = !create)" class="btn-with-border-effect" [ngClass]="
+            { 'disabled-li' : HAS_SELECTED_CREATE_BOT === false, 
+              'border-from-center' : HAS_SELECTED_CREATE_BOT === true, 
+              'li-active' : HAS_SELECTED_CREATE_BOT === false
+            }">
+                <a href="javascript:;" role="button"> Import </a>
+            </li>
+        </ul>
+
+    </div>
+
+</div>
+
+
+<div class="main-content" style="padding-top:0px">
+    <div class="container-fluid">
+
+       
+        
+
+        <div class="row" *ngIf=" HAS_SELECTED_CREATE_BOT === true">
+            <div class="page-content--wpr">
+                <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                <div *ngIf="!showSpinner" class="page-content">
+
+
+                    <div class="template-cards-wpr">
+                        <div class="template-cards">
+
+                            <!-- ---------------------------------------------- -->
+                            <!-- @ New card -->
+                            <!-- ---------------------------------------------- -->
+                            <div style="display: none;" class="t-card">
+                                <div style="padding: 26px;
+                        color: #3c4858;">
+                                    <div>
+                                        <img style="width: auto; height: 40px;"
+                                            src="https://tiledesk.com/wp-content/uploads/2022/11/IVR-Menu.png">
+                                    </div>
+                                    <span size="20" class="blank-span-h20"></span>
+                                    <span>This chatbot can help customers with problems without needing human touch,
+                                        like
+                                        changing passwords or displaying product prices.
+                                    </span>
+
+                                    <span aria-label="tag" class="template-tag"
+                                        style="color: rgb(0, 73, 189); background-color: rgb(220, 233, 255); width: fit-content; margin-top: 10px;">
+                                        <p weight="normal" class="template-tag-name">
+                                            Self-serve </p>
+                                    </span>
+                                </div>
+
+                                <div class="card__overlay">
+                                    <div class="card__header">
+                                        <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z" />
+                                        </svg>
+                                        <!-- <img class="card__thumb"
+                                src="https://tiledesk.com/wp-content/uploads/2022/11/IVR-Menu.png"
+                                alt="" /> -->
+                                        <div class="card__header-text template-card-title">
+                                            <h3 class="card__title">
+                                                Tommy for Customer Service </h3>
+                                            <!-- <span class="card__status">1 hour ago</span> -->
+                                        </div>
+                                    </div>
+                                    <div class="card__description">
+                                        <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
+                                            (click)="openDialog(template)">
+                                            <span>Use template</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="template-card" *ngFor="let startChatBot of startChatBotArray"
+                                [ngClass]="{'template-card-one-template': startChatBotArray?.length === 1}">
+                                <!-- <svg aria-hidden="true" focusable="false"
+                        style="width: 0px; height: 0px; position: absolute;">
+                        <linearGradient id="bot-cool-gradient" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#2d78e9"></stop>
+                            <stop offset="100%" stop-color="#0abcff"></stop>
+                        </linearGradient>
+                    </svg> -->
+                                <div class="template-card-img-row template-img">
+                                    <img *ngIf="!startChatBot?.bigImage" style="width: 40px; height: 40px;"
+                                        src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{startChatBot._id}}%2Fphoto.jpg?alt=media"
+                                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                                    <img *ngIf="startChatBot?.bigImage" style="width: auto; height: 40px;"
+                                        src="{{startChatBot.bigImage}}">
+
+                                </div>
+                                <span size="20" class="blank-span-h20"></span>
+                                <h2 weight="normal" class="template-name template-card-title">
+                                    {{startChatBot.name}}
+                                </h2>
+                                <span size="8" class="blank-span-h08"></span>
+                                <p weight="normal" class="template-description">
+                                    {{startChatBot.description}}
+                                    <span *ngIf="startChatBot?.certified === false" class="template-author">
+                                        Author: {{startChatBot.createdBy}}
+                                    </span>
+                                </p>
+                                <div class="use-template-btn-row use-template-btn-wpr">
+                                    <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
+                                        (click)="openDialog(startChatBot)">
+                                        <span *ngIf="startChatBot?.certified === true">Use template</span>
+                                        <span *ngIf="startChatBot?.certified === false">Import Chatbot</span>
+                                    </button>
+                                </div>
+                                <div class="template-card-footer template-footer">
+                                    <div class="template-tags-wpr">
+                                        <div class="template-tags"
+                                            *ngIf="startChatBot.certifiedTags || startChatBot.tags">
+
+                                            <span aria-label="tag" class="template-tag"
+                                                [ngStyle]="{'color': tag.color, 'background-color':  tag.background}"
+                                                *ngFor="let tag of startChatBot.certifiedTags">
+                                                <p weight="normal" class="template-tag-name">
+                                                    {{startChatBot?.name  }}
+                                                </p>
+
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                    <!--  badge "New" in the top right corner of the card -->
+                                    <svg *ngIf="startChatBot?.certified === true" width="92" height="104"
+                                        viewBox="0 0 92 104" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                        aria-label="new template" class="template-card-right-top-corner-badge">
+                                        <g filter="url(#filter0_d_1601_21599)">
+                                            <path d="M92 30L62 0H32L92 60V30Z" fill="#34B857"></path>
+                                        </g>
+                                        <path
+                                            d="M61.2288 21.8562L68.2575 14.8276L66.822 13.3922L62.2386 17.9756L63.2186 9.78876L61.9812 8.55133L54.9526 15.58L56.388 17.0154L60.9714 12.4319L59.9914 20.6188L61.2288 21.8562ZM62.6939 23.3213L67.0695 27.6969L68.4356 26.3307L65.4954 23.3906L66.9804 21.9057L69.3265 24.2518L70.6927 22.8857L68.3465 20.5395L69.7918 19.0942L72.732 22.0344L74.0981 20.6682L69.7225 16.2927L62.6939 23.3213ZM73.7453 34.3727L75.0916 35.719L83.8131 30.3832L82.2885 28.8587L76.5468 32.4621L79.3484 25.6809L72.5672 28.4825L76.1707 22.7408L74.6461 21.2163L69.3103 29.9377L70.6566 31.284L75.9331 29.0963L73.7453 34.3727Z"
+                                            fill="white"></path>
+                                        <defs>
+                                            <filter id="filter0_d_1601_21599" x="0" y="-20" width="124" height="124"
+                                                filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                                <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                                                <feColorMatrix in="SourceAlpha" type="matrix"
+                                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                                    result="hardAlpha">
+                                                </feColorMatrix>
+                                                <feOffset dy="12"></feOffset>
+                                                <feGaussianBlur stdDeviation="16"></feGaussianBlur>
+                                                <feColorMatrix type="matrix"
+                                                    values="0 0 0 0 0 0 0 0 0 0.105882 0 0 0 0 0.278431 0 0 0 0.12 0">
+                                                </feColorMatrix>
+                                                <feBlend mode="normal" in2="BackgroundImageFix"
+                                                    result="effect1_dropShadow_1601_21599">
+                                                </feBlend>
+                                                <feBlend mode="normal" in="SourceGraphic"
+                                                    in2="effect1_dropShadow_1601_21599" result="shape">
+                                                </feBlend>
+                                            </filter>
+                                        </defs>
+                                    </svg>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ./ real -->
+
+            </div>
+        </div>
+
+        <div class="row" *ngIf=" HAS_SELECTED_CREATE_BOT === false">
+            <!-- SPACER -->
+            <div class="col-sm-12" style="height:10px"></div>
+            <span class="import-chatbot-from-json-btn-wpr" style="margin-left: 16px;">
+                <input style="display:inline" name="upload-chatbot-from-json" id="upload-chatbot-from-json"
+                    class="inputfile" type="file" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json" />
+                <label class="btn btn-primary" for="upload-chatbot-from-json">
+                    <span class="material-icons" style="padding-right: 8px;">
+                        cloud_upload
+                    </span>
+                    Import Chatbot from JSON
+                </label>
+            </span>
+        </div>
+    </div>
+
+    
+
+</div>
