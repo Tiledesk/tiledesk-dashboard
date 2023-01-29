@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc18
+- Adds the new page to create the chatbot from scratch
+- Fixes the bug:: "test it out" is not dynamic
+- Fixes the bug:: the upload of the chatbot profile picture doesn't work
+- Fixes the bug:: rules update doesn't work
+- Changes, programmatically,  the validator for the text in the rule if "regexOption" is "any"
+
 ### 2.3.22-rc16
 - Improvements and bug fixing
 
