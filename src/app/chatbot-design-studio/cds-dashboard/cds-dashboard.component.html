@@ -100,7 +100,8 @@
                 (returnListOfIntents)=onReturnListOfIntents($event)
                 (createIntent)="onCreateIntentBtnClicked()" 
                 (deleteSelectedIntent)="onDeleteSelectedIntent()"
-                [events]="upadatedIntent.asObservable()">
+                [events]="upadatedIntent.asObservable()"
+                [eventStartUpdatedIntent]="startUpdatedIntent.asObservable()">
             </appdashboard-panel-intent-list>
         </div>
 

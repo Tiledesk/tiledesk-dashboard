@@ -51,6 +51,7 @@ export class CdsDashboardComponent implements OnInit {
   isOpenActionDrawer: boolean;
   //eventsSubject: Subject<any> = new Subject<any>();
   upadatedIntent: Subject<Intent> = new Subject<Intent>();
+  startUpdatedIntent: Subject<boolean> = new Subject<boolean>();
   selectedChatbot: Chatbot
   activeSidebarSection: string;
   IS_OPEN: boolean = false;
@@ -279,6 +280,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** ADD INTENT  */
   private creatIntent() {
+    this.startUpdatedIntent.next(true)
     console.log('creatIntent')
     this.showSpinner = true;
     let id_faq_kb = this.intentSelected.id_faq_kb;
@@ -369,6 +371,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** EDIT INTENT  */
   private editIntent() {
+    this.startUpdatedIntent.next(true)
     console.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
     this.showSpinner = true;
     let id = this.intentSelected.id;
