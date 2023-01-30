@@ -38,7 +38,7 @@
     <div class="action-list-wpr" *ngIf="actions && actions?.length > 0">
 
         <div cdkDropList class="action--list" (cdkDropListDropped)="drop($event)">
-            <div id="action_{{i}}" class="action--box" *ngFor="let action of actions; let i = index;let last = last"
+            <div id="action_{{i}}" class="action--box" *ngFor="let action of actions; let i = index;let lastItem = last"
                 cdkDrag cdkDragLockAxis="y" (click)="onActionSelected(action, i)">
 
                 <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
@@ -63,6 +63,11 @@
                     <div class="cds-action-name-wpr">
                         Reply
                     </div>
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
+                    </div>
                 </div>
 
                 <!-- ----------------------------- -->
@@ -74,6 +79,11 @@
                     </div>
                     <div class="cds-action-name-wpr">
                         Condition
+                    </div>
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
                     </div>
                 </div>
 
@@ -87,6 +97,11 @@
                     <div class="cds-action-name-wpr">
                         Connect Intent
                     </div>
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
+                    </div>
                 </div>
 
                 <!-- ----------------------------- -->
@@ -98,8 +113,12 @@
                     </div>
 
                     <div class="cds-action-name-wpr">
-                        <!-- {{action._tdActionType }} -->
                         Agent Handoff
+                    </div>
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
                     </div>
 
                 </div>
@@ -113,18 +132,13 @@
                         <img src="assets/cds/images/actions/open_hours.svg" title="If open hours">
                     </div>
                     <div class="cds-action-name-wpr">
-                        <!-- {{action._tdActionType }} -->
                         If open hours
                     </div>
-                    <!-- <div class="cds-action-arrow">
-                        <span class="material-icons" style="
-                            /* position: absolute; */
-                            transform: rotate(-90deg);
-                            top: 52px;
-                            color: #fff;">
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
                             keyboard_backspace
                         </span>
-                    </div> -->
+                    </div>
                 </div>
 
 
@@ -136,8 +150,12 @@
                         <img src="assets/cds/images/actions/assign_var.svg" title="Assign var">
                     </div>
                     <div class="cds-action-name-wpr">
-                        <!-- {{action._tdActionType }} -->
                         Assign var
+                    </div>
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
                     </div>
                 </div>
 
@@ -151,6 +169,11 @@
                     <div class="cds-action-name-wpr">
                         Delete var
                     </div>
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
+                    </div>
                 </div>
 
                 <!-- ----------------------------- -->
@@ -162,6 +185,11 @@
                     </div>
                     <div class="cds-action-name-wpr">
                         Hidden msg
+                    </div>
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
                     </div>
                 </div>
 
@@ -175,6 +203,11 @@
                     <div class="cds-action-name-wpr">
                         Send email
                     </div>
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
+                    </div>
                 </div>
 
                 <!-- ----------------------------- -->
@@ -187,15 +220,11 @@
                     <div class="cds-action-name-wpr">
                         If online agents
                     </div>
-                    <!-- <div class="cds-action-arrow">
-                        <span class="material-icons" style="
-                        /* position: absolute; */
-                        transform: rotate(-90deg);
-                        top: 52px;
-                        color: #fff;">
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
                             keyboard_backspace
                         </span>
-                    </div> -->
+                    </div>
                 </div>
 
                 <!-- ----------------------------- -->
@@ -206,18 +235,13 @@
                         <img src="assets/cds/images/actions/close.svg" title="Close">
                     </div>
                     <div class="cds-action-name-wpr">
-                        <!-- {{action._tdActionType }} -->
                         Close
                     </div>
-                    <!-- <div class="cds-action-arrow">
-                        <span class="material-icons" style="
-                        /* position: absolute; */
-                        transform: rotate(-90deg);
-                        top: 52px;
-                        color: #fff;">
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
                             keyboard_backspace
                         </span>
-                    </div> -->
+                    </div>
                 </div>
 
                 <!-- ----------------------------- -->
@@ -229,18 +253,13 @@
                     </div>
 
                     <div class="cds-action-name-wpr">
-                        <!-- {{action._tdActionType }} -->
                         Wait
                     </div>
-                    <!-- <div class="cds-action-arrow">
-                        <span class="material-icons" style="
-                        /* position: absolute; */
-                        transform: rotate(-90deg);
-                        top: 52px;
-                        color: #fff;">
+                    <div class="cds-action-arrow"  *ngIf="!lastItem">
+                        <span class="material-icons">
                             keyboard_backspace
                         </span>
-                    </div> -->
+                    </div>
                 </div>
 
                 <!-- ----------------------------- -->
@@ -253,15 +272,11 @@
                     <div class="cds-action-name-wpr">
                         Replace bot
                     </div>
-                    <!-- <div class="cds-action-arrow">
-                        <span class="material-icons" style="
-                        /* position: absolute; */
-                        transform: rotate(-90deg);
-                        top: 52px;
-                        color: #fff;">
+                    <div class="cds-action-arrow"  *ngIf="!lastItem">
+                        <span class="material-icons">
                             keyboard_backspace
                         </span>
-                    </div> -->
+                    </div>
                 </div>
 
                 <!-- ----------------------------- -->
@@ -273,6 +288,11 @@
                     </div>
                     <div class="cds-action-name-wpr">
                         Change dept
+                    </div>
+                    <div class="cds-action-arrow"  *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
                     </div>
                 </div>
 

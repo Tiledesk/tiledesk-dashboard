@@ -103,9 +103,9 @@
   justify-content: center;
   box-sizing: border-box;
   cursor: pointer;
-  background: rgba(138,180,248,.24);
+  background: rgba(138, 180, 248, 0.24);
   font-size: 12px; //14px;
-  margin: 8px 5px 8px 5px;
+  margin: 18px 5px 8px 5px;
   border-radius: 20px;
   min-width: 80px;
   max-width: 150px;
@@ -122,12 +122,12 @@
 .cds-action-icon-wpr {
   display: flex;
   margin-right: 10px;
-  
+
   img {
     width: 18px;
-    filter: brightness(0) saturate(100%) invert(97%) sepia(66%) saturate(6656%) hue-rotate(177deg) brightness(102%) contrast(98%)
+    filter: brightness(0) saturate(100%) invert(97%) sepia(66%) saturate(6656%) hue-rotate(177deg) brightness(102%)
+      contrast(98%);
   }
-
 }
 
 .cds-action-active {
@@ -169,7 +169,7 @@
   grid-column-gap: 1.2rem;
   align-items: center;
   margin-top: 24px;
-  margin-bottom: 8px;
+  margin-bottom: 0px;
   padding-left: 12px;
   padding-right: 12px;
 }
@@ -258,3 +258,17 @@
   font-size: 21px;
   color: #ff4000;
 }
+
+
+
+.cds-action-arrow {
+  position: absolute;
+  display: flex;
+  margin-top: 60px;
+}
+
+.cds-action-arrow > span {
+  transform: rotate(-90deg);
+  color: #d2e3fc;
+}
+
