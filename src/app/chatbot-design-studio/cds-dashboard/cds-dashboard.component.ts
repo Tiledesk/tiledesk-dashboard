@@ -40,6 +40,7 @@ export class CdsDashboardComponent implements OnInit {
 
   id_faq_kb: string;
   id_faq: string;
+  intent_id: string;
 
   botType: string;
   project: Project;
@@ -50,7 +51,9 @@ export class CdsDashboardComponent implements OnInit {
   isChromeVerGreaterThan100: boolean;
   isOpenActionDrawer: boolean;
   //eventsSubject: Subject<any> = new Subject<any>();
+  createIntent: Subject<Intent> = new Subject<Intent>();
   upadatedIntent: Subject<Intent> = new Subject<Intent>();
+  startUpdatedIntent: Subject<boolean> = new Subject<boolean>();
   selectedChatbot: Chatbot
   activeSidebarSection: string;
   IS_OPEN: boolean = false;
@@ -143,9 +146,11 @@ export class CdsDashboardComponent implements OnInit {
       }
       this.id_faq = params.faqid;
       this.botType = params.bottype
+      this.intent_id = params.intent_id
       console.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
       console.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
       console.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
+      console.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.intent_id);
     });
   }
 
@@ -279,6 +284,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** ADD INTENT  */
   private creatIntent() {
+    this.startUpdatedIntent.next(true)
     console.log('creatIntent')
     this.showSpinner = true;
     let id_faq_kb = this.intentSelected.id_faq_kb;
@@ -331,7 +337,7 @@ export class CdsDashboardComponent implements OnInit {
             button.classList.remove(successClassName)
             console.log('[CDS DSHBRD] HERE YES  ');
             //that.eventsSubject.next(intent);
-            that.upadatedIntent.next(intent);
+            that.createIntent.next(intent);
           }, stateDuration);
         }, stateDuration);
 
@@ -369,6 +375,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** EDIT INTENT  */
   private editIntent() {
+    this.startUpdatedIntent.next(true)
     console.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
     this.showSpinner = true;
     let id = this.intentSelected.id;

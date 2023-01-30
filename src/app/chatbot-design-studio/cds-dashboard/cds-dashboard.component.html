@@ -95,16 +95,21 @@
         <div class="box-left">
             <appdashboard-panel-intent-list class="panel-intent-list" 
                 [id_faq_kb]="id_faq_kb" 
+                [intent_id]="intent_id"
                 [projectID]="projectID"
                 (selected_intent)=onSelectIntent($event) 
                 (returnListOfIntents)=onReturnListOfIntents($event)
                 (createIntent)="onCreateIntentBtnClicked()" 
                 (deleteSelectedIntent)="onDeleteSelectedIntent()"
-                [events]="upadatedIntent.asObservable()">
+                [eventCreateIntent]="createIntent.asObservable()"
+                [eventUpadatedIntent]="upadatedIntent.asObservable()"
+                [eventStartUpdatedIntent]="startUpdatedIntent.asObservable()">
             </appdashboard-panel-intent-list>
         </div>
 
         <div class="box-right">
+
+            <cds-splash-screen *ngIf=!intentSelected> </cds-splash-screen>
 
             <div class="box-right-header">
                 <appdashboard-panel-intent-header *ngIf=intentSelected 
@@ -113,7 +118,7 @@
                     [listOfIntents]="listOfIntents">
                 </appdashboard-panel-intent-header>
             </div>
-
+            <!-- [events]="upadatedIntent.asObservable() -->
             <div class="box-right-content">
                 <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent" 
                     [intentSelected]="intentSelected"
@@ -124,8 +129,7 @@
                     (questionSelected)=onQuestionSelected($event) 
                     (actionDeleted)=onActionDeleted($event) 
                     (intentForm)=onIntentFormSelected($event)
-                    [isOpenActionDrawer]="isOpenActionDrawer" 
-                    [events]="upadatedIntent.asObservable()">
+                    [isOpenActionDrawer]="isOpenActionDrawer">
                 </appdashboard-panel-intent>
 
 

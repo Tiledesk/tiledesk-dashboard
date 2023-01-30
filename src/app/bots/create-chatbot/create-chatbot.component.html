@@ -118,8 +118,10 @@
                                 </h2>
                                 <span size="8" class="blank-span-h08"></span>
                                 <p weight="normal" class="template-description">
-                                    {{startChatBot.description}}
-                                    <span *ngIf="startChatBot?.certified === false" class="template-author">
+                                    <!-- {{startChatBot.description}} -->
+                                    {{startChatBot.shortDescription}}
+                                    
+                                    <span style="display: block; margin-top: 6px;" *ngIf="startChatBot?.certified === false" class="template-author">
                                         Author: {{startChatBot.createdBy}}
                                     </span>
                                 </p>

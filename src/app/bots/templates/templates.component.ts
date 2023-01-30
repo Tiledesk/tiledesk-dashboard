@@ -146,9 +146,17 @@ export class TemplatesComponent implements OnInit {
 
       if (res) {
         this.communityTemplates = res
-        this.logger.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES', this.communityTemplates);
+        console.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES', this.communityTemplates);
         this.allCommunityTemplatesCount = this.communityTemplates.length;
         this.logger.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
+
+        let stripHere = 115;
+        this.communityTemplates.forEach(communityTemplate => {
+          console.log('[BOTS-TEMPLATES] communityTemplate', communityTemplate);
+          if (communityTemplate['description']) {
+            communityTemplate['shortDescription'] = communityTemplate['description'].substring(0, stripHere) + '...';
+          }
+        });
 
         this.route = this.router.url
         if (this.route.indexOf('bots/templates/community') !== -1) {
@@ -179,6 +187,8 @@ export class TemplatesComponent implements OnInit {
       if (res) {
         this.certfifiedTemplates = res
         this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
+
+        // this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res
         // console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES', this.templates);
         // this.allTemplatesCount = this.templates.length;
@@ -198,7 +208,10 @@ export class TemplatesComponent implements OnInit {
         if (this.customerSatisfactionTemplates) {
           this.customerSatisfactionTemplatesCount = this.customerSatisfactionTemplates.length;
           this.logger.log('[BOTS-TEMPLATES] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
+          // this.doShortDescription(this.customerSatisfactionTemplates)
         }
+
+
 
         // ---------------------------------------------------------------------
         // Customer Increase Sales
@@ -210,6 +223,7 @@ export class TemplatesComponent implements OnInit {
         if (this.increaseSalesTemplates) {
           this.increaseSalesTemplatesCount = this.increaseSalesTemplates.length;
           this.logger.log('[BOTS-TEMPLATES] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
+          // this.doShortDescription(this.increaseSalesTemplates)
         }
 
         this.route = this.router.url
@@ -241,6 +255,16 @@ export class TemplatesComponent implements OnInit {
       this.logger.log('[BOTS-TEMPLATES] GET TEMPLATES COMPLETE');
       this.showSpinner = false;
       // this.generateTagsBackground(this.templates)
+    });
+  }
+
+  doShortDescription(templates) {
+
+    let stripHere = 115;
+    templates.forEach(template => {
+      console.log('[BOTS-TEMPLATES] startChatBot', template);
+      template['shortDescription'] = template['description'].substring(0, stripHere) + '...';
+
     });
   }
 
@@ -301,7 +325,7 @@ export class TemplatesComponent implements OnInit {
   createBlankTilebot() {
     // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
     this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
-   
+
   }
 
 }
