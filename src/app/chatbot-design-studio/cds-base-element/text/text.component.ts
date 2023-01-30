@@ -17,7 +17,7 @@ export class CDSTextComponent implements OnInit {
   @Input() customPrefix: boolean;
   @Input() disabled: boolean = false;
   @Input() autocompleteOptions: string[] = [];
-  @Output() change = new EventEmitter<string>();
+  @Output() onChange = new EventEmitter<string>();
   
   filteredOptions: Observable<string[]>;
   constructor() { }
@@ -34,11 +34,16 @@ export class CDSTextComponent implements OnInit {
     );
   }
 
-  onChangeText(text: string){
+  onChangeText(event){
     if(this.disabled) this.text = ' '
-    this.text = text
-    this.change.emit(text)
+    if(event && event.target){
+      this.text = event.target.value
+    }else{
+      this.text = event
+    }
+    this.onChange.emit(this.text)
   }
+
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();

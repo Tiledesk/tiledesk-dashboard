@@ -38,24 +38,24 @@ export class PanelButtonConfigurationComponent implements OnInit {
   constructor() { }
 
   /** Close panel on click outside */
-  @HostListener("click")
-  clicked() {
-    this.clickInside = true;
-  }
+  // @HostListener("click")
+  // clicked() {
+  //   this.clickInside = true;
+  // }
 
-  @HostListener('document:click', ['$event'])
-  clickedOut(event) {
-    let parentId;
-    try {
-      parentId = event.target.id;
-    } catch (error) {
-      // error
-    }
-    if(this.clickInside === false && parentId !== classCardButtonNoClose) {
-      this.closeButtonPanel.emit();
-    }
-    this.clickInside = false;
-  }
+  // @HostListener('document:click', ['$event'])
+  // clickedOut(event) {
+  //   let parentId;
+  //   try {
+  //     parentId = event.target.id;
+  //   } catch (error) {
+  //     // error
+  //   }
+  //   if(this.clickInside === false && parentId !== classCardButtonNoClose) {
+  //     this.closeButtonPanel.emit();
+  //   }
+  //   this.clickInside = false;
+  // }
 
 
   // SYSTEM FUNCTIONS //  
@@ -174,12 +174,20 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
   /** */
   onChangeActionButton(actionButton) {
+    this.buttonAction = actionButton
     this.button.action = actionButton;
   }
 
   /** */
   onCloseButtonPanel(){
     this.closeButtonPanel.emit();
+  }
+
+  onChangeTitle(text: string){
+    this.buttonLabel = text
+  }
+  onChangeUrl(text: string){
+    this.buttonUrl = text
   }
 
 }
