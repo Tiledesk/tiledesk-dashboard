@@ -75,6 +75,8 @@ import { ActionChangeDepartmentComponent } from './cds-dashboard/panel-intent-de
 import { ActionOnlineAgentsComponent } from './cds-dashboard/panel-intent-detail/actions/action-online-agents/action-online-agents.component';
 import { ActionOpenHoursComponent } from './cds-dashboard/panel-intent-detail/actions/action-open-hours/action-open-hours.component';
 import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/actions/action-hide-message/action-hide-message.component';
+import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-splash-screen.component';
+
 
 @NgModule({
   declarations: [
@@ -108,6 +110,7 @@ import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/
     ConditionComponent,
     ActionComponent,
     CdsChatbotDetailsComponent,
+    CdsSplashScreenComponent,
     ActionWaitComponent,
     //BASE-ELEMENT
     CDSTextComponent,
