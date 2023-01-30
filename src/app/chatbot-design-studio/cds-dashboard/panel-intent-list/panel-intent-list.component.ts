@@ -244,6 +244,8 @@ export class PanelIntentListComponent implements OnInit {
         this.selected_intent.emit(intent);
         console.log("[TEST-PANEL-INTENT-LIST] navigate");
         this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.selectedIntent.id], { replaceUrl: true })
+      } else {
+        this.selected_intent.emit(this.selectedIntent);
       }
 
     }, 200);
