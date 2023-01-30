@@ -21,7 +21,7 @@ export class ConditionComponent implements OnInit {
     {name: '12h', value: 12,selected: false},
     {name: '18h', value: 18,selected: false},
     {name: '24h', value: 24,selected: false},
-    {name: 'always', value: -1,selected: false}
+    {name: 'always', value: -1,selected: true}
   ];
 
   conditions: Array<{name: string, value: string, checked: boolean}> = [
