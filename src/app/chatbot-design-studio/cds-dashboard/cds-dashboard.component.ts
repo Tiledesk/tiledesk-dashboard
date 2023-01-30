@@ -40,6 +40,7 @@ export class CdsDashboardComponent implements OnInit {
 
   id_faq_kb: string;
   id_faq: string;
+  intent_id: string;
 
   botType: string;
   project: Project;
@@ -145,9 +146,11 @@ export class CdsDashboardComponent implements OnInit {
       }
       this.id_faq = params.faqid;
       this.botType = params.bottype
+      this.intent_id = params.intent_id
       console.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
       console.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
       console.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
+      console.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.intent_id);
     });
   }
 

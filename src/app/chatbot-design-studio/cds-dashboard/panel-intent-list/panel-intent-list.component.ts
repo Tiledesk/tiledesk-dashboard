@@ -16,7 +16,9 @@ const swal = require('sweetalert');
 export class PanelIntentListComponent implements OnInit {
 
   @Input() id_faq_kb: string;
+  @Input() intent_id: string;
   @Input() projectID: string;
+  @Input() events: Observable<any>;
   @Input() eventUpadatedIntent: Observable<any>;
   @Input() eventCreateIntent: Observable<any>;
   @Input() eventStartUpdatedIntent: Observable<any>;
@@ -47,26 +49,17 @@ export class PanelIntentListComponent implements OnInit {
     console.log("[PANEL-INTENT-LIST] - Selected chatbot ID: ", this.id_faq_kb);
     this.getAllIntents(this.id_faq_kb);
     this.onNewIntentListener()
-    this.listenToIntentUpdate() 
-    this.listenToStartUpdatingListener()
   }
 
   onNewIntentListener() {
     console.log("[PANEL-INTENT-LIST] onNewIntentListener")
-    this.eventsSubscription = this.eventCreateIntent.subscribe((intent: Intent) => {
+    this.eventsSubscription = this.events.subscribe((intent: Intent) => {
       console.log("[PANEL-INTENT-LIST] ---> ONNEWINTENTLISTENER: ", intent)
-      // const index = this.filtered_intents.findIndex((e) => e.id === intent.id);
-      // console.log("[PANEL-INTENT-LIST] onNewIntentListener intent index : ", index);
       this.getAllIntents(this.id_faq_kb).then((length: number) => {
         console.log("[PANEL-INTENT-LIST] intents length: ", length);
-        this.addBtnDisabled = false;
-
         this.selectIntent(intent, length - 1);
       })
     })
-  }
-
-  listenToIntentUpdate() {
     this.eventUpadatedIntent.subscribe((intent: Intent) => {
       console.log("[PANEL-INTENT-LIST] ---> ON UPDATE INTENTS: ", intent)
       // const index = this.filtered_intents.findIndex((e) => e.id === intent.id);
@@ -78,16 +71,14 @@ export class PanelIntentListComponent implements OnInit {
          console.log("[PANEL-INTENT-LIST] ON UPDATE INTENTS intent index : ", index);
         this.selectIntent(intent, index);
       })
+
+      this.eventStartUpdatedIntent.subscribe((startUpdating: boolean) => {
+        console.log("[PANEL-INTENT-LIST] ---> LISTEN TO START UPDATING INTENT : ", startUpdating)
+        this.addBtnDisabled = true;
+  
+      })
   })
-}
 
-
-  listenToStartUpdatingListener() {
-    this.eventStartUpdatedIntent.subscribe((startUpdating: boolean) => {
-      console.log("[PANEL-INTENT-LIST] ---> LISTEN TO START UPDATING INTENT : ", startUpdating)
-      this.addBtnDisabled = true;
-
-    })
   }
 
   getAllIntents(id_faq_kb) {
@@ -117,7 +108,7 @@ export class PanelIntentListComponent implements OnInit {
         this.filtered_intents = this.intents;
         //let element = document.getElementById('intent_' + (this.filtered_intents.length - 2));
         //console.log("element: ", element);
-
+        this.selectIntentFromUrl()
         resolve(this.filtered_intents.length);
 
       }), (error) => {
@@ -136,6 +127,16 @@ export class PanelIntentListComponent implements OnInit {
     this.filtered_intents = this.intents;
     this.filtered_intents = this.filtered_intents.filter(element => element.intent_display_name.toLowerCase().includes(text.toLowerCase()));
     //console.log("found those: ", this.filtered_intents)
+  }
+
+
+  selectIntentFromUrl(){
+    console.log('selectIntentFromUrl-->', this.intent_id)
+    if(this.intent_id !== '0'){
+      let index = this.intents.indexOf(this.intents.find(o => o.id === this.intent_id));
+      let intent = this.intents.find(el => el.id === this.intent_id)
+      this.selectIntent(intent, index)
+    }
   }
 
   selectIntent(intent: Intent, index: number) {
@@ -157,14 +158,14 @@ export class PanelIntentListComponent implements OnInit {
         element.classList.toggle("active")
         //element.scrollIntoView();
       }
-
+  
       if (!this.selectedIntent || this.selectedIntent.id != intent.id) {
         console.log("[PANEL-INTENT-LIST]  select intent emit");
         this.selectedIntent = intent;
         this.selected_intent.emit(intent);
 
         this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.selectedIntent.id], { replaceUrl: true })
-
+        
         // this.router.navigate(
         //   ['project/'+this.projectID+'/cds/'+this.id_faq_kb+'/intent/'+this.selectedIntent.id], 
         //   {
@@ -208,15 +209,13 @@ export class PanelIntentListComponent implements OnInit {
         }, () => {
           this.logger.log('[PANEL-INTENT-LIST] delete intent * COMPLETE *');
           // this.selectedIntent = null
-          console.log('[PANEL-INTENT-LIST] delete  this.selectedIntent ', this.selectedIntent);
-          console.log('[PANEL-INTENT-LIST] delete  intent ', intent);
-
+          console.log('[PANEL-INTENT-LIST] delete  this.selectedIntent ',  this.selectedIntent);
+          console.log('[PANEL-INTENT-LIST] delete  intent ',  intent);
           this.reselectselectedIntent()
           if (this.selectedIntent.id === intent.id) {
             this.deleteSelectedIntent.emit(true);
-
           }
-
+          
           swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
             icon: "success",
           }).then((okpressed) => {
