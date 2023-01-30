@@ -4,7 +4,7 @@ import { FaqService } from './../../../services/faq.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Intent } from 'app/models/intent-model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 const swal = require('sweetalert');
 
@@ -18,7 +18,6 @@ export class PanelIntentListComponent implements OnInit {
   @Input() id_faq_kb: string;
   @Input() intent_id: string;
   @Input() projectID: string;
-  @Input() events: Observable<any>;
   @Input() eventUpadatedIntent: Observable<any>;
   @Input() eventCreateIntent: Observable<any>;
   @Input() eventStartUpdatedIntent: Observable<any>;
@@ -26,7 +25,7 @@ export class PanelIntentListComponent implements OnInit {
   @Output() returnListOfIntents = new EventEmitter();
   @Output() createIntent = new EventEmitter();
   @Output() deleteSelectedIntent = new EventEmitter();
-  private eventsSubscription: Subscription;
+ 
 
   intent_start: Intent;
   intent_defaultFallback: Intent;
@@ -53,7 +52,7 @@ export class PanelIntentListComponent implements OnInit {
 
   onNewIntentListener() {
     console.log("[PANEL-INTENT-LIST] onNewIntentListener")
-    this.eventsSubscription = this.events.subscribe((intent: Intent) => {
+    this.eventCreateIntent.subscribe((intent: Intent) => {
       console.log("[PANEL-INTENT-LIST] ---> ONNEWINTENTLISTENER: ", intent)
       this.getAllIntents(this.id_faq_kb).then((length: number) => {
         console.log("[PANEL-INTENT-LIST] intents length: ", length);
