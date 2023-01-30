@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc20
+- Improvements and bug fixing
+
 ### 2.3.22-rc19
 - Save an intent with a temporary name as soon as the user adds it
 - Bug fixes: when an intent other than the selected one is deleted, the selected one is no longer active in the intent list
