@@ -14,7 +14,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   // objectKeys = Object.keys;
   @Input() intentSelected: Intent;
   @Input() isOpenActionDrawer: boolean = false;
-  @Input() events: Observable<any>;
+  // @Input() events: Observable<any>;
   private updatedIntentSubscription: Subscription;
   @Output() openActionDrawer = new EventEmitter();
   @Output() answerSelected = new EventEmitter();

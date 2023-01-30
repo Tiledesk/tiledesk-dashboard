@@ -17,7 +17,8 @@ export class PanelIntentListComponent implements OnInit {
 
   @Input() id_faq_kb: string;
   @Input() projectID: string;
-  @Input() events: Observable<any>;
+  @Input() eventUpadatedIntent: Observable<any>;
+  @Input() eventCreateIntent: Observable<any>;
   @Input() eventStartUpdatedIntent: Observable<any>;
   @Output() selected_intent = new EventEmitter();
   @Output() returnListOfIntents = new EventEmitter();
@@ -46,15 +47,16 @@ export class PanelIntentListComponent implements OnInit {
     console.log("[PANEL-INTENT-LIST] - Selected chatbot ID: ", this.id_faq_kb);
     this.getAllIntents(this.id_faq_kb);
     this.onNewIntentListener()
+    this.listenToIntentUpdate() 
     this.listenToStartUpdatingListener()
   }
 
   onNewIntentListener() {
     console.log("[PANEL-INTENT-LIST] onNewIntentListener")
-    this.eventsSubscription = this.events.subscribe((intent: Intent) => {
+    this.eventsSubscription = this.eventCreateIntent.subscribe((intent: Intent) => {
       console.log("[PANEL-INTENT-LIST] ---> ONNEWINTENTLISTENER: ", intent)
-      const index = this.filtered_intents.findIndex((e) => e.id === intent.id);
-      console.log("[PANEL-INTENT-LIST] onNewIntentListener intent index : ", index);
+      // const index = this.filtered_intents.findIndex((e) => e.id === intent.id);
+      // console.log("[PANEL-INTENT-LIST] onNewIntentListener intent index : ", index);
       this.getAllIntents(this.id_faq_kb).then((length: number) => {
         console.log("[PANEL-INTENT-LIST] intents length: ", length);
         this.addBtnDisabled = false;
@@ -63,6 +65,22 @@ export class PanelIntentListComponent implements OnInit {
       })
     })
   }
+
+  listenToIntentUpdate() {
+    this.eventUpadatedIntent.subscribe((intent: Intent) => {
+      console.log("[PANEL-INTENT-LIST] ---> ON UPDATE INTENTS: ", intent)
+      // const index = this.filtered_intents.findIndex((e) => e.id === intent.id);
+      // console.log("[PANEL-INTENT-LIST] onNewIntentListener intent index : ", index);
+      this.getAllIntents(this.id_faq_kb).then((length: number) => {
+        console.log("[PANEL-INTENT-LIST] intents length: ", length);
+        this.addBtnDisabled = false;
+         const index = this.filtered_intents.findIndex((e) => e.id === intent.id);
+         console.log("[PANEL-INTENT-LIST] ON UPDATE INTENTS intent index : ", index);
+        this.selectIntent(intent, index);
+      })
+  })
+}
+
 
   listenToStartUpdatingListener() {
     this.eventStartUpdatedIntent.subscribe((startUpdating: boolean) => {
