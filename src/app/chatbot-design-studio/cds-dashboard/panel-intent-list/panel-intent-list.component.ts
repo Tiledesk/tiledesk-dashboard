@@ -18,7 +18,6 @@ export class PanelIntentListComponent implements OnInit {
   @Input() id_faq_kb: string;
   @Input() intent_id: string;
   @Input() projectID: string;
-  @Input() events: Observable<any>;
   @Input() eventUpadatedIntent: Observable<any>;
   @Input() eventCreateIntent: Observable<any>;
   @Input() eventStartUpdatedIntent: Observable<any>;
@@ -26,7 +25,6 @@ export class PanelIntentListComponent implements OnInit {
   @Output() returnListOfIntents = new EventEmitter();
   @Output() createIntent = new EventEmitter();
   @Output() deleteSelectedIntent = new EventEmitter();
-  private eventsSubscription: Subscription;
 
   intent_start: Intent;
   intent_defaultFallback: Intent;
@@ -41,25 +39,25 @@ export class PanelIntentListComponent implements OnInit {
     private logger: LoggerService,
     private translate: TranslateService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
     console.log("[PANEL-INTENT-LIST] ngOnInit()")
     console.log("[PANEL-INTENT-LIST] - Selected chatbot ID: ", this.id_faq_kb);
     this.getAllIntents(this.id_faq_kb);
-    this.onNewIntentListener()
+    this.onEventListener()
   }
 
-  onNewIntentListener() {
+  onEventListener() {
     console.log("[PANEL-INTENT-LIST] onNewIntentListener")
-    this.eventsSubscription = this.events.subscribe((intent: Intent) => {
+    this.eventCreateIntent.subscribe((intent: Intent) => {
       console.log("[PANEL-INTENT-LIST] ---> ONNEWINTENTLISTENER: ", intent)
       this.getAllIntents(this.id_faq_kb).then((length: number) => {
         console.log("[PANEL-INTENT-LIST] intents length: ", length);
         this.selectIntent(intent, length - 1);
       })
     })
+
     this.eventUpadatedIntent.subscribe((intent: Intent) => {
       console.log("[PANEL-INTENT-LIST] ---> ON UPDATE INTENTS: ", intent)
       // const index = this.filtered_intents.findIndex((e) => e.id === intent.id);
@@ -70,14 +68,13 @@ export class PanelIntentListComponent implements OnInit {
          const index = this.filtered_intents.findIndex((e) => e.id === intent.id);
          console.log("[PANEL-INTENT-LIST] ON UPDATE INTENTS intent index : ", index);
         this.selectIntent(intent, index);
-      })
+      })   
+    })
 
-      this.eventStartUpdatedIntent.subscribe((startUpdating: boolean) => {
-        console.log("[PANEL-INTENT-LIST] ---> LISTEN TO START UPDATING INTENT : ", startUpdating)
-        this.addBtnDisabled = true;
-  
-      })
-  })
+    this.eventStartUpdatedIntent.subscribe((startUpdating: boolean) => {
+      console.log("[PANEL-INTENT-LIST] ---> LISTEN TO START UPDATING INTENT : ", startUpdating)
+      this.addBtnDisabled = true;
+    })
 
   }
 
