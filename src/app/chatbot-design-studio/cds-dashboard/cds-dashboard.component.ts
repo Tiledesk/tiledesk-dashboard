@@ -54,6 +54,7 @@ export class CdsDashboardComponent implements OnInit {
   createIntent: Subject<Intent> = new Subject<Intent>();
   upadatedIntent: Subject<Intent> = new Subject<Intent>();
   startUpdatedIntent: Subject<boolean> = new Subject<boolean>();
+  newIntentFromSplashScreen: Subject<boolean> = new Subject<boolean>();
   selectedChatbot: Chatbot
   activeSidebarSection: string;
   IS_OPEN: boolean = false;
@@ -98,7 +99,6 @@ export class CdsDashboardComponent implements OnInit {
     this.getTestSiteUrl();
     this.getDeptsByProjectId();
     this.hideWidget()
-
   }
 
   private hideWidget() {
@@ -338,6 +338,7 @@ export class CdsDashboardComponent implements OnInit {
             console.log('[CDS DSHBRD] HERE YES  ');
             //that.eventsSubject.next(intent);
             that.createIntent.next(intent);
+            
           }, stateDuration);
         }, stateDuration);
 
@@ -410,9 +411,6 @@ export class CdsDashboardComponent implements OnInit {
       actionsIntentSelected,
       webhookEnabledIntentSelected
     ).subscribe((upadatedIntent) => {
-
-
-
       this.showSpinner = false;
       console.log('[CDS DSHBRD] editIntent - RES upadatedIntent', upadatedIntent);
       if (upadatedIntent) {
@@ -527,6 +525,11 @@ export class CdsDashboardComponent implements OnInit {
     console.log('[CDS DSBRD] onSelectIntent elementIntentSelected', this.elementIntentSelected)
   }
 
+  onAddIntentFromSplashScreen(hasClickedAddNewIntent) {
+    console.log('[CDS DSBRD] onAddIntentFromSplashScreen hasClickedAddNewIntent ', hasClickedAddNewIntent)
+    this.newIntentFromSplashScreen.next(hasClickedAddNewIntent)
+  }
+
   onOpenActionDrawer(_isOpenActioDrawer: boolean) {
     console.log('[CDS DSBRD] onOpenActionDrawer - isOpenActioDrawer ', _isOpenActioDrawer)
     this.isOpenActionDrawer = _isOpenActioDrawer
@@ -570,6 +573,7 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = ''
     this.elementIntentSelected['element'] = null
+    this.editIntent();
   }
 
 

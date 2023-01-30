@@ -137,14 +137,20 @@
 .action-btn {
   padding: 12px 12px !important;
   border-radius: 15px !important;
-  background: #8ab4f8 !important;
+  background: rgba(138,180,248,.24) !important;
+  display: flex;
+
+  img {
+    width: 24px;
+    filter: brightness(0) saturate(100%) invert(97%) sepia(66%) saturate(6656%) hue-rotate(177deg) brightness(102%) contrast(98%)
+  }
 }
 
 .action-btn-text {
   margin-left: 11px;
   font-size: 14px;
   padding-right: 19px;
-  color: #e8eaed;
+  color: #d2e3fc; //#e8eaed;
 }
 
 *,
