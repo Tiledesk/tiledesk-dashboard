@@ -12,4 +12,8 @@ export class CdsSplashScreenComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  addNew() {
+    
+  }
+
 }
