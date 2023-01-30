@@ -1,10 +1,20 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc19
+- Save an intent with a temporary name as soon as the user adds it
+- Bug fixes: when an intent other than the selected one is deleted, the selected one is no longer active in the intent list
+- Fixed the bug: in the template's cards the template title is not visible due to the too long description
+- Selects the first available action when an intent is selected
+- Fixes the bug: when an intent is updated, the latest intent is selected in the intent list
+- Adds Chatbot design studio splash screen 
+- Selects an intent from the url
+- Sets in a new rule 'always' as default value for 'triggerEvery' condition
+
 ### 2.3.22-rc18
 - Adds the new page to create the chatbot from scratch
-- Fixes the bug:: "test it out" is not dynamic
-- Fixes the bug:: the upload of the chatbot profile picture doesn't work
-- Fixes the bug:: rules update doesn't work
+- Fixes the bug: "test it out" is not dynamic
+- Fixes the bug: the upload of the chatbot profile picture doesn't work
+- Fixes the bug: rules update doesn't work
 - Changes, programmatically,  the validator for the text in the rule if "regexOption" is "any"
 
 ### 2.3.22-rc16
