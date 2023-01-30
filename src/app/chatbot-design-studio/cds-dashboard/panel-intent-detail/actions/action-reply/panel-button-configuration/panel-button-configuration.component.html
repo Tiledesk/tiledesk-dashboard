@@ -13,25 +13,18 @@
 
     <div class="button-content-tab">
        
-        <div class="section displayed titleField">
+        <div class="section displayed">
 
-            <div class="form-group" [ngClass]="{'is-error':buttonLabelResult === false}">
-               <label 
-                    class="control-label title"
-                    [ngClass]="{'noDisplay':!buttonLabel}">
+            <div class="form-group" [ngClass]="{'is-error':buttonLabel}">
+               <label class="control-label ">
                     {{ 'Titolo del bottone...' | translate }}
                 </label>
-                <input 
-                    type="text" 
-                    [(ngModel)] = "buttonLabel"
-                    class="input form-control"
-                    (blur) = "onBlurButtonLabel($event)"
-                />
+                <cds-text
+                    [text]="buttonLabel"
+                    (onChange)="onChangeTitle($event)">
+                </cds-text>
             </div> 
 
-            <!-- <div class="titleField form-group" [ngClass]="{'is-error':buttonLabelResult === false}">
-                
-            </div> -->
         </div>
         
         <div class="section displayed">
@@ -54,8 +47,7 @@
             </div>
         </div>
 
-        <div class="section"
-            [ngClass]="{'displayed':buttonType === typeOfButton.URL}">
+        <div class="section" [ngClass]="{'displayed':buttonType === typeOfButton.URL}">
 
             <div class="form-group ng-select">
                 <label class="control-label">
@@ -78,11 +70,10 @@
                 <label class="control-label">
                     {{ 'Url' | translate }}
                 </label>
-                <input 
-                    type="text" 
-                    [(ngModel)] = "buttonUrl"
-                    class="input form-control"
-                />
+                <cds-text
+                    [text]="buttonUrl"
+                    (onChange)="onChangeUrl($event)">
+                </cds-text>
             </div> 
 
         </div>
@@ -94,28 +85,11 @@
                 <label class="control-label">
                     {{ 'Go to intent' | translate }}
                 </label>
-                <div class="selectFormModel">
-
-                    <!-- <cds-text id="text-condition"
-                        [control]="actionConditionFormGroup.controls['trueIntent']"
-                        [autocompleteOptions]="listOfActions">
-                    </cds-text> -->
-                    <ng-select [items]="listOfActions"
-                        placeholder="Select intent"
-                        [(ngModel)]="buttonAction"
-                        (change) = "onChangeActionButton($event)">
-                    </ng-select>
-
-                    <!-- <ng-select 
-                        class = "form-control-select" 
-                        [items] = "listOfActions" 
-                        [searchable] = false
-                        [clearable] = false
-                        [(ngModel)] = "buttonAction"
-                        (change) = "onChangeActionButton($event)">
-                    </ng-select> -->
-
-                </div>
+                <cds-text id="text-condition"
+                    [text]="buttonAction"
+                    [autocompleteOptions]="listOfActions"
+                    (onChange)="onChangeActionButton($event)">
+                </cds-text>
             </div>
 
         </div>

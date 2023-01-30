@@ -90,7 +90,7 @@ export class TemplateDetailComponent implements OnInit {
     this.getLoggedUser();
   }
 
-  
+
 
 
   getLoggedUser() {
@@ -180,10 +180,10 @@ export class TemplateDetailComponent implements OnInit {
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
     // const url = testItOutUrl + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=635b97cc7d7275001a2ab3e4"
-    const url = testItOutUrl + '?tiledesk_projectid=' + this.templateProjectId + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID="+ this.defaultDeptID
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.templateProjectId + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=" + this.defaultDeptID
     // console.log('openTestSiteInPopupWindow URL ', url)
 
-    
+
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
   }
@@ -269,12 +269,14 @@ export class TemplateDetailComponent implements OnInit {
 
   goToBotDetails() {
     this.logger.log('[TEMPLATE DETAIL] GO TO  BOT DETAILS - isDevMode() ', isDevMode());
-      // if (isDevMode() === false) { 
-      //   this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
-      // } else {
-        this.router.navigate(['project/' + this.project._id + '/cds/', this.botid]);
-      // }
-    
+    // if (isDevMode() === false) { 
+    //   this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
+    // } else {
+    //   // this.router.navigate(['project/' + this.project._id + '/cds/', this.botid]);
+    //   this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
+    // }
+    this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
+
     this.closeDialog();
     // this.closeCreateBotInfoModal();
     // } else {
