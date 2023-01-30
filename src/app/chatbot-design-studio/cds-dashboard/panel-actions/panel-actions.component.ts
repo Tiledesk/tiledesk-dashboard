@@ -19,10 +19,8 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   @Input() intentSelected: Intent
   @Output() openActionDrawer = new EventEmitter();
 
-  // @ViewChild('drawer' ,{ static: false }) drawer: MatDrawer
-
-  typeAction = TYPE_ACTION;
-
+  TYPE_ACTION = TYPE_ACTION
+  
   constructor() { }
 
   ngOnInit(): void {
@@ -53,7 +51,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     this.openActionDrawer.emit(this.isOpenActionDrawer);
   }
 
-  actionSelected(typeAction: string) {
+  actionSelected(typeAction: TYPE_ACTION) {
     console.log('[PANEL ACTION] actionSelected ', typeAction);
     if(typeAction === TYPE_ACTION.REPLY){
       let action = new ActionReply();
