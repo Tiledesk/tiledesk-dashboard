@@ -18,7 +18,7 @@ export class CDSTextareaComponent implements OnInit {
   @Input() textMessage: string;
   @Input() control: FormControl = new FormControl();
   @Input() showUtils: boolean = true;
-  @Output() change = new EventEmitter();
+  @Output() onChange = new EventEmitter();
 
   // Textarea //
   leftCharsText: number;
@@ -42,15 +42,15 @@ export class CDSTextareaComponent implements OnInit {
   }
 
    /** */
-   onChangeTextarea(text:string) {
+   onChangeTextarea(event) {
     this.leftCharsText = calculatingRemainingCharacters(this.text);
     if(this.leftCharsText<(this.limitCharsText/10)){
       this.alertCharsText = true;
     } else {
       this.alertCharsText = false;
     }
-    this.text = text;
-    this.change.emit(this.text);
+    this.text = event;
+    this.onChange.emit(this.text);
   }
 
 }
