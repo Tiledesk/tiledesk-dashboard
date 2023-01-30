@@ -93,6 +93,7 @@
 
     <ng-template #intents [ngOutletContext]="context">
         <div class="box-left">
+            <!-- [eventNewIntentFromSplashScreen]="newIntentFromSplashScreen.asObservable()" -->
             <appdashboard-panel-intent-list class="panel-intent-list" 
                 [id_faq_kb]="id_faq_kb" 
                 [intent_id]="intent_id"
@@ -103,13 +104,16 @@
                 (deleteSelectedIntent)="onDeleteSelectedIntent()"
                 [eventCreateIntent]="createIntent.asObservable()"
                 [eventUpadatedIntent]="upadatedIntent.asObservable()"
-                [eventStartUpdatedIntent]="startUpdatedIntent.asObservable()">
+                [eventStartUpdatedIntent]="startUpdatedIntent.asObservable()"
+               >
             </appdashboard-panel-intent-list>
         </div>
 
         <div class="box-right">
 
-            <cds-splash-screen *ngIf=!intentSelected> </cds-splash-screen>
+            <cds-splash-screen *ngIf=!intentSelected
+                (addIntentBtnClicked)="onAddIntentFromSplashScreen($event)" > 
+            </cds-splash-screen>
 
             <div class="box-right-header">
                 <appdashboard-panel-intent-header *ngIf=intentSelected 

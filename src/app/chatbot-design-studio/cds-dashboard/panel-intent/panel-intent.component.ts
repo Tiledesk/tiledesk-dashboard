@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { Form, Intent } from '../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Observable, Subscription } from 'rxjs';
-import { serialMap } from 'chartist';
+const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-panel-intent',
   templateUrl: './panel-intent.component.html',
@@ -57,19 +57,36 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
     // console.log("[PANEL INTENT]  (ngOnChanges) - this.intentSelected > actions: ", this.intentSelected.actions);
     // console.log("[PANEL INTENT] (ngOnChanges) - this.intentSelected > actions length: ", this.intentSelected.actions.length);
-    if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
-      // console.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected Exist actions', this.intentSelected.actions[0])
-      setTimeout(() => {
-        const actionElement = <HTMLElement>document.querySelector(`#action_0`);
-        // console.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
-        if (actionElement) {
-          actionElement.classList.add("cds-action-active");
-        }
-      }, 200);
+    
+      let elementsActive = Array.from(document.getElementsByClassName('cds-action-active'));
+      console.log('[PANEL INTENT] (ngOnChanges) - elementsActive', elementsActive);
+      console.log('[PANEL INTENT] (ngOnChanges) - elementsActive length ', elementsActive.length);
+    
 
-    }
+    // if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
+    //   // console.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected Exist actions', this.intentSelected.actions[0])
+    //   setTimeout(() => {
+    //     const actionElement = <HTMLElement>document.querySelector(`#action_0`);
+    //     // console.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
+    //     if (actionElement) {
+    //       actionElement.classList.add("cds-action-active");
+    //     }
+    //   }, 200);
+    // }
 
     if (changes.intentSelected) {
+      // console.log('[PANEL INTENT] (ngOnChanges) - changes.intentSelected', changes.intentSelected)
+      if (changes.intentSelected.currentValue['actions'] && changes.intentSelected.currentValue['actions'].length > 0) {
+        // console.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected Exist actions', changes.intentSelected.currentValue['actions'][0])
+        setTimeout(() => {
+          const actionElement = <HTMLElement>document.querySelector(`#action_0`);
+          // console.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
+          if (actionElement) {
+            actionElement.classList.add("cds-action-active");
+          }
+        }, 200);
+  
+      }
       if (changes.intentSelected.firstChange === false) {
         // console.log('[PANEL INTENT] (ngOnChanges) changes', changes);
         // console.log('[PANEL INTENT] (ngOnChanges) changes intentSelected currentValue', changes.intentSelected.currentValue);
@@ -209,10 +226,28 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   }
 
   onDeleteAction(actionindex) {
+    swal({
+      title: "Are you sure",
+      text: "The action will be deleted",
+      icon: "warning",
+      buttons: ["Cancel", "Delete"],
+      dangerMode: false,
+    })
+    .then((willdelete) => {
+      console.log('[PANEL INTENT] onDeleteAction willdelete', willdelete)
+     if (willdelete) {
+
     console.log('[PANEL INTENT] onDeleteAction index', actionindex);
     console.log('[PANEL INTENT] onDeleteAction intentSelected', this.intentSelected);
     this.intentSelected.actions.splice(actionindex, 1);
     this.actionDeleted.emit(true);
+     } 
+     
+    });
+
+
+
+ 
   }
 
 }
