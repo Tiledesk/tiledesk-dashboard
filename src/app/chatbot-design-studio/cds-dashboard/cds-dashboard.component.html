@@ -28,33 +28,31 @@
         </div>
         <!-- <i class="material-icons cds-btn-back" (click)="goBack()">keyboard_arrow_left</i> -->
         <div class="header-title">{{ selectedChatbot?.name }}</div>
-        <div class="cds-community-btn-wpr">
-            <button *ngIf="selectedChatbot?.public === false" id="cds-community-btn" class="btn btn-primary  pull-right" type="button"
-                (click)="publishOnCommunity()">
-                Publish on community
-            </button>
-            <button *ngIf="selectedChatbot?.public === true" id="cds-community-btn" class="btn btn-primary  pull-right" type="button"
-                (click)="removeFromCommunity()">
-                Remove from community
-            </button>
-
-        </div>
-       
+        <div class="right-opts">
+            <div>
+                <button *ngIf="selectedChatbot?.public === false" id="cds-community-btn" class="btn btn-primary pull-right cds-blue-button" type="button"
+                    (click)="publishOnCommunity()">
+                    Publish on community
+                </button>
+                <button *ngIf="selectedChatbot?.public === true" id="cds-community-btn" class="btn btn-primary pull-right cds-blue-button" type="button"
+                    (click)="removeFromCommunity()">
+                    Remove from community
+                </button>
+    
+            </div>
+            <div>
+                <button id="cds-test-it-out-btn" class="btn btn-primary pull-right cds-blue-button" type="button" (click)="openTestSiteInPopupWindow()">
+                    Test it out
+                </button>
+            </div>
+            <div class="cds-close-btn-wpr">
            
-      
-        <div class="cds-testitout-btn-wpr">
-            <button id="cds-test-it-out-btn" class="btn btn-primary  pull-right" type="button"
-                (click)="openTestSiteInPopupWindow()">
-                Test it out
-            </button>
-        </div>
-        <div class="cds-close-btn-wpr">
-       
-            <button class="btn pull-right cds-close-btn" (click)="goBack()">
-                <span class="material-icons cds-close-btn-icon">
-                    clear
-                </span>
-            </button>
+                <button class="btn pull-right cds-close-btn" (click)="goBack()">
+                    <span class="material-icons cds-close-btn-icon">
+                        clear
+                    </span>
+                </button>
+            </div>
         </div>
     </div>
 

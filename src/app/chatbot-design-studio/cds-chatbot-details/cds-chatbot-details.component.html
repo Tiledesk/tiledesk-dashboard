@@ -165,8 +165,8 @@
       <div class="row">
         <label class="col-xs-2"></label>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-          <button id="csd-update-bot-btn" style="margin-top: 12px;margin-bottom: 5px;" #editbotbtn
-            class="btn btn-primary  pull-left" (click)="editBot()" [disabled]="faqKb_name?.length === 0">
+          <button id="csd-update-bot-btn" #editbotbtn
+            class="btn btn-primary pull-left cds-blue-button" (click)="editBot()" [disabled]="faqKb_name?.length === 0">
             {{ "BotsAddEditPage.UpdateBotName" | translate }}
           </button>
         </div>
@@ -262,7 +262,6 @@
         <div class="col-sm-10 col-md-10">
           <h3 class="card_title__underlined" style="color:#e8eaed">
             <span class="card_title__underline">
-
               CSV
             </span>
           </h3>
@@ -281,7 +280,7 @@
 
 
       <div class="import-faq-from-csv-btn-wpr">
-        <button class="btn btn-primary inport-faq-from-csv" (click)="openImportModal()">
+        <button class="btn btn-primary cds-blue-button" (click)="openImportModal()">
           <span class="icon" style="padding-right:8px">
             <span class="material-icons">
               cloud_upload
@@ -295,7 +294,6 @@
         <div class="col-sm-10 col-md-10">
           <h3 class="card_title__underlined" style="margin-top: 30px; color:#e8eaed">
             <span class="card_title__underline">
-
               JSON
             </span>
           </h3>
@@ -312,11 +310,12 @@
         Intents
       </div>
 
-      <!-- -------------------------------------------- -->
-      <!-- Export Intents AS Json Btn -->
-      <!-- -------------------------------------------- -->
-      <span class="export-intents-to-json-btn-wpr">
-        <button class="btn btn-primary export-intents-to-json-btn" (click)="exportIntentsToJSON()">
+      
+      <div class="import-faq-from-csv-btn-wpr">
+        <!-- -------------------------------------------- -->
+        <!-- Export Intents AS Json Btn -->
+        <!-- -------------------------------------------- -->
+        <button class="btn btn-primary cds-blue-button" (click)="exportIntentsToJSON()">
           <span class="icon" style="padding-right:8px">
             <span class="material-icons">
               cloud_download
@@ -324,12 +323,11 @@
           </span>
           {{'ExportAsJSON' | translate}}
         </button>
-      </span>
-      <!-- ------------------------------------------ -->
-      <!-- Import Intents from Json Btn (change)="fileChangeUploadIntentsFromJSON($event)"-->
-      <!-- ------------------------------------------ -->
-      <span class="import-intents-from-json-btn-wpr" style="margin-left: 16px;">
-        <button class="btn btn-primary import-intents-from-json-btn" (click)="presentModalImportIntentsFromJson()">
+
+        <!-- ------------------------------------------ -->
+        <!-- Import Intents from Json Btn (change)="fileChangeUploadIntentsFromJSON($event)"-->
+        <!-- ------------------------------------------ -->
+        <button class="btn btn-primary cds-blue-button" (click)="presentModalImportIntentsFromJson()">
           <span class="icon" style="padding-right:8px">
             <span class="material-icons">
               cloud_upload
@@ -337,8 +335,7 @@
           </span>
           {{'ImportFromJSON' | translate}}
         </button>
-      </span>
-
+      </div>
 
       <!-- <span #importIntentsFromJson class="import-intents-from-json-btn-wpr" style="margin-left: 16px;">
                       <input style="display:inline" name="upload-intents-from-json" id="upload-intents-from-json"
@@ -363,8 +360,8 @@
       <!-- -------------------------------------------- -->
       <!-- Export Chatbot to Json Btn -->
       <!-- -------------------------------------------- -->
-      <span class="export-chatbot-to-json-btn-wpr">
-        <button class="btn btn-primary export-chatbot-to-json-btn" (click)="exportChatbotToJSON()">
+      <div class="import-faq-from-csv-btn-wpr">
+        <button class="btn btn-primary cds-blue-button" (click)="exportChatbotToJSON()">
           <span class="icon" style="padding-right:8px">
             <span class="material-icons">
               cloud_download
@@ -373,8 +370,7 @@
           <!-- Export Chatbot to JSON -->
           {{'ExportAsJSON' | translate}}
         </button>
-      </span>
-
+      </div>
       <!-- ---------------------------------------------------- -->
       <!-- Import Chatbot from Json Btn ! Note: display NONE-->
       <!-- ---------------------------------------------------- -->
@@ -419,7 +415,7 @@
       <div class="modal-body" style="padding-bottom: 20px !important; padding-top: 20px;">
 
         <div class="row" style="margin-right: 0px; margin-bottom:8px">
-          <div class="col-xs-10 col-xs-offset-1" class="cds-dwnld-example-csv">
+          <div class="col-xs-10 col-xs-offset-1 cds-dwnld-example-csv">
             <p (click)="downloadExampleCsv()" style="margin:5px; cursor:pointer"> <i class="material-icons"
                 style="font-size:18px; top: 4px; position: relative;">save_alt</i>
               {{ 'download' | translate }} <span style="font-weight:400"> {{ 'examplecsv' | translate }} </span>
