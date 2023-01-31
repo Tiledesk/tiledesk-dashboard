@@ -93,7 +93,6 @@
 
     <ng-template #intents [ngOutletContext]="context">
         <div class="box-left">
-            <!--  -->
             <appdashboard-panel-intent-list class="panel-intent-list" 
                 [id_faq_kb]="id_faq_kb" 
                 [intent_id]="intent_id"
@@ -112,7 +111,8 @@
         <div class="box-right">
 
             <cds-splash-screen *ngIf=!intentSelected
-                (addIntentBtnClicked)="onAddIntentFromSplashScreen($event)" > 
+                [text]="'Select an intent from the left sidebar or create a new one'"
+                (onClickBtn)="onAddIntentFromSplashScreen($event)" > 
             </cds-splash-screen>
 
             <div class="box-right-header">

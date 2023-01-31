@@ -96,7 +96,7 @@ $width-title: 80%;
 }
 
 #cds-save-intent-btn {
-    background: #8ab4f8;
+    background: $dark-blue;
     color: #202124;
     box-shadow: none !important;
     font-weight: 500 !important;
@@ -160,8 +160,8 @@ $circle-size: 40px;
   height: 100%;
   
   &#cds-save-intent-btn{
-    background: #8ab4f8;
-    border: 1px solid #8ab4f8;
+    background: $dark-blue;
+    border: 1px solid $dark-blue;
     box-shadow: none;
   }
   

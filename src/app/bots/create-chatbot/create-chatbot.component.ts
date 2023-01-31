@@ -69,9 +69,9 @@ export class CreateChatbotComponent implements OnInit {
       if (res) {
         const communityTemplates = res
         console.log('[CREATE-CHATBOT] communityTemplates', communityTemplates);
-
+        // 
         this.startChatBotArray = communityTemplates.filter((el) => {
-          return el.mainCategory === "System" && el.tags.includes('start-chatbot')
+          return el.mainCategory === "System" && el.tags && el.tags.includes('start-chatbot')
         });
         let stripHere = 115;
         this.startChatBotArray.forEach(startChatBot => {

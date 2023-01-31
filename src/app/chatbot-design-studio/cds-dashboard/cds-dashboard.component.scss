@@ -96,7 +96,7 @@ $margin-top-card: 30px;
         .panel-intent {
             position: relative;
             display: inline-block;
-            width: 240px;
+            width: 265px;
             height: auto;
             max-height: 100%;
             /* background-color: rgb($bg-color-bck-rgb); */
@@ -145,7 +145,7 @@ $margin-top-card: 30px;
 }
 
 #cds-add-new-intent-btn {
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     color: #202124 !important;
     box-shadow: none !important;
     font-weight: 500 !important;
@@ -246,7 +246,7 @@ $margin-top-card: 30px;
 }
 
 #cds-test-it-out-btn {
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     color: #202124 !important;
     box-shadow: none !important;
     font-weight: 500 !important;
@@ -270,7 +270,7 @@ $margin-top-card: 30px;
 }
 
 #cds-community-btn {
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     color: #202124 !important;
     box-shadow: none !important;
     font-weight: 500 !important;

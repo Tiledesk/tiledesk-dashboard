@@ -1,3 +1,5 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
 .button-intent {
   display: block;
   text-align: center;
@@ -95,15 +97,15 @@
 }
 
 .action--box {
-  padding: 0px 13px;
-  color: #d2e3fc;
+  padding: 0px 12px;
+  color: $action-item-color;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   cursor: pointer;
-  background: rgba(138, 180, 248, 0.24);
+  background: $action-item-background;
   font-size: 12px; //14px;
   margin: 18px 5px 8px 5px;
   border-radius: 20px;
@@ -122,19 +124,17 @@
 .cds-action-icon-wpr {
   display: flex;
   margin-right: 10px;
-
+  
   img {
     width: 18px;
-    filter: brightness(0) saturate(100%) invert(97%) sepia(66%) saturate(6656%) hue-rotate(177deg) brightness(102%)
-      contrast(98%);
+    filter: brightness(0) saturate(100%) invert(97%) sepia(66%) saturate(6656%) hue-rotate(177deg) brightness(102%) contrast(98%)
   }
+
 }
 
 .cds-action-active {
-  // background: #8ab4f8 !important;
-  // color: #202124 !important;
   border: 3px solid #0f172a !important;
-  outline: 2px solid #ecb606 !important;
+  outline: 2px solid $icon-color !important;
 }
 
 // .cdk-drag-preview {
@@ -259,8 +259,6 @@
   color: #ff4000;
 }
 
-
-
 .cds-action-arrow {
   position: absolute;
   display: flex;
@@ -271,4 +269,51 @@
   transform: rotate(-90deg);
   color: #d2e3fc;
 }
+
+.csd-add-action-btn-wpr {
+  height: 32px;
+}
+
+
+.csd-action-dot-and-btn-wpr {
+  display: block;
+  text-align: center;
+  box-sizing: border-box;
+  height: auto;
+  margin: 0 5px;
+}
+
+.cds-add-action-btn {
+  margin: 0px;
+  padding: 4px;
+  border-radius: 50%;
+  box-shadow: unset;
+  z-index: 2;
+}
+
+.cds-add-action-btn > span {
+  font-size: 24px;
+  color: #3ea9f5;
+  position: relative;
+  top: 0px;
+}
+
+.cds-add-action-btn:hover > span {
+  color: rgba(62, 169, 245, 0.6)
+}
+
+.action--text {
+  position: relative;
+  top: -26px;
+  left: 61px;
+  color: #3ea9f5;
+  font-size: 14px;
+  white-space: nowrap;
+  z-index: 1;
+  cursor: pointer;
+}
+.action--text:hover { 
+ color: rgba(62, 169, 245, 0.6)
+}
+
 

@@ -45,6 +45,7 @@ $padding: 10px;
     position: relative;
     display: inline-flex;
     vertical-align: top;
+    flex-direction: column;
     width: calc(100% - 100px);
     max-height: 100%;
     height: calc(100vh - 130px);
@@ -184,5 +185,14 @@ $padding: 10px;
                 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     &.active{
         display: block;
+    }
+}
+
+cds-action-description {
+    padding: 10px 0;
+    margin-left: 10px;
+    // margin-right: 30px;
+    & ::ng-deep .action_welcome{
+        margin-bottom: 0px;
     }
 }
