@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc21
+- Improvements and bug fixing
+
 ### 2.3.22-rc20
 - Improvements and bug fixing
 
