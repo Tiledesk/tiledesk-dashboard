@@ -1,3 +1,5 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
 /** LOCAL COLORS **/
 $color-withe: #ffffff;
 $color-blue: #3ea9f5;
@@ -198,7 +200,7 @@ $color-text-box: #566787;
 
 .btn-only-string {
     background: transparent !important;
-    color: #8ab4f8 !important;
+    color: $dark-blue !important;
     border: unset !important;
     box-shadow: unset !important;
     // background-color: #dce9ff !important;
@@ -213,7 +215,7 @@ $color-text-box: #566787;
 }
 
 #create-intent-form {
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     color: #202124 !important;
     box-shadow: none !important;
     font-weight: 500 !important;
@@ -226,7 +228,7 @@ $color-text-box: #566787;
 }
 
 #open-setting-btn {
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     box-shadow: none !important;
     color: #202124;
     font-weight: 500;
@@ -241,7 +243,7 @@ $color-text-box: #566787;
 }
  
 #add-form-btn {
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     box-shadow: none !important;
     color: #202124;
     font-weight: 500;

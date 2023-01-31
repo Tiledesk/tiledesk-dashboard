@@ -1,4 +1,5 @@
 @import "./src/assets/sass/md/_variables.scss";
+@import "./src/assets/sass/cds/_variables.scss";
 
 input[type="text"] {
     // min-width: 307px !important;
@@ -1175,7 +1176,7 @@ input[type="text"]:disabled::placeholder {
 }
 
 #csd-update-bot-btn {
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     color: #202124 !important;
     box-shadow: none !important;
     font-weight: 500 !important;
@@ -1192,7 +1193,7 @@ input[type="text"]:disabled::placeholder {
     padding-right: 15px;
 
     color: #202124;
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     box-shadow: none !important;
     font-weight: 500 !important;
     font-family: Poppins, Roboto, Arial, sans-serif !important;
@@ -1230,7 +1231,7 @@ input[type="text"]:disabled::placeholder {
     font-family: Poppins, Roboto, Arial, sans-serif !important;
     text-transform: capitalize !important;
     color: #202124;
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     font-weight: 500 !important;
 }
 #hook-to-dept-btn:hover {
@@ -1240,7 +1241,7 @@ input[type="text"]:disabled::placeholder {
 #upload-csv-choose-file {
     padding-left: 15px !important;
     padding-right: 15px !important;
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     box-shadow: unset !important;
     color: #202124;
     font-weight: 500 !important;
@@ -1257,7 +1258,7 @@ input[type="text"]:disabled::placeholder {
     margin-bottom: 0px;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     box-shadow: unset !important;
     color: #202124;
     font-weight: 500 !important;
@@ -1276,7 +1277,7 @@ input[type="text"]:disabled::placeholder {
     text-transform: unset !important;
     color: #202124 !important;
     font-weight: 500 !important;
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     margin-left: 15px;
 }
 
@@ -1294,7 +1295,7 @@ input[type="text"]:disabled::placeholder {
     text-transform: unset !important;
     color: #202124 !important;
     font-weight: 500 !important;
-    background: #8ab4f8;
+    background: $dark-blue;
     margin-left: 15px;
 }
 .export-intents-to-json-btn:hover {
@@ -1306,7 +1307,7 @@ input[type="text"]:disabled::placeholder {
     text-transform: unset !important;
     color: #202124 !important;
     font-weight: 500 !important;
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     margin-left: 15px !important;
 }
 
@@ -1324,7 +1325,7 @@ input[type="text"]:disabled::placeholder {
     text-transform: unset !important;
     color: #202124 !important;
     font-weight: 500 !important;
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
     margin-left: 15px !important;
 }
 
@@ -1337,7 +1338,7 @@ input[type="text"]:disabled::placeholder {
     text-transform: unset !important;
     color: #202124 !important;
     font-weight: 500 !important;
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
 }
 
 #upload-intents-from-json-overwrite:hover {
@@ -1348,31 +1349,36 @@ input[type="text"]:disabled::placeholder {
     box-shadow: unset !important;
     text-transform: unset !important;
     color: #202124 !important;
-    background: #8ab4f8 !important;
+    background: $dark-blue !important;
 }
 
 #upload-intents-from-json-add :hover {
     background: rgba(138, 180, 248, 0.8) !important;
 }
 
-
 .csd-chatbot-dtls-input {
     max-width: 400px;
 }
-
 
 input[type="file"] {
     display: none;
 }
 .custom-file-upload {
-    border: 1px solid #8ab4f8;
+    border: 1px solid $dark-blue;
     display: inline-block;
     padding: 11px 12px;
     cursor: pointer;
-    background: #8ab4f8!important;
+    background: $dark-blue !important;
     color: #000;
     border-radius: 4px;
     font-weight: 500;
     margin-top: 14px;
     width: 145px;
+}
+
+.cds-dwnld-example-csv {
+    text-align: center;
+    border: 1px solid $dark-blue;
+    background-color: $dark-blue;
+    color: #202124;
 }
