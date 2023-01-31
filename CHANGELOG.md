@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc22
+- Fixed the bug: intent is not updated
+
 ### 2.3.22-rc21
 - Fixed the bug: template list is not visible on Create Bot page
 
