@@ -20,7 +20,7 @@
             <span> Form </span>
         </div>
 
-
+        
         <!-- <div [ngStyle]="{'border':actions?.length > 0 ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
             [ngClass]="{'actions-btn-active': displayActions}" class="button-intent"
             (click)="toggleActions(displayActions = !displayActions) ">
@@ -35,6 +35,29 @@
     </div>
     <!-- [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}" -->
 
+    <!-- ------------------------ -->
+    <!-- @ Form -->
+    <!-- ------------------------ -->
+   aa {{ formSize }}
+    <div class="action--list">
+        <div class="action--box" [ngClass]="{'action-wpr-no-form': formSize === 0 }" (click)="displayForm()">
+            <div class="action-wpr" >
+                <div class="cds-action-icon-wpr">
+                    <span class="material-icons" style="font-size: 18px;">
+                        list_alt
+                    </span>
+                </div>
+                <div class="cds-action-name-wpr">
+                    Form
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ------------------------ -->
+    <!-- @ Actions -->
+    <!-- ------------------------ -->
     <div class="action-list-wpr" *ngIf="actions && actions?.length > 0">
 
         <div cdkDropList class="action--list" (cdkDropListDropped)="drop($event)">

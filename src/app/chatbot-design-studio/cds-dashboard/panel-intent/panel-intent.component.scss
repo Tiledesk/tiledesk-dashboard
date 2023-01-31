@@ -115,6 +115,12 @@
   font-weight: 400;
 }
 
+.action--box.action-wpr-no-form {
+    border: 1.9px dashed #9aa0a6 !important;
+    background: unset;
+    color: #9aa0a6;
+}
+
 .action-wpr {
   height: 18px;
   display: flex;

@@ -72,12 +72,11 @@
                         </span>
                       </th>
 
-                      <th>
+                      <!-- <th>
                         <span class="column-th-span">
-                          <!-- {{ "BotsPage.ExternalBot" | translate }} -->
                           {{ "BotsAddEditPage.Type" | translate }}
                         </span>
-                      </th>
+                      </th> -->
 
                       <th *ngIf="isVisibleAnalytics" class="column-th-span">
                         {{ "BotsAddEditPage.Messages" | translate }}
@@ -132,7 +131,7 @@
                   <tbody>
                     <!-- IF THERE ISN'T BOT -->
                     <tr *ngIf="faqkbList && faqkbList?.length === 0" class="no-bot-tr-msg-wpr">
-                      <td colspan="6" style="text-align: center; padding-top: 16px;">
+                      <td colspan="5" style="text-align: center; padding-top: 16px;">
                         <p class="no-bot-msg">
                           <!-- <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
                             info
@@ -149,6 +148,9 @@
                           <span style="display: block;">
                             <span class="btn---link" (click)="createBlankTilebot()"> create a new one from scratch
                             </span>
+
+                            
+
                           </span>
 
 
@@ -281,14 +283,14 @@
                         </div>
                       </td>
 
-                      <td>
+                      <!-- <td>
                         <span *ngIf="faqkb?.type !== 'internal'" style="text-transform: capitalize;font-weight:400;">
                           {{ faqkb?.type}}
                         </span>
                         <span *ngIf="faqkb?.type === 'internal'" style="text-transform: capitalize;font-weight:400;">
                           resolution
                         </span>
-                      </td>
+                      </td> -->
 
                       <td *ngIf="isVisibleAnalytics"
                         style="text-transform: capitalize;font-weight:400;text-align: center">
