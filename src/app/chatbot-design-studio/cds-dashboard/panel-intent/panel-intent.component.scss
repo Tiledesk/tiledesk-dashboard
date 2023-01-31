@@ -1,3 +1,5 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
 .button-intent {
   display: block;
   text-align: center;
@@ -95,15 +97,15 @@
 }
 
 .action--box {
-  padding: 0px 13px;
-  color: #d2e3fc;
+  padding: 0px 12px;
+  color: $action-item-color;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   cursor: pointer;
-  background: rgba(138, 180, 248, 0.24);
+  background: $action-item-background;
   font-size: 12px; //14px;
   margin: 18px 5px 8px 5px;
   border-radius: 20px;
@@ -122,12 +124,12 @@
 .cds-action-icon-wpr {
   display: flex;
   margin-right: 10px;
-
+  
   img {
     width: 18px;
-    filter: brightness(0) saturate(100%) invert(97%) sepia(66%) saturate(6656%) hue-rotate(177deg) brightness(102%)
-      contrast(98%);
+    filter: brightness(0) saturate(100%) invert(97%) sepia(66%) saturate(6656%) hue-rotate(177deg) brightness(102%) contrast(98%)
   }
+
 }
 
 .cds-action-active {
