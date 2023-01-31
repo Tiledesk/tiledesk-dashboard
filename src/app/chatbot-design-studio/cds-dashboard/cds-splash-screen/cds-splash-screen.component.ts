@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'cds-splash-screen',
@@ -6,15 +6,17 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./cds-splash-screen.component.scss']
 })
 export class CdsSplashScreenComponent implements OnInit {
-  @Output() addIntentBtnClicked = new EventEmitter();
+  
+  @Input() text: string
+  @Output() onClickBtn = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  addNewIntent() {
-    this.addIntentBtnClicked.emit(true);
+  onAdd() {
+    this.onClickBtn.emit(true);
   }
 
 }
