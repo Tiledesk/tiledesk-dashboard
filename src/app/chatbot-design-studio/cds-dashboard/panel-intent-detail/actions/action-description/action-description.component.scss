@@ -1,0 +1,39 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
+.action_welcome{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+    .action-title {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 5px;
+        img{
+            filter: brightness(0) saturate(100%) invert(84%) sepia(13%) saturate(5939%) hue-rotate(357deg) brightness(94%) contrast(97%);
+        }
+    }
+
+    .text-action {
+        color: $icon-color;
+        margin-right: $action-item-color;
+        margin-bottom: 0px;
+    }
+
+    .action-type {
+        margin-bottom: 0px;
+        color: white;
+    }
+    
+    .action-description{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        font-size: 11px;
+        color: $action-item-color;
+        line-height: 1.5;
+        // text-align: center;
+    }
+}
