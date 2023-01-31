@@ -35,6 +35,7 @@ export class RulesListComponent implements OnInit {
   onRuleDeleted(event: Rule){
     this.listOfRules = this.listOfRules.filter(el => el.uid !== event.uid)
     console.log('EVENT: onRemoveRule-->', event, this.listOfRules)
+    this.selectedChatbot.attributes['rules']= this.listOfRules
   }
 
 }
