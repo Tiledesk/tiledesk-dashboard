@@ -2,7 +2,7 @@
 
 <div class="box-sx">
     <cds-action-description [actionType]="'REPLY'"></cds-action-description>
-    
+
     <!-- [ngStyle]="{'transform': translateY}" -->
     <div #scrollMe id="scrollMe" 
         class="content draggable-list" 
@@ -61,7 +61,7 @@
                     (moveDownResponse) = onMoveDownResponse($event)
                     (deleteResponse) = onDeleteResponse($event)
                     (openButtonPanel) = onOpenButtonPanel($event)
-                    (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                    (change)=onChangeDelayTimeReplyElement()
                     (changeTextareaReplyElement) = onChangeTextareaReplyElement()
                     ></appdashboard-image-response>
                 </div>
