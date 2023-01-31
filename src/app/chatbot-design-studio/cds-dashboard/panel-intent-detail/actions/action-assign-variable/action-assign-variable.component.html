@@ -3,18 +3,19 @@
 
     <div class="text-editor-wrapper">
         <div class="field-box">
-            <label class="title-label">Expression:</label>
+            <label class="title-label">Assign to:</label>
             <cds-text id="text-condition"
-                [control]="actionAssignFormGroup.controls['expression']">
+                [control]="actionAssignFormGroup.controls['assignTo']"
+                [autocompleteOptions]="variables?variables:null ">
             </cds-text>
         </div>
     </div>
-
+    
     <div class="text-editor-wrapper">
         <div class="field-box">
-            <label class="title-label">Assign to:</label>
+            <label class="title-label">Value:</label>
             <cds-text id="text-condition"
-                [control]="actionAssignFormGroup.controls['assignTo']">
+                [control]="actionAssignFormGroup.controls['expression']">
             </cds-text>
         </div>
     </div>
