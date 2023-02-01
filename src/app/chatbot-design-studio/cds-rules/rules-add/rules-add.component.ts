@@ -145,13 +145,14 @@ export class RulesAddComponent implements OnInit {
         
         if(data){
           //SUCCESS STATE
+          
           setTimeout(() => {
             button.classList.remove(pendingClassName);
             button.classList.add(successClassName);
-          
+            that.onRuleAdded.emit(this.ruleFormGroup.value)
             window.setTimeout(() => {
               button.classList.remove(successClassName)
-              that.onRuleAdded.emit(this.ruleFormGroup.value)
+              
               that.isPanelExpanded = false;
             }, stateDuration);
           }, stateDuration);
@@ -195,13 +196,13 @@ export class RulesAddComponent implements OnInit {
         
       if(data){
         //SUCCESS STATE
+        
         setTimeout(() => {
           button.classList.remove(pendingClassName);
           button.classList.add(successClassName);
-        
+          that.onRuleDeleted.emit(this.ruleFormGroup.value)
           window.setTimeout(() => {
             button.classList.remove(successClassName)
-            that.onRuleDeleted.emit(this.ruleFormGroup.value)
             that.isPanelExpanded = true;
           }, stateDuration);
         }, stateDuration);
