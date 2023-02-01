@@ -9,7 +9,7 @@
             </cds-action-reply>
 
             <cds-action-wait *ngSwitchCase="typeAction.WAIT"
-                [actionwait]="elementSelected">
+                [action]="elementSelected">
             </cds-action-wait>
      
             <cds-action-intent *ngSwitchCase="typeAction.INTENT"
@@ -61,6 +61,15 @@
             <cds-action-change-department *ngSwitchCase="typeAction.CHANGE_DEPARTMENT"
                 [action]="elementSelected">
             </cds-action-change-department>
+
+            <cds-action-agent *ngSwitchCase="typeAction.AGENT"
+                [action]="elementSelected">
+            </cds-action-agent>
+
+            <cds-action-close *ngSwitchCase="typeAction.CLOSE"
+                [action]="elementSelected">
+            </cds-action-close>
+
         </div>
     </div>
 </div>
@@ -70,9 +79,10 @@
     <appdashboard-question [intentSelected]="intentSelected">
     </appdashboard-question>
 </div>
-<!-- (passJsonIntentForm)="passJsonIntentForm($event)" -->
+<!--  -->
 <div *ngIf="elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">
-    <appdashboard-form [intentForm]="elementSelected" [intentSelected]="intentSelected">
+    <appdashboard-form [intentForm]="elementSelected" [intentSelected]="intentSelected" 
+    (passJsonIntentForm)="passJsonIntentForm($event)">
     </appdashboard-form>
 </div>
 

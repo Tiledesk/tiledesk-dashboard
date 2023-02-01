@@ -1,7 +1,10 @@
 
 
 <div class="box-sx">
-    <cds-action-description [actionType]="'REPLY'"></cds-action-description>
+    <cds-action-description 
+        [actionType]="'REPLY'"
+        [actionSelected]="reply">
+    </cds-action-description>
 
     <!-- [ngStyle]="{'transform': translateY}" -->
     <div #scrollMe id="scrollMe" 
@@ -120,13 +123,13 @@
 </div>
 
 
-<div class="card-buttons" 
+<div class="card-buttons" (focusout)="onFocusOutEvent($event)"
     [ngClass]="{'active':openCardButton}">
     <appdashboard-panel-button-configuration
         *ngIf="openCardButton"
         [button] = buttonSelected
         [listOfActions] = listOfActions
         (closeButtonPanel) = onCloseButtonPanel()
-        (saveButton) = onSaveButton($event)
-    ></appdashboard-panel-button-configuration>
+        (saveButton) = onSaveButton($event)>
+    </appdashboard-panel-button-configuration>
 </div>

@@ -200,7 +200,7 @@ $color-text-box: #566787;
 
 .btn-only-string {
     background: transparent !important;
-    color: $dark-blue !important;
+    color: $light-blue !important;
     border: unset !important;
     box-shadow: unset !important;
     // background-color: #dce9ff !important;
@@ -215,8 +215,8 @@ $color-text-box: #566787;
 }
 
 #create-intent-form {
-    background: $dark-blue !important;
-    color: #202124 !important;
+    background: $light-blue !important;
+    color: $light-black !important;
     box-shadow: none !important;
     font-weight: 500 !important;
     font-family: Poppins, Roboto, Arial, sans-serif !important;
@@ -228,7 +228,7 @@ $color-text-box: #566787;
 }
 
 #open-setting-btn {
-    background: $dark-blue !important;
+    background: $light-blue !important;
     box-shadow: none !important;
     color: #202124;
     font-weight: 500;
@@ -243,7 +243,7 @@ $color-text-box: #566787;
 }
  
 #add-form-btn {
-    background: $dark-blue !important;
+    background: $light-blue !important;
     box-shadow: none !important;
     color: #202124;
     font-weight: 500;

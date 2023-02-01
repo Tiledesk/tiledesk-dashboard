@@ -13,7 +13,7 @@
                 <div class="onoffswitch-wrapper">
                     <div style="display: inline-block;position: relative;top: -13px;margin-right: 12px;">
                         <span *ngIf="chatbot.webhook_enabled === true"
-                            style="color:#3ea9f5; text-transform: uppercase; font-weight: 400;">
+                            style="color:#8ab4f8; text-transform: uppercase; font-weight: 400;">
                             {{'Enabled' | translate}}
                         </span>
                         <span *ngIf="chatbot.webhook_enabled === false"
@@ -75,11 +75,10 @@
             </div>
           </div>
 
-          <div class="row">
-            <label></label>
+          <div>
             <div>
-              <button id="update-bot-btn" style="margin-top: 12px;margin-bottom: 5px;" #editbotbtn
-                class="btn btn-primary  pull-right" (click)="editBot()"
+              <button id="update-bot-btn" #editbotbtn
+                class="btn btn-primary pull-right cds-blue-button" (click)="editBot()"
                 [disabled]="(chatbot.webhook_enabled === true && WEBHOOK_URL_HAS_ERROR === true) || (chatbot.webhook_enabled === false  && chatbot.webhook_url === undefined)">
                 {{ "BotsAddEditPage.UpdateBotName" | translate }}
               </button>

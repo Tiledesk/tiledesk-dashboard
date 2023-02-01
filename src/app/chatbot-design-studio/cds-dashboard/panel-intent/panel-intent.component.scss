@@ -115,6 +115,20 @@
   font-weight: 400;
 }
 
+.action--box.action-box-no-form {
+    border: 1.9px dashed #9aa0a6 !important;
+    background: unset;
+    color: #9aa0a6;
+}
+
+.action-box-in-list-exist-form {
+  margin-top: 3px !important;
+}
+
+.action-box-exist-form {
+  margin-bottom: 25px !important;
+}
+
 .action-wpr {
   height: 18px;
   display: flex;

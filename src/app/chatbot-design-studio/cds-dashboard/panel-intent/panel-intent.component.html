@@ -11,16 +11,16 @@
             <span> Question </span>
         </div>
 
-        <div class="button-intent" (click)="displayForm()"
+        <!-- <div class="button-intent" (click)="displayForm()"
             [ngStyle]="{'border':formSize > 0 ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
             [ngClass]="{'button-intent-active': HAS_SELECTED_FORM }">
             <span class="material-icons">
                 list_alt
             </span>
             <span> Form </span>
-        </div>
+        </div> -->
 
-
+        
         <!-- <div [ngStyle]="{'border':actions?.length > 0 ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
             [ngClass]="{'actions-btn-active': displayActions}" class="button-intent"
             (click)="toggleActions(displayActions = !displayActions) ">
@@ -35,10 +35,38 @@
     </div>
     <!-- [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}" -->
 
+    <!-- ------------------------ -->
+    <!-- @ Form -->
+    <!-- ------------------------ -->
+  
+    <div class="action--list">
+        <div class="action--box" [ngClass]="{'action-box-no-form': formSize === 0, 'action-box-exist-form': formSize > 0, 'cds-action-active': HAS_SELECTED_FORM }" (click)="displayForm()">
+            <div class="action-wpr" [ngClass]="{'action-wpr-exist-form': formSize > 0}">
+                <div class="cds-action-icon-wpr">
+                    <span class="material-icons" style="font-size: 18px;">
+                        list_alt
+                    </span>
+                </div>
+                <div class="cds-action-name-wpr">
+                    Form
+                </div>
+                <div class="cds-action-arrow" *ngIf="formSize > 0" >
+                    <span class="material-icons">
+                        keyboard_backspace
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ------------------------ -->
+    <!-- @ Actions -->
+    <!-- ------------------------ -->
     <div class="action-list-wpr" *ngIf="actions && actions?.length > 0">
 
         <div cdkDropList class="action--list" (cdkDropListDropped)="drop($event)">
-            <div id="action_{{i}}" class="action--box" *ngFor="let action of actions; let i = index;let lastItem = last"
+            <div id="action_{{i}}" class="action--box"  [ngClass]="{'action-box-in-list-exist-form': formSize > 0 && firstItem}" *ngFor="let action of actions; let i = index;let lastItem = last; let firstItem = first"
                 cdkDrag cdkDragLockAxis="y" (click)="onActionSelected(action, i)">
 
                 <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->

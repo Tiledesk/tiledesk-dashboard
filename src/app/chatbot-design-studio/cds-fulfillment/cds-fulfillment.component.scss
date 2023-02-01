@@ -1,3 +1,5 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
 .content {
     width: 100%;
     padding: 20px 40px;
@@ -84,11 +86,11 @@
     transition: all 0.3s ease-in 0s;
 }
 .nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label {
-    background-color: #3ea9f5;
+    background-color: $light-blue;
 }
 .nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label,
 .nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label:before {
-    border-color: #3ea9f5;
+    border-color: $light-blue;
 }
 .nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label:before {
     right: 0px;
@@ -150,10 +152,11 @@
     margin-top: 20px;
 }
 
-// .input-box {
-//     display: flex;
-//     flex: 1;
-// }
+.input-box {
+    width: 100%;
+    // display: flex;
+    // flex: 1;
+}
 
 .input[type=text] {
     height: 36px;
@@ -194,4 +197,10 @@
     .input[type=text] {
         min-width: 0px;
     }
+}
+
+.cds-blue-button{
+    margin-top: 12px;
+    margin-bottom: 5px;
+    padding: 12px 30px;
 }

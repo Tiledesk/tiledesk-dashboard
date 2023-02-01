@@ -344,6 +344,11 @@ private createNewButton(){
     this.openCardButton = false;
   }
 
+  onFocusOutEvent(event){
+    // console.log('onFocusOutEvent ::::::: ', event);
+    // this.onCloseButtonPanel()
+  }
+
 
 
 

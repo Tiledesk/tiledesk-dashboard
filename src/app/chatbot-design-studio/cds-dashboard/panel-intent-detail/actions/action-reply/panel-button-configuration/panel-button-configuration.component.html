@@ -17,9 +17,9 @@
 
             <div class="form-group" [ngClass]="{'is-error':buttonLabel}">
                <label class="control-label ">
-                    {{ 'Titolo del bottone...' | translate }}
+                    {{ 'Button title...' | translate }}
                 </label>
-                <cds-text
+                <cds-text id="input_title" #input_title
                     [text]="buttonLabel"
                     (onChange)="onChangeTitle($event)">
                 </cds-text>

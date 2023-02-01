@@ -75,14 +75,15 @@
 
             <label for="file-upload" class="custom-file-upload">
               <span *ngIf="!showSpinnerInUploadImageBtn">
-              <i class="fa fa-cloud-upload"></i>   {{ "UserProfile.UploadImage" | translate }}
-            </span>
-            <span *ngIf="showSpinnerInUploadImageBtn">
-              {{ 'VisitorsPage.Loading' | translate }}
-              <i class="fa fa-spinner fa-spin"></i>
-            </span>
-          </label>
-          <input #fileInputBotProfileImage (change)="upload($event)" id="file-upload" type="file"  accept=".jpg, .JPEG, .png" />
+                <i class="fa fa-cloud-upload"></i> {{ "UserProfile.UploadImage" | translate }}
+              </span>
+              <span *ngIf="showSpinnerInUploadImageBtn">
+                {{ 'VisitorsPage.Loading' | translate }}
+                <i class="fa fa-spinner fa-spin"></i>
+              </span>
+            </label>
+            <input #fileInputBotProfileImage (change)="upload($event)" id="file-upload" type="file"
+              accept=".jpg, .JPEG, .png" />
 
             <button id="cds-delete-bot-img-btn" class="btn btn-white delete_bot_image_btn tool_tip"
               (click)="deleteBotProfileImage()">
@@ -108,8 +109,8 @@
           {{ "BotsAddEditPage.Type" | translate }}
         </label>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-          <input id="bot_type" name="bot_type" [(ngModel)]="botTypeForInput" class="input csd-chatbot-dtls-input" type="text"
-            style="margin-bottom: 0px; color:#808080" disabled>
+          <input id="bot_type" name="bot_type" [(ngModel)]="botTypeForInput" class="input csd-chatbot-dtls-input"
+            type="text" style="margin-bottom: 0px; color:#808080" disabled>
         </div>
       </div>
 
@@ -122,7 +123,8 @@
           {{ "BotsAddEditPage.BotName" | translate }}
         </label>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-          <input id="faqKb_name" name="faqKb_name" [(ngModel)]="faqKb_name" class="input csd-chatbot-dtls-input" type="text">
+          <input id="faqKb_name" name="faqKb_name" [(ngModel)]="faqKb_name" class="input csd-chatbot-dtls-input"
+            type="text">
         </div>
       </div>
 
@@ -153,7 +155,8 @@
         </label>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
           <textarea id="bot_description" name="bot_description" [(ngModel)]="faqKb_description" rows="4"
-            style="resize: vertical;" class="input csd-chatbot-dtls-input" type="text" placeholder="{{ 'Description' | translate }}">
+            style="resize: vertical;" class="input csd-chatbot-dtls-input" type="text"
+            placeholder="{{ 'Description' | translate }}">
             </textarea>
         </div>
       </div>
@@ -165,8 +168,8 @@
       <div class="row">
         <label class="col-xs-2"></label>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-          <button id="csd-update-bot-btn" style="margin-top: 12px;margin-bottom: 5px;" #editbotbtn
-            class="btn btn-primary  pull-left" (click)="editBot()" [disabled]="faqKb_name?.length === 0">
+          <button id="csd-update-bot-btn" #editbotbtn
+            class="btn btn-primary pull-left cds-blue-button" (click)="editBot()" [disabled]="faqKb_name?.length === 0">
             {{ "BotsAddEditPage.UpdateBotName" | translate }}
           </button>
         </div>
@@ -229,7 +232,8 @@
             </ng-select>
 
             <span class="input-group-btn">
-              <button id="activate-bot" class="btn btn-tdblu-no-boxshadow" (click)="hookBotToDept()" [disabled]="!selected_dept_id" style="">
+              <button id="activate-bot" class="btn btn-tdblu-no-boxshadow" (click)="hookBotToDept()"
+                [disabled]="!selected_dept_id">
                 <span> {{ 'ActivateBot' | translate}} </span>
               </button>
             </span>
@@ -262,7 +266,6 @@
         <div class="col-sm-10 col-md-10">
           <h3 class="card_title__underlined" style="color:#e8eaed">
             <span class="card_title__underline">
-
               CSV
             </span>
           </h3>
@@ -281,7 +284,7 @@
 
 
       <div class="import-faq-from-csv-btn-wpr">
-        <button class="btn btn-primary inport-faq-from-csv" (click)="openImportModal()">
+        <button class="btn btn-primary cds-blue-button" (click)="openImportModal()">
           <span class="icon" style="padding-right:8px">
             <span class="material-icons">
               cloud_upload
@@ -295,7 +298,6 @@
         <div class="col-sm-10 col-md-10">
           <h3 class="card_title__underlined" style="margin-top: 30px; color:#e8eaed">
             <span class="card_title__underline">
-
               JSON
             </span>
           </h3>
@@ -308,28 +310,28 @@
       <!-- --------------------------------------------------- -->
       <!-- JSON Section tiltle-->
       <!-- --------------------------------------------------- -->
-      <div class="export-import-section-title">
+      <!-- <div class="export-import-section-title">
         Intents
-      </div>
+      </div> -->
 
-      <!-- -------------------------------------------- -->
-      <!-- Export Intents AS Json Btn -->
-      <!-- -------------------------------------------- -->
-      <span class="export-intents-to-json-btn-wpr">
-        <button class="btn btn-primary export-intents-to-json-btn" (click)="exportIntentsToJSON()">
+      
+      <!-- <div class="import-faq-from-csv-btn-wpr"> -->
+        <!-- -------------------------------------------- -->
+        <!-- Export Intents AS Json Btn -->
+        <!-- -------------------------------------------- -->
+        <!-- <button class="btn btn-primary cds-blue-button" (click)="exportIntentsToJSON()">
           <span class="icon" style="padding-right:8px">
             <span class="material-icons">
               cloud_download
             </span>
           </span>
           {{'ExportAsJSON' | translate}}
-        </button>
-      </span>
-      <!-- ------------------------------------------ -->
-      <!-- Import Intents from Json Btn (change)="fileChangeUploadIntentsFromJSON($event)"-->
-      <!-- ------------------------------------------ -->
-      <span class="import-intents-from-json-btn-wpr" style="margin-left: 16px;">
-        <button class="btn btn-primary import-intents-from-json-btn" (click)="presentModalImportIntentsFromJson()">
+        </button> -->
+
+        <!-- ------------------------------------------ -->
+        <!-- Import Intents from Json Btn (change)="fileChangeUploadIntentsFromJSON($event)"-->
+        <!-- ------------------------------------------ -->
+        <!-- <button class="btn btn-primary cds-blue-button" (click)="presentModalImportIntentsFromJson()">
           <span class="icon" style="padding-right:8px">
             <span class="material-icons">
               cloud_upload
@@ -337,9 +339,11 @@
           </span>
           {{'ImportFromJSON' | translate}}
         </button>
-      </span>
+      </div> -->
 
-
+      <!-- ------------------------------------------ -->
+      <!-- Not used -->
+      <!-- ------------------------------------------ -->
       <!-- <span #importIntentsFromJson class="import-intents-from-json-btn-wpr" style="margin-left: 16px;">
                       <input style="display:inline" name="upload-intents-from-json" id="upload-intents-from-json"
                         class="inputfile" type="file" (change)="fileChangeUploadIntentsFromJSON($event)"
@@ -363,8 +367,8 @@
       <!-- -------------------------------------------- -->
       <!-- Export Chatbot to Json Btn -->
       <!-- -------------------------------------------- -->
-      <span class="export-chatbot-to-json-btn-wpr">
-        <button class="btn btn-primary export-chatbot-to-json-btn" (click)="exportChatbotToJSON()">
+      <div class="import-faq-from-csv-btn-wpr">
+        <button class="btn btn-primary cds-blue-button" (click)="exportChatbotToJSON()">
           <span class="icon" style="padding-right:8px">
             <span class="material-icons">
               cloud_download
@@ -373,8 +377,7 @@
           <!-- Export Chatbot to JSON -->
           {{'ExportAsJSON' | translate}}
         </button>
-      </span>
-
+      </div>
       <!-- ---------------------------------------------------- -->
       <!-- Import Chatbot from Json Btn ! Note: display NONE-->
       <!-- ---------------------------------------------------- -->
@@ -419,7 +422,7 @@
       <div class="modal-body" style="padding-bottom: 20px !important; padding-top: 20px;">
 
         <div class="row" style="margin-right: 0px; margin-bottom:8px">
-          <div class="col-xs-10 col-xs-offset-1" class="cds-dwnld-example-csv">
+          <div class="col-xs-10 col-xs-offset-1 cds-dwnld-example-csv">
             <p (click)="downloadExampleCsv()" style="margin:5px; cursor:pointer"> <i class="material-icons"
                 style="font-size:18px; top: 4px; position: relative;">save_alt</i>
               {{ 'download' | translate }} <span style="font-weight:400"> {{ 'examplecsv' | translate }} </span>
@@ -702,7 +705,8 @@
           <input style="display:inline" name="upload-intents-from-json-overwrite"
             id="upload-intents-from-json-overwrite" class="inputfile" type="file"
             (change)="fileChangeUploadIntentsFromJSON($event, 'overwrite')" accept=".json" />
-          <label id="upload-intents-from-json-overwrite" class="btn btn-primary" for="upload-intents-from-json-overwrite">
+          <label id="upload-intents-from-json-overwrite" class="btn btn-primary"
+            for="upload-intents-from-json-overwrite">
             <span class="material-icons" style="padding-right: 8px;">
               cloud_upload
             </span>

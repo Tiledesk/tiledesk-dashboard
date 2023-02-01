@@ -28,33 +28,31 @@
         </div>
         <!-- <i class="material-icons cds-btn-back" (click)="goBack()">keyboard_arrow_left</i> -->
         <div class="header-title">{{ selectedChatbot?.name }}</div>
-        <div class="cds-community-btn-wpr">
-            <button *ngIf="selectedChatbot?.public === false" id="cds-community-btn" class="btn btn-primary  pull-right" type="button"
-                (click)="publishOnCommunity()">
-                Publish on community
-            </button>
-            <button *ngIf="selectedChatbot?.public === true" id="cds-community-btn" class="btn btn-primary  pull-right" type="button"
-                (click)="removeFromCommunity()">
-                Remove from community
-            </button>
-
-        </div>
-       
+        <div class="right-opts">
+            <div>
+                <button *ngIf="selectedChatbot?.public === false" id="cds-community-btn" class="btn btn-primary pull-right cds-blue-button" type="button"
+                    (click)="publishOnCommunity()">
+                    Publish on community
+                </button>
+                <button *ngIf="selectedChatbot?.public === true" id="cds-community-btn" class="btn btn-primary pull-right cds-blue-button" type="button"
+                    (click)="removeFromCommunity()">
+                    Remove from community
+                </button>
+    
+            </div>
+            <div>
+                <button id="cds-test-it-out-btn" class="btn btn-primary pull-right cds-blue-button" type="button" (click)="openTestSiteInPopupWindow()">
+                    Test it out
+                </button>
+            </div>
+            <div class="cds-close-btn-wpr">
            
-      
-        <div class="cds-testitout-btn-wpr">
-            <button id="cds-test-it-out-btn" class="btn btn-primary  pull-right" type="button"
-                (click)="openTestSiteInPopupWindow()">
-                Test it out
-            </button>
-        </div>
-        <div class="cds-close-btn-wpr">
-       
-            <button class="btn pull-right cds-close-btn" (click)="goBack()">
-                <span class="material-icons cds-close-btn-icon">
-                    clear
-                </span>
-            </button>
+                <button class="btn pull-right cds-close-btn" (click)="goBack()">
+                    <span class="material-icons cds-close-btn-icon">
+                        clear
+                    </span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -115,15 +113,20 @@
                 (onClickBtn)="onAddIntentFromSplashScreen($event)" > 
             </cds-splash-screen>
 
-            <div class="box-right-header">
+            <!-- <cds-splash-screen *ngIf=spinnerCreateIntent
+                [text]="'Select an intent from the left sidebar or create a new one'"
+                (onClickBtn)="onAddIntentFromSplashScreen($event)" > 
+            </cds-splash-screen> -->
+            <!-- *ngIf=!spinnerCreateIntent -->
+            <div class="box-right-header" >
                 <appdashboard-panel-intent-header *ngIf=intentSelected 
                     [intentSelected]="intentSelected"
                     (saveIntent)=onSaveIntent($event) 
                     [listOfIntents]="listOfIntents">
                 </appdashboard-panel-intent-header>
             </div>
-            <!-- [events]="upadatedIntent.asObservable() -->
-            <div class="box-right-content">
+            <!-- [events]="upadatedIntent.asObservable() *ngIf=!spinnerCreateIntent -->
+            <div class="box-right-content"  >
                 <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent" 
                     [intentSelected]="intentSelected"
                     [actionDrawerIsOpen]="actionDrawerIsOpen" 
@@ -133,7 +136,10 @@
                     (questionSelected)=onQuestionSelected($event) 
                     (actionDeleted)=onActionDeleted($event) 
                     (intentForm)=onIntentFormSelected($event)
-                    [isOpenActionDrawer]="isOpenActionDrawer">
+                    [isOpenActionDrawer]="isOpenActionDrawer"
+                    [eventUpadatedIntent]="upadatedIntent.asObservable()"
+                    [eventCreateIntent]="createIntent.asObservable()"
+                    (saveIntent)="onSaveIntent($event)">
                 </appdashboard-panel-intent>
 
 

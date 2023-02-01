@@ -79,6 +79,8 @@ import { ActionOnlineAgentsComponent } from './cds-dashboard/panel-intent-detail
 import { ActionOpenHoursComponent } from './cds-dashboard/panel-intent-detail/actions/action-open-hours/action-open-hours.component';
 import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/actions/action-hide-message/action-hide-message.component';
 import { ActionDescriptionComponent } from './cds-dashboard/panel-intent-detail/actions/action-description/action-description.component';
+import { ActionCloseComponent } from './cds-dashboard/panel-intent-detail/actions/action-close/action-close.component';
+import { ActionAgentHandoffComponent } from './cds-dashboard/panel-intent-detail/actions/action-agent-handoff/action-agent-handoff.component';
 
 
 import { HttpClient } from '@angular/common/http';
@@ -134,7 +136,9 @@ import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-
     ActionOnlineAgentsComponent,
     ActionOpenHoursComponent,
     ActionHideMessageComponent,
-    ActionDescriptionComponent
+    ActionDescriptionComponent,
+    ActionCloseComponent,
+    ActionAgentHandoffComponent
   ],
   imports: [
     A11yModule,
