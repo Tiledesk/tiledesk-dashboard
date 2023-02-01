@@ -133,7 +133,8 @@
                     (questionSelected)=onQuestionSelected($event) 
                     (actionDeleted)=onActionDeleted($event) 
                     (intentForm)=onIntentFormSelected($event)
-                    [isOpenActionDrawer]="isOpenActionDrawer">
+                    [isOpenActionDrawer]="isOpenActionDrawer"
+                    [eventUpadatedIntent]="upadatedIntent.asObservable()">
                 </appdashboard-panel-intent>
 
 

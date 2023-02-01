@@ -23,7 +23,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   @Output() intentForm = new EventEmitter();
   @Output() questionSelected = new EventEmitter();
   @Output() actionDeleted = new EventEmitter();
-
+  @Input() eventUpadatedIntent: Observable<any>;
   actions: Array<any>
   question: any
   answer: string;
@@ -59,19 +59,19 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit(): void {
-    // this.listenToIntentUpdates();
+    this.listenToIntentUpdates();
     // this.actions = this.intentSelected.actions
   }
 
-  // listenToIntentUpdates(){
-  //   this.events.subscribe((intent: Intent) => {
-  //     console.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
-  //   })
-  // }
+  listenToIntentUpdates(){
+    this.eventUpadatedIntent.subscribe((intent: Intent) => {
+      console.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
+    })
+  }
 
 
   ngOnChanges(changes: SimpleChanges) {
-    // console.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected', this.intentSelected);
+    console.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected', this.intentSelected);
 
     // console.log("[PANEL INTENT]  (ngOnChanges) - this.intentSelected > actions: ", this.intentSelected.actions);
     // console.log("[PANEL INTENT] (ngOnChanges) - this.intentSelected > actions length: ", this.intentSelected.actions.length);
@@ -93,7 +93,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     // }
 
     if (changes.intentSelected) {
-      // console.log('[PANEL INTENT] (ngOnChanges) - changes.intentSelected', changes.intentSelected)
+      console.log('[PANEL INTENT] (ngOnChanges) - changes.intentSelected', changes.intentSelected)
       if (changes.intentSelected.currentValue['actions'] && changes.intentSelected.currentValue['actions'].length > 0) {
         // console.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected Exist actions', changes.intentSelected.currentValue['actions'][0])
         setTimeout(() => {
@@ -233,6 +233,13 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     this.HAS_SELECTED_FORM = true
     this.HAS_SELECTED_ACTION = false
     console.log('[PANEL INTENT] displayForm ')
+
+    let activeElements = Array.from(document.getElementsByClassName('cds-action-active'));
+    console.log('[PANEL INTENT] activeElements' , activeElements)
+    activeElements.forEach((activeElement) => {
+      console.log('[PANEL INTENT] activeElement' , activeElement)
+      activeElement.classList.remove('cds-action-active');
+    })
 
     if (this.intentSelected && !this.intentSelected.form) {
       let newForm = new Form()
