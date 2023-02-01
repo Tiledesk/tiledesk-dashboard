@@ -1,5 +1,21 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc23
+- Adds: _tdActionTitle to Action class
+- Adds: action-close and action-agent component
+- Adds: input id for focus purpose
+- Adds: automatically set focus on cds-text tittle component
+- Adds: cds-text component in each action for setting tittle to an action
+- Adds: cds-text component to action-description section
+- Changes: renamed actionwait with action
+- Changes: replaced double "<\br>" with only one
+- Fixes the bug: rule list not updated after success button is showed
+- Fixes the bug: ng-select was cutted under its container
+- Fixes the bug: Chabot's profile picture is not visible after import
+- Removes the ability to import and export intents from the chatbot's "General" settings > Import/Export tab
+- Refactors the "Add Form" button
+- Fixes the bug: Saving an intent updates the detail section of the intent
+
 ### 2.3.22-rc22
 - Fixes the bug: intent is not updated
 
@@ -11,7 +27,7 @@
 
 ### 2.3.22-rc19
 - Save an intent with a temporary name as soon as the user adds it
-- Bug fixes: when an intent other than the selected one is deleted, the selected one is no longer active in the intent list
+- Fixes the bug: when an intent other than the selected one is deleted, the selected one is no longer active in the intent list
 - Fixed the bug: in the template's cards the template title is not visible due to the too long description
 - Selects the first available action when an intent is selected
 - Fixes the bug: when an intent is updated, the latest intent is selected in the intent list
