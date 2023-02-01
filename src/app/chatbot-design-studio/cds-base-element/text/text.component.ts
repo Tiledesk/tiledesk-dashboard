@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -10,6 +10,8 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class CDSTextComponent implements OnInit {
 
+  @ViewChild('input_text', {read:ElementRef}) myInput: ElementRef<HTMLInputElement>;
+  
   // @Input() textMessage: string;
   @Input() control: FormControl<string> = new FormControl()
   @Input() text: string;
