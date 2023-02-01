@@ -1,7 +1,7 @@
 <div class="rules-container">
     <div class="new-rules-box" [style.display]="showWelcome? 'none': 'block'">
         <div class="button-wrp">
-            <button id="cds-new-rules-button" type="button" class="btn btn-primary" (click)="addNew()"> 
+            <button id="cds-new-rules-button" type="button" class="btn btn-primary cds-blue-button" (click)="addNew()"> 
                 <span class="material-icons icon plus-icon">add</span>
                 Add
             </button>
@@ -14,7 +14,7 @@
                 (onClickBtn)="addNew($event)" > 
         </cds-splash-screen>
     </div>
-    
+
     <cds-rules-add *ngIf="addClicked"
         [listOfIntents]="listOfIntents"
         [selectedChatbot]="selectedChatbot"

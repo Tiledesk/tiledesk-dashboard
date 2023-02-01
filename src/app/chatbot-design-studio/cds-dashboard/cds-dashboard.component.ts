@@ -74,7 +74,6 @@ export class CdsDashboardComponent implements OnInit {
     private el: ElementRef
   ) { }
 
-
   // SYSTEM FUNCTIONS //
   ngOnInit() {
     this.getTranslations();
