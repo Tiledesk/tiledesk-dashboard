@@ -57,6 +57,7 @@ export class CdsDashboardComponent implements OnInit {
   newIntentFromSplashScreen: Subject<boolean> = new Subject<boolean>();
   selectedChatbot: Chatbot
   activeSidebarSection: string;
+  spinnerCreateIntent: boolean = false;
   IS_OPEN: boolean = false;
   public TESTSITE_BASE_URL: string;
   public defaultDepartmentId: string;
@@ -283,6 +284,8 @@ export class CdsDashboardComponent implements OnInit {
 
   /** ADD INTENT  */
   private creatIntent() {
+    this.spinnerCreateIntent = true
+    console.log('[CDS DSHBRD] creatIntent spinnerCreateIntent ',  this.spinnerCreateIntent)
     this.startUpdatedIntent.next(true)
     console.log('creatIntent')
     this.showSpinner = true;
@@ -329,21 +332,26 @@ export class CdsDashboardComponent implements OnInit {
 
         //SUCCESS STATE
         setTimeout(() => {
-          button.classList.remove(pendingClassName);
-          button.classList.add(successClassName);
-
+          if (button) {
+            button.classList.remove(pendingClassName);
+            button.classList.add(successClassName);
+          }
           window.setTimeout(() => {
-            button.classList.remove(successClassName)
+            if (button) {
+              button.classList.remove(successClassName)
+            }
             console.log('[CDS DSHBRD] HERE YES  ');
             //that.eventsSubject.next(intent);
             that.createIntent.next(intent);
-            
+
           }, stateDuration);
         }, stateDuration);
 
       }
     }, (error) => {
       this.showSpinner = false;
+      this.spinnerCreateIntent = false
+      console.log('[CDS DSHBRD] creatIntent ERROR spinnerCreateIntent ',  this.spinnerCreateIntent)
       this.logger.error('[CDS DSHBRD] CREATED FAQ - ERROR ', error);
       // if (error && error['status']) {
       //   this.error_status = error['status']
@@ -357,15 +365,19 @@ export class CdsDashboardComponent implements OnInit {
 
       //FAIL STATE
       setTimeout(() => {
-        button.classList.remove(pendingClassName);
-        button.classList.add(failClassName);
+        if (button) {
+          button.classList.remove(pendingClassName);
+          button.classList.add(failClassName);
+        }
 
         window.setTimeout(() => button.classList.remove(failClassName), stateDuration);
       }, stateDuration);
 
     }, () => {
       this.showSpinner = false;
-      this.logger.log('[CDS DSHBRD] CREATED FAQ * COMPLETE *');
+      this.spinnerCreateIntent = true
+      console.log('[CDS DSHBRD] creatIntent COMPLETE spinnerCreateIntent ',  this.spinnerCreateIntent)
+      console.log('[CDS DSHBRD] creatIntent * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
       // this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
       // this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.id_faq_kb + "/" + this.botType]); 
@@ -511,6 +523,7 @@ export class CdsDashboardComponent implements OnInit {
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", intent);
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions: ", this.intentSelected.actions);
     console.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions length: ", this.intentSelected.actions.length);
+    // && !this.intentSelected.form
     if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
       console.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0])
       this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1 })
