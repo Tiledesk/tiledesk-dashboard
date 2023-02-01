@@ -26,6 +26,8 @@ export class Intent {
 
 export class Action {
     _tdActionType: string;
+    _tdActionTitle: string = '';
+
 }
 
 export class ActionCondition extends Action {
