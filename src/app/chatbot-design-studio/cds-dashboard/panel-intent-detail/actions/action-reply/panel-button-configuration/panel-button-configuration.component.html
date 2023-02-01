@@ -19,7 +19,7 @@
                <label class="control-label ">
                     {{ 'Button title...' | translate }}
                 </label>
-                <cds-text
+                <cds-text id="input_title" #input_title
                     [text]="buttonLabel"
                     (onChange)="onChangeTitle($event)">
                 </cds-text>
