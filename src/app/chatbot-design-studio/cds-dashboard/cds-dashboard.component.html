@@ -113,15 +113,20 @@
                 (onClickBtn)="onAddIntentFromSplashScreen($event)" > 
             </cds-splash-screen>
 
-            <div class="box-right-header">
+            <!-- <cds-splash-screen *ngIf=spinnerCreateIntent
+                [text]="'Select an intent from the left sidebar or create a new one'"
+                (onClickBtn)="onAddIntentFromSplashScreen($event)" > 
+            </cds-splash-screen> -->
+            <!-- *ngIf=!spinnerCreateIntent -->
+            <div class="box-right-header" >
                 <appdashboard-panel-intent-header *ngIf=intentSelected 
                     [intentSelected]="intentSelected"
                     (saveIntent)=onSaveIntent($event) 
                     [listOfIntents]="listOfIntents">
                 </appdashboard-panel-intent-header>
             </div>
-            <!-- [events]="upadatedIntent.asObservable() -->
-            <div class="box-right-content">
+            <!-- [events]="upadatedIntent.asObservable() *ngIf=!spinnerCreateIntent -->
+            <div class="box-right-content"  >
                 <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent" 
                     [intentSelected]="intentSelected"
                     [actionDrawerIsOpen]="actionDrawerIsOpen" 
@@ -132,7 +137,9 @@
                     (actionDeleted)=onActionDeleted($event) 
                     (intentForm)=onIntentFormSelected($event)
                     [isOpenActionDrawer]="isOpenActionDrawer"
-                    [eventUpadatedIntent]="upadatedIntent.asObservable()">
+                    [eventUpadatedIntent]="upadatedIntent.asObservable()"
+                    [eventCreateIntent]="createIntent.asObservable()"
+                    (saveIntent)="onSaveIntent($event)">
                 </appdashboard-panel-intent>
 
 
