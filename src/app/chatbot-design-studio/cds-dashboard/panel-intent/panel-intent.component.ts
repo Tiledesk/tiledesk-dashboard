@@ -68,7 +68,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   listenToIntentUpdates() {
     this.eventUpadatedIntent.subscribe((intent: Intent) => {
       console.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
-      // 
+      // this.intentSelected = intent;
     })
   }
 

@@ -20,7 +20,7 @@
             <span> Form </span>
         </div> -->
 
-        
+
         <!-- <div [ngStyle]="{'border':actions?.length > 0 ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
             [ngClass]="{'actions-btn-active': displayActions}" class="button-intent"
             (click)="toggleActions(displayActions = !displayActions) ">
@@ -38,9 +38,11 @@
     <!-- ------------------------ -->
     <!-- @ Form -->
     <!-- ------------------------ -->
-  
-    <div class="action--list">
-        <div class="action--box" [ngClass]="{'action-box-no-form': formSize === 0, 'action-box-exist-form': formSize > 0, 'cds-action-active': HAS_SELECTED_FORM }" (click)="displayForm()">
+    <!-- 'action-box-exist-form': formSize > 0, -->
+    <div class="action--list-form">
+        <div class="action--box-form"
+            [ngClass]="{'action-box-no-form': formSize === 0,  'cds-action-active': HAS_SELECTED_FORM }"
+            (click)="displayForm()">
             <div class="action-wpr" [ngClass]="{'action-wpr-exist-form': formSize > 0}">
                 <div class="cds-action-icon-wpr">
                     <span class="material-icons" style="font-size: 18px;">
@@ -50,8 +52,8 @@
                 <div class="cds-action-name-wpr">
                     Form
                 </div>
-                <div class="cds-action-arrow" *ngIf="formSize > 0" >
-                    <span class="material-icons">
+                <div class="cds-action-arrow">
+                    <span class="material-icons" [ngStyle]="{'color': formSize > 0 ? '#d2e3fc' : '#9aa0a6' }">
                         keyboard_backspace
                     </span>
                 </div>
@@ -63,11 +65,18 @@
     <!-- ------------------------ -->
     <!-- @ Actions -->
     <!-- ------------------------ -->
+    <!-- [ngStyle]="{'margin-top': action._tdActionTitle && firstItem ? '25px' : '7px' , }" 
+       'action-box-in-list-exist-form': formSize > 0 && firstItem, -->
     <div class="action-list-wpr" *ngIf="actions && actions?.length > 0">
-
         <div cdkDropList class="action--list" (cdkDropListDropped)="drop($event)">
-            <div id="action_{{i}}" class="action--box"  [ngClass]="{'action-box-in-list-exist-form': formSize > 0 && firstItem}" *ngFor="let action of actions; let i = index;let lastItem = last; let firstItem = first"
-                cdkDrag cdkDragLockAxis="y" (click)="onActionSelected(action, i)">
+            <div id="action_{{i}}" class="action--box"
+                [ngClass]="{
+                'action--box-first-no-title': !action._tdActionTitle && firstItem,
+                'action--box-first-with-title': action._tdActionTitle && firstItem,
+                'action--box-no-title': !action._tdActionTitle && !firstItem, 
+                'action--box-with-title': action._tdActionTitle && !firstItem}" 
+                *ngFor="let action of actions; let i = index;let lastItem = last; let firstItem = first" cdkDrag
+                cdkDragLockAxis="y" (click)="onActionSelected(action, i)">
 
                 <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
                 <div class="action--handle" cdkDragHandle>
@@ -84,10 +93,14 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Reply -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'reply'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'reply'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/reply.svg" title="Reply">
                     </div>
+
                     <div class="cds-action-name-wpr">
                         Reply
                     </div>
@@ -101,7 +114,10 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Condition -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'condition'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'condition'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/condition.svg" title="Condition">
                     </div>
@@ -118,7 +134,10 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Connect Intent -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'intent'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'intent'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/connect_intent.svg" title="Connect intent">
                     </div>
@@ -135,7 +154,10 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Agent handoff -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'agent'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'agent'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/agent_handoff.svg" title="Agent Handoff">
                     </div>
@@ -155,7 +177,10 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Operating Hours -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'ifopenhours'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'ifopenhours'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/open_hours.svg" title="If open hours">
                     </div>
@@ -173,12 +198,15 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Add var -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'assign'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'assign'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/assign_var.svg" title="Assign var">
                     </div>
                     <div class="cds-action-name-wpr">
-                        Assign var
+                        Set attribute
                     </div>
                     <div class="cds-action-arrow" *ngIf="!lastItem">
                         <span class="material-icons">
@@ -190,12 +218,15 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Delete var -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'delete'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'delete'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/delete_var.svg" title="Delete var">
                     </div>
                     <div class="cds-action-name-wpr">
-                        Delete var
+                        Delete attribute
                     </div>
                     <div class="cds-action-arrow" *ngIf="!lastItem">
                         <span class="material-icons">
@@ -207,7 +238,10 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Hidden message -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'hmessage'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'hmessage'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/hidden_message.svg" title="Hidden message">
                     </div>
@@ -224,7 +258,10 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Send email -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'email'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'email'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/send_email.svg" title="Send email">
                     </div>
@@ -241,7 +278,10 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Online Agent -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'ifonlineagents'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'ifonlineagents'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/online_agents.svg" title="Online agents">
                     </div>
@@ -258,7 +298,10 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Close -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'close'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'close'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/close.svg" title="Close">
                     </div>
@@ -275,7 +318,10 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Wait -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'wait'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'wait'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/wait.svg" title="Wait">
                     </div>
@@ -293,7 +339,10 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Replace bot -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'replacebot'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'replacebot'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/replace_bot.svg" title="Replace bot">
                     </div>
@@ -310,7 +359,10 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Change department -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngIf="action._tdActionType ===  'department'">
+                <div class="action-wpr" *ngIf="action._tdActionType ===  'department'" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
                     <div class="cds-action-icon-wpr">
                         <img src="assets/cds/images/actions/change_department.svg" title="Change department">
                     </div>
