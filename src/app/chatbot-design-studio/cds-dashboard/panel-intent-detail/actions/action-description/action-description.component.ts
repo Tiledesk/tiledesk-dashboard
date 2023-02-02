@@ -13,7 +13,7 @@ export class ActionDescriptionComponent implements OnInit {
   @Input() actionSelected: Action;
   constructor() { }
 
-  titlePlaceholder: string = ''
+  titlePlaceholder: string = 'set a title to your action...'
   action = ACTIONS_LIST
   
   ngOnInit(): void {
@@ -21,9 +21,9 @@ export class ActionDescriptionComponent implements OnInit {
   }
 
   ngOnChanges(){
-    if(this.actionSelected && this.actionSelected._tdActionTitle === ''){
-      this.titlePlaceholder = 'set a title to your action...'
-    }
+    // if(this.actionSelected && this.actionSelected._tdActionTitle === ''){
+    //   this.titlePlaceholder = 'set a title to your action...'
+    // }
   }
 
   onChangeText(text: string){

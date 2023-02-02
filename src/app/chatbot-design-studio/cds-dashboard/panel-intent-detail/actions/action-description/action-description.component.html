@@ -1,7 +1,7 @@
 <div class="action_welcome">
     <div class="action-title">
         <img [src]="action[actionType]?.src" [title]="action[actionType]?.name">
-        <p class="text-action">{{action[actionType]?.name}}</p>
+        <p class="text-action">{{action[actionType]?.name | uppercase}}</p>
         <!-- <p class="action-type">{{action[actionType]?.name}}</p> -->
     </div>
     <cds-text
@@ -9,6 +9,5 @@
         [placeholder]="titlePlaceholder"
         (onChange)="onChangeText($event)">
     </cds-text>
-    <div class="action-description" [innerHTML]="action[actionType]?.description"></div>
-    <hr class="solid">
+    <!-- <div class="action-description" [innerHTML]="action[actionType]?.description"></div> -->
 </div>
