@@ -43,10 +43,12 @@ $margin-top-card: 30px;
     }
 }
 
-$box-left-width: 17%;
+$box-left-width: 250px;
 
 .box-left {
     width: $box-left-width; //200px;
+    max-width: $box-left-width;
+    min-width: $box-left-width;
     background-color: #394f5a;
     .panel-intent-list {
         position: relative;
@@ -99,7 +101,7 @@ $box-left-width: 17%;
         .panel-intent {
             position: relative;
             display: inline-block;
-            width: 265px;
+            width: 250px;
             height: auto;
             max-height: 100%;
             /* background-color: rgb($bg-color-bck-rgb); */
@@ -107,6 +109,7 @@ $box-left-width: 17%;
             overflow: hidden;
             margin: 0 10px;
             padding: 0px;
+            min-width: 250px;
         }
 
         .panel-intent-detail {
@@ -238,6 +241,19 @@ $box-left-width: 17%;
 
 .cds-close-btn-icon {
     font-size: 40px !important;
+}
+
+
+.intent-detail-wpr {
+    width: 100%;
+    margin-right: 21px;
+}
+
+.cds--footer {
+    position: fixed;
+    bottom: 0;
+    background: aliceblue;
+    width: 100%;
 }
 
 
