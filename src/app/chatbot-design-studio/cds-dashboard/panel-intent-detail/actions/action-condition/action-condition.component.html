@@ -1,8 +1,9 @@
+<cds-action-description 
+    [actionType]="'CONDITION'"
+    [actionSelected]="action">
+</cds-action-description>
+
 <div class="content">
-    <cds-action-description 
-        [actionType]="'CONDITION'"
-        [actionSelected]="action">
-    </cds-action-description>
 
     <div class="text-editor-wrapper">
         <div class="field-box">
@@ -36,6 +37,16 @@
                     [autocompleteOptions]="listOfActions">
                 </cds-text>
             </ul>
+        </div>
+    </div>
+
+    <div class="text-editor-wrapper checkbox">
+        <div class="field-box">
+            <!-- <label class="title-label">if <b style="color: red">FALSE</b> go to:</label> -->
+            <mat-checkbox 
+                [formControl]="actionConditionFormGroup.controls['stopOnConditionMet']">
+                {{"Stop on condition met" | translate}}
+            </mat-checkbox>
         </div>
     </div>
 
