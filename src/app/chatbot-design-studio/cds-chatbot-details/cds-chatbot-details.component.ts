@@ -470,6 +470,8 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
         console.log('[CDS-CHATBOT-DTLS] EDIT BOT - FAQ KB UPDATED ', faqKb);
         if (faqKb) {
           this.selectedChatbot.name = faqKb['name']
+          this.faqKb_description = faqKb['description']
+          this.selectedChatbot.description = faqKb['description']
         }
       }, (error) => {
         console.error('[CDS-CHATBOT-DTLS] EDIT BOT -  ERROR ', error);

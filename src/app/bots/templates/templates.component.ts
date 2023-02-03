@@ -37,6 +37,9 @@ export class TemplatesComponent implements OnInit {
   myChatbotOtherCount: number;
   customerSatisfactionBotsCount: number;
   increaseSalesBotsCount: number;
+  COMMUNITY_TEMPLATE: boolean = false;
+  CERTIFIED_TEMPLATE: boolean = false;
+
   constructor(
     private auth: AuthService,
     private faqKbService: FaqKbService,
@@ -54,6 +57,22 @@ export class TemplatesComponent implements OnInit {
     this.getCurrentProject()
     // this.getAllFaqKbByProjectId();
     this.getFaqKbByProjectId()
+    this.getRoutes()
+  }
+
+  getRoutes() {
+    this.route = this.router.url
+    if (this.route.indexOf('bots/templates/community') !== -1) {
+      this.COMMUNITY_TEMPLATE = true
+      this.CERTIFIED_TEMPLATE = false
+      console.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
+      console.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ',  this.CERTIFIED_TEMPLATE)
+    } else if (this.route.indexOf('bots/templates/all') !== -1) {
+      this.CERTIFIED_TEMPLATE = true
+      this.COMMUNITY_TEMPLATE = false
+      console.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ',  this.CERTIFIED_TEMPLATE)
+      console.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
+    }
   }
 
 
@@ -152,7 +171,7 @@ export class TemplatesComponent implements OnInit {
 
         let stripHere = 115;
         this.communityTemplates.forEach(communityTemplate => {
-          console.log('[BOTS-TEMPLATES] communityTemplate', communityTemplate);
+          // console.log('[BOTS-TEMPLATES] communityTemplate', communityTemplate);
           if (communityTemplate['description']) {
             communityTemplate['shortDescription'] = communityTemplate['description'].substring(0, stripHere) + '...';
           }
@@ -186,9 +205,9 @@ export class TemplatesComponent implements OnInit {
 
       if (res) {
         this.certfifiedTemplates = res
-        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
+        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
 
-        // this.doShortDescription(this.certfifiedTemplates)
+        this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res
         // console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES', this.templates);
         // this.allTemplatesCount = this.templates.length;
