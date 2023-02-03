@@ -1,5 +1,15 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc24
+- Improves the header button
+- Improves the intent list
+- Fixes the bug: company name is requested twice in the "advanced" form.
+- Adds the ability to enter a description for actions
+- Adds: stopOnConditionMet property on action-condition
+- Adds: hover style on hover csd-text
+- Changes: moved cds-action-description outside each action content (before)
+- Removes: isOpenActionDrawer input property on panel-action
+
 ### 2.3.22-rc23
 - Adds: _tdActionTitle to Action class
 - Adds: action-close and action-agent component
