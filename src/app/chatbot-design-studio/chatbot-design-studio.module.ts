@@ -86,6 +86,7 @@ import { ActionAgentHandoffComponent } from './cds-dashboard/panel-intent-detail
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-splash-screen.component';
+import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
 
 @NgModule({
   declarations: [
@@ -138,7 +139,8 @@ import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-
     ActionHideMessageComponent,
     ActionDescriptionComponent,
     ActionCloseComponent,
-    ActionAgentHandoffComponent
+    ActionAgentHandoffComponent,
+    CdsFooterComponent
   ],
   imports: [
     A11yModule,

@@ -30,18 +30,19 @@
         <div class="header-title">{{ selectedChatbot?.name }}</div>
         <div class="right-opts">
             <div>
-                <button *ngIf="selectedChatbot?.public === false" id="cds-community-btn" class="btn btn-primary pull-right cds-blue-button" type="button"
-                    (click)="publishOnCommunity()">
+                <button *ngIf="selectedChatbot?.public === false" id="cds-community-btn"
+                    class="btn btn-primary pull-right cds-blue-button" type="button" (click)="publishOnCommunity()">
                     Publish on community
                 </button>
-                <button *ngIf="selectedChatbot?.public === true" id="cds-community-btn" class="btn btn-primary pull-right cds-blue-button" type="button"
-                    (click)="removeFromCommunity()">
+                <button *ngIf="selectedChatbot?.public === true" id="cds-community-btn"
+                    class="btn btn-primary pull-right cds-blue-button" type="button" (click)="removeFromCommunity()">
                     Remove from community
                 </button>
-    
+
             </div>
             <div>
-                <button id="cds-test-it-out-btn" class="btn btn-primary pull-right cds-blue-button" type="button" (click)="openTestSiteInPopupWindow()">
+                <button id="cds-test-it-out-btn" class="btn btn-primary pull-right cds-blue-button cds-test-it-out" type="button"
+                    (click)="openTestSiteInPopupWindow()">
                     Test it out
                 </button>
             </div>
@@ -94,11 +95,11 @@
             <appdashboard-panel-intent-list class="panel-intent-list" 
                 [id_faq_kb]="id_faq_kb" 
                 [intent_id]="intent_id"
-                [projectID]="projectID"
-                (selected_intent)=onSelectIntent($event) 
-                (returnListOfIntents)=onReturnListOfIntents($event)
-                (createIntent)="onCreateIntentBtnClicked()" 
-                (deleteSelectedIntent)="onDeleteSelectedIntent()"
+                [projectID]="projectID" 
+                (selected_intent)=onSelectIntent($event)
+                (returnListOfIntents)=onReturnListOfIntents($event) 
+                (createIntent)="onCreateIntentBtnClicked()"
+                (deleteSelectedIntent)="onDeleteSelectedIntent()" 
                 [eventCreateIntent]="createIntent.asObservable()"
                 [eventUpadatedIntent]="upadatedIntent.asObservable()"
                 [eventStartUpdatedIntent]="startUpdatedIntent.asObservable()"
@@ -110,7 +111,7 @@
 
             <cds-splash-screen *ngIf=!intentSelected
                 [text]="'Select an intent from the left sidebar or create a new one'"
-                (onClickBtn)="onAddIntentFromSplashScreen($event)" > 
+                (onClickBtn)="onAddIntentFromSplashScreen($event)"> 
             </cds-splash-screen>
 
             <!-- <cds-splash-screen *ngIf=spinnerCreateIntent
@@ -143,8 +144,7 @@
                 </appdashboard-panel-intent>
 
 
-                <appdashboard-panel-actions 
-                    [isOpenActionDrawer]="isOpenActionDrawer"
+                <appdashboard-panel-actions *ngIf="isOpenActionDrawer"
                     (openActionDrawer)=onOpenActionDrawer($event) 
                     [intentSelected]="intentSelected">
                 </appdashboard-panel-actions>
@@ -156,6 +156,14 @@
                     [showSpinner]="showSpinner"
                     (openButtonPanel)=onOpenButtonPanel($event)>
                 </appdashboard-panel-intent-detail>
+
+                <!-- <cds-footer class="cds--footer" 
+                    *ngIf=intentSelected 
+                    [intentSelected]="intentSelected"
+                    (saveIntent)=onSaveIntent($event) 
+                    [listOfIntents]="listOfIntents"
+                    [newIntentName]="newIntentName">
+                </cds-footer> -->
             </div>
 
         </div>

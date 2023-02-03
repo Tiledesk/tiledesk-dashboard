@@ -49,7 +49,7 @@ export class FormModelsFactory {
         let field4 = new Field()
         field4.name = 'userPhone';
         field4.type = 'text';
-        field4.label = 'Thank you ${userFullname}! What is your Company name?';
+        field4.label = 'Thank you ${userFullname}!  What is your phone number?';
         let field5 = new Field()
         field5.name = 'userEmail';
         field5.type = 'text';

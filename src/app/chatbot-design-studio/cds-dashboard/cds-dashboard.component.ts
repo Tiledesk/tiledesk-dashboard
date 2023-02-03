@@ -33,6 +33,7 @@ export class CdsDashboardComponent implements OnInit {
   listOfActions: Array<string>;
   intentSelected: Intent;
   elementIntentSelected: any;
+  newIntentName: string;
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
@@ -614,6 +615,11 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['type'] = ''
     this.elementIntentSelected['element'] = null
   }
+
+  // onChangeIntentName(event) {
+  //   console.log('[CDS DSBRD] onChangeIntentName  event', event)
+  //   this.newIntentName = event
+  // }
 
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
