@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { Form, Intent } from '../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Observable, Subscription } from 'rxjs';
-import { TYPE_ACTION } from 'app/chatbot-design-studio/utils';
+import { ACTIONS_LIST, TYPE_ACTION } from 'app/chatbot-design-studio/utils';
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-panel-intent',
@@ -39,22 +39,8 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   HAS_SELECTED_FORM = false
   HAS_SELECTED_ACTION = false
 
-  availableActions: Array<{ name: string, type: TYPE_ACTION, src: string }> = [
-    { name: 'Reply', type: TYPE_ACTION.REPLY, src: "assets/cds/images/actions/reply.svg" },
-    { name: 'Condition', type: TYPE_ACTION.CONDITION, src: "assets/cds/images/actions/condition.svg" },
-    { name: 'Connect intent', type: TYPE_ACTION.INTENT, src: "assets/cds/images/actions/connect_intent.svg" },
-    { name: 'Agent Handoff', type: TYPE_ACTION.AGENT, src: "assets/cds/images/actions/agent_handoff.svg" },
-    { name: 'Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg" },
-    { name: 'Change dept', type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg" },
-    { name: 'Assign var', type: TYPE_ACTION.ASSIGN_VARIABLE, src: "assets/cds/images/actions/delete_var.svg" },
-    { name: 'Delete var', type: TYPE_ACTION.DELETE_VARIABLE, src: "assets/cds/images/actions/hidden_message.svg" },
-    { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src: "assets/cds/images/actions/condition.svg" },
-    { name: 'Send email', type: TYPE_ACTION.EMAIL, src: "assets/cds/images/actions/send_email.svg" },
-    { name: 'Online Agent', type: TYPE_ACTION.ONLINE_AGENTS, src: "assets/cds/images/actions/online_agents.svg" },
-    { name: 'Close', type: TYPE_ACTION.CLOSE, src: "assets/cds/images/actions/close.svg" },
-    { name: 'Wait', type: TYPE_ACTION.WAIT, src: "assets/cds/images/actions/wait.svg" },
-    { name: 'Replace bot', type: TYPE_ACTION.REPLACE_BOT, src: "assets/cds/images/actions/replace_bot.svg" }
-  ]
+  TYPE_ACTION = TYPE_ACTION
+  ACTIONS_LIST = ACTIONS_LIST
 
 
 
@@ -68,7 +54,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   listenToIntentUpdates() {
     this.eventUpadatedIntent.subscribe((intent: Intent) => {
       console.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
-      // this.intentSelected = intent;
+      // this.intentSelected = intent; 
     })
   }
 

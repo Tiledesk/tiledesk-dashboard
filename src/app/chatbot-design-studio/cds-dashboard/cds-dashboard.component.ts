@@ -616,10 +616,10 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = null
   }
 
-  onChangeIntentName(event) {
-    console.log('[CDS DSBRD] onChangeIntentName  event', event)
-    this.newIntentName = event
-  }
+  // onChangeIntentName(event) {
+  //   console.log('[CDS DSBRD] onChangeIntentName  event', event)
+  //   this.newIntentName = event
+  // }
 
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {

@@ -3,6 +3,7 @@
 .action_welcome{
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
     // gap: 10px;
     padding: 20px 30px;
     background-color: #fff; //$light-gray;
@@ -47,6 +48,7 @@ cds-text ::ng-deep {
         border: 1px solid #919ead !important;
         outline: 1px solid #919ead !important;
         transition: border .3s;
+        border-radius: 3px;
         
         line-height: 20px !important;
         font-size: 1em !important;

@@ -96,7 +96,7 @@ $width-title: 80%;
 }
 
 #cds-save-intent-btn {
-    background: $light-blue;
+    background: #3ea9f5;
     color: $light-black;
     box-shadow: none !important;
     font-weight: 500 !important;
@@ -160,8 +160,8 @@ $circle-size: 40px;
   height: 100%;
   
   &#cds-save-intent-btn{
-    background: $light-blue;
-    border: 1px solid $light-blue;
+    background: #3ea9f5;
+    border: 1px solid #3ea9f5;
     box-shadow: none;
   }
   
@@ -373,4 +373,13 @@ $circle-size: 40px;
     & + & {
       margin-left: 8px;
     }
+}
+
+.btns-wpr {
+  display: flex;
+  background: #e8eaed;
+  padding-left: 10px;
+  margin-right: 12px;
+  border-radius: 4px;
+  gap: 20px;
 }
