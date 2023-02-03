@@ -251,9 +251,11 @@ $box-left-width: 250px;
 
 .cds--footer {
     position: fixed;
-    bottom: 0;
+    bottom: 8px;
     background: aliceblue;
-    width: 100%;
+    width: 400px;
+    right: 38px;
+    border-radius: 4px;
 }
 
 

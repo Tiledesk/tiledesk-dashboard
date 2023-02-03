@@ -114,9 +114,10 @@
                 (onClickBtn)="onAddIntentFromSplashScreen($event)" > 
             </cds-splash-screen> -->
             <!-- *ngIf=!spinnerCreateIntent -->
+            <!-- (changeIntentName)="onChangeIntentName($event)" -->
             <div class="box-right-header">
                 <appdashboard-panel-intent-header *ngIf=intentSelected [intentSelected]="intentSelected"
-                    (saveIntent)=onSaveIntent($event) [listOfIntents]="listOfIntents" (changeIntentName)="onChangeIntentName($event)">
+                    (saveIntent)=onSaveIntent($event) [listOfIntents]="listOfIntents" >
                 </appdashboard-panel-intent-header>
             </div>
             <!-- [events]="upadatedIntent.asObservable() *ngIf=!spinnerCreateIntent -->
@@ -135,21 +136,21 @@
                     (openActionDrawer)=onOpenActionDrawer($event) [intentSelected]="intentSelected">
                 </appdashboard-panel-actions>
 
-                <div class="intent-detail-wpr">
+                <!-- <div class="intent-detail-wpr"> -->
                     <appdashboard-panel-intent-detail *ngIf=elementIntentSelected class="panel-intent-detail"
                         [listOfActions]="listOfActions" [elementIntentSelected]="elementIntentSelected"
                         [intentSelected]="intentSelected" [showSpinner]="showSpinner"
                         (openButtonPanel)=onOpenButtonPanel($event)>
                     </appdashboard-panel-intent-detail>
 
-                    <cds-footer class="cds--footer" 
+                    <!-- <cds-footer class="cds--footer" 
                     *ngIf=intentSelected 
                     [intentSelected]="intentSelected"
                     (saveIntent)=onSaveIntent($event) 
                     [listOfIntents]="listOfIntents"
                     [newIntentName]="newIntentName">
-                    </cds-footer>
-                </div>
+                    </cds-footer> -->
+                <!-- </div> -->
 
             </div>
 

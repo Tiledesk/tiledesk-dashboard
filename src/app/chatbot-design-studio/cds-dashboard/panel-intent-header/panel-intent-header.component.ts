@@ -10,7 +10,7 @@ import { Intent } from '../../../models/intent-model';
 })
 export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   @Output() saveIntent = new EventEmitter();
-  @Output() changeIntentName = new EventEmitter();
+  // @Output() changeIntentName = new EventEmitter();
   @Input() intentSelected: Intent;
   @Input() showSpinner: boolean;
   @Input() listOfIntents: Intent[];
@@ -98,7 +98,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   // EVENT FUNCTIONS //
   onChangeIntentName(name: string) {
-    this.changeIntentName.emit(name)
+    // this.changeIntentName.emit(name)
     console.log('[PANEL-INTENT-HEADER] onChangeIntentName name', name);
     console.log('[PANEL-INTENT-HEADER] onChangeIntentName this.intentSelected.intent_display_name ', this.intentSelected.intent_display_name);
     if (name !== this.intentSelected.intent_display_name) {
