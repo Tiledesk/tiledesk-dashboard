@@ -45,7 +45,7 @@ export class FormModelsFactory {
         let field3 = new Field()
         field3.name = 'companyName';
         field3.type = 'text';
-        field3.label = 'Thank you ${userFullname}! What is your Company name?';
+        field3.label = 'Thank you ${userFullname}! What is your phone number ?';
         let field4 = new Field()
         field4.name = 'userPhone';
         field4.type = 'text';
