@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc25
+- Improvements and bug fixing
+
 ### 2.3.22-rc24
 - Improves the header button
 - Improves the intent list
