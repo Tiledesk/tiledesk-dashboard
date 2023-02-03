@@ -85,3 +85,29 @@ li {
     width: 90%;
     display: block;
 }
+
+
+.checkbox-condition{
+    position: absolute;
+    bottom: 10px;
+    margin: 0;
+    
+}
+
+::ng-deep .mat-checkbox.mat-accent .mat-checkbox-frame {
+    border-color: $icon-color!important;
+}
+
+// overwrite the checkbox background
+::ng-deep .mat-checkbox-checked .mat-checkbox-background, 
+.mat-checkbox-indeterminate .mat-checkbox-background {
+    background-color: $icon-color!important;
+    .mat-checkbox-checkmark {
+        background: $icon-color!important;;
+        .mat-checkbox-checkmark-path {
+          stroke: white;
+          stroke-width: 5px;
+        }
+      }
+
+}

@@ -3,7 +3,10 @@
 .action_welcome{
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: flex-end;
+    // gap: 10px;
+    padding: 20px 30px;
+    background-color: #fff; //$light-gray;
     // margin-bottom: 30px;
     .action-title {
         display: flex;
@@ -11,13 +14,14 @@
         justify-content: flex-start;
         gap: 5px;
         img{
-            filter: brightness(0) saturate(100%) invert(84%) sepia(13%) saturate(5939%) hue-rotate(357deg) brightness(94%) contrast(97%);
+            // filter: brightness(0) saturate(100%) invert(84%) sepia(13%) saturate(5939%) hue-rotate(357deg) brightness(94%) contrast(97%);
+            filter: brightness(0) saturate(100%) invert(64%) sepia(10%) saturate(433%) hue-rotate(172deg) brightness(95%) contrast(95%);
         }
     }
 
     .text-action {
-        color: $icon-color;
-        margin-right: $action-item-color;
+        // color: $icon-color;
+        color: #919ead;
         margin-bottom: 0px;
     }
 
@@ -36,11 +40,19 @@
         line-height: 1.5;
         // text-align: center;
     }
+}
 
-    .solid{
-        border-top: 1px solid $light-blue;
-        width: 100%;
-        margin: 0px;
-        margin-bottom: 10px;
+cds-text ::ng-deep {
+    width: 300px;
+    input {
+        border: 1px solid #919ead !important;
+        outline: 1px solid #919ead !important;
+        transition: border .3s;
+        border-radius: 3px;
+        
+        line-height: 20px !important;
+        font-size: 1em !important;
+        padding: 2px 5px !important;
+
     }
 }

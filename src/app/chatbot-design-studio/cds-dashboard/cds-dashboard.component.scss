@@ -224,6 +224,15 @@ $box-left-width: 250px;
         .header-title {
             margin-left: 20px;
         }
+
+        .cds-test-it-out {
+            background-color: transparent;
+            border: 1px solid $light-blue;
+            color: $light-blue;
+            &:hover{
+                opacity: 0.8;
+            }
+        }
     }
 }
 
@@ -251,11 +260,9 @@ $box-left-width: 250px;
 
 .cds--footer {
     position: fixed;
-    bottom: 8px;
+    bottom: 0;
     background: aliceblue;
-    width: 400px;
-    right: 38px;
-    border-radius: 4px;
+    width: 100%;
 }
 
 
