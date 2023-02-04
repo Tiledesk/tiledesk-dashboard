@@ -99,15 +99,19 @@ export class CdsDashboardComponent implements OnInit {
     this.getBrowserVersion();
     this.getTestSiteUrl();
     this.getDeptsByProjectId();
-    this.hideWidget()
+    this.hideShowWidget('hide')
   }
 
-  private hideWidget() {
+  private hideShowWidget(status: "hide" | "show") {
     try {
       if (window && window['tiledesk']) {
         this.logger.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
 
-        window['tiledesk'].hide();
+        if(status==='hide'){
+          window['tiledesk'].hide();
+        }else if(status === 'show'){
+          window['tiledesk'].show();
+        }
         // alert('signin reinit');
       }
     } catch (error) {
@@ -325,7 +329,6 @@ export class CdsDashboardComponent implements OnInit {
       const failClassName = 'loading-btn--fail';
       const stateDuration = 1500;
       const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
-      console.log('buttonnnn', button)
 
       this.showSpinner = false;
       console.log('[CDS DSHBRD] creatIntent RES ', intent);
@@ -487,6 +490,7 @@ export class CdsDashboardComponent implements OnInit {
   /** Go back to previous page */
   goBack() {
     this.location.back();
+    this.hideShowWidget('show')
   }
 
   /** appdashboard-intent: Save intent */

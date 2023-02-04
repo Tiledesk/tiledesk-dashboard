@@ -4,6 +4,7 @@
         [selectedRule]="rule"
         [listOfIntents]="listOfIntents"
         [selectedChatbot]="selectedChatbot"
+        (onRuleAdded)="onRuleAdded($event)"
         (onRuleDeleted)="onRuleDeleted($event)">
     </cds-rules-add>
 </div>
