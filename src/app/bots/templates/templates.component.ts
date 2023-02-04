@@ -5,6 +5,7 @@ import { FaqKbService } from '../../services/faq-kb.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TemplateDetailComponent } from './template-detail/template-detail.component';
 import { Router } from '@angular/router';
+import { AppConfigService } from 'app/services/app-config.service';
 @Component({
   selector: 'appdashboard-templates',
   templateUrl: './templates.component.html',
@@ -40,12 +41,16 @@ export class TemplatesComponent implements OnInit {
   COMMUNITY_TEMPLATE: boolean = false;
   CERTIFIED_TEMPLATE: boolean = false;
 
+  storageBucket: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
   constructor(
     private auth: AuthService,
     private faqKbService: FaqKbService,
     private logger: LoggerService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    public appConfigService: AppConfigService,
   ) { }
 
 
@@ -57,8 +62,22 @@ export class TemplatesComponent implements OnInit {
     this.getCurrentProject()
     // this.getAllFaqKbByProjectId();
     this.getFaqKbByProjectId()
-    this.getRoutes()
+    this.getRoutes();
+    this.getProfileImageStorage();
   }
+  getProfileImageStorage() {
+  if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+    this.UPLOAD_ENGINE_IS_FIREBASE = true;
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    this.logger.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
+  } else {
+    this.UPLOAD_ENGINE_IS_FIREBASE = false;
+    this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+    this.logger.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.baseUrl, 'usecase native')
+  }
+}
 
   getRoutes() {
     this.route = this.router.url
@@ -102,6 +121,7 @@ export class TemplatesComponent implements OnInit {
   }
 
   openDialog(template) {
+    console.log('openDialog')
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,

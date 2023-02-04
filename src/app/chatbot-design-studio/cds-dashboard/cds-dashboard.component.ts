@@ -18,6 +18,8 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
+import { CdsPublishOnCommunityModalComponent } from './cds-publish-on-community-modal/cds-publish-on-community-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 const swal = require('sweetalert');
 
@@ -73,7 +75,8 @@ export class CdsDashboardComponent implements OnInit {
     private faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
     private departmentService: DepartmentService,
-    private el: ElementRef
+    private el: ElementRef,
+    public dialog: MatDialog,
   ) { }
 
   // SYSTEM FUNCTIONS //
@@ -667,6 +670,20 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   publishOnCommunity() {
+    console.log('openDialog')
+    const dialogRef = this.dialog.open(CdsPublishOnCommunityModalComponent, {
+      data: {
+        chatbot: this.selectedChatbot,
+        projectId: this.project._id
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  _publishOnCommunity() {
     swal({
       title: "Publish the chatbot",
       text: 'You are about to publish the chatbot in the community',
