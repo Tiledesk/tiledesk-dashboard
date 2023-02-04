@@ -38,4 +38,8 @@ export class RulesListComponent implements OnInit {
     this.selectedChatbot.attributes['rules']= this.listOfRules
   }
 
+  onRuleAdded(event: Rule){
+    console.log('EVENT: onRuleAdded-->', event, this.listOfRules)
+  }
+
 }
