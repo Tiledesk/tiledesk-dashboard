@@ -1,12 +1,184 @@
 <mat-dialog-actions align="end" style="min-height: 13px;">
-    <button mat-button mat-dialog-close
-        style="position: relative;top: -16px; min-width: 36px; padding: 0px;border-radius: 50%;">
+    <button mat-button mat-dialog-close style="position: relative;
+        top: -16px;
+        padding: 0px;
+        border-radius: 50%;
+        border: unset;
+        background: unset;
+        height: 24px;">
         <span class="material-icons">
             close
         </span>
     </button>
     <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
 </mat-dialog-actions>
-<mat-dialog-content class="mat-typography" style="min-height: 30px;">
+<mat-dialog-content class="mat-typography" style="min-height: 30px; height: 400px;">
+    <mat-tab-group>
+        <mat-tab label="Basic">
+
+            <div class="basic-info-wpr">
+                <!-- -------------------------------- -->
+                <!-- @ Bot avatar -->
+                <!-- -------------------------------- -->
+                <div class="row" style="margin-right: 0px; margin-left: 0px;margin-bottom: 8px;">
+                    <div class="col-sm-10">
+                        <!-- [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" -->
+                        <div class="card-avatar" style="display: flex;align-items: center;margin-bottom: 12px;">
+                            <div class="bot_avatar" style="width: 80px; height: 80px;margin-right: 20px;">
+
+                                <img *ngIf="botProfileImageExist === true || botImageHasBeenUploaded === true"
+                                    class="bot-profile-img" [src]="getBotProfileImage()"
+                                    onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                                <img *ngIf="botProfileImageExist === false && botImageHasBeenUploaded !== true"
+                                    class="bot-profile-img" src="assets/img/avatar_bot_tiledesk.svg" />
+                            </div>
+
+
+                            <label for="modal-file-upload" class="custom-file-upload">
+                                <span *ngIf="!showSpinnerInUploadImageBtn">
+                                    <i class="fa fa-cloud-upload"></i> Upload image
+                                    <!-- {{ "UserProfile.UploadImage" | translate }} -->
+                                </span>
+                                <span *ngIf="showSpinnerInUploadImageBtn">
+                                    <!-- {{ 'VisitorsPage.Loading' | translate }} -->
+                                    Loading
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                </span>
+                            </label>
+                            <input #cdsfileInputBotProfileImage (change)="upload($event)" id="modal-file-upload" type="file"
+                                accept=".jpg, .JPEG, .png" />
+
+                            <button id="cds-delete-bot-img-btn" class="btn btn-white delete_bot_image_btn tool_tip"
+                                (click)="deleteBotProfileImage()">
+                                <span class="material-icons" style="font-size: 24px; color: #fff">
+                                    delete_forever
+                                </span>
+
+                                <span class="bottom"
+                                    style="min-width: fit-content;padding: 5px;border-radius: 3px; text-transform: none;">
+                                    <!-- {{'RemovePhoto' | translate}} -->
+                                    Remove Image
+                                    <i></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <!-- Bot name  -->
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <div class="row" style="margin-right: 0px; margin-left: 0px;">
+                    <label class="col-xs-12 cds-custom-label">
+                        <!-- {{ "BotsAddEditPage.BotName" | translate }} -->
+                        Name
+                    </label>
+                    <div class="col-xs-12">
+                        <input id="faqKb_name" name="faqKb_name" [(ngModel)]="faqKb_name"
+                            class="input" type="text">
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <!-- Description  -->
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <div class="row" style="margin-right: 0px; margin-left: 0px;">
+                    <label class="col-xs-12 cds-custom-label">
+                        <!-- {{ 'Description' | translate }} -->
+                        Description
+                    </label>
+                    <div class="col-xs-12">
+                        <textarea id="bot_description" name="bot_description" [(ngModel)]="faqKb_description" rows="3"
+                            style="resize: vertical;" class="input" type="text"
+                            placeholder="{{ 'Description' | translate }}"> </textarea>
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <!-- Update button  -->
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <div class="row" style="margin-right: 0px; margin-left: 0px;">
+                    
+                    <div class="col-xs-12">
+                        <button id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left"
+                            (click)="editBot()" [disabled]="faqKb_name?.length === 0">
+                            <!-- {{ "BotsAddEditPage.UpdateBotName" | translate }} -->
+                            Update bot
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+
+        <!-- -------------------------- -->
+        <!-- Tags  -->
+        <!-- -------------------------- -->
+        <mat-tab label="Tag">
+
+            <div class="cds-select-chatbot-tags-wpr">
+
+                <!-- (change)="addTag()" -->
+                <ng-select class="ng-select-tags" id="select-tag" #ngSelect [items]="tagsList" bindLabel="tag"
+                    bindValue="_id" [clearable]="false" [clearSearchOnAdd]="true" [hideSelected]="true"
+                    placeholder="Type to create a tag and press enter" [(ngModel)]="tag" addTagText="Create New"
+                    [addTag]="createNewTag" (keyup.enter)="ngSelect.close()"
+                    notFoundText="Type to create a tag and press enter">
+
+                    <ng-template ng-label-tmp let-item="item">
+
+                        {{item.tag}}
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+
+                        {{item.tag}}
+                    </ng-template>
+                </ng-select>
+            </div>
+
+            <div class="csd-chatbot-tags--container">
+                <div class="cds-chatbot-tag-wpr" *ngFor="let tag of tagsList" role="button">
+
+                    <div class="cds-chatbot-tag">
+                        #{{ tag }}
+                    </div>
+
+                    <div class="cds-chatbot-tag-delete-icon-wpr" (click)="removeTag(tag)">
+                        <i class="material-icons" style="font-size: 12px;"> close </i>
+                        <!-- <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
+                    aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                    class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                    <path class="tag_icon_in_ws_msgs"
+                      d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                    </path>
+                  </svg> -->
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </mat-tab>
+
+
+        <!-- <mat-tab label="Icon"> Content 3 </mat-tab> -->
+<!-- -------------------------- -->
+        <!-- Publishing  -->
+        <!-- -------------------------- -->
+        <mat-tab label="Publishing"> 
+            <div class="publishing-wpr">
+
+                <button id="csd-publish-bot-to-community-btn" class="btn btn-primary "
+                (click)="publishOnCommunity()">
+                Publish to community
+            </button>
+
+            </div>
+        
+        </mat-tab>
+    </mat-tab-group>
 
 </mat-dialog-content>

@@ -24,6 +24,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -168,6 +169,7 @@ import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish
     MatInputModule,
     MatExpansionModule,
     MatDialogModule,
+    MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
     TranslateModule.forRoot({
