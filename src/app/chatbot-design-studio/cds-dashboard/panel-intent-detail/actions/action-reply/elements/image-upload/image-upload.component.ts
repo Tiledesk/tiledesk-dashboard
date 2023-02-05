@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Metadata } from '../../../../../../../models/intent-model';
 import { MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT } from '../../../../../../utils';
+import { UploadImageNativeService } from 'app/services/upload-image-native.service';
+import { DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'appdashboard-image-upload',
@@ -13,37 +15,87 @@ export class ImageUploadComponent implements OnInit {
 
   isHovering: boolean = false;
   dropEvent: any;
+  existAnAttacment: boolean = false;
+  isImageSvg = false;
   
-  constructor() { }
+  constructor(
+    private uploadImageNativeService: UploadImageNativeService,
+    private sanitizer: DomSanitizer
+  ) { }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    if(this.metadata.src){
-      this.setImageSize();
+    this.initializeApp();
+  }
+
+  initializeApp(){
+    try {
+      if(this.metadata.src){
+        this.isImageSvg = this.imageUrlIsSvgFormat(this.metadata.src);
+        this.setImageSize();
+      }
+    } catch (error) {
+      console.log("error: ", error);
     }
   }
 
 
+  private imageUrlIsSvgFormat(url){
+    try {
+      if(url.endsWith(".svg")){
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log("error: ", error);
+      return true;
+    }
+  }
+
+  sanitizerUrlImage(){
+    return this.sanitizer.bypassSecurityTrustUrl(this.metadata.src);
+  }
+
   // CUSTOM FUNCTIONS //
   selectFile(event: any): void {
-    let selectedFiles = event.target.files;
-    if (selectedFiles) {
-      const file: File | null = selectedFiles.item(0);
-      if (file) {
-        let currentFile = file;
-        let that = this;
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.metadata.src = e.target.result;
-          that.setImageSize();
-        };
-        reader.readAsDataURL(currentFile);
+    try {
+      let selectedFiles = event.target.files[0];
+      if (selectedFiles) {
+        this.uploadAttachment_Native(selectedFiles);
       }
+    } catch (error) {
+      console.log("error: ", error);
     }
+  }
+
+
+  private uploadAttachment_Native(uploadedFiles){
+    if (uploadedFiles.type.startsWith('image') && uploadedFiles.type.includes('svg')) {
+      this.isImageSvg = true;
+    } else if (uploadedFiles.type.startsWith('image') && !uploadedFiles.type.includes('svg')) {
+      this.isImageSvg = false;
+    }
+    this.uploadImageNativeService.uploadAttachment_Native(uploadedFiles)
+    .then(downloadURL => {
+      if (downloadURL) {
+        this.existAnAttacment = true
+        uploadedFiles['downloadURL'] = downloadURL;
+      }
+      this.metadata.src = downloadURL;
+      this.existAnAttacment = true
+      this.setImageSize();
+      // this.logger.log(`[WS-REQUESTS-MSGS] - upload native metadata `, this.metadata);
+      // this.fileUpload.nativeElement.value = '';
+    }).catch(error => {
+      console.log("error", error);
+      // this.logger.error(`[WS-REQUESTS-MSGS] - upload native Failed to upload file and get link `, error);
+    });
   }
 
   // EVENT FUNCTIONS //
 
+  /** */
   private setImageSize(){
     setTimeout(() => {
       try {
@@ -60,6 +112,7 @@ export class ImageUploadComponent implements OnInit {
   }
 
 
+  /** */
   readAsDataURL(e: any) {
     let dataFiles = " "
     if (e.type === 'change') {
@@ -69,59 +122,65 @@ export class ImageUploadComponent implements OnInit {
     } else {
       dataFiles = e.files
     }
-    const attributes = { files: dataFiles, enableBackdropDismiss: false };
+    // const attributes = { files: dataFiles, enableBackdropDismiss: false };
     // ---------------------------------------------------------------------
     // USE CASE IMAGE
     // ---------------------------------------------------------------------
     let file:any = dataFiles[0];
-    if (file.type.startsWith('image') && !file.type.includes('svg')) {
-      const reader = new FileReader();
-      let that = this;
-      reader.onload = (e: any) => {
-        console.log("CARICATA IMMAGINE::: ", e.target.result);
-        this.metadata.src = e.target.result;
-        var img = new Image();
-        img.src = this.metadata.src;
-        img.onload = function() {
-            that.setImageSize();
-        };
-        img.onerror = function(e) {
-            console.log("ERROR ::: ", e);
-        };
-        
-      }
-      reader.readAsDataURL(file);
-      // ---------------------------------------------------------------------
-      // USE CASE SVG
-      // ---------------------------------------------------------------------
-    } else if (file.type.startsWith('image') && file.type.includes('svg')) {
-      const preview = document.querySelector('#img-preview') as HTMLImageElement
-      const reader = new FileReader();
-      const that = this;
-      reader.addEventListener('load',function () {
-          const img = reader.result.toString();
-          console.log('FIREBASE-UPLOAD USE CASE SVG LoaderPreviewPage readAsDataURL img ',img)
-          // that.arrayFiles.push(that.sanitizer.bypassSecurityTrustResourceUrl(img))
-          // if (!that.fileSelected) {
-          //   that.fileSelected = that.sanitizer.bypassSecurityTrustResourceUrl(img)
-          // }
-      },false);
-
+    try {
       if (file) {
-        reader.readAsDataURL(file);
+        this.uploadAttachment_Native(file);
       }
-      // ---------------------------------------------------------------------
-      // USE CASE FILE
-      // ---------------------------------------------------------------------
-    } else {
-      console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE ',file)
-      console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE TYPE',file.type)
-      let file_extension =  file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length) || file.name
-      console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE EXTENSION', file_extension)
-      let file_name = file.name
-      console.log( '[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE NAME', file_name)
-      // this.createFile()
+    } catch (error) {
+      console.log("error: ", error);
     }
+    // if (file.type.startsWith('image') && !file.type.includes('svg')) {
+    //   const reader = new FileReader();
+    //   let that = this;
+    //   reader.onload = (e: any) => {
+    //     console.log("CARICATA IMMAGINE::: ", e.target);
+    //     // this.metadata.src = e.target.result;
+    //     var img = new Image();
+    //     img.src = this.metadata.src;
+    //     img.onload = function() {
+    //         that.setImageSize();
+    //     };
+    //     img.onerror = function(e) {
+    //         console.log("ERROR ::: ", e);
+    //     };
+    //   }
+    //   reader.readAsDataURL(file);
+    //   // ---------------------------------------------------------------------
+    //   // USE CASE SVG
+    //   // ---------------------------------------------------------------------
+    // } else if (file.type.startsWith('image') && file.type.includes('svg')) {
+    //   const preview = document.querySelector('#img-preview') as HTMLImageElement
+    //   const reader = new FileReader();
+    //   const that = this;
+    //   reader.addEventListener('load',function () {
+    //       const img = reader.result.toString();
+    //       console.log('FIREBASE-UPLOAD USE CASE SVG LoaderPreviewPage readAsDataURL img ',img)
+    //       // that.arrayFiles.push(that.sanitizer.bypassSecurityTrustResourceUrl(img))
+    //       // if (!that.fileSelected) {
+    //       //   that.fileSelected = that.sanitizer.bypassSecurityTrustResourceUrl(img)
+    //       // }
+    //   },false);
+
+    //   if (file) {
+    //     reader.readAsDataURL(file);
+    //   }
+    //   // ---------------------------------------------------------------------
+    //   // USE CASE FILE
+    //   // ---------------------------------------------------------------------
+    // } else {
+    //   console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE ',file)
+    //   console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE TYPE',file.type)
+    //   let file_extension =  file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length) || file.name
+    //   console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE EXTENSION', file_extension)
+    //   let file_name = file.name
+    //   console.log( '[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE NAME', file_name)
+    //   // this.createFile()
+    // }
   }
 
 
@@ -177,9 +236,26 @@ export class ImageUploadComponent implements OnInit {
 
 
   checkAcceptedFile(draggedFileMimeType) {
-    let isAcceptFile = false
+    let isAcceptFile = false;
+    let accept_files_array = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG'];
+    try {
+      const accept_file_segment = draggedFileMimeType.split('/');
+      let fileType = accept_file_segment[1];
+      accept_files_array.forEach((accept_file) => {
+        // console.log('checkAcceptedFile:', fileType, '--->', accept_file);
+        if (fileType.endsWith(accept_file)) {
+          isAcceptFile = true;
+          return isAcceptFile;
+        }
+      });
+    } catch (error) {
+      return isAcceptFile; 
+    }
+    return isAcceptFile; 
+
+    let accept_files = '*/*';
     // this.logger.log('[CONVS-DETAIL] > checkAcceptedFile - fileUploadAccept: ',this.appConfigProvider.getConfig().fileUploadAccept)
-    let accept_files = '*/*';//this.appConfigProvider.getConfig().fileUploadAccept
+    //this.appConfigProvider.getConfig().fileUploadAccept
     // this.logger.log('[CONVS-DETAIL] > checkAcceptedFile - mimeType: ',draggedFileMimeType)
     if (accept_files === '*/*') {
       isAcceptFile = true
@@ -189,7 +265,6 @@ export class ImageUploadComponent implements OnInit {
       const accept_files_array = accept_files.split(',')
       // this.logger.log('[CONVS-DETAIL] > checkAcceptedFile - fileUploadAccept accept_files_array ',accept_files_array)
       // this.logger.log('[CONVS-DETAIL] > checkAcceptedFile - fileUploadAccept accept_files_array typeof: ',typeof accept_files_array)
-
       accept_files_array.forEach((accept_file) => {
         // this.logger.log('[CONVS-DETAIL] > checkAcceptedFile - fileUploadAccept accept_file ',accept_file)
         const accept_file_segment = accept_file.split('/')
