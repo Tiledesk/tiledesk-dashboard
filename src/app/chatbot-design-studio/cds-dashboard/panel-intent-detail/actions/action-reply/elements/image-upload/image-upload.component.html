@@ -7,17 +7,21 @@
 
     <label class="inputUploadImage" for="uploadImage">
         <em class="material-icons">photo_camera</em>
-        <input style="display:none" type="file" id="uploadImage" accept="image/*" (change)="selectFile($event)" />
+        <input style="display:none" type="file" id="uploadImage" accept=".jpg, .JPEG, .png" (change)="selectFile($event)" />
     </label>
 
     <div class="labelDropUploadImage">
         <span *ngIf="isHovering === false">
-            trascina qui un'immagine o clicca per selezionarla
+            {{'drag an image here or click to select them' | translate}}
         </span>
         <span *ngIf="isHovering === true">
-            trascinamento
+            {{'image dragging' | translate}}
         </span>
     </div>
     
 </div>
-<img *ngIf="metadata.src" #imageUploaded id="imageUploaded" [src]="metadata.src" (change)="getDimensionImage()">
+
+<div *ngIf="metadata.src">
+    <img *ngIf="!isImageSvg" #imageUploaded id="imageUploaded" [src]="metadata.src" (change)="getDimensionImage()">
+    <!-- <img *ngIf="isImageSvg" #imageUploaded id="imageUploaded" [src]="sanitizerUrlImage()" (change)="getDimensionImage()"> -->
+</div>
