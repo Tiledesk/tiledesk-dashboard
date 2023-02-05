@@ -570,8 +570,8 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   // Export chatbot to JSON
   // -------------------------------------------------------------------------------------- 
   exportChatbotToJSON() {
-    const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
-    exportFaqToJsonBtnEl.blur();
+    // const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
+    // exportFaqToJsonBtnEl.blur();
     this.faqService.exportChatbotToJSON(this.id_faq_kb).subscribe((faq: any) => {
       // console.log('[TILEBOT] - EXPORT CHATBOT TO JSON - FAQS', faq)
       // console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)

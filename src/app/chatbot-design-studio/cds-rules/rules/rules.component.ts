@@ -54,7 +54,9 @@ export class RulesComponent implements OnInit {
 
   onRuleAdded(rule: Rule){
     this.listOfRules.unshift(rule)
-    this.selectedChatbot.attributes['rules']= this.listOfRules
+    this.selectedChatbot.attributes = {
+      rules: this.listOfRules
+    }
     this.addClicked = false;
   }
 

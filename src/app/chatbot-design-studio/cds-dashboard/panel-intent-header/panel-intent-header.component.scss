@@ -233,7 +233,7 @@ $circle-size: 40px;
     // Different background color (also on hover)
     &, &:hover {
       background: #8bc34a !important;
-      border: 1px solid #8bc34a;
+    //   border: 1px solid #8bc34a;
     }
 
     // Use "after" pseudo to trigger new fade in animation, as "before" is already used on "--pending"
@@ -266,7 +266,7 @@ $circle-size: 40px;
     // Different background color (also on hover)
     &, &:hover {
       background: #ff5722;
-      border: 1px solid #ff5722;
+    //   border: 1px solid #ff5722;
     }
 
     // Use "after" pseudo to trigger new fade in animation, as "before" is already used on "--pending"
@@ -279,8 +279,8 @@ $circle-size: 40px;
 
       // Simulate cross icon
       display: inline-block;
-      height: 65%;
-      width: 65%;
+      height: 50%;
+      width: 25%;
 
       // Using background gradient is the only solution creating a cross with a single element
       background: 
