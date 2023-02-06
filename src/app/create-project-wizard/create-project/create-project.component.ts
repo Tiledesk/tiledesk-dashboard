@@ -68,13 +68,12 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   }
 
   getLoggedUser() {
-    this.auth.user_bs
-      .subscribe((user) => {
-        // console.log('[WIZARD - CREATE-PRJCT] - USER ', user)
-        if (user) {
-          this.user = user;
-        }
-      });
+    this.auth.user_bs.subscribe((user) => {
+      // console.log('[WIZARD - CREATE-PRJCT] - USER ', user)
+      if (user) {
+        this.user = user;
+      }
+    });
   }
 
   checkCurrentUrlAndHideCloseBtn() {
@@ -265,6 +264,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
   continueToNextStep() {
     if (this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION === false) {
+      // this.goToWidgetOnBoading()
       this.goToConfigureWidget()
       this.logger.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION',  this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION, ' - goToConfigureWidget') 
     } else {
@@ -275,6 +275,10 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
   goToConfigureWidget() {
     this.router.navigate([`/project/${this.id_project}/configure-widget`]);
+  }
+
+  goToWidgetOnBoading(){
+    this.router.navigate([`/project/${this.id_project}/onboarding-widget`]);
   }
 
   goToInstallTemplate() {
