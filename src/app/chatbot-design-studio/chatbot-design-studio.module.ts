@@ -23,6 +23,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -87,6 +89,7 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-splash-screen.component';
 import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
+import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 
 @NgModule({
   declarations: [
@@ -140,7 +143,8 @@ import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.compon
     ActionDescriptionComponent,
     ActionCloseComponent,
     ActionAgentHandoffComponent,
-    CdsFooterComponent
+    CdsFooterComponent,
+    CdsPublishOnCommunityModalComponent
   ],
   imports: [
     A11yModule,
@@ -164,6 +168,8 @@ import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.compon
     FormsModule,
     MatInputModule,
     MatExpansionModule,
+    MatDialogModule,
+    MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
     TranslateModule.forRoot({

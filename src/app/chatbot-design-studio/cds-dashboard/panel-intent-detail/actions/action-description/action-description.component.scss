@@ -6,7 +6,7 @@
     align-items: flex-end;
     // gap: 10px;
     padding: 20px 30px;
-    background-color: #fff; //$light-gray;
+    background-color: rgba($color: #fff, $alpha: .22); //$light-gray;
     // margin-bottom: 30px;
     .action-title {
         display: flex;
@@ -45,8 +45,8 @@
 cds-text ::ng-deep {
     width: 300px;
     input {
-        border: 1px solid #919ead !important;
-        outline: 1px solid #919ead !important;
+        border: 1px solid #c6cdd4 !important;
+        outline: none !important;
         transition: border .3s;
         border-radius: 3px;
         

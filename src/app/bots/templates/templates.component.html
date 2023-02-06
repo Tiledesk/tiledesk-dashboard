@@ -21,17 +21,23 @@
 
                 <div class="button-row">
                     <div></div>
+
                     <button type="button" class="btn btn-new btn-size-m btn--primary" (click)="createBlankTilebot()">
                         <span>Add from scratch</span>
                     </button>
                 </div>
 
                 <div class="page-content--wpr">
+                    <div class="template-page-title">
+                        <span *ngIf="COMMUNITY_TEMPLATE">
+                            Community
+                        </span>
+                    </div>
                     <loading-spinner *ngIf="showSpinner"></loading-spinner>
                     <div *ngIf="!showSpinner" class="page-content">
 
-                        <!-- *ngIf="CERTIFIED_TEMPLATE" -->
-                        <div  class="template-cards-wpr">
+                        <!--  -->
+                        <div *ngIf="CERTIFIED_TEMPLATE" class="template-cards-wpr">
                             <div class="template-cards">
 
                                 <!-- ---------------------------------------------- -->
@@ -113,8 +119,9 @@
                                     <div class="use-template-btn-row use-template-btn-wpr">
                                         <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
                                             (click)="openDialog(template)">
-                                            <span *ngIf="template?.certified === true">Use template</span>
-                                            <span *ngIf="template?.certified === false">Import Chatbot</span>
+
+                                            <span>Use template</span>
+
                                         </button>
                                     </div>
                                     <div class="template-card-footer template-footer">
@@ -172,63 +179,121 @@
                         <!-- ------------------------------------------------------------ -->
                         <!-- @ Community tempates -->
                         <!-- ------------------------------------------------------------ -->
-                        <div style="display: none;" class="css-ph3dp7 cmnty-tmplt-list--wpr">
+                        <!-- Search bar -->
+                        <div *ngIf="COMMUNITY_TEMPLATE" class="css-1m7jc8x cmnty-tmplt-search-bar-container">
+                            <div class="css-t94b1v cmnty-tmplt-search-bar-wpr">
+                                <div class="css-vm1iz7 cmnty-tmplt-search-bar">
+                                    <div class="css-1wp4ooc cmnty-tmplt-search-bar-input-and-icon-wpr">
+                                        <input class="css-n1s1a0 cmnty-tmplt-search-bar-input"
+                                            placeholder="Search for Chatbot" value="">
+                                        <div class="css-1wdq4w3 cmnty-tmplt-search-bar-icon">
+                                            <svg preserveAspectRatio="xMidYMin" width="16" height="16"
+                                                viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+                                                class="css-1gcl232" style="vertical-align: middle;">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M11 3.75C6.99594 3.75 3.75 6.99594 3.75 11C3.75 15.0041 6.99594 18.25 11 18.25C12.9606 18.25 14.7395 17.4717 16.0445 16.2073C16.0669 16.1767 16.092 16.1474 16.1197 16.1197C16.1474 16.092 16.1767 16.0669 16.2073 16.0445C17.4717 14.7395 18.25 12.9606 18.25 11C18.25 6.99594 15.0041 3.75 11 3.75ZM17.6949 16.6342C18.9773 15.112 19.75 13.1462 19.75 11C19.75 6.16751 15.8325 2.25 11 2.25C6.16751 2.25 2.25 6.16751 2.25 11C2.25 15.8325 6.16751 19.75 11 19.75C13.1462 19.75 15.112 18.9773 16.6342 17.6949L20.4697 21.5303C20.7626 21.8232 21.2374 21.8232 21.5303 21.5303C21.8232 21.2374 21.8232 20.7626 21.5303 20.4697L17.6949 16.6342Z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <!-- Community tempaltes -->
+                        <div *ngIf="COMMUNITY_TEMPLATE" class="css-ph3dp7 cmnty-tmplt-list--wpr">
                             <div class="css-18ajwok cmnty-tmplt-list">
                                 <div class="css-ph3dp7 cmnty-tmplt-list--wpr">
                                     <div class="css-18ajwok cmnty-tmplt-list">
-                                        <div class="css-nghpcj cmnty-tmplt">
+                                        <div class="css-nghpcj cmnty-tmplt" *ngFor="let template of templates">
 
                                             <div class="css-1n67j40 cmnty-tmplt-header-wpr">
                                                 <div class="css-umm87 cmnty-tmplt-header-left">
                                                     <div class="css-1pwjctj cmnty-tmplt-content">
-                                                        <div data-focus-guard="true" tabindex="-1"
-                                                            style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
-                                                        </div>
-                                                        <span data-focus-lock-disabled="disabled" data-focus-lock="21"
-                                                            class="popover-control-container">
-                                                            <span class="css-36v8q4 cmnty-tmplt-header-left-author-main">
-                                                                <div class="css-bp3124 cmnty-tmplt-header-left-author-wpr">
-                                                                    <div  class="css-u5es3w cmnty-tmplt-header-left-author">
-                                                                        <div class="css-m6gn6 cmnty-tmplt-header-left-author-avatar">
-                                                                            <span style="box-sizing: border-box; display: inline-block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;">
-                                                                                <span style="box-sizing: border-box; display: block; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;">
-                                                                                    <img alt="" aria-hidden="true"
-                                                                                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2724%27%20height=%2724%27/%3e"
-                                                                                        style="display: block; max-width: 100%; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;">
-                                                                                </span>
-                                                                                <img title="replitted" alt="replitted"
-                                                                                    srcset="https://replit.com/cdn-cgi/image/width=32,quality=80,format=auto/https://storage.googleapis.com/replit/images/1656342806000_f6074b3fe0e31cc9c1f1b0b4edce70e8.jpeg 1x, https://replit.com/cdn-cgi/image/width=48,quality=80,format=auto/https://storage.googleapis.com/replit/images/1656342806000_f6074b3fe0e31cc9c1f1b0b4edce70e8.jpeg 2x"
-                                                                                    src="https://replit.com/cdn-cgi/image/width=48,quality=80,format=auto/https://storage.googleapis.com/replit/images/1656342806000_f6074b3fe0e31cc9c1f1b0b4edce70e8.jpeg"
-                                                                                    decoding="async"
-                                                                                    data-nimg="intrinsic"
-                                                                                    style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;">
-                                                                            </span>
-                                                                        </div>
-                                                                        <div
-                                                                            class="css-12zqyc0 cmnty-tmplt-header-left-author-avatar-name-wpr">
-                                                                            <span  class="css-o4584k cmnty-tmplt-header-left-author-avatar-name">Nicola Lanzilotto 
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </span>
-                                                        </span>
                                                         <!-- <div data-focus-guard="true" tabindex="-1"
                                                             style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
                                                         </div> -->
-                                                        <span
-                                                        class="css-1e00qvh cmnty-tmplt-header-left-publication-date-dot">•</span>
+                                                        <!-- <span data-focus-lock-disabled="disabled" data-focus-lock="21"
+                                                            class="popover-control-container"> -->
+                                                        <span class="css-36v8q4 cmnty-tmplt-header-left-author-main">
+                                                            <div class="css-bp3124 cmnty-tmplt-header-left-author-wpr">
+                                                                <div class="css-u5es3w cmnty-tmplt-header-left-author">
+                                                                    <div
+                                                                        class="css-m6gn6 cmnty-tmplt-header-left-author-avatar">
+                                                                        <span
+                                                                            style="box-sizing: border-box; display: inline-block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;">
+                                                                            <span
+                                                                                style="box-sizing: border-box; display: block; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;">
+                                                                                <img alt="" aria-hidden="true"
+                                                                                    src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2724%27%20height=%2724%27/%3e"
+                                                                                    style="display: block; max-width: 100%; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;">
+                                                                            </span>
+                                                                            <!-- --------------------------------------------------- -->
+                                                                            <!-- USECASE uploadEngine Firebase -->
+                                                                            <!-- --------------------------------------------------- -->
+                                                                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                                                                                title="replitted" alt="replitted"
+                                                                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{template?.createdBy}}%2Fphoto.jpg?alt=media"
+                                                                                onerror="this.src='assets/img/no_image_user.png'"
+                                                                                decoding="async" data-nimg="intrinsic"
+                                                                                style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;">
+
+
+                                                                            <!----------------------------------------------------- -->
+                                                                            <!-- USECASE uploadEngine Native -->
+                                                                            <!-- --------------------------------------------------- -->
+                                                                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                                                                title="replitted" alt="replitted"
+                                                                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{template?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                                                                onerror="this.src='assets/img/no_image_user.png'"
+                                                                                decoding="async" data-nimg="intrinsic"
+                                                                                style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;">
+
+                                                                        </span>
+                                                                    </div>
+                                                                    <!-- <div
+                                                                        class="css-12zqyc0 cmnty-tmplt-header-left-author-avatar-name-wpr">
+                                                                        <span
+                                                                            class="css-o4584k cmnty-tmplt-header-left-author-avatar-name">
+                                                                            Nicola Lanzilotto
+                                                                        </span>
+                                                                    </div> -->
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                        <!-- </span> -->
+                                                        <!-- <div data-focus-guard="true" tabindex="-1"
+                                                            style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
+                                                        </div> -->
+
                                                         <span
                                                             class="css-1drl345 cmnty-tmplt-header-left-publication-date-wpr">
-                                                            Published</span>
+                                                            Published
+                                                        </span>
                                                     </div>
-                                                 
+
                                                     <span class="css-9w8l6j cmnty-tmplt-header-left-date-wpr">
                                                         <span class="css-1e00qvh cmnty-tmplt-header-left-date">
-                                                            5 days ago</span>
+                                                            {{ template.createdAt | date: 'd/M/y'}}
+                                                        </span>
+                                                    </span>
+                                                    <span
+                                                        class="css-1e00qvh cmnty-tmplt-header-left-publication-date-dot">•</span>
+
+                                                    <span
+                                                        class="css-1drl345 cmnty-tmplt-header-left-publication-date-wpr">
+                                                        Updated
+                                                    </span>
+                                                    <span class="css-9w8l6j cmnty-tmplt-header-left-date-wpr">
+                                                        <span class="css-1e00qvh cmnty-tmplt-header-left-date">
+                                                            {{ template.updatedAt | date: 'd/M/y'}}
+                                                        </span>
                                                     </span>
                                                 </div>
-                                                <div class="css-cg4is2 cmnty-tmplt-header-right-wrp">
+                                                <!-- Like -->
+                                                <!-- <div class="css-cg4is2 cmnty-tmplt-header-right-wrp">
                                                     <div class="css-36v8q4 cmnty-tmplt-header-right">
                                                         <button type="button"
                                                             class="css-1pp49co cmnty-tmplt-header-like-btn">
@@ -245,7 +310,7 @@
                                                             </div>
                                                         </button>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="css-7hwtau cmnty-tmplt-card-content-wpr">
                                                 <div class="css-19xjgvx cmnty-tmplt-card-content">
@@ -253,43 +318,65 @@
                                                         <div
                                                             class="css-8p6k7j cmnty-tmplt-card-img-and-description-wpr">
                                                             <div class="css-1qaq6q9 cmnty-tmplt-card-img">
-                                                                <span
-                                                                    style="box-sizing: border-box; display: inline-block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"><span
-                                                                        style="box-sizing: border-box; display: block; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;"><img
+                                                                <!-- <span class="cmnty-tmplt-card-img-wpr"
+                                                                    style="box-sizing: border-box; display: inline-block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"> -->
+                                                                <!-- <span
+                                                                        style="box-sizing: border-box; display: block; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;">
+                                                                        <img
                                                                             alt="" aria-hidden="true"
                                                                             src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2784%27%20height=%2784%27/%3e"
                                                                             style="display: block; max-width: 100%; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;">
-                                                                    </span>
-                                                                    <img alt="tombola"
+                                                                    </span> -->
+                                                                <!-- <img alt="chatbot-img"
                                                                         srcset="https://replit.com/cdn-cgi/image/width=96,quality=80,format=auto/https://storage.googleapis.com/replit/images/1675019235615_f9bee3dc1581ac9c38ec4159538b1b98.png 1x, https://replit.com/cdn-cgi/image/width=256,quality=80,format=auto/https://storage.googleapis.com/replit/images/1675019235615_f9bee3dc1581ac9c38ec4159538b1b98.png 2x"
                                                                         src="https://replit.com/cdn-cgi/image/width=256,quality=80,format=auto/https://storage.googleapis.com/replit/images/1675019235615_f9bee3dc1581ac9c38ec4159538b1b98.png"
                                                                         decoding="async" data-nimg="intrinsic"
-                                                                        style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;"></span>
-                                                            </div>
-                                                            <div
-                                                                class="css-14dz4a cmnty-tmplt-card-description-wpr">
-                                                                <a href="/@replitted/tombola?v=1"
-                                                                    class="css-wzynpy cmnty-tmplt-card-title-wpr">
-                                                                    <span
-                                                                        class="css-78d9ti cmnty-tmplt-card-title">tombola</span>
-                                                                </a>
-                                                                <span
-                                                                    class="css-1y2t2y1 cmnty-tmplt-card-description" style=" -webkit-box-orient: vertical;">
-                                                                    physics-based music.
+                                                                        style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;"> -->
 
-                                                                    Keyboard controls
-                                                                    arrow keys: change rotation and speed
-                                                                    middle and upper keyboard rows (a, s, d, ...): synth
-                                                                    keyboard
-                                                                    z / x: synth keyboard octave down/up
-                                                                    c: next synth
-                                                                    spacebar: clear balls
+
+
+
+                                                                <span *ngIf="!template?.bigImage">
+                                                                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                                                                        class="cmnty-chatbot-img"
+                                                                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{template?._id}}%2Fphoto.jpg?alt=media"
+                                                                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
+                                                                        style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;" />
+
+                                                                    <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                                                        class="cmnty-chatbot-img"
+                                                                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{template?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                                                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
+                                                                        style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;" />
+                                                                </span>
+                                                                <span *ngIf="template?.bigImage">
+                                                                    <img *ngIf="template?.bigImage"
+                                                                        class="cmnty-chatbot-img"
+                                                                        src="{{template.bigImage}}"
+                                                                        style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;">
+                                                                </span>
+
+
+
+                                                                <!-- <img *ngIf="template?.bigImage"
+                                                                        src="{{template.bigImage}}"> -->
+                                                                <!-- </span> -->
+                                                            </div>
+                                                            <div class="css-14dz4a cmnty-tmplt-card-description-wpr">
+                                                                <div class="css-wzynpy cmnty-tmplt-card-title-wpr">
+                                                                    <span class="css-78d9ti cmnty-tmplt-card-title">
+                                                                        {{template.name}}
+                                                                    </span>
+                                                                </div>
+                                                                <span class="css-1y2t2y1 cmnty-tmplt-card-description"
+                                                                    style=" -webkit-box-orient: vertical;">
+                                                                    {{template.shortDescription}}
                                                                 </span>
                                                             </div>
                                                         </div>
                                                         <div class="css-1fubhz3 cmnty-tmplt-card-footer">
                                                             <div class="css-pqgycx cmnty-tmplt-card-footer-left">
-                                                                <div aria-label="runs" data-microtip-position="left"
+                                                                <!-- <div aria-label="runs" data-microtip-position="left"
                                                                     role="tooltip" class="css-gl59so cmnty-tmplt-card-footer-left--element"><svg
                                                                         preserveAspectRatio="xMidYMin" width="12"
                                                                         height="12" viewBox="0 0 24 24"
@@ -301,9 +388,10 @@
                                                                         </path>
                                                                     </svg>
                                                                     <span class="css-1gnnk6y cmnty-tmplt-card-footer-left--element-number">26.3K</span>
-                                                                </div>
-                                                                <div aria-label="comments" data-microtip-position="left"
-                                                                    role="tooltip" class="css-gl59so cmnty-tmplt-card-footer-left--element"><svg
+                                                                </div> -->
+                                                                <!-- <div aria-label="comments" data-microtip-position="left"
+                                                                    role="tooltip" class="css-gl59so cmnty-tmplt-card-footer-left--element">
+                                                                    <svg
                                                                         preserveAspectRatio="xMidYMin" width="12"
                                                                         height="12" viewBox="0 0 24 24"
                                                                         fill="currentColor" aria-hidden="true"
@@ -312,9 +400,14 @@
                                                                         <path fill-rule="evenodd" clip-rule="evenodd"
                                                                             d="M5 3.75C4.66848 3.75 4.35054 3.8817 4.11612 4.11612C3.8817 4.35054 3.75 4.66848 3.75 5V19.1893L6.46967 16.4697C6.61032 16.329 6.80109 16.25 7 16.25H19C19.3315 16.25 19.6495 16.1183 19.8839 15.8839C20.1183 15.6495 20.25 15.3315 20.25 15V5C20.25 4.66848 20.1183 4.35054 19.8839 4.11612C19.6495 3.8817 19.3315 3.75 19 3.75H5ZM3.05546 3.05546C3.57118 2.53973 4.27065 2.25 5 2.25H19C19.7293 2.25 20.4288 2.53973 20.9445 3.05546C21.4603 3.57118 21.75 4.27065 21.75 5V15C21.75 15.7293 21.4603 16.4288 20.9445 16.9445C20.4288 17.4603 19.7293 17.75 19 17.75H7.31066L3.53033 21.5303C3.31583 21.7448 2.99324 21.809 2.71299 21.6929C2.43273 21.5768 2.25 21.3033 2.25 21V5C2.25 4.27065 2.53973 3.57118 3.05546 3.05546Z">
                                                                         </path>
-                                                                    </svg><span class="css-1gnnk6y cmnty-tmplt-card-footer-left--element-number">1.2K</span></div>
-                                                                <div aria-label="likes" data-microtip-position="left"
-                                                                    role="tooltip" class="css-gl59so cmnty-tmplt-card-footer-left--element"><svg
+                                                                    </svg>
+                                                                    <span class="css-1gnnk6y cmnty-tmplt-card-footer-left--element-number">
+                                                                        1.2K
+                                                                    </span>
+                                                                </div> -->
+                                                                <!-- <div aria-label="likes" data-microtip-position="left"
+                                                                    role="tooltip" class="css-gl59so cmnty-tmplt-card-footer-left--element">
+                                                                    <svg
                                                                         preserveAspectRatio="xMidYMin" width="12"
                                                                         height="12" viewBox="0 0 24 24"
                                                                         fill="currentColor" aria-hidden="true"
@@ -323,163 +416,57 @@
                                                                         <path fill-rule="evenodd" clip-rule="evenodd"
                                                                             d="M14.5577 2.7242C15.3161 2.40993 16.1291 2.24817 16.9501 2.24817C17.7711 2.24817 18.5841 2.40993 19.3426 2.7242C20.101 3.03848 20.7902 3.49911 21.3706 4.07979C21.9511 4.66014 22.4117 5.34918 22.7259 6.10755C23.0402 6.86602 23.2019 7.67898 23.2019 8.49999C23.2019 9.321 23.0402 10.134 22.7259 10.8924C22.4117 11.6509 21.9511 12.3399 21.3704 12.9203C21.3704 12.9204 21.3705 12.9203 21.3704 12.9203L12.5304 21.7603C12.2376 22.0532 11.7627 22.0532 11.4698 21.7603L2.62979 12.9203C1.45744 11.748 0.798828 10.1579 0.798828 8.49999C0.798828 6.84205 1.45744 5.25201 2.62979 4.07966C3.80213 2.90732 5.39217 2.2487 7.05012 2.2487C8.70806 2.2487 10.2981 2.90732 11.4704 4.07966L12.0001 4.60933L12.5297 4.07979C13.1101 3.49911 13.7992 3.03848 14.5577 2.7242ZM20.3097 5.1402C19.8686 4.69889 19.3448 4.3488 18.7684 4.10995C18.1919 3.87111 17.5741 3.74817 16.9501 3.74817C16.3262 3.74817 15.7083 3.87111 15.1319 4.10995C14.5554 4.3488 14.0317 4.69889 13.5906 5.1402L12.5304 6.20032C12.2376 6.49322 11.7627 6.49322 11.4698 6.20032L10.4098 5.14032C9.51875 4.24928 8.31024 3.7487 7.05012 3.7487C5.79 3.7487 4.58149 4.24928 3.69045 5.14032C2.79941 6.03136 2.29883 7.23987 2.29883 8.49999C2.29883 9.76012 2.79941 10.9686 3.69045 11.8597L12.0001 20.1693L20.3098 11.8597C20.7511 11.4186 21.1013 10.8947 21.3402 10.3183C21.579 9.74181 21.7019 9.12396 21.7019 8.49999C21.7019 7.87603 21.579 7.25818 21.3402 6.68173C21.1013 6.10529 20.751 5.58131 20.3097 5.1402Z">
                                                                         </path>
-                                                                    </svg><span class="css-1gnnk6y cmnty-tmplt-card-footer-left--element-number">717</span>
-                                                                </div>
+                                                                    </svg>
+                                                                    <span class="css-1gnnk6y cmnty-tmplt-card-footer-left--element-number">717</span>
+                                                                </div> -->
+                                                                <!-- (click)="openDialog(template)" -->
+                                                                <button type="button"
+                                                                    class="btn btn-new btn-size-m btn--primary btn-block"
+                                                                    (click)="openDialog(template)">
+                                                                    <!-- <span *ngIf="template?.certified === true">Use
+                                                                        template</span> -->
+                                                                    <!-- *ngIf="template?.certified === false" -->
+                                                                    <span>Use template </span>
+                                                                </button>
                                                             </div>
                                                             <div class="css-sa2iis cmnty-tmplt-card-footer-right-wpr">
                                                                 <div class="css-1p5njkb cmnty-tmplt-card-footer-right">
-                                                                    <div class="css-1pwjctj cmnty-tmplt-content">
-                                                                        <a href="/community/games"
-                                                                            class="css-1limyoz cmnty-tmplt-tag-wpr">
+                                                                    <div class="css-1pwjctj cmnty-tmplt-content"  *ngIf="template.tags">
+                                                                        <div class="css-1limyoz cmnty-tmplt-tag-wpr" *ngFor="let tag of template.tags">
                                                                             <div class="css-14z49fr cmnty-tmplt-tag">
-                                                                                <div class="css-53dz3e cmnty-tmplt-tag-content-wpr">
-                                                                                    <div class="css-wnpbuq cmnty-tmplt-tag-content"><span
-                                                                                            class="css-1c3y4f8 cmnty-tmplt-tag-hash">#</span><span
-                                                                                            class="css-13s51og cmnty-tmplt-tag-name">games</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </a><a href="/community/python"
-                                                                            class="css-1limyoz cmnty-tmplt-tag-wpr" >
-                                                                            <div class="css-14z49fr cmnty-tmplt-tag">
-                                                                                <div class="css-53dz3e cmnty-tmplt-tag-content-wpr">
+                                                                                <div
+                                                                                    class="css-53dz3e cmnty-tmplt-tag-content-wpr">
                                                                                     <div class="css-wnpbuq cmnty-tmplt-tag-content">
                                                                                         <span
-                                                                                            class="css-1c3y4f8 cmnty-tmplt-tag-hash">#</span>
-                                                                                            <span
-                                                                                            class="css-13s51og cmnty-tmplt-tag-name">python</span>
+                                                                                            class="css-1c3y4f8 cmnty-tmplt-tag-hash">
+                                                                                            #
+                                                                                        </span>
+                                                                                        <span
+                                                                                            class="css-13s51og cmnty-tmplt-tag-name">
+                                                                                            {{tag}}
+                                                                                        </span>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </a><a href="/community/fun"
-                                                                            class="css-1limyoz cmnty-tmplt-tag-wpr">
-                                                                            <div class="css-14z49fr cmnty-tmplt-tag">
-                                                                                <div class="css-53dz3e cmnty-tmplt-tag-content-wpr">
-                                                                                    <div class="css-wnpbuq cmnty-tmplt-tag-content"><span
-                                                                                            class="css-1c3y4f8 cmnty-tmplt-tag-hash">#</span><span
-                                                                                            class="css-13s51og cmnty-tmplt-tag-name">fun</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </a><span class="css-1c3y4f8">+2</span></div>
+                                                                        </div>
+
+
+                                                                        <!-- <span class="css-1c3y4f8">+2</span> -->
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="css-h6zn0c">
-                                                    <div class="css-nghpcj">
-                                                        <div class="css-k8itw1">
-                                                            <div data-focus-guard="true" tabindex="-1"
-                                                                style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
-                                                            </div><span data-focus-lock-disabled="disabled"
-                                                                data-focus-lock="22"
-                                                                class="popover-control-container"><span
-                                                                    class="css-36v8q4"><a href="/@29josama"
-                                                                        class="css-36v8q4">
-                                                                        <div class="css-1opiqck"><span
-                                                                                style="box-sizing: border-box; display: inline-block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"><span
-                                                                                    style="box-sizing: border-box; display: block; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;"><img
-                                                                                        alt="" aria-hidden="true"
-                                                                                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2716%27%20height=%2716%27/%3e"
-                                                                                        style="display: block; max-width: 100%; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;"></span><img
-                                                                                    title="29josama" alt="29josama"
-                                                                                    src="https://www.gravatar.com/avatar/3f0ddc6a2713b80b9e25292b54721441?d=https://repl.it/public/images/evalbot/evalbot_30.png&amp;s=256"
-                                                                                    decoding="async"
-                                                                                    data-nimg="intrinsic"
-                                                                                    style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;"></span>
-                                                                        </div>
-                                                                    </a></span></span>
-                                                            <div data-focus-guard="true" tabindex="-1"
-                                                                style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
-                                                            </div>
-                                                            <div data-focus-guard="true" tabindex="-1"
-                                                                style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
-                                                            </div><span data-focus-lock-disabled="disabled"
-                                                                data-focus-lock="23"
-                                                                class="popover-control-container"><span><a
-                                                                        href="/@29josama" class="css-t27rqa"><span
-                                                                            class="css-o4584k">29josama</span></a></span></span>
-                                                            <div data-focus-guard="true" tabindex="-1"
-                                                                style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
-                                                            </div> <span class="css-1b528hf"> nice game dude
-                                                            </span><span class="css-9w8l6j"><span class="css-1c3y4f8">19
-                                                                    hours ago</span></span>
-                                                        </div>
-                                                        <div class="css-k8itw1">
-                                                            <div data-focus-guard="true" tabindex="-1"
-                                                                style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
-                                                            </div><span data-focus-lock-disabled="disabled"
-                                                                data-focus-lock="24"
-                                                                class="popover-control-container"><span
-                                                                    class="css-36v8q4"><a href="/@muhammedhashmin"
-                                                                        class="css-36v8q4">
-                                                                        <div class="css-1opiqck"><span
-                                                                                style="box-sizing: border-box; display: inline-block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"><span
-                                                                                    style="box-sizing: border-box; display: block; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;"><img
-                                                                                        alt="" aria-hidden="true"
-                                                                                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2716%27%20height=%2716%27/%3e"
-                                                                                        style="display: block; max-width: 100%; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;"></span><img
-                                                                                    title="muhammedhashmin"
-                                                                                    alt="muhammedhashmin"
-                                                                                    srcset="https://replit.com/cdn-cgi/image/width=16,quality=80,format=auto/https://storage.googleapis.com/replit/images/1672222659070_64bec6b18bfd01e82d0acc678279a954.png 1x, https://replit.com/cdn-cgi/image/width=32,quality=80,format=auto/https://storage.googleapis.com/replit/images/1672222659070_64bec6b18bfd01e82d0acc678279a954.png 2x"
-                                                                                    src="https://replit.com/cdn-cgi/image/width=32,quality=80,format=auto/https://storage.googleapis.com/replit/images/1672222659070_64bec6b18bfd01e82d0acc678279a954.png"
-                                                                                    decoding="async"
-                                                                                    data-nimg="intrinsic"
-                                                                                    style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;"></span>
-                                                                        </div>
-                                                                    </a></span></span>
-                                                            <div data-focus-guard="true" tabindex="-1"
-                                                                style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
-                                                            </div>
-                                                            <div data-focus-guard="true" tabindex="-1"
-                                                                style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
-                                                            </div><span data-focus-lock-disabled="disabled"
-                                                                data-focus-lock="25"
-                                                                class="popover-control-container"><span><a
-                                                                        href="/@muhammedhashmin"
-                                                                        class="css-t27rqa"><span
-                                                                            class="css-o4584k">muhammedhashmin</span></a></span></span>
-                                                            <div data-focus-guard="true" tabindex="-1"
-                                                                style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
-                                                            </div> <span
-                                                                class="css-1b528hf">https://replit.com/@muhammedhashmin/Messi-VS-Ronaldo?v=1
-                                                                try this football fans</span><span
-                                                                class="css-9w8l6j"><span class="css-1c3y4f8">17 hours
-                                                                    ago</span></span>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
+
                                             </div>
                                         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                                     </div>
                                 </div>
 
                             </div>
                         </div>
-
-
-
-
-
-
-
-
-
                     </div>
 
                     <!-- ./ real -->
