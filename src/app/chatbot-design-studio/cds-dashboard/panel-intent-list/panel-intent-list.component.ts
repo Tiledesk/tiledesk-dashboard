@@ -92,6 +92,9 @@ export class PanelIntentListComponent implements OnInit {
     this.eventUpadatedIntent.subscribe((intent: Intent) => {
       console.log("[PANEL-INTENT-LIST] ---> ON UPDATE INTENTS: ", intent);
       this.addBtnDisabled = false;
+      this.getAllIntents(this.id_faq_kb).then((resp) => {
+        this.preselectIntent();
+      })
       // const index = this.filtered_intents.findIndex((e) => e.id === intent.id);
       // console.log("[PANEL-INTENT-LIST] onNewIntentListener intent index : ", index);
       // this.getAllIntents(this.id_faq_kb).then((length: number) => {
