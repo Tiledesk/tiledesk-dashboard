@@ -1,0 +1,58 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
+.action_welcome{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    // gap: 10px;
+    padding: 20px 30px;
+    background-color: rgba($color: #fff, $alpha: .22); //$light-gray;
+    // margin-bottom: 30px;
+    .action-title {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 5px;
+        img{
+            // filter: brightness(0) saturate(100%) invert(84%) sepia(13%) saturate(5939%) hue-rotate(357deg) brightness(94%) contrast(97%);
+            filter: brightness(0) saturate(100%) invert(64%) sepia(10%) saturate(433%) hue-rotate(172deg) brightness(95%) contrast(95%);
+        }
+    }
+
+    .text-action {
+        // color: $icon-color;
+        color: #919ead;
+        margin-bottom: 0px;
+    }
+
+    .action-type {
+        margin-bottom: 0px;
+        color: white;
+    }
+    
+    .action-description{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        font-size: 11px;
+        color: $action-item-color;
+        line-height: 1.5;
+        // text-align: center;
+    }
+}
+
+cds-text ::ng-deep {
+    width: 300px;
+    input {
+        border: 1px solid #c6cdd4 !important;
+        outline: none !important;
+        transition: border .3s;
+        border-radius: 3px;
+        
+        line-height: 20px !important;
+        font-size: 1em !important;
+        padding: 2px 5px !important;
+
+    }
+}

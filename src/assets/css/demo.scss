@@ -1679,3 +1679,17 @@ footer ul {
   // padding-bottom: 8px !important;
   // border: 1px solid #e5effe !important;
 }
+
+.btn.btn-primary.cds-blue-button{
+  background: $light-blue;
+  color: $light-black;
+  box-shadow: none;
+  font-weight: 500;
+  font-family: "Poppins", Roboto, Arial, sans-serif;
+  text-transform: capitalize;
+  font-size: 14px;
+  padding: 6px 12px;
+  &:hover {
+    background: rgba(138, 180, 248, 0.8);
+  }
+}

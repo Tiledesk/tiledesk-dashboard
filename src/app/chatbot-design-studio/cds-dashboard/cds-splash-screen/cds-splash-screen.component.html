@@ -16,14 +16,14 @@
             Chatbot design studio
         </div>
     </div>
-    <div class="welcome_subtitle">Select an intent from the left sidebar or create a new one</div>
+    <div class="welcome_subtitle" [innerHTML]="text"></div>
     <div class="button-wrp">
         <!-- <div class="new-rules-button" (click)="addNew()">
             <span class="material-icons icon plus-icon">add</span>
             <p class="button-text">Add</p>
         </div> -->
 
-        <button id="cds-ss-add-intent-btn" type="button" class="btn btn-primary" (click)="addNewIntent()"> 
+        <button id="cds-ss-add-intent-btn" type="button" class="btn btn-primary cds-blue-button" (click)="onAdd()"> 
             <span class="material-icons icon plus-icon">add</span>
             Add
         </button>

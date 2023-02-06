@@ -13,6 +13,7 @@ export class ActionAssignVariableComponent implements OnInit {
   @Input() action: ActionAssignVariable;
 
   actionAssignFormGroup: FormGroup;
+  variables: Array<string>= []
 
   constructor(private formBuilder: FormBuilder,
               private logger: LoggerService,) { }

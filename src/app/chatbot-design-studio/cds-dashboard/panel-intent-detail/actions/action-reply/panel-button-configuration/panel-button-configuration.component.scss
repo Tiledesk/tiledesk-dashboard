@@ -7,6 +7,7 @@
     flex-direction: column;
     background-color: #1e293b;
     border-left: solid 2px #3ea9f5;
+    box-shadow: 0px 0px 42px 2px rgb(0, 0, 0, .78);
 }
 .button-header-tab:before {
     content: "";
@@ -113,6 +114,14 @@
     button {
         padding: 8px;
         margin: 8px;
+        background: $light-blue!important;
+        color: $light-black!important;
+        box-shadow: none!important;
+        font-weight: 500!important;
+        font-family: Poppins,Roboto,Arial,sans-serif!important;
+        text-transform: capitalize!important;
+        font-size: 14px!important;
+        padding: 6px 12px;
     }
 }
 

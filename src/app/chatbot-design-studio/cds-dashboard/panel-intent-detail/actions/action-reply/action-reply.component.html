@@ -1,4 +1,11 @@
+<cds-action-description 
+    [actionType]="'REPLY'"
+    [actionSelected]="reply">
+</cds-action-description>
+
 <div class="box-sx">
+    
+
     <!-- [ngStyle]="{'transform': translateY}" -->
     <div #scrollMe id="scrollMe" 
         class="content draggable-list" 
@@ -57,7 +64,7 @@
                     (moveDownResponse) = onMoveDownResponse($event)
                     (deleteResponse) = onDeleteResponse($event)
                     (openButtonPanel) = onOpenButtonPanel($event)
-                    (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                    (change)=onChangeDelayTimeReplyElement()
                     (changeTextareaReplyElement) = onChangeTextareaReplyElement()
                     ></appdashboard-image-response>
                 </div>
@@ -116,13 +123,13 @@
 </div>
 
 
-<div class="card-buttons" 
+<div class="card-buttons" (focusout)="onFocusOutEvent($event)"
     [ngClass]="{'active':openCardButton}">
     <appdashboard-panel-button-configuration
         *ngIf="openCardButton"
         [button] = buttonSelected
         [listOfActions] = listOfActions
         (closeButtonPanel) = onCloseButtonPanel()
-        (saveButton) = onSaveButton($event)
-    ></appdashboard-panel-button-configuration>
+        (saveButton) = onSaveButton($event)>
+    </appdashboard-panel-button-configuration>
 </div>

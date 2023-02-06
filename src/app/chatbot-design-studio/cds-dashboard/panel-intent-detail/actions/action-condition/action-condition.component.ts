@@ -48,7 +48,8 @@ export class ActionConditionComponent implements OnInit {
     return this.formBuilder.group({
       condition: ['', Validators.required],
       trueIntent: ['', Validators.required],
-      falseIntent: ['', Validators.required]
+      falseIntent: ['', Validators.required],
+      stopOnConditionMet: [ false, Validators.required]
     })
   }
 
@@ -56,7 +57,8 @@ export class ActionConditionComponent implements OnInit {
     this.actionConditionFormGroup.patchValue({
       condition: this.action.condition,
       trueIntent: this.action.trueIntent,
-      falseIntent: this.action.falseIntent
+      falseIntent: this.action.falseIntent,
+      stopOnConditionMet: this.action.stopOnConditionMet
     })
   }
 

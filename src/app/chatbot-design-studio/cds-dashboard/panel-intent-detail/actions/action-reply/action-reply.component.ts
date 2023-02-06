@@ -182,7 +182,7 @@ export class ActionReplyComponent implements OnInit {
   onAddNewResponse(element){
     console.log('onAddNewResponse:: ', element);
     try {
-      let message = new MessageWithWait(element.message.type, element.message.text, 0);
+      let message = new MessageWithWait(element.message.type, element.message.text, 500);
       if(element.message.attributes){
         message.attributes = element.message.attributes;
       }
@@ -198,19 +198,6 @@ export class ActionReplyComponent implements OnInit {
   }
 
 
-  // /** */
-  // private checkIntentName(): boolean {
-  //   //setTimeout(() => {
-  //     if (!this.intentName || this.intentName.length === 0){
-  //       //this.intentNameResult = false;
-  //       return false; 
-  //     } else {
-  //       this.intent.intent_display_name = this.intentName;
-  //       //this.intentNameResult = true;
-  //       return true;
-  //     }
-  //   //}, 300);
-  // }
 
 
   // EVENT FUNCTIONS //
@@ -265,6 +252,7 @@ export class ActionReplyComponent implements OnInit {
 
   /**onChangeTextareaReplyElement */
   onChangeTextareaReplyElement(){
+    console.log('onChangeTextareaReplyElement ************', this.arrayMessagesWithWait);
     this.generateCommandsWithWaitOfElements();
   }
 
@@ -354,6 +342,11 @@ private createNewButton(){
   onCloseButtonPanel() {
     console.log('onCloseButtonPanel :: ');
     this.openCardButton = false;
+  }
+
+  onFocusOutEvent(event){
+    // console.log('onFocusOutEvent ::::::: ', event);
+    // this.onCloseButtonPanel()
   }
 
 

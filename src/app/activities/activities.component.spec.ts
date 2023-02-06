@@ -2,7 +2,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivitiesComponent } from './activities.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { MyDatePickerModule } from 'mydatepicker';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import { AuthService } from '../core/auth.service';
@@ -31,7 +30,6 @@ describe('ActivitiesComponent', () => {
       // schemas: [NO_ERRORS_SCHEMA],
       imports: [
         TranslateModule.forRoot(),
-        MyDatePickerModule,
         RouterTestingModule,
         HttpClientModule,
         FormsModule,

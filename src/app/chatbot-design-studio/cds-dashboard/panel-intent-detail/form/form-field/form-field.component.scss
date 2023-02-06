@@ -1,3 +1,5 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
 /** LOCAL COLORS **/
 $color-withe: #ffffff;
 $color-blue: #3ea9f5;
@@ -118,4 +120,8 @@ $color-text-box: #566787;
 
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cds-edit-field-icon {
+   color: $light-blue;
 }

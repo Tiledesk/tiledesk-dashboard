@@ -10,6 +10,7 @@ import { Intent } from '../../../models/intent-model';
 })
 export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   @Output() saveIntent = new EventEmitter();
+  // @Output() changeIntentName = new EventEmitter();
   @Input() intentSelected: Intent;
   @Input() showSpinner: boolean;
   @Input() listOfIntents: Intent[];
@@ -41,12 +42,12 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
 
     const untitledIntents = this.listOfIntents.filter((el) => {
-      return el.intent_display_name.indexOf('untitled_intent') > -1;
+      return el.intent_display_name.indexOf('untitled_block') > -1;
     });
 
     console.log("[PANEL-INTENT-HEADER] OnChanges untitledIntents: ", untitledIntents)
     if (this.intentSelected.intent_display_name === undefined && untitledIntents.length === 0) {
-      this.intentSelected.intent_display_name = 'untitled_intent_1';
+      this.intentSelected.intent_display_name = 'untitled_block_1';
       this.saveIntent.emit(this.intentSelected);
       // this.listOfIntents.push(this.intentSelected) 
     } else if (this.intentSelected.intent_display_name === undefined && untitledIntents.length > 0) {
@@ -59,7 +60,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
       console.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentNumb: ", lastUntitledIntentNumb)
       const nextUntitledIntentNumb = lastUntitledIntentNumb + 1
       console.log("[PANEL-INTENT-HEADER] OnChanges nextUntitledIntentNumb: ", nextUntitledIntentNumb)
-      this.intentSelected.intent_display_name = 'untitled_intent_'+ nextUntitledIntentNumb;
+      this.intentSelected.intent_display_name = 'untitled_block_'+ nextUntitledIntentNumb;
       this.saveIntent.emit(this.intentSelected);
       // this.listOfIntents.push(this.intentSelected) 
     }
@@ -97,6 +98,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   // EVENT FUNCTIONS //
   onChangeIntentName(name: string) {
+    // this.changeIntentName.emit(name)
     console.log('[PANEL-INTENT-HEADER] onChangeIntentName name', name);
     console.log('[PANEL-INTENT-HEADER] onChangeIntentName this.intentSelected.intent_display_name ', this.intentSelected.intent_display_name);
     if (name !== this.intentSelected.intent_display_name) {

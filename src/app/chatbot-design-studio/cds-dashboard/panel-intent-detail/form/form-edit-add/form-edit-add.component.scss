@@ -1,3 +1,5 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
 .tilebot-add-edit-form {
     height: auto;
     max-height: 0;
@@ -36,7 +38,7 @@
     }
 
     #mat-expansion-panel-header-1 > span.mat-expansion-indicator:after  {
-        color: #8ab4f8;
+        color: $light-blue;
     }
 
     .input-wrapper {
@@ -243,4 +245,8 @@ input.form-control {
     font-size: 15px !important;
     color: #aaa !important;
     left: 6px !important;
+}
+
+.validation-field-title {
+color: $light-blue;
 }

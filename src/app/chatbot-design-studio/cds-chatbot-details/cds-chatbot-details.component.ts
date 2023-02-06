@@ -14,6 +14,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { Project } from 'app/models/project-model';
 import { FaqService } from 'app/services/faq.service';
 import { BotsBaseComponent } from 'app/bots/bots-base/bots-base.component';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 const swal = require('sweetalert');
 
 @Component({
@@ -100,6 +101,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     private translate: TranslateService,
     private notify: NotifyService,
     private faqService: FaqService,
+    private sanitizer: DomSanitizer
   ) { super(); }
 
   ngOnInit(): void {
@@ -449,11 +451,11 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     this.timeStamp = (new Date()).getTime();
   }
 
-  getBotProfileImage() {
+  getBotProfileImage(): SafeUrl {
     if (this.timeStamp) {
-      return this.botProfileImageurl + '&' + this.timeStamp;
+      return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl + '&' + this.timeStamp);
     }
-    return this.botProfileImageurl
+    return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl)
   }
 
   editBot() {
@@ -468,6 +470,8 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
         console.log('[CDS-CHATBOT-DTLS] EDIT BOT - FAQ KB UPDATED ', faqKb);
         if (faqKb) {
           this.selectedChatbot.name = faqKb['name']
+          this.faqKb_description = faqKb['description']
+          this.selectedChatbot.description = faqKb['description']
         }
       }, (error) => {
         console.error('[CDS-CHATBOT-DTLS] EDIT BOT -  ERROR ', error);
@@ -566,8 +570,8 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   // Export chatbot to JSON
   // -------------------------------------------------------------------------------------- 
   exportChatbotToJSON() {
-    const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
-    exportFaqToJsonBtnEl.blur();
+    // const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
+    // exportFaqToJsonBtnEl.blur();
     this.faqService.exportChatbotToJSON(this.id_faq_kb).subscribe((faq: any) => {
       // console.log('[TILEBOT] - EXPORT CHATBOT TO JSON - FAQS', faq)
       // console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)

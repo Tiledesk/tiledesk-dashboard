@@ -1,19 +1,25 @@
-<div class="content">
+<cds-action-description 
+    [actionType]="'ASSIGN_VARIABLE'"
+    [actionSelected]="action">
+</cds-action-description>
 
-    <div class="text-editor-wrapper">
-        <div class="field-box">
-            <label class="title-label">Expression:</label>
-            <cds-text id="text-condition"
-                [control]="actionAssignFormGroup.controls['expression']">
-            </cds-text>
-        </div>
-    </div>
+<div class="content">
 
     <div class="text-editor-wrapper">
         <div class="field-box">
             <label class="title-label">Assign to:</label>
             <cds-text id="text-condition"
-                [control]="actionAssignFormGroup.controls['assignTo']">
+                [control]="actionAssignFormGroup.controls['assignTo']"
+                [autocompleteOptions]="variables?variables:null ">
+            </cds-text>
+        </div>
+    </div>
+    
+    <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">Value:</label>
+            <cds-text id="text-condition"
+                [control]="actionAssignFormGroup.controls['expression']">
             </cds-text>
         </div>
     </div>

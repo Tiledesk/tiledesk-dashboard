@@ -45,9 +45,11 @@ $padding: 10px;
     position: relative;
     display: inline-flex;
     vertical-align: top;
+    flex-direction: column;
     width: calc(100% - 100px);
     max-height: 100%;
-    height: calc(100vh - 130px);
+    // height: calc(100vh - 145px);
+    max-height: calc(100vh - 145px);;
     overflow: hidden;
     border-radius: 0.6em;
     background-color: rgb($bg-color-card-rgb);
@@ -186,3 +188,12 @@ $padding: 10px;
         display: block;
     }
 }
+
+// cds-action-description {
+//     padding: 10px 0;
+//     margin-left: 10px;
+//     // margin-right: 30px;
+//     & ::ng-deep .action_welcome{
+//         margin-bottom: 0px;
+//     }
+// }

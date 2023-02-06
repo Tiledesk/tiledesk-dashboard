@@ -1,3 +1,5 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
 .cds-ss-main-content {
     display: flex;
     width: 100%;
@@ -28,8 +30,8 @@
 }
 
 #cds-ss-add-intent-btn {
-    background: #8ab4f8 !important;
-    color: #202124 !important;
+    background: $light-blue !important;
+    color: $light-black !important;
     box-shadow: none !important;
     font-weight: 500 !important;
     font-family: "Poppins", "Roboto", "Arial", sans-serif !important;

@@ -5,6 +5,7 @@ import { FaqKbService } from '../../services/faq-kb.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TemplateDetailComponent } from './template-detail/template-detail.component';
 import { Router } from '@angular/router';
+import { AppConfigService } from 'app/services/app-config.service';
 @Component({
   selector: 'appdashboard-templates',
   templateUrl: './templates.component.html',
@@ -37,12 +38,20 @@ export class TemplatesComponent implements OnInit {
   myChatbotOtherCount: number;
   customerSatisfactionBotsCount: number;
   increaseSalesBotsCount: number;
+  COMMUNITY_TEMPLATE: boolean = false;
+  CERTIFIED_TEMPLATE: boolean = false;
+
+  storageBucket: string;
+  baseUrl: string;
+  
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
   constructor(
     private auth: AuthService,
     private faqKbService: FaqKbService,
     private logger: LoggerService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    public appConfigService: AppConfigService,
   ) { }
 
 
@@ -54,6 +63,36 @@ export class TemplatesComponent implements OnInit {
     this.getCurrentProject()
     // this.getAllFaqKbByProjectId();
     this.getFaqKbByProjectId()
+    this.getRoutes();
+    this.getProfileImageStorage();
+  }
+  getProfileImageStorage() {
+  if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+    this.UPLOAD_ENGINE_IS_FIREBASE = true;
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    this.logger.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
+  } else {
+    this.UPLOAD_ENGINE_IS_FIREBASE = false;
+    this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+    this.logger.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.baseUrl, 'usecase native')
+  }
+}
+
+  getRoutes() {
+    this.route = this.router.url
+    if (this.route.indexOf('bots/templates/community') !== -1) {
+      this.COMMUNITY_TEMPLATE = true
+      this.CERTIFIED_TEMPLATE = false
+      console.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
+      console.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ',  this.CERTIFIED_TEMPLATE)
+    } else if (this.route.indexOf('bots/templates/all') !== -1) {
+      this.CERTIFIED_TEMPLATE = true
+      this.COMMUNITY_TEMPLATE = false
+      console.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ',  this.CERTIFIED_TEMPLATE)
+      console.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
+    }
   }
 
 
@@ -83,6 +122,7 @@ export class TemplatesComponent implements OnInit {
   }
 
   openDialog(template) {
+    console.log('openDialog')
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
@@ -152,7 +192,7 @@ export class TemplatesComponent implements OnInit {
 
         let stripHere = 115;
         this.communityTemplates.forEach(communityTemplate => {
-          console.log('[BOTS-TEMPLATES] communityTemplate', communityTemplate);
+          // console.log('[BOTS-TEMPLATES] communityTemplate', communityTemplate);
           if (communityTemplate['description']) {
             communityTemplate['shortDescription'] = communityTemplate['description'].substring(0, stripHere) + '...';
           }
@@ -186,9 +226,9 @@ export class TemplatesComponent implements OnInit {
 
       if (res) {
         this.certfifiedTemplates = res
-        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
+        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
 
-        // this.doShortDescription(this.certfifiedTemplates)
+        this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res
         // console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES', this.templates);
         // this.allTemplatesCount = this.templates.length;

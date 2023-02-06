@@ -536,7 +536,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.newBot_Id + "/" + bot_type]);
       } else if (this.botType === 'tilebot') {
         bot_type = 'tilebot'
-        this.router.navigate(['project/' + this.project._id + '/tilebot/intents/' + this.newBot_Id + "/" + bot_type]);
+        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/' + this.newBot_Id + "/" + bot_type]);
+        this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
+      
       } else {
         bot_type = this.botType;
         this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);

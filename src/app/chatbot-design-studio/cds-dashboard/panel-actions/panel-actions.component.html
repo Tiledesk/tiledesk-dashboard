@@ -1,4 +1,4 @@
-<div [ngClass]="{'actions-drawer-active': isOpenActionDrawer}" class="actions-drawer">
+<div class="actions-drawer" #panel_actions_div id="panel_actions_div" (focusout)="onFocusOut($event)">
   <div class="actions-drawer-close-btn-wpr">
     <button type="button" size="35" aria-label="Close" class="actions-drawer-close-btn" (click)="closeActionsDrawer()">
       <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"
@@ -28,10 +28,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.REPLY)">
-              <img src="assets/cds/images/actions/reply.svg" title="Reply">
+              <img [src]="ACTIONS_LIST['REPLY'].src" [title]="ACTIONS_LIST['REPLY'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Reply </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['REPLY'].name}}</div>
         </div>
       </div>
 
@@ -40,10 +40,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CONDITION)">
-              <img src="assets/cds/images/actions/condition.svg" title="Condition">
+              <img [src]="ACTIONS_LIST['CONDITION'].src" [title]="ACTIONS_LIST['CONDITION'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Condition </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['CONDITION'].name}}</div>
         </div>
       </div>
     </div>
@@ -56,10 +56,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.INTENT)">
-              <img src="assets/cds/images/actions/connect_intent.svg" title="Connect intent">
+              <img [src]="ACTIONS_LIST['INTENT'].src" [title]="ACTIONS_LIST['INTENT'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Connect Intent </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['INTENT'].name}}</div>
         </div>
       </div>
 
@@ -68,10 +68,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.AGENT)">
-              <img src="assets/cds/images/actions/agent_handoff.svg" title="Agent Handoff">
+              <img [src]="ACTIONS_LIST['AGENT'].src" [title]="ACTIONS_LIST['AGENT'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Agent Handoff </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['AGENT'].name}}</div>
         </div>
       </div>
     </div>
@@ -84,10 +84,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.OPEN_HOURS)">
-              <img src="assets/cds/images/actions/open_hours.svg" title="If open hours">
+              <img [src]="ACTIONS_LIST['OPEN_HOURS'].src" [title]="ACTIONS_LIST['OPEN_HOURS'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Operating Hours </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['OPEN_HOURS'].name}}</div>
         </div>
       </div>
 
@@ -95,10 +95,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CHANGE_DEPARTMENT)">
-              <img src="assets/cds/images/actions/change_department.svg" title="Change department">
+              <img [src]="ACTIONS_LIST['CHANGE_DEPARTMENT'].src" [title]="ACTIONS_LIST['CHANGE_DEPARTMENT'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Change department </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['CHANGE_DEPARTMENT'].name}}</div>
         </div>
       </div>
 
@@ -113,10 +113,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ASSIGN_VARIABLE)">
-              <img src="assets/cds/images/actions/assign_var.svg" title="Assign var">
+              <img [src]="ACTIONS_LIST['ASSIGN_VARIABLE'].src" [title]="ACTIONS_LIST['ASSIGN_VARIABLE'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Assign var </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['ASSIGN_VARIABLE'].name}}</div>
         </div>
       </div>
 
@@ -124,10 +124,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.DELETE_VARIABLE)">
-              <img src="assets/cds/images/actions/delete_var.svg" title="Delete var">
+              <img [src]="ACTIONS_LIST['DELETE_VARIABLE'].src" [title]="ACTIONS_LIST['DELETE_VARIABLE'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Delete var </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['DELETE_VARIABLE'].name}}</div>
         </div>
       </div>
 
@@ -144,10 +144,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.HIDE_MESSSAGE)">
-              <img src="assets/cds/images/actions/hidden_message.svg" title="Hidden message">
+              <img [src]="ACTIONS_LIST['HIDE_MESSSAGE'].src" [title]="ACTIONS_LIST['HIDE_MESSSAGE'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Hidden message </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['HIDE_MESSSAGE'].name}}</div>
         </div>
       </div>
 
@@ -156,10 +156,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.EMAIL)">
-              <img src="assets/cds/images/actions/send_email.svg" title="Send email">
+              <img [src]="ACTIONS_LIST['EMAIL'].src" [title]="ACTIONS_LIST['EMAIL'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Send email </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['EMAIL'].name}}</div>
         </div>
       </div>
     </div>
@@ -172,10 +172,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ONLINE_AGENTS)">
-              <img src="assets/cds/images/actions/online_agents.svg" title="Online agents">
+              <img [src]="ACTIONS_LIST['ONLINE_AGENTS'].src" [title]="ACTIONS_LIST['ONLINE_AGENTS'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Online Agent </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['ONLINE_AGENTS'].name}}</div>
         </div>
       </div>
 
@@ -183,10 +183,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CLOSE)">
-              <img src="assets/cds/images/actions/close.svg" title="Close">
+              <img [src]="ACTIONS_LIST['CLOSE'].src" [title]="ACTIONS_LIST['CLOSE'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Close </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['CLOSE'].name}}</div>
         </div>
       </div>
     </div>
@@ -201,10 +201,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.WAIT)">
-              <img src="assets/cds/images/actions/wait.svg" title="Wait">
+              <img [src]="ACTIONS_LIST['WAIT'].src" [title]="ACTIONS_LIST['WAIT'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Wait </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['WAIT'].name}}</div>
         </div>
       </div>
 
@@ -212,10 +212,10 @@
         <div class="action-box">
           <div class="action-btn-icon">
             <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.REPLACE_BOT)">
-              <img src="assets/cds/images/actions/replace_bot.svg" title="Replace bot">
+              <img [src]="ACTIONS_LIST['REPLACE_BOT'].src" [title]="ACTIONS_LIST['REPLACE_BOT'].name">
             </button>
           </div>
-          <div class="action-btn-text"> Replace bot </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['REPLACE_BOT'].name}}</div>
         </div>
       </div>
 

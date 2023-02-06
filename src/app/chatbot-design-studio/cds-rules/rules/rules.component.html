@@ -1,21 +1,20 @@
 <div class="rules-container">
-    <div class="new-rules-box" [style.visibility]="showWelcome? 'hidden': 'visible'">
-        <div class="new-rules-button" (click)="addNew()">
-            <span class="material-icons icon plus-icon">add</span>
-            <p class="button-text">Add</p>
+    <div class="new-rules-box" [style.display]="showWelcome? 'none': 'block'">
+        <div class="button-wrp">
+            <button id="cds-new-rules-button" type="button" class="btn btn-primary cds-blue-button" (click)="addNew()"> 
+                <span class="material-icons icon plus-icon">add</span>
+                Add
+            </button>
         </div>
     </div>
 
     <div class="welcome_message_wrp" *ngIf="showWelcome">
-            <div class="welcome_title">You have no rules set for this Chatbot</div>
-            <div class="welcome_subtitle">Rules allow your Chatbot to proactively write to your visitor based on specific events (i.e. visitor lands on a specific page)</div>
-            <div class="button-wrp">
-                <button id="cds-new-rules-button" type="button" class="btn btn-primary" (click)="addNew()"> 
-                    <span class="material-icons icon plus-icon">add</span>
-                    Add
-                </button>
-            </div>
+        <cds-splash-screen *ngIf=!intentSelected
+                [text]="'You have no rules set for this Chatbot <br><br> Rules allow your Chatbot to proactively write to your visitor based on specific events (i.e. visitor lands on a specific page)'"
+                (onClickBtn)="addNew($event)" > 
+        </cds-splash-screen>
     </div>
+
     <cds-rules-add *ngIf="addClicked"
         [listOfIntents]="listOfIntents"
         [selectedChatbot]="selectedChatbot"

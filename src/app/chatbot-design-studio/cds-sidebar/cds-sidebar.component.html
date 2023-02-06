@@ -8,7 +8,7 @@
         <!-- ------------------------------------------------------- -->
         <ng-container *ngIf="USER_ROLE !== 'agent'">
             <li [ngClass]="{'active-item': INTENTS_ROUTE_IS_ACTIVE}" (click)="goTo('cds-sb-intents')"
-                matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Intents" #tooltip="matTooltip"
+                matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Blocks" #tooltip="matTooltip"
                 matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="extendedWidth">
                 <a>
                     <i *ngIf="extendedWidth === true || extendedWidth === false"
@@ -16,7 +16,7 @@
                         textsms
                     </i>
                     <p *ngIf="extendedWidth === true" class="custom_paragraph">
-                        Intents
+                        Blocks
                     </p>
                 </a>
             </li>
@@ -130,7 +130,7 @@
 
     <div id="cds-sb-intents" name="intents" class="section" (click)="goTo('cds-sb-intents')"
         matTooltipClass="cds-mat-tooltip" 
-        matTooltip="Intents" 
+        matTooltip="Blocks" 
         #tooltip="matTooltip"
         matTooltipPosition='right' 
         matTooltipHideDelay="100" 
@@ -139,7 +139,7 @@
             sms
         </i>
         <p *ngIf="extendedWidth === true" class="item-label">
-            Intents
+            Blocks
         </p>
     </div>
 

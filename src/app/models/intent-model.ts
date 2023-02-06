@@ -26,12 +26,15 @@ export class Intent {
 
 export class Action {
     _tdActionType: string;
+    _tdActionTitle: string = '';
+
 }
 
 export class ActionCondition extends Action {
     condition: string;
     trueIntent: string;
     falseIntent: string;
+    stopOnConditionMet: boolean;
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.CONDITION;

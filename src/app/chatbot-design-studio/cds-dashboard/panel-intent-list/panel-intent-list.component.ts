@@ -49,8 +49,9 @@ export class PanelIntentListComponent implements OnInit {
     console.log("[PANEL-INTENT-LIST] ngOnInit()")
     console.log("[PANEL-INTENT-LIST] - Selected chatbot ID: ", this.id_faq_kb);
     console.log("[PANEL-INTENT-LIST] changes: ", this.intent_id);
+    this.selectedIntent = null;
     this.getAllIntents(this.id_faq_kb).then((resp) => {
-      this.preselectIntent();
+      // this.preselectIntent();
     })
     this.onEventListener();
   }
@@ -71,7 +72,8 @@ export class PanelIntentListComponent implements OnInit {
         this.selectedIntent = this.filtered_intents.find(o => o.id == this.intent_id);
       }
       console.log("[PANEL-INTENT-LIST] selectedIntent: ", this.selectedIntent);
-      this.selectIntent(this.selectedIntent, index);
+      // this.selected_intent.emit(this.selectedIntent);
+      // this.selectIntent(this.selectedIntent, index);
     }
   }
 
@@ -93,7 +95,12 @@ export class PanelIntentListComponent implements OnInit {
       console.log("[PANEL-INTENT-LIST] ---> ON UPDATE INTENTS: ", intent);
       this.addBtnDisabled = false;
       this.getAllIntents(this.id_faq_kb).then((resp) => {
+<<<<<<< HEAD
         this.preselectIntent();
+=======
+        // this.preselectIntent();
+        this.reselectselectedIntent()
+>>>>>>> 71189241df8482cdf4c5d2b3a72a804843cb6739
       })
       // const index = this.filtered_intents.findIndex((e) => e.id === intent.id);
       // console.log("[PANEL-INTENT-LIST] onNewIntentListener intent index : ", index);
@@ -248,7 +255,7 @@ export class PanelIntentListComponent implements OnInit {
         console.log("[TEST-PANEL-INTENT-LIST] navigate");
         this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.selectedIntent.id], { replaceUrl: true })
       } else {
-        this.selected_intent.emit(this.selectedIntent);
+        // this.selected_intent.emit(this.selectedIntent);
       }
 
     }, 200);
@@ -288,7 +295,7 @@ export class PanelIntentListComponent implements OnInit {
           // this.selectedIntent = null
           console.log('[PANEL-INTENT-LIST] delete  this.selectedIntent ', this.selectedIntent);
           console.log('[PANEL-INTENT-LIST] delete  intent ', intent);
-          //this.reselectselectedIntent()
+          this.reselectselectedIntent()
           if (this.selectedIntent.id === intent.id) {
             this.deleteSelectedIntent.emit(true);
           }
@@ -301,7 +308,7 @@ export class PanelIntentListComponent implements OnInit {
           } else {
             console.log("--> test - si sta eliminando un intent non selezionato")
             this.getAllIntents(this.id_faq_kb).then((length) => {
-              this.preselectIntent()
+              // this.preselectIntent()
               // let index = this.intents.indexOf(this.intents.find(o => o.id == this.selectedIntent.id))
               // console.log("after creating intent --> index: ", index);
               // console.log("after creating intent --> intent: ", this.selectedIntent);
@@ -320,19 +327,19 @@ export class PanelIntentListComponent implements OnInit {
     })
   }
 
-  // reselectselectedIntent() {
-  //   setTimeout(() => {
-  //     const index = this.filtered_intents.findIndex((e) => e.id === this.selectedIntent.id);
-  //     console.log('[PANEL-INTENT-LIST] delete  selectedIntent index ', index);
-  //     const element = document.getElementById('intent_' + index);
-  //     console.log("[PANEL-INTENT-LIST] delete: ", element);
-  //     if (element) {
-  //       console.log("[PANEL-INTENT-LIST] delete here yes");
-  //       element.classList.add("active")
-  //       //element.scrollIntoView();
-  //     }
-  //   }, 400);
-  // }
+  reselectselectedIntent() {
+    setTimeout(() => {
+      const index = this.filtered_intents.findIndex((e) => e.id === this.selectedIntent.id);
+      console.log('[PANEL-INTENT-LIST] delete  selectedIntent index ', index);
+      const element = document.getElementById('intent_' + index);
+      console.log("[PANEL-INTENT-LIST] delete: ", element);
+      if (element && index !== -1) {
+        console.log("[PANEL-INTENT-LIST] delete here yes");
+        element.classList.add("active")
+        //element.scrollIntoView();
+      }
+    }, 500);
+  }
 
 
 

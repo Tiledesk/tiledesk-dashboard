@@ -1,5 +1,6 @@
+import { CDSTextComponent } from './../../../../../cds-base-element/text/text.component';
 
-import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Button } from 'app/models/intent-model';
 
 import { TYPE_BUTTON, TYPE_URL, classCardButtonNoClose } from '../../../../../utils';
@@ -11,11 +12,12 @@ import { TYPE_BUTTON, TYPE_URL, classCardButtonNoClose } from '../../../../../ut
 })
 export class PanelButtonConfigurationComponent implements OnInit {
 
-  @Output() saveButton = new EventEmitter();
-  @Output() closeButtonPanel = new EventEmitter();
+  @ViewChild('input_title', {static: true}) input_topic: CDSTextComponent;
 
   @Input() listOfActions: Array<string>;
   @Input() button: Button;
+  @Output() saveButton = new EventEmitter();
+  @Output() closeButtonPanel = new EventEmitter();
 
   buttonLabelResult: boolean;
   buttonLabel: string;
@@ -87,11 +89,12 @@ export class PanelButtonConfigurationComponent implements OnInit {
     } catch (error) {
       // error
     }
-
     console.log('PanelButtonConfigurationComponent', this.button, this.buttonTypes);
-    
   }
 
+  ngAfterViewInit(){
+    this.input_topic.myInput.nativeElement.focus()
+  }
 
   // PRIVATE FUNCTIONS //  
   /** */

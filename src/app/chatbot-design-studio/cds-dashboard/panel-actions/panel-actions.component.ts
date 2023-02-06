@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ACTIONS_LIST } from './../../utils';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 
 import { TYPE_ACTION, TYPE_COMMAND } from '../../utils';
 import { ActionCondition, ActionAgent, ActionClose, 
@@ -15,25 +16,33 @@ import { ActionCondition, ActionAgent, ActionClose,
   styleUrls: ['./panel-actions.component.scss']
 })
 export class PanelActionsComponent implements OnInit, OnChanges {
-  @Input() isOpenActionDrawer: boolean;
+
+  @ViewChild('panel_actions_div') panel_actions_div: ElementRef;
+
+  // @Input() isOpenActionDrawer: boolean;
   @Input() intentSelected: Intent
   @Output() openActionDrawer = new EventEmitter();
 
   TYPE_ACTION = TYPE_ACTION
-  
+  ACTIONS_LIST = ACTIONS_LIST
+
   constructor() { }
 
   ngOnInit(): void {
 
   }
 
+  ngAfterViewInit(){
+    console.log('focussss', this.panel_actions_div)
+    this.panel_actions_div.nativeElement.focus();
+  }
+
+  onFocusOut(event){
+    console.log('onFocusOut eventttttttt',event)
+  }
+
   ngOnChanges() {
 
-    if (this.isOpenActionDrawer === true) {
-      this.isOpenActionDrawer = true
-    } else if (this.isOpenActionDrawer === false) {
-      this.isOpenActionDrawer = false
-    }
 
     // console.log('[PANEL ACTION] isOpenActionDrawer ', this.isOpenActionDrawer)
     // console.log('[PANEL ACTION] intentSelected ', this.intentSelected)
@@ -47,8 +56,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   }
 
   closeActionsDrawer() {
-    this.isOpenActionDrawer = false
-    this.openActionDrawer.emit(this.isOpenActionDrawer);
+    this.openActionDrawer.emit(false);
   }
 
   actionSelected(typeAction: TYPE_ACTION) {
