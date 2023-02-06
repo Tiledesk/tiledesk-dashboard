@@ -271,7 +271,8 @@ export class PanelIntentListComponent implements OnInit {
   onDeleteButtonClicked(intent) {
     swal({
       title: this.translate.instant('AreYouSure'),
-      text: this.translate.instant('TheAnswerWillBeDeleted', { intent_name: intent.intent_display_name }),
+      text: "The intent " + intent.intent_display_name + " will be deleted",
+      // text: this.translate.instant('TheAnswerWillBeDeleted', { intent_name: intent.intent_display_name }),
       icon: "warning",
       buttons: ["Cancel", "Delete"],
       dangerMode: true,

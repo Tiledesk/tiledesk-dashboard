@@ -310,6 +310,7 @@ import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-
 import { InstallTemplateComponent } from './create-project-wizard/install-template/install-template.component';
 import { ChatbotDesignStudioModule } from './chatbot-design-studio/chatbot-design-studio.module';
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
+import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
 
 
 
@@ -546,7 +547,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     BotsSidebarComponent, 
     GetStartChatbotForkComponent, 
     InstallTemplateComponent, 
-    CreateChatbotComponent
+    CreateChatbotComponent,OnboardingWidgetComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

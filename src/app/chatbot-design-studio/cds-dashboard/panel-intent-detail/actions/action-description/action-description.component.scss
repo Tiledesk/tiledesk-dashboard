@@ -6,7 +6,8 @@
     align-items: flex-end;
     // gap: 10px;
     padding: 20px 30px;
-    background-color: rgba($color: #fff, $alpha: .22); //$light-gray;
+    background-color: $icon-color;
+    // background-color: rgba($color: #fff, $alpha: .22); //$light-gray;
     // margin-bottom: 30px;
     .action-title {
         display: flex;
@@ -15,13 +16,13 @@
         gap: 5px;
         img{
             // filter: brightness(0) saturate(100%) invert(84%) sepia(13%) saturate(5939%) hue-rotate(357deg) brightness(94%) contrast(97%);
-            filter: brightness(0) saturate(100%) invert(64%) sepia(10%) saturate(433%) hue-rotate(172deg) brightness(95%) contrast(95%);
+            // filter: brightness(0) saturate(100%) invert(64%) sepia(10%) saturate(433%) hue-rotate(172deg) brightness(95%) contrast(95%);
         }
     }
 
     .text-action {
         // color: $icon-color;
-        color: #919ead;
+        color: #fff;
         margin-bottom: 0px;
     }
 
@@ -53,6 +54,10 @@ cds-text ::ng-deep {
         line-height: 20px !important;
         font-size: 1em !important;
         padding: 2px 5px !important;
+
+        :hover{
+            border: 1px solid $icon-color-background !important;
+        }
 
     }
 }

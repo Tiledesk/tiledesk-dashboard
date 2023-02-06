@@ -1,3 +1,4 @@
+import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
 import { MapRequestComponent } from './map-request/map-request.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
@@ -173,6 +174,7 @@ const routes: Routes = [
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
   { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
  
+  { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] }, 
 
   { path: 'project/:projectid/configure-widget', component: ConfigureWidgetComponent, canActivate: [AuthGuard] }, // wizard step 2
   { path: 'project/:projectid/onboarding/:langcode/:langname', component: OnboardingComponent, canActivate: [AuthGuard] }, // wizard step 3
