@@ -1,5 +1,13 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
+
+$text-color: white;
+$background-color: transparent;
+$text-color-hover: $icon-color;
+$background-color-hover: $icon-color-background;
+$text-color-active: white;
+$background-color-active: $icon-color;
+
 .content {
     width: 100%;
     display: flex;
@@ -24,7 +32,7 @@
     padding: 10px 0px;
 
     .title {
-        color: white;
+        color: $text-color;
         font-weight: 500;
         font-size: 14px;
     }
@@ -41,26 +49,26 @@
 
         .plus-icon {
             font-size: 16px;
-            color: white;
+            color: $text-color;
         }
 
         .button-text {
             margin-bottom: 0px;
-            color: white;
+            color: $text-color;
         }
     }
 
     .new-intent-button:hover {
-        background-color: white;
+        background-color: $background-color-hover;
         //border: 1px solid white;
 
         .plus-icon {
             font-size: 16px;
-            color: #333;
+            color: $text-color
         }
 
         .button-text {
-            color: #333;
+            color: $text-color;
         }
     }
 }
@@ -106,7 +114,8 @@
         width: 100%;
         justify-content: space-between;
         align-items: center;
-        position: relative //GAB
+        position: relative; //GAB
+        margin: 2px 0px; //GAB
     }
 
     .item-box-default {
@@ -134,7 +143,7 @@
     }
 
     .intent-display-name {
-        color: white;
+        color: $text-color;
         font-weight: 500;
         margin-bottom: 0px;
         font-size: 14px;
@@ -188,7 +197,8 @@
 }
 
 .intent:hover {
-    background-color: #d2d2d2;
+    // background-color: #d2d2d2;
+    background-color: $background-color-hover;
 
     .delete-box {
         display: block;
@@ -200,13 +210,15 @@
     .delete-box:hover {
         .delete-icon {
             font-size: 20px;
-            color: $color-red-hex;
+            // color: $color-red-hex;
+            color: #fff;
             transition: 0.3s;
         }
     }
 
     .intent-display-name {
-        color: #333;
+        // color: #333;
+        color: #fff;
         font-weight: 500;
         margin-bottom: 0px;
         font-size: 14px;
@@ -215,45 +227,52 @@
 
     .icon-list {
         .icon {
-            color: #333;
+            // color: #333;
+            color: #8c989e;
         }
     }
 }
 
 .intent:active {
-    background-color: #d2d2d2;
-    border-right: solid 5px #0049bd;
-    border-right: solid 5px #3ea9f5;
+    // background-color: #d2d2d2;
+    // border-right: solid 5px #3ea9f5;
+    // border-radius: 6px 10px 10px 6px;
+
+    background-color: $background-color-active;
+    border-right: solid 5px $background-color-hover;
     border-radius: 6px 10px 10px 6px;
 
     .intent-display-name {
-        color: #333;
+        // color: #333;
+        color: $text-color-active;
         font-weight: 500;
         margin-bottom: 0px;
     }
 
     .icon-list {
         .icon {
-            color: #333;
+            // color: #333;
+            color: white;
         }
     }
 }
 
 .active {
-    background-color: #d2d2d2;
-    //border-right: solid 5px #0049bd;
-    border-right: solid 5px #3ea9f5;
+    background-color: $background-color-active !important;
+    border-right: solid 5px $background-color-hover;
     border-radius: 6px 10px 10px 6px;
 
     .intent-display-name {
-        color: #333;
+        // color: #333;
+        color: $text-color-active;
         font-weight: 500;
         margin-bottom: 0px;
     }
 
     .icon-list {
         .icon {
-            color: #333;
+            // color: #333;
+            color: $background-color-hover !important;
         }
     }
 }
