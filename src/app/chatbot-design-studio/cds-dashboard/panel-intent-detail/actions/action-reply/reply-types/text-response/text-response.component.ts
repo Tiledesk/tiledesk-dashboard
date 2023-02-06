@@ -16,7 +16,7 @@ export class TextResponseComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   
   @Output() changeDelayTimeReplyElement = new EventEmitter();
-  @Output() changeTextareaReplyElement = new EventEmitter();
+  @Output() changeReplyElement = new EventEmitter();
   
   @Output() deleteResponse = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
@@ -112,7 +112,7 @@ export class TextResponseComponent implements OnInit {
   onChangeTextarea(text:string) {
     this.response.text = text;
     setTimeout(() => {
-      this.changeTextareaReplyElement.emit();
+      this.changeReplyElement.emit();
     }, 500);
   }
 

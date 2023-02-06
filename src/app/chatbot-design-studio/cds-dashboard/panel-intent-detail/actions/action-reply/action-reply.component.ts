@@ -250,9 +250,9 @@ export class ActionReplyComponent implements OnInit {
     this.generateCommandsWithWaitOfElements();
   }
 
-  /**onChangeTextareaReplyElement */
-  onChangeTextareaReplyElement(){
-    console.log('onChangeTextareaReplyElement ************', this.arrayMessagesWithWait);
+  /**onChangeReplyElement */
+  onChangeReplyElement(){
+    console.log('onChangeReplyElement ************', this.arrayMessagesWithWait);
     this.generateCommandsWithWaitOfElements();
   }
 

@@ -37,7 +37,7 @@
                     (deleteResponse) = onDeleteResponse($event)
                     (openButtonPanel) = onOpenButtonPanel($event)
                     (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
-                    (changeTextareaReplyElement) = onChangeTextareaReplyElement()
+                    (changeReplyElement) = onChangeReplyElement()
                     ></appdashboard-text-response>
                 </div>
             </div>
@@ -64,8 +64,8 @@
                     (moveDownResponse) = onMoveDownResponse($event)
                     (deleteResponse) = onDeleteResponse($event)
                     (openButtonPanel) = onOpenButtonPanel($event)
-                    (change)=onChangeDelayTimeReplyElement()
-                    (changeTextareaReplyElement) = onChangeTextareaReplyElement()
+                    (changeDelayTimeReplyElement)=onChangeDelayTimeReplyElement()
+                    (changeReplyElement) = onChangeReplyElement()
                     ></appdashboard-image-response>
                 </div>
             </div>
@@ -88,12 +88,13 @@
                     <appdashboard-frame-response
                     [index] = i
                     [response] = message
+                    onChangeText
                     (moveUpResponse) = onMoveUpResponse($event)
                     (moveDownResponse) = onMoveDownResponse($event)
                     (deleteResponse) = onDeleteResponse($event)
                     (openButtonPanel) = onOpenButtonPanel($event)
                     (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
-                    (changeTextareaReplyElement) = onChangeTextareaReplyElement()
+                    (changeReplyElement) = onChangeReplyElement()
                     ></appdashboard-frame-response>
                 </div>
             </div>
