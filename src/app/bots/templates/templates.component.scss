@@ -21,6 +21,15 @@
     -webkit-box-align: center;
     align-items: center;
     margin-bottom: 20px;
+    padding: 0px 10px;
+}
+
+.template-page-title {
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 26px;
+    padding-left: 19px;
+
 }
 
 .button-row > :nth-child(1) {
@@ -783,6 +792,7 @@
     outline: none;
     min-height: 0;
     min-width: 0;
+    margin-right: 6px;
 }
 
 .cmnty-tmplt-header-left-author-wpr {

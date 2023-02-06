@@ -21,12 +21,18 @@
 
                 <div class="button-row">
                     <div></div>
+
                     <button type="button" class="btn btn-new btn-size-m btn--primary" (click)="createBlankTilebot()">
                         <span>Add from scratch</span>
                     </button>
                 </div>
 
                 <div class="page-content--wpr">
+                    <div class="template-page-title">
+                        <span *ngIf="COMMUNITY_TEMPLATE">
+                            Community
+                        </span>
+                    </div>
                     <loading-spinner *ngIf="showSpinner"></loading-spinner>
                     <div *ngIf="!showSpinner" class="page-content">
 
@@ -224,20 +230,36 @@
                                                                                     src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2724%27%20height=%2724%27/%3e"
                                                                                     style="display: block; max-width: 100%; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;">
                                                                             </span>
-                                                                            <img title="replitted" alt="replitted"
-                                                                                srcset="https://replit.com/cdn-cgi/image/width=32,quality=80,format=auto/https://storage.googleapis.com/replit/images/1656342806000_f6074b3fe0e31cc9c1f1b0b4edce70e8.jpeg 1x, https://replit.com/cdn-cgi/image/width=48,quality=80,format=auto/https://storage.googleapis.com/replit/images/1656342806000_f6074b3fe0e31cc9c1f1b0b4edce70e8.jpeg 2x"
-                                                                                src="https://replit.com/cdn-cgi/image/width=48,quality=80,format=auto/https://storage.googleapis.com/replit/images/1656342806000_f6074b3fe0e31cc9c1f1b0b4edce70e8.jpeg"
+                                                                            <!-- --------------------------------------------------- -->
+                                                                            <!-- USECASE uploadEngine Firebase -->
+                                                                            <!-- --------------------------------------------------- -->
+                                                                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                                                                                title="replitted" alt="replitted"
+                                                                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{template?.createdBy}}%2Fphoto.jpg?alt=media"
+                                                                                onerror="this.src='assets/img/no_image_user.png'"
                                                                                 decoding="async" data-nimg="intrinsic"
                                                                                 style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;">
+
+
+                                                                            <!----------------------------------------------------- -->
+                                                                            <!-- USECASE uploadEngine Native -->
+                                                                            <!-- --------------------------------------------------- -->
+                                                                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                                                                title="replitted" alt="replitted"
+                                                                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{template?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                                                                onerror="this.src='assets/img/no_image_user.png'"
+                                                                                decoding="async" data-nimg="intrinsic"
+                                                                                style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;">
+
                                                                         </span>
                                                                     </div>
-                                                                    <div
+                                                                    <!-- <div
                                                                         class="css-12zqyc0 cmnty-tmplt-header-left-author-avatar-name-wpr">
                                                                         <span
                                                                             class="css-o4584k cmnty-tmplt-header-left-author-avatar-name">
                                                                             Nicola Lanzilotto
                                                                         </span>
-                                                                    </div>
+                                                                    </div> -->
                                                                 </div>
                                                             </div>
                                                         </span>
@@ -245,8 +267,7 @@
                                                         <!-- <div data-focus-guard="true" tabindex="-1"
                                                             style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
                                                         </div> -->
-                                                        <span
-                                                            class="css-1e00qvh cmnty-tmplt-header-left-publication-date-dot">•</span>
+
                                                         <span
                                                             class="css-1drl345 cmnty-tmplt-header-left-publication-date-wpr">
                                                             Published
@@ -256,6 +277,18 @@
                                                     <span class="css-9w8l6j cmnty-tmplt-header-left-date-wpr">
                                                         <span class="css-1e00qvh cmnty-tmplt-header-left-date">
                                                             {{ template.createdAt | date: 'd/M/y'}}
+                                                        </span>
+                                                    </span>
+                                                    <span
+                                                        class="css-1e00qvh cmnty-tmplt-header-left-publication-date-dot">•</span>
+
+                                                    <span
+                                                        class="css-1drl345 cmnty-tmplt-header-left-publication-date-wpr">
+                                                        Updated
+                                                    </span>
+                                                    <span class="css-9w8l6j cmnty-tmplt-header-left-date-wpr">
+                                                        <span class="css-1e00qvh cmnty-tmplt-header-left-date">
+                                                            {{ template.updatedAt | date: 'd/M/y'}}
                                                         </span>
                                                     </span>
                                                 </div>
@@ -398,12 +431,12 @@
                                                             </div>
                                                             <div class="css-sa2iis cmnty-tmplt-card-footer-right-wpr">
                                                                 <div class="css-1p5njkb cmnty-tmplt-card-footer-right">
-                                                                    <div class="css-1pwjctj cmnty-tmplt-content">
-                                                                        <div class="css-1limyoz cmnty-tmplt-tag-wpr">
-                                                                            <div class="css-14z49fr cmnty-tmplt-tag"  *ngIf="template.tags">
-                                                                                <div class="css-53dz3e cmnty-tmplt-tag-content-wpr">
-                                                                                    <div class="css-wnpbuq cmnty-tmplt-tag-content"
-                                                                                        *ngFor="let tag of template.tags">
+                                                                    <div class="css-1pwjctj cmnty-tmplt-content"  *ngIf="template.tags">
+                                                                        <div class="css-1limyoz cmnty-tmplt-tag-wpr" *ngFor="let tag of template.tags">
+                                                                            <div class="css-14z49fr cmnty-tmplt-tag">
+                                                                                <div
+                                                                                    class="css-53dz3e cmnty-tmplt-tag-content-wpr">
+                                                                                    <div class="css-wnpbuq cmnty-tmplt-tag-content">
                                                                                         <span
                                                                                             class="css-1c3y4f8 cmnty-tmplt-tag-hash">
                                                                                             #
@@ -416,8 +449,8 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                  
-                                                            
+
+
                                                                         <!-- <span class="css-1c3y4f8">+2</span> -->
                                                                     </div>
                                                                 </div>

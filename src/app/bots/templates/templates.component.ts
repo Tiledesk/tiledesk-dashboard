@@ -43,6 +43,7 @@ export class TemplatesComponent implements OnInit {
 
   storageBucket: string;
   baseUrl: string;
+  
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   constructor(
     private auth: AuthService,
