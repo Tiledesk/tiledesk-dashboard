@@ -1,5 +1,22 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc28
+- Restyles signing and signup page
+- Skips chatbot onboarding
+- Changes the shortcut buttons available in the home page
+- Adds community templates details component (in progress)
+- Adds: tipsText in action-description only for action-reply for 'start' intent
+- Adds: video tutorial on cds-intents and cds-rules sections in cds-slash-screen element
+- Changes: action-wait and action-change-department UI
+- Changes: width and height svg action
+- Changes: removed margin for cds-textarea base element
+- Changes: 'intent' with 'block'
+- Fixes the bug: action department not showed
+- Fixes the bug: action 'Hidden message' was over two lines
+- Fixes the bug: action-detail show only the first 10 actions in list
+- Fixes the bug: video disappear after save current intent
+- Fixes the bug: images has height and width with 0 value
+
 ### 2.3.22-rc27
 - Improvements and bug fixing
 
