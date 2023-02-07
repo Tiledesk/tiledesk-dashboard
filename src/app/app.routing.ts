@@ -133,6 +133,8 @@ import { ContactsComponent } from './contacts/contacts.component';
 // import { ContactsModule } from './contacts/contacts.module';
 import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component';
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
+import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
+
 
 
 const routes: Routes = [
@@ -152,6 +154,8 @@ const routes: Routes = [
   { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
 
+
+  { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
 
   // PROJECTS IS THE NEW HOME
   { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
@@ -223,7 +227,8 @@ const routes: Routes = [
 
   { path: 'userprofile', component: UserProfileComponent },
   // , canActivate: [AuthGuard]
-
+ 
+  
 
   /*** WEBSOCKET ***/
   /**
