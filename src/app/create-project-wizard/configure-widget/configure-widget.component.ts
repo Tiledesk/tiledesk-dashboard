@@ -490,8 +490,8 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     this.saveWidgetApparance();
 
 
-    // this.goToOnboardingInstallScript()
-    this.goToOnboardingChatbotSetUp()
+    this.goToOnboardingInstallScript()
+    // this.goToOnboardingChatbotSetUp()
 
     // console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangCode);
     // console.log('[WIZARD - CONFIGURE-WIDGET] ***** CONTINUE  this.temp_SelectedLangCode', this.temp_SelectedLangName)
