@@ -32,7 +32,7 @@ export class ImageUploadComponent implements OnInit {
     try {
       if(this.metadata.src){
         this.isImageSvg = this.imageUrlIsSvgFormat(this.metadata.src);
-        this.setImageSize();
+        // this.setImageSize(this.metadata.src);
       }
     } catch (error) {
       console.log("error: ", error);
@@ -76,15 +76,14 @@ export class ImageUploadComponent implements OnInit {
     } else if (uploadedFiles.type.startsWith('image') && !uploadedFiles.type.includes('svg')) {
       this.isImageSvg = false;
     }
-    this.uploadImageNativeService.uploadAttachment_Native(uploadedFiles)
-    .then(downloadURL => {
+    this.uploadImageNativeService.uploadAttachment_Native(uploadedFiles).then(downloadURL => {
       if (downloadURL) {
         this.existAnAttacment = true
         uploadedFiles['downloadURL'] = downloadURL;
       }
       this.metadata.src = downloadURL;
       this.existAnAttacment = true
-      this.setImageSize();
+      this.setImageSize(uploadedFiles);
       // this.logger.log(`[WS-REQUESTS-MSGS] - upload native metadata `, this.metadata);
       // this.fileUpload.nativeElement.value = '';
     }).catch(error => {
@@ -96,19 +95,32 @@ export class ImageUploadComponent implements OnInit {
   // EVENT FUNCTIONS //
 
   /** */
-  private setImageSize(){
-    setTimeout(() => {
-      try {
-        var width = this.myIdentifier.nativeElement.offsetWidth;
-        var height = this.myIdentifier.nativeElement.offsetHeight;
-        this.myIdentifier.nativeElement.setAttribute("width", width);
-        this.myIdentifier.nativeElement.setAttribute("height", height);
-        this.metadata.width = width;
-        this.metadata.height = height;
-      } catch (error) {
-        console.log('myIdentifier:' + error);
-      }
-    }, 0);
+  private setImageSize(uploadedFiles){
+    let fileReader = new FileReader();
+    fileReader.readAsDataURL(uploadedFiles)
+    fileReader.onload = () => { // when file has loaded
+      var img = new Image();
+      img.src = fileReader.result.toString()
+      img.onload = () => {
+          console.log('imageeee', img.width, img.height)
+          this.metadata.width = img.width;
+          this.metadata.height = img.height;
+          this.metadata.name = uploadedFiles.name
+          this.metadata.type = uploadedFiles.type
+      };
+    };
+    // setTimeout(() => {
+    //   try {
+    //     var width = this.myIdentifier.nativeElement.offsetWidth;
+    //     var height = this.myIdentifier.nativeElement.offsetHeight;
+    //     this.myIdentifier.nativeElement.setAttribute("width", width);
+    //     this.myIdentifier.nativeElement.setAttribute("height", height);
+    //     // this.metadata.width = width;
+    //     // this.metadata.height = height;
+    //   } catch (error) {
+    //     console.log('myIdentifier:' + error);
+    //   }
+    // }, 0);
   }
 
 

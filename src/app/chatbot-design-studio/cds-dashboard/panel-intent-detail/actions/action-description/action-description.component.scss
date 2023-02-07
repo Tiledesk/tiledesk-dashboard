@@ -1,6 +1,25 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
+.action-tip_wpr{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    font-size: 10px;
+    .material-icons{
+        color: #fff;
+        margin: 0px 5px;
+        font-size: 18px;
+    }
+
+    a {
+        color: white !important
+    }
+
+}
 .action_welcome{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-end;

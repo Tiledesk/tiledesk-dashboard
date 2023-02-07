@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { LocalDbService } from 'app/services/users-local-db.service';
 
 @Component({
   selector: 'cds-splash-screen',
@@ -8,11 +10,30 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class CdsSplashScreenComponent implements OnInit {
   
   @Input() text: string
+  @Input() videoUrl: string ="https://www.youtube.com/embed/b0laljUl85E?autoplay=1";
+  @Input() videoDescription: string;
+  @Input() section:  "cds-sb-intents" | "cds-sb-fulfillment" | "cds-sb-training" | "cds-sb-rules" | "cds-sb-settings"
   @Output() onClickBtn = new EventEmitter();
 
-  constructor() { }
+  canShowVideo: boolean = true
+  url: SafeResourceUrl = null
+  constructor(
+      public usersLocalDbService: LocalDbService,
+      private sanitizer: DomSanitizer
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(){
+    let canShowVideo = this.usersLocalDbService.getFromStorage('HAS_WATCHED_'+ this.section+ '_VIDEO')
+    if(!canShowVideo || canShowVideo === 'false'){
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.videoUrl)
+      this.canShowVideo = true
+      this.usersLocalDbService.setInStorage('HAS_WATCHED_'+ this.section+ '_VIDEO', true)
+    }else{
+      this.canShowVideo = false
+    }
   }
 
   onAdd() {

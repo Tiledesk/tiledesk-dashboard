@@ -46,7 +46,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
     this.elementIntentSelectedType = this.elementIntentSelected.type;
     this.elementSelected = this.elementIntentSelected.element;
     this.elementSelectedIndex = this.elementIntentSelected.index
-    this.elementSelectedMaxLength = [...Array(10).keys()]
+    this.elementSelectedMaxLength = [...Array(this.elementIntentSelected.maxLength).keys()]
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);

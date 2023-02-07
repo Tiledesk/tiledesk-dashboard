@@ -534,7 +534,7 @@ export class CdsDashboardComponent implements OnInit {
     // && !this.intentSelected.form
     if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
       console.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0])
-      this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1 })
+      this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1, intent_display_name: this.intentSelected.intent_display_name })
     }
     else {
 
@@ -562,13 +562,14 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = answer
   }
 
-  onActionSelected(event: { action: Action, index: number, maxLength: number }) {
+  onActionSelected(event: { action: Action, index: number, maxLength: number, intent_display_name: string }) {
     console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
     this.elementIntentSelected['element'] = event.action
     this.elementIntentSelected['index'] = event.index
     this.elementIntentSelected['maxLength'] = event.maxLength
+    this.elementIntentSelected['intent_display_name']= event.intent_display_name
     console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
   }
 

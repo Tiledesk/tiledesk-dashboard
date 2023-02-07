@@ -68,7 +68,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
     this.buttonTypes = [
       {label: "text", value: this.typeOfButton.TEXT},
       {label: "url", value: this.typeOfButton.URL}, 
-      {label: "go to intent", value: this.typeOfButton.ACTION}
+      {label: "go to block", value: this.typeOfButton.ACTION}
     ];
     this.urlTypes = [
       {label: "blank", value: this.typeOfUrl.BLANK},

@@ -46,3 +46,15 @@
 #cds-ss-add-intent-btn:hover {
     background: rgb(138, 180, 248, 0.8) !important;
 }
+
+.welcome_subtitle{
+    font-size: 20px;
+}
+
+.welcome_video{
+    .welcome_subtitle{
+        font-style: italic;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+}

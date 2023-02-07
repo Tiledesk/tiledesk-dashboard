@@ -53,8 +53,8 @@ export class PanelReplyToolsComponent implements OnInit {
             type: TYPE_MESSAGE.IMAGE,
             metadata: {
               src: '',
-              width: MESSAGE_METADTA_WIDTH,
-              height: MESSAGE_METADTA_HEIGHT
+              // width: MESSAGE_METADTA_WIDTH,
+              // height: MESSAGE_METADTA_HEIGHT
             }
           },
         } 
@@ -67,8 +67,8 @@ export class PanelReplyToolsComponent implements OnInit {
             type: TYPE_MESSAGE.FRAME,
             metadata: {
               src: '',
-              width: MESSAGE_METADTA_WIDTH,
-              height: MESSAGE_METADTA_HEIGHT
+              // width: MESSAGE_METADTA_WIDTH,
+              // height: MESSAGE_METADTA_HEIGHT
             }
           },
         } 
