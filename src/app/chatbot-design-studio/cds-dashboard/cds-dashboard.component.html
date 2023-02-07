@@ -111,6 +111,9 @@
 
             <cds-splash-screen *ngIf=!intentSelected
                 [text]="'Select a block from the left sidebar or create a new one'"
+                [videoUrl]="'https://www.youtube.com/embed/b0laljUl85E?autoplay=1'"
+                [videoDescription]="'Learn about conversation blocks and how to create them here'"
+                [section]="'cds-sb-intents'"
                 (onClickBtn)="onAddIntentFromSplashScreen($event)"> 
             </cds-splash-screen>
 
