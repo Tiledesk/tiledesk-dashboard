@@ -34,7 +34,8 @@ mat-form-field.box-textarea ::ng-deep {
         padding-bottom:0;
         .mat-form-field-flex {
             border-radius: 4px 4px 0 0;
-            padding: 0 0.75em 0 0.75em;
+            padding: 0px;
+            // padding: 0 0.75em 0 0.75em;
             margin: 0;
         }
     }
@@ -46,7 +47,7 @@ mat-form-field.box-textarea ::ng-deep {
 /** box-textarea **/
 .box-textarea {
     width: calc(100% - 40px);
-    margin-left: 20px;
+    // margin-left: 20px;
     textarea {
         border-radius: 8px;
         background: $color-withe-hex;

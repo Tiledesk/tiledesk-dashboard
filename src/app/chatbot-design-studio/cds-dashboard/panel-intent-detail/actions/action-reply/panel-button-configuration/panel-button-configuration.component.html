@@ -30,7 +30,8 @@
         <div class="section displayed">
             <div class="form-group ng-select">
                 <label class="control-label">
-                    {{ 'Type' | translate }}
+                    <!-- {{ 'Type' | translate }} -->
+                    Type
                 </label>
                 <div class="selectFormModel">
                     <ng-select 
@@ -83,7 +84,7 @@
             [ngClass]="{'displayed':buttonType === typeOfButton.ACTION}">
             <div class="form-group ng-select">
                 <label class="control-label">
-                    {{ 'Go to intent' | translate }}
+                    {{ 'Go to block' | translate }}
                 </label>
                 <cds-text id="text-condition"
                     [text]="buttonAction"

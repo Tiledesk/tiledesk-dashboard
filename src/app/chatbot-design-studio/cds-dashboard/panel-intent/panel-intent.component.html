@@ -330,14 +330,14 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Change department -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.DEPARTMENTS" cdkDragHandle>
+                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT" cdkDragHandle>
                     <div class="cds-action-title" *ngIf="action._tdActionTitle">
                         {{ action._tdActionTitle }}
                     </div>
                     <div class="cds-action-icon-wpr">
-                        <img [src]="ACTIONS_LIST['DEPARTMENTS'].src" [title]="ACTIONS_LIST['DEPARTMENTS'].name">
+                        <img [src]="ACTIONS_LIST['CHANGE_DEPARTMENT'].src" [title]="ACTIONS_LIST['CHANGE_DEPARTMENT'].name">
                     </div>
-                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['DEPARTMENTS'].name}}</div>
+                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['CHANGE_DEPARTMENT'].name}}</div>
                     <div class="cds-action-arrow" *ngIf="!lastItem">
                         <span class="material-icons">
                             keyboard_backspace

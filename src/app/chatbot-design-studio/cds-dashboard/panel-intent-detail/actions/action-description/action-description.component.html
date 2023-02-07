@@ -1,7 +1,7 @@
-<div class="action_welcome">
+ <div class="action_welcome">
     <div class="action-title">
         <img [src]="action[actionType]?.src" [title]="action[actionType]?.name">
-        <p class="text-action">{{action[actionType]?.name | uppercase}}</p>
+        <p class="text-action">{{action[actionType]?.name}}</p>
         <!-- <p class="action-type">{{action[actionType]?.name}}</p> -->
     </div>
     <cds-text
@@ -9,5 +9,12 @@
         [placeholder]="titlePlaceholder"
         (onChange)="onChangeText($event)">
     </cds-text>
-    <!-- <div class="action-description" [innerHTML]="action[actionType]?.description"></div> -->
+
+    <!-- TIP -->
+    <div class="action-tip_wpr" *ngIf="showTip">
+        <span class="material-icons">info</span>
+        <div [innerHtml]="tipText"></div>
+    </div>
 </div>
+
+    <!-- <div class="action-description" [innerHTML]="action[actionType]?.description"></div> -->

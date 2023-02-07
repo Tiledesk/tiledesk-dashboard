@@ -1440,6 +1440,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     window.open(url, '_blank');
   }
 
+
+
   goToAdminDocs() {
     const url = URL_getting_started_for_admins
     window.open(url, '_blank');
@@ -1479,6 +1481,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.hidechangelogrocket = false;
     }
+  }
+
+
+  goToTemplates() {
+    this.router.navigate(['project/' + this.projectId + '/bots/templates/all']);
+  }
+
+  goToCommunity() {
+    this.router.navigate(['project/' + this.projectId + '/bots/templates/community']);
   }
 
 

@@ -11,6 +11,8 @@ export class ActionDescriptionComponent implements OnInit {
 
   @Input() actionType: string;
   @Input() actionSelected: Action;
+  @Input() showTip: boolean = false;
+  @Input() tipText: string;
   constructor() { }
 
   titlePlaceholder: string = 'set a title to your action...'
@@ -24,6 +26,7 @@ export class ActionDescriptionComponent implements OnInit {
     // if(this.actionSelected && this.actionSelected._tdActionTitle === ''){
     //   this.titlePlaceholder = 'set a title to your action...'
     // }
+    console.log('showtipppp', this.showTip, this.tipText)
   }
 
   onChangeText(text: string){

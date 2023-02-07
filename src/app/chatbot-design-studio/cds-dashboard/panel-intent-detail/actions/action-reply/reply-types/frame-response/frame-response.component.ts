@@ -10,6 +10,7 @@ import { TYPE_MESSAGE, TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_
 })
 export class FrameResponseComponent implements OnInit {
   @Output() changeDelayTimeReplyElement = new EventEmitter();
+  @Output() changeReplyElement = new EventEmitter();
   @Output() deleteResponse = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
@@ -20,8 +21,8 @@ export class FrameResponseComponent implements OnInit {
 
   // frame //
   framePath: any;
-  frameWidth: string;
-  frameHeight: string;
+  frameWidth: number | string;
+  frameHeight: number | string;
   typeMessage =  TYPE_MESSAGE;
 
   // Textarea //
@@ -55,16 +56,15 @@ export class FrameResponseComponent implements OnInit {
       this.alertCharsText = false;
     }
      
-    // this.pathElementUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.pathElement);
-    // console.log(this.pathElementUrl);
-    // this.showAddImage = false;
-
   }
 
   // EVENT FUNCTIONS //
   /** */
   onChangeTextarea(text:string) {
     this.response.text = text;
+    console.log('onChangeTextarea:: ', this.response);
+    this.changeReplyElement.emit();
+    
   }
 
   /** */
@@ -83,9 +83,9 @@ export class FrameResponseComponent implements OnInit {
   }
 
   /** */
-  onChangeText(text:string) {
-    this.response.text = text;
-  }
+  // onChangeText(text:string) {
+  //   this.response.text = text;
+  // }
 
   /** */
   onChangeDelayTime(value:number){
@@ -121,6 +121,8 @@ export class FrameResponseComponent implements OnInit {
   onLoadPathElement(){
     try {
       this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src);
+      console.log('onLoadPathElement:: ', this.framePath, this.response.metadata);
+      this.changeReplyElement.emit();
     } catch (error) {
       console.log('error:: ', error);
     }

@@ -9,7 +9,7 @@ import { TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../..
 })
 export class ImageResponseComponent implements OnInit {
   
-  @Output() onChange = new EventEmitter()
+  @Output() changeReplyElement = new EventEmitter()
   @Output() deleteResponse = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
@@ -63,7 +63,7 @@ export class ImageResponseComponent implements OnInit {
   onChangeDelayTime(value:number){
     this.delayTime = value;
     this.response.time = value*1000;
-    this.onChange.emit();
+    this.changeReplyElement.emit();
   }
 
   /** */
@@ -100,7 +100,7 @@ export class ImageResponseComponent implements OnInit {
   /** */
   onChangeTextarea(text:string) {
     this.response.text = text;
-    this.onChange.emit()
+    this.changeReplyElement.emit()
   }
 
 

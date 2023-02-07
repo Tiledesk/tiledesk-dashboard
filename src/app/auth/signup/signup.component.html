@@ -3,55 +3,52 @@
 
   <div class="container-fluid">
 
+    <!-- [ngStyle]="{'background-size': bckgndImageSize}" 
+    'brand-background-image': company_name === 'Tiledesk',
+        'no_brand-background-image': company_name !== 'Tiledesk' -->
+    <div class="split left" style="display: flex; justify-content: center; align-items: center;"
+    [ngClass]="{'hidden_left_panel' : hide_left_panel === true  }">
 
-    <div class="split left" [ngStyle]="{'background-size': bckgndImageSize}" [ngClass]="{
-        'hidden_left_panel' : hide_left_panel === true, 
-        'brand-background-image': company_name === 'Tiledesk',
-        'no_brand-background-image': company_name !== 'Tiledesk'}">
+        <div>
+          <svg viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice"
+            xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 pointer-events-none ng-tns-c137-1"
+            style="inset: 0; position: absolute;">
+            <g fill="none" stroke="currentColor" stroke-width="100" class="text-gray-700 opacity-25 ng-tns-c137-1" style="color: gray;
+            opacity: 0.20;">
+              <circle r="234" cx="196" cy="23" class="ng-tns-c137-1"></circle>
+              <circle r="234" cx="790" cy="491" class="ng-tns-c137-1"></circle>
+            </g>
+          </svg>
+        </div>
 
-      <!-- 
-    // ---------------------------------------------------------------
-    // Right logo
-    // --------------------------------------------------------------- -->
+       <!--  --------------------------------------------------------------- -->
+      <!--  Right panel -->
+      <!--  --------------------------------------------------------------- -->
 
       <div class="centered-horizontally" style="margin:auto">
-        <!-- <img src="img_avatar2.png" alt="Avatar woman"> -->
-        <!-- <h2>Jane Flex</h2>
-      <p>Some text.</p> -->
-        <!--  -->
-        <div class="welcome-text" style="text-align: center;
-        margin:auto;width:350px; 
-        font-family: 'Montserrat', sans-serif; 
-        color:#fff; font-size:24px; 
-        line-height: 1.1em;
-        font-weight: 400; 
-        letter-spacing: 2px;
-        padding-top:40px; 
-        text-transform: uppercase;">
-          {{'WelcomeTo' | translate }}
-          <!-- <span>
-            {{"LetSetUpYourTiledeskChat" | translate: tparams }}
-          </span> -->
+        
+        <div class="left-logo" style="text-align: center;text-align: center;
+        z-index: 1050;
+        position: relative;">
+          <a [href]="company_site_url" target="_blank">
 
-          <div class="left-logo">
-            <a [href]="company_site_url" target="_blank">
-
-              <img [src]="companyLogoAllWithe_Url" class="img-fluid" style="width: 80%;
-              margin-top: 30px;
-              margin-bottom: 30px;" />
-            </a>
-          </div>
+            <img [src]="companyLogoAllWithe_Url" class="img-fluid" style="width: 180px;"/>
+          </a>
         </div>
-        <div style="width: 350px; margin: auto; text-align: center;">
-
-          <h2 style="font-size: 42px;font-family: 'Montserrat', sans-serif; color:#fff;  line-height: 1.2em;">
-
-            {{"LetSetUpYourTiledeskChat" | translate: tparams }}
-
-          </h2>
-
+       
+        <div class="welcome-text">
+          <!-- {{'WelcomeTo' | translate }} -->
+     
+          <span> Welcome </span> <span style="display: block;"> to Tiledesk </span>
+          
         </div>
-        <div style="width: 250px;
+
+        <div class="welcome-text-subtitle">
+          The community-led no-code platform for customer engagement. 
+          <span style="display: block;"> Omni-channel live chat + AI-powered chatbots and conversational apps. </span> 
+        </div>
+    
+        <!-- <div style="width: 250px;
         margin: auto;
         text-align: center;">
           <h2
@@ -62,7 +59,7 @@
             style="height: 56px;padding-left: 107px;padding-right: 107px;">
             Login
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -90,12 +87,31 @@
       </div>
       <div class="centered">
 
-        <div class="signin-title" style="text-align:center">
-          <h2 style="font-family: 'Montserrat', sans-serif; font-weight:400">
-            {{ 'CreateAFreeAccount' | translate}}
-          </h2>
- 
+        <div class="logo-at-media-plus-992">
+          <svg _ngcontent-pgl-c83="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="48px"
+            viewBox="0 0 60 60" width="48px" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px">
+            <path _ngcontent-pgl-c83=""
+              d="M51.8,28.2h-19c-1.7,0-3-1.3-3-3V6.4c0-1.7-1.3-3-3-3H8c-1.7,0-3,1.3-3,3v22v22c0,1.7,1.3,3,3,3H6.7h3.4  c0.8,0,1.3,0.2,1.9,0.8l2.3,2.3l2.1,2.1c0.8,0.8,1.7,0.8,2.4,0l2.1-2.1l2.3-2.3c0.6-0.6,1.1-0.8,1.9-0.8H52c1.7,0,3-1.3,3-3V31.2  C54.8,29.5,53.5,28.2,51.8,28.2"
+              fill="#F18876"></path>
+            <path _ngcontent-pgl-c83=""
+              d="M52,24.2H36.8c-1.5,0-2.8-1.3-2.8-2.8V6.2c0-1.5,1.3-2.8,2.8-2.8H52c1.5,0,2.8,1.3,2.8,2.8v15.2  C54.8,22.9,53.5,24.2,52,24.2"
+              fill="#E5BBAD"></path>
+          </svg>
         </div>
+
+        <div class="signup-title" style="text-align:center">
+          <h2>
+            Sign up
+          </h2>
+        </div>
+
+        <div class="signup-subtitle">
+          {{ "AlreadyHaveAnAccount" | translate }}
+          <span class="auth-link-button-signup" (click)="goToSigninPage()">
+            Login
+          </span>
+        </div>
+
         <div class="login-container" style="padding-top: 15px;">
 
           <form [formGroup]="userForm" (ngSubmit)="signup()" autocomplete="off">
@@ -164,7 +180,8 @@
             <button type="submit" class="btn signup-button" [disabled]="!userForm.valid">
               <span *ngIf="!showSpinnerInLoginBtn">
 
-                {{ "SignUp" | translate }}
+                <!-- {{ "SignUp" | translate }} -->
+                {{ 'CreateAFreeAccount' | translate}}
               </span>
               <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
             </button>

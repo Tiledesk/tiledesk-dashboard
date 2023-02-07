@@ -125,7 +125,7 @@
   margin: 18px 5px 8px 5px;
   border-radius: 20px;
   min-width: 80px;
-  max-width: 150px;
+  max-width: 160px;
   height: 35px;
   font-weight: 400;
 }
@@ -363,29 +363,30 @@
   border-radius: 50%;
   box-shadow: unset;
   z-index: 2;
+  // background-color: $icon-color-background;
 }
 
 .cds-add-action-btn > span {
   font-size: 24px;
-  color: #3ea9f5;
+  color: $icon-color;
   position: relative;
   top: 0px;
 }
 
 .cds-add-action-btn:hover > span {
-  color: rgba(62, 169, 245, 0.6);
+  color: rgba($icon-color, 0.8);
 }
 
 .action--text {
   position: relative;
   top: -26px;
   left: 61px;
-  color: #3ea9f5;
+  color: $icon-color;
   font-size: 14px;
   white-space: nowrap;
   z-index: 1;
   cursor: pointer;
 }
 .action--text:hover {
-  color: rgba(62, 169, 245, 0.6);
+  color: rgba($icon-color, 0.8);
 }

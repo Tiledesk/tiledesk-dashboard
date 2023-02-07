@@ -16,7 +16,7 @@ export class ActionReplyComponent implements OnInit {
   // @Output() saveIntent = new EventEmitter();
   @Input() reply: ActionReply;
   @Input() listOfActions: Array<string>;
-  
+  @Input() intent_display_name: string;
   // @Input() showSpinner: boolean;
   // @Input() openCardButton: boolean;
   
@@ -250,9 +250,9 @@ export class ActionReplyComponent implements OnInit {
     this.generateCommandsWithWaitOfElements();
   }
 
-  /**onChangeTextareaReplyElement */
-  onChangeTextareaReplyElement(){
-    console.log('onChangeTextareaReplyElement ************', this.arrayMessagesWithWait);
+  /**onChangeReplyElement */
+  onChangeReplyElement(){
+    console.log('onChangeReplyElement ************', this.arrayMessagesWithWait);
     this.generateCommandsWithWaitOfElements();
   }
 

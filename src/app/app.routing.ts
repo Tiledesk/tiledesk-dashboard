@@ -1,3 +1,4 @@
+import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
 import { MapRequestComponent } from './map-request/map-request.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
@@ -132,6 +133,8 @@ import { ContactsComponent } from './contacts/contacts.component';
 // import { ContactsModule } from './contacts/contacts.module';
 import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component';
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
+import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
+
 
 
 const routes: Routes = [
@@ -151,6 +154,8 @@ const routes: Routes = [
   { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
 
+
+  { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
 
   // PROJECTS IS THE NEW HOME
   { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
@@ -173,6 +178,7 @@ const routes: Routes = [
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
   { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
  
+  { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] }, 
 
   { path: 'project/:projectid/configure-widget', component: ConfigureWidgetComponent, canActivate: [AuthGuard] }, // wizard step 2
   { path: 'project/:projectid/onboarding/:langcode/:langname', component: OnboardingComponent, canActivate: [AuthGuard] }, // wizard step 3
@@ -221,7 +227,8 @@ const routes: Routes = [
 
   { path: 'userprofile', component: UserProfileComponent },
   // , canActivate: [AuthGuard]
-
+ 
+  
 
   /*** WEBSOCKET ***/
   /**
