@@ -21,8 +21,8 @@ export class FrameResponseComponent implements OnInit {
 
   // frame //
   framePath: any;
-  frameWidth: string;
-  frameHeight: string;
+  frameWidth: number | string;
+  frameHeight: number | string;
   typeMessage =  TYPE_MESSAGE;
 
   // Textarea //
@@ -56,10 +56,6 @@ export class FrameResponseComponent implements OnInit {
       this.alertCharsText = false;
     }
      
-    // this.pathElementUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.pathElement);
-    // console.log(this.pathElementUrl);
-    // this.showAddImage = false;
-
   }
 
   // EVENT FUNCTIONS //
@@ -126,6 +122,7 @@ export class FrameResponseComponent implements OnInit {
     try {
       this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src);
       console.log('onLoadPathElement:: ', this.framePath, this.response.metadata);
+      this.changeReplyElement.emit();
     } catch (error) {
       console.log('error:: ', error);
     }
