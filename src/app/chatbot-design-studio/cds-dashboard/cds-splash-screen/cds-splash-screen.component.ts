@@ -10,7 +10,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 export class CdsSplashScreenComponent implements OnInit {
   
   @Input() text: string
-  @Input() videoUrl: string ="https://www.youtube.com/embed/b0laljUl85E?autoplay=1";
+  @Input() videoUrl: string;
   @Input() videoDescription: string;
   @Input() section:  "cds-sb-intents" | "cds-sb-fulfillment" | "cds-sb-training" | "cds-sb-rules" | "cds-sb-settings"
   @Output() onClickBtn = new EventEmitter();
@@ -28,7 +28,7 @@ export class CdsSplashScreenComponent implements OnInit {
   ngOnChanges(){
     let canShowVideo = this.usersLocalDbService.getFromStorage('HAS_WATCHED_'+ this.section+ '_VIDEO')
     if(!canShowVideo || canShowVideo === 'false'){
-      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.videoUrl)
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.videoUrl+'?rel=0&autoplay=1&controls=1&showinfo=0')
       this.canShowVideo = true
       this.usersLocalDbService.setInStorage('HAS_WATCHED_'+ this.section+ '_VIDEO', true)
     }else{
