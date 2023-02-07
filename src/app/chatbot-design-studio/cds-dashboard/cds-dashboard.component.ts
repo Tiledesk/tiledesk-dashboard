@@ -1,3 +1,4 @@
+import { MultichannelService } from 'app/services/multichannel.service';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -75,6 +76,7 @@ export class CdsDashboardComponent implements OnInit {
     private faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
     private departmentService: DepartmentService,
+    private multichannelService: MultichannelService,
     private el: ElementRef,
     public dialog: MatDialog,
   ) { }
@@ -668,6 +670,26 @@ export class CdsDashboardComponent implements OnInit {
 
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
+  }
+
+  openWhatsappPage() {
+    let tiledesk_phone_number = this.appConfigService.getConfig().tiledeskPhoneNumber;
+
+    let info = {
+      project_id: this.projectID,
+      bot_id: this.selectedChatbot._id
+    }
+
+    console.log("--> info: ", info)
+
+    this.multichannelService.getCodeForWhatsappTest(info).then((response: any) => {
+      console.log("--> testing code from whatsapp: ", response);
+      let code = "%23td" + response.short_uid;
+      const testItOutOnWhatsappUrl = `https://api.whatsapp.com/send/?phone=${tiledesk_phone_number}&text=${code}&type=phone_number&app_absent=0`
+      window.open(testItOutOnWhatsappUrl, 'blank');
+    }).catch((err) => {
+      console.error("--> error getting testing code from whatsapp: ", err);
+    })
   }
 
   publishOnCommunity() {

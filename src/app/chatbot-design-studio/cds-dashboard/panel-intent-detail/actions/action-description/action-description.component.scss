@@ -12,12 +12,13 @@
         margin: 0px 5px;
         font-size: 18px;
     }
-
-    a {
-        color: white !important
-    }
-
 }
+
+div.action-tip_wpr::ng-deep a {
+    word-break: break-all;
+    color: white !important
+}
+
 .action_welcome{
     position: relative;
     display: flex;
