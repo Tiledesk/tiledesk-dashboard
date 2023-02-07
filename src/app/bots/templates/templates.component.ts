@@ -43,7 +43,7 @@ export class TemplatesComponent implements OnInit {
 
   storageBucket: string;
   baseUrl: string;
-  
+
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   constructor(
     private auth: AuthService,
@@ -67,18 +67,18 @@ export class TemplatesComponent implements OnInit {
     this.getProfileImageStorage();
   }
   getProfileImageStorage() {
-  if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-    this.UPLOAD_ENGINE_IS_FIREBASE = true;
-    const firebase_conf = this.appConfigService.getConfig().firebase;
-    this.storageBucket = firebase_conf['storageBucket'];
-    this.logger.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
-  } else {
-    this.UPLOAD_ENGINE_IS_FIREBASE = false;
-    this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      this.logger.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
 
-    this.logger.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      this.logger.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
   }
-}
 
   getRoutes() {
     this.route = this.router.url
@@ -86,11 +86,11 @@ export class TemplatesComponent implements OnInit {
       this.COMMUNITY_TEMPLATE = true
       this.CERTIFIED_TEMPLATE = false
       console.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
-      console.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ',  this.CERTIFIED_TEMPLATE)
+      console.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
     } else if (this.route.indexOf('bots/templates/all') !== -1) {
       this.CERTIFIED_TEMPLATE = true
       this.COMMUNITY_TEMPLATE = false
-      console.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ',  this.CERTIFIED_TEMPLATE)
+      console.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
       console.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
     }
   }
@@ -367,5 +367,12 @@ export class TemplatesComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
 
   }
+
+  goToCommunityTemplateDetail(templateid) {
+    console.log('[BOTS-TEMPLATES]  GO TO COMMUNITY TEMPLATE DTLS -  templateid ', templateid);
+    this.router.navigate(['project/' + this.project._id + '/template-details/' + templateid]);
+
+  }
+
 
 }

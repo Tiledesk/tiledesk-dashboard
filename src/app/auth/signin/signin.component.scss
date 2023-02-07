@@ -84,7 +84,7 @@
 
 /****** old  LOGIN ******/
 
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,500,600&display=swap");
 @import "./src/assets/sass/md/_variables.scss";
 /****** new LOGIN ******/
 .signin-button {
@@ -178,8 +178,10 @@ label {
 .left {
   width: 40%;
   left: 0;
-  // background-color: #f0806f;
-  background-color: $brand-secodary
+  // background-color: $brand-secodary;
+  // color: #f0806f;
+  background-color: rgb(15, 23, 42);
+  // background-image: url(https://tiledesk.com/wp-content/uploads/2023/01/background_chatboat_design.jpg?id=10568welcome-text);
 }
 
 .right {
@@ -214,18 +216,16 @@ label {
     // text-align: center;
   }
 
-
   .login-container {
     margin: 0 auto;
     padding-left: 30px;
     padding-right: 30px;
     // width: 400px !important;
   }
- 
+
   .right {
     width: 100%;
   }
-
 
   .left {
     width: 0%;
@@ -239,11 +239,20 @@ label {
     display: block;
   }
 
+  .logo-at-media-plus-992 {
+    display: none;
+  }
 
+  .signin-subtitle {
+    display: none;
+  }
+
+  .signin-title > h2 {
+    text-align: center !important;
+  }
 }
 
-@media (min-width: 992px) { 
-
+@media (min-width: 992px) {
   .right-logo {
     display: none;
   }
@@ -260,23 +269,78 @@ label {
   width: 75px;
   margin-left: -11px;
   -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg)
+  transform: rotate(-45deg);
 }
 
 #rocket-icon .flame {
   will-change: transform;
   -webkit-transform-origin: 15px 37.5px;
-  transform-origin: 15px 37.5px
+  transform-origin: 15px 37.5px;
 }
 
 .brand-background-image {
-  background-image: url('/assets/img/rocket-login-page_without_version.svg');
+  background-image: url("/assets/img/rocket-login-page_without_version.svg");
   background-repeat: no-repeat;
   background-position: center bottom;
 }
 
 .no_brand-background-image {
-  background-image: url('/assets/img/rocket-login-page_no_brand.svg');
+  background-image: url("/assets/img/rocket-login-page_no_brand.svg");
   background-repeat: no-repeat;
   background-position: center bottom;
+}
+
+// .signin-title {
+//   text-align:center
+// }
+
+.signin-title > h2 {
+  font-size: 36px;
+  // line-height: 55px;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-weight: 500;
+  text-align: left;
+}
+
+.signin-subtitle {
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 15px;
+  line-height: 21px;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  text-align: left;
+}
+
+.auth-link-button {
+  color: #03a5e8;
+  cursor: pointer;
+  display: block;
+}
+
+.auth-link-button:hover {
+  text-decoration: underline;
+}
+
+.welcome-text {
+  font-size: 48px;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-weight: 600;
+  line-height: 50px;
+  padding: 20px;
+  text-align: center;
+  z-index: 1050;
+  position: relative;
+  color: #e8eaed;
+}
+
+.welcome-text-subtitle {
+  padding-left: 80px;
+  padding-right: 80px;
+  text-align: center;
+  color: #f0806f;
+  font-size: 20px;
+  line-height: 29px;
+  font-weight: 500;
+  z-index: 1050;
+  position: relative;
 }

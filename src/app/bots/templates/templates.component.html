@@ -111,10 +111,10 @@
                                     <p weight="normal" class="template-description">
                                         <!-- {{template.description}} -->
                                         {{template.shortDescription}}
-                                        <span style="display: block; margin-top: 6px;"
+                                        <!-- <span style="display: block; margin-top: 6px;"
                                             *ngIf="template?.certified === false" class="template-author">
                                             Author: {{template.createdBy}}
-                                        </span>
+                                        </span> -->
                                     </p>
                                     <div class="use-template-btn-row use-template-btn-wpr">
                                         <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
@@ -203,6 +203,7 @@
 
 
                         <!-- Community tempaltes -->
+                        <!-- (click)="goToCommunityTemplateDetail(template._id)" -->
                         <div *ngIf="COMMUNITY_TEMPLATE" class="css-ph3dp7 cmnty-tmplt-list--wpr">
                             <div class="css-18ajwok cmnty-tmplt-list">
                                 <div class="css-ph3dp7 cmnty-tmplt-list--wpr">
