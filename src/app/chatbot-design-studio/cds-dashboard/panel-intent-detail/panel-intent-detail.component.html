@@ -5,6 +5,7 @@
             <cds-action-reply *ngSwitchCase="typeAction.REPLY"
                 class="panel-response"
                 [reply]="elementSelected"
+                [intent_display_name]="elementIntentSelected.intent_display_name"
                 [listOfActions]="listOfActions">
             </cds-action-reply>
 

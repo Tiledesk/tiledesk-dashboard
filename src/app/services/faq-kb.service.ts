@@ -120,6 +120,23 @@ export class FaqKbService {
       .get(url, httpOptions)
   }
 
+  getCommunityTemplateDetail(templateid) {
+   
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json',
+    //   })
+    // };
+   
+    const url = this.TEMPLATES_URL + '/windows/' + templateid
+
+    this.logger.log('[GET-TMPLT][FAQ-KB.SERV] - GET-COMMUNITY-TMPLT-DTLS - URL ', url);
+    return this._httpClient
+      .get(url)
+  }
+  // https://chatbot-templates-v3.herokuapp.com/chatbots/public/templates
+  // https://chatbot-templates-app-v3.herokuapp.com/chatbots/public/templates/windows/63e17ccb426521001330d8d0
+
   getTemplateById(botid) {
     // 'Authorization': this.TOKEN
     const httpOptions = {
