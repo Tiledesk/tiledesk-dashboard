@@ -213,8 +213,8 @@ export class MessageAttributes {
 export class Metadata {
     name?: string;
     src: string;
-    width?: string;
-    height?: string;
+    width?: number | string;
+    height?: number | string; 
     type?: string;
 }
 
