@@ -1,5 +1,5 @@
 import { ACTIONS_LIST } from './../../utils';
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, HostListener } from '@angular/core';
 
 import { TYPE_ACTION, TYPE_COMMAND } from '../../utils';
 import { ActionCondition, ActionAgent, ActionClose, 
@@ -26,7 +26,9 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   TYPE_ACTION = TYPE_ACTION
   ACTIONS_LIST = ACTIONS_LIST
 
-  constructor() { }
+  constructor(
+    private eRef: ElementRef
+  ) { }
 
   ngOnInit(): void {
 
@@ -35,6 +37,30 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   ngAfterViewInit(){
     console.log('focussss', this.panel_actions_div)
     this.panel_actions_div.nativeElement.focus();
+  }
+
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    //   console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
+    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
+    const clicked_element_id = event.target.id
+    if (this.eRef.nativeElement.contains(event.target)) {
+      console.log("clicked inside")
+    } else {
+
+      // const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
+      // console.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
+
+      //console.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
+      // && (!event.target.classList.contains('ng-option'))
+      // clicked_element_id !== 'a0da04ac7772' && 
+      if (!clicked_element_id.startsWith("actions-btns-wpr") && !event.target.classList.contains('csd-add-action-btn-wpr-element')) {
+        this.closeActionsDrawer();
+        console.log('clicked outside')
+      }
+    }
   }
 
   onFocusOut(event){

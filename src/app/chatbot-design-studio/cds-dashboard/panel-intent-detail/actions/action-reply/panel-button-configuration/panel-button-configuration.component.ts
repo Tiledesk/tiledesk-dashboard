@@ -12,7 +12,7 @@ import { TYPE_BUTTON, TYPE_URL, classCardButtonNoClose } from '../../../../../ut
 })
 export class PanelButtonConfigurationComponent implements OnInit {
 
-  @ViewChild('input_title', {static: true}) input_topic: CDSTextComponent;
+  @ViewChild('input_title', { static: true }) input_topic: CDSTextComponent;
 
   @Input() listOfActions: Array<string>;
   @Input() button: Button;
@@ -23,11 +23,19 @@ export class PanelButtonConfigurationComponent implements OnInit {
   buttonLabel: string;
 
   typeOfButton = TYPE_BUTTON;
-  buttonTypes: Array<{label: string, value: TYPE_BUTTON}>;
+  buttonTypes: Array<{ label: string, value: TYPE_BUTTON }> = [
+    { label: "text", value: this.typeOfButton.TEXT },
+    { label: "url", value: this.typeOfButton.URL },
+    { label: "go to block", value: this.typeOfButton.ACTION }
+  ]
   buttonType: string;
 
   typeOfUrl = TYPE_URL;
-  urlTypes: Array<{label: string, value: TYPE_URL}>;
+  urlTypes: Array<{ label: string, value: TYPE_URL }> = [
+    { label: "blank", value: this.typeOfUrl.BLANK },
+    { label: "parent", value: this.typeOfUrl.PARENT },
+    { label: "self", value: this.typeOfUrl.SELF },
+  ];
   urlType: string;
 
   buttonUrl: string;
@@ -37,7 +45,9 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
   clickInside: boolean;
 
-  constructor() { }
+  constructor(
+    private eRef: ElementRef
+  ) { }
 
   /** Close panel on click outside */
   // @HostListener("click")
@@ -65,35 +75,65 @@ export class PanelButtonConfigurationComponent implements OnInit {
   ngOnInit(): void {
     this.buttonLabelResult = true;
     this.errorUrl = false;
-    this.buttonTypes = [
-      {label: "text", value: this.typeOfButton.TEXT},
-      {label: "url", value: this.typeOfButton.URL}, 
-      {label: "go to block", value: this.typeOfButton.ACTION}
-    ];
-    this.urlTypes = [
-      {label: "blank", value: this.typeOfUrl.BLANK},
-      {label: "parent", value: this.typeOfUrl.PARENT},
-      {label: "self", value: this.typeOfUrl.SELF},
-    ];
     this.buttonLabel = '';
     this.buttonType = this.typeOfButton.TEXT;
     this.urlType = this.typeOfUrl.BLANK;
     this.buttonUrl = '';
-    
+
     try {
-      this.buttonLabel = this.button.value?this.button.value:null;
-      this.buttonType = this.button.type?this.button.type:null;
-      this.urlType = this.button.target?this.button.target:null;
-      this.buttonUrl = this.button.link?this.button.link:null;
-      this.buttonAction = this.button.action?this.button.action:null;
+      this.buttonLabel = this.button.value ? this.button.value : null;
+      this.buttonType = this.button.type ? this.button.type : null;
+      this.urlType = this.button.target ? this.button.target : null;
+      this.buttonUrl = this.button.link ? this.button.link : null;
+      this.buttonAction = this.button.action ? this.button.action : null;
     } catch (error) {
       // error
     }
     console.log('PanelButtonConfigurationComponent', this.button, this.buttonTypes);
   }
 
-  ngAfterViewInit(){
+  ngOnChanges() {
+    try {
+      this.buttonLabel = this.button.value ? this.button.value : null;
+      this.buttonType = this.button.type ? this.button.type : null;
+      this.urlType = this.button.target ? this.button.target : null;
+      this.buttonUrl = this.button.link ? this.button.link : null;
+      this.buttonAction = this.button.action ? this.button.action : null;
+    } catch (error) {
+      // error
+    }
+  }
+
+  ngAfterViewInit() {
     this.input_topic.myInput.nativeElement.focus()
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    //   console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
+    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
+
+    console.log("event.target: ", event.target)
+    
+    const clicked_element_id = event.target.id
+    if (this.eRef.nativeElement.contains(event.target)) {
+      console.log("clicked inside")
+    } else {
+
+      if (event.target.classList.contains('single-btn-reply')) {
+        console.log("element contain class single-btn-reply", event.target.classList.contains('single-btn-reply'));
+      } else {
+        console.log("element NOT contain class single-btn-reply", event.target.classList.contains('single-btn-reply'));
+      }
+
+      console.log('clicked outside')
+      if (!event.target.classList.contains('single-btn-reply')) {
+        this.onCloseButtonPanel();
+        console.log('clicked outside')
+      }
+  
+    }
   }
 
   // PRIVATE FUNCTIONS //  
@@ -109,26 +149,26 @@ export class PanelButtonConfigurationComponent implements OnInit {
   //   };
   // }
 
-  
+
   private checkButtonLabel(): boolean {
     //setTimeout(() => {
-      if (!this.buttonLabel || this.buttonLabel.length === 0){
-        this.buttonLabelResult = false;
-        return false;
-      } else {
-        this.button.value = this.buttonLabel;
-        this.buttonLabelResult = true;
-        return true;
-      }
+    if (!this.buttonLabel || this.buttonLabel.length === 0) {
+      this.buttonLabelResult = false;
+      return false;
+    } else {
+      this.button.value = this.buttonLabel;
+      this.buttonLabelResult = true;
+      return true;
+    }
     //}, 300);
   }
 
-  private checkTypeButton(){
-    if(this.buttonType === this.typeOfButton.TEXT){
+  private checkTypeButton() {
+    if (this.buttonType === this.typeOfButton.TEXT) {
       return true;
-    } else if(this.buttonType === this.typeOfButton.URL){
+    } else if (this.buttonType === this.typeOfButton.URL) {
       return this.checkUrl(this.buttonUrl);
-    } else if(this.buttonType === this.typeOfButton.ACTION){
+    } else if (this.buttonType === this.typeOfButton.ACTION) {
       return this.checkAction(this.buttonAction);
     }
     return false;
@@ -136,7 +176,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
   private checkUrl(url: string): boolean {
     this.errorUrl = true;
-    if(url && url.length > 1){
+    if (url && url.length > 1) {
       this.errorUrl = false;
       this.button.link = url;
       this.button.target = this.urlType;
@@ -146,32 +186,32 @@ export class PanelButtonConfigurationComponent implements OnInit {
   }
 
   private checkAction(action: string): boolean {
-    if(action && action.length > 1){
+    if (action && action.length > 1) {
       this.button.action = action;
       this.button.show_echo = true;
       return true;
     }
     return false;
   }
-  
+
 
   // EVENTS FUNCTIONS //  
   /** */
-  onSaveButton(){
+  onSaveButton() {
     let checkLabel = this.checkButtonLabel();
     let checkType = this.checkTypeButton();
-    if(checkLabel && checkType){
+    if (checkLabel && checkType) {
       this.saveButton.emit(this.button);
     }
   }
 
   /** */
-  onBlurButtonLabel(name: string){
+  onBlurButtonLabel(name: string) {
     this.buttonLabelResult = true;
   }
 
   /** */
-  onChangeTypeButton(typeOfButton: {label:string, value: TYPE_BUTTON}) {
+  onChangeTypeButton(typeOfButton: { label: string, value: TYPE_BUTTON }) {
     this.button.type = typeOfButton.value;
   }
 
@@ -182,14 +222,14 @@ export class PanelButtonConfigurationComponent implements OnInit {
   }
 
   /** */
-  onCloseButtonPanel(){
+  onCloseButtonPanel() {
     this.closeButtonPanel.emit();
   }
 
-  onChangeTitle(text: string){
+  onChangeTitle(text: string) {
     this.buttonLabel = text
   }
-  onChangeUrl(text: string){
+  onChangeUrl(text: string) {
     this.buttonUrl = text
   }
 
