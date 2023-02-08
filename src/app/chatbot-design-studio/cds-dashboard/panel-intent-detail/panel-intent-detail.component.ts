@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, TemplateRef, ViewContainerRef } from '@angular/core';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 import { Intent, Button, ActionReply, Action } from '../../../models/intent-model';
 import { TYPE_INTENT_ELEMENT, TYPE_ACTION } from '../../utils';
@@ -28,28 +29,30 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   openCardButton = false;
   // buttonSelected: Button;
 
-  constructor() { }
+  constructor(
+    private logger: LoggerService,
+  ) { }
 
   ngOnInit(): void {
     try {
       this.elementIntentSelectedType = this.elementIntentSelected.type;
       this.elementSelected = this.elementIntentSelected.element;
-      console.log('[PANEL-INTENT-DETAIL] (OnInit) elementIntentSelectedType ', this.elementIntentSelectedType);
-      console.log('[PANEL-INTENT-DETAIL] (OnInit) elementSelected ', this.elementSelected);
+      this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) elementIntentSelectedType ', this.elementIntentSelectedType);
+      this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) elementSelected ', this.elementSelected);
     } catch (error) {
-      console.log('[PANEL-INTENT-DETAIL] (OnInit) ERROR', error);
+      this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) ERROR', error);
     }
   }
 
   ngOnChanges() {
-    console.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.elementIntentSelected);
+    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.elementIntentSelected);
     this.elementIntentSelectedType = this.elementIntentSelected.type;
     this.elementSelected = this.elementIntentSelected.element;
     this.elementSelectedIndex = this.elementIntentSelected.index
     this.elementSelectedMaxLength = [...Array(this.elementIntentSelected.maxLength).keys()]
-    console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
-    console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
-    console.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
+    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
+    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
+    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
     
   }
   // EVENT FUNCTIONS //
@@ -63,9 +66,9 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
 
   //     // this.intentSelected.reply.attributes.commands.push(element);
   //     this.intentSelected.actions.push(element);
-  //     console.log('onAddNewResponse---->', this.intentSelected.actions);
+  //     this.logger.log('onAddNewResponse---->', this.intentSelected.actions);
   //   } catch (error) {
-  //     console.log('onAddNewResponse ERROR', error);
+  //     this.logger.log('onAddNewResponse ERROR', error);
   //   }
   // }
 
@@ -73,7 +76,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
 
   /** appdashboard-intent: Open button panel */
   onOpenButtonPanel(event) {
-    console.log('onOpenButtonPanel :: ', event);
+    this.logger.log('onOpenButtonPanel :: ', event);
     // if (this.openCardButton === true) {
     //   this.onCloseButtonPanel();
     // }
@@ -84,7 +87,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   
   /** appdashboard-button-configuration-panel: Save button */
   // onSaveButton(button) {
-  //   console.log('onSaveButton :: ', this.elementSelected);
+  //   this.logger.log('onSaveButton :: ', this.elementSelected);
   //   this.elementSelected.text = "...";
   //   this.openCardButton = false;
   // }
@@ -95,7 +98,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   // }
 
   passJsonIntentForm(json) {
-    console.log('[PANEL-INTENT-DETAIL] passJsonIntentForm ', json);
+    this.logger.log('[PANEL-INTENT-DETAIL] passJsonIntentForm ', json);
     if(json && json.fields && json.fields.length>0){
       // this.intentForm = json;
     }

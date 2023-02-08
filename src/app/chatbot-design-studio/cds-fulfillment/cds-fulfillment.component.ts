@@ -37,26 +37,26 @@ export class CdsFulfillmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("[CDS-FULFILLMENT] input chatbot: ", this.chatbot);
+    // console.log("[CDS-FULFILLMENT] input chatbot: ", this.chatbot);
   }
 
   editBot() {
-    console.log("edit bot clicked");
+    // console.log("edit bot clicked");
 
     // RESOLVE THE BUG 'edit button remains focused after clicking'
     // ???
     //this.elementRef.nativeElement.blur();
 
     this.faqKbService.updateChatbot(this.chatbot).subscribe((udpatedChatbot) => {
-      console.log('[CDS-FULFILLMENT] EDIT BOT - CHATBOT UPDATED ', udpatedChatbot);
+      // console.log('[CDS-FULFILLMENT] EDIT BOT - CHATBOT UPDATED ', udpatedChatbot);
       this.logger.log('[CDS-FULFILLMENT] EDIT BOT - CHATBOT UPDATED ', udpatedChatbot);
     }, (error) => {
-      console.error('[CDS-FULFILLMENT] EDIT BOT -  ERROR ', error);
+      // console.error('[CDS-FULFILLMENT] EDIT BOT -  ERROR ', error);
       this.logger.error('[CDS-FULFILLMENT] EDIT BOT -  ERROR ', error);
       // =========== NOTIFY ERROR ===========
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('updateBotError'), 4, 'report_problem');
     }, () => {
-      console.log('[TILEBOT] EDIT BOT - * COMPLETE *');
+      // console.log('[TILEBOT] EDIT BOT - * COMPLETE *');
       this.logger.log('[TILEBOT] EDIT BOT - * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('updateBotSuccess'), 2, 'done');

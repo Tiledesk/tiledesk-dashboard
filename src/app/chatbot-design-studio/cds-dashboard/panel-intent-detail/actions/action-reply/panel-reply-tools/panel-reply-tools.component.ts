@@ -33,7 +33,7 @@ export class PanelReplyToolsComponent implements OnInit {
 
 
   addElement(type: TYPE_MESSAGE){
-    console.log('addElement---->', type);
+    // console.log('addElement---->', type);
     var newElement:Command;
     switch (type) {
       case TYPE_MESSAGE.TEXT:

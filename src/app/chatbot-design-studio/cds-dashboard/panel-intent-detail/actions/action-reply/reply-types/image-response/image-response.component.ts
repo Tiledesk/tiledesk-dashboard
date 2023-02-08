@@ -81,7 +81,7 @@ export class ImageResponseComponent implements OnInit {
       //this.imageHeight = event.height;
       this.response.metadata.height = event.height;
     //}
-    console.log('onCloseImagePanel:: ', event);
+    // console.log('onCloseImagePanel:: ', event);
   }
 
   /** */
@@ -94,7 +94,7 @@ export class ImageResponseComponent implements OnInit {
   /** */
   onDeletePathElement(){
     this.response.metadata.src = null;
-    console.log('onDeletePathElement::: ', this.response.metadata);
+    // console.log('onDeletePathElement::: ', this.response.metadata);
   }
 
   /** */

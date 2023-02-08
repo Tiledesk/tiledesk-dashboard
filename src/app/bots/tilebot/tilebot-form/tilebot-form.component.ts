@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 import { URL_more_info_chatbot_forms } from 'app/utils/util';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 export interface ModalDeleteModel {
   deleteField?: string;
@@ -64,7 +65,8 @@ export class TilebotFormComponent implements OnInit, OnChanges {
   constructor(
     public translate: TranslateService,
     private route: ActivatedRoute,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private logger: LoggerService
   ) {
     this.langBot = this.route.snapshot.params['botlang'];
     if (!this.langBot || this.langBot === undefined) {
@@ -92,14 +94,14 @@ export class TilebotFormComponent implements OnInit, OnChanges {
 
 
 
-      console.log('[TILEBOT-FORM] cancelCommands ', this.cancelCommands)
-      console.log('[TILEBOT-FORM] cancelReply ', this.cancelReply)
-      console.log('[TILEBOT-FORM] cancelCommandsString ', this.cancelCommandsString)
+      this.logger.log('[TILEBOT-FORM] cancelCommands ', this.cancelCommands)
+      this.logger.log('[TILEBOT-FORM] cancelReply ', this.cancelReply)
+      this.logger.log('[TILEBOT-FORM] cancelCommandsString ', this.cancelCommandsString)
     }
   }
 
   ngOnChanges() {
-    console.log('[TILEBOT-FORM] intentForm ', this.intentForm)
+    // this.logger.log('[TILEBOT-FORM] intentForm ', this.intentForm)
   }
 
 
@@ -121,9 +123,9 @@ export class TilebotFormComponent implements OnInit, OnChanges {
     this.intentForm.cancelCommands = this.cancelCommands;
     this.intentForm.cancelReply = this.cancelReply;
 
-    console.log('[TILEBOT-FORM] generateJsonIntentForm selectedForm ', this.selectedForm)
+    this.logger.log('[TILEBOT-FORM] generateJsonIntentForm selectedForm ', this.selectedForm)
 
-    // console.log("generateJsonIntentForm", this.selectedFormId, this.selectedForm);
+    // this.logger.log("generateJsonIntentForm", this.selectedFormId, this.selectedForm);
     if (this.selectedForm) {
       // there not in v 3.2.8
       if (this.selectedForm.cancelCommands) {
@@ -144,8 +146,8 @@ export class TilebotFormComponent implements OnInit, OnChanges {
         this.intentForm.fields = this.selectedForm.fields;
         // this.fields = structuredClone(this.selectedForm.fields);
         this.fields = JSON.parse(JSON.stringify(this.selectedForm.fields));
-        console.log('[TILEBOT-FORM] generateJsonIntentForm selectedForm.fields ', this.fields)
-        console.log('[TILEBOT-FORM] generateJsonIntentForm intentForm ', this.intentForm)
+        this.logger.log('[TILEBOT-FORM] generateJsonIntentForm selectedForm.fields ', this.fields)
+        this.logger.log('[TILEBOT-FORM] generateJsonIntentForm intentForm ', this.intentForm)
       }
     }
     this.displayCancelButton = false;
@@ -172,9 +174,9 @@ export class TilebotFormComponent implements OnInit, OnChanges {
         this.cancelCommands.push(cancel);
         this.cancelReply = this.translations['CancelReply'] ? this.translations['CancelReply'] : '';
       }
-      // console.log('getCurrentTranslation this.cancelReply::', this.cancelReply);
+      // this.logger.log('getCurrentTranslation this.cancelReply::', this.cancelReply);
 
-      console.log('this.translations:::: ', this.translations);
+      this.logger.log('this.translations:::: ', this.translations);
     })
   }
 
@@ -199,7 +201,7 @@ export class TilebotFormComponent implements OnInit, OnChanges {
       }
       let item = { "id": "custom-model", "name": "Custom", "description_key": "", "fields": "" };
       this.modelsOfForm.push(item);
-      //console.log("modelsOfForm : ",this.modelsOfForm);
+      //this.logger.log("modelsOfForm : ",this.modelsOfForm);
       this.selectedForm = this.modelsOfForm[0];
       this.selectedFormId = this.modelsOfForm[0].id ? this.modelsOfForm[0].id : null;
       this.translateparam = { selectedFormName: this.selectedForm.name, description_key: this.selectedForm.description_key };
@@ -223,7 +225,7 @@ export class TilebotFormComponent implements OnInit, OnChanges {
   }
 
   jsonGenerator() {
-    // console.log('this.intentForm:: ', this.intentForm);
+    // this.logger.log('this.intentForm:: ', this.intentForm);
     this.passJsonIntentForm.emit(this.intentForm);
   }
 
@@ -259,7 +261,7 @@ export class TilebotFormComponent implements OnInit, OnChanges {
 
   /** Event modal open delete field */
   openDeleteFieldModal(index: string) {
-    // console.log('this.translations:::: ', this.translations);
+    // this.logger.log('this.translations:::: ', this.translations);
     let i: number = +index;
     this.displayMODAL = true;
     this.translateMap.deleteField = this.translations['DeleteField'] ? this.translations['DeleteField'] : '';
@@ -281,7 +283,7 @@ export class TilebotFormComponent implements OnInit, OnChanges {
         this.deleteForm();
       }
       this.intentForm.fields = this.fields;
-      // console.log('confirmDeleteModal::: ', this.intentForm, this.fields);
+      // this.logger.log('confirmDeleteModal::: ', this.intentForm, this.fields);
     }
     this.jsonGenerator();
     this.displayMODAL = false;
@@ -299,7 +301,7 @@ export class TilebotFormComponent implements OnInit, OnChanges {
     this.displayAddForm = false;
     this.displayEditForm = false;
     this.displaySettingForm = false;
-    // console.log('openBoxNewFormForm:: ', this.displayBoxNewForm, this.intentForm);
+    // this.logger.log('openBoxNewFormForm:: ', this.displayBoxNewForm, this.intentForm);
   }
 
   private deleteForm() {
@@ -391,13 +393,13 @@ export class TilebotFormComponent implements OnInit, OnChanges {
 
   /** */
   openDeleteForm() {
-    // console.log('this.translations:::: ', this.translations);
+    // this.logger.log('this.translations:::: ', this.translations);
     this.translateMap.deleteField = this.translations['DeleteForm'] ? this.translations['DeleteForm'] : '';
     this.translateMap.confirmDeleteField = this.translations['ConfirmDeleteForm'] ? this.translations['ConfirmDeleteForm'] : '';
     this.displayMODAL = true;
     this.selectedObjectId = this.idForm;
-    console.log('[TILEBOT-FORM] openDeleteForm displayMODAL', this.displayMODAL)
-    console.log('[TILEBOT-FORM] openDeleteForm selectedObjectId', this.selectedObjectId)
+    this.logger.log('[TILEBOT-FORM] openDeleteForm displayMODAL', this.displayMODAL)
+    this.logger.log('[TILEBOT-FORM] openDeleteForm selectedObjectId', this.selectedObjectId)
   }
 
 

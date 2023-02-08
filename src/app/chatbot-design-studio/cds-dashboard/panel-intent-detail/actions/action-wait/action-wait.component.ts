@@ -17,7 +17,7 @@ export class ActionWaitComponent implements OnInit, OnChanges {
   ngOnInit(): void {
   }
   ngOnChanges() {
-    console.log('[ACTION-WAIT] wait this.actionwait.millis ', this.action.millis)
+    // console.log('[ACTION-WAIT] wait this.actionwait.millis ', this.action.millis)
     const waitInSec = this.action.millis / 1000
     this.delayTime = waitInSec
   }
@@ -28,11 +28,11 @@ export class ActionWaitComponent implements OnInit, OnChanges {
   }
 
   updateWaitValue(event) {
-    console.log('[ACTION-WAIT] formatLabel updateSetting ', event.value)
+    // console.log('[ACTION-WAIT] formatLabel updateSetting ', event.value)
     const msvalue = event.value * 1000
 
     this.action.millis = msvalue
     // this.delayTime  = msvalue
-    console.log('[ACTION-WAIT] formatLabel msvalue ', msvalue)
+    // console.log('[ACTION-WAIT] formatLabel msvalue ', msvalue)
   }
 }

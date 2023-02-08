@@ -191,7 +191,7 @@
                                 <div class="css-vm1iz7 cmnty-tmplt-search-bar">
                                     <div class="css-1wp4ooc cmnty-tmplt-search-bar-input-and-icon-wpr">
                                         <input class="css-n1s1a0 cmnty-tmplt-search-bar-input"
-                                            placeholder="Search for Chatbot" value="">
+                                            placeholder="Search for Chatbot" [(ngModel)]="valueToSearch" (keyup.enter)="searchInCommunityTemplates()">
                                         <div class="css-1wdq4w3 cmnty-tmplt-search-bar-icon">
                                             <svg preserveAspectRatio="xMidYMin" width="16" height="16"
                                                 viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"

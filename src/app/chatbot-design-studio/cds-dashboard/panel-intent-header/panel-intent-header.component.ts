@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 
 import { Intent } from '../../../models/intent-model';
@@ -23,43 +24,45 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   id_faq_kb: string;
 
 
-  constructor() { }
+  constructor(
+    private logger: LoggerService,
+  ) { }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.showSpinner = false;
-    console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
+    this.logger.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {
-      console.log('intent selected ', error);
+      this.logger.log('intent selected ', error);
     }
   }
 
   ngOnChanges() {
-    console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
-    console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intentSelected.intent_display_name)
-    console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
+    this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
+    this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intentSelected.intent_display_name)
+    this.logger.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
 
     const untitledIntents = this.listOfIntents.filter((el) => {
       return el.intent_display_name.indexOf('untitled_block') > -1;
     });
 
-    console.log("[PANEL-INTENT-HEADER] OnChanges untitledIntents: ", untitledIntents)
+    this.logger.log("[PANEL-INTENT-HEADER] OnChanges untitledIntents: ", untitledIntents)
     if (this.intentSelected.intent_display_name === undefined && untitledIntents.length === 0) {
       this.intentSelected.intent_display_name = 'untitled_block_1';
       this.saveIntent.emit(this.intentSelected);
       // this.listOfIntents.push(this.intentSelected) 
     } else if (this.intentSelected.intent_display_name === undefined && untitledIntents.length > 0) {
       let lastUntitledIntent = untitledIntents[untitledIntents.length - 1].intent_display_name
-      console.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntent: ", lastUntitledIntent)
+      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntent: ", lastUntitledIntent)
      
       const lastUntitledIntentSegment =  lastUntitledIntent.split("_")
-      console.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentSegment: ", lastUntitledIntentSegment)
+      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentSegment: ", lastUntitledIntentSegment)
       const lastUntitledIntentNumb = +lastUntitledIntentSegment[2]
-      console.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentNumb: ", lastUntitledIntentNumb)
+      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentNumb: ", lastUntitledIntentNumb)
       const nextUntitledIntentNumb = lastUntitledIntentNumb + 1
-      console.log("[PANEL-INTENT-HEADER] OnChanges nextUntitledIntentNumb: ", nextUntitledIntentNumb)
+      this.logger.log("[PANEL-INTENT-HEADER] OnChanges nextUntitledIntentNumb: ", nextUntitledIntentNumb)
       this.intentSelected.intent_display_name = 'untitled_block_'+ nextUntitledIntentNumb;
       this.saveIntent.emit(this.intentSelected);
       // this.listOfIntents.push(this.intentSelected) 
@@ -77,7 +80,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {
-      console.log('[PANEL-INTENT-HEADER] intent selected ', error);
+      this.logger.log('[PANEL-INTENT-HEADER] intent selected ', error);
     }
   }
 
@@ -99,8 +102,8 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   // EVENT FUNCTIONS //
   onChangeIntentName(name: string) {
     // this.changeIntentName.emit(name)
-    console.log('[PANEL-INTENT-HEADER] onChangeIntentName name', name);
-    console.log('[PANEL-INTENT-HEADER] onChangeIntentName this.intentSelected.intent_display_name ', this.intentSelected.intent_display_name);
+    this.logger.log('[PANEL-INTENT-HEADER] onChangeIntentName name', name);
+    this.logger.log('[PANEL-INTENT-HEADER] onChangeIntentName this.intentSelected.intent_display_name ', this.intentSelected.intent_display_name);
     if (name !== this.intentSelected.intent_display_name) {
       this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
         return el.intent_display_name === name
@@ -108,11 +111,11 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     }
 
     this.intentNameNotHasSpecialCharacters = this.checkIntentNameMachRegex(name)
-    console.log('[PANEL-INTENT-HEADER] checkIntentNameMachRegex intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters);
+    this.logger.log('[PANEL-INTENT-HEADER] checkIntentNameMachRegex intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters);
 
-    console.log('[PANEL-INTENT-HEADER] intent name already exist', this.intentNameAlreadyExist);
+    this.logger.log('[PANEL-INTENT-HEADER] intent name already exist', this.intentNameAlreadyExist);
     this.intentNameResult = this.checkIntentName();
-    console.log('[PANEL-INTENT-HEADER] this.intentNameResult ', this.intentNameResult)
+    this.logger.log('[PANEL-INTENT-HEADER] this.intentNameResult ', this.intentNameResult)
   }
 
   /** */
@@ -122,10 +125,10 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** */
   onSaveIntent() {
-    console.log('[PANEL-INTENT-HEADER] this.intentName ', this.intentName)
-    console.log('[PANEL-INTENT-HEADER] intentNameResult ', this.intentNameResult)
-    console.log('[PANEL-INTENT-HEADER] intentNameAlreadyExist ', this.intentNameAlreadyExist)
-    console.log('[PANEL-INTENT-HEADER] intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters)
+    this.logger.log('[PANEL-INTENT-HEADER] this.intentName ', this.intentName)
+    this.logger.log('[PANEL-INTENT-HEADER] intentNameResult ', this.intentNameResult)
+    this.logger.log('[PANEL-INTENT-HEADER] intentNameAlreadyExist ', this.intentNameAlreadyExist)
+    this.logger.log('[PANEL-INTENT-HEADER] intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters)
     this.intentNameResult = this.checkIntentName();
     if (this.intentNameResult && !this.intentNameAlreadyExist && this.intentNameNotHasSpecialCharacters === true) {
       this.intentSelected.intent_display_name = this.intentName;
@@ -134,44 +137,44 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   }
 
   toggleIntentWebhook(event) {
-    console.log('[PANEL-INTENT-HEADER] toggleWebhook ', event.checked);
+    this.logger.log('[PANEL-INTENT-HEADER] toggleWebhook ', event.checked);
     this.intentSelected.webhook_enabled = event.checked
   }
   // getCurrentProject() {
   //   this.auth.project_bs.subscribe((project) => {
   //     this.project = project;
-  //     console.log('[PANEL-INTENT-HEADER] project from AUTH service subscription  ', this.project)
+  //     this.logger.log('[PANEL-INTENT-HEADER] project from AUTH service subscription  ', this.project)
   //   });
   // }
 
   // getDeptsByProjectId() {
   //   this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
-  //     console.log('[PANEL-INTENT-HEADER] - DEPT GET DEPTS ', departments);
-  //     console.log('[PANEL-INTENT-HEADER] - DEPT BOT ID ', this.id_faq_kb);
+  //     this.logger.log('[PANEL-INTENT-HEADER] - DEPT GET DEPTS ', departments);
+  //     this.logger.log('[PANEL-INTENT-HEADER] - DEPT BOT ID ', this.id_faq_kb);
 
   //     if (departments) {
   //       departments.forEach((dept: any) => {
-  //         // console.log('[PANEL-INTENT-HEADER] - DEPT', dept);
+  //         // this.logger.log('[PANEL-INTENT-HEADER] - DEPT', dept);
 
   //         if (dept.default === true) {
   //           this.defaultDepartmentId = dept._id;
-  //           console.log('[PANEL-INTENT-HEADER] - DEFAULT DEPT ID ', this.defaultDepartmentId);
+  //           this.logger.log('[PANEL-INTENT-HEADER] - DEFAULT DEPT ID ', this.defaultDepartmentId);
   //         }
 
   //       })
   //     }
   //   }, error => {
 
-  //     console.error('[PANEL-INTENT-HEADER] - DEPT - GET DEPTS  - ERROR', error);
+  //     this.logger.error('[PANEL-INTENT-HEADER] - DEPT - GET DEPTS  - ERROR', error);
   //   }, () => {
-  //     console.log('[PANEL-INTENT-HEADER] - DEPT - GET DEPTS - COMPLETE')
+  //     this.logger.log('[PANEL-INTENT-HEADER] - DEPT - GET DEPTS - COMPLETE')
 
   //   });
   // }
 
   // getTestSiteUrl() {
   //   this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
-  //   console.log('[PANEL-INTENT-HEADER] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+  //   this.logger.log('[PANEL-INTENT-HEADER] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   // }
 
   // openTestSiteInPopupWindow() {

@@ -86,7 +86,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
       // } 
       this.fieldName = this.field.name;
       this.fieldType = this.field.type;
-      console.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
+      // console.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
       // this.fieldRegex = this.field.regex;
       this.fieldRegex = '^.{1,}$'
       this.fieldLabel = this.field.label;
@@ -103,7 +103,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.fieldType = "TEXT";
     this.fieldRegex = '^.{1,}$'
     
-    console.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
+    // console.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
   }
 
   ngAfterViewInit() {
@@ -206,7 +206,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
 
   /** */
   onChangeTypeField(typeFieldValue) {
-    console.log("onChange:: ", typeFieldValue);
+    // console.log("onChange:: ", typeFieldValue);
     if (typeFieldValue === TYPE_FIELD.CUSTOM) {
       this.field.regex = TYPE_REGEX.customRGEX;
       // this.showRegexField = true;

@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, Form, Intent } from 'app/models/intent-model';
+import { LoggerService } from 'app/services/logger/logger.service';
 import { FormModelsFactory } from './form-models-factory';
 const swal = require('sweetalert');
 // import { URL_more_info_chatbot_forms } from 'app/utils/util';
@@ -62,7 +63,8 @@ export class FormComponent implements OnInit, OnChanges {
   constructor(
     public translate: TranslateService,
     private route: ActivatedRoute,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private logger: LoggerService,
   ) {
 
     this.langBot = this.route.snapshot.params['botlang'];
@@ -72,55 +74,55 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log('[FORM-COMP] (OnInit) intentSelected ', this.intentSelected)
-    console.log('[FORM-COMP] (OnInit) intentForm ', this.intentForm)
+    this.logger.log('[FORM-COMP] (OnInit) intentSelected ', this.intentSelected)
+    this.logger.log('[FORM-COMP] (OnInit) intentForm ', this.intentForm)
 
     let modelsFactory = new FormModelsFactory()
 
     this.modelsOfForm = modelsFactory.getModels();
-    console.log('[FORM-COMP] (OnInit) modelsOfForm ', this.modelsOfForm)
+    this.logger.log('[FORM-COMP] (OnInit) modelsOfForm ', this.modelsOfForm)
 
     this.selectedForm = this.modelsOfForm[0];
-    console.log('[FORM-COMP] (OnInit) selectedForm ', this.selectedForm)
+    this.logger.log('[FORM-COMP] (OnInit) selectedForm ', this.selectedForm)
 
     this.selectedFormId = this.modelsOfForm[0].id ? this.modelsOfForm[0].id : null;
-    console.log('[FORM-COMP] (OnInit) selectedFormId ', this.selectedFormId)
+    this.logger.log('[FORM-COMP] (OnInit) selectedFormId ', this.selectedFormId)
 
 
     // this.selectedForm = new Form()
     //   this.selectedForm.to_JSON()
-    //   console.log('[FORM-COMP] (OnInit) this.selectedForm.to_JSON() ',this.selectedForm.to_JSON())
+    //   this.logger.log('[FORM-COMP] (OnInit) this.selectedForm.to_JSON() ',this.selectedForm.to_JSON())
     // this.selectedForm = modelsFactory.getModels()[0];
-    // console.log('[FORM-COMP] (OnInit) selectedForm ', this.selectedForm)
+    // this.logger.log('[FORM-COMP] (OnInit) selectedForm ', this.selectedForm)
     // this.modelsOfForm = modelsFactory.getModels();
     // //this.modelsOfForm.push(modelsFactory.getModels());
-    // console.log('[FORM-COMP] (OnInit) modelsOfForm ', this.modelsOfForm)
+    // this.logger.log('[FORM-COMP] (OnInit) modelsOfForm ', this.modelsOfForm)
     // this.selectedForm = this.modelsOfForm[0];
-    // console.log('[FORM-COMP] (OnInit) selectedForm 2 ', this.selectedForm)
+    // this.logger.log('[FORM-COMP] (OnInit) selectedForm 2 ', this.selectedForm)
     // this.selectedFormId = this.modelsOfForm[0].id ? this.modelsOfForm[0].id : null;
-    // console.log('[FORM-COMP] (OnInit) selectedFormId ', this.selectedFormId)
+    // this.logger.log('[FORM-COMP] (OnInit) selectedFormId ', this.selectedFormId)
 
     this.getCurrentTranslation();
     // this.getModelsForm();
     this.translateMap = {};
     this.translations = {};
     this.intentFormSize = Object.keys(this.intentForm).length;
-    console.log('[FORM-COMP] (OnInit) intentFormSize ', this.intentFormSize)
+    this.logger.log('[FORM-COMP] (OnInit) intentFormSize ', this.intentFormSize)
     // if (this.intentForm ) {
     if (this.intentFormSize > 0) {
       this.displayNewFormButton = false;
       this.displaySettingsButton = true;
       if (this.intentForm && this.intentForm.fields) {
         this.fields = JSON.parse(JSON.stringify(this.intentForm.fields));
-        console.log('[FORM-COMP] OnInit intentForm.fields ', this.fields)
+        this.logger.log('[FORM-COMP] OnInit intentForm.fields ', this.fields)
       }
       this.cancelCommands = this.intentForm.cancelCommands;
       this.cancelReply = this.intentForm.cancelReply;
       this.cancelCommandsString = this.cancelCommands.toString();
 
-      console.log('[FORM-COMP] cancelCommands ', this.cancelCommands)
-      console.log('[FORM-COMP] cancelReply ', this.cancelReply)
-      console.log('[FORM-COMP] cancelCommandsString ', this.cancelCommandsString)
+      this.logger.log('[FORM-COMP] cancelCommands ', this.cancelCommands)
+      this.logger.log('[FORM-COMP] cancelReply ', this.cancelReply)
+      this.logger.log('[FORM-COMP] cancelCommandsString ', this.cancelCommandsString)
     }
     // else {
     //   // this.displayNewFormButton = true;
@@ -129,27 +131,27 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('[FORM-COMP] (OnChanges) intentForm ', this.intentForm)
-    console.log('[FORM-COMP] (OnChanges) intentSelected ', this.intentSelected)
+    this.logger.log('[FORM-COMP] (OnChanges) intentForm ', this.intentForm)
+    this.logger.log('[FORM-COMP] (OnChanges) intentSelected ', this.intentSelected)
   }
 
   getFieldFromId(idForm: number) {
-    console.log('[FORM-COMP] getFieldFromId idForm ', idForm)
+    this.logger.log('[FORM-COMP] getFieldFromId idForm ', idForm)
     // this.selectedForm = new FormModelsFactory().getModels()[0]
 
     this.selectedForm = new FormModelsFactory().getModels().find(({ id }) => id === idForm);
-    console.log('[FORM-COMP] getFieldFromId selectedForm ', this.selectedForm)
+    this.logger.log('[FORM-COMP] getFieldFromId selectedForm ', this.selectedForm)
 
     // this.translateparam = { selectedFormName: this.selectedForm.name, description_key: this.selectedForm.description_key };
   }
 
   generateJsonIntentForm() {
-    console.log('[FORM-COMP] generateJsonIntentForm')
+    this.logger.log('[FORM-COMP] generateJsonIntentForm')
     if (this.selectedFormId && !this.selectedForm) {
       this.getFieldFromId(this.selectedFormId);
     }
 
-    console.log('[FORM-COMP] selectedForm ', this.selectedForm)
+    this.logger.log('[FORM-COMP] selectedForm ', this.selectedForm)
 
     if (this.selectedForm) {
       // this.selectedForm = new Form()
@@ -161,12 +163,12 @@ export class FormComponent implements OnInit, OnChanges {
       // this.fields = JSON.parse(JSON.stringify(this.selectedForm.fields));
       this.fields = this.selectedForm.fields;
       this.intentFormSize = Object.keys(this.intentForm).length;
-      console.log('[FORM-COMP] generateJsonIntentForm ', this.intentForm)
+      this.logger.log('[FORM-COMP] generateJsonIntentForm ', this.intentForm)
     }
 
     this.displayCancelButton = false;
     this.displaySettingsButton = true;
-    console.log('[FORM-COMP] generateJsonIntentForm displaySettingsButton:', this.displaySettingsButton, ' displayCancelButton', this.displayCancelButton)
+    this.logger.log('[FORM-COMP] generateJsonIntentForm displaySettingsButton:', this.displaySettingsButton, ' displayCancelButton', this.displayCancelButton)
 
     // se sto creando un form custom che non ha campi
     if (this.fields.length === 0) {
@@ -184,16 +186,16 @@ export class FormComponent implements OnInit, OnChanges {
       this.translations = data['AddIntentPage'];
       let cancel = this.translations['Cancel'] ? this.translations['Cancel'] : 'cancel';
       this.translateMap.cancel = cancel;
-      console.log('[FORM-COMP]  getCurrentTranslation intentForm 1', this.intentForm);
+      this.logger.log('[FORM-COMP]  getCurrentTranslation intentForm 1', this.intentForm);
       this.intentFormSize = Object.keys(this.intentForm).length;
       if (this.intentFormSize === 0) {
-        console.log('[FORM-COMP] getCurrentTranslation intentForm 2', this.intentForm)
+        this.logger.log('[FORM-COMP] getCurrentTranslation intentForm 2', this.intentForm)
         this.cancelCommands.push(cancel);
         this.cancelReply = this.translations['CancelReply'] ? this.translations['CancelReply'] : '';
       }
-      console.log('[FORM-COMP] getCurrentTranslation this.cancelReply::', this.cancelReply);
-      console.log('[FORM-COMP] getCurrentTranslation cancel::', cancel);
-      console.log('[FORM-COMP] getCurrentTranslation cancelCommands::', this.cancelCommands);
+      this.logger.log('[FORM-COMP] getCurrentTranslation this.cancelReply::', this.cancelReply);
+      this.logger.log('[FORM-COMP] getCurrentTranslation cancel::', cancel);
+      this.logger.log('[FORM-COMP] getCurrentTranslation cancelCommands::', this.cancelCommands);
     })
   }
 
@@ -209,7 +211,7 @@ export class FormComponent implements OnInit, OnChanges {
 
   setCancelReplay() {
     this.intentForm.cancelReply = this.cancelReply;
-    console.log('[FORM-COMP]  setCancelReplay this.intentForm.cancelReply', this.intentForm.cancelReply)
+    this.logger.log('[FORM-COMP]  setCancelReplay this.intentForm.cancelReply', this.intentForm.cancelReply)
     this.jsonGenerator();
   }
 
@@ -217,12 +219,12 @@ export class FormComponent implements OnInit, OnChanges {
     // this.intentForm = new Form();
     // this.intentForm = this.selectedForm
     // this.intentForm.to_JSON()
-    console.log('[FORM-COMP] jsonGenerator this.intentForm:: ', this.intentForm);
+    this.logger.log('[FORM-COMP] jsonGenerator this.intentForm:: ', this.intentForm);
     this.passJsonIntentForm.emit(this.intentForm);
     // this.intentForm.push(this.intentForm)
     
     this.intentSelected.form = this.intentForm
-    console.log('[FORM-COMP] jsonGenerator this.intentSelected:: ', this.intentSelected);
+    this.logger.log('[FORM-COMP] jsonGenerator this.intentSelected:: ', this.intentSelected);
   }
 
   openSettingsForm() {
@@ -233,15 +235,15 @@ export class FormComponent implements OnInit, OnChanges {
     this.cancelReply = this.intentForm.cancelReply;
     this.cancelCommandsString = this.cancelCommands.toString();
 
-    console.log('[FORM-COMP] cancelCommands ', this.cancelCommands)
-    console.log('[FORM-COMP] cancelReply ', this.cancelReply)
-    console.log('[FORM-COMP] cancelCommandsString ', this.cancelCommandsString)
+    this.logger.log('[FORM-COMP] cancelCommands ', this.cancelCommands)
+    this.logger.log('[FORM-COMP] cancelReply ', this.cancelReply)
+    this.logger.log('[FORM-COMP] cancelCommandsString ', this.cancelCommandsString)
 
     // this.cancelCommandsString = this.cancelCommands.toString(); // this was commented - not commented in v 3.2.8
-    console.log('[FORM-COM]  openSettingsForm displaySettingsButton', this.displaySettingsButton)
-    console.log('[FORM-COM]  openSettingsForm displayCancelButton', this.displayCancelButton)
-    console.log('[FORM-COM]  openSettingsForm displaySettingForm', this.displaySettingForm)
-    console.log('[FORM-COM]  openSettingsForm cancelCommandsString', this.cancelCommandsString)
+    this.logger.log('[FORM-COM]  openSettingsForm displaySettingsButton', this.displaySettingsButton)
+    this.logger.log('[FORM-COM]  openSettingsForm displayCancelButton', this.displayCancelButton)
+    this.logger.log('[FORM-COM]  openSettingsForm displaySettingForm', this.displaySettingForm)
+    this.logger.log('[FORM-COM]  openSettingsForm cancelCommandsString', this.cancelCommandsString)
   }
 
   closeSettingsForm() {
@@ -249,10 +251,10 @@ export class FormComponent implements OnInit, OnChanges {
     this.displayCancelButton = false;
     this.displaySettingForm = false;
     this.cancelCommandsString = this.cancelCommands.toString(); // this was commented - not commented in v 3.2.8
-    console.log('[FORM-COM]  closeSettingsForm displaySettingsButton', this.displaySettingsButton)
-    console.log('[FORM-COM]  closeSettingsForm displayCancelButton', this.displayCancelButton)
-    console.log('[FORM-COM]  closeSettingsForm displaySettingForm', this.displaySettingForm)
-    console.log('[FORM-COM]  closeSettingsForm cancelCommandsString', this.cancelCommandsString)
+    this.logger.log('[FORM-COM]  closeSettingsForm displaySettingsButton', this.displaySettingsButton)
+    this.logger.log('[FORM-COM]  closeSettingsForm displayCancelButton', this.displayCancelButton)
+    this.logger.log('[FORM-COM]  closeSettingsForm displaySettingForm', this.displaySettingForm)
+    this.logger.log('[FORM-COM]  closeSettingsForm cancelCommandsString', this.cancelCommandsString)
 
   }
 
@@ -269,7 +271,7 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   openDeleteFieldModal(index: string) {
-    // console.log('this.translations:::: ', this.translations);
+    // this.logger.log('this.translations:::: ', this.translations);
     let i: number = +index;
     this.displayMODAL = true;
     this.translateMap.deleteField = this.translations['DeleteField'] ? this.translations['DeleteField'] : '';
@@ -309,8 +311,8 @@ export class FormComponent implements OnInit, OnChanges {
 
   /** Event modal confirm delete field */
   confirmDeleteModal(index: string) {
-    console.log('[FORM-COMP] confirmDeleteModal index ', index) 
-    console.log('[FORM-COMP] confirmDeleteModal this.idForm ', this.idForm) 
+    this.logger.log('[FORM-COMP] confirmDeleteModal index ', index) 
+    this.logger.log('[FORM-COMP] confirmDeleteModal this.idForm ', this.idForm) 
     if (index === this.idForm) {
     // if (index === this.selectedFormId) {
 
@@ -324,7 +326,7 @@ export class FormComponent implements OnInit, OnChanges {
         this.deleteForm();
       }
       this.intentForm.fields = this.fields;
-      console.log('confirmDeleteModal::: ', this.intentForm, this.fields);
+      this.logger.log('confirmDeleteModal::: ', this.intentForm, this.fields);
     }
     this.jsonGenerator();
     this.displayMODAL = false;
@@ -344,7 +346,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.displayEditForm = false;
     this.displaySettingForm = false;
     this.intentFormSize = 0
-    console.log('[FORM-COM] openBoxNewFormForm - displayBoxNewForm ', this.displayBoxNewForm, 'intentForm', this.intentForm);
+    this.logger.log('[FORM-COM] openBoxNewFormForm - displayBoxNewForm ', this.displayBoxNewForm, 'intentForm', this.intentForm);
   }
 
   private deleteForm() {
@@ -360,9 +362,9 @@ export class FormComponent implements OnInit, OnChanges {
     this.intentForm = null;
     this.fields = [];
     this.intentFormSize = 0;
-    console.log('[FORM-COM] deleteForm - displayBoxNewForm ', this.displayBoxNewForm, 'intentForm', this.intentForm);
+    this.logger.log('[FORM-COM] deleteForm - displayBoxNewForm ', this.displayBoxNewForm, 'intentForm', this.intentForm);
    
-    console.log('[FORM-COMP] deleteForm this.intentSelected:: ', this.intentSelected);
+    this.logger.log('[FORM-COMP] deleteForm this.intentSelected:: ', this.intentSelected);
   }
 
 
@@ -390,9 +392,9 @@ export class FormComponent implements OnInit, OnChanges {
     this.selectedField = null;
     this.displayAddForm = true;
     this.openAddEditForm();
-    console.log('[FORM-COMP] eventAddField displayEditForm ', this.displayEditForm)
-    console.log('[FORM-COMP] eventAddField selectedField ', this.selectedField)
-    console.log('[FORM-COMP] eventAddField displayAddForm ', this.displayAddForm)
+    this.logger.log('[FORM-COMP] eventAddField displayEditForm ', this.displayEditForm)
+    this.logger.log('[FORM-COMP] eventAddField selectedField ', this.selectedField)
+    this.logger.log('[FORM-COMP] eventAddField displayAddForm ', this.displayAddForm)
   }
 
   /** Event edit field */
@@ -404,9 +406,9 @@ export class FormComponent implements OnInit, OnChanges {
       this.displayEditForm = true;
       this.openAddEditForm();
     }, 300);
-    console.log('[FORM-COMP] eventEditField selectedField ', this.selectedField)
-    console.log('[FORM-COMP] eventEditField displayAddForm ', this.displayAddForm)
-    console.log('[FORM-COMP] eventEditField displayEditForm ', this.displayEditForm)
+    this.logger.log('[FORM-COMP] eventEditField selectedField ', this.selectedField)
+    this.logger.log('[FORM-COMP] eventEditField displayAddForm ', this.displayAddForm)
+    this.logger.log('[FORM-COMP] eventEditField displayEditForm ', this.displayEditForm)
   }
 
   eventDropField(fields) {
@@ -422,9 +424,9 @@ export class FormComponent implements OnInit, OnChanges {
     this.displayAddForm = false;
     this.displayEditForm = false;
     this.displayTilebotAddEditForm = true;
-    console.log('[FORM-COMP] closeAddEditForm displayAddForm ', this.displayAddForm)
-    console.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayEditForm)
-    console.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayTilebotAddEditForm)
+    this.logger.log('[FORM-COMP] closeAddEditForm displayAddForm ', this.displayAddForm)
+    this.logger.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayEditForm)
+    this.logger.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayTilebotAddEditForm)
   }
 
   /** Event SAVE field */
@@ -437,7 +439,7 @@ export class FormComponent implements OnInit, OnChanges {
     }
     if (this.intentForm) {
       this.intentForm.fields = this.fields;
-      console.log('[FORM-COMP] saveAddEditForm intentForm ', this.intentForm)
+      this.logger.log('[FORM-COMP] saveAddEditForm intentForm ', this.intentForm)
     }
     this.displayAddForm = false;
     this.displayEditForm = false;
@@ -454,13 +456,13 @@ export class FormComponent implements OnInit, OnChanges {
 
   /** */
   openDeleteForm() {
-    console.log('[FORM-COMP] openDeleteForm this.translations:::: ', this.translations);
+    this.logger.log('[FORM-COMP] openDeleteForm this.translations:::: ', this.translations);
     this.translateMap.deleteField = this.translations['DeleteForm'] ? this.translations['DeleteForm'] : '';
     this.translateMap.confirmDeleteField = this.translations['ConfirmDeleteForm'] ? this.translations['ConfirmDeleteForm'] : '';
     this.displayMODAL = true;
     this.selectedObjectId = this.idForm;
-    console.log('[FORM-COMP] openDeleteForm displayMODAL', this.displayMODAL)
-    console.log('[FORM-COMP openDeleteForm selectedObjectId', this.selectedObjectId)
+    this.logger.log('[FORM-COMP] openDeleteForm displayMODAL', this.displayMODAL)
+    this.logger.log('[FORM-COMP openDeleteForm selectedObjectId', this.selectedObjectId)
   }
 
   goToFormMoreInfo() {

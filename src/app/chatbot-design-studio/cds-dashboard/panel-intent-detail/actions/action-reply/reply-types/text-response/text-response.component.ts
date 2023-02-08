@@ -53,7 +53,7 @@ export class TextResponseComponent implements OnInit {
     try {
       this.buttons = this.response.attributes.attachment.buttons;
     } catch (error) {
-      console.log('there are no buttons');
+      // console.log('there are no buttons');
     }
   }
 
@@ -91,7 +91,7 @@ export class TextResponseComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     // this.textGrabbing = false;
     moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
-    console.log(this.buttons, event.previousIndex, event.currentIndex);
+    // console.log(this.buttons, event.previousIndex, event.currentIndex);
   }
   /** */
   onDeleteResponse(){

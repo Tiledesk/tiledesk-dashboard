@@ -13,6 +13,7 @@
     font-size: 30px;
     font-weight: 500;
     font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    line-height: 30px;
 }
 
 .cmnty-chatbot-dtls-img {
@@ -26,8 +27,8 @@
 
 .template-dtls-description {
     max-width: 820px;
-    margin-top: 14px;
-    font-weight: 400;
+    margin-top: 8px;
+    font-weight: 300;
     font-size: 16px;
 }
 
@@ -66,4 +67,57 @@
     min-width: 80px;
     padding: 0 16px;
     text-transform: none;
+    box-shadow: unset;
+
+}
+
+
+.cmnty-chatbot-dtls-author {
+    height: 24px;
+    width: 24px;
+    object-fit: cover;
+    background-color: #f0f1f2;
+    border: 1px solid #d2d4d6;
+    border-radius: 50%;
+}
+
+.cmnty-chatbot-dtls-author-and-publication-date-wpr {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cmnty-chatbot-publication-date {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.template-dtls-tags-wpr {
+    display: flex;
+    gap: 6px;
+    // justify-content: flex-end;
+    max-width: 820px;
+    margin-top: 8px;
+}
+
+.template-dtls-tag {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #c0c3c4;
+    border-radius: 16px;
+    padding: 0px 10px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.template-dtls-template-features-title {
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 26px;
+}
+
+.template-dtls-feature {
+    padding: 6px 0px;
+    font-weight: 400;
 }

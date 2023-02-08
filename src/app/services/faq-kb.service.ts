@@ -121,13 +121,13 @@ export class FaqKbService {
   }
 
   getCommunityTemplateDetail(templateid) {
-   
+
     // const httpOptions = {
     //   headers: new HttpHeaders({
     //     'Content-Type': 'application/json',
     //   })
     // };
-   
+
     const url = this.TEMPLATES_URL + '/windows/' + templateid
 
     this.logger.log('[GET-TMPLT][FAQ-KB.SERV] - GET-COMMUNITY-TMPLT-DTLS - URL ', url);
@@ -376,6 +376,25 @@ export class FaqKbService {
       .post(url, JSON.stringify(body), httpOptions)
   }
 
+
+  createChatbotFromScratch(botname, bottype, language) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.FAQKB_URL;
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
+
+    const body = { 'name': botname, 'id_project': this.project._id, 'type': bottype, language: language, template: 'blank' };
+
+    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
+
+    return this._httpClient
+      .post(url, JSON.stringify(body), httpOptions)
+  }
   // ------------------------------------------------------------------------------------------------
   // IF THE BOT IS OF TYPE DIALOGFLOW, AFTER THAT A NEW FAQKB WAS CREATED RUN A CALLBACK TO POST THE 
   // dialogfolw bot CREDENTIAL
@@ -557,5 +576,19 @@ export class FaqKbService {
     return this._httpClient.patch(url, body, httpOptions)
   }
 
+  searchInCommunityTemplates(query) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + this.project._id + '/bots/?' + query;
+    this.logger.log('[FAQ-KB.SERV] - getDialogflowBotCredetial GET URL', url);
+
+    return this._httpClient
+      .get(url, httpOptions)
+  }
 
 }

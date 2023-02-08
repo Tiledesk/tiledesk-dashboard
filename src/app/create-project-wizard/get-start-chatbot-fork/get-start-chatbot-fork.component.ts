@@ -63,7 +63,7 @@ export class GetStartChatbotForkComponent implements OnInit {
       .subscribe((user) => {
         if (user) {
           this.user = user;
-          console.log('[GET START CHATBOT FORK]  - user ', this.user)
+          // this.logger.log('[GET START CHATBOT FORK]  - user ', this.user)
         }
       });
   }
@@ -72,7 +72,7 @@ export class GetStartChatbotForkComponent implements OnInit {
    this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.projectId = project._id
-        console.log('[GET START CHATBOT FORK]  - projectId ', this.projectId)
+        // this.logger.log('[GET START CHATBOT FORK]  - projectId ', this.projectId)
       }
     });
   }
@@ -80,39 +80,39 @@ export class GetStartChatbotForkComponent implements OnInit {
   getTemplateNameOnSite() {
     this.route.queryParams
       .subscribe(params => {
-        // console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - params ', params);
+        // this.logger.log('[GET START CHATBOT FORK] GET QUERY PARAMS - params ', params);
         this.templateNameOnSite = params.tn
-        // console.log('[GET START CHATBOT FORK] GET QUERY PARAMS - templateNameOnSite ', this.templateNameOnSite);
+        // this.logger.log('[GET START CHATBOT FORK] GET QUERY PARAMS - templateNameOnSite ', this.templateNameOnSite);
       });
 
   }
 
   getTemplates() {
     // const storedRoute = this.localDbService.getFromStorage('wannago')
-    // console.log('[GET START CHATBOT FORK] storedRoute ', storedRoute)
+    // this.logger.log('[GET START CHATBOT FORK] storedRoute ', storedRoute)
 
     const storedRoute = decodeURIComponent(this.router.url);
-    // console.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
+    // this.logger.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
     if (storedRoute) {
       // storedRoute.split('/')
       let storedRouteSegments = storedRoute.split('/')
 
-      console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegments)
+      // this.logger.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegments)
       let secondStoredRouteSegment = storedRouteSegments[2]
 
-      // console.log('[GET START CHATBOT FORK] secondStoredRouteSegment ', secondStoredRouteSegment)
+      // this.logger.log('[GET START CHATBOT FORK] secondStoredRouteSegment ', secondStoredRouteSegment)
       // && (!storedRouteSegments.includes("?tn=")) && (!storedRouteSegments.includes("%253Ftn%253D"))
       if (secondStoredRouteSegment.includes("?")) {
 
         const secondStoredRouteSegments = storedRouteSegments[2].split('?tn=')
 
-        console.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
+        // this.logger.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
         this.botid = secondStoredRouteSegments[0]
         const _templateNameOnSite = secondStoredRouteSegments[1];
         try {
           this.templateNameOnSite = decodeURI(_templateNameOnSite)
         } catch (e) { // catches a malformed URI
-          console.error(e);
+          this.logger.error(e);
         }
       }
 
@@ -130,7 +130,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     }
 
     this.faqKbService.getTemplates().subscribe((res: any) => {
-      // console.log('[GET START CHATBOT FORK] GET TEMPLATES - RES ', res)
+      // this.logger.log('[GET START CHATBOT FORK] GET TEMPLATES - RES ', res)
       if (res) {
         const templates = res
 
@@ -138,11 +138,11 @@ export class GetStartChatbotForkComponent implements OnInit {
           return obj._id === this.botid
         });
         this.selectedTemplates = selectedTemplates[0]
-        // console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES ', this.selectedTemplates)
+        // this.logger.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES ', this.selectedTemplates)
 
         this.templateImg = this.selectedTemplates['bigImage'];
         // this.templateNameOnSite = this.selectedTemplates['nameOnSite'];
-        // console.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateImg ', this.templateImg)
+        // this.logger.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateImg ', this.templateImg)
 
       }
 
@@ -157,7 +157,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   getProjects() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      // console.log('[GET START CHATBOT FORK] - GET PROJECTS ', projects);
+      // this.logger.log('[GET START CHATBOT FORK] - GET PROJECTS ', projects);
       if (projects) {
         this.projects = projects;
         if (this.projects && this.projects.length === 1) {
