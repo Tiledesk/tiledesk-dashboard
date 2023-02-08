@@ -10,16 +10,16 @@ import { Component, Input, OnInit } from '@angular/core';
 export class HomePromoDesignStudioComponent implements OnInit {
 
   @Input() user: User;
-  
+
   url: SafeResourceUrl = null;
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/SgDGwvVoqWE')
+  
   }
 
   goToSite(){
-    window.open('https://www.youtube.com/watch?v=b0laljUl85E', '_blank')
+    window.open('https://youtu.be/USVKeiiFZ7o', '_blank')
   }
 
 }

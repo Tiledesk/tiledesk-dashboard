@@ -374,12 +374,12 @@ export class TemplatesComponent implements OnInit {
   }
 
 
-  //   servizio per effettuare una ricerca fulltext su name, description e tag
-  // curl -v -X GET -H 'Content-Type:application/json' -u andrea.leo@frontiere21.it:258456td  'https://tiledesk-server-pre.herokuapp.com/63c824ec8216d50035b2b04a/bots/?text=ciao2'
+
   searchInCommunityTemplates() {
     this.logger.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - value to search ', this.valueToSearch);
     this.faqKbService.searchInCommunityTemplates(this.valueToSearch).subscribe((res: any) => {
-      this.logger.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - RES ', res);
+      // this.templates = res
+      console.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - RES ', res);
     }, (error) => {
       this.logger.error('[BOTS-TEMPLATES] SEARCH IN COMMUNITY TEMPLATE - ERROR ', error);
       

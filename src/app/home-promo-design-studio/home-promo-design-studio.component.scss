@@ -97,7 +97,7 @@
 
 .onboarding__home__guide-header{
     position: relative;
-    height: 180px; //calc(169px + 60px);
+    height: 200px; //calc(169px + 60px);
     margin-right: 40px;
     top: -5px;
     background-color: #f1f1f1;
@@ -157,7 +157,8 @@
     position: absolute;
     // bottom: 40px;
     right: 145px;
-    top: 30px;
+    top: 40px;
+    bottom: 40px;
     display: flex;
     gap: 10px;
 
@@ -169,14 +170,14 @@
         border-radius: 6px;
 
         display: flex;
-        max-width: 220px;
+        max-width: 240px;
         justify-content: center;
         align-items: center;
         overflow: hidden;    
 
         background-image: url(https://tiledesk.com/wp-content/uploads/2023/01/chatboat_design_studio_copertina.jpg);
         background-color: #cccccc;
-        width: 188px;
+        width: 226px;
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;

@@ -583,8 +583,9 @@ export class FaqKbService {
         'Authorization': this.TOKEN
       })
     };
-
-    let url = this.SERVER_BASE_PATH + this.project._id + '/bots/?' + query;
+    // https://chatbot-templates-app-v3.herokuapp.com/chatbots/public/community
+    // https://chatbot-templates-app-v3.herokuapp.com/chatbots/public/community?text=lead
+    let url = this.COMMUNITY_TEMPLATES_URL + '?text=' + query;
     this.logger.log('[FAQ-KB.SERV] - getDialogflowBotCredetial GET URL', url);
 
     return this._httpClient

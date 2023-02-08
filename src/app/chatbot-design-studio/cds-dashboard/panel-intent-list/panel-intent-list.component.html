@@ -48,7 +48,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="delete-box">
+                 
+                    <div class="delete-box" *ngIf="selectedIntent !== null">
                         <span class="material-icons delete-icon"
                             (click)="$event.stopPropagation();onDeleteButtonClicked(intent_start)">delete</span>
                     </div>
@@ -84,7 +85,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="delete-box">
+                    <div class="delete-box" *ngIf="selectedIntent !== null">
                         <span class="material-icons delete-icon"
                             (click)="$event.stopPropagation();onDeleteButtonClicked(intent_defaultFallback)">delete</span>
                     </div>
@@ -177,7 +178,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="delete-box">
+                    <div class="delete-box" *ngIf="selectedIntent !== null">
                         <span class="material-icons delete-icon"
                             (click)="$event.stopPropagation();onDeleteButtonClicked(intent)">delete</span>
                     </div>
