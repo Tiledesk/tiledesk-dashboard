@@ -38,8 +38,13 @@
 
       <div class="action-box-wpr">
         <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CONDITION)">
+          <div class="action-btn-icon"
+            matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 
+            matTooltip="Coming Soon" 
+            #tooltip="matTooltip"
+            matTooltipPosition='below' 
+            matTooltipHideDelay="100">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CONDITION)" disabled>
               <img [src]="ACTIONS_LIST['CONDITION'].src" [title]="ACTIONS_LIST['CONDITION'].name">
             </button>
           </div>
@@ -111,8 +116,13 @@
     <div class="actions-btns-wpr">
       <div class="action-box-wpr">
         <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ASSIGN_VARIABLE)">
+          <div class="action-btn-icon" 
+            matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 
+            matTooltip="Coming Soon" 
+            #tooltip="matTooltip"
+            matTooltipPosition='below' 
+            matTooltipHideDelay="100">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ASSIGN_VARIABLE)" disabled>
               <img [src]="ACTIONS_LIST['ASSIGN_VARIABLE'].src" [title]="ACTIONS_LIST['ASSIGN_VARIABLE'].name">
             </button>
           </div>
@@ -122,8 +132,13 @@
 
       <div class="action-box-wpr">
         <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.DELETE_VARIABLE)">
+          <div class="action-btn-icon"
+            matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 
+            matTooltip="Coming Soon" 
+            #tooltip="matTooltip"
+            matTooltipPosition='below' 
+            matTooltipHideDelay="100">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.DELETE_VARIABLE)" disabled>
               <img [src]="ACTIONS_LIST['DELETE_VARIABLE'].src" [title]="ACTIONS_LIST['DELETE_VARIABLE'].name">
             </button>
           </div>

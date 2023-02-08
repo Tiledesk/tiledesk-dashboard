@@ -20,7 +20,7 @@
             <span> Form </span>
         </div> -->
 
-        
+
         <!-- <div [ngStyle]="{'border':actions?.length > 0 ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
             [ngClass]="{'actions-btn-active': displayActions}" class="button-intent"
             (click)="toggleActions(displayActions = !displayActions) ">
@@ -43,6 +43,15 @@
         <div class="action--box-form"
             [ngClass]="{'action-box-no-form': formSize === 0,  'cds-action-active': HAS_SELECTED_FORM }"
             (click)="displayForm()">
+
+            <div class="action--handle" style="pointer-events: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#ff4000">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path
+                        d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+                    </svg>
+            </div>
+
             <div class="action-wpr" [ngClass]="{'action-wpr-exist-form': formSize > 0}">
                 <div class="cds-action-icon-wpr">
                     <span class="material-icons" style="font-size: 18px;">
@@ -69,12 +78,11 @@
        'action-box-in-list-exist-form': formSize > 0 && firstItem, -->
     <div class="action-list-wpr" *ngIf="actions && actions?.length > 0">
         <div cdkDropList class="action--list" (cdkDropListDropped)="drop($event)">
-            <div id="action_{{i}}" class="action--box" [ngSwitch]="action._tdActionType"
-                [ngClass]="{
+            <div id="action_{{i}}" class="action--box" [ngSwitch]="action._tdActionType" [ngClass]="{
                 'action--box-first-no-title': !action._tdActionTitle && firstItem,
                 'action--box-first-with-title': action._tdActionTitle && firstItem,
                 'action--box-no-title': !action._tdActionTitle && !firstItem, 
-                'action--box-with-title': action._tdActionTitle && !firstItem}" 
+                'action--box-with-title': action._tdActionTitle && !firstItem}"
                 *ngFor="let action of actions; let i = index;let lastItem = last; let firstItem = first" cdkDrag
                 cdkDragLockAxis="y" (click)="onActionSelected(action, i)">
 
@@ -111,7 +119,7 @@
                 <!-- ----------------------------- -->
                 <!-- @ Action Condition -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.CONDITION" cdkDragHandle> 
+                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.CONDITION" cdkDragHandle>
                     <div class="cds-action-title" *ngIf="action._tdActionTitle">
                         {{ action._tdActionTitle }}
                     </div>
@@ -335,7 +343,8 @@
                         {{ action._tdActionTitle }}
                     </div>
                     <div class="cds-action-icon-wpr">
-                        <img [src]="ACTIONS_LIST['CHANGE_DEPARTMENT'].src" [title]="ACTIONS_LIST['CHANGE_DEPARTMENT'].name">
+                        <img [src]="ACTIONS_LIST['CHANGE_DEPARTMENT'].src"
+                            [title]="ACTIONS_LIST['CHANGE_DEPARTMENT'].name">
                     </div>
                     <div class="cds-action-name-wpr">{{ACTIONS_LIST['CHANGE_DEPARTMENT'].name}}</div>
                     <div class="cds-action-arrow" *ngIf="!lastItem">

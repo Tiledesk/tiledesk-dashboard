@@ -274,8 +274,11 @@
   // outline: 0;
   // transform: translateX(60px);
   transition: all 0.2s ease-in-out;
+  cursor: grab;
   // width: 36px;
 }
+
+
 
 // .action--handle > svg {
 //   position: absolute;
@@ -306,6 +309,11 @@
 }
 
 .action--box:hover > .action--handle {
+  // transform: translateX(0);
+  opacity: 1;
+}
+
+.action--box-form:hover > .action--handle {
   // transform: translateX(0);
   opacity: 1;
 }
