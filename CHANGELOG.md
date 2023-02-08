@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.4.0
+- Chatbot design studio
+
 ### 2.3.22-rc29
 - Improvements and bug fixing
 
