@@ -8,13 +8,18 @@
 <appdashboard-home-promo-banner *ngIf="isVisibleHomeBanner" (showPromoBanner)='showPromoBanner()'>
 </appdashboard-home-promo-banner>
 
+<appdashboard-home-promo-design-studio style="position: relative;"
+  [user]="user"
+  [ngStyle]="{'margin-top':isVisibleHomeBanner === true ? '0px' : '-5px' }">
+</appdashboard-home-promo-design-studio>
+
 <div class="main-content" style="padding-top: 8px;margin-top: 0px;">
   <!-- ----------------------------------------------------------- -->
   <!-- Home header -->
   <!-- ----------------------------------------------------------- -->
   <div class="row" style=" margin-left: -15px; margin-right: -15px;">
     <div class="col-md-12 n-header-home-wpr"
-      [ngStyle]="{'margin-top':isVisibleHomeBanner === true ? '-28px' : '-25px' }"
+      [ngStyle]="{'margin-top':isVisibleHomeBanner === true ? 'calc(-28px - 5px)' : 'calc(-25px - 5px)' }"
       [ngClass]="{'n-header-home-wpr-max-media-991-promo-banner': isVisibleHomeBanner}">
       <div class="n-header-home">
         <h2 class="n-header-home-title">

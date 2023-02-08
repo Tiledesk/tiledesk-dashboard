@@ -1,0 +1,222 @@
+#container-promo{
+    background-color: #2d323f;
+    width: 100%;
+    // height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0px;
+
+    .text-promo{
+        // text-align: center;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-self: flex-start;
+        margin-top: 12px;
+        margin-left: 20px;
+        // gap: 10px;
+        // width: 30%;
+        // margin: 0px 10px;
+        justify-content: center;
+        font-family:"Poppins", "Roboto", "Arial", sans-serif;
+        #title{
+            font-size: 33px;
+            font-weight: 700!important;
+            margin-bottom: 10px;
+            line-height: 32px;
+            margin: 0;
+            padding: 0;
+        }
+
+        #subtitle{
+            font-weight: 300!important;
+            font-size: 16px;
+            line-height: 24px;
+            color: #8a98b1;
+            margin-top: 0px;
+        }
+
+    }
+
+    #content{
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-around;
+
+        
+    }
+
+    
+}
+
+.play { 
+    background: red;
+    border-radius: 50% / 10%;
+    color: #FFFFFF;
+    font-size: 2em; /* change this to change size */
+    height: 2em;
+    // margin: auto auto;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    text-indent: 0.1em;
+    transition: all 150ms ease-out;
+    width: 3em;
+  }
+  
+  .play:hover {
+    background: darkorange;
+  }
+  
+  .play::before { 
+    background: inherit;
+    border-radius: 5% / 50%;
+    bottom: 9%;
+    content: "";
+    left: -5%;
+    position: absolute;
+    right: -5%;
+    top: 9%;
+  }
+  
+  .play::after {
+    border-style: solid;
+    border-width: 0.5em 0 0.5em 1.132em; //1em 0 1em 1.732em;
+    border-color: transparent transparent transparent rgba(255, 255, 255, 0.75);
+    content: ' ';
+    font-size: 0.75em;
+    height: 0;
+    margin: -0.5em 0 0 -0.5em;; //-1em 0 0 -0.75em;
+    top: 50%;
+    position: absolute;
+    width: 0;
+  }
+
+
+.onboarding__home__guide-header{
+    position: relative;
+    height: 180px; //calc(169px + 60px);
+    margin-right: 40px;
+    top: -5px;
+    background-color: #f1f1f1;
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.flex-auto{
+    flex: 1 1 auto;
+}
+
+.welcome{
+    font-size: 22px;
+    line-height: 27px;
+    font-weight: 600;
+
+    align-self: flex-end;
+    color:#2d323f
+}
+
+
+.onboarding__home__guide-assistant__circle-backdrop__right{
+    background-color: #fbc916;
+    position: absolute;
+    bottom: 0;
+    right: 20px;
+}
+
+.onboarding__home__guide-assistant__circle-backdrop__right.o__large{
+    height: 77px;
+    width: 154px;
+    border-top-left-radius: 154px;
+    border-top-right-radius: 154px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.onboarding__home__guide-assistant__asset.o__large{
+    width: 100px;
+    // height: 88px;
+    // left: 18px;
+}
+
+.onboarding__home__guide-assistant__asset {
+    // position: absolute;
+    // bottom: 0;
+    margin-bottom: 40px;
+}
+
+
+.onboarding__home__guide-assistant__speech-bubble__right{
+    
+    // max-width: 620px;
+    position: absolute;
+    // bottom: 40px;
+    right: 145px;
+    top: 30px;
+    display: flex;
+    gap: 10px;
+
+    & > .box_image{
+        background-color: #fff;
+        border-color: #fbc916;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 6px;
+
+        display: flex;
+        max-width: 220px;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;    
+
+        background-image: url(https://tiledesk.com/wp-content/uploads/2023/01/chatboat_design_studio_copertina.jpg);
+        background-color: #cccccc;
+        width: 188px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+
+        &:hover{
+            // border-color: red;
+            // border-width: 2px;
+            cursor: pointer;
+            img{
+                opacity: 0.8;
+            }
+        }
+    }
+
+    & > .box_message{
+        background-color: #fff;
+        border-color: #fbc916;
+        padding: 15px 20px;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 6px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+
+
+.t__light-text {
+    font-size: 13px;
+    line-height: 20px;
+    color: #737376;
+    font-weight: 400;
+}
+
+.t__h2, .t__h2__deem {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 600;
+    color: #2d323f;
+}
