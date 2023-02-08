@@ -164,6 +164,13 @@ input:-webkit-autofill {
   .signup-title > h2 {
     text-align: center !important;
   }
+
+  .no-card-required {
+    text-align: center!important;
+    color: #666666 !important;
+    font-size: 1.1em !important;
+    font-weight: 300 !important;
+  }
 }
 
 @media (min-width: 992px) {
@@ -187,7 +194,8 @@ input:-webkit-autofill {
   text-align: left;
 }
 
-.signup-subtitle {
+.signup-subtitle,
+.no-card-required {
   font-size: 16px;
   font-weight: 400;
   margin-bottom: 15px;
