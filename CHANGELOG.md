@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.3.22-rc29
+- Improvements and bug fixing
+
 ### 2.3.22-rc28
 - Restyles signing and signup page
 - Skips chatbot onboarding
