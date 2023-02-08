@@ -20,6 +20,7 @@ export const environment = {
     appsUrl: 'CHANGEIT',
     promoBannerUrl: 'CHANGEIT',
     chatStoragePrefix: "CHANGEIT",
+    tiledeskPhoneNumber: "CHANGEIT",
     firebase: {
         apiKey: "CHANGE-IT",
         authDomain: "CHANGE-IT",

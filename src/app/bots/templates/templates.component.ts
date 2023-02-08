@@ -43,8 +43,8 @@ export class TemplatesComponent implements OnInit {
 
   storageBucket: string;
   baseUrl: string;
-
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  valueToSearch: string;
   constructor(
     private auth: AuthService,
     private faqKbService: FaqKbService,
@@ -85,13 +85,13 @@ export class TemplatesComponent implements OnInit {
     if (this.route.indexOf('bots/templates/community') !== -1) {
       this.COMMUNITY_TEMPLATE = true
       this.CERTIFIED_TEMPLATE = false
-      console.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
-      console.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
+      this.logger.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
+      this.logger.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
     } else if (this.route.indexOf('bots/templates/all') !== -1) {
       this.CERTIFIED_TEMPLATE = true
       this.COMMUNITY_TEMPLATE = false
-      console.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
-      console.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
+      this.logger.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
+      this.logger.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
     }
   }
 
@@ -186,7 +186,7 @@ export class TemplatesComponent implements OnInit {
 
       if (res) {
         this.communityTemplates = res
-        console.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES', this.communityTemplates);
+        this.logger.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES', this.communityTemplates);
         this.allCommunityTemplatesCount = this.communityTemplates.length;
         this.logger.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
 
@@ -226,7 +226,7 @@ export class TemplatesComponent implements OnInit {
 
       if (res) {
         this.certfifiedTemplates = res
-        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
+        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
 
         this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res
@@ -302,7 +302,7 @@ export class TemplatesComponent implements OnInit {
 
     let stripHere = 115;
     templates.forEach(template => {
-      console.log('[BOTS-TEMPLATES] startChatBot', template);
+      this.logger.log('[BOTS-TEMPLATES] startChatBot', template);
       template['shortDescription'] = template['description'].substring(0, stripHere) + '...';
 
     });
@@ -363,15 +363,30 @@ export class TemplatesComponent implements OnInit {
 
 
   createBlankTilebot() {
-    // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-    this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+    this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+    // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
 
   }
 
   goToCommunityTemplateDetail(templateid) {
-    console.log('[BOTS-TEMPLATES]  GO TO COMMUNITY TEMPLATE DTLS -  templateid ', templateid);
+    this.logger.log('[BOTS-TEMPLATES]  GO TO COMMUNITY TEMPLATE DTLS -  templateid ', templateid);
     this.router.navigate(['project/' + this.project._id + '/template-details/' + templateid]);
+  }
 
+
+  //   servizio per effettuare una ricerca fulltext su name, description e tag
+  // curl -v -X GET -H 'Content-Type:application/json' -u andrea.leo@frontiere21.it:258456td  'https://tiledesk-server-pre.herokuapp.com/63c824ec8216d50035b2b04a/bots/?text=ciao2'
+  searchInCommunityTemplates() {
+    this.logger.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - value to search ', this.valueToSearch);
+    this.faqKbService.searchInCommunityTemplates(this.valueToSearch).subscribe((res: any) => {
+      this.logger.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - RES ', res);
+    }, (error) => {
+      this.logger.error('[BOTS-TEMPLATES] SEARCH IN COMMUNITY TEMPLATE - ERROR ', error);
+      
+    }, () => {
+      this.logger.log('[BOTS-TEMPLATES] SEARCH IN COMMUNITY TEMPLATE * COMPLETE * ');
+
+    });
   }
 
 

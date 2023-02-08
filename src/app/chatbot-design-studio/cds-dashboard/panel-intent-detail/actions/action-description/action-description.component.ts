@@ -26,7 +26,7 @@ export class ActionDescriptionComponent implements OnInit {
     // if(this.actionSelected && this.actionSelected._tdActionTitle === ''){
     //   this.titlePlaceholder = 'set a title to your action...'
     // }
-    console.log('showtipppp', this.showTip, this.tipText)
+    // console.log('showtipppp', this.showTip, this.tipText)
   }
 
   onChangeText(text: string){

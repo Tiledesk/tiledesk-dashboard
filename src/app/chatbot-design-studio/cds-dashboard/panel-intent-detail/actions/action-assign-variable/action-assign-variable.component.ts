@@ -13,39 +13,41 @@ export class ActionAssignVariableComponent implements OnInit {
   @Input() action: ActionAssignVariable;
 
   actionAssignFormGroup: FormGroup;
-  variables: Array<string>= []
+  variables: Array<string> = []
 
-  constructor(private formBuilder: FormBuilder,
-              private logger: LoggerService,) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private logger: LoggerService,
+  ) { }
 
   ngOnInit(): void {
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
     this.initialize()
-    if(this.action && this.action.assignTo){
+    if (this.action && this.action.assignTo) {
       this.setFormValue()
     }
-    
+
   }
 
-  private initialize(){
+  private initialize() {
     this.actionAssignFormGroup = this.buildForm();
     this.actionAssignFormGroup.valueChanges.subscribe(form => {
-      console.log('[ACTION-ASSIGN-VARIABLE] form valueChanges-->', form)
-      if(form && (form.assignTo !== '' || form.expression !==''))
+      this.logger.log('[ACTION-ASSIGN-VARIABLE] form valueChanges-->', form)
+      if (form && (form.assignTo !== '' || form.expression !== ''))
         this.action = Object.assign(this.action, this.actionAssignFormGroup.value);
     })
   }
-  
-  buildForm(): FormGroup{
+
+  buildForm(): FormGroup {
     return this.formBuilder.group({
       expression: ['', Validators.required],
       assignTo: ['', Validators.required]
     })
   }
 
-  setFormValue(){
+  setFormValue() {
     this.actionAssignFormGroup.patchValue({
       expression: this.action.expression,
       assignTo: this.action.assignTo

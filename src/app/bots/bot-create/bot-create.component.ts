@@ -377,6 +377,31 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     }
   }
 
+  createTilebotBotFromScratch() { 
+    this.language = this.botDefaultSelectedLangCode;
+    this.faqKbService.createChatbotFromScratch(this.faqKbName,  'tilebot', this.language)
+    .subscribe((faqKb) => {
+      this.logger.log('[BOT-CREATE] createTilebotBotFromScratch - RES ', faqKb);
+
+      if (faqKb) {
+        this.newBot_name = faqKb['name'];
+        this.newBot_Id = faqKb['_id'];
+        // this.translateparamBotName = { bot_name: this.newBot_name }
+        // SAVE THE BOT IN LOCAL STORAGE
+        this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);
+      }
+
+    }, (error) => {
+
+      this.logger.error('[BOT-CREATE] CREATE FAQKB - POST REQUEST ERROR ', error);
+
+    
+    }, () => {
+      this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
+
+      this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
+    })
+  }
 
   // CREATE 
   createBot() {
@@ -850,6 +875,10 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.logger.log('[BOT-CREATE] goToKBArticle_Connect_your_Dialogflow_Agent');
     const url = URL_connect_your_dialogflow_agent; // NOT FOUND on gethelp
     window.open(url, '_blank');
+  }
+
+  goToCommunityStartChatbot() {
+    this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
   }
 
 }

@@ -37,7 +37,7 @@ export class CdsSidebarComponent implements OnInit {
 
   getUserRole() {
     this.usersService.project_user_role_bs.pipe( takeUntil(this.unsubscribe$)).subscribe((userRole) => {
-         console.log('[CDS-SIDEBAR] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        //  console.log('[CDS-SIDEBAR] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
@@ -57,7 +57,7 @@ export class CdsSidebarComponent implements OnInit {
 
 
   goTo(section: "cds-sb-intents" | "cds-sb-fulfillment" | "cds-sb-training" | "cds-sb-rules" | "cds-sb-settings") {
-    console.log('[CDS-SIDEBAR] goTo item ', section)
+    // console.log('[CDS-SIDEBAR] goTo item ', section)
 
     // let elements = Array.from(document.getElementsByClassName('section is_active'));
     let elements = this.el.nativeElement.querySelectorAll('.section.is_active')

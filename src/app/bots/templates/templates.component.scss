@@ -1115,7 +1115,7 @@
     outline: none;
     min-height: 0px;
     min-width: 0px;
-    background-color: #fcfcfc;
+    background-color: #fff;
     padding: 8px;
 }
 
@@ -1162,7 +1162,7 @@
     outline: none;
     min-height: 0px;
     min-width: 0px;
-    background-color: #f0f1f2;
+    background-color: #fff;
     overflow: hidden;
     position: relative;
     border: 1px solid #d2d4d6;
@@ -1170,6 +1170,7 @@
     width: 84px;
     height: 84px;
     margin-right: 10px;
+    border-radius: 50%;
 }
 
 

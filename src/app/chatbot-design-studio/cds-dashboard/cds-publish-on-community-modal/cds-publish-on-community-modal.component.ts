@@ -45,19 +45,19 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     private uploadImageNativeService: UploadImageNativeService,
     private sanitizer: DomSanitizer
   ) {
-    console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] data ', data)
+    this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] data ', data)
     this.selectedChatbot = data.chatbot;
     this.projectId = data.projectId;
-    console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] selectedChatbot ', this.selectedChatbot)
-    console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] projectId ', this.projectId)
+    this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] selectedChatbot ', this.selectedChatbot)
+    this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] projectId ', this.projectId)
     if (this.selectedChatbot) {
       this.id_faq_kb = this.selectedChatbot._id;
-      console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - id_faq_kb ', this.id_faq_kb)
+      this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - id_faq_kb ', this.id_faq_kb)
       this.faqKb_name = this.selectedChatbot.name;
-      console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - faqKb_name ', this.faqKb_name)
+      this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - faqKb_name ', this.faqKb_name)
 
       this.faqKb_description = this.selectedChatbot.description;
-      console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - faqKb_description ', this.faqKb_description);
+      this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - faqKb_description ', this.faqKb_description);
       this.checkBotImageExist()
     }
   }
@@ -134,20 +134,20 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
 
   setImageProfileUrl_Native(storage) {
     this.botProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    //console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    //this.logger.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }
 
   getBotProfileImage(): SafeUrl {
     if (this.timeStamp) {
-      // console.log('getBotProfileImage this.botProfileImageurl', this.botProfileImageurl)
+      // this.logger.log('getBotProfileImage this.botProfileImageurl', this.botProfileImageurl)
       return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl + '&' + this.timeStamp);
     }
     return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl)
   }
 
   upload(event) {
-    console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE  upload')
+    this.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE  upload')
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
 
@@ -157,17 +157,17 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     } else {
 
       // Native upload
-      console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE  upload with native service')
+      this.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE  upload with native service')
 
       this.uploadImageNativeService.uploadBotPhotoProfile_Native(file, this.id_faq_kb).subscribe((downoloadurl) => {
-        console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE upload with native service - RES downoloadurl', downoloadurl);
+        this.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE upload with native service - RES downoloadurl', downoloadurl);
 
         this.botProfileImageurl = downoloadurl
 
         this.timeStamp = (new Date()).getTime();
       }, (error) => {
 
-        console.error('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE upload with native service - ERR ', error);
+        this.logger.error('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE upload with native service - ERR ', error);
       })
 
     }
@@ -204,18 +204,18 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
   }
 
   checkBotImageUploadIsComplete() {
-    console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] checkBotImageUploadIsComplete')
+    this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] checkBotImageUploadIsComplete')
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
       this.uploadImageService.botImageWasUploaded.subscribe((imageuploaded) => {
-        console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Firebase)');
+        this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Firebase)');
         this.botImageHasBeenUploaded = imageuploaded;
 
         if (this.storageBucket && this.botImageHasBeenUploaded === true) {
 
           this.showSpinnerInUploadImageBtn = false;
 
-          console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE - BUILD botProfileImageurl ');
+          this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE - BUILD botProfileImageurl ');
 
           this.setImageProfileUrl(this.storageBucket)
         }
@@ -223,7 +223,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     } else {
       // Native
       this.uploadImageNativeService.botImageWasUploaded_Native.subscribe((imageuploaded) => {
-        console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Native)');
+        this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Native)');
 
         this.botImageHasBeenUploaded = imageuploaded;
 
@@ -239,7 +239,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     // RESOLVE THE BUG 'edit button remains focused after clicking'
     this.elementRef.nativeElement.blur();
 
-    // console.log('[CDS-CHATBOT-DTLS] FAQ KB NAME TO UPDATE ', this.faqKb_name);
+    // this.logger.log('[CDS-CHATBOT-DTLS] FAQ KB NAME TO UPDATE ', this.faqKb_name);
     this.selectedChatbot.name = this.faqKb_name
     this.selectedChatbot.description = this.faqKb_description;
 
@@ -251,15 +251,15 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
   // Tags 
   // --------------------------------------------------------------------------------
   createNewTag = (newTag: string) => {
-    console.log("Create New TAG Clicked -> newTag: " + newTag)
+    this.logger.log("Create New TAG Clicked -> newTag: " + newTag)
     var index = this.tagsList.findIndex(t => t.tag === newTag);
     if (index === -1) {
-      console.log("Create New TAG Clicked - Tag NOT exist")
+      this.logger.log("Create New TAG Clicked - Tag NOT exist")
       this.tagsList.push(newTag)
-      console.log("Create New TAG Clicked - chatbot tag tagsList : ", this.tagsList)
+      this.logger.log("Create New TAG Clicked - chatbot tag tagsList : ", this.tagsList)
 
       let self = this;
-      console.log(' this.ngSelect', this.ngSelect)
+      this.logger.log(' this.ngSelect', this.ngSelect)
       if (this.ngSelect) {
         this.ngSelect.close()
         this.ngSelect.blur()
@@ -269,14 +269,14 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
       self.updateChatbot(self.selectedChatbot)
 
     } else {
-      console.log("Create New TAG Clicked - Tag already exist ")
+      this.logger.log("Create New TAG Clicked - Tag already exist ")
 
     }
   }
 
   removeTag(tag: string) {
     // if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
-    console.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag TO REMOVE: ', tag);
+    this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag TO REMOVE: ', tag);
     var index = this.tagsList.indexOf(tag);
     if (index !== -1) {
       this.tagsList.splice(index, 1);
@@ -285,7 +285,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     this.updateChatbot(this.selectedChatbot)
 
 
-    console.log('[WS-REQUESTS-MSGS] -  REMOVE TAG - TAGS ARRAY AFTER SPLICE: ', this.tagsList);
+    this.logger.log('[WS-REQUESTS-MSGS] -  REMOVE TAG - TAGS ARRAY AFTER SPLICE: ', this.tagsList);
 
   }
 
@@ -297,13 +297,13 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
 
     this.selectedChatbot.public = true
     this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((data) => {
-      console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] publishOnCommunity - RES ', data)
+      this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] publishOnCommunity - RES ', data)
     }, (error) => {
 
-      console.error('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] publishOnCommunity ERROR ', error);
+      this.logger.error('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] publishOnCommunity ERROR ', error);
     }, () => {
 
-      console.error('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] publishOnCommunity * COMPLETE * ');
+      this.logger.error('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] publishOnCommunity * COMPLETE * ');
       this.dialogRef.close();
 
     });
@@ -312,13 +312,13 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
   updateChatbot(selectedChatbot) {
     this.faqKbService.updateChatbot(selectedChatbot)
       .subscribe((chatbot: any) => {
-        console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - UPDATED CHATBOT - RES ', chatbot);
+        this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - UPDATED CHATBOT - RES ', chatbot);
 
       }, (error) => {
-        console.error('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - UPDATED CHATBOT - ERROR  ', error);
+        this.logger.error('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - UPDATED CHATBOT - ERROR  ', error);
         // self.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
       }, () => {
-        console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - UPDATED CHATBOT * COMPLETE *');
+        this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - UPDATED CHATBOT * COMPLETE *');
 
       });
   }

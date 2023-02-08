@@ -16,7 +16,7 @@ export class AnswerComponent implements OnInit , OnChanges{
   }
 
   ngOnChanges() {
-    console.log('[INTENT-ANSWER] intentSelected ' ,this.intentSelected) 
+    // console.log('[INTENT-ANSWER] intentSelected ' ,this.intentSelected) 
 
   }
 

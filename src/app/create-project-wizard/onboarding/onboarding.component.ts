@@ -348,7 +348,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
 
   // ----------------- 5 : ADD FAQ TO CHATBOT VIA CSV UPLOAD   ------------------------ //
   uploadFaqFromCSV(questions, answers, intents) {
-    console.log('uploadFaqFromCSV()::: ', answers);
+    // console.log('uploadFaqFromCSV()::: ', answers);
     let csvColumnsDelimiter = ';'
     var csv = '';
     let buttons = '';
@@ -368,7 +368,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
     //this.logger.log('FORM DATA ', formData)
     this.faqService.uploadFaqCsv(formData)
       .subscribe(data => {
-        console.log('uploadFaqCsv()::: ', data);
+        // console.log('uploadFaqCsv()::: ', data);
         this.logger.log('[TILEBOT] UPLOAD CSV DATA ', data);
         if (data['success'] === true) {
           // this.callback('uploadFaqCsv');
@@ -412,7 +412,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
 
   // ----------------- 8 : UPDATE 'START' FAQ BY ADDING BUTTONS   ------------------------ //
   updateStartMessage(){
-    console.log('updateStartMessage()::: ');
+    // console.log('updateStartMessage()::: ');
 
     let question = '\\start';
     let intent = 'start';

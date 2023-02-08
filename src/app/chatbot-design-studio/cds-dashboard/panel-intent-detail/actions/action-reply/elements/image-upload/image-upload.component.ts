@@ -3,6 +3,7 @@ import { Metadata } from '../../../../../../../models/intent-model';
 import { MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT } from '../../../../../../utils';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { DomSanitizer} from '@angular/platform-browser';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-image-upload',
@@ -20,7 +21,8 @@ export class ImageUploadComponent implements OnInit {
   
   constructor(
     private uploadImageNativeService: UploadImageNativeService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private logger: LoggerService,
   ) { }
 
   // SYSTEM FUNCTIONS //
@@ -35,7 +37,7 @@ export class ImageUploadComponent implements OnInit {
         // this.setImageSize(this.metadata.src);
       }
     } catch (error) {
-      console.log("error: ", error);
+      // this.logger.log("error: ", error);
     }
   }
 
@@ -48,7 +50,7 @@ export class ImageUploadComponent implements OnInit {
         return false;
       }
     } catch (error) {
-      console.log("error: ", error);
+      this.logger.log("error: ", error);
       return true;
     }
   }
@@ -65,7 +67,7 @@ export class ImageUploadComponent implements OnInit {
         this.uploadAttachment_Native(selectedFiles);
       }
     } catch (error) {
-      console.log("error: ", error);
+      this.logger.log("error: ", error);
     }
   }
 
@@ -87,7 +89,7 @@ export class ImageUploadComponent implements OnInit {
       // this.logger.log(`[WS-REQUESTS-MSGS] - upload native metadata `, this.metadata);
       // this.fileUpload.nativeElement.value = '';
     }).catch(error => {
-      console.log("error", error);
+      this.logger.log("error", error);
       // this.logger.error(`[WS-REQUESTS-MSGS] - upload native Failed to upload file and get link `, error);
     });
   }
@@ -102,7 +104,7 @@ export class ImageUploadComponent implements OnInit {
       var img = new Image();
       img.src = fileReader.result.toString()
       img.onload = () => {
-          console.log('imageeee', img.width, img.height)
+          this.logger.log('imageeee', img.width, img.height)
           this.metadata.width = img.width;
           this.metadata.height = img.height;
           this.metadata.name = uploadedFiles.name
@@ -118,7 +120,7 @@ export class ImageUploadComponent implements OnInit {
     //     // this.metadata.width = width;
     //     // this.metadata.height = height;
     //   } catch (error) {
-    //     console.log('myIdentifier:' + error);
+    //     this.logger.log('myIdentifier:' + error);
     //   }
     // }, 0);
   }
@@ -144,13 +146,13 @@ export class ImageUploadComponent implements OnInit {
         this.uploadAttachment_Native(file);
       }
     } catch (error) {
-      console.log("error: ", error);
+      this.logger.log("error: ", error);
     }
     // if (file.type.startsWith('image') && !file.type.includes('svg')) {
     //   const reader = new FileReader();
     //   let that = this;
     //   reader.onload = (e: any) => {
-    //     console.log("CARICATA IMMAGINE::: ", e.target);
+    //     this.logger.log("CARICATA IMMAGINE::: ", e.target);
     //     // this.metadata.src = e.target.result;
     //     var img = new Image();
     //     img.src = this.metadata.src;
@@ -158,7 +160,7 @@ export class ImageUploadComponent implements OnInit {
     //         that.setImageSize();
     //     };
     //     img.onerror = function(e) {
-    //         console.log("ERROR ::: ", e);
+    //         this.logger.log("ERROR ::: ", e);
     //     };
     //   }
     //   reader.readAsDataURL(file);
@@ -171,7 +173,7 @@ export class ImageUploadComponent implements OnInit {
     //   const that = this;
     //   reader.addEventListener('load',function () {
     //       const img = reader.result.toString();
-    //       console.log('FIREBASE-UPLOAD USE CASE SVG LoaderPreviewPage readAsDataURL img ',img)
+    //       this.logger.log('FIREBASE-UPLOAD USE CASE SVG LoaderPreviewPage readAsDataURL img ',img)
     //       // that.arrayFiles.push(that.sanitizer.bypassSecurityTrustResourceUrl(img))
     //       // if (!that.fileSelected) {
     //       //   that.fileSelected = that.sanitizer.bypassSecurityTrustResourceUrl(img)
@@ -185,12 +187,12 @@ export class ImageUploadComponent implements OnInit {
     //   // USE CASE FILE
     //   // ---------------------------------------------------------------------
     // } else {
-    //   console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE ',file)
-    //   console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE TYPE',file.type)
+    //   this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE ',file)
+    //   this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE TYPE',file.type)
     //   let file_extension =  file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length) || file.name
-    //   console.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE EXTENSION', file_extension)
+    //   this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE EXTENSION', file_extension)
     //   let file_name = file.name
-    //   console.log( '[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE NAME', file_name)
+    //   this.logger.log( '[LOADER-PREVIEW-PAGE] - readAsDataURL - USE CASE FILE - FILE NAME', file_name)
     //   // this.createFile()
     // }
   }
@@ -249,12 +251,12 @@ export class ImageUploadComponent implements OnInit {
 
   checkAcceptedFile(draggedFileMimeType) {
     let isAcceptFile = false;
-    let accept_files_array = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG'];
+    let accept_files_array = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif'];
     try {
       const accept_file_segment = draggedFileMimeType.split('/');
       let fileType = accept_file_segment[1];
       accept_files_array.forEach((accept_file) => {
-        // console.log('checkAcceptedFile:', fileType, '--->', accept_file);
+        // this.logger.log('checkAcceptedFile:', fileType, '--->', accept_file);
         if (fileType.endsWith(accept_file)) {
           isAcceptFile = true;
           return isAcceptFile;

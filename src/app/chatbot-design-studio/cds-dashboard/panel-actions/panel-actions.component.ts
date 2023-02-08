@@ -1,5 +1,5 @@
 import { ACTIONS_LIST } from './../../utils';
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, HostListener } from '@angular/core';
 
 import { TYPE_ACTION, TYPE_COMMAND } from '../../utils';
 import { ActionCondition, ActionAgent, ActionClose, 
@@ -8,6 +8,7 @@ import { ActionCondition, ActionAgent, ActionClose,
          ActionWait, ActionAssignVariable, ActionDeleteVariable, 
          ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
          ActionChangeDepartment, ActionHideMessage } from 'app/models/intent-model';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 
 @Component({
@@ -26,26 +27,55 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   TYPE_ACTION = TYPE_ACTION
   ACTIONS_LIST = ACTIONS_LIST
 
-  constructor() { }
+  constructor(
+    private logger: LoggerService,
+    private eRef: ElementRef
+  ) { }
 
   ngOnInit(): void {
 
   }
 
   ngAfterViewInit(){
-    console.log('focussss', this.panel_actions_div)
+    this.logger.log('focussss', this.panel_actions_div)
     this.panel_actions_div.nativeElement.focus();
   }
 
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    //   console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
+    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
+    const clicked_element_id = event.target.id
+    console.log("clicked_element_id: ", clicked_element_id);
+    if (this.eRef.nativeElement.contains(event.target)) {
+      // console.log("clicked inside")
+    } else {
+
+      // const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
+      // console.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
+
+      //console.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
+      // && (!event.target.classList.contains('ng-option'))
+      // clicked_element_id !== 'a0da04ac7772' && 
+      console.log("clicked_element_id.startsWith(actions-btns-wpr)", clicked_element_id.startsWith("actions-btns-wpr"))
+      if (!event.target.classList.contains('csd-add-action-btn-wpr-element')) {
+        this.closeActionsDrawer();
+        console.log('clicked outside')
+      }
+    }
+  }
+
   onFocusOut(event){
-    console.log('onFocusOut eventttttttt',event)
+    this.logger.log('onFocusOut eventttttttt',event)
   }
 
   ngOnChanges() {
 
 
-    // console.log('[PANEL ACTION] isOpenActionDrawer ', this.isOpenActionDrawer)
-    // console.log('[PANEL ACTION] intentSelected ', this.intentSelected)
+    // this.logger.log('[PANEL ACTION] isOpenActionDrawer ', this.isOpenActionDrawer)
+    // this.logger.log('[PANEL ACTION] intentSelected ', this.intentSelected)
 
 
     // if (this.isOpenActionDrawer === true)  {
@@ -60,15 +90,15 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   }
 
   actionSelected(typeAction: TYPE_ACTION) {
-    console.log('[PANEL ACTION] actionSelected ', typeAction);
+    this.logger.log('[PANEL ACTION] actionSelected ', typeAction);
     if(typeAction === TYPE_ACTION.REPLY){
       let action = new ActionReply();
       let commandWait = new Command(TYPE_COMMAND.WAIT);
       action.attributes.commands.push(commandWait);
       let command = new Command(TYPE_COMMAND.MESSAGE);
       command.message = new Message('text', 'A chat message will be sent to the visitor');
-      console.log('1 action:  ', action)
-      console.log('2 command:  ', command)
+      this.logger.log('1 action:  ', action)
+      this.logger.log('2 command:  ', command)
       action.attributes.commands.push(command);
       this.intentSelected.actions.push(action);
     }

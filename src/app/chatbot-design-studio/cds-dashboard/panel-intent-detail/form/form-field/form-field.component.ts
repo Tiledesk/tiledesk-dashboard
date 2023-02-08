@@ -32,7 +32,7 @@ export class FormFieldComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('[FORM-FIELD] fields ', this.fields)
+    // console.log('[FORM-FIELD] fields ', this.fields)
   }
 
   drop(event: CdkDragDrop<string[]>) {
