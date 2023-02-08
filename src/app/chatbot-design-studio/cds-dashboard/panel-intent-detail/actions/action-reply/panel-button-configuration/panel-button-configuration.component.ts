@@ -114,21 +114,18 @@ export class PanelButtonConfigurationComponent implements OnInit {
     //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
     //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
 
+    console.log("event: ", event)
     console.log("event.target: ", event.target)
+    console.log("event.target.classList: ", event.target.classList)
     
     const clicked_element_id = event.target.id
     if (this.eRef.nativeElement.contains(event.target)) {
       console.log("clicked inside")
     } else {
 
-      if (event.target.classList.contains('single-btn-reply')) {
-        console.log("element contain class single-btn-reply", event.target.classList.contains('single-btn-reply'));
-      } else {
-        console.log("element NOT contain class single-btn-reply", event.target.classList.contains('single-btn-reply'));
-      }
-
       console.log('clicked outside')
-      if (!event.target.classList.contains('single-btn-reply')) {
+
+      if (!event.target.classList.contains('single-btn-reply') && !event.target.classList.contains('ng-option') && !event.target.classList.contains('ng-option-label') && !event.target.classList.contains('mat-option-text')) {
         this.onCloseButtonPanel();
         console.log('clicked outside')
       }
