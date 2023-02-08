@@ -332,7 +332,7 @@ export class CdsDashboardComponent implements OnInit {
       const pendingClassName = 'loading-btn--pending';
       const successClassName = 'loading-btn--success';
       const failClassName = 'loading-btn--fail';
-      const stateDuration = 1500;
+      const stateDuration = 200;
       const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
 
       this.showSpinner = false;
@@ -414,7 +414,7 @@ export class CdsDashboardComponent implements OnInit {
     const pendingClassName = 'loading-btn--pending';
     const successClassName = 'loading-btn--success';
     const failClassName = 'loading-btn--fail';
-    const stateDuration = 1500;
+    const stateDuration = 200;
     const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
 
     //PENDING STATE
