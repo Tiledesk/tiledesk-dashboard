@@ -8,6 +8,7 @@ import { ActionCondition, ActionAgent, ActionClose,
          ActionWait, ActionAssignVariable, ActionDeleteVariable, 
          ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
          ActionChangeDepartment, ActionHideMessage } from 'app/models/intent-model';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   ACTIONS_LIST = ACTIONS_LIST
 
   constructor(
+    private logger: LoggerService,
     private eRef: ElementRef
   ) { }
 
@@ -35,7 +37,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   }
 
   ngAfterViewInit(){
-    console.log('focussss', this.panel_actions_div)
+    this.logger.log('focussss', this.panel_actions_div)
     this.panel_actions_div.nativeElement.focus();
   }
 
@@ -48,7 +50,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     const clicked_element_id = event.target.id
     console.log("clicked_element_id: ", clicked_element_id);
     if (this.eRef.nativeElement.contains(event.target)) {
-      console.log("clicked inside")
+      // console.log("clicked inside")
     } else {
 
       // const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
@@ -66,14 +68,14 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   }
 
   onFocusOut(event){
-    console.log('onFocusOut eventttttttt',event)
+    this.logger.log('onFocusOut eventttttttt',event)
   }
 
   ngOnChanges() {
 
 
-    // console.log('[PANEL ACTION] isOpenActionDrawer ', this.isOpenActionDrawer)
-    // console.log('[PANEL ACTION] intentSelected ', this.intentSelected)
+    // this.logger.log('[PANEL ACTION] isOpenActionDrawer ', this.isOpenActionDrawer)
+    // this.logger.log('[PANEL ACTION] intentSelected ', this.intentSelected)
 
 
     // if (this.isOpenActionDrawer === true)  {
@@ -88,15 +90,15 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   }
 
   actionSelected(typeAction: TYPE_ACTION) {
-    console.log('[PANEL ACTION] actionSelected ', typeAction);
+    this.logger.log('[PANEL ACTION] actionSelected ', typeAction);
     if(typeAction === TYPE_ACTION.REPLY){
       let action = new ActionReply();
       let commandWait = new Command(TYPE_COMMAND.WAIT);
       action.attributes.commands.push(commandWait);
       let command = new Command(TYPE_COMMAND.MESSAGE);
       command.message = new Message('text', 'A chat message will be sent to the visitor');
-      console.log('1 action:  ', action)
-      console.log('2 command:  ', command)
+      this.logger.log('1 action:  ', action)
+      this.logger.log('2 command:  ', command)
       action.attributes.commands.push(command);
       this.intentSelected.actions.push(action);
     }

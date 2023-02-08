@@ -2,6 +2,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActionIntentConnected } from 'app/models/intent-model';
 import { Component, OnInit, Input } from '@angular/core';
 import { TEXT_CHARS_LIMIT } from './../../../../utils';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'cds-action-intent',
@@ -22,12 +23,16 @@ export class ActionIntentComponent implements OnInit {
   // to delete
   //buttonAction: any;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private logger: LoggerService,
+    
+    ) { }
 
   ngOnInit(): void {
-    //console.log("[ACTION-INTENT] intents: ", this.intents)
+    //this.logger.log("[ACTION-INTENT] intents: ", this.intents)
     //this.filtered_intents = this.intents;
-    console.log("[ACTION-INTENT] elementSelected: ", this.action)
+    this.logger.log("[ACTION-INTENT] elementSelected: ", this.action)
   }
 
   ngOnChanges() {
@@ -40,7 +45,7 @@ export class ActionIntentComponent implements OnInit {
   private initialize() {
     this.actionIntentFormGroup = this.buildForm();
     this.actionIntentFormGroup.valueChanges.subscribe(form => {
-      console.log('[ACTION-INTENT] form valueChanges-->', form)
+      this.logger.log('[ACTION-INTENT] form valueChanges-->', form)
       if (form && (form.intentName !== '')) {
         this.action = Object.assign(this.action, this.actionIntentFormGroup.value)
       }
@@ -62,17 +67,17 @@ export class ActionIntentComponent implements OnInit {
   }
 
   // onKey(event) {
-  //   console.log("[ACTION-INTENT] onKey event: ", event);
+  //   this.logger.log("[ACTION-INTENT] onKey event: ", event);
   //   this.filtered_intents = this.intents;
   //   this.filtered_intents = this.filtered_intents.filter(intent => intent.toLowerCase().includes(event.toLowerCase()));
   // }
 
   // onChangeActionButton(event) {
-  //   //console.log("event: ", event)
+  //   //this.logger.log("event: ", event)
   // }
 
   // onTextChange(event) {
-  //   console.log("[ACTION-INTENT] onTextChange event: ", event);
+  //   this.logger.log("[ACTION-INTENT] onTextChange event: ", event);
   //   this.action.intentName = event;
   // }
 

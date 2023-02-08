@@ -399,7 +399,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
       })
     };
     const url = this.FAQ_URL;
-    console.log('[FAQ-SERV] ADD FAQ -  PUT URL ', url);
+    this.logger.log('[FAQ-SERV] ADD FAQ -  PUT URL ', url);
     const body = { 
       'id_faq_kb': id_faq_kb, 
       'question': question, 
@@ -442,7 +442,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
       'actions': intent_actions,
       'webhook_enabled': webhook_enabled 
     };
-    console.log('----------->>>', intent_actions, body);
+    this.logger.log('----------->>>', intent_actions, body);
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT REQUEST BODY ', body);
     return this._httpClient.put(url, JSON.stringify(body), httpOptions);
   }

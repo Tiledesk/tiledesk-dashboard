@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef }
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Button, Message, Command, ActionReply, MessageWithWait, MessageAttributes } from '../../../../../models/intent-model';
 import { TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE } from '../../../../utils';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'cds-action-reply',
@@ -37,16 +38,18 @@ export class ActionReplyComponent implements OnInit {
 
 
   
-  constructor() { }
+  constructor(
+    private logger: LoggerService,
+  ) { }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    console.log('ngOnInit panel-response');
+    this.logger.log('ngOnInit panel-response');
     // this.initialize();
   }
     
   ngOnChanges() {
-    console.log('ActionReplyComponent ngOnChanges');
+    this.logger.log('ActionReplyComponent ngOnChanges');
     this.initialize();
 
     // this.generateCommandsOfElements();
@@ -56,21 +59,21 @@ export class ActionReplyComponent implements OnInit {
   
   /** */
   // ngAfterContentChecked(){
-  //   console.log('ActionReplyComponent ngAfterContentChecked');
+  //   this.logger.log('ActionReplyComponent ngAfterContentChecked');
   //   setTimeout(() => {
   //     this.generateCommandsOfElements();
   //   }, 500); 
   // }
 
   // ngOnDestroy(){
-  //   console.log('ActionReplyComponent ngOnDestroy');
+  //   this.logger.log('ActionReplyComponent ngOnDestroy');
   //   setTimeout(() => {
   //     this.generateCommandsOfElements();
   //   }, 500); 
   // }
 
   // ngDoCheck(){
-  //   console.log('ActionReplyComponent ngDoCheck');
+  //   this.logger.log('ActionReplyComponent ngDoCheck');
   // }
 
 
@@ -87,7 +90,7 @@ export class ActionReplyComponent implements OnInit {
       try {
         this.arrayResponses = this.reply.attributes.commands;
       } catch (error) {
-        console.log('error:::', error);
+        this.logger.log('error:::', error);
       }
     }
     this.generateCommandsOfElements();
@@ -119,7 +122,7 @@ export class ActionReplyComponent implements OnInit {
     });
     this.reply.text = textConversation;
     this.reply.attributes.commands = replyArrayElements;
-    console.log("replyArrayElements", replyArrayElements);
+    this.logger.log("replyArrayElements", replyArrayElements);
   }
 
   /** */
@@ -138,13 +141,13 @@ export class ActionReplyComponent implements OnInit {
           if(element.message.metadata){
             message.metadata = element.message.metadata;
           }
-          console.log('MessageWithWait:::', message);
+          this.logger.log('MessageWithWait:::', message);
           this.arrayMessagesWithWait.push(message);
           time = 0;
         }
       });
     } catch (error) {
-      console.log(error);
+      this.logger.log(error);
     }
   }
 
@@ -173,14 +176,14 @@ export class ActionReplyComponent implements OnInit {
         this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
         this.scrollContainer.nativeElement.animate({scrollTop:0}, '500');
       } catch(error) { 
-        console.log('scrollToBottom ERROR: ', error);
+        this.logger.log('scrollToBottom ERROR: ', error);
       }    
     }, 300);        
   }
 
 
   onAddNewResponse(element){
-    console.log('onAddNewResponse:: ', element);
+    this.logger.log('onAddNewResponse:: ', element);
     try {
       let message = new MessageWithWait(element.message.type, element.message.text, 500);
       if(element.message.attributes){
@@ -193,7 +196,7 @@ export class ActionReplyComponent implements OnInit {
       // this.reply.attributes.commands.push(element);
       this.scrollToBottom();
     } catch (error) {
-      console.log('onAddNewResponse ERROR', error);
+      this.logger.log('onAddNewResponse ERROR', error);
     }
   }
 
@@ -246,13 +249,13 @@ export class ActionReplyComponent implements OnInit {
 
   /** */
   onChangeDelayTimeReplyElement(){
-    console.log('onChangeDelayTimeReplyElement ************', this.arrayMessagesWithWait);
+    this.logger.log('onChangeDelayTimeReplyElement ************', this.arrayMessagesWithWait);
     this.generateCommandsWithWaitOfElements();
   }
 
   /**onChangeReplyElement */
   onChangeReplyElement(){
-    console.log('onChangeReplyElement ************', this.arrayMessagesWithWait);
+    this.logger.log('onChangeReplyElement ************', this.arrayMessagesWithWait);
     this.generateCommandsWithWaitOfElements();
   }
 
@@ -262,7 +265,7 @@ export class ActionReplyComponent implements OnInit {
     try {
       this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
     } catch (error) {
-      console.log('name is not a string', error)
+      this.logger.log('name is not a string', error)
     }
   }
 
@@ -273,7 +276,7 @@ export class ActionReplyComponent implements OnInit {
  
   /** */
   // onSaveIntent(){
-  //   //console.log('onSaveIntent:: ', this.intent, this.arrayResponses);
+  //   //this.logger.log('onSaveIntent:: ', this.intent, this.arrayResponses);
   //   this.intentNameResult = this.checkIntentName();
   //   this.updateArrayResponse();
   //   if(this.intentNameResult){
@@ -288,7 +291,7 @@ export class ActionReplyComponent implements OnInit {
     try {
       this.reply.attributes.disableInputMessage = !this.reply.attributes.disableInputMessage;
     } catch (error) {
-      console.log("Error: ", error);
+      this.logger.log("Error: ", error);
     }
   }
 
@@ -304,15 +307,15 @@ private createNewButton(){
     'action': '',
     'show_echo': true
   };
-  console.log('createNewButton :: ', this.buttonSelected);
+  this.logger.log('createNewButton :: ', this.buttonSelected);
 }
 
   /** appdashboard-button-configuration-panel: onOpenButtonPanel */
   onOpenButtonPanel(event){
-    console.log('onOpenButtonPanel :: ', event);
+    this.logger.log('onOpenButtonPanel :: ', event);
     this.response = event.refResponse;
     if(!event.button){
-      console.log('new button  :: ', event.button);
+      this.logger.log('new button  :: ', event.button);
       this.newButton = true;
       this.createNewButton();
     } else {
@@ -320,12 +323,12 @@ private createNewButton(){
       this.buttonSelected = event.button;
     }
 
-    console.log("listOfActions:: ", this.listOfActions);
+    this.logger.log("listOfActions:: ", this.listOfActions);
     if (this.openCardButton === true) {
       this.onCloseButtonPanel();
     }
     this.openCardButton = true;
-    console.log('buttonSelected :: ', this.buttonSelected);
+    this.logger.log('buttonSelected :: ', this.buttonSelected);
   }
 
   /** appdashboard-button-configuration-panel: Save button */
@@ -333,19 +336,19 @@ private createNewButton(){
     if(this.newButton){
       this.response.attributes.attachment.buttons.push(button);
     }
-    console.log('onSaveButton222 :: ', button, this.response);
+    this.logger.log('onSaveButton222 :: ', button, this.response);
     this.openCardButton = false;
     this.generateCommandsWithWaitOfElements();
   }
 
   /** appdashboard-button-configuration-panel: Close button panel */
   onCloseButtonPanel() {
-    console.log('onCloseButtonPanel :: ');
+    this.logger.log('onCloseButtonPanel :: ');
     this.openCardButton = false;
   }
 
   onFocusOutEvent(event){
-    // console.log('onFocusOutEvent ::::::: ', event);
+    // this.logger.log('onFocusOutEvent ::::::: ', event);
     // this.onCloseButtonPanel()
   }
 

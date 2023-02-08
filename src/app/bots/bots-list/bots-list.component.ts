@@ -682,8 +682,8 @@ export class BotListComponent implements OnInit {
   }
 
   createBlankTilebot() {
-    // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-      this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+    this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+      // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
    
   }
 
@@ -696,11 +696,13 @@ export class BotListComponent implements OnInit {
   // Go to faq.component to: Add / Edit FAQ, Edit Bot name
   // ---------------------------------------------------------------------------
   goToBotDtls(idFaqKb: string, botType: string, botname: string) {
-    if (this.isPanelRoute === false) {
-      this.goToOldBotDtls(idFaqKb, botType, botname)
-    } else {
-      this.goToCDS(idFaqKb, botType, botname) 
-    }
+
+    this.goToCDS(idFaqKb, botType, botname) 
+    // if (this.isPanelRoute === false) {
+    //   this.goToOldBotDtls(idFaqKb, botType, botname)
+    // } else {
+    //   this.goToCDS(idFaqKb, botType, botname) 
+    // }
   }
 
   goToOldBotDtls(idFaqKb: string, botType: string, botname: string) {

@@ -10,6 +10,8 @@ import { FaqService } from 'app/services/faq.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AppConfigService } from 'app/services/app-config.service';
+import { LoggerService } from 'app/services/logger/logger.service';
 @Component({
   selector: 'appdashboard-create-chatbot',
   templateUrl: './create-chatbot.component.html',
@@ -25,6 +27,10 @@ export class CreateChatbotComponent implements OnInit {
   importedChatbotid: string;
   thereHasBeenAnErrorProcessing: string;
   create: boolean = true;
+
+  storageBucket: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
   constructor(
     private faqKbService: FaqKbService,
     private auth: AuthService,
@@ -35,6 +41,8 @@ export class CreateChatbotComponent implements OnInit {
     private botLocalDbService: BotLocalDbService,
     private notify: NotifyService,
     private translate: TranslateService,
+    public appConfigService: AppConfigService,
+    private logger: LoggerService,
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +50,21 @@ export class CreateChatbotComponent implements OnInit {
     this.getCurrentProject();
     this.getBrowserVersion();
     this.getTranslations()
+    this.getProfileImageStorage();
+  }
+
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      this.logger.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+
+      this.logger.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
   }
 
   getTranslations() {
@@ -68,29 +91,29 @@ export class CreateChatbotComponent implements OnInit {
 
       if (res) {
         const communityTemplates = res
-        console.log('[CREATE-CHATBOT] communityTemplates', communityTemplates);
-        // 
+        this.logger.log('[CREATE-CHATBOT] communityTemplates', communityTemplates);
+        
         this.startChatBotArray = communityTemplates.filter((el) => {
           return el.mainCategory === "System" && el.tags && el.tags.includes('start-chatbot')
         });
         let stripHere = 115;
         this.startChatBotArray.forEach(startChatBot => {
-          console.log('[CREATE-CHATBOT] startChatBot', startChatBot);
+          this.logger.log('[CREATE-CHATBOT] startChatBot', startChatBot);
           if (startChatBot['description']) {
             startChatBot['shortDescription'] = startChatBot['description'].substring(0, stripHere) + '...';
           }
         });
 
-        console.log('[CREATE-CHATBOT] startChatBotArray', this.startChatBotArray);
+        this.logger.log('[CREATE-CHATBOT] startChatBotArray', this.startChatBotArray);
 
         this.generateTagsBackground(this.startChatBotArray)
       }
 
     }, (error) => {
-      console.error('[CREATE-CHATBOT] GET COMMUNITY TEMPLATES ERROR ', error);
+      this.logger.error('[CREATE-CHATBOT] GET COMMUNITY TEMPLATES ERROR ', error);
       this.showSpinner = false;
     }, () => {
-      console.log('[CREATE-CHATBOT] GET COMMUNITY TEMPLATES COMPLETE');
+      this.logger.log('[CREATE-CHATBOT] GET COMMUNITY TEMPLATES COMPLETE');
 
       this.showSpinner = false;
     });
@@ -147,7 +170,7 @@ export class CreateChatbotComponent implements OnInit {
 
         tag.background = tagbckgnd
       } else {
-        console.log('[CREATE-CHATBOT] communityTemplates NO TAG COLOR');
+        this.logger.log('[CREATE-CHATBOT] communityTemplates NO TAG COLOR');
       }
       // template.certifiedTags.find(t => t.color === t.background).background = tagbckgnd;
 
@@ -185,13 +208,20 @@ export class CreateChatbotComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/bots']);
   }
 
+  goToCommunity() {
+    // this.router.navigate(['project/' + this.project._id + '/faqkb']);
+    this.router.navigate(['project/' + this.project._id + '/bots/templates/community']);
+  }
+
+  
+
   goBack() {
     this.location.back();
   }
 
 
   toggleTabCreateImport(tabcreate) {
-    console.log("[CREATE-CHATBOT] toggleTabCreateImport tabcreate", tabcreate);
+    this.logger.log("[CREATE-CHATBOT] toggleTabCreateImport tabcreate", tabcreate);
     this.HAS_SELECTED_CREATE_BOT = tabcreate
     //  console.log("[BOT-CREATE] toggleTabCreateImport HAS_SELECTED_CREATE_BOT",  this.HAS_SELECTED_CREATE_BOT );
   }
@@ -202,7 +232,7 @@ export class CreateChatbotComponent implements OnInit {
   // --------------------------------------------------------------------------
   fileChangeUploadChatbotFromJSON(event) {
 
-    console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event ', event);
+    this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event ', event);
     // let fileJsonToUpload = ''
     // // console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
     // const selectedFile = event.target.files[0];
@@ -220,13 +250,13 @@ export class CreateChatbotComponent implements OnInit {
     const formData: FormData = new FormData();
     formData.set('id_faq_kb', this.id_faq_kb);
     formData.append('uploadFile', file, file.name);
-    console.log('FORM DATA ', formData)
+    this.logger.log('FORM DATA ', formData)
 
     this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
-      console.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
         this.importedChatbotid = faqkb._id
-        console.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - importedChatbotid ', this.importedChatbotid)
+        this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - importedChatbotid ', this.importedChatbotid)
         this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
 
         this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
@@ -235,11 +265,11 @@ export class CreateChatbotComponent implements OnInit {
       }
 
     }, (error) => {
-      console.error('[TILEBOT] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+      this.logger.error('[TILEBOT] -  IMPORT CHATBOT FROM JSON- ERROR', error);
 
       this.notify.showWidgetStyleUpdateNotification(this.thereHasBeenAnErrorProcessing, 4, 'report_problem');
     }, () => {
-      console.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - COMPLETE');
+      this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
     });
   }

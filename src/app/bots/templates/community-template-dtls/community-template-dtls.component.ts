@@ -54,7 +54,7 @@ export class CommunityTemplateDtlsComponent implements OnInit {
 
   getParamsAndTemplateDetails() {
     this.route.params.subscribe((params) => {
-      console.log('[COMMUNITY-TEMPLATE-DTLS] GET PARAMS - params ', params);
+      this.logger.log('[COMMUNITY-TEMPLATE-DTLS] GET PARAMS - params ', params);
       if (params) {
         this.templateId = params.templateid
         this.projectId = params.projectid
@@ -72,7 +72,7 @@ export class CommunityTemplateDtlsComponent implements OnInit {
   getCommunityTemplateDetails(templateId) {
     this.faqKbService.getCommunityTemplateDetail(templateId)
       .subscribe((_template) => {
-        console.log('[COMMUNITY-TEMPLATE-DTLS] GET COMMUNITY TEMPLATE - template ', _template);
+        this.logger.log('[COMMUNITY-TEMPLATE-DTLS] GET COMMUNITY TEMPLATE - template ', _template);
         if (_template) {
           this.template = _template
         }

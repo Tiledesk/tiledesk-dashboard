@@ -115,42 +115,42 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   }
 
   ngOnChanges() {
-    console.log('[CDS-CHATBOT-DTLS] (OnChanges) selectedChatbot ', this.selectedChatbot)
+    this.logger.log('[CDS-CHATBOT-DTLS] (OnChanges) selectedChatbot ', this.selectedChatbot)
     this.destructureSelectedChatbot(this.selectedChatbot)
   }
 
   destructureSelectedChatbot(selectedChatbot: Chatbot) {
     this.faqKb_id = selectedChatbot._id;
-    console.log('[CDS-CHATBOT-DTLS] - BOT ID', this.faqKb_id)
+    this.logger.log('[CDS-CHATBOT-DTLS] - BOT ID', this.faqKb_id)
     this.id_faq_kb = selectedChatbot._id;
     if (this.faqKb_id) {
       this.checkBotImageExist()
     }
 
     this.faqKb_name = selectedChatbot.name;
-    console.log('[CDS-CHATBOT-DTLS] - BOT NAME', this.faqKb_name);
+    this.logger.log('[CDS-CHATBOT-DTLS] - BOT NAME', this.faqKb_name);
 
     this.botTypeForInput = selectedChatbot.type
-    console.log('[CDS-CHATBOT-DTLS] - BOT TYPE ', this.botTypeForInput);
+    this.logger.log('[CDS-CHATBOT-DTLS] - BOT TYPE ', this.botTypeForInput);
 
     this.faqKb_created_at = selectedChatbot.createdAt;
-    console.log('[CDS-CHATBOT-DTLS] - BOT CREATED AT ', this.faqKb_created_at);
+    this.logger.log('[CDS-CHATBOT-DTLS] - BOT CREATED AT ', this.faqKb_created_at);
 
     this.faqKb_description = selectedChatbot.description;
-    console.log('[CDS-CHATBOT-DTLS] - BOT DESCRIPTION ', this.faqKb_description);
+    this.logger.log('[CDS-CHATBOT-DTLS] - BOT DESCRIPTION ', this.faqKb_description);
 
     this.webhook_is_enabled = selectedChatbot.webhook_enabled
-    console.log('[CDS-CHATBOT-DTLS] - BOT webhook_is_enabled ', this.webhook_is_enabled);
+    this.logger.log('[CDS-CHATBOT-DTLS] - BOT webhook_is_enabled ', this.webhook_is_enabled);
 
     this.webhookUrl = selectedChatbot.webhook_url
-    console.log('[CDS-CHATBOT-DTLS] - BOT webhookUrl ', this.webhookUrl);
+    this.logger.log('[CDS-CHATBOT-DTLS] - BOT webhookUrl ', this.webhookUrl);
 
-    console.log('[CDS-CHATBOT-DTLS] - BOT LANGUAGE ', selectedChatbot.language);
+    this.logger.log('[CDS-CHATBOT-DTLS] - BOT LANGUAGE ', selectedChatbot.language);
 
     if (selectedChatbot && selectedChatbot.language) {
       this.faqkb_language = selectedChatbot.language;
       this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(selectedChatbot.language)].name
-      console.log('[CDS-CHATBOT-DTLS] BOT DEAFAULT SELECTED LANGUAGE ', this.botDefaultSelectedLang);
+      this.logger.log('[CDS-CHATBOT-DTLS] BOT DEAFAULT SELECTED LANGUAGE ', this.botDefaultSelectedLang);
     }
   }
 
@@ -175,7 +175,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project;
-      console.log('[CDS-CHATBOT-DTLS] project from AUTH service subscription  ', this.project)
+      this.logger.log('[CDS-CHATBOT-DTLS] project from AUTH service subscription  ', this.project)
     });
   }
 
@@ -314,7 +314,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
 
   toggleTab(displaysecodtab) {
 
-    console.log('[CDS-CHATBOT-DTLS] displaydetails', displaysecodtab)
+    this.logger.log('[CDS-CHATBOT-DTLS] displaydetails', displaysecodtab)
     if (displaysecodtab) {
       this.HAS_SELECTED_BOT_DETAILS = false;
       this.HAS_SELECTED_BOT_IMPORTEXORT = true;
@@ -323,8 +323,8 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
       this.HAS_SELECTED_BOT_IMPORTEXORT = false;
     }
 
-    console.log('[CDS-CHATBOT-DTLS] toggle Tab Detail / Import Export HAS_SELECTED_BOT_DETAILS', this.HAS_SELECTED_BOT_DETAILS)
-    console.log('[CDS-CHATBOT-DTLS] toggle Tab Detail / Import Export HAS_SELECTED_BOT_IMPORTEXORT', this.HAS_SELECTED_BOT_IMPORTEXORT)
+    this.logger.log('[CDS-CHATBOT-DTLS] toggle Tab Detail / Import Export HAS_SELECTED_BOT_DETAILS', this.HAS_SELECTED_BOT_DETAILS)
+    this.logger.log('[CDS-CHATBOT-DTLS] toggle Tab Detail / Import Export HAS_SELECTED_BOT_IMPORTEXORT', this.HAS_SELECTED_BOT_IMPORTEXORT)
   }
 
   // ---------------------------------------------------
@@ -408,18 +408,18 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   }
 
   checkBotImageUploadIsComplete() {
-    console.log('[CDS-CHATBOT-DTLS] checkBotImageUploadIsComplete')
+    this.logger.log('[CDS-CHATBOT-DTLS] checkBotImageUploadIsComplete')
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
       this.uploadImageService.botImageWasUploaded.subscribe((imageuploaded) => {
-        console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Firebase)');
+        this.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Firebase)');
         this.botImageHasBeenUploaded = imageuploaded;
 
         if (this.storageBucket && this.botImageHasBeenUploaded === true) {
 
           this.showSpinnerInUploadImageBtn = false;
 
-          console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD botProfileImageurl ');
+          this.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD botProfileImageurl ');
 
           this.setImageProfileUrl(this.storageBucket)
         }
@@ -427,7 +427,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     } else {
       // Native
       this.uploadImageNativeService.botImageWasUploaded_Native.subscribe((imageuploaded) => {
-        console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Native)');
+        this.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', imageuploaded, '(usecase Native)');
 
         this.botImageHasBeenUploaded = imageuploaded;
 
@@ -447,7 +447,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
 
   setImageProfileUrl_Native(storage) {
     this.botProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    //console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    //this.logger.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }
 
@@ -462,26 +462,26 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     // RESOLVE THE BUG 'edit button remains focused after clicking'
     this.elementRef.nativeElement.blur();
 
-    // console.log('[CDS-CHATBOT-DTLS] FAQ KB NAME TO UPDATE ', this.faqKb_name);
+    // this.logger.log('[CDS-CHATBOT-DTLS] FAQ KB NAME TO UPDATE ', this.faqKb_name);
 
 
     this.faqKbService.updateFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, this.botType, this.faqKb_description, this.webhook_is_enabled, this.webhookUrl, this.language)
       .subscribe((faqKb) => {
-        console.log('[CDS-CHATBOT-DTLS] EDIT BOT - FAQ KB UPDATED ', faqKb);
+        this.logger.log('[CDS-CHATBOT-DTLS] EDIT BOT - FAQ KB UPDATED ', faqKb);
         if (faqKb) {
           this.selectedChatbot.name = faqKb['name']
           this.faqKb_description = faqKb['description']
           this.selectedChatbot.description = faqKb['description']
         }
       }, (error) => {
-        console.error('[CDS-CHATBOT-DTLS] EDIT BOT -  ERROR ', error);
+        this.logger.error('[CDS-CHATBOT-DTLS] EDIT BOT -  ERROR ', error);
 
 
         // =========== NOTIFY ERROR ===========
         this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
 
       }, () => {
-        console.log('[CDS-CHATBOT-DTLS] EDIT BOT - * COMPLETE *');
+        this.logger.log('[CDS-CHATBOT-DTLS] EDIT BOT - * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
         this.selectedChatbot.name
@@ -503,11 +503,11 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
 
   hookBotToDept() {
     this.departmentService.updateExistingDeptWithSelectedBot(this.dept_id, this.id_faq_kb).subscribe((res) => {
-      console.log('[CDS-CHATBOT-DTLS] - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+      this.logger.log('[CDS-CHATBOT-DTLS] - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
     }, (error) => {
-      console.error('[CDS-CHATBOT-DTLS] - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
+      this.logger.error('[CDS-CHATBOT-DTLS] - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
     }, () => {
-      console.log('[CDS-CHATBOT-DTLS] - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
+      this.logger.log('[CDS-CHATBOT-DTLS] - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
       this.translateAndPresentModalBotAssociatedWithDepartment();
     });
   }
@@ -536,7 +536,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   // Upload bot photo
   // ---------------------------------------------------
   upload(event) {
-    console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE  upload')
+    this.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE  upload')
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
 
@@ -546,17 +546,17 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     } else {
 
       // Native upload
-      console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE  upload with native service')
+      this.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE  upload with native service')
 
       this.uploadImageNativeService.uploadBotPhotoProfile_Native(file, this.id_faq_kb).subscribe((downoloadurl) => {
-        console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE upload with native service - RES downoloadurl', downoloadurl);
+        this.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE upload with native service - RES downoloadurl', downoloadurl);
 
         this.botProfileImageurl = downoloadurl
 
         this.timeStamp = (new Date()).getTime();
       }, (error) => {
 
-        console.error('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE upload with native service - ERR ', error);
+        this.logger.error('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE upload with native service - ERR ', error);
       })
 
     }
@@ -573,8 +573,8 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     // const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
     // exportFaqToJsonBtnEl.blur();
     this.faqService.exportChatbotToJSON(this.id_faq_kb).subscribe((faq: any) => {
-      // console.log('[TILEBOT] - EXPORT CHATBOT TO JSON - FAQS', faq)
-      // console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
+      // this.logger.log('[TILEBOT] - EXPORT CHATBOT TO JSON - FAQS', faq)
+      // this.logger.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
       if (faq) {
         this.downloadObjectAsJson(faq, faq.name);
       }
@@ -593,8 +593,8 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-intents-to-json-btn');
     exportFaqToJsonBtnEl.blur();
     this.faqService.exportIntentsToJSON(this.id_faq_kb).subscribe((faq: any) => {
-      // console.log('[TILEBOT] - EXPORT BOT TO JSON - FAQS', faq)
-      // console.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
+      // this.logger.log('[TILEBOT] - EXPORT BOT TO JSON - FAQS', faq)
+      // this.logger.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
       if (faq) {
         this.downloadObjectAsJson(faq, this.faqKb_name + ' intents');
       }
@@ -623,7 +623,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
 
     this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event ', event);
     let fileJsonToUpload = ''
-    // console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
+    // this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
     const selectedFile = event.target.files[0];
     const fileReader = new FileReader();
     fileReader.readAsText(selectedFile, "UTF-8");
@@ -660,8 +660,8 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   }
 
   fileChangeUploadIntentsFromJSON(event, action) {
-    // console.log('[TILEBOT] - fileChangeUploadJSON event ', event);
-    // console.log('[TILEBOT] - fileChangeUploadJSON action ', action);
+    // this.logger.log('[TILEBOT] - fileChangeUploadJSON event ', event);
+    // this.logger.log('[TILEBOT] - fileChangeUploadJSON action ', action);
     const fileList: FileList = event.target.files;
     const file: File = fileList[0];
     const formData: FormData = new FormData();
@@ -689,15 +689,15 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
 
   exportFaqsToCsv() {
     this.faqService.exsportFaqsToCsv(this.id_faq_kb).subscribe((faq: any) => {
-      console.log('[CDS-CHATBOT-DTLS] - EXPORT FAQ TO CSV - FAQS', faq)
+      this.logger.log('[CDS-CHATBOT-DTLS] - EXPORT FAQ TO CSV - FAQS', faq)
 
       if (faq) {
         this.downloadFile(faq, 'faqs.csv');
       }
     }, (error) => {
-      console.error('[CDS-CHATBOT-DTLS] - EXPORT FAQ TO CSV - ERROR', error);
+      this.logger.error('[CDS-CHATBOT-DTLS] - EXPORT FAQ TO CSV - ERROR', error);
     }, () => {
-      console.log('[CDS-CHATBOT-DTLS] - EXPORT FAQ TO CSV - COMPLETE');
+      this.logger.log('[CDS-CHATBOT-DTLS] - EXPORT FAQ TO CSV - COMPLETE');
     });
   }
 
@@ -706,7 +706,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     const dwldLink = document.createElement('a');
     const url = URL.createObjectURL(blob);
     const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
-    console.log('[CDS-CHATBOT-DTLS] isSafariBrowser ', isSafariBrowser)
+    this.logger.log('[CDS-CHATBOT-DTLS] isSafariBrowser ', isSafariBrowser)
     if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
       dwldLink.setAttribute('target', '_blank');
 
@@ -752,7 +752,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   }
 
   onCloseInfoModalHandledError() {
-    console.log('[CDS-CHATBOT-DTLS] onCloseInfoModalHandledError')
+    this.logger.log('[CDS-CHATBOT-DTLS] onCloseInfoModalHandledError')
     this.displayInfoModal = 'none';
     // this.router.navigate(['project/' + this.project._id + '/faqkb']);
     this.ngOnInit();
@@ -760,7 +760,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
 
 
   countDelimiterDigit(event) {
-    console.log('[CDS-CHATBOT-DTLS] # OF DIGIT ', this.csvColumnsDelimiter.length)
+    this.logger.log('[CDS-CHATBOT-DTLS] # OF DIGIT ', this.csvColumnsDelimiter.length)
     if (this.csvColumnsDelimiter.length !== 1) {
       (<HTMLInputElement>document.getElementById('file')).disabled = true;
       this.modalChoosefileDisabled = true;
@@ -777,7 +777,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
 
     this.SHOW_CIRCULAR_SPINNER = true;
 
-    console.log('[CDS-CHATBOT-DTLS] CSV COLUMNS DELIMITER ', this.csvColumnsDelimiter)
+    this.logger.log('[CDS-CHATBOT-DTLS] CSV COLUMNS DELIMITER ', this.csvColumnsDelimiter)
     const fileList: FileList = event.target.files;
     if (fileList.length > 0) {
       const file: File = fileList[0];
@@ -785,11 +785,11 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
       formData.set('id_faq_kb', this.id_faq_kb);
       formData.set('delimiter', this.csvColumnsDelimiter);
       formData.append('uploadFile', file, file.name);
-      console.log('FORM DATA ', formData)
+      this.logger.log('FORM DATA ', formData)
 
       this.faqService.uploadFaqCsv(formData)
         .subscribe(data => {
-          console.log('[CDS-CHATBOT-DTLS] UPLOAD CSV DATA ', data);
+          this.logger.log('[CDS-CHATBOT-DTLS] UPLOAD CSV DATA ', data);
           if (data['success'] === true) {
             this.parse_done = true;
             this.parse_err = false;
@@ -798,10 +798,10 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
             this.parse_err = true;
           }
         }, (error) => {
-          console.error('[CDS-CHATBOT-DTLS] UPLOAD CSV - ERROR ', error);
+          this.logger.error('[CDS-CHATBOT-DTLS] UPLOAD CSV - ERROR ', error);
           this.SHOW_CIRCULAR_SPINNER = false;
         }, () => {
-          console.log('[CDS-CHATBOT-DTLS] UPLOAD CSV * COMPLETE *');
+          this.logger.log('[CDS-CHATBOT-DTLS] UPLOAD CSV * COMPLETE *');
           setTimeout(() => {
             this.SHOW_CIRCULAR_SPINNER = false
           }, 300);
@@ -863,22 +863,22 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
         let dep = key.split(":");
         if (dep[1] === "F") {
           this.isVisibleDEP = false;
-          //console.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
+          //this.logger.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
         } else {
           this.isVisibleDEP = true;
-          //console.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
+          //this.logger.log('PUBLIC-KEY (Faqcomponent) - isVisibleDEP', this.isVisibleDEP);
         }
       }
       // if (key.includes("PAY")) {
-      //  console.log('[CDS-CHATBOT-DTLS] PUBLIC-KEY - key', key);
+      //  this.logger.log('[CDS-CHATBOT-DTLS] PUBLIC-KEY - key', key);
       //   let pay = key.split(":");
-      //   //console.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+      //   //this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
       //   if (pay[1] === "F") {
       //     this.payIsVisible = false;
-      //    console.log('[CDS-CHATBOT-DTLS] - pay isVisible', this.payIsVisible);
+      //    this.logger.log('[CDS-CHATBOT-DTLS] - pay isVisible', this.payIsVisible);
       //   } else {
       //     this.payIsVisible = true;
-      //    console.log('[CDS-CHATBOT-DTLS] - pay isVisible', this.payIsVisible);
+      //    this.logger.log('[CDS-CHATBOT-DTLS] - pay isVisible', this.payIsVisible);
       //   }
       // }
       // if (key.includes("ANA")) {
@@ -904,7 +904,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
 
     // if (!this.public_Key.includes("PAY")) {
     //   this.payIsVisible = false;
-    //   //console.log('[CDS-CHATBOT-DTLS] - pay isVisible', this.payIsVisible);
+    //   //this.logger.log('[CDS-CHATBOT-DTLS] - pay isVisible', this.payIsVisible);
     // }
   }
 

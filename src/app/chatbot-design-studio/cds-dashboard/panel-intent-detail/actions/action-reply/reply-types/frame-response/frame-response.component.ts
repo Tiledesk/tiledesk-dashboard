@@ -62,7 +62,7 @@ export class FrameResponseComponent implements OnInit {
   /** */
   onChangeTextarea(text:string) {
     this.response.text = text;
-    console.log('onChangeTextarea:: ', this.response);
+    // console.log('onChangeTextarea:: ', this.response);
     this.changeReplyElement.emit();
     
   }
@@ -108,7 +108,7 @@ export class FrameResponseComponent implements OnInit {
       this.frameHeight = event.height;
       this.response.metadata.height = event.height;
     //}
-    console.log('onCloseframePanel:: ', event);
+    // console.log('onCloseframePanel:: ', event);
   }
 
   /** */
@@ -121,10 +121,10 @@ export class FrameResponseComponent implements OnInit {
   onLoadPathElement(){
     try {
       this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src);
-      console.log('onLoadPathElement:: ', this.framePath, this.response.metadata);
+      // console.log('onLoadPathElement:: ', this.framePath, this.response.metadata);
       this.changeReplyElement.emit();
     } catch (error) {
-      console.log('error:: ', error);
+      // console.log('error:: ', error);
     }
   }
 

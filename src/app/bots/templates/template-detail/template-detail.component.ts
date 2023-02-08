@@ -66,7 +66,7 @@ export class TemplateDetailComponent implements OnInit {
     private localDbService: LocalDbService,
     private botLocalDbService: BotLocalDbService,
   ) {
-    console.log('[TEMPLATE DETAIL] data ', data)
+    this.logger.log('[TEMPLATE DETAIL] data ', data)
     this.projectid = data.projectId
     this.template = data.template;
     this._newlyCreatedProject = data.newlyCreatedProject

@@ -2,6 +2,7 @@ import { Chatbot } from 'app/models/faq_kb-model';
 import { ActionReplaceBot } from 'app/models/intent-model';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Component, OnInit, Input } from '@angular/core';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'cds-action-replace-bot',
@@ -16,29 +17,32 @@ export class ActionReplaceBotComponent implements OnInit {
   chatbots_name_list: string[] = [];
   bot_selected: Chatbot;
   
-  constructor(private chatbotService: FaqKbService) { }
+  constructor(
+    private chatbotService: FaqKbService,
+    private logger: LoggerService,
+    ) { }
 
   ngOnInit(): void {
-    console.log("[ACTION REPLACE BOT] action: ", this.action)
+    this.logger.log("[ACTION REPLACE BOT] action: ", this.action)
     this.getAllBots();
   }
 
   getAllBots() {
     this.chatbotService.getAllBotByProjectId().subscribe((chatbots) => {
-      console.log("[ACTION REPLACE BOT] chatbots: ", chatbots);
+      this.logger.log("[ACTION REPLACE BOT] chatbots: ", chatbots);
       //this.bots = bots;
       this.chatbots_name_list = chatbots.map(a => a.name);
     }, (error) => {
-      console.error("[ACTION REPLACE BOT] error get bots: ", error);
+      this.logger.error("[ACTION REPLACE BOT] error get bots: ", error);
     }, () => {
-      console.log("[ACTION REPLACE BOT] get all chatbots completed.");
+      this.logger.log("[ACTION REPLACE BOT] get all chatbots completed.");
     })
   }
 
   onChangeActionButton(event) {
-    //console.log("[ACTION REPLACE BOT] onChangeActionButton event: ", event)
+    //this.logger.log("[ACTION REPLACE BOT] onChangeActionButton event: ", event)
     this.action.botName = event;
-    console.log("[ACTION REPLACE BOT] action edited: ", this.action)
+    this.logger.log("[ACTION REPLACE BOT] action edited: ", this.action)
   }
 
 }

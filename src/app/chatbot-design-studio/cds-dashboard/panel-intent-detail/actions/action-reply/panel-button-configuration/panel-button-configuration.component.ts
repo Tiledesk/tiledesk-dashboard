@@ -89,7 +89,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
     } catch (error) {
       // error
     }
-    console.log('PanelButtonConfigurationComponent', this.button, this.buttonTypes);
+    // console.log('PanelButtonConfigurationComponent', this.button, this.buttonTypes);
   }
 
   ngOnChanges() {

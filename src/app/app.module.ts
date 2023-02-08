@@ -312,6 +312,7 @@ import { ChatbotDesignStudioModule } from './chatbot-design-studio/chatbot-desig
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
 import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
+import { HomePromoDesignStudioComponent } from './home-promo-design-studio/home-promo-design-studio.component';
 
 
 
@@ -552,7 +553,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     InstallTemplateComponent, 
     CreateChatbotComponent,
     OnboardingWidgetComponent, 
-    CommunityTemplateDtlsComponent
+    CommunityTemplateDtlsComponent, HomePromoDesignStudioComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
