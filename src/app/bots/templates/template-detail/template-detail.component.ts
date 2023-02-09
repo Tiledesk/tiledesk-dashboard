@@ -70,8 +70,8 @@ export class TemplateDetailComponent implements OnInit {
     this.projectid = data.projectId
     this.template = data.template;
     this._newlyCreatedProject = data.newlyCreatedProject
-    // console.log('[TEMPLATE DETAIL] template ', this.template)
-    // console.log('[TEMPLATE DETAIL] projectid ', this.projectid)
+    // this.logger.log('[TEMPLATE DETAIL] template ', this.template)
+    // this.logger.log('[TEMPLATE DETAIL] projectid ', this.projectid)
     if (this.template) {
       this.botname = this.template.name
       this.templateid = this.template._id
@@ -79,7 +79,7 @@ export class TemplateDetailComponent implements OnInit {
       // this.translateparamBotName = { bot_name: this.botname }
     }
     // this.templateName = data.name
-    // console.log('TemplateDetailComponent templateName ' ,this.templateName)
+    // this.logger.log('TemplateDetailComponent templateName ' ,this.templateName)
     // this.templateDescription = data.description
   }
 
@@ -98,7 +98,7 @@ export class TemplateDetailComponent implements OnInit {
       .subscribe((user) => {
         if (user) {
           this.user = user;
-          // console.log('[TEMPLATE DETAIL]  - user ', this.user)
+          // this.logger.log('[TEMPLATE DETAIL]  - user ', this.user)
         }
       });
   }
@@ -110,7 +110,7 @@ export class TemplateDetailComponent implements OnInit {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.project = project
-        // console.log('[TEMPLATE DETAIL] project from AUTH service subscription ', this.project);
+        // this.logger.log('[TEMPLATE DETAIL] project from AUTH service subscription ', this.project);
         this.projectId = project._id;
         this.projectName = project.name;
         this.getDeptsByProjectId()
@@ -121,7 +121,7 @@ export class TemplateDetailComponent implements OnInit {
   // getDeptsByProjectId() {
   //   this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-  //     // console.log('[TEMPLATE DETAIL] - DEPTS RES ', departments);
+  //     // this.logger.log('[TEMPLATE DETAIL] - DEPTS RES ', departments);
 
   //     if (departments && departments.length === 1) {
   //       this.defaultDeptID = departments[0]._id
@@ -138,14 +138,14 @@ export class TemplateDetailComponent implements OnInit {
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      // console.log('[FAQ-EDIT-ADD] - DEPT - GET DEPTS  - RES', departments);
+      // this.logger.log('[FAQ-EDIT-ADD] - DEPT - GET DEPTS  - RES', departments);
       if (departments) {
         departments.forEach((dept: any) => {
-          // console.log('[FAQ-EDIT-ADD] - DEPT', dept);
+          // this.logger.log('[FAQ-EDIT-ADD] - DEPT', dept);
 
           if (dept.default === true) {
             this.defaultDeptID = dept._id;
-            // console.log('[FAQ-EDIT-ADD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
+            // this.logger.log('[FAQ-EDIT-ADD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
           }
         });
       }
@@ -165,7 +165,7 @@ export class TemplateDetailComponent implements OnInit {
       .subscribe((user_role) => {
         if (user_role) {
           this.USER_ROLE = user_role
-          // console.log('[TEMPLATE DETAIL] user_role ', user_role);
+          // this.logger.log('[TEMPLATE DETAIL] user_role ', user_role);
         }
       });
   }
@@ -176,12 +176,12 @@ export class TemplateDetailComponent implements OnInit {
   }
 
   openTestSiteInPopupWindow() {
-    // console.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
+    // this.logger.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
     // const url = testItOutUrl + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=635b97cc7d7275001a2ab3e4"
     const url = testItOutUrl + '?tiledesk_projectid=' + this.templateProjectId + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=" + this.defaultDeptID
-    // console.log('openTestSiteInPopupWindow URL ', url)
+    // this.logger.log('openTestSiteInPopupWindow URL ', url)
 
 
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
@@ -304,12 +304,12 @@ export class TemplateDetailComponent implements OnInit {
 
 
   // onSelectDepartment() {
-  //   console.log('[TEMPLATE DETAIL] - selected_dept_id ', this.selected_dept_id);
+  //   this.logger.log('[TEMPLATE DETAIL] - selected_dept_id ', this.selected_dept_id);
   //   this.dept_id = this.selected_dept_id
   //   const hasFound = this.depts_without_bot_array.filter((obj: any) => {
   //     return obj.id === this.selected_dept_id;
   //   });
-  //   console.log('[TEMPLATE DETAIL] private logger: LoggerService --->  onSelectBotId dept found', hasFound);
+  //   this.logger.log('[TEMPLATE DETAIL] private logger: LoggerService --->  onSelectBotId dept found', hasFound);
 
   //   if (hasFound.length > 0) {
   //     this.selected_dept_name = hasFound[0]['name']
