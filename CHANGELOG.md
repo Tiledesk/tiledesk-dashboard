@@ -1,6 +1,11 @@
 # tiledesk-dashboard
 
+### 2.4.1
+- Deploys in production
+- Adds the ability to search community chatbots by title, description, and tag
+
 ### 2.4.0
+- Deploys in production
 - Chatbot design studio
 
 ### 2.3.22-rc29
