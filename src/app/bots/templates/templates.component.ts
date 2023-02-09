@@ -45,6 +45,7 @@ export class TemplatesComponent implements OnInit {
   baseUrl: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   valueToSearch: string;
+  public THERE_ARE_RESULTS: boolean = true;
   constructor(
     private auth: AuthService,
     private faqKbService: FaqKbService,
@@ -122,7 +123,7 @@ export class TemplatesComponent implements OnInit {
   }
 
   openDialog(template) {
-    console.log('openDialog')
+    this.logger.log('openDialog')
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
@@ -131,7 +132,7 @@ export class TemplatesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Dialog result: ${result}`);
+      // this.logger.log(`Dialog result: ${result}`);
     });
   }
 
@@ -139,7 +140,7 @@ export class TemplatesComponent implements OnInit {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       if (faqKb) {
         this.myChatbotOtherCount = faqKb.length
-        // console.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount',  this.myChatbotOtherCount);
+        // this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount',  this.myChatbotOtherCount);
       }
 
       const customerSatisfactionBots = faqKb.filter((obj) => {
@@ -190,13 +191,13 @@ export class TemplatesComponent implements OnInit {
         this.allCommunityTemplatesCount = this.communityTemplates.length;
         this.logger.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
 
-        let stripHere = 115;
-        this.communityTemplates.forEach(communityTemplate => {
-          // console.log('[BOTS-TEMPLATES] communityTemplate', communityTemplate);
-          if (communityTemplate['description']) {
-            communityTemplate['shortDescription'] = communityTemplate['description'].substring(0, stripHere) + '...';
-          }
-        });
+        // let stripHere = 115;
+        // this.communityTemplates.forEach(communityTemplate => {
+        //   // this.logger.log('[BOTS-TEMPLATES] communityTemplate', communityTemplate);
+        //   if (communityTemplate['description']) {
+        //     communityTemplate['shortDescription'] = communityTemplate['description'].substring(0, stripHere) + '...';
+        //   }
+        // });
 
         this.route = this.router.url
         if (this.route.indexOf('bots/templates/community') !== -1) {
@@ -230,7 +231,7 @@ export class TemplatesComponent implements OnInit {
 
         this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res
-        // console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES', this.templates);
+        // this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES', this.templates);
         // this.allTemplatesCount = this.templates.length;
         this.allTemplatesCount = this.certfifiedTemplates.length;
         this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
@@ -269,9 +270,9 @@ export class TemplatesComponent implements OnInit {
         this.route = this.router.url
         // if (this.route.indexOf('bots/templates/all') !== -1) {
         //   this.templates = this.templates 
-        //   console.log('[BOTS-TEMPLATES] ROUTE templates/all');
+        //   this.logger.log('[BOTS-TEMPLATES] ROUTE templates/all');
         //   this.allTemplatesCount = this.templates.length;
-        //   console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
+        //   this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
         // } else 
         if (this.route.indexOf('bots/templates/customer-satisfaction') !== -1) {
           this.templates = this.customerSatisfactionTemplates
@@ -312,10 +313,10 @@ export class TemplatesComponent implements OnInit {
 
   generateTagsBackground(templates) {
     templates.forEach(template => {
-      // console.log('generateTagsBackground template', template)
+      // this.logger.log('generateTagsBackground template', template)
       if (template && template.certifiedTags) {
         template.certifiedTags.forEach(tag => {
-          // console.log('generateTagsBackground tag', tag)
+          // this.logger.log('generateTagsBackground tag', tag)
           let tagbckgnd = ''
           if (tag.color === "#a16300" || tag.color === "#A16300") {
             tagbckgnd = 'rgba(255,221,167,1)'
@@ -328,7 +329,7 @@ export class TemplatesComponent implements OnInit {
           } else if (tag.color !== "#a16300" && tag.color !== "#A16300" && tag.color !== "#00699E" && tag.color !== "#00699e" && tag.color !== "#25833e" && tag.color !== "#25833E" && tag.color !== "#0049bd" && tag.color !== "#0049BD") {
 
             tagbckgnd = this.hexToRgba(tag.color)
-            // console.log('generateTagsBackground tagbckgnd ', tagbckgnd)
+            // this.logger.log('generateTagsBackground tagbckgnd ', tagbckgnd)
           }
 
           // let b = {background : tagbckgnd}
@@ -377,16 +378,40 @@ export class TemplatesComponent implements OnInit {
 
   searchInCommunityTemplates() {
     this.logger.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - value to search ', this.valueToSearch);
-    this.faqKbService.searchInCommunityTemplates(this.valueToSearch).subscribe((res: any) => {
-      // this.templates = res
-      console.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - RES ', res);
+    this.faqKbService.searchInCommunityTemplates(this.valueToSearch).subscribe((searchedtemplates: any) => {
+      if (searchedtemplates) {
+       this.templates = searchedtemplates
+       
+       if (searchedtemplates.length === 0) {
+         this.THERE_ARE_RESULTS = false;
+
+       } else {
+        this.THERE_ARE_RESULTS = true;
+       }
+      }
+      
+      this.logger.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - RES  ', searchedtemplates);
     }, (error) => {
       this.logger.error('[BOTS-TEMPLATES] SEARCH IN COMMUNITY TEMPLATE - ERROR ', error);
-      
+
     }, () => {
       this.logger.log('[BOTS-TEMPLATES] SEARCH IN COMMUNITY TEMPLATE * COMPLETE * ');
 
     });
+  }
+
+  onChangeValueToSearch(valueToSearch) {
+    this.logger.log('[BOTS-TEMPLATES] onChangeValueToSearch  valueToSearch ', valueToSearch);
+    if (valueToSearch === '') {
+      // this.getCommunityTemplates()
+     this.templates = this.communityTemplates
+    }
+   
+  }
+
+  clearSearchInCommunityTemplates() {
+    this.valueToSearch = ''
+    this.templates = this.communityTemplates
   }
 
 
