@@ -190,7 +190,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - importedChatbotid ', this.importedChatbotid)
         this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
 
-        this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
+        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
+        this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
       }
 
     }, (error) => {
