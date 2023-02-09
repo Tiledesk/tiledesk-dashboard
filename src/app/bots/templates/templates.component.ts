@@ -140,7 +140,8 @@ export class TemplatesComponent implements OnInit {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       if (faqKb) {
         this.myChatbotOtherCount = faqKb.length
-        // this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount',  this.myChatbotOtherCount);
+        this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount',  this.myChatbotOtherCount);
+        this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - faqKb',  faqKb);
       }
 
       const customerSatisfactionBots = faqKb.filter((obj) => {
