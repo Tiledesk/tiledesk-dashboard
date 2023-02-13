@@ -47,7 +47,6 @@ export class FilterComponent implements OnInit {
 
   onChangeOperator(event, index){
     this.expression.conditions[index].operator= event['type']
-    console.log('expresssionnnn', this.expression)
   }
 
   onDeleteCondition(index: number, last: boolean){
