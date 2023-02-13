@@ -404,9 +404,43 @@
                                                             </div>
                                                             <div class="css-14dz4a cmnty-tmplt-card-description-wpr">
                                                                 <div class="css-wzynpy cmnty-tmplt-card-title-wpr">
-                                                                    <span class="css-78d9ti cmnty-tmplt-card-title">
+                                                                    <div class="css-78d9ti cmnty-tmplt-card-title">
                                                                         {{template.name}}
-                                                                    </span>
+                                                                    </div>
+
+                                                                    <div *ngIf="template?.certified === true"
+                                                                        style="height: 24px;margin-left: 6px;z-index: 2;"
+                                                                        matTooltipClass="custom-mat-tooltip"
+                                                                        matTooltip="Tiledesk verified" #tooltip="matTooltip"
+                                                                        matTooltipPosition='below'
+                                                                        matTooltipHideDelay="100">
+                                                                        <svg version="1.1" id="Layer_1"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                            x="0px" y="0px" viewBox="0 0 24 24"
+                                                                            style="enable-background:new 0 0 24 24;"
+                                                                            xml:space="preserve"
+                                                                            style="width: 24px;height:auto;">
+                                                                            <style type="text/css">
+                                                                                .certified_st0 {
+                                                                                    fill: none;
+                                                                                }
+
+                                                                                .certified_st1 {
+                                                                                    fill: #2B95E9;
+                                                                                }
+                                                                            </style>
+                                                                            <path class="certified_st0"
+                                                                                d="M0,0h24v24H0V0z" />
+                                                                            <g>
+                                                                                <path class="certified_st0"
+                                                                                    d="M0,0h24v24H0V0z" />
+                                                                            </g>
+                                                                            <path class="certified_st1"
+                                                                                d="M23,12l-2.4-2.8l0.3-3.7l-3.6-0.8l-1.9-3.2L12,3L8.6,1.5L6.7,4.7L3.1,5.5l0.3,3.7L1,12l2.4,2.8l-0.3,3.7
+                                                                                l3.6,0.8l1.9,3.2L12,21l3.4,1.5l1.9-3.2l3.6-0.8l-0.3-3.7L23,12z M11,15.5L7.4,12l1.4-1.4l2.1,2.1l4.2-4.2l1.4,1.4L11,15.5z" />
+                                                                        </svg>
+                                                                    </div>
                                                                 </div>
                                                                 <span class="css-1y2t2y1 cmnty-tmplt-card-description"
                                                                     style=" -webkit-box-orient: vertical;">
@@ -416,6 +450,8 @@
                                                         </div>
                                                         <div class="css-1fubhz3 cmnty-tmplt-card-footer">
                                                             <div class="css-pqgycx cmnty-tmplt-card-footer-left">
+
+
 
                                                                 <!-- <button type="button"
                                                                     class="btn btn-new btn-size-m btn--primary btn-block"
