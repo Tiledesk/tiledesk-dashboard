@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.4.2
+- Deploys in production
+- Adds the "test it out" button on the community template details and  on the community templates list page
+- Displays the "verified icon" on the community templates list page if the template is verified
+
 ### 2.4.1
 - Deploys in production
 - Adds the ability to search community chatbots by title, description, and tag
