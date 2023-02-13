@@ -90,7 +90,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-splash-screen.component';
 import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
-
+import { SatPopoverModule } from '@ncstate/sat-popover';
 @NgModule({
   declarations: [
     CdsDashboardComponent,
@@ -172,6 +172,7 @@ import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish
     MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
+    SatPopoverModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

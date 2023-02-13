@@ -7,7 +7,6 @@
     margin-right: 30px;
 }
 
-    
 .text-editor-wrapper:hover {
     .text-editor {
         .response-controls {
@@ -37,9 +36,9 @@
             .control-button {
                 cursor: pointer;
                 color: $color-bck-gray-hex;
-                transition: color .3s;
+                transition: color 0.3s;
                 height: 20px;
-                &.delete{
+                &.delete {
                     height: 24px;
                     width: 24px;
                     background: $color-bck-gray-hex;
@@ -50,13 +49,13 @@
                     em {
                         font-size: 1.15em;
                         color: $color-withe-hex;
-                        transition: color .3s;
+                        transition: color 0.3s;
                     }
                 }
             }
-            .control-button:hover{
+            .control-button:hover {
                 color: $color-withe-hex;
-                &.delete{
+                &.delete {
                     box-shadow: 0 2px 6px 0 rgb(255 255 255 / 15%);
                     em {
                         color: $color-red-hex;
@@ -66,22 +65,22 @@
         }
 
         .box-textarea {
-            width: calc(100% - 40px);
-            margin-left: 20px;
+            // width: calc(100% - 40px);
+            // margin-left: 20px;
             input {
                 border-radius: 8px;
                 background: $color-withe-hex;
                 border: 1px solid $color-withe-hex;
                 overflow-x: hidden;
                 overflow-y: auto;
-                width: calc(100% - 2.5em);
+                // width: calc(100% - 2.5em);
                 padding: 5px 5px;
                 color: $color-text-dark-hex;
                 font-size: 1.15em;
                 line-height: 25px;
                 resize: vertical;
 
-                &.customPrefix{
+                &.customPrefix {
                     padding-left: 20px;
                     width: calc(100% - 2.5em - 20px);
                 }
@@ -94,7 +93,7 @@
                 color: #7d7d7d;
                 font-weight: 800;
             }
-            
+
             .input-suffix {
                 position: absolute;
                 top: 14px;
@@ -138,8 +137,6 @@
             float: right;
         }
     }
-
-    
 }
 
 .text-editor-wrapper:hover .text-editor {
@@ -154,9 +151,9 @@ mat-form-field.mat-focused ::ng-deep {
         .mat-form-field-flex {
             .mat-form-field-infix {
                 input {
-                    border: 1px solid $icon-color!important;
-                    outline: 1px solid $icon-color!important;
-                    transition: border .3s;
+                    border: 1px solid $icon-color !important;
+                    outline: 1px solid $icon-color !important;
+                    transition: border 0.3s;
                 }
             }
         }
@@ -164,7 +161,7 @@ mat-form-field.mat-focused ::ng-deep {
 }
 mat-form-field.box-textarea ::ng-deep {
     .mat-form-field-wrapper {
-        padding-bottom:0;
+        padding-bottom: 0;
         .mat-form-field-flex {
             border-radius: 4px 4px 0 0;
             padding: 0 0.75em 0 0.75em;
@@ -174,13 +171,14 @@ mat-form-field.box-textarea ::ng-deep {
     }
     .mat-form-field-underline {
         display: none;
-    }    
+    }
 }
 
 /** box-textarea **/
 .box-textarea {
-    width: calc(100% - 40px);
-    margin-left: 20px;
+    // width: calc(100% - 40px);
+    // margin-left: 20px;
+    width: 100%;
     textarea {
         border-radius: 8px;
         background: $color-withe-hex;
@@ -233,4 +231,122 @@ mat-form-field.box-textarea ::ng-deep {
 .action-type {
     margin-bottom: 0px;
     color: white;
+}
+
+/* 
+/* Text editor utils 
+/* ----------------------------------------- */
+.text-editor-utils {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    bottom: -10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: absolute;
+    right: 5px;
+    z-index: 16;
+}
+
+.text-editor-insert-attribute {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 100%;
+    -webkit-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 23px;
+    justify-content: center;
+    margin-right: 5px;
+    width: 23px;
+}
+
+.emoji-picker-button {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 100%;
+    -webkit-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 23px;
+    justify-content: center;
+    margin-right: 5px;
+    width: 23px;
+}
+
+::ng-deep .set-attributes-panel {
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    max-height: 600px;
+    min-height: 200px;
+    box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
+        0 4px 4px -2px rgb(91 94 105 / 15%);
+    background: rgb(255, 255, 255);
+    border-radius: 4px;
+    padding: 15px 0;
+}
+
+.select-category-row {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 32px;
+    padding: 0 15px;
+    -webkit-transition: background-color 0.2s, opacity 0.2s;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.select-category-row:hover {
+    background: #f0f4f7;
+}
+
+.select-category-row-name {
+    color: #22272d;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    margin-right: 20px;
+}
+
+[contenteditable] {
+    border: 1px solid #000;
+    margin: 0.4em 0;
+    line-height: 8px;
+    -webkit-appearance: textfield;
+    appearance: textfield;
+    background: #fff;
+    padding: 5px;
+    border-radius: 8px;
+    min-height: 37px;
+}
+.single-attribute-style {
+    background: #ffdc66;
+    cursor: pointer;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border-radius: 10px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    display: inline;
+    padding: 0 5px;
 }
