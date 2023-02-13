@@ -1,3 +1,5 @@
+import { SatPopoverModule } from '@ncstate/sat-popover';
+import { ActionJsonConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-filter/action-json-condition.component';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -59,6 +61,7 @@ import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.compo
 import { CDSTextComponent } from './cds-base-element/text/text.component';
 import { CDSDelaySliderComponent } from './cds-base-element/delay-slider/delay-slider.component';
 import { CDSTextareaComponent } from './cds-base-element/textarea/textarea.component';
+import { FilterComponent } from './cds-base-element/filter/filter.component';
 
 //RULES COMPONENT
 import { RulesComponent } from './cds-rules/rules/rules.component';
@@ -90,6 +93,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-splash-screen.component';
 import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
+import { SelectComponent } from './cds-base-element/select/select.component';
+import { RowJsonConditionComponent } from './cds-base-element/row-json-condition/row-json-condition.component';
+
+
 
 @NgModule({
   declarations: [
@@ -143,8 +150,13 @@ import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish
     ActionDescriptionComponent,
     ActionCloseComponent,
     ActionAgentHandoffComponent,
+    ActionJsonConditionComponent,
     CdsFooterComponent,
-    CdsPublishOnCommunityModalComponent
+    CdsPublishOnCommunityModalComponent,
+    
+    FilterComponent,
+         SelectComponent,
+         RowJsonConditionComponent
   ],
   imports: [
     A11yModule,
@@ -179,6 +191,7 @@ import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish
         deps: [HttpClient],
       },
     }),
+    SatPopoverModule
   ]
 })
 export class ChatbotDesignStudioModule { }

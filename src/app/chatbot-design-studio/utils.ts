@@ -51,7 +51,28 @@ export enum TYPE_ACTION {
     CHANGE_DEPARTMENT = 'department',
     ONLINE_AGENTS = 'ifonlineagents',
     OPEN_HOURS = 'ifopenhours',
-    HIDE_MESSSAGE = 'hmessage'
+    HIDE_MESSSAGE = 'hmessage',
+    JSON_CONDITION = 'jsonCondition'
+}
+
+export enum TYPE_OPERATOR{
+    equalAsNumbers = "equalAsNumbers", 
+    equalAsStrings = "equalAsStrings",
+    notEqualAsNumbers = "notEqualAsNumbers",
+    notEqualAsStrings = "notEqualAsStrings",
+    greaterThan = "greaterThan",
+    greaterThanOrEqual = "greaterThanOrEqual",
+    lessThan = "lessThan",
+    lessThanOrEqual = "lessThanOrEqual",
+    AND = "AND",
+    OR = "OR",
+    startsWith = "startsWith",
+    startsWithIgnoreCase = "startsWithIgnoreCase",
+    contains = "contains",
+    containsIgnoreCase = "containsIgnoreCase",
+    endsWith = "isEmpty",
+    isEmpty = "isEmpty",
+    matches = "matches"
 }
 
 export enum TYPE_ATTACHMENT {
@@ -87,5 +108,27 @@ export const ACTIONS_LIST= {
     CHANGE_DEPARTMENT : { name: 'Change dept', type: TYPE_ACTION.CHANGE_DEPARTMENT, src:"assets/cds/images/actions/change_department.svg"},
     ONLINE_AGENTS : { name: 'If Online Agent', type: TYPE_ACTION.ONLINE_AGENTS, src:"assets/cds/images/actions/online_agents.svg", description: 'This action moves the flow to different blocks, based on the agents’ availability.<br>If the are agents available the TRUE block will be triggered.<br>If the are no agents available the FALSE block will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset Stop on met condition.'},
     OPEN_HOURS : { name: 'Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src:"assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the TRUE block will be triggered.<br>During offline hours the FALSE block will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.'},
-    HIDE_MESSSAGE : { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src:"assets/cds/images/actions/hidden_message.svg"}
+    HIDE_MESSSAGE : { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src:"assets/cds/images/actions/hidden_message.svg"},
+    JSON_CONDITION: {name: 'Filter', type: TYPE_ACTION.JSON_CONDITION, src:"assets/cds/images/actions/filter.svg"}
+}
+
+
+export const OPERATORS_LIST: { [key: string]: {name: string, type: TYPE_OPERATOR, src?: string}} = {
+    "equalAsNumbers" : { name: "equal As Numbers" , type: TYPE_OPERATOR.equalAsNumbers ,src:"assets/cds/images/operators/equal.svg"},
+    "equalAsStrings" : { name: "equal As Strings", type: TYPE_OPERATOR.equalAsStrings, src:"assets/cds/images/operators/equal.svg"},
+    "notEqualAsNumbers" : { name: "not Equal As Numbers", type: TYPE_OPERATOR.notEqualAsNumbers, src:"assets/cds/images/operators/not-equal.svg"},
+    "notEqualAsStrings" : { name: "not Equal As Strings", type: TYPE_OPERATOR.notEqualAsStrings, src:"assets/cds/images/operators/not-equal.svg"},
+    "greaterThan" : {  name: "greater Than", type: TYPE_OPERATOR.greaterThan, src:"assets/cds/images/operators/grather.svg"},
+    "greaterThanOrEqual" : {  name: "greater Than Or Equal", type: TYPE_OPERATOR.greaterThanOrEqual ,src:"assets/cds/images/operators/grather.svg" },
+    "lessThan" : { name: "less Than", type: TYPE_OPERATOR.lessThan, src:"assets/cds/images/operators/less.svg"},
+    "lessThanOrEqual" : {  name: "less Than Or Equal", type: TYPE_OPERATOR.lessThanOrEqual, src:"assets/cds/images/operators/lessEqual.svg"},
+    "AND": { name: "AND", type: TYPE_OPERATOR.AND},
+    "OR": { name: "OR", type: TYPE_OPERATOR.OR},
+    "startsWith": {  name: "starts With", type: TYPE_OPERATOR.startsWith },
+    "startsWithIgnoreCase": { name: "starts With Ignore Case", type: TYPE_OPERATOR.startsWithIgnoreCase},
+    "contains": { name: "contains", type: TYPE_OPERATOR.contains },
+    "containsIgnoreCase": {  name: "contains Ignore Case", type: TYPE_OPERATOR.containsIgnoreCase },
+    "endsWith": { name: "ends With", type: TYPE_OPERATOR.endsWith},
+    "isEmpty": { name: "is Empty", type: TYPE_OPERATOR.isEmpty },
+    "matches": { name: "matches", type: TYPE_OPERATOR.matches }
 }

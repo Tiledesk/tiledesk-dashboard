@@ -1,0 +1,25 @@
+<div class="condition">
+    <div style="width: 40%;">
+        <!-- [control]="control.controls['operand1']" -->
+        <cds-text
+            [text]="condition?.operand1"
+            
+            (onChange)="onChangeOperand($event, 'operand1')">
+        </cds-text>
+    </div>
+    <div style="width: 20%;">
+        <cds-select 
+            [items]="operators"
+            [bindLabelSelect]="'name'"
+            [bindValueSelect]="'type'"
+            [itemSelected]="condition?.operator"
+            (onSelected)="onChangeOperator($event)">
+        </cds-select>
+    </div>
+    <div style="width: 40%;">
+        <cds-text
+            [text]="condition?.operand2"
+            (onChange)="onChangeOperand($event, 'operand2')">
+        </cds-text>
+    </div>
+</div>

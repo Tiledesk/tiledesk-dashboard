@@ -1,3 +1,4 @@
+import { TYPE_OPERATOR } from './../chatbot-design-studio/utils';
 import { TYPE_ACTION, TYPE_ATTACHMENT } from '../chatbot-design-studio/utils';
 
 export class Intent {
@@ -113,6 +114,16 @@ export class ActionChangeDepartment extends Action {
     constructor(){
         super();
         this._tdActionType = TYPE_ACTION.CHANGE_DEPARTMENT;
+    }
+}
+
+export class ActionJsonCondition extends Action {
+    // variableName: string
+    groups: Array<Expression | Operator>
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.JSON_CONDITION;
+        this.groups = []
     }
 }
 
@@ -273,6 +284,28 @@ export class Field {
     label: string;
     regex?: string;
     errorLabel?: string;
+}
+
+
+export class Expression {
+    type: string = 'expression';
+    conditions: Array<Condition | Operator>
+    constructor(){
+        this.conditions = [ new Condition()]
+    }
+}
+
+export class Operator {
+    type: string = 'operator'
+    operator: "AND" | "OR" = "OR"
+}
+
+export class Condition {
+    type: string = 'condition';
+    operand1: string = ''
+    operator: TYPE_OPERATOR;
+    operand2: string = ''
+
 }
 
 
