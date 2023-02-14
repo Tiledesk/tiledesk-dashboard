@@ -18,46 +18,44 @@
             </div>
         </div>
     </div>
-    <!-- (document:click)="agentfbimg.close()" -->
+    
     <div class="text-editor-wrapper">
         <div class="text-editor">
             <div class="email-field-box">
                 <label class="title-label">Subject</label>
-                <input type="button" id="paste" value="Paste HTML" unselectable="on"
-                    (click)="selectedAttibute('nicola')">
+                <!-- --------------------------------- -->
+                <!-- @ Panel attibute  -->
+                <!-- --------------------------------- -->
+                <div *ngIf="isOpenSetAttributesPanel" class="set--attribrutes-panel">
+                    <input type="button" id="set--attribrute" value="first_name" unselectable="on"
+                        (click)="setAttribute('${nome}')">
 
-                <div class="text-editor-utils">
-                    <div class="text-editor-insert-attribute" [satPopoverAnchor]="agentfbimg"
-                        (click)="agentfbimg.toggle(); $event.stopPropagation()">
-                        <span class="material-icons" style=" color: #647283; font-size: 16px;">
+                    <input type="button" id="set--attribrute" value="city" unselectable="on"
+                        (click)="setAttribute('${city}')">
+
+                    <input type="button" id="set--attribrute" value="phone" unselectable="on"
+                        (click)="setAttribute('${phone}')">
+                </div>
+
+                <div unselectable="on" tabIndex="-1" class="text-editor-utils">
+                    <!-- <div unselectable="on" tabIndex="-1" class="text-editor-insert-attribute"
+                        (click)="toggleSetAttributesPanel(isOpenSetAttributesPanel = !isOpenSetAttributesPanel)">
+                        <span unselectable="on" class="material-icons material-icons-data-object" style="font-size: 16px;">
                             data_object
                         </span>
+                    </div> -->
 
-                        <sat-popover (opened)="onOpenPopover()" [autoFocus]="false" panelClass="set-attributes-panel"
-                            #agentfbimg horizontalAlign="before">
-                            <div class="select-category-row">
-                                <span id="attribute-nicola" class="select-category-row-name"
-                                    (click)="selectedAttibute('nicola')">
-                                    Nicola
-                                </span>
-                            </div>
-                            <div class="select-category-row">
-                                <span class="select-category-row-name">
-                                    Andrea
-                                </span>
-                            </div>
-                            <div class="select-category-row">
-                                <span class="select-category-row-name">
-                                    Gabriele
-                                </span>
-                            </div>
-                        </sat-popover>
+                    <input type="button" unselectable="on" class="insert-attribute-btn"
+                    (click)="toggleSetAttributesPanel(isOpenSetAttributesPanel = !isOpenSetAttributesPanel)">
+                    <span unselectable="on" class="material-icons material-icons-data-object" style="font-size: 16px;">
+                        data_object
+                    </span>
+                   
 
 
-                    </div>
                     <div class="emoji-picker">
                         <div class="emoji-picker-button" aria-expanded="false">
-                            <span class="material-icons" style="color: #647283; font-size: 16px;">
+                            <span class="material-icons" style="font-size: 16px;">
                                 emoji_emotions
                             </span>
                         </div>
@@ -67,8 +65,20 @@
                     <input matInput type="text" placeholder="Type a subject" [(ngModel)]="action.subject">
                 </mat-form-field> -->
                 <!-- (mouseleave)="mouseleave()" (mousedown)="mousedown($event);" -->
-                <div id="email-subject" (keyup)="onKeyUp($event)" (mouseup)="mouseUp()"  contenteditable="true">
-                    You can type here. Add an icon.
+                <!-- [textContent]="action.subject" (input)="action.subject = $event.target.textContent" -->
+
+                <!-- (input)="onInputActionSubject()" -->
+                <!-- <div data-focused="true" id="email-subject"  (keyup)="onKeyUp($event)" (mouseup)="mouseUp()"
+                    contenteditable="true">
+                    
+                </div> -->
+                <!-- <div class="set--attribrutes-panel">
+                    <input type="button" id="paste" value="Paste HTML" unselectable="on"
+                        (click)="pasteHtml('first_name')">
+                </div> -->
+
+                <div (input)="onInputActionSubject()" id="email-subject" contenteditable="true">
+
                 </div>
             </div>
         </div>

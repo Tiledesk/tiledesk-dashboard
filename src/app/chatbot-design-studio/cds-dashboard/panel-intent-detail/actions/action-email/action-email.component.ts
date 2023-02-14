@@ -1,27 +1,79 @@
 import { ActionEmail } from 'app/models/intent-model';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, HostListener, OnChanges } from '@angular/core';
 import { TEXT_CHARS_LIMIT } from './../../../../utils';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { HtmlEntitiesEncodePipe } from 'app/html-entities-encode.pipe';
+import { TiledeskVarSplitter } from '../../../../TiledeskVarSplitter';
+
 
 @Component({
   selector: 'cds-action-email',
   templateUrl: './action-email.component.html',
   styleUrls: ['./action-email.component.scss']
 })
-export class ActionEmailComponent implements OnInit {
+export class ActionEmailComponent implements OnInit, OnChanges {
 
   @Input() action: ActionEmail;
 
   email_error: boolean = false;
+  isOpenSetAttributesPanel: boolean = false
   // intents = ['uno', 'due', 'tre'];
 
 
   constructor(
     private logger: LoggerService,
+    private eRef: ElementRef
   ) { }
 
   ngOnInit(): void {
     this.logger.log("[ACTION-EMAIL] elementSelected: ", this.action)
+  }
+
+  ngOnChanges() {
+    console.log("[ACTION-EMAIL] ngOnChanges: this.action", this.action)
+    const splits = new TiledeskVarSplitter().getSplits(this.action.subject);
+    console.log('[ACTION-EMAIL] ngOnChanges splits:', splits)
+    let tagName = ''
+    let tagNameAsTag = ''
+    let newSplitsArray = [];
+    let fommattedActionSubject = ''
+    splits.forEach(element => {
+      if (element.type === 'tag') {
+        tagName = '${' + element.name + '}';
+        tagNameAsTag = `<div tag="true" contenteditable="false"  style=" font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${tagName}</div>`
+        newSplitsArray.push(tagNameAsTag)
+
+      } else if (element.type === 'text') {
+        newSplitsArray.push(element.text)
+      }
+    });
+    console.log('[ACTION-EMAIL]  newSplitsArray', newSplitsArray)
+
+    newSplitsArray.forEach(element => {
+      fommattedActionSubject += element
+
+    });
+    console.log('[ACTION-EMAIL]  fommattedActionSubject', fommattedActionSubject)
+
+    let imputEle = document.getElementById('email-subject') as HTMLElement
+    imputEle.innerHTML = fommattedActionSubject;
+    // imputEle.focus(imputEle);
+    this.placeCaretAtEnd(imputEle)
+
+  }
+
+  placeCaretAtEnd(el) {
+    el.focus();
+    if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+
+   
   }
 
 
@@ -34,123 +86,118 @@ export class ActionEmailComponent implements OnInit {
     this.action.to = event;
   }
 
-  // document.querySelector('.selectable-icons').addEventListener('click', function(e) {
-  //   var el = e.target.cloneNode(true);
-  //   el.setAttribute('contenteditable', false);
-  //   document.querySelector('[contenteditable]').appendChild(el);
-
-  // });
   // https://stackoverflow.com/questions/45686432/need-to-add-tags-and-normal-text-in-same-input-box
-  onOpenPopover() {
-    const imputEle = document.querySelector('#' + 'email-subject') as HTMLElement 
-    const caretPositon =  this.getCaretCharacterOffsetWithin(imputEle)
-    console.log("[ACTION-EMAIL] caretPositon: ", caretPositon);
-  } 
+  // http://jsfiddle.net/timdown/jwvha/527/
 
-  // mousedown(event) {
-  //   console.log("[ACTION-EMAIL] mousedown: ", event);
-  //   const imputEle = document.querySelector('#' + 'email-subject') as HTMLElement 
-  //   const caretPositon =  this.getCaretCharacterOffsetWithin(imputEle)
-  //   console.log("[ACTION-EMAIL] mousedown caretPositon: ", caretPositon);
+
+  setAttribute(attribute) {
+    console.log("[ACTION-EMAIL] selectedAttibute attribute: ", attribute);
+    const imputEle = document.querySelector('#email-subject') as HTMLElement
+    console.log("[ACTION-EMAIL] selectedAttibute imputEle: ", imputEle);
+    imputEle.focus();
+    this.setAttributeAtCaret(`<div contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
+    this.isOpenSetAttributesPanel = false;
+    this.onInputActionSubject()
+  }
+
+  setAttributeAtCaret(html: any) {
+    var sel, range;
+    if (window.getSelection) {
+      // IE9 and non-IE
+      sel = window.getSelection();
+      if (sel.getRangeAt && sel.rangeCount) {
+        range = sel.getRangeAt(0);
+        range.deleteContents();
+
+        // Range.createContextualFragment() would be useful here but is
+        // only relatively recently standardized and is not supported in
+        // some browsers (IE9, for one)
+        var el = document.createElement("div");
+        el.innerHTML = html;
+        var frag = document.createDocumentFragment(), node, lastNode;
+        while ((node = el.firstChild)) {
+          lastNode = frag.appendChild(node);
+        }
+        // var firstNode = frag.firstChild;
+        range.insertNode(frag);
+
+        // Preserve the selection
+        if (lastNode) {
+          range = range.cloneRange();
+          range.setStartAfter(lastNode);
+          range.collapse(true);
+          // if (selectPastedContent) {
+          //     range.setStartBefore(firstNode);
+          // } else {
+          //     range.collapse(true);
+          // }
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      }
+    }
+
+  }
+
+  onInputActionSubject() {
+    var contenteditable = document.querySelector('[contenteditable]'),
+      text = contenteditable.textContent;
+
+    console.log('contenteditable innerHtml', contenteditable.innerHTML)
+
+    console.log('onInputActionSubject text ', text)
+    this.action.subject = text;
+    console.log('onInputActionSubject action ', this.action)
+  }
+
+  toggleSetAttributesPanel(isopen) {
+    console.log("[ACTION-EMAIL] isopen Attributes Panel: ", isopen);
+    this.isOpenSetAttributesPanel = isopen
+  }
+
+  // @HostListener('document:click', ['$event'])
+  // clickout(event) {
+  //   console.log("[ACTION-EMAIL] clickout event: ", event)
+  //   console.log("[ACTION-EMAIL] clickout event target id: ", event.target.id)
+
+
+  // if (event.target.id.startsWith("set--attribrute") || event.target.classList.contains('text-editor-insert-attribute') || event.target.classList.contains('material-icons-data-object')) {
+  //   console.log("[ACTION-EMAIL] clickout : clicked inside")
+
+  // } else {
+  //   console.log("[ACTION-EMAIL] clickout : clicked outside")
+  //   this.isOpenSetAttributesPanel = false
   // }
 
+  // if (this.eRef.nativeElement.contains(event.target)) {
+  //   console.log("[ACTION-EMAIL] clickout : clicked inside")
+  // } else {
+  //   if (!event.target.id.startsWith("set--attribrute") || (event.target.id !== "") ) {
+  //     console.log("[ACTION-EMAIL] clickout : clicked outside")
+  //     this.isOpenSetAttributesPanel = false
+  //   }
+  // }
+  // }
+
+
+
+  // -----------------------------------------
+  // Not used 
+  // -----------------------------------------
   mouseUp() {
     console.log("[ACTION-EMAIL] mouseUp: ");
-    const imputEle = document.querySelector('#' + 'email-subject') as HTMLElement 
-    const caretPositon =  this.getCaretCharacterOffsetWithin(imputEle)
+    const imputEle = document.querySelector('#' + 'email-subject') as HTMLElement
+    const caretPositon = this.getCaretCharacterOffsetWithin(imputEle)
     console.log("[ACTION-EMAIL] mouseUp caretPositon: ", caretPositon);
   }
-  // mouseleave() {
-  //   console.log("[ACTION-EMAIL] mouseleave: ");
-  //   const imputEle = document.querySelector('#' + 'email-subject') as HTMLElement 
-  //   const caretPositon =  this.getCaretCharacterOffsetWithin(imputEle)
-  //   console.log("[ACTION-EMAIL] mouseleave caretPositon: ", caretPositon);
-
-  // }
 
   onKeyUp(event) {
+    // console.log("[ACTION-EMAIL] action: ", this.action);
     console.log("[ACTION-EMAIL] onKeyUp: ", event);
-    const imputEle = document.querySelector('#' + 'email-subject') as HTMLElement 
-    const caretPositon =  this.getCaretCharacterOffsetWithin(imputEle)
+    const imputEle = document.querySelector('#' + 'email-subject') as HTMLElement
+    const caretPositon = this.getCaretCharacterOffsetWithin(imputEle)
     console.log("[ACTION-EMAIL] onKeyUp caretPositon: ", caretPositon);
   }
-
-  selectedAttibute(attribute) {
-    console.log("[ACTION-EMAIL] selectedAttibute attribute: ", attribute);
-    const imputEle = document.querySelector('#' + 'email-subject') as any        
-    console.log("[ACTION-EMAIL] selectedAttibute imputEle: ", imputEle);
-
-    // var range = document.createRange()
-    // var sel = window.getSelection()
-    
-    // range.setStart(imputEle.childNodes[2], 5)
-    // range.collapse(true)
-    
-    // sel.removeAllRanges()
-    // sel.addRange(range)
- 
-
-
-    // console.log('imputEl' , imputEle) 
-    setTimeout(() => {
-
-    imputEle.focus()        
-  
-    // var range = document.createRange()
-    // var sel = window.getSelection()
-    
-    // range.setStart(imputEle.childNodes[2], 5)
-    // range.collapse(true)
-    
-    // sel.removeAllRanges()
-    // sel.addRange(range)
-    
-    this.pasteHtmlAtCaret('<div contenteditable="false" style=" background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">' + attribute +'</div>')
-     }, 500);
-
-
-
-   
-
-
-
-
-    // const selectedEl = document.querySelector('#' + eleid) as any
-    
-   
-    // var el = selectedEl.cloneNode(true);
-    // const attribute = selectedEl.setAttribute('contenteditable', false);
-    // this.pasteHtmlAtCaret('<div contenteditable="false" style=" background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">' + attribute +'</div>')
-   
-
-    // document.querySelector('[contenteditable]').appendChild(el);
-
-    //   const imputEle = document.querySelector('#' + 'email-subject') as any 
-    //   console.log("[ACTION-EMAIL] imputEle : ", imputEle);
-
-    //  let s = window.getSelection();
-    //  let r = s.getRangeAt(0)
-    //  console.log("[ACTION-EMAIL] getRangeAt : ", r);
-    //  let elx = r.startContainer.parentElement
-    //  console.log("[ACTION-EMAIL] elx : ", elx);
-    // //  select-category-row-name
-    // if (elx.classList.contains('select-category-row-name')) {
-    //   // Check if we are exactly at the end of the .label element
-    //   if (r.startOffset == r.endOffset && r.endOffset == elx.textContent.length) {
-    //     // prevent the default delete behavior
-    //     event.preventDefault();
-    //     if (elx.classList.contains('highlight')) {
-    //       // remove the element
-    //       elx.remove();
-    //     } else {
-    //       elx.classList.add('highlight');
-    //     }
-    //     return;
-    //   }
-    // }
-
-  }
-
 
   getCaretCharacterOffsetWithin(element) {
     var caretOffset = 0;
@@ -158,124 +205,25 @@ export class ActionEmailComponent implements OnInit {
     var win = doc.defaultView || doc.parentWindow;
     var sel;
     if (typeof win.getSelection != "undefined") {
-        sel = win.getSelection();
-        if (sel.rangeCount > 0) {
-            var range = win.getSelection().getRangeAt(0);
-            var preCaretRange = range.cloneRange();
-            preCaretRange.selectNodeContents(element);
-            preCaretRange.setEnd(range.endContainer, range.endOffset);
-            caretOffset = preCaretRange.toString().length;
-        }
-    } else if ( (sel = doc.selection) && sel.type != "Control") {
-        var textRange = sel.createRange();
-        var preCaretTextRange = doc.body.createTextRange();
-        preCaretTextRange.moveToElementText(element);
-        preCaretTextRange.setEndPoint("EndToEnd", textRange);
-        caretOffset = preCaretTextRange.text.length;
-    }
-    console.log('getCaretCharacterOffsetWithin caretOffset', caretOffset )
-    return caretOffset;
-}
-
-  pasteHtmlAtCaret(html) {
-    var sel, range;
-    if (window.getSelection) {
-      // IE9 and non-IE
-      sel = window.getSelection();
-      console.log('sel' ,sel)
-      if (sel.getRangeAt && sel.rangeCount) {
-        range = sel.getRangeAt(0);
-        range.deleteContents();
-      
-        console.log('range' ,range)
-        // Range.createContextualFragment() would be useful here but is
-        // only relatively recently standardized and is not supported in
-        // some browsers (IE9, for one)
-        var el = document.createElement("div");
-        console.log('el' ,el)
-        el.innerHTML = html;
-        var frag = document.createDocumentFragment(), node, lastNode;
-        console.log('frag' ,frag)
-        while ((node = el.firstChild)) {
-          console.log('node' ,node)
-          lastNode = frag.appendChild(node);
-          console.log('lastNode 1' ,lastNode)
-        }
-        var firstNode = frag.firstChild;
-        range.insertNode(frag);
-
-        // Preserve the selection
-        if (lastNode) {
-          console.log('lastNode 2 ' ,lastNode)
-          range = range.cloneRange();
-          console.log('range 2 ' ,range)
-          range.setStartAfter(lastNode);
-          // if (selectPastedContent) {
-          //     range.setStartBefore(firstNode);
-          // } else {
-          range.collapse(true);
-          // }
-          sel.removeAllRanges();
-          sel.addRange(range);
-        }
+      sel = win.getSelection();
+      if (sel.rangeCount > 0) {
+        var range = win.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
       }
+    } else if ((sel = doc.selection) && sel.type != "Control") {
+      var textRange = sel.createRange();
+      var preCaretTextRange = doc.body.createTextRange();
+      preCaretTextRange.moveToElementText(element);
+      preCaretTextRange.setEndPoint("EndToEnd", textRange);
+      caretOffset = preCaretTextRange.text.length;
     }
-    // else if ( (sel = <HTMLElement>document.selection) && sel.type != "Control") {
-    //     // IE < 9
-    //     var originalRange = sel.createRange();
-    //     originalRange.collapse(true);
-    //     sel.createRange().pasteHTML(html);
-    //     if (selectPastedContent) {
-    //         range = sel.createRange();
-    //         range.setEndPoint("StartToStart", originalRange);
-    //         range.select();
-    //     }
-    // }
+    console.log('getCaretCharacterOffsetWithin caretOffset', caretOffset)
+    return caretOffset;
   }
 
-  insertAtCursor(myField, myValue) {
-    this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - myValue ', myValue);
 
-    // if (this.addWhiteSpaceBefore === true) {
-    //   myValue = ' ' + myValue;
-    //   this.logger.log('[CANNED-RES-EDIT-CREATE] - GET TEXT AREA - QUI ENTRO myValue ', myValue);
-    // }
-
-    //IE support
-    if (myField.selection) {
-      myField.focus();
-      let sel = myField.selection.createRange();
-      sel.text = myValue;
-      // this.cannedResponseMessage = sel.text;
-    }
-    //MOZILLA and others
-    else if (myField.selectionStart || myField.selectionStart == '0') {
-      var startPos = myField.selectionStart;
-      this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - startPos ', startPos);
-
-      var endPos = myField.selectionEnd;
-      this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - endPos ', endPos);
-
-      myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-
-      // place cursor at end of text in text input element
-      myField.focus();
-      var val = myField.value; //store the value of the element
-      myField.value = ''; //clear the value of the element
-      myField.value = val + ' '; //set that value back. 
-
-
-
-      // myField.select();
-    } else {
-      myField.value += myValue;
-
-    }
-  }
-
-  // onTextChange(event) {
-  //   this.logger.log("[ACTION-EMAIL] onTextChange event: ", event);
-  //   //this.elementSelected.intentName = event;
-  // }
 
 }
