@@ -26,7 +26,7 @@
                 <!-- --------------------------------- -->
                 <!-- @ Panel attibute  -->
                 <!-- --------------------------------- -->
-                <div *ngIf="isOpenSetAttributesPanel" class="set--attribrutes-panel">
+                <!-- <div *ngIf="isOpenSetAttributesPanel" class="set--attribrutes-panel">
                     <input type="button" id="set--attribrute" value="first_name" unselectable="on"
                         (click)="setAttribute('${nome}')">
 
@@ -35,24 +35,21 @@
 
                     <input type="button" id="set--attribrute" value="phone" unselectable="on"
                         (click)="setAttribute('${phone}')">
-                </div>
+                </div> -->
+                <!-- --------------------------------- -->
+                <!-- ./ Panel attibute  -->
+                <!-- --------------------------------- -->
 
-                <div unselectable="on" tabIndex="-1" class="text-editor-utils">
-                    <!-- <div unselectable="on" tabIndex="-1" class="text-editor-insert-attribute"
-                        (click)="toggleSetAttributesPanel(isOpenSetAttributesPanel = !isOpenSetAttributesPanel)">
-                        <span unselectable="on" class="material-icons material-icons-data-object" style="font-size: 16px;">
-                            data_object
-                        </span>
-                    </div> -->
-
+                <!-- --------------------------------- -->
+                <!-- @ Editor utils  -->
+                <!-- --------------------------------- -->
+                <!-- <div unselectable="on" tabIndex="-1" class="text-editor-utils">
                     <input type="button" unselectable="on" class="insert-attribute-btn"
                     (click)="toggleSetAttributesPanel(isOpenSetAttributesPanel = !isOpenSetAttributesPanel)">
                     <span unselectable="on" class="material-icons material-icons-data-object" style="font-size: 16px;">
                         data_object
                     </span>
                    
-
-
                     <div class="emoji-picker">
                         <div class="emoji-picker-button" aria-expanded="false">
                             <span class="material-icons" style="font-size: 16px;">
@@ -60,26 +57,20 @@
                             </span>
                         </div>
                     </div>
-                </div>
+                    <div data-status="default" class="tpl-text-limit">
+                        539
+                    </div>
+                </div> -->
+                <!-- --------------------------------- -->
+                <!-- ./ Editor utils  -->
+                <!-- --------------------------------- -->
                 <!-- <mat-form-field class="box-textarea" appearance="fill">
                     <input matInput type="text" placeholder="Type a subject" [(ngModel)]="action.subject">
                 </mat-form-field> -->
-                <!-- (mouseleave)="mouseleave()" (mousedown)="mousedown($event);" -->
-                <!-- [textContent]="action.subject" (input)="action.subject = $event.target.textContent" -->
-
-                <!-- (input)="onInputActionSubject()" -->
-                <!-- <div data-focused="true" id="email-subject"  (keyup)="onKeyUp($event)" (mouseup)="mouseUp()"
-                    contenteditable="true">
-                    
-                </div> -->
-                <!-- <div class="set--attribrutes-panel">
-                    <input type="button" id="paste" value="Paste HTML" unselectable="on"
-                        (click)="pasteHtml('first_name')">
-                </div> -->
-
-                <div (input)="onInputActionSubject()" id="email-subject" contenteditable="true">
-
-                </div>
+               
+                <!-- <div data-focused="true" spellcheck="false" (input)="onInputActionSubject()" id="email-subject" contenteditable="true"> </div> -->
+            
+                <text-editable-div [text]="action.subject"> </text-editable-div>
             </div>
         </div>
     </div>

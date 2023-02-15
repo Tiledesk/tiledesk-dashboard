@@ -91,6 +91,7 @@ import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-
 import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { SatPopoverModule } from '@ncstate/sat-popover';
+import { TextEditableDivComponent } from './cds-base-element/text-editable-div/text-editable-div.component';
 @NgModule({
   declarations: [
     CdsDashboardComponent,
@@ -144,7 +145,8 @@ import { SatPopoverModule } from '@ncstate/sat-popover';
     ActionCloseComponent,
     ActionAgentHandoffComponent,
     CdsFooterComponent,
-    CdsPublishOnCommunityModalComponent
+    CdsPublishOnCommunityModalComponent,
+    TextEditableDivComponent
   ],
   imports: [
     A11yModule,

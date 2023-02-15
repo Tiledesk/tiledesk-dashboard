@@ -1,0 +1,39 @@
+<!-- --------------------------------- -->
+<!-- @ Panel attibute  -->
+<!-- --------------------------------- -->
+<div *ngIf="isOpenSetAttributesPanel" class="set--attribrutes-panel">
+    <input type="button" id="set--attribrute" value="first_name" unselectable="on" (click)="setAttribute('${nome}')">
+
+    <input type="button" id="set--attribrute" value="city" unselectable="on" (click)="setAttribute('${city}')">
+
+    <input type="button" id="set--attribrute" value="phone" unselectable="on" (click)="setAttribute('${phone}')">
+</div>
+<!-- --------------------------------- -->
+<!-- ./ Panel attibute  -->
+<!-- --------------------------------- -->
+
+<!-- --------------------------------- -->
+<!-- @ Editor utils  -->
+<!-- --------------------------------- -->
+<div unselectable="on" tabIndex="-1" class="text-editor-utils">
+    <input type="button" unselectable="on" class="insert-attribute-btn"
+        (click)="toggleSetAttributesPanel(isOpenSetAttributesPanel = !isOpenSetAttributesPanel)">
+    <span unselectable="on" class="material-icons material-icons-data-object" style="font-size: 16px;">
+        data_object
+    </span>
+
+    <div class="emoji-picker">
+        <div class="emoji-picker-button" aria-expanded="false">
+            <span class="material-icons" style="font-size: 16px;">
+                emoji_emotions
+            </span>
+        </div>
+    </div>
+    <div data-status="default" class="tpl-text-limit">
+        539
+    </div>
+</div>
+
+<div data-focused="true" spellcheck="false" (input)="onInput()" id="content-editable" contenteditable="true">
+
+</div>

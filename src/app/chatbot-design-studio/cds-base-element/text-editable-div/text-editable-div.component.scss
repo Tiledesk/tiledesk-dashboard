@@ -1,0 +1,132 @@
+.set--attribrutes-panel {
+    min-width: 150px;
+    background: #fff;
+    padding: 6px;
+    position: absolute;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    // gap: 5px;
+    // top: -68px;
+    box-shadow: 0 0 20px 4px #9aa1b126, 0 4px 80px -8px #24282f40, 0 4px 4px -2px #5b5e6926;
+    right: 0;
+    // top: -110px;
+    z-index: 1050;
+
+}
+
+
+.single-attribute-style {
+    background: #ffdc66;
+    cursor: pointer;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border-radius: 10px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    display: inline;
+    padding: 0 5px;
+}
+
+[contenteditable] {
+    border: 1px solid #000;
+    margin: 10.5px;
+    line-height: 25px;
+    -webkit-appearance: textfield;
+    appearance: textfield;
+    background: #fff;
+    padding: 5px;
+    border-radius: 8px;
+    min-height: 37px;
+    width: calc(100% - 168px);
+}
+
+
+.emoji-picker-button {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 100%;
+    -webkit-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 23px;
+    justify-content: center;
+    margin-right: 5px;
+    width: 23px;
+    color: #647283;
+}
+
+.emoji-picker-button:hover {
+    background: rgba(0, 108, 255, .3);
+}
+
+
+.tpl-text-limit {
+    background: #647283;
+    color: #fff;
+    border-radius: 10px;
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    padding: 0 10px;
+    pointer-events: none;
+    -webkit-transition: background-color .3s,color .3s;
+    transition: background-color .3s,color .3s;
+}
+
+
+.insert-attribute-btn {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    align-items: center;
+    background: transparent;
+    border-radius: 100%;
+    cursor: pointer;
+    display: flex;
+    height: 23px;
+    justify-content: center;
+    margin-right: 5px;
+    width: 24px;
+    color: #647283;
+    box-shadow: 0 1px 3px #00000030;
+    border: unset;
+    z-index: 1;
+}
+
+.material-icons-data-object {
+    font-size: 16px;
+    position: absolute;
+    left: 1px;
+    top: 0px;
+    text-align: center;
+    background: #fff;
+    border-radius: 50%;
+    height: 23px;
+    width: 23px;
+    padding: 3px 3px;
+    z-index: 0;
+    box-shadow: 0 1px 3px #00000030;
+}
+
+.text-editor-utils {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    bottom: -2px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: absolute;
+    right: 164px;
+    z-index: 16;
+}

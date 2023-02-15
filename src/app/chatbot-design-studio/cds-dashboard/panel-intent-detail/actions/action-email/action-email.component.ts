@@ -72,8 +72,6 @@ export class ActionEmailComponent implements OnInit, OnChanges {
       sel.removeAllRanges();
       sel.addRange(range);
     }
-
-   
   }
 
 
@@ -136,7 +134,6 @@ export class ActionEmailComponent implements OnInit, OnChanges {
         }
       }
     }
-
   }
 
   onInputActionSubject() {

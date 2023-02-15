@@ -314,6 +314,21 @@ mat-form-field.box-textarea ::ng-deep {
     background: rgba(0, 108, 255, .3);
 }
 
+
+.tpl-text-limit {
+    background: #647283;
+    color: #fff;
+    border-radius: 10px;
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    padding: 0 10px;
+    pointer-events: none;
+    -webkit-transition: background-color .3s,color .3s;
+    transition: background-color .3s,color .3s;
+}
+
 ::ng-deep .set-attributes-panel {
     display: flex;
     -ms-flex-direction: column;
