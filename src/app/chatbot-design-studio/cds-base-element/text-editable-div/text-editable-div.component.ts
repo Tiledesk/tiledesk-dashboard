@@ -7,15 +7,15 @@ import { LoggerService } from 'app/services/logger/logger.service';
   templateUrl: './text-editable-div.component.html',
   styleUrls: ['./text-editable-div.component.scss']
 })
-export class TextEditableDivComponent implements OnInit, OnChanges  {
-  
+export class TextEditableDivComponent implements OnInit, OnChanges {
+
   @Input() text: string;
   @Output() textChanged = new EventEmitter();
   @Input() emoijPikerBtn: boolean;
   @Input() setAttributeBtn: boolean;
   @Input() textLimitBtn: boolean;
   @Input() textLimit: number;
-     
+
 
 
 
@@ -44,6 +44,9 @@ export class TextEditableDivComponent implements OnInit, OnChanges  {
 
       } else if (element.type === 'text') {
         newSplitsArray.push(element.text)
+        // newSplitsArray.push(element.text.replace(/(?:\r\n|\r|\n)/g, '<br>'))
+
+
       }
     });
     console.log('[TEXT-EDITABLE-DIV]  newSplitsArray', newSplitsArray)
@@ -76,7 +79,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges  {
   setAttribute(attribute) {
     console.log("[TEXT-EDITABLE-DIV] selectedAttibute attribute: ", attribute);
     // const imputEle = document.querySelector('#email-subject') as HTMLElement
-    const imputEle =  this.elementRef.nativeElement.querySelector('#content-editable')
+    const imputEle = this.elementRef.nativeElement.querySelector('#content-editable')
     console.log("[TEXT-EDITABLE-DIV] selectedAttibute imputEle: ", imputEle);
     imputEle.focus();
     this.setAttributeAtCaret(`<div contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
@@ -123,22 +126,35 @@ export class TextEditableDivComponent implements OnInit, OnChanges  {
     }
   }
 
-
+  // 
   onInput() {
-    let contenteditable =  this.elementRef.nativeElement.querySelector('#content-editable'); //document.querySelector('[contenteditable]'),
-    let text = contenteditable.textContent;
+    let contenteditable = this.elementRef.nativeElement.querySelector('#content-editable'), //document.querySelector('[contenteditable]'),  //document.querySelector('[contenteditable]'),
+      text = contenteditable.textContent;
 
-    console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML)
 
-    console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', text)
-    this.text = text;
-    this.textChanged.emit(this.text) 
-   
+    for (let i = 0; i < text.length; i++) {
+      let code = text.charCodeAt(i);
+      console.log('text --->>> ', code)
+    }
+
+    // console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML)
+
+    console.log('[TEXT-EDITABLE-DIV] onInput text ', text)
+    // this.text = text;
+    this.textChanged.emit(text)
+
   }
 
   toggleSetAttributesPanel(isopen) {
-    console.log("[TEXT-EDITABLE-DIV] isopen Attributes Panel: ", isopen);
+    console.log("[TEXT-EDITABLE-DIV] toggleSetAttributesPanel - isopen Attributes Panel: ", isopen);
     this.isOpenSetAttributesPanel = isopen
+  }
+
+  onBlur() {
+    console.log("[TEXT-EDITABLE-DIV] onBlur isOpenSetAttributesPanel ", this.isOpenSetAttributesPanel);
+    // if (this.isOpenSetAttributesPanel === true) {
+    //   this.isOpenSetAttributesPanel = false;
+    // }
   }
 
 
