@@ -1,6 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { TiledeskVarSplitter } from 'app/chatbot-design-studio/TiledeskVarSplitter';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { calculatingRemainingCharacters, TEXT_CHARS_LIMIT } from '../../utils';
+
 
 @Component({
   selector: 'text-editable-div',
@@ -16,8 +18,8 @@ export class TextEditableDivComponent implements OnInit, OnChanges  {
   @Input() textLimitBtn: boolean;
   @Input() textLimit: number;
      
-
-
+  leftCharsText: number;
+  alertCharsText: boolean = false;
 
   isOpenSetAttributesPanel: boolean = false
   constructor(
@@ -26,6 +28,21 @@ export class TextEditableDivComponent implements OnInit, OnChanges  {
   ) { }
 
   ngOnInit(): void {
+    if(!this.textLimit || this.textLimit == 0){
+      this.textLimit = TEXT_CHARS_LIMIT;
+    }
+    this.calculatingRemainingCharacters();
+  }
+
+
+  private calculatingRemainingCharacters(){
+    this.leftCharsText = calculatingRemainingCharacters(this.text);
+    console.log('this.leftCharsText::: ', this.leftCharsText, (this.textLimit/10));
+    if(this.leftCharsText<(this.textLimit/10)){
+      this.alertCharsText = true;
+    } else {
+      this.alertCharsText = false;
+    }
   }
 
   ngOnChanges() {
@@ -125,15 +142,15 @@ export class TextEditableDivComponent implements OnInit, OnChanges  {
 
 
   onInput() {
-    let contenteditable =  this.elementRef.nativeElement.querySelector('#content-editable'); //document.querySelector('[contenteditable]'),
-    let text = contenteditable.textContent;
-
-    console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML)
-
-    console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', text)
-    this.text = text;
-    this.textChanged.emit(this.text) 
-   
+    let contenteditable =  this.elementRef.nativeElement.querySelector('#content-editable');
+    if(contenteditable.textContent.length > this.textLimit){
+      contenteditable.textContent = contenteditable.textContent.substring(0, this.textLimit);
+    }
+    this.text = contenteditable.textContent;
+    // console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML);
+    console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', this.text);
+    this.calculatingRemainingCharacters();
+    this.textChanged.emit(this.text);
   }
 
   toggleSetAttributesPanel(isopen) {
