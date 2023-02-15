@@ -16,22 +16,26 @@
 <!-- @ Editor utils  -->
 <!-- --------------------------------- -->
 <div unselectable="on" tabIndex="-1" class="text-editor-utils">
-    <input type="button" unselectable="on" class="insert-attribute-btn"
-        (click)="toggleSetAttributesPanel(isOpenSetAttributesPanel = !isOpenSetAttributesPanel)">
-    <span unselectable="on" class="material-icons material-icons-data-object" style="font-size: 16px;">
-        data_object
-    </span>
+    <div *ngIf="setAttributeBtn" class="insert-attribute-btn-wpr">
+        <input type="button" unselectable="on" class="insert-attribute-btn"
+            (click)="toggleSetAttributesPanel(isOpenSetAttributesPanel = !isOpenSetAttributesPanel)">
+        <span unselectable="on" class="material-icons material-icons-data-object" style="font-size: 16px;">
+            data_object
+        </span>
+    </div>
 
-    <div class="emoji-picker">
+    <div *ngIf="emoijPikerBtn" class="emoji-picker">
         <div class="emoji-picker-button" aria-expanded="false">
             <span class="material-icons" style="font-size: 16px;">
                 emoji_emotions
             </span>
         </div>
     </div>
-    <div data-status="default" class="tpl-text-limit">
+
+    <div *ngIf="textLimitBtn" data-status="default" class="tpl-text-limit">
         539
     </div>
+    
 </div>
 
 <div data-focused="true" spellcheck="false" (input)="onInput()" id="content-editable" contenteditable="true">

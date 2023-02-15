@@ -11,6 +11,13 @@ export class TextEditableDivComponent implements OnInit, OnChanges  {
   
   @Input() text: string;
   @Output() textChanged = new EventEmitter();
+  @Input() emoijPikerBtn: boolean;
+  @Input() setAttributeBtn: boolean;
+  @Input() textLimitBtn: boolean;
+  @Input() textLimit: number;
+     
+
+
 
   isOpenSetAttributesPanel: boolean = false
   constructor(
@@ -68,7 +75,8 @@ export class TextEditableDivComponent implements OnInit, OnChanges  {
 
   setAttribute(attribute) {
     console.log("[TEXT-EDITABLE-DIV] selectedAttibute attribute: ", attribute);
-    const imputEle = document.querySelector('#email-subject') as HTMLElement
+    // const imputEle = document.querySelector('#email-subject') as HTMLElement
+    const imputEle =  this.elementRef.nativeElement.querySelector('#content-editable')
     console.log("[TEXT-EDITABLE-DIV] selectedAttibute imputEle: ", imputEle);
     imputEle.focus();
     this.setAttributeAtCaret(`<div contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
@@ -117,12 +125,12 @@ export class TextEditableDivComponent implements OnInit, OnChanges  {
 
 
   onInput() {
-    var contenteditable = document.querySelector('[contenteditable]'),
-      text = contenteditable.textContent;
+    let contenteditable =  this.elementRef.nativeElement.querySelector('#content-editable'); //document.querySelector('[contenteditable]'),
+    let text = contenteditable.textContent;
 
-    console.log('contenteditable innerHtml', contenteditable.innerHTML)
+    console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML)
 
-    console.log('onInputActionSubject text ', text)
+    console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', text)
     this.text = text;
     this.textChanged.emit(this.text) 
    
