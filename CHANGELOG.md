@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.3
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.2
 - Deploys in production
 - Adds the "test it out" button on the community template details and  on the community templates list page
