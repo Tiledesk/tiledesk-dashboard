@@ -1,3 +1,5 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
 .set--attribrutes-panel {
     min-width: 150px;
     background: #fff;
@@ -90,6 +92,29 @@
     pointer-events: none;
     -webkit-transition: background-color 0.3s, color 0.3s;
     transition: background-color 0.3s, color 0.3s;
+    // background: #647283;
+    // color: #fff;
+    // border-radius: 10px;
+    // flex-shrink: 0;
+    // font-size: 12px;
+    // font-weight: 700;
+    // line-height: 16px;
+    // padding: 0 10px;
+    // pointer-events: none;
+    // -webkit-transition: background-color .3s,color .3s;
+    // transition: background-color .3s,color .3s;
+
+    .num-chars {
+        background: $color-light-gray-hex;
+        padding: 0px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        color: $color-text-box-hex;
+        float: right;
+        &.error {
+            background: $color-orange-hex;
+        }
+    }
 }
 
 .insert-attribute-btn {
