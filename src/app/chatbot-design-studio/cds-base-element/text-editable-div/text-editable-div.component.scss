@@ -53,6 +53,7 @@
     white-space: pre-wrap;
     white-space: break-spaces;
     display: inline-block;
+    font-size: 14px;
 }
 
 .emoji-picker-button {
@@ -138,6 +139,10 @@
     position: relative;
 }
 
+.insert-attribute-btn:hover {
+    background: rgba(0, 108, 255, .3);
+}
+
 .material-icons-data-object {
     font-size: 16px;
     position: absolute;
@@ -164,4 +169,17 @@
     position: absolute;
     right: 164px;
     z-index: 16;
+}
+
+::ng-deep .set-attributes-panel {
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    max-height: 600px;
+    min-height: 200px;
+    box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
+        0 4px 4px -2px rgb(91 94 105 / 15%);
+    background: rgb(255, 255, 255);
+    border-radius: 4px;
+    padding: 15px 0;
 }

@@ -31,7 +31,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     if(!this.textLimit || this.textLimit == 0){
       this.textLimit = TEXT_CHARS_LIMIT;
     }
-    this.calculatingRemainingCharacters();
+    // this.calculatingRemainingCharacters();
   }
 
 
@@ -161,14 +161,14 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     this.textChanged.emit(text)
 
     // let contenteditable =  this.elementRef.nativeElement.querySelector('#content-editable');
-    if(contenteditable.textContent.length > this.textLimit){
-      contenteditable.textContent = contenteditable.textContent.substring(0, this.textLimit);
-    }
-    this.text = contenteditable.textContent;
-    // console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML);
-    console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', this.text);
-    this.calculatingRemainingCharacters();
-    this.textChanged.emit(this.text);
+    // if(contenteditable.textContent.length > this.textLimit){
+    //   contenteditable.textContent = contenteditable.textContent.substring(0, this.textLimit);
+    // }
+    // this.text = contenteditable.textContent;
+    // // console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML);
+    // console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', this.text);
+    // this.calculatingRemainingCharacters();
+    // this.textChanged.emit(this.text);
   }
 
   toggleSetAttributesPanel(isopen) {

@@ -15,16 +15,26 @@
     <!-- --------------------------------- -->
 
     <!-- --------------------------------- -->
-    <!-- @ Editor utils  -->
+    <!-- @ Editor utils  (click)="toggleSetAttributesPanel(isOpenSetAttributesPanel = !isOpenSetAttributesPanel)"  -->
+    <!-- [satPopoverAnchor]="setattributepopover"
+    (click)="setattributepopover.toggle(); $event.stopPropagation()"
+    (document:click)="setattributepopover.close()" -->
     <!-- --------------------------------- -->
     <div unselectable="on" tabIndex="-1" class="text-editor-utils">
         <div *ngIf="setAttributeBtn" class="insert-attribute-btn-wpr">
-            <input type="button" unselectable="on" class="insert-attribute-btn"
-                (click)="toggleSetAttributesPanel(isOpenSetAttributesPanel = !isOpenSetAttributesPanel)">
+            <input type="button" unselectable="on" class="insert-attribute-btn" (click)="toggleSetAttributesPanel(isOpenSetAttributesPanel = !isOpenSetAttributesPanel)">
             <span unselectable="on" class="material-icons material-icons-data-object" style="font-size: 16px;">
                 data_object
             </span>
         </div>
+
+        <!-- <sat-popover panelClass="set-attributes-panel" [autoFocus]="false" #setattributepopover hasBackdrop
+            horizontalAlign="before">
+            <div class="popover-wrapper">
+                <input type="button" id="set--attribrute" value="city" unselectable="on"
+                    (click)="setAttribute('${city}')">
+            </div>
+        </sat-popover> -->
 
         <div *ngIf="emoijPikerBtn" class="emoji-picker">
             <div class="emoji-picker-button" aria-expanded="false">
@@ -42,7 +52,7 @@
         </div>
     </div>
 
-    <div data-focused="true" spellcheck="false" (blur)="onBlur()" (input)="onInput()" id="content-editable"
+    <div data-focused="true" spellcheck="false" (input)="onInput()" id="content-editable"
         contenteditable="true">
 
     </div>
