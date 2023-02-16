@@ -70,7 +70,15 @@
                
                 <!-- <div data-focused="true" spellcheck="false" (input)="onInputActionSubject()" id="email-subject" contenteditable="true"> </div> -->
                 
-                <text-editable-div class="editable-div" [emoijPikerBtn]="true" [setAttributeBtn]="true" [textLimitBtn]="false" [textLimit]="50" [text]="actionSubject" (textChanged)="onEditableDivTextChange($event, 'subject')"> </text-editable-div>
+                <text-editable-div 
+                    class="editable-div" 
+                    [emoijPikerBtn]="true" 
+                    [setAttributeBtn]="true" 
+                    [textLimitBtn]="true" 
+                    [textLimit]="30" 
+                    [text]="actionSubject" 
+                    (textChanged)="onEditableDivTextChange($event, 'subject')"
+                ></text-editable-div>
             </div>
         </div>
     </div>
