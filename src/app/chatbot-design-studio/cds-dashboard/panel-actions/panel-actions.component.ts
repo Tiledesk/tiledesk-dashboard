@@ -49,7 +49,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
     //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
     const clicked_element_id = event.target.id
-    console.log("clicked_element_id: ", clicked_element_id);
+    this.logger.log("clicked_element_id: ", clicked_element_id);
     if (this.eRef.nativeElement.contains(event.target)) {
       // console.log("clicked inside")
     } else {
@@ -60,10 +60,10 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       //console.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
       // && (!event.target.classList.contains('ng-option'))
       // clicked_element_id !== 'a0da04ac7772' && 
-      console.log("clicked_element_id.startsWith(actions-btns-wpr)", clicked_element_id.startsWith("actions-btns-wpr"))
+      this.logger.log("clicked_element_id.startsWith(actions-btns-wpr)", clicked_element_id.startsWith("actions-btns-wpr"))
       if (!event.target.classList.contains('csd-add-action-btn-wpr-element')) {
         this.closeActionsDrawer();
-        console.log('clicked outside')
+        this.logger.log('clicked outside')
       }
     }
   }
@@ -158,7 +158,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     if(typeAction === TYPE_ACTION.JSON_CONDITION){
       let action = new ActionJsonCondition();
       action.groups.push( new Expression())
-      console.log('actionnnnn', action)
+      this.logger.log('actionnnnn', action)
       this.intentSelected.actions.push(action);
     }
     
