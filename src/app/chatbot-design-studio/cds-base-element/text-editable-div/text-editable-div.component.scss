@@ -39,21 +39,24 @@
 }
 
 [contenteditable] {
-    border: 1px solid #000;
+    border: 0px solid #000;
     margin: 10.5px;
     line-height: 25px;
-    -webkit-appearance: textfield;
     appearance: textfield;
     background: #fff;
-    padding: 5px;
+    // padding: 5px;
     border-radius: 8px;
-    min-height: 37px;
+    min-height: 42px;
     width: calc(100% - 168px);
     white-space: pre;
     white-space: pre-wrap;
     white-space: break-spaces;
     display: inline-block;
     font-size: 14px;
+    overflow: hidden auto;
+    padding: 10px;
+    resize: vertical;
+    max-height: 125px;
 }
 
 .emoji-picker-button {
@@ -82,29 +85,8 @@
 }
 
 .tpl-text-limit {
-    background: #647283;
-    color: #fff;
-    border-radius: 10px;
-    flex-shrink: 0;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 16px;
-    padding: 0 10px;
     pointer-events: none;
-    -webkit-transition: background-color 0.3s, color 0.3s;
     transition: background-color 0.3s, color 0.3s;
-    // background: #647283;
-    // color: #fff;
-    // border-radius: 10px;
-    // flex-shrink: 0;
-    // font-size: 12px;
-    // font-weight: 700;
-    // line-height: 16px;
-    // padding: 0 10px;
-    // pointer-events: none;
-    // -webkit-transition: background-color .3s,color .3s;
-    // transition: background-color .3s,color .3s;
-
     .num-chars {
         background: $color-light-gray-hex;
         padding: 0px 8px;
@@ -112,11 +94,16 @@
         font-size: 0.8em;
         color: $color-text-box-hex;
         float: right;
+        line-height: 20px;
+        font-weight: 700;
+        width: 40px;
+        text-align: center;
         &.error {
             background: $color-orange-hex;
         }
     }
 }
+
 
 .insert-attribute-btn {
     -webkit-box-align: center;
@@ -159,16 +146,12 @@
 }
 
 .text-editor-utils {
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    bottom: -2px;
-    display: -webkit-box;
-    display: -ms-flexbox;
+    bottom: 6px;
     display: flex;
     position: absolute;
-    right: 164px;
-    z-index: 16;
+    right: 170px;
+    z-index: 1;
 }
 
 ::ng-deep .set-attributes-panel {

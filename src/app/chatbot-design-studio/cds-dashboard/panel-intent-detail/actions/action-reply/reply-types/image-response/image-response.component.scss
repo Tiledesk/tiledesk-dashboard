@@ -1,6 +1,10 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
 
+.text-editable-div {
+    margin-left: 20px;
+    display: block;
+}
 .extensions-response {
     font-size: $font-size-base;
     position: relative;

@@ -31,7 +31,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     if(!this.textLimit || this.textLimit == 0){
       this.textLimit = TEXT_CHARS_LIMIT;
     }
-    // this.calculatingRemainingCharacters();
+    this.calculatingRemainingCharacters();
   }
 
 
@@ -145,30 +145,32 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
 
   // 
   onInput() {
-    let contenteditable = this.elementRef.nativeElement.querySelector('#content-editable'), //document.querySelector('[contenteditable]'),  //document.querySelector('[contenteditable]'),
-      text = contenteditable.textContent;
+    let contenteditable = this.elementRef.nativeElement.querySelector('#content-editable') //document.querySelector('[contenteditable]'),  //document.querySelector('[contenteditable]'),
+      // text = contenteditable.textContent;
 
 
-    for (let i = 0; i < text.length; i++) {
-      let code = text.charCodeAt(i);
-      console.log('text --->>> ', code)
-    }
+    // for (let i = 0; i < text.length; i++) {
+    //   let code = text.charCodeAt(i);
+    //   console.log('text --->>> ', code)
+    // }
 
     // console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML)
 
-    console.log('[TEXT-EDITABLE-DIV] onInput text ', text)
-    // this.text = text;
-    this.textChanged.emit(text)
+    // console.log('[TEXT-EDITABLE-DIV] onInput text ', text)
+    // // this.text = text;
+    // this.textChanged.emit(text)
 
-    // let contenteditable =  this.elementRef.nativeElement.querySelector('#content-editable');
+  
     // if(contenteditable.textContent.length > this.textLimit){
     //   contenteditable.textContent = contenteditable.textContent.substring(0, this.textLimit);
+    //   // let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
+    //   this.placeCaretAtEnd(contenteditable)
     // }
-    // this.text = contenteditable.textContent;
-    // // console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML);
-    // console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', this.text);
-    // this.calculatingRemainingCharacters();
-    // this.textChanged.emit(this.text);
+    this.text = contenteditable.textContent;
+    // console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML);
+    console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', this.text);
+    this.calculatingRemainingCharacters();
+    this.textChanged.emit(this.text);
   }
 
   toggleSetAttributesPanel(isopen) {
