@@ -17,11 +17,10 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
   @Input() setAttributeBtn: boolean;
   @Input() textLimitBtn: boolean;
   @Input() textLimit: number;
+  @Input() minHeightContent: number;
      
   leftCharsText: number;
   alertCharsText: boolean = false;
-
-  minHeightContent: number = 120;
 
   isOpenSetAttributesPanel: boolean = false
   constructor(
@@ -162,11 +161,6 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     // console.log('[TEXT-EDITABLE-DIV] onInput text ', text)
     // // this.text = text;
     // this.textChanged.emit(text)
-
-
-    
-
-  
     if(this.textLimitBtn && imputEle.textContent.length > this.textLimit){
       imputEle.textContent = imputEle.textContent.substring(0, this.textLimit);
       let fommattedActionSubject = this.splitText(imputEle.textContent);
