@@ -62,14 +62,14 @@ export enum TYPE_ATTACHMENT {
 export const MESSAGE_METADTA_WIDTH = '100%';
 export const MESSAGE_METADTA_HEIGHT = 230;
 export const TIME_WAIT_DEFAULT = 500;
-export const TEXT_CHARS_LIMIT = 300;
+export const TEXT_CHARS_LIMIT = 1024;
 export const classCardButtonNoClose = 'card-buttons-no-close';
 
 
 
-export function calculatingRemainingCharacters(text: string) {
+export function calculatingRemainingCharacters(text: string, limit:number) {
     let numCharsText = text.length;
-    let leftCharsText = TEXT_CHARS_LIMIT - numCharsText;
+    let leftCharsText = limit - numCharsText;
     return leftCharsText;
 }
 

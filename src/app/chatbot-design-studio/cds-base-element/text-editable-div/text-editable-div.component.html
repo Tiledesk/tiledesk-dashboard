@@ -49,7 +49,12 @@
         </div>
     </div>
 
-    <div data-focused="true" spellcheck="false" (input)="onInput()" id="content-editable"
+    <div 
+        id="content-editable"
+        [ngStyle]="{'min-height':minHeightContent?minHeightContent+'px':'auto'}"
+        data-focused="true" 
+        spellcheck="false" 
+        (input)="onInput()" 
         contenteditable="true">
     </div>
 </div>

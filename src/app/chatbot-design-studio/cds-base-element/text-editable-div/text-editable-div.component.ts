@@ -21,6 +21,8 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
   leftCharsText: number;
   alertCharsText: boolean = false;
 
+  minHeightContent: number = 120;
+
   isOpenSetAttributesPanel: boolean = false
   constructor(
     private logger: LoggerService,
@@ -36,18 +38,29 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
 
 
   private calculatingRemainingCharacters(){
-    this.leftCharsText = calculatingRemainingCharacters(this.text);
-    console.log('this.leftCharsText::: ', this.leftCharsText, (this.textLimit/10));
-    if(this.leftCharsText<(this.textLimit/10)){
-      this.alertCharsText = true;
-    } else {
-      this.alertCharsText = false;
+    if(this.textLimitBtn){
+      this.leftCharsText = calculatingRemainingCharacters(this.text, this.textLimit);
+      console.log('this.leftCharsText::: ', this.textLimit, this.leftCharsText, (this.textLimit/10));
+      if(this.leftCharsText<(this.textLimit/10)){
+        this.alertCharsText = true;
+      } else {
+        this.alertCharsText = false;
+      }
     }
   }
 
   ngOnChanges() {
-    console.log("[TEXT-EDITABLE-DIV] ngOnChanges: text", this.text)
-    const splits = new TiledeskVarSplitter().getSplits(this.text);
+    console.log("[TEXT-EDITABLE-DIV] ngOnChanges: text", this.text);
+    // imputEle.focus(imputEle);
+    let fommattedActionSubject = this.splitText(this.text);
+    let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
+    imputEle.innerHTML = fommattedActionSubject;
+    this.placeCaretAtEnd(imputEle);
+  }
+
+
+  private splitText(text){
+    const splits = new TiledeskVarSplitter().getSplits(text);
     console.log('[TEXT-EDITABLE-DIV] ngOnChanges splits:', splits)
     let tagName = ''
     let tagNameAsTag = ''
@@ -58,28 +71,18 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
         tagName = '${' + element.name + '}';
         tagNameAsTag = `<div tag="true" contenteditable="false"  style=" font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${tagName}</div>`
         newSplitsArray.push(tagNameAsTag)
-
       } else if (element.type === 'text') {
         newSplitsArray.push(element.text)
-        // newSplitsArray.push(element.text.replace(/(?:\r\n|\r|\n)/g, '<br>'))
-
-
       }
     });
-    console.log('[TEXT-EDITABLE-DIV]  newSplitsArray', newSplitsArray)
-
+    console.log('[TEXT-EDITABLE-DIV]  fommattedActionSubject', fommattedActionSubject);
+    console.log('[TEXT-EDITABLE-DIV]  newSplitsArray', newSplitsArray);
     newSplitsArray.forEach(element => {
       fommattedActionSubject += element
-
     });
-    console.log('[TEXT-EDITABLE-DIV]  fommattedActionSubject', fommattedActionSubject)
-
-    // let imputEle = document.getElementById('email-subject') as HTMLElement
-    let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
-    imputEle.innerHTML = fommattedActionSubject;
-    // imputEle.focus(imputEle);
-    this.placeCaretAtEnd(imputEle)
+    return fommattedActionSubject;
   }
+
 
   placeCaretAtEnd(el) {
     el.focus();
@@ -145,7 +148,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
 
   // 
   onInput() {
-    let contenteditable = this.elementRef.nativeElement.querySelector('#content-editable') //document.querySelector('[contenteditable]'),  //document.querySelector('[contenteditable]'),
+    let imputEle = this.elementRef.nativeElement.querySelector('#content-editable') //document.querySelector('[contenteditable]'),  //document.querySelector('[contenteditable]'),
       // text = contenteditable.textContent;
 
 
@@ -160,17 +163,21 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     // // this.text = text;
     // this.textChanged.emit(text)
 
+
+    
+
   
-    // if(contenteditable.textContent.length > this.textLimit){
-    //   contenteditable.textContent = contenteditable.textContent.substring(0, this.textLimit);
-    //   // let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
-    //   this.placeCaretAtEnd(contenteditable)
-    // }
-    this.text = contenteditable.textContent;
-    // console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML);
-    console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', this.text);
+    if(this.textLimitBtn && imputEle.textContent.length > this.textLimit){
+      imputEle.textContent = imputEle.textContent.substring(0, this.textLimit);
+      let fommattedActionSubject = this.splitText(imputEle.textContent);
+      imputEle.innerHTML = fommattedActionSubject;
+      this.placeCaretAtEnd(imputEle);
+    }
     this.calculatingRemainingCharacters();
+    this.text = imputEle.textContent;
+    console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', this.text);
     this.textChanged.emit(this.text);
+    
   }
 
   toggleSetAttributesPanel(isopen) {

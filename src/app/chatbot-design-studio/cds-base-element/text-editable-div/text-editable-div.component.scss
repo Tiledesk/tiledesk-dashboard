@@ -42,11 +42,11 @@
     border: 0px solid #000;
     margin: 10.5px;
     line-height: 25px;
+    -webkit-appearance: textfield;
     appearance: textfield;
     background: #fff;
-    // padding: 5px;
     border-radius: 8px;
-    min-height: 42px;
+    /* min-height: 42px; */
     width: calc(100% - 168px);
     white-space: pre;
     white-space: pre-wrap;
@@ -54,8 +54,8 @@
     display: inline-block;
     font-size: 14px;
     overflow: hidden auto;
-    padding: 10px;
-    resize: vertical;
+    padding: 5px 10px;
+    /* resize: vertical; */
     max-height: 125px;
 }
 

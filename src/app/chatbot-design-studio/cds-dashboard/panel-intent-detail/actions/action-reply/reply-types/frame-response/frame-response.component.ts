@@ -49,7 +49,7 @@ export class FrameResponseComponent implements OnInit {
     this.limitCharsText = TEXT_CHARS_LIMIT;
     this.delayTime = this.response.time/1000;
     this.textMessage = this.response.text;
-    this.leftCharsText = calculatingRemainingCharacters(this.textMessage);
+    this.leftCharsText = calculatingRemainingCharacters(this.textMessage, this.limitCharsText);
     if(this.leftCharsText<(TEXT_CHARS_LIMIT/10)){
       this.alertCharsText = true;
     } else {
