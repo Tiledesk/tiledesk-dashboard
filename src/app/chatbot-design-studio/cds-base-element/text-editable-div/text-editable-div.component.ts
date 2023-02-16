@@ -99,7 +99,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     const imputEle = this.elementRef.nativeElement.querySelector('#content-editable')
     console.log("[TEXT-EDITABLE-DIV] selectedAttibute imputEle: ", imputEle);
     imputEle.focus();
-    this.setAttributeAtCaret(`<div contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
+    this.setAttributeAtCaret(`<div tag="true contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
     this.isOpenSetAttributesPanel = false;
     this.onInput()
   }
