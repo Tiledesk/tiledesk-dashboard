@@ -1,0 +1,50 @@
+<cds-action-description 
+    [actionType]="'JSON_CONDITION'"
+    [actionSelected]="action">
+</cds-action-description>
+
+<div class="content">
+
+    <form [formGroup]="actionJsonConditionFormGroup">
+        <div formArrayName="groups">
+            <div [formGroupName]="i" class="text-editor-wrapper" *ngFor="let group of action.groups; let i = index; let last = last">
+                <cds-filter *ngIf="i%2 === 0"
+                    [expression]="group"
+                    [booleanOperators]="booleanOperators"
+                    [variableList]="variableListMock"
+                    [control]="actionJsonConditionFormGroup.controls['groups'].controls[i]"
+                    (onAddControl)="onAddControl($event, i)">
+                </cds-filter>
+                <div *ngIf="i%2 === 1 && !last" >
+                    <div class="flex-element">
+                        <!-- <ng-select 
+                            appendTo="body"
+                            [items] = "booleanOperators" 
+                            [bindLabel]="'operator'"
+                            [bindValue]="'operator'"
+                            [searchable] = true
+                            [editableSearchTerm]= false
+                            [clearable] = false
+                            formControlName="operator"
+                            placeholder="Select an option">
+                        </ng-select> -->
+                        <cds-select
+                            [items]="booleanOperators"
+                            [bindLabelSelect]="'operator'"
+                            [bindValueSelect]="'operator'"
+                            [itemSelected]="group?.operator"
+                            [control]="actionJsonConditionFormGroup.controls['groups'].controls[i].get('operator')"
+                            (onSelected)="onChangeOperator($event, i)">
+                        </cds-select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-element" (click)="onClickAddGroup()">
+                <button class="btn btn-primary pull-right cds-blue-button">Add new group</button>
+            </div>
+
+        </div>
+    </form>
+
+</div>

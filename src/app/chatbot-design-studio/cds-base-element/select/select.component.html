@@ -1,0 +1,15 @@
+<div class="select-bot-box">
+    <ng-select 
+        class = "form-control-select" 
+        appendTo="body"
+        [items] = "items" 
+        [bindLabel]="bindLabelSelect"
+        [bindValue]="bindValueSelect"
+        [searchable] = true
+        [editableSearchTerm]= false
+        [clearable] = false
+        [(ngModel)] = "itemSelected"
+        placeholder="Select an option"
+        (change) = "onChangeActionButton($event)">
+    </ng-select>
+</div>

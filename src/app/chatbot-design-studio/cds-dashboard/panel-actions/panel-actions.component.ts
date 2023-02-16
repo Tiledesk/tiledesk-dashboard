@@ -1,3 +1,4 @@
+import { Operator } from './../../../models/intent-model';
 import { ACTIONS_LIST } from './../../utils';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, HostListener } from '@angular/core';
 
@@ -7,7 +8,7 @@ import { ActionCondition, ActionAgent, ActionClose,
          Message, ActionIntentConnected, ActionEmail, 
          ActionWait, ActionAssignVariable, ActionDeleteVariable, 
          ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
-         ActionChangeDepartment, ActionHideMessage } from 'app/models/intent-model';
+         ActionChangeDepartment, ActionHideMessage, ActionJsonCondition, Expression } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 
@@ -152,6 +153,12 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     }
     if(typeAction === TYPE_ACTION.HIDE_MESSSAGE){
       let action = new ActionHideMessage();
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.JSON_CONDITION){
+      let action = new ActionJsonCondition();
+      action.groups.push( new Expression())
+      console.log('actionnnnn', action)
       this.intentSelected.actions.push(action);
     }
     
