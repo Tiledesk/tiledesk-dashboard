@@ -71,6 +71,11 @@
                 [action]="elementSelected">
             </cds-action-close>
 
+            <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
+                [action]="elementSelected">
+            </cds-action-json-condition>
+
+
         </div>
     </div>
 </div>
