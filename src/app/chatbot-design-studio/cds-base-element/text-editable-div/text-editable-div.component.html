@@ -37,11 +37,14 @@
         <!-- <div *ngIf="textLimitBtn" data-status="default" class="tpl-text-limit">
             539
         </div> -->
-    <div *ngIf="textLimitBtn" data-status="default" class="tpl-text-limit">
-        <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
+        <div *ngIf="textLimitBtn" data-status="default" class="tpl-text-limit">
+            <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
+        </div>
     </div>
 
-    <div data-focused="true" spellcheck="false" (blur)="onBlur()" (input)="onInput()" id="content-editable" contenteditable="true">
+    <div data-focused="true" spellcheck="false" (blur)="onBlur()" (input)="onInput()" id="content-editable"
+        contenteditable="true">
 
     </div>
+
 </div>
