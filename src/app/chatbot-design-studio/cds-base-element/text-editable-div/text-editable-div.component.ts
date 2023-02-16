@@ -163,6 +163,8 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     // let contenteditable =  this.elementRef.nativeElement.querySelector('#content-editable');
     if(contenteditable.textContent.length > this.textLimit){
       contenteditable.textContent = contenteditable.textContent.substring(0, this.textLimit);
+      let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
+      this.placeCaretAtEnd(imputEle)
     }
     this.text = contenteditable.textContent;
     // console.log('[TEXT-EDITABLE-DIV] contenteditable innerHtml', contenteditable.innerHTML);
