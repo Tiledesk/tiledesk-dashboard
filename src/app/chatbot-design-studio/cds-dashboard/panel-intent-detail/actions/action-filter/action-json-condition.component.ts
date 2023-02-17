@@ -12,7 +12,7 @@ import { SatPopover } from '@ncstate/sat-popover';
 })
 export class ActionJsonConditionComponent implements OnInit {
 
-  @ViewChild("addFilter") myPopover : SatPopover;
+  @ViewChild("addFilter", {static: false}) myPopover : SatPopover;
   
   @Input() action: ActionJsonCondition;
   @Input() listOfActions: Array<{name: string, value: string}>;

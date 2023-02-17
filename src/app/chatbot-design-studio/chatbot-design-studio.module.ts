@@ -74,7 +74,6 @@ import { ActionComponent } from './cds-rules/rules-add/action/action.component';
 import { ActionWaitComponent } from './cds-dashboard/panel-intent-detail/actions/action-wait/action-wait.component';
 import { ActionEmailComponent } from './cds-dashboard/panel-intent-detail/actions/action-email/action-email.component';
 import { ActionIntentComponent } from './cds-dashboard/panel-intent-detail/actions/action-intent/action-intent.component'
-import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-condition/action-condition.component';
 import { ActionDeleteVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-delete-variable/action-delete-variable.component';
 import { ActionAssignVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/action-assign-variable.component';
 import { ActionReplaceBotComponent } from './cds-dashboard/panel-intent-detail/actions/action-replace-bot/action-replace-bot.component';
@@ -137,12 +136,10 @@ import { BaseFilterComponent } from './cds-dashboard/panel-intent-detail/actions
     CDSTextComponent,
     CDSDelaySliderComponent,
     CDSTextareaComponent,
-    ActionConditionComponent,
     ActionDeleteVariableComponent,
     ActionAssignVariableComponent,
     ActionIntentComponent,
     ActionEmailComponent,
-    ActionConditionComponent,
     ActionReplaceBotComponent,
     ActionChangeDepartmentComponent,
     ActionOnlineAgentsComponent,

@@ -183,13 +183,11 @@
         </cds-fulfillment>
     </ng-template>
 
-    <ng-template #training 
-        [ngOutletContext]="context">
+    <ng-template #training [ngOutletContext]="context">
         ... choice training...
     </ng-template>
 
-    <ng-template #rules 
-        [ngOutletContext]="context">
+    <ng-template #rules [ngOutletContext]="context">
         <cds-rules 
             [listOfIntents]="listOfIntents" 
             [selectedChatbot]="selectedChatbot">

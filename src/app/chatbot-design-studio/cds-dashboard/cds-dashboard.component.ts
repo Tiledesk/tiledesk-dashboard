@@ -145,7 +145,7 @@ export class CdsDashboardComponent implements OnInit {
   private hideShowWidget(status: "hide" | "show") {
     try {
       if (window && window['tiledesk']) {
-        this.logger.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
+        console.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
 
         if(status==='hide'){
           window['tiledesk'].hide();
@@ -155,7 +155,7 @@ export class CdsDashboardComponent implements OnInit {
         // alert('signin reinit');
       }
     } catch (error) {
-      this.logger.error('tiledesk_widget_hide ERROR', error)
+      console.error('tiledesk_widget_hide ERROR', error)
     }
   }
 
