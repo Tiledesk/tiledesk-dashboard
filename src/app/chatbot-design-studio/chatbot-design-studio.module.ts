@@ -95,6 +95,9 @@ import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.compon
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { SelectComponent } from './cds-base-element/select/select.component';
 import { RowJsonConditionComponent } from './cds-base-element/row-json-condition/row-json-condition.component';
+import { BaseConditionRowComponent } from './cds-dashboard/panel-intent-detail/actions/action-filter/base-condition-row/base-condition-row.component';
+import { BaseFilterComponent } from './cds-dashboard/panel-intent-detail/actions/action-filter/base-filter/base-filter.component';
+
 
 
 
@@ -155,8 +158,10 @@ import { RowJsonConditionComponent } from './cds-base-element/row-json-condition
     CdsPublishOnCommunityModalComponent,
     
     FilterComponent,
-         SelectComponent,
-         RowJsonConditionComponent
+    SelectComponent,
+    RowJsonConditionComponent,
+    BaseConditionRowComponent,
+    BaseFilterComponent,
   ],
   imports: [
     A11yModule,

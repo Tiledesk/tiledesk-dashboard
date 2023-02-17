@@ -1,3 +1,5 @@
+import { AbstractControl } from "@angular/forms";
+
 export enum TYPE_INTENT_ELEMENT {
     QUESTION = 'question',
     RESPONSE = 'response', 
@@ -70,7 +72,7 @@ export enum TYPE_OPERATOR{
     startsWithIgnoreCase = "startsWithIgnoreCase",
     contains = "contains",
     containsIgnoreCase = "containsIgnoreCase",
-    endsWith = "isEmpty",
+    endsWith = "endsWith",
     isEmpty = "isEmpty",
     matches = "matches"
 }
@@ -109,7 +111,7 @@ export const ACTIONS_LIST= {
     ONLINE_AGENTS : { name: 'If Online Agent', type: TYPE_ACTION.ONLINE_AGENTS, src:"assets/cds/images/actions/online_agents.svg", description: 'This action moves the flow to different blocks, based on the agents’ availability.<br>If the are agents available the TRUE block will be triggered.<br>If the are no agents available the FALSE block will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset Stop on met condition.'},
     OPEN_HOURS : { name: 'Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src:"assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the TRUE block will be triggered.<br>During offline hours the FALSE block will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.'},
     HIDE_MESSSAGE : { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src:"assets/cds/images/actions/hidden_message.svg"},
-    JSON_CONDITION: {name: 'Filter', type: TYPE_ACTION.JSON_CONDITION, src:"assets/cds/images/actions/filter.svg"}
+    JSON_CONDITION: {name: 'Condition', type: TYPE_ACTION.JSON_CONDITION, src:"assets/cds/images/actions/filter.svg"}
 }
 
 
@@ -119,7 +121,7 @@ export const OPERATORS_LIST: { [key: string]: {name: string, type: TYPE_OPERATOR
     "notEqualAsNumbers" : { name: "not Equal As Numbers", type: TYPE_OPERATOR.notEqualAsNumbers, src:"assets/cds/images/operators/not-equal.svg"},
     "notEqualAsStrings" : { name: "not Equal As Strings", type: TYPE_OPERATOR.notEqualAsStrings, src:"assets/cds/images/operators/not-equal.svg"},
     "greaterThan" : {  name: "greater Than", type: TYPE_OPERATOR.greaterThan, src:"assets/cds/images/operators/grather.svg"},
-    "greaterThanOrEqual" : {  name: "greater Than Or Equal", type: TYPE_OPERATOR.greaterThanOrEqual ,src:"assets/cds/images/operators/grather.svg" },
+    "greaterThanOrEqual" : {  name: "greater Than Or Equal", type: TYPE_OPERATOR.greaterThanOrEqual ,src:"assets/cds/images/operators/gratherEqual.svg" },
     "lessThan" : { name: "less Than", type: TYPE_OPERATOR.lessThan, src:"assets/cds/images/operators/less.svg"},
     "lessThanOrEqual" : {  name: "less Than Or Equal", type: TYPE_OPERATOR.lessThanOrEqual, src:"assets/cds/images/operators/lessEqual.svg"},
     "AND": { name: "AND", type: TYPE_OPERATOR.AND},
@@ -131,4 +133,12 @@ export const OPERATORS_LIST: { [key: string]: {name: string, type: TYPE_OPERATOR
     "endsWith": { name: "ends With", type: TYPE_OPERATOR.endsWith},
     "isEmpty": { name: "is Empty", type: TYPE_OPERATOR.isEmpty },
     "matches": { name: "matches", type: TYPE_OPERATOR.matches }
+}
+
+
+export function OperatorValidator( control: AbstractControl ): { [key: string]: boolean } | null {
+    if (control.value in TYPE_OPERATOR) {
+      return null;
+    }
+    return { invalidType: true };
 }
