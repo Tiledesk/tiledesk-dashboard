@@ -18,11 +18,10 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
   @Input() setAttributeBtn: boolean;
   @Input() textLimitBtn: boolean;
   @Input() textLimit: number;
+  @Input() minHeightContent: number;
 
   leftCharsText: number;
   alertCharsText: boolean = false;
-
-  minHeightContent: number = 120;
 
   isOpenSetAttributesPanel: boolean = false
 
@@ -42,8 +41,8 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     { name: 'variabile1', value: 'valvariabile14' },
     { name: 'userFullName', value: 'userFullName' },
   ]
-  @ViewChild("setattributepopover", { static: false }) setattributepopover : SatPopover;
-  
+  @ViewChild("setattributepopover", { static: false }) setattributepopover: SatPopover;
+
   constructor(
     private logger: LoggerService,
     private elementRef: ElementRef
@@ -77,7 +76,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     imputEle.innerHTML = fommattedActionSubject;
     this.placeCaretAtEnd(imputEle);
   }
- 
+
 
   private splitText(text) {
     const splits = new TiledeskVarSplitter().getSplits(text);
@@ -108,19 +107,19 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     el.focus();
     if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
       var range = document.createRange();
-      console.log('placeCaretAtEnd range ', range ) 
+      console.log('placeCaretAtEnd range ', range)
       range.selectNodeContents(el);
-      
+
       range.collapse(false);
       var sel = window.getSelection();
-      console.log('placeCaretAtEnd sel ', sel ) 
+      console.log('placeCaretAtEnd sel ', sel)
       sel.removeAllRanges();
       sel.addRange(range);
     }
   }
 
   openSetattributePopover() {
-    console.log('openSetattributePopover setattributepopover  ',  this.setattributepopover)
+    console.log('openSetattributePopover setattributepopover  ', this.setattributepopover)
     this.setattributepopover.open()
     let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
     this.placeCaretAtEnd(imputEle);
@@ -149,33 +148,33 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     console.log("[TEXT-EDITABLE-DIV] selectedAttibute imputEle: ", imputEle);
     this.setattributepopover.close()
     // setTimeout(() => {
-      
+
     // }, 500);
 
     imputEle.focus();
     this.placeCaretAtEnd(imputEle);
     this.setAttributeAtCaret(`<div tag="true" contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
     // this.isOpenSetAttributesPanel = false;
-    
-    setTimeout(() => { 
+
+    setTimeout(() => {
       this.setCaret(imputEle);
     }, 500);
-    
+
     this.onInput()
   }
 
   setCaret(imputEle) {
     // var el = document.getElementById("editable")
-    var el =  imputEle
+    var el = imputEle
     var range = document.createRange()
     var sel = window.getSelection()
-    
+
     range.setStart(el.childNodes[2], 5)
     range.collapse(true)
-    
+
     sel.removeAllRanges()
     sel.addRange(range)
-}
+  }
 
 
   setAttributeAtCaret(html: any) {
@@ -238,6 +237,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
 
 
 
+
     if (this.textLimitBtn && imputEle.textContent.length > this.textLimit) {
       imputEle.textContent = imputEle.textContent.substring(0, this.textLimit);
       let fommattedActionSubject = this.splitText(imputEle.textContent);
@@ -248,7 +248,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     this.text = imputEle.textContent;
     console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', this.text);
     this.textChanged.emit(this.text);
-    
+
   }
 
   toggleSetAttributesPanel(isopen) {
