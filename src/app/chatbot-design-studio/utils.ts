@@ -47,7 +47,7 @@ export enum TYPE_ACTION {
     WAIT = 'wait',
     INTENT = 'intent',
     // CONDITION = 'condition',
-    ASSIGN_VARIABLE = 'assign',
+    ASSIGN_VARIABLE = 'setattribute',
     DELETE_VARIABLE = 'delete',
     REPLACE_BOT = 'replacebot',
     CHANGE_DEPARTMENT = 'department',
