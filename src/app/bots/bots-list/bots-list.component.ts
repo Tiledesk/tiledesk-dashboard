@@ -698,12 +698,38 @@ export class BotListComponent implements OnInit {
   // ---------------------------------------------------------------------------
   goToBotDtls(idFaqKb: string, botType: string, botname: string) {
 
-    this.goToCDS(idFaqKb, botType, botname) 
+    this.goToCDS(idFaqKb) 
     // if (this.isPanelRoute === false) {
     //   this.goToOldBotDtls(idFaqKb, botType, botname)
     // } else {
     //   this.goToCDS(idFaqKb, botType, botname) 
     // }
+
+    let _botType = ""
+    if (botType === 'internal') {
+      _botType = 'native'
+
+      // -------------------------------------------------------------------------------------------
+      // Publish the bot name to be able to check in the native bot sidebar if the bot name changes,
+      // to prevent the bot name from updating every time a bot sidebar menu item is clicked
+      // -------------------------------------------------------------------------------------------
+      // this.faqKbService.publishBotName(botname)
+
+      this.router.navigate(['project/' + this.project._id + '/bots/intents/', idFaqKb, _botType]);
+
+    } else if (botType === 'tilebot') {
+      _botType = 'tilebot'
+      // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
+      // this.router.navigate(['project/' + this.project._id + '/createfaq', idFaqKb, _botType, 'en']);
+      this.goToCDS(idFaqKb) 
+
+
+    } else {
+      _botType = botType
+      this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
+    }
+
+    this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', idFaqKb, 'bot type ', botType);
   }
 
   goToOldBotDtls(idFaqKb: string, botType: string, botname: string) {
@@ -735,7 +761,7 @@ export class BotListComponent implements OnInit {
 
   }
 
-  goToCDS(idFaqKb: string, botType: string, botname: string) {
+  goToCDS(idFaqKb: string) {
     this.router.navigate(['project/' + this.project._id + '/cds/', idFaqKb, 'intent', '0']);
   }
 
