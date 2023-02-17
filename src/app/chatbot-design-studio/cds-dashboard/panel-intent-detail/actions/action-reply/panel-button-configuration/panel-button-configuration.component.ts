@@ -14,7 +14,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
   @ViewChild('input_title', { static: true }) input_topic: CDSTextComponent;
 
-  @Input() listOfActions: Array<string>;
+  @Input() listOfActions: Array<{name: string, value: string}>;
   @Input() button: Button;
   @Output() saveButton = new EventEmitter();
   @Output() closeButtonPanel = new EventEmitter();
@@ -114,20 +114,20 @@ export class PanelButtonConfigurationComponent implements OnInit {
     //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
     //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
 
-    console.log("event: ", event)
-    console.log("event.target: ", event.target)
-    console.log("event.target.classList: ", event.target.classList)
+    // console.log("event: ", event)
+    // console.log("event.target: ", event.target)
+    // console.log("event.target.classList: ", event.target.classList)
     
     const clicked_element_id = event.target.id
     if (this.eRef.nativeElement.contains(event.target)) {
-      console.log("clicked inside")
+      // console.log("clicked inside")
     } else {
 
-      console.log('clicked outside')
+      // console.log('clicked outside')
 
       if (!event.target.classList.contains('single-btn-reply') && !event.target.classList.contains('ng-option') && !event.target.classList.contains('ng-option-label') && !event.target.classList.contains('mat-option-text')) {
         this.onCloseButtonPanel();
-        console.log('clicked outside')
+        // console.log('clicked outside')
       }
   
     }
@@ -216,6 +216,11 @@ export class PanelButtonConfigurationComponent implements OnInit {
   onChangeActionButton(actionButton) {
     this.buttonAction = actionButton
     this.button.action = actionButton;
+  }
+
+  onChangeSelect(event: {name: string, value: string}){
+    this.buttonAction = event.value
+    this.button.action = event.value;
   }
 
   /** */

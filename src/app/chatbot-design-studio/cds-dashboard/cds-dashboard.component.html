@@ -30,29 +30,45 @@
         <div class="header-title">{{ selectedChatbot?.name }}</div>
         <div class="right-opts">
             <div>
+
+                <button id="cds-publish-btn" class="btn btn-primary pull-right" type="button" style="margin-left: 14px;"
+                    (click)="publish()">
+                    <span class="material-icons">
+                        send
+                        </span>
+                    Publish
+                </button>
+
                 <button *ngIf="selectedChatbot?.public === false" id="cds-community-btn"
                     class="btn btn-primary pull-right cds-blue-button" type="button" (click)="publishOnCommunity()">
-                    Publish on community
+                    Deploy on Community
                 </button>
                 <button *ngIf="selectedChatbot?.public === true" id="cds-community-btn"
                     class="btn btn-primary pull-right cds-blue-button" type="button" (click)="removeFromCommunity()">
                     Remove from community
                 </button>
 
+
+
+
+
             </div>
             <div *ngIf="TRY_ON_WA === true">
-                <button id="cds-test-it-wab-out-btn" class="btn btn-primary cds-blue-button cds-test-it-out" style="background-color: #45c351; color: #fff; border-color: #fff; height: 34px; margin-top: 8px;" type="button" (click)="openWhatsappPage()">
-                    <img width="18px" height="auto" src="assets/img/channel_icons/whatsapp-logo_green.svg">Try on WhatsApp
+                <button id="cds-test-it-wab-out-btn" class="btn btn-primary cds-blue-button cds-test-it-out"
+                    style="background-color: #45c351; color: #fff; border-color: #fff; height: 34px; margin-top: 8px;"
+                    type="button" (click)="openWhatsappPage()">
+                    <img width="18px" height="auto" src="assets/img/channel_icons/whatsapp-logo_green.svg">Try on
+                    WhatsApp
                 </button>
             </div>
             <div>
-                <button id="cds-test-it-out-btn" class="btn btn-primary pull-right cds-blue-button cds-test-it-out" type="button"
-                    (click)="openTestSiteInPopupWindow()">
+                <button id="cds-test-it-out-btn" class="btn btn-primary pull-right cds-blue-button cds-test-it-out"
+                    type="button" (click)="openTestSiteInPopupWindow()">
                     Test it out
                 </button>
             </div>
             <div class="cds-close-btn-wpr">
-           
+
                 <button class="btn pull-right cds-close-btn" (click)="goBack()">
                     <span class="material-icons cds-close-btn-icon">
                         clear
@@ -97,15 +113,10 @@
 
     <ng-template #intents [ngOutletContext]="context">
         <div class="box-left">
-            <appdashboard-panel-intent-list class="panel-intent-list" 
-                [id_faq_kb]="id_faq_kb" 
-                [intent_id]="intent_id"
-                [projectID]="projectID" 
-                (selected_intent)=onSelectIntent($event)
-                (returnListOfIntents)=onReturnListOfIntents($event) 
-                (createIntent)="onCreateIntentBtnClicked()"
-                (deleteSelectedIntent)="onDeleteSelectedIntent()" 
-                [eventCreateIntent]="createIntent.asObservable()"
+            <appdashboard-panel-intent-list class="panel-intent-list" [id_faq_kb]="id_faq_kb" [intent_id]="intent_id"
+                [projectID]="projectID" (selected_intent)=onSelectIntent($event)
+                (returnListOfIntents)=onReturnListOfIntents($event) (createIntent)="onCreateIntentBtnClicked()"
+                (deleteSelectedIntent)="onDeleteSelectedIntent()" [eventCreateIntent]="createIntent.asObservable()"
                 [eventUpadatedIntent]="upadatedIntent.asObservable()"
                 [eventStartUpdatedIntent]="startUpdatedIntent.asObservable()"
                 [eventNewIntentFromSplashScreen]="newIntentFromSplashScreen.asObservable()">
@@ -114,12 +125,10 @@
 
         <div class="box-right">
 
-            <cds-splash-screen *ngIf=!intentSelected
-                [text]="'Select a block from the left sidebar or create a new one'"
+            <cds-splash-screen *ngIf=!intentSelected [text]="'Select a block from the left sidebar or create a new one'"
                 [videoUrl]="'https://www.youtube.com/embed/b0laljUl85E'"
                 [videoDescription]="'Learn about conversation blocks and how to create them here'"
-                [section]="'cds-sb-intents'"
-                (onClickBtn)="onAddIntentFromSplashScreen($event)"> 
+                [section]="'cds-sb-intents'" (onClickBtn)="onAddIntentFromSplashScreen($event)">
             </cds-splash-screen>
 
             <!-- <cds-splash-screen *ngIf=spinnerCreateIntent
@@ -127,41 +136,30 @@
                 (onClickBtn)="onAddIntentFromSplashScreen($event)" > 
             </cds-splash-screen> -->
             <!-- *ngIf=!spinnerCreateIntent -->
-            <div class="box-right-header" >
-                <appdashboard-panel-intent-header *ngIf=intentSelected 
-                    [intentSelected]="intentSelected"
-                    (saveIntent)=onSaveIntent($event) 
-                    [listOfIntents]="listOfIntents">
+            <div class="box-right-header">
+                <appdashboard-panel-intent-header *ngIf=intentSelected [intentSelected]="intentSelected"
+                    (saveIntent)=onSaveIntent($event) [listOfIntents]="listOfIntents">
                 </appdashboard-panel-intent-header>
             </div>
             <!-- [events]="upadatedIntent.asObservable() *ngIf=!spinnerCreateIntent -->
-            <div class="box-right-content"  >
-                <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent" 
-                    [intentSelected]="intentSelected"
-                    [actionDrawerIsOpen]="actionDrawerIsOpen" 
-                    (openActionDrawer)=onOpenActionDrawer($event)
-                    (answerSelected)=onAnswerSelected($event) 
-                    (actionSelected)=onActionSelected($event)
-                    (questionSelected)=onQuestionSelected($event) 
-                    (actionDeleted)=onActionDeleted($event) 
-                    (intentForm)=onIntentFormSelected($event)
-                    [isOpenActionDrawer]="isOpenActionDrawer"
+            <div class="box-right-content">
+                <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent" [intentSelected]="intentSelected"
+                    [actionDrawerIsOpen]="actionDrawerIsOpen" (openActionDrawer)=onOpenActionDrawer($event)
+                    (answerSelected)=onAnswerSelected($event) (actionSelected)=onActionSelected($event)
+                    (questionSelected)=onQuestionSelected($event) (actionDeleted)=onActionDeleted($event)
+                    (intentForm)=onIntentFormSelected($event) [isOpenActionDrawer]="isOpenActionDrawer"
                     [eventUpadatedIntent]="upadatedIntent.asObservable()"
-                    [eventCreateIntent]="createIntent.asObservable()"
-                    (saveIntent)="onSaveIntent($event)">
+                    [eventCreateIntent]="createIntent.asObservable()" (saveIntent)="onSaveIntent($event)">
                 </appdashboard-panel-intent>
 
 
-                <appdashboard-panel-actions *ngIf="isOpenActionDrawer"
-                    (openActionDrawer)=onOpenActionDrawer($event) 
+                <appdashboard-panel-actions *ngIf="isOpenActionDrawer" (openActionDrawer)=onOpenActionDrawer($event)
                     [intentSelected]="intentSelected">
                 </appdashboard-panel-actions>
 
                 <appdashboard-panel-intent-detail *ngIf=elementIntentSelected class="panel-intent-detail"
-                    [listOfActions]="listOfActions" 
-                    [elementIntentSelected]="elementIntentSelected"
-                    [intentSelected]="intentSelected" 
-                    [showSpinner]="showSpinner"
+                    [listOfActions]="listOfActions" [elementIntentSelected]="elementIntentSelected"
+                    [intentSelected]="intentSelected" [showSpinner]="showSpinner"
                     (openButtonPanel)=onOpenButtonPanel($event)>
                 </appdashboard-panel-intent-detail>
 
@@ -178,21 +176,16 @@
     </ng-template>
 
     <ng-template #fulfillment [ngOutletContext]="context">
-        <cds-fulfillment 
-            [chatbot]="selectedChatbot">
+        <cds-fulfillment [chatbot]="selectedChatbot">
         </cds-fulfillment>
     </ng-template>
 
-    <ng-template #training 
-        [ngOutletContext]="context">
+    <ng-template #training [ngOutletContext]="context">
         ... choice training...
     </ng-template>
 
-    <ng-template #rules 
-        [ngOutletContext]="context">
-        <cds-rules 
-            [listOfIntents]="listOfIntents" 
-            [selectedChatbot]="selectedChatbot">
+    <ng-template #rules [ngOutletContext]="context">
+        <cds-rules [listOfIntents]="listOfIntents" [selectedChatbot]="selectedChatbot">
         </cds-rules>
     </ng-template>
 

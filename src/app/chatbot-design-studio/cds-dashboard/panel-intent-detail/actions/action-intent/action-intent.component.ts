@@ -12,7 +12,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 export class ActionIntentComponent implements OnInit {
 
   //@Input() intents: Array<any>;
-  @Input() intents: string[];
+  @Input() intents: Array<{name: string, value: string}>;
   @Input() action: ActionIntentConnected;
 
   actionIntentFormGroup: FormGroup;
@@ -72,9 +72,12 @@ export class ActionIntentComponent implements OnInit {
   //   this.filtered_intents = this.filtered_intents.filter(intent => intent.toLowerCase().includes(event.toLowerCase()));
   // }
 
-  // onChangeActionButton(event) {
-  //   //this.logger.log("event: ", event)
-  // }
+  onChangeSelect(event: {name: string, value: string}){
+    this.action.intentName = event.value
+    if(!this.action._tdActionTitle){
+      this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name
+    }
+  }
 
   // onTextChange(event) {
   //   this.logger.log("[ACTION-INTENT] onTextChange event: ", event);

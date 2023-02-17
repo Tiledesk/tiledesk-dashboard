@@ -10,10 +10,17 @@
             <label class="title-label">if <b style="color: green">TRUE</b> go to:</label>
             <ul>
                 <li style="background-color: green;"></li>
-                <cds-text id="text-condition"
+                <cds-select id="text-condition"
+                    [items]="listOfActions"
+                    [bindLabelSelect]="'name'"
+                    [bindValueSelect]="'value'"
+                    [itemSelected]="action?.trueIntent"
+                    (onSelected)="onChangeSelect($event, 'trueIntent')">
+                </cds-select>
+                <!-- <cds-text id="text-condition"
                     [control]="actionOpenHoursFormGroup.controls['trueIntent']"
                     [autocompleteOptions]="listOfActions">
-                </cds-text>
+                </cds-text> -->
             </ul> 
         </div>
     </div>
@@ -23,10 +30,17 @@
             <label class="title-label">if <b style="color: red">FALSE</b> go to:</label>
             <ul>
                 <li style="background-color: red;"></li>
-                <cds-text id="text-condition"
+                <cds-select id="text-condition"
+                    [items]="listOfActions"
+                    [bindLabelSelect]="'name'"
+                    [bindValueSelect]="'value'"
+                    [itemSelected]="action?.falseIntent"
+                    (onSelected)="onChangeSelect($event, 'falseIntent')">
+                </cds-select>
+                <!-- <cds-text id="text-condition"
                     [control]="actionOpenHoursFormGroup.controls['falseIntent']"
                     [autocompleteOptions]="listOfActions">
-                </cds-text>
+                </cds-text> -->
             </ul>
         </div>
     </div>

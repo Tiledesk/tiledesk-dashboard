@@ -31,16 +31,16 @@ export class Action {
 
 }
 
-export class ActionCondition extends Action {
-    condition: string;
-    trueIntent: string;
-    falseIntent: string;
-    stopOnConditionMet: boolean;
-    constructor() {
-        super();
-        this._tdActionType = TYPE_ACTION.CONDITION;
-    }
-}
+// export class ActionCondition extends Action {
+//     condition: string;
+//     trueIntent: string;
+//     falseIntent: string;
+//     stopOnConditionMet: boolean;
+//     constructor() {
+//         super();
+//         this._tdActionType = TYPE_ACTION.CONDITION;
+//     }
+// }
 
 export class ActionAssignVariable extends Action {
     expression: string;
@@ -118,12 +118,15 @@ export class ActionChangeDepartment extends Action {
 }
 
 export class ActionJsonCondition extends Action {
-    // variableName: string
+    trueIntent: string;
+    falseIntent: string;
+    stopOnConditionMet: boolean;
     groups: Array<Expression | Operator>
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.JSON_CONDITION;
         this.groups = []
+        this.stopOnConditionMet = false;
     }
 }
 
@@ -291,7 +294,8 @@ export class Expression {
     type: string = 'expression';
     conditions: Array<Condition | Operator>
     constructor(){
-        this.conditions = [ new Condition()]
+        // this.conditions = [ new Condition()]
+        this.conditions = []
     }
 }
 

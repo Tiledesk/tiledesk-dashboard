@@ -21,6 +21,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
 import { CdsPublishOnCommunityModalComponent } from './cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { NotifyService } from 'app/core/notify.service';
 
 const swal = require('sweetalert');
 
@@ -82,6 +83,7 @@ export class CdsDashboardComponent implements OnInit {
     private multichannelService: MultichannelService,
     private el: ElementRef,
     public dialog: MatDialog,
+    private notify: NotifyService,
   ) { }
 
   // SYSTEM FUNCTIONS //
@@ -145,7 +147,7 @@ export class CdsDashboardComponent implements OnInit {
   private hideShowWidget(status: "hide" | "show") {
     try {
       if (window && window['tiledesk']) {
-        this.logger.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
+        console.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
 
         if(status==='hide'){
           window['tiledesk'].hide();
@@ -155,7 +157,7 @@ export class CdsDashboardComponent implements OnInit {
         // alert('signin reinit');
       }
     } catch (error) {
-      this.logger.error('tiledesk_widget_hide ERROR', error)
+      console.error('tiledesk_widget_hide ERROR', error)
     }
   }
 
@@ -555,7 +557,7 @@ export class CdsDashboardComponent implements OnInit {
   /** appdashboard-intent-list: Select intent */
   onReturnListOfIntents(intents) {
     this.listOfIntents = intents;
-    this.listOfActions = intents.map(a => a.intent_display_name);
+    this.listOfActions = intents.map(a =>( {name: a.intent_display_name, value: '#'+a.intent_display_name}));
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
   }
@@ -701,7 +703,6 @@ export class CdsDashboardComponent implements OnInit {
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
 
-    // const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId
     const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&td_draft=true'
 
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
@@ -739,6 +740,19 @@ export class CdsDashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       // this.logger.log(`Dialog result: ${result}`);
+    });
+  }
+
+  publish() {
+    this.faqKbService.publish(this.selectedChatbot).subscribe((data) => {
+      console.log('[CDS DSBRD] publish  - RES ', data)
+    }, (error) => {
+  
+      console.error('[CDS DSBRD] publish ERROR ', error);
+    }, () => {
+      console.log('[CDS DSBRD] publish * COMPLETE *');
+      this.notify.showWidgetStyleUpdateNotification('Successfully published', 2, 'done');
+      
     });
   }
 

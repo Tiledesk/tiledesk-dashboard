@@ -28,10 +28,10 @@
                 (openButtonPanel) = onOpenButtonPanel($event)>
             </cds-action-email>
         
-            <cds-action-condition *ngSwitchCase="typeAction.CONDITION"
-                [listOfActions] = "listOfActions"
-                [action]="elementSelected">
-            </cds-action-condition>
+            <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
+                [action]="elementSelected"
+                [listOfActions]="listOfActions">
+            </cds-action-json-condition>
     
             <cds-action-assign-variable *ngSwitchCase="typeAction.ASSIGN_VARIABLE"
                 [action]="elementSelected">
@@ -70,11 +70,6 @@
             <cds-action-close *ngSwitchCase="typeAction.CLOSE"
                 [action]="elementSelected">
             </cds-action-close>
-
-            <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
-                [action]="elementSelected">
-            </cds-action-json-condition>
-
 
         </div>
     </div>

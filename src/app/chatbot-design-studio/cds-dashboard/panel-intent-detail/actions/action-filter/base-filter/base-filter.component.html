@@ -1,0 +1,49 @@
+<div class="base-filter">
+    <div class="control-buttons">
+        <div class="filter-remove" (click)="onRemoveGroup()"><span class="material-icons">delete</span></div>
+    </div>
+    <div class="content">
+
+            <div class="filter-row">
+                <div class="text-editor-wrapper" *ngFor="let group of expression?.conditions; let i = index; let last = last">
+                    
+                    <!-- CONDITION [i]-->
+                    <div *ngIf="i%2 === 0" class="filter-condition" (click)="onOpenConditionDetail(i); addConditionFilter.toggle() ">
+                        <div class="remove" (click)="$event.stopPropagation();onDeleteCondition(i, last)"><span class="material-icons">delete</span></div>
+                        <div class="filter-icon"><span class="material-icons">data_object</span></div>
+                        <div class="filer-text ellips"><b>{{group?.operand1}}</b> {{group?.operator}} <b>{{group?.operand2}}</b></div>                    
+                    </div>
+    
+                    <!-- OPERATOR [i]-->
+                    <div *ngIf="i%2 === 1">
+                        <cds-select
+                            [items]="booleanOperators"
+                            [bindLabelSelect]="'operator'"
+                            [bindValueSelect]="'operator'"
+                            [itemSelected]="group?.operator"
+                            (onSelected)="onChangeOperator($event, i)">
+                        </cds-select>
+                    </div>
+                </div>
+    
+            </div>
+    
+        <div class="basic-filter-wrp">
+            <div class="add-filter-button" [satPopoverAnchor]="addConditionFilter" (click)="addConditionFilter.toggle()">
+                <span class="material-icons">add</span>
+                Add new condition
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<sat-popover #addConditionFilter id="addConditionFilter" backDrop panelClass="add-filter-panel"
+    verticalAlign="below" interactiveClose="false">
+    <base-condition-row
+        [variableList]="variableListMock"
+        [intentVariableList]="intentVariableListMock"
+        [condition]="selectedCondition"
+        (close)="onDismiss($event)">
+    </base-condition-row>
+</sat-popover>

@@ -61,7 +61,6 @@ import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.compo
 import { CDSTextComponent } from './cds-base-element/text/text.component';
 import { CDSDelaySliderComponent } from './cds-base-element/delay-slider/delay-slider.component';
 import { CDSTextareaComponent } from './cds-base-element/textarea/textarea.component';
-import { FilterComponent } from './cds-base-element/filter/filter.component';
 
 //RULES COMPONENT
 import { RulesComponent } from './cds-rules/rules/rules.component';
@@ -75,7 +74,6 @@ import { ActionComponent } from './cds-rules/rules-add/action/action.component';
 import { ActionWaitComponent } from './cds-dashboard/panel-intent-detail/actions/action-wait/action-wait.component';
 import { ActionEmailComponent } from './cds-dashboard/panel-intent-detail/actions/action-email/action-email.component';
 import { ActionIntentComponent } from './cds-dashboard/panel-intent-detail/actions/action-intent/action-intent.component'
-import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-condition/action-condition.component';
 import { ActionDeleteVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-delete-variable/action-delete-variable.component';
 import { ActionAssignVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/action-assign-variable.component';
 import { ActionReplaceBotComponent } from './cds-dashboard/panel-intent-detail/actions/action-replace-bot/action-replace-bot.component';
@@ -94,7 +92,9 @@ import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-
 import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { SelectComponent } from './cds-base-element/select/select.component';
-import { RowJsonConditionComponent } from './cds-base-element/row-json-condition/row-json-condition.component';
+import { BaseConditionRowComponent } from './cds-dashboard/panel-intent-detail/actions/action-filter/base-condition-row/base-condition-row.component';
+import { BaseFilterComponent } from './cds-dashboard/panel-intent-detail/actions/action-filter/base-filter/base-filter.component';
+
 
 
 
@@ -136,12 +136,10 @@ import { RowJsonConditionComponent } from './cds-base-element/row-json-condition
     CDSTextComponent,
     CDSDelaySliderComponent,
     CDSTextareaComponent,
-    ActionConditionComponent,
     ActionDeleteVariableComponent,
     ActionAssignVariableComponent,
     ActionIntentComponent,
     ActionEmailComponent,
-    ActionConditionComponent,
     ActionReplaceBotComponent,
     ActionChangeDepartmentComponent,
     ActionOnlineAgentsComponent,
@@ -154,9 +152,9 @@ import { RowJsonConditionComponent } from './cds-base-element/row-json-condition
     CdsFooterComponent,
     CdsPublishOnCommunityModalComponent,
     
-    FilterComponent,
-         SelectComponent,
-         RowJsonConditionComponent
+    SelectComponent,
+    BaseConditionRowComponent,
+    BaseFilterComponent,
   ],
   imports: [
     A11yModule,

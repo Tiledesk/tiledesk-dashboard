@@ -1,8 +1,9 @@
-import { TYPE_OPERATOR } from './../../../../utils';
-import { Expression, Operator } from './../../../../../models/intent-model';
+import { OperatorValidator, TYPE_OPERATOR } from './../../../../utils';
+import { Expression, Operator, Condition } from './../../../../../models/intent-model';
 import { ActionJsonCondition } from '../../../../../models/intent-model';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Host, Input, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { SatPopover } from '@ncstate/sat-popover';
 
 @Component({
   selector: 'cds-action-json-condition',
@@ -11,24 +12,17 @@ import { AbstractControl, FormBuilder, FormGroup, Validators, FormArray } from '
 })
 export class ActionJsonConditionComponent implements OnInit {
 
+  @ViewChild("addFilter", {static: false}) myPopover : SatPopover;
+  
   @Input() action: ActionJsonCondition;
+  @Input() listOfActions: Array<{name: string, value: string}>;
 
   actionJsonConditionFormGroup: FormGroup
-
-
-  variableListMock: Array<{name: string, value: string}> = [
-    { name: 'variabile1', value: 'val1'},
-    { name: 'variabile2', value: 'val2'},
-    { name: 'variabile3', value: 'val3'},
-    { name: 'variabile4', value: 'val4'},
-    { name: 'variabile5', value: 'val5'},
-  ]
 
   booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
 
   constructor(
-    private formBuilder: FormBuilder
-  ) { }
+    private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
   }
@@ -36,24 +30,42 @@ export class ActionJsonConditionComponent implements OnInit {
   ngOnChanges() {
     this.initialize();
     console.log('[ACTION-JSON-CONDITION] actionnn-->', this.action)
-    // if (this.action && this.action.variableName) {
-    //   this.setFormValue();
-    // }
+    if (this.action) {
+      this.setFormValue()
+    }
   }
 
   private initialize() {
     this.actionJsonConditionFormGroup = this.buildForm();
     this.actionJsonConditionFormGroup.valueChanges.subscribe(form => {
       console.log('[ACTION-JSON-CONDITION] form valueChanges-->', form)
+      if(form && (form.trueIntent !== '' || form.falseIntent !== '' ||  form.stopOnConditionMet !== '')){
+        this.action.trueIntent = this.actionJsonConditionFormGroup.value.trueIntent
+        this.action.falseIntent = this.actionJsonConditionFormGroup.value.falseIntent
+        this.action.stopOnConditionMet = this.actionJsonConditionFormGroup.value.stopOnConditionMet
+        // this.action = Object.assign(this.action, this.actionJsonConditionFormGroup.value)
+      }
+    })
+  }
+
+  private setFormValue(){
+    this.actionJsonConditionFormGroup.patchValue({
+      trueIntent: this.action.trueIntent,
+      falseIntent: this.action.falseIntent,
+      stopOnConditionMet: this.action.stopOnConditionMet,
+      // groups: this.action.groups,
     })
   }
 
   buildForm(): FormGroup{
     return this.formBuilder.group({
-      groups: this.formBuilder.array([
-        this.createExpressionGroup(),
-        this.createOperatorGroup()
-      ]) 
+      trueIntent: ['', Validators.required],
+      falseIntent: ['', Validators.required],
+      stopOnConditionMet: [false, Validators.required],
+      // groups: this.formBuilder.array([
+      //   this.createExpressionGroup(),
+      //   // this.createOperatorGroup()
+      // ]) 
     })
   }
 
@@ -61,7 +73,7 @@ export class ActionJsonConditionComponent implements OnInit {
     return this.formBuilder.group({
       type:["expression", Validators.required],
       conditions: this.formBuilder.array([
-        this.createConditionGroup(), this.createOperatorGroup()
+        // this.createConditionGroup(), this.createOperatorGroup()
       ])
     })
   }
@@ -86,33 +98,42 @@ export class ActionJsonConditionComponent implements OnInit {
   onClickAddGroup(){
     this.action.groups.push(new Operator())
     this.action.groups.push(new Expression())
+
     console.log('onClickAddGroup-->', this.action)
-    let groups = this.actionJsonConditionFormGroup.get('groups') as FormArray
-    groups.push(this.createOperatorGroup())
-    groups.push(this.createExpressionGroup())
+    // let groups = this.actionJsonConditionFormGroup.get('groups') as FormArray
+    // groups.push(this.createOperatorGroup(), {emitEvent: false})
+    // groups.push(this.createExpressionGroup(), {emitEvent: false})
   }
 
-  onAddControl(event, index: number){
-    console.log('onAddControl actionsss', this.action, index)
-    let group = (this.actionJsonConditionFormGroup.get('groups') as FormArray).at(index) as FormGroup
-    let conditions = group.get('conditions') as FormArray
-    console.log('onAddControl groupppp', conditions )
-    conditions.push(this.createOperatorGroup())
-    conditions.push(this.createConditionGroup())
-    // (groups.at(index) as FormGroup).controls['conditions'].push(this.createOperatorGroup())
-    // (groups.at(index) as FormGroup).controls['conditions'].push(this.createConditionGroup())
-    console.log('onAddControl formmmmmmmm', this.actionJsonConditionFormGroup) 
+  onDeleteGroup(index: number, last: boolean){
+    console.log('onDeleteGroup', index, last, this.action.groups)
+    if(!last){
+      this.action.groups.splice(index, 2)
+    }else if(last){
+      this.action.groups.splice(index-1, 2)
+    }
+
+    if(this.action.groups.length === 0){
+      this.action.groups.push(new Expression())
+      // let groups = this.actionJsonConditionFormGroup.get('groups') as FormArray
+      // groups.push(this.createExpressionGroup(), {emitEvent: false})
+    }
   }
 
   onChangeOperator(event, index: number){
     (this.action.groups[index] as Operator).operator= event['type']
-    console.log('onChangeOperator actionsss', this.action)
+    console.log('onChangeOperator actionsss', this.action, this.actionJsonConditionFormGroup)
   }
-}
 
-export function OperatorValidator( control: AbstractControl ): { [key: string]: boolean } | null {
-  if (control.value in TYPE_OPERATOR) {
-    return { type: control.value };
+  onChangeForm(event:{name: string, value: string}, type){
+    this.action[type]=event.value
   }
-  return null;
+
+  onDismiss(condition: Condition){
+    console.log('onDismiss popover condition', condition)
+    let currentExpression = this.action.groups[0] as Expression
+    currentExpression.conditions.push(condition)
+    currentExpression.conditions.push(new Operator(), )
+    
+  }
 }

@@ -1,0 +1,64 @@
+<!-- ++++++++ STEP 1 ++++++++ -->
+<div *ngIf="step===0">
+    <div id="search">
+        <span class="material-icons">search</span>
+        <input type="text" 
+            placeholder="Type search value" 
+            [(ngModel)]="textVariable"
+            (ngModelChange)="onChangeSearch($event)">
+    </div>
+    <div id="scrollMe">
+        <div id="data">
+            <div class="category-name">USER DATA</div>
+            <div *ngFor="let variable of filteredVariableList" (click)="onVariableSelected(variable)" class="category-row">
+                <span class="material-icons">data_object</span>
+                <label class="category-row-name">{{variable.name}}</label>
+            </div>
+        </div>
+        <div id="data">
+            <div class="category-name">INTENT ATTRIBUTES</div>
+            <div *ngFor="let variable of filteredVariableList" (click)="onVariableSelected(variable)" class="category-row">
+                <span class="material-icons">data_object</span>
+                <label class="category-row-name">{{variable.name}}</label>
+            </div>
+        </div>
+        <div class="no-data" *ngIf="filteredVariableList.length === 0 || filteredVariableList.length == 0">
+            NO data found
+        </div>
+    </div>
+    <div id="add-attribute" (click)="onAddCustomAttribute()">
+        <span class="material-icons">add</span>
+        Add custom attributes
+    </div>
+</div>
+
+<!-- ++++++++ STEP 2 ++++++++ -->
+<div class="step2" *ngIf="step===1">
+    <form class="filter-item-drop-down" [formGroup]="conditionForm" (submit)="onSubmitCondition()">
+        <section class="header">
+            <span class="material-icons">data_object</span>
+            <label class="category-row-name">Custom Attribute</label>
+            <span class="material-icons" (click)="onClose()">close</span>
+        </section>
+        <section class="attribute">
+            <div>Attribute name</div>
+            <input type="text" formControlName="operand1" placeholder="Attribute name" [disabled]="disableInput" name="operand1" #operand1/>
+        </section>
+        <section class="condition">
+            <div>Condition</div>
+            <div class="operators-list">
+                <div class="operator" [class.active]="conditionForm.value.operator === item.type" *ngFor="let item of operatorsList" (click)="onClickOperator(item)">
+                    <img *ngIf="item.src" width="10px" [src]="item.src">
+                    <div>{{item.name}}</div>
+                </div>
+            </div>
+        </section>
+        <section class="value">
+            <div>Value</div>
+            <input type="text" formControlName="operand2" placeholder="Value" name="operand2"/>
+        </section>
+        <section class="submit">
+            <button class="btn btn-primary pull-right cds-blue-button" type="submit"> Apply condition</button>
+        </section>
+    </form>
+</div>

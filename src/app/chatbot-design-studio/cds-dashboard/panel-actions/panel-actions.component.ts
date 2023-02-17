@@ -3,7 +3,7 @@ import { ACTIONS_LIST } from './../../utils';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, HostListener } from '@angular/core';
 
 import { TYPE_ACTION, TYPE_COMMAND } from '../../utils';
-import { ActionCondition, ActionAgent, ActionClose, 
+import { ActionAgent, ActionClose, 
          ActionReply, Intent, Command, 
          Message, ActionIntentConnected, ActionEmail, 
          ActionWait, ActionAssignVariable, ActionDeleteVariable, 
@@ -123,10 +123,10 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       let action = new ActionEmail()
       this.intentSelected.actions.push(action);
     }
-    if(typeAction === TYPE_ACTION.CONDITION){
-      let action = new ActionCondition();
-      this.intentSelected.actions.push(action);
-    }
+    // if(typeAction === TYPE_ACTION.CONDITION){
+    //   let action = new ActionCondition();
+    //   this.intentSelected.actions.push(action);
+    // }
     if(typeAction === TYPE_ACTION.ASSIGN_VARIABLE){
       let action = new ActionAssignVariable();
       this.intentSelected.actions.push(action);

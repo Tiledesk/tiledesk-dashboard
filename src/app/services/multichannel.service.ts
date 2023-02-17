@@ -12,7 +12,7 @@ export class MultichannelService {
   TOKEN: string;
   user: any;
   project: any;
-
+  
   constructor(private http: HttpClient,
     private auth: AuthService,
     private appConfigService: AppConfigService,

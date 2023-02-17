@@ -86,11 +86,18 @@
                 <label class="control-label">
                     {{ 'Go to block' | translate }}
                 </label>
-                <cds-text id="text-condition"
+                <cds-select id="text-condition"
+                    [items]="listOfActions"
+                    [bindLabelSelect]="'name'"
+                    [bindValueSelect]="'value'"
+                    [itemSelected]="buttonAction"
+                    (onSelected)="onChangeSelect($event)">
+                </cds-select>
+                <!-- <cds-text id="text-condition"
                     [text]="buttonAction"
                     [autocompleteOptions]="listOfActions"
                     (onChange)="onChangeActionButton($event)">
-                </cds-text>
+                </cds-text> -->
             </div>
 
         </div>
