@@ -10,10 +10,17 @@
         <div class="text-editor-wrapper">
             <div class="field-box">
                 <label class="title-label">Go to block</label>
-                <cds-text id="text-condition" 
+                <cds-select
+                    [items]="intents"
+                    [bindLabelSelect]="'name'"
+                    [bindValueSelect]="'value'"
+                    [itemSelected]="action?.intentName"
+                    (onSelected)="onChangeSelect($event)">
+                </cds-select>
+                <!-- <cds-text id="text-condition" 
                     [control]="actionIntentFormGroup.controls['intentName']"
                     [autocompleteOptions]="intents">
-                </cds-text>
+                </cds-text> -->
             </div>
         </div>
 

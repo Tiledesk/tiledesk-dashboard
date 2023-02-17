@@ -10,7 +10,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 })
 export class ActionOnlineAgentsComponent implements OnInit {
 
-  @Input() listOfActions: string[];
+  @Input() listOfActions: Array<{name: string, value: string}>;
   @Input() action: ActionOnlineAgent;
 
   actionOnlineAgentsFormGroup: FormGroup
@@ -52,6 +52,10 @@ export class ActionOnlineAgentsComponent implements OnInit {
       trueIntent: this.action.trueIntent,
       falseIntent: this.action.falseIntent
     })
+  }
+
+  onChangeSelect(event:{name: string, value: string}, type){
+    this.action[type]=event.value
   }
 
 }
