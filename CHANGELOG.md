@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.5-rc1
+- Adds chatbot publish button in chatbot design studio
+- Adds the "condition" action
+
 ### 2.4.4
 - Deploys in production
 - Fixes the bug: when on the chatbot list page the user clicks on the button to view the details of an external bot, he is redirected to the chatbot design studio
