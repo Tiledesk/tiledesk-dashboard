@@ -54,7 +54,7 @@ export enum TYPE_ACTION {
     ONLINE_AGENTS = 'ifonlineagents',
     OPEN_HOURS = 'ifopenhours',
     HIDE_MESSSAGE = 'hmessage',
-    JSON_CONDITION = 'jsonCondition'
+    JSON_CONDITION = 'jsoncondition'
 }
 
 export enum TYPE_OPERATOR{
