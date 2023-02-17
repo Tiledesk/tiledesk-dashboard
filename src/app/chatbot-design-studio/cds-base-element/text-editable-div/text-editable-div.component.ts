@@ -1,4 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { SatPopover } from '@ncstate/sat-popover';
 import { TiledeskVarSplitter } from 'app/chatbot-design-studio/TiledeskVarSplitter';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { calculatingRemainingCharacters, TEXT_CHARS_LIMIT } from '../../utils';
@@ -17,31 +18,50 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
   @Input() setAttributeBtn: boolean;
   @Input() textLimitBtn: boolean;
   @Input() textLimit: number;
-     
+
   leftCharsText: number;
   alertCharsText: boolean = false;
 
   minHeightContent: number = 120;
 
   isOpenSetAttributesPanel: boolean = false
+
+  textVariable: string;
+  variableListMock: Array<{ name: string, value: string }> = [
+    { name: 'facebook', value: 'facebook' },
+    { name: 'email', value: 'email' },
+    { name: 'instagram', value: 'instagram' },
+    { name: 'variabile1', value: 'valvariabile14' },
+    { name: 'userFullName', value: 'userFullName' },
+  ]
+
+  intentVariableListMock: Array<{ name: string, value: string }> = [
+    { name: 'facebook', value: 'facebook' },
+    { name: 'email', value: 'email' },
+    { name: 'instagram', value: 'instagram' },
+    { name: 'variabile1', value: 'valvariabile14' },
+    { name: 'userFullName', value: 'userFullName' },
+  ]
+  @ViewChild("setattributepopover", { static: false }) setattributepopover : SatPopover;
+  
   constructor(
     private logger: LoggerService,
     private elementRef: ElementRef
   ) { }
 
   ngOnInit(): void {
-    if(!this.textLimit || this.textLimit == 0){
+    if (!this.textLimit || this.textLimit == 0) {
       this.textLimit = TEXT_CHARS_LIMIT;
     }
     this.calculatingRemainingCharacters();
   }
 
 
-  private calculatingRemainingCharacters(){
-    if(this.textLimitBtn){
+  private calculatingRemainingCharacters() {
+    if (this.textLimitBtn) {
       this.leftCharsText = calculatingRemainingCharacters(this.text, this.textLimit);
-      console.log('this.leftCharsText::: ', this.textLimit, this.leftCharsText, (this.textLimit/10));
-      if(this.leftCharsText<(this.textLimit/10)){
+      console.log('this.leftCharsText::: ', this.textLimit, this.leftCharsText, (this.textLimit / 10));
+      if (this.leftCharsText < (this.textLimit / 10)) {
         this.alertCharsText = true;
       } else {
         this.alertCharsText = false;
@@ -57,9 +77,9 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     imputEle.innerHTML = fommattedActionSubject;
     this.placeCaretAtEnd(imputEle);
   }
+ 
 
-
-  private splitText(text){
+  private splitText(text) {
     const splits = new TiledeskVarSplitter().getSplits(text);
     console.log('[TEXT-EDITABLE-DIV] ngOnChanges splits:', splits)
     let tagName = ''
@@ -88,12 +108,22 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     el.focus();
     if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
       var range = document.createRange();
+      console.log('placeCaretAtEnd range ', range ) 
       range.selectNodeContents(el);
+      
       range.collapse(false);
       var sel = window.getSelection();
+      console.log('placeCaretAtEnd sel ', sel ) 
       sel.removeAllRanges();
       sel.addRange(range);
     }
+  }
+
+  openSetattributePopover() {
+    console.log('openSetattributePopover setattributepopover  ',  this.setattributepopover)
+    this.setattributepopover.open()
+    let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
+    this.placeCaretAtEnd(imputEle);
   }
 
   setAttribute(attribute) {
@@ -102,10 +132,50 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     const imputEle = this.elementRef.nativeElement.querySelector('#content-editable')
     console.log("[TEXT-EDITABLE-DIV] selectedAttibute imputEle: ", imputEle);
     imputEle.focus();
-    this.setAttributeAtCaret(`<div tag="true contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
+    this.setAttributeAtCaret(`<div contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
     this.isOpenSetAttributesPanel = false;
     this.onInput()
   }
+
+  onAddCustomAttribute() { }
+
+  onChangeSearch($event) { }
+  // background: #ffdc66;
+  onVariableSelected(variable) {
+    console.log("[TEXT-EDITABLE-DIV] selectedAttibute attribute: ", variable);
+    let attribute = '${' + variable.value + '}'
+    // const imputEle = document.querySelector('#email-subject') as HTMLElement
+    const imputEle = this.elementRef.nativeElement.querySelector('#content-editable')
+    console.log("[TEXT-EDITABLE-DIV] selectedAttibute imputEle: ", imputEle);
+    this.setattributepopover.close()
+    // setTimeout(() => {
+      
+    // }, 500);
+
+    imputEle.focus();
+    this.placeCaretAtEnd(imputEle);
+    this.setAttributeAtCaret(`<div tag="true" contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
+    // this.isOpenSetAttributesPanel = false;
+    
+    setTimeout(() => { 
+      this.setCaret(imputEle);
+    }, 500);
+    
+    this.onInput()
+  }
+
+  setCaret(imputEle) {
+    // var el = document.getElementById("editable")
+    var el =  imputEle
+    var range = document.createRange()
+    var sel = window.getSelection()
+    
+    range.setStart(el.childNodes[2], 5)
+    range.collapse(true)
+    
+    sel.removeAllRanges()
+    sel.addRange(range)
+}
 
 
   setAttributeAtCaret(html: any) {
@@ -144,12 +214,13 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
         }
       }
     }
+
   }
 
   // 
   onInput() {
     let imputEle = this.elementRef.nativeElement.querySelector('#content-editable') //document.querySelector('[contenteditable]'),  //document.querySelector('[contenteditable]'),
-      // text = contenteditable.textContent;
+    // text = contenteditable.textContent;
 
 
     // for (let i = 0; i < text.length; i++) {
@@ -164,10 +235,10 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     // this.textChanged.emit(text)
 
 
-    
 
-  
-    if(this.textLimitBtn && imputEle.textContent.length > this.textLimit){
+
+
+    if (this.textLimitBtn && imputEle.textContent.length > this.textLimit) {
       imputEle.textContent = imputEle.textContent.substring(0, this.textLimit);
       let fommattedActionSubject = this.splitText(imputEle.textContent);
       imputEle.innerHTML = fommattedActionSubject;
