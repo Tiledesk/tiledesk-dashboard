@@ -8,12 +8,11 @@ import { LoggerService } from './logger/logger.service';
   providedIn: 'root'
 })
 export class MultichannelService {
-
   SERVER_BASE_PATH: string;
   TOKEN: string;
   user: any;
   project: any;
-
+  
   constructor(private http: HttpClient,
     private auth: AuthService,
     private appConfigService: AppConfigService,
