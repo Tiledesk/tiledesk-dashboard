@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.4
+- Deploys in production
+- Fixes the bug: when on the chatbot list page the user clicks on the button to view the details of an external bot, he is redirected to the chatbot design studio
+
 ### 2.4.3
 - Deploys in production
 - Improvements and bug fixing
