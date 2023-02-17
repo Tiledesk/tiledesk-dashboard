@@ -283,5 +283,21 @@ $box-left-width: 250px;
     }
 }
 
+#cds-publish-btn {
+    background: #006cff;
+    // border: 1px solid #006cff;
+    color: #fff;
+    box-shadow: none;
+    font-weight: 500;
+    font-family: Poppins,Roboto,Arial,sans-serif;
+    text-transform: capitalize;
+    font-size: 14px;
+    padding: 6px 12px;
+}
+
+#cds-publish-btn:hover { 
+    opacity: .8!important;
+}
+
 
 

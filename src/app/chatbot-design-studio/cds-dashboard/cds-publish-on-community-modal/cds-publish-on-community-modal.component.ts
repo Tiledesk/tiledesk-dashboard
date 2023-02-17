@@ -303,7 +303,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
       this.logger.error('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] publishOnCommunity ERROR ', error);
     }, () => {
 
-      this.logger.error('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] publishOnCommunity * COMPLETE * ');
+      this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] publishOnCommunity * COMPLETE * ');
       this.dialogRef.close();
 
     });

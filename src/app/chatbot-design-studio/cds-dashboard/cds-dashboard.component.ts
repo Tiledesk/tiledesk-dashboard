@@ -21,6 +21,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
 import { CdsPublishOnCommunityModalComponent } from './cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { NotifyService } from 'app/core/notify.service';
 
 const swal = require('sweetalert');
 
@@ -82,6 +83,7 @@ export class CdsDashboardComponent implements OnInit {
     private multichannelService: MultichannelService,
     private el: ElementRef,
     public dialog: MatDialog,
+    private notify: NotifyService,
   ) { }
 
   // SYSTEM FUNCTIONS //
@@ -738,6 +740,19 @@ export class CdsDashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       // this.logger.log(`Dialog result: ${result}`);
+    });
+  }
+
+  publish() {
+    this.faqKbService.publish(this.selectedChatbot).subscribe((data) => {
+      console.log('[CDS DSBRD] publish  - RES ', data)
+    }, (error) => {
+  
+      console.error('[CDS DSBRD] publish ERROR ', error);
+    }, () => {
+      console.log('[CDS DSBRD] publish * COMPLETE *');
+      this.notify.showWidgetStyleUpdateNotification('Successfully published', 2, 'done');
+      
     });
   }
 
