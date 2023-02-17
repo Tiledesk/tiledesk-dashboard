@@ -1,5 +1,6 @@
-import { FormControl } from '@angular/forms';
-import { Component, Input, OnInit, Output, EventEmitter, Type } from '@angular/core';
+import { Form } from './../../../models/intent-model';
+import { FormControl, FormControlName, FormGroup, FormGroupDirective } from '@angular/forms';
+import { Component, Input, OnInit, Output, EventEmitter, Type, Optional } from '@angular/core';
 
 @Component({
   selector: 'cds-select',
@@ -13,19 +14,19 @@ export class SelectComponent implements OnInit {
   @Input() itemSelected: any
   @Input() bindLabelSelect: string;
   @Input() bindValueSelect: string;
-  @Input() control: FormControl = new FormControl()
+  @Input() formGroup: FormGroup = new FormGroup({ select: new FormControl()});
+  @Input() formControlName: string = 'select';
   @Output() onSelected = new EventEmitter()
 
+  valueFormGroup: FormGroup 
+  
   constructor() { }
 
   ngOnInit(): void {
   }
 
   ngOnChanges(){
-    // console.log('itemselecteddddd', this.itemSelected, this.items, this.bindLabelSelect, this.bindValueSelect)
-    // console.log('controlllll', this.control, Object.keys(this.control))// if(this.itemSelected){
   }
-
 
   onChangeActionButton(event) {
     //this.logger.log("[ACTION REPLACE BOT] onChangeActionButton event: ", event)
