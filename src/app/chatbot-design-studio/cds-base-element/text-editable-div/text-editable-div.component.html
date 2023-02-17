@@ -81,7 +81,8 @@
         [ngStyle]="{'min-height':minHeightContent?minHeightContent+'px':'auto'}"
         data-focused="true" 
         spellcheck="false" 
-        (input)="onInput()" 
+        (input)="onInput('template')" 
+        (mouseup)="mouseUp()" 
         contenteditable="true">
     </div>
 </div>
