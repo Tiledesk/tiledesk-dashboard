@@ -3,7 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, 
 
 import { TYPE_ACTION, TYPE_COMMAND } from '../../utils';
 import { ActionCondition, ActionAgent, ActionClose, 
-         ActionReply, Intent, Command, 
+         ActionReply, ActionRandomReply, Intent, Command, 
          Message, ActionIntentConnected, ActionEmail, 
          ActionWait, ActionAssignVariable, ActionDeleteVariable, 
          ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
@@ -93,6 +93,17 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     this.logger.log('[PANEL ACTION] actionSelected ', typeAction);
     if(typeAction === TYPE_ACTION.REPLY){
       let action = new ActionReply();
+      let commandWait = new Command(TYPE_COMMAND.WAIT);
+      action.attributes.commands.push(commandWait);
+      let command = new Command(TYPE_COMMAND.MESSAGE);
+      command.message = new Message('text', 'A chat message will be sent to the visitor');
+      this.logger.log('1 action:  ', action)
+      this.logger.log('2 command:  ', command)
+      action.attributes.commands.push(command);
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.RANDOM_REPLY){
+      let action = new ActionRandomReply();
       let commandWait = new Command(TYPE_COMMAND.WAIT);
       action.attributes.commands.push(commandWait);
       let command = new Command(TYPE_COMMAND.MESSAGE);

@@ -92,6 +92,7 @@ import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.compon
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import { TextEditableDivComponent } from './cds-base-element/text-editable-div/text-editable-div.component';
+
 @NgModule({
   declarations: [
     CdsDashboardComponent,

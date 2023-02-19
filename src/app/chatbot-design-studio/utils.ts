@@ -39,6 +39,7 @@ export enum TYPE_MESSAGE {
 
 export enum TYPE_ACTION {
     REPLY = 'reply', 
+    RANDOM_REPLY = 'randomreply',
     AGENT = 'agent',
     CLOSE = 'close',
     EMAIL = 'email',
@@ -75,6 +76,7 @@ export function calculatingRemainingCharacters(text: string, limit:number) {
 
 export const ACTIONS_LIST= {
     REPLY : { name: 'Reply', type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: ''},
+    RANDOM_REPLY : { name: 'Random Reply', type: TYPE_ACTION.RANDOM_REPLY, src:"assets/cds/images/actions/reply.svg", description: ''},
     AGENT : { name: 'Agent Handoff', type: TYPE_ACTION.AGENT, src:"assets/cds/images/actions/agent_handoff.svg", description: 'This action replaces the current chatbot with an agent.<br>The upcoming agent is assigned to the conversation following the department rules'},
     CLOSE : { name: 'Close', type: TYPE_ACTION.CLOSE, src:"assets/cds/images/actions/close.svg", description: 'This action instantly closes the current conversation'},
     EMAIL : { name: 'Send email', type: TYPE_ACTION.EMAIL, src:"assets/cds/images/actions/send_email.svg", description: 'This action send an email to the specified users group or email addresses.<br>You can use a comma sepatated addresses list.<br>i.e. “andrea@tiledesk.com, gab@tiledesk.com"<br>You can use the special tag “@everyone” to send an email to each of the Tiledesk’s project teamates.<br><br>You can also use the name of a single user group using the group name. i.e. “sales”'},
