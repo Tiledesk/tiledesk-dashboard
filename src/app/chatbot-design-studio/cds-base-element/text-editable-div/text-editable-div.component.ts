@@ -76,9 +76,9 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
     imputEle.innerHTML = fommattedActionSubject;
     this.placeCaretAtEnd(imputEle);
-    setTimeout(() => {
-      this.saveSelection(imputEle, 0, 'ngOnChanges')
-    }, 500);
+    // setTimeout(() => {
+    //   this.saveSelection(imputEle, 0, 'ngOnChanges')
+    // }, 500);
 
   }
 
@@ -108,6 +108,8 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
   }
 
 
+
+
   placeCaretAtEnd(el) {
     el.focus();
     if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
@@ -120,6 +122,8 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
       console.log('placeCaretAtEnd sel ', sel)
       sel.removeAllRanges();
       sel.addRange(range);
+    } else {
+      console.log('placeCaretAtEnd else ')
     }
 
   }
@@ -134,30 +138,13 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
     // this.placeCaretAtEnd(imputEle);
     // this.setCaret(imputEle);
+    console.log('openSetattributePopover savedSelection', this.savedSelection)
     if (this.savedSelection) {
       this.restoreSelection(imputEle, this.savedSelection)
     } else {
       this.placeCaretAtEnd(imputEle);
     }
   }
-
-  setAttribute(attribute) {
-    console.log("[TEXT-EDITABLE-DIV] selectedAttibute attribute: ", attribute);
-    // const imputEle = document.querySelector('#email-subject') as HTMLElement
-    const imputEle = this.elementRef.nativeElement.querySelector('#content-editable')
-    console.log("[TEXT-EDITABLE-DIV] selectedAttibute imputEle: ", imputEle);
-    imputEle.focus();
-    this.setAttributeAtCaret(`<div contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
-    this.isOpenSetAttributesPanel = false;
-    // this.onInput()
-  }
-
-  onAddCustomAttribute() { }
-
-  onChangeSearch($event) { }
-  // background: #ffdc66;
-
-
 
   onVariableSelected(variable) {
     console.log("[TEXT-EDITABLE-DIV] selectedAttibute attribute: ", variable);
@@ -169,43 +156,124 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     console.log("[TEXT-EDITABLE-DIV] selectedAttibute imputEle: ", imputEle);
     this.setattributepopover.close()
     // setTimeout(() => {
+    //   if (this.savedSelection) { 
+    //     this.restoreSelection(imputEle, this.savedSelection)
 
-    // }, 500);
+    //   } else {
+    //     this.placeCaretAtEnd(imputEle);
+    //   }
+    // }, 400);
+
+
 
     imputEle.focus();
     // this.placeCaretAtEnd(imputEle);
     // this.setCaret(imputEle);
+
+    // let savedRange = this.savedSelection.getRangeAt(0)
+    // console.log('savedRange: ', savedRange) 
+
+    // let clonedRange = savedRange.cloneRange()
+    // console.log('clonedRange: ', clonedRange) 
+
     if (this.savedSelection) {
       this.restoreSelection(imputEle, this.savedSelection)
     } else {
       this.placeCaretAtEnd(imputEle);
     }
-    this.setAttributeAtCaret(`<div tag="true" contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66; cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
+    const timestamp = new Date().getTime()
+    console.log('timestamp', timestamp)
+    this.setAttributeAtCaret(`<div tag="true" id="${timestamp}" contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66; cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
     // this.isOpenSetAttributesPanel = false;
+
+    // this.savedSelection = this.saveSelection(imputEle, attribute.length, 'onVariableSelected')
+    // let range = document.createRange()
+    // window.getSelection()
+    // range.setStart(childNode, length)
+
+    console.log("[TEXT-EDITABLE-DIV] onVariableSelected savedSelection before to restore: ", this.savedSelection);
+
+    this.setCaret(imputEle)
+    // this.setCaret(imputEle, timestamp, attribute.length)
+
+    // if (this.savedSelection) {
+    //   // setTimeout(() => {
+    //     // this.setCaret(imputEle, timestamp, attribute.length)
+    //     this.restoreSelection(imputEle, this.savedSelection)
+    //   // }, 500);
+    // }
+
+    // if (this.savedSelection) {
+    //   this.restoreSelection(imputEle, this.savedSelection)
+    // } else {
+    //   this.placeCaretAtEnd(imputEle);
+    // }
+
     this.onInput('controller')
-    this.saveSelection(imputEle, 2, 'onVariableSelected')
-    if (this.savedSelection) {
-      setTimeout(() => {
-
-        this.restoreSelection(imputEle, this.savedSelection)
-      }, 500);
-    }
-
-
   }
 
-  setCaret(imputEle) {
-    // var el = document.getElementById("editable")
-    var el = imputEle
-    var range = document.createRange()
-    var sel = window.getSelection()
+  // setAttribute(attribute) {
+  //   console.log("[TEXT-EDITABLE-DIV] selectedAttibute attribute: ", attribute);
+  //   // const imputEle = document.querySelector('#email-subject') as HTMLElement
+  //   const imputEle = this.elementRef.nativeElement.querySelector('#content-editable')
+  //   console.log("[TEXT-EDITABLE-DIV] selectedAttibute imputEle: ", imputEle);
+  //   imputEle.focus();
+  //   this.setAttributeAtCaret(`<div contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
+  //   this.isOpenSetAttributesPanel = false;
+  //   // this.onInput()
+  // }
 
-    range.setStart(el.childNodes[2], 5)
+  onAddCustomAttribute() { }
+
+  onChangeSearch($event) { }
+  // background: #ffdc66;
+
+
+  _setCaret(imputEle, timestamp, length) {
+    // var el = document.getElementById("editable")
+    console.log('setCaret length ', length)
+    let el = imputEle
+    let range = document.createRange()
+    let sel = window.getSelection()
+    
+
+    // console.log('setCaret  el.childNodes[2]', el.childNodes[2])
+    console.log('setCaret  el.childNodes', el.childNodes)
+
+    el.childNodes.forEach((childNode, index) => {
+      console.log('childNode', childNode, 'index', index)
+      console.log('childNode id',  childNode.id , 'String(timestamp)', String(timestamp))
+      if (childNode.id === String(timestamp)) {
+        console.log('---- >>>>> childNode', childNode, 'index ', index)
+
+        // range.setStart(el.childNodes[index], length)
+        // setTimeout(() => {
+        range.setStart(childNode, 1)
+      // }, 500);
+        // this.saveSelection(imputEle, 0, 'setCaret') 
+      }
+    });
+
+
     range.collapse(true)
 
     sel.removeAllRanges()
     sel.addRange(range)
+    // el.focus();
   }
+
+
+  setCaret(imputEle) {
+    var el = imputEle
+    var range = document.createRange()
+    var sel = window.getSelection()
+    
+    range.setStart(el.childNodes[2], 5)
+    range.collapse(true)
+    
+    sel.removeAllRanges()
+    sel.addRange(range)
+}
 
 
   setAttributeAtCaret(html: any) {
@@ -244,7 +312,6 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
         }
       }
     }
-
   }
 
   // 
@@ -277,8 +344,8 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     this.textChanged.emit(this.text);
 
     if (calledBy === 'template') {
-      this.savedSelection = this.saveSelection(imputEle, 0, 'onInput');
-      console.log('[TEXT-EDITABLE-DIV] savedSelection ', this.savedSelection)
+      this.savedSelection = this.saveSelection(imputEle, 2, 'onInput');
+      console.log('[TEXT-EDITABLE-DIV] savedSelection onInput ', this.savedSelection)
     }
 
   }
@@ -294,12 +361,12 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
       var preSelectionRange = range.cloneRange();
       preSelectionRange.selectNodeContents(imputEle);
       preSelectionRange.setEnd(range.startContainer, range.startOffset);
-      var start = preSelectionRange.toString().length;
+      var start = preSelectionRange.toString().length + 'increment';
       console.log('saveSelection start', start)
       console.log('saveSelection end', start + range.toString().length)
       return {
 
-        start: start + increment,
+        start: start,
         end: start + range.toString().length
       }
     }
@@ -342,8 +409,8 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     console.log("[ACTION-EMAIL] mouseUp: ");
     let imputEle = this.elementRef.nativeElement.querySelector('#content-editable')
 
-    let savedSelection = this.saveSelection(imputEle, 0, 'mouseUp');
-    console.log('savedSelection ', savedSelection)
+    this.savedSelection = this.saveSelection(imputEle, 2, 'mouseUp');
+    console.log('savedSelection ', this.savedSelection)
   }
 
 
