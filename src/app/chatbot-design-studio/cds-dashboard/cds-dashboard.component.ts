@@ -373,7 +373,7 @@ export class CdsDashboardComponent implements OnInit {
       const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
 
       this.showSpinner = false;
-      this.logger.log('[CDS DSHBRD] creatIntent RES ', intent);
+     console.log('[CDS DSHBRD] creatIntent RES ', intent);
       if (intent) {
 
         //SUCCESS STATE
@@ -434,7 +434,7 @@ export class CdsDashboardComponent implements OnInit {
   /** EDIT INTENT  */
   private editIntent() {
     this.startUpdatedIntent.next(true)
-    this.logger.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
+    console.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
     this.showSpinner = true;
     let id = this.intentSelected.id;
     let questionIntentSelected = this.intentSelected.question;

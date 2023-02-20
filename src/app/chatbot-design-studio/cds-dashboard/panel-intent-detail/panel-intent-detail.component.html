@@ -9,6 +9,13 @@
                 [listOfActions]="listOfActions">
             </cds-action-reply>
 
+            <cds-action-reply *ngSwitchCase="typeAction.RANDOM_REPLY"
+                class="panel-response"
+                [reply]="elementSelected"
+                [intent_display_name]="elementIntentSelected.intent_display_name"
+                [listOfActions]="listOfActions">
+            </cds-action-reply>
+
             <cds-action-wait *ngSwitchCase="typeAction.WAIT"
                 [action]="elementSelected">
             </cds-action-wait>

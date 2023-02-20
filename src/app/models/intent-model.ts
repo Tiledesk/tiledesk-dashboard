@@ -101,6 +101,20 @@ export class ActionReply extends Action {
     }
 }
 
+export class ActionRandomReply extends Action {
+    text?: string;
+    attributes: Attributes;
+    constructor(text?: string, attributes?: Attributes) {
+        super();
+        // this.text = text ? text : '...';
+        this._tdActionType = TYPE_ACTION.RANDOM_REPLY;
+        this.attributes = new Attributes();
+        if (attributes){
+            this.attributes = attributes;
+        }
+    }
+}
+
 export class ActionReplaceBot extends Action {
     botName: string;
     constructor(){

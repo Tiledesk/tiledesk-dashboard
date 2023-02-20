@@ -33,7 +33,7 @@ export class CDSTextareaComponent implements OnInit {
       this.text = this.control.value
     }
 
-    this.leftCharsText = calculatingRemainingCharacters(this.text);
+    this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
     if(this.leftCharsText<(this.limitCharsText/10)){
       this.alertCharsText = true;
     } else {
@@ -43,7 +43,7 @@ export class CDSTextareaComponent implements OnInit {
 
    /** */
    onChangeTextarea(event) {
-    this.leftCharsText = calculatingRemainingCharacters(this.text);
+    this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
     if(this.leftCharsText<(this.limitCharsText/10)){
       this.alertCharsText = true;
     } else {

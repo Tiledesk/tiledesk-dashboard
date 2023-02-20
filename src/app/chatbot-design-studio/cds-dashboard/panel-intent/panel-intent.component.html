@@ -117,7 +117,25 @@
                 </div>
 
                 <!-- ----------------------------- -->
-                <!-- @ Action Json Condition ----- -->
+                <!-- @ Action Random Reply -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.RANDOM_REPLY" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
+                    <div class="cds-action-icon-wpr">
+                        <img [src]="ACTIONS_LIST['RANDOM_REPLY'].src" [title]="ACTIONS_LIST['RANDOM_REPLY'].name">
+                    </div>
+                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['RANDOM_REPLY'].name}}</div>
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
+                    </div>
+                </div>
+
+                <!-- ----------------------------- -->
+                <!-- @ Action Condition -->
                 <!-- ----------------------------- -->
                 <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.JSON_CONDITION" cdkDragHandle>
                     <div class="cds-action-title" *ngIf="action._tdActionTitle">

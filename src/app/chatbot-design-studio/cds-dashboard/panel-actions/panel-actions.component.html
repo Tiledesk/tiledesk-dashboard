@@ -35,7 +35,6 @@
         </div>
       </div>
 
-
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
@@ -47,6 +46,23 @@
         </div>
       </div>
     </div>
+
+    <!-- ---------------------------------- -->
+    <!-- NEW row -->
+    <!-- ---------------------------------- -->
+    <div class="actions-btns-wpr">
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.RANDOM_REPLY)">
+              <img [src]="ACTIONS_LIST['RANDOM_REPLY'].src" [title]="ACTIONS_LIST['RANDOM_REPLY'].name">
+            </button>
+          </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['RANDOM_REPLY'].name}}</div>
+        </div>
+      </div>
+    </div>
+    
 
     <!-- ---------------------------------- -->
     <!-- Second row -->
