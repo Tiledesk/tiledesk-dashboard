@@ -1,0 +1,58 @@
+<!-- ++++++++ STEP 1 ++++++++ -->
+<div *ngIf="step===0">
+    <variable-list
+        [variableListUserDefined]="variableListUserDefined"
+        [variableListSystemDefined]="variableListSystemDefined"
+        (onSelected)="onVariableSelected($event, 0)">
+    </variable-list>
+</div>
+
+<!-- ++++++++ STEP 2 ++++++++ -->
+<div class="step2" *ngIf="step===1">
+    <form class="filter-item-drop-down" [formGroup]="conditionForm" (submit)="onSubmitCondition()">
+        <section class="header">
+            <span class="material-icons">data_object</span>
+            <label class="category-row-name">Custom Attribute</label>
+            <span class="material-icons" (click)="onClose()">close</span>
+        </section>
+        <section class="attribute">
+            <div>Attribute name</div>
+            <input type="text" formControlName="operand1" placeholder="Attribute name" [readonly]="disableInput" name="operand1" #operand1/>
+        </section>
+        <section class="condition">
+            <div>Condition</div>
+            <div class="operators-list">
+                <div class="operator" [class.active]="conditionForm.value.operator === item.type" *ngFor="let item of operatorsList" (click)="onClickOperator(item)">
+                    <img *ngIf="item.src" width="10px" [src]="item.src">
+                    <div>{{item.name}}</div>
+                </div>
+            </div>
+        </section>
+        <section class="value" formGroupName="operand2">
+            <div>Value</div>
+            <div class="value-wrp">
+                <cds-textarea [control]="conditionForm.value.operand2.type=='const'? conditionForm.get('operand2.value'): conditionForm.get('operand2.name')"></cds-textarea>
+                <input type="text" [formControlName]="conditionForm.value.operand2.type=='const'? 'value': 'name'" placeholder="Value" name="operand2"/>
+                <div class="flex tag" *ngIf="conditionForm.value.operand2.type=='var'">
+                    <span class="material-icons close" (click)="clearInput()">close</span>
+                    {{conditionForm.value.operand2.name}}
+                </div>
+            </div>
+        </section>
+        <section class="submit">
+            <button class="btn btn-primary pull-right cds-blue-button" type="submit"> Apply condition</button>
+        </section>
+    </form>
+
+    <button class="btn btn-primary" [satPopoverAnchor]="addVariable" (click)="addVariable.toggle()"> open popover</button>
+</div>
+
+
+<sat-popover #addVariable id="addVariable" backDrop panelClass="add-filter-panel"
+    verticalAlign="below" interactiveClose="false">
+   <variable-list
+        [variableListUserDefined]="variableListUserDefined"
+        [variableListSystemDefined]="variableListSystemDefined"
+        (onSelected)="onVariableSelected($event, 1)">
+    </variable-list>
+</sat-popover>

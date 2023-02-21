@@ -1,5 +1,5 @@
-import { OperatorValidator, TYPE_OPERATOR } from './../../../../utils';
-import { Expression, Operator, Condition } from './../../../../../models/intent-model';
+import { OperatorValidator, TYPE_OPERATOR, variableList } from '../../../../utils';
+import { Expression, Operator, Condition } from '../../../../../models/intent-model';
 import { ActionJsonCondition } from '../../../../../models/intent-model';
 import { Component, Host, Input, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
@@ -15,7 +15,7 @@ export class ActionJsonConditionComponent implements OnInit {
   @ViewChild("addFilter", {static: false}) myPopover : SatPopover;
   
   @Input() action: ActionJsonCondition;
-  @Input() listOfActions: Array<{name: string, value: string}>;
+  @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
 
   actionJsonConditionFormGroup: FormGroup
 
@@ -29,7 +29,7 @@ export class ActionJsonConditionComponent implements OnInit {
 
   ngOnChanges() {
     this.initialize();
-    console.log('[ACTION-JSON-CONDITION] actionnn-->', this.action)
+    console.log('[ACTION-JSON-CONDITION] actionnn-->', this.action, variableList)
     if (this.action) {
       this.setFormValue()
     }
@@ -129,11 +129,4 @@ export class ActionJsonConditionComponent implements OnInit {
     this.action[type]=event.value
   }
 
-  onDismiss(condition: Condition){
-    console.log('onDismiss popover condition', condition)
-    let currentExpression = this.action.groups[0] as Expression
-    currentExpression.conditions.push(condition)
-    currentExpression.conditions.push(new Operator(), )
-    
-  }
 }

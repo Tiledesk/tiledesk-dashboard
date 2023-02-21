@@ -2,7 +2,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, HostListener, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { SatPopover } from '@ncstate/sat-popover';
 import { Condition, Expression, Operator } from 'app/models/intent-model';
-import { OperatorValidator } from 'app/chatbot-design-studio/utils';
+import { OperatorValidator, variableList, OPERATORS_LIST } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'base-filter',
@@ -19,22 +19,10 @@ export class BaseFilterComponent implements OnInit {
 
   selectedCondition: Condition;
   
-  variableListMock: Array<{name: string, value: string}> = [
-    { name: 'facebook', value: 'facebook'},
-    { name: 'email', value: 'email'},
-    { name: 'instagram', value: 'instagram'},
-    { name: 'variabile1', value: 'valvariabile14'},
-    { name: 'userFullName', value: 'userFullName'},
-  ]
-
-  intentVariableListMock: Array<{name: string, value: string}> = [
-    { name: 'facebook', value: 'facebook'},
-    { name: 'email', value: 'email'},
-    { name: 'instagram', value: 'instagram'},
-    { name: 'variabile1', value: 'valvariabile14'},
-    { name: 'userFullName', value: 'userFullName'},
-  ]
-
+  variableListUserDefined: Array<{name: string, value: string}> = variableList.userDefined
+  variableListSystemDefined: Array<{name: string, value: string, src: string, icon: string}> = variableList.systemDefined
+  OPERATORS_LIST = OPERATORS_LIST
+  
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
@@ -52,8 +40,9 @@ export class BaseFilterComponent implements OnInit {
     if(!last){
       this.expression.conditions.splice(index, 2)
     }else if(last){
-      this.expression.conditions.splice(index, 1)
+      this.expression.conditions.splice(index-1, 2)
     }
+    console.log('expressionnn', this.expression)
   }
 
   onRemoveGroup(){
@@ -69,8 +58,13 @@ export class BaseFilterComponent implements OnInit {
   onDismiss(condition: Condition){
     if(condition){
       console.log('onDismiss popover condition', condition)
-      this.expression.conditions.push(condition)
-      this.expression.conditions.push(new Operator())
+      if(this.expression.conditions.length === 0){
+        this.expression.conditions.push(condition)
+      }else{
+        this.expression.conditions.push(new Operator())
+        this.expression.conditions.push(condition)
+      }
+      
     }
     this.addConditionFilter.close()
     

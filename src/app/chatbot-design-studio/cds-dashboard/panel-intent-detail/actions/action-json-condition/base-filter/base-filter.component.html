@@ -1,5 +1,5 @@
 <div class="base-filter">
-    <div class="control-buttons">
+    <div class="control-buttons" *ngIf="expression?.conditions && expression?.conditions.length > 0">
         <div class="filter-remove" (click)="onRemoveGroup()"><span class="material-icons">delete</span></div>
     </div>
     <div class="content">
@@ -11,7 +11,12 @@
                     <div *ngIf="i%2 === 0" class="filter-condition" (click)="onOpenConditionDetail(i); addConditionFilter.toggle() ">
                         <div class="remove" (click)="$event.stopPropagation();onDeleteCondition(i, last)"><span class="material-icons">delete</span></div>
                         <div class="filter-icon"><span class="material-icons">data_object</span></div>
-                        <div class="filer-text ellips"><b>{{group?.operand1}}</b> {{group?.operator}} <b>{{group?.operand2}}</b></div>                    
+                        <div class="filer-text ellips">
+                            <b>{{group?.operand1}}</b> 
+                            {{OPERATORS_LIST[group?.operator].name}}
+                            <b *ngIf="group?.operand2.type === 'const'">{{group?.operand2?.value}}</b>
+                            <b *ngIf="group?.operand2.type === 'var'">{{group?.operand2?.name}}</b>
+                        </div>                    
                     </div>
     
                     <!-- OPERATOR [i]-->
@@ -41,8 +46,8 @@
 <sat-popover #addConditionFilter id="addConditionFilter" backDrop panelClass="add-filter-panel"
     verticalAlign="below" interactiveClose="false">
     <base-condition-row
-        [variableList]="variableListMock"
-        [intentVariableList]="intentVariableListMock"
+        [variableListUserDefined]="variableListUserDefined"
+        [variableListSystemDefined]="variableListSystemDefined"
         [condition]="selectedCondition"
         (close)="onDismiss($event)">
     </base-condition-row>

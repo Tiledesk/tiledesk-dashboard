@@ -12,15 +12,16 @@ import { Condition } from 'app/models/intent-model';
 export class BaseConditionRowComponent implements OnInit {
 
   @ViewChild('operand1') inputOperand1: ElementRef;
+  @ViewChild("addVariable") addVariable : SatPopover;
 
-  @Input() variableList: Array<{name: string, value: string}>
-  @Input() intentVariableList: Array<{name: string, value: string, src: string}>
+  @Input() variableListUserDefined: Array<{name: string, value: string}>
+  @Input() variableListSystemDefined: Array<{name: string, value: string, src?: string}>
   @Input() condition: Condition;
   @Output() close = new EventEmitter()
 
   textVariable: string = ''
   filteredVariableList: Array<{name: string, value: string}> = []
-  filteredIntentVariableList: Array<{name: string, value: string, src: string}>
+  filteredIntentVariableList: Array<{name: string, value: string, src?: string}>
   operatorsList: Array<{}> = []
   step: number = 0;
   disableInput: boolean = true
@@ -37,9 +38,9 @@ export class BaseConditionRowComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges){
     this.conditionForm = this.createConditionGroup()
     this.operatorsList = Object.keys(OPERATORS_LIST).map(key => (OPERATORS_LIST[key]))
-    if(this.variableList){
-      this.filteredVariableList = this.variableList
-      this.filteredIntentVariableList = this.intentVariableList
+    if(this.variableListUserDefined){
+      this.filteredVariableList = this.variableListUserDefined
+      this.filteredIntentVariableList = this.variableListSystemDefined
       console.log('[BASE_CONDITION_ROW] ngOnChanges filteredVariableList', this.filteredVariableList)
     }
 
@@ -56,7 +57,11 @@ export class BaseConditionRowComponent implements OnInit {
       type: ["condition", Validators.required],
       operand1 : [ '', Validators.required],
       operator: ['equalAsNumbers', [Validators.required, OperatorValidator]],
-      operand2: ['', Validators.required]
+      operand2: this.formBuilder.group({
+        type: ['const', Validators.required],
+        value: ['', Validators.nullValidator],
+        name: ['', Validators.nullValidator]
+      })
     })
   }
 
@@ -74,13 +79,23 @@ export class BaseConditionRowComponent implements OnInit {
     }else {
       this.textVariable = event
     }
-    this.filteredVariableList = this._filter(this.textVariable, this.variableList)
-    this.filteredIntentVariableList = this._filter(this.textVariable, this.intentVariableList)
+    this.filteredVariableList = this._filter(this.textVariable, this.variableListUserDefined)
+    this.filteredIntentVariableList = this._filter(this.textVariable, this.variableListSystemDefined)
   }
 
-  onVariableSelected(variableSelected: {name: string, value: string}){
-    this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
-    this.step +=1
+  onVariableSelected(variableSelected: {name: string, value: string}, step: number){
+    console.log('onVariableSelected-->', step, this.conditionForm, variableSelected)
+    if(step === 0){
+      this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
+      this.step +=1
+    }else if (step == 1){
+      this.conditionForm.patchValue({ operand2: {type: 'var', name: variableSelected.name}}, {emitEvent: false})
+      this.addVariable.close()
+    }
+  }
+
+  clearInput(){
+    this.conditionForm.patchValue({ operand2: {type: 'const', name: '', value: ''}}, {emitEvent: false})
   }
 
   onAddCustomAttribute(){
@@ -117,7 +132,8 @@ export class BaseConditionRowComponent implements OnInit {
     this.step = 0;
     this.disableInput = true
     this.conditionForm = this.createConditionGroup()
-    this.close.emit()
+    this.close.emit() // CLOSE BASE-FILTER POPOVER (IN PARENT)
+    this.addVariable.close() // CLOSE VARIABLE POPOVER
   }
 
 

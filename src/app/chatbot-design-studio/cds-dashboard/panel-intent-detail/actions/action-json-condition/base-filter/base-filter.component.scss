@@ -69,6 +69,7 @@
     .add-filter-button{
         display: flex;
         align-items: center;
+        justify-content: center;
         width: 100%;
         font-weight: 600;
         padding: 8px 15px;
@@ -179,7 +180,7 @@
         -webkit-box-align: center;
         -webkit-box-pack: center;
         align-items: center;
-        color: $action-item-background;
+        color: $icon-color;
         display: flex;
         font-size: 15px;
         justify-content: center;
