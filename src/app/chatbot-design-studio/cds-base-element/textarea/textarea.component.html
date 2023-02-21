@@ -3,6 +3,7 @@
 
         <mat-form-field class="box-textarea" appearance="fill">
             <textarea matInput
+                id="text-area"
                 #autosize="cdkTextareaAutosize"
                 [maxlength]="limitCharsText"
                 [formControl]="control"
@@ -14,7 +15,7 @@
             </textarea>
         </mat-form-field>
 
-        <div *ngIf="showUtils === true" class="editor-utils">
+        <!-- <div *ngIf="showUtils === true" class="editor-utils">
             <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
             <div class="text-editor-insert-attribute">
                 <em class="material-icons">code</em>
@@ -22,10 +23,41 @@
             <div class="emoji-picker">
                 <em class="material-icons">insert_emoticon</em>
             </div>
+        </div> -->
+
+        <div *ngIf="showUtils === true" unselectable="on" tabIndex="-1" class="editor-utils">
+            <div *ngIf="setAttributeBtn" class="insert-attribute-btn-wpr">
+                <input type="button" unselectable="on" class="insert-attribute-btn" [satPopoverAnchor]="addVariable"
+                (click)="addVariable.toggle();getCursorPosition();">
+                <span unselectable="on" class="material-icons material-icons-data-object" style="font-size: 16px;">
+                    data_object
+                </span>
+            </div>
+    
+            <div *ngIf="emoijPikerBtn" class="emoji-picker">
+                <div class="emoji-picker-button" aria-expanded="false">
+                    <span class="material-icons" style="font-size: 16px;">
+                        emoji_emotions
+                    </span>
+                </div>
+            </div>
+    
+            <div *ngIf="textLimitBtn" data-status="default" class="tpl-text-limit">
+                <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
+            </div>
         </div>
+
 
     </div>
 </div>
+
+<sat-popover #addVariable id="addVariable" backDrop panelClass="add-filter-panel" interactiveClose="false">
+   <variable-list
+        [variableListUserDefined]="variableListUserDefined"
+        [variableListSystemDefined]="variableListSystemDefined"
+        (onSelected)="onVariableSelected($event)">
+    </variable-list>
+</sat-popover>
 
 
 

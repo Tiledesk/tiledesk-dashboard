@@ -320,3 +320,10 @@ section.submit{
     
     }
 }
+
+
+::ng-deep cds-select {
+    textarea {
+        border: 1px solid red;
+    }
+}

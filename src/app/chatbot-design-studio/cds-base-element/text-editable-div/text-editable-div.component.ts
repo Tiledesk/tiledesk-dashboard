@@ -17,7 +17,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
   @Input() emoijPikerBtn: boolean;
   @Input() setAttributeBtn: boolean;
   @Input() textLimitBtn: boolean;
-  @Input() textLimit: number;
+  @Input() textLimit: number = TEXT_CHARS_LIMIT;
   @Input() minHeightContent: number;
 
   leftCharsText: number;
@@ -58,9 +58,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    if (!this.textLimit || this.textLimit == 0) {
-      this.textLimit = TEXT_CHARS_LIMIT;
-    }
+
     this.calculatingRemainingCharacters();
   }
 

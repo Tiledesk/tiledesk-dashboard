@@ -31,7 +31,7 @@
             (changeTextarea)="onChangeTextarea($event)"
         ></appdashboard-element-textarea> -->
         
-        <text-editable-div 
+        <!-- <text-editable-div 
             class = "text-editable-div"
             [emoijPikerBtn]="true" 
             [setAttributeBtn]="true" 
@@ -40,7 +40,13 @@
             [text]="response.text" 
             [minHeightContent]="125"
             (textChanged)="onChangeTextarea($event)"> 
-        </text-editable-div>
+        </text-editable-div> -->
+
+        <cds-textarea class="text-area"
+            [limitCharsText]="limitCharsText" 
+            [text]="response.text" 
+            (onChange)="onChangeTextarea($event)">
+        </cds-textarea>
              
         <div class="text-editor-drop">
             <em class="material-icons">drag_indicator</em>
