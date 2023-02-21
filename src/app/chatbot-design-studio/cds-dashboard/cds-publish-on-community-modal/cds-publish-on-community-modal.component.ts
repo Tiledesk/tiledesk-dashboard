@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core'
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { NotifyService } from 'app/core/notify.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
@@ -43,7 +44,8 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     private logger: LoggerService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private notify: NotifyService,
   ) {
     this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] data ', data)
     this.selectedChatbot = data.chatbot;
@@ -304,6 +306,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     }, () => {
 
       this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] publishOnCommunity * COMPLETE * ');
+      this.notify.showWidgetStyleUpdateNotification('Successfully deployed', 2, 'done');
       this.dialogRef.close();
 
     });

@@ -755,7 +755,11 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     this.logger.log('[CDS-CHATBOT-DTLS] onCloseInfoModalHandledError')
     this.displayInfoModal = 'none';
     // this.router.navigate(['project/' + this.project._id + '/faqkb']);
-    this.ngOnInit();
+    // this.ngOnInit();
+  }
+
+  onCloseInfoModalHandledSuccess() {
+    this.displayInfoModal = 'none';
   }
 
 

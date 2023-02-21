@@ -299,5 +299,42 @@ $box-left-width: 250px;
     opacity: .8!important;
 }
 
+#cds-publish-btn-option {
+    background: #006cff;
+    color: #fff;
+    box-shadow: none;
+    font-weight: 500;
+    font-family: Poppins,Roboto,Arial,sans-serif;
+    text-transform: capitalize;
+    font-size: 14px;
+    padding: 6px 12px;
+    margin-left: 2px;
+} 
+
+#cds-publish-btn-option:hover {
+    opacity: .8!important;
+}
+
+.custom---anchor:hover {
+    box-shadow: unset !important;
+    background-color:unset !important; 
+    color: unset !important
+}
+
+.btn-in-dropdown {
+    background: #8ab4f8;
+    color: #202124;
+    box-shadow: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-in-dropdown:hover { 
+    opacity: .8!important;
+}
+
 
 
