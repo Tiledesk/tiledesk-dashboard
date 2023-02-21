@@ -42,6 +42,14 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     { name: 'variabile1', value: 'valvariabile14' },
     { name: 'userFullName', value: 'userFullName' },
   ]
+  // -----------------------------
+  // new 
+  // -----------------------------
+  cannedResponseMessage: string;
+  elTextarea: HTMLInputElement;
+  addWhiteSpaceBefore: boolean;
+  texareaIsEmpty = false;
+
   @ViewChild("setattributepopover", { static: false }) setattributepopover: SatPopover;
 
   constructor(
@@ -56,6 +64,116 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     this.calculatingRemainingCharacters();
   }
 
+  // ---------------------------------------------------------
+  // new
+  // ---------------------------------------------------------
+  ngAfterViewInit() {
+    this.getTextArea();
+  }
+  getTextArea() {
+    this.elTextarea = this.elementRef.nativeElement.querySelector('.canned-response-texarea') as HTMLInputElement;
+    console.log('[CANNED-RES-EDIT-CREATE] - GET TEXT AREA - elTextarea ', this.elTextarea);
+  }
+
+  // -------------------------------------
+  // @ Open popover
+  // -------------------------------------
+  openSetattributePopover() {
+    // console.log('openSetattributePopover setattributepopover  ', this.setattributepopover)
+    console.log('openSetattributePopover setattributepopover is Open ', this.setattributepopover.isOpen())
+    this.setattributepopover.open()
+    // this.seCursorAtEnd()
+    const position = this.elTextarea.selectionStart
+    console.log(position)
+  }
+
+  onVariableSelected(variable) {
+    if (this.elTextarea) {
+      this.insertAtCursor(this.elTextarea, '${' + variable.name + '}')
+      this.setattributepopover.close()
+    }
+  }
+
+  seCursorAtEnd() {
+    this.elTextarea.focus()
+    var val = this.elTextarea.value;
+    console.log('onVariableSelected val', val)
+    this.elTextarea.value = ''; //clear the value of the element
+    this.elTextarea.value = val; //set that value back. 
+  }
+
+
+
+  insertAtCursor(myField, myValue) {
+    this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - myValue ', myValue);
+
+    if (this.addWhiteSpaceBefore === true) {
+      myValue = ' ' + myValue;
+      this.logger.log('[CANNED-RES-EDIT-CREATE] - GET TEXT AREA - QUI ENTRO myValue ', myValue);
+    }
+
+    //IE support
+    if (myField.selection) {
+      myField.focus();
+      let sel = myField.selection.createRange();
+      sel.text = myValue;
+      // this.cannedResponseMessage = sel.text;
+    }
+    //MOZILLA and others
+    else if (myField.selectionStart || myField.selectionStart == '0') {
+      var startPos = myField.selectionStart;
+      this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - startPos ', startPos);
+
+      var endPos = myField.selectionEnd;
+      this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - endPos ', endPos);
+
+      myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
+
+      // place cursor at end of text in text input element
+      myField.focus();
+      var val = myField.value; //store the value of the element
+      myField.value = ''; //clear the value of the element
+      myField.value = val + ' '; //set that value back. 
+
+      this.cannedResponseMessage = myField.value;
+
+      this.texareaIsEmpty = false;
+      // myField.select();
+    } else {
+      myField.value += myValue;
+      this.cannedResponseMessage = myField.value;
+    }
+  }
+
+
+  cannedResponseMessageChanged($event) {
+    console.log('[CANNED-RES-EDIT-CREATE] - ON MSG CHANGED ', $event);
+    if ($event && $event.length > 0) {
+      this.texareaIsEmpty = false;
+    } else {
+      // this.texareaIsEmpty = true;
+    }
+
+    if (/\s$/.test($event)) {
+
+      this.logger.log('[CANNED-RES-EDIT-CREATE] - ON MSG CHANGED - string contains space at last');
+      this.addWhiteSpaceBefore = false;
+    } else {
+
+      this.logger.log('[CANNED-RES-EDIT-CREATE] - ON MSG CHANGED - string does not contain space at last');
+
+      // IS USED TO ADD A WHITE SPACE TO THE 'PERSONALIZATION' VALUE IF THE STRING DOES NOT CONTAIN SPACE AT LAST
+      this.addWhiteSpaceBefore = true;
+    }
+
+  }
+
+
+
+
+  // ---------------------------------------------------------
+  // ./new
+  // ---------------------------------------------------------
 
   private calculatingRemainingCharacters() {
     if (this.textLimitBtn) {
@@ -72,10 +190,10 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
   ngOnChanges() {
     console.log("[TEXT-EDITABLE-DIV] ngOnChanges: text", this.text);
     // imputEle.focus(imputEle);
-    let fommattedActionSubject = this.splitText(this.text);
-    let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
-    imputEle.innerHTML = fommattedActionSubject;
-    this.placeCaretAtEnd(imputEle);
+    // let fommattedActionSubject = this.splitText(this.text);
+    // let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
+    // imputEle.innerHTML = fommattedActionSubject;
+    // this.placeCaretAtEnd(imputEle);
     // setTimeout(() => {
     //   this.saveSelection(imputEle, 0, 'ngOnChanges')
     // }, 500);
@@ -128,25 +246,10 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
 
   }
 
-  // -------------------------------------
-  // @ Open popover
-  // -------------------------------------
-  openSetattributePopover() {
-    console.log('openSetattributePopover setattributepopover  ', this.setattributepopover)
-    console.log('openSetattributePopover setattributepopover is Open ', this.setattributepopover.isOpen())
-    this.setattributepopover.open()
-    let imputEle = this.elementRef.nativeElement.querySelector('#content-editable');
-    // this.placeCaretAtEnd(imputEle);
-    // this.setCaret(imputEle);
-    console.log('openSetattributePopover savedSelection', this.savedSelection)
-    if (this.savedSelection) {
-      this.restoreSelection(imputEle, this.savedSelection)
-    } else {
-      this.placeCaretAtEnd(imputEle);
-    }
-  }
 
-  onVariableSelected(variable) {
+
+
+  _onVariableSelected(variable) {
     console.log("[TEXT-EDITABLE-DIV] selectedAttibute attribute: ", variable);
     let attribute = '${' + variable.value + '}'
 
@@ -209,7 +312,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     //   this.placeCaretAtEnd(imputEle);
     // }
 
-    this.onInput('controller')
+    // this.onInput('controller')
   }
 
   // setAttribute(attribute) {
@@ -235,21 +338,21 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     let el = imputEle
     let range = document.createRange()
     let sel = window.getSelection()
-    
+
 
     // console.log('setCaret  el.childNodes[2]', el.childNodes[2])
     console.log('setCaret  el.childNodes', el.childNodes)
 
     el.childNodes.forEach((childNode, index) => {
       console.log('childNode', childNode, 'index', index)
-      console.log('childNode id',  childNode.id , 'String(timestamp)', String(timestamp))
+      console.log('childNode id', childNode.id, 'String(timestamp)', String(timestamp))
       if (childNode.id === String(timestamp)) {
         console.log('---- >>>>> childNode', childNode, 'index ', index)
 
         // range.setStart(el.childNodes[index], length)
         // setTimeout(() => {
         range.setStart(childNode, 1)
-      // }, 500);
+        // }, 500);
         // this.saveSelection(imputEle, 0, 'setCaret') 
       }
     });
@@ -267,13 +370,13 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     var el = imputEle
     var range = document.createRange()
     var sel = window.getSelection()
-    
+
     range.setStart(el.childNodes[2], 5)
     range.collapse(true)
-    
+
     sel.removeAllRanges()
     sel.addRange(range)
-}
+  }
 
 
   setAttributeAtCaret(html: any) {
@@ -339,7 +442,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
       this.placeCaretAtEnd(imputEle);
     }
     this.calculatingRemainingCharacters();
-    this.text = imputEle.textContent;
+    // this.text = imputEle.textContent;
     console.log('[TEXT-EDITABLE-DIV] onInputActionSubject text ', this.text);
     this.textChanged.emit(this.text);
 

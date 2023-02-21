@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <div 
+    <!-- <div 
         id="content-editable"
         [ngStyle]="{'min-height':minHeightContent?minHeightContent+'px':'auto'}"
         data-focused="true" 
@@ -85,5 +85,11 @@
         (mouseup)="mouseUp()" 
         contenteditable="true"
         autofocus>
-    </div>
+    </div> -->
+    <!-- placeholder="{{'CannedResponses.WriteMsgToSendToYourVisitors' | translate}}" form-control  -->
+    <textarea id="canned-response-message"
+    name="canned-response-message" [ngClass]="{'texarea-is-empty' : texareaIsEmpty === true}"
+    [(ngModel)]="cannedResponseMessage" (ngModelChange)="cannedResponseMessageChanged($event)" rows="4"
+    class="canned-response-texarea"
+    > </textarea>
 </div>
