@@ -1,3 +1,5 @@
+import { SatPopoverModule } from '@ncstate/sat-popover';
+import { ActionJsonConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/action-json-condition.component';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -72,7 +74,6 @@ import { ActionComponent } from './cds-rules/rules-add/action/action.component';
 import { ActionWaitComponent } from './cds-dashboard/panel-intent-detail/actions/action-wait/action-wait.component';
 import { ActionEmailComponent } from './cds-dashboard/panel-intent-detail/actions/action-email/action-email.component';
 import { ActionIntentComponent } from './cds-dashboard/panel-intent-detail/actions/action-intent/action-intent.component'
-import { ActionConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-condition/action-condition.component';
 import { ActionDeleteVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-delete-variable/action-delete-variable.component';
 import { ActionAssignVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/action-assign-variable.component';
 import { ActionReplaceBotComponent } from './cds-dashboard/panel-intent-detail/actions/action-replace-bot/action-replace-bot.component';
@@ -90,8 +91,14 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-splash-screen.component';
 import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
-import { SatPopoverModule } from '@ncstate/sat-popover';
 import { TextEditableDivComponent } from './cds-base-element/text-editable-div/text-editable-div.component';
+import { SelectComponent } from './cds-base-element/select/select.component';
+import { BaseConditionRowComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/base-condition-row/base-condition-row.component';
+import { BaseFilterComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/base-filter/base-filter.component';
+import { VariableListComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/variable-list/variable-list.component';
+
+
+
 
 @NgModule({
   declarations: [
@@ -131,12 +138,10 @@ import { TextEditableDivComponent } from './cds-base-element/text-editable-div/t
     CDSTextComponent,
     CDSDelaySliderComponent,
     CDSTextareaComponent,
-    ActionConditionComponent,
     ActionDeleteVariableComponent,
     ActionAssignVariableComponent,
     ActionIntentComponent,
     ActionEmailComponent,
-    ActionConditionComponent,
     ActionReplaceBotComponent,
     ActionChangeDepartmentComponent,
     ActionOnlineAgentsComponent,
@@ -145,9 +150,15 @@ import { TextEditableDivComponent } from './cds-base-element/text-editable-div/t
     ActionDescriptionComponent,
     ActionCloseComponent,
     ActionAgentHandoffComponent,
+    ActionJsonConditionComponent,
     CdsFooterComponent,
     CdsPublishOnCommunityModalComponent,
-    TextEditableDivComponent
+    TextEditableDivComponent,
+    
+    SelectComponent,
+    BaseConditionRowComponent,
+    BaseFilterComponent,
+    VariableListComponent,
   ],
   imports: [
     A11yModule,
@@ -183,6 +194,7 @@ import { TextEditableDivComponent } from './cds-base-element/text-editable-div/t
         deps: [HttpClient],
       },
     }),
+    SatPopoverModule
   ]
 })
 export class ChatbotDesignStudioModule { }

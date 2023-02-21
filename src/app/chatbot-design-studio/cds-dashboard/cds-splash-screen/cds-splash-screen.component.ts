@@ -28,7 +28,7 @@ export class CdsSplashScreenComponent implements OnInit {
   ngOnChanges(){
     let canShowVideo = this.usersLocalDbService.getFromStorage('HAS_WATCHED_'+ this.section+ '_VIDEO')
     if(!canShowVideo || canShowVideo === 'false'){
-      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.videoUrl+'?rel=0&autoplay=1&controls=1&showinfo=0')
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.videoUrl+'?rel=0&autoplay=0&controls=1&showinfo=0')
       this.canShowVideo = true
       this.usersLocalDbService.setInStorage('HAS_WATCHED_'+ this.section+ '_VIDEO', true)
     }else{

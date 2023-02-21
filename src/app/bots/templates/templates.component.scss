@@ -1400,12 +1400,14 @@
     box-sizing: border-box;
     display: flex;
     flex-basis: auto;
-    flex-direction: column;
+    // flex-direction: column;
+    flex-direction: row;
     flex-shrink: 0;
     outline: none;
     min-height: 0px;
     min-width: 0px;
     color: inherit;
+    margin-bottom: 6px;
 }
 
 .cmnty-tmplt-card-title {
@@ -1694,4 +1696,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+
+::ng-deep .custom-mat-tooltip {
+    background-color: #2d323e !important;
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
 }

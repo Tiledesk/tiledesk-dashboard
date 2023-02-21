@@ -13,7 +13,8 @@
     font-size: 30px;
     font-weight: 500;
     font-family: "Poppins", "Roboto", "Arial", sans-serif;
-    line-height: 30px;
+    line-height: 33px;
+    max-width: 600px;
 }
 
 .cmnty-chatbot-dtls-img {
@@ -120,4 +121,13 @@
 .template-dtls-feature {
     padding: 6px 0px;
     font-weight: 400;
+}
+
+::ng-deep .custom-mat-tooltip {
+    background-color: #2d323e !important;
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
 }

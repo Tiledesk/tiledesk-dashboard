@@ -161,12 +161,13 @@ export class FormEditAddComponent implements OnInit, OnChanges {
       status = false;
     }
     if (this.fieldLabel.length == 0) {
-      this.labelResult = false;
-      status = false;
+      //this.labelResult = false;
+      //status = false;
+
     }
     if (this.fieldRegex.length == 0 && this.fieldType === TYPE_FIELD.CUSTOM) {
-      this.regexResult = false;
-      status = false;
+      //this.regexResult = false;
+      //status = false;
     }
     // this.field.regex = this.field.regex.replace(/\//gi, '');
     // console.log('[TILEBOT-EDIT-ADD] checkFields this.field.regex 1 ', this.field.regex)
@@ -253,9 +254,19 @@ export class FormEditAddComponent implements OnInit, OnChanges {
       // console.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
       this.field.regex = this.fieldRegex ? this.fieldRegex : TYPE_REGEX.customRGEX;
       // console.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
-      this.field.label = this.fieldLabel ? this.fieldLabel.trim() : '';
+      if(!this.fieldLabel || this.fieldLabel.trim().length === 0){
+        delete this.field.label
+      } else {
+        this.field.label = this.fieldLabel.trim();
+      }
+      if(!this.fieldErrorLabel || this.fieldErrorLabel.trim().length === 0){
+        delete this.field.errorLabel;
+      } else {
+        this.field.errorLabel = this.fieldErrorLabel.trim();
+      }
+      // this.field.label = this.fieldLabel ? this.fieldLabel.trim() : '';
       // console.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
-      this.field.errorLabel = this.fieldErrorLabel ? this.fieldErrorLabel.trim() : '';
+      // this.field.errorLabel = this.fieldErrorLabel ? this.fieldErrorLabel.trim() : '';
 
       this.fieldRegex = this.field.regex.toString();
       console.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)

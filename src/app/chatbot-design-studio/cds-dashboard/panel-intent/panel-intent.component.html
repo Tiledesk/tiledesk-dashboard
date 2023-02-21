@@ -117,34 +117,16 @@
                 </div>
 
                 <!-- ----------------------------- -->
-                <!-- @ Action Random Reply -->
+                <!-- @ Action Json Condition ----- -->
                 <!-- ----------------------------- -->
-                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.RANDOM_REPLY" cdkDragHandle>
+                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.JSON_CONDITION" cdkDragHandle>
                     <div class="cds-action-title" *ngIf="action._tdActionTitle">
                         {{ action._tdActionTitle }}
                     </div>
                     <div class="cds-action-icon-wpr">
-                        <img [src]="ACTIONS_LIST['RANDOM_REPLY'].src" [title]="ACTIONS_LIST['RANDOM_REPLY'].name">
+                        <img [src]="ACTIONS_LIST['JSON_CONDITION'].src" [title]="ACTIONS_LIST['JSON_CONDITION'].name">
                     </div>
-                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['RANDOM_REPLY'].name}}</div>
-                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                        <span class="material-icons">
-                            keyboard_backspace
-                        </span>
-                    </div>
-                </div>
-
-                <!-- ----------------------------- -->
-                <!-- @ Action Condition -->
-                <!-- ----------------------------- -->
-                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.CONDITION" cdkDragHandle>
-                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                        {{ action._tdActionTitle }}
-                    </div>
-                    <div class="cds-action-icon-wpr">
-                        <img [src]="ACTIONS_LIST['CONDITION'].src" [title]="ACTIONS_LIST['CONDITION'].name">
-                    </div>
-                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['CONDITION'].name}}</div>
+                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['JSON_CONDITION'].name}}</div>
                     <div class="cds-action-arrow" *ngIf="!lastItem">
                         <span class="material-icons">
                             keyboard_backspace
@@ -361,8 +343,7 @@
                         {{ action._tdActionTitle }}
                     </div>
                     <div class="cds-action-icon-wpr">
-                        <img [src]="ACTIONS_LIST['CHANGE_DEPARTMENT'].src"
-                            [title]="ACTIONS_LIST['CHANGE_DEPARTMENT'].name">
+                        <img [src]="ACTIONS_LIST['CHANGE_DEPARTMENT'].src" [title]="ACTIONS_LIST['CHANGE_DEPARTMENT'].name">
                     </div>
                     <div class="cds-action-name-wpr">{{ACTIONS_LIST['CHANGE_DEPARTMENT'].name}}</div>
                     <div class="cds-action-arrow" *ngIf="!lastItem">

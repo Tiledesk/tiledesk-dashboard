@@ -530,7 +530,24 @@ export class FaqKbService {
     return this._httpClient
       .put(url, JSON.stringify(chatbot), httpOptions)
   }
+  // http://localhost:3000/63ea8812b48b3e22c9372f05/faq_kb/63ea8820b48b3e22c9372f83/publish
 
+  public publish(chatbot: Chatbot) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    let url = this.FAQKB_URL + chatbot._id + "/publish";
+    this.logger.log('publish BOT - URL ', url);
+ 
+
+    return this._httpClient
+      .put(url, null, httpOptions)
+  }
 
 
   getNumberOfMessages(idBot, bottype) {

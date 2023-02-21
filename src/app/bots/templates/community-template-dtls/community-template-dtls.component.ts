@@ -5,6 +5,8 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { Location } from '@angular/common';
+import { DepartmentService } from 'app/services/department.service';
+import { Project } from 'app/models/project-model';
 
 @Component({
   selector: 'appdashboard-community-template-dtls',
@@ -22,6 +24,9 @@ export class CommunityTemplateDtlsComponent implements OnInit {
   public storageBucket: string;
   public baseUrl: string;
   public botid: string;
+  public TESTSITE_BASE_URL: string;
+  public defaultDepartmentId: string;
+  project: Project;
   constructor(
     private route: ActivatedRoute,
     private faqKbService: FaqKbService,
@@ -30,12 +35,16 @@ export class CommunityTemplateDtlsComponent implements OnInit {
     private logger: LoggerService,
     public location: Location,
     private router: Router,
+    private departmentService: DepartmentService,
   ) { }
 
   ngOnInit(): void {
     this.getParamsAndTemplateDetails();
     this.getBrowserVersion();
     this.getProfileImageStorage();
+    this.getDeptsByProjectId();
+    this.getCurrentProject();
+    this.getTestSiteUrl()
   }
 
   getProfileImageStorage() {
@@ -86,16 +95,14 @@ export class CommunityTemplateDtlsComponent implements OnInit {
 
   forkTemplate() {
     this.faqKbService.installTemplate(this.templateId, this.projectId).subscribe((res: any) => {
-      this.logger.log('[TEMPLATE DETAIL] - FORK TEMPLATE RES', res);
+      this.logger.log('[COMMUNITY-TEMPLATE-DTLS] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 
     }, (error) => {
-      this.logger.error('[TEMPLATE DETAIL] FORK TEMPLATE - ERROR ', error);
+      this.logger.error('[COMMUNITY-TEMPLATE-DTLS] FORK TEMPLATE - ERROR ', error);
 
     }, () => {
-      this.logger.log('[TEMPLATE DETAIL] FORK TEMPLATE COMPLETE');
-    
-
+      this.logger.log('[COMMUNITY-TEMPLATE-DTLS] FORK TEMPLATE COMPLETE');
      
       this.goToBotDetails()
   
@@ -108,10 +115,51 @@ export class CommunityTemplateDtlsComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
   }
 
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project;
+      this.logger.log('[TILEBOT] project from AUTH service subscription  ', this.project)
+    });
+  }
+
+  getDeptsByProjectId() {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+      this.logger.log('[COMMUNITY-TEMPLATE-DTLS] - DEPT GET DEPTS ', departments);
+
+      if (departments) {
+        departments.forEach((dept: any) => {
+
+          if (dept.default === true) {
+            this.defaultDepartmentId = dept._id;
+            this.logger.log('[COMMUNITY-TEMPLATE-DTLS - DEFAULT DEPT ID ',  this.defaultDepartmentId);
+          }
+        });
+      }
+    }, error => {
+
+      this.logger.error('[COMMUNITY-TEMPLATE-DTLS] - DEPT - GET DEPTS  - ERROR', error);
+    }, () => {
+      this.logger.log('[COMMUNITY-TEMPLATE-DTLS] - DEPT - GET DEPTS - COMPLETE')
+
+    });
+  }
 
 
+  getTestSiteUrl() {
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.logger.log('[COMMUNITY-TEMPLATE-DTLS] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+  }
 
-
+  openTestSiteInPopupWindow() {
+    // this.logger.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
+    const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
+    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+    // this.logger.log('openTestSiteInPopupWindow testItOutBaseUrl' , testItOutBaseUrl )  
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.templateId + "&tiledesk_departmentID=" + this.defaultDepartmentId
+    // this.logger.log('openTestSiteInPopupWindow URL ', url) 
+    let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
+    window.open(url, '_blank', params);
+  }
 
 
 

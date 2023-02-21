@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser'
+import { getEmbedUrl } from 'app/chatbot-design-studio/utils';
 import { Metadata } from '../../../../../../../models/intent-model';
 
 @Component({
@@ -58,7 +59,7 @@ export class ElementFromUrlComponent implements OnInit {
   onLoadPathElement(){
     // this.metadata.width = this.widthElement;
     // this.metadata.height = this.heightElement;
-    this.metadata.src = this.pathElement;
+    this.metadata.src = getEmbedUrl(this.pathElement);
 
     this.loadPathElement.emit();
   }

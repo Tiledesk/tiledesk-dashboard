@@ -1,3 +1,4 @@
+import { TYPE_OPERATOR } from './../chatbot-design-studio/utils';
 import { TYPE_ACTION, TYPE_ATTACHMENT } from '../chatbot-design-studio/utils';
 
 export class Intent {
@@ -30,16 +31,16 @@ export class Action {
 
 }
 
-export class ActionCondition extends Action {
-    condition: string;
-    trueIntent: string;
-    falseIntent: string;
-    stopOnConditionMet: boolean;
-    constructor() {
-        super();
-        this._tdActionType = TYPE_ACTION.CONDITION;
-    }
-}
+// export class ActionCondition extends Action {
+//     condition: string;
+//     trueIntent: string;
+//     falseIntent: string;
+//     stopOnConditionMet: boolean;
+//     constructor() {
+//         super();
+//         this._tdActionType = TYPE_ACTION.CONDITION;
+//     }
+// }
 
 export class ActionAssignVariable extends Action {
     expression: string;
@@ -127,6 +128,19 @@ export class ActionChangeDepartment extends Action {
     constructor(){
         super();
         this._tdActionType = TYPE_ACTION.CHANGE_DEPARTMENT;
+    }
+}
+
+export class ActionJsonCondition extends Action {
+    trueIntent: string;
+    falseIntent: string;
+    stopOnConditionMet: boolean;
+    groups: Array<Expression | Operator>
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.JSON_CONDITION;
+        this.groups = []
+        this.stopOnConditionMet = false;
     }
 }
 
@@ -287,6 +301,33 @@ export class Field {
     label: string;
     regex?: string;
     errorLabel?: string;
+}
+
+
+export class Expression {
+    type: string = 'expression';
+    conditions: Array<Condition | Operator>
+    constructor(){
+        // this.conditions = [ new Condition()]
+        this.conditions = []
+    }
+}
+
+export class Operator {
+    type: string = 'operator'
+    operator: "AND" | "OR" = "OR"
+}
+
+export class Condition {
+    type: string = 'condition';
+    operand1: string = ''
+    operator: TYPE_OPERATOR;
+    operand2: {
+        type: "const" | "var",
+        value?: string,
+        name?: string
+    }
+
 }
 
 

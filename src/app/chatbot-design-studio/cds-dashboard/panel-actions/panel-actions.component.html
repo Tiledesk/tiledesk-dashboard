@@ -37,17 +37,12 @@
 
       <div class="action-box-wpr">
         <div class="action-box">
-          <div class="action-btn-icon"
-            matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 
-            matTooltip="Coming Soon" 
-            #tooltip="matTooltip"
-            matTooltipPosition='below' 
-            matTooltipHideDelay="100">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CONDITION)" disabled>
-              <img [src]="ACTIONS_LIST['CONDITION'].src" [title]="ACTIONS_LIST['CONDITION'].name">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.JSON_CONDITION)">
+              <img [src]="ACTIONS_LIST['JSON_CONDITION'].src" [title]="ACTIONS_LIST['JSON_CONDITION'].name">
             </button>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['CONDITION'].name}}</div>
+          <div class="action-btn-text">{{ACTIONS_LIST['JSON_CONDITION'].name}}</div>
         </div>
       </div>
     </div>
@@ -138,7 +133,7 @@
             #tooltip="matTooltip"
             matTooltipPosition='below' 
             matTooltipHideDelay="100">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ASSIGN_VARIABLE)" disabled>
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ASSIGN_VARIABLE)">
               <img [src]="ACTIONS_LIST['ASSIGN_VARIABLE'].src" [title]="ACTIONS_LIST['ASSIGN_VARIABLE'].name">
             </button>
           </div>

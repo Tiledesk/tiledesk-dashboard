@@ -1,13 +1,14 @@
+import { ActionRandomReply, Operator } from './../../../models/intent-model';
 import { ACTIONS_LIST } from './../../utils';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, HostListener } from '@angular/core';
 
 import { TYPE_ACTION, TYPE_COMMAND } from '../../utils';
-import { ActionCondition, ActionAgent, ActionClose, 
-         ActionReply, ActionRandomReply, Intent, Command, 
+import { ActionAgent, ActionClose, 
+         ActionReply, Intent, Command, 
          Message, ActionIntentConnected, ActionEmail, 
          ActionWait, ActionAssignVariable, ActionDeleteVariable, 
          ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
-         ActionChangeDepartment, ActionHideMessage } from 'app/models/intent-model';
+         ActionChangeDepartment, ActionHideMessage, ActionJsonCondition, Expression } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 
@@ -90,7 +91,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   }
 
   actionSelected(typeAction: TYPE_ACTION) {
-    this.logger.log('[PANEL ACTION] actionSelected ', typeAction);
+    console.log('[PANEL ACTION] actionSelected ', typeAction);
     if(typeAction === TYPE_ACTION.REPLY){
       let action = new ActionReply();
       let commandWait = new Command(TYPE_COMMAND.WAIT);
@@ -133,10 +134,10 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       let action = new ActionEmail()
       this.intentSelected.actions.push(action);
     }
-    if(typeAction === TYPE_ACTION.CONDITION){
-      let action = new ActionCondition();
-      this.intentSelected.actions.push(action);
-    }
+    // if(typeAction === TYPE_ACTION.CONDITION){
+    //   let action = new ActionCondition();
+    //   this.intentSelected.actions.push(action);
+    // }
     if(typeAction === TYPE_ACTION.ASSIGN_VARIABLE){
       let action = new ActionAssignVariable();
       this.intentSelected.actions.push(action);
@@ -163,6 +164,12 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     }
     if(typeAction === TYPE_ACTION.HIDE_MESSSAGE){
       let action = new ActionHideMessage();
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.JSON_CONDITION){
+      let action = new ActionJsonCondition();
+      action.groups.push( new Expression())
+      console.log('actionnnnn', action)
       this.intentSelected.actions.push(action);
     }
     
