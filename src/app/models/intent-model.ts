@@ -308,7 +308,11 @@ export class Condition {
     type: string = 'condition';
     operand1: string = ''
     operator: TYPE_OPERATOR;
-    operand2: string = ''
+    operand2: {
+        type: "const" | "var",
+        value?: string,
+        name?: string
+    }
 
 }
 
