@@ -10,7 +10,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 })
 export class ActionOnlineAgentsComponent implements OnInit {
 
-  @Input() listOfActions: Array<{name: string, value: string}>;
+  @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
   @Input() action: ActionOnlineAgent;
 
   actionOnlineAgentsFormGroup: FormGroup
