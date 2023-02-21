@@ -46,15 +46,11 @@
                 <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
             </div>
         </div>
-
-
     </div>
 </div>
 
 <sat-popover #addVariable id="addVariable" backDrop panelClass="add-filter-panel" interactiveClose="false">
    <variable-list
-        [variableListUserDefined]="variableListUserDefined"
-        [variableListSystemDefined]="variableListSystemDefined"
         (onSelected)="onVariableSelected($event)">
     </variable-list>
 </sat-popover>

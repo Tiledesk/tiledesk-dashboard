@@ -35,8 +35,6 @@ export class CDSTextareaComponent implements OnInit {
   cannedResponseMessage: string;
   texareaIsEmpty = false;
 
-  variableListUserDefined: Array<{name: string, value: string}> = variableList.userDefined 
-  variableListSystemDefined: Array<{name: string, value: string, src?: string}> = variableList.systemDefined
   
   constructor(
     private logger: LoggerService,

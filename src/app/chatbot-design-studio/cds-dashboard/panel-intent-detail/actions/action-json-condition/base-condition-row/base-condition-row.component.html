@@ -55,8 +55,6 @@
 <sat-popover #addVariable id="addVariable" backDrop panelClass="add-filter-panel"
     verticalAlign="below" interactiveClose="false">
    <variable-list
-        [variableListUserDefined]="variableListUserDefined"
-        [variableListSystemDefined]="variableListSystemDefined"
         (onSelected)="onVariableSelected($event, 1)">
     </variable-list>
 </sat-popover>
