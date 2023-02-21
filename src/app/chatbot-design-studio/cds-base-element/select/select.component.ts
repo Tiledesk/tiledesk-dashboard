@@ -26,11 +26,15 @@ export class SelectComponent implements OnInit {
   }
 
   ngOnChanges(){
+    if(this.itemSelected){
+      this.itemSelected = this.items.find(el => el[this.bindValueSelect] === this.itemSelected)
+    }
   }
 
   onChangeActionButton(event) {
-    //this.logger.log("[ACTION REPLACE BOT] onChangeActionButton event: ", event)
-    this.itemSelected = event[this.bindValueSelect];
+    console.log("[SELECT BASE ELEMENT] onChangeActionButton event: ", event)
+    this.itemSelected = event;
+    // this.itemSelected = event[this.bindValueSelect];
     this.onSelected.emit(event)
   }
 

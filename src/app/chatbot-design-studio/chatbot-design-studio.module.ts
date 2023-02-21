@@ -1,5 +1,5 @@
 import { SatPopoverModule } from '@ncstate/sat-popover';
-import { ActionJsonConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-filter/action-json-condition.component';
+import { ActionJsonConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/action-json-condition.component';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -92,8 +92,9 @@ import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-
 import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { SelectComponent } from './cds-base-element/select/select.component';
-import { BaseConditionRowComponent } from './cds-dashboard/panel-intent-detail/actions/action-filter/base-condition-row/base-condition-row.component';
-import { BaseFilterComponent } from './cds-dashboard/panel-intent-detail/actions/action-filter/base-filter/base-filter.component';
+import { BaseConditionRowComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/base-condition-row/base-condition-row.component';
+import { BaseFilterComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/base-filter/base-filter.component';
+import { VariableListComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/variable-list/variable-list.component';
 
 
 
@@ -155,6 +156,7 @@ import { BaseFilterComponent } from './cds-dashboard/panel-intent-detail/actions
     SelectComponent,
     BaseConditionRowComponent,
     BaseFilterComponent,
+    VariableListComponent,
   ],
   imports: [
     A11yModule,

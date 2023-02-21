@@ -1,4 +1,5 @@
 import { AbstractControl } from "@angular/forms";
+import { ActionAssignVariable, Intent } from "app/models/intent-model";
 
 export enum TYPE_INTENT_ELEMENT {
     QUESTION = 'question',
@@ -141,4 +142,44 @@ export function OperatorValidator( control: AbstractControl ): { [key: string]: 
       return null;
     }
     return { invalidType: true };
+}
+
+export function getEmbedUrl(url: string) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    return (match && match[2].length === 11)
+      ? 'https://www.youtube.com/embed/'+ match[2]
+      : url;
+}
+
+export var variableList = {
+    userDefined: [],
+    systemDefined: [
+        { name: 'Department ID', value:'department_id', src:'', icon: 'domain'},
+        { name: 'Department name', value:'department_name', src:'', icon: 'domain'},
+        { name: 'Project ID', value:'project_id', src:'', icon: 'domain'},
+        { name: 'Last message ID', value:'last_message_id', src:'', icon: 'textsms'},
+        { name: 'Conversation ID', value:'conversation_id', src:'', icon:'textsms' },
+        { name: 'Last user text', value:'last_user_text', src:'', icon:'send'},
+        { name: 'Chatbot Name', value:'chatbot_name', src:'', icon:'person' },
+        { name: 'User ID', value:'user_id', src:'', icon:'person'},
+        { name: 'User agent', value:'user_agent', src:'', icon:'person'},
+        { name: 'Source', value:'user_source_page', src:'', icon:'language'},
+        { name: 'Language', value:'user_language', src:'', icon:'language'},
+        { name: 'URL', value:'chat_url', src:'', icon:'laptop'},
+        { name: 'IP', value:'user_ip_address', src:'', icon: 'laptop'},
+        { name: 'Country', value:'user_country', src:'', icon:'language'},
+        { name: 'City', value:'user_city', src:'', icon:'language'},
+        
+    ]
+}
+
+export function retriveListOfVariables(intents : Array<Intent>){
+    variableList.userDefined = []
+    intents.forEach(intent => {
+        intent.actions.filter(action => action._tdActionType === TYPE_ACTION.ASSIGN_VARIABLE).forEach(((actionAssignVariable: ActionAssignVariable) => {
+            variableList.userDefined.push({ name: actionAssignVariable.assignTo, value: actionAssignVariable.assignTo})
+        }))
+    })
 }

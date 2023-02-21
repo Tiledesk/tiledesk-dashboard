@@ -18,6 +18,7 @@ export class CDSTextareaComponent implements OnInit {
   @Input() textMessage: string;
   @Input() control: FormControl = new FormControl();
   @Input() showUtils: boolean = true;
+  
   @Output() onChange = new EventEmitter();
 
   // Textarea //

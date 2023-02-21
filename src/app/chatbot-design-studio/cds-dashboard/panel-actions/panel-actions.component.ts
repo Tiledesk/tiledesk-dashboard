@@ -91,7 +91,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   }
 
   actionSelected(typeAction: TYPE_ACTION) {
-    this.logger.log('[PANEL ACTION] actionSelected ', typeAction);
+    console.log('[PANEL ACTION] actionSelected ', typeAction);
     if(typeAction === TYPE_ACTION.REPLY){
       let action = new ActionReply();
       let commandWait = new Command(TYPE_COMMAND.WAIT);

@@ -1,15 +1,32 @@
 <div class="select-bot-box">
-    <ng-select 
+    <!-- <ng-select 
         class = "form-control-select" 
         appendTo="body"
+        [searchable] = true
+        [editableSearchTerm]= false
+        [clearable] = false
         [items] = "items" 
         [bindLabel]="bindLabelSelect"
         [bindValue]="bindValueSelect"
+        [(ngModel)] = "itemSelected"
+        placeholder="Select an option"
+        (change) = "onChangeActionButton($event)">
+    </ng-select> -->
+    <ng-select 
+        class = "form-control-select" 
+        appendTo="body"
         [searchable] = true
         [editableSearchTerm]= false
         [clearable] = false
         [(ngModel)] = "itemSelected"
         placeholder="Select an option"
         (change) = "onChangeActionButton($event)">
+        <ng-option *ngFor="let item of items" [value]="item">
+            <span class="material-icons" *ngIf="item['icon']">{{item['icon']}}</span>
+            <span>{{item[bindLabelSelect]}}</span>
+        </ng-option>
     </ng-select>
+
 </div>
+<!-- 
+     -->

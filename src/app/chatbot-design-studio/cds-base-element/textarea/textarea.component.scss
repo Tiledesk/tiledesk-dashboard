@@ -37,6 +37,12 @@ mat-form-field.box-textarea ::ng-deep {
             padding: 0px;
             // padding: 0 0.75em 0 0.75em;
             margin: 0;
+            background-color: transparent !important;
+        }
+
+        .mat-form-field-infix{
+            padding: 0px;
+            border-top: 0px;
         }
     }
     .mat-form-field-underline {
@@ -65,9 +71,11 @@ mat-form-field.box-textarea ::ng-deep {
 
 /** editor-utils **/
 .editor-utils {
-    position: relative;
+    position: absolute;
+    bottom: -10px;
+    right: 0px;
     margin: -20px 50px 0px 0px;
-    float: right;
+    // float: right;
     .num-chars {
         background: $color-light-gray-hex;
         padding: 0px 8px;
