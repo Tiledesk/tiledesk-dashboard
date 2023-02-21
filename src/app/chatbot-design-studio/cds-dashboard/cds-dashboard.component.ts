@@ -557,7 +557,8 @@ export class CdsDashboardComponent implements OnInit {
   /** appdashboard-intent-list: Select intent */
   onReturnListOfIntents(intents) {
     this.listOfIntents = intents;
-    this.listOfActions = intents.map(a =>( {name: a.intent_display_name, value: '#'+a.intent_display_name}));
+    this.listOfActions = intents.map(a =>( {name: a.intent_display_name, value: a.intent_display_name}));
+    
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
   }
