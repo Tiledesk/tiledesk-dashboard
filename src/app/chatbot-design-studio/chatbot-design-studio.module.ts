@@ -95,6 +95,7 @@ import { SelectComponent } from './cds-base-element/select/select.component';
 import { BaseConditionRowComponent } from './cds-dashboard/panel-intent-detail/actions/action-filter/base-condition-row/base-condition-row.component';
 import { BaseFilterComponent } from './cds-dashboard/panel-intent-detail/actions/action-filter/base-filter/base-filter.component';
 import { TextEditableDivComponent } from './cds-base-element/text-editable-div/text-editable-div.component';
+import { ActionWebRequestComponent } from './cds-dashboard/panel-intent-detail/actions/action-web-request/action-web-request.component';
 
 @NgModule({
   declarations: [
@@ -152,7 +153,8 @@ import { TextEditableDivComponent } from './cds-base-element/text-editable-div/t
     SelectComponent,
     BaseConditionRowComponent,
     BaseFilterComponent,
-    TextEditableDivComponent
+    TextEditableDivComponent,
+    ActionWebRequestComponent
   ],
   imports: [
     A11yModule,

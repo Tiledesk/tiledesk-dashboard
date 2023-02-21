@@ -135,6 +135,24 @@
                 </div>
 
                 <!-- ----------------------------- -->
+                <!-- @ Action Web Request -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.WEB_REQUEST" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
+                    <div class="cds-action-icon-wpr">
+                        <img [src]="ACTIONS_LIST['WEB_REQUEST'].src" [title]="ACTIONS_LIST['WEB_REQUEST'].name">
+                    </div>
+                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['WEB_REQUEST'].name}}</div>
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
+                    </div>
+                </div>
+
+                <!-- ----------------------------- -->
                 <!-- @ Action Condition -->
                 <!-- ----------------------------- -->
                 <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.JSON_CONDITION" cdkDragHandle>

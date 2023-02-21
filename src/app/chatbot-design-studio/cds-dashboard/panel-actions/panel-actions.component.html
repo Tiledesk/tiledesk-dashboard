@@ -45,12 +45,14 @@
           <div class="action-btn-text">{{ACTIONS_LIST['JSON_CONDITION'].name}}</div>
         </div>
       </div>
+
     </div>
 
     <!-- ---------------------------------- -->
     <!-- NEW row -->
     <!-- ---------------------------------- -->
     <div class="actions-btns-wpr">
+      
       <div class="action-box-wpr">
         <div class="action-box">
           <div class="action-btn-icon">
@@ -61,8 +63,20 @@
           <div class="action-btn-text">{{ACTIONS_LIST['RANDOM_REPLY'].name}}</div>
         </div>
       </div>
-    </div>
+
     
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.WEB_REQUEST)">
+              <img [src]="ACTIONS_LIST['WEB_REQUEST'].src" [title]="ACTIONS_LIST['WEB_REQUEST'].name">
+            </button>
+          </div>
+          <div class="action-btn-text">{{ACTIONS_LIST['WEB_REQUEST'].name}}</div>
+        </div>
+      </div>
+
+    </div>
 
     <!-- ---------------------------------- -->
     <!-- Second row -->

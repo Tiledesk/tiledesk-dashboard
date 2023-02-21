@@ -3,7 +3,7 @@ import { ACTIONS_LIST } from './../../utils';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, HostListener } from '@angular/core';
 
 import { TYPE_ACTION, TYPE_COMMAND } from '../../utils';
-import { ActionAgent, ActionClose, 
+import { ActionAgent, ActionClose, ActionWebRequest,
          ActionReply, ActionRandomReply, Intent, Command, 
          Message, ActionIntentConnected, ActionEmail, 
          ActionWait, ActionAssignVariable, ActionDeleteVariable, 
@@ -112,6 +112,10 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       this.logger.log('1 action:  ', action)
       this.logger.log('2 command:  ', command)
       action.attributes.commands.push(command);
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.WEB_REQUEST){
+      let action = new ActionWebRequest();
       this.intentSelected.actions.push(action);
     }
     if(typeAction === TYPE_ACTION.AGENT){
