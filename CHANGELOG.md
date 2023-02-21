@@ -1,9 +1,10 @@
 # tiledesk-dashboard
 
 ### 2.4.5-rc2
-Fix bug: On chatbot details page > Import/Export tab, the CSV file upload confirmation pop-up window does not close
-Moves the Deploy to Community button, available in the header of the chatbot dashboard, below the Publish button dropdown
-Displays an in-app notification if the deployment to community is successful
+- Fix bug: On chatbot details page > Import/Export tab, the CSV file upload confirmation pop-up window does not close
+- Moves the Deploy to Community button, available in the header of the chatbot dashboard, below the Publish button dropdown
+- Displays an in-app notification if the deployment to community is successful
+- Adds "Try WhatsApp" button in the header of the chatbot dashboard
 
 ### 2.4.5-rc1
 - Adds chatbot publish button in chatbot design studio
