@@ -21,7 +21,7 @@
         [(ngModel)] = "itemSelected"
         placeholder="Select an option"
         (change) = "onChangeActionButton($event)">
-        <ng-option *ngFor="let item of items" [value]="item">
+        <ng-option *ngFor="let item of items" [value]="item[bindValueSelect]">
             <span class="material-icons" *ngIf="item['icon']">{{item['icon']}}</span>
             <span>{{item[bindLabelSelect]}}</span>
         </ng-option>
