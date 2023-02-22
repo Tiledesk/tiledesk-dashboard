@@ -23,6 +23,8 @@ export class CDSTextareaComponent implements OnInit {
   @Input() emoijPikerBtn: boolean = true;
   @Input() setAttributeBtn: boolean = true;
   @Input() textLimitBtn: boolean = true;
+  @Input() minRow: number = 2;
+  @Input() popoverVerticalAlign: string = 'below'
   
   @Output() onChange = new EventEmitter();
   @Output() onSelected = new EventEmitter();
@@ -34,6 +36,7 @@ export class CDSTextareaComponent implements OnInit {
   addWhiteSpaceBefore: boolean;
   cannedResponseMessage: string;
   texareaIsEmpty = false;
+
 
   
   constructor(
