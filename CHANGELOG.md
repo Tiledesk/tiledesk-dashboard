@@ -1,5 +1,14 @@
 # tiledesk-dashboard
 
+### 2.4.6-rc1
+- Adds the ability to remove current group if no conditions are in it
+- Adds the action "web request"
+- Adds the action "action-random-reply"
+- Adds an object to "operand2" in the "jsonCondition" action 
+- Changes: passes intent_id while select an intent from list
+- Disables the autoplay of the YouTube tutorials video
+- Fixes the bug: YouTube videos are not displayed in iframe
+
 ### 2.4.5
 - Deploys in production
 - Fix bug: On chatbot details page > Import/Export tab, the CSV file upload confirmation pop-up window does not close
