@@ -23,9 +23,9 @@ export class CDSTextareaComponent implements OnInit {
   @Input() emoijPikerBtn: boolean = true;
   @Input() setAttributeBtn: boolean = true;
   @Input() textLimitBtn: boolean = true;
-
+  
   @Output() onChange = new EventEmitter();
-  @Output() onVariable = new EventEmitter();
+  @Output() onSelected = new EventEmitter();
   // Textarea //
   leftCharsText: number;
   alertCharsText: boolean;
@@ -35,7 +35,7 @@ export class CDSTextareaComponent implements OnInit {
   cannedResponseMessage: string;
   texareaIsEmpty = false;
 
-
+  
   constructor(
     private logger: LoggerService,
   ) { }
@@ -55,8 +55,8 @@ export class CDSTextareaComponent implements OnInit {
     }
   }
 
-  /** */
-  onChangeTextarea(event) {
+   /** */
+   onChangeTextarea(event) {
     console.log('[CDS-TEXAREA] onChangeTextarea-->', event)
     if (event) {
       this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
@@ -92,32 +92,26 @@ export class CDSTextareaComponent implements OnInit {
     }
   }
 
-
   ngAfterViewInit() {
     this.getTextArea();
   }
 
   getTextArea() {
     this.elTextarea = this.autosize['_textareaElement'] as HTMLInputElement;
-    console.log('[CDS-TEXAREA] - GET TEXT AREA - elTextarea ', this.elTextarea, this.autosize, this.autosize['_textareaElement']);
-    this.getCursorPosition()
+    console.log('[CANNED-RES-EDIT-CREATE] - GET TEXT AREA - elTextarea ', this.elTextarea);
   }
 
   getCursorPosition() {
     const position = this.elTextarea.selectionStart
-    console.log('getCursorPosition-->', position)
   }
 
-
-  onVariableSelected(variableSelected: { name: string, value: string }) {
+  onVariableSelected(variableSelected: {name: string, value: string}) {
     console.log('variableSelectedddd', variableSelected)
     if (this.elTextarea) {
-      this.insertAtCursor(this.elTextarea, '${' + variableSelected.name + '}')
+      this.insertAtCursor(this.elTextarea, '${' + variableSelected.value + '}')
       this.onChangeTextarea(this.elTextarea.value)
+      this.onSelected.emit(variableSelected)
       this.addVariable.close()
-      this.text = this.elTextarea.value
-      console.log('onVariableSelected this.text ', this.text)
-      this.onChange.emit(this.text);
     }
   }
 
@@ -170,6 +164,6 @@ export class CDSTextareaComponent implements OnInit {
       this.addVariable.close()
     }
   }
-
+  
 
 }

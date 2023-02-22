@@ -1,4 +1,4 @@
-<!-- ++++++++ STEP 1 ++++++++ -->
+<!-- ++++++++ STEP 0 ++++++++ -->
 <div *ngIf="step===0">
     <variable-list
         [variableListUserDefined]="variableListUserDefined"
@@ -7,7 +7,7 @@
     </variable-list>
 </div>
 
-<!-- ++++++++ STEP 2 ++++++++ -->
+<!-- ++++++++ STEP 1 ++++++++ -->
 <div class="step2" *ngIf="step===1">
     <form class="filter-item-drop-down" [formGroup]="conditionForm" (submit)="onSubmitCondition()">
         <section class="header">
@@ -34,7 +34,8 @@
                 <cds-textarea
                     [textLimitBtn]="false"
                     [emoijPikerBtn]="false"
-                    [control]="conditionForm.value.operand2.type=='const'? conditionForm.get('operand2.value'): conditionForm.get('operand2.name')">
+                    [control]="conditionForm.value.operand2.type=='const'? conditionForm.get('operand2.value'): conditionForm.get('operand2.name')"
+                    (onSelected)="onVariableSelected($event,1)">
                 </cds-textarea>
                 <!-- <input type="text" [formControlName]="conditionForm.value.operand2.type=='const'? 'value': 'name'" placeholder="Value" name="operand2"/> -->
                 <div class="flex tag" *ngIf="conditionForm.value.operand2.type=='var'">
@@ -48,13 +49,6 @@
         </section>
     </form>
 
-    <button class="btn btn-primary" [satPopoverAnchor]="addVariable" (click)="addVariable.toggle()"> open popover</button>
 </div>
 
 
-<sat-popover #addVariable id="addVariable" backDrop panelClass="add-filter-panel"
-    verticalAlign="below" interactiveClose="false">
-   <variable-list
-        (onSelected)="onVariableSelected($event, 1)">
-    </variable-list>
-</sat-popover>

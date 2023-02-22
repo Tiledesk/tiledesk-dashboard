@@ -12,7 +12,6 @@ import { Condition } from 'app/models/intent-model';
 export class BaseConditionRowComponent implements OnInit {
 
   @ViewChild('operand1') inputOperand1: ElementRef;
-  @ViewChild("addVariable") addVariable : SatPopover;
 
   @Input() variableListUserDefined: Array<{name: string, value: string}>
   @Input() variableListSystemDefined: Array<{name: string, value: string, src?: string}>
@@ -90,7 +89,7 @@ export class BaseConditionRowComponent implements OnInit {
       this.step +=1
     }else if (step == 1){
       this.conditionForm.patchValue({ operand2: {type: 'var', name: variableSelected.name}}, {emitEvent: false})
-      this.addVariable.close()
+      console.log('formmmmm', this.conditionForm)
     }
   }
 
@@ -133,7 +132,6 @@ export class BaseConditionRowComponent implements OnInit {
     this.disableInput = true
     this.conditionForm = this.createConditionGroup()
     this.close.emit() // CLOSE BASE-FILTER POPOVER (IN PARENT)
-    this.addVariable.close() // CLOSE VARIABLE POPOVER
   }
 
 
