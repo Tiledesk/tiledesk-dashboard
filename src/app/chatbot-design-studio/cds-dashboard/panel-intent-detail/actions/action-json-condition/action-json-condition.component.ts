@@ -1,4 +1,4 @@
-import { OperatorValidator, TYPE_OPERATOR, variableList } from '../../../../utils';
+import { OperatorValidator } from '../../../../utils';
 import { Expression, Operator, Condition } from '../../../../../models/intent-model';
 import { ActionJsonCondition } from '../../../../../models/intent-model';
 import { Component, Host, Input, OnInit, ViewChild } from '@angular/core';
@@ -29,7 +29,7 @@ export class ActionJsonConditionComponent implements OnInit {
 
   ngOnChanges() {
     this.initialize();
-    console.log('[ACTION-JSON-CONDITION] actionnn-->', this.action, variableList)
+    console.log('[ACTION-JSON-CONDITION] actionnn-->', this.action)
     if (this.action) {
       this.setFormValue()
     }
@@ -112,6 +112,7 @@ export class ActionJsonConditionComponent implements OnInit {
     }else if(last){
       this.action.groups.splice(index-1, 2)
     }
+    
 
     if(this.action.groups.length === 0){
       this.action.groups.push(new Expression())
@@ -127,6 +128,7 @@ export class ActionJsonConditionComponent implements OnInit {
 
   onChangeForm(event:{name: string, value: string}, type){
     this.action[type]=event.value
+    console.log('actionnnnn', this.action)
   }
 
 }

@@ -31,7 +31,7 @@
         <section class="value" formGroupName="operand2">
             <div>Value</div>
             <div class="value-wrp">
-                <cds-textarea [control]="conditionForm.value.operand2.type=='const'? conditionForm.get('operand2.value'): conditionForm.get('operand2.name')"></cds-textarea>
+                <!-- <cds-textarea [control]="conditionForm.value.operand2.type=='const'? conditionForm.get('operand2.value'): conditionForm.get('operand2.name')"></cds-textarea> -->
                 <input type="text" [formControlName]="conditionForm.value.operand2.type=='const'? 'value': 'name'" placeholder="Value" name="operand2"/>
                 <div class="flex tag" *ngIf="conditionForm.value.operand2.type=='var'">
                     <span class="material-icons close" (click)="clearInput()">close</span>
@@ -44,15 +44,15 @@
         </section>
     </form>
 
-    <button class="btn btn-primary" [satPopoverAnchor]="addVariable" (click)="addVariable.toggle()"> open popover</button>
+    <!-- <button class="btn btn-primary" [satPopoverAnchor]="addVariable" (click)="addVariable.toggle()"> open popover</button> -->
 </div>
 
 
-<sat-popover #addVariable id="addVariable" backDrop panelClass="add-filter-panel"
+<!-- <sat-popover #addVariable id="addVariable" backDrop panelClass="add-filter-panel"
     verticalAlign="below" interactiveClose="false">
    <variable-list
         [variableListUserDefined]="variableListUserDefined"
         [variableListSystemDefined]="variableListSystemDefined"
         (onSelected)="onVariableSelected($event, 1)">
     </variable-list>
-</sat-popover>
+</sat-popover> -->
