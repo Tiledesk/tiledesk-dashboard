@@ -2,7 +2,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, HostListener, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { SatPopover } from '@ncstate/sat-popover';
 import { Condition, Expression, Operator } from 'app/models/intent-model';
-import { OperatorValidator, variableList, OPERATORS_LIST } from 'app/chatbot-design-studio/utils';
+import { variableList, OPERATORS_LIST } from 'app/chatbot-design-studio/utils';
+
 
 @Component({
   selector: 'base-filter',
@@ -43,6 +44,11 @@ export class BaseFilterComponent implements OnInit {
       this.expression.conditions.splice(index-1, 2)
     }
     console.log('expressionnn', this.expression)
+
+    //REMOVE CURRENT GROUP OF CONDITIONS IF NO CONDITIONS ARE IN IT
+    if(this.expression.conditions.length === 0){
+      this.onRemoveGroup()
+    }
   }
 
   onRemoveGroup(){
