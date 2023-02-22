@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActionWebRequest } from 'app/models/intent-model';
-import { TYPE_METHOD_REQUEST } from '../../../../utils';
+import { TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT } from '../../../../utils';
 
 @Component({
   selector: 'cds-action-web-request',
@@ -12,7 +12,7 @@ export class ActionWebRequestComponent implements OnInit {
   @Input() action: ActionWebRequest;
   methods: Array<string>;
 
-  limitCharsText = 255;
+  limitCharsText = TEXT_CHARS_LIMIT;
   jsonHeader: string; 
   jsonBody: string;
   jsonText: string;
@@ -25,22 +25,26 @@ export class ActionWebRequestComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
+    this.initialize();
+  }
+
+  
+  // CUSTOM FUNCTIONS //
+  private initialize(){
     this.methods = Object.values(TYPE_METHOD_REQUEST);
     this.jsonHeader = JSON.parse(this.action.headersString);
     this.jsonBody = JSON.parse(this.action.jsonBody);
+    //this.action.method = this.action.method;
     this.setActionWebRequest();
-    console.log(this.methods);
-    this. switchJson();
+    this.switchJsonText();
   }
 
-  // CUSTOM FUNCTIONS //
-  setActionWebRequest(){
+  private setActionWebRequest(){
     this.action.headersString = JSON.stringify(this.jsonHeader);
     this.action.jsonBody = JSON.stringify(this.jsonBody);
   }
 
-  switchJson(){
-    this.action.method = this.methods[0];
+  private switchJsonText(){
     this.jsonText = this.jsonHeader;
     this.jsonText = this.formatJSON(this.jsonText, "\t");
   }
