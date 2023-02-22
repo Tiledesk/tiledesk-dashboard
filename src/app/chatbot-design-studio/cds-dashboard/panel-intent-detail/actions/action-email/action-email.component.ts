@@ -29,7 +29,7 @@ export class ActionEmailComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    this.logger.log("[ACTION-EMAIL] elementSelected: ", this.action)
+   console.log("[ACTION-EMAIL] elementSelected: ", this.action)
     this.actionSubject = this.action.subject
     this.actionBody = this.action.text
   }

@@ -13,7 +13,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 export class CDSTextareaComponent implements OnInit {
 
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
-  @ViewChild("addVariable") addVariable : SatPopover;
+  @ViewChild("addVariable") addVariable: SatPopover;
 
   @Input() text: string;
   @Input() limitCharsText: number = TEXT_CHARS_LIMIT;
@@ -23,7 +23,7 @@ export class CDSTextareaComponent implements OnInit {
   @Input() emoijPikerBtn: boolean = true;
   @Input() setAttributeBtn: boolean = true;
   @Input() textLimitBtn: boolean = true;
-  
+
   @Output() onChange = new EventEmitter();
   @Output() onVariable = new EventEmitter();
   // Textarea //
@@ -35,37 +35,61 @@ export class CDSTextareaComponent implements OnInit {
   cannedResponseMessage: string;
   texareaIsEmpty = false;
 
-  
+
   constructor(
     private logger: LoggerService,
   ) { }
 
   ngOnInit(): void {
-    if(this.text){
+    if (this.text) {
       this.control.patchValue(this.text)
-    }else{
+    } else {
       this.text = this.control.value
     }
 
     this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
-    if(this.leftCharsText<(this.limitCharsText/10)){
+    if (this.leftCharsText < (this.limitCharsText / 10)) {
       this.alertCharsText = true;
     } else {
       this.alertCharsText = false;
     }
   }
 
-   /** */
-   onChangeTextarea(event) {
-    console.log('onChangeTextarea-->', event)
-    this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
-    if(this.leftCharsText<(this.limitCharsText/10)){
-      this.alertCharsText = true;
-    } else {
-      this.alertCharsText = false;
+  /** */
+  onChangeTextarea(event) {
+    console.log('[CDS-TEXAREA] onChangeTextarea-->', event)
+    if (event) {
+      this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
+      if (this.leftCharsText < (this.limitCharsText / 10)) {
+        this.alertCharsText = true;
+      } else {
+        this.alertCharsText = false;
+      }
+     
+
+
+      if (event && event.length > 0) {
+        this.texareaIsEmpty = false;
+      } else {
+        // this.texareaIsEmpty = true;
+      }
+
+      if (/\s$/.test(event)) {
+
+        console.log('[CDS-TEXAREA] - onChangeTextarea - string contains space at last');
+        this.addWhiteSpaceBefore = false;
+      } else {
+
+        console.log('[CDS-TEXAREA] - onChangeTextarea - string does not contain space at last');
+
+        // IS USED TO ADD A WHITE SPACE TO THE 'PERSONALIZATION' VALUE IF THE STRING DOES NOT CONTAIN SPACE AT LAST
+        this.addWhiteSpaceBefore = true;
+      }
+
+      console.log('[CDS-TEXAREA] - event ', event.length);
+      this.text = event;
+      this.onChange.emit(this.text);
     }
-    this.text = event;
-    this.onChange.emit(this.text);
   }
 
 
@@ -75,7 +99,8 @@ export class CDSTextareaComponent implements OnInit {
 
   getTextArea() {
     this.elTextarea = this.autosize['_textareaElement'] as HTMLInputElement;
-    console.log('[CANNED-RES-EDIT-CREATE] - GET TEXT AREA - elTextarea ', this.elTextarea, this.autosize, this.autosize['_textareaElement']);
+    console.log('[CDS-TEXAREA] - GET TEXT AREA - elTextarea ', this.elTextarea, this.autosize, this.autosize['_textareaElement']);
+    this.getCursorPosition()
   }
 
   getCursorPosition() {
@@ -84,12 +109,15 @@ export class CDSTextareaComponent implements OnInit {
   }
 
 
-  onVariableSelected(variableSelected: {name: string, value: string}) {
+  onVariableSelected(variableSelected: { name: string, value: string }) {
     console.log('variableSelectedddd', variableSelected)
     if (this.elTextarea) {
       this.insertAtCursor(this.elTextarea, '${' + variableSelected.name + '}')
       this.onChangeTextarea(this.elTextarea.value)
       this.addVariable.close()
+      this.text = this.elTextarea.value
+      console.log('onVariableSelected this.text ', this.text)
+      this.onChange.emit(this.text);
     }
   }
 
@@ -136,12 +164,12 @@ export class CDSTextareaComponent implements OnInit {
   }
 
   @HostListener('document:keydown', ['$event'])
-  onKeyPress(event){
+  onKeyPress(event) {
     const keyCode = event.which || event.keyCode;
     if (keyCode === 27) { // Esc keyboard code
       this.addVariable.close()
     }
   }
-  
+
 
 }
