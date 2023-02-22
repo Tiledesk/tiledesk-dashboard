@@ -2,6 +2,11 @@
 @import "./src/assets/sass/cds/_variables.scss";
 $max-height: 230px;
 
+
+.text-editable-div {
+    margin-left: 20px;
+    display: block;
+}
 .frame-panel {
     position: absolute;
     left: 0;

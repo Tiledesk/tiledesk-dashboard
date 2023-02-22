@@ -9,6 +9,10 @@
 // $button-border-color: $icon-color;
 // $button-background-color: $icon-color-backgroud;
 
+.text-editable-div {
+    margin-left: 20px;
+    display: block;
+}
 .extensions-response {
     font-size: $font-size-base;
     position: relative;
@@ -126,14 +130,14 @@
     margin: -20px 50px 0px 0px;
     float: right;
     .num-chars {
-        background: $color-light-gray-hex;
+        // background: $color-light-gray-hex;
         padding: 0px 8px;
         border-radius: 12px;
         font-size: 0.8em;
-        color: $color-text-box-hex;
+        // color: $color-text-box-hex;
         float: right;
         &.error {
-            background: $color-orange-hex;
+            // background: $color-orange-hex;
         }
     }
     .text-editor-insert-attribute {

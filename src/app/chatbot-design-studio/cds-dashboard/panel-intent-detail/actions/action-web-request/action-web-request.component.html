@@ -1,0 +1,53 @@
+<div class="cds-web-request">
+
+    <div class="cds-web-request-row input-group cds-input-group">
+        <div class="label-assign-to">Assign to</div>
+        <input [(ngModel)]="action.assignTo" type="text" placeholder="..." class="ng-untouched ng-pristine ng-valid">
+    </div>
+
+    <div class="input-group cds-input-group">
+        <span class="input-group-addon cds-group-addon-left">
+            <ng-select 
+                class = "form-control-select" 
+                [items] = "methods" 
+                bindLabel="label"
+                bindValue="value"
+                [searchable] = false
+                [clearable] = false
+                [(ngModel)] = "action.method"
+                (change) = "onChangeMethodButton($event)">
+            </ng-select>
+        </span>
+        <input [(ngModel)]="action.url" type="text" placeholder="Enter request URL" class="ng-untouched ng-pristine ng-valid"> 
+    </div>
+
+    <div class="cds-web-request-row">
+        <div class="add-response" (click)="onChangeParamsButton()">
+            <span [ngClass]="{'cds-action-active': methodSelectedHeader}">Header</span>
+        </div>
+        <div class="add-response" (click)="onChangeParamsButton()">
+            <span [ngClass]="{'cds-action-active': methodSelectedBody}">Body</span>
+        </div>
+    </div>
+    
+    <div class="cds-web-request-row">
+            <textarea
+                [ngClass]="{'jsonError': !jsonIsValid}"
+                class = "text-editable-div"
+                [(ngModel)]="jsonText"
+                [maxlength]="limitCharsText"
+                cdkAutosizeMinRows="5"
+                cdkAutosizeMaxRows="10"
+                (ngModelChange)="onChangeTextarea($event)">
+            </textarea>
+    </div>
+
+    <div class="cds-web-request-row-error center" [ngClass]="{'json-error-yes': !jsonIsValid}">
+        <span>{{errorMessage}}</span>
+    </div>
+
+    <div class="cds-web-request-row center">
+        <button id="cds-community-btn" type="button" class="btn btn-primary pull-right cds-blue-button" (click)="onJsonFormatter()">format JSON </button>
+    </div>
+    
+</div>

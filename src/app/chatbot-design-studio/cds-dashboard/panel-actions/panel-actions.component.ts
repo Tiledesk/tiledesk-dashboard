@@ -3,8 +3,8 @@ import { ACTIONS_LIST } from './../../utils';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, HostListener } from '@angular/core';
 
 import { TYPE_ACTION, TYPE_COMMAND } from '../../utils';
-import { ActionAgent, ActionClose, 
-         ActionReply, Intent, Command, 
+import { ActionAgent, ActionClose, ActionWebRequest,
+         ActionReply, ActionRandomReply, Intent, Command, 
          Message, ActionIntentConnected, ActionEmail, 
          ActionWait, ActionAssignVariable, ActionDeleteVariable, 
          ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
@@ -101,6 +101,21 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       this.logger.log('1 action:  ', action)
       this.logger.log('2 command:  ', command)
       action.attributes.commands.push(command);
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.RANDOM_REPLY){
+      let action = new ActionRandomReply();
+      let commandWait = new Command(TYPE_COMMAND.WAIT);
+      action.attributes.commands.push(commandWait);
+      let command = new Command(TYPE_COMMAND.MESSAGE);
+      command.message = new Message('text', 'A chat message will be sent to the visitor');
+      this.logger.log('1 action:  ', action)
+      this.logger.log('2 command:  ', command)
+      action.attributes.commands.push(command);
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.WEB_REQUEST){
+      let action = new ActionWebRequest();
       this.intentSelected.actions.push(action);
     }
     if(typeAction === TYPE_ACTION.AGENT){

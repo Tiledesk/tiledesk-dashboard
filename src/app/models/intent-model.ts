@@ -1,5 +1,5 @@
 import { TYPE_OPERATOR } from './../chatbot-design-studio/utils';
-import { TYPE_ACTION, TYPE_ATTACHMENT } from '../chatbot-design-studio/utils';
+import { TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST } from '../chatbot-design-studio/utils';
 
 export class Intent {
     webhook_enabled?: boolean;
@@ -98,6 +98,37 @@ export class ActionReply extends Action {
         if (attributes){
             this.attributes = attributes;
         }
+    }
+}
+
+export class ActionRandomReply extends Action {
+    text?: string;
+    attributes: Attributes;
+    constructor(text?: string, attributes?: Attributes) {
+        super();
+        // this.text = text ? text : '...';
+        this._tdActionType = TYPE_ACTION.RANDOM_REPLY;
+        this.attributes = new Attributes();
+        if (attributes){
+            this.attributes = attributes;
+        }
+    }
+}
+
+export class ActionWebRequest extends Action {
+    method: string;
+    url: string;
+    headersString: string;
+    jsonBody: string;
+    assignTo: string;
+    constructor(){
+        super();
+        this.url = '';
+        this.headersString = JSON.stringify('{"Content-Type":"application/json", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"}');
+        this.jsonBody = JSON.stringify('{}');
+        this.assignTo = '';
+        this.method = TYPE_METHOD_REQUEST.GET;
+        this._tdActionType = TYPE_ACTION.WEB_REQUEST;
     }
 }
 
