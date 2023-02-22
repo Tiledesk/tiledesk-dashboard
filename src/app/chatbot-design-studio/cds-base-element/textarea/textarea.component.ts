@@ -4,7 +4,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { calculatingRemainingCharacters, TEXT_CHARS_LIMIT, variableList } from 'app/chatbot-design-studio/utils';
 import { SatPopover } from '@ncstate/sat-popover';
 import { LoggerService } from 'app/services/logger/logger.service';
-
+declare const $: any;
 @Component({
   selector: 'cds-textarea',
   templateUrl: './textarea.component.html',
@@ -24,8 +24,9 @@ export class CDSTextareaComponent implements OnInit {
   @Input() setAttributeBtn: boolean = true;
   @Input() textLimitBtn: boolean = true;
   @Input() minRow: number = 2;
+  @Input() maxRow: number = 20;
   @Input() popoverVerticalAlign: string = 'below'
-  
+
   @Output() onChange = new EventEmitter();
   @Output() onSelected = new EventEmitter();
   // Textarea //
@@ -38,9 +39,11 @@ export class CDSTextareaComponent implements OnInit {
   texareaIsEmpty = false;
 
 
-  
+
   constructor(
     private logger: LoggerService,
+
+    
   ) { }
 
   ngOnInit(): void {
@@ -56,10 +59,19 @@ export class CDSTextareaComponent implements OnInit {
     } else {
       this.alertCharsText = false;
     }
+
+    if (typeof $ === 'undefined') {
+      console.log('[CDS-TEXAREA] jQuery is NOT available')
+      // 
+    } else {
+      console.log('[CDS-TEXAREA] jQuery is available')
+      // jQuery is available
+    }
   }
 
-   /** */
-   onChangeTextarea(event) {
+  /** */
+  onChangeTextarea(event) {
+    this.getCursorPosition()
     console.log('[CDS-TEXAREA] onChangeTextarea-->', event)
     if (event) {
       this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
@@ -68,7 +80,7 @@ export class CDSTextareaComponent implements OnInit {
       } else {
         this.alertCharsText = false;
       }
-     
+
 
 
       if (event && event.length > 0) {
@@ -89,7 +101,7 @@ export class CDSTextareaComponent implements OnInit {
         this.addWhiteSpaceBefore = true;
       }
 
-      console.log('[CDS-TEXAREA] - event ', event.length);
+      console.log('[CDS-TEXAREA] - onChangeTextarea event length ', event.length);
       this.text = event;
       this.onChange.emit(this.text);
     }
@@ -99,25 +111,68 @@ export class CDSTextareaComponent implements OnInit {
     this.getTextArea();
   }
 
+  openSetattributePopover() {
+    this.elTextarea = this.autosize['_textareaElement'] as HTMLInputElement;
+    this.elTextarea.focus()
+  }
+
+
   getTextArea() {
     this.elTextarea = this.autosize['_textareaElement'] as HTMLInputElement;
-    console.log('[CANNED-RES-EDIT-CREATE] - GET TEXT AREA - elTextarea ', this.elTextarea);
+
+    console.log('[CDS-TEXAREA] - GET TEXT AREA - elTextarea ', this.elTextarea);
+    if (this.elTextarea) {
+      this.getCursorPosition()
+    }
+  }
+
+
+
+  mouseUp() {
+    var t = document.getElementById("textarea");
+   
   }
 
   getCursorPosition() {
-    const position = this.elTextarea.selectionStart
+  //   const position = this.elTextarea.selectionStart
+  //   console.log('[CDS-TEXAREA] - GET CURSOR POSITION - POS  ', position);
+
+  //   var cursor_pos = this.elTextarea.selectionStart;
+    
+  //   this.elTextarea.focus();
   }
 
-  onVariableSelected(variableSelected: {name: string, value: string}) {
+  onVariableSelected(variableSelected: { name: string, value: string }) {
     console.log('variableSelectedddd', variableSelected)
     if (this.elTextarea) {
-      this.insertAtCursor(this.elTextarea, '${' + variableSelected.value + '}')
+      this.elTextarea.focus()
+    
+      
+     
+      // this.insertAtCursor(this.elTextarea, '${' + variableSelected.value + '}')
+      this.insertAtCursorPos(this.elTextarea, '${' + variableSelected.value + '}')
       this.onChangeTextarea(this.elTextarea.value)
       this.onSelected.emit(variableSelected)
       this.addVariable.close()
     }
   }
 
+
+  insertAtCursorPos(elem: HTMLInputElement, attribute) {
+    // var cursor_pos = $("#text-area").prop('selectionStart');
+    // var textarea_txt = $("#text-area").val();
+    // var txt_to_add = value;
+    // $("#text-area").val(textarea_txt.substring(0, cursor_pos) + txt_to_add + textarea_txt.substring(cursor_pos));
+    // $("#text-area").focus();
+    // $('#text-area').prop('selectionEnd', cursor_pos + txt_to_add.length);
+
+    let cursor_pos = elem.selectionStart;
+    var textarea_txt = elem.value;
+    var txt_to_add = attribute;
+    elem.value = textarea_txt.substring(0, cursor_pos) + txt_to_add + textarea_txt.substring(cursor_pos)
+    elem.focus()
+    elem.selectionEnd = cursor_pos + txt_to_add.length
+  }
 
   insertAtCursor(myField, myValue) {
     this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - myValue ', myValue);
@@ -167,6 +222,12 @@ export class CDSTextareaComponent implements OnInit {
       this.addVariable.close()
     }
   }
-  
+
+
+ 
+
+ 
+
+
 
 }

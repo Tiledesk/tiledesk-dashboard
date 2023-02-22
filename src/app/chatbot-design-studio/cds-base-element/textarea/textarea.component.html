@@ -11,7 +11,8 @@
                 cdkAutosizeMinRows="{{minRow}}"
                 cdkAutosizeMaxRows="20"
                 [(ngModel)]="text"
-                (ngModelChange)="onChangeTextarea($event)">
+                (ngModelChange)="onChangeTextarea($event)"
+                (mouseup)="mouseUp()">
             </textarea>
         </mat-form-field>
 
@@ -28,7 +29,7 @@
         <div *ngIf="showUtils === true" unselectable="on" tabIndex="-1" class="editor-utils">
             <div *ngIf="setAttributeBtn" class="insert-attribute-btn-wpr">
                 <input type="button" unselectable="on" class="insert-attribute-btn" [satPopoverAnchor]="addVariable"
-                (click)="addVariable.toggle();getCursorPosition();">
+                (click)="addVariable.toggle(); openSetattributePopover();">
                 <span unselectable="on" class="material-icons material-icons-data-object" style="font-size: 16px;">
                     data_object
                 </span>

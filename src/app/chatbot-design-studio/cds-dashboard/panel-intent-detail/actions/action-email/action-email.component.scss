@@ -260,11 +260,17 @@ mat-form-field.box-textarea ::ng-deep {
     color: white;
 }
 
-::ng-deep cds-textarea .subject-text-area {
-    textarea {
-        resize: none !important; 
-    }
+// ::ng-deep cds-textarea .subject-text-area {
+//     textarea {
+//         resize: none !important; 
+//     }
+// }
+
+.subject-text-area > .text-editor-wrapper > .text-editor > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > textarea{
+    resize: none !important; 
 }
+
+
 
 /* 
 /* Text editor utils 
