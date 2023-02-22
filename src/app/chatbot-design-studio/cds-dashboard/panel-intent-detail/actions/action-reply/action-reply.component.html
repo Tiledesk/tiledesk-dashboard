@@ -15,8 +15,11 @@
         (cdkDropListDropped)="drop($event)"
         >
         <!-- <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag> -->
-        <div *ngFor="let message of arrayMessagesWithWait; let i = index;" class="draggable-box" cdkDrag>
-            <div *ngIf="message.type === typeMessage.TEXT ">
+        <div *ngFor="let message of arrayMessagesWithWait; let i = index;" 
+            class="draggable-box" 
+            [ngStyle]="{'margin-bottom':typeAction === typeActions.RANDOM_REPLY?'30px':'0px'}" 
+            cdkDrag>
+            <div *ngIf="message.type === typeMessage.TEXT">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-text-response
                     [index] = i
@@ -26,7 +29,7 @@
                 </div>
                 
                 <div class="response">
-                    <div *ngIf="typeAction == 'reply'"
+                    <div *ngIf="typeAction === typeActions.REPLY"
                         class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 
@@ -57,7 +60,7 @@
                 </div>
                 
                 <div class="response">
-                    <div *ngIf="typeAction == 'reply'" 
+                    <div *ngIf="typeAction === typeActions.REPLY"
                         class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 
@@ -88,7 +91,7 @@
                 </div>
                 
                 <div class="response">
-                    <div *ngIf="typeAction == 'reply'" 
+                    <div *ngIf="typeAction === typeActions.REPLY" 
                         class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 

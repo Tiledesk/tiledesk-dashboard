@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MessageWithWait } from '../../../../../../../models/intent-model';
-import { TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
+import { TYPE_ACTION, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
 
 @Component({
   selector: 'appdashboard-image-response',
@@ -20,6 +20,7 @@ export class ImageResponseComponent implements OnInit {
   @Input() typeAction: string;
 
   // Textarea //
+  typeActions = TYPE_ACTION;
   limitCharsText: number;
   leftCharsText: number;
   textMessage: string;

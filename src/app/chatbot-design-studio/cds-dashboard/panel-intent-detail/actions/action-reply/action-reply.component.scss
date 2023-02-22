@@ -64,6 +64,7 @@ $margin-bottom: 15px;
 
 .box-dx {
     display: inline-flex;
+    padding-top: 20px;
     .panel-tools-response {
         position: relative;
         display: inline-flex;
@@ -74,9 +75,9 @@ $margin-bottom: 15px;
         height: fit-content;
         overflow: hidden;
         border-radius: 0.6em;
-        background-color: rgb($bg-color-card-rgb);
+        background-color: $color-withe-hex;
         font-family: 'Poppins','Roboto', 'Arial', sans-serif;
-        color: #394f5a;
+        color: $bg-color-dark-hex;
         font-size: 1em;
         padding: $padding;
     }

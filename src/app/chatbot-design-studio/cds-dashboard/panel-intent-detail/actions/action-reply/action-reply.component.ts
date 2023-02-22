@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Button, Message, Command, ActionReply, MessageWithWait, MessageAttributes } from '../../../../../models/intent-model';
-import { TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE } from '../../../../utils';
+import { TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE } from '../../../../utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
@@ -30,6 +30,7 @@ export class ActionReplyComponent implements OnInit {
   typeCommand = TYPE_COMMAND;
   typeResponse = TYPE_RESPONSE;
   typeMessage = TYPE_MESSAGE;
+  typeActions = TYPE_ACTION;
   intentName: string;
   intentNameResult: boolean;
   textGrabbing: boolean;

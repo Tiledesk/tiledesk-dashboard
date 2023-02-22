@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser'
 import { MessageWithWait } from '../../../../../../../models/intent-model';
-import { TYPE_MESSAGE, TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT, calculatingRemainingCharacters } from '../../../../../../utils';
+import { TYPE_ACTION, TYPE_MESSAGE, TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT, calculatingRemainingCharacters } from '../../../../../../utils';
 
 @Component({
   selector: 'appdashboard-frame-response',
@@ -21,6 +21,7 @@ export class FrameResponseComponent implements OnInit {
   @Input() typeAction: string;
   
   // frame //
+  typeActions = TYPE_ACTION;
   framePath: any;
   frameWidth: number | string;
   frameHeight: number | string;
