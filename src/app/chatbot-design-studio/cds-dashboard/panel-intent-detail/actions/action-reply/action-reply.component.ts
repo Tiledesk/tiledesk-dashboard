@@ -16,6 +16,7 @@ export class ActionReplyComponent implements OnInit {
   // @Output() openButtonPanel = new EventEmitter();
   // @Output() saveIntent = new EventEmitter();
   @Input() reply: ActionReply;
+  @Input() typeAction: string;
   @Input() listOfActions: Array<string>;
   @Input() intent_display_name: string;
   // @Input() showSpinner: boolean;

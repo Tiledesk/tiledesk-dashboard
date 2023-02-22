@@ -18,7 +18,8 @@ export class FrameResponseComponent implements OnInit {
   
   @Input() response: MessageWithWait;
   @Input() index: number;
-
+  @Input() typeAction: string;
+  
   // frame //
   framePath: any;
   frameWidth: number | string;

@@ -20,12 +20,14 @@
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-text-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     ></appdashboard-text-response>
                 </div>
                 
                 <div class="response">
-                    <div class="response-drop" 
+                    <div *ngIf="typeAction == 'reply'"
+                        class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 
                         (mouseup)="mouseUp()" 
@@ -33,6 +35,7 @@
                     </div> 
                     <appdashboard-text-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     (moveUpResponse) = onMoveUpResponse($event)
                     (moveDownResponse) = onMoveDownResponse($event)
@@ -48,12 +51,14 @@
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-image-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     ></appdashboard-image-response>
                 </div>
                 
                 <div class="response">
-                    <div class="response-drop" 
+                    <div *ngIf="typeAction == 'reply'" 
+                        class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 
                         (mouseup)="mouseUp()" 
@@ -61,6 +66,7 @@
                     </div> 
                     <appdashboard-image-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     (moveUpResponse) = onMoveUpResponse($event)
                     (moveDownResponse) = onMoveDownResponse($event)
@@ -76,12 +82,14 @@
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-frame-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     ></appdashboard-frame-response>
                 </div>
                 
                 <div class="response">
-                    <div class="response-drop" 
+                    <div *ngIf="typeAction == 'reply'" 
+                        class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 
                         (mouseup)="mouseUp()" 
@@ -89,6 +97,7 @@
                     </div> 
                     <appdashboard-frame-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     onChangeText
                     (moveUpResponse) = onMoveUpResponse($event)
