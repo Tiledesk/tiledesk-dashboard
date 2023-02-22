@@ -1,0 +1,31 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
+::ng-deep{
+
+    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+        .ng-option-label{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+    
+            span.material-icons{
+                font-size: 20px;
+                color: $icon-color;
+            }
+        }
+    }
+
+    .ng-select .ng-select-container .ng-value{
+        .ng-value-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+    
+            span.material-icons{
+                font-size: 20px;
+                color: $icon-color;
+            }
+        }
+
+    } 
+}

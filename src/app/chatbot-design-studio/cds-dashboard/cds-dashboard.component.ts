@@ -1,3 +1,4 @@
+import { retriveListOfVariables, TYPE_ACTION } from 'app/chatbot-design-studio/utils';
 import { MultichannelService } from 'app/services/multichannel.service';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
@@ -12,7 +13,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { HttpClient } from "@angular/common/http";
 
 
-import { Intent, Button, Action, Form, ActionReply, Command, Message } from '../../models/intent-model';
+import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssignVariable } from '../../models/intent-model';
 import { TYPE_COMMAND, TYPE_INTENT_ELEMENT, TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
 import { Subject } from 'rxjs';
 import { FaqKbService } from 'app/services/faq-kb.service';
@@ -34,7 +35,8 @@ const swal = require('sweetalert');
 export class CdsDashboardComponent implements OnInit {
 
   listOfIntents: Array<Intent>;
-  listOfActions: Array<string>;
+  listOfActions: Array<{name: string, value: string, icon?:string}>;
+  listOfVariables: {userDefined:Array<any>, systemDefined: Array<any>};
   intentSelected: Intent;
   elementIntentSelected: any;
   newIntentName: string;
@@ -373,7 +375,7 @@ export class CdsDashboardComponent implements OnInit {
       const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
 
       this.showSpinner = false;
-      this.logger.log('[CDS DSHBRD] creatIntent RES ', intent);
+     console.log('[CDS DSHBRD] creatIntent RES ', intent);
       if (intent) {
 
         //SUCCESS STATE
@@ -434,7 +436,7 @@ export class CdsDashboardComponent implements OnInit {
   /** EDIT INTENT  */
   private editIntent() {
     this.startUpdatedIntent.next(true)
-    this.logger.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
+    console.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
     this.showSpinner = true;
     let id = this.intentSelected.id;
     let questionIntentSelected = this.intentSelected.question;
@@ -546,21 +548,34 @@ export class CdsDashboardComponent implements OnInit {
     this.logger.log('[CDS DSHBRD]  intent name already saved', intentNameAlreadyCreated);
     // this.logger.log
     if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
-
-
       this.creatIntent();
     } else if (this.EDIT_VIEW) {
       this.editIntent();
     }
+
+    retriveListOfVariables(this.listOfIntents)
   }
+
+
+
 
   /** appdashboard-intent-list: Select intent */
   onReturnListOfIntents(intents) {
     this.listOfIntents = intents;
-    this.listOfActions = intents.map(a =>( {name: a.intent_display_name, value: a.intent_display_name}));
-    
+    this.listOfActions = intents.map(a =>{
+      if(a.intent_display_name.trim() === 'start'){
+        return {name: a.intent_display_name, value: '#'+a.intent_id, icon:'rocket_launch'}
+      }else if(a.intent_display_name.trim() === 'defaultFallback'){
+        return {name: a.intent_display_name, value: '#'+a.intent_id, icon:'undo'}
+      }else {
+        return {name: a.intent_display_name, value: '#'+a.intent_id, icon:'label_important_outline'}
+      }
+      
+    });
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
+    
+    retriveListOfVariables(this.listOfIntents )
   }
 
   onSelectIntent(intent: Intent) {

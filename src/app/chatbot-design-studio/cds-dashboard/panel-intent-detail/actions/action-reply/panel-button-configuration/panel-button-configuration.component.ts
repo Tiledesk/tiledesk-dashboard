@@ -14,7 +14,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
   @ViewChild('input_title', { static: true }) input_topic: CDSTextComponent;
 
-  @Input() listOfActions: Array<{name: string, value: string}>;
+  @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
   @Input() button: Button;
   @Output() saveButton = new EventEmitter();
   @Output() closeButtonPanel = new EventEmitter();

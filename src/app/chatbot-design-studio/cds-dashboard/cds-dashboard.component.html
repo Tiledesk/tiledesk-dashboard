@@ -64,20 +64,6 @@
                     </li>
                 </ul>
             </div>
-            <!-- <button *ngIf="selectedChatbot?.public === false" id="cds-community-btn"
-                class="btn btn-primary pull-right cds-blue-button" type="button" (click)="publishOnCommunity()">
-                Deploy on Community
-            </button>
-            <button *ngIf="selectedChatbot?.public === true" id="cds-community-btn"
-                class="btn btn-primary pull-right cds-blue-button" type="button" (click)="removeFromCommunity()">
-                Remove from community
-            </button> -->
-
-
-
-
-
-
             <div *ngIf="TRY_ON_WA === true">
                 <button id="cds-test-it-wab-out-btn" class="btn btn-primary cds-blue-button cds-test-it-out"
                     style="background-color: #45c351; color: #fff; border-color: #fff; height: 34px; margin-top: 8px;"
@@ -138,10 +124,15 @@
 
     <ng-template #intents [ngOutletContext]="context">
         <div class="box-left">
-            <appdashboard-panel-intent-list class="panel-intent-list" [id_faq_kb]="id_faq_kb" [intent_id]="intent_id"
-                [projectID]="projectID" (selected_intent)=onSelectIntent($event)
-                (returnListOfIntents)=onReturnListOfIntents($event) (createIntent)="onCreateIntentBtnClicked()"
-                (deleteSelectedIntent)="onDeleteSelectedIntent()" [eventCreateIntent]="createIntent.asObservable()"
+            <appdashboard-panel-intent-list class="panel-intent-list" 
+                [id_faq_kb]="id_faq_kb" 
+                [intent_id]="intent_id"
+                [projectID]="projectID" 
+                (selected_intent)=onSelectIntent($event)
+                (returnListOfIntents)=onReturnListOfIntents($event) 
+                (createIntent)="onCreateIntentBtnClicked()"
+                (deleteSelectedIntent)="onDeleteSelectedIntent()" 
+                [eventCreateIntent]="createIntent.asObservable()"
                 [eventUpadatedIntent]="upadatedIntent.asObservable()"
                 [eventStartUpdatedIntent]="startUpdatedIntent.asObservable()"
                 [eventNewIntentFromSplashScreen]="newIntentFromSplashScreen.asObservable()">
@@ -162,8 +153,10 @@
             </cds-splash-screen> -->
             <!-- *ngIf=!spinnerCreateIntent -->
             <div class="box-right-header">
-                <appdashboard-panel-intent-header *ngIf=intentSelected [intentSelected]="intentSelected"
-                    (saveIntent)=onSaveIntent($event) [listOfIntents]="listOfIntents">
+                <appdashboard-panel-intent-header *ngIf=intentSelected 
+                    [intentSelected]="intentSelected"
+                    [listOfIntents]="listOfIntents"
+                    (saveIntent)=onSaveIntent($event)>
                 </appdashboard-panel-intent-header>
             </div>
             <!-- [events]="upadatedIntent.asObservable() *ngIf=!spinnerCreateIntent -->

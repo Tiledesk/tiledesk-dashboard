@@ -1,4 +1,5 @@
 import { AbstractControl } from "@angular/forms";
+import { ActionAssignVariable, Intent } from "app/models/intent-model";
 
 export enum TYPE_INTENT_ELEMENT {
     QUESTION = 'question',
@@ -41,6 +42,8 @@ export enum TYPE_MESSAGE {
 
 export enum TYPE_ACTION {
     REPLY = 'reply', 
+    RANDOM_REPLY = 'randomreply',
+    WEB_REQUEST = 'webrequest',
     AGENT = 'agent',
     CLOSE = 'close',
     EMAIL = 'email',
@@ -81,23 +84,44 @@ export enum TYPE_ATTACHMENT {
     TEMPLATE = "template"
 }
 
+export enum TYPE_METHOD_REQUEST {
+    GET = 'GET', 
+    POST = 'POST', 
+    PUT = 'PUT',
+    PATCH = 'PATCH',
+    DELETE = 'DELETE', 
+    COPY = 'COPY', 
+    HEAD = 'HEAD',
+    OPTIONS = 'OPTIONS',
+    LINK = 'LINK', 
+    UNLINK = 'UNLINK', 
+    PURGE = 'PURGE',
+    LOCK = 'LOCK',
+    UNLOCK = 'UNLOCK', 
+    PROPFIND = 'PROPFIND', 
+    VIEW = 'VIEW'
+}
+
+
 
 export const MESSAGE_METADTA_WIDTH = '100%';
 export const MESSAGE_METADTA_HEIGHT = 230;
 export const TIME_WAIT_DEFAULT = 500;
-export const TEXT_CHARS_LIMIT = 300;
+export const TEXT_CHARS_LIMIT = 1024;
 export const classCardButtonNoClose = 'card-buttons-no-close';
 
 
 
-export function calculatingRemainingCharacters(text: string) {
+export function calculatingRemainingCharacters(text: string, limit:number) {
     let numCharsText = text.length;
-    let leftCharsText = TEXT_CHARS_LIMIT - numCharsText;
+    let leftCharsText = limit - numCharsText;
     return leftCharsText;
 }
 
 export const ACTIONS_LIST= {
     REPLY : { name: 'Reply', type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: ''},
+    RANDOM_REPLY : { name: 'Random Reply', type: TYPE_ACTION.RANDOM_REPLY, src:"assets/cds/images/actions/random_reply.svg", description: ''},
+    WEB_REQUEST : { name: 'Web Request', type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},
     AGENT : { name: 'Agent Handoff', type: TYPE_ACTION.AGENT, src:"assets/cds/images/actions/agent_handoff.svg", description: 'This action replaces the current chatbot with an agent.<br>The upcoming agent is assigned to the conversation following the department rules'},
     CLOSE : { name: 'Close', type: TYPE_ACTION.CLOSE, src:"assets/cds/images/actions/close.svg", description: 'This action instantly closes the current conversation'},
     EMAIL : { name: 'Send email', type: TYPE_ACTION.EMAIL, src:"assets/cds/images/actions/send_email.svg", description: 'This action send an email to the specified users group or email addresses.<br>You can use a comma sepatated addresses list.<br>i.e. “andrea@tiledesk.com, gab@tiledesk.com"<br>You can use the special tag “@everyone” to send an email to each of the Tiledesk’s project teamates.<br><br>You can also use the name of a single user group using the group name. i.e. “sales”'},
@@ -141,4 +165,44 @@ export function OperatorValidator( control: AbstractControl ): { [key: string]: 
       return null;
     }
     return { invalidType: true };
+}
+
+export function getEmbedUrl(url: string) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    return (match && match[2].length === 11)
+      ? 'https://www.youtube.com/embed/'+ match[2]
+      : url;
+}
+
+export var variableList = {
+    userDefined: [],
+    systemDefined: [
+        { name: 'Department ID', value:'department_id', src:'', icon: 'domain'},
+        { name: 'Department name', value:'department_name', src:'', icon: 'domain'},
+        { name: 'Project ID', value:'project_id', src:'', icon: 'domain'},
+        { name: 'Last message ID', value:'last_message_id', src:'', icon: 'textsms'},
+        { name: 'Conversation ID', value:'conversation_id', src:'', icon:'textsms' },
+        { name: 'Last user text', value:'last_user_text', src:'', icon:'send'},
+        { name: 'Chatbot Name', value:'chatbot_name', src:'', icon:'person' },
+        { name: 'User ID', value:'user_id', src:'', icon:'person'},
+        { name: 'User agent', value:'user_agent', src:'', icon:'person'},
+        { name: 'Source', value:'user_source_page', src:'', icon:'language'},
+        { name: 'Language', value:'user_language', src:'', icon:'language'},
+        { name: 'URL', value:'chat_url', src:'', icon:'laptop'},
+        { name: 'IP', value:'user_ip_address', src:'', icon: 'laptop'},
+        { name: 'Country', value:'user_country', src:'', icon:'language'},
+        { name: 'City', value:'user_city', src:'', icon:'language'},
+        
+    ]
+}
+
+export function retriveListOfVariables(intents : Array<Intent>){
+    variableList.userDefined = []
+    intents.forEach(intent => {
+        intent.actions.filter(action => action._tdActionType === TYPE_ACTION.ASSIGN_VARIABLE).forEach(((actionAssignVariable: ActionAssignVariable) => {
+            variableList.userDefined.push({ name: actionAssignVariable.assignTo, value: actionAssignVariable.assignTo})
+        }))
+    })
 }

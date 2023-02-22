@@ -24,7 +24,7 @@ export class ElementTextareaComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.leftCharsText = calculatingRemainingCharacters(this.textMessage);
+    this.leftCharsText = calculatingRemainingCharacters(this.textMessage, this.limitCharsText);
     if(this.leftCharsText<(this.limitCharsText/10)){
       this.alertCharsText = true;
     } else {
@@ -57,7 +57,7 @@ export class ElementTextareaComponent implements OnInit {
 
   /** */
   onChangeTextarea(text:string) {
-    this.leftCharsText = calculatingRemainingCharacters(this.textMessage);
+    this.leftCharsText = calculatingRemainingCharacters(this.textMessage, this.limitCharsText);
     if(this.leftCharsText<(this.limitCharsText/10)){
       this.alertCharsText = true;
     } else {

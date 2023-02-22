@@ -553,7 +553,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     InstallTemplateComponent, 
     CreateChatbotComponent,
     OnboardingWidgetComponent, 
-    CommunityTemplateDtlsComponent, HomePromoDesignStudioComponent
+    CommunityTemplateDtlsComponent, 
+    HomePromoDesignStudioComponent, 
+    
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
