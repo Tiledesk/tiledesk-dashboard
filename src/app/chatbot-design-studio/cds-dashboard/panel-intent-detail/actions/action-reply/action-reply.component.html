@@ -15,17 +15,22 @@
         (cdkDropListDropped)="drop($event)"
         >
         <!-- <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag> -->
-        <div *ngFor="let message of arrayMessagesWithWait; let i = index;" class="draggable-box" cdkDrag>
-            <div *ngIf="message.type === typeMessage.TEXT ">
+        <div *ngFor="let message of arrayMessagesWithWait; let i = index;" 
+            class="draggable-box" 
+            [ngStyle]="{'margin-bottom':typeAction === typeActions.RANDOM_REPLY?'30px':'0px'}" 
+            cdkDrag>
+            <div *ngIf="message.type === typeMessage.TEXT">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-text-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     ></appdashboard-text-response>
                 </div>
                 
                 <div class="response">
-                    <div class="response-drop" 
+                    <div *ngIf="typeAction === typeActions.REPLY"
+                        class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 
                         (mouseup)="mouseUp()" 
@@ -33,6 +38,7 @@
                     </div> 
                     <appdashboard-text-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     (moveUpResponse) = onMoveUpResponse($event)
                     (moveDownResponse) = onMoveDownResponse($event)
@@ -48,12 +54,14 @@
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-image-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     ></appdashboard-image-response>
                 </div>
                 
                 <div class="response">
-                    <div class="response-drop" 
+                    <div *ngIf="typeAction === typeActions.REPLY"
+                        class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 
                         (mouseup)="mouseUp()" 
@@ -61,6 +69,7 @@
                     </div> 
                     <appdashboard-image-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     (moveUpResponse) = onMoveUpResponse($event)
                     (moveDownResponse) = onMoveDownResponse($event)
@@ -76,12 +85,14 @@
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-frame-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     ></appdashboard-frame-response>
                 </div>
                 
                 <div class="response">
-                    <div class="response-drop" 
+                    <div *ngIf="typeAction === typeActions.REPLY" 
+                        class="response-drop" 
                         [ngClass]="{'grabbing':textGrabbing}"
                         (mousedown)="mouseDown()" 
                         (mouseup)="mouseUp()" 
@@ -89,6 +100,7 @@
                     </div> 
                     <appdashboard-frame-response
                     [index] = i
+                    [typeAction] = typeAction
                     [response] = message
                     onChangeText
                     (moveUpResponse) = onMoveUpResponse($event)

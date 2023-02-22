@@ -24,24 +24,21 @@
         padding: 0;
         i {
             align-items: center;
-            border: 1px solid rgba($color-light-gray-hex, $bg-opacity-empty);
             border-radius: 4px;
-            color: $color-text-select-hex;
             display: flex;
             width: 100%;
             padding: 8px;
             justify-content: center;
             font-size: 1.5em;
-
             background: $action-item-background;
             color: $action-item-color;
             border: 3px solid $bg-color-dark-hex;
             &:hover {
-                outline: 2px solid rgba(236,182,6,.6901960784)!important;
+               outline: 2px solid $action-color-selected!important;
             }
         }
         span {
-            color:$action-item-color;
+            color:$bg-color-dark-hex;
             font-size: 0.8em;
             font-weight: 400;
             line-height: 19px;

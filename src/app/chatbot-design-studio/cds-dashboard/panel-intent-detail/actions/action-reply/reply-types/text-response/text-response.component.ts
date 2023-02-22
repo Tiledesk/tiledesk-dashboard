@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter, Attribute } 
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { MessageWithWait, Button, MessageAttributes } from '../../../../../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
+import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
 
 @Component({
   selector: 'appdashboard-text-response',
@@ -27,8 +27,10 @@ export class TextResponseComponent implements OnInit {
   
   @Input() response: MessageWithWait;
   @Input() index: number;
+  @Input() typeAction: string;
 
   // Textarea //
+  typeActions = TYPE_ACTION;
   limitCharsText: number;
   textMessage: string;
   // leftCharsText: number;
