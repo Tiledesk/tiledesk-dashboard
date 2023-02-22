@@ -20,7 +20,7 @@ export class VariableListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('[BASE_CONDITION_ROW] ngOnChanges variableList', this.variableListUserDefined, this.variableListSystemDefined)
+    console.log('[VARIABLE-LIST] ngOnChanges variableList', this.variableListUserDefined, this.variableListSystemDefined)
     if(this.variableListUserDefined){
       this.filteredVariableList = this.variableListUserDefined
     }

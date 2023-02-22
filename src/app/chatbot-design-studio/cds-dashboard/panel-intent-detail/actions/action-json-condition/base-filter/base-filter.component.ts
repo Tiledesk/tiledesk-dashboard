@@ -19,11 +19,9 @@ export class BaseFilterComponent implements OnInit {
 
   selectedCondition: Condition;
   
-  variableListUserDefined: Array<{name: string, value: string}> = variableList.userDefined
-  variableListSystemDefined: Array<{name: string, value: string, src: string, icon: string}> = variableList.systemDefined
   OPERATORS_LIST = OPERATORS_LIST
   
-  constructor(private formBuilder: FormBuilder) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
@@ -56,6 +54,7 @@ export class BaseFilterComponent implements OnInit {
 
 
   onDismiss(condition: Condition){
+    console.log('selectedCOnditionnnnnnn-->', this.selectedCondition)
     if(condition){
       console.log('onDismiss popover condition', condition)
       if(this.expression.conditions.length === 0){
@@ -64,7 +63,6 @@ export class BaseFilterComponent implements OnInit {
         this.expression.conditions.push(new Operator())
         this.expression.conditions.push(condition)
       }
-      
     }
     this.addConditionFilter.close()
     

@@ -13,8 +13,6 @@ export class BaseConditionRowComponent implements OnInit {
 
   @ViewChild('operand1') inputOperand1: ElementRef;
 
-  @Input() variableListUserDefined: Array<{name: string, value: string}>
-  @Input() variableListSystemDefined: Array<{name: string, value: string, src?: string}>
   @Input() condition: Condition;
   @Output() close = new EventEmitter()
 
@@ -37,12 +35,7 @@ export class BaseConditionRowComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges){
     this.conditionForm = this.createConditionGroup()
     this.operatorsList = Object.keys(OPERATORS_LIST).map(key => (OPERATORS_LIST[key]))
-    if(this.variableListUserDefined){
-      this.filteredVariableList = this.variableListUserDefined
-      this.filteredIntentVariableList = this.variableListSystemDefined
-      console.log('[BASE_CONDITION_ROW] ngOnChanges filteredVariableList', this.filteredVariableList)
-    }
-
+    
     if(this.condition){
       console.log('[BASE_CONDITION_ROW] selectedConditionnnn-->', this.condition)
       this.setFormValue()
@@ -70,16 +63,6 @@ export class BaseConditionRowComponent implements OnInit {
       operator: this.condition.operator,
       operand2: this.condition.operand2
     })
-  }
-
-  onChangeSearch(event){
-    if(event && event.target){
-      this.textVariable = event.target.value
-    }else {
-      this.textVariable = event
-    }
-    this.filteredVariableList = this._filter(this.textVariable, this.variableListUserDefined)
-    this.filteredIntentVariableList = this._filter(this.textVariable, this.variableListSystemDefined)
   }
 
   onVariableSelected(variableSelected: {name: string, value: string}, step: number){
