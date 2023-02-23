@@ -257,6 +257,11 @@ section.value{
         width: 100%;
         font-size: 15px;
         height: 37px;
+
+        &[readonly=true]{
+            pointer-events: none;
+            cursor: default;
+        }
     }
 
     div.value-wrp{
@@ -330,5 +335,6 @@ section.submit{
     textarea {
         border: 1px solid rgb(118, 118, 118) !important;
         resize: none !important; 
+        padding: 8px 20px !important;
     }
 }

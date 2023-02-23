@@ -34,7 +34,7 @@ export class ActionAssignVariableComponent implements OnInit {
   private initialize() {
     this.actionAssignFormGroup = this.buildForm();
     this.actionAssignFormGroup.valueChanges.subscribe(form => {
-      this.logger.log('[ACTION-ASSIGN-VARIABLE] form valueChanges-->', form)
+      console.log('[ACTION-ASSIGN-VARIABLE] form valueChanges-->', form)
       if (form && (form.assignTo !== '' || form.expression !== ''))
         this.action = Object.assign(this.action, this.actionAssignFormGroup.value);
     })
@@ -43,7 +43,7 @@ export class ActionAssignVariableComponent implements OnInit {
   buildForm(): FormGroup {
     return this.formBuilder.group({
       expression: ['', Validators.required],
-      assignTo: ['', Validators.required]
+      assignTo: ['', [Validators.required, Validators.pattern(new RegExp(/^[a-zA-Z_]*[a-zA-Z_]+[a-zA-Z0-9_]*$/gm))]]
     })
   }
 
