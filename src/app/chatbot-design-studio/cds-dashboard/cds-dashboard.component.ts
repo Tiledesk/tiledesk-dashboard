@@ -564,11 +564,11 @@ export class CdsDashboardComponent implements OnInit {
     this.listOfIntents = intents;
     this.listOfActions = intents.map(a =>{
       if(a.intent_display_name.trim() === 'start'){
-        return {name: a.intent_display_name, value: '#'+a.intent_display_name, icon:'rocket_launch'}
+        return {name: a.intent_display_name, value: '#'+a.intent_id, icon:'rocket_launch'}
       }else if(a.intent_display_name.trim() === 'defaultFallback'){
-        return {name: a.intent_display_name, value: '#'+a.intent_display_name, icon:'undo'}
+        return {name: a.intent_display_name, value: '#'+a.intent_id, icon:'undo'}
       }else {
-        return {name: a.intent_display_name, value: '#'+a.intent_display_name, icon:'label_important_outline'}
+        return {name: a.intent_display_name, value: '#'+a.intent_id, icon:'label_important_outline'}
       }
       
     });

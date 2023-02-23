@@ -34,6 +34,7 @@
                 <cds-textarea
                     [textLimitBtn]="false"
                     [emoijPikerBtn]="false"
+                    
                     [control]="conditionForm.value.operand2.type=='const'? conditionForm.get('operand2.value'): conditionForm.get('operand2.name')"
                     (onSelected)="onVariableSelected($event,1)">
                 </cds-textarea>
