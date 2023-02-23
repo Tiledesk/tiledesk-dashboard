@@ -83,7 +83,6 @@ mat-form-field.box-textarea ::ng-deep {
     .tpl-text-limit {
         pointer-events: none;
         transition: background-color 0.3s, color 0.3s;
-        border-radius: 10px;
         .num-chars {
             background: $color-light-gray-hex;
             flex-shrink: 0;
@@ -163,6 +162,7 @@ mat-form-field.box-textarea ::ng-deep {
         color: #647283;
         &:hover {
             background: #006cff;
+            color:#fff ;
         }
     }
 
@@ -188,6 +188,7 @@ mat-form-field.box-textarea ::ng-deep {
             color: #647283;
             &:hover {
                 background: #006cff;
+                color:#fff ;
             }
         }
     }
