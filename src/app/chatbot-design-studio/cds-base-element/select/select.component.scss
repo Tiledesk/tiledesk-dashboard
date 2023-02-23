@@ -2,8 +2,8 @@
 
 ::ng-deep{
 
-    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-        .ng-option-label{
+    .ng-dropdown-panel .ng-dropdown-panel-items {
+        .ng-option{
             display: flex;
             align-items: center;
             gap: 10px;
@@ -11,12 +11,28 @@
             span.material-icons{
                 font-size: 20px;
                 color: $icon-color;
+
+                &.intent-start{
+                    color: #0aae10;
+                }
+                &.intent-defaultFallback{
+                    color: #ff4000
+                }
             }
+
+            &.ng-option-marked {
+                background-color: rgba(#545454, .23) !important;
+            }
+
+            &.ng-option-selected{
+                background-color: rgba(#545454, .43) !important;
+            }
+            
         }
     }
 
-    .ng-select .ng-select-container .ng-value{
-        .ng-value-label {
+    .ng-select .ng-select-container {
+        .ng-value {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -24,7 +40,20 @@
             span.material-icons{
                 font-size: 20px;
                 color: $icon-color;
+
+                &.intent-start{
+                    color: #0aae10;
+                }
+
+                &.intent-defaultFallback{
+                    color: #ff4000
+                }
             }
+        }
+
+        .ng-clear-wrapper{
+            height: 17px;
+            width: 17px;
         }
 
     } 
