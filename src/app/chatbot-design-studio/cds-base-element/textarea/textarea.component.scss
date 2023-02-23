@@ -1,6 +1,5 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
-
 .text-editor-wrapper {
     font-size: $font-size-base;
     position: relative;
@@ -22,9 +21,9 @@ mat-form-field.mat-focused ::ng-deep {
             padding: 0px;
             .mat-form-field-infix {
                 textarea {
-                    border: 1px solid $icon-color!important;
-                    outline: 1px solid $icon-color!important;
-                    transition: border .3s;
+                    border: 1px solid $icon-color !important;
+                    outline: 1px solid $icon-color !important;
+                    transition: border 0.3s;
                 }
             }
         }
@@ -32,7 +31,7 @@ mat-form-field.mat-focused ::ng-deep {
 }
 mat-form-field.box-textarea ::ng-deep {
     .mat-form-field-wrapper {
-        padding-bottom:0;
+        padding-bottom: 0;
         .mat-form-field-flex {
             border-radius: 4px 4px 0 0;
             padding: 0px;
@@ -41,14 +40,14 @@ mat-form-field.box-textarea ::ng-deep {
             background-color: transparent !important;
         }
 
-        .mat-form-field-infix{
+        .mat-form-field-infix {
             padding: 0px;
             border-top: 0px;
         }
     }
     .mat-form-field-underline {
         display: none;
-    }    
+    }
 }
 
 /** box-textarea **/
@@ -84,14 +83,16 @@ mat-form-field.box-textarea ::ng-deep {
     .tpl-text-limit {
         pointer-events: none;
         transition: background-color 0.3s, color 0.3s;
+        border-radius: 10px;
         .num-chars {
             background: $color-light-gray-hex;
+            flex-shrink: 0;
             padding: 0px 8px;
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 0.8em;
             color: $color-text-box-hex;
             float: right;
-            line-height: 20px;
+            line-height: 16px;
             font-weight: 700;
             width: 40px;
             text-align: center;
@@ -101,48 +102,71 @@ mat-form-field.box-textarea ::ng-deep {
         }
     }
 
-    .insert-attribute-btn {
+    // .insert-attribute-btn {
+    //     -webkit-box-align: center;
+    //     -ms-flex-align: center;
+    //     -webkit-box-pack: center;
+    //     -ms-flex-pack: center;
+    //     align-items: center;
+    //     background: transparent;
+    //     border-radius: 100%;
+    //     cursor: pointer;
+    //     display: flex;
+    //     height: 23px;
+    //     justify-content: center;
+    //     width: 24px;
+    //     color: #647283;
+    //     box-shadow: 0 1px 3px #00000030;
+    //     border: unset;
+    //     z-index: 1;
+    //     position: relative;
+
+    //     &:hover {
+    //         background: rgba(0, 108, 255, .3);
+    //     }
+    // }
+
+    // .material-icons-data-object {
+    //     font-size: 16px;
+    //     position: absolute;
+    //     left: 1px;
+    //     top: 0px;
+    //     text-align: center;
+    //     background: #fff;
+    //     border-radius: 50%;
+    //     height: 23px;
+    //     width: 23px;
+    //     padding: 3px 3px;
+    //     z-index: 0;
+    //     box-shadow: 0 1px 3px #00000030;
+
+    // }
+
+    .text-editor-insert-attribute {
         -webkit-box-align: center;
         -ms-flex-align: center;
         -webkit-box-pack: center;
         -ms-flex-pack: center;
         align-items: center;
-        background: transparent;
+        background: #fff;
         border-radius: 100%;
+        -webkit-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
         cursor: pointer;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
         height: 23px;
         justify-content: center;
-        width: 24px;
-        color: #647283;
-        box-shadow: 0 1px 3px #00000030;
-        border: unset;
-        z-index: 1;
-        position: relative;
-
-        &:hover {
-            background: rgba(0, 108, 255, .3);
-        }
-    }
-    
-    
-    .material-icons-data-object {
-        font-size: 16px;
-        position: absolute;
-        left: 1px;
-        top: 0px;
-        text-align: center;
-        background: #fff;
-        border-radius: 50%;
-        height: 23px;
+        margin-right: 5px;
         width: 23px;
-        padding: 3px 3px;
-        z-index: 0;
-        box-shadow: 0 1px 3px #00000030;
+        color: #647283;
+        &:hover {
+            background: #006cff;
+        }
     }
 
     .emoji-picker {
-        
         .emoji-picker-button {
             -webkit-box-align: center;
             -ms-flex-align: center;
@@ -159,23 +183,22 @@ mat-form-field.box-textarea ::ng-deep {
             display: flex;
             height: 23px;
             justify-content: center;
+            margin-right: 5px;
             width: 23px;
             color: #647283;
-
             &:hover {
-                background: rgba(0, 108, 255, 0.3);
+                background: #006cff;
             }
         }
     }
 }
-
 
 ::ng-deep .add-filter-panel {
     display: flex;
     -ms-flex-direction: column;
     flex-direction: column;
     // max-height: 600px;
-    min-height: 200px;
+    // min-height: 200px;
     box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
         0 4px 4px -2px rgb(91 94 105 / 15%);
     background: rgb(255, 255, 255);

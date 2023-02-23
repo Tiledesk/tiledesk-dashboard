@@ -71,7 +71,7 @@ export class CDSTextareaComponent implements OnInit {
 
   /** */
   onChangeTextarea(event) {
-    this.getCursorPosition()
+   
     console.log('[CDS-TEXAREA] onChangeTextarea-->', event)
     if (event) {
       this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
@@ -122,25 +122,11 @@ export class CDSTextareaComponent implements OnInit {
 
     console.log('[CDS-TEXAREA] - GET TEXT AREA - elTextarea ', this.elTextarea);
     if (this.elTextarea) {
-      this.getCursorPosition()
+      
     }
   }
 
 
-
-  mouseUp() {
-    var t = document.getElementById("textarea");
-   
-  }
-
-  getCursorPosition() {
-  //   const position = this.elTextarea.selectionStart
-  //   console.log('[CDS-TEXAREA] - GET CURSOR POSITION - POS  ', position);
-
-  //   var cursor_pos = this.elTextarea.selectionStart;
-    
-  //   this.elTextarea.focus();
-  }
 
   onVariableSelected(variableSelected: { name: string, value: string }) {
     console.log('variableSelectedddd', variableSelected)

@@ -47,8 +47,8 @@
         <!-- <text-editable-div class="editable-div" [minHeightContent]="110" [emoijPikerBtn]="true" [setAttributeBtn]="true"  [text]="actionBody" [textLimitBtn]="false" [textLimit]="1024"  (textChanged)="onEditableDivTextChange($event, 'text')"> </text-editable-div> -->
 
         <cds-textarea class="body-text-area" 
-        [limitCharsText]="50" 
-            [emoijPikerBtn]="false"
+            [limitCharsText]="1024" 
+            [emoijPikerBtn]="true"
             [text]="actionBody" 
             [minRow]="4" 
             popoverVerticalAlign="above"

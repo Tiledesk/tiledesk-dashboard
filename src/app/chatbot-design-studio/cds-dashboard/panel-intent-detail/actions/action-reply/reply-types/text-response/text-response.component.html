@@ -44,7 +44,9 @@
 
         <cds-textarea class="text-area"
             [text]="response.text" 
-            (onChange)="onChangeTextarea($event)">
+            (onChange)="onChangeTextarea($event)"
+            popoverVerticalAlign="above"
+            [emoijPikerBtn]="false">
         </cds-textarea>
              
         <div class="text-editor-drop">
