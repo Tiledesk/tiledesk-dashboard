@@ -23,6 +23,7 @@ export class BaseConditionRowComponent implements OnInit {
   step: number = 0;
   disableInput: boolean = true
 
+
   conditionForm: FormGroup
 
   constructor(
@@ -71,8 +72,18 @@ export class BaseConditionRowComponent implements OnInit {
       this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
       this.step +=1
     }else if (step == 1){
-      this.conditionForm.patchValue({ operand2: {type: 'var', name: variableSelected.name}}, {emitEvent: false})
-      console.log('formmmmm', this.conditionForm)
+      // this.conditionForm.patchValue({ operand2: {type: 'var', name: variableSelected.name}}, {emitEvent: false})
+      // console.log('formmmmm', this.conditionForm)
+    }
+  }
+
+  onChangeTextArea(text: string, step: number){
+    console.log('textttt', text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)))
+    if(text && text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))){
+      text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)).forEach(match => {
+        text = text.replace(text,match)
+        this.conditionForm.patchValue({ operand2: {type: 'var', name: text}}, {emitEvent: false})
+      })
     }
   }
 
