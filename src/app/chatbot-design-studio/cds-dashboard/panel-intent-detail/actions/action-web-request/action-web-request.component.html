@@ -1,4 +1,9 @@
-<div class="cds-web-request">
+<cds-action-description 
+    [actionType]="'WEB_REQUEST'"
+    [actionSelected]="action">
+</cds-action-description>
+
+<div class="content">
 
     <div class="cds-web-request-row input-group cds-input-group">
         <div class="label-assign-to">Assign to</div>
@@ -31,15 +36,15 @@
     </div>
     
     <div class="cds-web-request-row">
-            <textarea
-                [ngClass]="{'jsonError': !jsonIsValid}"
-                class = "text-editable-div"
-                [(ngModel)]="jsonText"
-                [maxlength]="limitCharsText"
-                cdkAutosizeMinRows="5"
-                cdkAutosizeMaxRows="10"
-                (ngModelChange)="onChangeTextarea($event)">
-            </textarea>
+        <textarea
+            [ngClass]="{'jsonError': !jsonIsValid}"
+            class = "text-editable-div"
+            [(ngModel)]="jsonText"
+            [maxlength]="limitCharsText"
+            cdkAutosizeMinRows="5"
+            cdkAutosizeMaxRows="10"
+            (ngModelChange)="onChangeTextarea($event)">
+        </textarea>
     </div>
 
     <div class="cds-web-request-row-error center" [ngClass]="{'json-error-yes': !jsonIsValid}">

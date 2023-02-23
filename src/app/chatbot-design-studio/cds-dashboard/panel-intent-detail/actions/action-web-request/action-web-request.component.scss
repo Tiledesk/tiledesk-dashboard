@@ -1,158 +1,164 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
-.cds-web-request {
-    .cds-web-request-row {
-        margin: 10px 4px;
-        display: flex;
-        &.center{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    }
-    .label-assign-to {
-        cursor: default;
-        display: flex;
-        outline: none;
-        overflow: hidden;
-        position: relative;
-        width: 150px;
-        height: 36px;
-        border-radius: 4px 0 0 4px;
-        background: #f2f2f2;
-        font-weight: 700;
-        margin: 6px 0;
-        padding: 8px 0 0 10px;
-    }
-    .input-group .input-group-addon {
-        border: 0;
-        background: transparent;
-        padding: 6px 0;
-    }
-    .cds-input-group {
-        margin: 10px 15px;
-        input {
-            border: 0;
-            background: #fff;
-            margin: 6px 0px 0;
-            height: 36px;
-            width: 100%;
-            padding: 0 10px;
-            border-radius: 0px 4px 4px 0px;
-        }
-
-    }
-
-    .form-control-select {
-        width: 120px!important;
-    }
-    .form-control-select ::ng-deep .ng-select-container { 
-        cursor: default;
-        display: flex;
-        outline: none;
-        overflow: hidden;
-        position: relative;
-        width: 100%;
-        border-radius: 4px 0px 0px 4px;
-        background: #f2f2f2;
-        font-weight: bold;
-    }
-    .form-control-select.ng-select-focused ::ng-deep .ng-select-container { 
-        border-color: transparent;
-        border: 1;
-        box-shadow: none;
-    }
-    .ng-select {
-        position: relative;
-        display: block;
-        box-sizing: border-box;
-        width: 120px;
-    }
-
-    .add-response { 
-        text-align: center;
-        cursor: pointer;
-        box-sizing: border-box;
-        outline: none;
-        margin: 0 0 0 14px;
-        padding: 0;
-        span {
-            align-items: center;
-            display: flex;
-            width: 80px;
-            padding: 8px;
-            justify-content: center;
-            background: $action-item-background;
-            color: $action-item-color;
-            border-radius: 6px;
-            height: 40px;
-            margin: 0 10px 0 0;
-            font-size: 0.8em;
-            border: 1px solid #0F172A;
-            font-weight: 400;
-            &:hover {
-                outline: 2px solid rgba(236,182,6,.6901960784)!important;
-            }
-            &.cds-action-active {
-                outline: 2px solid rgba(236,182,6,.6901960784)!important;
-            }
-        }
-    }
-
-    .text-editable-div {
-        width: 100%;
-    }
-    textarea{
-        border: 0px solid #000;
-        margin: 10.5px;
-        line-height: 25px;
-        appearance: textfield;
-        background: #fff;
-        border-radius: 8px;
-        width: calc(100% - 0px);
-        white-space: pre;
-        white-space: pre-wrap;
-        white-space: break-spaces;
-        display: inline-block;
-        font-size: 14px;
-        overflow: hidden auto;
-        padding: 5px 10px;
-        height: 200px;
-        &.jsonError {
-            outline: rgb(209, 47, 25) solid 2px !important; //rgb(236, 6, 6) solid 2px !important;
-        }
-    }
-
-    .cds-web-request-row-error {
-        margin: 10px 15px;
-        display: flex;
-        font-size: 0.8em;
-        line-height: normal;
-        padding: 10px;
-        border-radius: 4px;
-        color: rgb(209, 47, 25);
-        background: rgb(251, 227, 228);
-        border-color: rgb(251, 194, 196);
-        opacity: 0;
-        span{
-            line-height: normal;
-            min-height: 30px;
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-        &.center{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        &.json-error-yes {
-            opacity: 1;
-            transition: opacity 0.6s;
-        } 
-    }
-    
+.content {
+    //padding: 10px 30px;
+    padding: 20px 0px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
+
+.cds-web-request-row {
+    margin: 10px 4px;
+    display: flex;
+    &.center{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+.label-assign-to {
+    cursor: default;
+    display: flex;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    width: 150px;
+    height: 36px;
+    border-radius: 4px 0 0 4px;
+    background: #f2f2f2;
+    font-weight: 700;
+    margin: 6px 0;
+    padding: 8px 0 0 10px;
+}
+.input-group .input-group-addon {
+    border: 0;
+    background: transparent;
+    padding: 6px 0;
+}
+.cds-input-group {
+    margin: 10px 15px;
+    input {
+        border: 0;
+        background: #fff;
+        margin: 6px 0px 0;
+        height: 36px;
+        width: 100%;
+        padding: 0 10px;
+        border-radius: 0px 4px 4px 0px;
+    }
+
+}
+
+.form-control-select {
+    width: 120px!important;
+}
+.form-control-select ::ng-deep .ng-select-container { 
+    cursor: default;
+    display: flex;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    border-radius: 4px 0px 0px 4px;
+    background: #f2f2f2;
+    font-weight: bold;
+}
+.form-control-select.ng-select-focused ::ng-deep .ng-select-container { 
+    border-color: transparent;
+    border: 1;
+    box-shadow: none;
+}
+.ng-select {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    width: 120px;
+}
+
+.add-response { 
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    outline: none;
+    margin: 0 0 0 14px;
+    padding: 0;
+    span {
+        align-items: center;
+        display: flex;
+        width: 80px;
+        padding: 8px;
+        justify-content: center;
+        background: $action-item-background;
+        color: $action-item-color;
+        border-radius: 6px;
+        height: 40px;
+        margin: 0 10px 0 0;
+        font-size: 0.8em;
+        border: 1px solid #0F172A;
+        font-weight: 400;
+        &:hover {
+            outline: 2px solid rgba(236,182,6,.6901960784)!important;
+        }
+        &.cds-action-active {
+            outline: 2px solid rgba(236,182,6,.6901960784)!important;
+        }
+    }
+}
+
+.text-editable-div {
+    width: 100%;
+}
+textarea{
+    border: 0px solid #000;
+    margin: 10.5px;
+    line-height: 25px;
+    appearance: textfield;
+    background: #fff;
+    border-radius: 8px;
+    width: calc(100% - 0px);
+    white-space: pre;
+    white-space: pre-wrap;
+    white-space: break-spaces;
+    display: inline-block;
+    font-size: 14px;
+    overflow: hidden auto;
+    padding: 5px 10px;
+    height: 200px;
+    &.jsonError {
+        outline: rgb(209, 47, 25) solid 2px !important; //rgb(236, 6, 6) solid 2px !important;
+    }
+}
+
+.cds-web-request-row-error {
+    margin: 10px 15px;
+    display: flex;
+    font-size: 0.8em;
+    line-height: normal;
+    padding: 10px;
+    border-radius: 4px;
+    color: rgb(209, 47, 25);
+    background: rgb(251, 227, 228);
+    border-color: rgb(251, 194, 196);
+    opacity: 0;
+    span{
+        line-height: normal;
+        min-height: 30px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+    &.center{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &.json-error-yes {
+        opacity: 1;
+        transition: opacity 0.6s;
+    } 
+}
+    
+
 
 
 
