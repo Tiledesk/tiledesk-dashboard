@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { variableList } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'variable-list',
@@ -7,26 +8,28 @@ import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angu
 })
 export class VariableListComponent implements OnInit {
   
-  @Input() variableListUserDefined: Array<{name: string, value: string}>
-  @Input() variableListSystemDefined: Array<{name: string, value: string, src?: string}>
   @Output() onSelected = new EventEmitter()
 
+  variableListUserDefined: Array<{name: string, value: string}> = variableList.userDefined 
+  variableListSystemDefined: Array<{name: string, value: string, src?: string}> = variableList.systemDefined
+  
   filteredVariableList: Array<{name: string, value: string}> = []
   filteredIntentVariableList: Array<{name: string, value: string, src?: string}>
   textVariable: string = ''
+
   constructor() { }
 
   ngOnInit(): void {
-  }
-
-  ngOnChanges(){
-    console.log('[BASE_CONDITION_ROW] ngOnChanges variableList', this.variableListUserDefined, this.variableListSystemDefined)
+    console.log('[VARIABLE-LIST] ngOnChanges variableList', this.variableListUserDefined, this.variableListSystemDefined)
     if(this.variableListUserDefined){
       this.filteredVariableList = this.variableListUserDefined
     }
     if(this.variableListSystemDefined){
       this.filteredIntentVariableList = this.variableListSystemDefined
     }
+  }
+
+  ngOnChanges(){
   }
 
   onVariableSelected(variableSelected: {name: string, value: string}){

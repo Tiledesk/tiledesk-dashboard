@@ -4,6 +4,7 @@
 
             <cds-action-reply *ngSwitchCase="typeAction.REPLY"
                 class="panel-response"
+                [typeAction]="typeAction.REPLY"
                 [reply]="elementSelected"
                 [intent_display_name]="elementIntentSelected.intent_display_name"
                 [listOfActions]="listOfActions">
@@ -11,6 +12,7 @@
 
             <cds-action-reply *ngSwitchCase="typeAction.RANDOM_REPLY"
                 class="panel-response"
+                [typeAction]="typeAction.RANDOM_REPLY"
                 [reply]="elementSelected"
                 [intent_display_name]="elementIntentSelected.intent_display_name"
                 [listOfActions]="listOfActions">

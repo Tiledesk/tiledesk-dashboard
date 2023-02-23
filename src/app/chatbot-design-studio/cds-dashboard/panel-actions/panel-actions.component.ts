@@ -1,4 +1,3 @@
-import { Operator } from './../../../models/intent-model';
 import { ACTIONS_LIST } from './../../utils';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, HostListener } from '@angular/core';
 
@@ -172,8 +171,8 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     }
     if(typeAction === TYPE_ACTION.JSON_CONDITION){
       let action = new ActionJsonCondition();
-      action.groups.push( new Expression())
-      this.logger.log('actionnnnn', action)
+      action.jsonCondition.groups.push( new Expression())
+      console.log('actionnnnn', action)
       this.intentSelected.actions.push(action);
     }
     

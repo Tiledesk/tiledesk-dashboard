@@ -9,7 +9,7 @@
         <!-- formArrayName="groups" -->
         <div > 
             <!-- [formGroupName]="i" -->
-            <div  class="text-editor-wrapper" *ngFor="let group of action?.groups; let i = index; let last = last">
+            <div  class="text-editor-wrapper" *ngFor="let group of action?.jsonCondition?.groups; let i = index; let last = last">
                 <!-- EXPRESSION [i]-->
                 <div *ngIf="i%2 === 0">
                     <base-filter *ngIf="i%2 === 0"
@@ -26,6 +26,7 @@
                             [items]="booleanOperators"
                             [bindLabelSelect]="'operator'"
                             [bindValueSelect]="'operator'"
+                            [placeholder]="'Select a block'"
                             [itemSelected]="group?.operator"
                             (onSelected)="onChangeOperator($event, i)">
                         </cds-select>
@@ -54,6 +55,8 @@
                         [bindLabelSelect]="'name'"
                         [bindValueSelect]="'value'"
                         [itemSelected]="action?.trueIntent"
+                        [placeholder]="'Select a block'"
+                        [clearable]="true"
                         (onSelected)="onChangeForm($event, 'trueIntent')">
                     </cds-select>
                 </ul> 
@@ -70,6 +73,8 @@
                         [bindLabelSelect]="'name'"
                         [bindValueSelect]="'value'"
                         [itemSelected]="action?.falseIntent"
+                        [placeholder]="'Select a block'"
+                        [clearable]="true"
                         (onSelected)="onChangeForm($event, 'falseIntent')">
                     </cds-select>
                 </ul>

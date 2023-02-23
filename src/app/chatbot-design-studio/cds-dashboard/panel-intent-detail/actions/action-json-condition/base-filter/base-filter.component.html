@@ -43,11 +43,9 @@
 </div>
 
 
-<sat-popover #addConditionFilter id="addConditionFilter" backDrop panelClass="add-filter-panel"
+<sat-popover #addConditionFilter id="addConditionFilter" panelClass="add-filter-panel"
     verticalAlign="below" interactiveClose="false">
     <base-condition-row
-        [variableListUserDefined]="variableListUserDefined"
-        [variableListSystemDefined]="variableListSystemDefined"
         [condition]="selectedCondition"
         (close)="onDismiss($event)">
     </base-condition-row>

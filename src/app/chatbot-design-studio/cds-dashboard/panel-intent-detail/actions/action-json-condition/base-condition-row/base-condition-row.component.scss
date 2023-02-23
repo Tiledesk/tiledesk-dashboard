@@ -257,6 +257,11 @@ section.value{
         width: 100%;
         font-size: 15px;
         height: 37px;
+
+        &[readonly=true]{
+            pointer-events: none;
+            cursor: default;
+        }
     }
 
     div.value-wrp{
@@ -274,8 +279,8 @@ section.value{
             justify-content: center;
 
             .close{
-                height: 16px;
-                width: 16px;
+                // height: 16px;
+                width: 17px;
                 top: -7px;
                 right: -7px;
                 font-size: 15px;
@@ -284,6 +289,9 @@ section.value{
                 background: white;
                 cursor: pointer;
                 position: absolute;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 opacity: 1;
                 &:hover{
                     background: #ecb606;
@@ -318,5 +326,15 @@ section.submit{
         height: 37px;
         line-height: 35px;
     
+    }
+}
+
+
+::ng-deep cds-textarea {
+    display: flex;
+    textarea {
+        border: 1px solid rgb(118, 118, 118) !important;
+        resize: none !important; 
+        padding: 8px 20px !important;
     }
 }

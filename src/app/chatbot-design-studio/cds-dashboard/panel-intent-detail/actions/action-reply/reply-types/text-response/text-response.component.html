@@ -1,4 +1,4 @@
-<div class="extensions-response">
+<div *ngIf="typeAction === typeActions.REPLY" class="extensions-response">
     <div class="delay-wrapper">
         <appdashboard-delay-slider
         [delayTime]="delayTime"
@@ -17,19 +17,19 @@
             <div class="control-button delete" (click)="onDeleteResponse()">
                 <em class="material-icons">delete</em>
             </div>
-            <div class="control-button" (click)="onMoveUpResponse()">
+            <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveUpResponse()">
                 <em class="material-icons">expand_less</em>
             </div> 
-            <div class="control-button" (click)="onMoveDownResponse()">
+            <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveDownResponse()">
                 <em class="material-icons">expand_more</em>
             </div>
         </div>
 
-        <appdashboard-element-textarea
+        <!-- <appdashboard-element-textarea
             [limitCharsText]="limitCharsText"
             [textMessage]="response.text"
             (changeTextarea)="onChangeTextarea($event)"
-        ></appdashboard-element-textarea>
+        ></appdashboard-element-textarea> -->
         
         <!-- <text-editable-div 
             class = "text-editable-div"
@@ -41,8 +41,15 @@
             [minHeightContent]="125"
             (textChanged)="onChangeTextarea($event)"> 
         </text-editable-div> -->
+
+        <cds-textarea class="text-area"
+            [text]="response.text" 
+            (onChange)="onChangeTextarea($event)"
+            popoverVerticalAlign="above"
+            [emoijPikerBtn]="false">
+        </cds-textarea>
              
-        <div class="text-editor-drop">
+        <div *ngIf="typeAction === typeActions.REPLY" class="text-editor-drop">
             <em class="material-icons">drag_indicator</em>
         </div>
 

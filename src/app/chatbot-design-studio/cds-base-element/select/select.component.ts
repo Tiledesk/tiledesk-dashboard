@@ -14,6 +14,8 @@ export class SelectComponent implements OnInit {
   @Input() itemSelected: any
   @Input() bindLabelSelect: string;
   @Input() bindValueSelect: string;
+  @Input() clearable: boolean = false;
+  @Input() placeholder: string = 'Select an option'
   @Input() formGroup: FormGroup = new FormGroup({ select: new FormControl()});
   @Input() formControlName: string = 'select';
   @Output() onSelected = new EventEmitter()
@@ -30,14 +32,14 @@ export class SelectComponent implements OnInit {
     //   console.log('itemmmm selectedddd-->', this.itemSelected, this.items)
     //   this.itemSelected = this.items.find(el => el[this.bindValueSelect] === this.itemSelected)
     // }
-    // this.itemSelected = this.items.find(el => el[this.bindValueSelect] === this.itemSelected)
+    this.itemSelected = this.items.find(el => el[this.bindValueSelect] === this.itemSelected)[this.bindValueSelect]
   }
 
   onChangeActionButton(event) {
-    console.log("[SELECT BASE ELEMENT] onChangeActionButton event: ", event)
+    console.log("[SELECT BASE ELEMENT] onChangeActionButton event: ", event, this.items)
     // this.itemSelected = event;
-    this.itemSelected = this.items.find(el => el[this.bindValueSelect] === event)
-    this.onSelected.emit(this.itemSelected)
+    this.itemSelected = event[this.bindValueSelect];
+    this.onSelected.emit(event)
   }
 
 }

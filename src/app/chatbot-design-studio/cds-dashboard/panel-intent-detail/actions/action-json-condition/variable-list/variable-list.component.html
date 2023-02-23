@@ -5,7 +5,7 @@
         [(ngModel)]="textVariable"
         (ngModelChange)="onChangeSearch($event)">
 </div>
-<div id="scrollMe">
+<div id="variable-list-scrollMe">
     <div id="data" *ngIf="filteredVariableList && filteredVariableList.length > 0">
         <div class="category-name" >USER DATA</div>
         <div *ngFor="let variable of filteredVariableList" (click)="onVariableSelected(variable)" class="category-row">
@@ -20,7 +20,7 @@
             <label class="category-row-name">{{variable?.name}}</label>
         </div>
     </div>
-    <div id="no-data" *ngIf="filteredVariableList.length === 0 || filteredIntentVariableList.length == 0">
+    <div id="no-data" *ngIf="filteredVariableList.length === 0 && filteredIntentVariableList.length == 0">
        <div class="no-result">
             <span class="material-icons">search</span>
             <span class="text">Nothing found. Please consider changing your search query.</span>

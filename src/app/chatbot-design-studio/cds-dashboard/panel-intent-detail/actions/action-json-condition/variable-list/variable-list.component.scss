@@ -25,9 +25,9 @@
     font-size: 18px;
 }
 
-#scrollMe{
-   
-    max-height: calc(34vh - 50px);
+#variable-list-scrollMe {
+    // max-height: calc(34vh - 50px);
+    max-height: 90vh;
     overflow-y: scroll;
 }
 
