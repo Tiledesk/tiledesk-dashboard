@@ -20,7 +20,7 @@
             <label class="category-row-name">{{variable?.name}}</label>
         </div>
     </div>
-    <div id="no-data" *ngIf="filteredVariableList.length === 0 || filteredIntentVariableList.length == 0">
+    <div id="no-data" *ngIf="filteredVariableList.length === 0 && filteredIntentVariableList.length == 0">
        <div class="no-result">
             <span class="material-icons">search</span>
             <span class="text">Nothing found. Please consider changing your search query.</span>
