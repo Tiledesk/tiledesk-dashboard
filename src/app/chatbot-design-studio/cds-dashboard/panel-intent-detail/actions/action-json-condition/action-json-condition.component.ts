@@ -128,7 +128,6 @@ export class ActionJsonConditionComponent implements OnInit {
 
   onChangeForm(event:{name: string, value: string}, type){
     this.action[type]=event.value
-    console.log('actionnnnn', this.action)
   }
 
 }

@@ -142,10 +142,13 @@
 
 /** TEXT **/
 mat-form-field.mat-form-field ::ng-deep {
-    input{
-        &:hover{
-            border: 1px solid $icon-color !important;
-            outline: 1px solid $icon-color !important;
+    .mat-form-field-infix{
+        border-top: 0px !important;
+        input{
+            &:hover{
+                border: 1px solid $icon-color !important;
+                outline: 1px solid $icon-color !important;
+            }
         }
     }
 }

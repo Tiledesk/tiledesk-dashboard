@@ -60,8 +60,8 @@ export class CDSTextareaComponent implements OnInit {
     }
   }
 
-   /** */
-   onChangeTextarea(event) {
+  /** */
+  onChangeTextarea(event) {
     console.log('[CDS-TEXAREA] onChangeTextarea-->', event)
     if (event) {
       this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
@@ -125,8 +125,8 @@ export class CDSTextareaComponent implements OnInit {
       // this.insertAtCursor(this.elTextarea, '${' + variableSelected.value + '}')
       this.insertAtCursorPos(this.elTextarea, '${' + variableSelected.value + '}')
       this.onChangeTextarea(this.elTextarea.value)
-      this.onSelected.emit(variableSelected)
       this.addVariable.close()
+      this.onSelected.emit(variableSelected)
     }
   }
 

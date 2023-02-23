@@ -157,13 +157,8 @@
 
       <div class="action-box-wpr">
         <div class="action-box">
-          <div class="action-btn-icon"
-            matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 
-            matTooltip="Coming Soon" 
-            #tooltip="matTooltip"
-            matTooltipPosition='below' 
-            matTooltipHideDelay="100">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.DELETE_VARIABLE)" disabled>
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.DELETE_VARIABLE)">
               <img [src]="ACTIONS_LIST['DELETE_VARIABLE'].src" [title]="ACTIONS_LIST['DELETE_VARIABLE'].name">
             </button>
           </div>

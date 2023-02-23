@@ -72,8 +72,8 @@ export class BaseConditionRowComponent implements OnInit {
       this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
       this.step +=1
     }else if (step == 1){
-      // this.conditionForm.patchValue({ operand2: {type: 'var', name: variableSelected.name}}, {emitEvent: false})
-      // console.log('formmmmm', this.conditionForm)
+      this.conditionForm.patchValue({ operand2: {type: 'var', name: variableSelected.name}}, {emitEvent: false})
+      console.log('formmmmm', this.conditionForm)
     }
   }
 
@@ -101,12 +101,6 @@ export class BaseConditionRowComponent implements OnInit {
 
   onClickOperator(operator: {}){
     this.conditionForm.patchValue({ operator: operator['type']})
-
-    // let popoverContent = document.getElementsByClassName('filter-item-drop-down')[0] as  HTMLElement
-    // setTimeout(()=>{
-    //   console.log('contenttt', popoverContent)
-    //   popoverContent.scroll()
-    // },100)
   }
 
   onSubmitCondition(){
