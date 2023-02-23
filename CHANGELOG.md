@@ -1,5 +1,15 @@
 # tiledesk-dashboard
 
+### 2.4.6-rc2
+- Added: readonly property to cds-textarea base element
+- Added: jsonCondition property to action-json-condition
+- Changed: set var into operant2 without ${*}
+- Changed: added ng-template and removed ng-option in select base element
+- Fixes the bug: check if variable already exist before pushing
+- Fixes the bug: if condition already exist, do not push new condition but override the existing one
+- Fixes the bug: select not save current value
+- Fixes the bug: no-data showed also if variable exist in variable-list component
+
 ### 2.4.6-rc1
 - Adds the ability to remove current group if no conditions are in it
 - Adds the action "web request"
@@ -11,13 +21,13 @@
 
 ### 2.4.5
 - Deploys in production
-- Fix bug: On chatbot details page > Import/Export tab, the CSV file upload confirmation pop-up window does not close
+- Fixes the bug: On chatbot details page > Import/Export tab, the CSV file upload confirmation pop-up window does not close
 - Moves the Deploy to Community button, available in the header of the chatbot dashboard, below the Publish button dropdown
 - Displays an in-app notification if the deployment to community is successful
 - Adds "Try WhatsApp" button in the header of the chatbot dashboard
 
 ### 2.4.5-rc2
-- Fix bug: On chatbot details page > Import/Export tab, the CSV file upload confirmation pop-up window does not close
+- Fixes the bug: On chatbot details page > Import/Export tab, the CSV file upload confirmation pop-up window does not close
 - Moves the Deploy to Community button, available in the header of the chatbot dashboard, below the Publish button dropdown
 - Displays an in-app notification if the deployment to community is successful
 - Adds "Try WhatsApp" button in the header of the chatbot dashboard
