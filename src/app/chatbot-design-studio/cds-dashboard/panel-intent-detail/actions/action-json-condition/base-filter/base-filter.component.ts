@@ -18,7 +18,8 @@ export class BaseFilterComponent implements OnInit {
   @Output() onDeleteGroup = new EventEmitter()
 
   selectedCondition: Condition;
-  
+  selectedIndex: number;
+
   OPERATORS_LIST = OPERATORS_LIST
   
   constructor() { }
@@ -32,6 +33,7 @@ export class BaseFilterComponent implements OnInit {
 
   onOpenConditionDetail(index: number){
     this.selectedCondition = this.expression.conditions[index] as Condition
+    this.selectedIndex = index
   }
 
   onDeleteCondition(index: number, last: boolean){
@@ -54,15 +56,23 @@ export class BaseFilterComponent implements OnInit {
 
 
   onDismiss(condition: Condition){
-    console.log('selectedCOnditionnnnnnn-->', this.selectedCondition)
     if(condition){
       console.log('onDismiss popover condition', condition)
-      if(this.expression.conditions.length === 0){
-        this.expression.conditions.push(condition)
-      }else{
-        this.expression.conditions.push(new Operator())
-        this.expression.conditions.push(condition)
+      //if condition already exist --> do not push new condition
+      //else push new operaor and condition  
+      if(this.selectedCondition){
+        this.expression.conditions[this.selectedIndex]= condition
+      }else {
+
+        if(this.expression.conditions.length === 0){
+          this.expression.conditions.push(condition)
+        }else{
+          this.expression.conditions.push(new Operator())
+          this.expression.conditions.push(condition)
+        }
+
       }
+      
     }
     this.addConditionFilter.close()
     
