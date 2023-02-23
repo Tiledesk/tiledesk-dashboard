@@ -25,6 +25,7 @@ export class CDSTextareaComponent implements OnInit {
   @Input() textLimitBtn: boolean = true;
   @Input() minRow: number = 2;
   @Input() maxRow: number = 20;
+  @Input() readonly: boolean = false;
   @Input() popoverVerticalAlign: string = 'below'
   
   @Output() onChange = new EventEmitter();
