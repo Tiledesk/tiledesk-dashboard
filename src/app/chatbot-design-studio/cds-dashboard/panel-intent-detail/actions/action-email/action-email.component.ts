@@ -1,9 +1,6 @@
 import { ActionEmail } from 'app/models/intent-model';
-import { Component, OnInit, Input, ElementRef, HostListener, OnChanges } from '@angular/core';
-import { TEXT_CHARS_LIMIT } from './../../../../utils';
+import { Component, OnInit, Input, ElementRef, OnChanges } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { HtmlEntitiesEncodePipe } from 'app/html-entities-encode.pipe';
-import { TiledeskVarSplitter } from '../../../../TiledeskVarSplitter';
 
 
 @Component({
@@ -17,8 +14,8 @@ export class ActionEmailComponent implements OnInit, OnChanges {
  
 
   email_error: boolean = false;
-  public actionSubject: string
-  public actionBody: string
+  public actionSubject: string = ''
+  public actionBody: string = ''
   // isOpenSetAttributesPanel: boolean = false
   // intents = ['uno', 'due', 'tre'];
 

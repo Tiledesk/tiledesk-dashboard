@@ -4,7 +4,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { calculatingRemainingCharacters, TEXT_CHARS_LIMIT, variableList } from 'app/chatbot-design-studio/utils';
 import { SatPopover } from '@ncstate/sat-popover';
 import { LoggerService } from 'app/services/logger/logger.service';
-declare const $: any;
+
 @Component({
   selector: 'cds-textarea',
   templateUrl: './textarea.component.html',
@@ -15,7 +15,7 @@ export class CDSTextareaComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   @ViewChild("addVariable") addVariable: SatPopover;
 
-  @Input() text: string;
+  @Input() text: string = '';
   @Input() limitCharsText: number = TEXT_CHARS_LIMIT;
   @Input() textMessage: string;
   @Input() control: FormControl = new FormControl();
@@ -26,7 +26,7 @@ export class CDSTextareaComponent implements OnInit {
   @Input() minRow: number = 2;
   @Input() maxRow: number = 20;
   @Input() popoverVerticalAlign: string = 'below'
-
+  
   @Output() onChange = new EventEmitter();
   @Output() onSelected = new EventEmitter();
   // Textarea //
@@ -39,11 +39,9 @@ export class CDSTextareaComponent implements OnInit {
   texareaIsEmpty = false;
 
 
-
+  
   constructor(
     private logger: LoggerService,
-
-    
   ) { }
 
   ngOnInit(): void {
@@ -59,19 +57,10 @@ export class CDSTextareaComponent implements OnInit {
     } else {
       this.alertCharsText = false;
     }
-
-    if (typeof $ === 'undefined') {
-      console.log('[CDS-TEXAREA] jQuery is NOT available')
-      // 
-    } else {
-      console.log('[CDS-TEXAREA] jQuery is available')
-      // jQuery is available
-    }
   }
 
-  /** */
-  onChangeTextarea(event) {
-   
+   /** */
+   onChangeTextarea(event) {
     console.log('[CDS-TEXAREA] onChangeTextarea-->', event)
     if (event) {
       this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
@@ -80,7 +69,7 @@ export class CDSTextareaComponent implements OnInit {
       } else {
         this.alertCharsText = false;
       }
-
+     
 
 
       if (event && event.length > 0) {
@@ -101,7 +90,7 @@ export class CDSTextareaComponent implements OnInit {
         this.addWhiteSpaceBefore = true;
       }
 
-      console.log('[CDS-TEXAREA] - onChangeTextarea event length ', event.length);
+      console.log('[CDS-TEXAREA] - event ', event.length);
       this.text = event;
       this.onChange.emit(this.text);
     }
@@ -132,9 +121,6 @@ export class CDSTextareaComponent implements OnInit {
     console.log('variableSelectedddd', variableSelected)
     if (this.elTextarea) {
       this.elTextarea.focus()
-    
-      
-     
       // this.insertAtCursor(this.elTextarea, '${' + variableSelected.value + '}')
       this.insertAtCursorPos(this.elTextarea, '${' + variableSelected.value + '}')
       this.onChangeTextarea(this.elTextarea.value)
@@ -160,46 +146,7 @@ export class CDSTextareaComponent implements OnInit {
     elem.selectionEnd = cursor_pos + txt_to_add.length
   }
 
-  insertAtCursor(myField, myValue) {
-    this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - myValue ', myValue);
 
-    if (this.addWhiteSpaceBefore === true) {
-      myValue = ' ' + myValue;
-      this.logger.log('[CANNED-RES-EDIT-CREATE] - GET TEXT AREA - QUI ENTRO myValue ', myValue);
-    }
-
-    //IE support
-    if (myField.selection) {
-      myField.focus();
-      let sel = myField.selection.createRange();
-      sel.text = myValue;
-      // this.cannedResponseMessage = sel.text;
-    }
-    //MOZILLA and others
-    else if (myField.selectionStart || myField.selectionStart == '0') {
-      var startPos = myField.selectionStart;
-      this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - startPos ', startPos);
-
-      var endPos = myField.selectionEnd;
-      this.logger.log('[CANNED-RES-EDIT-CREATE] - insertAtCursor - endPos ', endPos);
-
-      myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-
-      // place cursor at end of text in text input element
-      myField.focus();
-      var val = myField.value; //store the value of the element
-      myField.value = ''; //clear the value of the element
-      myField.value = val + ' '; //set that value back. 
-
-      this.cannedResponseMessage = myField.value;
-
-      this.texareaIsEmpty = false;
-      // myField.select();
-    } else {
-      myField.value += myValue;
-      this.cannedResponseMessage = myField.value;
-    }
-  }
 
   @HostListener('document:keydown', ['$event'])
   onKeyPress(event) {
@@ -208,12 +155,7 @@ export class CDSTextareaComponent implements OnInit {
       this.addVariable.close()
     }
   }
-
-
- 
-
- 
-
+  
 
 
 }
