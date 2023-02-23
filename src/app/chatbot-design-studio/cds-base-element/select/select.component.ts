@@ -14,6 +14,8 @@ export class SelectComponent implements OnInit {
   @Input() itemSelected: any
   @Input() bindLabelSelect: string;
   @Input() bindValueSelect: string;
+  @Input() clearable: boolean = false;
+  @Input() placeholder: string = 'Select an option'
   @Input() formGroup: FormGroup = new FormGroup({ select: new FormControl()});
   @Input() formControlName: string = 'select';
   @Output() onSelected = new EventEmitter()

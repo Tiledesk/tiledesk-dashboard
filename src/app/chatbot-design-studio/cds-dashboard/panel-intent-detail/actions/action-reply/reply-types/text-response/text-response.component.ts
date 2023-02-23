@@ -49,7 +49,7 @@ export class TextResponseComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    this.limitCharsText = TEXT_CHARS_LIMIT;
+    // this.limitCharsText = TEXT_CHARS_LIMIT;
     this.delayTime = this.response.time/1000;
     this.buttons = [];
     try {

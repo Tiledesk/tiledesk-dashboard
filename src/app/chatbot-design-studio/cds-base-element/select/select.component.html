@@ -1,18 +1,30 @@
 <div class="select-bot-box">
-    <!-- <ng-select 
+    <ng-select 
         class = "form-control-select" 
         appendTo="body"
         [searchable] = true
         [editableSearchTerm]= false
-        [clearable] = false
+        [clearable]="clearable" 
         [items] = "items" 
         [bindLabel]="bindLabelSelect"
         [bindValue]="bindValueSelect"
         [(ngModel)] = "itemSelected"
-        placeholder="Select an option"
+        [placeholder]="placeholder"
         (change) = "onChangeActionButton($event)">
-    </ng-select> -->
-    <ng-select 
+        <ng-template ng-label-tmp let-item="item">
+            <span class="material-icons" *ngIf="item['icon']"
+            [class.intent-start]="item[bindLabelSelect] === 'start'"
+            [class.intent-defaultFallback]="item[bindLabelSelect] === 'defaultFallback'">{{item['icon']}}</span>
+            <span>  {{item[bindLabelSelect]}} </span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-index="index">
+            <span class="material-icons" *ngIf="item['icon']"
+                [class.intent-start]="item[bindLabelSelect] === 'start'"
+                [class.intent-defaultFallback]="item[bindLabelSelect] === 'defaultFallback'">{{item['icon']}}</span>
+            <span>  {{item[bindLabelSelect]}} </span>
+        </ng-template>
+    </ng-select>
+    <!-- <ng-select 
         class = "form-control-select" 
         appendTo="body"
         [searchable] = true
@@ -25,7 +37,7 @@
             <span class="material-icons" *ngIf="item['icon']">{{item['icon']}}</span>
             <span>{{item[bindLabelSelect]}}</span>
         </ng-option>
-    </ng-select>
+    </ng-select> -->
 
 </div>
 <!-- 

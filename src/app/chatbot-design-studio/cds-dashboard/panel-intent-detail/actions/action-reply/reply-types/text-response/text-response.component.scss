@@ -30,6 +30,14 @@
 }
 
 
+.text-area{
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    display: flex;
+    padding: 0 0.75em 0 0.75em;
+}
+
+
 
 .text-editor-wrapper {
     font-size: $font-size-base;

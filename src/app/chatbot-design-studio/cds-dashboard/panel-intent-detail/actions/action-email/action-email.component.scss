@@ -73,8 +73,8 @@
                 border: 1px solid $color-withe-hex;
                 overflow-x: hidden;
                 overflow-y: auto;
-                // width: calc(100% - 2.5em);
-                padding: 5px 5px;
+                width: calc(100% - 2.5em);
+                padding: 20px;
                 color: $color-text-dark-hex;
                 font-size: 1.15em;
                 line-height: 25px;
@@ -159,33 +159,59 @@ mat-form-field.mat-focused ::ng-deep {
         }
     }
 }
+
 mat-form-field.box-textarea ::ng-deep {
     .mat-form-field-wrapper {
-        padding-bottom: 0;
+        padding-bottom:0;
         .mat-form-field-flex {
             border-radius: 4px 4px 0 0;
-            padding: 0 0.75em 0 0.75em;
+            padding: 0px;
+            // padding: 0 0.75em 0 0.75em;
             margin: 0;
-            background: transparent;
+            background-color: transparent !important;
+        }
+
+        .mat-form-field-infix{
+            padding: 0px;
+            border-top: 0px;
         }
     }
     .mat-form-field-underline {
         display: none;
-    }
+    }    
 }
 
 /** box-textarea **/
+// .box-textarea {
+//     // width: calc(100% - 40px);
+//     // margin-left: 20px;
+//     width: 100%;
+//     textarea {
+//         border-radius: 8px;
+//         background: $color-withe-hex;
+//         border: 1px solid $color-withe-hex;
+//         overflow-x: hidden;
+//         overflow-y: auto;
+//         width: calc(100% - 3.5em);
+//         padding: 20px 20px;
+//         color: $color-text-dark-hex;
+//         font-size: 1.15em;
+//         line-height: 25px;
+//         resize: vertical;
+//     }
+// }
+
+
 .box-textarea {
-    // width: calc(100% - 40px);
-    // margin-left: 20px;
     width: 100%;
+    // margin-left: 20px;
     textarea {
         border-radius: 8px;
         background: $color-withe-hex;
         border: 1px solid $color-withe-hex;
         overflow-x: hidden;
         overflow-y: auto;
-        width: calc(100% - 3.5em);
+        width: calc(100% - 2.5em);
         padding: 20px 20px;
         color: $color-text-dark-hex;
         font-size: 1.15em;
@@ -204,10 +230,10 @@ mat-form-field.box-textarea ::ng-deep {
 
 .title-label {
     color: white;
-    font-size: 18px;
-    margin-bottom: 0px;
+    font-size: 16px;
+    margin-bottom: 3px;
     // margin-left: 30px;
-    margin-left: 13px;
+    // margin-left: 13px;
 }
 
 .action-title {
@@ -233,6 +259,18 @@ mat-form-field.box-textarea ::ng-deep {
     margin-bottom: 0px;
     color: white;
 }
+
+// ::ng-deep cds-textarea .subject-text-area {
+//     textarea {
+//         resize: none !important; 
+//     }
+// }
+
+::ng-deep cds-textarea .subject-text-area > .text-editor-wrapper > .text-editor > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > textarea{
+    resize: none !important; 
+}
+
+
 
 /* 
 /* Text editor utils 

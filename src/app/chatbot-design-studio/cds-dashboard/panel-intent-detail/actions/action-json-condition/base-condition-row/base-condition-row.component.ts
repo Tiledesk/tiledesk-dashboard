@@ -12,10 +12,7 @@ import { Condition } from 'app/models/intent-model';
 export class BaseConditionRowComponent implements OnInit {
 
   @ViewChild('operand1') inputOperand1: ElementRef;
-  @ViewChild("addVariable") addVariable : SatPopover;
 
-  @Input() variableListUserDefined: Array<{name: string, value: string}>
-  @Input() variableListSystemDefined: Array<{name: string, value: string, src?: string}>
   @Input() condition: Condition;
   @Output() close = new EventEmitter()
 
@@ -38,12 +35,7 @@ export class BaseConditionRowComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges){
     this.conditionForm = this.createConditionGroup()
     this.operatorsList = Object.keys(OPERATORS_LIST).map(key => (OPERATORS_LIST[key]))
-    if(this.variableListUserDefined){
-      this.filteredVariableList = this.variableListUserDefined
-      this.filteredIntentVariableList = this.variableListSystemDefined
-      console.log('[BASE_CONDITION_ROW] ngOnChanges filteredVariableList', this.filteredVariableList)
-    }
-
+    
     if(this.condition){
       console.log('[BASE_CONDITION_ROW] selectedConditionnnn-->', this.condition)
       this.setFormValue()
@@ -73,16 +65,6 @@ export class BaseConditionRowComponent implements OnInit {
     })
   }
 
-  onChangeSearch(event){
-    if(event && event.target){
-      this.textVariable = event.target.value
-    }else {
-      this.textVariable = event
-    }
-    this.filteredVariableList = this._filter(this.textVariable, this.variableListUserDefined)
-    this.filteredIntentVariableList = this._filter(this.textVariable, this.variableListSystemDefined)
-  }
-
   onVariableSelected(variableSelected: {name: string, value: string}, step: number){
     console.log('onVariableSelected-->', step, this.conditionForm, variableSelected)
     if(step === 0){
@@ -90,7 +72,7 @@ export class BaseConditionRowComponent implements OnInit {
       this.step +=1
     }else if (step == 1){
       this.conditionForm.patchValue({ operand2: {type: 'var', name: variableSelected.name}}, {emitEvent: false})
-      this.addVariable.close()
+      console.log('formmmmm', this.conditionForm)
     }
   }
 
@@ -133,7 +115,6 @@ export class BaseConditionRowComponent implements OnInit {
     this.disableInput = true
     this.conditionForm = this.createConditionGroup()
     this.close.emit() // CLOSE BASE-FILTER POPOVER (IN PARENT)
-    this.addVariable.close() // CLOSE VARIABLE POPOVER
   }
 
 

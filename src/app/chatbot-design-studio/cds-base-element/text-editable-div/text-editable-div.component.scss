@@ -263,3 +263,18 @@
         color: #9ba6b3;
     }
 }
+
+.canned-response-texarea {
+    resize: vertical;
+    width: 100%;
+    /* height: 98px; */
+    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 5px;
+    color: #22272d;
+    font-size: 1.15em;
+    line-height: 25px;
+}
