@@ -8,10 +8,22 @@
     <div class="text-editor-wrapper">
         <div class="field-box">
             <label class="title-label">Assign to:</label>
-            <cds-text id="text-condition"
-                [control]="actionAssignFormGroup.controls['assignTo']"
-                [autocompleteOptions]="variables?variables:null ">
-            </cds-text>
+            <div class="value-wrp">
+                <cds-textarea id="assignTo"
+                    [textLimitBtn]="false"
+                    [emoijPikerBtn]="false"
+                    [setAttributeBtn]="hasSelectedVariable? false: true"
+                    [minRow]="1" [maxRow]="1"
+                    [readonly]="hasSelectedVariable? true : false"
+                    [control]="actionAssignFormGroup.controls['assignTo']"
+                    (onSelected)="onVariableSelected($event,1)">
+                </cds-textarea>
+                <!-- <input type="text" [formControlName]="conditionForm.value.operand2.type=='const'? 'value': 'name'" placeholder="Value" name="operand2"/> -->
+                <div class="flex tag" *ngIf="hasSelectedVariable">
+                    <span class="material-icons close" (click)="clearInput()">close</span>
+                    {{actionAssignFormGroup.value.assignTo}}
+                </div>
+            </div>
         </div>
     </div>
     

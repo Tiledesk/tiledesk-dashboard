@@ -11,6 +11,14 @@
             <cds-text id="text-condition"
                 [control]="actionDeleteFormGroup.controls['variableName']">
             </cds-text>
+            <cds-select
+                [items]="variableListUserDefined"
+                [bindLabelSelect]="'name'"
+                [bindValueSelect]="'value'"
+                [itemSelected]="action?.variableName"
+                (onSelected)="onChangeSelect($event)">
+            </cds-select>
+
         </div>
     </div>
 
