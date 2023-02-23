@@ -206,8 +206,11 @@ export function retriveListOfVariables(intents: Array<Intent>) {
     variableList.userDefined = []
     intents.forEach(intent => {
         intent.actions.filter(action => action._tdActionType === TYPE_ACTION.ASSIGN_VARIABLE).forEach(((actionAssignVariable: ActionAssignVariable) => {
-            if(!variableList.userDefined.some(el => el.name === actionAssignVariable.assignTo))
-                variableList.userDefined.push({ name: actionAssignVariable.assignTo, value: actionAssignVariable.assignTo })
+            if(actionAssignVariable.assignTo === null || actionAssignVariable.assignTo === '') return;
+            if(variableList.userDefined.some(el => el.value === actionAssignVariable.assignTo)) return;
+            if(variableList.systemDefined.some(el => el.value === actionAssignVariable.assignTo)) return;
+
+            variableList.userDefined.push({ name: actionAssignVariable.assignTo, value: actionAssignVariable.assignTo })
         }))
     })
 }
