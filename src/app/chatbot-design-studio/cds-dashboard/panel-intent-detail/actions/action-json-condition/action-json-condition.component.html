@@ -9,7 +9,7 @@
         <!-- formArrayName="groups" -->
         <div > 
             <!-- [formGroupName]="i" -->
-            <div  class="text-editor-wrapper" *ngFor="let group of action?.jsonCondition?.groups; let i = index; let last = last">
+            <div  class="text-editor-wrapper" *ngFor="let group of action?.groups; let i = index; let last = last">
                 <!-- EXPRESSION [i]-->
                 <div *ngIf="i%2 === 0" class="base-filter">
                     <div class="control-buttons" *ngIf="group?.conditions && group?.conditions.length > 0 || i!==0">

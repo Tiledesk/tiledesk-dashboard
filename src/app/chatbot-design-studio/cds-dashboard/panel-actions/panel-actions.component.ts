@@ -171,7 +171,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     }
     if(typeAction === TYPE_ACTION.JSON_CONDITION){
       let action = new ActionJsonCondition();
-      action.jsonCondition.groups.push( new Expression())
+      action.groups.push( new Expression())
       console.log('actionnnnn', action)
       this.intentSelected.actions.push(action);
     }
