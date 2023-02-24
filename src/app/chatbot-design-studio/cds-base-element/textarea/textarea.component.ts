@@ -70,8 +70,6 @@ export class CDSTextareaComponent implements OnInit {
         this.alertCharsText = false;
       }
      
-
-
       if (event && event.length > 0) {
         this.texareaIsEmpty = false;
       } else {
@@ -79,17 +77,13 @@ export class CDSTextareaComponent implements OnInit {
       }
 
       if (/\s$/.test(event)) {
-
         console.log('[CDS-TEXAREA] - onChangeTextarea - string contains space at last');
         this.addWhiteSpaceBefore = false;
       } else {
-
         console.log('[CDS-TEXAREA] - onChangeTextarea - string does not contain space at last');
-
         // IS USED TO ADD A WHITE SPACE TO THE 'PERSONALIZATION' VALUE IF THE STRING DOES NOT CONTAIN SPACE AT LAST
         this.addWhiteSpaceBefore = true;
       }
-
       console.log('[CDS-TEXAREA] - event ', event.length);
       this.text = event;
       this.onChange.emit(this.text);

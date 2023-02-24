@@ -4,6 +4,9 @@
 .text-editable-div {
     margin-left: 20px;
     display: block;
+    margin-top: 0px;
+    margin-left: 30px;
+    width: calc(100% - 40px);
 }
 .extensions-response {
     font-size: $font-size-base;

@@ -46,7 +46,7 @@ export class ActionReplyComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    this.logger.log('ngOnInit panel-response');
+    this.logger.log('ngOnInit panel-response', this.typeAction);
     // this.initialize();
   }
     
