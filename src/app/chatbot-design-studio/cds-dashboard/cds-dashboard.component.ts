@@ -149,7 +149,7 @@ export class CdsDashboardComponent implements OnInit {
   private hideShowWidget(status: "hide" | "show") {
     try {
       if (window && window['tiledesk']) {
-        console.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
+        this.logger.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
 
         if(status==='hide'){
           window['tiledesk'].hide();
@@ -159,7 +159,7 @@ export class CdsDashboardComponent implements OnInit {
         // alert('signin reinit');
       }
     } catch (error) {
-      console.error('tiledesk_widget_hide ERROR', error)
+      this.logger.error('tiledesk_widget_hide ERROR', error)
     }
   }
 
@@ -375,7 +375,7 @@ export class CdsDashboardComponent implements OnInit {
       const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
 
       this.showSpinner = false;
-     console.log('[CDS DSHBRD] creatIntent RES ', intent);
+     this.logger.log('[CDS DSHBRD] creatIntent RES ', intent);
       if (intent) {
 
         //SUCCESS STATE
@@ -436,7 +436,7 @@ export class CdsDashboardComponent implements OnInit {
   /** EDIT INTENT  */
   private editIntent() {
     this.startUpdatedIntent.next(true)
-    console.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
+    this.logger.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
     this.showSpinner = true;
     let id = this.intentSelected.id;
     let questionIntentSelected = this.intentSelected.question;
@@ -761,12 +761,12 @@ export class CdsDashboardComponent implements OnInit {
 
   publish() {
     this.faqKbService.publish(this.selectedChatbot).subscribe((data) => {
-      console.log('[CDS DSBRD] publish  - RES ', data)
+      this.logger.log('[CDS DSBRD] publish  - RES ', data)
     }, (error) => {
   
-      console.error('[CDS DSBRD] publish ERROR ', error);
+      this.logger.error('[CDS DSBRD] publish ERROR ', error);
     }, () => {
-      console.log('[CDS DSBRD] publish * COMPLETE *');
+      this.logger.log('[CDS DSBRD] publish * COMPLETE *');
       this.notify.showWidgetStyleUpdateNotification('Successfully published', 2, 'done');
       
     });

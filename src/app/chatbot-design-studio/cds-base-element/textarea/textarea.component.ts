@@ -27,7 +27,7 @@ export class CDSTextareaComponent implements OnInit {
   @Input() maxRow: number = 20;
   @Input() readonly: boolean = false;
   @Input() popoverVerticalAlign: string = 'below'
-  
+
   @Output() onChange = new EventEmitter();
   @Output() onSelected = new EventEmitter();
   // Textarea //
@@ -40,7 +40,7 @@ export class CDSTextareaComponent implements OnInit {
   texareaIsEmpty = false;
 
 
-  
+
   constructor(
     private logger: LoggerService,
   ) { }
@@ -62,39 +62,21 @@ export class CDSTextareaComponent implements OnInit {
 
   /** */
   onChangeTextarea(event) {
-    console.log('[CDS-TEXAREA] onChangeTextarea-->', event)
-    if (event) {
+    this.logger.log('[CDS-TEXAREA] onChangeTextarea-->', event)
+    // if (event) {
+      // this.text = event.trim();
       this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
       if (this.leftCharsText < (this.limitCharsText / 10)) {
         this.alertCharsText = true;
       } else {
         this.alertCharsText = false;
       }
-     
 
-
-      if (event && event.length > 0) {
-        this.texareaIsEmpty = false;
-      } else {
-        // this.texareaIsEmpty = true;
-      }
-
-      if (/\s$/.test(event)) {
-
-        console.log('[CDS-TEXAREA] - onChangeTextarea - string contains space at last');
-        this.addWhiteSpaceBefore = false;
-      } else {
-
-        console.log('[CDS-TEXAREA] - onChangeTextarea - string does not contain space at last');
-
-        // IS USED TO ADD A WHITE SPACE TO THE 'PERSONALIZATION' VALUE IF THE STRING DOES NOT CONTAIN SPACE AT LAST
-        this.addWhiteSpaceBefore = true;
-      }
-
-      console.log('[CDS-TEXAREA] - event ', event.length);
-      this.text = event;
+      // this.logger.log('[CDS-TEXAREA] - event ', event.length);
+      // this.logger.log('[CDS-TEXAREA] - this.textent  ',  this.text);
+      // this.logger.log('[CDS-TEXAREA] - this.textent length',  this.text.length); 
       this.onChange.emit(this.text);
-    }
+    // }
   }
 
   ngAfterViewInit() {
@@ -110,16 +92,16 @@ export class CDSTextareaComponent implements OnInit {
   getTextArea() {
     this.elTextarea = this.autosize['_textareaElement'] as HTMLInputElement;
 
-    console.log('[CDS-TEXAREA] - GET TEXT AREA - elTextarea ', this.elTextarea);
+    this.logger.log('[CDS-TEXAREA] - GET TEXT AREA - elTextarea ', this.elTextarea);
     if (this.elTextarea) {
-      
+
     }
   }
 
 
 
   onVariableSelected(variableSelected: { name: string, value: string }) {
-    console.log('variableSelectedddd', variableSelected)
+    this.logger.log('variableSelectedddd', variableSelected)
     if (this.elTextarea) {
       this.elTextarea.focus()
       // this.insertAtCursor(this.elTextarea, '${' + variableSelected.value + '}')
@@ -156,7 +138,7 @@ export class CDSTextareaComponent implements OnInit {
       this.addVariable.close()
     }
   }
-  
+
 
 
 }

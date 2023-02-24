@@ -126,7 +126,7 @@ export class BotListComponent implements OnInit {
 
   getNavigationBaseUrl() {
     const href = window.location.href;
-    console.log('[BOTS-LIST] href ', href)
+    // console.log('[BOTS-LIST] href ', href)
     const hrefArray = href.split('/#/');
   
     this.navigationBaseUrl = hrefArray[0];

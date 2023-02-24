@@ -3,6 +3,7 @@ import { Component, HostListener, Input, OnInit, Output, ViewChild, EventEmitter
 import { SatPopover } from '@ncstate/sat-popover';
 import { Condition, Expression, Operator } from 'app/models/intent-model';
 import { variableList, OPERATORS_LIST } from 'app/chatbot-design-studio/utils';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 
 @Component({
@@ -23,13 +24,15 @@ export class BaseFilterComponent implements OnInit {
 
   OPERATORS_LIST = OPERATORS_LIST
   
-  constructor() { }
+  constructor(
+    private logger: LoggerService
+  ) { }
 
   ngOnInit(): void {
   }
 
   ngOnChanges(){
-    console.log('[BASE_FILTER] expression selected-->', this.expression)
+    this.logger.log('[BASE_FILTER] expression selected-->', this.expression)
   }
 
   onOpenConditionDetail(index: number){
@@ -43,18 +46,18 @@ export class BaseFilterComponent implements OnInit {
     }else if(last){
       this.expression.conditions.splice(index-1, 2)
     }
-    console.log('expressionnn', this.expression)
+    this.logger.log('expressionnn', this.expression)
   }
 
   onChangeOperator(event, index: number){
     (this.expression.conditions[index] as Operator).operator= event['type']
-    console.log('onChangeOperator expressionn', this.expression)
+    this.logger.log('onChangeOperator expressionn', this.expression)
   }
 
 
   onDismiss(condition: Condition){
     if(condition){
-      console.log('onDismiss popover condition', condition)
+      this.logger.log('onDismiss popover condition', condition)
       //if condition already exist --> do not push new condition
       //else push new operaor and condition  
       if(this.selectedCondition){

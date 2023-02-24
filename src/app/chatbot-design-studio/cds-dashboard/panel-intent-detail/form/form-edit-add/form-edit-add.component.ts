@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnChanges } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 export enum TYPE_FIELD {
   CUSTOM = 'CUSTOM',
@@ -65,7 +66,8 @@ export class FormEditAddComponent implements OnInit, OnChanges {
 
   constructor(
     private translate: TranslateService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private logger: LoggerService
   ) { }
 
   ngOnInit(): void {
@@ -86,7 +88,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
       // } 
       this.fieldName = this.field.name;
       this.fieldType = this.field.type;
-      // console.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
+      // this.logger.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
       // this.fieldRegex = this.field.regex;
       this.fieldRegex = '^.{1,}$'
       this.fieldLabel = this.field.label;
@@ -103,7 +105,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.fieldType = "TEXT";
     this.fieldRegex = '^.{1,}$'
     
-    // console.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
+    // this.logger.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
   }
 
   ngAfterViewInit() {
@@ -127,7 +129,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   }
 
   checkFields() {
-    // console.log('checkFields') 
+    // this.logger.log('checkFields') 
     this.nameResult = true;
     this.typeResult = true;
     this.labelResult = true;
@@ -135,24 +137,24 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     let status = true;
     
     // this.field.name = this.fieldName ? this.fieldName : '';
-    // // console.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
+    // // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
     // this.field.type = this.fieldType ? this.fieldType.toUpperCase() : null;
-    // // console.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
+    // // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
     // this.field.regex = this.fieldRegex ? this.fieldRegex : TYPE_REGEX.customRGEX;
-    // // console.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
+    // // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
     // this.field.label = this.fieldLabel ? this.fieldLabel.trim() : '';
-    // // console.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
+    // // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
     // this.field.errorLabel = this.fieldErrorLabel ? this.fieldErrorLabel.trim() : '';
-    // console.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
+    // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
     if (this.fieldType == null) {
       this.typeResult = false;
       status = false;
     }
 
     let REGEX = new RegExp(TYPE_REGEX.nameRGEX.replace(/\//gi, ''));
-    // console.log('[TILEBOT-EDIT-ADD] checkFields nameRGEX REGEX ', REGEX)
+    // this.logger.log('[TILEBOT-EDIT-ADD] checkFields nameRGEX REGEX ', REGEX)
     this.nameResult = REGEX.test(this.fieldName);
-    // console.log('[TILEBOT-EDIT-ADD] nameResult',this.nameResult,' REGEX.test - field.name', this.field.name )
+    // this.logger.log('[TILEBOT-EDIT-ADD] nameResult',this.nameResult,' REGEX.test - field.name', this.field.name )
     if (this.nameResult === false) {
       status = false;
     }
@@ -170,9 +172,9 @@ export class FormEditAddComponent implements OnInit, OnChanges {
       //status = false;
     }
     // this.field.regex = this.field.regex.replace(/\//gi, '');
-    // console.log('[TILEBOT-EDIT-ADD] checkFields this.field.regex 1 ', this.field.regex)
+    // this.logger.log('[TILEBOT-EDIT-ADD] checkFields this.field.regex 1 ', this.field.regex)
     // this.fieldRegex = this.field.regex.toString();
-    // console.log('[TILEBOT-EDIT-ADD] checkFields this.field.regex 2 ', this.field.regex)
+    // this.logger.log('[TILEBOT-EDIT-ADD] checkFields this.field.regex 2 ', this.field.regex)
     return status;
 
   }
@@ -207,7 +209,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
 
   /** */
   onChangeTypeField(typeFieldValue) {
-    // console.log("onChange:: ", typeFieldValue);
+    // this.logger.log("onChange:: ", typeFieldValue);
     if (typeFieldValue === TYPE_FIELD.CUSTOM) {
       this.field.regex = TYPE_REGEX.customRGEX;
       // this.showRegexField = true;
@@ -243,17 +245,17 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   }
 
   save() {
-    // console.log('[TILEBOT-EDIT-ADD] save ')
+    // this.logger.log('[TILEBOT-EDIT-ADD] save ')
     if (this.checkFields()) {
-      // console.log('[TILEBOT-EDIT-ADD] save checkFields ', this.checkFields())
+      // this.logger.log('[TILEBOT-EDIT-ADD] save checkFields ', this.checkFields())
       this.displayInfoMessage = false;
       this.showForm = false;
       this.field.name = this.fieldName ? this.fieldName : '';
-      // console.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
+      // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
       this.field.type = this.fieldType ? this.fieldType.toUpperCase() : null;
-      // console.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
+      // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
       this.field.regex = this.fieldRegex ? this.fieldRegex : TYPE_REGEX.customRGEX;
-      // console.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
+      // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
       if(!this.fieldLabel || this.fieldLabel.trim().length === 0){
         delete this.field.label
       } else {
@@ -265,11 +267,11 @@ export class FormEditAddComponent implements OnInit, OnChanges {
         this.field.errorLabel = this.fieldErrorLabel.trim();
       }
       // this.field.label = this.fieldLabel ? this.fieldLabel.trim() : '';
-      // console.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
+      // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
       // this.field.errorLabel = this.fieldErrorLabel ? this.fieldErrorLabel.trim() : '';
 
       this.fieldRegex = this.field.regex.toString();
-      console.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
+      this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
         
       this.saveAddEditForm.emit(this.field);
     }

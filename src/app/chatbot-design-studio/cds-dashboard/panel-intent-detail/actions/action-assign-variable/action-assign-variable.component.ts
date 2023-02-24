@@ -36,7 +36,7 @@ export class ActionAssignVariableComponent implements OnInit {
   private initialize() {
     this.actionAssignFormGroup = this.buildForm();
     this.actionAssignFormGroup.valueChanges.subscribe(form => {
-      console.log('[ACTION-ASSIGN-VARIABLE] form valueChanges-->', form)
+      this.logger.log('[ACTION-ASSIGN-VARIABLE] form valueChanges-->', form)
       if (form && (form.assignTo !== '' || form.expression !== ''))
         this.action = Object.assign(this.action, this.actionAssignFormGroup.value);
     })
@@ -63,14 +63,14 @@ export class ActionAssignVariableComponent implements OnInit {
 
 
   onVariableSelected(variableSelected: {name: string, value: string}, step: number){
-    console.log('onVariableSelected-->', step, this.actionAssignFormGroup, variableSelected)
+    this.logger.log('onVariableSelected-->', step, this.actionAssignFormGroup, variableSelected)
     this.hasSelectedVariable = true
     this.actionAssignFormGroup.patchValue({ assignTo: variableSelected.value})// if(step === 0){
     //   this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
     //   this.step +=1
     // }else if (step == 1){
     //   // this.conditionForm.patchValue({ operand2: {type: 'var', name: variableSelected.name}}, {emitEvent: false})
-    //   // console.log('formmmmm', this.conditionForm)
+    //   // this.logger.log('formmmmm', this.conditionForm)
     // }
   }
 

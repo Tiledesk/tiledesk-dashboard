@@ -209,7 +209,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     this.HAS_SELECTED_QUESTION = false
     this.HAS_SELECTED_FORM = false
     this.HAS_SELECTED_ACTION = true
-    console.log('[PANEL INTENT] onActionSelected action: ', action)
+    this.logger.log('[PANEL INTENT] onActionSelected action: ', action)
     this.logger.log('[PANEL INTENT] onActionSelected index', index)
 
     let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));

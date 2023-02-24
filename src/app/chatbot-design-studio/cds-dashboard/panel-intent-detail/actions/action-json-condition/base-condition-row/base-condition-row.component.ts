@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnInit, SimpleChanges, EventEmitter, Output, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { OPERATORS_LIST, OperatorValidator } from 'app/chatbot-design-studio/utils';
 import { Condition } from 'app/models/intent-model';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'base-condition-row',
@@ -27,7 +28,9 @@ export class BaseConditionRowComponent implements OnInit {
   conditionForm: FormGroup
 
   constructor(
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private logger: LoggerService
+    ) { }
 
   ngOnInit(): void {
     
@@ -38,7 +41,7 @@ export class BaseConditionRowComponent implements OnInit {
     this.operatorsList = Object.keys(OPERATORS_LIST).map(key => (OPERATORS_LIST[key]))
     
     if(this.condition){
-      console.log('[BASE_CONDITION_ROW] selectedConditionnnn-->', this.condition)
+      this.logger.log('[BASE_CONDITION_ROW] selectedConditionnnn-->', this.condition)
       this.setFormValue()
       this.step = 1
     }
@@ -67,18 +70,18 @@ export class BaseConditionRowComponent implements OnInit {
   }
 
   onVariableSelected(variableSelected: {name: string, value: string}, step: number){
-    console.log('onVariableSelected-->', step, this.conditionForm, variableSelected)
+    this.logger.log('onVariableSelected-->', step, this.conditionForm, variableSelected)
     if(step === 0){
       this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
       this.step +=1
     }else if (step == 1){
       this.conditionForm.patchValue({ operand2: {type: 'var', name: variableSelected.name}}, {emitEvent: false})
-      console.log('formmmmm', this.conditionForm)
+      this.logger.log('formmmmm', this.conditionForm)
     }
   }
 
   onChangeTextArea(text: string, step: number){
-    console.log('textttt', text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)))
+    this.logger.log('textttt', text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)))
     if(text && text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))){
       text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)).forEach(match => {
         text = text.replace(text,match)
@@ -104,7 +107,7 @@ export class BaseConditionRowComponent implements OnInit {
   }
 
   onSubmitCondition(){
-    console.log('onSubmitCondition-->', this.conditionForm)
+    this.logger.log('onSubmitCondition-->', this.conditionForm)
     if(this.conditionForm.valid){
       let condition: Condition = new Condition()
       condition = Object.assign(condition, this.conditionForm.value);
@@ -115,7 +118,7 @@ export class BaseConditionRowComponent implements OnInit {
   }
 
   onClose(){
-    console.log('onClose pressed')
+    this.logger.log('onClose pressed')
     this.step = 0;
     this.disableInput = true
     this.conditionForm = this.createConditionGroup()

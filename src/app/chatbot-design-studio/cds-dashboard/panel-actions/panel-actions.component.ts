@@ -44,19 +44,19 @@ export class PanelActionsComponent implements OnInit, OnChanges {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    //   console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
-    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
+    //   this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+    //  this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
+    //  this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
     const clicked_element_id = event.target.id
     this.logger.log("clicked_element_id: ", clicked_element_id);
     if (this.eRef.nativeElement.contains(event.target)) {
-      // console.log("clicked inside")
+      // this.logger.log("clicked inside")
     } else {
 
       // const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
-      // console.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
+      // this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
 
-      //console.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
+      //this.logger.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
       // && (!event.target.classList.contains('ng-option'))
       // clicked_element_id !== 'a0da04ac7772' && 
       this.logger.log("clicked_element_id.startsWith(actions-btns-wpr)", clicked_element_id.startsWith("actions-btns-wpr"))
@@ -90,7 +90,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   }
 
   actionSelected(typeAction: TYPE_ACTION) {
-    console.log('[PANEL ACTION] actionSelected ', typeAction);
+    this.logger.log('[PANEL ACTION] actionSelected ', typeAction);
     if(typeAction === TYPE_ACTION.REPLY){
       let action = new ActionReply();
       let commandWait = new Command(TYPE_COMMAND.WAIT);
@@ -172,7 +172,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     if(typeAction === TYPE_ACTION.JSON_CONDITION){
       let action = new ActionJsonCondition();
       action.groups.push( new Expression())
-      console.log('actionnnnn', action)
+      this.logger.log('actionnnnn', action)
       this.intentSelected.actions.push(action);
     }
     

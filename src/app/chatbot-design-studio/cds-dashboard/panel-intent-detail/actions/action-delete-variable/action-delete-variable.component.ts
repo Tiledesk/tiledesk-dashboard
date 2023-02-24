@@ -53,7 +53,7 @@ export class ActionDeleteVariableComponent implements OnInit {
   }
 
   onChangeSelect(variableSelected: {name: string, value: string}){
-    console.log('changeeeeee', variableSelected)
+    this.logger.log('changeeeeee', variableSelected)
     this.actionDeleteFormGroup.patchValue({variableName: variableSelected.value})
   }
 

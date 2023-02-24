@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActionWebRequest } from 'app/models/intent-model';
+import { LoggerService } from 'app/services/logger/logger.service';
 import { TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT } from '../../../../utils';
 
 @Component({
@@ -21,7 +22,9 @@ export class ActionWebRequestComponent implements OnInit {
   methodSelectedHeader = true;
   methodSelectedBody = false;
 
-  constructor() { }
+  constructor(
+    private logger: LoggerService
+  ) { }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
@@ -77,7 +80,7 @@ export class ActionWebRequestComponent implements OnInit {
   }
 
   onChangeTextarea(e){
-    // console.log('onChangeTextarea:: ', e);
+    // this.logger.log('onChangeTextarea:: ', e);
     if(this.methodSelectedHeader){
       this.jsonHeader = this.jsonText;
     } else if(this.methodSelectedBody){
@@ -110,7 +113,7 @@ export class ActionWebRequestComponent implements OnInit {
         this.jsonText = this.formatJSON(this.jsonText, "\t");
       }
       catch (err) {
-        console.log('error:', err);
+        this.logger.error('error:', err);
       }
   }
   

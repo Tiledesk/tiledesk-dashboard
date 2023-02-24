@@ -26,7 +26,7 @@ export class ActionEmailComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-   console.log("[ACTION-EMAIL] elementSelected: ", this.action)
+   this.logger.log("[ACTION-EMAIL] elementSelected: ", this.action)
     this.actionSubject = this.action.subject
     this.actionBody = this.action.text
   }
@@ -34,15 +34,15 @@ export class ActionEmailComponent implements OnInit, OnChanges {
 
   onEditableDivTextChange($event: string, property: string) {
 
-    console.log("[ACTION-EMAIL] onEditableDivTextChange event", $event)
-    console.log("[ACTION-EMAIL] onEditableDivTextChange property", property)
+    this.logger.log("[ACTION-EMAIL] onEditableDivTextChange event", $event)
+    this.logger.log("[ACTION-EMAIL] onEditableDivTextChange property", property)
     this.action[property] = $event
   }
 
   ngOnChanges() {
-    console.log("[ACTION-EMAIL] ngOnChanges: this.action", this.action)
+    this.logger.log("[ACTION-EMAIL] ngOnChanges: this.action", this.action)
     // const splits = new TiledeskVarSplitter().getSplits(this.action.subject);
-    // console.log('[ACTION-EMAIL] ngOnChanges splits:', splits)
+    // this.logger.log('[ACTION-EMAIL] ngOnChanges splits:', splits)
     // let tagName = ''
     // let tagNameAsTag = ''
     // let newSplitsArray = [];
@@ -57,13 +57,13 @@ export class ActionEmailComponent implements OnInit, OnChanges {
     //     newSplitsArray.push(element.text)
     //   }
     // });
-    // console.log('[ACTION-EMAIL]  newSplitsArray', newSplitsArray)
+    // this.logger.log('[ACTION-EMAIL]  newSplitsArray', newSplitsArray)
 
     // newSplitsArray.forEach(element => {
     //   fommattedActionSubject += element
 
     // });
-    // console.log('[ACTION-EMAIL]  fommattedActionSubject', fommattedActionSubject)
+    // this.logger.log('[ACTION-EMAIL]  fommattedActionSubject', fommattedActionSubject)
 
     // let imputEle = document.getElementById('email-subject') as HTMLElement
     // imputEle.innerHTML = fommattedActionSubject;
@@ -99,9 +99,9 @@ export class ActionEmailComponent implements OnInit, OnChanges {
 
 
   // setAttribute(attribute) {
-  //   console.log("[ACTION-EMAIL] selectedAttibute attribute: ", attribute);
+  //   this.logger.log("[ACTION-EMAIL] selectedAttibute attribute: ", attribute);
   //   const imputEle = document.querySelector('#email-subject') as HTMLElement
-  //   console.log("[ACTION-EMAIL] selectedAttibute imputEle: ", imputEle);
+  //   this.logger.log("[ACTION-EMAIL] selectedAttibute imputEle: ", imputEle);
   //   imputEle.focus();
   //   this.setAttributeAtCaret(`<div contenteditable="false" style="font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${attribute}</div>`)
   //   this.isOpenSetAttributesPanel = false;
@@ -150,37 +150,37 @@ export class ActionEmailComponent implements OnInit, OnChanges {
   //   var contenteditable = document.querySelector('[contenteditable]'),
   //     text = contenteditable.textContent;
 
-  //   console.log('contenteditable innerHtml', contenteditable.innerHTML)
+  //   this.logger.log('contenteditable innerHtml', contenteditable.innerHTML)
 
-  //   console.log('onInputActionSubject text ', text)
+  //   this.logger.log('onInputActionSubject text ', text)
   //   this.action.subject = text;
-  //   console.log('onInputActionSubject action ', this.action)
+  //   this.logger.log('onInputActionSubject action ', this.action)
   // }
 
 // <  toggleSetAttributesPanel(isopen) {
-//     console.log("[ACTION-EMAIL] isopen Attributes Panel: ", isopen);
+//     this.logger.log("[ACTION-EMAIL] isopen Attributes Panel: ", isopen);
 //     this.isOpenSetAttributesPanel = isopen
 //   }>
 
   // @HostListener('document:click', ['$event'])
   // clickout(event) {
-  //   console.log("[ACTION-EMAIL] clickout event: ", event)
-  //   console.log("[ACTION-EMAIL] clickout event target id: ", event.target.id)
+  //   this.logger.log("[ACTION-EMAIL] clickout event: ", event)
+  //   this.logger.log("[ACTION-EMAIL] clickout event target id: ", event.target.id)
 
 
   // if (event.target.id.startsWith("set--attribrute") || event.target.classList.contains('text-editor-insert-attribute') || event.target.classList.contains('material-icons-data-object')) {
-  //   console.log("[ACTION-EMAIL] clickout : clicked inside")
+  //   this.logger.log("[ACTION-EMAIL] clickout : clicked inside")
 
   // } else {
-  //   console.log("[ACTION-EMAIL] clickout : clicked outside")
+  //   this.logger.log("[ACTION-EMAIL] clickout : clicked outside")
   //   this.isOpenSetAttributesPanel = false
   // }
 
   // if (this.eRef.nativeElement.contains(event.target)) {
-  //   console.log("[ACTION-EMAIL] clickout : clicked inside")
+  //   this.logger.log("[ACTION-EMAIL] clickout : clicked inside")
   // } else {
   //   if (!event.target.id.startsWith("set--attribrute") || (event.target.id !== "") ) {
-  //     console.log("[ACTION-EMAIL] clickout : clicked outside")
+  //     this.logger.log("[ACTION-EMAIL] clickout : clicked outside")
   //     this.isOpenSetAttributesPanel = false
   //   }
   // }
@@ -192,18 +192,18 @@ export class ActionEmailComponent implements OnInit, OnChanges {
   // Not used 
   // -----------------------------------------
   // mouseUp() {
-  //   console.log("[ACTION-EMAIL] mouseUp: ");
+  //   this.logger.log("[ACTION-EMAIL] mouseUp: ");
   //   const imputEle = document.querySelector('#' + 'email-subject') as HTMLElement
   //   const caretPositon = this.getCaretCharacterOffsetWithin(imputEle)
-  //   console.log("[ACTION-EMAIL] mouseUp caretPositon: ", caretPositon);
+  //   this.logger.log("[ACTION-EMAIL] mouseUp caretPositon: ", caretPositon);
   // }
 
   // onKeyUp(event) {
-  //   // console.log("[ACTION-EMAIL] action: ", this.action);
-  //   console.log("[ACTION-EMAIL] onKeyUp: ", event);
+  //   // this.logger.log("[ACTION-EMAIL] action: ", this.action);
+  //   this.logger.log("[ACTION-EMAIL] onKeyUp: ", event);
   //   const imputEle = document.querySelector('#' + 'email-subject') as HTMLElement
   //   const caretPositon = this.getCaretCharacterOffsetWithin(imputEle)
-  //   console.log("[ACTION-EMAIL] onKeyUp caretPositon: ", caretPositon);
+  //   this.logger.log("[ACTION-EMAIL] onKeyUp caretPositon: ", caretPositon);
   // }
 
   // getCaretCharacterOffsetWithin(element) {
@@ -227,7 +227,7 @@ export class ActionEmailComponent implements OnInit, OnChanges {
   //     preCaretTextRange.setEndPoint("EndToEnd", textRange);
   //     caretOffset = preCaretTextRange.text.length;
   //   }
-  //   console.log('getCaretCharacterOffsetWithin caretOffset', caretOffset)
+  //   this.logger.log('getCaretCharacterOffsetWithin caretOffset', caretOffset)
   //   return caretOffset;
   // }
 
