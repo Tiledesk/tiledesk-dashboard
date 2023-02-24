@@ -10,10 +10,16 @@
 .cds-web-request-row {
     margin: 10px 4px;
     display: flex;
+    position: relative;
     &.center{
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    .cds-rigth{
+        position: absolute;
+        right: 18px;
+        top: -6px;
     }
 }
 .label-assign-to {
@@ -139,7 +145,7 @@ textarea{
     color: rgb(209, 47, 25);
     background: rgb(251, 227, 228);
     border-color: rgb(251, 194, 196);
-    opacity: 0;
+    opacity: 1;
     span{
         line-height: normal;
         min-height: 30px;
@@ -153,7 +159,6 @@ textarea{
         justify-content: center;
     }
     &.json-error-yes {
-        opacity: 1;
         transition: opacity 0.6s;
     } 
 }

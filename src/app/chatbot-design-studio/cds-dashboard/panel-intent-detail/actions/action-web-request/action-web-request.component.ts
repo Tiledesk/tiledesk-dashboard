@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActionWebRequest } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { FormControl } from '@angular/forms';
 import { TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT } from '../../../../utils';
 
 @Component({
@@ -12,6 +13,9 @@ export class ActionWebRequestComponent implements OnInit {
 
   @Input() action: ActionWebRequest;
   methods: Array<string>;
+
+  assignTo = new FormControl(); 
+  pattern = "^[a-zA-Z_]*[a-zA-Z_]+[a-zA-Z0-9_]*$";
 
   limitCharsText = TEXT_CHARS_LIMIT;
   jsonHeader: string; 
@@ -35,11 +39,15 @@ export class ActionWebRequestComponent implements OnInit {
   // CUSTOM FUNCTIONS //
   private initialize(){
     this.methods = Object.values(TYPE_METHOD_REQUEST);
+    // this.jsonHeader = this.action.headersString;
+    // this.jsonBody = this.action.jsonBody;
     this.jsonHeader = JSON.parse(this.action.headersString);
     this.jsonBody = JSON.parse(this.action.jsonBody);
-    //this.action.method = this.action.method;
+    // this.jsonText = this.jsonHeader;
+    this.jsonIsValid = this.isValidJson(this.jsonHeader);
     this.setActionWebRequest();
     this.switchJsonText();
+    // console.log('jsonIsValid:: ',this.jsonIsValid);
   }
 
   private setActionWebRequest(){
@@ -57,8 +65,12 @@ export class ActionWebRequestComponent implements OnInit {
       return '';
     }
     else {
-      var parsedData = JSON.parse(input);
-      return JSON.stringify(parsedData, null, indent);
+      try {
+        var parsedData = JSON.parse(input);
+        return JSON.stringify(parsedData, null, indent);
+      } catch (e) {
+        return input;
+      }
     }
   }
 
@@ -116,5 +128,6 @@ export class ActionWebRequestComponent implements OnInit {
         this.logger.error('error:', err);
       }
   }
+
   
 }
