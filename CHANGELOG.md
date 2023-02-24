@@ -1,10 +1,37 @@
 # tiledesk-dashboard
 
+### 2.4.7
+- Deploys in production
+- Adds the ability to create a new question by clicking the "ADD" button.
+- Fixes the bug: Email addresses are incorrect in Settings > "Email ticketing"
+- Adds an info message in the "Random reply" action
+- Improves the style of the "Reply" actions
+
+### 2.4.6
+- Deploys in production
+- Adds validators to assignTo and operand2
+- Adds description in agent-handoff action component
+- Adds the readonly property to cds-textarea base element
+- Adds the jsonCondition property to action-json-condition
+- Changes: set var into operant2 without ${*}
+- Changes: added ng-template and removed ng-option in select base element
+- Fixes the bug: check if variable already exist before pushing
+- Fixes the bug: if condition already exist, do not push new condition but override the existing one
+- Fixes the bug: select not save current value
+- Fixes the bug: no-data showed also if variable exist in variable-list component
+- Adds the ability to remove current group if no conditions are in it
+- Adds the action "web request"
+- Adds the action "action-random-reply"
+- Adds an object to "operand2" in the "jsonCondition" action 
+- Changes: passes intent_id while select an intent from list
+- Disables the autoplay of the YouTube tutorials video
+- Fixes the bug: YouTube videos are not displayed in iframe
+
 ### 2.4.6-rc2
-- Added: readonly property to cds-textarea base element
-- Added: jsonCondition property to action-json-condition
-- Changed: set var into operant2 without ${*}
-- Changed: added ng-template and removed ng-option in select base element
+- Adds the readonly property to cds-textarea base element
+- Adds the jsonCondition property to action-json-condition
+- Changes: set var into operant2 without ${*}
+- Changes: added ng-template and removed ng-option in select base element
 - Fixes the bug: check if variable already exist before pushing
 - Fixes the bug: if condition already exist, do not push new condition but override the existing one
 - Fixes the bug: select not save current value
