@@ -148,6 +148,15 @@ const routes: Routes = [
   //   loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
   // },
 
+   {
+    canActivate: [AuthGuard],
+    path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
+    loadChildren: () => import('./chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule)
+  },
+
+  { path: 'project/:projectid/cds/:faqkbid', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // not Used
+  // { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id', component: CdsDashboardComponent, canActivate: [AuthGuard] },
+
 
   /* PRIVATE */
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
@@ -315,8 +324,7 @@ const routes: Routes = [
   // -----------------------------------------
   // NEW  replace the path ...createfaq and ...editfaq
   // -----------------------------------------
-  { path: 'project/:projectid/cds/:faqkbid', component: CdsDashboardComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id', component: CdsDashboardComponent, canActivate: [AuthGuard] },
+ 
   
   { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
 

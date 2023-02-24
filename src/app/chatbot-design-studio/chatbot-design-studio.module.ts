@@ -5,7 +5,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { A11yModule } from '@angular/cdk/a11y';
-import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -29,7 +28,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 
 // import { SharedModule } from '../shared/shared.module';
-import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
+
 import { PanelReplyToolsComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/panel-reply-tools/panel-reply-tools.component';
 import { ActionReplyComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/action-reply.component';
 import { TextResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/text-response/text-response.component';
@@ -97,6 +96,16 @@ import { BaseFilterComponent } from './cds-dashboard/panel-intent-detail/actions
 import { VariableListComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/variable-list/variable-list.component';
 import { TextEditableDivComponent } from './cds-base-element/text-editable-div/text-editable-div.component';
 import { ActionWebRequestComponent } from './cds-dashboard/panel-intent-detail/actions/action-web-request/action-web-request.component';
+import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
+import { RouterModule, Routes } from '@angular/router';
+
+const routes : Routes = [
+  {
+    path:'',
+    component: CdsDashboardComponent
+  },
+]
+
 
 @NgModule({
   declarations: [
@@ -175,7 +184,8 @@ import { ActionWebRequestComponent } from './cds-dashboard/panel-intent-detail/a
     MatAutocompleteModule,
     MatSlideToggleModule,
     MatListModule,
-    RouterModule,
+    // RouterModule,
+    RouterModule.forChild(routes),
     TranslateModule,
     FormsModule,
     MatInputModule,
@@ -192,7 +202,9 @@ import { ActionWebRequestComponent } from './cds-dashboard/panel-intent-detail/a
         deps: [HttpClient],
       },
     })
-  ]
+  ],
+  exports: 
+  [RouterModule]
 })
 export class ChatbotDesignStudioModule { }
 
