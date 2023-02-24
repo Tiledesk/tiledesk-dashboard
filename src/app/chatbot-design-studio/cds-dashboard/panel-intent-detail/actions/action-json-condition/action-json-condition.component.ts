@@ -96,8 +96,8 @@ export class ActionJsonConditionComponent implements OnInit {
 
 
   onClickAddGroup(){
-    this.action.jsonCondition.groups.push(new Operator())
-    this.action.jsonCondition.groups.push(new Expression())
+    this.action.groups.push(new Operator())
+    this.action.groups.push(new Expression())
 
     console.log('onClickAddGroup-->', this.action)
     // let groups = this.actionJsonConditionFormGroup.get('groups') as FormArray
@@ -106,29 +106,28 @@ export class ActionJsonConditionComponent implements OnInit {
   }
 
   onDeleteGroup(index: number, last: boolean){
-    console.log('onDeleteGroup', index, last, this.action.jsonCondition.groups)
+    console.log('onDeleteGroup', index, last, this.action.groups)
     if(!last){
-      this.action.jsonCondition.groups.splice(index, 2)
+      this.action.groups.splice(index, 2)
     }else if(last){
-      this.action.jsonCondition.groups.splice(index-1, 2)
+      this.action.groups.splice(index-1, 2)
     }
     
 
-    if(this.action.jsonCondition.groups.length === 0){
-      this.action.jsonCondition.groups.push(new Expression())
+    if(this.action.groups.length === 0){
+      this.action.groups.push(new Expression())
       // let groups = this.actionJsonConditionFormGroup.get('groups') as FormArray
       // groups.push(this.createExpressionGroup(), {emitEvent: false})
     }
   }
 
   onChangeOperator(event, index: number){
-    (this.action.jsonCondition.groups[index] as Operator).operator= event['type']
+    (this.action.groups[index] as Operator).operator= event['type']
     console.log('onChangeOperator actionsss', this.action, this.actionJsonConditionFormGroup)
   }
 
   onChangeForm(event:{name: string, value: string}, type){
     this.action[type]=event.value
-    console.log('actionnnnn', this.action)
   }
 
 }

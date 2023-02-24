@@ -156,9 +156,9 @@ export const OPERATORS_LIST: { [key: string]: { name: string, type: TYPE_OPERATO
     "OR": { name: "OR", type: TYPE_OPERATOR.OR },
     "startsWith": { name: "starts With", type: TYPE_OPERATOR.startsWith },
     "startsWithIgnoreCase": { name: "starts With Ignore Case", type: TYPE_OPERATOR.startsWithIgnoreCase },
+    "endsWith": { name: "ends With", type: TYPE_OPERATOR.endsWith },
     "contains": { name: "contains", type: TYPE_OPERATOR.contains },
     "containsIgnoreCase": { name: "contains Ignore Case", type: TYPE_OPERATOR.containsIgnoreCase },
-    "endsWith": { name: "ends With", type: TYPE_OPERATOR.endsWith },
     "isEmpty": { name: "is Empty", type: TYPE_OPERATOR.isEmpty },
     "matches": { name: "matches", type: TYPE_OPERATOR.matches }
 }
@@ -206,6 +206,10 @@ export function retriveListOfVariables(intents: Array<Intent>) {
     variableList.userDefined = []
     intents.forEach(intent => {
         intent.actions.filter(action => action._tdActionType === TYPE_ACTION.ASSIGN_VARIABLE).forEach(((actionAssignVariable: ActionAssignVariable) => {
+            if(actionAssignVariable.assignTo === null || actionAssignVariable.assignTo === '') return;
+            if(variableList.userDefined.some(el => el.value === actionAssignVariable.assignTo)) return;
+            if(variableList.systemDefined.some(el => el.value === actionAssignVariable.assignTo)) return;
+
             variableList.userDefined.push({ name: actionAssignVariable.assignTo, value: actionAssignVariable.assignTo })
         }))
     })

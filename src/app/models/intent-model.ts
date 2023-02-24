@@ -152,13 +152,12 @@ export class ActionJsonCondition extends Action {
     trueIntent: string;
     falseIntent: string;
     stopOnConditionMet: boolean;
-    jsonCondition: { 
-        groups: Array<Expression | Operator>
-    }
+    groups: Array<Expression | Operator>;
+
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.JSON_CONDITION;
-        this.jsonCondition= { groups : [] };
+        this.groups = [];
         this.stopOnConditionMet = false;
     }
 }

@@ -25,6 +25,7 @@ export class CDSTextareaComponent implements OnInit {
   @Input() textLimitBtn: boolean = true;
   @Input() minRow: number = 2;
   @Input() maxRow: number = 20;
+  @Input() readonly: boolean = false;
   @Input() popoverVerticalAlign: string = 'below'
   
   @Output() onChange = new EventEmitter();
@@ -59,8 +60,8 @@ export class CDSTextareaComponent implements OnInit {
     }
   }
 
-   /** */
-   onChangeTextarea(event) {
+  /** */
+  onChangeTextarea(event) {
     console.log('[CDS-TEXAREA] onChangeTextarea-->', event)
     if (event) {
       this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
@@ -86,8 +87,10 @@ export class CDSTextareaComponent implements OnInit {
       }
       console.log('[CDS-TEXAREA] - event ', event.length);
       this.text = event;
-      this.onChange.emit(this.text);
+      
     }
+    console.log('checccccc', this.control)
+    this.onChange.emit(event);
   }
 
   ngAfterViewInit() {
@@ -118,8 +121,8 @@ export class CDSTextareaComponent implements OnInit {
       // this.insertAtCursor(this.elTextarea, '${' + variableSelected.value + '}')
       this.insertAtCursorPos(this.elTextarea, '${' + variableSelected.value + '}')
       this.onChangeTextarea(this.elTextarea.value)
-      this.onSelected.emit(variableSelected)
       this.addVariable.close()
+      this.onSelected.emit(variableSelected)
     }
   }
 

@@ -7,10 +7,12 @@
                 #autosize="cdkTextareaAutosize"
                 [maxlength]="limitCharsText"
                 [formControl]="control"
+                [class.invalid]="control.invalid"
                 cdkTextareaAutosize
                 cdkAutosizeMinRows="{{minRow}}"
                 cdkAutosizeMaxRows="{{maxRow}}"
                 [(ngModel)]="text"
+                [readonly]="readonly"
                 (ngModelChange)="onChangeTextarea($event)">
             </textarea>
         </mat-form-field>
@@ -55,12 +57,12 @@
         </div>
     </div>
 </div>
-
-<sat-popover #addVariable id="addVariable" verticalAlign="{{popoverVerticalAlign}}"  backDrop panelClass="add-filter-panel" interactiveClose="false">
-   <variable-list
-        (onSelected)="onVariableSelected($event)">
-    </variable-list>
-</sat-popover>
+<!-- verticalAlign="{{popoverVerticalAlign}}"  lockAlignment -->
+<sat-popover #addVariable id="addVariable"  horizontalAlign="center" verticalAlign="center"  hasBackdrop (backdropClicked)="addVariable.close()" panelClass="texarea-add-filter-panel"  interactiveClose="false">
+    <variable-list
+         (onSelected)="onVariableSelected($event)">
+     </variable-list>
+ </sat-popover>
 
 
 

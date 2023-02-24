@@ -162,7 +162,7 @@ mat-form-field.mat-focused ::ng-deep {
 
 mat-form-field.box-textarea ::ng-deep {
     .mat-form-field-wrapper {
-        padding-bottom:0;
+        padding-bottom: 0;
         .mat-form-field-flex {
             border-radius: 4px 4px 0 0;
             padding: 0px;
@@ -171,14 +171,14 @@ mat-form-field.box-textarea ::ng-deep {
             background-color: transparent !important;
         }
 
-        .mat-form-field-infix{
+        .mat-form-field-infix {
             padding: 0px;
             border-top: 0px;
         }
     }
     .mat-form-field-underline {
         display: none;
-    }    
+    }
 }
 
 /** box-textarea **/
@@ -201,7 +201,6 @@ mat-form-field.box-textarea ::ng-deep {
 //     }
 // }
 
-
 .box-textarea {
     width: 100%;
     // margin-left: 20px;
@@ -223,6 +222,7 @@ mat-form-field.box-textarea ::ng-deep {
 .email-field-box {
     display: flex;
     flex-direction: column;
+    gap: 10px;
     // width: 70%;
     // min-width: 900px;
     // max-width: 1400px;
@@ -262,15 +262,15 @@ mat-form-field.box-textarea ::ng-deep {
 
 // ::ng-deep cds-textarea .subject-text-area {
 //     textarea {
-//         resize: none !important; 
+//         resize: none !important;
 //     }
 // }
 
-::ng-deep cds-textarea .subject-text-area > .text-editor-wrapper > .text-editor > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > textarea{
-    resize: none !important; 
+::ng-deep cds-textarea.subject-text-area {
+    textarea {
+        resize: none !important;
+    }
 }
-
-
 
 /* 
 /* Text editor utils 
@@ -324,7 +324,7 @@ mat-form-field.box-textarea ::ng-deep {
 }
 
 .insert-attribute-btn:hover {
-    background: rgba(0, 108, 255, .3);
+    background: rgba(0, 108, 255, 0.3);
 }
 
 .emoji-picker-button {
@@ -349,9 +349,8 @@ mat-form-field.box-textarea ::ng-deep {
 }
 
 .emoji-picker-button:hover {
-    background: rgba(0, 108, 255, .3);
+    background: rgba(0, 108, 255, 0.3);
 }
-
 
 .tpl-text-limit {
     background: #647283;
@@ -363,8 +362,8 @@ mat-form-field.box-textarea ::ng-deep {
     line-height: 16px;
     padding: 0 10px;
     pointer-events: none;
-    -webkit-transition: background-color .3s,color .3s;
-    transition: background-color .3s,color .3s;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 ::ng-deep .set-attributes-panel {
@@ -393,8 +392,6 @@ mat-form-field.box-textarea ::ng-deep {
     -webkit-transition: background-color 0.2s, opacity 0.2s;
     transition: background-color 0.2s, opacity 0.2s;
 }
-
-
 
 .select-category-row-name {
     color: #22272d;
@@ -442,7 +439,6 @@ mat-form-field.box-textarea ::ng-deep {
     right: 0;
     // top: -110px;
     z-index: 1050;
-    
 }
 
 #set--attribrute {
@@ -461,5 +457,3 @@ mat-form-field.box-textarea ::ng-deep {
 #set--attribrute:hover {
     background-color: #f0f4f7;
 }
-
-

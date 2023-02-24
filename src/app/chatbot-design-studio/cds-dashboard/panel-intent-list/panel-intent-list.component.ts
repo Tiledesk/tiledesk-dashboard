@@ -4,7 +4,7 @@ import { FaqService } from './../../../services/faq.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Intent } from 'app/models/intent-model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 const swal = require('sweetalert');
 
@@ -26,6 +26,7 @@ export class PanelIntentListComponent implements OnInit {
   @Output() returnListOfIntents = new EventEmitter();
   @Output() createIntent = new EventEmitter();
   @Output() deleteSelectedIntent = new EventEmitter();
+ 
 
   intent_start: Intent;
   intent_defaultFallback: Intent;

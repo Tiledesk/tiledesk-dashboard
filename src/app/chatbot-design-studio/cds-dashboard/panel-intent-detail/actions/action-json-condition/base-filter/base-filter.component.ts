@@ -44,15 +44,6 @@ export class BaseFilterComponent implements OnInit {
       this.expression.conditions.splice(index-1, 2)
     }
     console.log('expressionnn', this.expression)
-
-    //REMOVE CURRENT GROUP OF CONDITIONS IF NO CONDITIONS ARE IN IT
-    if(this.expression.conditions.length === 0){
-      this.onRemoveGroup()
-    }
-  }
-
-  onRemoveGroup(){
-    this.onDeleteGroup.emit()
   }
 
   onChangeOperator(event, index: number){

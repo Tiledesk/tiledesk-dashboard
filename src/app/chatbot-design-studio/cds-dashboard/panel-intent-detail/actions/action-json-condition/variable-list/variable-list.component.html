@@ -5,7 +5,7 @@
         [(ngModel)]="textVariable"
         (ngModelChange)="onChangeSearch($event)">
 </div>
-<div id="scrollMe">
+<div id="variable-list-scrollMe">
     <div id="data" *ngIf="filteredVariableList && filteredVariableList.length > 0">
         <div class="category-name" >USER DATA</div>
         <div *ngFor="let variable of filteredVariableList" (click)="onVariableSelected(variable)" class="category-row">
@@ -14,7 +14,7 @@
         </div>
     </div>
     <div id="data" *ngIf="filteredIntentVariableList && filteredIntentVariableList.length > 0">
-        <div class="category-name" >INTENT ATTRIBUTES</div>
+        <div class="category-name" >SYSTEM ATTRIBUTES</div>
         <div *ngFor="let variable of filteredIntentVariableList" (click)="onVariableSelected(variable)" class="category-row">
             <span class="material-icons">{{variable?.icon}}</span>
             <label class="category-row-name">{{variable?.name}}</label>
