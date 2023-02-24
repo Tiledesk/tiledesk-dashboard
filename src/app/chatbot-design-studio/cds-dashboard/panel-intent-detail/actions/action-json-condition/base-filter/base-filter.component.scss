@@ -88,7 +88,7 @@
 }
 
 
-::ng-deep .add-filter-panel {
+::ng-deep .base-filter--add-filter-panel {
     display: flex;
     -ms-flex-direction: column;
     flex-direction: column;
@@ -100,10 +100,9 @@
     border-radius: 4px;
     // padding: 15px;
     margin-top: 10px;
-    width: 500px;
-
-    max-height: calc(50vh - 100px) !important;
-    overflow-y: scroll !important;
+    width: 500px; // nk
+    // max-height: calc(50vh - 100px) !important; nk
+    // overflow-y: scroll !important; // nk
 }
 
 

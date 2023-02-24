@@ -43,9 +43,9 @@
     </div>
 </div>
 
-
-<sat-popover #addConditionFilter id="addConditionFilter" panelClass="add-filter-panel"
-    verticalAlign="below" interactiveClose="false">
+<!-- verticalAlign="below" -->
+<sat-popover #addConditionFilter id="addConditionFilter"  horizontalAlign="center" verticalAlign="center" hasBackdrop (backdropClicked)="addConditionFilter.close()"  panelClass="base-filter--add-filter-panel"
+     interactiveClose="false">
     <base-condition-row
         [condition]="selectedCondition"
         (close)="onDismiss($event)">
