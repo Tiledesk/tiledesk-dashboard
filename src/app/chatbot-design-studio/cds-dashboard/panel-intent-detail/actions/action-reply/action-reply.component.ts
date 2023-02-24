@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Button, Message, Command, ActionReply, MessageWithWait, MessageAttributes } from '../../../../../models/intent-model';
-import { TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE } from '../../../../utils';
+import { ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE } from '../../../../utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
@@ -31,12 +31,14 @@ export class ActionReplyComponent implements OnInit {
   typeResponse = TYPE_RESPONSE;
   typeMessage = TYPE_MESSAGE;
   typeActions = TYPE_ACTION;
+  actionList = ACTIONS_LIST;
   intentName: string;
   intentNameResult: boolean;
   textGrabbing: boolean;
   arrayResponses: Array<Command>;
   arrayMessagesWithWait: Array<MessageWithWait>;
 
+  actionType:string;
 
 
   
@@ -46,14 +48,14 @@ export class ActionReplyComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    this.logger.log('ngOnInit panel-response', this.typeAction);
-    // this.initialize();
+    // console.log('ngOnInit panel-response::: ', this.typeAction);
+    this.actionType = (this.typeAction === TYPE_ACTION.RANDOM_REPLY?'RANDOM_REPLY':'REPLY');
+
   }
     
   ngOnChanges() {
     this.logger.log('ActionReplyComponent ngOnChanges');
     this.initialize();
-
     // this.generateCommandsOfElements();
     // this.elementIntentSelectedType = this.elementIntentSelected.type;
   }

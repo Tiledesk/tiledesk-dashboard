@@ -1,23 +1,21 @@
 <cds-action-description 
-    [actionType]="'REPLY'"
+    [actionType]="actionType"
     [actionSelected]="reply"
     [showTip]="intent_display_name==='start'"
     [tipText]="'<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '">
 </cds-action-description>
 
 <div class="box-sx">
-    
-
+    <div class="reply-info" *ngIf="typeAction === typeActions.RANDOM_REPLY">{{actionList.RANDOM_REPLY.description}}</div>
     <!-- [ngStyle]="{'transform': translateY}" -->
     <div #scrollMe id="scrollMe" 
         class="content draggable-list" 
         cdkDropList 
-        (cdkDropListDropped)="drop($event)"
-        >
+        (cdkDropListDropped)="drop($event)">
         <!-- <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag> -->
         <div *ngFor="let message of arrayMessagesWithWait; let i = index;" 
             class="draggable-box" 
-            [ngStyle]="{'margin-bottom':typeAction === typeActions.RANDOM_REPLY?'30px':'0px'}" 
+            [ngStyle]="{'margin-top':typeAction === typeActions.RANDOM_REPLY?'20px':'0px', 'margin-bottom':typeAction === typeActions.RANDOM_REPLY?'30px':'0px'}" 
             cdkDrag>
             <div *ngIf="message.type === typeMessage.TEXT">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
