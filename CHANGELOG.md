@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.4.7
+- Deploys in production
+- Adds the ability to create a new question by clicking the "ADD" button.
+- Fixes the bug: Email addresses are incorrect in Settings > "Email ticketing"
+- Adds an info message in the "Random reply" action
+- Improves the style of the "Reply" actions
+
 ### 2.4.6
 - Deploys in production
 - Adds validators to assignTo and operand2
