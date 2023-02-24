@@ -36,17 +36,19 @@
             [emoijPikerBtn]="true" 
             [setAttributeBtn]="true" 
             [textLimitBtn]="true" 
-            [textLimit]="limitCharsText" 
+            
             [text]="response.text" 
             [minHeightContent]="125"
             (textChanged)="onChangeTextarea($event)"> 
         </text-editable-div> -->
 
-        <cds-textarea class="text-area"
+        <cds-textarea 
+            class="text-editable-div"
             [text]="response.text" 
-            (onChange)="onChangeTextarea($event)"
+            [minRow]="1"
             popoverVerticalAlign="above"
-            [emoijPikerBtn]="false">
+            [emoijPikerBtn]="false"
+            (onChange)="onChangeTextarea($event)">
         </cds-textarea>
              
         <div *ngIf="typeAction === typeActions.REPLY" class="text-editor-drop">

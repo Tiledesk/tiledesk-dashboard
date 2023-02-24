@@ -23,7 +23,7 @@ export class BaseConditionRowComponent implements OnInit {
   operatorsList: Array<{}> = []
   step: number = 0;
   disableInput: boolean = true
-
+  disableSubmit: boolean = true
 
   conditionForm: FormGroup
 
@@ -76,18 +76,33 @@ export class BaseConditionRowComponent implements OnInit {
       this.step +=1
     }else if (step == 1){
       this.conditionForm.patchValue({ operand2: {type: 'var', name: variableSelected.name}}, {emitEvent: false})
+<<<<<<< HEAD
       this.logger.log('formmmmm', this.conditionForm)
+=======
+      console.log('formmmmm', this.conditionForm)
+      this.disableSubmit = false
+>>>>>>> d46f5d87cef4f302b5afc20a5bfbd8476caf8119
     }
   }
 
   onChangeTextArea(text: string, step: number){
+<<<<<<< HEAD
     this.logger.log('textttt', text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)))
+=======
+    console.log('textttt', text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)))
+    if(text){
+      this.disableSubmit = false
+    }else{
+      this.disableSubmit = true
+    }
+>>>>>>> d46f5d87cef4f302b5afc20a5bfbd8476caf8119
     if(text && text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))){
       text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)).forEach(match => {
         text = text.replace(text,match)
         this.conditionForm.patchValue({ operand2: {type: 'var', name: text}}, {emitEvent: false})
       })
     }
+   
   }
 
   clearInput(){

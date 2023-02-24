@@ -6,6 +6,9 @@ $max-height: 230px;
 .text-editable-div {
     margin-left: 20px;
     display: block;
+    margin-top: 0px;
+    margin-left: 30px;
+    width: calc(100% - 40px);
 }
 .frame-panel {
     position: absolute;

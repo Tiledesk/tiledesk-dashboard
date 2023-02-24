@@ -24,6 +24,12 @@ mat-form-field.mat-focused ::ng-deep {
                     border: 1px solid $icon-color !important;
                     outline: 1px solid $icon-color !important;
                     transition: border 0.3s;
+
+                    &.invalid{
+                        border: 1px solid red !important;
+                        outline: 1px solid red !important;
+                        transition: border 0.3s;
+                    }
                 }
             }
         }
