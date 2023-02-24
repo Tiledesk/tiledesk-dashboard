@@ -1,3 +1,4 @@
+import { ACTIONS_LIST } from 'app/chatbot-design-studio/utils';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActionAgent } from 'app/models/intent-model';
 
@@ -9,6 +10,8 @@ import { ActionAgent } from 'app/models/intent-model';
 export class ActionAgentHandoffComponent implements OnInit {
 
   @Input() action: ActionAgent;
+
+  actions = ACTIONS_LIST
 
   constructor() { }
 
