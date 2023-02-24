@@ -28,7 +28,7 @@
         <!-- <input   class="cds-question" value="{{q}}"
                     (ngModelChange)="onChangeText($event)" /> -->
         <h4>
-            When a user says something similar to a training phrase, Tiledesk matches it to the intent
+            When a user says something similar to a training phrase, Tiledesk matches it to the block
         </h4>            
 
         <div class="input-group cds-input-group">
@@ -40,10 +40,17 @@
             <!-- -->
             <!-- (ngModelChange)="onChangeText($event)"  [(ngModel)]="questions_array[index]" -->
             <input [(ngModel)]="newQuestion" (keydown.enter)='addQuestion()'type="text" class="cds-add-question-input"
-                aria-label="question" placeholder="Add user expression and press enter">
+                aria-label="question" placeholder="Add user expression and press enter or click ADD">
+
+                <span class="input-group-addon cds-group-addon-question-right" (click)="addQuestion()">
+                  <span class="cds-group-addon-question-right-btn-text"> ADD </span>  
+                    <span class="material-icons cds-group-addon-question-right-btn-icon">
+                        add
+                    </span>
+                </span>
           
         </div>
-        <!-- </mat-form-field> -->
+   
 
     </div>
 

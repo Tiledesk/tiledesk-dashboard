@@ -30,17 +30,16 @@
             padding: 8px;
             justify-content: center;
             font-size: 1.5em;
-            color: $action-item-color;
             background: $color-withe-hex;
-            color: $color-text-box-hex;
-            border: 1px solid $bg-color-dark-hex;
+            color: $color-bck-gray-hex;
+            border: 1px solid $color-light-gray-hex;
             &:hover {
-                outline: 2px solid $action-color-selected!important;
+                outline: 1px solid $action-color-selected!important;
                 border: 1px solid $action-color-selected!important;
             }
         }
         span {
-            color:$bg-color-dark-hex;
+            color:$color-bck-gray-hex;
             font-size: 0.8em;
             font-weight: 400;
             line-height: 19px;
