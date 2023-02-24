@@ -1,5 +1,161 @@
 # tiledesk-dashboard
 
+### 2.4.6-rc2
+- Added: readonly property to cds-textarea base element
+- Added: jsonCondition property to action-json-condition
+- Changed: set var into operant2 without ${*}
+- Changed: added ng-template and removed ng-option in select base element
+- Fixes the bug: check if variable already exist before pushing
+- Fixes the bug: if condition already exist, do not push new condition but override the existing one
+- Fixes the bug: select not save current value
+- Fixes the bug: no-data showed also if variable exist in variable-list component
+
+### 2.4.6-rc1
+- Adds the ability to remove current group if no conditions are in it
+- Adds the action "web request"
+- Adds the action "action-random-reply"
+- Adds an object to "operand2" in the "jsonCondition" action 
+- Changes: passes intent_id while select an intent from list
+- Disables the autoplay of the YouTube tutorials video
+- Fixes the bug: YouTube videos are not displayed in iframe
+
+### 2.4.5
+- Deploys in production
+- Fixes the bug: On chatbot details page > Import/Export tab, the CSV file upload confirmation pop-up window does not close
+- Moves the Deploy to Community button, available in the header of the chatbot dashboard, below the Publish button dropdown
+- Displays an in-app notification if the deployment to community is successful
+- Adds "Try WhatsApp" button in the header of the chatbot dashboard
+
+### 2.4.5-rc2
+- Fixes the bug: On chatbot details page > Import/Export tab, the CSV file upload confirmation pop-up window does not close
+- Moves the Deploy to Community button, available in the header of the chatbot dashboard, below the Publish button dropdown
+- Displays an in-app notification if the deployment to community is successful
+- Adds "Try WhatsApp" button in the header of the chatbot dashboard
+
+### 2.4.5-rc1
+- Adds chatbot publish button in chatbot design studio
+- Adds the "condition" action
+
+### 2.4.4
+- Deploys in production
+- Fixes the bug: when on the chatbot list page the user clicks on the button to view the details of an external bot, he is redirected to the chatbot design studio
+
+### 2.4.3
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.2
+- Deploys in production
+- Adds the "test it out" button on the community template details and  on the community templates list page
+- Displays the "verified icon" on the community templates list page if the template is verified
+
+### 2.4.1
+- Deploys in production
+- Adds the ability to search community chatbots by title, description, and tag
+
+### 2.4.0
+- Deploys in production
+- Chatbot design studio
+
+### 2.3.22-rc29
+- Improvements and bug fixing
+
+### 2.3.22-rc28
+- Restyles signing and signup page
+- Skips chatbot onboarding
+- Changes the shortcut buttons available in the home page
+- Adds community templates details component (in progress)
+- Adds: tipsText in action-description only for action-reply for 'start' intent
+- Adds: video tutorial on cds-intents and cds-rules sections in cds-slash-screen element
+- Changes: action-wait and action-change-department UI
+- Changes: width and height svg action
+- Changes: removed margin for cds-textarea base element
+- Changes: 'intent' with 'block'
+- Fixes the bug: action department not showed
+- Fixes the bug: action 'Hidden message' was over two lines
+- Fixes the bug: action-detail show only the first 10 actions in list
+- Fixes the bug: video disappear after save current intent
+- Fixes the bug: images has height and width with 0 value
+
+### 2.3.22-rc27
+- Improvements and bug fixing
+
+### 2.3.22-rc26
+- Improvements and bug fixing
+
+### 2.3.22-rc25
+- Improvements and bug fixing
+
+### 2.3.22-rc24
+- Improves the header button
+- Improves the intent list
+- Fixes the bug: company name is requested twice in the "advanced" form.
+- Adds the ability to enter a description for actions
+- Adds: stopOnConditionMet property on action-condition
+- Adds: hover style on hover csd-text
+- Changes: moved cds-action-description outside each action content (before)
+- Removes: isOpenActionDrawer input property on panel-action
+
+### 2.3.22-rc23
+- Adds: _tdActionTitle to Action class
+- Adds: action-close and action-agent component
+- Adds: input id for focus purpose
+- Adds: automatically set focus on cds-text tittle component
+- Adds: cds-text component in each action for setting tittle to an action
+- Adds: cds-text component to action-description section
+- Changes: renamed actionwait with action
+- Changes: replaced double "<\br>" with only one
+- Fixes the bug: rule list not updated after success button is showed
+- Fixes the bug: ng-select was cutted under its container
+- Fixes the bug: Chabot's profile picture is not visible after import
+- Removes the ability to import and export intents from the chatbot's "General" settings > Import/Export tab
+- Refactors the "Add Form" button
+- Fixes the bug: Saving an intent updates the detail section of the intent
+
+### 2.3.22-rc22
+- Fixes the bug: intent is not updated
+
+### 2.3.22-rc21
+- Fixes the bug: template list is not visible on Create Bot page
+
+### 2.3.22-rc20
+- Improvements and bug fixing
+
+### 2.3.22-rc19
+- Save an intent with a temporary name as soon as the user adds it
+- Fixes the bug: when an intent other than the selected one is deleted, the selected one is no longer active in the intent list
+- Fixed the bug: in the template's cards the template title is not visible due to the too long description
+- Selects the first available action when an intent is selected
+- Fixes the bug: when an intent is updated, the latest intent is selected in the intent list
+- Adds Chatbot design studio splash screen 
+- Selects an intent from the url
+- Sets in a new rule 'always' as default value for 'triggerEvery' condition
+
+### 2.3.22-rc18
+- Adds the new page to create the chatbot from scratch
+- Fixes the bug: "test it out" is not dynamic
+- Fixes the bug: the upload of the chatbot profile picture doesn't work
+- Fixes the bug: rules update doesn't work
+- Changes, programmatically,  the validator for the text in the rule if "regexOption" is "any"
+
+### 2.3.22-rc16
+- Improvements and bug fixing
+
+### 2.3.22-rc15
+- Improvements and bug fixing
+
+### 2.3.22-rc14
+- Improvements and bug fixing
+
+### 2.3.22-rc13
+- Improvements and bug fixing
+
+### 2.3.22-rc12
+- Improvements and bug fixing
+
+### 2.3.22-rc11
+- Improvements
+
 ### 2.3.22-rc10
 - Adds a check that saves the intent if it has no special characters
 - Replaces the name of actions with their icon
@@ -8,7 +164,7 @@
 - Bug Fixing
 
 ### 2.3.22-rc9
-- Add the ability to enable/disable the intent webhook
+- Add the ability to enable/disable the intent's webhook
 - Fixes action bugs
 
 ### 2.3.22-rc8
