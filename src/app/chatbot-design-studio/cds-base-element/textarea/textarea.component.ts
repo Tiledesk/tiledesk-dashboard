@@ -75,6 +75,7 @@ export class CDSTextareaComponent implements OnInit {
       // this.logger.log('[CDS-TEXAREA] - event ', event.length);
       // this.logger.log('[CDS-TEXAREA] - this.textent  ',  this.text);
       // this.logger.log('[CDS-TEXAREA] - this.textent length',  this.text.length); 
+      this.text = event;
       this.onChange.emit(this.text);
     // }
   }
