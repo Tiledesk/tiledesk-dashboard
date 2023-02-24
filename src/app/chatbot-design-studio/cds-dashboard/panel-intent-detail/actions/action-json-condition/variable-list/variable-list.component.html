@@ -14,7 +14,7 @@
         </div>
     </div>
     <div id="data" *ngIf="filteredIntentVariableList && filteredIntentVariableList.length > 0">
-        <div class="category-name" >INTENT ATTRIBUTES</div>
+        <div class="category-name" >SYSTEM ATTRIBUTES</div>
         <div *ngFor="let variable of filteredIntentVariableList" (click)="onVariableSelected(variable)" class="category-row">
             <span class="material-icons">{{variable?.icon}}</span>
             <label class="category-row-name">{{variable?.name}}</label>
