@@ -93,8 +93,10 @@ export class CDSTextareaComponent implements OnInit {
 
       console.log('[CDS-TEXAREA] - event ', event.length);
       this.text = event;
-      this.onChange.emit(this.text);
+      
     }
+    console.log('checccccc', this.control)
+    this.onChange.emit(event);
   }
 
   ngAfterViewInit() {
