@@ -166,7 +166,7 @@ input:-webkit-autofill {
   }
 
   .no-card-required {
-    text-align: center!important;
+    text-align: center !important;
     color: #666666 !important;
     font-size: 1.1em !important;
     font-weight: 300 !important;
@@ -243,8 +243,31 @@ label {
 
 // FORM ERROR
 .is-danger {
-  padding: 11px 0 11px 20px;
-  color: #da491c;
+  // padding: 11px 0 11px 20px;
+  // color: #da491c;
+  color: #f6303a;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  margin-top: -6px;
+}
+
+.pswrd-wpr {
+  position: relative;
+}
+
+.pswrd-eye {
+  cursor: pointer;
+  position: absolute;
+  right: 16px;
+  top: calc(50% - 12px);
+  border: 0px;
+  background: transparent;
+  outline: none;
+  margin: 0px;
+  padding: 0px;
+  width: 24px;
 }
 
 // start CHECKBOX TERMS AND CONDITIONS

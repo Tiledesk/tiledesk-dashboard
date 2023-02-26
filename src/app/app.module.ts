@@ -313,6 +313,8 @@ import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.com
 import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
 import { HomePromoDesignStudioComponent } from './home-promo-design-studio/home-promo-design-studio.component';
+import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
+
 
 
 
@@ -554,7 +556,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CreateChatbotComponent,
     OnboardingWidgetComponent, 
     CommunityTemplateDtlsComponent, 
-    HomePromoDesignStudioComponent, 
+    HomePromoDesignStudioComponent,
+    PasswordStrengthComponent 
     
   ],
   imports: [
