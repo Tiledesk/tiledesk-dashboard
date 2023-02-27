@@ -153,6 +153,7 @@ input[type="email"]:hover {
 
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
+  box-shadow: 0 0 0px 1000px white inset;
 }
 
 label {
@@ -161,8 +162,14 @@ label {
 
 // FORM ERROR
 .is-danger {
-  padding: 11px 0 11px 20px;
-  color: #da491c;
+  // padding: 11px 0 11px 20px;
+  // color: #da491c;
+  color: #f6303a;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  margin-top: -6px;
 }
 
 .split {

@@ -64,6 +64,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   strongPassword = false;
   userForm: FormGroup;
   isVisiblePsw: boolean = false
+  isVisiblePwsStrengthBar: boolean = false
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
   // 'maxlength': 'Password cannot be more than 25 characters long.',
@@ -148,19 +149,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
         Validators.required,
 
       ]],
-      'displayName': ['', []
-      ],
-      'firstName': ['', [
-        Validators.required,
-      ]],
-      'lastName': ['',
-        [
-          Validators.required,
-        ]],
-      'terms': ['',
-        [
-          Validators.required,
-        ]],
+      'displayName': ['', []],
+      'firstName': ['', []],
+      'lastName': [' ', []],
+      'terms': ['', [Validators.required,]],
     });
     this.userForm.valueChanges.subscribe((data) => this.onValueChanged(data));
     this.onValueChanged(); // reset validation messages
@@ -168,8 +160,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   // Updates validation state on form changes.
   onValueChanged(data?: any) {
-    if (!this.userForm) { return; }
+    if (!this.userForm) {
+      return;
+    }
     const form = this.userForm;
+
     for (const field in this.formErrors) {
       // tslint:disable-next-line:max-line-length
       if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName' || field === 'terms')) {
@@ -191,16 +186,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
 
-  onPasswordStrengthChanged(event: boolean) {
-    this.strongPassword = event;
-  }
-
-  togglePswdVisibility(isVisiblePsw) {
-    console.log('[SIGN-UP] togglePswdVisibility isVisiblePsw ', isVisiblePsw) 
-    const pswrdElem = <HTMLInputElement>document.querySelector('#signup-password')
-    console.log('[SIGN-UP] togglePswdVisibility pswrdElem ', pswrdElem) 
-    pswrdElem.classList.toggle("secure")
-  }
 
   getQueryParamsAndSegmentRecordPageAndIdentify() {
     this.route.queryParamMap
@@ -413,25 +398,43 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   signup() {
     this.showSpinnerInLoginBtn = true;
+    const email = this.userForm.value['email']
+    console.log('[SIGN-UP] signup  email ', email)
+
+    let yourname = "";
+    if (email.includes('@')) {
+      const emailBeforeAt = email.split('@')[0];
+      if (emailBeforeAt && !emailBeforeAt.includes('.')) {
+
+        yourname = emailBeforeAt;
+        console.log('[SIGN-UP] signup  yourname (use case email without dot before @) ', yourname)
+        this.userForm.controls['firstName'].patchValue(yourname)
+      } else if (emailBeforeAt && emailBeforeAt.includes('.')) {
+        const emailBeforeAtAndFirstDot = email.split('.')[0];
+        console.log('[SIGN-UP] signup  emailBeforeAtAndFirstDot ', emailBeforeAtAndFirstDot)
+        yourname = emailBeforeAtAndFirstDot;
+        console.log('[SIGN-UP] signup  yourname (use case email with dot before @) ', yourname)
+        this.userForm.controls['firstName'].patchValue(yourname)
+      }
+    }
+
+    console.log('[SIGN-UP] signup  this.userForm ', this.userForm)
 
     this.auth.showExpiredSessionPopup(true);
 
-    this.auth.signup(
-      this.userForm.value['email'],
-      this.userForm.value['password'],
-      this.userForm.value['firstName'],
-      this.userForm.value['lastName'])
+     this.auth.signup( this.userForm.value['email'],   this.userForm.value['password'], this.userForm.value['firstName'], this.userForm.value['lastName'])
+
       .subscribe((signupResponse) => {
         this.logger.log('[SIGN-UP] Email ', this.userForm.value['email']);
         this.logger.log('[SIGN-UP] Password ', this.userForm.value['password']);
         this.logger.log('[SIGN-UP] Firstname ', this.userForm.value['firstName']);
         this.logger.log('[SIGN-UP] Lastname ', this.userForm.value['lastName']);
-        this.logger.log('[SIGN-UP] POST DATA ', signupResponse);
+        console.log('[SIGN-UP] POST DATA ', signupResponse);
         if (signupResponse['success'] === true) {
           // this.router.navigate(['/welcome']);
-          this.logger.log('[SIGN-UP] RES ', signupResponse);
+          console.log('[SIGN-UP] RES ', signupResponse);
           const userEmail = signupResponse.user.email
-          this.logger.log('[SIGN-UP] RES USER EMAIL ', userEmail);
+          console.log('[SIGN-UP] RES USER EMAIL ', userEmail);
 
           if (!isDevMode()) {
             if (window['analytics']) {
@@ -614,6 +617,30 @@ export class SignupComponent implements OnInit, AfterViewInit {
   onChange($event) {
     const checkModel = $event.target.checked;
     this.logger.log('[SIGN-UP] CHECK MODEL ', checkModel)
+  }
+
+  onPasswordStrengthChanged(event: boolean) {
+    this.strongPassword = event;
+  }
+
+  togglePswdVisibility(isVisiblePsw) {
+    console.log('[SIGN-UP] togglePswdVisibility isVisiblePsw ', isVisiblePsw)
+    this.isVisiblePsw = isVisiblePsw
+    const pswrdElem = <HTMLInputElement>document.querySelector('#signup-password')
+    console.log('[SIGN-UP] togglePswdVisibility pswrdElem ', pswrdElem)
+    pswrdElem.classList.toggle("secure")
+  }
+
+
+  onFocusPwsInput() {
+
+    this.isVisiblePwsStrengthBar = true;
+    console.log('[SIGN-UP] onFocusPwsInput isVisiblePwsStrengthBar ', this.isVisiblePwsStrengthBar)
+  }
+
+  onBlurPwsInput() {
+    this.isVisiblePwsStrengthBar = false;
+    console.log('[SIGN-UP] onBlurPwsInput isVisiblePwsStrengthBar ', this.isVisiblePwsStrengthBar)
   }
 
 

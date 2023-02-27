@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@a
   styleUrls: ['./password-strength.component.scss']
 })
 export class PasswordStrengthComponent implements OnInit {
-
+  //https://stackblitz.com/edit/angular-ivy-bnupgd?file=src%2Fapp%2Fstrength-bar%2Fstrength-bar.component.ts,src%2Fapp%2Fstrength-bar%2Fstrength-bar.component.html,src%2Fapp%2Fstrength-bar%2Fstrength-checker.component.ts,src%2Fapp%2Fapp.component.css
   constructor() { }
 
   ngOnInit(): void {
