@@ -22,6 +22,7 @@
   "promoBannerUrl": "${PROMO_BANNER_URL}",
   "chatStoragePrefix": "${CHAT_STORAGE_PREFIX}",
   "tiledeskPhoneNumber": "${TILEDESK_PHONE_NUMBER}",
+  "ticketingEmail": "${TICKETING_EMAIL}", 
   "firebase": {
       "apiKey": "${FIREBASE_APIKEY}",
       "authDomain": "${FIREBASE_AUTHDOMAIN}",

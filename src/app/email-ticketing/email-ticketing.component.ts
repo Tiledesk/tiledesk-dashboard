@@ -20,7 +20,8 @@ export class EmailTicketingComponent implements OnInit {
   public selectedDeptId: string;
   public ticketingEmailDept: string;
   public hasCopiedTicketingEmail: boolean = false
-  public public_Key: any
+  public public_Key: any;
+  public emailEndpoint: string;
   constructor(
     private deptService: DepartmentService,
     private auth: AuthService,
@@ -34,7 +35,13 @@ export class EmailTicketingComponent implements OnInit {
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.getOSCODE();
+    // this.getTicketingEmailEndpoint()
   }
+
+  // getTicketingEmailEndpoint() {
+  //   this.emailEndpoint = this.appConfigService.getConfig().ticketingEmail
+  //   console.log('  this.emailEndpoint ',   this.emailEndpoint)
+  // }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -74,9 +81,9 @@ export class EmailTicketingComponent implements OnInit {
         this.projectID = project._id
         this.logger.log('[EMAIL-TICKETING] projectID ', this.projectID)
 
-        // this.ticketingEmail = "support@" + this.projectID + '.tickets.tiledesk.com'
-        this.ticketingEmail = "support@" + this.projectID + '.email.tiledesk.com'
-        
+        // this.ticketingEmail = "support@" + this.projectID + '.tickets.tiledesk.com' // v2
+        // this.ticketingEmail = "support@" + this.projectID + '.email.tiledesk.com' // v3
+        this.ticketingEmail = "support@" + this.projectID + '.' + this.appConfigService.getConfig().ticketingEmail
       }
     });
   }
@@ -130,7 +137,8 @@ export class EmailTicketingComponent implements OnInit {
   buildDeptTicketingEmail(selectedDeptId) {
     // <Department_id>@<Project_id>.tickets.tiledesk.com
     // this.ticketingEmailDept = selectedDeptId + "@" + this.projectID + '.tickets.tiledesk.com'
-    this.ticketingEmailDept = selectedDeptId + "@" + this.projectID + '.email.tiledesk.com'
+    // this.ticketingEmailDept = selectedDeptId + "@" + this.projectID + '.email.tiledesk.com'
+    this.ticketingEmail = "support@" + this.projectID + '.' + this.appConfigService.getConfig().ticketingEmail
   }
 
   copyTicketingEmailDept() {
