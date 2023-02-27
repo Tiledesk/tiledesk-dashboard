@@ -165,6 +165,24 @@ export class SignupComponent implements OnInit, AfterViewInit {
     }
     const form = this.userForm;
 
+    // console.log('[SIGN-UP] onValueChanged  data', data)
+    // if (data) {
+    //   let elemPswInput = <HTMLInputElement>document.getElementById('signup-password')
+    //   console.log('[SIGN-UP] onValueChanged  data password length (1)', data.password.length)
+    //   if (data.password.length >= 0) {
+    //     console.log('[SIGN-UP] onValueChanged  data password length (2)', data.password.length)
+    //     // document.getElementById("password")
+
+    //     elemPswInput.setAttribute("type", "text");
+    //     elemPswInput.classList.add("secure");
+    //   }
+    //   // else if ( data.password.length == 0) {
+    //   //   console.log('[SIGN-UP] onValueChanged  data password length (3)', data.password.length)
+    //   //   elemPswInput.setAttribute("type", "password");
+    //   //   elemPswInput.classList.remove("secure");
+    //   // }
+    // }
+
     for (const field in this.formErrors) {
       // tslint:disable-next-line:max-line-length
       if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName' || field === 'terms')) {
@@ -242,7 +260,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
             });
           } catch (err) {
-            this.logger.error('SiSignupgnin page error', err);
+            this.logger.error('Signup page error', err);
           }
           try {
             window['analytics'].identify({
@@ -422,7 +440,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
     this.auth.showExpiredSessionPopup(true);
 
-     this.auth.signup( this.userForm.value['email'],   this.userForm.value['password'], this.userForm.value['firstName'], this.userForm.value['lastName'])
+    this.auth.signup(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['firstName'], this.userForm.value['lastName'])
 
       .subscribe((signupResponse) => {
         this.logger.log('[SIGN-UP] Email ', this.userForm.value['email']);
@@ -625,10 +643,23 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   togglePswdVisibility(isVisiblePsw) {
     console.log('[SIGN-UP] togglePswdVisibility isVisiblePsw ', isVisiblePsw)
-    this.isVisiblePsw = isVisiblePsw
+    this.isVisiblePsw = isVisiblePsw;
+
     const pswrdElem = <HTMLInputElement>document.querySelector('#signup-password')
-    console.log('[SIGN-UP] togglePswdVisibility pswrdElem ', pswrdElem)
-    pswrdElem.classList.toggle("secure")
+    // if (pswrdElem.type === "text") {
+    //   console.log('[SIGN-UP] togglePswdVisibility pswrdElem (use case type text)', pswrdElem)
+    //   pswrdElem.classList.toggle("secure")
+    // }
+
+    // if (pswrdElem.type === "password") {
+    console.log('[SIGN-UP] togglePswdVisibility pswrdElem (use case type password) ', pswrdElem)
+    if (isVisiblePsw) {
+      pswrdElem.setAttribute("type", "text");
+    } else {
+      pswrdElem.setAttribute("type", "password");
+    }
+
+    // }
   }
 
 

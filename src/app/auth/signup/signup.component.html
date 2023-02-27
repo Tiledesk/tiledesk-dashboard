@@ -142,7 +142,8 @@
 
             <label for="password">Password <span style="color:#ff5252">*</span></label>
             <div class="pswrd-wpr">
-              <input type="text" id="signup-password" class="input secure" formControlName="password" required (focus)='onFocusPwsInput()' (blur)='onBlurPwsInput()'>
+              <!-- <input type="text" id="signup-password" class="input secure" formControlName="password" required (focus)='onFocusPwsInput()' (blur)='onBlurPwsInput()'> -->
+              <input type="password"  id="signup-password" class="input" autocomplete="new-password" aria-autocomplete="list" formControlName="password">
               <button type="button" tabindex="-1" class="pswrd-eye"
                 (click)="togglePswdVisibility(isVisiblePsw = !isVisiblePsw)">
                  <!-- --------------------------------------- -->
