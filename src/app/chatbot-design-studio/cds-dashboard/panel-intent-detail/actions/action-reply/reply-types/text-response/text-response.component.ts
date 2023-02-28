@@ -136,7 +136,6 @@ export class TextResponseComponent implements OnInit {
         this.buttons = this.response.attributes.attachment.buttons;
       }
     } catch (error) {
-      
     }
     
     this.openButtonPanel.emit({button: button, refResponse: this.response});

@@ -204,6 +204,8 @@
     }
 }
 .button-reply-text {
+    width: 100%;
+    height: 100%;
     max-width: $button-max-width-base;
     user-select: none;
     color: $color-blue-hex;

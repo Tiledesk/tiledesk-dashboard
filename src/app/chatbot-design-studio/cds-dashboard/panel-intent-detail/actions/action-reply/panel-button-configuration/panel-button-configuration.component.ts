@@ -77,7 +77,6 @@ export class PanelButtonConfigurationComponent implements OnInit {
     this.buttonType = this.typeOfButton.TEXT;
     this.urlType = this.typeOfUrl.BLANK;
     this.buttonUrl = '';
-
     try {
       this.buttonLabel = this.button.value ? this.button.value : null;
       this.buttonType = this.button.type ? this.button.type : null;
