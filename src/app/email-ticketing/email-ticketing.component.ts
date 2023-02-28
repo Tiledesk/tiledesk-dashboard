@@ -138,7 +138,7 @@ export class EmailTicketingComponent implements OnInit {
     // <Department_id>@<Project_id>.tickets.tiledesk.com
     // this.ticketingEmailDept = selectedDeptId + "@" + this.projectID + '.tickets.tiledesk.com'
     // this.ticketingEmailDept = selectedDeptId + "@" + this.projectID + '.email.tiledesk.com'
-    this.ticketingEmail = "support@" + this.projectID + '.' + this.appConfigService.getConfig().ticketingEmail
+    this.ticketingEmailDept = selectedDeptId + "@" + this.projectID + '.' + this.appConfigService.getConfig().ticketingEmail
   }
 
   copyTicketingEmailDept() {
