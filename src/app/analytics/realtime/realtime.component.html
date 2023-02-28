@@ -264,8 +264,7 @@
                             </td>
                             <!-- (click)="goToMemberProfile(member?.id_user?._id)" -->
                             <td style="font-weight: 400;cursor:pointer" (click)="goToMemberProfile(member?._id)">
-                                <span style="text-transform: uppercase">{{ member?.id_user?.lastname }}</span> {{
-                                member?.id_user?.firstname }}
+                                {{ member?.id_user?.firstname }} {{ member?.id_user?.lastname }} 
                             </td>
 
                             <td>

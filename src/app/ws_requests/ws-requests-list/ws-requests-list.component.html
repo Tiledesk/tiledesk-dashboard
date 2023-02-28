@@ -503,8 +503,8 @@
                           box-shadow: unset;
                           border-radius: 4px;
                           font-size: 11px;" class="bottom">
-                            <span style="text-transform: capitalize;"> {{ agent?.id_user?.firstname }}
-                              <span *ngIf="agent?.id_user?.lastname">
+                            <span> {{ agent?.id_user?.firstname }}
+                              <span *ngIf="agent?.id_user?.lastname && agent?.id_user?.lastname !== ' '">
                                 {{ agent?.id_user?.lastname | slice:0:1 }}.
                               </span>
 

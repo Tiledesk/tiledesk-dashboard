@@ -98,8 +98,8 @@
                     </div>
                   </div>
                   <span class="bottom-home-header">
-                    <span style="text-transform: capitalize;"> {{ projectUser?.id_user?.firstname }}
-                      <span *ngIf="projectUser?.id_user?.lastname">
+                    <span> {{ projectUser?.id_user?.firstname }}
+                      <span *ngIf="projectUser?.id_user?.lastname && projectUser?.id_user?.lastname !== ' '">
                         {{ projectUser?.id_user?.lastname | slice:0:1 }}.
                       </span>
                     </span>

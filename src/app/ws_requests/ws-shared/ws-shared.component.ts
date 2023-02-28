@@ -152,7 +152,7 @@ export class WsSharedComponent implements OnInit {
 
         this.cleaned_members_array.push(member_id);
         this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
-
+        this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS isFirebaseUploadEngine ', isFirebaseUploadEngine);
         const memberIsBot = member_id.includes('bot_');
 
         if (memberIsBot === true) {
