@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:T-ANA:T-ACT:T-TRI:T-GRO:T-DEP:T-OPH:T-MTL:T-DGF:T-NAT:T-CAR:T-V1L:T-PSA:T-MTT:T-SUP:T-LBS:T-APP:T-DEV:T-NOT:T-RAS:T',
+    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-CAR:F-V1L:F-PSA:F-MTT:F-SUP:F-LBS:F-APP:F-DEV:F-NOT:F-IPS:F-ETK:F-RAS:F-PPB:F-PET:F-MTS:F-TIL:F-DGF:F-NAT:F-HPB:F-TOW:F',
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v4/launch.js',
     botcredendialsURL: 'CHANGE-IT',
@@ -20,6 +20,7 @@ export const environment = {
     appsUrl: 'CHANGEIT',
     promoBannerUrl: 'CHANGEIT',
     chatStoragePrefix: "CHANGEIT",
+    ticketingEmail: "CHANGEIT",
     tiledeskPhoneNumber: "CHANGEIT",
     firebase: {
         apiKey: "CHANGE-IT",
