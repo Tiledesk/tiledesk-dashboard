@@ -3,7 +3,7 @@ import { CDSTextComponent } from './../../../../../cds-base-element/text/text.co
 import { Component, OnInit, Input, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Button } from 'app/models/intent-model';
 
-import { TYPE_BUTTON, TYPE_URL, classCardButtonNoClose } from '../../../../../utils';
+import { TYPE_BUTTON, TYPE_URL } from '../../../../../utils';
 
 @Component({
   selector: 'appdashboard-panel-button-configuration',
@@ -13,6 +13,8 @@ import { TYPE_BUTTON, TYPE_URL, classCardButtonNoClose } from '../../../../../ut
 export class PanelButtonConfigurationComponent implements OnInit {
 
   @ViewChild('input_title', { static: true }) input_topic: CDSTextComponent;
+  @ViewChild('button_save', { static: true }) button_save_topic: any;
+  
 
   @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
   @Input() button: Button;
@@ -21,7 +23,6 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
   buttonLabelResult: boolean;
   buttonLabel: string;
-
   typeOfButton = TYPE_BUTTON;
   buttonTypes: Array<{ label: string, value: TYPE_BUTTON }> = [
     { label: "text", value: this.typeOfButton.TEXT },
@@ -37,12 +38,9 @@ export class PanelButtonConfigurationComponent implements OnInit {
     { label: "self", value: this.typeOfUrl.SELF },
   ];
   urlType: string;
-
   buttonUrl: string;
   errorUrl: boolean;
-
   buttonAction: string;
-
   clickInside: boolean;
 
   constructor(
@@ -89,7 +87,6 @@ export class PanelButtonConfigurationComponent implements OnInit {
     } catch (error) {
       // error
     }
-    // console.log('PanelButtonConfigurationComponent', this.button, this.buttonTypes);
   }
 
   ngOnChanges() {
@@ -105,58 +102,47 @@ export class PanelButtonConfigurationComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.input_topic.myInput.nativeElement.focus()
+    this.input_topic.myInput.nativeElement.focus();
   }
 
-  @HostListener('document:click', ['$event'])
-  clickout(event) {
-    //   console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
-    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
-
-    // console.log("event: ", event)
-    // console.log("event.target: ", event.target)
-    // console.log("event.target.classList: ", event.target.classList)
-    
-    const clicked_element_id = event.target.id
-    if (this.eRef.nativeElement.contains(event.target)) {
-      // console.log("clicked inside")
-    } else {
-
-      // console.log('clicked outside')
-
-      if (!event.target.classList.contains('single-btn-reply') && !event.target.classList.contains('ng-option') && !event.target.classList.contains('ng-option-label') && !event.target.classList.contains('mat-option-text')) {
-        this.onCloseButtonPanel();
-        // console.log('clicked outside')
-      }
-  
-    }
-  }
-
-  // PRIVATE FUNCTIONS //  
-  /** */
-  // private addNewButton(){
-  //   this.button = {
-  //     'value': '',
-  //     'type': this.typeOfButton.TEXT,
-  //     'target': this.typeOfUrl.BLANK,
-  //     'link': '',
-  //     'action': '',
-  //     'show_echo': true
-  //   };
+  // @HostListener('document:click', ['$event'])
+  // clickout(event) {
+  //   const clicked_element_id = event.target.id;
+  //   console.log("clicked: ", event.target.classList);
+  //   if (this.eRef.nativeElement.contains(event.target)) {
+  //     // console.log("clicked inside")
+  //   } else {
+  //     // console.log('clicked outside')
+  //     if (!event.target.classList.contains('single-btn-reply') && !event.target.classList.contains('ng-option') && !event.target.classList.contains('ng-option-label') && !event.target.classList.contains('mat-option-text')) {
+  //       this.onCloseButtonPanel();
+  //       // console.log('clicked outside')
+  //     }
+  //   }
   // }
 
+  // PRIVATE FUNCTIONS //  
+
+  private setFocusOnButtonSave(){
+    // console.log('setFocusOnButtonSave: ', this.button_save_topic);
+    this.button_save_topic.nativeElement.focus();
+  }
 
   private checkButtonLabel(): boolean {
-    //setTimeout(() => {
     if (!this.buttonLabel || this.buttonLabel.length === 0) {
-      this.buttonLabelResult = false;
-      return false;
-    } else {
-      this.button.value = this.buttonLabel;
-      this.buttonLabelResult = true;
-      return true;
+      this.buttonLabel = 'Button';
     }
+    this.button.value = this.buttonLabel;
+    this.buttonLabelResult = true;
+    return true;
+    //setTimeout(() => {
+    // if (!this.buttonLabel || this.buttonLabel.length === 0) {
+    //   this.buttonLabelResult = false;
+    //   return false;
+    // } else {
+    //   this.button.value = this.buttonLabel;
+    //   this.buttonLabelResult = true;
+    //   return true;
+    // }
     //}, 300);
   }
 
@@ -191,15 +177,18 @@ export class PanelButtonConfigurationComponent implements OnInit {
     return false;
   }
 
-
-  // EVENTS FUNCTIONS //  
-  /** */
-  onSaveButton() {
+  private checkAndSaveButton(){
     let checkLabel = this.checkButtonLabel();
     let checkType = this.checkTypeButton();
     if (checkLabel && checkType) {
       this.saveButton.emit(this.button);
     }
+  }
+
+  // EVENTS FUNCTIONS //  
+  /** */
+  onSaveButton() {
+    this.checkAndSaveButton();
   }
 
   /** */
@@ -214,13 +203,15 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
   /** */
   onChangeActionButton(actionButton) {
-    this.buttonAction = actionButton
+    this.buttonAction = actionButton;
     this.button.action = actionButton;
   }
 
   onChangeSelect(event: {name: string, value: string}){
-    this.buttonAction = event.value
+    console.log('onChangeSelect: ', event);
+    this.buttonAction = event.value;
     this.button.action = event.value;
+    this.setFocusOnButtonSave();
   }
 
   /** */
@@ -229,10 +220,13 @@ export class PanelButtonConfigurationComponent implements OnInit {
   }
 
   onChangeTitle(text: string) {
-    this.buttonLabel = text
+    this.buttonLabel = text;
+    this.checkAndSaveButton();
   }
+
   onChangeUrl(text: string) {
-    this.buttonUrl = text
+    this.buttonUrl = text;
+    this.checkAndSaveButton();
   }
 
 }
