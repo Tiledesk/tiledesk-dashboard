@@ -129,7 +129,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
   private checkButtonLabel(): boolean {
     if (!this.buttonLabel || this.buttonLabel.length === 0) {
-      this.buttonLabel = 'Button';
+      this.buttonLabel = '';
     }
     this.button.value = this.buttonLabel;
     this.buttonLabelResult = true;
