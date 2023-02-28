@@ -165,19 +165,19 @@ export class SignupComponent implements OnInit, AfterViewInit {
     }
     const form = this.userForm;
 
-    // console.log('[SIGN-UP] onValueChanged  data', data)
+    // this.logger.log('[SIGN-UP] onValueChanged  data', data)
     // if (data) {
     //   let elemPswInput = <HTMLInputElement>document.getElementById('signup-password')
-    //   console.log('[SIGN-UP] onValueChanged  data password length (1)', data.password.length)
+    //   this.logger.log('[SIGN-UP] onValueChanged  data password length (1)', data.password.length)
     //   if (data.password.length >= 0) {
-    //     console.log('[SIGN-UP] onValueChanged  data password length (2)', data.password.length)
+    //     this.logger.log('[SIGN-UP] onValueChanged  data password length (2)', data.password.length)
     //     // document.getElementById("password")
 
     //     elemPswInput.setAttribute("type", "text");
     //     elemPswInput.classList.add("secure");
     //   }
     //   // else if ( data.password.length == 0) {
-    //   //   console.log('[SIGN-UP] onValueChanged  data password length (3)', data.password.length)
+    //   //   this.logger.log('[SIGN-UP] onValueChanged  data password length (3)', data.password.length)
     //   //   elemPswInput.setAttribute("type", "password");
     //   //   elemPswInput.classList.remove("secure");
     //   // }
@@ -212,9 +212,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.queryParams = params['params']
         this.logger.log('segmentsPageAndIdentify queryParams', this.queryParams)
         var size = Object.keys(this.queryParams).length;
-        // console.log('queryParams size ', size)
+        // this.logger.log('queryParams size ', size)
         const storedRoute = this.localDbService.getFromStorage('wannago')
-        // console.log('[SIGN-UP] storedRoute', storedRoute)
+        // this.logger.log('[SIGN-UP] storedRoute', storedRoute)
         if (size > 0) {
 
           for (const [key, value] of Object.entries(this.queryParams)) {
@@ -226,15 +226,15 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
           let storedRouteSegments = storedRoute.split('/')
 
-          // console.log('[SIGN-UP] storedRouteSegments', storedRouteSegments)
+          // this.logger.log('[SIGN-UP] storedRouteSegments', storedRouteSegments)
           let secondStoredRouteSegment = storedRouteSegments[2]
-          // console.log('[SIGN-UP] secondStoredRouteSegment', storedRouteSegments)
+          // this.logger.log('[SIGN-UP] secondStoredRouteSegment', storedRouteSegments)
           if (secondStoredRouteSegment && secondStoredRouteSegment.includes("?")) {
 
             const secondStoredRouteSegments = storedRouteSegments[2].split('?tn=')
-            // console.log('[SIGN-UP] secondStoredRouteSegments', secondStoredRouteSegments)
+            // this.logger.log('[SIGN-UP] secondStoredRouteSegments', secondStoredRouteSegments)
             this.templateName = decodeURIComponent(secondStoredRouteSegments[1])
-            // console.log('[SIGN-UP] secondStoredRouteSegments templateName', this.templateName)
+            // this.logger.log('[SIGN-UP] secondStoredRouteSegments templateName', this.templateName)
           }
           this.segmentRecordPageAndIdentify(this.templateName)
 
@@ -344,7 +344,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   checkCurrentUrlAndSkipWizard() {
 
     this.storedRoute = this.localDbService.getFromStorage('wannago')
-    // console.log('[SIGN-UP] storedRoute ', this.storedRoute)
+    // this.logger.log('[SIGN-UP] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
       this.EXIST_STORED_ROUTE = true
     } else {
@@ -417,7 +417,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   signup() {
     this.showSpinnerInLoginBtn = true;
     const email = this.userForm.value['email']
-    console.log('[SIGN-UP] signup  email ', email)
+    this.logger.log('[SIGN-UP] signup  email ', email)
 
     let yourname = "";
     if (email.includes('@')) {
@@ -425,18 +425,18 @@ export class SignupComponent implements OnInit, AfterViewInit {
       if (emailBeforeAt && !emailBeforeAt.includes('.')) {
 
         yourname = emailBeforeAt;
-        console.log('[SIGN-UP] signup  yourname (use case email without dot before @) ', yourname)
+        this.logger.log('[SIGN-UP] signup  yourname (use case email without dot before @) ', yourname)
         this.userForm.controls['firstName'].patchValue(yourname)
       } else if (emailBeforeAt && emailBeforeAt.includes('.')) {
         const emailBeforeAtAndFirstDot = email.split('.')[0];
-        console.log('[SIGN-UP] signup  emailBeforeAtAndFirstDot ', emailBeforeAtAndFirstDot)
+        this.logger.log('[SIGN-UP] signup  emailBeforeAtAndFirstDot ', emailBeforeAtAndFirstDot)
         yourname = emailBeforeAtAndFirstDot;
-        console.log('[SIGN-UP] signup  yourname (use case email with dot before @) ', yourname)
+        this.logger.log('[SIGN-UP] signup  yourname (use case email with dot before @) ', yourname)
         this.userForm.controls['firstName'].patchValue(yourname)
       }
     }
 
-    console.log('[SIGN-UP] signup  this.userForm ', this.userForm)
+    this.logger.log('[SIGN-UP] signup  this.userForm ', this.userForm)
 
     this.auth.showExpiredSessionPopup(true);
 
@@ -447,12 +447,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIGN-UP] Password ', this.userForm.value['password']);
         this.logger.log('[SIGN-UP] Firstname ', this.userForm.value['firstName']);
         this.logger.log('[SIGN-UP] Lastname ', this.userForm.value['lastName']);
-        console.log('[SIGN-UP] POST DATA ', signupResponse);
+        this.logger.log('[SIGN-UP] POST DATA ', signupResponse);
         if (signupResponse['success'] === true) {
           // this.router.navigate(['/welcome']);
-          console.log('[SIGN-UP] RES ', signupResponse);
+          this.logger.log('[SIGN-UP] RES ', signupResponse);
           const userEmail = signupResponse.user.email
-          console.log('[SIGN-UP] RES USER EMAIL ', userEmail);
+          this.logger.log('[SIGN-UP] RES USER EMAIL ', userEmail);
 
           if (!isDevMode()) {
             if (window['analytics']) {
@@ -468,12 +468,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
               let utm_source_value = undefined;
               let su = undefined;
               var size = Object.keys(this.queryParams).length;
-              // console.log('queryParams size ', size)
+              // this.logger.log('queryParams size ', size)
               // let event = ''
               if (size > 0) {
 
                 for (const [key, value] of Object.entries(this.queryParams)) {
-                  // console.log(`${key}: ${value}`);
+                  // this.logger.log(`${key}: ${value}`);
                   // event = "Signed Up button clicked" + ' ' + key + '=' + value
                   if (key === 'utm_source') {
                     utm_source_value = value
@@ -576,8 +576,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
           window['tiledesk_widget_login']();
         }
 
-        // console.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
-        // console.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
+        // this.logger.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
+        // this.logger.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
 
         if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {
@@ -642,17 +642,17 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
   togglePswdVisibility(isVisiblePsw) {
-    console.log('[SIGN-UP] togglePswdVisibility isVisiblePsw ', isVisiblePsw)
+    this.logger.log('[SIGN-UP] togglePswdVisibility isVisiblePsw ', isVisiblePsw)
     this.isVisiblePsw = isVisiblePsw;
 
     const pswrdElem = <HTMLInputElement>document.querySelector('#signup-password')
     // if (pswrdElem.type === "text") {
-    //   console.log('[SIGN-UP] togglePswdVisibility pswrdElem (use case type text)', pswrdElem)
+    //   this.logger.log('[SIGN-UP] togglePswdVisibility pswrdElem (use case type text)', pswrdElem)
     //   pswrdElem.classList.toggle("secure")
     // }
 
     // if (pswrdElem.type === "password") {
-    console.log('[SIGN-UP] togglePswdVisibility pswrdElem (use case type password) ', pswrdElem)
+    this.logger.log('[SIGN-UP] togglePswdVisibility pswrdElem (use case type password) ', pswrdElem)
     if (isVisiblePsw) {
       pswrdElem.setAttribute("type", "text");
     } else {
@@ -666,12 +666,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
   onFocusPwsInput() {
 
     this.isVisiblePwsStrengthBar = true;
-    console.log('[SIGN-UP] onFocusPwsInput isVisiblePwsStrengthBar ', this.isVisiblePwsStrengthBar)
+    this.logger.log('[SIGN-UP] onFocusPwsInput isVisiblePwsStrengthBar ', this.isVisiblePwsStrengthBar)
   }
 
   onBlurPwsInput() {
     this.isVisiblePwsStrengthBar = false;
-    console.log('[SIGN-UP] onBlurPwsInput isVisiblePwsStrengthBar ', this.isVisiblePwsStrengthBar)
+    this.logger.log('[SIGN-UP] onBlurPwsInput isVisiblePwsStrengthBar ', this.isVisiblePwsStrengthBar)
   }
 
 
