@@ -184,7 +184,7 @@ export class MessagesComponent implements OnInit {
     this.logger.log("[ANALYTICS - MSGS] Lastdays: ", lastdays);
     
     this.subscription = this.analyticsService.getMessagesByDay(lastdays, senderID).subscribe((messagesByDay) => {
-    //  console.log("[ANALYTICS - MSGS] »» MESSAGES BY DAY RESULT: ", messagesByDay)
+      this.logger.log("[ANALYTICS - MSGS] »» MESSAGES BY DAY RESULT: ", messagesByDay)
 
       const lastdays_initarray = [];
       for (let i = 0; i < lastdays; i++) {
