@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.4.8
+- Adds the password security bar on the registration page
+- Adds the ability to sign up only with email and password
+- Outsources the endpoint of the ticketing email in the environments (variable name "ticketingEmail")
+- Adds the ability, at the signup, to select the strong password suggested by the browser
+
 ### 2.4.7
 - Deploys in production
 - Adds the ability to create a new question by clicking the "ADD" button.
