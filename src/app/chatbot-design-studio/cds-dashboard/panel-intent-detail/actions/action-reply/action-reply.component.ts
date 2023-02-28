@@ -304,13 +304,14 @@ export class ActionReplyComponent implements OnInit {
 
 private createNewButton(){
   this.buttonSelected =  {
-    'value': '',
+    'value': 'Button',
     'type': TYPE_BUTTON.TEXT,
     'target': TYPE_URL.BLANK,
     'link': '',
     'action': '',
     'show_echo': true
   };
+  this.response.attributes.attachment.buttons.push(this.buttonSelected);
   this.logger.log('createNewButton :: ', this.buttonSelected);
 }
 
@@ -337,11 +338,10 @@ private createNewButton(){
 
   /** appdashboard-button-configuration-panel: Save button */
   onSaveButton(button) {
-    if(this.newButton){
-      this.response.attributes.attachment.buttons.push(button);
-    }
-    this.logger.log('onSaveButton222 :: ', button, this.response);
-    this.openCardButton = false;
+    // if(this.newButton){
+    //   this.response.attributes.attachment.buttons.push(button);
+    // }
+    this.logger.log('onSaveButton :: ', button, this.response);
     this.generateCommandsWithWaitOfElements();
   }
 

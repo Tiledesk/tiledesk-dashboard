@@ -209,7 +209,6 @@ export function retriveListOfVariables(intents: Array<Intent>) {
             if(actionAssignVariable.assignTo === null || actionAssignVariable.assignTo === '') return;
             if(variableList.userDefined.some(el => el.value === actionAssignVariable.assignTo)) return;
             if(variableList.systemDefined.some(el => el.value === actionAssignVariable.assignTo)) return;
-
             variableList.userDefined.push({ name: actionAssignVariable.assignTo, value: actionAssignVariable.assignTo })
         }))
     })
