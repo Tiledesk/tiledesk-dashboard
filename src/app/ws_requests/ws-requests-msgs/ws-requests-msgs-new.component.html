@@ -1014,7 +1014,7 @@
                                   [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}"
                                   style="cursor:pointer" [satPopoverAnchor]="agentnoimg"
                                   (click)="$event.stopPropagation()" (click)="agentnoimg.toggle()"
-                                  (document:click)="agentnoimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.userFullname}}
+                                  (document:click)="agentnoimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}}
                                    {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
                                   matTooltipPosition='left' matTooltipHideDelay="100">
                                   {{ agent?.userFullname }}
