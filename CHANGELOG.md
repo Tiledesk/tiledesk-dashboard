@@ -1,10 +1,13 @@
 # tiledesk-dashboard
 
 ### 2.4.8
-- Adds the password security bar on the registration page
+- Adds the password security bar on the sign up page
 - Adds the ability to sign up only with email and password
 - Outsources the endpoint of the ticketing email in the environments (variable name "ticketingEmail")
 - Adds the ability, at the signup, to select the strong password suggested by the browser
+- Adds the ability, for the "Reply" actions, to "edit in place" the title of the buttons
+- Fixed the bug: in the "Reply" actions when selecting a block from the "Go to block" combo-box the popup window closes
+- Fixes teammates first name in case last name is missing (no longer required in the new signup)
 
 ### 2.4.7
 - Deploys in production
