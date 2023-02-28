@@ -189,6 +189,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
   /** */
   onSaveButton() {
     this.checkAndSaveButton();
+    this.closeButtonPanel.emit();
   }
 
   /** */
