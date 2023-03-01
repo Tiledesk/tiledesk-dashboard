@@ -2270,6 +2270,7 @@
     "SmartReassignmentForThisConversationWillBeEnabled":"Якщо натиснути кнопку «Перетворити на онлайн», для цієї розмови буде ввімкнено розумне перепризначення",
     "TagAlreadyAssigned":"Тег уже призначено",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Цей тег уже призначено. Будь ласка, введіть унікальний тег",
+    "GetStarted": "Почати",
     "AddIntentPage": {
         "AddForm": "Додати форму",
         "SelectTemplateForm": "Виберіть тип форми серед запропонованих або створіть новий",

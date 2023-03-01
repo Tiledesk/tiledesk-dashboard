@@ -2270,6 +2270,7 @@
     "SmartReassignmentForThisConversationWillBeEnabled":"Ao clicar no botão Converter para online, a reatribuição inteligente para esta conversa será habilitada",
     "TagAlreadyAssigned":"Tag já atribuído",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Esta tag já foi atribuída. Por favor, insira uma tag única",
+    "GetStarted": "Primeiros passos",
     "AddIntentPage": {
         "AddForm": "Adicione o formulário",
         "SelectTemplateForm": "Selecione um tipo de forma entre os sugeridos ou crie um novo",

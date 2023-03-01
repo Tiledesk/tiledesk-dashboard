@@ -2270,6 +2270,7 @@
     "SmartReassignmentForThisConversationWillBeEnabled":"بالنقر فوق الزر تحويل إلى عبر الإنترنت ، سيتم تمكين SMART REASSIGNMENT للمحادثة الحالية",
     "TagAlreadyAssigned":"تم تعيين TAG بالفعل",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"تم تعيين TAG هذا بالفعل. الرجاء إدخال TAG فريد",
+    "GetStarted": "ابدأ الآن",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

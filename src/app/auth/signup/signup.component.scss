@@ -215,7 +215,7 @@ input:-webkit-autofill {
 }
 
 .welcome-text {
-  font-size: 48px;
+  font-size: 40px;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-weight: 600;
   line-height: 50px;
@@ -231,8 +231,8 @@ input:-webkit-autofill {
   padding-right: 80px;
   text-align: center;
   color: #f0806f;
-  font-size: 20px;
-  line-height: 29px;
+  font-size: 18px;
+  line-height: 25px;
   font-weight: 500;
   z-index: 1050;
   position: relative;
@@ -258,17 +258,19 @@ label {
   position: relative;
 }
 
-.pswrd-eye {
+.pswrd-eye-btn {
   cursor: pointer;
-  position: absolute;
-  right: 16px;
-  top: calc(50% - 12px);
-  border: 0px;
-  background: transparent;
-  outline: none;
-  margin: 0px;
-  padding: 0px;
-  width: 24px;
+    position: absolute;
+    right: 1px;
+    /* top: calc(50% - 12px); */
+    border: 0px;
+    background: transparent;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    width: 50px;
+    /* background: aliceblue; */
+    height: 54px;
 }
 
 // start CHECKBOX TERMS AND CONDITIONS
@@ -285,6 +287,7 @@ label {
   -ms-user-select: none;
   user-select: none;
   padding-top: 3px;
+  font-family: 'Poppins', 'Roboto',  'Arial', sans-serif;
 }
 
 /* Hide the browser's default checkbox */
@@ -360,6 +363,38 @@ input.secure {
   background-image: url("/assets/img/rocket-login-page_no_brand.svg");
   background-repeat: no-repeat;
   background-position: center bottom;
+}
+
+/*
+/* Social proof
+/* -------------------------------------------------------- */
+
+.social-proof-container {
+bottom: 20px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+.social-proof-wpr  {
+  -webkit-box-align: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 45px;
+    justify-content: center;
+
+}
+
+.social-proof {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  align-items: center;
 }
 
 // @import "./src/assets/sass/md/_variables.scss";

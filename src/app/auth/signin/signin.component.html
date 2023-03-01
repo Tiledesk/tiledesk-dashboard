@@ -24,40 +24,37 @@
       <!--  --------------------------------------------------------------- -->
       <!--  Right panel -->
       <!--  --------------------------------------------------------------- -->
-      <div class="centered-horizontally" style="margin:auto">
+      <div class="centered-horizontally" style="margin:auto; margin-top: 60px;">
 
         <div class="left-logo" style="text-align: center;text-align: center;
         z-index: 1050;
         position: relative;">
           <a [href]="company_site_url" target="_blank">
 
-            <img [src]="companyLogoAllWithe_Url" class="img-fluid" style="width: 180px;"/>
+            <!-- <img [src]="companyLogoAllWithe_Url" class="img-fluid" style="width: 180px;"/> -->
+            <img src="assets/img/logos/tiledesk_planet.svg" class="img-fluid" style="width: 200px;" />
           </a>
         </div>
 
-        <div class="welcome-text">
-          <!-- {{'WelcomeTo' | translate }} -->
+        <!-- <div class="welcome-text">
           <span> Welcome </span> <span style="display: block;"> to Tiledesk </span>
-        </div>
+        </div> -->
 
-        <div class="welcome-text-subtitle">
+        <!-- <div class="welcome-text-subtitle">
           The community-led no-code platform for customer engagement. 
           <span style="display: block;"> Omni-channel live chat + AI-powered chatbots and conversational apps. </span> 
-        </div>
+        </div> -->
 
-        <!-- <div *ngIf="SUP === true" style="width: 250px; margin: auto; text-align: center;">
-    
-          <h2
-            style="font-size: 26px;font-family:'Montserrat', sans-serif;color:#fff; text-align:left; line-height: 1.2em;">
+         <div *ngIf="SUP === true" style="width: 260px; margin: auto; text-align: center;">
+          <h2 class="signin-no-account">
             {{ "Dont" | translate }} <br>
             {{ "HaveAnAccountYet" | translate }}
           </h2>
 
-          <button (click)="goToSignupPage()" type="submit" class="btn btn-white"
-            style="height: 56px;padding-left: 54px;padding-right: 54px;">
+          <button id="go-to-signup-btn" (click)="goToSignupPage()" type="submit" class="btn btn-white">
             {{ 'CreateAFreeAccount' | translate}}
           </button>
-        </div> -->
+        </div> 
 
       </div>
     </div>
@@ -74,10 +71,10 @@
         </div>
       </div> -->
 
-      <!-- 
-    // ---------------------------------------------------------------
-    // Right logo
-    // --------------------------------------------------------------- -->
+       
+    <!-- --------------------------------------------------------------- -->
+    <!-- Right logo -->
+    <!-- --------------------------------------------------------------- -->
       <!-- position: relative;  top: 16px; -->
       <div class="right-logo" style="text-align: center;">
         <a [href]="company_site_url" target="_blank">
@@ -104,12 +101,12 @@
             <!-- {{ "SignInTo" | translate}} {{ company_name }} -->
           </h2>
 
-          <div *ngIf="SUP === true" class="signin-subtitle">
+          <!-- <div *ngIf="SUP === true" class="signin-subtitle">
             {{ "Dont" | translate }} {{ "HaveAnAccountYet" | translate }}
             <span class="auth-link-button" (click)="goToSignupPage()">
               {{ 'CreateAFreeAccount' | translate}}
             </span>
-          </div>
+          </div> -->
 
 
           <!-- <img src="assets/img/logos/tiledesk_2.0_logo_black_v2.svg" class="img-fluid" style="max-width: 280px;

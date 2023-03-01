@@ -2270,6 +2270,7 @@
     "SmartReassignmentForThisConversationWillBeEnabled":"Onlayn rejimə çevir düyməsinə klikləməklə, cari söhbət üçün ağıllı yenidən təyinat aktiv ediləcək",
     "TagAlreadyAssigned":"TAG artıq təyin edilib",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Bu teq artıq təyin edilib. Zəhmət olmasa unikal etiket daxil edin",
+    "GetStarted": "Başlayın",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",
@@ -2299,6 +2300,7 @@
             "field_label": "İstifadəçilərə düzgün məlumat daxil olmağa kömək edən aydın bir etiket yazın (ex: adınız nədir?)",
             "field_error": "İstifadəçi tərəfindən daxil olan məlumatlar düzgün deyilsə, səhv mesajı yazın"
         }
+		
     },
     "CHAT_IONIC": {
         "LABEL_TU": "Sən: ",

@@ -10,13 +10,13 @@ export const CutomTooltipOptions: TooltipOptions = {
     'hide-delay': 0,
     'placement': 'top',
     'autoPlacement': true,
-  }
+}
 
-  export const stripEmojis = (str: string) =>
-  str.replace(
-    /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
-    ''
-  ).replace(/\s+/g, ' ').trim();
+export const stripEmojis = (str: string) =>
+    str.replace(
+        /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
+        ''
+    ).replace(/\s+/g, ' ').trim();
 
 export function members_as_html(members: object, requester_id: string, currentUserFireBaseUID: string): string {
     if (!members) {
@@ -145,6 +145,141 @@ export const LogLevel = {
 
 export const tranlatedLanguage = ['it', 'en', 'de', 'es', 'pt', 'fr', 'ru', 'tr', 'sr', 'ar', 'uk', 'sv', 'az', 'kk', 'uz']
 
+export const emailDomainWhiteList = [
+    'gmail.com',
+    'outlook.com',
+    'hotmail.com',
+    'hotmail.co.uk',
+    'hotmail.fr',
+    'hotmail.it',
+    'sbcglobal.net',
+    'sfr.fr',
+    'live.fr',
+    'verizon.net',
+    'tiscali.it',
+    'virgilio.it',
+    'inbox.com',
+    'aol.com',
+    'aim.com',
+    'yahoo.com',
+    'yahoo.fr',
+    'yahoo.co.uk',
+    'yahoo.com.br',
+    'yahoo.co.in',
+    'live.com',
+    'rediffmail.com',
+    'free.fr',
+    'titan.email',
+    'gmx.de',
+    'web.de',
+    'yandex.ru',
+    'ymail.com',
+    'libero.it',
+    'uol.com.br',
+    'bol.com.br',
+    'mail.ru',
+    'cox.net',
+    'icloud.com ',
+    'pm.com',
+    'protonmail.com',
+    'zoho.com',
+    'yandex.com',
+    'gmx.com',
+    'hubspot.com',
+    'mail.com',
+    'email.com',
+    'usa.com',
+    'consultant.com',
+    'myself.com',
+    'europe.com',
+    'dr.com',
+    'engineer.com',
+    'asia.com',
+    'post.com',
+    'tutanota.com',
+    'mail2world.com',
+    'mail2one.com',
+    'mail2italy.com',
+    'mail2italian.com',
+    'mail2milano.com',
+    'mail2rome.com',
+    'mail2vienna.com',
+    'mail2cool.com',
+    'mail2art.com',
+    'mail2fun.com',
+    'mail2dude.com',
+    'mail2expert.com',
+    'mail2engineer.com',
+    'mail2consultant.com',
+    'msn.com',
+    'wanadoo.fr',
+    'orange.fr',
+    'comcast.net',
+    'live.co.uk',
+    'googlemail.com',
+    'ahoo.es',
+    'ig.com.blueyonder',
+    'live.nl',
+    'bigpond.com',
+    'terra.com.br',
+    'yahoo.it',
+    'neuf.fr',
+    'yahoo.de',
+    'alice.it',
+    'rocketmail.com',
+    'att.net',
+    'laposte.net',
+    'facebook.com',
+    'bellsouth.net',
+    'yahoo.in',
+    'hotmail.es',
+    'charter.net',
+    'yahoo.ca',
+    'yahoo.com.au',
+    'rambler.ru',
+    'hotmail.de',
+    'shaw.ca',
+    'yahoo.co.jp',
+    'sky.comcast',
+    'earthlink.net',
+    'optonline.net',
+    'freenet.de',
+    't-online.de',
+    'aliceadsl.fr',
+    'home.nl',
+    'qq.com',
+    'telenet.be',
+    'yahoo.com.ar',
+    'tiscali.co.uk',
+    'yahoo.com.mx',
+    'voila.fr',
+    'gmx.net',
+    'planet.nl',
+    'tin.it',
+    'live.it',
+    'ntlworld.com',
+    'arcor.de',
+    'yahoo.co.id',
+    'frontiernet.net',
+    'hetnet.nl',
+    'live.com.au',
+    'yahoo.com.sg',
+    'zonnet.nl',
+    'club-internet.fr',
+    'juno.com',
+    'optusnet.com.au',
+    'blueyonder.co.uk',
+    'bluewin.ch',
+    'skynet.be',
+    'sympatico.ca',
+    'windstream.net',
+    'mac.com',
+    'centurytel.net',
+    'chello.nl',
+    'live.ca',
+    'bigpond.net.au'
+]
+
 // Links to documentation
 export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
 export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
@@ -166,7 +301,7 @@ export const URL_getting_started_for_admins = 'https://gethelp.tiledesk.com/cate
 export const URL_getting_started_for_agents = 'https://gethelp.tiledesk.com/categories/getting-started-for-agents/' //'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/'
 export const URL_google_tag_manager_add_tiledesk_to_your_sites = 'https://docs.tiledesk.com/knowledge-base/google-tag-manager-add-tiledesk-to-your-sites/' // NOT FOUND on gethelp
 export const URL_setting_up_automatic_assignment = 'https://gethelp.tiledesk.com/articles/setting-up-automatic-assignment/' // https://docs.tiledesk.com/knowledge-base/setting-up-automatic-assignment/
-export const URL_dialogflow_connector =  'https://gethelp.tiledesk.com/articles/dialogflow-connector/'
+export const URL_dialogflow_connector = 'https://gethelp.tiledesk.com/articles/dialogflow-connector/'
 
 
 
