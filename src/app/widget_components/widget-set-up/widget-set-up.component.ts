@@ -17,7 +17,6 @@ import { AppConfigService } from '../../services/app-config.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
-import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -32,6 +31,8 @@ import { AnalyticsService } from 'app/analytics/analytics-service/analytics.serv
 const swal = require('sweetalert');
 import { AbstractControl, FormControl } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -357,6 +358,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public featureIsAvailable: boolean;
   @ViewChild('fileInputLauncherBtnlogo', { static: false }) fileInputLauncherBtnlogo: any;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
 
   constructor(
     private notify: NotifyService,
@@ -372,7 +374,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     public appConfigService: AppConfigService,
     public brandService: BrandService,
     private analyticsService: AnalyticsService,
-    private logger: LoggerService,
     private usersService: UsersService,
     private prjctPlanService: ProjectPlanService,
     private uploadImageService: UploadImageService,

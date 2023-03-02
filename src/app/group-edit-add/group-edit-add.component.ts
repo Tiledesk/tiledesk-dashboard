@@ -8,7 +8,8 @@ import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'app-group-edit-add',
   templateUrl: './group-edit-add.component.html',
@@ -64,6 +65,9 @@ export class GroupEditAddComponent implements OnInit {
   baseUrl: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -74,8 +78,7 @@ export class GroupEditAddComponent implements OnInit {
     private notify: NotifyService,
     private translate: TranslateService,
     public location: Location,
-    public appConfigService: AppConfigService,
-    private logger: LoggerService
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {

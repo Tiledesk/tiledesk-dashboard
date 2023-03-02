@@ -13,7 +13,9 @@ import { BotLocalDbService } from '../services/bot-local-db.service';
 import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from "../services/websocket/websocket-js";
 import { avatarPlaceholder, getColorBck } from '../utils/util';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from './chat21-core/providers/abstract/app-storage.service';
 interface NewUser {
   displayName: string;
   email: string;
@@ -61,6 +63,9 @@ export class UsersService {
   storageBucket: string;
   baseUrl: string;
   eventlist: any;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
 
     private auth: AuthService,
@@ -69,8 +74,8 @@ export class UsersService {
     private faqKbService: FaqKbService,
     private botLocalDbService: BotLocalDbService,
     public appConfigService: AppConfigService,
+    private appStorageService: AppStorageService,
     public webSocketJs: WebSocketJs,
-    private logger: LoggerService,
     private _httpClient: HttpClient
   ) {
 
@@ -834,7 +839,7 @@ export class UsersService {
     this.project_user_role_bs.next(projectUser_role);
 
     // COMPARE THE STORED ROLE WITH THE USER ROLE PUBLISHED
-    const storedProjectJson = localStorage.getItem(this.project_id);
+    const storedProjectJson = this.appStorageService.getItem(this.project_id);
     if (storedProjectJson) {
       const projectObject = JSON.parse(storedProjectJson);
       const storedUserRole = projectObject['role'];
@@ -856,7 +861,7 @@ export class UsersService {
         }
 
         // RESET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
-        localStorage.setItem(storedProjectId, JSON.stringify(projectForStorage));
+        this.appStorageService.setItem(storedProjectId, JSON.stringify(projectForStorage));
       }
     }
   }

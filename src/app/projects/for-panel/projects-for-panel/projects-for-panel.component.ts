@@ -15,8 +15,11 @@ import { takeUntil } from 'rxjs/operators';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../../services/brand.service';
 import PerfectScrollbar from 'perfect-scrollbar';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 // import { PerfectScrollbarTdDirective } from '../../../_directives/td-perfect-scrollbar/perfect-scrollbar-td.directive';
-import { LoggerService } from '../../../services/logger/logger.service';
+
 declare const ngDevMode: boolean;
 @Component({
   selector: 'appdashboard-projects-for-panel',
@@ -74,7 +77,8 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
  LAST_STORED_PRJCT_ID:  string
 
   private unsubscribe$: Subject<any> = new Subject<any>();
-
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -83,8 +87,8 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private uploadImageService: UploadImageService,
     public appConfigService: AppConfigService,
-    public brandService: BrandService,
-    private logger: LoggerService
+    private appStorageService: AppStorageService,
+    public brandService: BrandService
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
@@ -127,7 +131,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     this.getLastStoredProject()
   }
   getLastStoredProject() {
-    const lastStoredProjectObjct = localStorage.getItem('last_project')
+    const lastStoredProjectObjct = this.appStorageService.getItem('last_project')
     if (lastStoredProjectObjct) {
       const lastStoredProject = JSON.parse(lastStoredProjectObjct);
       // console.log('[PROJECTS-X-PANEL] GET LAST STORED PROJECT - lastStoredProject ', lastStoredProject)
@@ -255,7 +259,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     // ------------------------------------------------------------------------------------------------------------
     // POST MESSAGE hasChangedProject (communicates to the parent (chat-ionic) that the agent has changed project)
     // ------------------------------------------------------------------------------------------------------------
-    localStorage.setItem('last_project', JSON.stringify(project))
+    this.appStorageService.setItem('last_project', JSON.stringify(project))
     window.top.postMessage('hasChangedProject', '*')
 
     this.logger.log('[PROJECTS-X-PANEL] - hasChangedPRJCT - PROJECT status ', project_status)
@@ -282,7 +286,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
      * SET THE project_id IN THE LOCAL STORAGE
      * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
-    // localStorage.setItem('project', JSON.stringify(project));
+    // this.appStorageService.setItem('project', JSON.stringify(project));
   }
 
 
@@ -348,7 +352,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
               countOfcurrentUserAvailabilityInProjects = countOfcurrentUserAvailabilityInProjects + 1;
             }
 
-            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+            this.appStorageService.setItem(project.id_project._id, JSON.stringify(prjct));
           }
         });
         this.logger.log('[PROJECTS-X-PANEL] - GET PROJECTS AFTER', projects);

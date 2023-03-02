@@ -4,7 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 
 @Injectable()
 export class UploadImageNativeService {
@@ -20,11 +21,12 @@ export class UploadImageNativeService {
   TOKEN: string;
   public files: any[];
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     public appConfigService: AppConfigService,
     public auth: AuthService,
-    public _httpClient: HttpClient,
-    private logger: LoggerService
+    public _httpClient: HttpClient
   ) {
     this.getToken()
 

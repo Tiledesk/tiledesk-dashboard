@@ -14,8 +14,10 @@ import { NotifyService } from '../core/notify.service';
 import { Router } from '@angular/router';
 import { Project } from './../models/project-model';
 import { AppConfigService } from '../services/app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { FormControl } from "@angular/forms";
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 @Component({
   selector: 'appdashboard-hours',
@@ -153,6 +155,9 @@ export class HoursComponent implements OnInit, OnDestroy {
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   // hasSaved: boolean
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     private projectService: ProjectService,
@@ -162,7 +167,7 @@ export class HoursComponent implements OnInit, OnDestroy {
     public notify: NotifyService,
     private router: Router,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private appStorageService: AppStorageService,
   ) { }
 
   ngOnInit() {
@@ -607,7 +612,7 @@ export class HoursComponent implements OnInit, OnDestroy {
           }
 
           this.logger.log('[HOURS] - UPDATED PROJECT _project set in storage', _project);
-          localStorage.setItem(project['_id'], JSON.stringify(_project));
+          this.appStorageService.setItem(project['_id'], JSON.stringify(_project));
 
           this.auth.projectSelected(_project)
 

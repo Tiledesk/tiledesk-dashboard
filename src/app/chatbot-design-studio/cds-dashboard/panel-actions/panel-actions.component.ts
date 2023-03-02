@@ -8,7 +8,9 @@ import { ActionAgent, ActionClose, ActionWebRequest,
          ActionWait, ActionAssignVariable, ActionDeleteVariable, 
          ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
          ActionChangeDepartment, ActionHideMessage, ActionJsonCondition, Expression } from 'app/models/intent-model';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+
 
 
 @Component({
@@ -27,8 +29,9 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   TYPE_ACTION = TYPE_ACTION
   ACTIONS_LIST = ACTIONS_LIST
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
-    private logger: LoggerService,
     private eRef: ElementRef
   ) { }
 

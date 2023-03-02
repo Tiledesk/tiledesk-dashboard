@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AppStoreService } from '../../services/app-store.service';
-import {  HttpModule } from '@angular/http';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -11,7 +10,6 @@ import { LocalDbService } from '../../services/users-local-db.service'; // Error
 import { WebSocketJs } from "../../services/websocket/websocket-js"; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> WebSocketJs]: 
 
 import { AppStoreInstallComponent } from './app-store-install.component';
-import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from '../../services/app-config.service';
 
 describe('AppStoreInstallComponent', () => {
@@ -23,7 +21,6 @@ describe('AppStoreInstallComponent', () => {
       declarations: [AppStoreInstallComponent],
       imports: [
         RouterTestingModule,
-        HttpModule,
         HttpClientModule
       ],
       providers: [
@@ -33,7 +30,6 @@ describe('AppStoreInstallComponent', () => {
         NotifyService,
         LocalDbService,
         WebSocketJs,
-        LoggerService,
         AppConfigService
       ]
     })

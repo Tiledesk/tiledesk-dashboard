@@ -30,11 +30,13 @@ import * as moment from 'moment';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './services/brand.service';
 import { ScriptService } from './services/script/script.service';
-import { LoggerService } from './services/logger/logger.service';
 import { NotifyService } from './core/notify.service';
 import { avatarPlaceholder, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
+import { LoggerInstance } from './services/chat21-core/providers/logger/loggerInstance';
+import { LoggerService } from './services/chat21-core/providers/abstract/logger.service';
+import { AppStorageService } from './services/chat21-core/providers/abstract/app-storage.service';
 
 
 declare const gtag: Function;
@@ -79,19 +81,21 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     current_selected_prjct: any;
     // private logger: LoggerService = LoggerInstance.getInstance();
     // background_bottom_section = brand.sidebar.background_bottom_section
+    private logger: LoggerService = LoggerInstance.getInstance();
+
     constructor(
         public location: Location,
         private router: Router,
         private translate: TranslateService,
         private auth: AuthService,
         public appConfigService: AppConfigService,
+        private appStorageService: AppStorageService,
         public wsRequestsService: WsRequestsService,
         public wsMsgsService: WsMsgsService,
         public webSocketJs: WebSocketJs,
         private metaTitle: Title,
         public brandService: BrandService,
         public script: ScriptService,
-        private logger: LoggerService,
         private notify: NotifyService,
         public usersLocalDbService: LocalDbService,
         private projectService: ProjectService,
@@ -141,7 +145,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         //     this.logger.log('APP.COMP - script loaded ', data);
         // }).catch(error => this.logger.log('APP.COMP - script error ', error));
 
-        this.logger.initilaizeLoger()
+        // this.logger.initilaizeLoger()
 
         const brand = brandService.getBrand();
 
@@ -202,7 +206,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // console.log('[APP-COMPONENT] browserLang ', browserLang)
         if (this.auth.user_bs && this.auth.user_bs.value) {
             this.logger.log('[APP-COMPONENT] this.auth.user_bs.value._id ', this.auth.user_bs.value._id)
-            const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            const stored_preferred_lang = this.appStorageService.getItem(this.auth.user_bs.value._id + '_lang')
             this.logger.log('[APP-COMPONENT] stored_preferred_lang', stored_preferred_lang)
             // console.log('[APP-COMPONENT] !!! ===== HELLO APP.COMP ===== BRS LANG ', browserLang)
             let dshbrd_lang = ''
@@ -414,6 +418,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     listenToFCMForegroundMsgs() {
         try {
             const messaging = firebase.messaging()
+            const that = this
             messaging.onMessage((payload) => {
 
                 // console.log(' listenToFCMForegroundMsgs Message received. ', payload);
@@ -425,9 +430,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (this.HIDE_FOREGROUND_NOTIFICATION === false) {
                     this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link, requester_avatar_initial, requester_avatar_bckgrnd);
                 }
-                this.count = this.count + 1;
+                that.count = this.count + 1;
                 // console.log('snd test foreground notification count ', this.count);
-                this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
+                that.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
 
                 const elemNotification = document.getElementById('foreground-not');
                 // console.log('[APP-COMPONENT] !! elemNotification  ', elemNotification)
@@ -435,7 +440,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (elemNotification) {
                     elemNotification.addEventListener('click', function handleClick() {
                         // console.log('element clicked');
-                        localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct))
+                        that.appStorageService.setItem('last_project', JSON.stringify(self.current_selected_prjct))
                     });
                 }
 
@@ -462,7 +467,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const self = this
             notification.onclick = function () {
                 window.open(link);
-                localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct))
+                self.appStorageService.setItem('last_project', JSON.stringify(self.current_selected_prjct))
             };
         }
     }
@@ -494,7 +499,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const self = this
         elemNotification.addEventListener('click', function handleClick() {
             // console.log('element clicked');
-            localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct))
+            self.appStorageService.setItem('last_project', JSON.stringify(self.current_selected_prjct))
         });
 
 

@@ -8,8 +8,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from "./websocket/websocket-js";
-import { LoggerService } from '../services/logger/logger.service';
 import { map } from 'rxjs/operators';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 
 @Injectable()
 export class ContactsService {
@@ -20,12 +21,13 @@ export class ContactsService {
   currentUserID: string;
   SERVER_BASE_PATH: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private httpClient: HttpClient,
     public auth: AuthService,
     public appConfigService: AppConfigService,
-    public webSocketJs: WebSocketJs,
-    private logger: LoggerService
+    public webSocketJs: WebSocketJs
 
   ) {
     this.getCurrentProject();

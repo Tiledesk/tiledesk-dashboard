@@ -2,11 +2,12 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { CannedResponsesService } from '../services/canned-responses.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
 import { AppConfigService } from '../services/app-config.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-canned-responses-list',
   templateUrl: './canned-responses-list.component.html',
@@ -28,11 +29,13 @@ export class CannedResponsesListComponent implements OnInit {
   storageBucket: string;
   baseUrl: string;
   isChromeVerGreaterThan100: boolean
+  
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
     private notify: NotifyService,
-    private logger: LoggerService,
     private auth: AuthService,
     private usersLocalDbService: LocalDbService,
     private usersService: UsersService,

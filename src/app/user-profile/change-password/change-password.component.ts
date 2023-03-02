@@ -5,8 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
-import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 
 @Component({
@@ -33,13 +34,15 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   warning: string;
   selectAProjectToManageNotificationEmails: string;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
     private usersService: UsersService,
     public auth: AuthService,
     private router: Router,
-    private logger: LoggerService,
     private translate: TranslateService
   ) { }
 

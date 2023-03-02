@@ -5,9 +5,10 @@ import { Observable } from 'rxjs';
 import { FaqKb } from '../models/faq_kb-model';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 export class FaqKbService {
 
@@ -22,12 +23,12 @@ export class FaqKbService {
   project: any;
   public $nativeBotName: BehaviorSubject<string> = new BehaviorSubject<string>('')
 
-
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     public appConfigService: AppConfigService,
-    private _httpClient: HttpClient,
-    private logger: LoggerService
+    private _httpClient: HttpClient
   ) {
 
     // SUBSCRIBE TO USER BS

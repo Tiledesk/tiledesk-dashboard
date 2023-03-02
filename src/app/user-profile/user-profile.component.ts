@@ -13,12 +13,14 @@ import { AppConfigService } from '../services/app-config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from '../services/logger/logger.service';
 import { tranlatedLanguage, avatarPlaceholder, getColorBck } from 'app/utils/util';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { DomSanitizer} from '@angular/platform-browser';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 const swal = require('sweetalert');
 
 
@@ -156,6 +158,8 @@ export class UserProfileComponent implements OnInit {
   ];
   isChromeVerGreaterThan100: boolean;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public auth: AuthService,
     private _location: Location,
@@ -165,8 +169,8 @@ export class UserProfileComponent implements OnInit {
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     public appConfigService: AppConfigService,
+    private appStorageService: AppStorageService,
     private translate: TranslateService,
-    private logger: LoggerService,
     private route: ActivatedRoute,
     private usersLocalDbService: LocalDbService,
     private prjctPlanService: ProjectPlanService,
@@ -269,7 +273,7 @@ export class UserProfileComponent implements OnInit {
 
         this.createUserAvatar(user);
 
-        const stored_preferred_lang = localStorage.getItem(this.userId + '_lang')
+        const stored_preferred_lang = this.appStorageService.getItem(this.userId + '_lang')
 
         if (stored_preferred_lang) {
           this.HAS_SELECTED_PREFERRED_LANG = true;
@@ -330,7 +334,7 @@ export class UserProfileComponent implements OnInit {
   onSelectPreferredDsbrdLang(selectedLanguageCode) {
     this.logger.log('[USER-PROFILE] onSelectPreferredDsbrdLang -  selectedLanguage ', selectedLanguageCode)
     this.selected_dashboard_language = selectedLanguageCode;
-    localStorage.setItem(this.userId + '_lang', selectedLanguageCode);
+    this.appStorageService.setItem(this.userId + '_lang', selectedLanguageCode);
     this.HAS_SELECTED_PREFERRED_LANG = true;
     this.display_msg_please_select_language = false;
     this.display_msg_refresh_page_for_selected_lang = true;
@@ -363,7 +367,7 @@ export class UserProfileComponent implements OnInit {
 
   onSelectBrowserLangFromRadioBtn($event) {
     this.logger.log('[USER-PROFILE] onSelectBrowserLangFromRadioBtn -  event ', $event.target.checked)
-    localStorage.removeItem(this.userId + '_lang');
+    this.appStorageService.removeItem(this.userId + '_lang');
     this.HAS_SELECTED_PREFERRED_LANG = false;
     this.hasSelectedBrowserLangRadioBtn = $event.target.checked
     this.hasSelectedPreferredLangRadioBtn = false;

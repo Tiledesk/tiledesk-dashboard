@@ -8,8 +8,9 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { Subscription } from 'rxjs';
 import { UsersService } from '../../services/users.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 
 @Component({
@@ -41,6 +42,9 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
   // };
   profile_name: string;
   isChromeVerGreaterThan100:boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public translate: TranslateService,
     public auth: AuthService,
@@ -48,7 +52,6 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
     private prjctPlanService: ProjectPlanService,
     private notify: NotifyService,
     private usersService: UsersService,
-    public logger: LoggerService,
     public appConfigService: AppConfigService
   ) {
     super(translate,);

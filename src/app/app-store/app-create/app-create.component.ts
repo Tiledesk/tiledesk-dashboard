@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { AppStoreService } from 'app/services/app-store.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { Location } from '@angular/common';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-app-create',
   templateUrl: './app-create.component.html',
@@ -46,9 +47,10 @@ export class AppCreateComponent implements OnInit {
 
   clients = { dashboard: false, webchat: false, widget: false, appsstore: false }
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     public auth: AuthService,
-    public logger: LoggerService,
     private appStoreService: AppStoreService,
     public location: Location,
     private notify: NotifyService,

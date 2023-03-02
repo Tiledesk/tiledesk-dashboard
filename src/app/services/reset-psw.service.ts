@@ -3,7 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user-model';
 import { AppConfigService } from '../services/app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 
 @Injectable()
 export class ResetPswService {
@@ -13,9 +14,10 @@ export class ResetPswService {
   RESET_PSW_BASE_URL: string;
   CHECK_PSW_RESET_KEY_BASE_URL: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public appConfigService: AppConfigService,
-    private logger: LoggerService,
     public _httpclient: HttpClient
   ) {
     this.getAppConfigAndBuildUrls();

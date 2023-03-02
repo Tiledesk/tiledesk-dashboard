@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnInit, SimpleChanges, EventEmitter, Output, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { OPERATORS_LIST, OperatorValidator } from 'app/chatbot-design-studio/utils';
 import { Condition } from 'app/models/intent-model';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'base-condition-row',
@@ -27,9 +28,10 @@ export class BaseConditionRowComponent implements OnInit {
 
   conditionForm: FormGroup
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
-    private formBuilder: FormBuilder,
-    private logger: LoggerService
+    private formBuilder: FormBuilder
     ) { }
 
   ngOnInit(): void {

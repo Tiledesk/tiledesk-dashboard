@@ -2,16 +2,18 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Location } from '@angular/common';
 import { ProjectPlanService } from '../services/project-plan.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Injectable()
 export class ProjectProfileGuard implements CanActivate {
   userIsAuthorized: boolean;
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private router: Router,
     public location: Location,
-    private prjctPlanService: ProjectPlanService,
-    private logger: LoggerService
+    private prjctPlanService: ProjectPlanService
   ) {
     this.logger.log('[PROJECT-PROFILE-GUARD] HELLO !!!')
   }

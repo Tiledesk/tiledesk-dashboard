@@ -5,7 +5,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 
 @Injectable()
 export class TriggerService {
@@ -15,12 +16,13 @@ export class TriggerService {
   user: any;
   TOKEN: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private _httpClient: HttpClient,
     public auth: AuthService,
     public departmentService: DepartmentService,
-    public appConfigService: AppConfigService,
-    private logger: LoggerService
+    public appConfigService: AppConfigService
   ) {
 
     this.user = auth.user_bs.value

@@ -7,7 +7,8 @@ import { Location } from '@angular/common';
 import { PasswordValidation } from './password-validation';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 type EmailField = 'email';
 type EmailFormErrors = { [u in EmailField]: string };
@@ -77,14 +78,16 @@ export class ResetPswComponent implements OnInit {
   ERROR_SENDING_EMAIL_RESET_PSW_USER_NOT_FOUND: boolean;
   ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR: boolean;
   OTHER_ERROR_MSG: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor
     (
       private fb: FormBuilder,
       private resetPswService: ResetPswService,
       private activetedRoute: ActivatedRoute,
       public location: Location,
-      public brandService: BrandService,
-      private logger: LoggerService
+      public brandService: BrandService
     ) {
 
     const brand = brandService.getBrand();

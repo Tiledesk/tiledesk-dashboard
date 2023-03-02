@@ -4,12 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
 import { BrandService } from 'app/services/brand.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
-import { LocalDbService } from 'app/services/users-local-db.service';
-import { CreateProjectComponent } from '../create-project/create-project.component';
-
 
 
 @Component({
@@ -32,10 +30,12 @@ export class GetStartChatbotForkComponent implements OnInit {
   public projectname: string;
   public user: any;
   public projectId: any;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public brandService: BrandService,
     private projectService: ProjectService,
-    private logger: LoggerService,
     private faqKbService: FaqKbService,
     private auth: AuthService,
     private router: Router,
@@ -201,7 +201,7 @@ export class GetStartChatbotForkComponent implements OnInit {
         //     countOfcurrentUserAvailabilityInProjects = countOfcurrentUserAvailabilityInProjects + 1;
         //   }
 
-        //   localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+        //   this.appStorageService.setItem(project.id_project._id, JSON.stringify(prjct));
       }
 
       // this.logger.log('[PROJECTS] - GET PROJECTS AFTER', projects);

@@ -7,8 +7,9 @@ import { Component, OnInit } from '@angular/core';
 // import * as moment from 'moment';
 import moment from "moment"
 import { Subscription, zip } from 'rxjs';
-import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-messages',
   templateUrl: './messages.component.html',
@@ -34,12 +35,13 @@ export class MessagesComponent implements OnInit {
   bots: any;
   messageCountLastMonth: any;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private translate: TranslateService,
     private analyticsService: AnalyticsService,
     private usersService: UsersService,
-    private faqKbService: FaqKbService,
-    private logger: LoggerService
+    private faqKbService: FaqKbService
     ) {
 
     this.lang = this.translate.getBrowserLang();

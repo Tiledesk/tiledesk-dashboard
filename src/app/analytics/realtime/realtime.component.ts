@@ -6,8 +6,9 @@ import { DepartmentService } from 'app/services/department.service';
 import { Router } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { AppConfigService } from '../../services/app-config.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { AnalyticsService } from '../analytics-service/analytics.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-realtime',
@@ -44,6 +45,8 @@ export class RealtimeComponent implements OnInit {
   baseUrl: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private usersService: UsersService,
     private auth: AuthService,
@@ -51,8 +54,7 @@ export class RealtimeComponent implements OnInit {
     private router: Router,
     public wsRequestsService: WsRequestsService,
     public appConfigService: AppConfigService,
-    private analyticsService: AnalyticsService,
-    private logger: LoggerService
+    private analyticsService: AnalyticsService
   ) { }
 
   ngOnInit() {

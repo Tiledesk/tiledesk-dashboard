@@ -13,7 +13,6 @@ import { NotifyService } from '../../core/notify.service';
 import { DepartmentService } from '../../services/department.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import {
   URL_microlanguage_for_dialogflow_images_videos,
   URL_dialogflow_connector_handoff_to_human_agent_example,
@@ -23,6 +22,8 @@ import {
   URL_connect_your_dialogflow_agent
 } from '../../utils/util';
 import { FaqService } from 'app/services/faq.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'bot-create',
@@ -114,6 +115,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   public create: boolean = true
   thereHasBeenAnErrorProcessing: string;
   importedChatbotid: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -125,7 +129,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     private notify: NotifyService,
     public brandService: BrandService,
     private departmentService: DepartmentService,
-    private logger: LoggerService,
     private faqService: FaqService,
   ) {
     super();

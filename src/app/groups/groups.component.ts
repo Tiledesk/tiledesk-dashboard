@@ -5,9 +5,10 @@ import { Group } from '../models/group-model';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { NotifyService } from '../core/notify.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { URL_creating_groups } from '../utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -38,13 +39,15 @@ export class GroupsComponent implements OnInit {
   public_Key: any;
   isVisibleGRO
   isChromeVerGreaterThan100: boolean
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     private groupsService: GroupService,
     private router: Router,
     private usersService: UsersService,
     private notify: NotifyService,
-    private logger: LoggerService,
     public appConfigService: AppConfigService,
   ) { }
 

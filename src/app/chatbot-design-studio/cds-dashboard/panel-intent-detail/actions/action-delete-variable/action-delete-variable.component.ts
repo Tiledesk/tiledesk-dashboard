@@ -2,7 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { variableList } from 'app/chatbot-design-studio/utils';
 import { ActionDeleteVariable } from 'app/models/intent-model';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'cds-action-delete-variable',
@@ -16,9 +17,10 @@ export class ActionDeleteVariableComponent implements OnInit {
   actionDeleteFormGroup: FormGroup;
   variableListUserDefined: Array<{name: string, value: string}> = variableList.userDefined 
   
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
-    private formBuilder: FormBuilder,
-    private logger: LoggerService
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {

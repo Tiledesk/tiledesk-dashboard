@@ -1,7 +1,8 @@
 import { ActionOnlineAgent } from './../../../../../models/intent-model';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'cds-action-online-agents',
@@ -15,9 +16,10 @@ export class ActionOnlineAgentsComponent implements OnInit {
 
   actionOnlineAgentsFormGroup: FormGroup
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private formBuilder: FormBuilder,
-    private logger: LoggerService,
   ) { }
 
   ngOnInit(): void {

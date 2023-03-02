@@ -6,8 +6,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
 import { BehaviorSubject } from 'rxjs';
 import { AppConfigService } from './app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { map } from 'rxjs/operators';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 
 export class DepartmentService {
@@ -20,11 +21,12 @@ export class DepartmentService {
   user: any;
   project: any;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private httpClient: HttpClient,
     private auth: AuthService,
-    public appConfigService: AppConfigService,
-    private logger: LoggerService
+    public appConfigService: AppConfigService
   ) {
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value

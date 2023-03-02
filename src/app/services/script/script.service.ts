@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 // import { ScriptStoreT } from "./script.store";
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from '../chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from '../chat21-core/providers/logger/loggerInstance';
 declare var document: any;
 
 // https://stackoverflow.com/questions/34489916/how-to-load-external-scripts-dynamically-in-angular
@@ -12,12 +13,12 @@ declare var document: any;
 export class ScriptService {
 
   script: any;
-
   private scripts: any = {};
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
-    private _httpClient: HttpClient,
-    private logger: LoggerService
+    private _httpClient: HttpClient
   ) {
     this.logger.log('[SCRIPT-SERV] Hello !!!')
 

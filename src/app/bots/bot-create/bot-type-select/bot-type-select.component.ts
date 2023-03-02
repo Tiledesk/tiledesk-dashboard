@@ -7,8 +7,9 @@ import { AppConfigService } from '../../../services/app-config.service';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../../services/brand.service';
-import { LoggerService } from '../../../services/logger/logger.service';
 import { URL_configure_your_first_chatbot, URL_connect_your_dialogflow_agent } from '../../../utils/util';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-bot-type-select',
@@ -29,13 +30,15 @@ export class BotTypeSelectComponent implements OnInit {
   // tparams = brand;
   tparams: any;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private router: Router,
     public location: Location,
     public auth: AuthService,
     public appConfigService: AppConfigService,
-    public brandService: BrandService,
-    private logger: LoggerService
+    public brandService: BrandService
   ) {
 
     const brand = brandService.getBrand();

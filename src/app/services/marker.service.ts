@@ -2,8 +2,9 @@ import { PopupService } from './popup.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 
-import { LoggerService } from '../services/logger/logger.service';
 @Injectable()
 export class MarkerService {
 
@@ -14,10 +15,11 @@ export class MarkerService {
     return 20 * (val / maxVal);
   }
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private http: HttpClient,
-    private popupService: PopupService,
-    private logger: LoggerService
+    private popupService: PopupService
     ) { }
 
 

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UploadImageService } from 'app/services/upload-image.service';
@@ -15,6 +14,9 @@ import { NotifyService } from '../../core/notify.service';
 import { ProjectService } from 'app/services/project.service';
 import { tranlatedLanguage } from 'app/utils/util';
 import { avatarPlaceholder, getColorBck } from '../../utils/util'
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -65,12 +67,14 @@ export class SidebarUserDetailsComponent implements OnInit {
     { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg' },
   ];
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public auth: AuthService,
-    private logger: LoggerService,
     private translate: TranslateService,
     private router: Router,
     public appConfigService: AppConfigService,
+    private appStorageService: AppStorageService,
     private usersService: UsersService,
     public snackBar: MatSnackBar,
     private uploadImageService: UploadImageService,
@@ -616,7 +620,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
         this.createUserAvatar(user);
 
-        const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
+        const stored_preferred_lang = this.appStorageService.getItem(this.user._id + '_lang')
 
         if (stored_preferred_lang) {
           this.dsbrd_lang = stored_preferred_lang;

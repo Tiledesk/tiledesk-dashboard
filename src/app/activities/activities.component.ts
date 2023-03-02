@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs'
 import { LoggerService } from '../services/logger/logger.service';
 import { ActivitiesService } from './activities-service/activities.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 @Component({
   selector: 'appdashboard-activities',
   templateUrl: './activities.component.html',
@@ -85,7 +86,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     private usersLocalDbService: LocalDbService,
     private botLocalDbService: BotLocalDbService,
     private logger: LoggerService,
-    private activitiesService: ActivitiesService
+    private activitiesService: ActivitiesService,
+    private appStorageService: AppStorageService,
   ) { }
 
   ngOnInit() {
@@ -407,7 +409,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
               let stored_preferred_lang = undefined
               if (this.auth.user_bs && this.auth.user_bs.value) {
-                stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+                stored_preferred_lang = this.appStorageService.getItem(this.auth.user_bs.value._id + '_lang')
               }
 
               let dshbrd_lang = ''

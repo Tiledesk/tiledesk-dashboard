@@ -9,8 +9,9 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { zip } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { BrandService } from '../services/brand.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 declare var Stripe: any;
 
@@ -69,6 +70,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   contactUsEmail: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public location: Location,
     public auth: AuthService,
@@ -77,7 +80,6 @@ export class PricingComponent implements OnInit, OnDestroy {
     public projectService: ProjectService,
     private prjctPlanService: ProjectPlanService,
     public brandService: BrandService,
-    private logger: LoggerService,
     public appConfigService: AppConfigService,
   ) {
 

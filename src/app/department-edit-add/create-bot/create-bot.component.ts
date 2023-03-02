@@ -3,7 +3,8 @@ import { slideInOutAnimation } from './../../_animations/index';
 import { AppConfigService } from './../../services/app-config.service';
 import { BrandService } from './../../services/brand.service';
 import { AuthService } from './../../core/auth.service';
-import { LoggerService } from './../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-create-bot',
   templateUrl: './create-bot.component.html',
@@ -22,13 +23,14 @@ export class CreateBotComponent implements OnInit {
   natIsVisible: boolean;
   tparams:any;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   @Output() valueChange = new EventEmitter();
 
   constructor(
     public appConfigService: AppConfigService,
     public brandService: BrandService,
-    public auth: AuthService,
-    private logger: LoggerService
+    public auth: AuthService
   ) { 
     const brand = brandService.getBrand();
     this.tparams = brand;

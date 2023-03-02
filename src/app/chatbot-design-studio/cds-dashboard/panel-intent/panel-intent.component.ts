@@ -3,7 +3,8 @@ import { Form, Intent } from '../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Observable, Subscription } from 'rxjs';
 import { ACTIONS_LIST, TYPE_ACTION } from 'app/chatbot-design-studio/utils';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-panel-intent',
@@ -43,11 +44,9 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   TYPE_ACTION = TYPE_ACTION
   ACTIONS_LIST = ACTIONS_LIST
 
+  private logger: LoggerService = LoggerInstance.getInstance();
 
-
-  constructor(
-    private logger: LoggerService
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.listenToIntentUpdates();

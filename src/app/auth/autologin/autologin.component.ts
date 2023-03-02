@@ -10,7 +10,9 @@ import { isDevMode } from '@angular/core';
 import { AppConfigService } from '../../services/app-config.service';
 import { environment } from '../../../environments/environment';
 import { ProjectService } from '../../services/project.service';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 @Component({
   selector: 'appdashboard-autologin',
@@ -26,7 +28,7 @@ export class AutologinComponent implements OnInit {
   FCMcurrentToken: string;
   user: any;
   public version: string = environment.VERSION;
-
+  private logger: LoggerService = LoggerInstance.getInstance();
 
 
   constructor(
@@ -35,8 +37,8 @@ export class AutologinComponent implements OnInit {
     private router: Router,
     public sso: SsoService,
     public appConfigService: AppConfigService,
+    private appStorageService: AppStorageService,
     private projectService: ProjectService,
-    private logger: LoggerService
   ) {
 
     this.user = auth.user_bs.value;
@@ -70,7 +72,7 @@ export class AutologinComponent implements OnInit {
       const JWT = params.token
       this.logger.log('[AUTOLOGIN] SSO - autologin page params token ', JWT);
 
-      const storedUser = localStorage.getItem('user');
+      const storedUser = this.appStorageService.getItem('user');
       let storedJWT = ''
       if (storedUser) {
         const storedUserParsed = JSON.parse(storedUser)
@@ -140,7 +142,7 @@ export class AutologinComponent implements OnInit {
       const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
-      localStorage.setItem('user', JSON.stringify(user));
+      this.appStorageService.setItem('user', JSON.stringify(user));
       localStorage.setItem(chatPrefix + '__tiledeskToken', JWT);
 
       this.auth.publishSSOloggedUser();
@@ -170,7 +172,7 @@ export class AutologinComponent implements OnInit {
       const project_id = route_part[2]
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
 
-      const storedProjectJson = localStorage.getItem(project_id);
+      const storedProjectJson = this.appStorageService.getItem(project_id);
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
 
       if (storedProjectJson === null) {
@@ -222,7 +224,7 @@ export class AutologinComponent implements OnInit {
         }
         // SET THE ID, the NAME OF THE PROJECT and THE USER ROLE IN THE LOCAL STORAGE.
         this.logger.log('[AUTOLOGIN] - PROJECT THAT IS STORED', projectForStorage);
-        localStorage.setItem(project_id, JSON.stringify(projectForStorage));
+        this.appStorageService.setItem(project_id, JSON.stringify(projectForStorage));
 
       }
 
@@ -266,7 +268,7 @@ export class AutologinComponent implements OnInit {
                 this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser JWT ', JWT);
                 // const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
                 const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
-                localStorage.setItem('user', JSON.stringify(user));
+                this.appStorageService.setItem('user', JSON.stringify(user));
                 // localStorage.setItem('chat_sv5__tiledeskToken', JWT);
                 localStorage.setItem(chatPrefix+'__tiledeskToken', JWT);
                 this.auth.publishSSOloggedUser();

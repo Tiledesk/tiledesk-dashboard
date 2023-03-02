@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { AuthService } from '../core/auth.service';
 import { UsersService } from '../services/users.service';
-import { LoggerService } from '../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-visitors',
   templateUrl: './visitors.component.html',
@@ -11,10 +12,12 @@ export class VisitorsComponent implements OnInit {
   projectId: string;
   showSpinner = false;
   visitors: any;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     private usersService: UsersService,
-    private logger: LoggerService
   ) { }
 
   ngOnInit() {

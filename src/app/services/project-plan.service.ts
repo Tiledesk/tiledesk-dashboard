@@ -7,7 +7,8 @@ import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 
 export class ProjectPlanService {
@@ -18,13 +19,15 @@ export class ProjectPlanService {
   TOKEN: string
   project_deleted_notification: string
   progetIdGetFromParams: string
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private router: Router,
     private auth: AuthService,
     private projectService: ProjectService,
     private notify: NotifyService,
-    private translate: TranslateService,
-    private logger: LoggerService
+    private translate: TranslateService
   ) {
     this.getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish('costructor');
     this.getUserToken();

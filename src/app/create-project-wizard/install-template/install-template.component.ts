@@ -2,7 +2,6 @@ import { Component, isDevMode, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BrandService } from 'app/services/brand.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TemplateDetailComponent } from 'app/bots/templates/template-detail/template-detail.component';
 import { ProjectService } from 'app/services/project.service';
@@ -11,6 +10,8 @@ import { Project } from 'app/models/project-model';
 import { WidgetService } from 'app/services/widget.service';
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-install-template',
@@ -36,10 +37,12 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   public templates: any;
   public newlyCreatedProject = false
   public user: any
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private route: ActivatedRoute,
     private faqKbService: FaqKbService,
-    private logger: LoggerService,
     public brandService: BrandService,
     public dialog: MatDialog,
     private router: Router,

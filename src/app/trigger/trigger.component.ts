@@ -8,7 +8,8 @@ import { NotifyService } from 'app/core/notify.service';
 import { Trigger } from 'app/models/trigger-model';
 import { TranslateService } from '@ngx-translate/core';
 import { URL_getting_started_with_triggers } from '../utils/util';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-trigger',
@@ -43,13 +44,15 @@ export class TriggerComponent implements OnInit {
   translateparam: any; 
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     private triggerService: TriggerService,
     private router: Router,
     private notify: NotifyService,
-    private translate: TranslateService,
-    private logger: LoggerService
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {

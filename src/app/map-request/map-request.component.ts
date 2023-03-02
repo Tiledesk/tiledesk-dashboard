@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MarkerService } from './../services/marker.service';
 import { Component, AfterViewInit, OnInit, Input, Output, EventEmitter, HostListener, SimpleChanges } from '@angular/core';
 import * as L from 'leaflet';
-import { LoggerService } from './../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -44,10 +45,11 @@ export class MapRequestComponent implements OnInit, AfterViewInit {
   SIDEBAR_APPS_IN_CHAT_PANEL_MODE: boolean;
   // lat: number;
   // lon: number;
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private markerService: MarkerService,
     private router: Router,
-    private logger: LoggerService
   ) { }
 
   ngOnInit() {

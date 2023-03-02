@@ -2,7 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef }
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Button, Message, Command, ActionReply, MessageWithWait, MessageAttributes } from '../../../../../models/intent-model';
 import { TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE } from '../../../../utils';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+
 
 @Component({
   selector: 'cds-action-reply',
@@ -37,12 +39,9 @@ export class ActionReplyComponent implements OnInit {
   arrayResponses: Array<Command>;
   arrayMessagesWithWait: Array<MessageWithWait>;
 
-
-
+  private logger: LoggerService = LoggerInstance.getInstance();
   
-  constructor(
-    private logger: LoggerService,
-  ) { }
+  constructor() { }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {

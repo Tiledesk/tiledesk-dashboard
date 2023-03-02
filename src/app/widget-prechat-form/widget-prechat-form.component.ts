@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { LoggerService } from '../services/logger/logger.service';
+
 @Component({
   selector: 'appdashboard-widget-prechat-form',
   templateUrl: './widget-prechat-form.component.html',
@@ -35,8 +35,6 @@ export class WidgetPrechatFormComponent implements OnInit, OnChanges {
   objectKeys = Object.keys;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private logger: LoggerService,
     private elementRef: ElementRef
   ) { }
 

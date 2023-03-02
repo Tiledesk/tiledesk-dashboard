@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { DepartmentService } from 'app/services/department.service';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { URL_getting_started_with_email_ticketing } from '../utils/util';
 @Component({
   selector: 'appdashboard-email-ticketing',
@@ -21,10 +22,12 @@ export class EmailTicketingComponent implements OnInit {
   public ticketingEmailDept: string;
   public hasCopiedTicketingEmail: boolean = false
   public public_Key: any
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private deptService: DepartmentService,
     private auth: AuthService,
-    private logger: LoggerService,
     public appConfigService: AppConfigService,
   ) { }
 

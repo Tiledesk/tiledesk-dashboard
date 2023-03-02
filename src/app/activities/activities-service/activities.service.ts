@@ -3,8 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { Observable } from 'rxjs';
-import { LoggerService } from '../../services/logger/logger.service';
 import { Activity } from '../../models/activity-model';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
 @Injectable()
 export class ActivitiesService {
 
@@ -12,6 +13,8 @@ export class ActivitiesService {
   SERVER_BASE_PATH: string;
   TOKEN: string;
   projectID: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
 
   /**
    * 
@@ -24,7 +27,6 @@ export class ActivitiesService {
     private _httpClient: HttpClient,
     private auth: AuthService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
   ) {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
     this.TOKEN = auth.user_bs.value.token;

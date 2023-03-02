@@ -10,7 +10,9 @@ import { Location } from '@angular/common';
 import { FaqKbService } from '../../services/faq-kb.service';
 // import * as moment from 'moment';
 import moment from "moment";
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 @Component({
   selector: 'app-faq-test',
@@ -39,6 +41,9 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   currentUserFirstname: string;
   botName: string;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -46,7 +51,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     private faqService: FaqService,
     private _location: Location,
     private faqKbService: FaqKbService,
-    private logger: LoggerService
+    private appStorageService: AppStorageService,
   ) { }
 
   ngOnInit() {
@@ -104,7 +109,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
    * USING THE QUESTION SAVED IN THE STORAGE (IN THIS WAY THE USER DISPLAY THE PREVIOUS RESULT OF RESEARCH)
    * WHEN THE USER GO TO THE PAGE 'EDIT BOT' (faq.comp) THE STORED SEARCHED QUESTION IS CLEARED  */
   getSearchedQuestionFromStorage() {
-    const storedQuestionToTest = localStorage.getItem('searchedQuestion');
+    const storedQuestionToTest = this.appStorageService.getItem('searchedQuestion');
     this.logger.log('[FAQ-TEST-COMP] SEARCHED QUESTION - FROM LOcAL STORAGE 1', storedQuestionToTest)
     if (storedQuestionToTest !== 'null') {
       // this.questionToTest = storedQuestionToTest;
@@ -169,7 +174,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
     if (this.questionToTest) {
 
-      localStorage.setItem('searchedQuestion', this.questionToTest);
+      this.appStorageService.setItem('searchedQuestion', this.questionToTest);
 
       // this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.questionToTest)
       this.faqService.searchFaqByFaqKbId(this.idBot, this.questionToTest)

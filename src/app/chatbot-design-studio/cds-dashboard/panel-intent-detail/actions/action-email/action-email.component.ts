@@ -1,7 +1,7 @@
 import { ActionEmail } from 'app/models/intent-model';
 import { Component, OnInit, Input, ElementRef, OnChanges } from '@angular/core';
-import { LoggerService } from 'app/services/logger/logger.service';
-
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'cds-action-email',
@@ -18,10 +18,9 @@ export class ActionEmailComponent implements OnInit, OnChanges {
   public actionBody: string = ''
   // isOpenSetAttributesPanel: boolean = false
   // intents = ['uno', 'due', 'tre'];
-
+  private logger: LoggerService = LoggerInstance.getInstance();
 
   constructor(
-    private logger: LoggerService,
     private eRef: ElementRef
   ) { }
 

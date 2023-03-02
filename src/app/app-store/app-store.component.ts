@@ -3,11 +3,12 @@ import { AppStoreService } from '../services/app-store.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Subscription } from 'rxjs'
-import { LoggerService } from '../services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { URL_configure_your_first_chatbot, URL_connect_your_dialogflow_agent, URL_rasa_ai_integration, URL_external_chatbot_connect_your_own_chatbot} from './../utils/util';
 import { BrandService } from 'app/services/brand.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-app-store',
@@ -29,11 +30,13 @@ export class AppStoreComponent implements OnInit {
   errorWhileDeletingApp: string;
   done_msg: string;
   tparams: any;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
     public auth: AuthService,
-    private logger: LoggerService,
     private notify: NotifyService,
     private translate: TranslateService,
     public brandService: BrandService,

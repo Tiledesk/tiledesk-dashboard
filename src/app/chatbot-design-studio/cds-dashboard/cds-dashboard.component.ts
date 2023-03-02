@@ -8,7 +8,6 @@ import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from '../../services/logger/logger.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { HttpClient } from "@angular/common/http";
 
@@ -23,6 +22,8 @@ import { DepartmentService } from 'app/services/department.service';
 import { CdsPublishOnCommunityModalComponent } from './cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NotifyService } from 'app/core/notify.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 const swal = require('sweetalert');
 
@@ -71,13 +72,14 @@ export class CdsDashboardComponent implements OnInit {
   public_Key: string;
   TRY_ON_WA: boolean;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private faqService: FaqService,
     private auth: AuthService,
     public location: Location,
-    private logger: LoggerService,
     private httpClient: HttpClient,
     private faqKbService: FaqKbService,
     public appConfigService: AppConfigService,

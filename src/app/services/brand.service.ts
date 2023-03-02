@@ -5,7 +5,8 @@ import { environment } from '../../environments/environment';
 // import  brand  from "../../assets/brand/brand.json";
 // import * as brand from 'assets/brand/brand.json';
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 
 const swal = require('sweetalert');
 
@@ -58,13 +59,14 @@ export class BrandService {
   warning: string;
   loadBrandError: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private httpClient: HttpClient,
-    private translate: TranslateService,
-    private logger: LoggerService
+    private translate: TranslateService
   ) {
     this.getTranslations()
-
+    console.log('aaaaaaaaa ccccc', this.logger)
   }
 
   getTranslations() {
@@ -98,9 +100,9 @@ export class BrandService {
 
     let url = ''
     if (environment.remoteConfig === false) {
-
+      console.log('aaaaaaaaa', this.logger)
       if (environment.hasOwnProperty("brandSrc")) {
-
+        
         this.logger.log('[BRAND-SERV] loadBrand remoteConfig is false - env has Property brandSrc');
         const remoteBrandUrl = this.isEmpty(environment['brandSrc']);
 
@@ -116,6 +118,7 @@ export class BrandService {
         this.brand = this._brand;
       }
     } else {
+      console.log('aaaaaaaaa eeeee', this.logger)
       const res = await this.httpClient.get(environment['remoteConfigUrl']).toPromise();
       this.logger.log('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
 

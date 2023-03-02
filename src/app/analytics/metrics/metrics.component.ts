@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-metrics',
   templateUrl: './metrics.component.html',
@@ -9,12 +10,9 @@ export class MetricsComponent implements OnInit {
   @Input()  autoselected
  
   selected='richieste'
- 
-  constructor(
-    private logger: LoggerService
+  private logger: LoggerService = LoggerInstance.getInstance();
 
-  ) {
-   }
+  constructor() {}
 
   ngOnInit() {
 

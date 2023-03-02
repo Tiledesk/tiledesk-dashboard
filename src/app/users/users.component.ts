@@ -10,7 +10,8 @@ import { Subscription } from 'rxjs'
 import { AppConfigService } from '../services/app-config.service'
 import { avatarPlaceholder, getColorBck } from '../utils/util'
 import { URL_understanding_default_roles } from '../utils/util'
-import { LoggerService } from '../services/logger/logger.service'
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service'
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance'
 
 const swal = require('sweetalert')
 
@@ -89,6 +90,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   prjct_id: string;
   prjct_name: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -97,7 +100,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService,
   ) { }
 
   ngOnInit() {

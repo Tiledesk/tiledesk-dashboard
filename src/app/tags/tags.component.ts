@@ -6,7 +6,8 @@ import { LocalDbService } from '../services/users-local-db.service';
 import { UsersService } from '../services/users.service';
 import { AppConfigService } from '../services/app-config.service';
 import { AuthService } from '../core/auth.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-tags',
   templateUrl: './tags.component.html',
@@ -45,6 +46,9 @@ export class TagsComponent implements OnInit, AfterViewInit {
   ];
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public translate: TranslateService,
     private notify: NotifyService,
@@ -52,8 +56,7 @@ export class TagsComponent implements OnInit, AfterViewInit {
     private usersLocalDbService: LocalDbService,
     public appConfigService: AppConfigService,
     private usersService: UsersService,
-    private auth: AuthService,
-    private logger: LoggerService
+    private auth: AuthService
   ) { }
 
   ngOnInit() {

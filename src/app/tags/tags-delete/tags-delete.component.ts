@@ -2,7 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TagsService } from '../../services/tags.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../core/notify.service';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-tags-delete',
   templateUrl: './tags-delete.component.html',
@@ -20,11 +21,12 @@ export class TagsDeleteComponent implements OnInit {
   delete_label_success: string;
   delete_label_error: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     public translate: TranslateService,
     private notify: NotifyService,
     private tagsService: TagsService,
-    private logger: LoggerService
   ) { }
 
   ngOnInit() {

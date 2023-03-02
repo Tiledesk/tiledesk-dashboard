@@ -15,9 +15,9 @@ import { Request } from '../../../models/request-model';
 import { DepartmentService } from '../../../services/department.service';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from '../../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 const swal = require('sweetalert');
 
@@ -92,17 +92,17 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     public usersLocalDbService: LocalDbService,
     public router: Router,
     public appConfigService: AppConfigService,
+    public appStorageService: AppStorageService,
     public wsRequestsService: WsRequestsService,
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     private departmentService: DepartmentService,
     public notify: NotifyService,
     public translate: TranslateService,
-    public logger: LoggerService,
     private projectService: ProjectService,
     private wsMsgsService: WsMsgsService
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, translate, appStorageService);
   }
 
   // -------------------------------------------------------------
@@ -646,14 +646,14 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
-    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+    this.appStorageService.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, requestid, requester_fullanme)
   }
 
   // openChatInNewWindow(requestid: string, requester_fullanme: string) {
   //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requestid', requestid);
   //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requester_fullanme', requester_fullanme);
-  //   const chatTabCount = localStorage.getItem('tabCount')
+  //   const chatTabCount = this.appStorageService.getItem('tabCount')
   //   console.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount ', chatTabCount)
 
   //   let url = ''

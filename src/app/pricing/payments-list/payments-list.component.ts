@@ -5,7 +5,8 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { ProjectService } from '../../services/project.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-payments-list',
   templateUrl: './payments-list.component.html',
@@ -15,12 +16,14 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
   subscription_payments: any;
   showSpinner = true;
   subscription: Subscription;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     private prjctPlanService: ProjectPlanService,
     private prjctService: ProjectService,
-    public location: Location,
-    private logger: LoggerService
+    public location: Location
   ) { }
 
   ngOnInit() {

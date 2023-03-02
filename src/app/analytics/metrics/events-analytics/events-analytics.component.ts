@@ -4,8 +4,9 @@ import { Component, OnInit } from '@angular/core';
 // import * as moment from 'moment'
 import moment from "moment";
 import { Chart } from 'chart.js';
-import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-events-analytics',
   templateUrl: './events-analytics.component.html',
@@ -38,11 +39,11 @@ export class EventsAnalyticsComponent implements OnInit {
   ]
 
   eventsCountLastMonth: any;
+  private logger: LoggerService = LoggerInstance.getInstance();
 
   constructor(
     private analyticsService: AnalyticsService,
-    private translate: TranslateService,
-    private logger: LoggerService
+    private translate: TranslateService
   ) {
 
     this.lang = this.translate.getBrowserLang();

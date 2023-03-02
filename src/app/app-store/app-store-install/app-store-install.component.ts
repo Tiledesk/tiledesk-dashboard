@@ -6,7 +6,8 @@ import { Location } from '@angular/common';
 import { AppStoreService } from 'app/services/app-store.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 
 @Component({
@@ -31,15 +32,16 @@ export class AppStoreInstallComponent implements OnInit {
   isChromeVerGreaterThan100: boolean;
   reason: string;
   appurl: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     public location: Location,
     private appStoreService: AppStoreService,
     private auth: AuthService,
-    private ngZone: NgZone,
-    private router: Router,
-    private logger: LoggerService
+    private router: Router
   ) {
     // console.log('Here app-store-install!!!')
     this.getRouteParams();

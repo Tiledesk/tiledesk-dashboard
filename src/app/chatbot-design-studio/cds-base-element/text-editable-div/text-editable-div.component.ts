@@ -1,7 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { SatPopover } from '@ncstate/sat-popover';
 import { TiledeskVarSplitter } from 'app/chatbot-design-studio/TiledeskVarSplitter';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { calculatingRemainingCharacters, TEXT_CHARS_LIMIT } from '../../utils';
 
 
@@ -52,8 +53,9 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
 
   @ViewChild("setattributepopover", { static: false }) setattributepopover: SatPopover;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
-    private logger: LoggerService,
     private elementRef: ElementRef
   ) { }
 

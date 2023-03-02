@@ -26,9 +26,9 @@ import { Observable } from 'rxjs';
 import { ProjectUser } from '../../models/project-user';
 import { ProjectService } from '../../services/project.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { GroupService } from '../../services/group.service';
 import { Group } from 'app/models/group-model';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 const swal = require('sweetalert');
 
@@ -209,15 +209,15 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
+    public appStorageService: AppStorageService,
     private departmentService: DepartmentService,
     public notify: NotifyService,
     public contactsService: ContactsService,
     private projectService: ProjectService,
     private prjctPlanService: ProjectPlanService,
-    public logger: LoggerService,
     public groupService: GroupService
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, translate, appStorageService);
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
@@ -304,7 +304,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // this.openWindow('Tiledesk - Open Source Live Chat', url)
     // this.focusWin('Tiledesk - Open Source Live Chat')
     // --- new 
-    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+    this.appStorageService.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl
     const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');

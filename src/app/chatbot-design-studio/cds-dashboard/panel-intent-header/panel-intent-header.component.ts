@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+
 
 
 import { Intent } from '../../../models/intent-model';
@@ -23,10 +25,9 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   id_faq_kb: string;
 
-
-  constructor(
-    private logger: LoggerService,
-  ) { }
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
+  constructor() { }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {

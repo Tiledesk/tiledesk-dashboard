@@ -9,7 +9,8 @@ import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'app/services/app-config.service';
 import { UsersService } from '../services/users.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-contact-details',
@@ -81,6 +82,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   attributesDecodedJWTAttributesArray: Array<any>
   attributesDecodedJWTArrayMerged: Array<any>
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -90,8 +94,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     private notify: NotifyService,
     private translate: TranslateService,
     private appConfigService: AppConfigService,
-    private usersService: UsersService,
-    private logger: LoggerService
+    private usersService: UsersService
   ) { }
 
   // -----------------------------------------------------------------------------------------------------

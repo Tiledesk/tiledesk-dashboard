@@ -1,7 +1,8 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnInit } from '@angular/core';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { ActionHideMessage } from 'app/models/intent-model';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'cds-action-hide-message',
@@ -14,8 +15,12 @@ export class ActionHideMessageComponent implements OnInit {
   @Input() action: ActionHideMessage;
   
   actionHideMessageFormGroup: FormGroup;
-  constructor(private formBuilder: FormBuilder,
-              private logger: LoggerService) { }
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
+  constructor(
+    private formBuilder: FormBuilder,
+  ) { }
 
   ngOnInit(): void { 
   }

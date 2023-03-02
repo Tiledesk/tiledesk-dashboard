@@ -8,7 +8,9 @@ import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { NavbarForPanelService } from './navbar-for-panel.service';
 import { WsRequestsService } from './../../services/websocket/ws-requests.service';
-import { LoggerService } from './../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+
 @Component({
   selector: 'appdashboard-navbar-for-panel',
   templateUrl: './navbar-for-panel.component.html',
@@ -31,6 +33,7 @@ export class NavbarForPanelComponent implements OnInit {
   IS_PROJECTS_X_PANEL_ROUTE: boolean;
   dkmode: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
+  private logger: LoggerService = LoggerInstance.getInstance();
 
   constructor(
     private auth: AuthService,
@@ -39,8 +42,7 @@ export class NavbarForPanelComponent implements OnInit {
     private router: Router,
     public usersLocalDbService: LocalDbService,
     public navbarForPanelService: NavbarForPanelService,
-    public wsRequestsService: WsRequestsService,
-    private logger: LoggerService
+    public wsRequestsService: WsRequestsService
 
   ) {
     this.getCurrentRoute();

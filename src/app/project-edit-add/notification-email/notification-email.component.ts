@@ -5,8 +5,9 @@ import { DomSanitizer } from '@angular/platform-browser'
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
 import PerfectScrollbar from 'perfect-scrollbar';
-import { LoggerService } from '../../services/logger/logger.service';
 import { NotifyService } from '../../core/notify.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 declare const $: any;
 @Component({
@@ -30,13 +31,15 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   anErrorHasOccurredMsg: string;
   emailTemplateUpdatedSuccessfullyMsg: string;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public location: Location,
     public projectService: ProjectService,
     private sanitizer: DomSanitizer,
     private translate: TranslateService,
     private auth: AuthService,
-    private logger: LoggerService,
     private notify: NotifyService
   ) { }
 

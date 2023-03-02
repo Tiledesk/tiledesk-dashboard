@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { Location } from '@angular/common';
-import { LoggerService } from '../services/logger/logger.service';
 import { URL_understanding_default_roles } from './../utils/util';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 declare var $: any;
 /// Notify users about errors and other helpful stuff
@@ -57,10 +58,10 @@ export class NotifyService {
 
   public URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public location: Location,
-    private logger: LoggerService
-
   ) {
 
   }

@@ -4,7 +4,9 @@ import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../models/user-model';
 import { BrandService } from '../services/brand.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -23,12 +25,14 @@ export class VerifyEmailComponent implements OnInit {
   error_msg_subtitle: string;
   success_msg: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
     private router: Router,
     public brandService: BrandService,
-    private logger: LoggerService
+    private appStorageService: AppStorageService,
   ) { 
     const brand = brandService.getBrand();
     this.company_logo_black__url = brand['company_logo_black__url'];
@@ -52,7 +56,7 @@ export class VerifyEmailComponent implements OnInit {
 
         this.success_msg = 'Your email has successfully been verified';
 
-        const storedUser = localStorage.getItem('user')
+        const storedUser = this.appStorageService.getItem('user')
 
         if (storedUser !== null) {
 

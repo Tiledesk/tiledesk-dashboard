@@ -3,7 +3,8 @@ import { Component, HostListener, Input, OnInit, Output, ViewChild, EventEmitter
 import { SatPopover } from '@ncstate/sat-popover';
 import { Condition, Expression, Operator } from 'app/models/intent-model';
 import { variableList, OPERATORS_LIST } from 'app/chatbot-design-studio/utils';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 
 @Component({
@@ -24,9 +25,9 @@ export class BaseFilterComponent implements OnInit {
 
   OPERATORS_LIST = OPERATORS_LIST
   
-  constructor(
-    private logger: LoggerService
-  ) { }
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
+  constructor() { }
 
   ngOnInit(): void {
   }

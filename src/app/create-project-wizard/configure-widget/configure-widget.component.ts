@@ -9,9 +9,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { WidgetSetUpBaseComponent } from '../../widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WidgetService } from '../../services/widget.service';
 import { AppConfigService } from '../../services/app-config.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { Location } from '@angular/common';
 import { tranlatedLanguage } from 'app/utils/util';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-configure-widget',
@@ -80,6 +81,9 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
   // EXIST_STORED_ROUTE: boolean = false
   storedRoute: string;
   browser_lang: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -88,7 +92,6 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     public translate: TranslateService,
     private widgetService: WidgetService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService,
     public location: Location
   ) {
     super(translate);

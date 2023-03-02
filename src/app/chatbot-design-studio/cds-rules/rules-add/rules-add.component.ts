@@ -1,4 +1,3 @@
-import { LoggerService } from 'app/services/logger/logger.service';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { Component, Input, OnInit, SimpleChanges, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
@@ -7,6 +6,8 @@ import { Chatbot } from 'app/models/faq_kb-model';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Rule } from 'app/models/rule-model';
 import { MatExpansionPanel } from '@angular/material/expansion';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'cds-rules-add',
@@ -30,10 +31,13 @@ export class RulesAddComponent implements OnInit {
   autocompleteOptions: Array<string> = [];
   isPanelExpanded: boolean = false;
 
-  constructor(private formBuilder: FormBuilder,
-              private logger: LoggerService,
-              private el: ElementRef,
-              private faqkbService: FaqKbService) { }
+  private logger: LoggerService = LoggerInstance.getInstance();
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private el: ElementRef,
+    private faqkbService: FaqKbService
+  ) { }
 
   ngOnInit(): void {
     this.ruleFormGroup = this.buildForm();

@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { slideInOutAnimationNoBckgrnd } from '../../../_animations/index';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -9,6 +8,8 @@ import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-ws-sidebar-apps',
   templateUrl: './ws-sidebar-apps.component.html',
@@ -47,8 +48,9 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
   frameHeightWebchatHeight:number = 100
   TOKEN: string
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
-    private logger: LoggerService,
     private translate: TranslateService,
     public router: Router,
     public appStoreService: AppStoreService,

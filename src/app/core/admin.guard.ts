@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { AuthService } from '../core/auth.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 // implements CanActivate
 @Injectable()
 export class AdminGuard {
@@ -11,11 +12,12 @@ export class AdminGuard {
   projectId: string;
   currentUserId: string
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private router: Router,
     private usersService: UsersService,
     private auth: AuthService,
-    private logger: LoggerService
   ) {
     // this.checkRole();
     // this.getLoggedUser();

@@ -3,7 +3,6 @@ import { Chatbot } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { UploadImageService } from 'app/services/upload-image.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { AuthService } from 'app/core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,6 +14,8 @@ import { Project } from 'app/models/project-model';
 import { FaqService } from 'app/services/faq.service';
 import { BotsBaseComponent } from 'app/bots/bots-base/bots-base.component';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 
 @Component({
@@ -88,8 +89,10 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   details: any
   displayDeleteFaqModal = 'none';
   displayImportJSONModal = 'none'
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
-    private logger: LoggerService,
     public appConfigService: AppConfigService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,

@@ -1,5 +1,4 @@
 import { Component, HostListener, OnInit } from '@angular/core'
-import { LoggerService } from './../../services/logger/logger.service'
 import { AppConfigService } from '../../services/app-config.service'
 import { AuthService } from '../../core/auth.service'
 import { NavigationEnd, Router } from '@angular/router'
@@ -8,6 +7,8 @@ import { TranslateService } from '@ngx-translate/core'
 import { UsersService } from 'app/services/users.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service'
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance'
 @Component({
   selector: 'appdashboard-settings-sidebar',
   templateUrl: './settings-sidebar.component.html',
@@ -56,9 +57,9 @@ export class SettingsSidebarComponent implements OnInit {
   teammatates_and_groups_lbl: string;
   USER_HAS_TOGGLE_SIDEBAR: boolean;
   private unsubscribe$: Subject<any> = new Subject<any>();
+  private logger: LoggerService = LoggerInstance.getInstance();
   constructor(
     public appConfigService: AppConfigService,
-    private logger: LoggerService,
     private auth: AuthService,
     public router: Router,
     public location: Location,

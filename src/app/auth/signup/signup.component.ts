@@ -9,9 +9,11 @@ import { AppConfigService } from '../../services/app-config.service';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import moment from 'moment';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -93,6 +95,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
       'required': 'Please accept Terms and Conditions and Privacy Policy',
     },
   };
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
@@ -101,8 +105,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private notify: NotifyService,
     public appConfigService: AppConfigService,
+    private appStorageService: AppStorageService,
     public brandService: BrandService,
-    private logger: LoggerService,
     private localDbService: LocalDbService
   ) {
 
@@ -237,7 +241,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
   redirectIfLogged() {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = this.appStorageService.getItem('user');
     if (storedUser) {
       this.logger.log('[SIGN-UP] - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
       this.router.navigate(['/projects']);

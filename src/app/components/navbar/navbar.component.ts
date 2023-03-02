@@ -35,8 +35,10 @@ import { Subscription } from 'rxjs'
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { URL_understanding_default_roles } from '../../utils/util';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 const swal = require('sweetalert');
 
@@ -138,7 +140,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
 
   NOTIFICATION_SOUND: string;
-  storedValuePrefix = 'dshbrd----'
+  // storedValuePrefix = 'dshbrd----'
   hasPlayed = false
   MT: boolean
   OPERATING_HOURS_ACTIVE: boolean;
@@ -150,6 +152,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   flag_url: string;
   dsbrd_lang: string;
   tlangparams: any;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     location: Location,
     private element: ElementRef,
@@ -165,9 +170,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     private projectService: ProjectService,
     public wsRequestsService: WsRequestsService,
     public appConfigService: AppConfigService,
+    private appStorageService: AppStorageService,
     public brandService: BrandService,
-    public LocalDbService: LocalDbService,
-    private logger: LoggerService,
+    public LocalDbService: LocalDbService
 
   ) {
 
@@ -264,7 +269,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
       // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
       if (this.user) {
 
-        const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
+        const stored_preferred_lang = this.appStorageService.getItem(this.user._id + '_lang')
 
         if (stored_preferred_lang) {
           this.dsbrd_lang = stored_preferred_lang;
@@ -316,7 +321,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   setNotificationSound() {
     // NOTIFICATION_SOUND = 'enabled';
-    const storedNotificationSound = localStorage.getItem(this.storedValuePrefix + 'sound');
+    const storedNotificationSound = this.appStorageService.getItem('sound');
     this.logger.log('[NAVBAR] NOTIFICATION_SOUND STORED ', storedNotificationSound)
 
     if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
@@ -326,7 +331,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
       this.NOTIFICATION_SOUND = 'enabled';
 
-      localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
+      this.appStorageService.setItem('sound', this.NOTIFICATION_SOUND);
       this.logger.log('[NAVBAR] NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
     }
 
@@ -891,7 +896,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     activeOperatingHours: boolean) {
     // console.log('!NAVBAR  goToHome prjct ', project)
     this.logger.log('[NAVBAR] goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired, 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
-    localStorage.setItem('last_project', JSON.stringify(project))
+    this.appStorageService.setItem('last_project', JSON.stringify(project))
     // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
     if (id_project !== this.projectId) {
       // this.subscription.unsubscribe();
@@ -1084,7 +1089,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             // --------------------------------------------------------------------------
             // @ get stored request
             // --------------------------------------------------------------------------
-            const storedRequest = localStorage.getItem(r.id + '_' + r.status);
+            const storedRequest = this.appStorageService.getItem(r.id + '_' + r.status);
             // this.logger.log('[NAVBAR] IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
 
             // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
@@ -1140,7 +1145,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
       // --------------------------------------------------------------------------
       // @ set request to store (doUnservedDateDiffAndShowNotification)
       // --------------------------------------------------------------------------
-      localStorage.setItem(r.id + '_' + r.status, 'true');
+      this.appStorageService.setItem(r.id + '_' + r.status, 'true');
 
     }
 
@@ -1174,7 +1179,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             // --------------------------------------------------------------------------
             // @ get stored request
             // --------------------------------------------------------------------------
-            const storedRequest = localStorage.getItem(r.id + '_' + r.status);
+            const storedRequest = this.appStorageService.getItem(r.id + '_' + r.status);
             // this.logger.log('[NAVBAR] IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
 
             // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
@@ -1227,7 +1232,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
               // --------------------------------------------------------------------------
               // @ set request to store (notifyLastUnservedAndCurrentUserRequest)
               // --------------------------------------------------------------------------
-              localStorage.setItem(r.id + '_' + r.status, 'true');
+              this.appStorageService.setItem(r.id + '_' + r.status, 'true');
 
             }
 
@@ -1290,7 +1295,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     // --------------------------------------------------------------------------
     // @ set request to store (doUnservedDateDiffAndShowNotification)
     // --------------------------------------------------------------------------
-    localStorage.setItem(r.id + '_' + r.status, 'true');
+    this.appStorageService.setItem(r.id + '_' + r.status, 'true');
 
 
   }
@@ -1362,7 +1367,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     //------------------------------------------
 
 
-    this.NOTIFICATION_SOUND = localStorage.getItem(this.storedValuePrefix + 'sound');
+    this.NOTIFICATION_SOUND = this.appStorageService.getItem('sound');
     // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification)', this.NOTIFICATION_SOUND)
     // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
     if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
@@ -1403,7 +1408,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   setNoticationSoundUserPreference(value) {
     // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (setNoticationSoundUserPreference)', value)
-    localStorage.setItem(this.storedValuePrefix + 'sound', value);
+    this.appStorageService.setItem('sound', value);
   }
 
   ngAfterContentChecked() {
@@ -1526,7 +1531,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   // }
 
   getFromLocalStorageHasOpenedTheChat() {
-    const storedChatOpenedValue = localStorage.getItem('chatOpened');
+    const storedChatOpenedValue = this.appStorageService.getItem('chatOpened');
     this.logger.log('[NAVBAR] + + + STORED CHAT OPENED VALUE ', storedChatOpenedValue);
     if (storedChatOpenedValue && storedChatOpenedValue === 'true') {
       this.HAS_OPENED_THE_CHAT = true;

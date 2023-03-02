@@ -2,7 +2,8 @@
 import { Injectable } from '@angular/core';
 import { forwardRef, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoggerService } from './../../services/logger/logger.service';
+import { LoggerService } from '../chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from '../chat21-core/providers/logger/loggerInstance';
 @Injectable()
 export class WebSocketJs {
 
@@ -36,8 +37,9 @@ export class WebSocketJs {
   public pongSent$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public pongReceived$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  private logger: LoggerService = LoggerInstance.getInstance();
 
-  constructor(@Inject(forwardRef(() => LoggerService)) public logger: LoggerService) {
+  constructor() {
 
     this.logger.log("[WEBSOCKET-JS] HELLO !!!");
     this.topics = [];

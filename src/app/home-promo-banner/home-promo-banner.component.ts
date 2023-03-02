@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, isDevMode, OnInit, Output } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { HomeService } from 'app/services/home.service';
-import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-home-promo-banner',
@@ -17,10 +18,12 @@ export class HomePromoBannerComponent implements OnInit {
   currentUserID: string;
   // @Output() dispayPromoBanner = new EventEmitter();
   @Output() showPromoBanner = new EventEmitter();
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public homeService: HomeService,
     public auth: AuthService,
-    private logger: LoggerService
   ) { }
 
   ngOnInit(): void {

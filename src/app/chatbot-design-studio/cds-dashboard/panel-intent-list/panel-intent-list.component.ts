@@ -1,10 +1,11 @@
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from './../../../services/logger/logger.service';
 import { FaqService } from './../../../services/faq.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Intent } from 'app/models/intent-model';
 import { Observable } from 'rxjs';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 const swal = require('sweetalert');
 
@@ -38,9 +39,10 @@ export class PanelIntentListComponent implements OnInit {
   selectedIntent: Intent;
   addBtnDisabled: boolean = false;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private faqService: FaqService,
-    private logger: LoggerService,
     private translate: TranslateService,
     private router: Router,
     private route: ActivatedRoute

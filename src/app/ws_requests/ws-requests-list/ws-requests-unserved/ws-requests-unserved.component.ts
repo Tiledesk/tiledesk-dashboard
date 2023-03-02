@@ -1,3 +1,4 @@
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 import { Request } from '../../../models/request-model';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
@@ -16,7 +17,6 @@ import { DepartmentService } from '../../../services/department.service';
 import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { LoggerService } from '../../../services/logger/logger.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 
 const swal = require('sweetalert');
@@ -80,17 +80,17 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     public usersLocalDbService: LocalDbService,
     public router: Router,
     public appConfigService: AppConfigService,
+    public appStorageService: AppStorageService,
     public wsRequestsService: WsRequestsService,
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     private departmentService: DepartmentService,
     public notify: NotifyService,
     public translate: TranslateService,
-    public logger: LoggerService,
     private wsMsgsService: WsMsgsService
   ) {
 
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, translate, appStorageService);
   }
 
   // -------------------------------------------------------------

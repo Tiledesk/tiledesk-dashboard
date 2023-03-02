@@ -4,7 +4,8 @@ import { ActionJsonCondition } from '../../../../../models/intent-model';
 import { Component, Host, Input, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { SatPopover } from '@ncstate/sat-popover';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'cds-action-json-condition',
@@ -22,10 +23,11 @@ export class ActionJsonConditionComponent implements OnInit {
 
   booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private formBuilder: FormBuilder,
-    private logger: LoggerService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
   }

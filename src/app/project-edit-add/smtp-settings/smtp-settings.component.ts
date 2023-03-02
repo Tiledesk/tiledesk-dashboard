@@ -4,7 +4,8 @@ import { AuthService } from 'app/core/auth.service';
 import { Location } from '@angular/common';
 import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 
 @Component({
@@ -34,13 +35,15 @@ export class SmtpSettingsComponent implements OnInit {
   public authenticationFailedMsg: string;
   public anErrorHasOccurredMsg: string;
   isChromeVerGreaterThan100: boolean
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public projectService: ProjectService,
     private auth: AuthService,
     public location: Location,
     private notify: NotifyService,
-    private translate: TranslateService,
-    private logger: LoggerService
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {

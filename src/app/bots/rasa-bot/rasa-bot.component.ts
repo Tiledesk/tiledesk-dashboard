@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { Location } from '@angular/common';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { Project } from 'app/models/project-model';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DepartmentService } from 'app/services/department.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { NotifyService } from 'app/core/notify.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-rasa-bot',
   templateUrl: './rasa-bot.component.html',
@@ -49,10 +50,12 @@ export class RasaBotComponent implements OnInit {
 
   CREATE_BOT_ERROR: boolean;
   translateparamBotName: any;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private auth: AuthService,
     public location: Location,
-    private logger: LoggerService,
     private faqKbService: FaqKbService,
     private router: Router,
     private route: ActivatedRoute,

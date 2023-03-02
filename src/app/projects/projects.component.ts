@@ -15,9 +15,11 @@ import { takeUntil } from 'rxjs/operators';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { tranlatedLanguage } from 'app/utils/util';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -79,6 +81,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   languageNotSupported: boolean = false
   private unsubscribe$: Subject<any> = new Subject<any>();
   prjct_profile_name: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -88,9 +93,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     public appConfigService: AppConfigService,
+    private appStorageService: AppStorageService,
     public brandService: BrandService,
     public wsRequestsService: WsRequestsService,
-    private logger: LoggerService,
     private translate: TranslateService,
   ) {
     const brand = brandService.getBrand();
@@ -146,7 +151,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         this.logger.log('[PROJECTS] - Current USER ID ', this.currentUserId)
 
 
-        const stored_preferred_lang = localStorage.getItem(this.currentUserId + '_lang')
+        const stored_preferred_lang = this.appStorageService.getItem(this.currentUserId + '_lang')
         // console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
         if (stored_preferred_lang) {
           this.dsbrd_lang = stored_preferred_lang;
@@ -389,7 +394,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     project_status: number,
     activeOperatingHours: boolean) {
     this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
-    // localStorage.setItem('last_project', JSON.stringify(project))
     // window.top.postMessage('hasChangedProject', '*')
 
     this.logger.log('[PROJECTS] - GO TO HOME - PROJECT status ', project_status)
@@ -426,7 +430,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
      * SET THE project_id IN THE LOCAL STORAGE
      * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
-    // localStorage.setItem('project', JSON.stringify(project));
+    // this.appStorageService.setItem('project', JSON.stringify(project));
   }
 
   // GO TO  PROJECT-EDIT-ADD COMPONENT
@@ -562,7 +566,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
               countOfcurrentUserAvailabilityInProjects = countOfcurrentUserAvailabilityInProjects + 1;
             }
 
-            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+            this.appStorageService.setItem(project.id_project._id, JSON.stringify(prjct));
           }
         });
         this.logger.log('[PROJECTS] - GET PROJECTS AFTER', projects);

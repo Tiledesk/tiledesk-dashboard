@@ -16,9 +16,10 @@ import { UsersService } from '../services/users.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ComponentCanDeactivate } from '../core/pending-changes.guard';
-import { LoggerService } from '../services/logger/logger.service';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -113,6 +114,9 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving: string
   isChromeVerGreaterThan100: boolean;
   USER_ROLE: string
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -124,8 +128,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     public translate: TranslateService,
     private notify: NotifyService,
     private usersService: UsersService,
-    public appConfigService: AppConfigService,
-    private logger: LoggerService
+    public appConfigService: AppConfigService
   ) { }
 
 

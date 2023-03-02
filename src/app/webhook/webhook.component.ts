@@ -3,8 +3,9 @@ import { NotifyService } from './../core/notify.service';
 import { WebhookService } from './../services/webhook.service';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { LoggerService } from '../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-webhook',
   templateUrl: './webhook.component.html',
@@ -25,12 +26,14 @@ export class WebhookComponent implements OnInit {
   sharedSecret: string;
   subscriptionIDToDelete: string;
   isChromeVerGreaterThan100: boolean
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private webhookService: WebhookService,
     public translate: TranslateService,
     private notify: NotifyService,
     private location: Location,
-    private logger: LoggerService,
     private auth: AuthService,
   ) { }
 

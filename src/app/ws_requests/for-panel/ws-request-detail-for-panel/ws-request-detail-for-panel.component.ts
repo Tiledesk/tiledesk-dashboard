@@ -20,10 +20,10 @@ import { NotifyService } from '../../../core/notify.service';
 
 import PerfectScrollbar from 'perfect-scrollbar';
 import { ContactsService } from '../../../services/contacts.service';
-import { LoggerService } from '../../../services/logger/logger.service';
 // import * as moment from 'moment';
 import moment from "moment";
 import { WebSocketJs } from 'app/services/websocket/websocket-js';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 @Component({
   selector: 'appdashboard-ws-request-detail-for-panel',
   templateUrl: './ws-request-detail-for-panel.component.html',
@@ -72,10 +72,11 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   join_polling: any
   archive_polling: any
   MORE_INFO_ACCORDION_IS_OPENED: boolean = false;
-
+  
   constructor(
     private wsMsgsService: WsMsgsService,
     public appConfigService: AppConfigService,
+    public appStorageService: AppStorageService,
     public botLocalDbService: BotLocalDbService,
     public usersLocalDbService: LocalDbService,
     public router: Router,
@@ -86,9 +87,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     public auth: AuthService,
     public translate: TranslateService,
     public contactsService: ContactsService,
-    public logger: LoggerService,
     public webSocketJs: WebSocketJs
-  ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate); }
+  ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, translate, appStorageService); }
 
   ngOnInit() {
     this.getProfileImageStorage();
@@ -153,9 +153,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
     let stored_preferred_lang = undefined
     if (this.auth.user_bs && this.auth.user_bs.value) {
-      stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+      stored_preferred_lang = this.appStorageService.getItem(this.auth.user_bs.value._id + '_lang')
     }
-    // const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
     let dshbrd_lang = ''
     if (this.browserLang && !stored_preferred_lang) {
       dshbrd_lang = this.browserLang

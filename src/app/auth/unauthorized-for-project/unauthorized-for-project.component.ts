@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-unauthorized-for-project',
   templateUrl: './unauthorized-for-project.component.html',
@@ -9,10 +10,11 @@ import { LoggerService } from '../../services/logger/logger.service';
 })
 export class UnauthorizedForProjectComponent implements OnInit {
   CHAT_PANEL_MODE: boolean;
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private auth: AuthService,
     private router: Router,
-    private logger: LoggerService
   ) { }
 
   ngOnInit() {

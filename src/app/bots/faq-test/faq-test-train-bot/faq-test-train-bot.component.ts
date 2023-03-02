@@ -3,7 +3,8 @@ import { slideInOutAnimation } from '../../../_animations/index';
 import { FaqService } from '../../../services/faq.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../../core/notify.service';
-import { LoggerService } from '../../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-faq-test-train-bot',
   templateUrl: './faq-test-train-bot.component.html',
@@ -23,11 +24,13 @@ export class FaqTestTrainBotComponent implements OnInit {
   showSpinner = true;
   answer: string;
   answerSuccessfullyAdded: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private faqService: FaqService,
     private notify: NotifyService,
-    private translate: TranslateService,
-    private logger: LoggerService
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {

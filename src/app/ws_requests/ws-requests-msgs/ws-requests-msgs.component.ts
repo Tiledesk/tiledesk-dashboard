@@ -25,7 +25,6 @@ import { TagsService } from '../../services/tags.service';
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util';
-import { LoggerService } from '../../services/logger/logger.service';
 
 import 'firebase/database';
 import { ProjectService } from 'app/services/project.service';
@@ -36,6 +35,7 @@ import moment from 'moment';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { TooltipOptions } from 'ng2-tooltip-directive';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 const swal = require('sweetalert');
 // './ws-requests-msgs.component.html',
@@ -362,7 +362,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   convertToOnline: string;
   smartReassignmentForThisConversationWillBeEnabled: string;
   tagAlreadyAssigned: string
-  thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag: string
+  thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag: string  
   /**
    * Constructor
    * @param router 
@@ -400,9 +400,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     public translate: TranslateService,
+    public appStorageService: AppStorageService,
     private tagsService: TagsService,
     public contactsService: ContactsService,
-    public logger: LoggerService,
     private projectService: ProjectService,
     public appStoreService: AppStoreService,
     private uploadImageService: UploadImageService,
@@ -410,7 +410,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, translate, appStorageService)
     this.jira_issue_types = [
       { id: 10002, name: 'Task', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10318&avatarType=issuetype' },
       { id: 10004, name: 'Bug', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype' },
@@ -808,9 +808,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     let stored_preferred_lang = undefined
     if (this.auth.user_bs && this.auth.user_bs.value) {
-      stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+      stored_preferred_lang = this.appStorageService.getItem(this.auth.user_bs.value._id + '_lang')
     }
-    // const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
     let dshbrd_lang = ''
     if (this.browserLang && !stored_preferred_lang) {
       dshbrd_lang = this.browserLang
@@ -1382,7 +1381,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             } else if (this.request['closed_by'] === "_trigger") {
               this.request['closed_by_label'] = this.translate.instant('By') + ' ' + "Trigger"
             } else {
-              const storedTeammate = this.usersLocalDbService.getMemberFromStorage(this.request['closed_by']) //  localStorage.getItem('dshbrd----' + this.request['closed_by'] )
+              const storedTeammate = this.usersLocalDbService.getMemberFromStorage(this.request['closed_by'])
 
               if (storedTeammate) {
                 this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammate ', storedTeammate)
@@ -1418,7 +1417,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             const storedProjectUsersArray = []
             this.request.followers.forEach(requestfollowerid => {
               // console.log('requestfollowerid ', requestfollowerid)
-              let storedProjectUser = localStorage.getItem('dshbrd----' + requestfollowerid)
+              let storedProjectUser = this.appStorageService.getItem(requestfollowerid)
               // console.log('follower from storage ', storedProjectUser)
               // console.log('follower  parsed from storage ', storedProjectUser)
               if (storedProjectUser) {
@@ -3874,7 +3873,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openChatAtSelectedConversation() {
     this.openChatBtn.nativeElement.blur();
-    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+    this.appStorageService.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, this.id_request, this.request.lead.fullname)
   }
 
@@ -3942,14 +3941,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
     // ---- new
-    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+    this.appStorageService.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl + agentId + '/' + agentFullname + '/new'
     const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
 
 
-    // const chatTabCount = localStorage.getItem('tabCount')
+
     // console.log('[WS-REQUESTS-MSGS] chatWithAgent chatTabCount ', chatTabCount)
     // let url = ''
     // if (chatTabCount) {

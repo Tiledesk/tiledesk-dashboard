@@ -5,8 +5,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 // import * as moment from 'moment';
 import moment from "moment";
-import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-visitors-analytics',
   templateUrl: './visitors-analytics.component.html',
@@ -38,10 +39,11 @@ export class VisitorsAnalyticsComponent implements OnInit {
   selected: string;
   visitorsCountLastMonth: any;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private translate: TranslateService,
-    private analyticsService: AnalyticsService,
-    private logger: LoggerService
+    private analyticsService: AnalyticsService
   ) {
 
     this.lang = this.translate.getBrowserLang();

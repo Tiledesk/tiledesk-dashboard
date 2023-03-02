@@ -4,10 +4,11 @@ import { AuthService } from '../../core/auth.service';
 import { BehaviorSubject } from 'rxjs';
 import { Subject } from 'rxjs';
 import { WsMessage } from '../../models/ws-message-model';
-import { LoggerService } from '../../services/logger/logger.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from '../app-config.service';
+import { LoggerService } from '../chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from '../chat21-core/providers/logger/loggerInstance';
 @Injectable()
 
 export class WsMsgsService {
@@ -24,11 +25,11 @@ export class WsMsgsService {
   // public _wsMsgsList = new Subject<any>();
   CURRENT_USER_ID: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
- 
     public auth: AuthService,
     public webSocketJs: WebSocketJs,
-    private logger: LoggerService,
     public appConfigService: AppConfigService,
     private _httpClient: HttpClient
   ) {

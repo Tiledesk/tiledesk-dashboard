@@ -12,7 +12,6 @@ import { LocalDbService } from '../services/users-local-db.service'; // Error: S
 import { WebSocketJs } from "../services/websocket/websocket-js"; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> WebSocketJs]: 
 
 import { RouterTestingModule } from '@angular/router/testing'; // Error: StaticInjectorError(DynamicTestModule)[Analytics2Component -> Router]: 
-import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Error: StaticInjectorError(DynamicTestModule)[AnalyticsService -> HttpClient]:
@@ -21,20 +20,20 @@ import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { PanoramicaComponent } from './panoramica/panoramica.component';
 import { MetricsComponent } from './metrics/metrics.component';
 import { RealtimeComponent } from './realtime/realtime.component';
-import { HeatMapModule } from '@syncfusion/ej2-angular-heatmap';
 import { RequestsComponent } from './metrics/requests/requests.component';
 import { VisitorsAnalyticsComponent } from './metrics/visitors-analytics/visitors-analytics.component';
 import { MessagesComponent } from './metrics/messages/messages.component';
 import { ConvsDurationComponent } from './metrics/convsduration/convsduration.component';
 import { EventsAnalyticsComponent } from './metrics/events-analytics/events-analytics.component';
 import { SatisfactionComponent } from './metrics/satisfaction/satisfaction.component';
-import { MomentModule } from 'angular2-moment';
+import { MomentModule } from 'ngx-moment';
 import { LoadingSpinnerComponent } from 'app/ui/loading-spinner/loading-spinner.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule, HttpTestingController, RequestMatch, TestRequest } from '@angular/common/http/testing';
 import { AnalyticsService } from './analytics-service/analytics.service';
 import { ResponseTimesComponent } from './metrics/responsetimes/responsetimes.component';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
 
 describe('AnalyticsComponent', () => {
   let component: AnalyticsComponent;
@@ -62,7 +61,6 @@ describe('AnalyticsComponent', () => {
         TranslateModule.forRoot(),
         RouterTestingModule,
         HttpClientModule,
-        HeatMapModule,
         MomentModule,
         FormsModule,
         NgSelectModule,

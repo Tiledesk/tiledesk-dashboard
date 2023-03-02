@@ -6,11 +6,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfigService } from '../../services/app-config.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { WidgetService } from 'app/services/widget.service';
 import { WidgetSetUpBaseComponent } from '../../widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-install-widget',
@@ -40,12 +41,14 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
   EXIST_STORED_ROUTE: boolean = false
   storedRoute: string;
   botid: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     private router: Router,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
-    private logger: LoggerService,
     private route: ActivatedRoute,
     private widgetService: WidgetService,
     public translate: TranslateService,

@@ -5,8 +5,9 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { NotifyService } from 'app/core/notify.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { UploadImageService } from 'app/services/upload-image.service';
 @Component({
@@ -36,12 +37,13 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
   @ViewChild('cdsfileInputBotProfileImage', { static: false }) cdsfileInputBotProfileImage: any;
   @ViewChild('editbotbtn', { static: false }) private elementRef: ElementRef;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CdsPublishOnCommunityModalComponent>,
     private faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     private sanitizer: DomSanitizer,

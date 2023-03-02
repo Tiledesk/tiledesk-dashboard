@@ -14,7 +14,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { DepartmentService } from '../../services/department.service';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { browserRefresh } from './../../app.component';
 import { AuthService } from 'app/core/auth.service';
 
@@ -79,10 +78,9 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     public translate: TranslateService,
     public usersService: UsersService,
     public faqKbService: FaqKbService,
-    public logger: LoggerService,
     private auth: AuthService
   ) {
-    super(translate, departmentService, usersService, faqKbService, logger)
+    super(translate, departmentService, usersService, faqKbService)
   }
 
   ngOnInit() {

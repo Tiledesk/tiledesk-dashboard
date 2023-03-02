@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { slideInOutAnimation } from '../../../_animations/index';
-import { LoggerService } from '../../../services/logger/logger.service';
 @Component({
   selector: 'appdashboard-faq-sidebar',
   templateUrl: './faq-sidebar.component.html',
@@ -13,9 +14,10 @@ export class FaqSidebarComponent implements OnInit {
   @Output() valueChange = new EventEmitter();
   _displaydDemoModal = 'none'
   hasClickedStart= false;
-  constructor(
-    private logger: LoggerService
-  ) { }
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
+  constructor() { }
 
   ngOnInit() {
   }

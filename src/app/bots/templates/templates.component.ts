@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TemplateDetailComponent } from './template-detail/template-detail.component';
 import { Router } from '@angular/router';
 import { AppConfigService } from 'app/services/app-config.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-templates',
   templateUrl: './templates.component.html',
@@ -46,10 +47,12 @@ export class TemplatesComponent implements OnInit {
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   valueToSearch: string;
   public THERE_ARE_RESULTS: boolean = true;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     private faqKbService: FaqKbService,
-    private logger: LoggerService,
     public dialog: MatDialog,
     private router: Router,
     public appConfigService: AppConfigService,

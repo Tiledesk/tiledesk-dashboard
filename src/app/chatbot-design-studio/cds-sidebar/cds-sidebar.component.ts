@@ -1,11 +1,12 @@
 import { element } from 'protractor';
 import { Component, EventEmitter, Input, OnInit, Output, ElementRef } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
 import { timeStamp } from 'console';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'cds-sidebar',
@@ -22,8 +23,9 @@ export class CdsSidebarComponent implements OnInit {
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
-    private logger: LoggerService,
     private auth: AuthService,
     private usersService: UsersService,
     private el: ElementRef

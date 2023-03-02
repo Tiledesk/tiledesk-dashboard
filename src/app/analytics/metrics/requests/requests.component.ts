@@ -7,8 +7,9 @@ import { Chart } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, zip } from 'rxjs';
 import { UsersService } from 'app/services/users.service';
-import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-requests',
   templateUrl: './requests.component.html',
@@ -41,13 +42,14 @@ export class RequestsComponent implements OnInit {
   bots: any;
   conversationsCountLastMonth: any;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private analyticsService: AnalyticsService,
     private translate: TranslateService,
     private departmentService: DepartmentService,
     private usersService: UsersService,
-    public faqKbService: FaqKbService,
-    private logger: LoggerService
+    public faqKbService: FaqKbService
   ) {
 
     this.lang = this.translate.getBrowserLang();

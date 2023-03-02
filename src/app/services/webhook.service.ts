@@ -3,7 +3,8 @@ import { AppConfigService } from './app-config.service';
 import { AuthService } from './../core/auth.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 export class WebhookService {
 
@@ -12,11 +13,12 @@ export class WebhookService {
   projectID: string;
   TOKEN: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private http: HttpClient,
     public auth: AuthService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
   ) {
     this.getToken()
     this.getCurrentProject();

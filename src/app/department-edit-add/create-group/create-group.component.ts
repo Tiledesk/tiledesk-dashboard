@@ -5,7 +5,8 @@ import { AppConfigService } from '../../services/app-config.service';
 import { GroupService } from '../../services/group.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../core/notify.service';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-create-group',
@@ -37,13 +38,15 @@ export class CreateGroupComponent implements OnInit {
   group_created_success_msg: string;
   group_created_error_msg: string;
   group_name_already_exist: boolean = false
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private usersService: UsersService,
     private groupsService: GroupService,
     public appConfigService: AppConfigService,
     private notify: NotifyService,
-    private translate: TranslateService,
-    private logger: LoggerService
+    private translate: TranslateService
   ) {
 
     // this.sidebar_height = this.newInnerWidth +'px'

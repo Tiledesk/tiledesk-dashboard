@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-tilebot-list-fields-form',
@@ -23,9 +22,7 @@ export class TilebotListFieldsFormComponent implements OnInit, OnChanges {
   selectedField: any;
 
 
-  constructor(
-    private logger: LoggerService,
-  ) {
+  constructor() {
     // void
   }
 

@@ -7,8 +7,9 @@ import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { UsersService } from '../../services/users.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 
 @Component({
@@ -30,6 +31,9 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -37,7 +41,6 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
     private prjctPlanService: ProjectPlanService,
     private notify: NotifyService,
     private usersService: UsersService,
-    private logger: LoggerService,
     public appConfigService: AppConfigService
   ) { super(translate); }
 

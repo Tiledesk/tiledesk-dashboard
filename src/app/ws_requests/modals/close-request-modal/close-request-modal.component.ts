@@ -2,7 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NotifyService } from '../../../core/notify.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from '../../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-close-request-modal',
   templateUrl: './close-request-modal.component.html',
@@ -21,12 +22,12 @@ export class CloseRequestModalComponent implements OnInit {
   requestHasBeenArchivedNoticationMsg_part1: string;
   requestHasBeenArchivedNoticationMsg_part2: string;
 
-
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private notify: NotifyService,
     public wsRequestsService: WsRequestsService,
-    private translate: TranslateService,
-    private logger: LoggerService
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {

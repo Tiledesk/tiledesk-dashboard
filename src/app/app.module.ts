@@ -313,6 +313,11 @@ import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.com
 import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
 import { HomePromoDesignStudioComponent } from './home-promo-design-studio/home-promo-design-studio.component';
+import { CustomLogger } from './services/chat21-core/providers/logger/customLogger';
+import { LoggerInstance } from './services/chat21-core/providers/logger/loggerInstance';
+import { LoggerModule, NGXLogger, NgxLoggerLevel } from 'ngx-logger';
+import { AppStorageService } from './services/chat21-core/providers/abstract/app-storage.service';
+import { LocalSessionStorage } from './services/chat21-core/providers/localSessionStorage';
 
 
 
@@ -326,26 +331,30 @@ export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-const appInitializerFn = (appConfig: AppConfigService, brandService: BrandService) => {
+const appInitializerFn = (appConfig: AppConfigService, brandService: BrandService, logger: NGXLogger) => {
   return async () => {
     // console.log('APP INITIALIZED')
-    // localStorage.setItem('isLoading', 'false')
-    let loggingLevel = ''
-    if (typeof appConfig.getConfig().logLevel === 'string') {
-      loggingLevel = appConfig.getConfig().logLevel.toUpperCase()
-    }
-    if (appConfig.getConfig().logLevel === undefined) {
-      // console.log('### DSHBRD here 1')
-      loggingLevel = 'DEBUG'
-    }
+    // let loggingLevel = ''
 
-    if (appConfig.getConfig().logLevel !== undefined) {
-      // console.log('### DSHBRD here 2A')
-      if (appConfig.getConfig().logLevel.length === 0) {
-        // console.log('### DSHBRD here 2B')
-        loggingLevel = 'DEBUG'
-      }
-    }
+    let customLogger = new CustomLogger(logger)
+    LoggerInstance.setInstance(customLogger)
+    customLogger.setLoggerConfig(true, appConfig.getConfig().logLevel)
+
+    // if (typeof appConfig.getConfig().logLevel === 'string') {
+    //   loggingLevel = appConfig.getConfig().logLevel.toUpperCase()
+    // }
+    // if (appConfig.getConfig().logLevel === undefined) {
+    //   // console.log('### DSHBRD here 1')
+    //   loggingLevel = 'DEBUG'
+    // }
+
+    // if (appConfig.getConfig().logLevel !== undefined) {
+    //   // console.log('### DSHBRD here 2A')
+    //   if (appConfig.getConfig().logLevel.length === 0) {
+    //     // console.log('### DSHBRD here 2B')
+    //     loggingLevel = 'DEBUG'
+    //   }
+    // }
 
 
     if (environment.remoteConfig) {
@@ -358,14 +367,14 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
 
       // console.log('APP-CONFIG ', appConfig.getConfig() ) 
 
-      if (loggingLevel === 'INFO' || loggingLevel === 'DEBUG') {
+      // if (loggingLevel === 'INFO' || loggingLevel === 'DEBUG') {
         // console.info('%c ### DSHBRD [APP-MODULE-TS] remoteConfig', 'color: #1a73e8', environment.remoteConfig);
-        console.info('%c ### DSHBRD [APP-MODULE-TS] appConfig loaded', 'color: #1a73e8');
-        console.info('%c ### DSHBRD [APP-MODULE-TS] brandService loaded', 'color: #1a73e8');
-        console.info('%c ### DSHBRD [APP-MODULE-TS] chat Engine ', 'color: #1a73e8', chatEngine);
-        console.info('%c ### DSHBRD [APP-MODULE-TS] upload Engine ', 'color: #1a73e8', uploadEngine);
-        console.info('%c ### DSHBRD [APP-MODULE-TS] push Engine: ', 'color: #1a73e8', pushEngine);
-      }
+        customLogger.info('%c ### DSHBRD [APP-MODULE-TS] appConfig loaded', 'color: #1a73e8');
+        customLogger.info('%c ### DSHBRD [APP-MODULE-TS] brandService loaded', 'color: #1a73e8');
+        customLogger.info('%c ### DSHBRD [APP-MODULE-TS] chat Engine ', 'color: #1a73e8', chatEngine);
+        customLogger.info('%c ### DSHBRD [APP-MODULE-TS] upload Engine ', 'color: #1a73e8', uploadEngine);
+        customLogger.info('%c ### DSHBRD [APP-MODULE-TS] push Engine: ', 'color: #1a73e8', pushEngine);
+      // }
 
       return;
     } else {
@@ -376,14 +385,14 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
       let uploadEngine = appConfig.getConfig().uploadEngine
       let pushEngine = appConfig.getConfig().pushEngine
 
-      if (loggingLevel === 'INFO' || loggingLevel === 'DEBUG') {
+      // if (loggingLevel === 'INFO' || loggingLevel === 'DEBUG') {
         // console.info('%c ### DSHBRD [APP-MODULE-TS] remoteConfig', 'color: #1a73e8', environment.remoteConfig);
         // console.info('%c ### DSHBRD [APP-MODULE-TS] config', 'color: #1a73e8', appConfig.getConfig());
-        console.info('%c ### DSHBRD [APP-MODULE-TS] brandService loaded', 'color: #1a73e8');
-        console.info('%c ### DSHBRD [APP-MODULE-TS] chat Engine ', 'color: #1a73e8', chatEngine);
-        console.info('%c ### DSHBRD [APP-MODULE-TS] upload Engine ', 'color: #1a73e8', uploadEngine);
-        console.info('%c ### DSHBRD [APP-MODULE-TS] push Engine: ', 'color: #1a73e8', pushEngine);
-      }
+        customLogger.info('%c ### DSHBRD [APP-MODULE-TS] brandService loaded', 'color: #1a73e8');
+        customLogger.info('%c ### DSHBRD [APP-MODULE-TS] chat Engine ', 'color: #1a73e8', chatEngine);
+        customLogger.info('%c ### DSHBRD [APP-MODULE-TS] upload Engine ', 'color: #1a73e8', uploadEngine);
+        customLogger.info('%c ### DSHBRD [APP-MODULE-TS] push Engine: ', 'color: #1a73e8', pushEngine);
+      // }
 
       return;
     }
@@ -611,9 +620,27 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
         deps: [HttpClient],
       },
     }),
+    LoggerModule.forRoot({
+      level: NgxLoggerLevel.DEBUG,
+      // timestampFormat: 'HH:mm:ss.SSS',
+      enableSourceMaps: false,
+      disableFileDetails: true,
+      colorScheme: ['purple', 'yellow', 'gray', 'gray', 'red', 'red', 'red'],
+      //serverLoggingUrl: 'https://tiledesk-server-pre.herokuapp.com/logs'
+    }),
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [AppConfigService, BrandService, NGXLogger]
+    },
+    {
+      provide: AppStorageService,
+      useClass: LocalSessionStorage
+    },
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
@@ -624,12 +651,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     BrandService,
     LoggerService,
     HomeService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: appInitializerFn,
-      multi: true,
-      deps: [AppConfigService, BrandService]
-    },
     // {
     //   provide: APP_INITIALIZER,
     //   useFactory: brandLoader,

@@ -7,7 +7,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from './../../core/auth.service';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { LoggerService } from './../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-notification-settings',
   templateUrl: './notification-settings.component.html',
@@ -27,6 +28,9 @@ export class NotificationSettingsComponent implements OnInit {
   updateSuccessMsg: string;
   updateErrorMsg: string;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private _location: Location,
     private auth: AuthService,
@@ -37,7 +41,6 @@ export class NotificationSettingsComponent implements OnInit {
     private usersService: UsersService,
     private translate: TranslateService,
     private notify: NotifyService,
-    private logger: LoggerService
     ) 
     { }
 

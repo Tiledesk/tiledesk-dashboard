@@ -28,10 +28,12 @@ import { DepartmentService } from '../../services/department.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { WsRequestsService } from './../../services/websocket/ws-requests.service';
-import { LoggerService } from './../../services/logger/logger.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util'
 import { DomSanitizer } from '@angular/platform-browser';
 import { FaqKbService } from 'app/services/faq-kb.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 declare const $: any;
 
@@ -222,11 +224,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     new_messages_count: number;
 
     NOTIFICATION_SOUND: string;
-    storedValuePrefix = 'dshbrd----'
+    // storedValuePrefix = 'dshbrd----'
     hasPlayed = false
     currentUrl: string;
     audio: any;
     myChatbotCount: number;
+
+    private logger: LoggerService = LoggerInstance.getInstance();
+
     constructor(
         private router: Router,
         public location: Location,
@@ -240,10 +245,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private uploadImageNativeService: UploadImageNativeService,
         private translate: TranslateService,
         public appConfigService: AppConfigService,
-
+        private appStorageService: AppStorageService,
         public brandService: BrandService,
         public wsRequestsService: WsRequestsService,
-        private logger: LoggerService,
         private sanitizer: DomSanitizer,
         private faqKbService: FaqKbService,
     ) {
@@ -299,7 +303,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getNotificationSoundPreferences() {
         // NOTIFICATION_SOUND = 'enabled';
-        const storedNotificationSound = localStorage.getItem(this.storedValuePrefix + 'sound');
+        const storedNotificationSound = this.appStorageService.getItem('sound');
 
         if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
 
@@ -378,7 +382,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.currentUserId = user._id;
                 this.logger.log('[SIDEBAR] Current USER ID ', this.currentUserId);
 
-                const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
+                const stored_preferred_lang = this.appStorageService.getItem(this.user._id + '_lang')
 
                 if (stored_preferred_lang) {
                     this.dsbrd_lang = stored_preferred_lang;
@@ -1273,7 +1277,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getProjectUserRole(projectId) {
         // console.log('[SIDEBAR] - PROJECT USER ROLE projectId ', projectId);
-        const storedProjectJson = localStorage.getItem(projectId);
+        const storedProjectJson = this.appStorageService.getItem(projectId);
         if (storedProjectJson) {
             const projectObject = JSON.parse(storedProjectJson);
             this.USER_ROLE = projectObject['role'];
@@ -1551,7 +1555,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         // SAVE IN 'show_settings_submenu' KEY OF LOCAL STORAGE THE VALUE OF this.SHOW_SETTINGS_SUBMENU
         // (IS USED TO DISPLAY / HIDE THE SUBMENU WHEN THE PAGE IS REFRESHED)
-        localStorage.setItem('show_settings_submenu', `${this.SHOW_SETTINGS_SUBMENU}`);
+        this.appStorageService.setItem('show_settings_submenu', `${this.SHOW_SETTINGS_SUBMENU}`);
 
         if (this.SHOW_SETTINGS_SUBMENU === true) {
             this.trasform = 'rotate(180deg)';
@@ -1625,7 +1629,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         // --- new 
         if (this.current_selected_prjct) {
-            localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+            this.appStorageService.setItem('last_project', JSON.stringify(this.current_selected_prjct))
         }
         // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
         // let url = baseUrl
@@ -1634,7 +1638,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
         // --- already commented ---
-        // const chatTabCount = localStorage.getItem('tabCount');
+        // const chatTabCount = this.appStorageService.getItem('tabCount');
         // this.logger.log('[SIDEBAR] openChat chatTabCount ', chatTabCount);
         // if (chatTabCount) {
         //     if (+chatTabCount > 0) {
@@ -1662,7 +1666,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // --------------------------------------------------------------------
         if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
             this.logger.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
-            localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+            this.appStorageService.setItem('last_project', JSON.stringify(this.current_selected_prjct))
         }
 
     }

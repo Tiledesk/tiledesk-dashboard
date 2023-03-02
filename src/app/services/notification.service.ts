@@ -3,7 +3,8 @@ import { AppConfigService } from './app-config.service';
 import { AuthService } from './../core/auth.service';
 import { HttpClient, HttpHeaderResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 export class NotificationService {
 
@@ -13,12 +14,13 @@ export class NotificationService {
   user: any;
   TOKEN: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private _httpClient: HttpClient,
     private auth: AuthService,
     private appConfigService: AppConfigService,
-    public usersService: UsersService,
-    private logger: LoggerService
+    public usersService: UsersService
   ) {
     this.user = auth.user_bs.value;
     this.project_user_id = usersService.project_user_id_bs.value;

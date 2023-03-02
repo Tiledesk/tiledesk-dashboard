@@ -13,7 +13,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { browserRefresh } from './../../app.component';
 import { AuthService } from 'app/core/auth.service';
 @Component({
@@ -55,6 +54,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   public browserRefresh: boolean;
   isChromeVerGreaterThan100: boolean;
   
+  
   // departments = new Array;     --> get from BaseTriggerComponent
 
   // messageCondition: string;    --> get from BaseTriggerComponent
@@ -71,11 +71,10 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     public translate: TranslateService,
     public usersService: UsersService,
     public faqKbService: FaqKbService,
-    public logger: LoggerService,
     private auth: AuthService
   ) {
 
-    super(translate, departmentService, usersService, faqKbService, logger)
+    super(translate, departmentService, usersService, faqKbService)
   }
 
   ngOnInit() {

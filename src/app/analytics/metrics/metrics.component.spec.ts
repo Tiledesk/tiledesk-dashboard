@@ -4,7 +4,6 @@ import { MetricsComponent } from './metrics.component';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';  // If 'appdashboard-richieste' ...... is an Angular component, then verify that it is part of this module.
-import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { RequestsComponent } from './requests/requests.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -59,7 +58,6 @@ describe('MetricheComponent', () => {
         HttpClientTestingModule
       ],
       providers:[
-        LoggerService,
         AppConfigService,
         AnalyticsService,
         HttpClient,

@@ -4,7 +4,8 @@ import { Group } from '../models/group-model';
 import { AuthService } from '../core/auth.service';
 import { Observable } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 export class GroupService {
 
@@ -15,11 +16,12 @@ export class GroupService {
   project_id: any;
   user: any;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private _httpClient: HttpClient,
     private auth: AuthService,
-    public appConfigService: AppConfigService,
-    private logger: LoggerService
+    public appConfigService: AppConfigService
   ) {
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value

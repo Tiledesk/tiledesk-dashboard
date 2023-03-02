@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-handle-invitation',
   templateUrl: './handle-invitation.component.html',
@@ -29,6 +30,8 @@ export class HandleInvitationComponent implements OnInit {
   tparams:any;
   company_logo_45x45: any;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     
     private route: ActivatedRoute,
@@ -36,8 +39,7 @@ export class HandleInvitationComponent implements OnInit {
     public projectService: ProjectService,
     private router: Router,
     private translate: TranslateService,
-    public brandService: BrandService,
-    private logger: LoggerService
+    public brandService: BrandService
   ) { 
     const brand = brandService.getBrand();
     this.tparams = brand;

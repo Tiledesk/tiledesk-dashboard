@@ -2,7 +2,8 @@ import { NotifyService } from 'app/core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WebhookService } from './../../services/webhook.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { LoggerService } from './../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-webhook-add-edit',
   templateUrl: './webhook-add-edit.component.html',
@@ -31,11 +32,12 @@ export class WebhookAddEditComponent implements OnInit {
   updateErrorMsg: string;
   response: any;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private webhookService: WebhookService,
     public translate: TranslateService,
     private notify: NotifyService,
-    private logger: LoggerService
   ) { }
 
   ngOnInit() {

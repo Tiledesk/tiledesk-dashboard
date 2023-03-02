@@ -3,10 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { Location } from '@angular/common';
 import { DepartmentService } from 'app/services/department.service';
 import { Project } from 'app/models/project-model';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-community-template-dtls',
@@ -27,12 +28,14 @@ export class CommunityTemplateDtlsComponent implements OnInit {
   public TESTSITE_BASE_URL: string;
   public defaultDepartmentId: string;
   project: Project;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private route: ActivatedRoute,
     private faqKbService: FaqKbService,
     private auth: AuthService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService,
     public location: Location,
     private router: Router,
     private departmentService: DepartmentService,

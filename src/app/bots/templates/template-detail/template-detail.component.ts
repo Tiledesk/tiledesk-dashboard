@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { LoggerService } from 'app/services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
 
@@ -52,11 +53,12 @@ export class TemplateDetailComponent implements OnInit {
   // public selected_dept_id: string;
   // public selected_dept_name: string;
   // translateparamBotName: any;
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<TemplateDetailComponent>,
     public appConfigService: AppConfigService,
-    private logger: LoggerService,
     public auth: AuthService,
     private usersService: UsersService,
     private faqKbService: FaqKbService,

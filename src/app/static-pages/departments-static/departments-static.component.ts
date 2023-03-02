@@ -7,8 +7,9 @@ import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from '../../services/users.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 // node_modules/ng-simple-slideshow/src/app/modules/slideshow/IImage.d.ts
 // src/app/static-pages/departments-static/departments-static.component.ts
@@ -46,6 +47,9 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -53,7 +57,6 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
     private notify: NotifyService,
     public translate: TranslateService,
     private usersService: UsersService,
-    private logger: LoggerService,
     public appConfigService: AppConfigService
   ) {
     super(translate);

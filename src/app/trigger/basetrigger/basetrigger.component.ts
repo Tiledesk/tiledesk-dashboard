@@ -4,7 +4,8 @@ import { Observable, zip } from 'rxjs';
 import { DepartmentService } from 'app/services/department.service'
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-basetrigger',
   template: '',
@@ -31,12 +32,14 @@ export class BasetriggerComponent implements OnInit {
   projectUserAndBotsWithoutIdentityBotArray = []
   botsWithoutIdentityBotArray = []
   default_dept_id: string;
+
+  logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public translate: TranslateService,
     public departmentService: DepartmentService,
     public usersService: UsersService,
     public faqKbService: FaqKbService,
-    public logger: LoggerService
   ) {
   }
 

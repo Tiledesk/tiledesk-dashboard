@@ -7,7 +7,6 @@ import { AuthService } from '../../core/auth.service';
 import { NotifyService } from '../../core/notify.service';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from '../../services/logger/logger.service';
 import {
   URL_styling_your_chatbot_replies,
   URL_response_bot_images_buttons_videos_and_more,
@@ -19,6 +18,8 @@ const swal = require('sweetalert');
 import { } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'faq-edit-add',
   templateUrl: './faq-edit-add.component.html',
@@ -65,6 +66,9 @@ export class FaqEditAddComponent implements OnInit {
   isChromeVerGreaterThan100: boolean;
   public TESTSITE_BASE_URL: string;
   public defaultDepartmentId: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -73,7 +77,6 @@ export class FaqEditAddComponent implements OnInit {
     private notify: NotifyService,
     public location: Location,
     private translate: TranslateService,
-    private logger: LoggerService,
     public appConfigService: AppConfigService,
     private departmentService: DepartmentService
   ) { }

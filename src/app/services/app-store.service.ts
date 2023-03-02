@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { BehaviorSubject } from 'rxjs';
 import { AppConfigService } from './app-config.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 
 export class AppStoreService {
@@ -17,11 +18,13 @@ export class AppStoreService {
   // APPS_BASE_URL = "https://tiledesk-apps.herokuapp.com/"
   APPS_URL: string;
   APPS_BASE_URL: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     // http: Http,
     private _httpClient: HttpClient,
     public auth: AuthService,
-    private logger: LoggerService,
     public appConfigService: AppConfigService
   ) {
     this.APPS_BASE_URL = this.appConfigService.getConfig().appsUrl;

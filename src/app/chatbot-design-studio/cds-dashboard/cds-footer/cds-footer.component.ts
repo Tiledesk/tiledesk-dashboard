@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Intent } from 'app/models/intent-model';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'cds-footer',
@@ -20,9 +21,9 @@ export class CdsFooterComponent implements OnInit {
   intentNameNotHasSpecialCharacters: boolean = true;
   id_faq_kb: string;
 
-  constructor(
-    private logger: LoggerService,
-  ) { }
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
+  constructor() { }
 
   ngOnInit(): void {
     this.showSpinner = false;

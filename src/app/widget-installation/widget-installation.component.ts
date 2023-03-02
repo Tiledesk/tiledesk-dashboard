@@ -125,8 +125,7 @@ export class WidgetInstallationComponent implements OnInit {
         this.classList.toggle("active-install-widget");
 
         var panel = this.nextElementSibling;
-        // this.logger.log('[WIDGET-INSTALLATION] ACCORDION ARROW - INSTALL WIDGET - panel', panel);
-
+        
         var arrow_icon_div = this.children[1];
         // console.log('[WIDGET-INSTALLATION] ACCORDION ARROW - INSTALL WIDGET - ICON WRAP DIV', arrow_icon_div);
 

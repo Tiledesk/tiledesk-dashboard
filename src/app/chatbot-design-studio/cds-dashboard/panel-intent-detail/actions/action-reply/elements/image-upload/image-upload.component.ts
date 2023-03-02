@@ -3,7 +3,8 @@ import { Metadata } from '../../../../../../../models/intent-model';
 import { MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT } from '../../../../../../utils';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { DomSanitizer} from '@angular/platform-browser';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-image-upload',
@@ -19,10 +20,11 @@ export class ImageUploadComponent implements OnInit {
   existAnAttacment: boolean = false;
   isImageSvg = false;
   
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private uploadImageNativeService: UploadImageNativeService,
     private sanitizer: DomSanitizer,
-    private logger: LoggerService,
   ) { }
 
   // SYSTEM FUNCTIONS //

@@ -11,9 +11,10 @@ import { Project } from '../models/project-model';
 import { UsersService } from '../services/users.service';
 import { Subscription } from 'rxjs';
 
-import { LoggerService } from '../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
-import { coerceStringArray } from '@angular/cdk/coercion';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 // import { RequestsMsgsComponent } from '../requests-msgs/requests-msgs.component';
 // import { HomeComponent } from '../home/home.component';
 
@@ -45,7 +46,8 @@ export class AuthGuard implements CanActivate {
   current_project_trial_expired: boolean;
   URL_HAS_JWT: boolean
 
-
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -53,8 +55,8 @@ export class AuthGuard implements CanActivate {
     public location: Location,
     private projectService: ProjectService,
     private usersService: UsersService,
-    private logger: LoggerService,
-    public localDbService: LocalDbService
+    public localDbService: LocalDbService,
+    private appStorageService: AppStorageService,
   ) {
     this.logger.log('[AUTH-GUARD] hello !!!')
 
@@ -154,7 +156,7 @@ export class AuthGuard implements CanActivate {
   }
 
   checkStoredProject(navigationProjectId) {
-    const storedProjectJson = localStorage.getItem(navigationProjectId);
+    const storedProjectJson = this.appStorageService.getItem(navigationProjectId);
     this.logger.log('[AUTH-GUARD] - PROJECT JSON GET FROM STORAGE ', storedProjectJson);
 
 
@@ -208,7 +210,7 @@ export class AuthGuard implements CanActivate {
         }
         // SET THE ID, the NAME OF THE PROJECT and THE USER ROLE IN THE LOCAL STORAGE.
         this.logger.log('[AUTH-GUARD] - PROJECT THAT IS STORED', projectForStorage);
-        localStorage.setItem(this.nav_project_id, JSON.stringify(projectForStorage));
+        this.appStorageService.setItem(this.nav_project_id, JSON.stringify(projectForStorage));
 
         // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
         this.logger.log('[AUTH-GUARD] CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')

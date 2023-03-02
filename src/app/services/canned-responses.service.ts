@@ -3,7 +3,8 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 export class CannedResponsesService {
 
@@ -11,11 +12,12 @@ export class CannedResponsesService {
   TOKEN: any;
   SERVER_BASE_PATH: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private httpClient: HttpClient,
     public auth: AuthService,
-    public appConfigService: AppConfigService,
-    private logger: LoggerService
+    public appConfigService: AppConfigService
   ) {
     this.getAppConfig();
     this.getCurrentProject();

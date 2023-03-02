@@ -5,7 +5,8 @@ import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from '../services/app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 export class ProjectService {
 
@@ -19,12 +20,13 @@ export class ProjectService {
   public myAvailabilityCount: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   public hasCreatedNewProject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
  
     public auth: AuthService,
     public _httpclient: HttpClient,
-    public appConfigService: AppConfigService,
-    private logger: LoggerService
+    public appConfigService: AppConfigService
   ) {
     this.user = auth.user_bs.value
     this.checkIfUserExistAndGetToken()

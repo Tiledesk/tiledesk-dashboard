@@ -12,7 +12,6 @@ import { AuthService } from './core/auth.service';
 import { NotifyService } from './core/notify.service';  // Error: StaticInjectorError(DynamicTestModule)[AuthService -> NotifyService]:
 import { LocalDbService } from './services/users-local-db.service'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> LocalDbService]: 
 import { WebSocketJs } from "./services/websocket/websocket-js"; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> WebSocketJs]: 
-import { LoggerService } from './services/logger/logger.service';
 import { AppConfigService } from './services/app-config.service';
 import { WsRequestsService } from './services/websocket/ws-requests.service';
 import { WsMsgsService } from './services/websocket/ws-msgs.service';
@@ -53,7 +52,6 @@ describe('AppComponent', () => {
         NotifyService,
         LocalDbService,
         WebSocketJs,
-        LoggerService,
         AppConfigService,
         WsRequestsService,
         WsMsgsService,

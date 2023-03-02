@@ -12,7 +12,8 @@ import { NotifyService } from '../core/notify.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ProjectPlanService } from '../services/project-plan.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'mongodb-departments',
   templateUrl: './departments.component.html',
@@ -61,6 +62,9 @@ export class DepartmentsComponent implements OnInit {
   subscriptionInactiveOrTrialExpired: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private deptService: DepartmentService,
     private router: Router,
@@ -70,8 +74,7 @@ export class DepartmentsComponent implements OnInit {
     public translate: TranslateService,
     private notify: NotifyService,
     private prjctPlanService: ProjectPlanService,
-    public appConfigService: AppConfigService,
-    private logger: LoggerService
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AppConfigService } from '../services/app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Injectable()
 export class SsoService {
@@ -11,9 +12,10 @@ export class SsoService {
   SERVER_BASE_PATH: string;
   GET_CURRENT_AUTHENTICATED_USER: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public appConfigService: AppConfigService,
-    private logger: LoggerService,
     public _httpclient: HttpClient
   ) {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;

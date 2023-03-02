@@ -24,7 +24,6 @@ import moment from "moment";
 import { ContactsService } from '../services/contacts.service'; // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
 import { avatarPlaceholder, getColorBck } from '../utils/util';
-import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators'
 import { ProjectService } from 'app/services/project.service';
@@ -34,6 +33,9 @@ import {
   URL_google_tag_manager_add_tiledesk_to_your_sites
 } from '../utils/util';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 const swal = require('sweetalert');
 @Component({
@@ -118,6 +120,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // promoBannerContent: any;
   // promoBannerSyle: any;
   // resPromoBanner: any;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -128,11 +133,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
+    private appStorageService: AppStorageService,
     public brandService: BrandService,
     private analyticsService: AnalyticsService,
     private contactsService: ContactsService,
     private faqKbService: FaqKbService,
-    private logger: LoggerService,
     private projectService: ProjectService,
   ) {
     const brand = brandService.getBrand();
@@ -272,7 +277,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.project = project
           this.projectId = this.project._id
 
-          const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
+          const hasEmittedTrialEnded = this.appStorageService.getItem(this.project._id)
           this.logger.log('[HOME] - getCurrentProjectAndInit  ', hasEmittedTrialEnded, '  for project id', this.project._id)
 
           this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
@@ -356,7 +361,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
       this.logger.log('[HOME] - Find Current Project Among All project daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
 
-      const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.current_selected_prjct.id_project._id)
+      const hasEmittedTrialEnded = this.appStorageService.getItem(this.current_selected_prjct.id_project._id)
       this.logger.log('[HOME] - Find Current Project Among All hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', this.current_selected_prjct.id_project._id)
       this.logger.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_type 2', this.prjct_profile_type);
       // if ((this.prjct_profile_type === 'free' && daysDiffNowFromProjctCreated >= 30) || (this.prjct_profile_type === 'payment' && daysDiffNowFromProjctCreated < 30)) {
@@ -384,7 +389,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
                   }
                 });
                 // this.updatedProjectTrialEndedEmitted(true)
-                localStorage.setItem('dshbrd----' + this.current_selected_prjct.id_project._id, 'hasEmittedTrialEnded')
+                this.appStorageService.setItem(this.current_selected_prjct.id_project._id, 'hasEmittedTrialEnded')
               } catch (err) {
                 this.logger.error('track Trial Started event error', err);
               }
@@ -452,7 +457,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   diplayPopup() {
-    const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
+    const hasClosedPopup = this.appStorageService.getItem('hasclosedpopup')
     // console.log('[HOME] hasClosedPopup', hasClosedPopup)
     if (hasClosedPopup === null) {
       this.popup_visibility = 'block'
@@ -464,7 +469,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   closeEverythingStartsHerePopup() {
     // console.log('[HOME] closeEverythingStartsHerePopup')
-    localStorage.setItem('dshbrd----hasclosedpopup', 'true')
+    this.appStorageService.setItem('hasclosedpopup', 'true')
     this.popup_visibility = 'none'
     // console.log('[HOME] closeEverythingStartsHerePopup popup_visibility ',  this.popup_visibility)
   }
@@ -1364,12 +1369,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // window.open(url, '_blank');
 
     // --- new
-    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+    this.appStorageService.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl
     const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
-    // const chatTabCount = localStorage.getItem('tabCount');
+    // const chatTabCount = this.appStorageServicdee.getItem('tabCount');
     // this.logger.log('[HOME] openChat chatTabCount ', chatTabCount);
     // if (chatTabCount) {
     //   if (+chatTabCount > 0) {

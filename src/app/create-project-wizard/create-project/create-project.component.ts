@@ -7,11 +7,13 @@ import { Location } from '@angular/common';
 // import { slideInAnimation } from '../../_animations/index';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import moment from 'moment';
 import { tranlatedLanguage } from 'app/utils/util';
 import { TranslateService } from '@ngx-translate/core';
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 @Component({
   selector: 'appdashboard-create-project',
@@ -43,15 +45,17 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   botid: string;
   browser_lang: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private projectService: ProjectService,
     private auth: AuthService,
     private router: Router,
     public location: Location,
     public brandService: BrandService,
-    private logger: LoggerService,
     private route: ActivatedRoute,
     public translate: TranslateService,
+    private appStorageService: AppStorageService,
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -155,7 +159,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
         /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
          * SET THE project_id IN THE LOCAL STORAGE
          * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
-        // localStorage.setItem('project', JSON.stringify(newproject));
+        // this.appStorageService.setItem('project', JSON.stringify(newproject));
 
       }, (error) => {
         this.DISPLAY_SPINNER = false;
@@ -251,7 +255,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
               operatingHours: project.id_project.activeOperatingHours
             }
 
-            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+            this.appStorageService.setItem(project.id_project._id, JSON.stringify(prjct));
           }
         });
       }

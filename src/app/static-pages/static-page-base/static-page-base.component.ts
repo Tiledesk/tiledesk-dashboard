@@ -58,7 +58,6 @@ export class StaticPageBaseComponent implements OnInit {
     this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
       .subscribe((text: string) => {
         this.prjct_profile_name = text;
-        // this.logger.log('+ + + PaydPlanName ', text)
       });
   }
 

@@ -15,7 +15,8 @@ import { BrandService } from '../services/brand.service';
 import { URL_understanding_default_roles } from '../utils/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 
 @Component({
@@ -125,6 +126,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   invitedProjectUser: any
   profile_name_for_segment: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -135,8 +138,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     public appConfigService: AppConfigService,
     public location: Location,
-    public brandService: BrandService,
-    private logger: LoggerService,
+    public brandService: BrandService
 
   ) {
     const brand = brandService.getBrand();

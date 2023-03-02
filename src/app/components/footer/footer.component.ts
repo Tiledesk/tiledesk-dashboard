@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { environment } from '../../../environments/environment';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './../../services/brand.service';
-import { LoggerService } from './../../services/logger/logger.service';
 // declare var require: any;
 @Component({
   selector: 'app-footer',
@@ -34,9 +35,10 @@ export class FooterComponent implements OnInit {
   display_contact_us_email: string;
   contactUsEmail: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
-    public brandService: BrandService,
-    private logger: LoggerService
+    public brandService: BrandService
   ) { 
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];

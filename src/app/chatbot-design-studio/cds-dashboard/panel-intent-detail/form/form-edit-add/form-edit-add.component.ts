@@ -1,7 +1,8 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnChanges } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 export enum TYPE_FIELD {
   CUSTOM = 'CUSTOM',
@@ -64,10 +65,11 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   fieldLabel: string = '';
   fieldErrorLabel: string = '';
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private translate: TranslateService,
-    private httpClient: HttpClient,
-    private logger: LoggerService
+    private httpClient: HttpClient
   ) { }
 
   ngOnInit(): void {

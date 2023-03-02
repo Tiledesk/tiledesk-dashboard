@@ -3,7 +3,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from '../../services/app-config.service';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Injectable()
 export class AnalyticsService {
  
@@ -18,12 +19,12 @@ export class AnalyticsService {
   TOKEN: string;
 
   public richieste_bs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  private logger: LoggerService = LoggerInstance.getInstance();
 
   constructor(
     private httpClient: HttpClient,
     public auth: AuthService,
-    public appConfigService: AppConfigService,
-    private logger: LoggerService
+    public appConfigService: AppConfigService
   ) {
     this.user = auth.user_bs.value
     this.checkUser()

@@ -3,7 +3,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, Form, Intent } from 'app/models/intent-model';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { FormModelsFactory } from './form-models-factory';
 const swal = require('sweetalert');
 // import { URL_more_info_chatbot_forms } from 'app/utils/util';
@@ -60,11 +61,12 @@ export class FormComponent implements OnInit, OnChanges {
 
   translateparam = { selectedFormName: "", description_key: "" };
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public translate: TranslateService,
     private route: ActivatedRoute,
     private httpClient: HttpClient,
-    private logger: LoggerService,
   ) {
 
     this.langBot = this.route.snapshot.params['botlang'];

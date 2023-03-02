@@ -7,13 +7,12 @@ import { Chart } from 'chart.js';
 import moment from "moment";
 import { TranslateService } from '@ngx-translate/core';
 import { of, Subscription, Observable, zip } from 'rxjs';
-import { ProjectUser } from '../../../models/project-user';
-import { FaqKb } from '../../../models/faq_kb-model';
-
-import { LoggerService } from '../../../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
-import { map } from 'rxjs/operators';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
+
 
 @Component({
   selector: 'appdashboard-convsduration',
@@ -56,6 +55,7 @@ export class ConvsDurationComponent implements OnInit {
   projectBotsList: any;
   bots: any;
   durationConversationTime: any;
+  private logger: LoggerService = LoggerInstance.getInstance();
 
   constructor(
     private analyticsService: AnalyticsService,
@@ -63,8 +63,8 @@ export class ConvsDurationComponent implements OnInit {
     private departmentService: DepartmentService,
     private usersService: UsersService,
     private faqKbService: FaqKbService,
-    private logger: LoggerService,
-    private auth: AuthService
+    private auth: AuthService,
+    private appStorageService: AppStorageService,
   ) {
 
     this.lang = this.translate.getBrowserLang();
@@ -344,7 +344,7 @@ export class ConvsDurationComponent implements OnInit {
 
               let stored_preferred_lang = undefined
               if (this.auth.user_bs && this.auth.user_bs.value) {
-                stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+                stored_preferred_lang = this.appStorageService.getItem(this.auth.user_bs.value._id + '_lang')
               }
 
 
@@ -588,7 +588,7 @@ export class ConvsDurationComponent implements OnInit {
                   const browserLang = this.translate.getBrowserLang();
                   let stored_preferred_lang = undefined
                   if (this.auth.user_bs && this.auth.user_bs.value) {
-                    stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+                    stored_preferred_lang = this.appStorageService.getItem(this.auth.user_bs.value._id + '_lang')
                   }
 
 

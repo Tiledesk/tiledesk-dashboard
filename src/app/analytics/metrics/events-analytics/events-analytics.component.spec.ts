@@ -16,7 +16,6 @@ import { LocalDbService } from '../../../services/users-local-db.service'; // Er
 import { WebSocketJs } from "../../../services/websocket/websocket-js"; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> WebSocketJs]: 
 import { RouterTestingModule } from '@angular/router/testing'; // Error: StaticInjectorError(DynamicTestModule)[AuthService -> Router]: 
 
-import { LoggerService } from '../../../services/logger/logger.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
@@ -46,7 +45,6 @@ describe('EventsAnalyticsComponent', () => {
         NotifyService,
         LocalDbService,
         WebSocketJs,
-        LoggerService,
         AppConfigService
        ],
 

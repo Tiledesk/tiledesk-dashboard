@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 
 export class PopupService {
   hideBtn: boolean = false;
-  constructor(
-    private logger: LoggerService
-  ) { }
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
+  constructor() { }
 
   makeSegnalationsServedPopup(request: any, calling_page: string): string {
 

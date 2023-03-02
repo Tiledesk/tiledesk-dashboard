@@ -5,12 +5,13 @@ import { UsersService } from '../../services/users.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 
 @Component({
@@ -43,6 +44,9 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   isChromeVerGreaterThan100: boolean;
   currentUser: any;
   project: any;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
@@ -50,7 +54,6 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     private router: Router,
     private projectService: ProjectService,
-    private logger: LoggerService,
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
   ) { }

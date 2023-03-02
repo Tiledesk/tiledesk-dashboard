@@ -3,7 +3,6 @@ import { Subscription } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectService } from '../../services/project.service';
 import { WidgetService } from '../../services/widget.service';
@@ -15,6 +14,8 @@ import { DepartmentService } from '../../services/department.service';
 
 import{ stripEmojis } from '../../utils/util';
 import { HttpClient } from "@angular/common/http"
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-onboarding',
@@ -72,6 +73,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   segmentTrack: string;
   segmentAttributes: any;
  
+  private logger: LoggerService = LoggerInstance.getInstance();
 
   constructor(
     private faqService: FaqService,
@@ -81,7 +83,6 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
     private route: ActivatedRoute,
     private auth: AuthService,
     public brandService: BrandService,
-    private logger: LoggerService,
     public translate: TranslateService,
     private projectService: ProjectService,
     public widgetService: WidgetService,

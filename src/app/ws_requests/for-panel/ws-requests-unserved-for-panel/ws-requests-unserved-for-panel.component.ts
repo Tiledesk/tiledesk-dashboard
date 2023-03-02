@@ -26,8 +26,8 @@ import { Location } from '@angular/common';
 // import { fadeInAnimation } from '../../../_animations/index';
 const swal = require('sweetalert');
 import { ContactsService } from '../../../services/contacts.service';
-import { LoggerService } from '../../../services/logger/logger.service';
 import { WebSocketJs } from 'app/services/websocket/websocket-js';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 @Component({
   selector: 'appdashboard-ws-requests-unserved-for-panel',
@@ -139,16 +139,16 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     public usersService: UsersService,
     public faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
+    public appStorageService: AppStorageService,
     private departmentService: DepartmentService,
     public notify: NotifyService,
     public location: Location,
     private cdref: ChangeDetectorRef,
     public contactsService: ContactsService,
-    public logger: LoggerService,
     public webSocketJs: WebSocketJs
 
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, translate, appStorageService);
     this.zone = new NgZone({ enableLongStackTrace: false });
     // this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] !!!!')
   }

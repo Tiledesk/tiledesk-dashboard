@@ -4,8 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ContactsService } from '../services/contacts.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from '../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-contact-edit',
@@ -38,6 +39,9 @@ export class ContactEditComponent implements OnInit {
   showSpinner = false;
   isChromeVerGreaterThan100: boolean;
   HIDE_GO_BACK_BTN: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -45,7 +49,6 @@ export class ContactEditComponent implements OnInit {
     private notify: NotifyService,
     private translate: TranslateService,
     public auth: AuthService,
-    private logger: LoggerService,
     private router: Router
   ) { }
 

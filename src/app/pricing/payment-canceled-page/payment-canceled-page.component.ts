@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { AuthService } from '../../core/auth.service';
 import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-payment-canceled-page',
@@ -14,11 +15,13 @@ export class PaymentCanceledPageComponent implements OnInit {
   contact_us_email: string;
   id_project: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(  
-     private router: Router,
+    private router: Router,
     private auth: AuthService,
-    public brandService: BrandService,
-    private logger: LoggerService) { 
+    public brandService: BrandService
+  ) { 
       const brand = brandService.getBrand();
       this.contact_us_email = brand['contact_us_email'];
     }

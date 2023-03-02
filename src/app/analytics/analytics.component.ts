@@ -13,8 +13,10 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import { Chart } from 'chart.js';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { AppConfigService } from '../services/app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { AnalyticsService } from './analytics-service/analytics.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 @Component({
   selector: 'appdashboard-analytics2',
@@ -95,6 +97,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   storageBucket: string;
   childToSelect: string
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   /**
    * 
    * @param auth 
@@ -112,7 +117,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     private analyticsService: AnalyticsService,
     public wsRequestsService: WsRequestsService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private appStorageService: AppStorageService
   ) {
     this.selected = 'panoramica';//-> default active component
     this.logger.log('[ANALYTICS] !!! »»» HELLO ANALYTICS »»» ');
@@ -136,7 +141,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.browserLang = this.translate.getBrowserLang();
     // console.log('[ANALYTICS] - setMomentLocale browserLang', this.browserLang)
 
-    const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+    const stored_preferred_lang = this.appStorageService.getItem(this.auth.user_bs.value._id + '_lang')
     let dshbrd_lang = ''
     if (this.browserLang && !stored_preferred_lang) {
       dshbrd_lang = this.browserLang

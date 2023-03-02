@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { Faq } from '../models/faq-model';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from './app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { Intent } from 'app/models/intent-model';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 export class FaqService {
 
@@ -16,11 +17,12 @@ export class FaqService {
   user: any;
   project: any;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     public appConfigService: AppConfigService,
-    private _httpClient: HttpClient,
-    private logger: LoggerService
+    private _httpClient: HttpClient
   ) {
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value

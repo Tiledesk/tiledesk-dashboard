@@ -5,9 +5,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../../core/notify.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
-import { LoggerService } from '../../../services/logger/logger.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'appdashboard-ws-train-bot',
@@ -40,6 +41,7 @@ export class WsTrainBotComponent implements OnInit, OnChanges, OnDestroy {
   has_pressed_search = false;
   selectQuestionForTooltip: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
+  private logger: LoggerService = LoggerInstance.getInstance();
   /**
    * Constructor
    * @param faqService 
@@ -55,7 +57,6 @@ export class WsTrainBotComponent implements OnInit, OnChanges, OnDestroy {
     private notify: NotifyService,
     private router: Router,
     private auth: AuthService,
-    private logger: LoggerService
   ) { }
 
   // -----------------------------------------------------------------------------------------------------

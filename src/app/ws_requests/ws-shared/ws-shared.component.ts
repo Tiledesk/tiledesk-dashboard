@@ -7,8 +7,10 @@ import { WsRequestsService } from '../../services/websocket/ws-requests.service'
 import { FaqKbService } from '../../services/faq-kb.service';
 import { UsersService } from '../../services/users.service';
 import { NotifyService } from '../../core/notify.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 @Component({
   selector: 'appdashboard-ws-shared',
   templateUrl: './ws-shared.component.html',
@@ -81,6 +83,9 @@ export class WsSharedComponent implements OnInit {
   humanAgentsIdArray: any;
   botAgentsIdArray: any;
   you_are_successfully_added_to_the_chat: string
+
+  logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     public botLocalDbService: BotLocalDbService,
     public usersLocalDbService: LocalDbService,
@@ -89,8 +94,8 @@ export class WsSharedComponent implements OnInit {
     public faqKbService: FaqKbService,
     public usersService: UsersService,
     public notify: NotifyService,
-    public logger: LoggerService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public appStorageService: AppStorageService,
   ) { }
 
   ngOnInit() { }
@@ -107,7 +112,7 @@ export class WsSharedComponent implements OnInit {
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requestid', requestid);
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requester_fullanme', requester_fullanme);
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - CHAT_BASE_URL', CHAT_BASE_URL);
-    const chatTabCount = localStorage.getItem('tabCount')
+    const chatTabCount = this.appStorageService.getItem('tabCount')
     this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount ', chatTabCount)
 
     let baseUrl = CHAT_BASE_URL + '#/conversation-detail/'

@@ -21,8 +21,10 @@ import 'firebase/messaging'
 import 'firebase/database'
 import { AppConfigService } from '../services/app-config.service'
 import { WebSocketJs } from '../services/websocket/websocket-js'
-import { LoggerService } from '../services/logger/logger.service'
 import { ScriptService } from '../services/script/script.service'
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service'
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance'
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service'
 // import { SsoService } from './sso.service';
 
 // start SUPER USER
@@ -81,6 +83,8 @@ export class AuthService {
   selected_project_id: string
   public_Key: string
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private _httpClient: HttpClient,
     private router: Router,
@@ -89,8 +93,8 @@ export class AuthService {
     private route: ActivatedRoute,
     public location: Location,
     public appConfigService: AppConfigService,
+    private appStorageService: AppStorageService,
     public webSocketJs: WebSocketJs,
-    private logger: LoggerService,
     private scriptService: ScriptService,
   ) // public ssoService: SsoService
   {
@@ -162,7 +166,7 @@ export class AuthService {
   // GET THE USER OBJECT FROM LOCAL STORAGE AND PUBLISH IT WITH THE BehaviorSubject user_bs
   // --------------------------------------------------------------------------------------
   checkIfExistStoredUserAndPublish() {
-    const storedUser = localStorage.getItem('user')
+    const storedUser = this.appStorageService.getItem('user')
     // this.logger.log('[AUTH-SERV] »> »> PUBLISH STORED USER ', storedUser);
     if (storedUser !== null) {
       this.user_bs.next(JSON.parse(storedUser))
@@ -199,7 +203,7 @@ export class AuthService {
   // CALLED BY AUTOLOGIN AFTER  getCurrentAuthenticatedUser(JWT)
   // --------------------------------------------------------------------------------------
   publishSSOloggedUser() {
-    const storedUser = localStorage.getItem('user')
+    const storedUser = this.appStorageService.getItem('user')
     if (storedUser !== null) {
       this.user_bs.next(JSON.parse(storedUser))
 
@@ -335,9 +339,7 @@ export class AuthService {
 
               this.subscription.unsubscribe()
 
-              const storedProjectJson = localStorage.getItem(
-                this.nav_project_id,
-              )
+              const storedProjectJson = this.appStorageService.getItem(this.nav_project_id)
               this.logger.log('[AUTH-SERV] - JSON OF STORED PROJECT: ', storedProjectJson)
 
               // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
@@ -415,7 +417,7 @@ export class AuthService {
       project_id = this.selected_project_id
     }
 
-    const storedProjectJson = localStorage.getItem(project_id)
+    const storedProjectJson = this.appStorageService.getItem(project_id)
     this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id)
     this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson)
     if (storedProjectJson) {
@@ -456,7 +458,7 @@ export class AuthService {
       project_id = this.selected_project_id
     }
 
-    const storedProjectJson = localStorage.getItem(project_id)
+    const storedProjectJson = this.appStorageService.getItem(project_id)
     this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id)
     this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson)
     if (storedProjectJson) {
@@ -491,7 +493,7 @@ export class AuthService {
       project_id = this.selected_project_id
     }
 
-    const storedProjectJson = localStorage.getItem(project_id)
+    const storedProjectJson = this.appStorageService.getItem(project_id)
     this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id)
     this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson,)
     if (storedProjectJson) {
@@ -598,10 +600,9 @@ export class AuthService {
         this.user_bs.next(user)
 
         // SET USER IN LOCAL STORAGE
-        localStorage.setItem('user', JSON.stringify(user))
+        this.appStorageService.setItem('user', JSON.stringify(user))
         const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
         localStorage.setItem(chatPrefix + '__tiledeskToken', user.token) // x autologin of Chat ionic
-        // localStorage.setItem('chat_sv5__tiledeskToken', user.token) // x autologin of Chat ionic
         this.logger.log('[AUTH-SERV] > USER ', user)
 
         ///////////////////
@@ -786,7 +787,7 @@ export class AuthService {
     this.user_bs.next(updated_user)
 
     // RESET THE (UPDATED) USER OBJECT IN LOCAL STORAGE
-    localStorage.setItem('user', JSON.stringify(updated_user))
+    this.appStorageService.setItem('user', JSON.stringify(updated_user))
   }
 
   ////// SUPER USER AUTH //////
@@ -814,7 +815,7 @@ export class AuthService {
     )
     this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PRJCT VALUE = ', this.project_bs.value)
     // this.logger.log('!!C-U »»»»» AUTH SERV - HAS BEEN CALLED "HAS CLICKED GOTO PROJECTS" - PUBLISH PRJCT = ', this.project_bs.next(null))
-    localStorage.removeItem('project') // NOTE: questo serve????
+    this.appStorageService.removeItem('project') // NOTE: questo serve????
   }
 
   // -----------------------------------------------------------------------
@@ -922,7 +923,7 @@ export class AuthService {
     }
 
     if (calledby !== 'account-settings' && calledby !== 'autologin') { // in account-settings in tracked the acccont deleted event 
-      const storedUser = localStorage.getItem('user')
+      const storedUser = this.appStorageService.getItem('user')
       let storedUserParsed = null
       if (storedUser) {
         storedUserParsed = JSON.parse(storedUser)
@@ -943,7 +944,7 @@ export class AuthService {
       // console.log('[AUTH-SERV] projectId ', projectId)
 
       if (projectId) {
-        const storedProject = localStorage.getItem(projectId)
+        const storedProject = this.appStorageService.getItem(projectId)
         if (storedProject) {
           storedPrjctParsed = JSON.parse(storedProject)
           // console.log('[AUTH-SERV] storedPrjctParsed ', storedPrjctParsed)
@@ -1051,9 +1052,9 @@ export class AuthService {
       this.project_bs.value,
     )
 
-    localStorage.removeItem('user')
-    localStorage.removeItem('project')
-    localStorage.removeItem('role')
+    this.appStorageService.removeItem('user')
+    this.appStorageService.removeItem('project')
+    this.appStorageService.removeItem('role')
 
     // if (calledby !== 'autologin') {
     this.logger.log('[AUTH-SERV] Signout this.router.url +++++ ', this.router.url)
@@ -1125,7 +1126,7 @@ export class AuthService {
                 FCMtoken,
               )
               this.FCMcurrentToken = FCMtoken
-              const storedUser = localStorage.getItem('user')
+              const storedUser = this.appStorageService.getItem('user')
               const storedUserObj = JSON.parse(storedUser)
               this.logger.log('[AUTH-SERV] signOut >>>> getToken storedUserObj ', storedUserObj)
               if (storedUserObj) {

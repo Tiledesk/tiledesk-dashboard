@@ -25,11 +25,11 @@ import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { TagsService } from '../../services/tags.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -300,16 +300,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public translate: TranslateService,
     public notify: NotifyService,
     public appConfigService: AppConfigService,
+    public appStorageService: AppStorageService,
     public wsRequestsService: WsRequestsService,
     public location: Location,
     public selectOptionsTranslatePipe: SelectOptionsTranslatePipe,
     private tagsService: TagsService,
-    public logger: LoggerService,
     private projectService: ProjectService,
     private wsMsgsService: WsMsgsService,
     public route: ActivatedRoute
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, translate, appStorageService);
   }
 
   ngOnInit() {
@@ -909,7 +909,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
-    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+    this.appStorageService.setItem('last_project', JSON.stringify(this.current_selected_prjct))
     this.openChatToTheSelectedConversation(this.CHAT_BASE_URL, requestid, requester_fullanme)
   }
 

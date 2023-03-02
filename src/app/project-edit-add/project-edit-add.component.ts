@@ -22,11 +22,13 @@ import { takeUntil } from 'rxjs/operators'
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { avatarPlaceholder, getColorBck, URL_setting_up_automatic_assignment } from './../utils/util';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 const swal = require('sweetalert');
 
 type UserFields = 'creditCard' | 'expirationDate' | 'cvc';
@@ -211,6 +213,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   };
   allowedIPs: any
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   /**
    * 
    * @param projectService 
@@ -237,8 +242,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private translate: TranslateService,
     public appConfigService: AppConfigService,
+    private appStorageService: AppStorageService,
     public brandService: BrandService,
-    private logger: LoggerService,
     private _fb: FormBuilder,
     private contactsService: ContactsService
     // private formGroup: FormGroup
@@ -1932,7 +1937,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
           this.auth.projectSelected(project)
 
-          const storedProjectJson = localStorage.getItem(this.id_project);
+          const storedProjectJson = this.appStorageService.getItem(this.id_project);
           this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT JSON ', storedProjectJson);
 
           if (storedProjectJson) {
@@ -1960,7 +1965,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               }
 
               // RE-SET THE PROJECT IN THE STORAGE WITH THE UPDATED NAME
-              localStorage.setItem(storedProjectId, JSON.stringify(updatedProjectForStorage));
+              this.appStorageService.setItem(storedProjectId, JSON.stringify(updatedProjectForStorage));
 
             }
           }

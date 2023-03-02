@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { LoggerService } from '../../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 // import{htmlEntities, stripEmojis} from '../../../utils/util';
 
 @Component({
@@ -19,9 +20,10 @@ export class WelcomeMessageConfigurationComponent implements OnInit {
   limitChars: number = 300;
   numChars: number = 0;
   messegeError = false;
-  constructor(
-    private logger: LoggerService
-  ) { }
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
+  constructor() { }
 
   ngOnInit() {
     this.init();

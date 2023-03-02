@@ -1,9 +1,10 @@
-import { LoggerService } from 'app/services/logger/logger.service';
 import { Intent } from 'app/models/intent-model';
 import { Chatbot } from './../../../models/faq_kb-model';
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Rule } from 'app/models/rule-model';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'cds-rules',
@@ -18,7 +19,10 @@ export class RulesComponent implements OnInit {
   addClicked: boolean = false;
   showWelcome: boolean = false;
   listOfRules: Rule[]=[];
-  constructor(private logger: LoggerService) { }
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
+  constructor() { }
 
   ngOnInit(): void {
   }

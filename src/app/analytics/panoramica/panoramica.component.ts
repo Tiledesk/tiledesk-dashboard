@@ -9,7 +9,6 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { Chart } from 'chart.js';
 import { AuthService } from 'app/core/auth.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { AnalyticsService } from '../analytics-service/analytics.service';
 
 import {
@@ -23,6 +22,9 @@ import {
   ApexGrid, 
   ApexStroke
 } from "ng-apexcharts";
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -87,11 +89,13 @@ export class PanoramicaComponent implements OnInit {
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
   formattedHeatMapRes: any;
   
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private translate: TranslateService,
     private analyticsService: AnalyticsService,
     private auth: AuthService,
-    private logger: LoggerService
+    private appStorageService: AppStorageService,
   ) {
 
     this.lang = this.translate.getBrowserLang();
@@ -815,9 +819,9 @@ export class PanoramicaComponent implements OnInit {
             const browserLang = this.translate.getBrowserLang();
             let stored_preferred_lang = undefined
             if (this.auth.user_bs && this.auth.user_bs.value) {
-              stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+              stored_preferred_lang =this.appStorageService.getItem(this.auth.user_bs.value._id + '_lang')
             }
-            // const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            // const stored_preferred_lang = this.appStorageService.getItem(this.auth.user_bs.value._id + '_lang')
             let dshbrd_lang = ''
             if (browserLang && !stored_preferred_lang) {
               dshbrd_lang = browserLang
@@ -881,9 +885,9 @@ export class PanoramicaComponent implements OnInit {
 
             let stored_preferred_lang = undefined
             if (this.auth.user_bs && this.auth.user_bs.value) {
-              stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+              stored_preferred_lang = this.appStorageService.getItem(this.auth.user_bs.value._id + '_lang')
             }
-            // const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+            // const stored_preferred_lang = this.appStorageService.getItem(this.auth.user_bs.value._id + '_lang')
             let dshbrd_lang = ''
             if (browserLang && !stored_preferred_lang) {
               dshbrd_lang = browserLang

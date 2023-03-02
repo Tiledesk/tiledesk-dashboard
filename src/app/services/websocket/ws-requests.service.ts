@@ -7,9 +7,10 @@ import { Request } from '../../models/request-model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subscription } from 'rxjs'
 import { AppConfigService } from '../../services/app-config.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from '../users-local-db.service';
 import { map } from 'rxjs/operators';
+import { LoggerService } from '../chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from '../chat21-core/providers/logger/loggerInstance';
 export interface Message {
   action: string;
   payload: {
@@ -84,6 +85,9 @@ export class WsRequestsService implements OnDestroy {
   subscribed_request_id: string;
   subscribed_requester_id: string;
   subscribed_projectuser_id: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   /**
    * Constructor
    * 
@@ -94,7 +98,6 @@ export class WsRequestsService implements OnDestroy {
     public auth: AuthService,
     public webSocketJs: WebSocketJs,
     public appConfigService: AppConfigService,
-    private logger: LoggerService,
     public usersLocalDbService: LocalDbService,
     private _httpClient: HttpClient
   ) {

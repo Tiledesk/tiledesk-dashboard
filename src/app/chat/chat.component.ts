@@ -2,7 +2,8 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser'
 import { AppConfigService } from '../services/app-config.service';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'chat',
   templateUrl: './chat.component.html',
@@ -19,10 +20,11 @@ export class ChatComponent implements OnInit {
   // newInnerWidth: any;
   iframeHeight: any;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private sanitizer: DomSanitizer,
-    public appConfigService: AppConfigService,
-    private logger: LoggerService
+    public appConfigService: AppConfigService
   ) {
   
 

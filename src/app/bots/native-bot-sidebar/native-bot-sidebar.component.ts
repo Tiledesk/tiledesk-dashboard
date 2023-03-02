@@ -1,6 +1,5 @@
 
 import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core'
-import { LoggerService } from './../../services/logger/logger.service'
 import { AppConfigService } from '../../services/app-config.service'
 import { AuthService } from '../../core/auth.service'
 import { Router } from '@angular/router'
@@ -10,6 +9,8 @@ import { UsersService } from 'app/services/users.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service'
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service'
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance'
 @Component({
   selector: 'appdashboard-native-bot-sidebar',
   templateUrl: './native-bot-sidebar.component.html',
@@ -42,9 +43,10 @@ export class NativeBotSidebarComponent implements OnInit, OnChanges {
   IS_OPEN: boolean = true
 
   private unsubscribe$: Subject<any> = new Subject<any>();
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     public appConfigService: AppConfigService,
-    private logger: LoggerService,
     private auth: AuthService,
     public router: Router,
     public location: Location,

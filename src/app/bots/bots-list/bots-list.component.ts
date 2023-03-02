@@ -13,7 +13,8 @@ import { AppConfigService } from '../../services/app-config.service';
 import { DepartmentService } from '../../services/department.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 @Component({
   selector: 'bots-list',
@@ -87,6 +88,9 @@ export class BotListComponent implements OnInit {
   route: string
   dev_mode: boolean;
   isPanelRoute: boolean = false;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -97,8 +101,7 @@ export class BotListComponent implements OnInit {
     public appConfigService: AppConfigService,
     private translate: TranslateService,
     public brandService: BrandService,
-    public departmentService: DepartmentService,
-    private logger: LoggerService
+    public departmentService: DepartmentService
   ) {
 
     const brand = brandService.getBrand();

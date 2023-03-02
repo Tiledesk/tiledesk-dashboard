@@ -4,7 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 import { URL_more_info_chatbot_forms } from 'app/utils/util';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 export interface ModalDeleteModel {
   deleteField?: string;
@@ -62,11 +63,12 @@ export class TilebotFormComponent implements OnInit, OnChanges {
 
   translateparam = { selectedFormName: "", description_key: "" };
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     public translate: TranslateService,
     private route: ActivatedRoute,
-    private httpClient: HttpClient,
-    private logger: LoggerService
+    private httpClient: HttpClient
   ) {
     this.langBot = this.route.snapshot.params['botlang'];
     if (!this.langBot || this.langBot === undefined) {

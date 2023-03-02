@@ -7,8 +7,10 @@ import { NotifyService } from '../../core/notify.service';
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
@@ -64,14 +66,16 @@ export class SigninComponent implements OnInit {
     },
   };
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
     public appConfigService: AppConfigService,
+    private appStorageService: AppStorageService,
     private notify: NotifyService,
     public brandService: BrandService,
-    private logger: LoggerService,
     private localDbService: LocalDbService
   ) {
     const brand = brandService.getBrand();
@@ -104,7 +108,7 @@ export class SigninComponent implements OnInit {
   }
 
   redirectIfLogged() {
-    const storedUser = localStorage.getItem('user')
+    const storedUser = this.appStorageService.getItem('user')
     if (storedUser && !this.EXIST_STORED_ROUTE) {
       this.logger.log('[SIGN-IN] - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
       this.router.navigate(['/projects']);

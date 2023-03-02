@@ -7,8 +7,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { UsersService } from '../../services/users.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 
 @Component({
@@ -31,6 +32,9 @@ export class TriggerStaticComponent extends StaticPageBaseComponent implements O
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -38,7 +42,6 @@ export class TriggerStaticComponent extends StaticPageBaseComponent implements O
     private prjctPlanService: ProjectPlanService,
     private notify: NotifyService,
     private usersService: UsersService,
-    private logger: LoggerService,
     public appConfigService: AppConfigService
   ) {
     super(translate);

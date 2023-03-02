@@ -9,9 +9,10 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { Subject, Subscription } from 'rxjs';
 import { AppConfigService } from '../../services/app-config.service';
 import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { takeUntil } from 'rxjs/operators';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 const swal = require('sweetalert');
 @Component({
   selector: 'notification-message',
@@ -50,6 +51,8 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   currentUser: any;
   profile_name_for_segment: string;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     public notify: NotifyService,
     public auth: AuthService,
@@ -59,7 +62,6 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
-    private logger: LoggerService,
     private usersService: UsersService,
   ) {
     const brand = brandService.getBrand();
@@ -372,7 +374,6 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   // TODO: PROBABLY NOT USED - VERIFY BETTER
   // ----------------------------------------
   openChat() {
-    // localStorage.setItem('chatOpened', 'true');
     const url = this.CHAT_BASE_URL;
     window.open(url, '_blank');
     this.notify.publishHasClickedChat(true);

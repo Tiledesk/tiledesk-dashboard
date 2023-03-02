@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
-import { LoggerService } from '../services/logger/logger.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 @Injectable()
 export class UploadImageService {
 
@@ -20,8 +21,10 @@ export class UploadImageService {
 
   public uploadImageErrorMsg: string;
   public fileNotSupportedMsg: string;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
-    private logger: LoggerService,
     private notify: NotifyService,
     private translate: TranslateService
   ) {

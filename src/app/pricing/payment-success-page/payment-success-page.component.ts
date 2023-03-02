@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, isDevMode, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import moment from 'moment';
 import { Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
 import { AuthService } from '../../core/auth.service';
 import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
 
 
 @Component({
@@ -20,11 +21,13 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
   contact_us_email: string;
   id_project: string;
   currentUser: any;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+
   constructor(
     private router: Router,
     private auth: AuthService,
     public brandService: BrandService,
-    private logger: LoggerService,
     private prjctPlanService: ProjectPlanService
   ) {
     const brand = brandService.getBrand();

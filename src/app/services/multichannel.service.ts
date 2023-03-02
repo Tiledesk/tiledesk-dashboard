@@ -2,7 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
-import { LoggerService } from './logger/logger.service';
+import { LoggerService } from './chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from './chat21-core/providers/logger/loggerInstance';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,12 @@ export class MultichannelService {
   user: any;
   project: any;
   
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(private http: HttpClient,
     private auth: AuthService,
     private appConfigService: AppConfigService,
-    private logger: LoggerService) {
+  ) {
 
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value

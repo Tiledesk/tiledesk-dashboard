@@ -21,7 +21,6 @@ import { BotsBaseComponent } from '../bots-base/bots-base.component';
 import { BrandService } from '../../services/brand.service';
 import { DepartmentService } from '../../services/department.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util';
-import { LoggerService } from '../../services/logger/logger.service';
 import {
   URL_microlanguage_for_dialogflow_images_videos,
   URL_dialogflow_connector_handoff_to_human_agent_example,
@@ -32,6 +31,9 @@ import {
   URL_dialogflow_connector
 } from '../../utils/util';
 import { DomSanitizer } from '@angular/platform-browser';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
+import { AppStorageService } from 'app/services/chat21-core/providers/abstract/app-storage.service';
 
 
 const swal = require('sweetalert');
@@ -182,6 +184,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
   @ViewChild('fileInputBotProfileImage', { static: false }) fileInputBotProfileImage: any;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private faqService: FaqService,
     private router: Router,
@@ -195,10 +200,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     public appConfigService: AppConfigService,
-    private usersService: UsersService,
+    private appStorageService: AppStorageService,
     public brandService: BrandService,
     private departmentService: DepartmentService,
-    private logger: LoggerService,
     private sanitizer: DomSanitizer
   ) {
     super();
@@ -952,8 +956,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
    * TEST PAGE DISPLAY THE PREVIOUS RESULT OF RESEARCH.
    * WHEN THE USER RETURN IN THE EDIT BOT PAGE (THIS COMPONENT) THE RESEARCHED QUESTION IS RESETTED */
   clearSearchedQuestionStored() {
-    // localStorage.setItem('searchedQuestion', '');
-    localStorage.removeItem('searchedQuestion')
+    // this.appStorageService.setItem('searchedQuestion', '');
+    this.appStorageService.removeItem('searchedQuestion')
   }
 
   getCurrentProject() {

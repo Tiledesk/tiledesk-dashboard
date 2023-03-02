@@ -7,7 +7,6 @@ import { UsersService } from '../services/users.service';
 import { AuthService } from '../core/auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NotifyService } from '../core/notify.service';
-import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
 
 import { LocalDbService } from '../services/users-local-db.service';
@@ -39,7 +38,6 @@ describe('ActivitiesComponent', () => {
         UsersService,
         AuthService,
         NotifyService,
-        LoggerService,
         AppConfigService,
         LocalDbService,
         BotLocalDbService,

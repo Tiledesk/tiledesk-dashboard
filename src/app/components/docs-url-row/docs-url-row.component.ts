@@ -1,5 +1,6 @@
 import { Component, OnInit , Input} from '@angular/core';
-import { LoggerService } from '../../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-docs-url-row',
   templateUrl: './docs-url-row.component.html',
@@ -12,9 +13,10 @@ export class DocsUrlRowComponent implements OnInit {
   @Input() text_to_display: string;
   
   translateparam: any; 
-  constructor(
-    private logger: LoggerService
-  ) { }
+  
+  private logger: LoggerService = LoggerInstance.getInstance();
+
+  constructor() { }
 
   ngOnInit() {
     this.translateparam = { helpdoc: this.doctitle };

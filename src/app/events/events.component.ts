@@ -4,7 +4,8 @@ import { UsersService } from '../services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 @Component({
   selector: 'appdashboard-events',
   templateUrl: './events.component.html',
@@ -16,12 +17,12 @@ export class EventsComponent implements OnInit,  OnDestroy {
   events: any;
   showSpinner = false;
   private unsubscribe$: Subject<any> = new Subject<any>();
-
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private auth: AuthService,
     private usersService: UsersService,
     private route: ActivatedRoute,
-    private logger: LoggerService
   ) {
     this.getParams();
   }

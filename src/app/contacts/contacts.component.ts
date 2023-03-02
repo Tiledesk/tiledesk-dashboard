@@ -12,7 +12,8 @@ import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
-import { LoggerService } from '../services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -99,6 +100,9 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   payIsVisible: boolean;
   public_Key: any;
   isChromeVerGreaterThan100: boolean;
+
+  private logger: LoggerService = LoggerInstance.getInstance();
+  
   constructor(
     private contactsService: ContactsService,
     private router: Router,
@@ -107,8 +111,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     private usersService: UsersService,
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
-    private appConfigService: AppConfigService,
-    private logger: LoggerService
+    private appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {

@@ -3,7 +3,8 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter, ElementRef, 
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { calculatingRemainingCharacters, TEXT_CHARS_LIMIT, variableList } from 'app/chatbot-design-studio/utils';
 import { SatPopover } from '@ncstate/sat-popover';
-import { LoggerService } from 'app/services/logger/logger.service';
+import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerInstance } from 'app/services/chat21-core/providers/logger/loggerInstance';
 
 @Component({
   selector: 'cds-textarea',
@@ -39,11 +40,9 @@ export class CDSTextareaComponent implements OnInit {
   cannedResponseMessage: string;
   texareaIsEmpty = false;
 
+  private logger: LoggerService = LoggerInstance.getInstance();
 
-
-  constructor(
-    private logger: LoggerService,
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
     if (this.text) {
