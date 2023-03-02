@@ -14,7 +14,7 @@ export class ActionReplaceBotComponent implements OnInit {
   @Input() action: ActionReplaceBot;
 
   //bots: Chatbot[] = [];
-  chatbots_name_list: string[] = [];
+  chatbots_name_list: Array<{name: string, value: string, icon?:string}>;
   bot_selected: Chatbot;
   
   constructor(
@@ -31,7 +31,7 @@ export class ActionReplaceBotComponent implements OnInit {
     this.chatbotService.getAllBotByProjectId().subscribe((chatbots) => {
       this.logger.log("[ACTION REPLACE BOT] chatbots: ", chatbots);
       //this.bots = bots;
-      this.chatbots_name_list = chatbots.map(a => a.name);
+      this.chatbots_name_list = chatbots.map(a => ({ name: a.name, value: a.name, icon: 'smart_toy'}));
     }, (error) => {
       this.logger.error("[ACTION REPLACE BOT] error get bots: ", error);
     }, () => {
@@ -39,9 +39,9 @@ export class ActionReplaceBotComponent implements OnInit {
     })
   }
 
-  onChangeActionButton(event) {
+  onChangeSelect(event) {
     //this.logger.log("[ACTION REPLACE BOT] onChangeActionButton event: ", event)
-    this.action.botName = event;
+    this.action.botName = event.value;
     this.logger.log("[ACTION REPLACE BOT] action edited: ", this.action)
   }
 
