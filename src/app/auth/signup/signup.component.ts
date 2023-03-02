@@ -12,6 +12,9 @@ import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import moment from 'moment';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { ProjectService } from 'app/services/project.service';
+import { Project } from 'app/models/project-model';
+import { emailDomainWhiteList } from 'app/utils/util';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -38,6 +41,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   tparams: any;
   companyLogoBlack_Url: string;
   companyLogoAllWithe_Url: string;
+  companyLogoPlanet: string;
   company_name: string;
   company_site_url: string;
   privacy_policy_link_text: string;
@@ -64,7 +68,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
   strongPassword = false;
   userForm: FormGroup;
   isVisiblePsw: boolean = false
-  isVisiblePwsStrengthBar: boolean = false
+  isVisiblePwsStrengthBar: boolean = false;
+
+  // @ create project on signup
+  new_project: any;
+  project_name: string;
+  id_project: string;
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
   // 'maxlength': 'Password cannot be more than 25 characters long.',
@@ -107,14 +116,18 @@ export class SignupComponent implements OnInit, AfterViewInit {
     public appConfigService: AppConfigService,
     public brandService: BrandService,
     private logger: LoggerService,
-    private localDbService: LocalDbService
+    private localDbService: LocalDbService,
+    private projectService: ProjectService,
   ) {
 
     const brand = brandService.getBrand();
+    // this.logger.log('>>> BRAND ' , brand) 
 
     this.tparams = brand;
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.companyLogoAllWithe_Url = brand['company_logo_allwhite__url'];
+    this.companyLogoPlanet = brand['company_logo_planet__url'];
+    // this.logger.log('>>> BRAND > companyLogoPlanet ' , this.companyLogoPlanet) 
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
     this.privacy_policy_link_text = brand['privacy_policy_link_text'];
@@ -428,9 +441,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIGN-UP] signup  yourname (use case email without dot before @) ', yourname)
         this.userForm.controls['firstName'].patchValue(yourname)
       } else if (emailBeforeAt && emailBeforeAt.includes('.')) {
-        const emailBeforeAtAndFirstDot = email.split('.')[0];
-        this.logger.log('[SIGN-UP] signup  emailBeforeAtAndFirstDot ', emailBeforeAtAndFirstDot)
-        yourname = emailBeforeAtAndFirstDot;
+        const emailBeforeAtAndFirstOfDot = email.split('.')[0];
+        this.logger.log('[SIGN-UP] signup  emailBeforeAtAndFirstDot ', emailBeforeAtAndFirstOfDot)
+        yourname = emailBeforeAtAndFirstOfDot;
         this.logger.log('[SIGN-UP] signup  yourname (use case email with dot before @) ', yourname)
         this.userForm.controls['firstName'].patchValue(yourname)
       }
@@ -453,6 +466,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIGN-UP] RES ', signupResponse);
           const userEmail = signupResponse.user.email
           this.logger.log('[SIGN-UP] RES USER EMAIL ', userEmail);
+
+          // Hide pending email alert if the user sign up (will be displayed when the userr signin)
+          // this.localDbService.setInStorage('hpea', true);
 
           if (!isDevMode()) {
             if (window['analytics']) {
@@ -507,7 +523,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
             }
           }
 
-          this.autoSignin(userEmail);
+          this.autoSignin(userEmail, signupResponse);
 
         } else {
           this.logger.error('[SIGN-UP] ERROR CODE', signupResponse['code']);
@@ -554,7 +570,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
 
-  autoSignin(userEmail: string) {
+  autoSignin(userEmail: string, signupResponse: any) {
     // this.auth.emailLogin(
     const self = this;
 
@@ -581,7 +597,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
         if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {
-            self.router.navigate(['/create-project']);
+            // self.router.navigate(['/create-project']);
+            self.createNewProject(signupResponse)
+
+
           } else {
             self.router.navigate(['/projects']);
           }
@@ -601,6 +620,155 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
     });
   }
+
+  createNewProject(signupResponse) {
+    let projectName = ''
+    const email = this.userForm.value['email']
+    if (email.includes('@')) {
+      const emailAfterAt = email.split('@')[1];
+      if (!emailDomainWhiteList.includes(emailAfterAt)) {
+        if (emailAfterAt.includes('.'))
+          projectName = emailAfterAt.split('.')[0]
+        else if (!emailAfterAt.includes('.')) {
+          projectName = emailAfterAt
+        }
+      } else {
+        projectName = 'My awesome project'
+      }
+    } else {
+      projectName = 'My awesome project'
+    }
+    // this.DISPLAY_SPINNER_SECTION = true;
+    // this.DISPLAY_SPINNER = true;
+    this.logger.log('[SIGN-UP] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', projectName);
+
+    this.projectService.createProject(projectName)
+      .subscribe((project) => {
+        this.logger.log('[SIGN-UP] POST DATA PROJECT RESPONSE ', project);
+        if (project) {
+          this.new_project = project
+          // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
+          // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
+          const newproject: Project = {
+            _id: project['_id'],
+            name: project['name'],
+            operatingHours: project['activeOperatingHours'],
+            profile_type: project['profile'].type,
+            profile_name: project['profile'].name,
+            trial_expired: project['trialExpired']
+          }
+
+          // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
+          this.auth.projectSelected(newproject)
+          this.logger.log('[SIGN-UP] CREATED PROJECT ', newproject)
+
+          this.id_project = newproject._id
+          this.router.navigate([`/project/${this.id_project}/configure-widget`]);
+
+
+        }
+
+
+      }, (error) => {
+        // this.DISPLAY_SPINNER = false;
+        this.logger.error('[SIGN-UP] CREATE NEW PROJECT - POST REQUEST - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[SIGN-UP] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
+        this.projectService.newProjectCreated(true);
+
+        const trialStarDate = moment(new Date(this.new_project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
+        // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
+        const trialEndDate = moment(new Date(this.new_project.createdAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
+        // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
+
+        if (!isDevMode()) {
+          if (window['analytics']) {
+            try {
+              window['analytics'].page("Signup, Create project", {
+
+              });
+            } catch (err) {
+              this.logger.error('Signup Create project page error', err);
+            }
+
+            try {
+              window['analytics'].identify(signupResponse.user._id, {
+                name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                email: signupResponse.user.email,
+                logins: 5,
+                plan: "Pro (trial)"
+              });
+            } catch (err) {
+              this.logger.error('Signup Create project identify error', err);
+            }
+
+            try {
+              window['analytics'].track('Trial Started', {
+                "userId": signupResponse.user._id,
+                "trial_start_date": trialStarDate,
+                "trial_end_date": trialEndDate,
+                "trial_plan_name": "Pro (trial)",
+                "context": {
+                  "groupId": this.new_project._id
+                }
+              });
+            } catch (err) {
+              this.logger.error('Signup Create track Trial Started event error', err);
+            }
+
+            try {
+              window['analytics'].group(this.new_project._id, {
+                name: this.new_project.name,
+                plan: "Pro (trial)",
+              });
+            } catch (err) {
+              this.logger.error('Signup Create project group error', err);
+            }
+          }
+        }
+
+        setTimeout(() => {
+          // this.DISPLAY_SPINNER = false;
+        }, 2000);
+
+        // 'getProjectsAndSaveInStorage()' was called only on the onInit lifehook, now recalling also after the creation 
+        // of the new project resolve the bug  'the auth service not find the project in the storage'
+        this.getProjectsAndSaveInStorage();
+
+      });
+  }
+
+  getProjectsAndSaveInStorage() {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+
+      if (projects) {
+        // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
+        // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
+        // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
+        projects.forEach(project => {
+          this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
+          if (project.id_project) {
+            const prjct: Project = {
+              _id: project.id_project._id,
+              name: project.id_project.name,
+              role: project.role,
+              operatingHours: project.id_project.activeOperatingHours
+            }
+
+            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+          }
+        });
+      }
+    }, error => {
+      this.logger.error('[SIGN-UP] getProjectsAndSaveInStorage - ERROR ', error)
+    }, () => {
+      this.logger.log('[SIGN-UP] getProjectsAndSaveInStorage - COMPLETE')
+    });
+  }
+
+
 
   widgetReInit() {
     if (window && window['tiledesk']) {

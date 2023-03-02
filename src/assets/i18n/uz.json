@@ -2278,6 +2278,8 @@
     "SmartReassignmentForThisConversationWillBeEnabled":"Onlaynga aylantirish tugmasini bosish orqali suhbat uchun aqlli qayta tayinlash yoqiladi",
     "TagAlreadyAssigned":"Teg allaqachon tayinlangan",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Bu teg allaqachon tayinlangan. Iltimos, noyob teg kiriting",
+    "GetStarted": "Ishni boshlang",
+    "EditProjectName":"Loyiha nomini tahrirlash",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

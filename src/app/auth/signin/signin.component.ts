@@ -109,10 +109,10 @@ export class SigninComponent implements OnInit {
       this.logger.log('[SIGN-IN] - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
       this.router.navigate(['/projects']);
     } else if (storedUser && this.EXIST_STORED_ROUTE) {
-      
-  
+
+
       // this.localDbService.removeFromStorage('wannago')
-      
+
       this.router.navigate([this.storedRoute]);
     }
   }
@@ -267,6 +267,8 @@ export class SigninComponent implements OnInit {
   signin() {
     this.showSpinnerInLoginBtn = true;
 
+
+
     this.auth.showExpiredSessionPopup(true);
     // this.auth.emailLogin(
     const self = this;
@@ -275,7 +277,7 @@ export class SigninComponent implements OnInit {
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], (error, user) => {
       if (!error) {
         this.logger.log('[SIGN-IN] SSO (Signin) - user', user);
-
+        // this.localDbService.removeFromStorage('hpea');
         if (!isDevMode()) {
           if (window['analytics']) {
             try {

@@ -2278,6 +2278,8 @@
 	"SmartReassignmentForThisConversationWillBeEnabled":"Durch Klicken auf die Schaltfläche In Online konvertieren wird die intelligente Neuzuweisung für die aktuelle Konversation aktiviert",
 	"TagAlreadyAssigned":"TAG bereits zugewiesen",
 	"ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Dieses Tag wurde bereits vergeben. Bitte geben Sie ein eindeutiges Tag ein",
+	"GetStarted": "Anmelden",
+	"EditProjectName":"Projektname bearbeiten",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",
@@ -2307,5 +2309,6 @@
 			"field_label": "Schreiben Sie ein klares Etikett, das den Benutzern hilft, die richtigen Daten einzugeben (Beispiel: Wie heißt Ihr Name?)",
 			"field_error": "Schreiben Sie eine Fehlermeldung, wenn die vom Benutzer eingegebenen Daten nicht korrekt sind"
 		}
+		
 	}
 }

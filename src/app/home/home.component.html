@@ -8,8 +8,7 @@
 <appdashboard-home-promo-banner *ngIf="isVisibleHomeBanner" (showPromoBanner)='showPromoBanner()'>
 </appdashboard-home-promo-banner>
 
-<appdashboard-home-promo-design-studio style="position: relative;"
-  [user]="user"
+<appdashboard-home-promo-design-studio style="position: relative;" [user]="user"
   [ngStyle]="{'margin-top':isVisibleHomeBanner === true ? '0px' : '-5px' }">
 </appdashboard-home-promo-design-studio>
 
@@ -24,7 +23,14 @@
       <div class="n-header-home">
         <h2 class="n-header-home-title">
           <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span>
-
+          <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
+          matTooltipClass="custom-mat-tooltip"
+          matTooltip="{{'EditProjectName' | translate }}" 
+          #tooltip="matTooltip" 
+          matTooltipPosition='below' 
+          matTooltipHideDelay="100">
+            mode_edit
+          </span>
 
           <!-- // PLAN TYPE BADGE -->
           <span *ngIf="isVisible" style="font-family: roboto;">
@@ -640,7 +646,7 @@
                         History
                       </div>
                       <div class="wrap-shortcut-subtitle-home-header">
-                       
+
                         <!-- {{ 'ViewTheConversationsHistory' | translate }} -->
                         View the conversations history
 
@@ -1742,7 +1748,7 @@
       </div>
       <div class="dialog-popup-content">
         <!-- {{'NowYouHaveMoreSpaceToUseYourChatBotsApps' | translate}} -->
-        Use buttons, rules, form builders and more for your flawless conversational design 
+        Use buttons, rules, form builders and more for your flawless conversational design
 
       </div>
     </div>

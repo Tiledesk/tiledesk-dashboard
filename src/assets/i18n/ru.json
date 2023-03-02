@@ -2278,6 +2278,8 @@
     "SmartReassignmentForThisConversationWillBeEnabled":"Нажав кнопку Преобразовать в онлайн, умное переназначение для этого разговора будет включено",
     "TagAlreadyAssigned":"Тег уже назначен",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Этот тег уже присвоен. Пожалуйста, введите уникальный тег",
+    "GetStarted": "Начать",
+    "EditProjectName":"Редактировать название проекта",
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",

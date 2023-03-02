@@ -351,3 +351,37 @@ label {
   z-index: 1050;
   position: relative;
 }
+
+.signin-no-account {
+  font-size: 30px;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  color: #fff;
+  text-align: left;
+  line-height: 1.3em;
+  font-weight: 600;
+}
+
+#go-to-signup-btn {
+  // height: 56px;
+  // background-color: #8ab4f8;
+  // color: #202124;
+  // font-size: 18px;
+  // text-transform: none;
+  // box-shadow: unset;
+  // font-family: "Poppins","Roboto", "Arial", sans-serif;
+
+  background-color: #0f172a;
+  height: 56px;
+  color: #8ab4f8;
+  font-size: 18px;
+  text-transform: none;
+  box-shadow: unset;
+  font-family: Poppins, Roboto, Arial, sans-serif;
+  border: 2px solid #8ab4f8;
+  transition: background-color .5s;
+}
+
+#go-to-signup-btn:hover {
+  background-color: #8ab4f8;
+  color: #0f172a;
+}

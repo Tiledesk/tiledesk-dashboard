@@ -2278,6 +2278,8 @@
     "SmartReassignmentForThisConversationWillBeEnabled":"By clicking the Convert to online button, smart reassignment for this conversation will be enabled",
     "TagAlreadyAssigned":"Tag already assigned",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"This tag has been already assigned. Please enter a unique tag",
+    "GetStarted": "Get started",
+    "EditProjectName":"Edit project name",
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",
