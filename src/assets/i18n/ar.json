@@ -2271,6 +2271,7 @@
     "TagAlreadyAssigned":"تم تعيين TAG بالفعل",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"تم تعيين TAG هذا بالفعل. الرجاء إدخال TAG فريد",
     "GetStarted": "ابدأ الآن",
+    "EditProjectName": "تحرير اسم المشروع",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

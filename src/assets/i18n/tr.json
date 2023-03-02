@@ -2271,6 +2271,7 @@
     "TagAlreadyAssigned":"Etiket zaten atanmış",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Bu etiket zaten atanmış. Lütfen benzersiz bir etiket girin",
     "GetStarted": "Başlayın",
+    "EditProjectName":"Proje adını düzenle",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",

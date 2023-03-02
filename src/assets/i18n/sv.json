@@ -2271,6 +2271,7 @@
     "TagAlreadyAssigned":"Tagg redan tilldelad",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Den här taggen har redan tilldelats. Vänligen ange en unik etikett",
     "GetStarted": "Kom igång",
+    "EditProjectName":"Redigera projektnamn",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

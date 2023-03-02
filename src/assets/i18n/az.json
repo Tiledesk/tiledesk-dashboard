@@ -2271,6 +2271,7 @@
     "TagAlreadyAssigned":"TAG artıq təyin edilib",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Bu teq artıq təyin edilib. Zəhmət olmasa unikal etiket daxil edin",
     "GetStarted": "Başlayın",
+    "EditProjectName":"Layihənin adını redaktə edin",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

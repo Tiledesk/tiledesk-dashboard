@@ -2271,6 +2271,7 @@
     "TagAlreadyAssigned":"Таг је већ додељен",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Ова ознака је већ додељена. Молимо унесите јединствену ознаку",
     "GetStarted": "Започните",
+    "EditProjectName":"Уредите име пројекта",
     "AddIntentPage": {
         "AddForm": "Додати образац",
         "SelectTemplateForm": "Изаберите врсту обрасца међу онима који су предложени или створили нови",

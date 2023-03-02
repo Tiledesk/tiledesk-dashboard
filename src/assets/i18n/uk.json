@@ -2271,6 +2271,7 @@
     "TagAlreadyAssigned":"Тег уже призначено",
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Цей тег уже призначено. Будь ласка, введіть унікальний тег",
     "GetStarted": "Почати",
+    "EditProjectName":"Редагувати назву проекту",
     "AddIntentPage": {
         "AddForm": "Додати форму",
         "SelectTemplateForm": "Виберіть тип форми серед запропонованих або створіть новий",
