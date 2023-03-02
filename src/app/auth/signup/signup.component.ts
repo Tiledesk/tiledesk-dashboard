@@ -574,7 +574,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     // this.auth.emailLogin(
     const self = this;
 
-    this.auth.signin(userEmail, this.userForm.value['password'], function (error) {
+    this.auth.signin(userEmail, this.userForm.value['password'], this.appConfigService.getConfig().SERVER_BASE_URL, function (error) {
       self.logger.log('[SIGN-UP] autoSignin 1. POST DATA ', error);
 
       if (!error) {

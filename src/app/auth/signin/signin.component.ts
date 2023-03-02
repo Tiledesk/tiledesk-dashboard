@@ -267,16 +267,14 @@ export class SigninComponent implements OnInit {
   signin() {
     this.showSpinnerInLoginBtn = true;
 
-
-
     this.auth.showExpiredSessionPopup(true);
     // this.auth.emailLogin(
     const self = this;
 
     this.logger.log('[SIGN-IN] email ', this.userForm.value['email'])
-    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], (error, user) => {
+    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], this.appConfigService.getConfig().SERVER_BASE_URL, (error, user) => {
       if (!error) {
-        this.logger.log('[SIGN-IN] SSO (Signin) - user', user);
+        // console.log('[SIGN-IN] SSO (Signin) - user', user);
         // this.localDbService.removeFromStorage('hpea');
         if (!isDevMode()) {
           if (window['analytics']) {
@@ -318,24 +316,6 @@ export class SigninComponent implements OnInit {
 
 
 
-        // self.widgetReInit();
-
-        /**
-         * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
-         */
-        //  self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + ' ' + user.lastname)
-        //  self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
-        //  self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
-
-        // setTimeout(() => {
-        //   try {
-        //     window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
-        //   } catch (err) {
-        //     self.logger.log('[SIGN-IN] SetTiledeskWidgetUserSignin (Signin) error', err);
-        //   }
-        // }, 2000);
-
-
         // --------------------------------------------
         // Run widget login
         // --------------------------------------------
@@ -346,7 +326,7 @@ export class SigninComponent implements OnInit {
 
       } else {
         this.showSpinnerInLoginBtn = false;
-        this.logger.error('[SIGN-IN] 1. POST DATA ERROR', error);
+        // console.error('[SIGN-IN] 1. POST DATA ERROR', error);
         // self.logger.error('[SIGN-IN] 2. POST DATA ERROR status', error.status);
 
         if (error.status === 0) {
@@ -361,9 +341,51 @@ export class SigninComponent implements OnInit {
 
           // this.logger.log('SIGNIN USER - POST REQUEST ERROR ', error);
           // this.logger.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
-          this.logger.error('[SIGN-IN] SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
+          // console.log('[SIGN-IN] SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
 
+          if (error.status !== 401) {
+
+            this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
+
+          } else if (error.status === 401) {
+
+            self.signinV2()
+
+          }
+        }
+      }
+      // tslint:disable-next-line:no-debugger
+      // debugger
+    });
+  }
+
+
+  signinV2() {
+    const self = this;
+    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], 'https://api.tiledesk.com/v2/', (error, user) => {
+      if (!error) {
+        // console.log('[SIGN-IN] IN V2 (Signin) - user', user);
+        const url = "https://console.tiledesk.com/v2/dashboard/#/projects?token=" + user.token;
+        window.open(url, '_self');
+      } else {
+        this.showSpinnerInLoginBtn = false;
+        this.logger.error('[SIGN-IN] IN V2  1. POST DATA ERROR', error);
+        // self.logger.error('[SIGN-IN] 2. POST DATA ERROR status', error.status);
+
+        if (error.status === 0) {
+
+          this.display = 'block';
+          this.signin_errormsg = 'Sorry, there was an error connecting to the server'
           this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
+        } else {
+          this.display = 'block';
+
+          this.signin_errormsg = error['error']['msg']
+          this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
+          // this.logger.log('SIGNIN USER - POST REQUEST ERROR ', error);
+          // this.logger.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
+          // console.log('[SIGN-IN] SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
+
         }
       }
       // tslint:disable-next-line:no-debugger
