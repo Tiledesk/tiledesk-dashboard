@@ -1188,6 +1188,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
+  goToProjectSettingsGeneral() {
+    this.router.navigate(['project/' + this.projectId + '/project-settings/general']);
+  } 
+
 
 
   // RISOLVE lo USE-CASE: L'UTENTE è NELLA HOME DEL PROGETTO A (DI CUI è OWNER)

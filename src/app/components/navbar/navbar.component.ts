@@ -166,7 +166,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     public wsRequestsService: WsRequestsService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
-    public LocalDbService: LocalDbService,
+    public localDbService: LocalDbService,
     private logger: LoggerService,
 
   ) {
@@ -605,6 +605,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
    * - WHEN IS DETECTED THE PROJECT PAGE OR THE LOGIN PAGE OR THE SIGNUP PAGE  THE "PENDING EMAIL VERIFICATION ALERT " IS NOT DISPLAYED
    */
   hidePendingEmailNotification() {
+  //  const hidePendingEmailAlert = this.localDbService.getFromStorage('hpea');
+
+  
     this.router.events.subscribe((val) => {
       if (this.location.path() !== '') {
         this.route = this.location.path();
@@ -614,7 +617,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
           (this.route === '/login') ||
           (this.route === '/signup') ||
           (this.route === '/create-project') ||
+          (this.route === '/configure-widget') ||
+          (this.route === '/install-widget') ||
           (this.route === '/forgotpsw') ||
+          (this.route.indexOf('/configure-widget') !== -1) ||
+          (this.route.indexOf('/install-widget') !== -1) ||
           (this.route.indexOf('/install-tiledesk') !== -1) ||
           (this.route.indexOf('/handle-invitation') !== -1) ||
           (this.route.indexOf('/signup-on-invitation') !== -1) ||
@@ -1131,7 +1138,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     if (this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
       this.notifyService.showUnservedNotication(contact_fullname, r.first_text, url)
 
-      const count = +this.LocalDbService.getForegrondNotificationsCount();
+      const count = +this.localDbService.getForegrondNotificationsCount();
       this.wsRequestsService.publishAndStoreForegroundRequestCount(count)
 
       this.shown_requests[r.id] = true;

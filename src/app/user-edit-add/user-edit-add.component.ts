@@ -817,7 +817,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.logger.error('[USER-EDIT-ADD] - INVITE USER  ERROR ', error);
 
       const invite_error = error['error']
-      console.error('[USER-EDIT-ADD] - INVITE USER  ERROR BODY ', invite_error);
+      // console.error('[USER-EDIT-ADD] - INVITE USER  ERROR BODY ', invite_error);
 
       if ((invite_error['success'] === false) && (invite_error['code'] === 4000)) {
         this.logger.error('[USER-EDIT-ADD] !!! Forbidden, you can not invite yourself')

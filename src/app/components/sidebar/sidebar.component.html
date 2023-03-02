@@ -35,8 +35,12 @@
     <ul style="margin-top: 0px;" class="nav">
 
       <!-- CHAT  {{'Chat' | translate}}-->
-      <li id="openchat-a" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
-        matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+      <li id="openchat-a" *ngIf="project" routerLinkActive="active" 
+        matTooltipClass="custom-mat-tooltip"
+        matTooltip="Chat" 
+        #tooltip="matTooltip" 
+        matTooltipPosition='right' 
+        matTooltipHideDelay="100">
         <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}"
           (click)="openChat()" style="cursor: pointer; text-align: center;height: 40px;">
           <span id="openchat-span" style="position: relative;top: 3px;vertical-align: middle;">
