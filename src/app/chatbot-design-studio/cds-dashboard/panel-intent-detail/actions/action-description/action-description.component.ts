@@ -1,6 +1,7 @@
 import { ACTIONS_LIST } from './../../../../utils';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Action } from 'app/models/intent-model';
+import { SatPopover } from '@ncstate/sat-popover';
 
 @Component({
   selector: 'cds-action-description',
@@ -9,6 +10,8 @@ import { Action } from 'app/models/intent-model';
 })
 export class ActionDescriptionComponent implements OnInit {
 
+  @ViewChild("descriptionTooltip") popover : SatPopover;
+  
   @Input() actionType: string;
   @Input() actionSelected: Action;
   @Input() showTip: boolean = false;
@@ -32,6 +35,13 @@ export class ActionDescriptionComponent implements OnInit {
   onChangeText(text: string){
    this.actionSelected._tdActionTitle = text
     // this.actionSel._tdActionTitle = text
+  }
+
+  manageTooltip(){
+    this.popover.toggle()
+    setTimeout(() => {
+      // this.popover.close()
+    }, 3000);
   }
 
 }
