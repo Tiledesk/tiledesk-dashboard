@@ -8,13 +8,23 @@
             <div class="email-field-box">
                 <label class="title-label">To</label>
                 <!-- <div class="text-editor-wpr" style="position: relative;"> -->
+                    <!-- [limitCharsText]="150"  -->
+                    <cds-textarea class="to-text-area" 
+                    [emoijPikerBtn]="false"
+                    [textLimitBtn]="false"
+                    [text]="actionTo" 
+                    [minRow]="1"
+                    [maxRow]="1"
+                    popoverVerticalAlign="above" 
+                    (onChange)="onEditableDivTextChange($event, 'to')">
+                </cds-textarea>
 
-                <mat-form-field class="box-textarea" appearance="fill">
+                <!-- <mat-form-field class="box-textarea" appearance="fill">
                     <input matInput type="email" placeholder="Destinatary" [(ngModel)]="action.to">
                     <mat-hint *ngIf="email_error">Email must be valid</mat-hint>
-                </mat-form-field>
+                </mat-form-field> -->
 
-                <!-- <input class="cds-input" type="email" placeholder="Destinatary" [(ngModel)]="action.to"> -->
+          
             </div>
         </div>
     </div>
