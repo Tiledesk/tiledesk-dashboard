@@ -17,7 +17,7 @@ export class ActionReplyComponent implements OnInit {
   // @Output() saveIntent = new EventEmitter();
   @Input() reply: ActionReply;
   @Input() typeAction: string;
-  @Input() listOfActions: Array<string>;
+  @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
   @Input() intent_display_name: string;
   // @Input() showSpinner: boolean;
   // @Input() openCardButton: boolean;

@@ -562,7 +562,7 @@ export class AuthService {
    * @param email
    * @param password
    */
-  signin(email: string, password: string, callback) {
+  signin(email: string, password: string, baseUrl:string, callback) {
     const self = this
 
     const httpOptions = {
@@ -575,8 +575,9 @@ export class AuthService {
     const body = { email: email, password: password }
     this.logger.log('[AUTH-SERV] - SIGNIN POST REQUEST BODY ', body)
 
-    const url = this.SIGNIN_BASE_URL
-    this.logger.log('[AUTH-SERV] - SIGNIN URL ', url)
+    // const url = this.SIGNIN_BASE_URL
+    const url = baseUrl + 'auth/signin';
+    console.log('[AUTH-SERV] - SIGNIN URL ', url)
 
     return this._httpClient
       .post(url, JSON.stringify(body), httpOptions)

@@ -106,14 +106,27 @@
 .actions-drawer-title {
   padding-bottom: 6px;
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 600;
   color: #9aa0a6;
+}
+
+.section-title{
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 23px;
+  margin-bottom: 5px;
+  width: 100%;
+  color: $action-item-color;
 }
 
 .actions-drawer-content {
   position: relative;
   margin-top: 24px;
-  padding-left: 30px;
+  padding: 0px 30px;
+
+  section{
+    margin-bottom: 20px
+  }
 }
 
 .actions-btns-wpr {

@@ -1,28 +1,26 @@
 <cds-action-description 
-        [actionType]="'INTENT'"
-        [actionSelected]="action">
+    [actionType]="'INTENT'"
+    [actionSelected]="action">
 </cds-action-description>
 
 <div class="content">
 
-    <div class="select-intent-box">
-
-        <div class="text-editor-wrapper">
-            <div class="field-box">
-                <label class="title-label">Go to block</label>
-                <cds-select
-                    [items]="intents"
-                    [bindLabelSelect]="'name'"
-                    [bindValueSelect]="'value'"
-                    [itemSelected]="action?.intentName"
-                    (onSelected)="onChangeSelect($event)">
-                </cds-select>
-                <!-- <cds-text id="text-condition" 
-                    [control]="actionIntentFormGroup.controls['intentName']"
-                    [autocompleteOptions]="intents">
-                </cds-text> -->
-            </div>
+    <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">Go to block</label>
+            <cds-select id="text-condition"
+                [items]="intents"
+                [bindLabelSelect]="'name'"
+                [bindValueSelect]="'value'"
+                [itemSelected]="action?.intentName"
+                (onSelected)="onChangeSelect($event)">
+            </cds-select>
+            <!-- <cds-text id="text-condition" 
+                [control]="actionIntentFormGroup.controls['intentName']"
+                [autocompleteOptions]="intents">
+            </cds-text> -->
         </div>
+    </div>
 
         <!-- <div>
             <label class="title-label">
@@ -48,7 +46,6 @@
             </ng-select>
         </div> -->
 
-    </div>
 
 
     <!-- <div class="form-group ng-select" style="width: 500px;">

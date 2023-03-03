@@ -7,6 +7,38 @@
     margin-right: 30px;
 }
 
+// #text-condition{
+//     position: relative;
+//     top: -4px;
+//     right: -45px;
+//     width: 88%;
+//     display: block;
+// }
+
+.text-editor-wrapper {
+    font-size: $font-size-base;
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 30px;    
+}
+
+.field-box {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    min-width: 90px;
+    gap: 10px;
+}
+
+.title-label {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 0px;
+}
+
 
 /** TEXT AREA **/
 mat-form-field.mat-focused ::ng-deep {

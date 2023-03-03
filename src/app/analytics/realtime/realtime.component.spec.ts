@@ -4,7 +4,7 @@ import { RealtimeComponent } from './realtime.component';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MomentModule } from 'angular2-moment';
+import { MomentModule } from 'ngx-moment';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';

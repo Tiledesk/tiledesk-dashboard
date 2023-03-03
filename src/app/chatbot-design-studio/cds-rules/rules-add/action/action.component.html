@@ -10,11 +10,9 @@
     </div> -->
     <div class="item-action-element">
         <label class="card-subtitle">Message:</label>
-        <div style="width: 100%;">
-            <cds-text id="text"
-                [control]="actionForm.controls[0].get('message.text')"
-                [autocompleteOptions]="autocompleteOptions">
-            </cds-text>
-        </div>
+        <cds-text id="text"
+            [control]="actionForm.controls[0].get('message.text')"
+            [autocompleteOptions]="autocompleteOptions">
+        </cds-text>
     </div>
 </div>

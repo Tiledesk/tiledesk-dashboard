@@ -23,6 +23,7 @@ import { DepartmentService } from 'app/services/department.service';
 import { CdsPublishOnCommunityModalComponent } from './cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NotifyService } from 'app/core/notify.service';
+import { LocalDbService } from 'app/services/users-local-db.service';
 
 const swal = require('sweetalert');
 
@@ -35,8 +36,8 @@ const swal = require('sweetalert');
 export class CdsDashboardComponent implements OnInit {
 
   listOfIntents: Array<Intent>;
-  listOfActions: Array<{name: string, value: string, icon?:string}>;
-  listOfVariables: {userDefined:Array<any>, systemDefined: Array<any>};
+  listOfActions: Array<{ name: string, value: string, icon?: string }>;
+  listOfVariables: { userDefined: Array<any>, systemDefined: Array<any> };
   intentSelected: Intent;
   elementIntentSelected: any;
   newIntentName: string;
@@ -71,6 +72,22 @@ export class CdsDashboardComponent implements OnInit {
   public_Key: string;
   TRY_ON_WA: boolean;
 
+  // Attach bot to dept
+  displayModalAttacchBotToDept: string;
+  dept_id: string;
+  DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
+  PRESENTS_MODAL_ATTACH_BOT_TO_DEPT: boolean = false;
+  depts_without_bot_array = [];
+  selected_bot_id: string;
+  selected_bot_name: string;
+  HAS_CLICKED_HOOK_BOOT_TO_DEPT: boolean = false;
+  HAS_COMPLETED_HOOK_BOOT_TO_DEPT: boolean = false;
+  HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS: boolean = false;
+  HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR: boolean = false;
+  translateparamBotName: any;
+
+  popup_visibility: string = 'none'
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -86,6 +103,7 @@ export class CdsDashboardComponent implements OnInit {
     private el: ElementRef,
     public dialog: MatDialog,
     private notify: NotifyService,
+    public usersLocalDbService: LocalDbService,
   ) { }
 
   // SYSTEM FUNCTIONS //
@@ -93,6 +111,7 @@ export class CdsDashboardComponent implements OnInit {
     this.getTranslations();
     this.auth.checkRoleForCurrentProject();
     this.getUrlParams();
+    this.diplayPopup();
     // this.getFaqKbId();
     if (this.router.url.indexOf('/createfaq') !== -1) {
       this.logger.log('[CDS DSHBRD] HAS CLICKED CREATE ');
@@ -151,9 +170,9 @@ export class CdsDashboardComponent implements OnInit {
       if (window && window['tiledesk']) {
         this.logger.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
 
-        if(status==='hide'){
+        if (status === 'hide') {
           window['tiledesk'].hide();
-        }else if(status === 'show'){
+        } else if (status === 'show') {
           window['tiledesk'].show();
         }
         // alert('signin reinit');
@@ -215,6 +234,7 @@ export class CdsDashboardComponent implements OnInit {
       this.logger.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
       if (chatbot) {
         this.selectedChatbot = chatbot
+        this.translateparamBotName = { bot_name: this.selectedChatbot.name }
       }
 
     }, (error) => {
@@ -334,7 +354,7 @@ export class CdsDashboardComponent implements OnInit {
   /** ADD INTENT  */
   private creatIntent() {
     this.spinnerCreateIntent = true
-    this.logger.log('[CDS DSHBRD] creatIntent spinnerCreateIntent ',  this.spinnerCreateIntent)
+    this.logger.log('[CDS DSHBRD] creatIntent spinnerCreateIntent ', this.spinnerCreateIntent)
     this.startUpdatedIntent.next(true)
     this.logger.log('creatIntent')
     this.showSpinner = true;
@@ -375,7 +395,7 @@ export class CdsDashboardComponent implements OnInit {
       const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
 
       this.showSpinner = false;
-     this.logger.log('[CDS DSHBRD] creatIntent RES ', intent);
+      this.logger.log('[CDS DSHBRD] creatIntent RES ', intent);
       if (intent) {
 
         //SUCCESS STATE
@@ -399,7 +419,7 @@ export class CdsDashboardComponent implements OnInit {
     }, (error) => {
       this.showSpinner = false;
       this.spinnerCreateIntent = false
-      this.logger.log('[CDS DSHBRD] creatIntent ERROR spinnerCreateIntent ',  this.spinnerCreateIntent)
+      this.logger.log('[CDS DSHBRD] creatIntent ERROR spinnerCreateIntent ', this.spinnerCreateIntent)
       this.logger.error('[CDS DSHBRD] CREATED FAQ - ERROR ', error);
       // if (error && error['status']) {
       //   this.error_status = error['status']
@@ -424,7 +444,7 @@ export class CdsDashboardComponent implements OnInit {
     }, () => {
       this.showSpinner = false;
       this.spinnerCreateIntent = true
-      this.logger.log('[CDS DSHBRD] creatIntent COMPLETE spinnerCreateIntent ',  this.spinnerCreateIntent)
+      this.logger.log('[CDS DSHBRD] creatIntent COMPLETE spinnerCreateIntent ', this.spinnerCreateIntent)
       this.logger.log('[CDS DSHBRD] creatIntent * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
       // this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
@@ -533,7 +553,9 @@ export class CdsDashboardComponent implements OnInit {
 
   /** Go back to previous page */
   goBack() {
-    this.location.back();
+    // this.location.back();
+
+    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
     this.hideShowWidget('show')
   }
 
@@ -562,20 +584,20 @@ export class CdsDashboardComponent implements OnInit {
   /** appdashboard-intent-list: Select intent */
   onReturnListOfIntents(intents) {
     this.listOfIntents = intents;
-    this.listOfActions = intents.map(a =>{
-      if(a.intent_display_name.trim() === 'start'){
-        return {name: a.intent_display_name, value: '#'+a.intent_id, icon:'rocket_launch'}
-      }else if(a.intent_display_name.trim() === 'defaultFallback'){
-        return {name: a.intent_display_name, value: '#'+a.intent_id, icon:'undo'}
-      }else {
-        return {name: a.intent_display_name, value: '#'+a.intent_id, icon:'label_important_outline'}
+    this.listOfActions = intents.map(a => {
+      if (a.intent_display_name.trim() === 'start') {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
+      } else if (a.intent_display_name.trim() === 'defaultFallback') {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'undo' }
+      } else {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
       }
-      
+
     });
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
-    
-    retriveListOfVariables(this.listOfIntents )
+
+    retriveListOfVariables(this.listOfIntents)
   }
 
   onSelectIntent(intent: Intent) {
@@ -624,7 +646,7 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = event.action
     this.elementIntentSelected['index'] = event.index
     this.elementIntentSelected['maxLength'] = event.maxLength
-    this.elementIntentSelected['intent_display_name']= event.intent_display_name
+    this.elementIntentSelected['intent_display_name'] = event.intent_display_name
     this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
   }
 
@@ -684,28 +706,129 @@ export class CdsDashboardComponent implements OnInit {
   //   this.newIntentName = event
   // }
 
+  publish() {
+    this.faqKbService.publish(this.selectedChatbot).subscribe((data) => {
+      this.logger.log('[CDS DSBRD] publish  - RES ', data)
+    }, (error) => {
+
+      this.logger.error('[CDS DSBRD] publish ERROR ', error);
+    }, () => {
+      this.logger.log('[CDS DSBRD] publish * COMPLETE *');
+      this.notify.showWidgetStyleUpdateNotification('Successfully published', 2, 'done');
+
+    });
+    if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === true) {
+     this.present_modal_attacch_bot_to_dept()
+  // } else {
+    
+  }
+}
+
+present_modal_attacch_bot_to_dept() {
+  this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
+  this.displayModalAttacchBotToDept = 'block'
+
+}
+
+onCloseModalAttacchBotToDept() { 
+  this.displayModalAttacchBotToDept = 'none'
+}
+
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
       this.logger.log('[CDS DSBRD] - DEPT GET DEPTS ', departments);
       this.logger.log('[CDS DSBRD] - DEPT BOT ID ', this.id_faq_kb);
 
       if (departments) {
-        departments.forEach((dept: any) => {
-          // this.logger.log('[PANEL-INTENT-HEADER] - DEPT', dept);
 
+        departments.forEach((dept: any) => {
+          // this.logger.log('[CDS DSBRD] - DEPT', dept);
           if (dept.default === true) {
             this.defaultDepartmentId = dept._id;
             this.logger.log('[CDS DSBRD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
           }
-
         })
+
+        const depts_length = departments.length
+        this.logger.log('[CDS DSBRD] ---> GET DEPTS DEPTS LENGHT ', depts_length);
+
+        if (depts_length === 1) {
+          this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = false
+          this.dept_id = departments[0]['_id']
+
+          this.logger.log('[CDS DSBRD]  --->  DEFAULT DEPT HAS BOT ', departments[0].hasBot);
+          if (departments[0].hasBot === true) {
+
+            this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT ');
+            // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
+            // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
+            // this.logger.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
+            this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+          } else {
+            this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
+            this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+          }
+        }
+
+        if (depts_length > 1) {
+          this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = true;
+          departments.forEach(dept => {
+
+            if (dept.hasBot === true) {
+              this.logger.log('[CDS DSBRD] --->  DEPT HAS BOT ');
+              this.logger.log('[CDS DSBRD] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+            } else {
+
+              this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
+        
+              this.logger.log('[CDS DSBRD] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+
+              this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
+            }
+
+          });
+
+          this.logger.log('[CDS DSBRD] --->  DEPT ARRAY OF DEPT WITHOUT BOT ', this.depts_without_bot_array);
+        }
+
       }
     }, error => {
-
       this.logger.error('[CDS DSBRD] - DEPT - GET DEPTS  - ERROR', error);
     }, () => {
       this.logger.log('[CDS DSBRD] - DEPT - GET DEPTS - COMPLETE')
+    });
+  }
 
+  onSelectBotId() {
+    this.logger.log('[CDS DSBRD] --->  onSelectBotId ', this.selected_bot_id);
+    this.dept_id = this.selected_bot_id
+    const hasFound = this.depts_without_bot_array.filter((obj: any) => {
+      return obj.id === this.selected_bot_id;
+    });
+    this.logger.log('[CDS DSBRD]  onSelectBotId found', hasFound);
+
+    if (hasFound.length > 0) {
+      this.selected_bot_name = hasFound[0]['name']
+    }
+  }
+
+  hookBotToDept() {
+    this.HAS_CLICKED_HOOK_BOOT_TO_DEPT = true;
+    this.departmentService.updateExistingDeptWithSelectedBot(this.dept_id, this.selectedChatbot._id).subscribe((res) => {
+      this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+    }, (error) => {
+      this.logger.error('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
+
+      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
+      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR = true;
+
+      this.logger.error('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
+    }, () => {
+      this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE ');
+
+      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
+      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS = true;
+      this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
     });
   }
 
@@ -715,7 +838,6 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   openTestSiteInPopupWindow() {
-
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
 
@@ -759,18 +881,7 @@ export class CdsDashboardComponent implements OnInit {
     });
   }
 
-  publish() {
-    this.faqKbService.publish(this.selectedChatbot).subscribe((data) => {
-      this.logger.log('[CDS DSBRD] publish  - RES ', data)
-    }, (error) => {
-  
-      this.logger.error('[CDS DSBRD] publish ERROR ', error);
-    }, () => {
-      this.logger.log('[CDS DSBRD] publish * COMPLETE *');
-      this.notify.showWidgetStyleUpdateNotification('Successfully published', 2, 'done');
-      
-    });
-  }
+
 
   _publishOnCommunity() {
     swal({
@@ -837,6 +948,25 @@ export class CdsDashboardComponent implements OnInit {
           this.logger.log('[CDS DSBRD] removeFromCommunity (else)')
         }
       });
+
+  }
+
+
+  diplayPopup() {
+    const hasClosedPopup = this.usersLocalDbService.getFromStorage('hasclosedcdspopup')
+    this.logger.log('[CDS DSBRD] hasClosedPopup', hasClosedPopup)
+    if (hasClosedPopup === null) {
+      this.popup_visibility = 'block'
+      this.logger.log('[CDS DSBRD] popup_visibility', this.popup_visibility)
+    }
+    if (hasClosedPopup === 'true') {
+      this.popup_visibility = 'none'
+    }
+  }
+  closeRemenberToPublishPopup() {
+    this.logger.log('[CDS DSBRD] closeRemenberToPublishPopup')
+    this.usersLocalDbService.setInStorage('hasclosedcdspopup', 'true')
+    this.popup_visibility = 'none'
 
   }
 

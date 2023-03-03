@@ -1,20 +1,42 @@
  <div class="action_welcome">
-    <div class="action-title">
-        <img [src]="action[actionType]?.src" [title]="action[actionType]?.name">
-        <p class="text-action">{{action[actionType]?.name}}</p>
-        <!-- <p class="action-type">{{action[actionType]?.name}}</p> -->
+
+    <div class="section action-description" *ngIf="action[actionType]?.description || showTip">
+        <div *ngIf="action[actionType]?.description"
+            [satPopoverAnchor]="descriptionTooltip"
+            (click)="manageTooltip()">
+            <span class="material-icons">info</span>
+        </div>
+        <div *ngIf="!action[actionType]?.description">
+            <span class="material-icons">info</span>
+        </div>
+        <div [innerHtml]="tipText" *ngIf="showTip"></div>
     </div>
-    <cds-text
-        [text]="actionSelected?._tdActionTitle"
-        [placeholder]="titlePlaceholder"
-        (onChange)="onChangeText($event)">
-    </cds-text>
+
+    <div class="section">
+        <div class="action-title">
+            <img [src]="action[actionType]?.src" [title]="action[actionType]?.name">
+            <p class="text-action">{{action[actionType]?.name}}</p>
+            <!-- <p class="action-type">{{action[actionType]?.name}}</p> -->
+        </div>
+        <cds-text
+            [text]="actionSelected?._tdActionTitle"
+            [placeholder]="titlePlaceholder"
+            (onChange)="onChangeText($event)">
+        </cds-text>
+    </div>
 
     <!-- TIP -->
-    <div class="action-tip_wpr" *ngIf="showTip">
+    <!-- <div class="action-tip_wpr" >
         <span class="material-icons">info</span>
         <div [innerHtml]="tipText"></div>
-    </div>
+    </div> -->
 </div>
 
-    <!-- <div class="action-description" [innerHTML]="action[actionType]?.description"></div> -->
+<sat-popover #descriptionTooltip id="descriptionTooltip" hasBackdrop verticalAlign="center" horizontalAlign="after" (backdropClicked)="descriptionTooltip.close()" panelClass="description-tooltip">
+   <div class="tooltip-wrp">
+        <div class="caret_tooltip"></div>
+        <span [innerHTML]="action[actionType]?.description"></span>
+   </div>
+</sat-popover>
+
+<!-- <div class="action-description" [innerHTML]="action[actionType]?.description"></div> -->

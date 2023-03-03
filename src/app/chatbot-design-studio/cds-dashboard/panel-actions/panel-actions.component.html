@@ -17,244 +17,244 @@
       </div>
     </div>
   </div>
+
+
   <div class="actions-drawer-content">
 
-    <!-- ---------------------------------- -->
-    <!-- First row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
 
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.REPLY)">
-              <img [src]="ACTIONS_LIST['REPLY'].src" [title]="ACTIONS_LIST['REPLY'].name">
-            </button>
+    <section>
+      <div class="section-title">Most used</div>
+      <!-- ---------------------------------- -->
+      <!-- First row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.REPLY)">
+                <img [src]="ACTIONS_LIST['REPLY'].src" [title]="ACTIONS_LIST['REPLY'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['REPLY'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['REPLY'].name}}</div>
         </div>
-      </div>
-
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.JSON_CONDITION)">
-              <img [src]="ACTIONS_LIST['JSON_CONDITION'].src" [title]="ACTIONS_LIST['JSON_CONDITION'].name" >
-            </button>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.AGENT)">
+                <img [src]="ACTIONS_LIST['AGENT'].src" [title]="ACTIONS_LIST['AGENT'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['AGENT'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['JSON_CONDITION'].name}}</div>
         </div>
+
       </div>
-
-    </div>
-
-    <!-- ---------------------------------- -->
-    <!-- NEW row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
+      <!-- ---------------------------------- -->
+      <!-- Second row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
       
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.RANDOM_REPLY)">
-              <img [src]="ACTIONS_LIST['RANDOM_REPLY'].src" [title]="ACTIONS_LIST['RANDOM_REPLY'].name">
-            </button>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.RANDOM_REPLY)">
+                <img [src]="ACTIONS_LIST['RANDOM_REPLY'].src" [title]="ACTIONS_LIST['RANDOM_REPLY'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['RANDOM_REPLY'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['RANDOM_REPLY'].name}}</div>
         </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CLOSE)">
+                <img [src]="ACTIONS_LIST['CLOSE'].src" [title]="ACTIONS_LIST['CLOSE'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['CLOSE'].name}}</div>
+          </div>
+        </div>
+  
+      </div>
+      <!-- ---------------------------------- -->
+      <!-- Third row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.OPEN_HOURS)">
+                <img [src]="ACTIONS_LIST['OPEN_HOURS'].src" [title]="ACTIONS_LIST['OPEN_HOURS'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['OPEN_HOURS'].name}}</div>
+          </div>
+        </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ONLINE_AGENTS)">
+                <img [src]="ACTIONS_LIST['ONLINE_AGENTS'].src" [title]="ACTIONS_LIST['ONLINE_AGENTS'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['ONLINE_AGENTS'].name}}</div>
+          </div>
+        </div>
+
       </div>
 
-    
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.WEB_REQUEST)">
-              <img [src]="ACTIONS_LIST['WEB_REQUEST'].src" [title]="ACTIONS_LIST['WEB_REQUEST'].name">
-            </button>
+    </section>
+
+
+    <section>
+      <div class="section-title">Flow</div>
+      <!-- ---------------------------------- -->
+      <!-- First row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+      
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.JSON_CONDITION)">
+                <img [src]="ACTIONS_LIST['JSON_CONDITION'].src" [title]="ACTIONS_LIST['JSON_CONDITION'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['JSON_CONDITION'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['WEB_REQUEST'].name}}</div>
         </div>
-      </div>
-
-    </div>
-
-    <!-- ---------------------------------- -->
-    <!-- Second row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.INTENT)">
-              <img [src]="ACTIONS_LIST['INTENT'].src" [title]="ACTIONS_LIST['INTENT'].name">
-            </button>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.INTENT)">
+                <img [src]="ACTIONS_LIST['INTENT'].src" [title]="ACTIONS_LIST['INTENT'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['INTENT'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['INTENT'].name}}</div>
         </div>
+  
       </div>
+      <!-- ---------------------------------- -->
+      <!-- Second row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
 
-
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.AGENT)">
-              <img [src]="ACTIONS_LIST['AGENT'].src" [title]="ACTIONS_LIST['AGENT'].name">
-            </button>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ASSIGN_VARIABLE)">
+                <img [src]="ACTIONS_LIST['ASSIGN_VARIABLE'].src" [title]="ACTIONS_LIST['ASSIGN_VARIABLE'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['ASSIGN_VARIABLE'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['AGENT'].name}}</div>
         </div>
-      </div>
-    </div>
-
-    <!-- ---------------------------------- -->
-    <!-- Third row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.OPEN_HOURS)">
-              <img [src]="ACTIONS_LIST['OPEN_HOURS'].src" [title]="ACTIONS_LIST['OPEN_HOURS'].name">
-            </button>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.DELETE_VARIABLE)">
+                <img [src]="ACTIONS_LIST['DELETE_VARIABLE'].src" [title]="ACTIONS_LIST['DELETE_VARIABLE'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['DELETE_VARIABLE'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['OPEN_HOURS'].name}}</div>
         </div>
+  
       </div>
+      <!-- ---------------------------------- -->
+      <!-- Third row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
 
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CHANGE_DEPARTMENT)">
-              <img [src]="ACTIONS_LIST['CHANGE_DEPARTMENT'].src" [title]="ACTIONS_LIST['CHANGE_DEPARTMENT'].name">
-            </button>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.REPLACE_BOT)">
+                <img [src]="ACTIONS_LIST['REPLACE_BOT'].src" [title]="ACTIONS_LIST['REPLACE_BOT'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['REPLACE_BOT'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['CHANGE_DEPARTMENT'].name}}</div>
         </div>
-      </div>
-
-    </div>
-
-
-    <!-- ---------------------------------- -->
-    <!--  Sixth row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon" 
-            matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 
-            matTooltip="Coming Soon" 
-            #tooltip="matTooltip"
-            matTooltipPosition='below' 
-            matTooltipHideDelay="100">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ASSIGN_VARIABLE)">
-              <img [src]="ACTIONS_LIST['ASSIGN_VARIABLE'].src" [title]="ACTIONS_LIST['ASSIGN_VARIABLE'].name">
-            </button>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.WAIT)">
+                <img [src]="ACTIONS_LIST['WAIT'].src" [title]="ACTIONS_LIST['WAIT'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['WAIT'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['ASSIGN_VARIABLE'].name}}</div>
         </div>
-      </div>
 
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.DELETE_VARIABLE)">
-              <img [src]="ACTIONS_LIST['DELETE_VARIABLE'].src" [title]="ACTIONS_LIST['DELETE_VARIABLE'].name">
-            </button>
+      </div>
+    </section>
+
+
+    <section>
+      <div class="section-title">Integrations</div>
+      <!-- ---------------------------------- -->
+      <!-- First row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+      
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.WEB_REQUEST)">
+                <img [src]="ACTIONS_LIST['WEB_REQUEST'].src" [title]="ACTIONS_LIST['WEB_REQUEST'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['WEB_REQUEST'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['DELETE_VARIABLE'].name}}</div>
         </div>
-      </div>
-
-
-
-    </div>
-
-    <!-- ---------------------------------- -->
-    <!-- Sixth row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
-
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.HIDE_MESSSAGE)">
-              <img [src]="ACTIONS_LIST['HIDE_MESSSAGE'].src" [title]="ACTIONS_LIST['HIDE_MESSSAGE'].name">
-            </button>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.EMAIL)">
+                <img [src]="ACTIONS_LIST['EMAIL'].src" [title]="ACTIONS_LIST['EMAIL'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['EMAIL'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['HIDE_MESSSAGE'].name}}</div>
         </div>
+  
       </div>
+    </section>
 
-
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.EMAIL)">
-              <img [src]="ACTIONS_LIST['EMAIL'].src" [title]="ACTIONS_LIST['EMAIL'].name">
-            </button>
+    <section>
+      <div class="section-title">Special</div>
+      <!-- ---------------------------------- -->
+      <!-- First row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+      
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.HIDE_MESSSAGE)">
+                <img [src]="ACTIONS_LIST['HIDE_MESSSAGE'].src" [title]="ACTIONS_LIST['HIDE_MESSSAGE'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['HIDE_MESSSAGE'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['EMAIL'].name}}</div>
         </div>
-      </div>
-    </div>
-    <!-- ---------------------------------- -->
-    <!-- Seventh row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
-
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ONLINE_AGENTS)">
-              <img [src]="ACTIONS_LIST['ONLINE_AGENTS'].src" [title]="ACTIONS_LIST['ONLINE_AGENTS'].name">
-            </button>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CHANGE_DEPARTMENT)">
+                <img [src]="ACTIONS_LIST['CHANGE_DEPARTMENT'].src" [title]="ACTIONS_LIST['CHANGE_DEPARTMENT'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['CHANGE_DEPARTMENT'].name}}</div>
           </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['ONLINE_AGENTS'].name}}</div>
         </div>
+  
       </div>
-
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CLOSE)">
-              <img [src]="ACTIONS_LIST['CLOSE'].src" [title]="ACTIONS_LIST['CLOSE'].name">
-            </button>
-          </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['CLOSE'].name}}</div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ---------------------------------- -->
-    <!-- Eighth row -->
-    <!-- ---------------------------------- -->
-    <div class="actions-btns-wpr">
-
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.WAIT)">
-              <img [src]="ACTIONS_LIST['WAIT'].src" [title]="ACTIONS_LIST['WAIT'].name">
-            </button>
-          </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['WAIT'].name}}</div>
-        </div>
-      </div>
-
-      <div class="action-box-wpr">
-        <div class="action-box">
-          <div class="action-btn-icon">
-            <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.REPLACE_BOT)">
-              <img [src]="ACTIONS_LIST['REPLACE_BOT'].src" [title]="ACTIONS_LIST['REPLACE_BOT'].name">
-            </button>
-          </div>
-          <div class="action-btn-text">{{ACTIONS_LIST['REPLACE_BOT'].name}}</div>
-        </div>
-      </div>
-
-    </div>
+    </section>
 
     <!-- ---------------------------------- -->
     <!-- Not used -->

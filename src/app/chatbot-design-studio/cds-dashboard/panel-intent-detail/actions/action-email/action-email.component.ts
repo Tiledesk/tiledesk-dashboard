@@ -14,8 +14,10 @@ export class ActionEmailComponent implements OnInit, OnChanges {
  
 
   email_error: boolean = false;
+  public actionTo: string = ''
   public actionSubject: string = ''
   public actionBody: string = ''
+
   // isOpenSetAttributesPanel: boolean = false
   // intents = ['uno', 'due', 'tre'];
 
@@ -27,6 +29,7 @@ export class ActionEmailComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
    this.logger.log("[ACTION-EMAIL] elementSelected: ", this.action)
+    this.actionTo = this.action.to
     this.actionSubject = this.action.subject
     this.actionBody = this.action.text
   }

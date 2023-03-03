@@ -8,7 +8,7 @@
     <label class="title-label">Choose a bot</label>
 
     <div class="select-bot-box">
-        <ng-select 
+        <!-- <ng-select 
             class = "form-control-select" 
             appendTo="body"
             [items] = "chatbots_name_list" 
@@ -17,7 +17,15 @@
             [clearable] = false
             [(ngModel)] = "action.botName"
             (change) = "onChangeActionButton($event)">
-        </ng-select>
+        </ng-select> -->
+
+        <cds-select id="text-condition"
+            [items]="chatbots_name_list"
+            [bindLabelSelect]="'name'"
+            [bindValueSelect]="'value'"
+            [itemSelected]="action?.botName"
+            (onSelected)="onChangeSelect($event)">
+        </cds-select>
     </div>
 
 </div>
