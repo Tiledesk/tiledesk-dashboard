@@ -97,6 +97,7 @@ import { BaseFilterComponent } from './cds-dashboard/panel-intent-detail/actions
 import { VariableListComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/variable-list/variable-list.component';
 import { TextEditableDivComponent } from './cds-base-element/text-editable-div/text-editable-div.component';
 import { ActionWebRequestComponent } from './cds-dashboard/panel-intent-detail/actions/action-web-request/action-web-request.component';
+import { AttributesComponent } from './cds-base-element/attributes/attributes.component';
 
 @NgModule({
   declarations: [
@@ -156,7 +157,8 @@ import { ActionWebRequestComponent } from './cds-dashboard/panel-intent-detail/a
     BaseFilterComponent,
     VariableListComponent,
     TextEditableDivComponent,
-    ActionWebRequestComponent
+    ActionWebRequestComponent,
+    AttributesComponent
   ],
   imports: [
     A11yModule,

@@ -93,6 +93,11 @@
                     [itemSelected]="buttonAction"
                     (onSelected)="onChangeSelect($event)">
                 </cds-select>
+
+                <cds-attributes
+                [attributes]="buttonAttributes"
+                (onChange)="onChangeAttributes($event)"
+                ></cds-attributes>
                 <!-- <cds-text id="text-condition"
                     [text]="buttonAction"
                     [autocompleteOptions]="listOfActions"

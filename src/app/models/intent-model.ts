@@ -279,6 +279,7 @@ export interface Button {
     link?: string,
     target?: string,
     action?: string,
+    attributes?: any,
     show_echo?: boolean
 }
 
