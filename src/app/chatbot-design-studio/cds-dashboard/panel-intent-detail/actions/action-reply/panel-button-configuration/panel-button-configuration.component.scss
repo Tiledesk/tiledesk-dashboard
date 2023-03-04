@@ -9,6 +9,7 @@
     border-left: solid 2px #3ea9f5;
     box-shadow: 0px 0px 42px 2px rgb(0, 0, 0, .78);
 }
+
 .button-header-tab:before {
     content: "";
     position: absolute;
@@ -19,7 +20,6 @@
     height: 1px;
     background-color: #6474913d;
 }
-
 
 .buttons-drawer-title{
     font-size: 18px;
@@ -93,22 +93,17 @@
             padding: 0em 3em;
         }
     }
+    .cds-attributes {
+        margin-top: 20px;
+        display: block;
+    }
 }
-.button-content-tab::before{
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-    height: 1px;
-    background-color: #6474913d;
-}
+
 
 
 .button-footer-tab {
     min-height: 50px;
-    border-top: 0px solid $color-txt-3-hex;
+    border-top: 1px solid #6474913d;
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
     button {

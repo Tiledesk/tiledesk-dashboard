@@ -95,8 +95,9 @@
                 </cds-select>
 
                 <cds-attributes
+                class = "cds-attributes"
                 [attributes]="buttonAttributes"
-                (onChange)="onChangeAttributes($event)"
+                (changeAttributes)="onChangeAttributes($event)"
                 ></cds-attributes>
                 <!-- <cds-text id="text-condition"
                     [text]="buttonAction"

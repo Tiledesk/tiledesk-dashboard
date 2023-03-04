@@ -234,8 +234,8 @@ export class PanelButtonConfigurationComponent implements OnInit {
   }
 
   onChangeAttributes(attributes:any){
-    console.log('attributes: ', attributes);
     this.button.attributes = attributes;
+    // console.log('attributes: ', this.button, attributes);
     this.saveButton.emit(this.button);
   }
 }

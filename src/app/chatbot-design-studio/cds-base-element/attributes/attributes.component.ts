@@ -8,42 +8,64 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 export class AttributesComponent implements OnInit {
 
   @Output() changeAttributes = new EventEmitter();
-  @Input() attributes: Array<any>;
+  @Input() attributes: string;
 
-  newAttrinute: any = {"key": "", "value": ""};
+  newAttributes: Array<any> = [];
 
   constructor() { }
 
   ngOnInit(): void {
-    if(!this.attributes){
-      this.attributes = [];
+    let that = this;
+    let parseAttributes = {};
+    if(this.isValidJson(this.attributes)){
+      parseAttributes = JSON.parse(this.attributes);
     }
-    this.attributes.push(this.newAttrinute);
+    // console.log('AttributesComponent:: ', parseAttributes);
+    Object.keys(parseAttributes).forEach(key => {
+      // console.log(key); // 👉️ name, country
+      // console.log(this.attributes[key]); // 👉️ James, Chile
+      const newAtt = {"key":key, "value": parseAttributes[key]};
+      this.newAttributes.push(newAtt);
+    });
+    this.newAttributes.push({key:"", value:""});
+  }
+
+
+  private isValidJson(json) {
+    try {
+      JSON.parse(json);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   onChangeAttributes(attribute: any, index: number){
-    console.log('onChangeAttributes:: ', attribute, index);
+    let that = this;
+    // console.log('onChangeAttributes:: ', attribute, index);
     if(attribute.key.length>0 || attribute.value.length>0){
-      console.log('sto scrivendo:: ');
-      this.changeAttributes.emit(this.attributes);
-      if (index == this.attributes.length-1){
-        this.attributes.push({"key": "", "value": ""});
+      //console.log('sto scrivendo:: ');
+      if (index == this.newAttributes.length-1){
+        this.newAttributes.push({key:"", value:""});
       }
     } else {
-
-      let that = this;
-      this.attributes.forEach(function(item, index, object) {
+      this.newAttributes.forEach(function(item, index, object) {
         if(!item.key && !item.value){
-          if (index < that.attributes.length-1){
+          if (index < that.newAttributes.length-1){
             object.splice(index, 1);
           }
         }
       });
-      // this.attributes.push({"key": "", "value": ""});
-      this.changeAttributes.emit(this.attributes);
-      console.log('onChangeAttributes:: pop ', this.attributes);
     }
-    
+    let attributes = {};
+    this.newAttributes.forEach(function(item) {
+      if(item.key || item.value){
+        attributes[item.key] = item.value;
+      }
+    });
+    this.attributes = JSON.stringify(attributes);
+    // console.log("------- >>>> ", this.attributes);
+    this.changeAttributes.emit(this.attributes);
   }
 
 }

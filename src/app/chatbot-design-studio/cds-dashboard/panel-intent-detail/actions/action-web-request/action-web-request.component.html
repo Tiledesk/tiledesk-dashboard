@@ -34,10 +34,17 @@
     </div>
     
     <div class="cds-web-request-row">
+        <cds-attributes
+            *ngIf="methodSelectedHeader"
+            class="cds-attributes"
+            [attributes]="jsonHeader"
+            (changeAttributes)="onChangeAttributes($event)"
+        ></cds-attributes>
         <textarea
+            *ngIf="methodSelectedBody"
             [ngClass]="{'jsonError': !jsonIsValid}"
             class = "text-editable-div"
-            [(ngModel)]="jsonText"
+            [(ngModel)]="jsonBody"
             [maxlength]="limitCharsText"
             cdkAutosizeMinRows="5"
             cdkAutosizeMaxRows="10"
@@ -45,7 +52,8 @@
         </textarea>
     </div>
 
-    <div class="cds-web-request-row-error center json-error-yes" 
+    <div *ngIf="methodSelectedBody"
+        class="cds-web-request-row-error center json-error-yes" 
         [ngStyle]="{'opacity':jsonIsValid ? '0' : '1' }">
         <span>{{errorMessage}}</span>
     </div>

@@ -19,8 +19,10 @@ export class ActionJsonConditionComponent implements OnInit {
   @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
 
   actionJsonConditionFormGroup: FormGroup
-
   booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
+
+  trueIntentAttributes: string = "";
+  falseIntentAttributes: string = "";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,6 +51,8 @@ export class ActionJsonConditionComponent implements OnInit {
         // this.action = Object.assign(this.action, this.actionJsonConditionFormGroup.value)
       }
     })
+    this.trueIntentAttributes = this.action.trueIntentAttributes;
+    this.falseIntentAttributes = this.action.falseIntentAttributes;
   }
 
   private setFormValue(){
@@ -133,4 +137,11 @@ export class ActionJsonConditionComponent implements OnInit {
     this.action[type]=event.value
   }
 
+  onChangeAttributesTrue(attributes:any){
+    this.action.trueIntentAttributes = attributes;
+  }
+
+  onChangeAttributesFalse(attributes:any){
+    this.action.falseIntentAttributes = attributes;
+  }
 }

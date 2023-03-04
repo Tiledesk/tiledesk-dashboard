@@ -20,11 +20,14 @@ export class ActionWebRequestComponent implements OnInit {
   limitCharsText = TEXT_CHARS_LIMIT;
   jsonHeader: string; 
   jsonBody: string;
-  jsonText: string;
+  // jsonText: string;
   jsonIsValid = true;
   errorMessage: string;
   methodSelectedHeader = true;
   methodSelectedBody = false;
+
+
+  headerAttributes: any;
 
   constructor(
     private logger: LoggerService
@@ -39,25 +42,18 @@ export class ActionWebRequestComponent implements OnInit {
   // CUSTOM FUNCTIONS //
   private initialize(){
     this.methods = Object.values(TYPE_METHOD_REQUEST);
-    // this.jsonHeader = this.action.headersString;
-    // this.jsonBody = this.action.jsonBody;
-    this.jsonHeader = JSON.parse(this.action.headersString);
-    this.jsonBody = JSON.parse(this.action.jsonBody);
-    // this.jsonText = this.jsonHeader;
-    this.jsonIsValid = this.isValidJson(this.jsonHeader);
-    this.setActionWebRequest();
-    this.switchJsonText();
-    // console.log('jsonIsValid:: ',this.jsonIsValid);
+    this.jsonHeader = this.action.headersString;
+    this.jsonIsValid = this.isValidJson(this.action.jsonBody);
+    if(this.jsonIsValid){
+      this.jsonBody = this.action.jsonBody;
+      this.jsonBody = this.formatJSON(this.jsonBody, "\t");
+    }
   }
 
   private setActionWebRequest(){
-    this.action.headersString = JSON.stringify(this.jsonHeader);
-    this.action.jsonBody = JSON.stringify(this.jsonBody);
-  }
-
-  private switchJsonText(){
-    this.jsonText = this.jsonHeader;
-    this.jsonText = this.formatJSON(this.jsonText, "\t");
+    // this.action.headersString = JSON.stringify(this.jsonHeader);
+    // this.action.jsonBody = JSON.stringify(this.jsonBody);
+    this.action.jsonBody = this.jsonBody;
   }
 
   private formatJSON(input, indent) {
@@ -92,15 +88,9 @@ export class ActionWebRequestComponent implements OnInit {
   }
 
   onChangeTextarea(e){
-    // this.logger.log('onChangeTextarea:: ', e);
-    if(this.methodSelectedHeader){
-      this.jsonHeader = this.jsonText;
-    } else if(this.methodSelectedBody){
-      this.jsonBody = this.jsonText;
-    }
     this.setActionWebRequest();
     setTimeout(() => {
-      this.jsonIsValid = this.isValidJson(this.jsonText);
+      this.jsonIsValid = this.isValidJson(this.jsonBody);
     }, 500);
   }
 
@@ -108,26 +98,26 @@ export class ActionWebRequestComponent implements OnInit {
     if(this.methodSelectedHeader){
       this.methodSelectedHeader = false;
       this.methodSelectedBody = true;
-      this.jsonHeader = this.jsonText;
-      this.jsonText = this.jsonBody;
     } else if(this.methodSelectedBody){
       this.methodSelectedHeader = true;
       this.methodSelectedBody = false;
-      this.jsonBody = this.jsonText;
-      this.jsonText = this.jsonHeader;
     }
-    this.jsonIsValid = this.isValidJson(this.jsonText);
+    this.jsonIsValid = this.isValidJson(this.jsonBody);
     this.setActionWebRequest();
   }
 
   onJsonFormatter(){
       try {
-        this.jsonText = this.formatJSON(this.jsonText, "\t");
+        this.jsonBody = this.formatJSON(this.jsonBody, "\t");
       }
       catch (err) {
         this.logger.error('error:', err);
       }
   }
 
-  
+  onChangeAttributes(attributes:any){
+    this.jsonHeader = attributes;
+    this.action.headersString = this.jsonHeader;
+  }
+
 }
