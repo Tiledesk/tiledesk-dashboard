@@ -1,5 +1,17 @@
 # tiledesk-dashboard
 
+### 2.4.10-rc1
+- Adds the ability, when clicking on the "Publish" button, available in the chatbot design dashboard, to hook the chatbot to a department
+- Display the "Remember to Click the Publish Button" popup when the user first visits the chatbot design dashboard
+- Removes Rasa Bot and Dialogflow from the app store
+- Adds the ability to select attributes to the "to" field in the email action
+- Adds "autologin" in v2 if user is not found in v3
+- Adds the ability to set custom attributes to the "go to block" buttons of the "Reply" action.
+- Adds the ability to set custom attributes to the "Operating hours" action
+- Adds the ability to set custom attributes to the "If online agent" action
+- Adds the ability to set custom attributes to the "Condition" action
+- Adds the ability to set custom attributes to the header of the "Web request" action
+
 ### 2.4.9
 - Adds the Social Proof on the sign up page
 - Creates automatically the first project after sign up (the first step of the wizard to create a project is skipped)
