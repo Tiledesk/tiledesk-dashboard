@@ -62,6 +62,8 @@ export class ActionDeleteVariable extends Action {
 export class ActionOnlineAgent extends Action {
     trueIntent: string;
     falseIntent: string;
+    trueIntentAttributes?: string;
+    falseIntentAttributes?: string;
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.ONLINE_AGENTS;
@@ -71,6 +73,8 @@ export class ActionOnlineAgent extends Action {
 export class ActionOpenHours extends Action {
     trueIntent: string;
     falseIntent: string;
+    trueIntentAttributes?: string;
+    falseIntentAttributes?: string;
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.OPEN_HOURS;
@@ -124,8 +128,8 @@ export class ActionWebRequest extends Action {
     constructor(){
         super();
         this.url = '';
-        this.headersString = JSON.stringify('{"Content-Type":"application/json", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"}');
-        this.jsonBody = JSON.stringify('{}');
+        this.headersString = JSON.stringify({"Content-Type":"application/json", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"});
+        this.jsonBody = JSON.stringify({});
         this.assignTo = '';
         this.method = TYPE_METHOD_REQUEST.GET;
         this._tdActionType = TYPE_ACTION.WEB_REQUEST;
@@ -153,7 +157,8 @@ export class ActionJsonCondition extends Action {
     falseIntent: string;
     stopOnConditionMet: boolean;
     groups: Array<Expression | Operator>;
-
+    trueIntentAttributes?: string;
+    falseIntentAttributes?: string;
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.JSON_CONDITION;
@@ -279,6 +284,7 @@ export interface Button {
     link?: string,
     target?: string,
     action?: string,
+    attributes?: any,
     show_echo?: boolean
 }
 

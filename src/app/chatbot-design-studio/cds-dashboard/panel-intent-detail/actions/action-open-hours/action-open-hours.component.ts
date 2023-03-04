@@ -14,6 +14,8 @@ export class ActionOpenHoursComponent implements OnInit {
   @Input() action: ActionOpenHours;
 
   actionOpenHoursFormGroup: FormGroup
+  trueIntentAttributes: any = "";
+  falseIntentAttributes: any = "";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,6 +39,8 @@ export class ActionOpenHoursComponent implements OnInit {
       if (form && (form.trueIntent !== ''))
         this.action = Object.assign(this.action, this.actionOpenHoursFormGroup.value);
     })
+    this.trueIntentAttributes = this.action.trueIntentAttributes;
+    this.falseIntentAttributes = this.action.falseIntentAttributes;
   }
 
 
@@ -57,5 +61,14 @@ export class ActionOpenHoursComponent implements OnInit {
   onChangeSelect(event:{name: string, value: string}, type){
     this.action[type]=event.value
   }
+
+  onChangeAttributesTrue(attributes:any){
+    this.action.trueIntentAttributes = attributes;
+  }
+
+  onChangeAttributesFalse(attributes:any){
+    this.action.falseIntentAttributes = attributes;
+  }
+
 
 }

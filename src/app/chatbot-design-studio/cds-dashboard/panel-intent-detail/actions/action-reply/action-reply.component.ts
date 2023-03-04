@@ -85,6 +85,7 @@ export class ActionReplyComponent implements OnInit {
   // CUSTOM FUNCTIONS //
   /** */
   private initialize(){
+    this.openCardButton = false;
     this.arrayResponses = [];
     this.arrayMessagesWithWait = [];
     this.intentName = '';

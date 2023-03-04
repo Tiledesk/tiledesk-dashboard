@@ -43,6 +43,8 @@ export class PanelButtonConfigurationComponent implements OnInit {
   buttonAction: string;
   clickInside: boolean;
 
+  buttonAttributes: Array<any>;
+
   constructor(
     private eRef: ElementRef
   ) { }
@@ -83,9 +85,11 @@ export class PanelButtonConfigurationComponent implements OnInit {
       this.urlType = this.button.target ? this.button.target : null;
       this.buttonUrl = this.button.link ? this.button.link : null;
       this.buttonAction = this.button.action ? this.button.action : null;
+      this.buttonAttributes = this.button.attributes ? this.button.attributes : [];
     } catch (error) {
       // error
     }
+    
   }
 
   ngOnChanges() {
@@ -229,4 +233,9 @@ export class PanelButtonConfigurationComponent implements OnInit {
     this.checkAndSaveButton();
   }
 
+  onChangeAttributes(attributes:any){
+    this.button.attributes = attributes;
+    // console.log('attributes: ', this.button, attributes);
+    this.saveButton.emit(this.button);
+  }
 }

@@ -14,6 +14,8 @@ export class ActionOnlineAgentsComponent implements OnInit {
   @Input() action: ActionOnlineAgent;
 
   actionOnlineAgentsFormGroup: FormGroup
+  trueIntentAttributes: string = "";
+  falseIntentAttributes: string = "";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,6 +24,7 @@ export class ActionOnlineAgentsComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
 
   ngOnChanges() {
     this.initialize()
@@ -37,6 +40,8 @@ export class ActionOnlineAgentsComponent implements OnInit {
       if (form && (form.trueIntent !== ''))
         this.action = Object.assign(this.action, this.actionOnlineAgentsFormGroup.value);
     })
+    this.trueIntentAttributes = this.action.trueIntentAttributes;
+    this.falseIntentAttributes = this.action.falseIntentAttributes;
   }
 
 
@@ -58,4 +63,12 @@ export class ActionOnlineAgentsComponent implements OnInit {
     this.action[type]=event.value
   }
 
+
+  onChangeAttributesTrue(attributes:any){
+    this.action.trueIntentAttributes = attributes;
+  }
+
+  onChangeAttributesFalse(attributes:any){
+    this.action.falseIntentAttributes = attributes;
+  }
 }

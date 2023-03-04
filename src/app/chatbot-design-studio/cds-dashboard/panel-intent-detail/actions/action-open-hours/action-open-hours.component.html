@@ -23,6 +23,11 @@
                 </cds-text> -->
             </ul> 
         </div>
+        <cds-attributes
+            class="cds-attributes"
+            [attributes]="trueIntentAttributes"
+            (changeAttributes)="onChangeAttributesTrue($event)"
+        ></cds-attributes>
     </div>
 
     <div class="text-editor-wrapper">
@@ -43,6 +48,11 @@
                 </cds-text> -->
             </ul>
         </div>
+        <cds-attributes
+            class="cds-attributes"
+            [attributes]="falseIntentAttributes"
+            (changeAttributes)="onChangeAttributesFalse($event)"
+        ></cds-attributes>
     </div>
 
 </div>

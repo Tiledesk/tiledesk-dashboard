@@ -1,0 +1,15 @@
+<div class="header__center ng-star-inserted">Attributes</div>
+<div class="auto-suggest-group">
+    <div class="key-value-form-column">
+        <div class="key-value-cell__placeholder reference__0-0" tabindex="-1">Key</div>
+    </div>
+    <div class="key-value-form-column">
+        <div class="key-value-cell__placeholder reference__0-1" tabindex="-1">Value</div>
+    </div>
+</div>
+<div *ngFor="let attribute of newAttributes; let i = index;">
+    <div class="auto-suggest-group">
+        <input [(ngModel)]="attribute.key" type="text" placeholder="Key" class="sx-input" (ngModelChange)="onChangeAttributes(attribute, i)">
+        <input [(ngModel)]="attribute.value" type="text" placeholder="Value" class="dx-input" (ngModelChange)="onChangeAttributes(attribute, i)">
+    </div>
+</div>

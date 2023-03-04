@@ -1,0 +1,69 @@
+.header__center {
+    font-size: 1.1em;
+    display: grid;
+    grid-template-columns: 1fr max-content 1fr;
+    grid-column-gap: 1.1em;
+    align-items: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 12px;
+    padding-right: 12px;
+    color:#f2f2f2;
+}
+  
+.header__center::before,
+.header__center::after {
+    content: "";
+    display: block;
+    height: 1px;
+    background-color: currentColor;
+}
+
+.key-value-form-column {
+    font-size: 1em;
+    width: 50%;
+    color:#f2f2f2;
+    text-align: center;
+}
+
+.auto-suggest-group{
+    display: flex;
+}
+
+.sx-input {
+    border: 0;
+    cursor: default;
+    display: flex;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    width: 150px;
+    height: 26px;
+    border-radius: 4px 0 0 4px;
+    background: #f2f2f2;
+    font-weight: 500;
+    font-size: 14px;
+    margin: 3px 0;
+    margin-right: 2px;
+    padding: 0 0 0 10px;
+    width: calc(50% - 2px);
+    color: #1e293b;
+}
+
+
+.dx-input {
+    border: 0;
+    background: #fff;
+    margin: 3px 0;
+    font-size: 14px;
+    height: 26px;
+    width: 50%;
+    padding: 0 10px;
+    border-radius: 0 4px 4px 0;
+    color: #1e293b;
+    width: calc(50% - 2px);
+}
+
+.dx-input:focus, .sx-input:focus {
+    outline: 2px solid rgba(236,182,6,1);
+}
