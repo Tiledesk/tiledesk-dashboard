@@ -578,7 +578,7 @@
               <!-- --------------------------------------------------------------------- -->
               <!-- email -->
               <!-- --------------------------------------------------------------------- -->
-              <div class="col-sm-12 contact-email-col-12">
+              <div class="col-sm-12 contact-email-col-12" (click)='goToEditContact(contact_details?._id)'>
                 <p style="margin-bottom: 0px;margin-top: 6px; ">
                   <!-- style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;" -->
                   <span class="tool_tip">
@@ -586,8 +586,10 @@
      
 
                     <span class="top"
-                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
+                      line-height: 16px;">
                       {{ "ContactEmail" | translate }}
+                        <span style="display: block; font-size: 11px;font-weight: 300;"> {{'ClickToEdit' | translate}} </span>
                       <i style="top: 88%;"></i>
                     </span>
                   </span>
@@ -596,7 +598,9 @@
                     *ngIf="contact_details?.email" href="mailto:{{contact_details?.email}}">
                     {{ contact_details?.email }}
                   </a>
-                  <a *ngIf="!contact_details?.email" style="color: #7695a5; font-weight: 400; font-size: 12px;">n/a</a>
+                  <span *ngIf="!contact_details?.email" style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                    n/a
+                  </span>
 
                 </p>
               </div>

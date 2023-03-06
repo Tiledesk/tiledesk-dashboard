@@ -103,8 +103,8 @@ export class FaqKbService {
       .get(url, httpOptions)
   }
 
-    // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/"
-    // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/community"
+  // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/"
+  // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/community"
   getCommunityTemplates() {
     // 'Authorization': this.TOKEN
     const httpOptions = {
@@ -112,7 +112,7 @@ export class FaqKbService {
         'Content-Type': 'application/json',
       })
     };
-  
+
     const url = this.COMMUNITY_TEMPLATES_URL
 
     this.logger.log('[GET-TMPLT][FAQ-KB.SERV] - GET-TMPLT - URL ', url);
@@ -150,7 +150,7 @@ export class FaqKbService {
       .get(url, httpOptions)
   }
 
-  installTemplate(botid, projectid) {
+  installTemplate(botid: string, projectid: string, ispublic: boolean, landingprojectid) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -160,8 +160,8 @@ export class FaqKbService {
     this.logger.log('[BOT-CREATE][FAQ-KB.SERV] -  FORK - BOT ID ', botid);
     // / (dovrebbe funzionare anche con POST ../PROJECT_ID/bots/fork/ID_FAQ_FB/)
     // const url = this.SERVER_BASE_PATH + "635b97cc7d7275001a2ab3e0/bots/fork/" + botid;
-    const url = this.SERVER_BASE_PATH + projectid + "/faq_kb/fork/" + botid + "?public=true&projectid=" + projectid;
-    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - FORK - URL ', url);
+    const url = this.SERVER_BASE_PATH + projectid + "/faq_kb/fork/" + botid + "?public=" + ispublic + "&projectid=" + projectid;
+    // console.log('[BOT-CREATE][FAQ-KB.SERV] - FORK - URL ', url);
 
     return this._httpClient
       .post(url, null, httpOptions)
@@ -543,7 +543,7 @@ export class FaqKbService {
 
     let url = this.FAQKB_URL + chatbot._id + "/publish";
     this.logger.log('publish BOT - URL ', url);
- 
+
 
     return this._httpClient
       .put(url, null, httpOptions)

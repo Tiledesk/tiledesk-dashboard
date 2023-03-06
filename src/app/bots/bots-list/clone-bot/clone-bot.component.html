@@ -1,0 +1,62 @@
+<mat-dialog-actions align="end" style="min-height: 13px;">
+    <button tabindex="-1" mat-button mat-dialog-close
+        style="top: -25px; min-width: 36px;padding: 0px;border-radius: 50%; right: -11px;">
+        <span class="material-icons">
+            close
+        </span>
+    </button>
+    <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
+</mat-dialog-actions>
+
+<mat-dialog-content class="mat-typography" style="min-height: 30px;">
+
+    <div class="clone-bot-content-wpr">
+        <div class="clone-bot-header">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="clone-bot-title">
+                        {{ 'Duplicate' | translate }} {{ bot_name }}
+                    </h2>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="clone-bot-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 style="font-weight: 400;"> Choose which project you want to duplicate the chatbot on </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- (clear)="onClearSelectedLanguage()" -->
+                    <ng-select class="select-language-in-wizard" id="language_option"
+                        style="margin-top: 0px; max-width: 500px;" 
+                        [clearable]="false" 
+                        [(ngModel)]="selectedProject"
+                        [items]="projects" 
+                        bindLabel="id_project.name" 
+                        bindValue="id_project._id"
+                        placeholder="Choose a project" 
+                        (change)="onSelectProject(selectedProject)">
+                    </ng-select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- (click)="goToInstallTemplate()" -->
+                    <button  class="btn btn-md btn-primary" (click)="duplicateChatbot()">
+                        Duplicate
+                    </button>
+                    
+                    
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</mat-dialog-content>

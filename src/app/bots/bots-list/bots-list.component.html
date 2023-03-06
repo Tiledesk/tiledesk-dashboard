@@ -297,7 +297,9 @@
                       </td>
 
                       <td>
-                        {{ faqkb?.createdAt | date: 'd/M/y'}}
+                        <!-- {{ faqkb?.createdAt | date: 'd/M/y'}} -->
+                        {{ faqkb?.createdAt | amDateFormat: 'LLL'}}
+                        
                       </td> 
                   
                       <td class="td-actions text-right" style="padding-top:18px !important">
@@ -306,6 +308,12 @@
                           (click)='goToBotDtls(faqkb?._id, faqkb?.type,  faqkb?.name)'>
                           <i class="material-icons">edit</i>
                         </button>
+
+                      <button type="button" rel="tooltip" title="{{ 'Duplicate' | translate }}"
+                        class="btn btn-primary btn-simple btn-xs"
+                        (click)='duplicateChatbot(faqkb?._id,  faqkb?.name)'>
+                        <i class="material-icons">content_copy</i>
+                      </button>
 
                         
                       <!-- <button *ngIf="faqkb?.type === 'tilebot' && isPanelRoute === false" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}"

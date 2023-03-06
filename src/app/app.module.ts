@@ -314,10 +314,7 @@ import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-wi
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
 import { HomePromoDesignStudioComponent } from './home-promo-design-studio/home-promo-design-studio.component';
 import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
-
-
-
-
+import { CloneBotComponent } from './bots/bots-list/clone-bot/clone-bot.component';
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -557,8 +554,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     OnboardingWidgetComponent, 
     CommunityTemplateDtlsComponent, 
     HomePromoDesignStudioComponent,
-    PasswordStrengthComponent 
-    
+    PasswordStrengthComponent,
+    CloneBotComponent 
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
