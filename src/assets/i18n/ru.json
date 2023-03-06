@@ -2280,6 +2280,7 @@
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Этот тег уже присвоен. Пожалуйста, введите уникальный тег",
     "GetStarted": "Начать",
     "EditProjectName":"Редактировать название проекта",
+    "Duplicate": "Дублировать",
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",

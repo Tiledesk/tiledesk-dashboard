@@ -2280,6 +2280,7 @@
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Esta etiqueta ya ha sido asignada. Por favor ingrese una etiqueta única",
     "GetStarted": "Primeros pasos",
     "EditProjectName":"Editar nombre del proyecto",
+    "Duplicate": "Duplicado",
     "AddIntentPage": {
         "AddForm": "Agregar forma",
         "SelectTemplateForm": "Seleccione un tipo de formulario entre los sugeridos o cree uno nuevo",

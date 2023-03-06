@@ -2280,6 +2280,7 @@
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Бұл тег әлдеқашан тағайындалған. Бірегей тег енгізіңіз",
     "GetStarted": "Іске кірісіңіз",
     "EditProjectName":"Жоба атауын өңдеу",
+    "Duplicate": "Көшірме",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",
