@@ -440,7 +440,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       .subscribe((lead: any) => {
 
         if (lead) {
-          this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
+          // console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
           this.contact_details = lead;
 
           if (this.contact_details && this.contact_details.lead_id) {
@@ -823,6 +823,18 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   goToEditContact(requester_id) {
     this.router.navigate(['project/' + this.projectId + '/contact/edit', requester_id]);
+  }
+
+  goToEditContactNote(requester_id) {
+    this.router.navigate(['project/' + this.projectId + '/contact/edit', requester_id], { fragment: 'note' });
+  }
+
+  goToEditContactAddress(requester_id) {
+    this.router.navigate(['project/' + this.projectId + '/contact/edit', requester_id], { fragment: 'address' });
+  }
+
+  goToEditContactPhone(requester_id) {
+    this.router.navigate(['project/' + this.projectId + '/contact/edit', requester_id], { fragment: 'phone' });
   }
 
 

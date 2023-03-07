@@ -931,10 +931,12 @@ my-app .main-panel .main-content .card {
 
 .right-sidebar--m-icon {
   vertical-align: middle;
-  color: #394f5a;
+  // color: #394f5a;
+  color: #8796af;
   font-size: 14px;
   padding: 6px;
-  background: #e4e6eb;
+  // background: #e4e6eb;
+  background: transparent;
   border-radius: 50%;
   cursor: pointer;
 }

@@ -586,7 +586,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
 
-
+ 
   goToUserProfileLanguageSection() {
     this.router.navigate(['project/' + this.projectId + '/user-profile'], { fragment: 'language' });
     this.closeUserDetailSidePanel();
