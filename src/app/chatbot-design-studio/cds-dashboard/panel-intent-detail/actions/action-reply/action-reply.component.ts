@@ -17,11 +17,11 @@ export class ActionReplyComponent implements OnInit {
   // @Output() saveIntent = new EventEmitter();
   @Input() reply: ActionReply;
   @Input() typeAction: string;
-  @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
+  @Input() listOfActions: Array<{ name: string, value: string, icon?: string }>;
   @Input() intent_display_name: string;
   // @Input() showSpinner: boolean;
   // @Input() openCardButton: boolean;
-  
+
   response: MessageWithWait;
   openCardButton: boolean = false;
   buttonSelected: Button;
@@ -38,10 +38,10 @@ export class ActionReplyComponent implements OnInit {
   arrayResponses: Array<Command>;
   arrayMessagesWithWait: Array<MessageWithWait>;
 
-  actionType:string;
+  actionType: string;
 
 
-  
+
   constructor(
     private logger: LoggerService,
   ) { }
@@ -49,10 +49,10 @@ export class ActionReplyComponent implements OnInit {
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     // console.log('ngOnInit panel-response::: ', this.typeAction);
-    this.actionType = (this.typeAction === TYPE_ACTION.RANDOM_REPLY?'RANDOM_REPLY':'REPLY');
+    this.actionType = (this.typeAction === TYPE_ACTION.RANDOM_REPLY ? 'RANDOM_REPLY' : 'REPLY');
 
   }
-    
+
   ngOnChanges() {
     this.logger.log('ActionReplyComponent ngOnChanges');
     this.initialize();
@@ -60,7 +60,7 @@ export class ActionReplyComponent implements OnInit {
     // this.elementIntentSelectedType = this.elementIntentSelected.type;
   }
 
-  
+
   /** */
   // ngAfterContentChecked(){
   //   this.logger.log('ActionReplyComponent ngAfterContentChecked');
@@ -84,14 +84,14 @@ export class ActionReplyComponent implements OnInit {
 
   // CUSTOM FUNCTIONS //
   /** */
-  private initialize(){
+  private initialize() {
     this.openCardButton = false;
     this.arrayResponses = [];
     this.arrayMessagesWithWait = [];
     this.intentName = '';
     this.intentNameResult = true;
     this.textGrabbing = false;
-    if(this.reply){
+    if (this.reply) {
       try {
         this.arrayResponses = this.reply.attributes.commands;
       } catch (error) {
@@ -104,26 +104,28 @@ export class ActionReplyComponent implements OnInit {
 
 
   /** */
-  private generateCommandsWithWaitOfElements(){
+  private generateCommandsWithWaitOfElements() {
     let replyArrayElements: Array<Command> = [];
     let textConversation: string = ''
     this.arrayMessagesWithWait.forEach(el => {
-      if(el.time && el.time > 0){
+      if (el.time && el.time > 0) {
         let elementWait = new Command(TYPE_COMMAND.WAIT);
         elementWait.time = el.time;
         replyArrayElements.push(elementWait);
       }
       let elementMessage = new Command(TYPE_COMMAND.MESSAGE);
       elementMessage.message = new Message(el.type, el.text);
-      if(el.attributes){
+      if (el.attributes) {
         elementMessage.message.attributes = el.attributes;
       }
-      if(el.metadata){
+      if (el.metadata) {
         elementMessage.message.metadata = el.metadata;
       }
-      
+
       replyArrayElements.push(elementMessage);
-      textConversation += el.text +'\r\n'
+      if (el.text) {
+        textConversation += el.text + '\r\n'
+      }
     });
     this.reply.text = textConversation;
     this.reply.attributes.commands = replyArrayElements;
@@ -131,23 +133,24 @@ export class ActionReplyComponent implements OnInit {
   }
 
   /** */
-  private generateCommandsOfElements(){
+  private generateCommandsOfElements() {
     var time = 500;
     try {
       this.arrayResponses.forEach(element => {
-        if(element.type === TYPE_COMMAND.WAIT){
+        if (element.type === TYPE_COMMAND.WAIT) {
           time = element.time;
         }
-        if(element.type === TYPE_COMMAND.MESSAGE){
+        if (element.type === TYPE_COMMAND.MESSAGE) {
           let message = new MessageWithWait(element.message.type, element.message.text, time);
-          if(element.message.attributes){
+          if (element.message.attributes) {
             message.attributes = element.message.attributes;
           }
-          if(element.message.metadata){
+          if (element.message.metadata) {
             message.metadata = element.message.metadata;
           }
           this.logger.log('MessageWithWait:::', message);
           this.arrayMessagesWithWait.push(message);
+
           time = 0;
         }
       });
@@ -179,22 +182,22 @@ export class ActionReplyComponent implements OnInit {
     setTimeout(() => {
       try {
         this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
-        this.scrollContainer.nativeElement.animate({scrollTop:0}, '500');
-      } catch(error) { 
+        this.scrollContainer.nativeElement.animate({ scrollTop: 0 }, '500');
+      } catch (error) {
         this.logger.log('scrollToBottom ERROR: ', error);
-      }    
-    }, 300);        
+      }
+    }, 300);
   }
 
 
-  onAddNewResponse(element){
+  onAddNewResponse(element) {
     this.logger.log('onAddNewResponse:: ', element);
     try {
       let message = new MessageWithWait(element.message.type, element.message.text, 500);
-      if(element.message.attributes){
+      if (element.message.attributes) {
         message.attributes = element.message.attributes;
       }
-      if(element.message.metadata){
+      if (element.message.metadata) {
         message.metadata = element.message.metadata;
       }
       this.arrayMessagesWithWait.push(message);
@@ -210,12 +213,12 @@ export class ActionReplyComponent implements OnInit {
 
   // EVENT FUNCTIONS //
   /** */
-  mouseDown(){
+  mouseDown() {
     this.textGrabbing = true;
   }
 
   /** */
-  mouseUp(){
+  mouseUp() {
     this.textGrabbing = false;
   }
 
@@ -227,45 +230,45 @@ export class ActionReplyComponent implements OnInit {
   }
 
   /** */
-  onDeleteResponse(index:number){
-    this.arrayMessagesWithWait.splice(index, 1); 
+  onDeleteResponse(index: number) {
+    this.arrayMessagesWithWait.splice(index, 1);
     this.generateCommandsWithWaitOfElements();
   }
 
   /** */
-  onMoveUpResponse(index:number){
-    if(index>0){
-      let to = index-1;
+  onMoveUpResponse(index: number) {
+    if (index > 0) {
+      let to = index - 1;
       let from = index;
-      this.arrayMessagesWithWait.splice(to,0,this.arrayMessagesWithWait.splice(from,1)[0]);
+      this.arrayMessagesWithWait.splice(to, 0, this.arrayMessagesWithWait.splice(from, 1)[0]);
       this.generateCommandsWithWaitOfElements();
     }
   }
 
   /** */
-  onMoveDownResponse(index:number){
-    if(index<this.arrayMessagesWithWait.length-1){
-      let to = index+1;
+  onMoveDownResponse(index: number) {
+    if (index < this.arrayMessagesWithWait.length - 1) {
+      let to = index + 1;
       let from = index;
-      this.arrayMessagesWithWait.splice(to,0,this.arrayMessagesWithWait.splice(from,1)[0]);
+      this.arrayMessagesWithWait.splice(to, 0, this.arrayMessagesWithWait.splice(from, 1)[0]);
       this.generateCommandsWithWaitOfElements();
     }
   }
 
   /** */
-  onChangeDelayTimeReplyElement(){
+  onChangeDelayTimeReplyElement() {
     this.logger.log('onChangeDelayTimeReplyElement ************', this.arrayMessagesWithWait);
     this.generateCommandsWithWaitOfElements();
   }
 
   /**onChangeReplyElement */
-  onChangeReplyElement(){
+  onChangeReplyElement() {
     this.logger.log('onChangeReplyElement ************', this.arrayMessagesWithWait);
     this.generateCommandsWithWaitOfElements();
   }
 
   /** */
-  onChangeIntentName(name: string){
+  onChangeIntentName(name: string) {
     name.toString();
     try {
       this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
@@ -275,10 +278,10 @@ export class ActionReplyComponent implements OnInit {
   }
 
   /** */
-  onBlurIntentName(name: string){
+  onBlurIntentName(name: string) {
     this.intentNameResult = true;
   }
- 
+
   /** */
   // onSaveIntent(){
   //   //this.logger.log('onSaveIntent:: ', this.intent, this.arrayResponses);
@@ -289,10 +292,10 @@ export class ActionReplyComponent implements OnInit {
   //   }
   // }
 
-  
+
 
   /** */
-  onDisableInputMessage(){
+  onDisableInputMessage() {
     try {
       this.reply.attributes.disableInputMessage = !this.reply.attributes.disableInputMessage;
     } catch (error) {
@@ -303,24 +306,24 @@ export class ActionReplyComponent implements OnInit {
 
 
 
-private createNewButton(){
-  this.buttonSelected =  {
-    'value': 'Button',
-    'type': TYPE_BUTTON.TEXT,
-    'target': TYPE_URL.BLANK,
-    'link': '',
-    'action': '',
-    'show_echo': true
-  };
-  this.response.attributes.attachment.buttons.push(this.buttonSelected);
-  this.logger.log('createNewButton :: ', this.buttonSelected);
-}
+  private createNewButton() {
+    this.buttonSelected = {
+      'value': 'Button',
+      'type': TYPE_BUTTON.TEXT,
+      'target': TYPE_URL.BLANK,
+      'link': '',
+      'action': '',
+      'show_echo': true
+    };
+    this.response.attributes.attachment.buttons.push(this.buttonSelected);
+    this.logger.log('createNewButton :: ', this.buttonSelected);
+  }
 
   /** appdashboard-button-configuration-panel: onOpenButtonPanel */
-  onOpenButtonPanel(event){
+  onOpenButtonPanel(event) {
     this.logger.log('onOpenButtonPanel :: ', event);
     this.response = event.refResponse;
-    if(!event.button){
+    if (!event.button) {
       this.logger.log('new button  :: ', event.button);
       this.newButton = true;
       this.createNewButton();
@@ -352,7 +355,7 @@ private createNewButton(){
     this.openCardButton = false;
   }
 
-  onFocusOutEvent(event){
+  onFocusOutEvent(event) {
     // this.logger.log('onFocusOutEvent ::::::: ', event);
     // this.onCloseButtonPanel()
   }
