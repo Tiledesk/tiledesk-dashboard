@@ -1,0 +1,14 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
+.title-label {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 10px;   
+}
+
+.block-wrp {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}

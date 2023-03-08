@@ -1,5 +1,5 @@
 import { TYPE_OPERATOR } from './../chatbot-design-studio/utils';
-import { TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST } from '../chatbot-design-studio/utils';
+import { TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR, TYPE_FUNCTION } from '../chatbot-design-studio/utils';
 
 export class Intent {
     webhook_enabled?: boolean;
@@ -28,7 +28,7 @@ export class Intent {
 export class Action {
     _tdActionType: string;
     _tdActionTitle: string = '';
-
+ 
 }
 
 // export class ActionCondition extends Action {
@@ -41,13 +41,43 @@ export class Action {
 //         this._tdActionType = TYPE_ACTION.CONDITION;
 //     }
 // }
-
+/*
 export class ActionAssignVariable extends Action {
     expression: string;
     assignTo: string;
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.ASSIGN_VARIABLE;
+    }
+}
+*/
+
+
+export class Operation {
+    operators?: Array<TYPE_MATH_OPERATOR>
+    operands: Array<Operand>
+}
+
+export class Operand {
+    value: string
+    isVariable: boolean
+    function?: TYPE_FUNCTION
+}
+
+export class ActionAssignVariable extends Action {
+    destination: string;
+    operation: Operation;
+
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.ASSIGN_VARIABLE;
+        this.operation = {
+            operands: [{
+                value: '',
+                isVariable: false
+            }],
+            operators: []
+        };
     }
 }
 
@@ -347,7 +377,6 @@ export class Condition {
     }
 
 }
-
 
 
 

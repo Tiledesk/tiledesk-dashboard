@@ -1,0 +1,10 @@
+<label class="title-label">Operation:</label>
+<div *ngFor="let op of list; let i = index" class="block-wrp">
+    <operand *ngIf="i % 2 == 0" [operand] = "op"></operand>
+    <operator *ngIf="i % 2 == 1" [operator] = "op" (operatorChange)="onSelectedOperator($event)"></operator>   
+</div>
+<div class="add-filter-button" (click)="onClickOperator()">
+    <span class="material-icons">add</span>
+    Add new operator
+</div>
+
