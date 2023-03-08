@@ -1,6 +1,6 @@
-
 <!-- margin-top:6px; -->
-<div class="navbar-brand" style=" padding-left:30px; z-index: 1050;position: relative;" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+<div class="navbar-brand" style=" padding-left:30px; z-index: 1050;position: relative;"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
   {{ "ContactDetails" | translate }}
@@ -31,7 +31,7 @@
             </div>
 
             <table class="table table-hover">
-          
+
               <tbody>
                 <!-- ===== IF THERE ISN'T CONTACT REQUEST ===== -->
                 <tr *ngIf="requests_list && requests_list?.length === 0">
@@ -49,11 +49,12 @@
                     <!-- ------------------------------------- -->
                     <!-- IF IS A CLOSED REQUEST -->
                     <!-- ------------------------------------- -->
-                    <span *ngIf="request?.status === 1000 && !request?.subject" (click)='goToRequestMsgs(request?.request_id)'
-                      style="cursor:pointer" matTooltipClass="custom-mat-tooltip"
+                    <span *ngIf="request?.status === 1000 && !request?.subject"
+                      (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"
+                      matTooltipClass="custom-mat-tooltip"
                       matTooltip="{{ 'RequestMsgsPage.RequestResolved' | translate }}" #tooltip="matTooltip"
                       matTooltipPosition='below' matTooltipHideDelay="100">
-                  
+
                       <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                         <style type="text/css">
                           .st0-chat-closed {
@@ -76,102 +77,106 @@
                     </span>
 
                     <!-- ------------------------------------- -->
-                    <!-- IF IS AN INTERNAL CLOSED REQUEST --> 
+                    <!-- IF IS AN INTERNAL CLOSED REQUEST -->
                     <!-- ------------------------------------- -->
-                    <span *ngIf="request?.status === 1000 && request?.subject" (click)='goToRequestMsgs(request?.request_id)'
-                      style="cursor:pointer" matTooltipClass="custom-mat-tooltip"
-                      matTooltip="{{ 'RequestMsgsPage.InternalRequestResolved' | translate }}"
-                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                  
-                        <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
-                          <style type="text/css">
-                            .closed_Internal_st0 {
-                              fill: none;
-                              stroke: #999999;
-                              stroke-width: 2;
-                              stroke-miterlimit: 10;
-                            }
+                    <span *ngIf="request?.status === 1000 && request?.subject"
+                      (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"
+                      matTooltipClass="custom-mat-tooltip"
+                      matTooltip="{{ 'RequestMsgsPage.InternalRequestResolved' | translate }}" #tooltip="matTooltip"
+                      matTooltipPosition='below' matTooltipHideDelay="100">
 
-                            .closed_Internal_st1{
-                              fill: #999999;
-                            }
-                          </style>
-                          <path class="closed_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+                      <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                        <style type="text/css">
+                          .closed_Internal_st0 {
+                            fill: none;
+                            stroke: #999999;
+                            stroke-width: 2;
+                            stroke-miterlimit: 10;
+                          }
+
+                          .closed_Internal_st1 {
+                            fill: #999999;
+                          }
+                        </style>
+                        <path class="closed_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
                           C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
-                            <path class="closed_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+                        <path class="closed_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
                           c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
                           C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
                           c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                        </svg>
-                      </span>
+                      </svg>
+                    </span>
 
-                      <!-- ------------------------------------- -->
-                      <!-- IF IS AN UNSERVED REQUEST -->
-                      <!-- ------------------------------------- -->
-                      <span *ngIf="request?.status === 100 && !request?.subject" (click)='goToRequestMsgs(request?.request_id)'
-                        style="cursor:pointer" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='below' matTooltipHideDelay="100">
+                    <!-- ------------------------------------- -->
+                    <!-- IF IS AN UNSERVED REQUEST -->
+                    <!-- ------------------------------------- -->
+                    <span *ngIf="request?.status === 100 && !request?.subject"
+                      (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"
+                      matTooltipClass="custom-mat-tooltip"
+                      matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}" #tooltip="matTooltip"
+                      matTooltipPosition='below' matTooltipHideDelay="100">
 
-                        <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
-                          <style type="text/css">
-                            .st0-unserved {
-                              fill: none;
-                              stroke: #ED4537;
-                              stroke-width: 2;
-                              stroke-miterlimit: 10;
-                            }
+                      <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                        <style type="text/css">
+                          .st0-unserved {
+                            fill: none;
+                            stroke: #ED4537;
+                            stroke-width: 2;
+                            stroke-miterlimit: 10;
+                          }
 
-                            .st1-unserved {
-                              fill: #ED4537;
-                            }
-                          </style>
-                          <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                          .st1-unserved {
+                            fill: #ED4537;
+                          }
+                        </style>
+                        <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
                               c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3.3,30.5,3.3z" />
-                          <g>
-                            <path class="st1-unserved"
-                              d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
-                            <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
+                        <g>
+                          <path class="st1-unserved"
+                            d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
+                          <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
                                 c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
-                          </g>
-                        </svg>
-                      </span>
+                        </g>
+                      </svg>
+                    </span>
 
-                      <!-- ------------------------------------- -->
-                      <!-- IF IS AN INTERNAL UNSERVED REQUEST  -->
-                      <!-- ------------------------------------- -->
-                      <span *ngIf="request?.status === 100 && request?.subject" (click)='goToRequestMsgs(request?.request_id)'
-                          style="cursor:pointer" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}"
-                          #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-    
-                        <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
-                          <style type="text/css">
-                            .unserved_Internal_st0 {
-                              fill: none;
-                              stroke: #ED4537;
-                              stroke-width: 2;
-                              stroke-miterlimit: 10;
-                            }
+                    <!-- ------------------------------------- -->
+                    <!-- IF IS AN INTERNAL UNSERVED REQUEST  -->
+                    <!-- ------------------------------------- -->
+                    <span *ngIf="request?.status === 100 && request?.subject"
+                      (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"
+                      matTooltipClass="custom-mat-tooltip"
+                      matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}" #tooltip="matTooltip"
+                      matTooltipPosition='below' matTooltipHideDelay="100">
 
-                            .unserved_Internal_st1 {
-                              fill: #ED4537;
-                            }
-                          </style>
-                          <path class="unserved_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+                      <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                        <style type="text/css">
+                          .unserved_Internal_st0 {
+                            fill: none;
+                            stroke: #ED4537;
+                            stroke-width: 2;
+                            stroke-miterlimit: 10;
+                          }
+
+                          .unserved_Internal_st1 {
+                            fill: #ED4537;
+                          }
+                        </style>
+                        <path class="unserved_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
                             C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
-                          <path class="unserved_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+                        <path class="unserved_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
                             c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
                             C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
                             c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                        </svg>
-                      </span>
+                      </svg>
+                    </span>
 
-                      <!-- // SERVED REQUESTS AND CURRENT USER IS A PARTICIPANT -->
-                      <span *ngIf="request?.status === 200 && request?.currentUserIsJoined  && !request?.subject"
-                      (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" matTooltipClass="custom-mat-tooltip"
-                      matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
-                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                    <!-- // SERVED REQUESTS AND CURRENT USER IS A PARTICIPANT -->
+                    <span *ngIf="request?.status === 200 && request?.currentUserIsJoined  && !request?.subject"
+                      (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"
+                      matTooltipClass="custom-mat-tooltip"
+                      matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}" #tooltip="matTooltip"
+                      matTooltipPosition='below' matTooltipHideDelay="100">
 
                       <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                         <style type="text/css">
@@ -197,38 +202,40 @@
 
                     <!-- IF IS A INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
                     <span *ngIf="request?.status === 200 && request?.currentUserIsJoined  && request?.subject"
-                    (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
-                    matTooltipPosition='below' matTooltipHideDelay="100">
+                      (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"
+                      matTooltipClass="custom-mat-tooltip"
+                      matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
+                      matTooltipPosition='below' matTooltipHideDelay="100">
 
-                    <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
-                      <style type="text/css">
-                        .served_bycu_Internal_st0 {
-                          fill: none;
-                          stroke: #4DAF4F;
-                          stroke-width: 2;
-                          stroke-miterlimit: 10;
-                        }
+                      <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                        <style type="text/css">
+                          .served_bycu_Internal_st0 {
+                            fill: none;
+                            stroke: #4DAF4F;
+                            stroke-width: 2;
+                            stroke-miterlimit: 10;
+                          }
 
-                        .served_bycu_Internal_st1 {
-                          fill: #4DAF4F;
-                        }
-                      </style>
-                      <path class="served_bycu_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+                          .served_bycu_Internal_st1 {
+                            fill: #4DAF4F;
+                          }
+                        </style>
+                        <path class="served_bycu_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
                       C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
                         <path class="served_bycu_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
                       c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
                       C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
                       c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                    </svg>
-                  </span>
+                      </svg>
+                    </span>
 
                     <!-- // SERVED REQUESTS AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER-->
                     <span *ngIf="request?.status === 200 && !request?.currentUserIsJoined && !request?.subject"
-                      (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"   matTooltipClass="custom-mat-tooltip"
+                      (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"
+                      matTooltipClass="custom-mat-tooltip"
                       matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
                       matTooltipPosition='below' matTooltipHideDelay="100">
-            
+
                       <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                         <style type="text/css">
                           .st0-served {
@@ -256,35 +263,32 @@
 
                     <!-- IF IS AN INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
                     <span *ngIf="request?.status === 200 && !request?.currentUserIsJoined && request?.subject"
-                    (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"  matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}"
-                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-          
-                    <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
-                      <style type="text/css">
-                        .served__Internal_st0 {
-                          fill: none;
-                          stroke: #05BDD4;
-                          stroke-width: 2;
-                          stroke-miterlimit: 10;
-                        }
+                      (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"
+                      matTooltipClass="custom-mat-tooltip"
+                      matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" #tooltip="matTooltip"
+                      matTooltipPosition='below' matTooltipHideDelay="100">
 
-                        .served__Internal_st1 {
-                          fill: #05BDD4;
-                        }
-                      </style>
-                      <path class="served__Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+                      <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                        <style type="text/css">
+                          .served__Internal_st0 {
+                            fill: none;
+                            stroke: #05BDD4;
+                            stroke-width: 2;
+                            stroke-miterlimit: 10;
+                          }
+
+                          .served__Internal_st1 {
+                            fill: #05BDD4;
+                          }
+                        </style>
+                        <path class="served__Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
                       C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
                         <path class="served__Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
                       c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
                       C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
                       c0.5,0,0.9-0.5,0.9-1.1V22z" />
-                    </svg>
-                  </span>
-
-
-  
-
+                      </svg>
+                    </span>
                   </td>
 
 
@@ -295,7 +299,7 @@
 
                     <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
                       {{ 'SentThe' | translate}} {{ request?.createdAt | date: 'dd/MM/yyyy' }}
-                      <span *ngIf="request?.department?.name"> 
+                      <span *ngIf="request?.department?.name">
                         <span>{{ 'ToTheDepartment' | translate}} </span>
                         <span style="text-transform: uppercase"> {{ request?.department?.name }} </span>
                       </span>
@@ -353,14 +357,14 @@
           <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
 
             <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4">
+              <div class="col-xs-6 col-sm-6 col-md-6">
                 <h3 class="card_title__underlined">
                   <!-- <span class="card_title__underline" style="white-space: nowrap;">
                     {{ "ContactDetails" | translate }}
                   </span> -->
                   <!-- [ngStyle]="{'background-color': fillColour }" -->
                   <span class="contact-avatar-wrapper" style="position: relative;top: -6px;">
-                    <span class="contact-avatar" 
+                    <span class="contact-avatar"
                       [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
                       style="float: left; margin-right: 8px;">
                       <span class="contact-avatar-fullname-initials">
@@ -406,8 +410,35 @@
                   </span>
                 </h3>
               </div>
-              <div class="col-xs-8 col-sm-8 col-md-8">
-                <div class="dropdown pull-right">
+              <div class="col-xs-6 col-sm-6 col-md-6">
+
+                <div class="contact-action-wpr">
+                  <div class="contact-action tool_tip" (click)='goToEditContact(contact_details?._id)'>
+                    <span class="material-icons" style="color:#8796af;">
+                      edit
+                    </span>
+                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
+                    line-height: 16px;font-size: 12px; left: -100%;">
+                      {{ "EditContact" | translate }}
+                      <i style="top: 88%;"></i>
+                    </span>
+                  </div>
+
+
+                  <div class="contact-action tool_tip" style="margin-left: 8px;"
+                    (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'>
+                    <span class="material-icons" style="color:#f44336;; margin-left: 12px">
+                      delete
+                    </span>
+                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
+                    line-height: 16px;font-size: 12px; left: -100%;">
+                      {{ "MoveToTrash" | translate }}
+                      <i style="top: 88%;margin-left: 12px"></i>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- <div style="display: none;" class="dropdown pull-right">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="material-icons" style="color:rgba(0, 0, 0, 0.87); margin-top: 14px;">
                       more_vert
@@ -427,7 +458,7 @@
                       </a>
                     </li>
                   </ul>
-                </div>
+                </div> -->
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="section-subtitle"> </div>
@@ -502,61 +533,62 @@
                 </span>
               </div> -->
 
+            <!-- ------------------------------------------------------ -->
+            <!-- @ Attributes decoded JWT accordion   -->
+            <!-- ------------------------------------------------------ -->
+            <div *ngIf="contact_details?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED" class="row"
+              style="padding-right: 15px; padding-left: 15px;">
+              <div class="col-sm-12 attributes-jwt-decoded-cntct-accordion-wpr" style="border-top: unset !important">
+                <p class="row-header  attributes-decoded-jwt-cntct-accordion"
+                  (click)="openAttributesDecodedJWTAccordion()"
+                  style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
+                  <i class="material-icons" style="vertical-align: middle; color: #8796af;margin-left: 6px;"> gpp_good </i>
+                  <span style="vertical-align: middle; color: #555 ">
+                    {{ "decodedJWT" | translate }}
+                  </span>
+                </p>
                 <!-- ------------------------------------------------------ -->
-                <!-- @ Attributes decoded JWT accordion -->
+                <!-- @ Attributes decoded JWT panel -->
                 <!-- ------------------------------------------------------ -->
-                <!-- -->
-                <div *ngIf="contact_details?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED" class="row" style="padding-right: 15px; padding-left: 15px;">
-                  <div class="col-sm-12 attributes-jwt-decoded-cntct-accordion-wpr" style="border-top: unset !important">
-                    <p class="row-header  attributes-decoded-jwt-cntct-accordion"
-                      (click)="openAttributesDecodedJWTAccordion()"
-                      style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
-                      <i class="material-icons" style="vertical-align: middle; color: #2C3E48"> gpp_good </i>
-                      <span style="vertical-align: middle">
-                        {{ "decodedJWT" | translate }}
-                      </span>
-                    </p>
-                    <!-- ------------------------------------------------------ -->
-                    <!-- @ Attributes decoded JWT panel -->
-                    <!-- ------------------------------------------------------ -->
-                    <!-- attributesDecodedJWTArray -->
-                    <div class="attributes-decoded-jwt-panel" style="padding: 0px 5px !important;">
-                      <div *ngFor="let attribute of  attributesDecodedJWTArrayMerged; let i = index">
-                        <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+                <!-- attributesDecodedJWTArray -->
+                <div class="attributes-decoded-jwt-panel" style="padding: 0px 5px !important;">
+                  <div *ngFor="let attribute of  attributesDecodedJWTArrayMerged; let i = index">
+                    <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
-                          <div class="row">
-                            <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
-                              <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'" class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
+                      <div class="row">
+                        <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                          <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
+                            class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
                               font-size: 11px;"> {{Attributes | translate}} </div>
-                              <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes"
-                                [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
-                                {{attribute?.attributeName }}:
-                              </div>
-
-                              <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
-                                class="attribute" [ngClass]="{'attribute_cutted_text': !attribute?.decodedJWTType}">
-                                {{attribute?.attributeValue }}
-                              </div>
-
-                            </div>
-                            <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
-                            <!-- [ngClass]="{'down' : attributeFullText === true}" -->
-                            <!-- white-space: nowrap;width: 1%; -->
-                            <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
-                              style="text-align: right;">
-                              <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
-                                style="cursor: pointer; color: #039be5; font-size:18px;"
-                                (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
-                                keyboard_arrow_down
-                              </i>
-
-                            </div>
+                          <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes"
+                            [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
+                            {{attribute?.attributeName }}:
                           </div>
+
+                          <div aria-expanded="false" [id]="attribute?.attributeName +'_value'" class="attribute"
+                            [ngClass]="{'attribute_cutted_text': !attribute?.decodedJWTType}">
+                            {{attribute?.attributeValue }}
+                          </div>
+
+                        </div>
+                        <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
+                        <!-- [ngClass]="{'down' : attributeFullText === true}" -->
+                        <!-- white-space: nowrap;width: 1%; -->
+                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                          style="text-align: right;">
+                          <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
+                            style="cursor: pointer; color: #039be5; font-size:18px;"
+                            (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
+                            keyboard_arrow_down
+                          </i>
+
                         </div>
                       </div>
                     </div>
                   </div>
-                </div> <!-- ./ end attributes decoded JWT accordion-->
+                </div>
+              </div>
+            </div> <!-- ./ end attributes decoded JWT accordion-->
 
 
 
@@ -580,24 +612,27 @@
               <!-- --------------------------------------------------------------------- -->
               <div class="col-sm-12 contact-email-col-12">
                 <p style="margin-bottom: 0px;margin-top: 6px; ">
-                  <!-- style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;" -->
                   <span class="tool_tip">
-                    <i class="material-icons right-sidebar--m-icon">email</i>
-     
+                    <i class="material-icons right-sidebar--m-icon"
+                      (click)='goToEditContact(contact_details?._id)'>email</i>
 
-                    <span class="top"
-                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+
+                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
+                      line-height: 16px;">
                       {{ "ContactEmail" | translate }}
+                      <span style="display: block; font-size: 11px;font-weight: 300;"> {{'ClickToEdit' | translate}}
+                      </span>
                       <i style="top: 88%;"></i>
                     </span>
                   </span>
 
-                  <a style="font-size: 12px; color: #0f62ff !important;font-weight: 400;" target="_blank"
+                  <a style="font-size: 14px; color: #0f62ff !important;font-weight: 400;" target="_blank"
                     *ngIf="contact_details?.email" href="mailto:{{contact_details?.email}}">
                     {{ contact_details?.email }}
                   </a>
-                  <a *ngIf="!contact_details?.email" style="color: #7695a5; font-weight: 400; font-size: 12px;">n/a</a>
-
+                  <span *ngIf="!contact_details?.email" class="contact-sidebar-label">
+                    n/a
+                  </span>
                 </p>
               </div>
             </div>
@@ -608,209 +643,130 @@
             <!-- --------------------------------------------------------------------- -->
             <div class="row">
               <div class="col-sm-12">
-
-                <p style="margin-bottom: 0px;margin-top: 3px;">
-
-                  <!-- style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;" -->
+                <p style="margin-bottom: 0px;margin-top: 6px;">
                   <span class="tool_tip">
-                    <i class="material-icons right-sidebar--m-icon">business</i>
-         
-                    <span class="top"
-                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                    <i class="material-icons right-sidebar--m-icon"
+                      (click)='goToEditContact(contact_details?._id)'>business</i>
+
+                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;    text-align: center;
+                      line-height: 16px;">
                       {{ "Company" | translate }}
+                      <span style="display: block; font-size: 11px;font-weight: 300;"> {{'ClickToEdit' | translate}}
+                      </span>
                       <i style="top: 88%;"></i>
                     </span>
 
                   </span>
-                  <span *ngIf="contact_details?.company" style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                  <span *ngIf="contact_details?.company" class="contact-sidebar-label">
                     {{ contact_details?.company }}
                   </span>
-                  <span *ngIf="!contact_details?.company" style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                  <span *ngIf="!contact_details?.company" class="contact-sidebar-label">
                     n/a
                   </span>
-                  <!-- </span> -->
                 </p>
               </div>
             </div>
-
-
-
 
             <!-- --------------------------------------------------------------------- -->
-            <!-- Created At -->
+            <!-- Address -->
             <!-- --------------------------------------------------------------------- -->
-            <div class="row" style="margin-top:5px">
-              <div class="col-sm-12">
-                <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
-                  <span class="tool_tip">
-                    <!-- style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;" -->
-                    <i class="material-icons right-sidebar--m-icon">calendar_today</i>
-               
-
-                    <span class="top"
-                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
-                      {{ "StartDate" | translate }}
-                      <i style="top: 88%;"></i>
-                    </span>
-
-                  </span>
-
-                  <span *ngIf="contact_details?.createdAt" style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                    {{ contact_details?.createdAt | amTimeAgo }}
-                    <span>({{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}) </span>
-                  </span>
-                  <span *ngIf="!contact_details?.createdAt">
-                    n/a
-                  </span>
-                  <!-- </span> -->
-                </p>
-              </div>
-            </div>
-
-            <!-- 
-            // ---------------------------------------------------------------------
-            // Lead ID
-            // --------------------------------------------------------------------- -->
-            <div class="row" style="margin-top:5px">
-              <div class="col-sm-12">
-                <p style="margin-bottom: 0px;">
-                  <span class="tool_tip">
-                    <!-- style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;" -->
-                    <i class="material-icons right-sidebar--m-icon">code</i>
-            
-                    <span class="top"
-                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
-                      {{ "ContactId" | translate }}
-                      <i style="top: 88%;"></i>
-                    </span>
-
-                  </span>
-
-                  <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                    {{ lead_id }}
-                  </span>
-
-                  <!-- </span> -->
-                </p>
-              </div>
-            </div>
-
-             
-              <!-- --------------------------------------------------------------------- -->
-              <!-- Address -->
-              <!-- --------------------------------------------------------------------- -->
-            <div class="row" style="margin-top:5px">
+            <div class="row" style="margin-top:6px">
               <div class="col-sm-12">
                 <p style="margin-bottom: 0px;">
                   <span style="position: relative;top: 1px;">
                     <div class="row">
                       <div class="col-xs-10" style="padding-right:10px">
                         <span class="tool_tip">
-                          <!-- style="vertical-align: middle; color: #394f5a;font-size:16px" -->
-                          <i class="material-icons right-sidebar--m-icon">person_pin_circle</i>
-                 
-                          <span class="top"
-                            style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                          <i class="material-icons right-sidebar--m-icon"
+                            (click)='goToEditContactAddress(contact_details?._id)'>person_pin_circle</i>
+
+                          <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;    text-align: center;
+                            line-height: 16px;">
                             {{ "Address" | translate }}
+                            <span style="display: block; font-size: 11px;font-weight: 300;">
+                              {{'ClickToEdit' | translate}} </span>
                             <i style="top: 88%;"></i>
                           </span>
-
                         </span>
 
                         <span style=" font-weight: 500; font-size: 12px;">
 
+                          <!-- ------------------------------------ -->
+                          <!-- Street Address -->
+                          <!-- ------------------------------------ -->
                           <span *ngIf="!showAllAddress">
-                             
-                            <!-- ------------------------------------ -->
-                            <!-- Street Address -->
-                            <!-- ------------------------------------ -->
-                            <!-- style="display: block; margin-left: 20px;" -->
-                            <span>
-                              <!-- <span>
-                                {{ 'StreetAddress' | translate }}
-                              </span> -->
-                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                                {{streetAddress}} ...
-                              </span>
-
-                            </span> <!-- ./end !showAllAddress -->
-
-                          </span>
+                            <span class="contact-sidebar-label" (click)="toggleAddress()" style="cursor: pointer;">
+                              {{streetAddress}} ...
+                            </span>
+                          </span> <!-- ./end !showAllAddress -->
 
                           <span *ngIf="showAllAddress" style="word-wrap: break-word;">
-                             
+
                             <!-- ------------------------------------ -->
                             <!-- Street Address -->
                             <!-- ------------------------------------ -->
                             <span style="display: block; margin-left: 20px;">
-                              <span>
-                                {{ 'StreetAddress' | translate }}
+                              <span class="address-label">
+                                {{ 'StreetAddress' | translate }}:
                               </span>
-                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                              <span class="contact-sidebar-label">
                                 {{streetAddress}}
                               </span>
                             </span>
 
-                             
                             <!-- ------------------------------------ -->
                             <!-- City -->
                             <!-- ------------------------------------ -->
                             <span style="display: block; margin-left: 20px;">
-                              <span>
-                                {{ 'City' | translate }}
+                              <span class="address-label">
+                                {{ 'City' | translate }}:
                               </span>
-                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                              <span class="contact-sidebar-label">
                                 {{city}}
                               </span>
                             </span>
 
-                             
                             <!-- ------------------------------------ -->
                             <!-- State (field name 'region') -->
                             <!-- ------------------------------------ -->
                             <span style="display: block; margin-left: 20px;">
-                              <span>
-                                {{ 'State' | translate }}
+                              <span class="address-label">
+                                {{ 'State' | translate }}:
                               </span>
-                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                              <span class="contact-sidebar-label">
                                 {{region}}
                               </span>
                             </span>
 
-                             
                             <!-- ------------------------------------ -->
                             <!-- PostalCode (field name 'zipcode') -->
                             <!-- ------------------------------------ -->
                             <span style="display: block; margin-left: 20px;">
-                              <span>
-                                {{ 'PostalCode' | translate }}
+                              <span class="address-label">
+                                {{ 'PostalCode' | translate }}:
                               </span>
-                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                              <span class="contact-sidebar-label">
                                 {{zipcode}}
                               </span>
                             </span>
 
-                             
                             <!-- ------------------------------------ -->
                             <!-- PostalCode (field name 'zipcode') -->
                             <!-- ------------------------------------ -->
                             <span style="display: block; margin-left: 20px;">
-                              <span>
-                                {{ 'Country' | translate }}
+                              <span class="address-label">
+                                {{ 'Country' | translate }}:
                               </span>
-                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                              <span class="contact-sidebar-label">
                                 {{country}}
                               </span>
                             </span>
                           </span> <!-- ./end showAllAddress -->
-
                         </span>
                       </div>
 
                       <div class="col-xs-2" style="text-align: right;">
-                        <i id="address_arrow_down" class="material-icons rotate"
-                          style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:3px"
-                          (click)="toggleAddress()">
+                        <i id="address_arrow_down" class="material-icons rotate" (click)="toggleAddress()">
                           keyboard_arrow_down
                         </i>
                       </div>
@@ -820,63 +776,161 @@
               </div>
             </div>
 
-             
-            <!-- -------------------------------------- -->
-            <!-- Note -->
-            <!-- -------------------------------------- -->
-            <div class="row" style="margin-top:5px">
-              <div class="col-sm-12" style="padding-bottom: 4px;">
-                <p style="margin-bottom: 0px;">
 
-                  <span class="showPosts">
-                    <span class="greekCross">
+            <!-- --------------------------------------------------------------------- -->
+            <!-- Phone -->
+            <!-- --------------------------------------------------------------------- -->
+            <div class="row">
+              <div class="col-sm-12">
 
-                      <span style="white-space: nowrap; margin-right: 3px;">
+                <p style="margin-bottom: 0px;margin-top: 6px;">
+                  <span class="tool_tip">
+                    <i class="material-icons right-sidebar--m-icon"
+                      (click)='goToEditContactPhone(contact_details?._id)'>call</i>
 
-                        <!-- style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;" -->
-                        <i class="material-icons right-sidebar--m-icon">subject</i>
-
-                        <!-- <span style="position: relative;top: 1px;"> -->
-                        <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Poppins', sans-serif !important;">
-                          Note
-                        </span>
-
+                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap; text-align: center;
+                      line-height: 16px;">
+                      {{ "PhoneNumber" | translate }}
+                      <span style="display: block; font-size: 11px;font-weight: 300;"> {{'ClickToEdit' | translate}}
                       </span>
-                    </span>
-                    <span *ngIf="contact_details?.note" style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                      {{ contact_details?.note }}
+                      <i style="top: 88%;"></i>
                     </span>
 
-                    <span *ngIf="!contact_details?.note"
-                      style="color: #7695a5; font-weight: 500; font-size: 12px;">n/a</span>
-                    <!-- </span> -->
-
+                  </span>
+                  <span *ngIf="contact_details?.phone" class="contact-sidebar-label">
+                    {{ contact_details?.phone }}
+                  </span>
+                  <span *ngIf="!contact_details?.phone" class="contact-sidebar-label">
+                    n/a
                   </span>
                 </p>
               </div>
             </div>
 
-           
+
+            <!-- -------------------------------------- -->
+            <!-- Note -->
+            <!-- -------------------------------------- -->
+            <div class="row" style="margin-top:6px">
+              <div class="col-sm-12" style="padding-bottom: 4px;">
+                <p style="margin-bottom: 0px;">
+
+                  <span class="showPosts tool_tip">
+                    <span class="greekCross">
+                      <span style="white-space: nowrap; margin-right: 3px;">
+                        <span class="tool_tip">
+                          <i class="material-icons right-sidebar--m-icon"
+                            (click)='goToEditContactNote(contact_details?._id)'>subject</i>
+
+                          <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap; text-align: center;
+                            line-height: 16px;">
+                            Note
+                            <span style="display: block; font-size: 11px;font-weight: 300;">
+                              {{'ClickToEdit' | translate}} </span>
+                            <i style="top: 88%;"></i>
+                          </span>
+
+                        </span>
+
+                        <!-- <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Poppins', sans-serif !important;">
+                          Note
+                        </span> -->
+
+                      </span>
+                    </span>
+                    <span *ngIf="contact_details?.note" class="contact-sidebar-label">
+                      {{ contact_details?.note }}
+                    </span>
+
+                    <span *ngIf="!contact_details?.note" class="contact-sidebar-label">n/a</span>
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <!-- --------------------------------------------------------------------- -->
+            <!-- Created At -->
+            <!-- --------------------------------------------------------------------- -->
+            <div class="row" style="margin-top:6px">
+              <div class="col-sm-12">
+                <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
+                  <span class="tool_tip">
+
+                    <i class="material-icons right-sidebar--m-icon">calendar_today</i>
+
+
+                    <span class="top"
+                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                      {{ "StartDate" | translate }}
+                      <i style="top: 88%;"></i>
+                    </span>
+
+                  </span>
+
+                  <span *ngIf="contact_details?.createdAt" class="contact-sidebar-label">
+                    {{ contact_details?.createdAt | amTimeAgo }}
+                    <!-- <span>({{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}) </span> -->
+                    <span>({{ contact_details?.createdAt | amDateFormat: 'LLL'}}) </span>
+
+                  </span>
+                  <span *ngIf="!contact_details?.createdAt" class="contact-sidebar-label">
+                    n/a
+                  </span>
+
+                </p>
+              </div>
+            </div>
+
+
+            <!-- --------------------------------------------------------------------- -->
+            <!-- Lead ID -->
+            <!-- --------------------------------------------------------------------- -->
+            <div class="row" style="margin-top:6px">
+              <div class="col-sm-12">
+                <p style="margin-bottom: 0px;">
+                  <span class="tool_tip">
+                    <i class="material-icons right-sidebar--m-icon">code</i>
+
+                    <span class="top"
+                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                      {{ "ContactId" | translate }}
+                      <i style="top: 88%;"></i>
+                    </span>
+
+                  </span>
+
+                  <span class="contact-sidebar-label">
+                    {{ lead_id }}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+
             <!-- -------------------------------------- -->
             <!-- @ ATTRIBUTES -->
             <!-- -------------------------------------- -->
             <!-- style="margin-bottom: 8px; color: #566787; border-top: 1px solid #e1eef4; padding-top: 8px; font-weight: 400; font-size: 18px" -->
-            <div *ngIf="contact_details?.attributes" class="row" style="margin-top: 6px; padding-left: 15px;padding-right: 15px;">
-              <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;border-top: 1px solid #eeeeee;" >
-                <p class="row-header attributes-accordion" (click)="toggleAttributes()" style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
-                  
+            <div *ngIf="contact_details?.attributes" class="row"
+              style="margin-top: 6px; padding-left: 15px;padding-right: 15px;">
+              <div class="col-sm-12"
+                style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;border-top: 1px solid #eeeeee;">
+                <p class="row-header attributes-accordion" (click)="toggleAttributes()"
+                  style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
+
                   <span>
                     <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18"
-                      style="enable-background:new 0 0 18 18; width: 24px; height: 24px;" xml:space="preserve">
+                      style="enable-background:new 0 0 18 18; width: 24px; height: 24px;margin-left: 6px;"
+                      xml:space="preserve">
                       <style type="text/css">
                         .st0_attributes_icon {
                           fill: none;
                         }
 
                         .st1_attributes_icon {
-                          fill: #2C3E48;
+                          fill: #8796af;
                         }
                       </style>
                       <g>
@@ -895,12 +949,12 @@
                       </g>
                     </svg>
                   </span>
-                  
-                  <span style="position: relative;top: -7px;">
+
+                  <span style="position: relative;top: -7px;color: #555">
                     {{ "Attributes" | translate }}
                   </span>
 
-                  <span style="float: right;">
+                  <span style="float: right;" (click)="toggleAttributes()">
                     <i id="attributes_arrow_down" class="material-icons rotate"
                       style="cursor: pointer; color: #039be5; font-size:25px;position:relative; top:2px; left: 2px;"
                       (click)="toggleAttributes()">
@@ -910,11 +964,12 @@
                 </p>
 
 
-                 
+
                 <!-- --------------------------------------- -->
                 <!-- contatct attributes accordion panel" -->
                 <!-- --------------------------------------- -->
-                <div class="contatct-attributes-accordion-panel" style="padding-left: 3px;padding-right: 10px;" *ngIf="showAttributes">
+                <div class="contatct-attributes-accordion-panel" style="padding-left: 3px;padding-right: 10px;"
+                  *ngIf="showAttributes">
                   <div *ngFor="let attribute of attributesArray; let i = index">
                     <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
@@ -943,7 +998,7 @@
                         </div>
                       </div>
 
-                            <!-- 
+                      <!-- 
                           <div class="debug_div">
                             L : {{attribute?.attributeValueL}} <br>
                             L + 180 : {{attribute?.attributeValueL + 180}} <br>
@@ -951,7 +1006,7 @@
                           </div> -->
 
                     </div>
-                  </div> 
+                  </div>
 
                 </div> <!-- ./ end contatct-attributes-accordion-panel -->
 

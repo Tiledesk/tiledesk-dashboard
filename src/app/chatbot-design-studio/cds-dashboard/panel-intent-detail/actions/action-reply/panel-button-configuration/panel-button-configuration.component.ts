@@ -212,7 +212,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
   }
 
   onChangeSelect(event: {name: string, value: string}){
-    console.log('onChangeSelect: ', event);
+    // console.log('onChangeSelect: ', event);
     this.buttonAction = event.value;
     this.button.action = event.value;
     this.setFocusOnButtonSave();

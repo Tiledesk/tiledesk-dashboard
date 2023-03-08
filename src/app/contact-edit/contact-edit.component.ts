@@ -13,7 +13,7 @@ import { AuthService } from 'app/core/auth.service';
   styleUrls: ['./contact-edit.component.scss']
 })
 export class ContactEditComponent implements OnInit {
-  @ViewChild('editleadbtn', { static: false })  edit_lead_btn_ref: ElementRef;
+  @ViewChild('editleadbtn', { static: false }) edit_lead_btn_ref: ElementRef;
   lead_id: string;
   lead_fullname: string;
   lead_email: string;
@@ -38,6 +38,7 @@ export class ContactEditComponent implements OnInit {
   showSpinner = false;
   isChromeVerGreaterThan100: boolean;
   HIDE_GO_BACK_BTN: boolean;
+  private fragment: string;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -55,6 +56,31 @@ export class ContactEditComponent implements OnInit {
     this.getRequesterIdParamAndThenGetContactById();
     this.getBrowserVersion()
     this.getCurrentRouteUrlToHideDisplayGoToBackBtn()
+    this.getFragment()
+  }
+
+  getFragment() {
+    this.route.fragment.subscribe(fragment => {
+      this.fragment = fragment;
+      // console.log('[CONTACT-EDIT] - FRAGMENT ', this.fragment)
+    });
+  }
+
+  ngAfterViewInit(): void {
+    try {
+      // name of the class of the html div = . + fragment
+      setTimeout(() => {
+        const fragmentEl = <HTMLElement>document.querySelector('.' + this.fragment)
+        // console.log('[CONTACT-EDIT] - QUERY SELECTOR fragmentEl  ', fragmentEl)
+        if (fragmentEl) {
+          fragmentEl.scrollIntoView();
+        }
+      }, 1000);
+      // document.querySelector('#' + this.fragment).scrollIntoView();
+      // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
+    } catch (e) {
+      // console.error('[CONTACT-EDIT] - QUERY SELECTOR language ERROR  ', e)
+    }
   }
 
 
@@ -69,7 +95,7 @@ export class ContactEditComponent implements OnInit {
       this.HIDE_GO_BACK_BTN = false
     }
   }
- 
+
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;

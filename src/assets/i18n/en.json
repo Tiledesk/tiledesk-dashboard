@@ -2280,6 +2280,8 @@
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"This tag has been already assigned. Please enter a unique tag",
     "GetStarted": "Get started",
     "EditProjectName":"Edit project name",
+    "Duplicate": "Duplicate",
+    "ContactUsByEmailToUpdateYourPlan": "Contact us by e-mail to update your plan",
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",

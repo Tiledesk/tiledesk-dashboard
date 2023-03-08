@@ -3,7 +3,6 @@ import { Component, EventEmitter, Input, OnInit, Output, ElementRef } from '@ang
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
-import { timeStamp } from 'console';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

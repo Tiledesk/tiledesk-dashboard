@@ -162,7 +162,8 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
-          this.router.navigate(['project/' + this.projectId + '/pricing']);
+          // this.router.navigate(['project/' + this.projectId + '/pricing']);
+          this.notify.presentContactUsModalToUpgradePlan(true);
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

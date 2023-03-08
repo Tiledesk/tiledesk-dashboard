@@ -2280,6 +2280,8 @@
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"تم تعيين TAG هذا بالفعل. الرجاء إدخال TAG فريد",
     "GetStarted": "ابدأ الآن",
     "EditProjectName": "تحرير اسم المشروع",
+    "Duplicate": "نسخة مماثلة للأصل",
+    "ContactUsByEmailToUpdateYourPlan": "اتصل بنا عن طريق البريد الإلكتروني لتحديث خطتك",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

@@ -94,7 +94,7 @@ export class CommunityTemplateDtlsComponent implements OnInit {
   }
 
   forkTemplate() {
-    this.faqKbService.installTemplate(this.templateId, this.projectId).subscribe((res: any) => {
+    this.faqKbService.installTemplate(this.templateId, this.projectId, true, this.projectId).subscribe((res: any) => {
       this.logger.log('[COMMUNITY-TEMPLATE-DTLS] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 

@@ -29,8 +29,8 @@
         <!-- <i class="material-icons cds-btn-back" (click)="goBack()">keyboard_arrow_left</i> -->
         <div class="header-title">{{ selectedChatbot?.name }}</div>
         <div class="right-opts">
-
-            <div class="btn-group">
+           
+            <div class="btn-group"  [ngStyle]="{'z-index':popup_visibility === 'block' ? '1051' : '1' }">
                 <button id="cds-publish-btn" class="btn btn-primary" type="button" style="margin-left: 14px;"
                     (click)="publish()">
                     <span class="material-icons">
@@ -164,7 +164,7 @@
                 </appdashboard-panel-intent>
 
 
-                <appdashboard-panel-actions *ngIf="isOpenActionDrawer" (openActionDrawer)=onOpenActionDrawer($event)
+                <appdashboard-panel-actions style="z-index: 101;" *ngIf="isOpenActionDrawer" (openActionDrawer)=onOpenActionDrawer($event)
                     [intentSelected]="intentSelected">
                 </appdashboard-panel-actions>
 

@@ -88,7 +88,7 @@ export class TemplatesComponent implements OnInit {
       this.CERTIFIED_TEMPLATE = false
       this.logger.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
       this.logger.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
-    } else if (this.route.indexOf('bots/templates/all') !== -1) {
+    } else if ((this.route.indexOf('bots/templates/all') !== -1 ) || (this.route.indexOf('bots/templates/customer-satisfaction') !== -1 ) || (this.route.indexOf('bots/templates/increase-sales') !== -1 )) {
       this.CERTIFIED_TEMPLATE = true
       this.COMMUNITY_TEMPLATE = false
       this.logger.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)

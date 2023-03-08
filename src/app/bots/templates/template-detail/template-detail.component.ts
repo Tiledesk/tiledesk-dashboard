@@ -90,9 +90,6 @@ export class TemplateDetailComponent implements OnInit {
     this.getLoggedUser();
   }
 
-
-
-
   getLoggedUser() {
     this.auth.user_bs
       .subscribe((user) => {
@@ -102,8 +99,6 @@ export class TemplateDetailComponent implements OnInit {
         }
       });
   }
-
-
 
   getCurrentProjectAndThenGetDeptsByProjectId() {
     // this.project = this.auth.project_bs.value;
@@ -190,7 +185,7 @@ export class TemplateDetailComponent implements OnInit {
 
 
   forkTemplate() {
-    this.faqKbService.installTemplate(this.templateid, this.projectid).subscribe((res: any) => {
+    this.faqKbService.installTemplate(this.templateid, this.projectid, true, this.templateid).subscribe((res: any) => {
       this.logger.log('[TEMPLATE DETAIL] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 

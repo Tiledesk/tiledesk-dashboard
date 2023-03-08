@@ -920,7 +920,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       .then((upgradePlan) => {
         if (upgradePlan) {
           this.logger.log('[WS-REQUESTS-LIST] swal upgradePlan', upgradePlan)
-          this.router.navigate(['project/' + this.projectId + '/pricing']);
+          // this.router.navigate(['project/' + this.projectId + '/pricing']);
+          this.notify.presentContactUsModalToUpgradePlan(true);
         } else {
           this.logger.log('[WS-REQUESTS-LIST] swal upgradePlan (else)', upgradePlan)
         }

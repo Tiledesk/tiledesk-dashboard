@@ -14,6 +14,11 @@ import { DepartmentService } from '../../services/department.service';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { ProjectService } from 'app/services/project.service';
+import { BotLocalDbService } from 'app/services/bot-local-db.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CloneBotComponent } from './clone-bot/clone-bot.component';
+
 const swal = require('sweetalert');
 @Component({
   selector: 'bots-list',
@@ -87,6 +92,9 @@ export class BotListComponent implements OnInit {
   route: string
   dev_mode: boolean;
   isPanelRoute: boolean = false;
+  public selectedProjectId: string;
+  public projectname: string;
+  public currentProjectId : string;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -98,7 +106,10 @@ export class BotListComponent implements OnInit {
     private translate: TranslateService,
     public brandService: BrandService,
     public departmentService: DepartmentService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private projectService: ProjectService,
+    private botLocalDbService: BotLocalDbService,
+    public dialog: MatDialog
   ) {
 
     const brand = brandService.getBrand();
@@ -126,7 +137,7 @@ export class BotListComponent implements OnInit {
 
   getNavigationBaseUrl() {
     const href = window.location.href;
-    // console.log('[BOTS-LIST] href ', href)
+    //  this.logger.log('[BOTS-LIST] href ', href)
     const hrefArray = href.split('/#/');
   
     this.navigationBaseUrl = hrefArray[0];
@@ -138,23 +149,19 @@ export class BotListComponent implements OnInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //   this.logger.log("[BOTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
   getCommunityTemplates () {
 
     this.faqKbService.getCommunityTemplates().subscribe((res: any) => {
-
       if (res) {
         const communityTemplates = res
         this.logger.log('[BOTS-LIST] - GET COMMUNITY TEMPLATES', communityTemplates);
         this.allCommunityTemplatesCount = communityTemplates.length;
         this.logger.log('[[BOTS-LIST] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
-
-
       }
-
     }, (error) => {
       this.logger.error('[BOTS-LIST]  GET COMMUNITY TEMPLATES ERROR ', error);
   
@@ -162,7 +169,6 @@ export class BotListComponent implements OnInit {
       this.logger.log('[BOTS-LIST]  GET COMMUNITY TEMPLATES COMPLETE');
    
     });
-
   }
 
   getTemplates() {
@@ -170,7 +176,7 @@ export class BotListComponent implements OnInit {
 
       if (res) {
         const templates = res
-        // console.log('[BOTS-LIST] - GET ALL TEMPLATES', templates);
+        //  this.logger.log('[BOTS-LIST] - GET ALL TEMPLATES', templates);
         this.allTemplatesCount = templates.length;
         this.logger.log('[BOTS-LIST] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
 
@@ -192,7 +198,7 @@ export class BotListComponent implements OnInit {
         const increaseSalesTemplates = templates.filter((obj) => {
           return obj.mainCategory === "Increase Sales"
         });
-        // console.log('[BOTS-LIST] - Increase Sales TEMPLATES', increaseSalesTemplates);
+        //  this.logger.log('[BOTS-LIST] - Increase Sales TEMPLATES', increaseSalesTemplates);
         if (increaseSalesTemplates) {
           this.increaseSalesTemplatesCount = increaseSalesTemplates.length;
           this.logger.log('[BOTS-LIST] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
@@ -206,6 +212,84 @@ export class BotListComponent implements OnInit {
       this.logger.log('[BOTS-LIST] GET TEMPLATES COMPLETE');
       this.showSpinner = false;
       // this.generateTagsBackground(this.templates)
+    });
+  }
+
+  duplicateChatbot(bot_id,   bot_name) {
+    this.getProjects(bot_id,  bot_name)
+  }
+
+  getProjects(bot_id,  bot_name) {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      this.logger.log('[BOTS-LIST] - duplicateChatbot - GET PROJECTS ', projects);
+      if (projects) {
+    
+        if (projects && projects.length === 1) {
+          this.projectname = projects[0].id_project.name
+          this.selectedProjectId = projects[0].id_project._id
+          this.forkTemplate(bot_id, this.selectedProjectId)
+        } else if (projects && projects.length > 1) {
+
+          this.openDialogCloneBot(projects,bot_id, bot_name ) 
+        }
+
+      }
+    }, error => {
+
+      this.logger.error('[BOTS-LIST] - duplicateChatbot - GET PROJECTS - ERROR ', error)
+    }, () => {
+      this.logger.log('[BOTS-LIST] - duplicateChatbot - GET PROJECTS * COMPLETE *')
+    });
+  }
+
+  openDialogCloneBot(projects, bot_id, bot_name) {
+    const dialogRef = this.dialog.open(CloneBotComponent, {
+      data: {
+        botName: bot_name,
+        projects: projects,
+        currentProjectId: this.currentProjectId,
+
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(selectedProjectId => {
+      this.logger.log(`Dialog afterClosed result (selectedProjectId): ${selectedProjectId}`);
+    if (selectedProjectId) {
+      this.forkTemplate(bot_id, selectedProjectId)
+    }
+    });
+  }
+
+
+
+  forkTemplate(bot_id, selectedProjectId) {
+    this.faqKbService.installTemplate(bot_id, this.currentProjectId, false, selectedProjectId).subscribe((res: any) => {
+      this.logger.log('[BOTS-LIST] - FORK TEMPLATE RES', res);
+      // this.botid = res.bot_id
+      this.getFaqKbById(res.bot_id ,selectedProjectId);
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] FORK TEMPLATE - ERROR ', error);
+
+    }, () => {
+      this.logger.log('[BOTS-LIST] FORK TEMPLATE COMPLETE');
+      
+
+
+    });
+  }
+
+  getFaqKbById(botid, selectedProjectId) {
+    this.faqKbService.getFaqKbById(botid).subscribe((faqkb: any) => {
+      this.logger.log('[BOTS-LIST] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      if (selectedProjectId === this.currentProjectId) {
+        this.getFaqKbByProjectId();
+      }
+      this.botLocalDbService.saveBotsInStorage(botid, faqkb);
+
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
+    }, () => {
+      this.logger.log('[BOTS-LIST] GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
     });
   }
 
@@ -267,6 +351,7 @@ export class BotListComponent implements OnInit {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
       if (this.project) {
+       this.currentProjectId = this.project._id
         // this.logger.log('[BOTS-LIST] 00 -> FAQKB COMP project ID from AUTH service subscription  ', this.project._id)
       }
     });
@@ -279,7 +364,7 @@ export class BotListComponent implements OnInit {
   getFaqKbByProjectId() {
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      // console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+      this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;

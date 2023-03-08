@@ -2280,6 +2280,8 @@
     "ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag":"Bu teq artıq təyin edilib. Zəhmət olmasa unikal etiket daxil edin",
     "GetStarted": "Başlayın",
     "EditProjectName":"Layihənin adını redaktə edin",
+    "Duplicate": "Dublikat",
+    "ContactUsByEmailToUpdateYourPlan": "Planınızı yeniləmək üçün elektron poçtla bizimlə əlaqə saxlayın",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

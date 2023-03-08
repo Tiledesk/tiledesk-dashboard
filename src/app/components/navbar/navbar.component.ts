@@ -150,6 +150,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   flag_url: string;
   dsbrd_lang: string;
   tlangparams: any;
+  
   constructor(
     location: Location,
     private element: ElementRef,
@@ -256,7 +257,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
+    //  console.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
@@ -837,23 +838,68 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   goToPricing() {
     // if (this.ROLE_IS_AGENT === false) {
     if (this.USER_ROLE === 'owner') {
-      this.router.navigate(['project/' + this.projectId + '/pricing']);
+      this.presentModalUpgradePlan()
+      // this.router.navigate(['project/' + this.projectId + '/pricing']);
     } else {
 
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
 
-  goToPayment() {
-    var _this = this;
-    if (this.USER_ROLE === 'owner') {
-      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-        this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+  presentModalUpgradePlan() {
+   
+    this.notifyService.presentContactUsModalToUpgradePlan(true);
+    if (!isDevMode()) {
+      if (window['analytics']) {
+
+        try {
+          window['analytics'].track('Update plan', {
+            "email": this.user.email,
+          }, {
+            "context": {
+              "groupId": this.projectId
+            }
+          });
+        } catch (err) {
+          this.logger.error('track [NAVBAR] Update plan error', err);
+        }
+
+        try {
+          window['analytics'].identify(this.user._id, {
+            name: this.user.firstname + ' ' + this.user.lastname,
+            email: this.user.email,
+            logins: 5,
+            plan: this.profile_name,
+          });
+        } catch (err) {
+          this.logger.error('identify [NAVBAR] Update plan error', err);
+        }
+
+        try {
+          window['analytics'].group(this.projectId, {
+            name: this.projectName,
+            plan: this.profile_name,
+          });
+        } catch (err) {
+          this.logger.error('group [NAVBAR] Update plan error', err);
+        }
       }
-    } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
+
   }
+ 
+ 
+
+  // goToPayment() {
+  //   var _this = this;
+  //   if (this.USER_ROLE === 'owner') {
+  //     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+  //       this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+  //     }
+  //   } else {
+  //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
+  //   }
+  // }
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
