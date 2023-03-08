@@ -256,6 +256,11 @@ mat-form-field.box-textarea ::ng-deep {
 .cds-group-addon-right:hover > .cds-group-addon-right-icon {
     color: #ff4000;
 }
+
+.add-question-btn-disabled {
+    pointer-events: none;
+    background: #aaa;
+}
 // .cds-question-input:hover ~ .cds-group-addon-right ~ span {
 //     opacity: 1;
 // }

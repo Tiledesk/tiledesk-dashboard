@@ -42,7 +42,7 @@
             <input [(ngModel)]="newQuestion" (keydown.enter)='addQuestion()'type="text" class="cds-add-question-input"
                 aria-label="question" placeholder="Add user expression and press enter or click ADD">
 
-                <span class="input-group-addon cds-group-addon-question-right" (click)="addQuestion()">
+                <span class="input-group-addon cds-group-addon-question-right" (click)="addQuestion()" [ngClass]="{'add-question-btn-disabled': !newQuestion || newQuestion?.length === 0}">
                   <span class="cds-group-addon-question-right-btn-text"> ADD </span>  
                     <span class="material-icons cds-group-addon-question-right-btn-icon">
                         add
