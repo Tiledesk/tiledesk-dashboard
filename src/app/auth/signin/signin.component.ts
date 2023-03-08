@@ -327,7 +327,7 @@ export class SigninComponent implements OnInit {
       } else {
         this.showSpinnerInLoginBtn = false;
         // console.error('[SIGN-IN] 1. POST DATA ERROR', error);
-        // self.logger.error('[SIGN-IN] 2. POST DATA ERROR status', error.status);
+        self.logger.error('[SIGN-IN] 2. POST DATA ERROR status', error.status);
 
         if (error.status === 0) {
 
@@ -335,17 +335,18 @@ export class SigninComponent implements OnInit {
           this.signin_errormsg = 'Sorry, there was an error connecting to the server'
           this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
         } else {
-          this.display = 'block';
-
-          this.signin_errormsg = error['error']['msg']
+         
 
           // this.logger.log('SIGNIN USER - POST REQUEST ERROR ', error);
           // this.logger.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
           // console.log('[SIGN-IN] SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
 
           if (error.status !== 401) {
+            this.display = 'block';
 
-            this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
+            this.signin_errormsg = error['error']['msg']
+
+            self.notify.showToast(self.signin_errormsg, 4, 'report_problem')
 
           } else if (error.status === 401) {
 
@@ -370,7 +371,7 @@ export class SigninComponent implements OnInit {
       } else {
         this.showSpinnerInLoginBtn = false;
         this.logger.error('[SIGN-IN] IN V2  1. POST DATA ERROR', error);
-        // self.logger.error('[SIGN-IN] 2. POST DATA ERROR status', error.status);
+        self.logger.error('[SIGN-IN] 2. POST DATA ERROR status', error.status);
 
         if (error.status === 0) {
 

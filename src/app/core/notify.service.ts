@@ -70,6 +70,7 @@ export class NotifyService {
     if (displayModal === true) {
       this.displayContactUsModalToUpgradePlan = 'block';
     }
+    
   }
 
   contacUsViaEmail() {

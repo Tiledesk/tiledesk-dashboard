@@ -345,8 +345,9 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   goToPricing() {
     this.logger.log('goToPricing projectId ', this.projectId);
     // this.router.navigate(['project/' + this.projectId + '/pricing']);
-    this.notify.presentContactUsModalToUpgradePlan(true);
+  
     this.notify.closeModalSubsExpired();
+    this.notify.presentContactUsModalToUpgradePlan(true);
   }
 
   launchWidget() {

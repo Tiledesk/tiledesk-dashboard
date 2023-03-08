@@ -328,7 +328,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
   }
 
   selectTab(index: number): void {
-    console.log('selectTab index', index)
+    // console.log('selectTab index', index)
     this.selectedIndex = index;
   }
 

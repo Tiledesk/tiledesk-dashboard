@@ -32,6 +32,7 @@ import { AnalyticsService } from 'app/analytics/analytics-service/analytics.serv
 const swal = require('sweetalert');
 import { AbstractControl, FormControl } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
+import { isDevMode } from '@angular/core';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -355,6 +356,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public learnMoreAboutDefaultRoles: string;
   public payIsVisible: boolean;
   public featureIsAvailable: boolean;
+  public user: any;
   @ViewChild('fileInputLauncherBtnlogo', { static: false }) fileInputLauncherBtnlogo: any;
 
 
@@ -588,7 +590,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
           // this.router.navigate(['project/' + this.id_project + '/pricing']);
-          this.notify.presentContactUsModalToUpgradePlan(true);
+          this.presentModalContactUsToUpgradePlan()
+          
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();
@@ -597,6 +600,48 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
+
+
+  presentModalContactUsToUpgradePlan() {
+    this.notify.presentContactUsModalToUpgradePlan(true);
+    if (!isDevMode()) {
+      if (window['analytics']) {
+
+        try {
+          window['analytics'].track('Update plan', {
+            "email": this.user.email,
+          }, {
+            "context": {
+              "groupId": this.id_project
+            }
+          });
+        } catch (err) {
+          this.logger.error('track [WIDGET-SET-UP] Update plan error', err);
+        }
+
+        try {
+          window['analytics'].identify(this.user._id, {
+            name: this.user.firstname + ' ' + this.user.lastname,
+            email: this.user.email,
+            logins: 5,
+            plan: this.profile_name,
+          });
+        } catch (err) {
+          this.logger.error('identify [WIDGET-SET-UP] Update plan error', err);
+        }
+
+        try {
+          window['analytics'].group(this.id_project, {
+            name: this.projectName,
+            plan: this.profile_name,
+          });
+        } catch (err) {
+          this.logger.error('group [WIDGET-SET-UP] Update plan error', err);
+        }
+      }
+    }
+  }
+
   // else {
   //   this.notify._displayContactUsModal(true, 'upgrade_plan');
   // }
@@ -813,6 +858,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       .subscribe((user) => {
         this.logger.log('[WIDGET-SET-UP] USER GET IN »» WIDGET DESIGN ', user)
         if (user) {
+          this.user = user
           this.current_user_name = user.firstname + ' ' + user.lastname
           this.currentUserId = user._id;
           this.logger.log('[WIDGET-SET-UP] Current USER ID ', this.currentUserId)

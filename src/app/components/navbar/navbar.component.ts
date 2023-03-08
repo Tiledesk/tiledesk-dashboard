@@ -257,7 +257,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
+    //  console.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
@@ -849,8 +849,45 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   presentModalUpgradePlan() {
    
     this.notifyService.presentContactUsModalToUpgradePlan(true);
+    if (!isDevMode()) {
+      if (window['analytics']) {
+
+        try {
+          window['analytics'].track('Update plan', {
+            "email": this.user.email,
+          }, {
+            "context": {
+              "groupId": this.projectId
+            }
+          });
+        } catch (err) {
+          this.logger.error('track [NAVBAR] Update plan error', err);
+        }
+
+        try {
+          window['analytics'].identify(this.user._id, {
+            name: this.user.firstname + ' ' + this.user.lastname,
+            email: this.user.email,
+            logins: 5,
+            plan: this.profile_name,
+          });
+        } catch (err) {
+          this.logger.error('identify [NAVBAR] Update plan error', err);
+        }
+
+        try {
+          window['analytics'].group(this.projectId, {
+            name: this.projectName,
+            plan: this.profile_name,
+          });
+        } catch (err) {
+          this.logger.error('group [NAVBAR] Update plan error', err);
+        }
+      }
+    }
+
   }
-  // &body=body
+ 
  
 
   // goToPayment() {
