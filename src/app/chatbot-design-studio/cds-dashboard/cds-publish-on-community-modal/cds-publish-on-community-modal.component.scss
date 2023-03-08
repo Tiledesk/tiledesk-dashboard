@@ -78,7 +78,9 @@ input[type="file"] {
     color: #000;
     border-radius: 4px;
     font-weight: 500;
-    margin-top: 14px;
+    // margin-top: 14px;
+    box-shadow: unset;
+    margin-top: 6px;
     box-shadow: unset;
 }
 
@@ -86,20 +88,7 @@ input[type="file"] {
     background: rgba(138, 180, 248, 0.8) !important;
 }
 
-#csd-update-bot-btn {
-    border: 1px solid $light-blue;
-    display: inline-block;
-    padding: 11px 12px;
-    cursor: pointer;
-    background: $light-blue !important;
-    color: #000;
-    border-radius: 4px;
-    font-weight: 500;
-    margin-top: 6px;
-}
-#csd-update-bot-btn:hover {
-    background: rgba(138, 180, 248, 0.8) !important;
-}
+
 
 
 
@@ -131,6 +120,13 @@ input[type="file"] {
 }
 
 /*
+/* Icon
+/* ------------------------------------ */
+.upload-chatbot-image {
+    height: 260px
+}
+
+/*
 /* Tags
 /* ------------------------------------ */
 .cds-select-chatbot-tags-wpr {
@@ -139,7 +135,7 @@ input[type="file"] {
 }
 
 .csd-chatbot-tags--container {
-    height: 260px;
+    height: 198px;
     display: flex;
     gap: 12px;
 }
@@ -173,10 +169,10 @@ input[type="file"] {
 /* ------------------------------------ */
 
 .publishing-wpr {
-    height: 350px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 289px;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
 }
 
 #csd-publish-bot-to-community-btn {
@@ -194,5 +190,25 @@ input[type="file"] {
 
 
 #csd-publish-bot-to-community-btn:hover {
+    background: rgba(138, 180, 248, 0.8) !important;
+}
+
+/*
+/* Navigation btn 
+/* ------------------------------------ */
+
+#cds-navigation-btn{
+    border: 1px solid $light-blue;
+    display: inline-block;
+    padding: 11px 12px;
+    cursor: pointer;
+    background: $light-blue !important;
+    color: #000;
+    border-radius: 4px;
+    font-weight: 500;
+    box-shadow: unset;
+    
+}
+#cds-navigation-btn:hover {
     background: rgba(138, 180, 248, 0.8) !important;
 }

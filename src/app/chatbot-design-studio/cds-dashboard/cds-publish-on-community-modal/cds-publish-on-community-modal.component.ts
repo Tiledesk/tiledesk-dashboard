@@ -33,6 +33,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
   showSpinnerInUploadImageBtn = false;
   botProfileImageurl: string;
   timeStamp: any;
+  selectedIndex = 0;
   @ViewChild('cdsfileInputBotProfileImage', { static: false }) cdsfileInputBotProfileImage: any;
   @ViewChild('editbotbtn', { static: false }) private elementRef: ElementRef;
 
@@ -324,6 +325,11 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
         this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - UPDATED CHATBOT * COMPLETE *');
 
       });
+  }
+
+  selectTab(index: number): void {
+    console.log('selectTab index', index)
+    this.selectedIndex = index;
   }
 
 

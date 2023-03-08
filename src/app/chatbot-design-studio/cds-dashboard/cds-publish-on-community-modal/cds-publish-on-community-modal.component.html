@@ -14,17 +14,74 @@
 </mat-dialog-actions>
 <h1 mat-dialog-title>Deploy to community</h1>
 <mat-dialog-content class="mat-typography" style="min-height: 30px; height: 400px;">
-    <mat-tab-group>
+    <mat-tab-group #tabGroup>
         <mat-tab label="Basic">
 
             <div class="basic-info-wpr">
+
+
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <!-- Bot name  -->
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <div class="row" style="margin-right: 0px; margin-left: 0px;">
+                    <label class="col-xs-12 cds-custom-label">
+                        <!-- {{ "BotsAddEditPage.BotName" | translate }} -->
+                        Name
+                    </label>
+                    <div class="col-xs-12">
+                        <input id="faqKb_name" name="faqKb_name" [(ngModel)]="faqKb_name" class="input" type="text">
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <!-- Description  -->
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <div class="row" style="margin-right: 0px; margin-left: 0px;">
+                    <label class="col-xs-12 cds-custom-label">
+                        <!-- {{ 'Description' | translate }} -->
+                        Description
+                    </label>
+                    <div class="col-xs-12">
+                        <textarea id="bot_description" name="bot_description" [(ngModel)]="faqKb_description" rows="5"
+                            style="resize: vertical;" class="input" type="text"
+                            placeholder="{{ 'Description' | translate }}"> </textarea>
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <!-- Update button  -->
+                <!-- ------------------------------------------------------------------------------------------- -->
+                <div class="row" style="margin-right: 0px; margin-left: 0px;">
+
+                    <div class="col-xs-12">
+                        <button id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left"
+                            (click)="editBot()" [disabled]="faqKb_name?.length === 0">
+                            <!-- {{ "BotsAddEditPage.UpdateBotName" | translate }} -->
+                            Update bot
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="button-wpr">
+                <button id="cds-navigation-btn" class="btn btn-primary pull-right"
+                    (click)="tabGroup.selectedIndex = 1">Next</button>
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="Icon">
+
+            <div class="upload-chatbot-image">
                 <!-- -------------------------------- -->
                 <!-- @ Bot avatar -->
                 <!-- -------------------------------- -->
-                <div class="row" style="margin-right: 0px; margin-left: 0px;margin-bottom: 8px;">
-                    <div class="col-sm-10">
+                <div class="row" style="margin-right: 0px; margin-left: 0px;margin-bottom: 8px;margin-top: 30px;">
+                    <div class="col-sm-12">
                         <!-- [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" -->
-                        <div class="card-avatar" style="display: flex;align-items: center;margin-bottom: 12px;">
+                        <div class="card-avatar"
+                            style="display: flex;align-items: center;margin-bottom: 12px;justify-content: center;">
                             <div class="bot_avatar" style="width: 80px; height: 80px;margin-right: 20px;">
 
                                 <img *ngIf="botProfileImageExist === true || botImageHasBeenUploaded === true"
@@ -47,8 +104,8 @@
                                     <i class="fa fa-spinner fa-spin"></i>
                                 </span>
                             </label>
-                            <input #cdsfileInputBotProfileImage (change)="upload($event)" id="modal-file-upload" type="file"
-                                accept=".jpg, .JPEG, .png" />
+                            <input #cdsfileInputBotProfileImage (change)="upload($event)" id="modal-file-upload"
+                                type="file" accept=".jpg, .JPEG, .png" />
 
                             <button id="cds-delete-bot-img-btn" class="btn btn-white delete_bot_image_btn tool_tip"
                                 (click)="deleteBotProfileImage()">
@@ -66,56 +123,24 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- ------------------------------------------------------------------------------------------- -->
-                <!-- Bot name  -->
-                <!-- ------------------------------------------------------------------------------------------- -->
-                <div class="row" style="margin-right: 0px; margin-left: 0px;">
-                    <label class="col-xs-12 cds-custom-label">
-                        <!-- {{ "BotsAddEditPage.BotName" | translate }} -->
-                        Name
-                    </label>
-                    <div class="col-xs-12">
-                        <input id="faqKb_name" name="faqKb_name" [(ngModel)]="faqKb_name"
-                            class="input" type="text">
-                    </div>
-                </div>
-
-                <!-- ------------------------------------------------------------------------------------------- -->
-                <!-- Description  -->
-                <!-- ------------------------------------------------------------------------------------------- -->
-                <div class="row" style="margin-right: 0px; margin-left: 0px;">
-                    <label class="col-xs-12 cds-custom-label">
-                        <!-- {{ 'Description' | translate }} -->
-                        Description
-                    </label>
-                    <div class="col-xs-12">
-                        <textarea id="bot_description" name="bot_description" [(ngModel)]="faqKb_description" rows="3"
-                            style="resize: vertical;" class="input" type="text"
-                            placeholder="{{ 'Description' | translate }}"> </textarea>
-                    </div>
-                </div>
-
-                <!-- ------------------------------------------------------------------------------------------- -->
-                <!-- Update button  -->
-                <!-- ------------------------------------------------------------------------------------------- -->
-                <div class="row" style="margin-right: 0px; margin-left: 0px;">
-                    
-                    <div class="col-xs-12">
-                        <button id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left"
-                            (click)="editBot()" [disabled]="faqKb_name?.length === 0">
-                            <!-- {{ "BotsAddEditPage.UpdateBotName" | translate }} -->
-                            Update bot
-                        </button>
-                    </div>
-                </div>
             </div>
+            <div class="button-wpr">
+
+                <button id="cds-navigation-btn" class="btn btn-primary pull-right" (click)="tabGroup.selectedIndex = 2"
+                    style="margin-left: 12px;">Next</button>
+                <button id="cds-navigation-btn" class="btn btn-primary pull-right"
+                    (click)="tabGroup.selectedIndex = 0">Back</button>
+            </div>
+
+
+
         </mat-tab>
+
 
         <!-- -------------------------- -->
         <!-- Tags  -->
         <!-- -------------------------- -->
-        <mat-tab label="Tag">
+        <mat-tab label="Tags">
 
             <div class="cds-select-chatbot-tags-wpr">
 
@@ -157,28 +182,57 @@
                   </svg> -->
 
                     </div>
-
                 </div>
             </div>
 
+            <div class="button-wpr">
+                <button id="cds-navigation-btn" class="btn btn-primary pull-right" (click)="tabGroup.selectedIndex = 3"
+                    style="margin-left: 12px;">Next</button>
+                <button id="cds-navigation-btn" class="btn btn-primary pull-right"
+                    (click)="tabGroup.selectedIndex = 1">Back</button>
 
+            </div>
         </mat-tab>
 
 
         <!-- <mat-tab label="Icon"> Content 3 </mat-tab> -->
-<!-- -------------------------- -->
+        <!-- -------------------------- -->
         <!-- Publishing  -->
         <!-- -------------------------- -->
-        <mat-tab label="Publishing"> 
+        <mat-tab label="Publishing">
             <div class="publishing-wpr">
 
-                <button id="csd-publish-bot-to-community-btn" class="btn btn-primary "
-                (click)="publishOnCommunity()">
-                Deploy to community
-            </button>
+                <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                    <div class="col-xs-12">
+                        <div class="deploy-to community-text" style="margin-top: 30px;">
+                            <h3>
+                                Publish your chatbot on the tiledesk community. Allow other users to clone and customize
+                                your chatbot.
+                                Collect accolades and become part of the world's largest conversation designer
+                                community.
+                            </h3>
+                        </div>
+                    </div>
+                </div>
 
+
+                <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                    <div class="col-xs-12">
+                        <div class="publish-bot-to-community-btn-wpr" style="    display: flex;
+                        justify-content: center;
+                        align-items: center;">
+                            <button id="csd-publish-bot-to-community-btn" class="btn btn-primary "
+                                (click)="publishOnCommunity()">
+                                Deploy to community
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        
+
+            <button id="cds-navigation-btn" class="btn btn-primary pull-right"
+                (click)="tabGroup.selectedIndex = 2">Back</button>
+
         </mat-tab>
     </mat-tab-group>
 
