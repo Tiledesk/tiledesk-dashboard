@@ -45,10 +45,11 @@ export class OperationComponent implements OnInit {
         this.onAddOperator.emit();
     }
 
-    onSelectedOperator(event: {value: TYPE_MATH_OPERATOR, index: number}) {
-        this.operation.operators[event.index] = event.value;
-        this.setList(this.operation);   
-        console.log('operation', this.operation);;
-        
+    onSelectedOperator(event: any, index: number) {
+        this.operation.operators[index] = TYPE_MATH_OPERATOR[event.value];
+    }
+
+    trackByIndex(index: number, obj: any): any {
+        return index;
     }
 }

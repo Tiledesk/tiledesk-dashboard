@@ -8,8 +8,8 @@ import { TYPE_MATH_OPERATOR, TYPE_MATH_OPERATOR_LIST } from 'app/chatbot-design-
 })
 export class OperatorComponent implements OnInit {
 
-    @Input() operator: {value: TYPE_MATH_OPERATOR, index: number};
-    @Output() operatorChange = new EventEmitter<{value: TYPE_MATH_OPERATOR, index: number}>();
+    @Input() operator: TYPE_MATH_OPERATOR;
+    @Output() operatorChange = new EventEmitter<TYPE_MATH_OPERATOR>();
     listOfOperators: Array<{name: string, value: string, icon?:string}> = [];
 
     constructor() { }
@@ -21,9 +21,6 @@ export class OperatorComponent implements OnInit {
     }
 
     onSelectedOperator(event: any) {
-        this.operator.value = TYPE_MATH_OPERATOR[event.value];
-        console.log('operator selected', this.operator);
-        this.operatorChange.emit(this.operator)
+        this.operatorChange.emit(event)
     }
-
 }
