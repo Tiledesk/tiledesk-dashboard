@@ -1472,7 +1472,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   goToPricing() {
     if (this.isVisiblePaymentTab) {
       if (this.USER_ROLE === 'owner') {
-        this.router.navigate(['project/' + this.id_project + '/pricing']);
+        // this.router.navigate(['project/' + this.id_project + '/pricing']);
+        this.notify.presentContactUsModalToUpgradePlan(true);
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }

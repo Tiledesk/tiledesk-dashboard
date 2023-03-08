@@ -587,7 +587,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
-          this.router.navigate(['project/' + this.id_project + '/pricing']);
+          // this.router.navigate(['project/' + this.id_project + '/pricing']);
+          this.notify.presentContactUsModalToUpgradePlan(true);
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

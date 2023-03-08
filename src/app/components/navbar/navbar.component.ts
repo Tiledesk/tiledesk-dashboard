@@ -150,6 +150,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   flag_url: string;
   dsbrd_lang: string;
   tlangparams: any;
+  
   constructor(
     location: Location,
     private element: ElementRef,
@@ -837,23 +838,31 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   goToPricing() {
     // if (this.ROLE_IS_AGENT === false) {
     if (this.USER_ROLE === 'owner') {
-      this.router.navigate(['project/' + this.projectId + '/pricing']);
+      this.presentModalUpgradePlan()
+      // this.router.navigate(['project/' + this.projectId + '/pricing']);
     } else {
 
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
 
-  goToPayment() {
-    var _this = this;
-    if (this.USER_ROLE === 'owner') {
-      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-        this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
-      }
-    } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
-    }
+  presentModalUpgradePlan() {
+   
+    this.notifyService.presentContactUsModalToUpgradePlan(true);
   }
+  // &body=body
+ 
+
+  // goToPayment() {
+  //   var _this = this;
+  //   if (this.USER_ROLE === 'owner') {
+  //     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+  //       this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+  //     }
+  //   } else {
+  //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
+  //   }
+  // }
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {

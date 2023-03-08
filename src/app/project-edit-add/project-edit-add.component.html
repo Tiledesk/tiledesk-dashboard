@@ -265,7 +265,7 @@
                   </div> <!-- ./end row-->
 
                   <div class="input-wrapper" style="max-width: 992px;">
-                    <div class="row">
+                    <div style="display: none;" class="row">
                       <label class="col-sm-2 custom-label">
                         {{ 'YourCurrentPlan' | translate }}
                       </label>
@@ -336,7 +336,7 @@
                         <!-- ******* THE UPGRADE BTN @ MEDIA < 768 IS BOTTOM "NO PAYMENTS" ROW                     ******* -->
                         <!-- ---------------------------------------------------------------------------------------------- -->
                         <div class="card what-youre-missing-card"
-                          style="box-shadow: rgba(155, 155, 155, .3) 0px 2px 12px; border-radius:10px;border: 1px solid #e1eef4;position: absolute; margin-top: 0px;">
+                          style="display: none;box-shadow: rgba(155, 155, 155, .3) 0px 2px 12px; border-radius:10px;border: 1px solid #e1eef4;position: absolute; margin-top: 0px;">
                           <div class="card-content" style="padding-left:5px; padding-right:5px; padding-bottom:0px">
                             <div style="border-radius: 10px 10px 0 0;  
                           /* background: #3ea9f5; */
@@ -689,7 +689,7 @@
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SEE PAYMENTS BTN  -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise'"
+                    <!-- <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise'"
                       style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label">
                         {{ "ProjectEditPage.Payments" | translate }}
@@ -700,7 +700,7 @@
                           {{ "ProjectEditPage.SeePayments" | translate }}
                         </button>
                       </div>
-                    </div>
+                    </div> -->
 
 
                     <!-- ------------------------------------------------------------------------------------------------ -->
@@ -1942,6 +1942,8 @@
     </div>
   </div>
 </div>
+
+
 
 
 <!-- --------------------------------------------------------------------------------  -->

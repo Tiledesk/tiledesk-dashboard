@@ -35,6 +35,7 @@ export class NotifyService {
   displayModalEnterpiseSubsExpired: string;
 
   displayContactUsModal = 'none';
+  
   viewCancelSubscriptionModal = 'none';
   displayDataExportNotAvailable = 'none';
   displayInstallTiledeskModal = 'none';
@@ -56,7 +57,7 @@ export class NotifyService {
   displayLogoutModal = 'none';
 
   public URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
-
+  public displayContactUsModalToUpgradePlan = 'none';
   constructor(
     public location: Location,
     private logger: LoggerService
@@ -65,6 +66,20 @@ export class NotifyService {
 
   }
 
+  presentContactUsModalToUpgradePlan(displayModal: boolean) {
+    if (displayModal === true) {
+      this.displayContactUsModalToUpgradePlan = 'block';
+    }
+  }
+
+  contacUsViaEmail() {
+    window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
+    this.closeContactUsModalToUpgradePlan()
+  }
+
+  closeContactUsModalToUpgradePlan() {
+    this.displayContactUsModalToUpgradePlan = 'none'
+  }
 
 
   displaySubscripionHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) {
@@ -119,6 +134,10 @@ export class NotifyService {
   closeContactUsModal() {
     this.displayContactUsModal = 'none';
   }
+
+ 
+
+  
 
   // -----------------------------------------------
   // Data Export Not Available Modal
