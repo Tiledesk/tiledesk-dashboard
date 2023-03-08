@@ -1767,8 +1767,8 @@
                           <span
                             style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px; white-space: nowrap;"
                             class="top">
-                            <span style="text-transform: capitalize;"> {{ agent?.firstname }}
-                              <span *ngIf="agent?.lastname">
+                            <span> {{ agent?.firstname }}
+                              <span *ngIf="agent?.lastname && agent?.lastname !== ' '">
                                 {{ agent?.lastname | slice:0:1 }}.
                               </span>
                             </span>

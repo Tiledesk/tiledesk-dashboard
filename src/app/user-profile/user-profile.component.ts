@@ -18,7 +18,7 @@ import { tranlatedLanguage, avatarPlaceholder, getColorBck } from 'app/utils/uti
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
-import { DomSanitizer} from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 const swal = require('sweetalert');
 
 
@@ -197,7 +197,7 @@ export class UserProfileComponent implements OnInit {
 
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // console.log('[USER-PROFILE] - getProjectPlan project Profile Data', projectProfileData)
+      // this.logger..log('[USER-PROFILE] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_id = projectProfileData._id
         this.prjct_name = projectProfileData.name
@@ -231,7 +231,7 @@ export class UserProfileComponent implements OnInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -423,7 +423,7 @@ export class UserProfileComponent implements OnInit {
       this.logger.log('[USER-PROFILE] - IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
     } else {
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-      // console.log('[USER-PROFILE] - IMAGE STORAGE ', this.baseUrl, 'usecase Native')
+      // this.logger.log('[USER-PROFILE] - IMAGE STORAGE ', this.baseUrl, 'usecase Native')
     }
   }
 
@@ -446,7 +446,7 @@ export class UserProfileComponent implements OnInit {
         this.userProfileImageurl = ''
 
         if (environment.production && environment.production === true && this.appConfigService.getConfig().baseImageUrl === "https://api.tiledesk.com/v2/") {
-          // console.log('upload env prod? ', environment.production)
+          // this.logger.log('upload env prod? ', environment.production)
           this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
           // this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
 
@@ -454,10 +454,10 @@ export class UserProfileComponent implements OnInit {
         } else if (environment.production && environment.production === true && this.appConfigService.getConfig().baseImageUrl !== "https://api.tiledesk.com/v2/") {
           this.userProfileImageurl = downloadurl;
         } else if (!environment.production) {
-          // console.log('upload env prod? ', environment.production)
+          // this.logger.log('upload env prod? ', environment.production)
           this.userProfileImageurl = downloadurl;
         }
-        // console.log('[USER-PROFILE] IMAGE upload with native service - RES downoloadurl', this.userProfileImageurl);
+        // this.logger.log('[USER-PROFILE] IMAGE upload with native service - RES downoloadurl', this.userProfileImageurl);
         this.timeStamp = (new Date()).getTime();
       }, (error) => {
 
@@ -494,11 +494,15 @@ export class UserProfileComponent implements OnInit {
         this.logger.log('[USER-PROFILE] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Native)');
 
         this.userImageHasBeenUploaded = image_exist;
-        this.showSpinnerInUploadImageBtn = false;
-        const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
-        this.logger.log('[USER-PROFILE] stored_user', stored_user)
-        stored_user['hasImage'] = true;
-        this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
+        if (this.userImageHasBeenUploaded === true) {
+          this.showSpinnerInUploadImageBtn = false;
+
+          const stored_user = this.usersLocalDbService.getMemberFromStorage(this.userId);
+          this.logger.log('[USER-PROFILE] stored_user', stored_user)
+          stored_user['hasImage'] = true;
+          this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
+
+        }
         // here "setImageProfileUrl" is missing because in the "upload" method there is the subscription to the downoload 
         // url published by the BehaviourSubject in the service "upload-image-native"
       })
@@ -512,13 +516,13 @@ export class UserProfileComponent implements OnInit {
 
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
         if (this.storageBucket && this.userProfileImageExist === true) {
-          //  console.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
+          //  this.logger.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
           this.setImageProfileUrl(this.storageBucket)
         }
       } else {
         if (this.baseUrl && this.userProfileImageExist === true) {
           this.setImageProfileUrl_Native(this.baseUrl)
-          // console.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST - NATIVE  - here yes ');
+          // this.logger.log('[USER-PROFILE] PROFILE IMAGE - USER PROFILE IMAGE EXIST - NATIVE  - here yes ');
         }
       }
     });
@@ -531,14 +535,14 @@ export class UserProfileComponent implements OnInit {
 
     // this.userProfileImageurl = ''
     // if (environment.production && environment.production === true) {
-    //   // console.log('setImageProfileUrl_Native env prod ', environment.production)
+    //   // this.logger.log('setImageProfileUrl_Native env prod ', environment.production)
     //   this.userProfileImageurl = "https://rtm.tiledesk.com/images?path=uploads%2Fusers%2F" + this.userId + "%2Fimages%2Fphoto.jpg"
 
     // } else if (!environment.production) {
     //   this.userProfileImageurl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.userId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     // }
 
-    // console.log('setImageProfileUrl_Native userProfileImageurl ', this.userProfileImageurl)
+    // this.logger.log('setImageProfileUrl_Native userProfileImageurl ', this.userProfileImageurl)
     // this.logger.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
     this.timeStamp = (new Date()).getTime();
   }
@@ -576,7 +580,7 @@ export class UserProfileComponent implements OnInit {
     if (this.timeStamp) {
       this.logger.log('PROFILE IMAGE (USER-IMG IN USER-LOG) - getUserProfileImage ', this.userProfileImageurl);
       // setTimeout(() => {
-      return  this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl + '&' + this.timeStamp);
+      return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl + '&' + this.timeStamp);
       // }, 200);
     }
     return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl)

@@ -220,7 +220,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       )
       .subscribe((userRole) => {
 
-        // console.log('[SIDEBAR-USER-DETAILS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        // this.logger..log('[SIDEBAR-USER-DETAILS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
         this.USER_ROLE = userRole;
       })
@@ -229,9 +229,9 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    //   console.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
-    //  console.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
+    //   this.logger..log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
+    //  this.logger..log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
+    //  this.logger..log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
     const clicked_element_id = event.target.id
     if (this.eRef.nativeElement.contains(event.target)) {
       this.logger.log('[SIDEBAR-USER-DETAILS] clicked inside')
@@ -268,22 +268,22 @@ export class SidebarUserDetailsComponent implements OnInit {
 
     this.usersService.projectUser_bs.subscribe((projectUser_bs) => {
       // this.PROFILE_STATUS = projectUser_bs;
-      //  console.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
+      //  this.logger..log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
 
       if (projectUser_bs) {
         if (projectUser_bs.user_available === false && projectUser_bs.profileStatus === 'inactive') {
-          // console.log('teammateStatus ', this.teammateStatus) 
+          // this.logger..log('teammateStatus ', this.teammateStatus) 
           this.selectedStatus = this.teammateStatus[2].id;
-          //  console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
+          //  this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
           this.teammateStatus = this.teammateStatus.slice(0)
         } else if (projectUser_bs.user_available === false && (projectUser_bs.profileStatus === '' || !projectUser_bs.profileStatus)) {
           this.selectedStatus = this.teammateStatus[1].id;
-          //  console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
+          //  this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
           this.teammateStatus = this.teammateStatus.slice(0)
         } else if (projectUser_bs.user_available === true && (projectUser_bs.profileStatus === '' || !projectUser_bs.profileStatus)) {
           this.selectedStatus = this.teammateStatus[0].id
           this.teammateStatus = this.teammateStatus.slice(0)
-          // console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+          // this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
         }
       }
       //  this.teammateStatus = this.teammateStatus.slice(0)
@@ -306,7 +306,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-      // console.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+      // this.logger..log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
       if ((projectUser) && (projectUser.length !== 0)) {
         // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
@@ -348,7 +348,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   changeAvailabilityState(selecedstatusID) {
-    // console.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
+    // this.logger..log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
 
     let IS_AVAILABLE = null
     let profilestatus = ''
@@ -366,7 +366,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       .subscribe((projectUser: any) => {
 
 
-        // console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
+        // this.logger..log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
 
         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
         this.usersService.availability_btn_clicked(true)
@@ -395,7 +395,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   //   this.usersService.updateCurrentUserAvailability(this.projectId, IS_AVAILABLE).subscribe((projectUser: any) => { // non 
 
-  //   //  console.log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ', projectUser)
+  //   //  this.logger..log('[SIDEBAR-USER-DETAILS] PROJECT-USER UPDATED ', projectUser)
 
   //     if (projectUser.user_available === false) {
   //       // this.openSnackBar()
@@ -444,21 +444,21 @@ export class SidebarUserDetailsComponent implements OnInit {
             takeUntil(this.unsubscribe$)
         )
         .subscribe((projectUser) => {
-            // console.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
+            // this.logger..log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
             if (projectUser) {
               if (projectUser['user_available'] === false && projectUser['profileStatus'] === 'inactive') {
-                // console.log('teammateStatus ', this.teammateStatus) 
+                // this.logger..log('teammateStatus ', this.teammateStatus) 
                 this.selectedStatus = this.teammateStatus[2].id;
-                //  console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
+                //  this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
                 this.teammateStatus = this.teammateStatus.slice(0)
               } else if (projectUser['user_available'] === false && (projectUser['profileStatus'] === '' || !projectUser['profileStatus'])) {
                 this.selectedStatus = this.teammateStatus[1].id;
-                //  console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
+                //  this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
                 this.teammateStatus = this.teammateStatus.slice(0)
               } else if (projectUser['user_available'] === true && (projectUser['profileStatus'] === '' || !projectUser['profileStatus'])) {
                 this.selectedStatus = this.teammateStatus[0].id
                 this.teammateStatus = this.teammateStatus.slice(0)
-                // console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+                // this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
               }
     
             }
@@ -603,7 +603,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   getLoggedUserAndCurrentDshbrdLang() {
-    //  console.log('[SIDEBAR-USER-DETAILS] BrowserLang ', this.translate.getBrowserLang())
+    //  this.logger..log('[SIDEBAR-USER-DETAILS] BrowserLang ', this.translate.getBrowserLang())
     this.auth.user_bs.subscribe((user) => {
       this.logger.log('[SIDEBAR-USER-DETAILS] »»» »»» USER GET IN SIDEBAR-USER-DETAILS', user)
       // tslint:disable-next-line:no-debugger
