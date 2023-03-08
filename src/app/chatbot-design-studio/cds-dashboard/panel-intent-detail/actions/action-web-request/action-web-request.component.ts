@@ -18,7 +18,7 @@ export class ActionWebRequestComponent implements OnInit {
   pattern = "^[a-zA-Z_]*[a-zA-Z_]+[a-zA-Z0-9_]*$";
 
   limitCharsText = TEXT_CHARS_LIMIT;
-  jsonHeader: string; 
+  jsonHeader: any; 
   jsonBody: string;
   // jsonText: string;
   jsonIsValid = true;

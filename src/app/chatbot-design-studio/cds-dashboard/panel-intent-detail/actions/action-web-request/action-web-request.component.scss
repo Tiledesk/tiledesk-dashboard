@@ -17,9 +17,13 @@
         justify-content: center;
     }
     .cds-rigth{
-        position: absolute;
-        right: 18px;
-        top: -6px;
+        // position: absolute;
+        // right: 18px;
+        // top: -6px;
+        .btn{
+            padding: 8px 12px;
+            margin: 2px 10px;
+        }
     }
 }
 .label-assign-to {
@@ -42,7 +46,7 @@
     padding: 6px 0;
 }
 .cds-input-group {
-    margin: 10px 0px;
+    margin: 10px 11px;
     input {
         border: 0;
         background: #fff;
