@@ -122,13 +122,13 @@ export class ActionRandomReply extends Action {
 export class ActionWebRequest extends Action {
     method: string;
     url: string;
-    headersString: string;
+    headersString: any;
     jsonBody: string;
     assignTo: string;
     constructor(){
         super();
         this.url = '';
-        this.headersString = JSON.stringify({"Content-Type":"application/json", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"});
+        this.headersString = {"Content-Type":"application/json", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"};
         this.jsonBody = JSON.stringify({});
         this.assignTo = '';
         this.method = TYPE_METHOD_REQUEST.GET;

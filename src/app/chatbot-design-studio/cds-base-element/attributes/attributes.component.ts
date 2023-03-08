@@ -8,7 +8,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 export class AttributesComponent implements OnInit {
 
   @Output() changeAttributes = new EventEmitter();
-  @Input() attributes: string;
+  @Input() attributes: any;
 
   newAttributes: Array<any> = [];
 
@@ -16,17 +16,21 @@ export class AttributesComponent implements OnInit {
 
   ngOnInit(): void {
     let that = this;
-    let parseAttributes = {};
-    if(this.isValidJson(this.attributes)){
-      parseAttributes = JSON.parse(this.attributes);
-    }
+    // let parseAttributes = {};
+    // if(this.isValidJson(this.attributes)){
+    //   parseAttributes = JSON.parse(this.attributes);
+    // }
     // console.log('AttributesComponent:: ', parseAttributes);
-    Object.keys(parseAttributes).forEach(key => {
-      // console.log(key); // 👉️ name, country
-      // console.log(this.attributes[key]); // 👉️ James, Chile
-      const newAtt = {"key":key, "value": parseAttributes[key]};
-      this.newAttributes.push(newAtt);
-    });
+    try {
+      Object.keys(this.attributes).forEach(key => {
+        // console.log(key);
+        // console.log(this.attributes[key]);
+        const newAtt = {"key":key, "value": this.attributes[key]};
+        this.newAttributes.push(newAtt);
+      });
+    } catch (error) {
+      // console.log("error: ", error);
+    }
     this.newAttributes.push({key:"", value:""});
   }
 
@@ -63,9 +67,9 @@ export class AttributesComponent implements OnInit {
         attributes[item.key] = item.value;
       }
     });
-    this.attributes = JSON.stringify(attributes);
+    // this.attributes = JSON.stringify(attributes);
     // console.log("------- >>>> ", this.attributes);
-    this.changeAttributes.emit(this.attributes);
+    this.changeAttributes.emit(attributes);
   }
 
 }
