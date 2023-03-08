@@ -11,4 +11,24 @@
     flex-direction: column;
     margin-bottom: 10px;
     margin-top: 10px;
+    gap: 25px;
+}
+
+.add-filter-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-weight: 600;
+    padding: 8px 15px;
+    border: 1px solid #c6cdd4;
+    border-radius: 4px;
+    color: #c6cdd4;
+    cursor: pointer;
+    margin-top: 15px;
+    
+    &:hover{
+        border-color: white;
+        color: white
+    }
 }
