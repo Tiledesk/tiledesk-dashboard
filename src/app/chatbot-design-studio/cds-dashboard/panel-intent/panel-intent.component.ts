@@ -42,7 +42,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
   TYPE_ACTION = TYPE_ACTION
   ACTIONS_LIST = ACTIONS_LIST
-
+  questionCount: number;
 
 
   constructor(
@@ -68,7 +68,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     })
   }
 
-  
+
 
 
   ngOnChanges(changes: SimpleChanges) {
@@ -96,17 +96,17 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     if (changes.intentSelected) {
       // this.logger.log('[PANEL INTENT] (ngOnChanges) - changes.intentSelected', changes.intentSelected)
       // if (!changes.intentSelected.currentValue['form']) {
-       
-        if (changes.intentSelected.currentValue['actions'] && changes.intentSelected.currentValue['actions'].length > 0) {
-          // this.logger.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected Exist actions', changes.intentSelected.currentValue['actions'][0])
-          setTimeout(() => {
-            const actionElement = <HTMLElement>document.querySelector(`#action_0`);
-            // this.logger.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
-            if (actionElement) {
-              actionElement.classList.add("cds-action-active");
-            }
-          }, 200);
-        }
+
+      if (changes.intentSelected.currentValue['actions'] && changes.intentSelected.currentValue['actions'].length > 0) {
+        // this.logger.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected Exist actions', changes.intentSelected.currentValue['actions'][0])
+        setTimeout(() => {
+          const actionElement = <HTMLElement>document.querySelector(`#action_0`);
+          // this.logger.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
+          if (actionElement) {
+            actionElement.classList.add("cds-action-active");
+          }
+        }, 200);
+      }
       // }
       if (changes.intentSelected.firstChange === false) {
         // this.logger.log('[PANEL INTENT] (ngOnChanges) changes', changes);
@@ -132,12 +132,19 @@ export class PanelIntentComponent implements OnInit, OnChanges {
         // const question_segment = this.intentSelected.question.split(\n);
         // https://bobbyhadz.com/blog/javascript-split-string-by-newline
 
-        // const question_segment = this.intentSelected.question.split(/\r?\n/).filter(element => element);
+        const question_segment = this.intentSelected.question.split(/\r?\n/).filter(element => element);
 
-        // this.logger.log('[PANEL INTENT] question_segment', question_segment);
+        // console.log('[PANEL INTENT] question_segment', question_segment);
+        this.questionCount = question_segment.length;
+        // console.log('[PANEL INTENT] (ngOnChanges) questionCount: ', this.questionCount);
+        this.question = this.intentSelected.question;
+        // console.log('[PANEL INTENT] (ngOnChanges) question: ', this.question);
+      } else {
+        this.question = this.intentSelected.question;
+
+        // console.log('[PANEL INTENT] (ngOnChanges) - else - question: ', this.question);
       }
-      this.question = this.intentSelected.question;
-      // this.logger.log('[PANEL INTENT] (ngOnChanges) question: ', this.question);
+
       // if (this.HAS_SELECTED_QUESTION) {
       //   this.onSelectQuestion()
       // }
@@ -192,6 +199,13 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     this.HAS_SELECTED_FORM = false
     this.HAS_SELECTED_ACTION = false
     this.questionSelected.emit(this.intentSelected);
+    let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
+    this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
+    if (elementsWithActiveClass.length != 0) {
+      elementsWithActiveClass.forEach((el) => {
+        el.classList.remove('cds-action-active');
+      })
+    }
   }
 
 
@@ -236,7 +250,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     this.HAS_SELECTED_QUESTION = false
     this.HAS_SELECTED_FORM = true
     this.HAS_SELECTED_ACTION = false
-    this.logger.log('[PANEL INTENT] displayForm HAS_SELECTED_FORM ',  this.HAS_SELECTED_FORM )
+    this.logger.log('[PANEL INTENT] displayForm HAS_SELECTED_FORM ', this.HAS_SELECTED_FORM)
 
     let activeElements = Array.from(document.getElementsByClassName('cds-action-active'));
     this.logger.log('[PANEL INTENT] activeElements', activeElements)

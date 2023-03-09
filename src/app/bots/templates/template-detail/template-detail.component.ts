@@ -70,9 +70,10 @@ export class TemplateDetailComponent implements OnInit {
     this.projectid = data.projectId
     this.template = data.template;
     this._newlyCreatedProject = data.newlyCreatedProject
-    // this.logger.log('[TEMPLATE DETAIL] template ', this.template)
+    // console.log('[TEMPLATE DETAIL] template ', this.template)
     // this.logger.log('[TEMPLATE DETAIL] projectid ', this.projectid)
     if (this.template) {
+     
       this.botname = this.template.name
       this.templateid = this.template._id
       this.templateProjectId = this.template.id_project
@@ -175,7 +176,7 @@ export class TemplateDetailComponent implements OnInit {
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
     // const url = testItOutUrl + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=635b97cc7d7275001a2ab3e4"
-    const url = testItOutUrl + '?tiledesk_projectid=' + this.templateProjectId + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=" + this.defaultDeptID
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.templateProjectId + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=" + "63d7911ca7b3d3001a4a9408"
     // this.logger.log('openTestSiteInPopupWindow URL ', url)
 
 
