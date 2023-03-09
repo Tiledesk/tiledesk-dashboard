@@ -9,9 +9,10 @@ div.operand-wrp {
 
     .material-icons {
         font-size: 43px;
-        margin-left: 10px;
-        margin-right: 10px;
         color: #8ab4f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     div.value-wrp{

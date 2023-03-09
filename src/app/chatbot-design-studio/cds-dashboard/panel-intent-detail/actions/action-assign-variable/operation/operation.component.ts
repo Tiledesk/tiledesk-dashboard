@@ -11,7 +11,7 @@ export class OperationComponent implements OnInit {
 
     @Input() operation: Operation;
     @Output() onAddOperator = new EventEmitter<any>();
-    list: Array<{value: TYPE_MATH_OPERATOR, index: number} | Operand | ''> = [];
+    list: Array< TYPE_MATH_OPERATOR | Operand | ''> = [];
 
 
     constructor() { }
@@ -20,9 +20,7 @@ export class OperationComponent implements OnInit {
 
     }
 
-    ngOnChanges(changes) {
-        console.log('operation', this.operation);
-        
+    ngOnChanges(changes) {        
         if (this.operation) {
             this.setList(this.operation);
         }
@@ -36,7 +34,7 @@ export class OperationComponent implements OnInit {
             this.list.push(operation.operands[i]);
 
             if (i < operation.operands.length - 1) {
-                this.list.push({value: operation.operators[i], index: i});
+                this.list.push(operation.operators[i]);
             }
         }
     }
@@ -46,6 +44,9 @@ export class OperationComponent implements OnInit {
     }
 
     onSelectedOperator(event: any, index: number) {
+        this.list[index] = TYPE_MATH_OPERATOR[event.value];
+
+        index = Math.floor(index / 2);
         this.operation.operators[index] = TYPE_MATH_OPERATOR[event.value];
     }
 

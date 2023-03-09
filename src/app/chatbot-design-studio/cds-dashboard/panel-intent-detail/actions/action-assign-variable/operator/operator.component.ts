@@ -19,8 +19,9 @@ export class OperatorComponent implements OnInit {
             this.listOfOperators.push({name: TYPE_MATH_OPERATOR_LIST[key].name, value: TYPE_MATH_OPERATOR_LIST[key].type})
         }
     }
+          
 
-    onSelectedOperator(event: any) {
-        this.operatorChange.emit(event)
+    onSelectedOperator(event: any) {    
+        this.operatorChange.emit(event);        
     }
 }

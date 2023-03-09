@@ -71,7 +71,7 @@ export class ActionAssignVariableComponent implements OnInit {
     onOperatorSelected() {
         let temp = this.action.operation
  
-        this.action.operation.operators.push(TYPE_MATH_OPERATOR.addAsNumber)
+        this.action.operation.operators.push(TYPE_MATH_OPERATOR['addAsNumber'])
         this.action.operation.operands.push(new Operand());
 
         this.action.operation = Object.assign({}, temp)

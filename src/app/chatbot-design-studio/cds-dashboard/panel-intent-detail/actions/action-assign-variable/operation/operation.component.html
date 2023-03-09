@@ -3,7 +3,7 @@
 <div class="block-wrp">
     <div *ngFor="let op of list; let index = index; trackBy:trackByIndex;">
         <operand *ngIf="index % 2 == 0" [operand] = "op"></operand>
-        <operator *ngIf="index % 2 == 1" [(operator)] = "list[index]"></operator>   
+        <operator *ngIf="index % 2 == 1" [operator] = "op" (operatorChange)="onSelectedOperator($event, index)"></operator>   
     </div>
 </div>
 <div class="add-filter-button" (click)="onClickOperator()">

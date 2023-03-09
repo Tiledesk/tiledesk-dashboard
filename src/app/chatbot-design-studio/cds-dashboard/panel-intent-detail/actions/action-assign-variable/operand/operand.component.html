@@ -21,6 +21,7 @@
         [bindLabelSelect]="'name'"
         [bindValueSelect]="'value'"
         [placeholder]="'Select a function'"
+        [itemSelected]="operandForm.value.function"
         [clearable]="true"
         (onSelected)="onSelectedFunction($event)"
     >
