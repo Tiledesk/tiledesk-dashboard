@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.11
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.10
 - Deploys in production
 - Adds links to the page for editing contact information on the contact details page
