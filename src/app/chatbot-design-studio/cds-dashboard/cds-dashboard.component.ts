@@ -866,10 +866,11 @@ onCloseModalAttacchBotToDept() {
       this.logger.error("--> error getting testing code from whatsapp: ", err);
     })
   }
-
+  // maxWidth: '688px',
   publishOnCommunity() {
     this.logger.log('openDialog')
     const dialogRef = this.dialog.open(CdsPublishOnCommunityModalComponent, {
+     
       data: {
         chatbot: this.selectedChatbot,
         projectId: this.project._id
