@@ -4,11 +4,13 @@
     grid-template-columns: 1fr max-content 1fr;
     grid-column-gap: 1.1em;
     align-items: center;
-    margin-top: 0px;
-    margin-bottom: 0px;
     padding-left: 12px;
     padding-right: 12px;
     color:#f2f2f2;
+    max-width: 400px;
+    width: 100%;
+    // text-align: center;
+    // margin: 0 auto;
 }
   
 .header__center::before,
@@ -28,6 +30,10 @@
 
 .auto-suggest-group{
     display: flex;
+    max-width: 400px;
+    width: 100%;
+    // text-align: center;
+    // margin: 0 auto;
 }
 
 .sx-input {
@@ -45,9 +51,12 @@
     font-size: 14px;
     margin: 3px 0;
     margin-right: 2px;
-    padding: 0 0 0 10px;
+    padding: 0 10px 0 10px;
     width: calc(50% - 2px);
     color: #1e293b;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 
@@ -62,6 +71,9 @@
     border-radius: 0 4px 4px 0;
     color: #1e293b;
     width: calc(50% - 2px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .dx-input:focus, .sx-input:focus {

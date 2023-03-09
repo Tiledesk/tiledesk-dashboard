@@ -17,7 +17,7 @@
   margin: 10px 5px 0;
   font-family: "Poppins";
   padding: 10px;
-  transition: all 0.3s;
+  transition: all 0.1s;
   // min-width: 100px;
   &:hover {
     background-color: #d2d2d2;
@@ -25,14 +25,50 @@
   }
 }
 
+.button-intent-questions {
+  background-color: rgb(66,85,117) !important;
+  color: #d2e3fc !important;
+  width: fit-content !important;
+  margin: auto !important;
+  margin-top: 9px !important;
+  border-radius: 30px !important;
+  padding: 10px 15px !important;
+  border: 3px solid #0f172a!important;
+}
+
+.no-question {
+  border: 1.9px dashed #9aa0a6 !important;
+  background-color: unset !important;
+}
+
+.button-intent-questions:hover  { 
+  background-color: rgba(66,85,117, .6) !important;
+}
+
+.button-intent-active {
+  // background-color: #d2d2d2;
+  // color: #333333;
+  
+  outline: 2px solid rgba(236,182,6,.6901960784)!important;
+
+}
+
+.circuit-brain-st0 {
+  fill: #E8EAED;
+}
+
+// .button-intent:hover svg {
+//   fill: #333333;
+// } 
+
 .button-intent-active {
   background-color: #d2d2d2;
   color: #333333;
 }
 
-.button-intent > span {
-  display: block;
-}
+// .button-intent > span {
+//   display: block;
+// }
 
 .intent-two-columns-wpr {
   display: flex;
