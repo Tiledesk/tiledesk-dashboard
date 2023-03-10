@@ -102,6 +102,10 @@ export enum TYPE_METHOD_REQUEST {
     VIEW = 'VIEW'
 }
 
+export enum TYPE_METHOD_ATTRIBUTE {
+    TEXT = 'text',
+    INPUT = 'input'
+}
 
 
 export const MESSAGE_METADTA_WIDTH = '100%';

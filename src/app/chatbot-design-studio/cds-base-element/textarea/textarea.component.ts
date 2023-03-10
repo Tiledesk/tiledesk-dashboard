@@ -30,28 +30,29 @@ export class CDSTextareaComponent implements OnInit {
 
   @Output() onChange = new EventEmitter();
   @Output() onSelected = new EventEmitter();
+
   // Textarea //
   leftCharsText: number;
   alertCharsText: boolean;
   elTextarea: HTMLInputElement;
-
   addWhiteSpaceBefore: boolean;
   cannedResponseMessage: string;
   texareaIsEmpty = false;
 
-
-
   constructor(
-    private logger: LoggerService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit(): void {
+    this.initialize();
+  }
+
+  initialize(){
     if (this.text) {
       this.control.patchValue(this.text)
     } else {
       this.text = this.control.value
     }
-
     this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
     if (this.leftCharsText < (this.limitCharsText / 10)) {
       this.alertCharsText = true;
