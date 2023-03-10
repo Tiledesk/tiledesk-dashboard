@@ -63,7 +63,6 @@ export class TemplateDetailComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private departmentService: DepartmentService,
-    private localDbService: LocalDbService,
     private botLocalDbService: BotLocalDbService,
   ) {
     this.logger.log('[TEMPLATE DETAIL] data ', data)

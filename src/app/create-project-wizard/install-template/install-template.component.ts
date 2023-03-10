@@ -11,7 +11,10 @@ import { Project } from 'app/models/project-model';
 import { WidgetService } from 'app/services/widget.service';
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { TranslateService } from '@ngx-translate/core';
-
+import { Location } from '@angular/common';
+import { BotLocalDbService } from 'app/services/bot-local-db.service';
+import { DepartmentService } from 'app/services/department.service';
+import { AppConfigService } from 'app/services/app-config.service';
 @Component({
   selector: 'appdashboard-install-template',
   templateUrl: './install-template.component.html',
@@ -23,7 +26,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   projectName: string;
   projectPlan: string;
   botId: string;
-  selectedTemplate: string;
+  selectedTemplate: any;
 
   public companyLogoBlack_Url: string;
   public tparams: any;
@@ -36,6 +39,11 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   public templates: any;
   public newlyCreatedProject = false
   public user: any
+  botid: string;
+  public defaultDeptID: string;
+  public botname: string;
+  project: Project;
+  public TESTSITE_BASE_URL: string;
   constructor(
     private route: ActivatedRoute,
     private faqKbService: FaqKbService,
@@ -47,7 +55,11 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     public auth: AuthService,
     private widgetService: WidgetService,
     public translate: TranslateService,
-
+    public location: Location,
+    private botLocalDbService: BotLocalDbService,
+    private departmentService: DepartmentService,
+    public appConfigService: AppConfigService,
+    
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -60,6 +72,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   ngOnInit(): void {
     this.getParamsTemplatesAndProjects()
     this.getLoggedUser();
+    this.getTestSiteUrl()
   }
 
   getLoggedUser() {
@@ -67,7 +80,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
       .subscribe((user) => {
         if (user) {
           this.user = user;
-          // console.log('[INSTALL-TEMPLATE]  - user ', this.user)
+          // this.logger.log('[INSTALL-TEMPLATE]  - user ', this.user)
         }
       });
   }
@@ -77,7 +90,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
 
       this.logger.log('[INSTALL-TEMPLATE] params ', params)
       this.projectId = params.projectid;
-      // console.log('[INSTALL-TEMPLATE] projectId ', this.projectId)
+      // this.logger.log('[INSTALL-TEMPLATE] projectId ', this.projectId)
       this.botId = params.botid;
       this.langCode = params.langcode;
       this.langName = params.langname;
@@ -126,10 +139,10 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
       this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS ', projects);
       if (projects && projects.length > 0) {
         projects.forEach(project => {
-          // console.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
+          // this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
           if (project.id_project.id === projectid) {
-            // console.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
-
+            // this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
+            this.project = project.id_project
             this.projectName = project.id_project.name;
             this.projectPlan = project.id_project.profile.name
 
@@ -142,14 +155,16 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
               trial_expired: project['id_project']['trialExpired']
             }
             this.auth.projectSelected(selectedProject)
+
+            this.getDeptsByProjectId() 
           }
         });
       }
     }, error => {
 
-      this.logger.error('[GET START CHATBOT FORK] - GET PROJECTS - ERROR ', error)
+      this.logger.error('[INSTALL-TEMPLATE] - GET PROJECTS - ERROR ', error)
     }, () => {
-      this.logger.log('[GET START CHATBOT FORK] - GET PROJECTS * COMPLETE *')
+      this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS * COMPLETE *')
     });
   }
 
@@ -159,20 +174,21 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
       if (res) {
-        this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
+        // this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
 
         const selectedTemplate = res.filter((obj) => {
           return obj._id === botid
         });
         this.templates = selectedTemplate
-        this.openDialog(this.templates[0])
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
+        // this.openDialog(this.templates[0])
+        this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
 
         if (this.templates) {
           this.generateTagsBackground(this.templates)
         }
 
         this.templateImg = this.templates[0]['bigImage'];
+        this.botname = this.templates[0]['name']
 
         if (!isDevMode()) {
           if (window['analytics']) {
@@ -212,17 +228,17 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
       this.logger.error('[INSTALL-TEMPLATE] GET TEMPLATE BY ID - ERROR ', error);
 
     }, () => {
-      this.logger.log('[GET START CHATBOT FORK] GET TEMPLATE BY ID * COMPLETE *');
+      this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATE BY ID * COMPLETE *');
 
     });
   }
 
   generateTagsBackground(templates) {
     templates.forEach(template => {
-      // console.log('generateTagsBackground template', template)
+      // this.logger.log('generateTagsBackground template', template)
       if (template && template.certifiedTags) {
         template.certifiedTags.forEach(tag => {
-          // console.log('generateTagsBackground tag', tag)
+          // this.logger.log('generateTagsBackground tag', tag)
           let tagbckgnd = ''
           if (tag.color === "#a16300" || tag.color === "#A16300") {
             tagbckgnd = 'rgba(255,221,167,1)'
@@ -235,7 +251,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
           } else if (tag.color !== "#a16300" && tag.color !== "#A16300" && tag.color !== "#00699E" && tag.color !== "#00699e" && tag.color !== "#25833e" && tag.color !== "#25833E" && tag.color !== "#0049bd" && tag.color !== "#0049BD") {
 
             tagbckgnd = this.hexToRgba(tag.color)
-            // console.log('generateTagsBackground tagbckgnd ', tagbckgnd)
+            // this.logger.log('generateTagsBackground tagbckgnd ', tagbckgnd)
           }
           tag.background = tagbckgnd;
         });
@@ -256,24 +272,153 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     throw new Error('Bad Hex');
   }
 
-  openDialog(template) {
-    const dialogRef = this.dialog.open(TemplateDetailComponent, {
-      data: {
-        template: template,
-        projectId: this.projectId,
-        newlyCreatedProject: this.newlyCreatedProject
+  // openDialog(template) {
+  //   const dialogRef = this.dialog.open(TemplateDetailComponent, {
+  //     data: {
+  //       template: template,
+  //       projectId: this.projectId,
+  //       newlyCreatedProject: this.newlyCreatedProject
 
-      },
-    });
+  //     },
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Dialog result: ${result}`);
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     // this.logger.log(`Dialog result: ${result}`);
+  //   });
+  // }
 
   goToGetStartChatbot() {
-    this.router.navigate([`/get-chatbot/${this.botId}`]);
+    // this.router.navigate([`/get-chatbot/${this.botId}`]);
+    this.location.back();
 
   }
+
+
+  forkTemplate() {
+    this.faqKbService.installTemplate(this.templates[0]._id, this.projectId, true, this.templates[0]._id).subscribe((res: any) => {
+      this.logger.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
+      this.botid = res.bot_id
+
+    }, (error) => {
+      this.logger.error('[INSTALL-TEMPLATE]] FORK TEMPLATE - ERROR ', error);
+
+    }, () => {
+      this.logger.log('[INSTALL-TEMPLATE] FORK TEMPLATE COMPLETE');
+      if (this.newlyCreatedProject) {
+        this.hookBotToDept()
+      }
+
+      this.getFaqKbById(this.botid);
+      this.goToBotDetails()
+      if (!isDevMode()) {
+        if (window['analytics']) {
+          try {
+            window['analytics'].track('Use template', {
+              "username": this.user.firstname + ' ' + this.user.lastname,
+              "userId": this.user._id,
+              "chatbotName": this.botname
+            });
+          } catch (err) {
+            this.logger.error('track Use template (install template) event error', err);
+          }
+
+          try {
+            window['analytics'].identify(this.user._id, {
+              name: this.user.firstname + ' ' + this.user.lastname,
+              email: this.user.email,
+              logins: 5,
+
+            });
+          } catch (err) {
+            this.logger.error('Identify Use template (install template) event error', err);
+          }
+
+          try {
+            window['analytics'].group(this.projectId, {
+              name: this.projectName,
+
+            });
+          } catch (err) {
+            this.logger.error('Group tUse template (install template) error', err);
+          }
+
+        }
+      }
+
+    });
+  }
+
+  getDeptsByProjectId() {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+
+      // this.logger.log('[FAQ-EDIT-ADD] - DEPT - GET DEPTS  - RES', departments);
+      if (departments) {
+        departments.forEach((dept: any) => {
+         
+
+          if (dept.default === true) {
+            this.defaultDeptID = dept._id;
+          
+          }
+        });
+      }
+
+    }, error => {
+
+      this.logger.error('[INSTALL-TEMPLATE] - DEPT - GET DEPTS  - ERROR', error);
+    }, () => {
+      this.logger.log('[INSTALL-TEMPLATE] - DEPT - GET DEPTS - COMPLETE')
+
+    });
+  }
+
+  hookBotToDept() {
+    this.departmentService.updateExistingDeptWithSelectedBot(this.defaultDeptID, this.botid).subscribe((res) => {
+      this.logger.log('[INSTALL-TEMPLATE] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - RES ', res);
+    }, (error) => {
+      this.logger.error('[INSTALL-TEMPLATE] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - ERROR ', error);
+    }, () => {
+      this.logger.log('[[INSTALL-TEMPLATE] Bot Create - UPDATE DEFAULT DEPT WITH FORKED BOT - COMPLETE ');
+    });
+  }
+
+
+  getFaqKbById(botid) {
+    this.faqKbService.getFaqKbById(botid).subscribe((faqkb: any) => {
+      this.logger.log('[INSTALL-TEMPLATE] GET FAQ-KB (DETAILS) BY ID  ', faqkb);
+
+      this.botLocalDbService.saveBotsInStorage(botid, faqkb);
+
+    }, (error) => {
+      this.logger.error('[INSTALL-TEMPLATE] GET FAQ-KB BY ID  - ERROR ', error);
+    }, () => {
+      this.logger.log('[INSTALL-TEMPLATE] GET FAQ-KB ID  - COMPLETE ');
+    });
+  }
+
+
+  goToBotDetails() {
+    this.logger.log('[TEMPLATE DETAIL] GO TO  BOT DETAILS - isDevMode() ', isDevMode());
+    this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
+  }
+
+  getTestSiteUrl() {
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.logger.log('[TEMPLATE DETAIL] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+  }
+
+  openTestSiteInPopupWindow() {
+    // this.logger.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
+    const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
+    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+    // const url = testItOutUrl + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=635b97cc7d7275001a2ab3e4"
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.templates[0].id_project + '&tiledesk_participants=bot_' + this.templates[0]._id + "&tiledesk_departmentID=" + "63d7911ca7b3d3001a4a9408"
+    // this.logger.log('openTestSiteInPopupWindow URL ', url)
+
+
+    let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
+    window.open(url, '_blank', params);
+  }
+
 
 }
