@@ -15,18 +15,20 @@
                     [setAttributeBtn]="hasSelectedVariable? false: true"
                     [minRow]="1" [maxRow]="1"
                     [readonly]="hasSelectedVariable? true : false"
-                    [control]="actionAssignFormGroup.controls['assignTo']"
+                    [control]="actionAssignFormGroup.controls['destination']"
                     (onSelected)="onVariableSelected($event,1)">
                 </cds-textarea>
                 <!-- <input type="text" [formControlName]="conditionForm.value.operand2.type=='const'? 'value': 'name'" placeholder="Value" name="operand2"/> -->
                 <div class="flex tag" *ngIf="hasSelectedVariable">
                     <span class="material-icons close" (click)="clearInput()">close</span>
-                    {{actionAssignFormGroup.value.assignTo}}
+                    {{actionAssignFormGroup.value.destination}}
                 </div>
             </div>
         </div>
     </div>
     
+    <operation [operation] = "action.operation" (onAddOperator)="onOperatorSelected()"></operation>
+    <!--     
     <div class="text-editor-wrapper">
         <div class="field-box">
             <label class="title-label">Value:</label>
@@ -34,6 +36,6 @@
                 [control]="actionAssignFormGroup.controls['expression']">
             </cds-text>
         </div>
-    </div>
+    </div> -->
 
 </div>
