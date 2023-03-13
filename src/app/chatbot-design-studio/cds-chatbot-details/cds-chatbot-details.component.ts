@@ -384,7 +384,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     this.logger.log('[CDS-CHATBOT-DTLS] HERE YES')
     this.botProfileImageExist = false
     this.verifyImageURL(imageUrl, function (imageExists) {
-      this.logger.log('[CDS-CHATBOT-DTLS] HERE YES 2')
+      // this.logger.log('[CDS-CHATBOT-DTLS] HERE YES 2')
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
 
