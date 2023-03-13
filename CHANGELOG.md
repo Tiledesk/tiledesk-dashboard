@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.14
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.12
 - Deploys in production
 - Improves “get chatbot template” onboarding
