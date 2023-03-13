@@ -323,7 +323,9 @@ export class BotListComponent implements OnInit {
       this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
-      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      // this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
+      
 
       this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
