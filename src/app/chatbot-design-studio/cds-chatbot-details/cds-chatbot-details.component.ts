@@ -32,7 +32,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   id_faq_kb: string;
   storageBucket: string;
   showSpinnerInUploadImageBtn = false;
-  botProfileImageurl: SafeUrl;
+  botProfileImageurl: string;
   timeStamp: any;
   all_depts: any;
   isVisibleDEP: boolean;
@@ -122,7 +122,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   destructureSelectedChatbot(selectedChatbot: Chatbot) {
     this.faqKb_id = selectedChatbot._id;
     this.logger.log('[CDS-CHATBOT-DTLS] - BOT ID', this.faqKb_id)
-    console.log('[CDS-CHATBOT-DTLS] - BOT ID', this.faqKb_id)
+    this.logger.log('[CDS-CHATBOT-DTLS] - BOT ID', this.faqKb_id)
     this.id_faq_kb = selectedChatbot._id;
     if (this.faqKb_id) {
       this.checkBotImageExist()
@@ -381,14 +381,15 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     const baseUrl = this.appConfigService.getConfig().baseImageUrl;
     const imageUrl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     const self = this;
-    console.log('[CDS-CHATBOT-DTLS] HERE YES')
+    this.logger.log('[CDS-CHATBOT-DTLS] HERE YES')
+    this.botProfileImageExist = false
     this.verifyImageURL(imageUrl, function (imageExists) {
-
+      this.logger.log('[CDS-CHATBOT-DTLS] HERE YES 2')
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
 
         self.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
-        console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+       
 
         self.setImageProfileUrl_Native(baseUrl)
 
@@ -396,7 +397,7 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
         self.botProfileImageExist = imageExists
 
         self.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
-        console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+       
       }
     })
   }
@@ -411,6 +412,8 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
       callBack(false);
     };
   }
+
+ 
 
   checkBotImageUploadIsComplete() {
     this.logger.log('[CDS-CHATBOT-DTLS] checkBotImageUploadIsComplete')
@@ -451,17 +454,17 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   }
 
   setImageProfileUrl_Native(storage) {
-    let _botProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg' + new Date().getTime();;
-    this.botProfileImageurl = this.sanitizer.bypassSecurityTrustUrl(_botProfileImageurl)
-    // this.timeStamp = new Date().getTime();
+    this.botProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg' // + '&' + new Date().getTime();;
+    // this.botProfileImageurl = this.sanitizer.bypassSecurityTrustUrl(_botProfileImageurl)
+    this.timeStamp = new Date().getTime();
   }
 
-  // getBotProfileImage(): SafeUrl {
-  //   if (this.timeStamp) {
-  //     return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl + '&' + this.timeStamp);
-  //   }
-  //   return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl)
-  // }
+  getBotProfileImage(): SafeUrl {
+    if (this.timeStamp) {
+      return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl + '&' + this.timeStamp);
+    }
+    return this.sanitizer.bypassSecurityTrustUrl(this.botProfileImageurl)
+  }
 
   editBot() {
     // RESOLVE THE BUG 'edit button remains focused after clicking'

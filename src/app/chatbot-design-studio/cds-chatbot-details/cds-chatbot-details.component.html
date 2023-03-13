@@ -58,10 +58,10 @@
           <div class="card-avatar" style="padding-bottom:15px; display: flex;align-items: center;">
             <div class="bot_avatar" style="width: 80px; height: 80px;margin-right: 20px;">
 
-              <!-- <img *ngIf="botProfileImageExist === true || botImageHasBeenUploaded === true" class="bot-profile-img"
-                [src]="getBotProfileImage()" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" /> -->
               <img *ngIf="botProfileImageExist === true || botImageHasBeenUploaded === true" class="bot-profile-img"
-                [src]="botProfileImageurl" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                [src]="getBotProfileImage()" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+              <!-- <img *ngIf="botProfileImageExist === true || botImageHasBeenUploaded === true" class="bot-profile-img"
+                [src]="botProfileImageurl" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" /> -->
 
               <img *ngIf="botProfileImageExist === false && botImageHasBeenUploaded !== true" class="bot-profile-img"
                 src="assets/img/avatar_bot_tiledesk.svg" />
