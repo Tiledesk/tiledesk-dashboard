@@ -169,8 +169,10 @@
                 </appdashboard-panel-actions>
 
                 <appdashboard-panel-intent-detail *ngIf=elementIntentSelected class="panel-intent-detail"
-                    [listOfActions]="listOfActions" [elementIntentSelected]="elementIntentSelected"
-                    [intentSelected]="intentSelected" [showSpinner]="showSpinner"
+                    [listOfActions]="listOfActions" 
+                    [elementIntentSelected]="elementIntentSelected"
+                    [intentSelected]="intentSelected" 
+                    [showSpinner]="showSpinner"
                     (openButtonPanel)=onOpenButtonPanel($event)>
                 </appdashboard-panel-intent-detail>
 

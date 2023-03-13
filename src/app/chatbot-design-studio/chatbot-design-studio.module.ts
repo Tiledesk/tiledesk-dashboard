@@ -98,6 +98,7 @@ import { VariableListComponent } from './cds-dashboard/panel-intent-detail/actio
 import { TextEditableDivComponent } from './cds-base-element/text-editable-div/text-editable-div.component';
 import { ActionWebRequestComponent } from './cds-dashboard/panel-intent-detail/actions/action-web-request/action-web-request.component';
 import { AttributesComponent } from './cds-base-element/attributes/attributes.component';
+import { DialogComponent } from './cds-base-element/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -158,7 +159,8 @@ import { AttributesComponent } from './cds-base-element/attributes/attributes.co
     VariableListComponent,
     TextEditableDivComponent,
     ActionWebRequestComponent,
-    AttributesComponent
+    AttributesComponent,
+    DialogComponent
   ],
   imports: [
     A11yModule,

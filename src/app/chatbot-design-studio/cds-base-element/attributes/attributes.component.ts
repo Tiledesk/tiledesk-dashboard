@@ -17,11 +17,17 @@ export class AttributesComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    // this.initialize();
+  }
+
+
+  ngOnChanges() {
     this.initialize();
   }
 
 
   private initialize(){
+    this.newAttributes = [];
     try {
       Object.keys(this.attributes).forEach(key => {
         // console.log(key, this.attributes[key]);

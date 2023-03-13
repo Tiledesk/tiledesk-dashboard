@@ -79,6 +79,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
     this.buttonType = this.typeOfButton.TEXT;
     this.urlType = this.typeOfUrl.BLANK;
     this.buttonUrl = '';
+    this.buttonAttributes = [];
     try {
       this.buttonLabel = this.button.value ? this.button.value : null;
       this.buttonType = this.button.type ? this.button.type : null;
@@ -93,12 +94,14 @@ export class PanelButtonConfigurationComponent implements OnInit {
   }
 
   ngOnChanges() {
+    this.buttonAttributes = [];
     try {
       this.buttonLabel = this.button.value ? this.button.value : null;
       this.buttonType = this.button.type ? this.button.type : null;
       this.urlType = this.button.target ? this.button.target : null;
       this.buttonUrl = this.button.link ? this.button.link : null;
       this.buttonAction = this.button.action ? this.button.action : null;
+      this.buttonAttributes = this.button.attributes ? this.button.attributes : [];
     } catch (error) {
       // error
     }
