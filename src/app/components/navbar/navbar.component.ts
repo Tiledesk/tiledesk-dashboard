@@ -838,8 +838,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   goToPricing() {
     // if (this.ROLE_IS_AGENT === false) {
     if (this.USER_ROLE === 'owner') {
-      this.presentModalUpgradePlan()
-      // this.router.navigate(['project/' + this.projectId + '/pricing']);
+      // this.presentModalUpgradePlan()
+      this.router.navigate(['project/' + this.projectId + '/pricing']);
     } else {
 
       this.presentModalOnlyOwnerCanManageTheAccountPlan()

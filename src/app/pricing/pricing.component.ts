@@ -68,7 +68,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
 
   contactUsEmail: string;
-
+  clientReferenceId: string;
   constructor(
     public location: Location,
     public auth: AuthService,
@@ -92,6 +92,7 @@ export class PricingComponent implements OnInit, OnDestroy {
    *  
    *  * to test from localhost start ngrok and replace the initial part of the url
    *    http://03caec73.ngrok.io/modules/payments/stripe/webhook
+   *  https://98bf-151-57-59-176.eu.ngrok.io/modules/payments/stripe/webhook 
    * 
    *  Note: to create an ngrok tunnel run: ./ngrok http  http://localhost:3000/
    * 
@@ -109,7 +110,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     // this.switchPlanPrice()
 
     this.getBaseUrl()
-    this.getCurrentUser();
+    
     // this.getAllUsersOfCurrentProject();
     this.getNoOfProjectUsersAndPendingInvitations();
 
@@ -257,6 +258,10 @@ export class PricingComponent implements OnInit, OnDestroy {
         this.projectId = project._id;
         this.logger.log('[PRICING] - projectId ', this.projectId)
         this.projectName = project.name;
+
+        if (this.projectId) {
+          this.getCurrentUser();
+        }
       }
     });
   }
@@ -271,6 +276,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.logger.log('[PRICING] USER UID ', this.currentUserID);
       this.logger.log('[PRICING] USER email ', this.currentUserEmail);
 
+      this.clientReferenceId = this.currentUserID + '|' + this.projectId
     } else {
       // this.logger.log('No user is signed in');
     }
@@ -495,6 +501,10 @@ export class PricingComponent implements OnInit, OnDestroy {
           that.displayStipeCheckoutError = result.error.message;
         }
       });
+
+  
+
+
   }
 
 

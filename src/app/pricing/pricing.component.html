@@ -121,6 +121,14 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                 (click)="stripeProPlanPerDayWithTrialCheckout()">
                    DAILY PLAN WITH TRIAL
                 </button> -->
+
+                <!-- 63f4ad5e394cfe00132ac70d -->
+              
+              <stripe-buy-button
+                buy-button-id="buy_btn_1Mk6RBD1JyUWkzR9DzTHvDgb"
+                publishable-key="pk_test_51MhFEUD1JyUWkzR9FQk2tjFEigAnddgIo5cezm2wkTiQ2z2e7rgscoYYouEjd9xZookxo0Ad9voSkY2YHmZEgI2X004MLzq9Vf"
+                client-reference-id="{{clientReferenceId}}">
+              </stripe-buy-button>
                 
                 <button *ngIf="DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD === true"  style="background-color:rgb(227, 70, 196);color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
                 (click)="stripeLiveProDailyCheckout()">
