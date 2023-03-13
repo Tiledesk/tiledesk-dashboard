@@ -134,9 +134,12 @@ export class ActionJsonConditionComponent implements OnInit {
   }
 
   onChangeForm(event:{name: string, value: string}, type){
-    this.action[type]=event.value
+    if(event.value){
+      this.action[type]=event.value
+    }else {
+      this.action[type] = event
+    }
   }
-
   onChangeAttributesTrue(attributes:any){
     this.action.trueIntentAttributes = attributes;
   }

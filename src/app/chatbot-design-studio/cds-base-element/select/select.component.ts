@@ -44,4 +44,9 @@ export class SelectComponent implements OnInit {
     this.onSelected.emit(event)
   }
 
+  onResetValue(){
+    this.itemSelected = null
+    this.onSelected.emit(null)
+  }
+
 }

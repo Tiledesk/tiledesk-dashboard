@@ -561,6 +561,8 @@ export class CdsDashboardComponent implements OnInit {
 
   /** appdashboard-intent: Save intent */
   onSaveIntent(intent: Intent) {
+    console.log("Intent:", intent);
+    
     this.logger.log('[CDS DSHBRD] onSaveIntent intent:: ', intent);
     this.logger.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
     this.intentSelected = intent;
