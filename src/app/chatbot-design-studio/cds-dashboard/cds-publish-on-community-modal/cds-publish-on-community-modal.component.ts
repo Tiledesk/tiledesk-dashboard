@@ -94,6 +94,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     const imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + this.id_faq_kb + '%2Fphoto.jpg?alt=media';
 
     const self = this;
+  
     this.verifyImageURL(imageUrl, function (imageExists) {
 
       if (imageExists === true) {
@@ -112,6 +113,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     const baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
     const imageUrl = baseUrl + 'images?path=uploads%2Fusers%2F' + this.id_faq_kb + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     const self = this;
+    this.botProfileImageExist = false
     this.verifyImageURL(imageUrl, function (imageExists) {
 
       if (imageExists === true) {

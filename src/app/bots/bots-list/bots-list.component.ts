@@ -94,7 +94,9 @@ export class BotListComponent implements OnInit {
   isPanelRoute: boolean = false;
   public selectedProjectId: string;
   public projectname: string;
-  public currentProjectId : string;
+  public currentProjectId: string;
+  public botProfileImageExist: boolean;
+  public botProfileImageurl: string;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -139,7 +141,7 @@ export class BotListComponent implements OnInit {
     const href = window.location.href;
     //  this.logger.log('[BOTS-LIST] href ', href)
     const hrefArray = href.split('/#/');
-  
+
     this.navigationBaseUrl = hrefArray[0];
     if (this.navigationBaseUrl === "https://panel.tiledesk.com/v3/dashboard") {
       this.isPanelRoute = true
@@ -153,7 +155,7 @@ export class BotListComponent implements OnInit {
     })
   }
 
-  getCommunityTemplates () {
+  getCommunityTemplates() {
 
     this.faqKbService.getCommunityTemplates().subscribe((res: any) => {
       if (res) {
@@ -164,10 +166,10 @@ export class BotListComponent implements OnInit {
       }
     }, (error) => {
       this.logger.error('[BOTS-LIST]  GET COMMUNITY TEMPLATES ERROR ', error);
-  
+
     }, () => {
       this.logger.log('[BOTS-LIST]  GET COMMUNITY TEMPLATES COMPLETE');
-   
+
     });
   }
 
@@ -215,22 +217,22 @@ export class BotListComponent implements OnInit {
     });
   }
 
-  duplicateChatbot(bot_id,   bot_name) {
-    this.getProjects(bot_id,  bot_name)
+  duplicateChatbot(bot_id, bot_name) {
+    this.getProjects(bot_id, bot_name)
   }
 
-  getProjects(bot_id,  bot_name) {
+  getProjects(bot_id, bot_name) {
     this.projectService.getProjects().subscribe((projects: any) => {
       this.logger.log('[BOTS-LIST] - duplicateChatbot - GET PROJECTS ', projects);
       if (projects) {
-    
+
         if (projects && projects.length === 1) {
           this.projectname = projects[0].id_project.name
           this.selectedProjectId = projects[0].id_project._id
           this.forkTemplate(bot_id, this.selectedProjectId)
         } else if (projects && projects.length > 1) {
 
-          this.openDialogCloneBot(projects,bot_id, bot_name ) 
+          this.openDialogCloneBot(projects, bot_id, bot_name)
         }
 
       }
@@ -254,9 +256,9 @@ export class BotListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(selectedProjectId => {
       this.logger.log(`Dialog afterClosed result (selectedProjectId): ${selectedProjectId}`);
-    if (selectedProjectId) {
-      this.forkTemplate(bot_id, selectedProjectId)
-    }
+      if (selectedProjectId) {
+        this.forkTemplate(bot_id, selectedProjectId)
+      }
     });
   }
 
@@ -266,15 +268,12 @@ export class BotListComponent implements OnInit {
     this.faqKbService.installTemplate(bot_id, this.currentProjectId, false, selectedProjectId).subscribe((res: any) => {
       this.logger.log('[BOTS-LIST] - FORK TEMPLATE RES', res);
       // this.botid = res.bot_id
-      this.getFaqKbById(res.bot_id ,selectedProjectId);
+      this.getFaqKbById(res.bot_id, selectedProjectId);
     }, (error) => {
       this.logger.error('[BOTS-LIST] FORK TEMPLATE - ERROR ', error);
 
     }, () => {
       this.logger.log('[BOTS-LIST] FORK TEMPLATE COMPLETE');
-      
-
-
     });
   }
 
@@ -323,11 +322,15 @@ export class BotListComponent implements OnInit {
       this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
-      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      // this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
+
 
       this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
   }
+
+  
 
   translateTrashBotSuccessMsg() {
     this.translate.get('TrashBotSuccessNoticationMsg')
@@ -351,7 +354,7 @@ export class BotListComponent implements OnInit {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
       if (this.project) {
-       this.currentProjectId = this.project._id
+        this.currentProjectId = this.project._id
         // this.logger.log('[BOTS-LIST] 00 -> FAQKB COMP project ID from AUTH service subscription  ', this.project._id)
       }
     });
@@ -368,6 +371,13 @@ export class BotListComponent implements OnInit {
       if (faqKb) {
 
         this.faqkbList = faqKb;
+
+        this.faqkbList.forEach(bot => {
+          this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot ', bot)
+          this.getBotProfileImage(bot) 
+          
+        });
+
         this.myChatbotOtherCount = faqKb.length
 
         // ---------------------------------------------------------------------
@@ -461,6 +471,44 @@ export class BotListComponent implements OnInit {
       // this.getAllFaqByFaqKbId();
     });
 
+  }
+
+  getBotProfileImage(bot) {
+    const baseUrl = this.appConfigService.getConfig().baseImageUrl;
+    const imageUrl = baseUrl + 'images?path=uploads%2Fusers%2F' + bot._id + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    this.botProfileImageExist = false;
+    this.botProfileImageurl = "assets/img/avatar_bot_tiledesk.svg"
+    bot.botImage = this.botProfileImageurl
+    // bot.botImage = imageUrl + '&' + new Date().getTime();
+    const self = this;
+    this.logger.log('[BOTS-LIST] HERE YES 1')
+    this.verifyImageURL(imageUrl, function (imageExists) {
+ 
+      if (imageExists === true) {
+        self.botProfileImageExist = imageExists
+        self.logger.log('[BOTS-LIST] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+        bot.botImage = imageUrl + '&' + new Date().getTime();
+        // this.botProfileImageurl = this.sanitizer.bypassSecurityTrustUrl(_botProfileImageurl)
+        // self.setImageProfileUrl_Native(baseUrl)
+
+      } else {
+        self.botProfileImageExist = imageExists
+
+        self.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+        
+      }
+    })
+  }
+
+  verifyImageURL(image_url, callBack) {
+    const img = new Image();
+    img.src = image_url;
+    img.onload = function () {
+      callBack(true);
+    };
+    img.onerror = function () {
+      callBack(false);
+    };
   }
 
   getOSCODE() {
@@ -769,8 +817,8 @@ export class BotListComponent implements OnInit {
 
   createBlankTilebot() {
     this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-      // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
-   
+    // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+
   }
 
 
@@ -783,7 +831,7 @@ export class BotListComponent implements OnInit {
   // ---------------------------------------------------------------------------
   goToBotDtls(idFaqKb: string, botType: string, botname: string) {
 
-    this.goToCDS(idFaqKb) 
+    this.goToCDS(idFaqKb)
     // if (this.isPanelRoute === false) {
     //   this.goToOldBotDtls(idFaqKb, botType, botname)
     // } else {
@@ -806,7 +854,7 @@ export class BotListComponent implements OnInit {
       _botType = 'tilebot'
       // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
       // this.router.navigate(['project/' + this.project._id + '/createfaq', idFaqKb, _botType, 'en']);
-      this.goToCDS(idFaqKb) 
+      this.goToCDS(idFaqKb)
 
 
     } else {
