@@ -483,19 +483,13 @@ export class BotListComponent implements OnInit {
     const self = this;
     this.logger.log('[BOTS-LIST] HERE YES 1')
     this.verifyImageURL(imageUrl, function (imageExists) {
-      this.logger.log('[BOTS-LIST] HERE YES 2')
+ 
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
-
         self.logger.log('[BOTS-LIST] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
-      
-
-
         bot.botImage = imageUrl + '&' + new Date().getTime();
         // this.botProfileImageurl = this.sanitizer.bypassSecurityTrustUrl(_botProfileImageurl)
         // self.setImageProfileUrl_Native(baseUrl)
-
-
 
       } else {
         self.botProfileImageExist = imageExists
