@@ -1,6 +1,26 @@
 import { AbstractControl } from "@angular/forms";
 import { ActionAssignVariable, Intent } from "app/models/intent-model";
 
+
+export enum TYPE_MATH_OPERATOR {
+    addAsNumber = "addAsNumber",
+    addAsString = "addAsString",
+    subtractAsNumber = "subtractAsNumber",
+    multiplyAsNumber = "multiplyAsNumber",
+    divideAsNumber = "divideAsNumber"
+}
+
+export enum TYPE_FUNCTION {
+    upperCaseAsString = "upperCaseAsString",
+    lowerCaseAsString = "lowerCaseAsString",
+    capitalizeAsString = "capitalizeAsString",
+    absAsNumber = "absAsNumber",
+    ceilAsNumber = "ceilAsNumber",
+    floorAsNumber = "floorAsNumber",
+    roundAsNumber = "roundAsNumber"
+}
+
+
 export enum TYPE_INTENT_ELEMENT {
     QUESTION = 'question',
     RESPONSE = 'response',
@@ -165,6 +185,24 @@ export const OPERATORS_LIST: { [key: string]: { name: string, type: TYPE_OPERATO
     "containsIgnoreCase": { name: "contains Ignore Case", type: TYPE_OPERATOR.containsIgnoreCase },
     "isEmpty": { name: "is Empty", type: TYPE_OPERATOR.isEmpty },
     "matches": { name: "matches", type: TYPE_OPERATOR.matches }
+}
+
+export const TYPE_MATH_OPERATOR_LIST: { [key: string]: { name: string, type: TYPE_MATH_OPERATOR, src?: string } } = {
+    "addAsNumbers": { name: "Add as numbers", type: TYPE_MATH_OPERATOR.addAsNumber, src: "assets/cds/images/operators/add.svg" },
+    "addAsStrings": { name: "Add as strings", type: TYPE_MATH_OPERATOR.addAsString, src: "assets/cds/images/operators/add.svg" },
+    "substractAsNumbers": { name: "Substract as numbers", type: TYPE_MATH_OPERATOR.subtractAsNumber, src: "assets/cds/images/operators/substract.svg" },
+    "multiplyAsNumbers": { name: "Multiply as numbers", type: TYPE_MATH_OPERATOR.multiplyAsNumber, src: "assets/cds/images/operators/multiply.svg" },
+    "divideAsNumbers": { name: "Divide as numbers", type: TYPE_MATH_OPERATOR.divideAsNumber, src: "assets/cds/images/operators/divide.svg" },
+}
+
+export const TYPE_FUNCTION_LIST: { [key: string]: { name: string, type: TYPE_FUNCTION, src?: string } } = {
+    "upperCaseAsStrings": { name: "Upper case", type: TYPE_FUNCTION.upperCaseAsString, src: "assets/cds/images/operators/upperCase.svg" },
+    "lowerCaseAsStrings": { name: "Lower case", type: TYPE_FUNCTION.lowerCaseAsString, src: "assets/cds/images/operators/lowerCase.svg" },
+    "capitalizeAsStrings": { name: "Capitalize", type: TYPE_FUNCTION.capitalizeAsString, src: "assets/cds/images/operators/capitalize.svg" },
+    "absAsNumbers": { name: "Absolute value", type: TYPE_FUNCTION.absAsNumber, src: "assets/cds/images/operators/abs.svg" },
+    "roundAsNumbers": { name: "Round", type: TYPE_FUNCTION.roundAsNumber, src: "assets/cds/images/operators/round.svg" },
+    "floorAsNumbers": { name: "Floor", type: TYPE_FUNCTION.floorAsNumber, src: "assets/cds/images/operators/floor.svg" },
+    "ceilAsNumbers": { name: "Ceil", type: TYPE_FUNCTION.ceilAsNumber, src: "assets/cds/images/operators/ceil.svg" },
 }
 
 

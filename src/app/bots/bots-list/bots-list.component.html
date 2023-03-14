@@ -166,9 +166,15 @@
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot--img"
+                          <!-- <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot--img"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{faqkb?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" /> -->
+                            
+                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot--img"
+                            [src]="faqkb.botImage"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                            
 
                           <span *ngIf="faqkb.type === 'internal'">
                             <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />

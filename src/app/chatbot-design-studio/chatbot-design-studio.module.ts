@@ -27,6 +27,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -98,6 +101,9 @@ import { VariableListComponent } from './cds-dashboard/panel-intent-detail/actio
 import { TextEditableDivComponent } from './cds-base-element/text-editable-div/text-editable-div.component';
 import { ActionWebRequestComponent } from './cds-dashboard/panel-intent-detail/actions/action-web-request/action-web-request.component';
 import { AttributesComponent } from './cds-base-element/attributes/attributes.component';
+import { OperationComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operation/operation.component';
+import { OperandComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operand/operand.component';
+import { OperatorComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operator/operator.component';
 import { DialogComponent } from './cds-base-element/dialog/dialog.component';
 
 @NgModule({
@@ -160,6 +166,9 @@ import { DialogComponent } from './cds-base-element/dialog/dialog.component';
     TextEditableDivComponent,
     ActionWebRequestComponent,
     AttributesComponent,
+    OperationComponent,
+    OperandComponent,
+    OperatorComponent,
     DialogComponent
   ],
   imports: [
@@ -179,6 +188,8 @@ import { DialogComponent } from './cds-base-element/dialog/dialog.component';
     MatAutocompleteModule,
     MatSlideToggleModule,
     MatListModule,
+    MatButtonModule,
+    MatIconModule,
     RouterModule,
     TranslateModule,
     FormsModule,

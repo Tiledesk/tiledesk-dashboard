@@ -67,9 +67,9 @@ export class BaseConditionRowComponent implements OnInit {
       operator: this.condition.operator,
       operand2: this.condition.operand2
     })
-  }
+}
 
-  onVariableSelected(variableSelected: {name: string, value: string}, step: number){
+onVariableSelected(variableSelected: {name: string, value: string}, step: number){    
     this.logger.log('onVariableSelected-->', step, this.conditionForm, variableSelected)
     if(step === 0){
       this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
@@ -83,19 +83,20 @@ export class BaseConditionRowComponent implements OnInit {
 
   onChangeTextArea(text: string, step: number){
     this.logger.log('textttt', text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)));
-    
     if(text){
       this.disableSubmit = false
     }else{
       this.disableSubmit = true
     }
     if(text && text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))){
+
       text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)).forEach(match => {
+
         text = text.replace(text,match)
         this.conditionForm.patchValue({ operand2: {type: 'var', name: text}}, {emitEvent: false})
-      })
-    }
-   
+
+    })
+    } 
   }
 
   clearInput(){

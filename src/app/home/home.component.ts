@@ -632,7 +632,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
 
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
-      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
       this.logger.log('[HOME] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
       this.getAllUsersOfCurrentProject(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
       this.getAllFaqKbByProjectId(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME
@@ -1325,7 +1325,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     } else if (bot_type === 'tilebot') {
       botType = 'tilebot'
       if (this.USER_ROLE !== 'agent') {
-        this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
+        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
+        this.router.navigate(['project/' + this.project._id + '/cds/', bot_id, 'intent', '0']);
       }
     } else {
       botType = bot_type

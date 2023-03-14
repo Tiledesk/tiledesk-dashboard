@@ -566,6 +566,8 @@ export class CdsDashboardComponent implements OnInit {
 
   /** appdashboard-intent: Save intent */
   onSaveIntent(intent: Intent) {
+    this.logger.log("Intent:", intent);
+    
     this.logger.log('[CDS DSHBRD] onSaveIntent intent:: ', intent);
     this.logger.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
     this.intentSelected = intent;
@@ -864,17 +866,19 @@ onCloseModalAttacchBotToDept() {
 
     this.multichannelService.getCodeForWhatsappTest(info).then((response: any) => {
       this.logger.log("--> testing code from whatsapp: ", response);
-      let code = "%23td" + response.short_uid;
-      const testItOutOnWhatsappUrl = `https://api.whatsapp.com/send/?phone=${tiledesk_phone_number}&text=${code}&type=phone_number&app_absent=0`
+      // let code = "%23td" + response.short_uid;
+      let text = "%23td" + response.short_uid + " Send me to start testing your bot";
+      const testItOutOnWhatsappUrl = `https://api.whatsapp.com/send/?phone=${tiledesk_phone_number}&text=${text}&type=phone_number&app_absent=0`
       window.open(testItOutOnWhatsappUrl, 'blank');
     }).catch((err) => {
       this.logger.error("--> error getting testing code from whatsapp: ", err);
     })
   }
-
+  // maxWidth: '688px',
   publishOnCommunity() {
     this.logger.log('openDialog')
     const dialogRef = this.dialog.open(CdsPublishOnCommunityModalComponent, {
+     
       data: {
         chatbot: this.selectedChatbot,
         projectId: this.project._id

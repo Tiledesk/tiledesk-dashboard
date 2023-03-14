@@ -417,7 +417,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       this.logger.log('[DEPT-EDIT-ADD] IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
-      this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
       this.logger.log('[DEPT-EDIT-ADD] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
   }
@@ -931,7 +931,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     } else if (this.bot_type === 'tilebot') {
       botType = 'tilebot'
       if (this.USER_ROLE !== 'agent') {
-        this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
+        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
+        this.router.navigate(['project/' + this.project._id + '/cds/', this.selectedId, 'intent', '0']);
       }
     } else {
       botType = this.bot_type;
