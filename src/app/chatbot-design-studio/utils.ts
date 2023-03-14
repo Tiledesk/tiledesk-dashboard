@@ -122,6 +122,10 @@ export enum TYPE_METHOD_REQUEST {
     VIEW = 'VIEW'
 }
 
+export enum TYPE_METHOD_ATTRIBUTE {
+    TEXT = 'text',
+    INPUT = 'input'
+}
 
 
 export const MESSAGE_METADTA_WIDTH = '100%';
@@ -157,7 +161,7 @@ export const ACTIONS_LIST= {
     REPLACE_BOT: { name: 'Replace bot', type: TYPE_ACTION.REPLACE_BOT, src: "assets/cds/images/actions/replace_bot.svg", description: "Choose a chatbot to replace the current one in the conversation" },
     CHANGE_DEPARTMENT: { name: 'Change dept', type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg" },
     ONLINE_AGENTS: { name: 'If Online Agent', type: TYPE_ACTION.ONLINE_AGENTS, src: "assets/cds/images/actions/online_agents.svg", description: 'This action moves the flow to different blocks, based on the agents’ availability.<br>If the are agents available the <b>TRUE block</b> will be triggered.<br>If the are no agents available the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset Stop on met condition.' },
-    OPEN_HOURS: { name: 'Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the <b>TRUE block</b> will be triggered.<br>During offline hours the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.' },
+    OPEN_HOURS: { name: 'If Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the <b>TRUE block</b> will be triggered.<br>During offline hours the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.' },
     HIDE_MESSSAGE: { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src: "assets/cds/images/actions/hidden_message.svg" },
     JSON_CONDITION: { name: 'Condition', type: TYPE_ACTION.JSON_CONDITION, src: "assets/cds/images/actions/condition.svg" }
 }
@@ -240,16 +244,15 @@ export var variableList = {
     ]
 }
 
-export function retriveListOfVariables(intents: Array<Intent>) {
-    variableList.userDefined = []
-    intents.forEach(intent => {
-        intent.actions.filter(action => action._tdActionType === TYPE_ACTION.ASSIGN_VARIABLE).forEach(((actionAssignVariable: ActionAssignVariable) => {
-            if(!actionAssignVariable.hasOwnProperty('assignTo')) return; 
-            if(actionAssignVariable.destination === null || actionAssignVariable.destination === '') return;
-            if(variableList.userDefined.some(el => el.value === actionAssignVariable.destination)) return;
-            if(variableList.systemDefined.some(el => el.value === actionAssignVariable.destination)) return;
-
-            variableList.userDefined.push({ name: actionAssignVariable.destination, value: actionAssignVariable.destination })
-        }))
-    })
-}
+// export function retriveListOfVariables(intents: Array<Intent>) {
+//     variableList.userDefined = []
+//     intents.forEach(intent => {
+//         intent.actions.filter(action => action._tdActionType === TYPE_ACTION.ASSIGN_VARIABLE).forEach(((actionAssignVariable: ActionAssignVariable) => {
+//             if(!actionAssignVariable.hasOwnProperty('assignTo')) return; 
+//             if(actionAssignVariable.assignTo === null || actionAssignVariable.assignTo === '') return;
+//             if(variableList.userDefined.some(el => el.value === actionAssignVariable.assignTo)) return;
+//             if(variableList.systemDefined.some(el => el.value === actionAssignVariable.assignTo)) return;
+//             variableList.userDefined.push({ name: actionAssignVariable.assignTo, value: actionAssignVariable.assignTo })
+//         }))
+//     })
+// }

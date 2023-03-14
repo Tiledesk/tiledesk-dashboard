@@ -1,81 +1,186 @@
-.header__center {
-    font-size: 1.1em;
-    display: grid;
-    grid-template-columns: 1fr max-content 1fr;
-    grid-column-gap: 1.1em;
-    align-items: center;
-    padding-left: 12px;
-    padding-right: 12px;
-    color:#f2f2f2;
-    max-width: 400px;
-    width: 100%;
-    // text-align: center;
-    // margin: 0 auto;
-}
-  
-.header__center::before,
-.header__center::after {
-    content: "";
-    display: block;
-    height: 1px;
-    background-color: currentColor;
-}
+.cds-attributes {
+    .header__center {
+        font-size: 1.1em;
+        display: grid;
+        grid-template-columns: 1fr max-content 1fr;
+        grid-column-gap: 1.1em;
+        align-items: center;
+        padding-left: 12px;
+        padding-right: 12px;
+        color:#f2f2f2;
+        max-width: 400px;
+        width: 100%;
+        // text-align: center;
+        // margin: 0 auto;
+    }
+      
+    .header__center::before,
+    .header__center::after {
+        content: "";
+        display: block;
+        height: 1px;
+        background-color: currentColor;
+    }
+    
+    .key-value-form-column {
+        font-size: 1em;
+        width: 50%;
+        color:#f2f2f2;
+        text-align: center;
+    }
+    
+    .auto-suggest-group{
+        display: flex;
+        max-width: 400px;
+        width: 100%;
+        // text-align: center;
+        // margin: 0 auto;
+    }
+    
+    .sx-input {
+        border: 0;
+        cursor: default;
+        display: flex;
+        outline: none;
+        overflow: hidden;
+        position: relative;
+        width: 150px;
+        height: 26px;
+        border-radius: 4px 0 0 4px;
+        background: #f2f2f2;
+        font-weight: 500;
+        font-size: 14px;
+        margin: 3px 0;
+        margin-right: 2px;
+        padding: 0 10px 0 10px;
+        width: calc(50% - 2px);
+        color: #1e293b;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    
+    
+    .dx-input {
+        border: 0;
+        background: #fff;
+        margin: 3px 0;
+        font-size: 14px;
+        height: 26px;
+        width: 50%;
+        padding: 0 10px;
+        border-radius: 0 4px 4px 0;
+        color: #1e293b;
+        width: calc(50% - 2px);
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    
+    .dx-input:focus, .sx-input:focus {
+        outline: 2px solid rgba(236,182,6,1);
+    }
 
-.key-value-form-column {
-    font-size: 1em;
-    width: 50%;
-    color:#f2f2f2;
-    text-align: center;
-}
-
-.auto-suggest-group{
-    display: flex;
-    max-width: 400px;
-    width: 100%;
-    // text-align: center;
-    // margin: 0 auto;
-}
-
-.sx-input {
-    border: 0;
-    cursor: default;
-    display: flex;
-    outline: none;
-    overflow: hidden;
-    position: relative;
-    width: 150px;
-    height: 26px;
-    border-radius: 4px 0 0 4px;
-    background: #f2f2f2;
-    font-weight: 500;
-    font-size: 14px;
-    margin: 3px 0;
-    margin-right: 2px;
-    padding: 0 10px 0 10px;
-    width: calc(50% - 2px);
-    color: #1e293b;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
 
 
-.dx-input {
-    border: 0;
-    background: #fff;
-    margin: 3px 0;
-    font-size: 14px;
-    height: 26px;
-    width: 50%;
-    padding: 0 10px;
-    border-radius: 0 4px 4px 0;
-    color: #1e293b;
-    width: calc(50% - 2px);
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
 
-.dx-input:focus, .sx-input:focus {
-    outline: 2px solid rgba(236,182,6,1);
+    ::ng-deep cds-textarea#assignTo {
+        display: flex;
+        &.assigned {
+            textarea {
+                background: transparent;
+                padding: 0!important;
+                border: 0!important;
+                outline: 0!important;
+            }
+        }
+        .editor-utils {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: absolute;
+            bottom: -8px;
+            right: 4px;
+            z-index: 1;
+        }
+        textarea {
+            max-height: 41px;
+            cursor: default;
+            display: flex;
+            position: relative;
+            border-radius: 4px 0 0 4px;
+            background: rgb(242,242,242);
+            font-weight: 500;
+            font-size: 14px;
+            margin: 3px 0px 3px 0;
+            color: #1e293b;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 0!important;
+            width: calc(100% - 2px);
+            border: 0px!important;
+            outline: 0px!important;
+            height: 26px!important;
+            resize: none!important;
+        }
+    }
+
+    
+
+    .value-wrp {
+        position: relative;
+        width: 50%;
+        .flex{
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .close{
+                width: 17px;
+                top: -4px;
+                left: -7px;
+                font-size: 15px;
+                border-radius: 50%;
+                background: white;
+                cursor: pointer;
+                position: absolute;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                opacity: 1;
+                &:hover{
+                    background: #ecb606;
+                    color: white;
+                }
+            }
+        }
+    
+        .tag{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 2px;
+            border-radius: 4px 0 0 4px;
+            margin: 3px 0px;
+            padding: 5px 10px;
+            background-color: #ecb606;
+            color: white;
+            max-height: 26px;
+            justify-content: initial;
+        }
+
+        .label-close{
+            width: 100%;
+            font-size: 14px;
+            padding: 0px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
 }

@@ -258,7 +258,6 @@ export class FaqKbService {
 
     let url = this.FAQKB_URL + id;
     this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID - URL', url);
-
     return this._httpClient
       .get<FaqKb[]>(url, httpOptions)
   }
@@ -274,7 +273,6 @@ export class FaqKbService {
 
     let url = this.FAQKB_URL + id;
     this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID - URL', url);
-
     return this._httpClient
       .get<FaqKb>(url, httpOptions)
   }
@@ -572,6 +570,25 @@ export class FaqKbService {
     return this._httpClient.get(this.SERVER_BASE_PATH + this.project._id + "/analytics/messages/count", { headers: headers, params: params })
 
   }
+
+
+  
+  addNodeToChatbotAttributes(idBot: string, key:string,  json:any) {
+    this.logger.log('[FAQ-KB.SERV] - addNodeToAttributesChatbot idBot ', idBot)
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    let url = this.SERVER_BASE_PATH + this.project._id + '/bots/' + idBot + '/attributes';
+    this.logger.log('addRuleToChatbot BOT - URL ', url);
+    let body = { [key]: json }
+    this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
+    return this._httpClient.patch(url, body, httpOptions)
+  }
+
 
 
   addRuleToChatbot(idBot: string, rule: any[]) {
