@@ -34,7 +34,7 @@ export class VariableListComponent implements OnInit {
   }
 
   ngOnChanges(){
-    
+    //this.initialize();
   }
 
   private initialize(){
@@ -49,7 +49,7 @@ export class VariableListComponent implements OnInit {
     if(this.variableListSystemDefined){
       this.filteredIntentVariableList = this.variableListSystemDefined
     }
-    console.log('variable-list initialize:: ', variableList.userDefined);
+    //console.log('variable-list initialize:: ', variableList.userDefined);
   }
 
   openDialog() {
@@ -70,6 +70,7 @@ export class VariableListComponent implements OnInit {
   private getIdBot(){
     this.route.params.subscribe((params) => {
       this.idBot = params.faqkbid;
+
     });
   }
 

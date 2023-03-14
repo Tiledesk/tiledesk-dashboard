@@ -258,7 +258,6 @@ export class FaqKbService {
 
     let url = this.FAQKB_URL + id;
     this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID - URL', url);
-
     return this._httpClient
       .get<FaqKb[]>(url, httpOptions)
   }
@@ -274,7 +273,6 @@ export class FaqKbService {
 
     let url = this.FAQKB_URL + id;
     this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID - URL', url);
-
     return this._httpClient
       .get<FaqKb>(url, httpOptions)
   }
@@ -591,7 +589,7 @@ export class FaqKbService {
     return this._httpClient.patch(url, body, httpOptions)
   }
 
-  
+
 
   addRuleToChatbot(idBot: string, rule: any[]) {
     this.logger.log('[FAQ-KB.SERV] - addRuleToChatbot idBot ', idBot)

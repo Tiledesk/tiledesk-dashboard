@@ -1,4 +1,4 @@
-import { retriveListOfVariables, TYPE_ACTION, variableList } from 'app/chatbot-design-studio/utils';
+import { TYPE_ACTION, variableList } from 'app/chatbot-design-studio/utils';
 import { MultichannelService } from 'app/services/multichannel.service';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
@@ -234,8 +234,8 @@ export class CdsDashboardComponent implements OnInit {
       if (chatbot) {
         this.selectedChatbot = chatbot;
         this.translateparamBotName = { bot_name: this.selectedChatbot.name }
-        variableList.userDefined =  this.selectedChatbot.attributes.variables;
-        console.log('variableList.userDefined:: ', variableList.userDefined);
+        variableList.userDefined = this.convertJsonToArray(this.selectedChatbot.attributes.variables);
+        //console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);
       }
     }, (error) => {
       this.logger.error('[CDS DSHBRD] - GET BOT BY ID RES - ERROR ', error);
@@ -244,6 +244,11 @@ export class CdsDashboardComponent implements OnInit {
       this.logger.log('[CDS DSHBRD] - GET BOT BY ID RES - COMPLETE ');
 
     });
+  }
+
+  private convertJsonToArray(jsonData){
+    const arrayOfObjs = Object.entries(jsonData).map(([key, value]) => ({'name':key, 'value':value}))
+    return arrayOfObjs;
   }
 
 
@@ -575,7 +580,7 @@ export class CdsDashboardComponent implements OnInit {
       this.editIntent();
     }
 
-    retriveListOfVariables(this.listOfIntents)
+    // retriveListOfVariables(this.listOfIntents)
   }
 
 
@@ -597,7 +602,7 @@ export class CdsDashboardComponent implements OnInit {
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
 
-    retriveListOfVariables(this.listOfIntents)
+    //retriveListOfVariables(this.listOfIntents)
   }
 
   onSelectIntent(intent: Intent) {
