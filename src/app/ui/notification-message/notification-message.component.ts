@@ -211,8 +211,8 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
         this.notify.closeDataExportNotAvailable();
-        // this.router.navigate(['project/' + this.projectId + '/pricing']);
-        this.notify.presentContactUsModalToUpgradePlan(true);
+        this.router.navigate(['project/' + this.projectId + '/pricing']);
+        // this.notify.presentContactUsModalToUpgradePlan(true);
 
       } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
         this.notify.closeDataExportNotAvailable();
@@ -344,10 +344,10 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
   goToPricing() {
     this.logger.log('goToPricing projectId ', this.projectId);
-    // this.router.navigate(['project/' + this.projectId + '/pricing']);
+    this.router.navigate(['project/' + this.projectId + '/pricing']);
   
     this.notify.closeModalSubsExpired();
-    this.notify.presentContactUsModalToUpgradePlan(true);
+    // this.notify.presentContactUsModalToUpgradePlan(true);
   }
 
   launchWidget() {

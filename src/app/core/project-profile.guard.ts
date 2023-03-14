@@ -28,7 +28,7 @@ export class ProjectProfileGuard implements CanActivate {
 
 
     const project = await this.prjctPlanService._getProjectById(prjct_id);
-    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** userIsAuthorized ****** ', project)
+    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** userIsAuthorized ****** ', project)
 
     const type = project['profile'].type;
     const isActiveSubscription = project['isActiveSubscription'];

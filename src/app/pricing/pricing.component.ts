@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
+import { TranslateService } from '@ngx-translate/core';
 
 declare var Stripe: any;
 
@@ -68,7 +69,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
 
   contactUsEmail: string;
-  clientReferenceId: string;
+  clientReferenceIdForGrowthPlan: string;
+  browser_lang:string;
   constructor(
     public location: Location,
     public auth: AuthService,
@@ -79,6 +81,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     public brandService: BrandService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
+    private translate: TranslateService,
   ) {
 
     const brand = brandService.getBrand();
@@ -119,6 +122,46 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.setPlansPKandCode();
     this.getRouteParamsAndAppId();
   }
+
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.logger.log('[PRICING] - project ', project)
+        this.projectId = project._id;
+        this.logger.log('[PRICING] - projectId ', this.projectId)
+        this.projectName = project.name;
+
+        if (this.projectId) {
+          this.getCurrentUser();
+        }
+      }
+    });
+  }
+
+  getCurrentUser() {
+    const user = this.auth.user_bs.value
+
+    this.logger.log('[PRICING]  Component user ', user);
+    if (user) {
+      this.currentUserID = user._id
+      this.currentUserEmail = user.email
+      this.logger.log('[PRICING] USER UID ', this.currentUserID);
+      this.logger.log('[PRICING] USER email ', this.currentUserEmail);
+
+      this.clientReferenceIdForGrowthPlan = this.currentUserID + '_' + this.projectId + '_' + 'growth'
+      console.log('[PRICING] clientReferenceIdForGrowthPlan ' ,this.clientReferenceIdForGrowthPlan) 
+    } else {
+      // this.logger.log('No user is signed in');
+    }
+  }
+
+  getBrowserLanguage() {
+    this.browser_lang = this.translate.getBrowserLang();
+    console.log('[PRICING] - browser_lang ', this.browser_lang)
+  }
+
+
 
   getRouteParamsAndAppId() {
     const appID = this.appConfigService.getConfig().firebase.appId;
@@ -165,19 +208,19 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
+      console.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
       if (projectProfileData) {
 
         this.subscription_id = projectProfileData.subscription_id;
-        this.logger.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
+        console.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
 
       }
     }, error => {
 
-      this.logger.error('[PRICING] - getProjectPlan - ERROR', error);
+      console.error('[PRICING] - getProjectPlan - ERROR', error);
     }, () => {
 
-      this.logger.log('[PRICING] - getProjectPlan * COMPLETE *')
+      console.log('[PRICING] - getProjectPlan * COMPLETE *')
 
     });
   }
@@ -251,36 +294,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     // this.logger.log('[PRICING] host ', this.dashboardHost)
   }
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      if (project) {
-        this.logger.log('[PRICING] - project ', project)
-        this.projectId = project._id;
-        this.logger.log('[PRICING] - projectId ', this.projectId)
-        this.projectName = project.name;
-
-        if (this.projectId) {
-          this.getCurrentUser();
-        }
-      }
-    });
-  }
-
-  getCurrentUser() {
-    const user = this.auth.user_bs.value
-
-    this.logger.log('[PRICING]  Component user ', user);
-    if (user) {
-      this.currentUserID = user._id
-      this.currentUserEmail = user.email
-      this.logger.log('[PRICING] USER UID ', this.currentUserID);
-      this.logger.log('[PRICING] USER email ', this.currentUserEmail);
-
-      this.clientReferenceId = this.currentUserID + '|' + this.projectId
-    } else {
-      // this.logger.log('No user is signed in');
-    }
-  }
+  
 
 
   selectedPlan(_selectedPlanName: string) {
@@ -501,10 +515,6 @@ export class PricingComponent implements OnInit, OnDestroy {
           that.displayStipeCheckoutError = result.error.message;
         }
       });
-
-  
-
-
   }
 
 
@@ -542,6 +552,14 @@ export class PricingComponent implements OnInit, OnDestroy {
           that.displayStipeCheckoutError = result.error.message;
         }
       });
+  }
+
+
+  // ----------------- new 
+  stripeGrowthPaymentLinkCheckout() {
+  const  url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForGrowthPlan}&locale=${this.browser_lang}`
+
+    window.open(url, '_blank');
   }
 
 
