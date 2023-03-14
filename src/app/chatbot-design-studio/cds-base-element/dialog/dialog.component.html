@@ -15,7 +15,15 @@
             </div>
         </div>
     <div text-color="default" text-type="h6" text-bottom="1">Attribute name</div> 
-    <input text-type="h6" placeholder="Type attribute name" data-error="false" data-form-error="true" data-height="standard" class="tpl-input" [(ngModel)]="data.name">
+    <cds-textarea id="text-condition"
+        [text]="data.name"
+        [textLimitBtn]="false"
+        [emoijPikerBtn]="false"
+        [setAttributeBtn]="false"
+        [minRow]="1" [maxRow]="1"
+        [control]="actionHideMessageFormGroup.controls['text']">
+    </cds-textarea>
+    <!-- <input text-type="h6" placeholder="Type attribute name" data-error="false" data-form-error="true" data-height="standard" class="tpl-input" [(ngModel)]="data.name"> -->
 </div> 
 <div class="tpl-modal-buttons">
     <button type="button" data-disabled="false" data-icon-size="standard" data-icon-position="before" data-theme="grey-outline" data-height="standard" data-width="auto" data-align="center" data-actions="true" text-type="h5" class="btn btn-cancel" (click)="onCloseDialog()">Cancel</button>
