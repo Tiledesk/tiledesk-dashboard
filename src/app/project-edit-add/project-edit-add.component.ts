@@ -189,6 +189,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isChromeVerGreaterThan100: boolean
 
   thereHasBeenAnErrorProcessing: string;
+  advancedSettingBtnDisabled = false;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -964,14 +965,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.subscription_creation_date = projectProfileData.subscription_creation_date;
         } else {
           this.subscription_creation_date = projectProfileData.subscription_start_date;
-
-
         }
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > subscription_creation_date', this.subscription_creation_date)
         this.prjct_profile_type = projectProfileData.profile_type;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
 
+        if (this.profile_name === 'enterprise' && this.subscription_is_active === true) {
+          this.advancedSettingBtnDisabled = false
+        } else if (this.profile_name === 'enterprise' && this.subscription_is_active === false) {
+          this.advancedSettingBtnDisabled = true
 
+        } else if (this.profile_name !== 'enterprise') {
+          this.advancedSettingBtnDisabled = true
+        }
         /**
          * *** GET THE subscription_creation_date FROM THE PTOJECT PROFILE ***
          */
@@ -1744,6 +1750,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   toggleChat_limit_on($event) {
+
     if ($event.target.checked) {
 
       this.chat_limit_on = true;
@@ -1753,6 +1760,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.chat_limit_on = false;
       this.logger.log('[PRJCT-EDIT-ADD] - toggleChat_limit_on ', this.chat_limit_on);
     }
+
 
   }
 
