@@ -70,5 +70,13 @@ export class ActionOpenHoursComponent implements OnInit {
     this.action.falseIntentAttributes = attributes;
   }
 
+  /** */
+  onStopConditionMeet() {
+    try {
+      this.action.stopOnConditionMet = !this.action.stopOnConditionMet;
+    } catch (error) {
+      this.logger.log("Error: ", error);
+    }
+  }
 
 }

@@ -116,37 +116,3 @@
         height: 100%;
     }
 }
-
-
-
-// /** TEXT AREA **/
-// ::ng-deep cds-textarea#key-attribute {
-//     display: flex;
-//     textarea {
-//         border: 1px solid #c6cdd4;
-//         resize: none !important; 
-//         padding: 8px 20px !important;
-//         height: 25px !important;
-//         min-height: 25px !important;
-//     }
-// }
-
-// mat-form-field.mat-focused ::ng-deep {
-//     .mat-form-field-wrapper {
-//         .mat-form-field-flex {
-//             padding: 0px;
-//             .mat-form-field-infix {
-//                 textarea {
-//                     border: 1px solid rgb(242 205 111) !important;
-//                     outline: 0px solid rgb(242 205 111) !important;
-//                     transition: border 0.3s;
-//                     &.invalid{
-//                         border: 1px solid red !important;
-//                         outline: 0px solid red !important;
-//                         transition: border 0.3s;
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }

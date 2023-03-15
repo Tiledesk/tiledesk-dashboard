@@ -3,7 +3,7 @@
         <div class="tpl-modal-header-text">
             <span>Add a custom attribute</span>
         </div>
-        <i text-color="light" class="material-icons cds-close-btn-icon" [mat-dialog-close]="true">close</i>
+        <i text-color="light" class="material-icons cds-close-btn-icon" [mat-dialog-close]="false">close</i>
     </div>
     <div class="tpl-modal-content">
         <div class="tpl-info">
@@ -15,17 +15,9 @@
             </div>
         </div>
     <div class="tpl-label-textarea">Attribute name</div> 
-    <!-- <cds-textarea id="key-attribute"
-        [text]="textInput"
-        [textLimitBtn]="false"
-        [emoijPikerBtn]="false"
-        [setAttributeBtn]="false"
-        [minRow]="1" [maxRow]="1"
-        [control]="actionHideMessageFormGroup.controls['text']">
-    </cds-textarea> -->
     <input placeholder="Type attribute name" class="tpl-input" [class.invalid]="btnDisabled" [(ngModel)]="data.text" (ngModelChange)="onChangeTextInput($event)">
 </div> 
 <div class="tpl-modal-buttons">
-    <button type="button" class="btn btn-cancel" (click)="onCloseDialog()">Cancel</button>
+    <button type="button" class="btn btn-cancel" [mat-dialog-close]="false">Cancel</button>
     <button type="button" class="btn btn-warning cds-yellow-button" [disabled]="btnDisabled" [mat-dialog-close]="data.text">Add attribute</button>
 </div>

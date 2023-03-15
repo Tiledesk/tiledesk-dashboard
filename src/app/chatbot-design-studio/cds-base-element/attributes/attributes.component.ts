@@ -10,23 +10,29 @@ export class AttributesComponent implements OnInit {
   @Output() changeAttributes = new EventEmitter();
   @Input() attributes: any;
   @Input() method: any;
+  @Input() openBlock: boolean;
 
   newAttributes: Array<any> = [];
   typeMethodAttribute = TYPE_METHOD_ATTRIBUTE;
 
+  panelOpenState = true;
+
   constructor() { }
 
   ngOnInit(): void {
-    // this.initialize();
-  }
-
-
-  ngOnChanges() {
     this.initialize();
   }
 
 
+  ngOnChanges() {
+    // this.initialize();
+  }
+
+
   private initialize(){
+    if(!this.openBlock){
+      this.openBlock = false;
+    }
     this.newAttributes = [];
     try {
       Object.keys(this.attributes).forEach(key => {
@@ -40,6 +46,9 @@ export class AttributesComponent implements OnInit {
     this.newAttributes.push({key:"", value:""});
     if(!this.method){
       this.method = TYPE_METHOD_ATTRIBUTE.TEXT;
+    }
+    if(this.newAttributes.length>1) {
+      this.openBlock = true;
     }
   }
 

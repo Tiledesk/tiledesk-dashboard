@@ -59,11 +59,12 @@ export class VariableListComponent implements OnInit {
       data: {text: ''}
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-      let variable = {name: result, value: result};
-      // variableList.userDefined.push(variable);
-      that.variableListUserDefined.push(variable);
-      this.saveVariables(this.variableListUserDefined);
+      // console.log(`Dialog result: ${result}`);
+      if(result && result !== undefined && result !== false){
+        let variable = {name: result, value: result};
+        that.variableListUserDefined.push(variable);
+        this.saveVariables(this.variableListUserDefined);
+      }
     });
   }
 

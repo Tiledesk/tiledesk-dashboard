@@ -12,9 +12,9 @@
                 <cds-textarea id="assignTo"
                     [textLimitBtn]="false"
                     [emoijPikerBtn]="false"
-                    [setAttributeBtn]="hasSelectedVariable? false: true"
+                    [setAttributeBtn]="true"
                     [minRow]="1" [maxRow]="1"
-                    [readonly]="hasSelectedVariable? true : false"
+                    [readonly]="true"
                     [control]="actionAssignFormGroup.controls['destination']"
                     (onSelected)="onVariableSelected($event,1)">
                 </cds-textarea>
