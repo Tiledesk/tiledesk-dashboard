@@ -1600,6 +1600,7 @@
 													<span class="active-language-label">{{selectedLangName}}
 													</span>
 													<input class="custom-input" id="welcome-title"
+														maxlength="30"
 														[(ngModel)]="welcomeTitle" (focus)="onFocusWelcomeTitle()"
 														(ngModelChange)="welcomeTitleChange($event)"
 														style="font-weight: 400; margin-bottom:3px"
@@ -1645,6 +1646,7 @@
 													</span>
 
 													<input class="custom-input" id="welcome-msg"
+														maxlength="30"
 														[(ngModel)]="welcomeMsg"
 														(ngModelChange)="welcomeMsgChange($event)"
 														(focus)="onFocusWelcomeMsg()"
