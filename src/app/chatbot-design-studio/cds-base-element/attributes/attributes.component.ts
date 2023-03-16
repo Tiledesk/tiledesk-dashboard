@@ -20,12 +20,12 @@ export class AttributesComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.initialize();
+    // this.initialize();
   }
 
 
   ngOnChanges() {
-    // this.initialize();
+    this.initialize();
   }
 
 
@@ -86,7 +86,6 @@ export class AttributesComponent implements OnInit {
         attributes[item.key] = item.value;
       }
     });
-    // this.attributes = JSON.stringify(attributes);
     // console.log("------- >>>> ", this.attributes);
     this.changeAttributes.emit(attributes);
   }
@@ -98,14 +97,16 @@ export class AttributesComponent implements OnInit {
     } else {
       this.newAttributes[index].key = '';
     }
+    this.setChangedAttributes();
   }
   
   onVariableSelected(variableSelected: {name: string, value: string}, index: number){
+    console.log('onVariableSelected:: ',variableSelected.value);
     this.newAttributes[index].key = variableSelected.value;
     if(!this.newAttributes[index].value){
       this.newAttributes.push({key:"", value:""});
     }
-    // this.onChangeAttributes(variableSelected, index);
+    this.setChangedAttributes();
   }
 
 }

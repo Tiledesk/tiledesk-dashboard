@@ -127,26 +127,23 @@ export class TextResponseComponent implements OnInit {
 
   /** */
   onOpenButtonPanel(button?){
-    // if(!button){
-    //   button = this.addNewButton();
-    // }
+    // console.log('onOpenButtonPanel: ', button, this.response);
     try {
       if(!this.response.attributes || !this.response.attributes.attachment.buttons){
         this.response.attributes = new MessageAttributes();
         this.buttons = this.response.attributes.attachment.buttons;
       }
     } catch (error) {
+      console.log('error: ', error);
     }
-    
     this.openButtonPanel.emit({button: button, refResponse: this.response});
   }
 
   onDeleteButton(index){
     this.buttons.splice(index, 1);
-    //REMOVE ATTRIBUTES OBJ IF NO BUTTONS EXIST
-    if(this.buttons.length === 0){
-      delete this.response.attributes.attachment
-    } 
+    // if(this.buttons.length === 0){
+    //   delete this.response.attributes.attachment
+    // } 
   }
 
   onMoveLeftButton(fromIndex){
