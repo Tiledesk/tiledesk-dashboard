@@ -16,7 +16,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   @Input() listOfActions: Array<string>;
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
-  @Input() intentSelected: Intent
+  @Input() intentSelected: Intent;
 
   typeIntentElement = TYPE_INTENT_ELEMENT;
   typeAction = TYPE_ACTION;

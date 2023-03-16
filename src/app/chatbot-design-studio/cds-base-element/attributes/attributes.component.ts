@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
-
+import { TYPE_METHOD_ATTRIBUTE } from 'app/chatbot-design-studio/utils';
 @Component({
   selector: 'cds-attributes',
   templateUrl: './attributes.component.html',
@@ -9,22 +9,28 @@ export class AttributesComponent implements OnInit {
 
   @Output() changeAttributes = new EventEmitter();
   @Input() attributes: any;
+  @Input() method: any;
 
   newAttributes: Array<any> = [];
+  typeMethodAttribute = TYPE_METHOD_ATTRIBUTE;
 
   constructor() { }
 
   ngOnInit(): void {
-    let that = this;
-    // let parseAttributes = {};
-    // if(this.isValidJson(this.attributes)){
-    //   parseAttributes = JSON.parse(this.attributes);
-    // }
-    // console.log('AttributesComponent:: ', parseAttributes);
+    // this.initialize();
+  }
+
+
+  ngOnChanges() {
+    this.initialize();
+  }
+
+
+  private initialize(){
+    this.newAttributes = [];
     try {
       Object.keys(this.attributes).forEach(key => {
-        // console.log(key);
-        // console.log(this.attributes[key]);
+        // console.log(key, this.attributes[key]);
         const newAtt = {"key":key, "value": this.attributes[key]};
         this.newAttributes.push(newAtt);
       });
@@ -32,8 +38,10 @@ export class AttributesComponent implements OnInit {
       // console.log("error: ", error);
     }
     this.newAttributes.push({key:"", value:""});
+    if(!this.method){
+      this.method = TYPE_METHOD_ATTRIBUTE.TEXT;
+    }
   }
-
 
   private isValidJson(json) {
     try {
@@ -46,9 +54,7 @@ export class AttributesComponent implements OnInit {
 
   onChangeAttributes(attribute: any, index: number){
     let that = this;
-    // console.log('onChangeAttributes:: ', attribute, index);
     if(attribute.key.length>0 || attribute.value.length>0){
-      //console.log('sto scrivendo:: ');
       if (index == this.newAttributes.length-1){
         this.newAttributes.push({key:"", value:""});
       }
@@ -61,6 +67,10 @@ export class AttributesComponent implements OnInit {
         }
       });
     }
+    this.setChangedAttributes();
+  }
+
+  private setChangedAttributes(){
     let attributes = {};
     this.newAttributes.forEach(function(item) {
       if(item.key || item.value){
@@ -70,6 +80,23 @@ export class AttributesComponent implements OnInit {
     // this.attributes = JSON.stringify(attributes);
     // console.log("------- >>>> ", this.attributes);
     this.changeAttributes.emit(attributes);
+  }
+
+  onClearInput(index){
+    // console.log('onClearInput:: ',this.newAttributes, index);
+    if(!this.newAttributes[index].value){
+      this.newAttributes.splice(index, 1);
+    } else {
+      this.newAttributes[index].key = '';
+    }
+  }
+  
+  onVariableSelected(variableSelected: {name: string, value: string}, index: number){
+    this.newAttributes[index].key = variableSelected.value;
+    if(!this.newAttributes[index].value){
+      this.newAttributes.push({key:"", value:""});
+    }
+    // this.onChangeAttributes(variableSelected, index);
   }
 
 }

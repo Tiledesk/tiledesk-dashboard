@@ -1926,7 +1926,7 @@
     "ChatLimitDisabled": "Limite chat disabilitato",
     "AutomaticUnavailableeStatusEnabled": "Non disponibile automatico abilitato",
     "AutomaticUnavailableStatusDisabled": "Non disponibile automatico disabilitato",
-    "UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject": "Users with the Agent role cannot manage the advanced options of the project",
+    "UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject": "Gli utenti con il ruolo Agente non possono gestire le opzioni avanzate del progetto",
     "ThisFeatureIsAvailableWithTheProPlan": "Questa funzione è disponibile con il piano Pro o con il piano Enterprise",
     "From": "Dal",
     "To": "Al",

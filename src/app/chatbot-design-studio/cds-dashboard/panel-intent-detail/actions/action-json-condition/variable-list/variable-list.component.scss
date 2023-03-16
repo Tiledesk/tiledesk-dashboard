@@ -112,3 +112,31 @@
         line-height: 20px;
     }
 }
+
+
+
+
+
+#add-attribute{
+    border-top: 1px solid #e8eef3;
+    cursor: pointer;
+    flex-shrink: 0;
+    height: 43px;
+    transition: all .3s;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    .material-icons{
+        margin-right: 15px;
+        color: $icon-color;
+        font-size: 24px;
+        font-weight: 500;
+    }
+    div {
+        color: #22272d;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 20px;
+        transition: color .3s;
+    }
+}

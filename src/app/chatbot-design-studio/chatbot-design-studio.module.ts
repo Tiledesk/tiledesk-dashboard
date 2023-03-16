@@ -104,6 +104,7 @@ import { AttributesComponent } from './cds-base-element/attributes/attributes.co
 import { OperationComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operation/operation.component';
 import { OperandComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operand/operand.component';
 import { OperatorComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operator/operator.component';
+import { DialogComponent } from './cds-base-element/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -167,7 +168,8 @@ import { OperatorComponent } from './cds-dashboard/panel-intent-detail/actions/a
     AttributesComponent,
     OperationComponent,
     OperandComponent,
-    OperatorComponent
+    OperatorComponent,
+    DialogComponent
   ],
   imports: [
     A11yModule,

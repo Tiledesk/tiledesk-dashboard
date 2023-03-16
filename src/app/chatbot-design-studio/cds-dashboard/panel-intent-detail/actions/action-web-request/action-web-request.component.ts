@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActionWebRequest } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { FormControl } from '@angular/forms';
-import { TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT } from '../../../../utils';
+import { TYPE_METHOD_ATTRIBUTE, TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT } from '../../../../utils';
 
 @Component({
   selector: 'cds-action-web-request',
@@ -13,21 +12,19 @@ export class ActionWebRequestComponent implements OnInit {
 
   @Input() action: ActionWebRequest;
   methods: Array<string>;
-
-  assignTo = new FormControl(); 
   pattern = "^[a-zA-Z_]*[a-zA-Z_]+[a-zA-Z0-9_]*$";
 
   limitCharsText = TEXT_CHARS_LIMIT;
   jsonHeader: any; 
   jsonBody: string;
-  // jsonText: string;
   jsonIsValid = true;
   errorMessage: string;
   methodSelectedHeader = true;
   methodSelectedBody = false;
-
-
   headerAttributes: any;
+
+  hasSelectedVariable: boolean = false;
+  typeMethodAttribute = TYPE_METHOD_ATTRIBUTE;
 
   constructor(
     private logger: LoggerService
@@ -35,7 +32,15 @@ export class ActionWebRequestComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
+    // on init
+  }
+
+  ngOnChanges() {
+    // on change
     this.initialize();
+    if (this.action && this.action.assignTo) {
+      this.hasSelectedVariable = true
+    }
   }
 
   
@@ -51,8 +56,6 @@ export class ActionWebRequestComponent implements OnInit {
   }
 
   private setActionWebRequest(){
-    // this.action.headersString = JSON.stringify(this.jsonHeader);
-    // this.action.jsonBody = JSON.stringify(this.jsonBody);
     this.action.jsonBody = this.jsonBody;
   }
 
@@ -118,6 +121,16 @@ export class ActionWebRequestComponent implements OnInit {
   onChangeAttributes(attributes:any){
     this.jsonHeader = attributes;
     this.action.headersString = this.jsonHeader;
+  }
+
+  onClearInput(){
+    this.action.assignTo = '';
+    this.hasSelectedVariable = false;
+  }
+  
+  onVariableSelected(variableSelected: {name: string, value: string}, step: number){
+    this.hasSelectedVariable = true;
+    this.action.assignTo = variableSelected.value;
   }
 
 }

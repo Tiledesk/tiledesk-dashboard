@@ -181,6 +181,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   groupsList: Group[];
   DISPLAY_ALL_TEAMMATES_TO_AGENT: boolean;
   newTicketRequestId: string;
+  onlyAvailableWithEnterprisePlan: string;
   /**
    * 
    * @param wsRequestsService 
@@ -319,6 +320,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
+        this.prjct_profile_name = projectProfileData.profile_name;
 
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
@@ -402,6 +404,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.translate.get('ThisFeatureIsAvailableWithTheProPlan')
       .subscribe((translation: any) => {
         this.featureIsAvailableWithTheProPlan = translation;
+      });
+
+      this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
+      .subscribe((translation: any) => {
+        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyAvailableWithEnterprisePlan = translation;
       });
   }
 
@@ -883,14 +891,44 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   goToProjectSettings_Advanced() {
-    this.logger.log('[WS-REQUESTS-LIST] HAS CLICKED goToProjectSettings_Advanced');
+    // console.log('[WS-REQUESTS-LIST] HAS CLICKED goToProjectSettings_Advanced prjct_profile_name',this.prjct_profile_name);
+    // console.log('[WS-REQUESTS-LIST] HAS CLICKED goToProjectSettings_Advanced subscription_is_active',this.subscription_is_active);
 
-    if (this.CURRENT_USER_ROLE !== 'agent') {
-      this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
-
-    } else if (this.CURRENT_USER_ROLE === 'agent') {
-      this.presentModalAgentCannotManageAvancedSettings();
+    if (this.prjct_profile_name === 'enterprise' && this.subscription_is_active === true) {
+      if (this.CURRENT_USER_ROLE === 'owner') {
+        // console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Advanced');
+        this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
+      } else {
+        this.presentModalAgentCannotManageAvancedSettings()
+      }
+    } else if (this.prjct_profile_name === 'enterprise' && this.subscription_is_active === false) {
+      this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    } else if (this.prjct_profile_name !== 'enterprise') {
+      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
     }
+
+
+    // if (this.CURRENT_USER_ROLE !== 'agent') {
+    //   this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
+
+    // } else if (this.CURRENT_USER_ROLE === 'agent') {
+    //   this.presentModalAgentCannotManageAvancedSettings();
+    // }
+  }
+
+  presentModalFeautureAvailableOnlyWithEnterprisePlan() {
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyAvailableWithEnterprisePlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
   }
 
   presentModalAgentCannotManageAvancedSettings() {
