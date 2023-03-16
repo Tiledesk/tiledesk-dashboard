@@ -2,6 +2,7 @@
 
 ### 2.4.15
 - Deploys in production
+- Adds the ability to use advanced project options for the ENTERPRISE plan
 - Improvements and bug fixing
 
 ### 2.4.14
