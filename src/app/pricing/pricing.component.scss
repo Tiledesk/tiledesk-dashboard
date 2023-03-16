@@ -70,15 +70,18 @@ button.close {
 /* MODAL END */
 
 .close-pricing-page {
-  text-align: right;
+  width: fit-content;
+  position: absolute;
+  top: 0px;
+  left: calc(100% - 55px);
 }
 
 .close-btn {
-  font-size: 60px;
+  font-size: 50px;
   font-weight: 100;
-  color: #000;
+  color: #fff;
   cursor: pointer;
-  opacity: 0.2;
+  // opacity: 0.2;
 }
 
 .close-btn:hover {
@@ -430,7 +433,7 @@ li:before {
   flex-direction: row;
   -webkit-box-flex: 1;
   flex-grow: 1;
-  padding: 0px 50px 32px;
+  padding: 0px 0px 32px;
 }
 
 .pricing-page {
@@ -548,6 +551,20 @@ li:before {
   height: 50px;
 }
 
+.plan-btn {
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.01em;
+  padding: 0px 14px;
+  border: 0px;
+  background-color: transparent;
+  height: 100%;
+  border-radius: 22px;
+  font-weight: 500;
+  color: rgb(8, 15, 26);
+  cursor: pointer;
+}
+
 .selected-plan-btn {
   font-size: 14px;
   line-height: 18px;
@@ -563,19 +580,7 @@ li:before {
   box-shadow: rgb(0 27 71 / 8%) 0px 3px 8px;
 }
 
-.plan-btn {
-  font-size: 14px;
-  line-height: 18px;
-  letter-spacing: -0.01em;
-  padding: 0px 14px;
-  border: 0px;
-  background-color: transparent;
-  height: 100%;
-  border-radius: 22px;
-  font-weight: 500;
-  color: rgb(8, 15, 26);
-  cursor: pointer;
-}
+
 
 .span-24 {
   display: block;
@@ -638,12 +643,24 @@ li:before {
   min-height: 32px;
 }
 
+.span-4 {
+  display: block;
+  width: 4px;
+  min-width: 4px;
+  height: 4px;
+  min-height: 4px;
+}
+
 .plan-features {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   overflow: hidden;
   max-height: none;
+  flex: 1 1 calc(50% - 20px);
+  // max-width: calc(50% - 20px);
+  padding-left: 0px;
+  padding-bottom: 0px !important;
 }
 
 .plan-features-wpr {
@@ -654,11 +671,6 @@ li:before {
   flex-flow: row wrap;
   gap: 20px;
   width: 100%;
-}
-.plan-features {
-  flex: 1 1 calc(50% - 20px);
-  // max-width: calc(50% - 20px);
-  padding-left: 0px;
 }
 
 .plan-features::before {
@@ -727,4 +739,101 @@ li:before {
   -webkit-box-pack: center;
   justify-content: center;
   display: flex;
+}
+
+.plan-card-price-wpr {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.plan-card-price {
+  height: auto;
+  position: relative;
+  font-size: 40px;
+  line-height: 52px;
+  letter-spacing: -0.02em;
+  color: rgb(8, 15, 26);
+  font-weight: 500;
+}
+
+.plan-card-currency {
+  position: absolute;
+  top: 7px;
+  margin-left: 4px;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+.plan-card-price-period {
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.01em;
+  color: rgb(8, 15, 26);
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.span-12 {
+  display: block;
+  width: 4px;
+  min-width: 4px;
+  height: 4px;
+  min-height: 4px;
+}
+
+.btn-size-xl-round {
+  border-radius: 26px;
+  font-size: 18px;
+  height: 46px;
+  line-height: 23px;
+  min-width: 160px;
+  padding: 0 20px;
+  text-transform: unset;
+  font-weight: 400;
+  box-shadow: unset;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+}
+
+.btn-new {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+}
+.btn--primary {
+  background-color: #0566ff;
+  border-color: #0566ff;
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background-color: #0049bd;
+  border-color: #0049bd;
+  color: #fff;
+}
+
+.btn-text {
+  text-transform: none;
+  font-weight: 300;
+}
+
+.checkout-btn-wpr {
+  display: flex;
+  justify-content: center;
+}
+
+
+.two-months-free-text-container {
+  height: 26px;
+  margin-top: 6px;
+  background: linear-gradient(130deg, #ff7a18, #af002d 41.07%, #319197 76.05%);
+  background: #0566ff;
+  color: #fff;
+  font-weight: 400;
+  padding: 3px 6px;
+  border-radius: 3px ;
 }

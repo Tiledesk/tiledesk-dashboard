@@ -15,12 +15,28 @@ import { TranslateService } from '@ngx-translate/core';
 
 declare var Stripe: any;
 
+enum PLAN_NAME {
+  A = 'Growth',
+  B = 'Scale',
+  C = 'Enterprise',
+}
+enum PLAN_DESC {
+  Growth = 'Improve customer experience and qualify leads better with premium features',
+  Scale = 'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
+  Enterprise = 'Exploit all the premium features and receive support to design chatbots tailor-made',
+}
+
 @Component({
   selector: 'appdashboard-pricing',
   templateUrl: './pricing.component.html',
   styleUrls: ['./pricing.component.scss']
 })
 export class PricingComponent implements OnInit, OnDestroy {
+  PLAN_NAME = PLAN_NAME;
+  PLAN_DESC = PLAN_DESC;
+  planName: string;
+  planDecription: string;
+
 
   // company_name = brand.company_name;
   company_name: string;
@@ -70,7 +86,9 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   contactUsEmail: string;
   clientReferenceIdForGrowthPlan: string;
-  browser_lang:string;
+  browser_lang: string;
+
+
   constructor(
     public location: Location,
     public auth: AuthService,
@@ -113,7 +131,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     // this.switchPlanPrice()
 
     this.getBaseUrl()
-    
+
     // this.getAllUsersOfCurrentProject();
     this.getNoOfProjectUsersAndPendingInvitations();
 
@@ -121,6 +139,9 @@ export class PricingComponent implements OnInit, OnDestroy {
 
     this.setPlansPKandCode();
     this.getRouteParamsAndAppId();
+
+    this.planName = PLAN_NAME.A
+    this.planDecription = PLAN_DESC[PLAN_NAME.A]
   }
 
 
@@ -150,7 +171,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.logger.log('[PRICING] USER email ', this.currentUserEmail);
 
       this.clientReferenceIdForGrowthPlan = this.currentUserID + '_' + this.projectId + '_' + 'growth'
-      console.log('[PRICING] clientReferenceIdForGrowthPlan ' ,this.clientReferenceIdForGrowthPlan) 
+      console.log('[PRICING] clientReferenceIdForGrowthPlan ', this.clientReferenceIdForGrowthPlan)
     } else {
       // this.logger.log('No user is signed in');
     }
@@ -294,7 +315,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     // this.logger.log('[PRICING] host ', this.dashboardHost)
   }
 
-  
+
 
 
   selectedPlan(_selectedPlanName: string) {
@@ -555,12 +576,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
 
-  // ----------------- new 
-  stripeGrowthPaymentLinkCheckout() {
-  const  url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForGrowthPlan}&locale=${this.browser_lang}`
 
-    window.open(url, '_blank');
-  }
 
 
 
@@ -587,7 +603,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   // -------------------------------------------------------------
-  // Used for test (uncomment the button in the teplate to use it) 
+  // Used for test (uncomment the button in the template to use it) 
   // -------------------------------------------------------------
   cancelSubcription() {
     this.projectService.cancelSubscription().subscribe((confirmation: any) => {
@@ -602,7 +618,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   // -------------------------------------------------------------
-  // Used for test (uncomment the button in the teplate to use it) 
+  // Used for test (uncomment the button in the template to use it) 
   // -------------------------------------------------------------
   updatesubscription() {
     this.projectService.updatesubscription().subscribe((updatesubscription: any) => {
@@ -617,6 +633,25 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
 
+  // ----------------- new 
+  stripeGrowthPaymentLinkCheckout() {
+    const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForGrowthPlan}&locale=${this.browser_lang}`
+
+    window.open(url, '_blank');
+  }
+
+  selected_Plan(planid) {
+    this.planName = planid
+    this.planDecription
+
+    console.log('select plan name', planid)
+
+
+  
+      this.planDecription = PLAN_DESC[planid]
+      console.log('select planDecription', this.planDecription)
+  
+  }
 
 
 }
