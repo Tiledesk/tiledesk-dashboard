@@ -500,6 +500,20 @@ li:before {
   height: 50px;
 }
 
+.period-btn {
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.01em;
+  padding: 0px 14px;
+  border: 0px;
+  background-color: transparent;
+  height: 100%;
+  border-radius: 22px;
+  font-weight: 500;
+  color: rgb(8, 15, 26);
+  cursor: pointer;
+}
+
 .selected-period-btn {
   font-size: 14px;
   line-height: 18px;
@@ -515,19 +529,7 @@ li:before {
   box-shadow: rgb(0 27 71 / 8%) 0px 3px 8px;
 }
 
-.period-btn {
-  font-size: 14px;
-  line-height: 18px;
-  letter-spacing: -0.01em;
-  padding: 0px 14px;
-  border: 0px;
-  background-color: transparent;
-  height: 100%;
-  border-radius: 22px;
-  font-weight: 500;
-  color: rgb(8, 15, 26);
-  cursor: pointer;
-}
+
 
 .plan-switch-wpr {
   display: flex;
@@ -831,6 +833,7 @@ li:before {
   height: 26px;
   margin-top: 6px;
   background: linear-gradient(130deg, #ff7a18, #af002d 41.07%, #319197 76.05%);
+  background: linear-gradient(90deg,hsl(269,calc(1*52.7%),52.7%),hsl(325,calc(1*31.7%),51.8%));
   background: #0566ff;
   color: #fff;
   font-weight: 400;

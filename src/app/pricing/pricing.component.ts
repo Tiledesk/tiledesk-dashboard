@@ -26,6 +26,56 @@ enum PLAN_DESC {
   Enterprise = 'Exploit all the premium features and receive support to design chatbots tailor-made',
 }
 
+enum MONTHLY_PRICE {
+  Growth = "19",
+  Scale = "79",
+  Enterprise = '199'
+}
+
+enum ANNUAL_PRICE {
+  Growth = "190",
+  Scale = "790",
+  Enterprise = '1.990'
+}
+
+const featuresPlanA = [
+  'CRM',
+  'Canned Responses',
+  'Private Notes',
+  '14-days conversations history',
+  'Working Hours',
+  'Email Ticketing',
+  'User Ratings',
+  'Analytics',
+  'Webhooks',
+  'Email Support',
+]
+
+const featuresPlanB = [
+  'Unbranding',
+  'Unlimited conversations history',
+  'WhatsApp Business',
+  'Facebook Messenger',
+  'Unlimited Departments',
+  'Unlimited Groups',
+  'Smart Routing / Assignment',
+  'Knowledge Base',
+  'Livechat Support',
+]
+
+const featuresPlanC = [
+  'Dedicated Customer Success Manager',
+  'Chatbot Design Assistance',
+  'Onboarding and Training',
+  'IP Filtering',
+  'Ban Visitors',
+  'Email Templates Customisation',
+  'SMTP Settings',
+  'Activities Log',
+  'Data Export',
+  'Premium Customer Support',
+]
+
 @Component({
   selector: 'appdashboard-pricing',
   templateUrl: './pricing.component.html',
@@ -34,10 +84,15 @@ enum PLAN_DESC {
 export class PricingComponent implements OnInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   PLAN_DESC = PLAN_DESC;
+  MONTHLY_PRICE = MONTHLY_PRICE;
+  ANNUAL_PRICE = ANNUAL_PRICE;
   planName: string;
   planDecription: string;
-
-
+  planFeatures: Array<string>;
+  annualPrice: string;
+  monthlyPrice: string;
+  annualPeriod: boolean;
+  monthlyPeriod: boolean;
   // company_name = brand.company_name;
   company_name: string;
 
@@ -142,6 +197,80 @@ export class PricingComponent implements OnInit, OnDestroy {
 
     this.planName = PLAN_NAME.A
     this.planDecription = PLAN_DESC[PLAN_NAME.A]
+    this.planFeatures = featuresPlanA
+    this.monthlyPeriod = true;
+    this.annualPeriod = false;
+    this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.A]
+  }
+
+
+  // ----------------- new 
+  stripeGrowthPaymentLinkCheckout() {
+    const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForGrowthPlan}&locale=${this.browser_lang}`
+
+    window.open(url, '_blank');
+  }
+
+  selected_Plan(planname) {
+    this.planFeatures = []
+    this.planName = planname
+
+
+    console.log('select plan name', planname)
+    this.planDecription = PLAN_DESC[planname]
+    console.log('select planDecription', this.planDecription)
+
+    if (planname === PLAN_NAME.A) {
+      console.log(' PLAN A Features')
+      this.planFeatures = featuresPlanA
+    }
+    if (planname === PLAN_NAME.B) {
+      console.log(' PLAN B Features')
+      this.planFeatures = featuresPlanB
+    }
+
+    if (planname === PLAN_NAME.C) {
+      console.log(' PLAN C Features')
+      this.planFeatures = featuresPlanC
+    }
+
+    this.selectedPeriod('monthly')
+  }
+
+  selectedPeriod(period) {
+    console.log('selectedPeriod > select plan name', this.planName)
+    console.log('selectedPeriod > select period', period)
+    // annualPeriod: boolean; 
+    // monthlyPeriod: boolean; 
+    if (period === 'monthly') {
+      this.monthlyPeriod = true;
+      this.annualPeriod = false;
+      if (this.planName === PLAN_NAME.A) {
+        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.A]
+      }
+      if (this.planName === PLAN_NAME.B) {
+        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.B]
+      }
+      if (this.planName === PLAN_NAME.C) {
+        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.C]
+      }
+
+    }
+
+    if (period === 'annual') {
+      this.monthlyPeriod = false;
+      this.annualPeriod = true;
+      if (this.planName === PLAN_NAME.A) {
+        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.A]
+      }
+      if (this.planName === PLAN_NAME.B) {
+        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.B]
+      }
+      if (this.planName === PLAN_NAME.C) {
+        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.C]
+      }
+    }
+
   }
 
 
@@ -633,25 +762,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
 
-  // ----------------- new 
-  stripeGrowthPaymentLinkCheckout() {
-    const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForGrowthPlan}&locale=${this.browser_lang}`
 
-    window.open(url, '_blank');
-  }
-
-  selected_Plan(planid) {
-    this.planName = planid
-    this.planDecription
-
-    console.log('select plan name', planid)
-
-
-  
-      this.planDecription = PLAN_DESC[planid]
-      console.log('select planDecription', this.planDecription)
-  
-  }
 
 
 }
