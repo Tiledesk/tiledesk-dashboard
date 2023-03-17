@@ -21,13 +21,12 @@ mat-form-field.mat-focused ::ng-deep {
             padding: 0px;
             .mat-form-field-infix {
                 textarea {
-                    border: 1px solid $icon-color !important;
-                    outline: 1px solid $icon-color !important;
+                    border: 1px solid rgb(242 205 111) !important;
+                    outline: 0px solid rgb(242 205 111) !important;
                     transition: border 0.3s;
-
                     &.invalid{
                         border: 1px solid red !important;
-                        outline: 1px solid red !important;
+                        outline: 0px solid red !important;
                         transition: border 0.3s;
                     }
                 }

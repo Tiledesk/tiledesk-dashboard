@@ -10,37 +10,35 @@ import { TYPE_MATH_OPERATOR } from 'app/chatbot-design-studio/utils';
     styleUrls: ['./action-assign-variable.component.scss']
 })
 export class ActionAssignVariableComponent implements OnInit {
-
     @Input() action: ActionAssignVariable;
 
     actionAssignFormGroup: FormGroup;
-    variables: Array<string> = []
-    hasSelectedVariable: boolean = false
+    variables: Array<string> = [];
+    hasSelectedVariable: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
-        private logger: LoggerService,
+        private logger: LoggerService
     ) { }
 
     ngOnInit(): void {
     }
 
     ngOnChanges() {
-        this.initialize()
+        this.initialize();
         if (this.action && this.action.destination) {
-            this.setFormValue()
-            this.hasSelectedVariable = true
+            this.setFormValue();
+            this.hasSelectedVariable = true;
         }
     }
 
     private initialize() {
         this.actionAssignFormGroup = this.buildForm();
         this.actionAssignFormGroup.valueChanges.subscribe(form => {
-            this.logger.log('[ACTION-ASSIGN-VARIABLE] form valueChanges-->', form)
+            this.logger.log('[ACTION-ASSIGN-VARIABLE] form valueChanges-->', form);
             if (form && (form.destination !== '')) {
-                this.action.destination = form.destination
+                this.action.destination = form.destination;
             }
-
         })
     }
 
@@ -57,23 +55,21 @@ export class ActionAssignVariableComponent implements OnInit {
     }
 
     clearInput() {
-        this.actionAssignFormGroup.get('destination').reset()
+        this.actionAssignFormGroup.get('destination').reset();
         this.hasSelectedVariable = false
     }
 
 
     onVariableSelected(variableSelected: { name: string, value: string }, step: number) {
-        this.logger.log('onVariableSelected-->', step, this.actionAssignFormGroup, variableSelected)
+        this.logger.log('onVariableSelected-->', step, this.actionAssignFormGroup, variableSelected);
         this.hasSelectedVariable = true
-        this.actionAssignFormGroup.patchValue({ destination: variableSelected.value })// if(step === 0){
+        this.actionAssignFormGroup.patchValue({ destination: variableSelected.value });// if(step === 0){
     }
 
     onOperatorSelected() {
-        let temp = this.action.operation
- 
-        this.action.operation.operators.push(TYPE_MATH_OPERATOR['addAsNumber'])
+        let temp = this.action.operation;
+        this.action.operation.operators.push(TYPE_MATH_OPERATOR['addAsNumber']);
         this.action.operation.operands.push(new Operand());
-
-        this.action.operation = Object.assign({}, temp)
+        this.action.operation = Object.assign({}, temp);
     }
 }

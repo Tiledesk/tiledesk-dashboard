@@ -10,9 +10,12 @@ export class AttributesComponent implements OnInit {
   @Output() changeAttributes = new EventEmitter();
   @Input() attributes: any;
   @Input() method: any;
+  @Input() openBlock: boolean;
 
   newAttributes: Array<any> = [];
   typeMethodAttribute = TYPE_METHOD_ATTRIBUTE;
+
+  panelOpenState = true;
 
   constructor() { }
 
@@ -27,6 +30,9 @@ export class AttributesComponent implements OnInit {
 
 
   private initialize(){
+    if(!this.openBlock){
+      this.openBlock = false;
+    }
     this.newAttributes = [];
     try {
       Object.keys(this.attributes).forEach(key => {
@@ -40,6 +46,9 @@ export class AttributesComponent implements OnInit {
     this.newAttributes.push({key:"", value:""});
     if(!this.method){
       this.method = TYPE_METHOD_ATTRIBUTE.TEXT;
+    }
+    if(this.newAttributes.length>1) {
+      this.openBlock = true;
     }
   }
 
@@ -77,7 +86,6 @@ export class AttributesComponent implements OnInit {
         attributes[item.key] = item.value;
       }
     });
-    // this.attributes = JSON.stringify(attributes);
     // console.log("------- >>>> ", this.attributes);
     this.changeAttributes.emit(attributes);
   }
@@ -89,14 +97,16 @@ export class AttributesComponent implements OnInit {
     } else {
       this.newAttributes[index].key = '';
     }
+    this.setChangedAttributes();
   }
   
   onVariableSelected(variableSelected: {name: string, value: string}, index: number){
+    console.log('onVariableSelected:: ',variableSelected.value);
     this.newAttributes[index].key = variableSelected.value;
     if(!this.newAttributes[index].value){
       this.newAttributes.push({key:"", value:""});
     }
-    // this.onChangeAttributes(variableSelected, index);
+    this.setChangedAttributes();
   }
 
 }

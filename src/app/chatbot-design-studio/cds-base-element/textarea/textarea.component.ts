@@ -72,7 +72,6 @@ export class CDSTextareaComponent implements OnInit {
       } else {
         this.alertCharsText = false;
       }
-
       // this.logger.log('[CDS-TEXAREA] - event ', event.length);
       // this.logger.log('[CDS-TEXAREA] - this.textent  ',  this.text);
       // this.logger.log('[CDS-TEXAREA] - this.textent length',  this.text.length); 
@@ -93,17 +92,14 @@ export class CDSTextareaComponent implements OnInit {
 
   getTextArea() {
     this.elTextarea = this.autosize['_textareaElement'] as HTMLInputElement;
-
     this.logger.log('[CDS-TEXAREA] - GET TEXT AREA - elTextarea ', this.elTextarea);
-    if (this.elTextarea) {
-
-    }
+    if (this.elTextarea) {}
   }
 
 
 
   onVariableSelected(variableSelected: { name: string, value: string }) {
-    this.logger.log('variableSelectedddd', variableSelected)
+    this.logger.log('variableSelectedddd', variableSelected);
     if (this.elTextarea) {
       this.elTextarea.focus()
       // this.insertAtCursor(this.elTextarea, '${' + variableSelected.value + '}')

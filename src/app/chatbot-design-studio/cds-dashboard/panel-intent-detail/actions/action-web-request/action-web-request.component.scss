@@ -205,6 +205,7 @@ textarea{
 
 div.value-wrp {
     position: relative;
+    min-height: 40px;
     .flex{
         position: absolute;
         top: 0px;
@@ -244,7 +245,8 @@ div.value-wrp {
         padding: 5px 10px;
         background-color: #ecb606;
         color: #fff;
-        min-height: 26px;
+        min-height: 30px;
+        height: fit-content;
     }
 }
 

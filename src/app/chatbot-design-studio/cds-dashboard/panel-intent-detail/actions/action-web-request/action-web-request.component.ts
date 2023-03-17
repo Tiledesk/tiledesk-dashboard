@@ -101,6 +101,7 @@ export class ActionWebRequestComponent implements OnInit {
     if(this.methodSelectedHeader){
       this.methodSelectedHeader = false;
       this.methodSelectedBody = true;
+      this.jsonHeader = this.action.headersString;
     } else if(this.methodSelectedBody){
       this.methodSelectedHeader = true;
       this.methodSelectedBody = false;
@@ -119,8 +120,9 @@ export class ActionWebRequestComponent implements OnInit {
   }
 
   onChangeAttributes(attributes:any){
-    this.jsonHeader = attributes;
-    this.action.headersString = this.jsonHeader;
+    // console.log('onChangeAttributes');
+    this.action.headersString = attributes;
+    // this.jsonHeader = attributes;
   }
 
   onClearInput(){

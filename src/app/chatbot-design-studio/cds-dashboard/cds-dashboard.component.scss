@@ -121,7 +121,7 @@ $box-left-width: 250px;
             /* width: auto; */
             /* flex-grow: 1; */
             min-width: 400px;
-            height: auto;
+            height: fit-content;
             max-height: 100%;
             /* background-color: rgb($bg-color-bck-rgb); */
             border-radius: $panel-border-radius;

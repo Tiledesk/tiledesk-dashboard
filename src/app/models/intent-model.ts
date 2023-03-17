@@ -94,8 +94,10 @@ export class ActionOnlineAgent extends Action {
     falseIntent: string;
     trueIntentAttributes?: string;
     falseIntentAttributes?: string;
+    stopOnConditionMet: boolean;
     constructor() {
         super();
+        this.stopOnConditionMet = false;
         this._tdActionType = TYPE_ACTION.ONLINE_AGENTS;
     }
 }
@@ -105,8 +107,10 @@ export class ActionOpenHours extends Action {
     falseIntent: string;
     trueIntentAttributes?: string;
     falseIntentAttributes?: string;
+    stopOnConditionMet: boolean;
     constructor() {
         super();
+        this.stopOnConditionMet = false;
         this._tdActionType = TYPE_ACTION.OPEN_HOURS;
     }
 }

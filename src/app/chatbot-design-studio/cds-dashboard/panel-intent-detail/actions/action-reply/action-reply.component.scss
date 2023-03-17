@@ -51,7 +51,7 @@ $margin-bottom: 15px;
     width: calc(100% - 100px);
     max-height: 100%;
     // height: calc(100vh - 145px);
-    max-height: calc(100vh - 130px - $action-description-height - $margin-bottom);
+    max-height: calc(100% - 130px - $action-description-height - $margin-bottom);
     overflow: hidden;
     border-radius: 0.6em;
     // background-color: rgb($bg-color-card-rgb);

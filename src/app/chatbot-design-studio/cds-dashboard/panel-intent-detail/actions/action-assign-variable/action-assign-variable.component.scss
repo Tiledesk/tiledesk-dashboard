@@ -50,7 +50,6 @@ div.value-wrp{
         top: 0px;
         bottom: 0px;
         right: 8px;
-
         display: flex;
         align-items: center;
         justify-content: center;
@@ -62,7 +61,6 @@ div.value-wrp{
             right: -7px;
             font-size: 15px;
             border-radius: 50%;
-
             background: white;
             cursor: pointer;
             position: absolute;
@@ -83,7 +81,6 @@ div.value-wrp{
         bottom: 0;
         left: 8px;
         right: unset;
-
         border-radius: 7px;
         margin: 5px;
         padding: 5px 10px;
@@ -99,7 +96,6 @@ div.value-wrp{
         border: 1px solid rgb(118, 118, 118) !important;
         resize: none !important; 
         padding: 8px 20px !important;
-
         height: 25px !important;
         min-height: 25px !important;
     }

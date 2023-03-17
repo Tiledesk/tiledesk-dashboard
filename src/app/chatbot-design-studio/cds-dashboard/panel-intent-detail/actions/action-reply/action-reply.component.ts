@@ -345,6 +345,10 @@ export class ActionReplyComponent implements OnInit {
     // if(this.newButton){
     //   this.response.attributes.attachment.buttons.push(button);
     // }
+    
+    // button.action = button.action + JSON.stringify(button.attributes);
+    // delete(button.attributes);
+    console.log('button.action::: ', button.action);
     this.logger.log('onSaveButton :: ', button, this.response);
     this.generateCommandsWithWaitOfElements();
   }
