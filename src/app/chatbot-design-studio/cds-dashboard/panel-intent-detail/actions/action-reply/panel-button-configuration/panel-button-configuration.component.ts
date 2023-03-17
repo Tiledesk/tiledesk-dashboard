@@ -1,7 +1,7 @@
 import { CDSTextComponent } from './../../../../../cds-base-element/text/text.component';
-
-import { Component, OnInit, Input, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { Button } from 'app/models/intent-model';
+
 
 import { TYPE_BUTTON, TYPE_URL } from '../../../../../utils';
 
@@ -11,10 +11,7 @@ import { TYPE_BUTTON, TYPE_URL } from '../../../../../utils';
   styleUrls: ['./panel-button-configuration.component.scss']
 })
 export class PanelButtonConfigurationComponent implements OnInit {
-
   @ViewChild('input_title', { static: true }) input_topic: CDSTextComponent;
-  @ViewChild('button_save', { static: true }) button_save_topic: any;
-  
 
   @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
   @Input() button: Button;
@@ -43,10 +40,12 @@ export class PanelButtonConfigurationComponent implements OnInit {
   errorUrl: boolean;
   buttonAction: string;
   clickInside: boolean;
-  buttonAttributes: Array<any>;
+  buttonAttributes: any;
+  openBlockAttributes: boolean = false;
 
   constructor(
-    private eRef: ElementRef
+    private el: ElementRef, 
+    private renderer: Renderer2
   ) { }
 
 
@@ -74,7 +73,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
     this.urlType = this.typeOfUrl.BLANK;
     this.buttonUrl = '';
     this.buttonAction = null;
-    this.buttonAttributes = [];
+    this.buttonAttributes = '';
     try {
       this.buttonLabel = this.button.value ? this.button.value : null;
       this.buttonType = this.button.type ? this.button.type : null;
@@ -85,12 +84,16 @@ export class PanelButtonConfigurationComponent implements OnInit {
       // error
     }
     let intent = this.setAttributesFromAction(this.button.action);
+    // console.log('intent:: ', intent);
     if(intent && intent.action !== null){
       this.buttonAction = intent.action;
     }
     if(intent && intent.attributes !== null){
+      // console.log('intent: ', intent);
       this.buttonAttributes = intent.attributes;
+      this.openBlockAttributes = true;
     }
+
   }
 
 
@@ -126,13 +129,14 @@ export class PanelButtonConfigurationComponent implements OnInit {
   }
 
 
-  private setFocusOnButtonSave(){
-    try {
-      this.button_save_topic.nativeElement.focus();
-    } catch (error) {
-      console.log('error: ', error);
-    }
-  }
+  // private setBlurFocus(id){
+  //   try {
+  //     this.select_action.clearable = false;
+  //     this.select_action.input_select.nativeElement.blur();
+  //   } catch (error) {
+  //     console.log('error: ', error);
+  //   }
+  // }
 
   private checkButtonLabel(): boolean {
     try {
@@ -216,9 +220,12 @@ export class PanelButtonConfigurationComponent implements OnInit {
   onChangeSelect(event: {name: string, value: string}){
     // console.log('onChangeSelect: ', event);
     this.buttonAction = event.value;
-    // this.button.action = this.buttonAction + this.buttonAttributes;
-    this.button.action = this.buttonAction + JSON.stringify(this.buttonAttributes);
-    this.setFocusOnButtonSave();
+    if(this.buttonAttributes && this.buttonAttributes !== '{}'){
+      this.button.action = this.buttonAction + JSON.stringify(this.buttonAttributes);
+    } else {
+      this.button.action = this.buttonAction;
+    }
+    // this.openBlockAttributes = true;
   }
 
   /** */
@@ -241,7 +248,12 @@ export class PanelButtonConfigurationComponent implements OnInit {
   onChangeAttributes(attributes:any){
     // console.log('attributes: ', this.button, attributes);
     this.button.attributes = attributes;
-    this.button.action = this.buttonAction + JSON.stringify(attributes);
+    if(attributes && attributes !== '{}'){
+      this.button.action = this.buttonAction + JSON.stringify(attributes);
+    } else {
+      this.button.action = this.buttonAction;
+    }
+    // this.button.action = this.buttonAction + JSON.stringify(attributes);
     delete(this.button.attributes);
     this.saveButton.emit(this.button);
   }
