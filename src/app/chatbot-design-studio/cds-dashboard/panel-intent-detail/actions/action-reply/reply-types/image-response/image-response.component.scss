@@ -239,3 +239,126 @@
         }
     }
 }
+
+/** BUTTONS **/
+.buttons-response {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 12px 0 0 0;
+    width: 100%;
+    font-size: $font-size-base;
+    padding: 0 25px;
+}
+.custom-placeholder {
+    background: #ccc;
+    border: dotted 3px #999;
+    height: $button-height-base;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.button-reply {
+    position: relative;
+    min-width: 100px;
+    height: $button-height-base;
+    margin: 10px 5px 0;
+    padding: 0 16px;
+    user-select: none;
+    box-sizing: border-box;
+    outline: none;
+    background: $color-withe-hex;
+    border: 1px solid $color-blue-hex;
+    border-radius: $button-border-radius-base;
+    color: $color-blue-hex;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    line-height: $button-height-base;
+    text-align: center;
+    transition: all .3s;
+}
+.button-reply:hover {
+    .button-controls {
+        opacity: 1;
+    }
+}
+.button-reply-text {
+    width: 100%;
+    height: 100%;
+    max-width: $button-max-width-base;
+    user-select: none;
+    color: $color-blue-hex;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    line-height: $button-height-base;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    overflow: hidden!important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.button-reply-add {
+    user-select: none;
+    box-sizing: border-box;
+    outline: none;
+    border: 1px dashed $color-txt-2-hex;
+    border-radius: $button-border-radius-base;
+    color: $color-withe-hex;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 400;
+    height: $button-height-base;
+    line-height: $button-height-base;
+    margin: 10px 5px 0;
+    order: 1;
+    padding: 0 16px;
+    transition: all .3s;
+    min-width: 100px;
+    width: fit-content;
+}
+.button-controls {
+    justify-content: space-between;
+    display: inline-flex;
+    width: 100%;
+    height: 24px;
+    position: absolute;
+    right: 0;
+    top: -55%;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    .buttonsToMove{
+        display: inline-flex;
+    }
+    .control-button {
+        cursor: pointer;
+        background: $color-bck-gray-hex;
+        color: $color-bck-gray-hex;
+        transition: color .3s;
+        height: 24px;
+        width: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 2px;
+        em {
+            font-size: 1.15em;
+            color: $color-withe-hex;
+            transition: color .3s;
+        }
+    }
+    .control-button:hover{
+        color: $color-withe-hex;
+        box-shadow: 0 2px 6px 0 rgb(255 255 255 / 15%);
+        em {
+            color: $color-red-hex;
+        }
+        &.delete{
+            em {
+                color: $color-red-hex;
+            }
+        }
+    }
+}

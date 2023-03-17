@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { TYPE_MATH_OPERATOR } from 'app/chatbot-design-studio/utils';
 import { Operand, Operation } from 'app/models/intent-model';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
     selector: 'operation',
@@ -14,7 +15,9 @@ export class OperationComponent implements OnInit {
     list: Array< TYPE_MATH_OPERATOR | Operand | ''> = [];
 
 
-    constructor() { }
+    constructor(
+        private logger: LoggerService
+    ) { }
 
     ngOnInit(): void {
 
@@ -52,5 +55,19 @@ export class OperationComponent implements OnInit {
 
     trackByIndex(index: number, obj: any): any {
         return index;
+    }
+
+    onDeleteGroup(index: number, last: boolean){
+        this.logger.log('onDeleteGroup', index, last, this.operation, this.list)
+        if(!last){
+            this.operation.operators.splice(index/2, 1)
+            this.operation.operands.splice(index/2, 1)
+        }else if(last){
+            this.operation.operands.splice(index/2, 1)
+            if(this.operation.operators.length > 0){
+                this.operation.operators.splice((index-1)/2, 1)
+            }
+        }
+        this.setList(this.operation)
     }
 }

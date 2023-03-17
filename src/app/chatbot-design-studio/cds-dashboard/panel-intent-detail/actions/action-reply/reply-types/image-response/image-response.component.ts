@@ -1,5 +1,6 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MessageWithWait } from '../../../../../../../models/intent-model';
+import { Button, MessageAttributes, MessageWithWait } from '../../../../../../../models/intent-model';
 import { TYPE_ACTION, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
 
 @Component({
@@ -25,7 +26,7 @@ export class ImageResponseComponent implements OnInit {
   leftCharsText: number;
   textMessage: string;
   alertCharsText: boolean;
-
+  buttons: Array<Button>;
   // Delay //
   delayTime: number;
 
@@ -41,6 +42,13 @@ export class ImageResponseComponent implements OnInit {
       this.alertCharsText = true;
     } else {
       this.alertCharsText = false;
+    }
+
+    this.buttons = [];
+    try {
+      this.buttons = this.response.attributes.attachment.buttons;
+    } catch (error) {
+      // console.log('there are no buttons');
     }
   }
 
@@ -104,24 +112,57 @@ export class ImageResponseComponent implements OnInit {
     this.changeReplyElement.emit()
   }
 
+  onOpenButtonPanel(button?){
+    // if(!button){
+    //   button = this.addNewButton();
+    // }
+    try {
+      if(!this.response.attributes || !this.response.attributes.attachment.buttons){
+        this.response.attributes = new MessageAttributes();
+        this.buttons = this.response.attributes.attachment.buttons;
+      }
+    } catch (error) {
+    }
+    
+    this.openButtonPanel.emit({button: button, refResponse: this.response});
+  }
 
+  onDeleteButton(index){
+    this.buttons.splice(index, 1);
+    //REMOVE ATTRIBUTES OBJ IF NO BUTTONS EXIST
+    if(this.buttons.length === 0){
+      delete this.response.attributes.attachment
+    } 
+  }
 
-  // private async presentModal(e: any): Promise<any> {
-  //   let dataFiles = " "
-  //   if (e.type === 'change') {
-  //     console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal change e', e);
-  //     console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal change e.target ', e.target);
-  //     console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal change e.target.files', e.target.files);
-  //     dataFiles = e.target.files;
-  //   } else if (e.type === 'drop') {
-  //     dataFiles = e.dataTransfer.files
-  //     console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal drop e.dataTransfer.files', e.dataTransfer.files);
-  //   } else {
-  //     dataFiles = e.files
-  //     console.log('[CONVS-DETAIL][MSG-TEXT-AREA] presentModal dataFiles when paste', dataFiles);
-  //   }
-  //   const attributes = { files: dataFiles, enableBackdropDismiss: false };
-  //   console.log('[CONVS-DETAIL][MSG-TEXT-AREA] attributes', attributes);
-  // }
+   // EVENT FUNCTIONS //
+  /** */
+  drop(event: CdkDragDrop<string[]>) {
+    // this.textGrabbing = false;
+    moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
+    // console.log(this.buttons, event.previousIndex, event.currentIndex);
+  }
+
+  onMoveLeftButton(fromIndex){
+    let toIndex = fromIndex-1;
+    if(toIndex<0){
+      toIndex = 0;
+    }
+    this.arraymove(this.buttons, fromIndex, toIndex);
+  }
+
+  onMoveRightButton(fromIndex){
+    let toIndex = fromIndex+1;
+    if(toIndex>this.buttons.length-1){
+      toIndex = this.buttons.length-1;
+    }
+    this.arraymove(this.buttons, fromIndex, toIndex);
+  }
+
+  private arraymove(buttons, fromIndex, toIndex) {
+    var element = buttons[fromIndex];
+    buttons.splice(fromIndex, 1);
+    buttons.splice(toIndex, 0, element);
+  }
 }
 
