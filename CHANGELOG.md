@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.19
+- Deploys in production
+- Fixed the bug: 'ng-select' in 'Reply' action buttons
+
 ### 2.4.18
 - Deploys in production
 - Improvements and bug fixing
