@@ -30,8 +30,7 @@
         <div class="section displayed">
             <div class="form-group ng-select">
                 <label class="control-label">
-                    <!-- {{ 'Type' | translate }} -->
-                    Type
+                    {{ 'Type' | translate }}
                 </label>
                 <div class="selectFormModel class-test-select">
                     <ng-select 
@@ -93,24 +92,19 @@
                     [itemSelected]="buttonAction"
                     (onSelected)="onChangeSelect($event)">
                 </cds-select>
-
                 <cds-attributes
-                class = "cds-attributes"
-                [attributes]="buttonAttributes"
-                (changeAttributes)="onChangeAttributes($event)"
+                    class = "cds-attributes"
+                    [attributes]="buttonAttributes"
+                    (changeAttributes)="onChangeAttributes($event)"
                 ></cds-attributes>
-                <!-- <cds-text id="text-condition"
-                    [text]="buttonAction"
-                    [autocompleteOptions]="listOfActions"
-                    (onChange)="onChangeActionButton($event)">
-                </cds-text> -->
             </div>
 
         </div>
        
     </div> 
 
-    <!-- <div class="button-footer-tab">
+    <!-- 
+    <div class="button-footer-tab">
         <button 
             #button_save
             type="button" 
@@ -118,7 +112,8 @@
             (click)="onSaveButton()">
             {{ 'Save' | translate }}
         </button>
-    </div> -->
+    </div> 
+    -->
 
 </div>
 
