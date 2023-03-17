@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.4.16
+- Deploys in production
+- Adds the ability to delete an operation in action 'assignVariable'
+- Adds buttons in reply image
+- Adds the maximum character length to 'greetings messages'
+
 ### 2.4.15
 - Deploys in production
 - Adds the ability to use advanced project options for the ENTERPRISE plan
