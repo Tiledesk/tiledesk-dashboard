@@ -1,7 +1,14 @@
 # tiledesk-dashboard
 
+### 2.4.16
+- Deploys in production
+- Adds the ability to delete an operation in action 'assignVariable'
+- Adds buttons in reply image
+- Adds the maximum character length to 'greetings messages'
+
 ### 2.4.15
 - Deploys in production
+- Adds the ability to use advanced project options for the ENTERPRISE plan
 - Improvements and bug fixing
 
 ### 2.4.14
@@ -46,6 +53,7 @@
 - Adds the ability to set custom attributes to the header of the "Web request" action
 
 ### 2.4.9
+- Deploys in production
 - Adds the Social Proof on the sign up page
 - Creates automatically the first project after sign up (the first step of the wizard to create a project is skipped)
 - Hides the "Pending Email Verification" alert during onboarding
@@ -53,6 +61,7 @@
 - Updates the instructions for installing the widget on WordPress
 
 ### 2.4.8
+- Deploys in production
 - Adds the password security bar on the sign up page
 - Adds the ability to sign up only with email and password
 - Outsources the endpoint of the ticketing email in the environments (variable name "ticketingEmail")
