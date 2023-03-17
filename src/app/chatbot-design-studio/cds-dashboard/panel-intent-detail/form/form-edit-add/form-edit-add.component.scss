@@ -72,9 +72,20 @@
     border-radius: 4px;
 }
 
+
 .form-group {
     padding-bottom: 7px;
     margin: 10px 0;
+    .form-control {
+        margin-bottom: 7px;
+        height: auto;
+        background-image: none;
+    }
+    &.is-focused {
+        .form-control {
+            background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d200, #d2d2d200);
+        }
+    }
     label {
         font-size: 12px;
         line-height: normal;
@@ -95,12 +106,12 @@
     box-shadow: none;
     transition-duration: 0.3s;
     background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d200, #d2d2d200);
+    background-position: center bottom,center calc(100% - 1px);
 }
 
 textarea.form-control,
 input.form-control {
     background: #fff;
-    border-radius: 0;
     border: 1px solid #d9d9d9;
     width: 100%;
     padding-left: 5px;
@@ -109,12 +120,20 @@ input.form-control {
     background-size: 0 2px, 100% 1px;
     background-repeat: no-repeat;
     background-position: center bottom, center calc(100% - 1px);
+    
+    padding: 8px 10px!important;
+    border-radius: 8px;
+    line-height: 25px;
+    resize: none;
+    height: auto;
 }
 
 .form-footer {
     text-align: right;
     padding-top: 0px;
     margin-top: 10px;
+    padding-right: 15px;
+    padding-left: 15px;
     .btn {
         margin: 10px 4px;
     }
@@ -248,5 +267,79 @@ input.form-control {
 }
 
 .validation-field-title {
-color: $light-blue;
+    color: $light-blue;
+}
+
+
+/** CSS textarea */
+
+.material-icons {
+    color: #ecb606b0;
+    font-size: 18px;
+}
+
+::ng-deep cds-textarea#assignTo {
+    display: flex;
+    // &.assigned {
+    //     textarea {
+    //         background: transparent;
+    //         padding: 0!important;
+    //         border: 0!important;
+    //         outline: 0!important;
+    //     }
+    // }
+    textarea {
+        border: 1px solid rgb(118, 118, 118) !important;
+        resize: none !important; 
+        padding: 8px 20px !important;
+        height: 25px !important;
+        min-height: 25px !important;
+    }
+}
+
+div.value-wrp {
+    position: relative;
+    min-height: 40px;
+    .flex{
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        right: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .close{
+            width: 17px;
+            top: -7px;
+            right: -7px;
+            font-size: 15px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            &:hover{
+                background: #ecb606;
+                color: white;
+            }
+        }
+    }
+
+    div.tag {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 6px;
+        right: unset;
+        border-radius: 7px;
+        margin: 5px 0;
+        padding: 5px 10px;
+        background-color: #ecb606;
+        color: #fff;
+        min-height: 30px;
+        height: fit-content;
+    }
 }

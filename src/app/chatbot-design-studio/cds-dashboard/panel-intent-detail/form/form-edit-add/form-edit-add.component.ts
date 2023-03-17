@@ -45,6 +45,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   displayInfoMessage = false;
   inputTypePlaceholderClass = true;
   panelOpenState = false;
+  hasSelectedVariable: boolean = false;
 
 
   // customRGEX = /^.{1,}$/;
@@ -71,6 +72,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
+    this.hasSelectedVariable = false;
     this.showRegexField = true;
     if (this.displayAddForm) {
       this.field = {
@@ -87,6 +89,9 @@ export class FormEditAddComponent implements OnInit, OnChanges {
       //   // this.showRegexField = true;
       // } 
       this.fieldName = this.field.name;
+      if(this.fieldName && this.fieldName !== ''){
+        this.hasSelectedVariable = true;
+      }
       this.fieldType = this.field.type;
       // this.logger.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
       // this.fieldRegex = this.field.regex;
@@ -204,6 +209,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   /** */
   onChangeParameterName(parameterName) {
     parameterName.toString();
+    console.log('onChangeParameterName', parameterName);
     this.fieldName = parameterName.replace(/[^A-Z0-9_]+/ig, "");
   }
 
@@ -284,5 +290,20 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.displayInfoMessage = false;
     this.closeAddEditForm.emit();
   }
+
+  onVariableSelected(variableSelected: {name: string, value: string}){
+    this.hasSelectedVariable = true;
+    this.field.name = variableSelected.value;
+    //variableSelected.value.toString();
+    this.fieldName = variableSelected.value; //.replace(/[^A-Z0-9_]+/ig, "");
+    // console.log('onChangeParameterName', variableSelected.value);
+  }
+
+  onClearInput() {
+    this.hasSelectedVariable = false;
+    this.fieldName = '';
+    this.field.name = '';
+  }
+
 
 }

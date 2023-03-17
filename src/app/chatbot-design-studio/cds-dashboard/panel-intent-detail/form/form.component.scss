@@ -9,17 +9,38 @@ $color-bck-box: #e7f3ff;
 $color-text-box: #566787;
 
 .box-tilebot--form {
-    position: relative;
-    top: 0px;
+    position: initial;
     padding: 10px 0;
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
     height: 100%;
+    width: 100%;
     .splash-screen--form {
         text-align: center;
-        min-height: 300px;
         width: 100%;
+        height: auto;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #cfe6fa;
+
+        .tpl-modal-header-text {
+            margin-bottom: 20px;
+        }
+        .tpl-info-text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            i {
+                margin-right: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #cfe6fa;
+            }
+        }
+        
     }
 
     .more-info {
