@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.18
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.16
 - Deploys in production
 - Adds the ability to delete an operation in action 'assignVariable'
