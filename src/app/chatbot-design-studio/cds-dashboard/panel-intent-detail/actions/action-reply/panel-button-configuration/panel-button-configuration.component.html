@@ -1,4 +1,4 @@
-<div class="button-tab">
+<div id="button-tab" class="button-tab">
 
     <div class="button-header-tab">
 
@@ -85,7 +85,7 @@
                 <label class="control-label">
                     {{ 'Go to block' | translate }}
                 </label>
-                <cds-select id="text-condition"
+                <cds-select #select_action id="select-action"
                     [items]="listOfActions"
                     [bindLabelSelect]="'name'"
                     [bindValueSelect]="'value'"
@@ -93,7 +93,10 @@
                     (onSelected)="onChangeSelect($event)">
                 </cds-select>
                 <cds-attributes
+                    #cds_attributes
+                    id="cds-attributes"
                     class = "cds-attributes"
+                    [openBlock]="openBlockAttributes"
                     [attributes]="buttonAttributes"
                     (changeAttributes)="onChangeAttributes($event)"
                 ></cds-attributes>

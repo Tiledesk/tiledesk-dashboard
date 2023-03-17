@@ -16,7 +16,11 @@ $color-text-box: #566787;
     // justify-content: center;
     // align-items: center;
     height: 100%;
-    // border: 1px solid green;
+    .splash-screen--form {
+        text-align: center;
+        min-height: 300px;
+        width: 100%;
+    }
 
     .more-info {
         cursor: pointer;

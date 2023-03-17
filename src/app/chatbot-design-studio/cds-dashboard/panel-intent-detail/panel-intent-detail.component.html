@@ -96,7 +96,10 @@
 </div>
 <!--  -->
 <div *ngIf="elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">
-    <appdashboard-form [intentForm]="elementSelected" [intentSelected]="intentSelected" 
+    <appdashboard-form 
+    style="display: block"
+    [intentForm]="elementSelected" 
+    [intentSelected]="intentSelected" 
     (passJsonIntentForm)="passJsonIntentForm($event)">
     </appdashboard-form>
 </div>

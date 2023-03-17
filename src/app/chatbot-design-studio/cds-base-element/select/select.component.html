@@ -1,5 +1,6 @@
 <div class="select-bot-box">
     <ng-select 
+        #ngSelect
         class = "form-control-select" 
         appendTo="body"
         [searchable] = true
@@ -11,6 +12,8 @@
         [(ngModel)] = "itemSelected"
         [placeholder]="placeholder"
         (clear)="onResetValue()"
+        (open)="onOpen()"
+        (close)="onClose()"
         (change) = "onChangeActionButton($event)">
         <ng-template ng-label-tmp let-item="item">
             <span class="material-icons" *ngIf="item['icon']"

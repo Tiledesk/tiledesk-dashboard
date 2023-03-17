@@ -8,14 +8,29 @@
 
     <!-- HEADER BUTTONS -->
    <!-- > {{ displayNewFormButton }} -->
+   <div *ngIf="displayNewFormButton" class="splash-screen--form">
+
+            <div class="tpl-modal-header-text">
+                <span>Add a Form to ask user data</span>
+            </div>
+
+            <div class="tpl-info">
+                <i class="material-icons-outlined tpl-info-icon">help_outline</i>
+                <div class="tpl-info-text">
+                    <a href="https://gethelp.tiledesk.com/articles/how-to-create-conversational-forms-with-chatbots/" target="_blank">More info: How to create conversational forms with chatbots</a>
+                </div>
+            </div>
+
+            <button id="add-form-btn" class="btn btn-primary add-form" (click)="openBoxNewFormForm()">
+                <span class="icon-label opened">{{ "AddIntentPage.AddForm" | translate }}</span>
+                <span class="icon">
+                    <i class="material-icons">add_circle</i>
+                </span>
+            </button>
+
+    </div>
+
     <div class="header-buttons--form">
-     
-        <button id="add-form-btn" *ngIf="displayNewFormButton" class="btn btn-primary add-form" (click)="openBoxNewFormForm()">
-            <span class="icon-label opened">{{ "AddIntentPage.AddForm" | translate }}</span>
-            <span class="icon">
-                <i class="material-icons">add_circle</i>
-            </span>
-        </button>
         <!-- (click)="openDeleteForm()" presenModalDeleteForm -->
         <button id="delete-form-btn" *ngIf="!displayNewFormButton && intentFormSize > 0" class="btn btn-danger add-form" 
             (click)="openDeleteForm()">
