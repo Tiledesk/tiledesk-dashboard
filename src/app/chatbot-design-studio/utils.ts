@@ -71,6 +71,7 @@ export enum TYPE_ACTION {
     INTENT = 'intent',
     // CONDITION = 'condition',
     ASSIGN_VARIABLE = 'setattribute',
+    ASSIGN_FUNCTION = 'setfunction',
     DELETE_VARIABLE = 'delete',
     REPLACE_BOT = 'replacebot',
     CHANGE_DEPARTMENT = 'department',
@@ -159,6 +160,7 @@ export const ACTIONS_LIST= {
     INTENT : { name: 'Connect block', type: TYPE_ACTION.INTENT, src:"assets/cds/images/actions/connect_intent.svg", description: 'This action moves the flow to the specified block.<br> Keep in mind that if there are other actions in the current block actions-pipeline they will be executed too, generating a parallel-execution of all the branches affering to each block triggered through this Connect-block action.'},
     // CONDITION : { name: 'Condition', type: TYPE_ACTION.CONDITION, src:"assets/cds/images/actions/condition.svg"},
     ASSIGN_VARIABLE: { name: 'Set attribute', type: TYPE_ACTION.ASSIGN_VARIABLE, src: "assets/cds/images/actions/assign_var.svg" },
+    ASSIGN_FUNCTION: { name: 'Set function', type: TYPE_ACTION.ASSIGN_FUNCTION, src: "assets/cds/images/actions/assign_var.svg" },
     DELETE_VARIABLE: { name: 'Delete attribute', type: TYPE_ACTION.DELETE_VARIABLE, src: "assets/cds/images/actions/delete_var.svg" },
     REPLACE_BOT: { name: 'Replace bot', type: TYPE_ACTION.REPLACE_BOT, src: "assets/cds/images/actions/replace_bot.svg", description: "Choose a chatbot to replace the current one in the conversation" },
     CHANGE_DEPARTMENT: { name: 'Change dept', type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg" },
@@ -189,10 +191,10 @@ export const OPERATORS_LIST: { [key: string]: { name: string, type: TYPE_OPERATO
 
 export const TYPE_MATH_OPERATOR_LIST: { [key: string]: { name: string, type: TYPE_MATH_OPERATOR, src?: string } } = {
     "addAsNumbers": { name: "Add as numbers", type: TYPE_MATH_OPERATOR.addAsNumber, src: "assets/cds/images/operators/add.svg" },
-    "addAsStrings": { name: "Add as strings", type: TYPE_MATH_OPERATOR.addAsString, src: "assets/cds/images/operators/add.svg" },
-    "substractAsNumbers": { name: "Substract as numbers", type: TYPE_MATH_OPERATOR.subtractAsNumber, src: "assets/cds/images/operators/substract.svg" },
-    "multiplyAsNumbers": { name: "Multiply as numbers", type: TYPE_MATH_OPERATOR.multiplyAsNumber, src: "assets/cds/images/operators/multiply.svg" },
-    "divideAsNumbers": { name: "Divide as numbers", type: TYPE_MATH_OPERATOR.divideAsNumber, src: "assets/cds/images/operators/divide.svg" },
+    "addAsStrings": { name: "Add as text", type: TYPE_MATH_OPERATOR.addAsString, src: "assets/cds/images/operators/add.svg" },
+    "substractAsNumbers": { name: "Substract", type: TYPE_MATH_OPERATOR.subtractAsNumber, src: "assets/cds/images/operators/substract.svg" },
+    "multiplyAsNumbers": { name: "Multiply", type: TYPE_MATH_OPERATOR.multiplyAsNumber, src: "assets/cds/images/operators/multiply.svg" },
+    "divideAsNumbers": { name: "Divide", type: TYPE_MATH_OPERATOR.divideAsNumber, src: "assets/cds/images/operators/divide.svg" },
 }
 
 export const TYPE_FUNCTION_LIST: { [key: string]: { name: string, type: TYPE_FUNCTION, src?: string } } = {

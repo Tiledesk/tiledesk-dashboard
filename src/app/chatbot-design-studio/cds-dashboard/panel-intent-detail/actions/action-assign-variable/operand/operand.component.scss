@@ -3,20 +3,29 @@
 div.operand-wrp {
     display: grid;
     align-items: center;
-    grid-template-columns: 6fr 1fr 6fr;
+    grid-template-columns: 11fr 1fr;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
-
     background: rgb(66,85,117);
-    padding: 20px;
+    padding: 10px;
     border-radius: 4px;
+    &.opened {
+        grid-template-columns: 6fr 1fr 6fr;
+        .select-function{
+            display:block;
+        }
+    }
+    .select-function{
+        display:none;
+    }
 
     .material-icons {
-        font-size: 43px;
+        font-size: 25px;
         color: #8ab4f8;
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
     }
 
     div.value-wrp{

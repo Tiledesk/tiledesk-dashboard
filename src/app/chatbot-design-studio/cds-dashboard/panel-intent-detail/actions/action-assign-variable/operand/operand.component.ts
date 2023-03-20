@@ -15,10 +15,12 @@ export class OperandComponent implements OnInit {
     
     operandForm: FormGroup;
     listOfFunctions: Array<{name: string, value: string, icon?:string}> = [];
+    openSlectFunction: boolean;
 
     constructor(private formBuild: FormBuilder) {}
 
     ngOnInit(): void {
+        this.openSlectFunction = false;
         for (let key in TYPE_FUNCTION_LIST) {
             this.listOfFunctions.push({name: TYPE_FUNCTION_LIST[key].name, value: TYPE_FUNCTION_LIST[key].type})
         }
@@ -67,6 +69,10 @@ export class OperandComponent implements OnInit {
 
     onSelectedFunction(event: any) {
         this.operandForm.get('function').setValue(event.value)
+    }
+
+    onToggleSelectFunction(){
+        this.openSlectFunction = !this.openSlectFunction;
     }
 
 }

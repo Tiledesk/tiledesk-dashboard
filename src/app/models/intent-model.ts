@@ -80,6 +80,23 @@ export class ActionAssignVariable extends Action {
     }
 }
 
+export class ActionAssignFunction extends Action {
+    destination: string;
+    operation: Operation;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.ASSIGN_FUNCTION;
+        this.operation = {
+            operands: [{
+                value: '',
+                isVariable: false
+            }],
+            operators: []
+        };
+    }
+}
+
+
 export class ActionDeleteVariable extends Action {
     variableName: string
     constructor() {

@@ -1,5 +1,7 @@
-<div class="operand-wrp">
+<div class="operand-wrp"
+    [ngClass]="{'opened' : openSlectFunction}">
     <div class="value-wrp">
+
         <cds-textarea id="operand"
         [textLimitBtn]="false"
         [emoijPikerBtn]="false"
@@ -15,12 +17,13 @@
         </div>
     </div>
     
-    <span class="material-icons">add</span>
+    <span class="material-icons" (click)="onToggleSelectFunction()">settings</span>
     <cds-select
+        class="select-function"
         [items]="listOfFunctions"
         [bindLabelSelect]="'name'"
         [bindValueSelect]="'value'"
-        [placeholder]="'Select a function'"
+        [placeholder]="'Apply a function to the value'"
         [itemSelected]="operandForm.value.function"
         [clearable]="true"
         (onSelected)="onSelectedFunction($event)"

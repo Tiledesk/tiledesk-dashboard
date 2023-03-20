@@ -50,6 +50,10 @@
             <cds-action-assign-variable *ngSwitchCase="typeAction.ASSIGN_VARIABLE"
                 [action]="elementSelected">
             </cds-action-assign-variable>
+
+            <cds-action-assign-function *ngSwitchCase="typeAction.ASSIGN_FUNCTION"
+                [action]="elementSelected">
+            </cds-action-assign-function>
         
             <cds-action-delete-variable *ngSwitchCase="typeAction.DELETE_VARIABLE"
                 [action]="elementSelected">

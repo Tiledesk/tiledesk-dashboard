@@ -57,10 +57,10 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   private patchAllActionsId(){
     if(this.actions && this.actions.length>0){
       this.actions.forEach(function(action, index, object) {
-        object[index] = patchActionId(action);
+        if(!action._tdActionId){object[index] = patchActionId(action)};
       });
     }
-    console.log('patchAllActionsId:: ', this.actions);
+    // console.log('patchAllActionsId:: ', this.actions);
   }
 
   listenToIntentUpdates() {
