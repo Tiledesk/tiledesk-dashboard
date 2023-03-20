@@ -52,14 +52,17 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             </div>
             <div class="css-sjtw19 eg3bate2 plan-switch-wpr">
               <div class="css-rx6g2d eg3bate1 plan-switch-btns-wpr">
-                <button class="css-xie4lp eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.A}" (click)="selected_Plan(PLAN_NAME.A)">
+                <button class="css-xie4lp eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.A}"
+                  (click)="selected_Plan(PLAN_NAME.A)">
                   For small teams & startups
 
                 </button>
-                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.B}" (click)="selected_Plan(PLAN_NAME.B)">
+                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.B}"
+                  (click)="selected_Plan(PLAN_NAME.B)">
                   For larger teams & scale-ups
                 </button>
-                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.C}" (click)="selected_Plan(PLAN_NAME.C)">
+                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.C}"
+                  (click)="selected_Plan(PLAN_NAME.C)">
                   For medium & large enterprises
                 </button>
               </div>
@@ -76,12 +79,21 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                     {{planDecription}}
                   </span>
                 </p>
-                <span size="32" class="css-1sx5jt9 e1soz8mc0 span-32"> </span>
+                <span size="8" class="css-1sx5jt9 e1soz8mc0 span-8"> </span>
+                
+                  <div class="highlighted-features-wpr">
+                    <span *ngFor="let feature of highlightedFeatures"
+                      class="highlighted-features" [ngStyle]="{'color': feature.color, 'background-color':  feature.background}">
+                      <div class="highlighted-feature"> {{feature.feature}} </div>
+                    </span>
+                  </div>
+                
+                <span size="16" class="css-1sx5jt9 e1soz8mc0 span-16"> </span>
                 <div class="css-w1ej1e eaklcf32 plan-features">
                   <ul class="css-1b45418 eaklcf34 plan-features-wpr">
 
 
-                    <li class="css-1655qqu eaklcf33 plan-features"  *ngFor="let feature of planFeatures">
+                    <li class="css-1655qqu eaklcf33 plan-features" *ngFor="let feature of planFeatures">
                       <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
                         <div class="css-i03ybx eaklcf31 plan-features-icon">
                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
@@ -228,7 +240,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                         <div class="css-1sdeyeu eaklcf30 plan-features-text">Departments</div>
                       </div>
                     </li> -->
-                    
+
                     <!-- <li class="css-1655qqu eaklcf33 plan-features">
                       <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
                         <div class="css-i03ybx eaklcf31 plan-features-icon">
@@ -273,10 +285,12 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
                 <div class="css-le9b4r ev1261q3 pricing-page-header-period-switch-wpr">
                   <div class="css-rx6g2d ev1261q2 pricing-page-header-period-switch">
-                    <button class="css-xie4lp ev1261q1 period-btn" [ngClass]="{'selected-period-btn': monthlyPeriod}" (click)="selectedPeriod('monthly')">
+                    <button class="css-xie4lp ev1261q1 period-btn" [ngClass]="{'selected-period-btn': monthlyPeriod}"
+                      (click)="selectedPeriod('monthly')">
                       Monthly
                     </button>
-                    <button class="css-ppa1gj ev1261q1 period-btn" [ngClass]="{'selected-period-btn': annualPeriod}" (click)="selectedPeriod('annual')">
+                    <button class="css-ppa1gj ev1261q1 period-btn" [ngClass]="{'selected-period-btn': annualPeriod}"
+                      (click)="selectedPeriod('annual')">
                       Annually
                     </button>
                   </div>
@@ -298,8 +312,13 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                 </button> -->
               </div> <!-- right-content -->
             </div>
-            <div class="checkout-btn-wpr">
-              <button type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.A" (click)="openPaymentLinkMontlyPlanA()">
+              <button id="monthly-plan-a" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.A"  (click)="openPaymentLinkAnnuallyPlanA()">
+              <button id="annually-plan-a" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Go to checkout </span>
               </button>
             </div>

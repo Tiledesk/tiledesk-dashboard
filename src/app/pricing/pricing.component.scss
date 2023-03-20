@@ -529,8 +529,6 @@ li:before {
   box-shadow: rgb(0 27 71 / 8%) 0px 3px 8px;
 }
 
-
-
 .plan-switch-wpr {
   display: flex;
   flex-direction: column;
@@ -581,8 +579,6 @@ li:before {
   color: rgb(5, 102, 255);
   box-shadow: rgb(0 27 71 / 8%) 0px 3px 8px;
 }
-
-
 
 .span-24 {
   display: block;
@@ -828,15 +824,37 @@ li:before {
   justify-content: center;
 }
 
-
 .two-months-free-text-container {
   height: 26px;
   margin-top: 6px;
-  background: linear-gradient(130deg, #ff7a18, #af002d 41.07%, #319197 76.05%);
-  background: linear-gradient(90deg,hsl(269,calc(1*52.7%),52.7%),hsl(325,calc(1*31.7%),51.8%));
-  background: #0566ff;
+  // background: linear-gradient(130deg, #ff7a18, #af002d 41.07%, #319197 76.05%);
+  background: linear-gradient(90deg, hsl(269, calc(1 * 52.7%), 52.7%), hsl(325, calc(1 * 31.7%), 51.8%));
+  // background: #0566ff;
   color: #fff;
   font-weight: 400;
   padding: 3px 6px;
-  border-radius: 3px ;
+  border-radius: 4px;
+}
+
+.highlighted-features-wpr {
+  display: flex;
+  /* flex-flow: row wrap; */
+  /* -webkit-box-align: center; */
+  /* margin: -3px -2px; */
+  /* flex: 1 1 0%; */
+  align-items: center;
+  /* justify-content: flex-start; */
+  /* transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1) 0s; */
+  gap: 12px;
+  flex-direction: row;
+}
+
+.highlighted-features {
+  border-radius: 4px;
+}
+
+.highlighted-feature {
+  padding: 0px 6px;
+  font-size: 14px;
+  font-weight: 400;
 }

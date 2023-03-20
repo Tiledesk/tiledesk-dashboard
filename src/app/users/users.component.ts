@@ -364,10 +364,14 @@ export class UsersComponent implements OnInit, OnDestroy {
     window.open(url, '_blank')
   }
 
+  goToPricing() {
+    this.router.navigate(['project/' + this.id_project + '/pricing']);
+  }
+
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe(
       (projectProfileData: any) => {
-        //  console.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
+         console.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
         if (projectProfileData) {
           this.prjct_id = projectProfileData._id
           this.prjct_name = projectProfileData.name
@@ -390,8 +394,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           }
 
           this.projectPlanAgentsNo = projectProfileData.profile_agents
-          this.subscription_is_active =
-            projectProfileData.subscription_is_active
+          this.subscription_is_active = projectProfileData.subscription_is_active
           this.subscription_end_date = projectProfileData.subscription_end_date
           this.prjct_profile_type = projectProfileData.profile_type
           this.profile_name = projectProfileData.profile_name

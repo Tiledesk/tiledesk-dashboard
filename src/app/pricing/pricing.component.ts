@@ -50,6 +50,12 @@ const featuresPlanA = [
   'Webhooks',
   'Email Support',
 ]
+const highlightedFeaturesPlanA = [
+  {'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 Seats'},
+  {'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.'},
+]
+
+
 
 const featuresPlanB = [
   'Unbranding',
@@ -63,6 +69,11 @@ const featuresPlanB = [
   'Livechat Support',
 ]
 
+const highlightedFeaturesPlanB = [
+  {'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats'},
+  {'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.'},
+]
+
 const featuresPlanC = [
   'Dedicated Customer Success Manager',
   'Chatbot Design Assistance',
@@ -74,6 +85,11 @@ const featuresPlanC = [
   'Activities Log',
   'Data Export',
   'Premium Customer Support',
+]
+
+const highlightedFeaturesPlanC = [
+  {'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': 'Chatbot design assistance'}
+
 ]
 
 @Component({
@@ -93,6 +109,9 @@ export class PricingComponent implements OnInit, OnDestroy {
   monthlyPrice: string;
   annualPeriod: boolean;
   monthlyPeriod: boolean;
+  highlightedFeatures = []
+  clientReferenceIdForPlanA: string;
+  browser_lang: string;
   // company_name = brand.company_name;
   company_name: string;
 
@@ -140,8 +159,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
 
   contactUsEmail: string;
-  clientReferenceIdForGrowthPlan: string;
-  browser_lang: string;
+ 
 
 
   constructor(
@@ -197,7 +215,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
     this.planName = PLAN_NAME.A
     this.planDecription = PLAN_DESC[PLAN_NAME.A]
-    this.planFeatures = featuresPlanA
+    this.planFeatures = featuresPlanA;
+    this.highlightedFeatures = highlightedFeaturesPlanA
     this.monthlyPeriod = true;
     this.annualPeriod = false;
     this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.A]
@@ -205,33 +224,43 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
   // ----------------- new 
-  stripeGrowthPaymentLinkCheckout() {
-    const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForGrowthPlan}&locale=${this.browser_lang}`
+  openPaymentLinkMontlyPlanA() {
+    const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
 
     window.open(url, '_blank');
   }
 
+
+  openPaymentLinkAnnuallyPlanA() {
+    const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+    window.open(url, '_blank');
+  }
+
   selected_Plan(planname) {
-    this.planFeatures = []
-    this.planName = planname
+    this.planFeatures = [];
+    this.highlightedFeatures = [];
+    this.planName = planname;
 
 
     console.log('select plan name', planname)
     this.planDecription = PLAN_DESC[planname]
-    console.log('select planDecription', this.planDecription)
+    console.log('select planDecription', this.planDecription);
 
     if (planname === PLAN_NAME.A) {
       console.log(' PLAN A Features')
-      this.planFeatures = featuresPlanA
+      this.planFeatures = featuresPlanA;
+      this.highlightedFeatures = highlightedFeaturesPlanA;
     }
     if (planname === PLAN_NAME.B) {
       console.log(' PLAN B Features')
-      this.planFeatures = featuresPlanB
+      this.planFeatures = featuresPlanB;
+      this.highlightedFeatures = highlightedFeaturesPlanB;
     }
 
     if (planname === PLAN_NAME.C) {
-      console.log(' PLAN C Features')
-      this.planFeatures = featuresPlanC
+      console.log(' PLAN C Features');
+      this.planFeatures = featuresPlanC;
+      this.highlightedFeatures = highlightedFeaturesPlanC;
     }
 
     this.selectedPeriod('monthly')
@@ -299,8 +328,8 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.logger.log('[PRICING] USER UID ', this.currentUserID);
       this.logger.log('[PRICING] USER email ', this.currentUserEmail);
 
-      this.clientReferenceIdForGrowthPlan = this.currentUserID + '_' + this.projectId + '_' + 'growth'
-      console.log('[PRICING] clientReferenceIdForGrowthPlan ', this.clientReferenceIdForGrowthPlan)
+      this.clientReferenceIdForPlanA = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.A
+      console.log('[PRICING] clientReferenceIdForPlanA ', this.clientReferenceIdForPlanA)
     } else {
       // this.logger.log('No user is signed in');
     }
