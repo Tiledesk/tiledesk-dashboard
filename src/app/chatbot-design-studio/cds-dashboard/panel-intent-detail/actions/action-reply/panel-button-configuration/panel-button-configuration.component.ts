@@ -1,5 +1,5 @@
 import { CDSTextComponent } from './../../../../../cds-base-element/text/text.component';
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Button } from 'app/models/intent-model';
 
 
@@ -43,10 +43,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
   buttonAttributes: any;
   openBlockAttributes: boolean = false;
 
-  constructor(
-    private el: ElementRef, 
-    private renderer: Renderer2
-  ) { }
+  constructor() { }
 
 
   // SYSTEM FUNCTIONS //  
@@ -91,7 +88,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
     if(intent && intent.attributes !== null){
       // console.log('intent: ', intent);
       this.buttonAttributes = intent.attributes;
-      this.openBlockAttributes = true;
+      // this.openBlockAttributes = true;
     }
 
   }

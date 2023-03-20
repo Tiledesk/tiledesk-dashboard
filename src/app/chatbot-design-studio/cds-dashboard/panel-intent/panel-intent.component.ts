@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { Form, Intent } from '../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Observable, Subscription } from 'rxjs';
-import { ACTIONS_LIST, TYPE_ACTION } from 'app/chatbot-design-studio/utils';
+import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 const swal = require('sweetalert');
 @Component({
@@ -52,6 +52,15 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.listenToIntentUpdates();
     // this.actions = this.intentSelected.actions
+  }
+
+  private patchAllActionsId(){
+    if(this.actions && this.actions.length>0){
+      this.actions.forEach(function(action, index, object) {
+        object[index] = patchActionId(action);
+      });
+    }
+    console.log('patchAllActionsId:: ', this.actions);
   }
 
   listenToIntentUpdates() {
@@ -126,7 +135,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     if (this.intentSelected) {
       // this.logger.log('[PANEL INTENT] (ngOnChanges) intentSelected', this.intentSelected);
       this.actions = this.intentSelected.actions;
-
+      this.patchAllActionsId();
       // this.logger.log('[PANEL INTENT] (ngOnChanges) actions', this.actions);
       if (this.intentSelected && this.intentSelected.question) {
         // const question_segment = this.intentSelected.question.split(\n);

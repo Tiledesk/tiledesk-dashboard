@@ -80,6 +80,10 @@ export enum TYPE_ACTION {
     JSON_CONDITION = 'jsoncondition'
 }
 
+export enum TYPE_TD_ACTION_ID {
+    UUIDV4 = 'UUIDV4'
+}
+
 export enum TYPE_OPERATOR {
     equalAsNumbers = "equalAsNumbers",
     equalAsStrings = "equalAsStrings",
@@ -238,6 +242,18 @@ export var variableList = {
         { name: 'City', value: 'user_city', src: '', icon: 'language' },
 
     ]
+}
+
+
+export function patchActionId(action) {
+    try {
+        if(!action._tdActionId){
+            action._tdActionId = TYPE_TD_ACTION_ID.UUIDV4;
+        }
+    } catch (error) {
+       // error 
+    }
+    return action;
 }
 
 // export function retriveListOfVariables(intents: Array<Intent>) {

@@ -6,9 +6,26 @@
                     <label class="control-label">
                         {{ 'AddIntentPage.ParameterName' | translate }}
                     </label>
-                    <input type="text" class="input form-control" [(ngModel)]="fieldName"
+                    <!-- <input type="text" class="input form-control" [(ngModel)]="fieldName"
                         (ngModelChange)="onChangeParameterName($event)" (focus)="displayMessage('field_name')"
-                        style="border-radius: 5px;" />
+                        style="border-radius: 5px;" /> -->
+                    <div class="value-wrp">
+                        <cds-textarea id="assignTo"
+                            [ngClass]="{'assigned' : fieldName}"
+                            [text]="fieldName"
+                            [textLimitBtn]="false"
+                            [emoijPikerBtn]="false"
+                            [setAttributeBtn]="hasSelectedVariable? false: true"
+                            [minRow]="1" [maxRow]="1"
+                            [readonly]="true"
+                            (onSelected)="onVariableSelected($event)">
+                        </cds-textarea>
+                        <div class="flex tag" *ngIf="hasSelectedVariable">
+                            <span class="material-icons close" (click)="onClearInput()">close</span>
+                            {{fieldName}}
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -38,10 +55,19 @@
                     <label class="control-label">
                         {{ 'AddIntentPage.Label' | translate }}
                     </label>
-                    <textarea name="field_label" [(ngModel)]="fieldLabel" rows="3" style="resize: vertical;"
-                        class="form-control" type="text" (focus)="displayMessage('field_label')"
-                        style="border-radius: 5px;line-height: 14px;">
-                    </textarea>
+                    <!-- <textarea name="field_label" [(ngModel)]="fieldLabel" rows="1" style="resize: vertical;"
+                        class="form-control" type="text" (focus)="displayMessage('field_label')">
+                    </textarea> -->
+
+                    <cds-textarea 
+                        class="form-control"
+                        name="field_label"
+                        [text]="fieldLabel" 
+                        [minRow]="1"
+                        popoverVerticalAlign="above"
+                        [emoijPikerBtn]="true"
+                        (focus)="displayMessage('field_label')">
+                    </cds-textarea>
                 </div>
             </div>
         </div>
