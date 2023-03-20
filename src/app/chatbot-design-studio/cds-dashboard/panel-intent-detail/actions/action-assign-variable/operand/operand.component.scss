@@ -4,13 +4,13 @@ div.operand-wrp {
     display: grid;
     align-items: center;
     grid-template-columns: 11fr 1fr;
-    grid-column-gap: 10px;
+    grid-column-gap: 0px;
     grid-row-gap: 10px;
     background: rgb(66,85,117);
-    padding: 10px;
-    border-radius: 4px;
+    padding: 10px 10px 20px;
+    border-radius: 5px;
     &.opened {
-        grid-template-columns: 6fr 1fr 6fr;
+        // grid-template-columns: 6fr 1fr 6fr;
         .select-function{
             display:block;
         }
@@ -26,11 +26,12 @@ div.operand-wrp {
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        margin-top: 20px;
     }
 
     div.value-wrp{
         position: relative;
-        display: flex;
+        display: block;
         
 
         .flex{
@@ -50,7 +51,7 @@ div.operand-wrp {
                 right: -7px;
                 font-size: 15px;
                 border-radius: 50%;
-    
+                margin-top: 0;
                 background: white;
                 cursor: pointer;
                 position: absolute;
@@ -68,11 +69,10 @@ div.operand-wrp {
     
         div.tag{
             position: absolute;
-            top: 0;
+            top: 24px;
             bottom: 0;
             left: 8px;
             right: unset;
-    
             border-radius: 7px;
             margin: 5px;
             padding: 5px 10px;
@@ -108,8 +108,23 @@ div.operand-wrp {
         border: 1px solid rgb(118, 118, 118) !important;
         resize: none !important; 
         padding: 8px 20px !important;
-
         height: 25px !important;
         min-height: 25px !important;
+        width: calc(100% - 45px);
+    }
+    textarea::placeholder {
+        font-family: 'Poppins','Roboto',Arial,sans-serif;
+        font-size: 13px;
     }
 }
+
+
+::ng-deep cds-select#selectOperand {
+    .ng-value-container{
+        font-family: 'Poppins','Roboto',Arial,sans-serif;
+        .ng-placeholder {
+            font-size: 13px;
+        }
+    }
+}
+

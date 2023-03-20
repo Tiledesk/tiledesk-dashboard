@@ -1,32 +1,38 @@
 <div class="operand-wrp"
     [ngClass]="{'opened' : openSlectFunction}">
-    <div class="value-wrp">
-
-        <cds-textarea id="operand"
-        [textLimitBtn]="false"
-        [emoijPikerBtn]="false"
-        [setAttributeBtn]="operandForm.value.value? false: true"
-        [minRow]="1" [maxRow]="1"
-        [readonly]="operandForm.value.isVariable? true : false"
-        [control]="operandForm.get('value')"
-        (onChange)="onChangeTextArea($event)">
-        </cds-textarea>
-        <div class="flex tag" *ngIf="operandForm.value.isVariable">
-            <span class="material-icons close" (click)="clearInput()">close</span>
-            {{operandForm.value.value}}
+    
+    <div class="textarea-value">
+        <div class="value-wrp">
+            <label>Value</label>
+            <cds-textarea id="operand"
+            [placeholder]="'Insert a constant value or choose an attribute'"
+            [textLimitBtn]="false"
+            [emoijPikerBtn]="false"
+            [setAttributeBtn]="operandForm.value.value? false: true"
+            [minRow]="1" [maxRow]="1"
+            [readonly]="operandForm.value.isVariable? true : false"
+            [control]="operandForm.get('value')"
+            (onChange)="onChangeTextArea($event)">
+            </cds-textarea>
+            <div class="flex tag" *ngIf="operandForm.value.isVariable">
+                <span class="material-icons close" (click)="clearInput()">close</span>
+                {{operandForm.value.value}}
+            </div>
         </div>
     </div>
-    
     <span class="material-icons" (click)="onToggleSelectFunction()">settings</span>
-    <cds-select
-        class="select-function"
-        [items]="listOfFunctions"
-        [bindLabelSelect]="'name'"
-        [bindValueSelect]="'value'"
-        [placeholder]="'Apply a function to the value'"
-        [itemSelected]="operandForm.value.function"
-        [clearable]="true"
-        (onSelected)="onSelectedFunction($event)"
-    >
-    </cds-select>
+    <div class="select-function">
+        <label>Function</label>
+        <cds-select id="selectOperand"
+            [items]="listOfFunctions"
+            [bindLabelSelect]="'name'"
+            [bindValueSelect]="'value'"
+            [placeholder]="'Apply a function to the value'"
+            [itemSelected]="operandForm.value.function"
+            [clearable]="true"
+            (onSelected)="onSelectedFunction($event)"
+        >
+        </cds-select>
+    </div>
+    
 </div>

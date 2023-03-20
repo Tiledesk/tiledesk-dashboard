@@ -15,6 +15,8 @@ export class CDSTextareaComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   @ViewChild("addVariable") addVariable: SatPopover;
 
+  
+  @Input() placeholder: string = '';
   @Input() text: string = '';
   @Input() limitCharsText: number = TEXT_CHARS_LIMIT;
   @Input() textMessage: string;
