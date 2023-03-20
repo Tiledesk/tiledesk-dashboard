@@ -25,12 +25,12 @@ export class ActionDeleteVariableComponent implements OnInit {
   }
 
   private initialize() {
-    console.log('action: ', variableList.userDefined);
+    // console.log('action: ', variableList.userDefined);
     this.variableListUserDefined = variableList.userDefined;
   }
 
   onChangeSelect(variableSelected: {name: string, value: string}){
-    console.log('changeeeeee', variableSelected);
+    // console.log('changeeeeee', variableSelected);
     this.action.variableName = variableSelected.name;
   }
 

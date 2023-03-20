@@ -81,7 +81,6 @@ export class PanelButtonConfigurationComponent implements OnInit {
       // error
     }
     let intent = this.setAttributesFromAction(this.button.action);
-    // console.log('intent:: ', intent);
     if(intent && intent.action !== null){
       this.buttonAction = intent.action;
     }
@@ -90,7 +89,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
       this.buttonAttributes = intent.attributes;
       // this.openBlockAttributes = true;
     }
-
+    // console.log('buttonAction:: ', this.buttonAction); 
   }
 
 
