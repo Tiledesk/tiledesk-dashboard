@@ -135,6 +135,7 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component';
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
+import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component';
 
 
 
@@ -149,7 +150,8 @@ const routes: Routes = [
   // },
 
   { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] },
-
+  
+  
 
   /* PRIVATE */
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
@@ -186,7 +188,8 @@ const routes: Routes = [
   { path: 'project/:projectid/onboarding/:langcode/:langname', component: OnboardingComponent, canActivate: [AuthGuard] }, // wizard step 3
   { path: 'project/:projectid/install-widget/:langcode/:langname', component: InstallWidgetComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard , ProjectProfileGuard] },
+  { path: 'project/:projectid/cannedresponses-demo', component: CannedResponsesStaticComponent, canActivate: [AuthGuard]},
   { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] },
 
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },

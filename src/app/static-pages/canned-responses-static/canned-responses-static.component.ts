@@ -1,85 +1,68 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { AuthService } from '../../core/auth.service';
+import { Component,OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../core/auth.service';
+import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { Subscription } from 'rxjs';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
-import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
+import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
 
-const swal = require('sweetalert');
-
 @Component({
-  selector: 'appdashboard-analytics-static',
-  templateUrl: './analytics-static.component.html',
-  styleUrls: ['./analytics-static.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  selector: 'appdashboard-canned-responses-static',
+  templateUrl: './canned-responses-static.component.html',
+  styleUrls: ['./canned-responses-static.component.scss']
 })
-export class AnalyticsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
-  PLAN_NAME = PLAN_NAME
-  subscription: Subscription;
-  projectId: string;
-  browserLang: string;
+export class CannedResponsesStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
+  tparams: any;
+  imageObject = [
+    {
+      image: 'assets/img/canned-static-1.png',
+      thumbImage: 'assets/img/canned-static-1.png'
+    },
+    // {
+    //   image: 'assets/img/contacts-static-2.png',
+    //   thumbImage: 'assets/img/contacts-static-2.png'
+    // }
+  ];
   prjct_profile_type: string;
   subscription_is_active: any;
   prjct_profile_name: string;
   subscription_end_date: Date;
-  profile_name: string;
+  browserLang: string;
 
-  imageUrlArray = [
-    { url: 'assets/img/new_analitycs_1_v6.png', backgroundSize: 'contain' },
-    { url: 'assets/img/new_anlitycs_2.png', backgroundSize: 'contain' },
-    { url: 'assets/img/new_analitycs_6.png', backgroundSize: 'contain' },
-  ];
+  subscription: Subscription;
 
-  imageObject = [
-    {
-      image: 'assets/img/new_analitycs_1_v6.png',
-      thumbImage: 'assets/img/new_analitycs_1_v6.png',
-      alt: 'analitycs demo image'
-    },
-    {
-      image: 'assets/img/new_anlitycs_2.png',
-      thumbImage: 'assets/img/new_anlitycs_2.png',
-      alt: 'analitycs demo image'
-    },
-    {
-      image: 'assets/img/new_analitycs_6.png',
-      thumbImage: 'assets/img/new_analitycs_6.png',
-      alt: 'analitycs demo image '
-    },
-  ];
+  projectId: string;
 
   USER_ROLE: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+  profile_name: string;
   isChromeVerGreaterThan100: boolean;
-  tparams: any;
+  PLAN_NAME = PLAN_NAME
   constructor(
     private router: Router,
     public auth: AuthService,
-    public translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     private notify: NotifyService,
+    public translate: TranslateService,
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService
-  ) { super(translate); 
-    this.tparams = {'plan_name': PLAN_NAME.B}}
+  ) { super(translate);}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getOSCODE();
     this.getCurrentProject();
-    this.getBrowserLang();
     this.getProjectPlan();
-
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
+    this.tparams = {'plan_name': PLAN_NAME.A}
   }
 
   getBrowserVersion() {
@@ -91,8 +74,8 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[TRIGGER-BASECOMP] AppConfigService getAppConfig public_Key', this.public_Key)
-    this.logger.log('[TRIGGER-BASECOMP] public_Key', this.public_Key)
+    this.logger.log('[CANNED-RES-STATIC] AppConfigService getAppConfig public_Key', this.public_Key)
+    this.logger.log('[CANNED-RES-STATIC] public_Key', this.public_Key)
 
     let keys = this.public_Key.split("-");
     // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
@@ -100,35 +83,29 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
     keys.forEach(key => {
       // this.logger.log('NavbarComponent public_Key key', key)
       if (key.includes("PAY")) {
-        this.logger.log('[ANALYTICS-STATIC] PUBLIC-KEY - key', key);
+        this.logger.log('[CANNED-RES-STATIC] PUBLIC-KEY - key', key);
         let pay = key.split(":");
         // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
-          this.logger.log('[ANALYTICS-STATIC] - pay isVisible', this.payIsVisible);
+          this.logger.log('[CANNED-RES-STATIC] - pay isVisible', this.payIsVisible);
         } else {
           this.payIsVisible = true;
-          this.logger.log('[ANALYTICS-STATIC] - pay isVisible', this.payIsVisible);
+          this.logger.log('[CANNED-RES-STATIC] - pay isVisible', this.payIsVisible);
         }
       }
     });
 
     if (!this.public_Key.includes("PAY")) {
       this.payIsVisible = false;
-      this.logger.log('[ANALYTICS-STATIC] - pay isVisible', this.payIsVisible);
+      this.logger.log('[CANNED-RES-STATIC] - pay isVisible', this.payIsVisible);
     }
-  }
-
-
-
-  getBrowserLang() {
-    this.browserLang = this.translate.getBrowserLang();
   }
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
       this.USER_ROLE = user_role;
-      this.logger.log('[ANALYTICS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+      this.logger.log('[CANNED-RES-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
   }
 
@@ -139,41 +116,45 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
   translateModalOnlyOwnerCanManageProjectAccount() {
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[DEPTS-STATIC]  onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
+
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        // this.logger.log('[DEPTS-STATIC] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
   }
 
+  getBrowserLang() {
+    this.browserLang = this.translate.getBrowserLang();
+  }
+
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
+      // this.logger.log('[DEPTS-STATIC] - project ', project)
 
       if (project) {
         this.projectId = project._id
-        this.logger.log('[ANALYTICS-STATIC] - project id', this.projectId)
+        this.logger.log('[CANNED-RES-STATIC] - project Id ', this.projectId)
       }
     });
   }
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[ANALYTICS-STATIC] GET PROJECT PROFILE', projectProfileData)
+      this.logger.log('[CANNED-RES-STATIC] GET PROJECT PROFILE', projectProfileData)
       if (projectProfileData) {
-
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
-
         this.subscription_end_date = projectProfileData.subscription_end_date
         this.profile_name = projectProfileData.profile_name
-
         this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+
           if (this.USER_ROLE === 'owner') {
 
             if (this.profile_name !== 'enterprise') {
@@ -185,18 +166,18 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
               this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
             }
           }
+
         }
       }
     }, err => {
-      this.logger.error('[ANALYTICS-STATIC] GET PROJECT PROFILE - ERROR', err);
+      this.logger.error('[CANNED-RES-STATIC] GET PROJECT PROFILE - ERROR', err);
     }, () => {
-      this.logger.log('[ANALYTICS-STATIC] GET PROJECT PROFILE * COMPLETE *');
+      this.logger.log('[CANNED-RES-STATIC] GET PROJECT PROFILE * COMPLETE *');
     });
   }
 
-
   goToPricing() {
-    this.logger.log('[ANALYTICS-STATIC] - goToPricing projectId ', this.projectId);
+    this.logger.log('[CNTCTS-STATIC] - goToPricing projectId ', this.projectId);
     if (this.payIsVisible) {
       if (this.USER_ROLE === 'owner') {
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
@@ -222,6 +203,7 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+
 
 
 }

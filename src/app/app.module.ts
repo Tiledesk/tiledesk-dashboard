@@ -316,6 +316,8 @@ import { HomePromoDesignStudioComponent } from './home-promo-design-studio/home-
 import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
 import { CloneBotComponent } from './bots/bots-list/clone-bot/clone-bot.component';
 import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component';
+import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component';
+
 
 
 
@@ -558,7 +560,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomePromoDesignStudioComponent,
     PasswordStrengthComponent,
     CloneBotComponent,
-    ContactsStaticComponent 
+    ContactsStaticComponent,
+    CannedResponsesStaticComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

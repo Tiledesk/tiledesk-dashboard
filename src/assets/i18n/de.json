@@ -2286,6 +2286,7 @@
 	"CRMImprovesCustomerRelationship":"CRM oder Customer Relationship Management verbessert das Kundenbeziehungsmanagement, indem es eine 360-Grad-Sicht auf den Kunden schafft",
 	"CRMRecordsCustomerContactInformation":"Das CRM zeichnet Kundenkontaktinformationen wie E-Mail-Adresse, Telefonnummer und vieles mehr auf, damit Sie die Entwicklung des Interaktionsnetzwerks Ihres Unternehmens besser verstehen können.",
 	"AvailableFromThePlan":"Verfügbar im Plan {{plan_name}}",
+	"HavingCannedResponsesCanPutYouGreatAdvantage":"Effizienz ist alles, wenn es um Kundenzufriedenheit geht. Eine Sammlung leicht verfügbarer „vorgefertigter Antworten“ kann Ihnen einen großen Vorteil verschaffen, wenn Sie sich in einer Live-Chat-Sitzung um eine Kundenanfrage kümmern oder einfach nur häufig gestellte Fragen beantworten.",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",

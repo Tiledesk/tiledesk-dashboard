@@ -722,7 +722,7 @@ export class ProjectService {
   // -------------------------------------
   // UPDATE SUBSCRIPTION !! Used for test
   // -------------------------------------
-  public updatesubscription() {
+  public updatesubscription(price) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -734,7 +734,7 @@ export class ProjectService {
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/updatesubscription';
     this.logger.log('[PROJECT-SERV] UPDATE SUBSCRIPTION PUT URL ', url);
 
-    const body = { 'projectid': this.projectID, 'userid': this.user._id };
+    const body = { 'projectid': this.projectID, 'userid': this.user._id, price: price };
     this.logger.log('[PROJECT-SERV] UPDATE SUBSCRIPTION PUT  BODY ', body);
 
     return this._httpclient

@@ -12,14 +12,15 @@ import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
 import { TranslateService } from '@ngx-translate/core';
+import { PLAN_NAME } from 'app/utils/util';
 
 declare var Stripe: any;
 
-enum PLAN_NAME {
-  A = 'Growth',
-  B = 'Scale',
-  C = 'Enterprise',
-}
+// enum PLAN_NAME {
+//   A = 'Growth',
+//   B = 'Scale',
+//   C = 'Enterprise',
+// }
 enum PLAN_DESC {
   Growth = 'Improve customer experience and qualify leads better with premium features',
   Scale = 'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
@@ -51,8 +52,8 @@ const featuresPlanA = [
   'Email Support',
 ]
 const highlightedFeaturesPlanA = [
-  {'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 Seats'},
-  {'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.'},
+  { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 Seats' },
+  { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' },
 ]
 
 
@@ -70,8 +71,8 @@ const featuresPlanB = [
 ]
 
 const highlightedFeaturesPlanB = [
-  {'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats'},
-  {'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.'},
+  { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats' },
+  { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' },
 ]
 
 const featuresPlanC = [
@@ -88,7 +89,7 @@ const featuresPlanC = [
 ]
 
 const highlightedFeaturesPlanC = [
-  {'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': 'Chatbot design assistance'}
+  { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': 'Chatbot design assistance' }
 
 ]
 
@@ -110,6 +111,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   annualPeriod: boolean;
   monthlyPeriod: boolean;
   highlightedFeatures = []
+  projectCurrenPlan: string;
   clientReferenceIdForPlanA: string;
   browser_lang: string;
   // company_name = brand.company_name;
@@ -159,7 +161,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
 
   contactUsEmail: string;
- 
+
 
 
   constructor(
@@ -225,16 +227,53 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   // ----------------- new 
   openPaymentLinkMontlyPlanA() {
-    const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+    // if (this.projectCurrenPlan === "free") {
+      const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+      window.open(url, '_blank');
+    // } else {
+    //   console.log('selectedPeriod > openPaymentLinkMontlyPlanA projectCurrenPlan', this.projectCurrenPlan)
+    //   console.log('selectedPeriod > openPaymentLinkMontlyPlanA planName', this.planName)
+    //   console.log('selectedPeriod > openPaymentLinkMontlyPlanA monthlyPeriod',  this.monthlyPeriod)
+    //   console.log('selectedPeriod > openPaymentLinkMontlyPlanA annualPeriod',  this.annualPeriod)
+    //   // price Montly price_1MnhkYD1JyUWkzR91uPxN1tj Scale Plan
 
-    window.open(url, '_blank');
+    //   const PlanBAnnuallyPrice = 'price_1MnhkYD1JyUWkzR91uPxN1tj'
+    //   this.updatesubscription(PlanBAnnuallyPrice)
+    // }
   }
+
+
+
 
 
   openPaymentLinkAnnuallyPlanA() {
-    const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
-    window.open(url, '_blank');
+    // if (this.projectCurrenPlan === "free") {
+      const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+      window.open(url, '_blank');
+    // } else {
+    //   console.log('selectedPeriod > openPaymentLinkAnnuallyPlanA projectCurrenPlan', this.projectCurrenPlan)
+    //   console.log('selectedPeriod > openPaymentLinkAnnuallyPlanA planName', this.planName)
+    //   console.log('selectedPeriod > openPaymentLinkAnnuallyPlanA monthlyPeriod',  this.monthlyPeriod)
+    //   console.log('selectedPeriod > openPaymentLinkAnnuallyPlanA annualPeriod',  this.annualPeriod)
+
+    //   // price Annually price_1Mnhm7D1JyUWkzR9xv9WbV9C Scale Plan
+    //   const PlanBAnnuallyPrice = 'price_1Mnhm7D1JyUWkzR9xv9WbV9C'
+    //   this.updatesubscription(PlanBAnnuallyPrice)
+    // }
   }
+  
+  updatesubscription(price) {
+    this.projectService.updatesubscription(price).subscribe((updatesubscription: any) => {
+      this.logger.log('[PRICING] - updatesubscription RES ', updatesubscription);
+
+    }, error => {
+      this.logger.error('[PRICING] - updatesubscription - ERROR: ', error);
+    }, () => {
+      this.logger.log('[PRICING] - updatesubscription * COMPLETE *')
+    });
+
+  }
+
 
   selected_Plan(planname) {
     this.planFeatures = [];
@@ -391,8 +430,9 @@ export class PricingComponent implements OnInit, OnDestroy {
       if (projectProfileData) {
 
         this.subscription_id = projectProfileData.subscription_id;
+        this.projectCurrenPlan = projectProfileData.profile_name
         console.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
-
+        console.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
       }
     }, error => {
 
@@ -775,20 +815,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   }
 
-  // -------------------------------------------------------------
-  // Used for test (uncomment the button in the template to use it) 
-  // -------------------------------------------------------------
-  updatesubscription() {
-    this.projectService.updatesubscription().subscribe((updatesubscription: any) => {
-      this.logger.log('[PRICING] - updatesubscription RES ', updatesubscription);
-
-    }, error => {
-      this.logger.error('[PRICING] - updatesubscription - ERROR: ', error);
-    }, () => {
-      this.logger.log('[PRICING] - updatesubscription * COMPLETE *')
-    });
-
-  }
+ 
+ 
 
 
 

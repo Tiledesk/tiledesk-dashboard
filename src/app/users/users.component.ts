@@ -11,6 +11,7 @@ import { AppConfigService } from '../services/app-config.service'
 import { avatarPlaceholder, getColorBck } from '../utils/util'
 import { URL_understanding_default_roles } from '../utils/util'
 import { LoggerService } from '../services/logger/logger.service'
+import { PLAN_NAME } from 'app/utils/util';
 
 const swal = require('sweetalert')
 
@@ -20,6 +21,7 @@ const swal = require('sweetalert')
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit, OnDestroy {
+  PLAN_NAME = PLAN_NAME;
   public_Key: string
   showSpinner = true
   projectUsersList: any

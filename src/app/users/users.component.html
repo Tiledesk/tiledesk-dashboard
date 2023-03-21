@@ -71,13 +71,14 @@
         </div>
 
 
-        <!-- *********** start PROJECT PROFILE INFO  *********** -->
-        <!-- *ngIf="prjct_profile_type === 'payment'" -->
-        <div class="row" >
+        <!-- -------------------------------------------------- -->
+        <!-- NEW PROJECT PROFILE INFO -->
+        <!-- -------------------------------------------------- -->
+        <!-- <div class="row" >
           <div class="col-md-12">
             <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
               <div class="card-content">
-                <!-- *ngIf="subscription_is_active === true" -->
+             
                 <span >
                   <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
                   <span class="msg-alert">
@@ -88,7 +89,7 @@
                       (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
                   </span>
                 </span>
-              <!-- *ngIf="subscription_is_active === false" -->
+              
                 <span>
                   <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
                   <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
@@ -105,29 +106,85 @@
               </div>
             </div>
           </div>
+        </div> -->
+        <!-- -------------------------------------------------- -->
+        <!-- ./ NEW PROJECT PROFILE INFO -->
+        <!-- -------------------------------------------------- -->
+
+        <!-- -------------------------------------------------- -->
+        <!--  PROJECT PROFILE INFO  -->
+        <!-- -------------------------------------------------- -->
+        <div class="row" *ngIf="prjct_profile_type === 'payment'">
+          <div class="col-md-12">
+            <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
+              <div class="card-content">
+                <span *ngIf="subscription_is_active === true">
+                  <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
+                  <span class="msg-alert">
+                    {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
+                    {{ "Of" | translate }} {{ projectPlanAgentsNo }} {{ "ActiveOperatorSeatsInThe" | translate }}
+                    <span style="text-transform: capitalize">
+                      {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
+                      (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
+                  </span>
+                </span>
+                <span *ngIf="subscription_is_active === false">
+                  <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
+                  <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
+                    <span style="text-transform: capitalize">
+                      {{ prjct_profile_name }}
+                    </span>
+                    {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }} -
+
+                    <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
+                      {{ "Pricing.UpgradePlan" | translate }} </span>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- *********** ./end PROJECT PROFILE INFO  *********** -->
+        <!-- -------------------------------------------------- -->
+        <!--  ./ PROJECT PROFILE INFO  -->
+        <!-- -------------------------------------------------- -->
 
         <div class="row">
           <div class="col-md-12">
-            <div class="card card card--no-border" style="min-height: 195px;margin-top: 15px;box-shadow: rgba(0, 27, 71, 0.08) 0px 3px 8px !important;padding: 0px 6px;">
+            <div class="card card card--no-border"
+              style="min-height: 195px;margin-top: 15px;box-shadow: rgba(0, 27, 71, 0.08) 0px 3px 8px !important;padding: 0px 6px;">
 
 
               <!-- table-responsive -->
+              <div class="card-header card-header-custom-bckgrnd"
+                style="height:55px; border-bottom:1px solid rgb(239, 242, 246);">
 
-              <div class="card-header card-header-custom-bckgrnd" style="height:55px; border-bottom:1px solid rgb(239, 242, 246);">
-                <button *ngIf="USER_ROLE !== 'agent' && (projectUsersLength + countOfPendingInvites < 3) && profile_name === 'free'" class="btn btn-primary pull-right" style="padding: 8px 16px;margin:0px; text-transform:unset "
+                <!-- ---------------------------------------- -->
+                <!-- New  -->
+                <!-- ---------------------------------------- -->
+                <!-- <button
+                  *ngIf="USER_ROLE !== 'agent' && ((projectUsersLength + countOfPendingInvites < 3) && profile_name === 'free') || ((projectUsersLength + countOfPendingInvites < 4) && profile_name === PLAN_NAME.A)"
+                  class="btn btn-primary pull-right" style="padding: 8px 16px;margin:0px; text-transform:unset "
                   (click)="goToAddUser()">
-                  <!-- <span class="icon" style="padding-right:8px">
-                    <i class="material-icons">add_circle</i>
-                  </span> -->
                   {{ "UsersPage.Invites" | translate }}
                 </button>
 
-                <button *ngIf="USER_ROLE !== 'agent' && (projectUsersLength + countOfPendingInvites === 3) && profile_name === 'free'" class="btn btn-primary pull-right" style="padding: 8px 16px;margin:0px; text-transform:unset"
-                (click)="goToPricing()">
-                {{ "UpgradeYourPlanToAddMoreTeammates" | translate }}
-              </button>
+                <button
+                  *ngIf="USER_ROLE !== 'agent' && ((projectUsersLength + countOfPendingInvites === 3) && profile_name === 'free') || ((projectUsersLength + countOfPendingInvites === 4) && profile_name === PLAN_NAME.A)"
+                  class="btn btn-primary pull-right" style="padding: 8px 16px;margin:0px; text-transform:unset"
+                  (click)="goToPricing()">
+                  {{ "UpgradeYourPlanToAddMoreTeammates" | translate }}
+                </button> -->
+                <!-- ---------------------------------------- -->
+                <!-- ./ New  -->
+                <!-- ---------------------------------------- -->
+
+                <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary" style="padding: 8px 16px;margin:0px;"
+                  (click)="goToAddUser()">
+                  <span class="icon" style="padding-right:8px">
+                    <i class="material-icons">add_circle</i>
+                  </span>
+                  {{ "UsersPage.Invites" | translate }}
+                </button>
 
 
 
@@ -142,7 +199,7 @@
               <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px; width: 100%;">
 
                 <table class="table table-hover">
-                  <thead >
+                  <thead>
                     <tr style="display: none;">
 
                       <!-- ------------------------------------- -->
@@ -224,7 +281,6 @@
                           <!-- --------------------------------------------------- -->
 
                           <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
-
                             class="user-img-in-teammates-list"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'" />
@@ -290,10 +346,9 @@
 
                       <td>
                         <span>
-                          <span class="White__Tooltip"     
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'ChatWith' | translate }}  {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}" #tooltip="matTooltip"
-                          matTooltipPosition='above' matTooltipHideDelay="100">
+                          <span class="White__Tooltip" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'ChatWith' | translate }}  {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}"
+                            #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                             <i class="material-icons chat-with-agent"
                               (click)="chatWithAgent(projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)">
                               chat
@@ -323,7 +378,7 @@
                       </td>
 
 
-                        <!-- ------------------------------------------- -->
+                      <!-- ------------------------------------------- -->
                       <!-- Select  AVAILABLE / UNAVAILABLE / INACTIVE -->
                       <!-- ------------------------------------------- -->
                       <!-- *ngIf="CURRENT_USER_ID !== projectUser?.id_user?._id" -->
