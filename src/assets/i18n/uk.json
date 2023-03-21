@@ -2283,6 +2283,9 @@
     "Duplicate": "Дублювати",
     "ContactUsByEmailToUpdateYourPlan": "Зверніться до нас електронною поштою, щоб оновити свій план",
     "UpgradeYourPlanToAddMoreTeammates": "Оновіть свій план, щоб додати більше товаришів по команді",
+    "CRMImprovesCustomerRelationship":"CRM або Customer Relationship Management покращує управління взаємовідносинами з клієнтами, створюючи 360-градусний огляд клієнта",
+    "CRMRecordsCustomerContactInformation":"CRM записує контактну інформацію клієнтів, таку як адреса електронної пошти, номер телефону та багато іншого, щоб ви могли краще зрозуміти еволюцію мережі взаємодії вашої компанії.",
+    "AvailableFromThePlan":"Доступно з тарифного плану {{plan_name}}",
     "AddIntentPage": {
         "AddForm": "Додати форму",
         "SelectTemplateForm": "Виберіть тип форми серед запропонованих або створіть новий",

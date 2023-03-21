@@ -2283,6 +2283,9 @@
     "Duplicate": "Duplicado",
     "ContactUsByEmailToUpdateYourPlan": "Contáctenos por correo electrónico para actualizar su plan",
     "UpgradeYourPlanToAddMoreTeammates": "Actualiza tu plan para agregar más compañeros de equipo",
+    "CRMImprovesCustomerRelationship":"El CRM o Customer Relationship Management mejora la gestión de las relaciones con los clientes al crear una vista de 360 grados del cliente",
+    "CRMRecordsCustomerContactInformation":"El CRM registra la información de contacto del cliente, como la dirección de correo electrónico, el número de teléfono y mucho más para que pueda comprender mejor la evolución de la red de interacciones de su empresa.",
+    "AvailableFromThePlan":"Disponible desde el plan {{plan_name}}",
     "AddIntentPage": {
         "AddForm": "Agregar forma",
         "SelectTemplateForm": "Seleccione un tipo de formulario entre los sugeridos o cree uno nuevo",

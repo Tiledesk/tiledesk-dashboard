@@ -2283,6 +2283,9 @@
     "Duplicate": "Dublikat",
     "ContactUsByEmailToUpdateYourPlan": "Planınızı yeniləmək üçün elektron poçtla bizimlə əlaqə saxlayın",
     "UpgradeYourPlanToAddMoreTeammates": "Daha çox komanda yoldaşı əlavə etmək üçün planınızı təkmilləşdirin",
+    "CRMImprovesCustomerRelationship":"CRM və ya Müştəri Münasibətlərinin İdarə Edilməsi müştərinin 360 dərəcə görünüşünü yaradaraq müştəri münasibətlərinin idarə edilməsini təkmilləşdirir",
+    "CRMRecordsCustomerContactInformation":"CRM e-poçt ünvanı, telefon nömrəsi və daha çox kimi müştəri ilə əlaqə məlumatlarını qeyd edir ki, siz şirkətinizin qarşılıqlı əlaqələr şəbəkəsinin təkamülünü daha yaxşı başa düşəsiniz.",
+    "AvailableFromThePlan":"{{plan_name}} planından əlçatandır",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

@@ -2283,6 +2283,9 @@
     "Duplicate": "Duplicera",
     "ContactUsByEmailToUpdateYourPlan": "Kontakta oss via e-post för att uppdatera din plan",
     "UpgradeYourPlanToAddMoreTeammates": "Uppgradera din plan för att lägga till fler lagkamrater",
+    "CRMImprovesCustomerRelationship":"CRM eller Customer Relationship Management förbättrar kundrelationshanteringen genom att skapa en 360-gradersvy av kunden",
+    "CRMRecordsCustomerContactInformation":"CRM registrerar kundkontaktinformation, såsom e-postadress, telefonnummer och mycket mer så att du bättre kan förstå utvecklingen av ditt företags nätverk av interaktioner.",
+    "AvailableFromThePlan":"Tillgänglig från planen {{plan_name}}",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

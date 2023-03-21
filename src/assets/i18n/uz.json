@@ -2283,6 +2283,9 @@
     "Duplicate": "Dublikat",
     "ContactUsByEmailToUpdateYourPlan": "O'zingizning rejangizni yangilash uchun elektron pochta orqali biz bilan bog'laning",
     "UpgradeYourPlanToAddMoreTeammates": "Ko'proq jamoadoshlaringizni qo'shish uchun rejangizni yangilang",
+    "CRMImprovesCustomerRelationship":"CRM yoki Mijoz bilan aloqalarni boshqarish mijozning 360 graduslik ko'rinishini yaratish orqali mijozlar bilan munosabatlarni boshqarishni yaxshilaydi.",
+    "CRMRecordsCustomerContactInformation":"CRM mijozlar bilan bog'lanish ma'lumotlarini, masalan, elektron pochta manzili, telefon raqami va boshqa ko'p narsalarni yozib oladi, shunda siz kompaniyangizning o'zaro aloqa tarmog'i evolyutsiyasini yaxshiroq tushunishingiz mumkin.",
+    "AvailableFromThePlan": "{{plan_name}} rejasidan mavjud",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

@@ -2283,6 +2283,9 @@
     "Duplicate": "نسخة مماثلة للأصل",
     "ContactUsByEmailToUpdateYourPlan": "اتصل بنا عن طريق البريد الإلكتروني لتحديث خطتك",
     "UpgradeYourPlanToAddMoreTeammates": "قم بترقية خطتك لإضافة المزيد من زملائك في الفريق",
+    "CRMImprovesCustomerRelationship": "يعمل CRM أو إدارة علاقات العملاء على تحسين إدارة علاقات العملاء من خلال إنشاء عرض 360 درجة للعميل",
+    "CRMRecordsCustomerContactInformation": "يسجل CRM معلومات الاتصال بالعميل ، مثل عنوان البريد الإلكتروني ورقم الهاتف وغير ذلك الكثير حتى تتمكن من فهم تطور شبكة تفاعلات شركتك بشكل أفضل.",
+    "AvailableFromThePlan": "متاح من خطة {{plan_name}}",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

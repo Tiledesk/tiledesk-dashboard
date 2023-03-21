@@ -2283,6 +2283,9 @@
     "Duplicate": "Kopyalamak",
     "ContactUsByEmailToUpdateYourPlan": "Planınızı güncellemek için e-posta ile bize ulaşın",
     "UpgradeYourPlanToAddMoreTeammates": "Daha fazla takım arkadaşı eklemek için planınızı yükseltin",
+    "CRMImprovesCustomerRelationship":"CRM veya Müşteri İlişkileri Yönetimi, müşterinin 360 derecelik bir görünümünü oluşturarak müşteri ilişkileri yönetimini geliştirir.",
+    "CRMRecordsCustomerContactInformation":"CRM, şirketinizin etkileşim ağının gelişimini daha iyi anlayabilmeniz için e-posta adresi, telefon numarası ve çok daha fazlası gibi müşteri iletişim bilgilerini kaydeder.",
+    "AvailableFromThePlan":"{{plan_name}} planından edinilebilir",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",
