@@ -43,12 +43,20 @@
                                 [setAttributeBtn]="attribute.key? false: true"
                                 [minRow]="1" [maxRow]="1"
                                 [readonly]="true"
+                                (clearInput)="onClearInput(i)"
                                 (onSelected)="onVariableSelected($event,i)">
                             </cds-textarea>
-                            <div class="flex tag" *ngIf="attribute.key">
+
+                            <!-- <div class="flex tag" *ngIf="attribute.key">
                                 <span class="material-icons close" (click)="onClearInput(i)">close</span>
                                 <span class="label-close">{{attribute.key}}</span>
-                            </div>
+                            </div> -->
+
+                            <!-- <cds-selected-variable  *ngIf="hasSelectedVariable"
+                                [index]="i"
+                                [text]="attribute.key"
+                                (clearInput)="onClearInput(i)"
+                            ></cds-selected-variable> -->
                         </div> 
                         <input [(ngModel)]="attribute.value" type="text" placeholder="Value" class="dx-input" (ngModelChange)="onChangeAttributes(attribute, i)">
                     </div>

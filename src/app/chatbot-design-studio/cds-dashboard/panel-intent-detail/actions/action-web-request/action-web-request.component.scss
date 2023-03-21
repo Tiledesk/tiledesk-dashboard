@@ -202,7 +202,7 @@ textarea{
     }
 }
 
-
+/*
 div.value-wrp {
     position: relative;
     min-height: 40px;
@@ -215,18 +215,23 @@ div.value-wrp {
         align-items: center;
         justify-content: center;
         .close{
-            width: 17px;
-            top: -7px;
-            right: -7px;
-            font-size: 15px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
             position: absolute;
             display: flex;
+            top: -7px;
+            right: -7px;
+            width: 18px;
+            height: 18px;
+            font-size: 14px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid #ecb607;
+            color: #ecb606;
+            cursor: pointer;
+            opacity: 1;
             justify-content: center;
             align-items: center;
-            opacity: 1;
+            padding: 2px;
+            margin: 0;
             &:hover{
                 background: #ecb606;
                 color: white;
@@ -249,6 +254,7 @@ div.value-wrp {
         height: fit-content;
     }
 }
+*/
 
 
 

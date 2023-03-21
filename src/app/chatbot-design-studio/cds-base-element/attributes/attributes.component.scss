@@ -1,5 +1,5 @@
 .cds-attributes {
-    max-width: 400px;
+    // max-width: 400px;
     .header__center {
         font-size: 1.1em;
         display: grid;
@@ -108,6 +108,9 @@
 
 
 
+    .value-wrp {
+        width: 50%;
+    }
 
     ::ng-deep cds-textarea#assignTo {
         display: flex;
@@ -149,61 +152,18 @@
             height: 26px!important;
             resize: none!important;
         }
-    }
 
-    .value-wrp {
-        position: relative;
-        width: 50%;
-        .flex{
-            position: absolute;
-            top: 0px;
-            bottom: 0px;
-            right: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            .close{
-                width: 17px;
-                top: -4px;
-                left: -7px;
-                font-size: 15px;
-                border-radius: 50%;
-                background: white;
-                cursor: pointer;
-                position: absolute;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                opacity: 1;
-                &:hover{
-                    background: #ecb606;
-                    color: white;
+        .text-editor-wrapper {
+            position: relative;
+            .tag {
+                inset: 0 2px 0 0;
+                border-radius: 4px 0 0 4px;
+                margin: 3px 0;
+                justify-content: initial;
+                .close {
+                    left: -7px;
                 }
             }
-        }
-    
-        .tag{
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 2px;
-            border-radius: 4px 0 0 4px;
-            margin: 3px 0px;
-            padding: 5px 10px;
-            background-color: #ecb606;
-            color: white;
-            max-height: 26px;
-            justify-content: initial;
-        }
-
-        .label-close{
-            width: 100%;
-            font-size: 14px;
-            padding: 0px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
         }
     }
 }

@@ -57,14 +57,11 @@ export class OperandComponent implements OnInit {
     onChangeTextArea(text: string) {
         if(text && text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))){
             text = text.replace(text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))[0])
-            this.operandForm.get('value').setValue(text)
-            this.operandForm.get('isVariable').setValue(true)
+            this.operandForm.get('value').setValue(text);
+            this.operandForm.get('isVariable').setValue(true);
+        } else {
+            this.operandForm.get('isVariable').setValue(false);
         }
-    }   
-
-    clearInput(){
-        this.operandForm.get('value').setValue('')
-        this.operandForm.get('isVariable').setValue(false)
     }
 
     onSelectedFunction(event: any) {

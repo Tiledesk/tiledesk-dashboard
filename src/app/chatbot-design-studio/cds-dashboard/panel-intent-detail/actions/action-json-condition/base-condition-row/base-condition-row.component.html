@@ -42,10 +42,14 @@
                     (onChange)="onChangeTextArea($event, 1)">
                 </cds-textarea>
                 <!-- <input type="text" [formControlName]="conditionForm.value.operand2.type=='const'? 'value': 'name'" placeholder="Value" name="operand2"/> -->
-                <div class="flex tag" *ngIf="conditionForm.value.operand2.type=='var'">
+                <!-- <div class="flex tag" *ngIf="conditionForm.value.operand2.type=='var'">
                     <span class="material-icons close" (click)="clearInput()">close</span>
                     {{conditionForm.value.operand2.name}}
-                </div>
+                </div> -->
+                <cds-selected-variable  *ngIf="conditionForm.value.operand2.type=='var'"
+                    [text]="conditionForm.value.operand2.name"
+                    (clearInput)="onClearInput(i)"
+                ></cds-selected-variable>
             </div>
         </section>
         <section class="submit">

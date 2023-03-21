@@ -30,8 +30,10 @@ export class CDSTextareaComponent implements OnInit {
   @Input() readonly: boolean = false;
   @Input() popoverVerticalAlign: string = 'below'
 
+  
   @Output() onChange = new EventEmitter();
   @Output() onSelected = new EventEmitter();
+  @Output() clearInput = new EventEmitter();
 
   // Textarea //
   leftCharsText: number;
@@ -40,6 +42,7 @@ export class CDSTextareaComponent implements OnInit {
   addWhiteSpaceBefore: boolean;
   cannedResponseMessage: string;
   texareaIsEmpty = false;
+  hasSelectedVariable: boolean = false;
 
   constructor(
     private logger: LoggerService
@@ -66,20 +69,14 @@ export class CDSTextareaComponent implements OnInit {
   /** */
   onChangeTextarea(event) {
     this.logger.log('[CDS-TEXAREA] onChangeTextarea-->', event)
-    // if (event) {
-      // this.text = event.trim();
-      this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
-      if (this.leftCharsText < (this.limitCharsText / 10)) {
-        this.alertCharsText = true;
-      } else {
-        this.alertCharsText = false;
-      }
-      // this.logger.log('[CDS-TEXAREA] - event ', event.length);
-      // this.logger.log('[CDS-TEXAREA] - this.textent  ',  this.text);
-      // this.logger.log('[CDS-TEXAREA] - this.textent length',  this.text.length); 
-      this.text = event;
-      this.onChange.emit(this.text);
-    // }
+    this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
+    if (this.leftCharsText < (this.limitCharsText / 10)) {
+      this.alertCharsText = true;
+    } else {
+      this.alertCharsText = false;
+    }
+    this.text = event;
+    this.onChange.emit(this.text);
   }
 
   ngAfterViewInit() {
@@ -91,25 +88,32 @@ export class CDSTextareaComponent implements OnInit {
     this.elTextarea.focus()
   }
 
-
   getTextArea() {
     this.elTextarea = this.autosize['_textareaElement'] as HTMLInputElement;
     this.logger.log('[CDS-TEXAREA] - GET TEXT AREA - elTextarea ', this.elTextarea);
     if (this.elTextarea) {}
   }
 
-
-
   onVariableSelected(variableSelected: { name: string, value: string }) {
     this.logger.log('variableSelectedddd', variableSelected);
     if (this.elTextarea) {
-      this.elTextarea.focus()
-      // this.insertAtCursor(this.elTextarea, '${' + variableSelected.value + '}')
+      this.elTextarea.focus();
       this.insertAtCursorPos(this.elTextarea, '${' + variableSelected.value + '}')
-      this.onChangeTextarea(this.elTextarea.value)
-      this.addVariable.close()
-      this.onSelected.emit(variableSelected)
+      this.onChangeTextarea(this.elTextarea.value);
+      this.addVariable.close();
+      this.text = '';
+      this.onSelected.emit(variableSelected);
     }
+  }
+
+  onClearInput() {
+    // if (this.elTextarea) {
+    //   this.elTextarea.focus();
+    //   this.onChangeTextarea('')
+    //   this.addVariable.close();
+    // }
+    this.text = '';
+    this.clearInput.emit({name: '', value: ''});
   }
 
 

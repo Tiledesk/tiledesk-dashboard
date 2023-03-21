@@ -99,7 +99,7 @@ onVariableSelected(variableSelected: {name: string, value: string}, step: number
     } 
   }
 
-  clearInput(){
+  onClearInput(){
     this.conditionForm.patchValue({ operand2: {type: 'const', name: '', value: ''}}, {emitEvent: false})
   }
 

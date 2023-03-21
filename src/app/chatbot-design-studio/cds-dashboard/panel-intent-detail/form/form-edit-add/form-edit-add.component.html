@@ -20,10 +20,14 @@
                             [readonly]="true"
                             (onSelected)="onVariableSelected($event)">
                         </cds-textarea>
-                        <div class="flex tag" *ngIf="hasSelectedVariable">
+                        <!-- <div class="flex tag" *ngIf="hasSelectedVariable">
                             <span class="material-icons close" (click)="onClearInput()">close</span>
                             {{fieldName}}
-                        </div>
+                        </div> -->
+                        <cds-selected-variable  *ngIf="hasSelectedVariable"
+                            [text]="fieldName"
+                            (clearInput)="onClearInput(i)"
+                        ></cds-selected-variable>
                     </div>
 
                 </div>

@@ -14,10 +14,14 @@
             [control]="operandForm.get('value')"
             (onChange)="onChangeTextArea($event)">
             </cds-textarea>
-            <div class="flex tag" *ngIf="operandForm.value.isVariable">
+            <!-- <div class="flex tag" *ngIf="operandForm.value.isVariable">
                 <span class="material-icons close" (click)="clearInput()">close</span>
                 {{operandForm.value.value}}
-            </div>
+            </div> -->
+            <!-- <cds-selected-variable  *ngIf="operandForm.value.isVariable"
+                [text]="operandForm.value.value"
+                (clearInput)="onClearInput()"
+            ></cds-selected-variable> -->
         </div>
     </div>
     <span class="material-icons" (click)="onToggleSelectFunction()">settings</span>

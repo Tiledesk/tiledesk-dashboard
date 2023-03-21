@@ -79,10 +79,14 @@
                     (onSelected)="onVariableSelected($event,1)">
                 </cds-textarea>
                 <!-- <input type="text" [formControlName]="conditionForm.value.operand2.type=='const'? 'value': 'name'" placeholder="Value" name="operand2"/> -->
-                <div class="flex tag" *ngIf="hasSelectedVariable">
+                <!-- <div class="flex tag" *ngIf="hasSelectedVariable">
                     <span class="material-icons close" (click)="onClearInput()">close</span>
                     {{action.assignTo}}
-                </div>
+                </div> -->
+                <!-- <cds-selected-variable  *ngIf="hasSelectedVariable"
+                    [text]="action.assignTo"
+                    (clearInput)="onClearInput(i)"
+                ></cds-selected-variable> -->
             </div>
         </div>
     </div>

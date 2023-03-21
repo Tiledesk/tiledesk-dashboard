@@ -34,52 +34,52 @@ div.operand-wrp {
         display: block;
         
 
-        .flex{
-            position: absolute;
-            top: 0px;
-            bottom: 0px;
-            right: 8px;
+        // .flex{
+        //     position: absolute;
+        //     top: 0px;
+        //     bottom: 0px;
+        //     right: 8px;
     
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        //     display: flex;
+        //     align-items: center;
+        //     justify-content: center;
     
-            .close{
-                // height: 16px;
-                width: 17px;
-                top: -7px;
-                right: -7px;
-                font-size: 15px;
-                border-radius: 50%;
-                margin-top: 0;
-                background: white;
-                cursor: pointer;
-                position: absolute;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                opacity: 1;
-                &:hover{
-                    background: #ecb606;
-                    color: white;
-                }
-            }
+        //     .close{
+        //         // height: 16px;
+        //         width: 17px;
+        //         top: -7px;
+        //         right: -7px;
+        //         font-size: 15px;
+        //         border-radius: 50%;
+        //         margin-top: 0;
+        //         background: white;
+        //         cursor: pointer;
+        //         position: absolute;
+        //         display: flex;
+        //         justify-content: center;
+        //         align-items: center;
+        //         opacity: 1;
+        //         &:hover{
+        //             background: #ecb606;
+        //             color: white;
+        //         }
+        //     }
     
-        }
+        // }
     
-        div.tag{
-            position: absolute;
-            top: 24px;
-            bottom: 0;
-            left: 8px;
-            right: unset;
-            border-radius: 7px;
-            margin: 5px;
-            padding: 5px 10px;
-            background-color: #ecb606;
-            color: white;
+        // div.tag{
+        //     position: absolute;
+        //     top: 30px;
+        //     bottom: 5px;
+        //     left: 8px;
+        //     right: unset;
+        //     border-radius: 7px;
+        //     margin: 5px;
+        //     padding: 5px 10px;
+        //     background-color: #ecb606;
+        //     color: white;
     
-        }
+        // }
     }        
 
     .applay-function-button{

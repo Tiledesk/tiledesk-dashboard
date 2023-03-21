@@ -14,7 +14,7 @@ export class ActionAssignVariableComponent implements OnInit {
 
     actionAssignFormGroup: FormGroup;
     variables: Array<string> = [];
-    hasSelectedVariable: boolean = false;
+    // hasSelectedVariable: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -28,7 +28,7 @@ export class ActionAssignVariableComponent implements OnInit {
         this.initialize();
         if (this.action && this.action.destination) {
             this.setFormValue();
-            this.hasSelectedVariable = true;
+            // this.hasSelectedVariable = true;
         }
     }
 
@@ -54,15 +54,15 @@ export class ActionAssignVariableComponent implements OnInit {
         })
     }
 
-    clearInput() {
-        this.actionAssignFormGroup.get('destination').reset();
-        this.hasSelectedVariable = false
-    }
+    // onClearInput() {
+    //     this.actionAssignFormGroup.get('destination').reset();
+    //     this.hasSelectedVariable = false
+    // }
 
 
     onVariableSelected(variableSelected: { name: string, value: string }, step: number) {
         this.logger.log('onVariableSelected-->', step, this.actionAssignFormGroup, variableSelected);
-        this.hasSelectedVariable = true
+        // this.hasSelectedVariable = true
         this.actionAssignFormGroup.patchValue({ destination: variableSelected.value });// if(step === 0){
     }
 

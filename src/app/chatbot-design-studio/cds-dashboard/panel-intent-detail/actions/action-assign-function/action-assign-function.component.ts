@@ -54,7 +54,7 @@ export class ActionAssignFunctionComponent implements OnInit {
     })
   }
 
-  clearInput() {
+  onClearInput() {
     this.actionAssignFormGroup.get('destination').reset();
     this.hasSelectedVariable = false
   }
