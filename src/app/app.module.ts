@@ -317,6 +317,8 @@ import { PasswordStrengthComponent } from './auth/signup/password-strength/passw
 import { CloneBotComponent } from './bots/bots-list/clone-bot/clone-bot.component';
 import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component';
 import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component';
+import { UpgradePlanModalComponent } from './components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
+
 
 
 
@@ -561,7 +563,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     PasswordStrengthComponent,
     CloneBotComponent,
     ContactsStaticComponent,
-    CannedResponsesStaticComponent
+    CannedResponsesStaticComponent,
+    UpgradePlanModalComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

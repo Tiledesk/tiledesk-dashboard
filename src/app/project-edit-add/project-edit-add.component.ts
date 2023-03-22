@@ -23,7 +23,7 @@ import { takeUntil } from 'rxjs/operators'
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
-import { avatarPlaceholder, getColorBck, URL_setting_up_automatic_assignment } from './../utils/util';
+import { avatarPlaceholder, getColorBck, PLAN_NAME, URL_setting_up_automatic_assignment } from './../utils/util';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
@@ -189,6 +189,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isChromeVerGreaterThan100: boolean
 
   thereHasBeenAnErrorProcessing: string;
+  advancedSettingBtnDisabled = false;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -980,6 +981,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         //   this.logger.log('ProjectPlanService (ProjectEditAddComponent) subscription_creation_date', this.subscription_creation_date)
         // }
         // RETURN THE CURRENT DAY AT THE TIME 00:00:00
+
+        if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
+          this.advancedSettingBtnDisabled = false
+        } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
+          this.advancedSettingBtnDisabled = true
+
+        } else if (this.profile_name !== PLAN_NAME.C) {
+          this.advancedSettingBtnDisabled = true
+        }
+
         const today = moment().startOf('day')
 
         // RETURN THE CURRENT DAY AT THE CURRENT TIME

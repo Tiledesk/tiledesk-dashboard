@@ -10,39 +10,6 @@
 
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
 </span>
-<!-- <span class="navbar-brand navbar-brand-title">
-  {{ "ProjectSettings" | translate }}
-</span> -->
-
-
-<!-- <ul class="bottom-nav">
-  <li (click)="goToProjectSettings_General()" class="btn-with-border-effect"
-    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
-    <a> {{ "General" | translate }} </a>
-  </li>
-
-  <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
-    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false}">
-    <a> {{ "ProjectEditPage.Account" | translate }}</a>
-  </li>
-
-  <li *ngIf="isVisibleDeveloperTab" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
-    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
-    <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
-  </li>
-
-
-  <li *ngIf="isVisibleAdvancedTab && USER_ROLE !== 'agent'" (click)="goToProjectSettings_Advanced()"
-    class="btn-with-border-effect"
-    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ADVANCED_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
-    <a> {{ "SmartAssign" | translate }}</a>
-  </li>
-
-  <li *ngIf="isVisibleNotificationTab" (click)="goToProjectSettings_Notification()" class="btn-with-border-effect"
-    [ngClass]="{'li-active': PROJECT_SETTINGS_NOTIFICATION_ROUTE, 'border-from-center': PROJECT_SETTINGS_NOTIFICATION_ROUTE === false }">
-    <a> {{ "Notification" | translate }}</a>
-  </li>
-</ul> -->
 
 
 
@@ -126,7 +93,7 @@
                 </svg>
               </span>
               <span class="project-edit-add-link-to-doc" (click)="goToKBDocsSettingUpAutomaticAssignment()">
-                {{'SettingUpAutomaticAssignment' | translate}}
+                {{'SettingUpAutomaticAssignment' | translate}}  <span class="enterprise--only--badge"> {{'EnterpriseOnly'| translate}} </span>
               </span>
             </div>
           </div>
@@ -916,7 +883,7 @@
                         <div class="onoffswitch">
                           <input (change)="toggleChat_limit_on($event)" [checked]="chat_limit_on" type="checkbox"
                             name="chat_limit_on_onoffswitch" class="onoffswitch-checkbox"
-                            id="chat_limit_on_onoffswitch">
+                            id="chat_limit_on_onoffswitch" [disabled]="advancedSettingBtnDisabled === true">
                           <label class="onoffswitch-label" for="chat_limit_on_onoffswitch">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
@@ -960,19 +927,7 @@
                       </h3>
                     </div>
 
-                    <!-- <div class="col-md-6">
-                  <h3 class="card-title onoffswitch_container_first_line">
 
-                    <div class="onoffswitch">
-                      <input (change)="toggleChat_limit_on($event)" [checked]="chat_limit_on" type="checkbox"
-                        name="chat_limit_on_onoffswitch" class="onoffswitch-checkbox" id="chat_limit_on_onoffswitch">
-                      <label class="onoffswitch-label" for="chat_limit_on_onoffswitch">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
-                      </label>
-                    </div>
-                  </h3>
-                </div> -->
 
                     <div class="col-md-12">
                       <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
@@ -1050,7 +1005,8 @@
                       <h3 class="card-title onoffswitch_container">
                         <div class="onoffswitch">
                           <input (change)="toggleReassignment_on($event)" [checked]="reassignment_on" type="checkbox"
-                            name="reassignment_on_onoffswitch" class="onoffswitch-checkbox" id="reassignment_on">
+                            name="reassignment_on_onoffswitch" class="onoffswitch-checkbox" id="reassignment_on" 
+                            [disabled]="advancedSettingBtnDisabled === true">
                           <label class="onoffswitch-label" for="reassignment_on">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
@@ -1677,7 +1633,8 @@
                             reassignment_timeout_has_minimum_error === true || 
                             reassignment_timeout_has_maximum__error === true ||
                             automatic_idle_chats_has_minimum_error === true ||
-                            automatic_idle_chats_has_maximum__error === true">
+                            automatic_idle_chats_has_maximum__error === true ||
+                            advancedSettingBtnDisabled === true">
                     {{ 'ScriptPage.Save' | translate }}
                   </button>
 

@@ -47,10 +47,10 @@
               </i>
               <span class="expired__Tooltiptext"
                 style="font-size:14px; top: 43px;padding: 5px; height: 44px; cursor:pointer">
-                <span *ngIf="profile_name !== 'enterprise'">
+                <span *ngIf="profile_name !== PLAN_NAME.C">
                   {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
                 </span>
-                <span *ngIf="profile_name === 'enterprise'">
+                <span *ngIf="profile_name === PLAN_NAME.C">
                   {{ 'Pricing.ThePlanHasExpired' | translate }}
                 </span>
               </span>

@@ -9,7 +9,7 @@ import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
-import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
 import { Subscription } from 'rxjs';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -84,7 +84,7 @@ const swal = require('sweetalert');
 
 
 export class HistoryAndNortConvsComponent extends WsSharedComponent implements OnInit, OnDestroy {
-
+  PLAN_NAME = PLAN_NAME
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   // @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
@@ -1423,13 +1423,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       if (this.CURRENT_USER_ROLE === 'owner') {
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-          if (this.profile_name !== 'enterprise') {
+          if (this.profile_name !== PLAN_NAME.C) {
             this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-          } else if (this.profile_name === 'enterprise') {
+          } else if (this.profile_name ===  PLAN_NAME.C) {
             this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
           }
 
-        } else if (this.profile_name === 'free' && this.trial_expired === true) {
+        } else if (this.profile_name === 'free' && this.trial_expired === true) {  // 
           this.router.navigate(['project/' + this.projectId + '/pricing']);
           // this.notify.presentContactUsModalToUpgradePlan(true);
         }

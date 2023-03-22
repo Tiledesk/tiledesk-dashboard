@@ -4,7 +4,7 @@ import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
 import { NotifyService } from '../../core/notify.service';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -41,6 +41,7 @@ const swal = require('sweetalert');
   // encapsulation: ViewEncapsulation.None
 })
 export class WsRequestsListComponent extends WsSharedComponent implements OnInit, AfterViewInit, OnDestroy {
+  PLAN_NAME = PLAN_NAME;
 
   CHAT_BASE_URL: string;
 
@@ -181,6 +182,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   groupsList: Group[];
   DISPLAY_ALL_TEAMMATES_TO_AGENT: boolean;
   newTicketRequestId: string;
+  onlyAvailableWithEnterprisePlan: string;
   /**
    * 
    * @param wsRequestsService 
@@ -402,6 +404,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.translate.get('ThisFeatureIsAvailableWithTheProPlan')
       .subscribe((translation: any) => {
         this.featureIsAvailableWithTheProPlan = translation;
+      });
+
+      this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
+      .subscribe((translation: any) => {
+        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyAvailableWithEnterprisePlan = translation;
       });
   }
 
@@ -885,12 +893,40 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   goToProjectSettings_Advanced() {
     this.logger.log('[WS-REQUESTS-LIST] HAS CLICKED goToProjectSettings_Advanced');
 
-    if (this.CURRENT_USER_ROLE !== 'agent') {
-      this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
+    // if (this.CURRENT_USER_ROLE !== 'agent') {
+    //   this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
 
-    } else if (this.CURRENT_USER_ROLE === 'agent') {
-      this.presentModalAgentCannotManageAvancedSettings();
+    // } else if (this.CURRENT_USER_ROLE === 'agent') {
+    //   this.presentModalAgentCannotManageAvancedSettings();
+    // }
+
+    if (this.prjct_profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
+      if (this.CURRENT_USER_ROLE === 'owner') {
+        // console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Advanced');
+        this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
+      } else {
+        this.presentModalAgentCannotManageAvancedSettings()
+      }
+    } else if (this.prjct_profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
+      this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+    } else if (this.prjct_profile_name !== PLAN_NAME.C) {
+      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
     }
+  }
+
+  presentModalFeautureAvailableOnlyWithEnterprisePlan() {
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyAvailableWithEnterprisePlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
   }
 
   presentModalAgentCannotManageAvancedSettings() {

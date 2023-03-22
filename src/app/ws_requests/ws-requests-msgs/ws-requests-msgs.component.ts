@@ -24,7 +24,7 @@ import { TagsService } from '../../services/tags.service';
 
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
-import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 
 import 'firebase/database';
@@ -36,6 +36,9 @@ import moment from 'moment';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { TooltipOptions } from 'ng2-tooltip-directive';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UpgradePlanModalComponent } from 'app/components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
 
 const swal = require('sweetalert');
 // './ws-requests-msgs.component.html',
@@ -45,7 +48,10 @@ const swal = require('sweetalert');
   styleUrls: ['./ws-requests-msgs.component.scss']
 })
 export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
+  PLAN_NAME = PLAN_NAME
+  
   objectKeys = Object.keys;
+  isVisiblePaymentTab: boolean;
   @ViewChild('scrollMe', { static: false })
   private myScrollContainer: ElementRef;
 
@@ -362,7 +368,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   convertToOnline: string;
   smartReassignmentForThisConversationWillBeEnabled: string;
   tagAlreadyAssigned: string
-  thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag: string
+  thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag: string;
+  profile_name: string;
   /**
    * Constructor
    * @param router 
@@ -407,7 +414,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public appStoreService: AppStoreService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
-
+    private prjctPlanService: ProjectPlanService,
+    public dialog: MatDialog,
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
@@ -517,6 +525,56 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.getClickOutEditContactFullname()
   }
 
+  getProjectPlan() {
+    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE', projectProfileData)
+      if (projectProfileData) {
+
+        // this.prjct_profile_type = projectProfileData.profile_type;
+        // this.subscription_is_active = projectProfileData.subscription_is_active;
+
+        // this.subscription_end_date = projectProfileData.subscription_end_date
+        this.profile_name = projectProfileData.profile_name
+
+        if (projectProfileData.profile_name === 'free'  && projectProfileData.trial_expired === true &&  this.selectedResponseTypeID === 2) {
+          const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
+          console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
+          if (elemTexareaSendMsg && this.isVisiblePaymentTab) {
+            elemTexareaSendMsg.disabled = true;
+            this.openUpgradePlanDialog(projectProfileData._id)
+          }
+        }
+      }
+    }, err => {
+      console.error('[WS-REQUESTS-MSGS] GET PROJECT PROFILE - ERROR', err);
+    }, () => {
+      console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE * COMPLETE *');
+    });
+  }
+
+  openUpgradePlanDialog(projectid) {
+    
+    const dialogRef = this.dialog.open(UpgradePlanModalComponent, {
+      data: {
+        featureAvailableFrom: PLAN_NAME.A,
+        projectId: projectid,
+        userRole: this.CURRENT_USER_ROLE
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log(`Dialog result: ${result}`);
+      this.selectedResponseTypeID = 1
+      const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
+      console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1) afterClosed', elemTexareaSendMsg);
+
+      if (elemTexareaSendMsg && elemTexareaSendMsg.disabled) {
+        elemTexareaSendMsg.disabled = false;
+        console.log('✅ element is disabled afterClosed');
+      }
+
+    });
+  }
 
   getQueryParams() {
     this.route.queryParams
@@ -1089,7 +1147,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.isVisibleLBS = true;
           // this.logger.log('[WS-REQUESTS-MSGS] - lbs is', this.isVisibleLBS);
         }
+      }
 
+      if (key.includes("PAY")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisiblePaymentTab = false;
+        } else {
+          this.isVisiblePaymentTab = true;
+        }
       }
 
       if (key.includes("APP")) {
@@ -1108,6 +1175,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
     if (!this.public_Key.includes("APP")) {
       this.isVisibleAPP = false;
+    }
+
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePaymentTab = false;
     }
   }
 
@@ -4750,8 +4821,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onChangeReplyType(selectedResponseTypeID) {
-    this.logger.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)
+    console.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)
     this.selectedResponseTypeID = selectedResponseTypeID;
+    if (this.selectedResponseTypeID === 2) { // Private note
+      this.getProjectPlan();
+    }
+    if (this.selectedResponseTypeID === 1) {
+      const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
+      console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1)', elemTexareaSendMsg);
+
+      if (elemTexareaSendMsg && elemTexareaSendMsg.disabled) {
+        elemTexareaSendMsg.disabled = false;
+        console.log('✅ element is disabled');
+      } else {
+        console.log('⛔️ element is not disabled');
+      }
+
+
+    }
     const selectResponseTypeElem = <HTMLElement>document.querySelector('.select-response-type');
     selectResponseTypeElem.blur();
   }

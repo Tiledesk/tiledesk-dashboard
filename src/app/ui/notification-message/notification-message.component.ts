@@ -12,6 +12,7 @@ import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { takeUntil } from 'rxjs/operators';
+import { PLAN_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 @Component({
   selector: 'notification-message',
@@ -20,6 +21,7 @@ const swal = require('sweetalert');
   encapsulation: ViewEncapsulation.None,
 })
 export class NotificationMessageComponent implements OnInit, OnDestroy {
+  PLAN_NAME = PLAN_NAME
   private unsubscribe$: Subject<any> = new Subject<any>();
   tparams: any;
   company_name: string;
@@ -148,15 +150,17 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
         if (projectProfileData.profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
-            this.profile_name_for_segment = "Pro plan (trial)"
+            this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
           } else {
             this.profile_name_for_segment = "Free"
           }
         } else if (projectProfileData.profile_type === 'payment') {
-          if (projectProfileData.profile_name === 'pro') {
-            this.profile_name_for_segment = "Pro"
-          } else if (projectProfileData.profile_name === 'enterprise') {
-            this.profile_name_for_segment = "Enterprise"
+          if (projectProfileData.profile_name === PLAN_NAME.A) {
+            this.profile_name_for_segment = PLAN_NAME.A
+          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+            this.profile_name_for_segment = PLAN_NAME.B
+          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+            this.profile_name_for_segment = PLAN_NAME.C
           }
         }
       }
@@ -175,6 +179,19 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     this.logger.log('[NOTIFICATION-MSG] buildPlanName - planName ', planName, ' browserLang  ', browserLang);
 
     if (planType === 'payment') {
+
+      if (planName === PLAN_NAME.A) {
+        this.prjct_profile_name = PLAN_NAME.A + 'plan'
+        this.profile_name_for_segment =  PLAN_NAME.A
+      } else if (this.prjct_profile_name ===  PLAN_NAME.B) {
+        this.prjct_profile_name = PLAN_NAME.B + 'plan'
+        this.profile_name_for_segment = PLAN_NAME.B
+      } else if (this.prjct_profile_name ===  PLAN_NAME.C) {
+        this.prjct_profile_name = PLAN_NAME.C + 'plan'
+        this.profile_name_for_segment = PLAN_NAME.C
+      }
+
+
 
       this.getPaidPlanTranslation(planName)
       // if (browserLang === 'it') {
