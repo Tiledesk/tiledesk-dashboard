@@ -1172,7 +1172,10 @@
 
 											<div class="col-xs-12">
 												<button class="btn btn-get-feature-no-boxshadow pull-right" style="margin-bottom: 0px;"
-													*ngIf="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true"
+													*ngIf="(profile_name === PLAN_NAME.A) || 
+													(profile_name === PLAN_NAME.B && subscription_is_active === false) || 
+													(profile_name === PLAN_NAME.C && subscription_is_active === false) ||
+													(prjct_profile_type === 'free' && prjct_trial_expired === true)"
 													(click)="goToPricing()"
 													matTooltipClass="custom-mat-tooltip-in-widget-setup"
 													matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}"
@@ -1214,7 +1217,10 @@
 												<textarea (focus)="onFocusFooterBranding()" [(ngModel)]="footerBrand"
 													(ngModelChange)="onChangeFooterBrand($event)" rows="3"
 													class="widget-setup-texarea"
-													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">	</textarea>
+													[disabled]="(profile_name === PLAN_NAME.A) || 
+													(profile_name === PLAN_NAME.B && subscription_is_active === false) || 
+													(profile_name === PLAN_NAME.C && subscription_is_active === false) ||
+													(prjct_profile_type === 'free' && prjct_trial_expired === true)">	</textarea>
 												<!-- <div *ngIf="footerBrand?.length <= 0"
 													style="font-size: 11px; color: #f44336;">
 													{{ 'RequiredField' | translate}}

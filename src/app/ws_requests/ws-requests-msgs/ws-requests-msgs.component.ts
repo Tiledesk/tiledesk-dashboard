@@ -49,7 +49,7 @@ const swal = require('sweetalert');
 })
 export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
   PLAN_NAME = PLAN_NAME
-  
+
   objectKeys = Object.keys;
   isVisiblePaymentTab: boolean;
   @ViewChild('scrollMe', { static: false })
@@ -370,6 +370,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   tagAlreadyAssigned: string
   thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag: string;
   profile_name: string;
+  subscription_is_active: any;
+  agentCannotManageAdvancedOptions: string;
+  subscription_end_date: any;
+  onlyAvailableWithEnterprisePlan: string;
+  learnMoreAboutDefaultRoles: string;
   /**
    * Constructor
    * @param router 
@@ -533,10 +538,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // this.prjct_profile_type = projectProfileData.profile_type;
         // this.subscription_is_active = projectProfileData.subscription_is_active;
 
-        // this.subscription_end_date = projectProfileData.subscription_end_date
+        this.subscription_end_date = projectProfileData.subscription_end_date
         this.profile_name = projectProfileData.profile_name
 
-        if (projectProfileData.profile_name === 'free'  && projectProfileData.trial_expired === true &&  this.selectedResponseTypeID === 2) {
+        if (projectProfileData.profile_name === 'free' && projectProfileData.trial_expired === true && this.selectedResponseTypeID === 2) {
           const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
           console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
           if (elemTexareaSendMsg && this.isVisiblePaymentTab) {
@@ -553,7 +558,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   openUpgradePlanDialog(projectid) {
-    
     const dialogRef = this.dialog.open(UpgradePlanModalComponent, {
       data: {
         featureAvailableFrom: PLAN_NAME.A,
@@ -3876,55 +3880,85 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // Ban Visitor
   // ---------------------------
   displayModalBanVisitor(leadid: string, ipaddress: string) {
+    if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
+      if (this.CURRENT_USER_ROLE === 'owner') {
+        this.logger.log('displayModalBanVisitor leadid ', leadid)
+        this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
+        const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
+        this.logger.log("displayModalBanVisitor bannedVisitorsArray", index)
+        // if (this.visitorIsBanned === false) {
+        if (index === -1) {
+          swal({
+            title: this.areYouSureLbl + '?',
+            icon: "info",
+            buttons: [this.cancelLbl, this.yesBanVisitorLbl],
+            dangerMode: true,
+            className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+          })
+            .then((willBan) => {
+              if (willBan) {
+                // console.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
 
-    this.logger.log('displayModalBanVisitor leadid ', leadid)
-    this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
-    const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
-    this.logger.log("displayModalBanVisitor bannedVisitorsArray", index)
-    // if (this.visitorIsBanned === false) {
-    if (index === -1) {
-      swal({
-        title: this.areYouSureLbl + '?',
-        icon: "info",
-        buttons: [this.cancelLbl, this.yesBanVisitorLbl],
-        dangerMode: true,
-        className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-      })
-        .then((willBan) => {
-          if (willBan) {
-            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
+                this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
+                  // console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
 
-            this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
-              // console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
+                }, (error) => {
+                  // console.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
 
-            }, (error) => {
-              // console.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
+                  swal(this.anErrorHasOccurredMsg, {
+                    icon: "error",
+                  });
 
-              swal(this.anErrorHasOccurredMsg, {
-                icon: "error",
-              });
+                }, () => {
+                  // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
 
-            }, () => {
-              // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
+                  swal({
+                    title: this.done_msg + "!",
+                    icon: "success",
+                    button: "OK",
+                    className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+                  }).then((okpressed) => {
+                    this.findCurrentProjectAmongAll(this.id_project)
+                  });
 
-              swal({
-                title: this.done_msg + "!",
-                icon: "success",
-                button: "OK",
-                className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-              }).then((okpressed) => {
-                this.findCurrentProjectAmongAll(this.id_project)
-              });
-
+                });
+              } else {
+                // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+                // swal("Your imaginary file is safe!");
+              }
             });
-          } else {
-            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
-            // swal("Your imaginary file is safe!");
-          }
-        });
-    } else {
-      this.presentModalVisitorAlreadyBanned()
+        } else {
+          this.presentModalVisitorAlreadyBanned()
+        }
+
+      } else {
+        this.presentModalAgentCannotManageAvancedSettings()
+      }
+    } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
+      this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+    } else if (this.profile_name !== PLAN_NAME.C) {
+      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
     }
+
+  }
+
+  presentModalFeautureAvailableOnlyWithEnterprisePlan() {
+    const el = document.createElement('div')
+    el.innerHTML = this.onlyAvailableWithEnterprisePlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+  }
+
+  presentModalAgentCannotManageAvancedSettings() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
   }
 
   presentModalVisitorAlreadyBanned() {
@@ -4375,6 +4409,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.translate.get('ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag').subscribe((text: string) => {
       this.thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag = text;
     });
+
+    this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
+      .subscribe((translation: any) => {
+        this.agentCannotManageAdvancedOptions = translation;
+      });
+
+
+    this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
+      .subscribe((translation: any) => {
+
+        this.onlyAvailableWithEnterprisePlan = translation;
+      });
+
+      this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
+      });
 
   }
 

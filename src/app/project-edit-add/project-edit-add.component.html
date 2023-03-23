@@ -93,8 +93,9 @@
                 </svg>
               </span>
               <span class="project-edit-add-link-to-doc" (click)="goToKBDocsSettingUpAutomaticAssignment()">
-                {{'SettingUpAutomaticAssignment' | translate}}  <span class="enterprise--only--badge"> {{'EnterpriseOnly'| translate}} </span>
+                {{'SettingUpAutomaticAssignment' | translate}}  
               </span>
+              <span *ngIf="profile_name !== PLAN_NAME.C" class="enterprise--only--badge"> {{'EnterpriseOnly'| translate}} </span>
             </div>
           </div>
           <!-- <div class="col-xs-12">
@@ -246,7 +247,7 @@
                             <span style="font-weight: 400">
                               <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
 
-                              <span *ngIf="profile_name !== 'enterprise'">
+                              <span *ngIf="profile_name !== PLAN_NAME.C">
                                 ( {{ numberOf_agents_seats }} {{ "AgentSeats" | translate }} x € {{ plan_amount / 100 }}
                                 .00
                                 /
@@ -380,14 +381,14 @@
                             </i>
 
                             <span *ngIf="!SUBSCRIPTION_BUFFER_DAYS">
-                              <span *ngIf="profile_name !== 'enterprise'">
+                              <span *ngIf="profile_name !== PLAN_NAME.C">
                                 {{ "Pricing.YourSubscriptionIsActive" | translate }}.
                               </span>
-                              <span *ngIf="profile_name === 'enterprise'">
+                              <span *ngIf="profile_name === PLAN_NAME.C">
                                 {{ "Pricing.ThePlanIsActive" | translate }}.
                               </span>
 
-                              <span *ngIf="profile_name !== 'enterprise'">
+                              <span *ngIf="profile_name !== PLAN_NAME.C">
                                 {{ "NextRenew" | translate }}
                                 <span *ngIf="days_to_next_renew === 0">
                                   {{ "Today" | translate}} {{ "At" | translate}} {{ timeOfNextRenew }}
@@ -445,7 +446,8 @@
                               {{ "Pricing.Your" | translate }}
 
                               <span style="font-weight:400">
-                                {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate: tparams }}
+                                <!-- {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate: tparams }} -->
+                                {{ "Pricing.30DaysFreeTrial" | translate: translationParams }}
                               </span>
 
                               {{ "Pricing.WillExpireIn" | translate }}
@@ -1304,7 +1306,7 @@
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
                           {{ "ProjectEditPage.CustomizeEmailTemplate" | translate }}
-                          <!-- <span class="enterprise-only-badge"> {{'EnterpriseOnly' | translate }} </span> -->
+                          <span class="enterprise-only-badge"> {{'EnterpriseOnly' | translate }} </span>
                         </span>
                       </h3>
                     </div>
@@ -1330,8 +1332,8 @@
                     <div class="col-md-6">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
-                          {{ "ProjectEditPage.SMTPSettings" | translate }} <span class="enterprise-only-badge">
-                            {{'EnterpriseOnly' | translate }} </span>
+                          {{ "ProjectEditPage.SMTPSettings" | translate }} 
+                          <span class="enterprise-only-badge"> {{'EnterpriseOnly' | translate }} </span>
                         </span>
                       </h3>
                     </div>

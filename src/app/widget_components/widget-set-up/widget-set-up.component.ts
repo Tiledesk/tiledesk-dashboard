@@ -21,7 +21,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
+import { PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -42,7 +42,7 @@ import { isDevMode } from '@angular/core';
 
 
 export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
-
+  PLAN_NAME = PLAN_NAME
   public disabled = false;
   public color: ThemePalette = 'primary';
   public touchUi = false;
@@ -565,13 +565,28 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.subscription_is_active = projectProfileData.subscription_is_active;
           this.subscription_end_date = projectProfileData.subscription_end_date;
 
-          if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+          // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+          //   this.featureIsAvailable = false;
+          //   // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
+          // } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true || this.prjct_profile_type === 'free' && this.prjct_trial_expired === false) {
+          //   this.featureIsAvailable = true;
+          //   // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
+          // }
+          if (
+            (this.profile_name === PLAN_NAME.A) ||
+            (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+            (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+            (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true)
+            ) {
             this.featureIsAvailable = false;
-            // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
-          } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true || this.prjct_profile_type === 'free' && this.prjct_trial_expired === false) {
-            this.featureIsAvailable = true;
-            // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
-          }
+          } else if (
+            (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
+            (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
+            (this.prjct_profile_type === 'free' && this.prjct_trial_expired === false)
+            ) {
+              this.featureIsAvailable = true;
+            }
+ 
 
         }
       }, error => {
@@ -591,7 +606,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         } else {
           this.router.navigate(['project/' + this.id_project + '/pricing']);
           // this.presentModalContactUsToUpgradePlan()
-          
+
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

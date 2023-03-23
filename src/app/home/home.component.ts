@@ -324,7 +324,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.prjct_profile_type === 'free') {
         if (this.prjct_trial_expired === false) {
           this.logger.log('[HOME] Find Current Project Among All BRS-LANG 2 ', this.browserLang);
-          this.profile_name_for_segment = PLAN_NAME.B + "(trial)"
+          this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
           this.prjct_profile_name = PLAN_NAME.B + " (trial)"
           // this.getProPlanTrialTranslation();
 
@@ -340,13 +340,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.logger.log('[HOME] Find Current Project Among All BRS-LANG 4 ', this.browserLang);
         if (this.prjct_profile_name === PLAN_NAME.A) {
-          this.prjct_profile_name = PLAN_NAME.A + 'plan'
+          this.prjct_profile_name = PLAN_NAME.A + ' plan'
           this.profile_name_for_segment =  PLAN_NAME.A
         } else if (this.prjct_profile_name ===  PLAN_NAME.B) {
-          this.prjct_profile_name = PLAN_NAME.B + 'plan'
+          this.prjct_profile_name = PLAN_NAME.B + ' plan'
           this.profile_name_for_segment = PLAN_NAME.B
         } else if (this.prjct_profile_name ===  PLAN_NAME.C) {
-          this.prjct_profile_name = PLAN_NAME.C + 'plan'
+          this.prjct_profile_name = PLAN_NAME.C + ' plan'
           this.profile_name_for_segment = PLAN_NAME.C
         }
       }
