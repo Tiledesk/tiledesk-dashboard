@@ -194,6 +194,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   thereHasBeenAnErrorProcessing: string;
   advancedSettingBtnDisabled = false;
+  upgradePlan: string;
+  cancel: string;
+  featureAvailableOnlyWithPaidPlans: string;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -404,6 +407,23 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       .subscribe((translation: any) => {
         this.agentCannotManageAdvancedOptions = translation;
       });
+
+    this.translate.get('Pricing.UpgradePlan')
+      .subscribe((translation: any) => {
+        this.upgradePlan = translation;
+      });
+
+    this.translate.get('Cancel')
+      .subscribe((translation: any) => {
+        this.cancel = translation;
+      });
+
+    this.translate.get('FeatureAvailableOnlyWithPaidPlans')
+      .subscribe((translation: any) => {
+        this.featureAvailableOnlyWithPaidPlans = translation;
+      });
+
+
   }
 
   translateThereHasBeenAnErrorProcessing() {
@@ -2271,26 +2291,35 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToWebhookPage() {
     if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === false) {
-      
+      this.presentModalFeautureAvailableOnlyWithPaidPlans()
     } else {
       this.logger.log("[PRJCT-EDIT-ADD] Navigate to Webhook with the ProjectID: ", this.id_project);
       this.router.navigate(['project/' + this.id_project + '/webhook']);
     }
   }
 
-  presentModalFeautureAvailableOnlyWithPaymentPlan() {
+  presentModalFeautureAvailableOnlyWithPaidPlans() {
     const el = document.createElement('div')
-    el.innerHTML = "Feature available only with paid plans"
+    el.innerHTML = this.featureAvailableOnlyWithPaidPlans
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
       icon: "info",
       // buttons: true,
-      button: {
-        text: "OK",
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
       },
       dangerMode: false,
-    })
+    }).then((value) => {
+      if (value === 'catch') {
+        console.log('presentModalFeautureAvailableOnlyWithPaidPlans value', value)
+        this.router.navigate(['project/' + this.projectId + '/pricing']);
+      }
+    });
   }
 
   getTestSiteUrl() {
