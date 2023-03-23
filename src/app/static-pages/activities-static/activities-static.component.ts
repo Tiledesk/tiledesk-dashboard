@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { PLAN_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -18,6 +19,8 @@ const swal = require('sweetalert');
   styleUrls: ['./activities-static.component.scss']
 })
 export class ActivitiesStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
+  PLAN_NAME = PLAN_NAME
+  tparams: any;
   activities: any;
   agentAvailabilityOrRoleChange: string;
   agentDeletion: string;
@@ -64,6 +67,7 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
     this.getTranslationStrings();
     this.getOSCODE();
     this.getBrowserVersion();
+    this.tparams = {'plan_name': PLAN_NAME.C}
   }
 
   getBrowserVersion() {

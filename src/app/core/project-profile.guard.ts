@@ -54,7 +54,12 @@ export class ProjectProfileGuard implements CanActivate {
 
       } else if (trialExpired === false) {
 
-        this.userIsAuthorized = true
+        this.userIsAuthorized = true;
+        if ((planName !== PLAN_NAME.C && url.indexOf('/activities') !== -1)) {
+          this.userIsAuthorized = false;
+          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
+        }
 
         console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
       }
@@ -68,17 +73,21 @@ export class ProjectProfileGuard implements CanActivate {
         this.userIsAuthorized = true;
         if ((planName === PLAN_NAME.A && url.indexOf('/analytics') !== -1)) {
           this.userIsAuthorized = false;
-
           console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
           console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ANALYTICS', url.indexOf('/analytics') !== -1);
-          // } else if (planName === PLAN_NAME.A && url.indexOf('/analytics') !== -1) {
-
-          //   this.userIsAuthorized = false;
-          //   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ' ,planName ,' - userIsAuthorized: ', this.userIsAuthorized);
-          //   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ANALYTICS', url.indexOf('/analytics') !== -1);
 
         } else {
           console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ANALYTICS', url.indexOf('/analytics') !== -1);
+        }
+
+
+        if ((planName !== PLAN_NAME.C && url.indexOf('/activities') !== -1)) {
+          this.userIsAuthorized = false;
+          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
+
+        } else {
+          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
         }
       } else if (isActiveSubscription === false) {
 
