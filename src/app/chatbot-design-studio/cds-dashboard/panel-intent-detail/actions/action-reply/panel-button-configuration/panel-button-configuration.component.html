@@ -93,6 +93,7 @@
                     (onSelected)="onChangeSelect($event)">
                 </cds-select>
                 <cds-attributes
+                    *ngIf="buttonAction"
                     #cds_attributes
                     id="cds-attributes"
                     class = "cds-attributes"

@@ -230,11 +230,13 @@ export class CdsDashboardComponent implements OnInit {
     this.logger.log('getFaqById');
     this.showSpinner = true;
     this.faqKbService.getBotById(botid).subscribe((chatbot: Chatbot) => {
-      this.logger.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
+      // console.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
       if (chatbot) {
         this.selectedChatbot = chatbot;
         this.translateparamBotName = { bot_name: this.selectedChatbot.name }
-        variableList.userDefined = this.convertJsonToArray(this.selectedChatbot.attributes.variables);
+        if (this.selectedChatbot && this.selectedChatbot.attributes) {
+          variableList.userDefined = this.convertJsonToArray(this.selectedChatbot.attributes.variables);
+        }
         //console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);
       }
     }, (error) => {
@@ -246,8 +248,8 @@ export class CdsDashboardComponent implements OnInit {
     });
   }
 
-  private convertJsonToArray(jsonData){
-    const arrayOfObjs = Object.entries(jsonData).map(([key, value]) => ({'name':key, 'value':value}))
+  private convertJsonToArray(jsonData) {
+    const arrayOfObjs = Object.entries(jsonData).map(([key, value]) => ({ 'name': key, 'value': value }))
     return arrayOfObjs;
   }
 
@@ -567,7 +569,7 @@ export class CdsDashboardComponent implements OnInit {
   /** appdashboard-intent: Save intent */
   onSaveIntent(intent: Intent) {
     this.logger.log("Intent:", intent);
-    
+
     this.logger.log('[CDS DSHBRD] onSaveIntent intent:: ', intent);
     this.logger.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
     this.intentSelected = intent;
@@ -723,23 +725,25 @@ export class CdsDashboardComponent implements OnInit {
       this.logger.log('[CDS DSBRD] publish * COMPLETE *');
       this.notify.showWidgetStyleUpdateNotification('Successfully published', 2, 'done');
 
+      this.getBotById(this.id_faq_kb)
+
     });
     if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === true) {
-     this.present_modal_attacch_bot_to_dept()
-  // } else {
-    
+      this.present_modal_attacch_bot_to_dept()
+      // } else {
+
+    }
   }
-}
 
-present_modal_attacch_bot_to_dept() {
-  this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
-  this.displayModalAttacchBotToDept = 'block'
+  present_modal_attacch_bot_to_dept() {
+    this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
+    this.displayModalAttacchBotToDept = 'block'
 
-}
+  }
 
-onCloseModalAttacchBotToDept() { 
-  this.displayModalAttacchBotToDept = 'none'
-}
+  onCloseModalAttacchBotToDept() {
+    this.displayModalAttacchBotToDept = 'none'
+  }
 
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
@@ -787,7 +791,7 @@ onCloseModalAttacchBotToDept() {
             } else {
 
               this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
-        
+
               this.logger.log('[CDS DSBRD] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
 
               this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
@@ -878,7 +882,7 @@ onCloseModalAttacchBotToDept() {
   publishOnCommunity() {
     this.logger.log('openDialog')
     const dialogRef = this.dialog.open(CdsPublishOnCommunityModalComponent, {
-     
+
       data: {
         chatbot: this.selectedChatbot,
         projectId: this.project._id

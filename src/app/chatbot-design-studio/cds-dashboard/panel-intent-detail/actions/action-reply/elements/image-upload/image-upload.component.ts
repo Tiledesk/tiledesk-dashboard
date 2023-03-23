@@ -73,9 +73,9 @@ export class ImageUploadComponent implements OnInit {
 
 
   private uploadAttachment_Native(uploadedFiles){
-    if (uploadedFiles.type.startsWith('image') && uploadedFiles.type.includes('svg')) {
+    if ((uploadedFiles.type.startsWith('image') || uploadedFiles.type.includes('gif')) && uploadedFiles.type.includes('svg')) {
       this.isImageSvg = true;
-    } else if (uploadedFiles.type.startsWith('image') && !uploadedFiles.type.includes('svg')) {
+    } else if ((uploadedFiles.type.startsWith('image') || uploadedFiles.type.includes('gif')) && !uploadedFiles.type.includes('svg')) {
       this.isImageSvg = false;
     }
     this.uploadImageNativeService.uploadAttachment_Native(uploadedFiles).then(downloadURL => {
