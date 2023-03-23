@@ -5,22 +5,22 @@
             <textarea matInput
                 id="text-area"
                 #autosize="cdkTextareaAutosize"
+                [class.invalid]="control.invalid"
                 [maxlength]="limitCharsText"
                 [formControl]="control"
-                [class.invalid]="control.invalid"
                 [placeholder]="placeholder"
                 cdkTextareaAutosize
                 cdkAutosizeMinRows="{{minRow}}"
                 cdkAutosizeMaxRows="{{maxRow}}"
                 [(ngModel)]="text"
                 [readonly]="readonly"
-                (ngModelChange)="onChangeTextarea($event)">
+                (ngModelChange)="onChangeTextArea($event)">
             </textarea>
         </mat-form-field>
 
         <div *ngIf="showUtils === true" unselectable="on" tabIndex="-1" class="editor-utils">
 
-            <div *ngIf="setAttributeBtn" class="text-editor-insert-attribute" [satPopoverAnchor]="addVariable" (click)="addVariable.toggle(); openSetattributePopover();">
+            <div *ngIf="setAttributeBtn" class="text-editor-insert-attribute" [satPopoverAnchor]="addVariable" (click)="addVariable.toggle(); openSetAttributePopover();">
                 <span class="material-icons " style="font-size: 16px;">
                     data_object
                 </span>
@@ -39,9 +39,9 @@
             </div>
         </div>
 
-        <div class="tag" *ngIf="text && readonly">
-            <span class="material-icons close" (click)="onClearInput()">close</span>
-            <div class="tag-content"><span class="tag-text">{{text}}</span></div>
+        <div class="tag" *ngIf="textTag">
+            <span class="material-icons close" (click)="onClearSelectedAttribute()">close</span>
+            <div class="tag-content ellips"><span class="tag-text">{{textTag}}</span></div>
         </div>
 
     </div>

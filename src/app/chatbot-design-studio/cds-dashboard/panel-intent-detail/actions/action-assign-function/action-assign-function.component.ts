@@ -60,7 +60,7 @@ export class ActionAssignFunctionComponent implements OnInit {
   }
 
 
-  onVariableSelected(variableSelected: { name: string, value: string }, step: number) {
+  onSelectedAttribute(variableSelected: { name: string, value: string }, step: number) {
     this.logger.log('onVariableSelected-->', step, this.actionAssignFormGroup, variableSelected);
     this.hasSelectedVariable = true
     this.actionAssignFormGroup.patchValue({ destination: variableSelected.value });// if(step === 0){

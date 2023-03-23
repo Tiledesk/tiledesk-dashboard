@@ -1,5 +1,4 @@
 import { ActionAssignVariable, Operand } from './../../../../../models/intent-model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnInit } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TYPE_MATH_OPERATOR } from 'app/chatbot-design-studio/utils';
@@ -12,61 +11,20 @@ import { TYPE_MATH_OPERATOR } from 'app/chatbot-design-studio/utils';
 export class ActionAssignVariableComponent implements OnInit {
     @Input() action: ActionAssignVariable;
 
-    actionAssignFormGroup: FormGroup;
     variables: Array<string> = [];
-    // hasSelectedVariable: boolean = false;
 
-    constructor(
-        private formBuilder: FormBuilder,
+    constructor (
         private logger: LoggerService
     ) { }
 
     ngOnInit(): void {
     }
 
-    ngOnChanges() {
-        this.initialize();
-        if (this.action && this.action.destination) {
-            this.setFormValue();
-            // this.hasSelectedVariable = true;
-        }
+    onSelectedAttribute(variableSelected: { name: string, value: string }) {
+        this.action.destination = variableSelected.value;
     }
 
-    private initialize() {
-        this.actionAssignFormGroup = this.buildForm();
-        this.actionAssignFormGroup.valueChanges.subscribe(form => {
-            this.logger.log('[ACTION-ASSIGN-VARIABLE] form valueChanges-->', form);
-            if (form && (form.destination !== '')) {
-                this.action.destination = form.destination;
-            }
-        })
-    }
-
-    buildForm(): FormGroup {
-        return this.formBuilder.group({
-            destination: ['', [Validators.required, Validators.pattern(new RegExp(/^[a-zA-Z_]*[a-zA-Z_]+[a-zA-Z0-9_]*$/gm))]]
-        })
-    }
-
-    setFormValue() {
-        this.actionAssignFormGroup.patchValue({
-            destination: this.action.destination
-        })
-    }
-
-    // onClearInput() {
-    //     this.actionAssignFormGroup.get('destination').reset();
-    //     this.hasSelectedVariable = false
-    // }
-
-
-    onVariableSelected(variableSelected: { name: string, value: string }, step: number) {
-        this.logger.log('onVariableSelected-->', step, this.actionAssignFormGroup, variableSelected);
-        // this.hasSelectedVariable = true
-        this.actionAssignFormGroup.patchValue({ destination: variableSelected.value });// if(step === 0){
-    }
-
-    onOperatorSelected() {
+    onSelectedOperator() {
         let temp = this.action.operation;
         this.action.operation.operators.push(TYPE_MATH_OPERATOR['addAsNumber']);
         this.action.operation.operands.push(new Operand());

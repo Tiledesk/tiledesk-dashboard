@@ -16,6 +16,7 @@ export class OperandComponent implements OnInit {
     operandForm: FormGroup;
     listOfFunctions: Array<{name: string, value: string, icon?:string}> = [];
     openSlectFunction: boolean;
+    placeholder: string;
 
     constructor(private formBuild: FormBuilder) {}
 
@@ -26,8 +27,27 @@ export class OperandComponent implements OnInit {
         }
     }
 
+    ngOnChanges() {
+        this.placeholder = 'Insert a constant value or choose an attribute';
+        this.operandForm = this.createOperandGroup();
+        this.operandForm.valueChanges.subscribe(data => {
+            if(data.value !== '') {
+                this.operand.value = data.value;
+                this.operand.isVariable = data.isVariable;
+            }
+            if (data.function !== null) {
+                this.operand.function = data.function;
+            } else {
+                delete(this.operand.function);
+            }
+        });
+        if (this.operand) {
+            this.operandForm.patchValue(this.operand);
+        }
+    }
+
     //to do validate form
-    createOperandGroup(): FormGroup {
+    private createOperandGroup(): FormGroup {
         return this.formBuild.group({
             value: ['', Validators.required],
             isVariable: [false],
@@ -35,37 +55,31 @@ export class OperandComponent implements OnInit {
         })        
     }
 
-    ngOnChanges() {
-        this.operandForm = this.createOperandGroup();
-        this.operandForm.valueChanges.subscribe(data => {
-            
-            if(data.value !== '') {
-                this.operand.value = data.value;
-                this.operand.isVariable = data.isVariable;
-            }
-
-            if (data.function !== null) {
-                this.operand.function = data.function;
-            }
-        })
-
-        if (this.operand) {
-            this.operandForm.patchValue(this.operand);
-        }
-    }
-
+    /** START EVENTS TEXTAREA **/
     onChangeTextArea(text: string) {
         if(text && text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))){
-            text = text.replace(text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))[0])
+            text = text.replace(text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))[0]);
             this.operandForm.get('value').setValue(text);
             this.operandForm.get('isVariable').setValue(true);
-        } else {
-            this.operandForm.get('isVariable').setValue(false);
         }
+    }   
+    onSelectedAttribute(variableSelected: { name: string, value: string }){
+        this.operandForm.get('isVariable').setValue(true);
+        this.operandForm.get('value').setValue(variableSelected.name);
     }
+    onClearSelectedAttribute(){
+        this.operandForm.get('value').setValue('');
+        this.operandForm.get('isVariable').setValue(false);
+    }
+    /** END EVENTS TEXTAREA */
+
 
     onSelectedFunction(event: any) {
-        this.operandForm.get('function').setValue(event.value)
+        if(event){
+            this.operandForm.get('function').setValue(event.value);
+        } else {
+            this.operandForm.get('function').setValue(null);
+        }
     }
 
     onToggleSelectFunction(){

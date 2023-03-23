@@ -69,7 +69,7 @@ export class BaseConditionRowComponent implements OnInit {
     })
 }
 
-onVariableSelected(variableSelected: {name: string, value: string}, step: number){    
+onSelectedAttribute(variableSelected: {name: string, value: string}, step: number){    
     this.logger.log('onVariableSelected-->', step, this.conditionForm, variableSelected)
     if(step === 0){
       this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
@@ -81,7 +81,7 @@ onVariableSelected(variableSelected: {name: string, value: string}, step: number
     }
   }
 
-  onChangeTextArea(text: string, step: number){
+  onChangeTextArea(text: string){
     this.logger.log('textttt', text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)));
     if(text){
       this.disableSubmit = false

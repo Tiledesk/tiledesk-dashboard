@@ -1,4 +1,5 @@
 @import "./src/assets/sass/cds/_variables.scss";
+@import "./src/assets/sass/cds/styles.scss";
 
 .text-editor-wrapper {
     font-size: $font-size-base;
@@ -161,20 +162,12 @@ mat-form-field.box-textarea ::ng-deep {
 
 ::ng-deep .texarea-add-filter-panel {
     display: flex;
-    -ms-flex-direction: column;
     flex-direction: column;
-    // max-height: 600px;
-    // min-height: 200px;
     box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
         0 4px 4px -2px rgb(91 94 105 / 15%);
     background: rgb(255, 255, 255);
     border-radius: 4px;
     right: 27px !important;
-    // padding: 15px;
-    // margin-top: 10px;
-    // width: 500px;
-    // max-height: calc(50vh - 100px) !important;
-    // overflow-y: scroll !important;
 }
 
 
@@ -194,8 +187,9 @@ mat-form-field.box-textarea ::ng-deep {
         justify-content: center;
         border-radius: 7px;
         margin: 5px;
-        // padding: 5px 10px;
-        // padding: 5px 0px 5px 10px;
+        height: fit-content;
+        padding: 2px;
+        max-width: calc(100% - 25px);
         background-color: #ecb606;
         color: #fff;
         .close{

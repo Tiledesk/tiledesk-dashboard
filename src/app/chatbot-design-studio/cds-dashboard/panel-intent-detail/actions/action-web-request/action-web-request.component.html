@@ -54,8 +54,9 @@
     </div>
 
     <div *ngIf="methodSelectedBody"
-        class="cds-web-request-row-error center json-error-yes" 
-        [ngStyle]="{'opacity':jsonIsValid ? '0' : '1' }">
+        class="cds-web-request-row-error center" 
+        [ngClass]="{'json-error-yes': !jsonIsValid}">
+        <!-- [ngStyle]="{'opacity':jsonIsValid ? '0' : '1' }" -->
         <span>{{errorMessage}}</span>
     </div>
 
@@ -76,7 +77,8 @@
                     [setAttributeBtn]="hasSelectedVariable? false: true"
                     [minRow]="1" [maxRow]="1"
                     [readonly]="true"
-                    (onSelected)="onVariableSelected($event,1)">
+                    (clearSelectedAttribute)="onClearSelectedAttribute()"
+                    (selectedAttribute)="onSelectedAttribute($event,1)">
                 </cds-textarea>
                 <!-- <input type="text" [formControlName]="conditionForm.value.operand2.type=='const'? 'value': 'name'" placeholder="Value" name="operand2"/> -->
                 <!-- <div class="flex tag" *ngIf="hasSelectedVariable">

@@ -106,12 +106,18 @@
 }
 
 
-.filter-row{
-    display: grid;
-    align-items: center;
-    grid-template-columns: 6fr 1fr;
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
+// .filter-row{
+//     display: grid;
+//     align-items: center;
+//     grid-template-columns: 6fr 1fr;
+//     grid-column-gap: 10px;
+//     grid-row-gap: 10px;
+// }
+
+.filter-operator {
+    min-width: 100px;
+    width: fit-content;
+    margin: 10px auto;
 }
 
 .filter-condition{

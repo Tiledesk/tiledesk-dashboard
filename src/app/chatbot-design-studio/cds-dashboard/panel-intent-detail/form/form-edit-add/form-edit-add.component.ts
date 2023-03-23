@@ -291,7 +291,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.closeAddEditForm.emit();
   }
 
-  onVariableSelected(variableSelected: {name: string, value: string}){
+  onSelectedAttribute(variableSelected: {name: string, value: string}){
     this.hasSelectedVariable = true;
     this.field.name = variableSelected.value;
     //variableSelected.value.toString();

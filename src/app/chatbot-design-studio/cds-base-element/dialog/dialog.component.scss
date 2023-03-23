@@ -77,7 +77,7 @@
 
 .tpl-input {
     background: #fff;
-    border: 1px solid #c6cdd4;
+    border: 2px solid #c6cdd4;
     border-radius: 6px;
     color: #22272d;
     display: block;
@@ -92,7 +92,7 @@
         opacity: 0.5;
     }
     &.invalid{
-        border: 1px solid red !important;
+        border: 2px solid red !important;
         outline: 0px solid red !important;
         transition: border 0.3s;
     }
@@ -109,6 +109,7 @@
         min-width: 80px;
         background-color: #ecb606b0;
         height: 100%;
+        color: #333;
     }
     .btn-cancel {
         min-width: 80px;

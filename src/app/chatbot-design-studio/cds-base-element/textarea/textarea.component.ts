@@ -15,11 +15,10 @@ export class CDSTextareaComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   @ViewChild("addVariable") addVariable: SatPopover;
 
-  
   @Input() placeholder: string = '';
   @Input() text: string = '';
   @Input() limitCharsText: number = TEXT_CHARS_LIMIT;
-  @Input() textMessage: string;
+  // @Input() textMessage: string;
   @Input() control: FormControl = new FormControl();
   @Input() showUtils: boolean = true;
   @Input() emoijPikerBtn: boolean = true;
@@ -28,12 +27,12 @@ export class CDSTextareaComponent implements OnInit {
   @Input() minRow: number = 2;
   @Input() maxRow: number = 20;
   @Input() readonly: boolean = false;
+  @Input() onevalue: boolean = false;
   @Input() popoverVerticalAlign: string = 'below'
 
-  
-  @Output() onChange = new EventEmitter();
-  @Output() onSelected = new EventEmitter();
-  @Output() clearInput = new EventEmitter();
+  @Output() changeTextarea = new EventEmitter();
+  @Output() selectedAttribute = new EventEmitter();
+  @Output() clearSelectedAttribute = new EventEmitter();
 
   // Textarea //
   leftCharsText: number;
@@ -42,107 +41,113 @@ export class CDSTextareaComponent implements OnInit {
   addWhiteSpaceBefore: boolean;
   cannedResponseMessage: string;
   texareaIsEmpty = false;
-  hasSelectedVariable: boolean = false;
+  textTag: string = '';
 
   constructor(
     private logger: LoggerService
   ) { }
 
   ngOnInit(): void {
+    //this.initialize();
+  }
+
+  ngOnChanges() {
     this.initialize();
-  }
-
-  initialize(){
-    if (this.text) {
-      this.control.patchValue(this.text)
-    } else {
-      this.text = this.control.value
-    }
-    this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
-    if (this.leftCharsText < (this.limitCharsText / 10)) {
-      this.alertCharsText = true;
-    } else {
-      this.alertCharsText = false;
-    }
-  }
-
-  /** */
-  onChangeTextarea(event) {
-    this.logger.log('[CDS-TEXAREA] onChangeTextarea-->', event)
-    this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
-    if (this.leftCharsText < (this.limitCharsText / 10)) {
-      this.alertCharsText = true;
-    } else {
-      this.alertCharsText = false;
-    }
-    this.text = event;
-    this.onChange.emit(this.text);
   }
 
   ngAfterViewInit() {
     this.getTextArea();
   }
 
-  openSetattributePopover() {
+  initialize(){
+    if (this.text) {
+      this.control.patchValue(this.text);
+    } else {
+      this.text = this.control.value;
+    }
+    this.calculatingleftCharsText();
+  }
+
+  private calculatingleftCharsText(){
+    this.leftCharsText = calculatingRemainingCharacters(this.text, this.limitCharsText);
+    if (this.leftCharsText < (this.limitCharsText / 10)) {
+      this.alertCharsText = true;
+    } else {
+      this.alertCharsText = false;
+    }
+  }
+
+
+  /** */
+  onChangeTextArea(event) {
+    this.logger.log('[CDS-TEXAREA] onChangeTextarea-->', event);
+    this.calculatingleftCharsText();
+    console.log('onChangeTextarea!! ',event);
+    if(this.readonly && event){
+      this.textTag = event;
+      this.text = '';
+      if(this.elTextarea)this.elTextarea.value = '';
+      console.log("SI::  readonly -- text --", this.text, " -- textTag --", this.textTag);
+    } else {
+      this.text = event;
+      console.log("NO::  readonly -- text --", this.text, " -- textTag --", this.textTag);
+    }
+    this.changeTextarea.emit(event);
+  }
+
+  onVariableSelected(variableSelected: { name: string, value: string }) {
+    this.logger.log('variableSelectedddd', variableSelected);
+    console.log('onVariableSelected:: ', variableSelected);
+    let valueTextArea = {name: '', value: ''};
+    if (this.elTextarea) {
+      this.elTextarea.focus();
+      this.insertAtCursorPos(this.elTextarea, '${' + variableSelected.value + '}');
+      valueTextArea.name = this.elTextarea.value;
+      valueTextArea.value = this.elTextarea.value;
+    }
+    if(this.readonly){
+      this.elTextarea.value = '';
+      valueTextArea.name = variableSelected.value;
+      valueTextArea.value = variableSelected.value;
+    }
+    //this.onChangeTextArea(variableSelected.value);
+    this.addVariable.close();
+    this.selectedAttribute.emit(variableSelected);
+  }
+
+  onClearSelectedAttribute() {
+    // this.text = '';
+    this.textTag = '';
+    this.clearSelectedAttribute.emit({name: '', value: ''});
+  }
+
+  openSetAttributePopover() {
     this.elTextarea = this.autosize['_textareaElement'] as HTMLInputElement;
     this.elTextarea.focus()
   }
 
-  getTextArea() {
+  private getTextArea() {
     this.elTextarea = this.autosize['_textareaElement'] as HTMLInputElement;
     this.logger.log('[CDS-TEXAREA] - GET TEXT AREA - elTextarea ', this.elTextarea);
     if (this.elTextarea) {}
   }
 
-  onVariableSelected(variableSelected: { name: string, value: string }) {
-    this.logger.log('variableSelectedddd', variableSelected);
-    if (this.elTextarea) {
-      this.elTextarea.focus();
-      this.insertAtCursorPos(this.elTextarea, '${' + variableSelected.value + '}')
-      this.onChangeTextarea(this.elTextarea.value);
-      this.addVariable.close();
-      this.text = '';
-      this.onSelected.emit(variableSelected);
-    }
-  }
-
-  onClearInput() {
-    // if (this.elTextarea) {
-    //   this.elTextarea.focus();
-    //   this.onChangeTextarea('')
-    //   this.addVariable.close();
-    // }
-    this.text = '';
-    this.clearInput.emit({name: '', value: ''});
-  }
-
-
-  insertAtCursorPos(elem: HTMLInputElement, attribute) {
-    // var cursor_pos = $("#text-area").prop('selectionStart');
-    // var textarea_txt = $("#text-area").val();
-    // var txt_to_add = value;
-    // $("#text-area").val(textarea_txt.substring(0, cursor_pos) + txt_to_add + textarea_txt.substring(cursor_pos));
-    // $("#text-area").focus();
-    // $('#text-area').prop('selectionEnd', cursor_pos + txt_to_add.length);
-
+  private insertAtCursorPos(elem: HTMLInputElement, attribute) {
     let cursor_pos = elem.selectionStart;
     var textarea_txt = elem.value;
     var txt_to_add = attribute;
-    elem.value = textarea_txt.substring(0, cursor_pos) + txt_to_add + textarea_txt.substring(cursor_pos)
-    elem.focus()
-    elem.selectionEnd = cursor_pos + txt_to_add.length
+    elem.value = textarea_txt.substring(0, cursor_pos) + txt_to_add + textarea_txt.substring(cursor_pos);
+    elem.focus();
+    elem.selectionEnd = cursor_pos + txt_to_add.length;
   }
-
 
 
   @HostListener('document:keydown', ['$event'])
   onKeyPress(event) {
     const keyCode = event.which || event.keyCode;
     if (keyCode === 27) { // Esc keyboard code
-      this.addVariable.close()
+      this.addVariable.close();
     }
   }
-
-
 
 }

@@ -10,7 +10,6 @@ div.operand-wrp {
     padding: 10px 10px 20px;
     border-radius: 5px;
     &.opened {
-        // grid-template-columns: 6fr 1fr 6fr;
         .select-function{
             display:block;
         }
@@ -32,54 +31,6 @@ div.operand-wrp {
     div.value-wrp{
         position: relative;
         display: block;
-        
-
-        // .flex{
-        //     position: absolute;
-        //     top: 0px;
-        //     bottom: 0px;
-        //     right: 8px;
-    
-        //     display: flex;
-        //     align-items: center;
-        //     justify-content: center;
-    
-        //     .close{
-        //         // height: 16px;
-        //         width: 17px;
-        //         top: -7px;
-        //         right: -7px;
-        //         font-size: 15px;
-        //         border-radius: 50%;
-        //         margin-top: 0;
-        //         background: white;
-        //         cursor: pointer;
-        //         position: absolute;
-        //         display: flex;
-        //         justify-content: center;
-        //         align-items: center;
-        //         opacity: 1;
-        //         &:hover{
-        //             background: #ecb606;
-        //             color: white;
-        //         }
-        //     }
-    
-        // }
-    
-        // div.tag{
-        //     position: absolute;
-        //     top: 30px;
-        //     bottom: 5px;
-        //     left: 8px;
-        //     right: unset;
-        //     border-radius: 7px;
-        //     margin: 5px;
-        //     padding: 5px 10px;
-        //     background-color: #ecb606;
-        //     color: white;
-    
-        // }
     }        
 
     .applay-function-button{
@@ -127,4 +78,3 @@ div.operand-wrp {
         }
     }
 }
-
