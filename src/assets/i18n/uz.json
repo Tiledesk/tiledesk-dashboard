@@ -2288,6 +2288,7 @@
     "CRMRecordsCustomerContactInformation":"CRM mijozlar bilan bog'lanish ma'lumotlarini, masalan, elektron pochta manzili, telefon raqami va boshqa ko'p narsalarni yozib oladi, shunda siz kompaniyangizning o'zaro aloqa tarmog'i evolyutsiyasini yaxshiroq tushunishingiz mumkin.",
     "AvailableFromThePlan": "{{plan_name}} rejasidan mavjud",
     "AvailableWithThePlan":"{{plan_name}} tarif rejasida mavjud",
+    "FeatureAvailableOnlyWithPaidPlans":"Funksiya faqat pulli tariflarda mavjud",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Mijozlarning qoniqishi haqida gap ketganda, samaradorlik hamma narsadir. Oson mavjud bo'lgan “konservalangan javoblar“ to'plamiga ega bo'lish jonli chat sessiyasida mijozlar so'roviga qatnashish yoki shunchaki tez-tez so'raladigan savollarga javob berishda sizga katta ustunlik berishi mumkin.",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",

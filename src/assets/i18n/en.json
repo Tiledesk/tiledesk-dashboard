@@ -2288,6 +2288,7 @@
     "CRMRecordsCustomerContactInformation": "The CRM records customer contact information, such as email address, phone number and much more so that you can better understand the evolution of your company's network of interactions.",
     "AvailableFromThePlan": "Available from the {{plan_name}} plan",
     "AvailableWithThePlan":"Available with the {{plan_name}} plan",
+    "FeatureAvailableOnlyWithPaidPlans":"Feature available only with paid plans",
     "HavingCannedResponsesCanPutYouGreatAdvantage": "Efficiency is everything when it comes to customer satisfaction. Having a collection of readily available, “canned responses” can put you at a great advantage when attending to a customer inquiry in a live chat session or just addressing frequently asked questions.",
     "AddIntentPage": {
         "AddForm": "Add form",

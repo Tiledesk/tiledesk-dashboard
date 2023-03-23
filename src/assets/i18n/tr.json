@@ -2288,6 +2288,7 @@
     "CRMRecordsCustomerContactInformation":"CRM, şirketinizin etkileşim ağının gelişimini daha iyi anlayabilmeniz için e-posta adresi, telefon numarası ve çok daha fazlası gibi müşteri iletişim bilgilerini kaydeder.",
     "AvailableFromThePlan":"{{plan_name}} planından edinilebilir",
     "AvailableWithThePlan":"Tillgänglig med planen {{plan_name}}",
+    "FeatureAvailableOnlyWithPaidPlans":"Özellik yalnızca ücretli planlarda mevcuttur",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Müşteri memnuniyeti söz konusu olduğunda verimlilik her şeydir. Hazır yanıtlardan oluşan bir koleksiyona sahip olmak, canlı bir sohbet oturumunda bir müşteri sorgusuna katılırken veya yalnızca sık sorulan soruları yanıtlarken size büyük avantaj sağlayabilir.",
     "AddIntentPage": {
         "AddForm": "Form ekle",

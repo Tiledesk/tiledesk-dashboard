@@ -2288,6 +2288,7 @@
 	"CRMRecordsCustomerContactInformation":"Das CRM zeichnet Kundenkontaktinformationen wie E-Mail-Adresse, Telefonnummer und vieles mehr auf, damit Sie die Entwicklung des Interaktionsnetzwerks Ihres Unternehmens besser verstehen können.",
 	"AvailableFromThePlan":"Verfügbar im Plan {{plan_name}}",
 	"AvailableWithThePlan":"Verfügbar mit dem Plan {{plan_name}}",
+	"FeatureAvailableOnlyWithPaidPlans":"Funktion nur mit kostenpflichtigen Plänen verfügbar",
 	"HavingCannedResponsesCanPutYouGreatAdvantage":"Effizienz ist alles, wenn es um Kundenzufriedenheit geht. Eine Sammlung leicht verfügbarer „vorgefertigter Antworten“ kann Ihnen einen großen Vorteil verschaffen, wenn Sie sich in einer Live-Chat-Sitzung um eine Kundenanfrage kümmern oder einfach nur häufig gestellte Fragen beantworten.",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",

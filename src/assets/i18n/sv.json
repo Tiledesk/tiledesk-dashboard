@@ -2288,6 +2288,7 @@
     "CRMRecordsCustomerContactInformation":"CRM registrerar kundkontaktinformation, såsom e-postadress, telefonnummer och mycket mer så att du bättre kan förstå utvecklingen av ditt företags nätverk av interaktioner.",
     "AvailableFromThePlan":"Tillgänglig från planen {{plan_name}}",
     "AvailableWithThePlan":"Tillgänglig med planen {{plan_name}}",
+    "FeatureAvailableOnlyWithPaidPlans":"Funktionen är endast tillgänglig med betalabonnemang",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Effektivitet är allt när det kommer till kundnöjdhet. Att ha en samling lättillgängliga, “bearbetade svar“ kan ge dig en stor fördel när du svarar på en kundförfrågan i en livechattsession eller bara tar upp vanliga frågor.",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
