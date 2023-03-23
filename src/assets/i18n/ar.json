@@ -552,7 +552,8 @@
         "UpgradePlan": "خطة الترقية",
         "UpgradeYourPlan": "قم بترقية خطتك",
         "Your": "لك",
-        "30DaysFreeTrialOfTiledeskProPlan": "نسخة تجريبية مجانية لمدة 30 يومًا من خطة {{ company_name }}",
+        "30DaysFreeTrialOfTiledeskProPlan": "نسخة تجريبية مجانية لمدة 30 يومًا من خطة {{plan_name}}",
+        "30DaysFreeTrial": "30-days free trial of the {{ plan_name }} plan",
         "WillExpireIn": "ستنتهي في",
         "Days": "أيام",
         "Tomorrow": "غدا",
@@ -2286,6 +2287,7 @@
     "CRMImprovesCustomerRelationship": "يعمل CRM أو إدارة علاقات العملاء على تحسين إدارة علاقات العملاء من خلال إنشاء عرض 360 درجة للعميل",
     "CRMRecordsCustomerContactInformation": "يسجل CRM معلومات الاتصال بالعميل ، مثل عنوان البريد الإلكتروني ورقم الهاتف وغير ذلك الكثير حتى تتمكن من فهم تطور شبكة تفاعلات شركتك بشكل أفضل.",
     "AvailableFromThePlan": "متاح من خطة {{plan_name}}",
+    "AvailableWithThePlan":"متوفر مع خطة {{plan_name}}",
     "HavingCannedResponsesCanPutYouGreatAdvantage": "الكفاءة هي كل شيء عندما يتعلق الأمر برضا العملاء. إن الحصول على مجموعة من “الردود الجاهزة“ المتاحة بسهولة يمكن أن يمنحك ميزة كبيرة عند حضور استفسار عميل في جلسة محادثة مباشرة أو مجرد معالجة الأسئلة المتداولة.",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",

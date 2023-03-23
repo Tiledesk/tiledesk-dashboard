@@ -553,6 +553,7 @@
         "UpgradeYourPlan": "Améliorez votre forfait",
         "Your": "Ton",
         "30DaysFreeTrialOfTiledeskProPlan": "Essai gratuit de 30 jours du plan {{ company_name }}",
+        "30DaysFreeTrial": "essai gratuit de 30 jours du forfait {{ plan_name }}",
         "WillExpireIn": "expirera dans",
         "Days": "jours",
         "Tomorrow": "demain",
@@ -2286,6 +2287,7 @@
     "CRMImprovesCustomerRelationship":"Le CRM ou Customer Relationship Management améliore la gestion de la relation client en créant une vue à 360 degrés du client",
     "CRMRecordsCustomerContactInformation":"Le CRM enregistre les coordonnées des clients, telles que l'adresse e-mail, le numéro de téléphone et bien plus encore, afin que vous puissiez mieux comprendre l'évolution du réseau d'interactions de votre entreprise.",
     "AvailableFromThePlan":"Disponible à partir du forfait {{plan_name}}",
+    "AvailableWithThePlan":"Disponible avec le forfait {{plan_name}}",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"L'efficacité est primordiale lorsqu'il s'agit de la satisfaction du client. Avoir une collection de “réponses prédéfinies“ facilement disponibles peut vous donner un grand avantage lorsque vous répondez à une demande d'un client lors d'une session de chat en direct ou que vous répondez simplement aux questions fréquemment posées.",
     "AddIntentPage": {
         "AddForm": "Ajouter le formulaire",

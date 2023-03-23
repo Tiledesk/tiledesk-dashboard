@@ -553,6 +553,7 @@
         "UpgradeYourPlan": "Uppgradera din plan",
         "Your": "Din",
         "30DaysFreeTrialOfTiledeskProPlan": "30 dagars gratis provperiod på {{ company_name }} Pro-planen",
+        "30DaysFreeTrial": "30 dagars gratis provperiod på {{ plan_name }}-planen",
         "WillExpireIn": "kommer att löpa ut om",
         "Days": "dagar",
         "Tomorrow": "i morgon",
@@ -2286,6 +2287,7 @@
     "CRMImprovesCustomerRelationship":"CRM eller Customer Relationship Management förbättrar kundrelationshanteringen genom att skapa en 360-gradersvy av kunden",
     "CRMRecordsCustomerContactInformation":"CRM registrerar kundkontaktinformation, såsom e-postadress, telefonnummer och mycket mer så att du bättre kan förstå utvecklingen av ditt företags nätverk av interaktioner.",
     "AvailableFromThePlan":"Tillgänglig från planen {{plan_name}}",
+    "AvailableWithThePlan":"Tillgänglig med planen {{plan_name}}",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Effektivitet är allt när det kommer till kundnöjdhet. Att ha en samling lättillgängliga, “bearbetade svar“ kan ge dig en stor fördel när du svarar på en kundförfrågan i en livechattsession eller bara tar upp vanliga frågor.",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",

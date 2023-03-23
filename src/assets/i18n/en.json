@@ -553,6 +553,7 @@
         "UpgradeYourPlan": "Upgrade your Plan",
         "Your": "Your",
         "30DaysFreeTrialOfTiledeskProPlan": "30-days free trial of the {{ company_name }} Pro plan",
+        "30DaysFreeTrial": "30-days free trial of the {{ plan_name }} plan",
         "WillExpireIn": "will expire in",
         "Days": "days",
         "Tomorrow": "tomorrow",
@@ -2286,6 +2287,7 @@
     "CRMImprovesCustomerRelationship": "CRM or Customer Relationship Management improves customer relationship management by creating a 360-degree view of the customer",
     "CRMRecordsCustomerContactInformation": "The CRM records customer contact information, such as email address, phone number and much more so that you can better understand the evolution of your company's network of interactions.",
     "AvailableFromThePlan": "Available from the {{plan_name}} plan",
+    "AvailableWithThePlan":"Available with the {{plan_name}} plan",
     "HavingCannedResponsesCanPutYouGreatAdvantage": "Efficiency is everything when it comes to customer satisfaction. Having a collection of readily available, “canned responses” can put you at a great advantage when attending to a customer inquiry in a live chat session or just addressing frequently asked questions.",
     "AddIntentPage": {
         "AddForm": "Add form",

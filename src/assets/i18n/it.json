@@ -553,6 +553,7 @@
         "UpgradeYourPlan": "Aggiorna il tuo Piano",
         "Your": "I tuoi",
         "30DaysFreeTrialOfTiledeskProPlan": "30 giorni di prova gratuita del piano {{ company_name }} Pro",
+        "30DaysFreeTrial": "prova gratuita di 30 giorni del piano {{ plan_name }}",
         "WillExpireIn": "scadranno tra",
         "Days": "giorni",
         "Tomorrow": "domani",
@@ -2286,6 +2287,7 @@
     "CRMImprovesCustomerRelationship":"Il CRM o Customer Relationship Management migliora la gestione delle relazioni con i clienti creando una visione a 360 gradi del cliente",
     "CRMRecordsCustomerContactInformation":"Il CRM registra le informazioni di contatto del cliente, come indirizzo email, numero di telefono e molto altro in modo da poter comprendere meglio l'evoluzione della rete di interazioni della tua azienda.",
     "AvailableFromThePlan":"Disponibile dal piano {{plan_name}}",
+    "AvailableWithThePlan":"Disponibile con il piano {{plan_name}}",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"L'efficienza è tutto quando si tratta della soddisfazione del cliente. Avere una raccolta di “risposte predefinite“ prontamente disponibili può darti un grande vantaggio quando rispondi a una richiesta del cliente in una sessione di chat dal vivo o semplicemente rispondi alle domande frequenti.",
     "AddIntentPage": {
         "AddForm": "Aggiungi form",
