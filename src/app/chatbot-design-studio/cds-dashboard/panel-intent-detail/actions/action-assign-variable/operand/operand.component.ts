@@ -62,6 +62,7 @@ export class OperandComponent implements OnInit {
             this.operandForm.get('value').setValue(text);
             this.operandForm.get('isVariable').setValue(true);
         }
+       
     }   
     onSelectedAttribute(variableSelected: { name: string, value: string }){
         this.operandForm.get('isVariable').setValue(true);

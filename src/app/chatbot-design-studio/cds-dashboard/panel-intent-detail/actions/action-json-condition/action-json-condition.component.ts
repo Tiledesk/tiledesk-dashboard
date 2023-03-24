@@ -105,7 +105,6 @@ export class ActionJsonConditionComponent implements OnInit {
   onClickAddGroup(){
     this.action.groups.push(new Operator())
     this.action.groups.push(new Expression())
-
     this.logger.log('onClickAddGroup-->', this.action)
     // let groups = this.actionJsonConditionFormGroup.get('groups') as FormArray
     // groups.push(this.createOperatorGroup(), {emitEvent: false})

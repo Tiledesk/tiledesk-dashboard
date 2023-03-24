@@ -11,29 +11,27 @@ import { LoggerService } from 'app/services/logger/logger.service';
   styleUrls: ['./base-condition-row.component.scss']
 })
 export class BaseConditionRowComponent implements OnInit {
-
   @ViewChild('operand1') inputOperand1: ElementRef;
-
   @Input() condition: Condition;
-  @Output() close = new EventEmitter()
+  @Output() close = new EventEmitter();
 
-  textVariable: string = ''
+  textVariable: string = '';
   filteredVariableList: Array<{name: string, value: string}> = []
   filteredIntentVariableList: Array<{name: string, value: string, src?: string}>
   operatorsList: Array<{}> = []
   step: number = 0;
-  disableInput: boolean = true
-  disableSubmit: boolean = true
-
-  conditionForm: FormGroup
+  disableInput: boolean = true;
+  disableSubmit: boolean = true;
+  conditionForm: FormGroup;
+  readonlyTextarea: boolean = false;
+  setAttributeBtnOperand2: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private logger: LoggerService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
-    
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -43,9 +41,9 @@ export class BaseConditionRowComponent implements OnInit {
     if(this.condition){
       this.logger.log('[BASE_CONDITION_ROW] selectedConditionnnn-->', this.condition)
       this.setFormValue()
-      this.step = 1
+      this.step = 1;
     }
-   
+    console.log('******* ngOnChanges-->', this.condition);
   }
 
   createConditionGroup(): FormGroup{
@@ -66,38 +64,59 @@ export class BaseConditionRowComponent implements OnInit {
       operand1 : this.condition.operand1,
       operator: this.condition.operator,
       operand2: this.condition.operand2
-    })
+    });
+    if(this.condition.operand2){
+      this.setAttributeBtnOperand2 = false;
+    } else {
+      this.setAttributeBtnOperand2 = true;
+    }
 }
 
-onSelectedAttribute(variableSelected: {name: string, value: string}, step: number){    
-    this.logger.log('onVariableSelected-->', step, this.conditionForm, variableSelected)
-    if(step === 0){
-      this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
-      this.step +=1
-    }else if (step == 1){
-      this.conditionForm.patchValue({ operand2: {type: 'var', name: variableSelected.name}}, {emitEvent: false})
-      this.logger.log('formmmmm', this.conditionForm)
-      this.disableSubmit = false
-    }
-  }
-
+/** START EVENTS cds-textarea **/
   onChangeTextArea(text: string){
+    console.log('******* onChangeTextArea-->', text);
     this.logger.log('textttt', text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)));
     if(text){
-      this.disableSubmit = false
+      this.disableSubmit = false;
+      this.setAttributeBtnOperand2 = false;
     }else{
-      this.disableSubmit = true
+      this.disableSubmit = true;
+      this.setAttributeBtnOperand2 = true;
     }
     if(text && text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))){
-
       text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)).forEach(match => {
-
         text = text.replace(text,match)
-        this.conditionForm.patchValue({ operand2: {type: 'var', name: text}}, {emitEvent: false})
-
-    })
+        this.conditionForm.patchValue({ operand2: {type: 'const', name: text}}, {emitEvent: false})
+      });
     } 
   }
+
+  onSelectedAttribute(variableSelected: {name: string, value: string}, step: number){ 
+    console.log('******* onVariableSelected-->', step, variableSelected);   
+    this.logger.log('1 onVariableSelected-->', step, this.conditionForm, variableSelected);
+    if(step === 0){
+      this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
+      this.step +=1;
+    }else if (step == 1){
+      this.conditionForm.patchValue({ operand2: {type:'var', name:variableSelected.name, value:variableSelected.value}}, {emitEvent: false});
+      this.logger.log('formmmmm', this.conditionForm);
+      this.disableSubmit = false;
+      this.readonlyTextarea = true;
+      this.setAttributeBtnOperand2 = false;
+    }
+    console.log('******* onVariableSelected-->', step, variableSelected);
+  }
+
+  onClearSelectedAttribute(){
+    console.log('onClearSelectedAttribute-->');   
+    this.conditionForm.patchValue({ operand2: {type: 'var', name: ''}}, {emitEvent: false});
+    this.disableSubmit = true;
+    this.readonlyTextarea = false;
+    this.setAttributeBtnOperand2 = true;
+  }
+  /** END EVENTS cds-textarea **/
+
+
 
   onClearInput(){
     this.conditionForm.patchValue({ operand2: {type: 'const', name: '', value: ''}}, {emitEvent: false})
@@ -134,6 +153,9 @@ onSelectedAttribute(variableSelected: {name: string, value: string}, step: numbe
     this.close.emit() // CLOSE BASE-FILTER POPOVER (IN PARENT)
   }
 
+  onDeleteInputField(){
+    this.conditionForm.patchValue({ operand1:'' }, {emitEvent: false});
+  }
 
   private _filter(value: string, array: Array<any>): Array<any> {
     const filterValue = value.toLowerCase();
@@ -144,7 +166,7 @@ onSelectedAttribute(variableSelected: {name: string, value: string}, step: numbe
   onKeyPress(event){
     const keyCode = event.which || event.keyCode;
     if (keyCode === 27) { // Esc keyboard code
-      this.onClose()
+      this.onClose();
     }
   }
 

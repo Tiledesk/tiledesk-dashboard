@@ -116,14 +116,12 @@ input.form-control {
     width: 100%;
     padding-left: 5px;
     padding-top: 7px;
-
     background-size: 0 2px, 100% 1px;
     background-repeat: no-repeat;
     background-position: center bottom, center calc(100% - 1px);
-    
     padding: 8px 10px!important;
     border-radius: 8px;
-    line-height: 25px;
+    line-height: 18px;
     resize: none;
     height: auto;
 }
@@ -159,9 +157,15 @@ input.form-control {
     }
 }
 
+.form-group label.control-label {
+    top: -20px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    position: absolute;
+}
 .form-group.is-empty label.control-label {
-    top: -6px;
-    left: 6px;
     font-size: 14px;
     line-height: normal;
     position: absolute;
@@ -170,20 +174,7 @@ input.form-control {
     pointer-events: none;
 }
 
-.form-group label.control-label {
-    top: -35px;
-    left: 0;
-    font-size: 11px;
-    line-height: normal;
-    position: absolute;
-    pointer-events: none;
-    transition: 0.3s ease all;
-    color: #3c4858;
-}
-
-.form-group.is-focused label.control-label {
-    top: -35px;
-    left: 0;
+.form-group.is-focused label.control-label {    
     font-size: 11px;
     line-height: normal;
     position: absolute;
@@ -194,8 +185,6 @@ input.form-control {
 
 .form-group.ng-select {
     label.control-label {
-        top: -35px;
-        left: 0;
         font-size: 11px;
         line-height: normal;
         position: absolute;
@@ -205,8 +194,6 @@ input.form-control {
     }
     &.is-placeholder {
         label.control-label {
-            top: -6px;
-            left: 6px;
             font-size: 14px;
             line-height: normal;
             position: absolute;
@@ -259,7 +246,6 @@ input.form-control {
 
 
 .control-label {
-    top: -37px !important;
     transition: unset;
     font-size: 15px !important;
     color: #aaa !important;
@@ -274,7 +260,7 @@ input.form-control {
 /** CSS textarea */
 
 .material-icons {
-    color: #ecb606b0;
+    // color: #ecb606b0;
     font-size: 18px;
 }
 

@@ -21,7 +21,7 @@ export class OperationComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    ngOnChanges(changes) {        
+    ngOnChanges(changes) {     
         if (this.operation) {
             this.setList(this.operation);
         }

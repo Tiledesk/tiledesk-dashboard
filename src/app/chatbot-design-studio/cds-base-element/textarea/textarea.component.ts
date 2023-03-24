@@ -42,6 +42,7 @@ export class CDSTextareaComponent implements OnInit {
   cannedResponseMessage: string;
   texareaIsEmpty = false;
   textTag: string = '';
+  isSelected: boolean = false;
 
   constructor(
     private logger: LoggerService
@@ -82,22 +83,25 @@ export class CDSTextareaComponent implements OnInit {
   onChangeTextArea(event) {
     this.logger.log('[CDS-TEXAREA] onChangeTextarea-->', event);
     this.calculatingleftCharsText();
-    console.log('onChangeTextarea!! ',event);
+    // console.log('onChangeTextarea!! ',this.isSelected);
     if(this.readonly && event){
       this.textTag = event;
       this.text = '';
       if(this.elTextarea)this.elTextarea.value = '';
-      console.log("SI::  readonly -- text --", this.text, " -- textTag --", this.textTag);
+      // console.log("SI::  readonly -- text --", this.text, " -- textTag --", this.textTag);
     } else {
       this.text = event;
-      console.log("NO::  readonly -- text --", this.text, " -- textTag --", this.textTag);
+      // console.log("NO::  readonly -- text --", this.text, " -- textTag --", this.textTag);
     }
-    this.changeTextarea.emit(event);
+    if(!this.isSelected || !this.readonly){
+      this.changeTextarea.emit(event);
+    }
   }
 
   onVariableSelected(variableSelected: { name: string, value: string }) {
     this.logger.log('variableSelectedddd', variableSelected);
-    console.log('onVariableSelected:: ', variableSelected);
+    this.isSelected = true;
+    // console.log('onVariableSelected:: ', variableSelected);
     let valueTextArea = {name: '', value: ''};
     if (this.elTextarea) {
       this.elTextarea.focus();
@@ -109,15 +113,16 @@ export class CDSTextareaComponent implements OnInit {
       this.elTextarea.value = '';
       valueTextArea.name = variableSelected.value;
       valueTextArea.value = variableSelected.value;
+    } else {
+      this.onChangeTextArea(valueTextArea.name);
     }
-    //this.onChangeTextArea(variableSelected.value);
     this.addVariable.close();
     this.selectedAttribute.emit(variableSelected);
   }
 
   onClearSelectedAttribute() {
-    // this.text = '';
     this.textTag = '';
+    this.isSelected = false;
     this.clearSelectedAttribute.emit({name: '', value: ''});
   }
 

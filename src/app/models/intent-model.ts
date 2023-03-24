@@ -113,7 +113,7 @@ export class ActionOnlineAgent extends Action {
     stopOnConditionMet: boolean;
     constructor() {
         super();
-        this.stopOnConditionMet = false;
+        this.stopOnConditionMet = true;
         this._tdActionType = TYPE_ACTION.ONLINE_AGENTS;
     }
 }
@@ -126,7 +126,7 @@ export class ActionOpenHours extends Action {
     stopOnConditionMet: boolean;
     constructor() {
         super();
-        this.stopOnConditionMet = false;
+        this.stopOnConditionMet = true;
         this._tdActionType = TYPE_ACTION.OPEN_HOURS;
     }
 }
@@ -213,7 +213,7 @@ export class ActionJsonCondition extends Action {
         super();
         this._tdActionType = TYPE_ACTION.JSON_CONDITION;
         this.groups = [];
-        this.stopOnConditionMet = false;
+        this.stopOnConditionMet = true;
     }
 }
 
