@@ -44,6 +44,13 @@ export class CDSTextareaComponent implements OnInit {
   textTag: string = '';
   isSelected: boolean = false;
 
+  public textArea: string = '';
+  public isEmojiPickerVisible: boolean;
+  IS_ON_MOBILE_DEVICE = false;
+  emojiPerLine: number = 8;
+  emojiColor: string ="#ac8b2c";
+  emojiiCategories = [ 'recent', 'people', 'nature', 'activity'];
+
   constructor(
     private logger: LoggerService
   ) { }
@@ -83,7 +90,7 @@ export class CDSTextareaComponent implements OnInit {
   onChangeTextArea(event) {
     this.logger.log('[CDS-TEXAREA] onChangeTextarea-->', event);
     this.calculatingleftCharsText();
-    // console.log('onChangeTextarea!! ',this.isSelected);
+    console.log('onChangeTextarea!! ',event);
     if(this.readonly && event){
       this.textTag = event;
       this.text = '';
@@ -146,6 +153,15 @@ export class CDSTextareaComponent implements OnInit {
     elem.selectionEnd = cursor_pos + txt_to_add.length;
   }
 
+  onShowEmojiPicker(){
+    
+  }
+
+  onAddEmoji(event){
+      this.text = `${this.text}${event.emoji.native}`;
+      this.isEmojiPickerVisible = false;
+  }
+  
 
   @HostListener('document:keydown', ['$event'])
   onKeyPress(event) {

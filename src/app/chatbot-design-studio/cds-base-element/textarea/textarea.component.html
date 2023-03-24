@@ -27,7 +27,7 @@
             </div>
     
             <div *ngIf="emoijPikerBtn" class="emoji-picker">
-                <div class="emoji-picker-button" aria-expanded="false">
+                <div class="emoji-picker-button" aria-expanded="false" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">
                     <span class="material-icons" style="font-size: 16px;">
                         emoji_emotions
                     </span>
@@ -52,6 +52,21 @@
         (onSelected)="onVariableSelected($event)">
     </variable-list>
 </sat-popover>
+
+<emoji-mart
+*ngIf="isEmojiPickerVisible"
+class="emoji-mart"
+[style.visibility]="isEmojiPickerVisible?'visible':'hidden'"
+[showPreview]="false" 
+[perLine]="emojiPerLine" 
+[include]="emojiiCategories"
+[color]="emojiColor" 
+[darkMode]="false"
+[emojiSize] = "24"
+(emojiSelect)="onAddEmoji($event)">
+</emoji-mart>
+
+
 
 
 

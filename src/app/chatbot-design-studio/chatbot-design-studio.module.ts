@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 //MATERIAL ELEMENTS
 import { MatInputModule } from '@angular/material/input';
@@ -178,6 +179,7 @@ import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-deta
     CommonModule,
     DragDropModule,
     NgSelectModule,
+    PickerModule,
     TextFieldModule,
     MatSliderModule,
     MatSidenavModule,
