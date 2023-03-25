@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { PLAN_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 // node_modules/ng-simple-slideshow/src/app/modules/slideshow/IImage.d.ts
 // src/app/static-pages/departments-static/departments-static.component.ts
@@ -18,7 +19,7 @@ const swal = require('sweetalert');
   styleUrls: ['./departments-static.component.scss']
 })
 export class DepartmentsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
-
+  PLAN_NAME = PLAN_NAME
   imageObject = [
     {
       image: 'assets/img/static-depts4.png',
@@ -46,6 +47,7 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
   isChromeVerGreaterThan100: boolean;
+  tparams: any;
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -66,6 +68,7 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
+    this.tparams = {'plan_name': PLAN_NAME.B } 
   }
 
   getBrowserVersion() {

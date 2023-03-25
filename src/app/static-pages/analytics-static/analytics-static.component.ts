@@ -68,15 +68,16 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService
-  ) { super(translate); 
-    this.tparams = {'plan_name': PLAN_NAME.B}}
+  ) { 
+    super(translate); 
+    this.tparams = {'plan_name': PLAN_NAME.B}
+  }
 
   ngOnInit() {
     this.getOSCODE();
     this.getCurrentProject();
     this.getBrowserLang();
     this.getProjectPlan();
-
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
@@ -91,8 +92,8 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[TRIGGER-BASECOMP] AppConfigService getAppConfig public_Key', this.public_Key)
-    this.logger.log('[TRIGGER-BASECOMP] public_Key', this.public_Key)
+    this.logger.log('[ANALYTICS-STATIC] AppConfigService getAppConfig public_Key', this.public_Key)
+    this.logger.log('[ANALYTICS-STATIC public_Key', this.public_Key)
 
     let keys = this.public_Key.split("-");
     // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)

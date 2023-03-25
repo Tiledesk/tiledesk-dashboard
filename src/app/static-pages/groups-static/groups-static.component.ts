@@ -9,6 +9,7 @@ import { StaticPageBaseComponent } from './../static-page-base/static-page-base.
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { PLAN_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -17,14 +18,14 @@ const swal = require('sweetalert');
   styleUrls: ['./groups-static.component.scss']
 })
 export class GroupsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
-
+  PLAN_NAME = PLAN_NAME
   projectId: string;
   browserLang: string;
   prjct_profile_type: string;
   subscription_is_active: any;
   prjct_profile_name: string;
   subscription_end_date: Date;
-
+  tparams: any;
 
 
   imageObject = [
@@ -56,6 +57,7 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
     public appConfigService: AppConfigService
   ) {
     super(translate);
+    this.tparams = {'plan_name': PLAN_NAME.B } 
   }
 
   ngOnInit() {
