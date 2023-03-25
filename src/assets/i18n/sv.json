@@ -2289,6 +2289,8 @@
     "AvailableFromThePlan":"Tillgänglig från planen {{plan_name}}",
     "AvailableWithThePlan":"Tillgänglig med planen {{plan_name}}",
     "FeatureAvailableOnlyWithPaidPlans":"Funktionen är endast tillgänglig med betalabonnemang",
+    "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Håll dig uppdaterad om vad som händer i ditt team hela tiden. Monitor (Team Inbox) ger dig det du behöver för smart samarbete, allt på ett ställe.",
+    "CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Skapa en exceptionell kundupplevelse där du kan föra konversationer med dina kunder över flera kanaler",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Effektivitet är allt när det kommer till kundnöjdhet. Att ha en samling lättillgängliga, “bearbetade svar“ kan ge dig en stor fördel när du svarar på en kundförfrågan i en livechattsession eller bara tar upp vanliga frågor.",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",

@@ -2289,6 +2289,8 @@
     "AvailableFromThePlan":"{{plan_name}} planından edinilebilir",
     "AvailableWithThePlan":"Tillgänglig med planen {{plan_name}}",
     "FeatureAvailableOnlyWithPaidPlans":"Özellik yalnızca ücretli planlarda mevcuttur",
+    "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Ekibinizde olan bitenden her zaman haberdar olun. İzleme (Ekip Gelen Kutusu), akıllı işbirliği için ihtiyaç duyduğunuz her şeyi tek bir yerde sunar.",
+    "CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Müşterilerinizle birden çok kanalda iletişim kurabileceğiniz olağanüstü bir müşteri deneyimi yaratın",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Müşteri memnuniyeti söz konusu olduğunda verimlilik her şeydir. Hazır yanıtlardan oluşan bir koleksiyona sahip olmak, canlı bir sohbet oturumunda bir müşteri sorgusuna katılırken veya yalnızca sık sorulan soruları yanıtlarken size büyük avantaj sağlayabilir.",
     "AddIntentPage": {
         "AddForm": "Form ekle",

@@ -2289,6 +2289,8 @@
     "AvailableFromThePlan": "{{plan_name}} rejasidan mavjud",
     "AvailableWithThePlan":"{{plan_name}} tarif rejasida mavjud",
     "FeatureAvailableOnlyWithPaidPlans":"Funksiya faqat pulli tariflarda mavjud",
+    "MonitorGivesYouWhatYouNeedForSmartCollaboration":"Jamoangizda sodir bo'layotgan voqealardan doimo xabardor bo'lib turing. Monitor (Team Inbox) sizga aqlli hamkorlik uchun kerak bo'lgan narsalarni bir joyda taqdim etadi.",
+    "CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Mijozlaringiz bilan bir nechta kanallar bo'ylab suhbatlar o'tkazishingiz mumkin bo'lgan ajoyib mijozlar tajribasini yarating",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Mijozlarning qoniqishi haqida gap ketganda, samaradorlik hamma narsadir. Oson mavjud bo'lgan “konservalangan javoblar“ to'plamiga ega bo'lish jonli chat sessiyasida mijozlar so'roviga qatnashish yoki shunchaki tez-tez so'raladigan savollarga javob berishda sizga katta ustunlik berishi mumkin.",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",

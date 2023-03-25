@@ -2289,6 +2289,8 @@
     "AvailableFromThePlan":"Disponible à partir du forfait {{plan_name}}",
     "AvailableWithThePlan":"Disponible avec le forfait {{plan_name}}",
     "FeatureAvailableOnlyWithPaidPlans":"Fonctionnalité disponible uniquement avec les forfaits payants",
+    "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Restez informé de ce qui se passe dans votre équipe à tout moment. Monitor (Team Inbox) vous donne tout ce dont vous avez besoin pour une collaboration intelligente, le tout en un seul endroit.",
+    "CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Créez une expérience client exceptionnelle où vous pouvez avoir des conversations avec vos clients sur plusieurs canaux",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"L'efficacité est primordiale lorsqu'il s'agit de la satisfaction du client. Avoir une collection de “réponses prédéfinies“ facilement disponibles peut vous donner un grand avantage lorsque vous répondez à une demande d'un client lors d'une session de chat en direct ou que vous répondez simplement aux questions fréquemment posées.",
     "AddIntentPage": {
         "AddForm": "Ajouter le formulaire",

@@ -2289,6 +2289,8 @@
     "AvailableFromThePlan":"Disponible desde el plan {{plan_name}}",
     "AvailableWithThePlan":"Disponible con el plan {{plan_name}}",
     "FeatureAvailableOnlyWithPaidPlans":"Feature available only with paid plans",
+    "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Manténgase informado sobre lo que sucede en su equipo todo el tiempo. Monitor (Bandeja de entrada del equipo) le brinda lo que necesita para una colaboración inteligente, todo en un solo lugar.",
+    "CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Cree una experiencia de cliente excepcional donde pueda tener conversaciones con sus clientes a través de múltiples canales",
     "HavingCannedResponsesCanPutYouGreatAdvantage": "La eficiencia lo es todo cuando se trata de la satisfacción del cliente. Tener una colección de “respuestas enlatadas“ fácilmente disponibles puede brindarle una gran ventaja cuando atiende una consulta de un cliente en una sesión de chat en vivo o simplemente responde preguntas frecuentes.",
     "AddIntentPage": {
         "AddForm": "Agregar forma",

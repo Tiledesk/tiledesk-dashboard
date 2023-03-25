@@ -2289,6 +2289,8 @@
     "AvailableFromThePlan":"Доступно з тарифного плану {{plan_name}}",
     "AvailableWithThePlan":"Доступно з планом {{plan_name}}",
     "FeatureAvailableOnlyWithPaidPlans":"Функція доступна лише з платними планами",
+    "MonitorGivesYouWhatYouNeedForSmartCollaboration":"Завжди будьте в курсі подій у вашій команді. Monitor (Team Inbox) надає все, що вам потрібно для розумної співпраці, в одному місці.",
+    "CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Створіть виняткову взаємодію з клієнтами, де ви можете спілкуватися зі своїми клієнтами через кілька каналів",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Ефективність — це все, коли йдеться про задоволення клієнтів. Наявність колекції готових «консервованих відповідей» може дати вам велику перевагу під час обробки запитів клієнтів у сеансі живого чату або просто відповіді на поширені запитання.",
     "AddIntentPage": {
         "AddForm": "Додати форму",

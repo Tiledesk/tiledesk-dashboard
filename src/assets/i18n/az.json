@@ -2289,6 +2289,8 @@
     "AvailableFromThePlan":"{{plan_name}} planından əlçatandır",
     "AvailableWithThePlan":"{{plan_name}} planı ilə əlçatandır",
     "FeatureAvailableOnlyWithPaidPlans":"Funksiya yalnız ödənişli planlarla mövcuddur",
+    "MonitorGivesYouWhatYouNeedForSmartCollaboration":"Komandanızda hər zaman baş verənlərdən xəbərdar olun. Monitor (Komanda Gələnlər Qutusu) sizə ağıllı əməkdaşlıq üçün lazım olanı bir yerdə verir.",
+    "CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Müştərilərinizlə bir çox kanalda söhbət edə biləcəyiniz müstəsna müştəri təcrübəsi yaradın",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Müştəri məmnuniyyətinə gəldikdə, səmərəlilik hər şeydir. Asanlıqla əldə edilə bilən “konservləşdirilmiş cavablar” kolleksiyasına sahib olmaq canlı söhbət sessiyasında müştəri sorğusuna qatılarkən və ya sadəcə tez-tez verilən suallara cavab verərkən sizə böyük üstünlük verə bilər.",
     "AddIntentPage": {
         "AddForm": "Forma vermək",

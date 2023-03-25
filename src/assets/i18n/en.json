@@ -2289,6 +2289,8 @@
     "AvailableFromThePlan": "Available from the {{plan_name}} plan",
     "AvailableWithThePlan":"Available with the {{plan_name}} plan",
     "FeatureAvailableOnlyWithPaidPlans":"Feature available only with paid plans",
+    "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Stay informed on what's happening in your team all the time. Monitor (Team Inbox) gives you what you need for smart collaboration, all in one place",
+    "CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Create an exceptional customer experience where you can have conversations with your customers across multiple channels",
     "HavingCannedResponsesCanPutYouGreatAdvantage": "Efficiency is everything when it comes to customer satisfaction. Having a collection of readily available, “canned responses” can put you at a great advantage when attending to a customer inquiry in a live chat session or just addressing frequently asked questions.",
     "AddIntentPage": {
         "AddForm": "Add form",
