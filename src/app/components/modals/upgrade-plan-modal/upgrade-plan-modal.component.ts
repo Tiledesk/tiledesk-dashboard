@@ -12,6 +12,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 })
 export class UpgradePlanModalComponent implements OnInit {
   tparams: any;
+  
   id_project: string;
   USER_ROLE: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
@@ -27,6 +28,7 @@ export class UpgradePlanModalComponent implements OnInit {
   ) { 
     console.log('[UPGRADE-PLAN-MODAL] data ', data)
     this.tparams = {'plan_name': data.featureAvailableFrom}
+   
     this.id_project = data.projectId;
     this.USER_ROLE = data.userRole
     console.log('[UPGRADE-PLAN-MODAL] data > USER_ROLE  ',  this.USER_ROLE)

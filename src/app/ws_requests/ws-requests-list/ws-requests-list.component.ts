@@ -42,6 +42,9 @@ const swal = require('sweetalert');
 })
 export class WsRequestsListComponent extends WsSharedComponent implements OnInit, AfterViewInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
+  trial_expired: string;
+  profile_name: string;
+  subscription_end_date: any;
 
   CHAT_BASE_URL: string;
 
@@ -162,8 +165,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   learnMoreAboutDefaultRoles: string;
   featureIsAvailableWithTheProPlan: string;
 
-  prjct_profile_name: string;
-  subscription_end_date: any;
+
+  
 
   public_Key: string;
   isVisibleSmartAssignOption: boolean;
@@ -321,7 +324,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
-
+        this.trial_expired = projectProfileData.trial_expired
+        this.profile_name = projectProfileData.profile_name;
+        this.subscription_end_date = projectProfileData.subscription_end_date;
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
           this.DISPLAY_OPH_AS_DISABLED = true;
@@ -900,16 +905,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     //   this.presentModalAgentCannotManageAvancedSettings();
     // }
 
-    if (this.prjct_profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
+    if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
       if (this.CURRENT_USER_ROLE === 'owner') {
         // console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Advanced');
         this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
       } else {
         this.presentModalAgentCannotManageAvancedSettings()
       }
-    } else if (this.prjct_profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
+    } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
       this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
-    } else if (this.prjct_profile_name !== PLAN_NAME.C) {
+    } else if (this.profile_name !== PLAN_NAME.C) {
       this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
     }
   }

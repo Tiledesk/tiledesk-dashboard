@@ -62,6 +62,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   @ViewChild("multilanguage", { static: false }) multilanguageRef: ElementRef;
   @ViewChild(NgSelectComponent, { static: false }) ngSelectComponent: NgSelectComponent;
   tparams: any;
+  t_params: any;
   company_name: any;
   company_site_url: any;
   TESTSITE_BASE_URL: string;
@@ -386,6 +387,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.tparams = brand;
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
+    this.t_params= {'plan_name': PLAN_NAME.B}
   }
 
   ngOnInit() {
@@ -576,15 +578,19 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             (this.profile_name === PLAN_NAME.A) ||
             (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
             (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-            (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true)
+            (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) 
+           
             ) {
             this.featureIsAvailable = false;
+            console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
           } else if (
             (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
             (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
             (this.prjct_profile_type === 'free' && this.prjct_trial_expired === false)
+           
             ) {
               this.featureIsAvailable = true;
+              console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
             }
  
 

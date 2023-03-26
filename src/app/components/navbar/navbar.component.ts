@@ -36,7 +36,7 @@ import { Subscription } from 'rxjs'
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import { URL_understanding_default_roles } from '../../utils/util';
+import { PLAN_NAME, URL_understanding_default_roles } from '../../utils/util';
 
 const swal = require('sweetalert');
 
@@ -48,12 +48,15 @@ const swal = require('sweetalert');
 })
 export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
 
+  PLAN_NAME = PLAN_NAME
+
   URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   // tparams = brand;
   tparams: any;
+  translationParams: any;
 
   // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
   public_Key: string;
@@ -175,6 +178,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.translationParams = { plan_name: PLAN_NAME.B }
 
 
     this.location = location;
@@ -740,7 +744,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
+      console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_profile_name = projectProfileData.profile_name;
         this.profile_name = projectProfileData.profile_name;
@@ -764,15 +768,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         } else if (this.prjct_trial_expired === true) {
           this.prjc_trial_days_left_percentage = 100;
         }
-        if (this.prjct_profile_type === 'payment') {
-          this.logger.log('[NAVBAR] browserLang ', this.browserLang);
-          this.getPaidPlanTranslation(projectProfileData.profile_name);
-          // if (this.browserLang === 'it') {
-          //     this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
-          // } else if (this.browserLang !== 'it') {
-          //     this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
-          // }
-        }
+        // if (this.prjct_profile_type === 'payment') {
+        //   this.logger.log('[NAVBAR] browserLang ', this.browserLang);
+        //   this.getPaidPlanTranslation(projectProfileData.profile_name);
+        // }
       }
     }, error => {
       this.logger.error('[NAVBAR] - getProjectPlan - ERROR', error);
@@ -781,13 +780,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     });
   }
 
-  getPaidPlanTranslation(project_profile_name) {
-    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-      .subscribe((text: string) => {
-        this.prjct_profile_name = text;
-        this.logger.log('+ + + PaydPlanName ', text)
-      });
-  }
+  // getPaidPlanTranslation(project_profile_name) {
+  //   this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+  //     .subscribe((text: string) => {
+  //       this.prjct_profile_name = text;
+  //       this.logger.log('+ + + PaydPlanName ', text)
+  //     });
+  // }
 
   /**
    * *! ############ CANCEL SUBSCRIPTION ############ !*

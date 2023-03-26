@@ -909,15 +909,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToProjectSettings_Security() {
     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Security');
-    if (this.prjct_profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
+    if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
       if (this.USER_ROLE === 'owner') {
         this.router.navigate(['project/' + this.id_project + '/project-settings/security'])
       } else {
         this.presentModalAgentCannotManageAvancedSettings()
       }
-    } else if (this.prjct_profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
+    } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
       this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
-    } else if (this.prjct_profile_name !== PLAN_NAME.C) {
+    } else if (this.profile_name !== PLAN_NAME.C) {
       this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
     }
   }
@@ -1016,7 +1016,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+     console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
@@ -2290,12 +2290,48 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToWebhookPage() {
+    this.logger.log("[PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE > ProjectID: ", this.id_project);
+    console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE prjct_profile_type: ', this.prjct_profile_type)
+    console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE prjct_profile_name: ', this.prjct_profile_name)
+    console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE PLAN_NAME.A : ', PLAN_NAME.A)
+    console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE PLAN_NAME.B : ', PLAN_NAME.B)
+    console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE PLAN_NAME.C : ', PLAN_NAME.C)
+    console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE subscription_is_active: ', this.subscription_is_active)
+
     if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === false) {
-      this.presentModalFeautureAvailableOnlyWithPaidPlans()
-    } else {
-      this.logger.log("[PRJCT-EDIT-ADD] Navigate to Webhook with the ProjectID: ", this.id_project);
+      console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN B TRIAL ')
       this.router.navigate(['project/' + this.id_project + '/webhook']);
     }
+    if (this.profile_name == PLAN_NAME.A && this.subscription_is_active === true) {
+      console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN A ACTIVE ')
+      this.router.navigate(['project/' + this.id_project + '/webhook']);
+    }
+    if (this.profile_name == PLAN_NAME.B && this.subscription_is_active === true) {
+      console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN B ACTIVE ')
+      this.router.navigate(['project/' + this.id_project + '/webhook']);
+    }
+    if (this.profile_name == PLAN_NAME.C && this.subscription_is_active === true) {
+      console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
+      this.router.navigate(['project/' + this.id_project + '/webhook']);
+
+
+    } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+      console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN FREE FOREVER - PRESENT MODAL ')
+      this.presentModalFeautureAvailableOnlyWithPaidPlans()
+    } else if (this.profile_name == PLAN_NAME.A && this.subscription_is_active === false) {
+      console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN A EXPIRED - PRESENT MODAL ')
+      this.presentModalFeautureAvailableOnlyWithPaidPlans()
+    } else if (this.profile_name == PLAN_NAME.B && this.subscription_is_active === false) {
+      console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN B EXPIRED - PRESENT MODAL ')
+      this.presentModalFeautureAvailableOnlyWithPaidPlans()
+    } else if (this.profile_name == PLAN_NAME.C && this.subscription_is_active === false) {
+      console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
+      this.presentModalFeautureAvailableOnlyWithPaidPlans()
+    }
+
+
+
+    
   }
 
   presentModalFeautureAvailableOnlyWithPaidPlans() {

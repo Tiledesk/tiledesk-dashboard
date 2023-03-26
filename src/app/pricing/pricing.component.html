@@ -80,14 +80,14 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                   </span>
                 </p>
                 <span size="8" class="css-1sx5jt9 e1soz8mc0 span-8"> </span>
-                
-                  <div class="highlighted-features-wpr">
-                    <span *ngFor="let feature of highlightedFeatures"
-                      class="highlighted-features" [ngStyle]="{'color': feature.color, 'background-color':  feature.background}">
-                      <div class="highlighted-feature"> {{feature.feature}} </div>
-                    </span>
-                  </div>
-                
+
+                <div class="highlighted-features-wpr">
+                  <span *ngFor="let feature of highlightedFeatures" class="highlighted-features"
+                    [ngStyle]="{'color': feature.color, 'background-color':  feature.background}">
+                    <div class="highlighted-feature"> {{feature.feature}} </div>
+                  </span>
+                </div>
+
                 <span size="16" class="css-1sx5jt9 e1soz8mc0 span-16"> </span>
                 <div class="css-w1ej1e eaklcf32 plan-features">
                   <ul class="css-1b45418 eaklcf34 plan-features-wpr">
@@ -312,16 +312,58 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                 </button> -->
               </div> <!-- right-content -->
             </div>
-            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.A" (click)="openPaymentLinkMontlyPlanA()">
-              <button id="monthly-plan-a" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+            <!-- --------------------- -->
+            <!-- Plan A Montly -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.A"
+              (click)="openPaymentLinkMontlyPlanA()">
+              <button id="monthly-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Go to checkout </span>
               </button>
             </div>
-            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.A"  (click)="openPaymentLinkAnnuallyPlanA()">
-              <button id="annually-plan-a" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+            <!-- --------------------- -->
+            <!-- Plan A Annually -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.A"
+              (click)="openPaymentLinkAnnuallyPlanA()">
+              <button id="annually-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Go to checkout </span>
               </button>
             </div>
+            <!-- --------------------- -->
+            <!-- Plan B Montly -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.B"
+              (click)="openPaymentLinkMontlyPlanB()">
+              <button id="monthly-plan-b" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan B Annually -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.B"
+              (click)="openPaymentLinkAnnuallyPlanB()">
+              <button id="annually-plan-b" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan C  -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" (click)="openPaymentLinkPlanC()">
+              <button id="plan-c" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+
 
             <span size="20" class="css-g4vijh e1soz8mc0"></span>
             <!-- <div data-testid="automation" class="css-4lq111 e194a3xf5">

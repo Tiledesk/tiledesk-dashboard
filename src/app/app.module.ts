@@ -318,6 +318,10 @@ import { CloneBotComponent } from './bots/bots-list/clone-bot/clone-bot.componen
 import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component';
 import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component';
 import { UpgradePlanModalComponent } from './components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
+import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
+import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
+
+
 
 
 
@@ -564,7 +568,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CloneBotComponent,
     ContactsStaticComponent,
     CannedResponsesStaticComponent,
-    UpgradePlanModalComponent
+    UpgradePlanModalComponent,
+    WsrequestsStaticComponent,
+    EmailTicketingStaticComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

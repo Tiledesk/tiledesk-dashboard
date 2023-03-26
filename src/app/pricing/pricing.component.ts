@@ -113,6 +113,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   highlightedFeatures = []
   projectCurrenPlan: string;
   clientReferenceIdForPlanA: string;
+  clientReferenceIdForPlanB: string;
+  clientReferenceIdForPlanC: string;
   browser_lang: string;
   // company_name = brand.company_name;
   company_name: string;
@@ -225,11 +227,48 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
 
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.logger.log('[PRICING] - project ', project)
+        this.projectId = project._id;
+        this.logger.log('[PRICING] - projectId ', this.projectId)
+        this.projectName = project.name;
+
+        if (this.projectId) {
+          this.getCurrentUser();
+        }
+      }
+    });
+  }
+
+  getCurrentUser() {
+    const user = this.auth.user_bs.value
+
+    this.logger.log('[PRICING]  Component user ', user);
+    if (user) {
+      this.currentUserID = user._id
+      this.currentUserEmail = user.email
+      this.logger.log('[PRICING] USER UID ', this.currentUserID);
+      this.logger.log('[PRICING] USER email ', this.currentUserEmail);
+
+      this.clientReferenceIdForPlanA = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.A
+      console.log('[PRICING] clientReferenceIdForPlanA ', this.clientReferenceIdForPlanA)
+      this.clientReferenceIdForPlanB = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.B
+      console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanB)
+      this.clientReferenceIdForPlanC = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.C
+      console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanC)
+    } else {
+      // this.logger.log('No user is signed in');
+    }
+  }
+
   // ----------------- new 
   openPaymentLinkMontlyPlanA() {
+    console.log('[PRICING] PLAN A Montly') 
     // if (this.projectCurrenPlan === "free") {
-      const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
-      window.open(url, '_blank');
+    const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+    window.open(url, '_blank');
     // } else {
     //   console.log('selectedPeriod > openPaymentLinkMontlyPlanA projectCurrenPlan', this.projectCurrenPlan)
     //   console.log('selectedPeriod > openPaymentLinkMontlyPlanA planName', this.planName)
@@ -243,25 +282,38 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
 
-
-
-
   openPaymentLinkAnnuallyPlanA() {
-    // if (this.projectCurrenPlan === "free") {
-      const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
-      window.open(url, '_blank');
-    // } else {
-    //   console.log('selectedPeriod > openPaymentLinkAnnuallyPlanA projectCurrenPlan', this.projectCurrenPlan)
-    //   console.log('selectedPeriod > openPaymentLinkAnnuallyPlanA planName', this.planName)
-    //   console.log('selectedPeriod > openPaymentLinkAnnuallyPlanA monthlyPeriod',  this.monthlyPeriod)
-    //   console.log('selectedPeriod > openPaymentLinkAnnuallyPlanA annualPeriod',  this.annualPeriod)
-
-    //   // price Annually price_1Mnhm7D1JyUWkzR9xv9WbV9C Scale Plan
-    //   const PlanBAnnuallyPrice = 'price_1Mnhm7D1JyUWkzR9xv9WbV9C'
-    //   this.updatesubscription(PlanBAnnuallyPrice)
-    // }
+    console.log('[PRICING] PLAN A Annually') 
+    const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+    window.open(url, '_blank');
   }
-  
+
+
+  // -------------------------------
+  // PLAN B 
+  // -------------------------------
+  openPaymentLinkMontlyPlanB() {
+    // if (this.projectCurrenPlan === "free") {
+      console.log('[PRICING] PLAN B Montly') 
+    const url = `https://buy.stripe.com/test_7sI6pkce24T0d8YdQT?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+    window.open(url, '_blank');
+
+  }
+
+
+  openPaymentLinkAnnuallyPlanB() {
+    console.log('[PRICING] PLAN B Annually') 
+    const url = `https://buy.stripe.com/test_fZeeVQ6TI85cglabIK?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+    window.open(url, '_blank');
+  }
+
+  openPaymentLinkPlanC() {
+    console.log('[PRICING] PLAN C')
+    const url = `https://buy.stripe.com/test_4gw1502Ds5X4ed26ot?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
+    window.open(url, '_blank');
+  }
+ 
+
   updatesubscription(price) {
     this.projectService.updatesubscription(price).subscribe((updatesubscription: any) => {
       this.logger.log('[PRICING] - updatesubscription RES ', updatesubscription);
@@ -342,37 +394,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      if (project) {
-        this.logger.log('[PRICING] - project ', project)
-        this.projectId = project._id;
-        this.logger.log('[PRICING] - projectId ', this.projectId)
-        this.projectName = project.name;
 
-        if (this.projectId) {
-          this.getCurrentUser();
-        }
-      }
-    });
-  }
-
-  getCurrentUser() {
-    const user = this.auth.user_bs.value
-
-    this.logger.log('[PRICING]  Component user ', user);
-    if (user) {
-      this.currentUserID = user._id
-      this.currentUserEmail = user.email
-      this.logger.log('[PRICING] USER UID ', this.currentUserID);
-      this.logger.log('[PRICING] USER email ', this.currentUserEmail);
-
-      this.clientReferenceIdForPlanA = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.A
-      console.log('[PRICING] clientReferenceIdForPlanA ', this.clientReferenceIdForPlanA)
-    } else {
-      // this.logger.log('No user is signed in');
-    }
-  }
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
@@ -815,8 +837,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   }
 
- 
- 
+
+
 
 
 

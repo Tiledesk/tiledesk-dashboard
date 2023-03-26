@@ -171,7 +171,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.getAvailableProjectUsersByProjectId();
 
     this.getUserRole();
-    // this.getProjectPlan(); // nk 
+    // this.getProjectPlan(); 
     // this.getVisitorCounter();
     this.getOSCODE();
     this.checkPromoURL()
@@ -180,9 +180,34 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.diplayPopup();
     // this.startChabgelogAnimation()
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
-
     // this.getPromoBanner()
   }
+
+  // getProjectPlan() {
+  //   this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+  //     console.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
+  //     if (projectProfileData) {
+  //       this.prjct_profile_name = projectProfileData.profile_name;
+  //       this.profile_name = projectProfileData.profile_name;
+  //       this.prjct_trial_expired = projectProfileData.trial_expired;
+
+  //       this.prjct_profile_type = projectProfileData.profile_type;
+  //       this.subscription_end_date = projectProfileData.subscription_end_date;
+  //       this.subscription_is_active = projectProfileData.subscription_is_active;
+  //       // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
+
+  //       if() {
+
+  //       }
+
+
+  //     }
+  //   }, error => {
+  //     this.logger.error('[HOME] - getProjectPlan - ERROR', error);
+  //   }, () => {
+  //     this.logger.log('[HOME] - getProjectPlan - COMPLETE')
+  //   });
+  // }
 
   // getPromoBanner() {
   //   this.projectService.getPromoBanner().subscribe((res: any) => {
@@ -294,7 +319,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.getProjects().subscribe((projects: any) => {
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-     console.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
+      console.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
       const projectProfileData = this.current_selected_prjct.id_project.profile
 
       this.prjct_name = this.current_selected_prjct.id_project.name;
@@ -323,12 +348,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (this.prjct_profile_type === 'free') {
         if (this.prjct_trial_expired === false) {
+
+          this.isVisibleANA = true
+
           this.logger.log('[HOME] Find Current Project Among All BRS-LANG 2 ', this.browserLang);
           this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
           this.prjct_profile_name = PLAN_NAME.B + " (trial)"
           // this.getProPlanTrialTranslation();
 
         } else {
+          this.isVisibleANA = false;
+
           this.profile_name_for_segment = "Free"
           this.prjct_profile_name = "Free plan";
           // this.getPaidPlanTranslation(this.prjct_profile_name);
@@ -341,13 +371,28 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.logger.log('[HOME] Find Current Project Among All BRS-LANG 4 ', this.browserLang);
         if (this.prjct_profile_name === PLAN_NAME.A) {
           this.prjct_profile_name = PLAN_NAME.A + ' plan'
-          this.profile_name_for_segment =  PLAN_NAME.A
-        } else if (this.prjct_profile_name ===  PLAN_NAME.B) {
+          this.profile_name_for_segment = PLAN_NAME.A
+
+          this.isVisibleANA = false;
+
+
+        } else if (this.prjct_profile_name === PLAN_NAME.B) {
           this.prjct_profile_name = PLAN_NAME.B + ' plan'
           this.profile_name_for_segment = PLAN_NAME.B
-        } else if (this.prjct_profile_name ===  PLAN_NAME.C) {
+          if (this.subscription_is_active) {
+            this.isVisibleANA = true;
+          } else {
+            this.isVisibleANA = true;
+          }
+
+        } else if (this.prjct_profile_name === PLAN_NAME.C) {
           this.prjct_profile_name = PLAN_NAME.C + ' plan'
           this.profile_name_for_segment = PLAN_NAME.C
+          if (this.subscription_is_active) {
+            this.isVisibleANA = true;
+          } else {
+            this.isVisibleANA = true;
+          }
         }
       }
       const projectCreatedAt = this.current_selected_prjct.id_project.createdAt
@@ -413,7 +458,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           } catch (err) {
             this.logger.error('group Home error', err);
           }
-        } 
+        }
         // else {
         //   this.logger.error('group Home window[analytics]', window['analytics']);
         // }
@@ -1198,7 +1243,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goToProjectSettingsGeneral() {
     this.router.navigate(['project/' + this.projectId + '/project-settings/general']);
-  } 
+  }
 
 
 

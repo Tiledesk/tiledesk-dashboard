@@ -1150,7 +1150,8 @@
 											</svg>
 										</div>
 										<h4 class="widget-section-header__title-underlined">
-											Unbranding <span class="pro-only-badge" *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true"> {{'ProOnly' | translate }}
+											Unbranding <span class="from-plan-badge" *ngIf="featureIsAvailable === false">
+												{{'AvailableFromThePlan' | translate: t_params }}
 											</span>
 										</h4>
 									</div>
@@ -1160,9 +1161,8 @@
 										</i>
 									</div>
 								</button>
-								<div class="widget-section-container"
-									[ngClass]="{'feature-not-available' : prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true}"
-									style="height: auto; transition-duration: 0.613s;">
+								<div class="widget-section-container" 
+								[ngClass]="{'feature-not-available' : featureIsAvailable === false}" style="height: auto; transition-duration: 0.613s;">
 									<div class="section-offset">
 										<!-- ---------------------------------------------	 -->
 										<!-- Upgrade plan to get Unbranding features -->
@@ -1171,12 +1171,11 @@
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
 
 											<div class="col-xs-12">
-												<button class="btn btn-get-feature-no-boxshadow pull-right" style="margin-bottom: 0px;"
-													*ngIf="(profile_name === PLAN_NAME.A) || 
+												<button class="btn btn-get-feature-no-boxshadow pull-right"
+													style="margin-bottom: 0px;" *ngIf="(profile_name === PLAN_NAME.A) || 
 													(profile_name === PLAN_NAME.B && subscription_is_active === false) || 
 													(profile_name === PLAN_NAME.C && subscription_is_active === false) ||
-													(prjct_profile_type === 'free' && prjct_trial_expired === true)"
-													(click)="goToPricing()"
+													(prjct_profile_type === 'free' && prjct_trial_expired === true)" (click)="goToPricing()"
 													matTooltipClass="custom-mat-tooltip-in-widget-setup"
 													matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}"
 													#tooltip="matTooltip" matTooltipPosition='below'
@@ -1202,8 +1201,7 @@
 													matTooltip=" {{'ToCustomizeTheWidgetFooterWithYourBrand' | translate}}"
 													#tooltip="matTooltip" matTooltipPosition='below'
 													matTooltipHideDelay="100">
-													<i class="material-icons"
-														style="font-size: 18px;
+													<i class="material-icons" style="font-size: 18px;
 														color: #566787;
 														cursor: pointer;
 														vertical-align: middle;">
@@ -1216,8 +1214,7 @@
 											<div class="col-sm-12">
 												<textarea (focus)="onFocusFooterBranding()" [(ngModel)]="footerBrand"
 													(ngModelChange)="onChangeFooterBrand($event)" rows="3"
-													class="widget-setup-texarea"
-													[disabled]="(profile_name === PLAN_NAME.A) || 
+													class="widget-setup-texarea" [disabled]="(profile_name === PLAN_NAME.A) || 
 													(profile_name === PLAN_NAME.B && subscription_is_active === false) || 
 													(profile_name === PLAN_NAME.C && subscription_is_active === false) ||
 													(prjct_profile_type === 'free' && prjct_trial_expired === true)">	</textarea>
@@ -1232,7 +1229,7 @@
 										<!-- Custom launcher -->
 										<!-- ---------------------------------------- -->
 										<div class="form-group"
-											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px; margin-top: 12px!important;"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 12px!important;"
 											[ngClass]="{'custom-launcher-feature-not-available' : prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true}">
 											<label class="col-xs-12 control-label widget-settings-control-head-label"
 												style="white-space: nowrap;">
@@ -1250,7 +1247,7 @@
 													</i>
 												</span>
 											</label>
-								
+
 											<div class="col-sm-12">
 												<div class="wrapper-custom-launcher" style="margin-top: 3px;">
 													<!-- ------------------------------------------- -->
@@ -1361,7 +1358,7 @@
 																		style="font-weight: 400;max-width: 100% !important;"
 																		[ngClass]="{'image-not-exist-input-border' : CUSTOM_LAUNCHER_LOGO_EXIST === false}"
 																		placeholder="{{ 'EnterTheURLOfTheLauncherButtonImage' | translate }}"
-																		[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">
+																		[disabled]="featureIsAvailable === false">
 
 																	<span *ngIf="IMAGE_EXIST === false"
 																		style="color:#f44336; display: block;font-size: 12px;">
@@ -1505,14 +1502,14 @@
 										<!-- ------------------------------------- -->
 										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
-										
+
 											<div class="col-sm-12">
-										
+
 												<button class="btn btn-success-no-boxshadow  footerbrand-save-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveFooterBrandAndLauncherBtn()"
 													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">
-												{{ 'UpdateWidget' | translate }}
+													{{ 'UpdateWidget' | translate }}
 												</button>
 											</div>
 										</div>
@@ -2848,8 +2845,7 @@
 
 
 										<appdashboard-widget-chat *ngIf="DISPLAY_WIDGET_CHAT"
-											[primaryColor]="primaryColor" 
-											[secondaryColor]="secondaryColor"
+											[primaryColor]="primaryColor" [secondaryColor]="secondaryColor"
 											[themeColorOpacity]="themeColorOpacity"
 											[HAS_FOCUSED_ONLINE_MSG]="HAS_FOCUSED_ONLINE_MSG"
 											[HAS_FOCUSED_OFFLINE_MSG]="HAS_FOCUSED_OFFLINE_MSG"
@@ -2863,10 +2859,8 @@
 										</appdashboard-widget-chat>
 
 										<appdashboard-widget-prechat-form *ngIf="DISPLAY_WIDGET_PRECHAT_FORM"
-											[primaryColor]="primaryColor" 
-											[secondaryColor]="secondaryColor"
-											[themeColorOpacity]="themeColorOpacity"
-											[newConversation]="newConversation"
+											[primaryColor]="primaryColor" [secondaryColor]="secondaryColor"
+											[themeColorOpacity]="themeColorOpacity" [newConversation]="newConversation"
 											[preChatFormCustomFieldsEnabled]="preChatFormCustomFieldsEnabled"
 											[prechatFormArray]="prechatFormArray"
 											[prechatFormTexareaJson]="prechatFormTexareaJson"

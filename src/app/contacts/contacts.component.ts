@@ -7,7 +7,7 @@ import { Contact } from '../models/contact-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { NotifyService } from '../core/notify.service';
-import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
 import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
@@ -22,6 +22,12 @@ const swal = require('sweetalert');
   styleUrls: ['./contacts.component.scss'],
 })
 export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
+ 
+  PLAN_NAME = PLAN_NAME;
+  profile_name: string;
+  upgradePlan: string;
+  cancel: string;
+  featureAvailableFromBPlan: string;
 
   public colours = [
     '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085',
@@ -238,6 +244,21 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.moveToTrash_msg = text;
       });
 
+      this.translate.get('Pricing.UpgradePlan')
+      .subscribe((translation: any) => {
+        this.upgradePlan = translation;
+      });
+
+    this.translate.get('Cancel')
+      .subscribe((translation: any) => {
+        this.cancel = translation;
+      });
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromBPlan = translation;
+      });
+
     this.translatePlaceholder();
 
   }
@@ -272,7 +293,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       this.logger.log('[CONTACTS-COMP] getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
-
+        this.profile_name = projectProfileData.profile_name
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
 
@@ -874,19 +895,41 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   exportContactsToCsv() {
-    this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
-      this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
 
-      // this.logger.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
-      if (leads_object) {
-        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
-        this.downloadFile(leads_object);
+    if (this.payIsVisible) {
+      if (
+        (this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.trial_expired === true)
+        
+      ) {
+        this.presentModalFeautureAvailableOnlyWithPaidPlans() 
+        console.log('[CONTACTS-COMP] -  EXPORT DATA IS NOT AVAILABLE ')
+      } else if (
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
+        (this.prjct_profile_type === 'free' && this.trial_expired === false)
+
+      ) {
+        this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
+          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
+          if (leads_object) {
+            this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
+            this.downloadFile(leads_object);
+          }
+        }, (error) => {
+          this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
+        }, () => {
+          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
+        });
+        console.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
       }
-    }, (error) => {
-      this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
-    }, () => {
-      this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
-    });
+
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
+
 
     // if (this.payIsVisible) {
     //   if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
@@ -914,6 +957,31 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     //   this.notify._displayContactUsModal(true, 'upgrade_plan');
     // }
   }
+
+  presentModalFeautureAvailableOnlyWithPaidPlans() {
+    const el = document.createElement('div')
+    el.innerHTML = this.featureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        console.log('featureAvailableFromBPlan value', value)
+        this.router.navigate(['project/' + this.projectId + '/pricing']);
+      }
+    });
+  }
+
 
   downloadFile(data) {
     const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });

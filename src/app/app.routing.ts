@@ -136,6 +136,8 @@ import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
 import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component';
+import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
+import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
 
 
 
@@ -239,7 +241,8 @@ const routes: Routes = [
   /**
    * if change wsrequest search for all occurrence - 
    * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages */
-  { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/wsrequests-demo', component: WsrequestsStaticComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/request-for-panel/:requestid', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
 
@@ -355,7 +358,8 @@ const routes: Routes = [
 
 
   // , ProjectProfileGuard
-  { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
   // 
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
 
@@ -364,7 +368,7 @@ const routes: Routes = [
 
   // new routing page is the edit department
   { path: 'project/:projectid/routing/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] }, // new
-  { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
+ 
 
 
 
@@ -453,8 +457,8 @@ const routes: Routes = [
   // Webhook
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/email', component: EmailTicketingComponent, canActivate: [AuthGuard] },
-
+  { path: 'project/:projectid/email', component: EmailTicketingComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
 
 
 ];
