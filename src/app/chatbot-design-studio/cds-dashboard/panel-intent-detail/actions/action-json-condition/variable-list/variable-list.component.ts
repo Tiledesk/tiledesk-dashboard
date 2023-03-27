@@ -93,7 +93,8 @@ export class VariableListComponent implements OnInit {
   }
 
   onVariableSelected(variableSelected: {name: string, value: string}){
-    this.onSelected.emit(variableSelected)
+    console.log('onVariableSelected');
+    this.onSelected.emit(variableSelected);
   }
 
   onChangeSearch(event){

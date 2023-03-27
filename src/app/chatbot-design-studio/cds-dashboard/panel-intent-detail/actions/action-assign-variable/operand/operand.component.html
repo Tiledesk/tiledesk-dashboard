@@ -1,29 +1,37 @@
-<div class="operand-wrp">
-    <div class="value-wrp">
-        <cds-textarea id="operand"
-        [textLimitBtn]="false"
-        [emoijPikerBtn]="false"
-        [setAttributeBtn]="operandForm.value.value? false: true"
-        [minRow]="1" [maxRow]="1"
-        [readonly]="operandForm.value.isVariable? true : false"
-        [control]="operandForm.get('value')"
-        (onChange)="onChangeTextArea($event)">
-        </cds-textarea>
-        <div class="flex tag" *ngIf="operandForm.value.isVariable">
-            <span class="material-icons close" (click)="clearInput()">close</span>
-            {{operandForm.value.value}}
+<div class="operand-wrp"
+    [ngClass]="{'opened' : openSlectFunction}">
+    
+    <div class="textarea-value">
+        <div class="value-wrp">
+            <label>Value</label>
+            <cds-textarea id="operand"
+                [placeholder]="operandForm.value.isVariable? '' : placeholder"
+                [textLimitBtn]="false"
+                [emoijPikerBtn]="false"
+                [text]="operandForm.value.value"
+                [setAttributeBtn]="operandForm.value.value? false : true"
+                [minRow]="1" [maxRow]="1"
+                [readonly]="operandForm.value.isVariable? true : false"
+                [control]="operandForm.get('value')"
+                (clearSelectedAttribute)="onClearSelectedAttribute()"
+                (selectedAttribute)="onSelectedAttribute($event)"
+                (changeTextarea)="onChangeTextArea($event)">
+            </cds-textarea>
         </div>
     </div>
+
+    <span class="material-icons" (click)="onToggleSelectFunction()">settings</span>
+    <div class="select-function">
+        <label>Function</label>
+        <cds-select id="selectOperand"
+            [items]="listOfFunctions"
+            [bindLabelSelect]="'name'"
+            [bindValueSelect]="'value'"
+            [placeholder]="'Apply a function to the value'"
+            [itemSelected]="operandForm.value.function"
+            [clearable]="true"
+            (onSelected)="onSelectedFunction($event)">
+        </cds-select>
+    </div>
     
-    <span class="material-icons">add</span>
-    <cds-select
-        [items]="listOfFunctions"
-        [bindLabelSelect]="'name'"
-        [bindValueSelect]="'value'"
-        [placeholder]="'Select a function'"
-        [itemSelected]="operandForm.value.function"
-        [clearable]="true"
-        (onSelected)="onSelectedFunction($event)"
-    >
-    </cds-select>
 </div>

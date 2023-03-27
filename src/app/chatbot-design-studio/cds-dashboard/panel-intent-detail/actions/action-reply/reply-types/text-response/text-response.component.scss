@@ -181,7 +181,6 @@
 .button-reply {
     position: relative;
     min-width: 100px;
-    height: $button-height-base;
     margin: 10px 5px 0;
     padding: 0 16px;
     user-select: none;
@@ -232,7 +231,6 @@
     cursor: pointer;
     font-size: 1em;
     font-weight: 400;
-    height: $button-height-base;
     line-height: $button-height-base;
     margin: 10px 5px 0;
     order: 1;
@@ -241,6 +239,7 @@
     min-width: 100px;
     width: fit-content;
 }
+
 .button-controls {
     justify-content: space-between;
     display: inline-flex;
@@ -248,7 +247,7 @@
     height: 24px;
     position: absolute;
     right: 0;
-    top: -55%;
+    top: -40%;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     .buttonsToMove{

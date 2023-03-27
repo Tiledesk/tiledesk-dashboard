@@ -9,7 +9,7 @@
     position: relative;
     height: 26px;
     padding: 0 9px 0 3px;
-    width: 100px;
+    // width: 100px;
     text-align: center;
     transition: width .3s ease-in;
     font-size: $font-size-base;
@@ -26,6 +26,7 @@
     .delay-slider{
         display: inline-block;
         opacity: 0;
+        width: 0;
         transition: opacity .2s;
     }
     .delay-range {

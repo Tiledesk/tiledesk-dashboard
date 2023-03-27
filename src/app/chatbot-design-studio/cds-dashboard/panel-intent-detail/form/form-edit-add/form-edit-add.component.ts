@@ -238,17 +238,6 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     }
   }
 
-  displayMessage(field) {
-    if (this.infoMessages[field]) {
-      this.infoMessage = this.infoMessages[field];
-      this.displayInfoMessage = true;
-    }
-    if (field === 'field_label') {
-      this.infoMessage += " " + this.markbotLabel;
-      // "You can use markbot to format your labels (https://gethelp.tiledesk.com/articles/sending-images-videos-quick-replies-and-more/)";
-    }
-
-  }
 
   save() {
     // this.logger.log('[TILEBOT-EDIT-ADD] save ')
@@ -275,10 +264,8 @@ export class FormEditAddComponent implements OnInit, OnChanges {
       // this.field.label = this.fieldLabel ? this.fieldLabel.trim() : '';
       // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
       // this.field.errorLabel = this.fieldErrorLabel ? this.fieldErrorLabel.trim() : '';
-
       this.fieldRegex = this.field.regex.toString();
       this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
-        
       this.saveAddEditForm.emit(this.field);
     }
   }
@@ -291,19 +278,42 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.closeAddEditForm.emit();
   }
 
-  onVariableSelected(variableSelected: {name: string, value: string}){
+  /** START ACTIONS CDS-TEXTAREA */
+  onSelectedAttributeParam(variableSelected: {name: string, value: string}){
     this.hasSelectedVariable = true;
     this.field.name = variableSelected.value;
-    //variableSelected.value.toString();
-    this.fieldName = variableSelected.value; //.replace(/[^A-Z0-9_]+/ig, "");
-    // console.log('onChangeParameterName', variableSelected.value);
+    this.fieldName = variableSelected.value;
   }
-
-  onClearInput() {
+  clearSelectedAttributeParam() {
     this.hasSelectedVariable = false;
     this.fieldName = '';
     this.field.name = '';
   }
+  onChangeTextAreaLabel(text: string){
+    this.field.label = text;
+    this.fieldLabel = text;
+    console.log('onChangeTextAreaLabel:: ',  this.field.label, this.fieldLabel);
+  }
+  
+  // onSelectedAttributeLabel(variableSelected: {name: string, value: string}){
+  //   this.field.label = variableSelected.value;
+  //   this.fieldLabel = variableSelected.value;
+  // }
+
+  
+  displayMessage(field) {
+    if (this.infoMessages[field]) {
+      this.infoMessage = this.infoMessages[field];
+      this.displayInfoMessage = true;
+    }
+    if (field === 'field_label') {
+      this.infoMessage += " " + this.markbotLabel;
+    }
+  }
+  /** END ACTIONS CDS-TEXTAREA */
+
+
+  
 
 
 }

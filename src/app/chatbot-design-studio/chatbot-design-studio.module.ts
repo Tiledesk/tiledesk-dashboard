@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 //MATERIAL ELEMENTS
 import { MatInputModule } from '@angular/material/input';
@@ -105,6 +106,7 @@ import { OperationComponent } from './cds-dashboard/panel-intent-detail/actions/
 import { OperandComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operand/operand.component';
 import { OperatorComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operator/operator.component';
 import { DialogComponent } from './cds-base-element/dialog/dialog.component';
+import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-function/action-assign-function.component';
 
 @NgModule({
   declarations: [
@@ -169,13 +171,15 @@ import { DialogComponent } from './cds-base-element/dialog/dialog.component';
     OperationComponent,
     OperandComponent,
     OperatorComponent,
-    DialogComponent
+    DialogComponent,
+    ActionAssignFunctionComponent
   ],
   imports: [
     A11yModule,
     CommonModule,
     DragDropModule,
     NgSelectModule,
+    PickerModule,
     TextFieldModule,
     MatSliderModule,
     MatSidenavModule,

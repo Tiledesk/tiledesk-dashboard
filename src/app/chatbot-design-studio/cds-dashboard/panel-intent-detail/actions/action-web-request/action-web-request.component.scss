@@ -140,16 +140,17 @@ textarea{
 }
 
 .cds-web-request-row-error {
-    margin: 10px 15px;
     display: flex;
     font-size: 0.8em;
     line-height: normal;
-    padding: 10px;
     border-radius: 4px;
     color: rgb(209, 47, 25);
     background: rgb(251, 227, 228);
     border-color: rgb(251, 194, 196);
     opacity: 1;
+    height: 0px;
+    padding: 0px;
+    margin: 0px;
     span{
         line-height: normal;
         min-height: 30px;
@@ -163,7 +164,11 @@ textarea{
         justify-content: center;
     }
     &.json-error-yes {
-        transition: opacity 0.6s;
+        transition-delay: 0s;
+        transition: all 0.3s;
+        height: auto;
+        padding: 10px;
+        margin: 10px 15px;
     } 
 }
 
@@ -185,14 +190,6 @@ textarea{
 
 ::ng-deep cds-textarea#assignTo {
     display: flex;
-    &.assigned {
-        textarea {
-            background: transparent;
-            padding: 0!important;
-            border: 0!important;
-            outline: 0!important;
-        }
-    }
     textarea {
         border: 1px solid rgb(118, 118, 118) !important;
         resize: none !important; 
@@ -202,7 +199,10 @@ textarea{
     }
 }
 
-
+div.value-wrp {
+    min-height: 50px;
+}
+/*
 div.value-wrp {
     position: relative;
     min-height: 40px;
@@ -215,18 +215,23 @@ div.value-wrp {
         align-items: center;
         justify-content: center;
         .close{
-            width: 17px;
-            top: -7px;
-            right: -7px;
-            font-size: 15px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
             position: absolute;
             display: flex;
+            top: -7px;
+            right: -7px;
+            width: 18px;
+            height: 18px;
+            font-size: 14px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid #ecb607;
+            color: #ecb606;
+            cursor: pointer;
+            opacity: 1;
             justify-content: center;
             align-items: center;
-            opacity: 1;
+            padding: 2px;
+            margin: 0;
             &:hover{
                 background: #ecb606;
                 color: white;
@@ -249,6 +254,7 @@ div.value-wrp {
         height: fit-content;
     }
 }
+*/
 
 
 

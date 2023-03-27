@@ -7,7 +7,7 @@ import { ActionAgent, ActionClose, ActionWebRequest,
          Message, ActionIntentConnected, ActionEmail, 
          ActionWait, ActionAssignVariable, ActionDeleteVariable, 
          ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
-         ActionChangeDepartment, ActionHideMessage, ActionJsonCondition, Expression } from 'app/models/intent-model';
+         ActionChangeDepartment, ActionHideMessage, ActionJsonCondition, Expression, ActionAssignFunction } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 
@@ -173,6 +173,10 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       let action = new ActionJsonCondition();
       action.groups.push( new Expression())
       this.logger.log('actionnnnn', action)
+      this.intentSelected.actions.push(action);
+    }
+    if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
+      let action = new ActionAssignFunction();
       this.intentSelected.actions.push(action);
     }
     

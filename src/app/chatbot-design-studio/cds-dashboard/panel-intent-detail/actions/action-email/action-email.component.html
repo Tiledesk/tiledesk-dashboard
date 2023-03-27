@@ -16,7 +16,7 @@
                     [minRow]="1"
                     [maxRow]="1"
                     popoverVerticalAlign="above" 
-                    (onChange)="onEditableDivTextChange($event, 'to')">
+                    (changeTextarea)="onEditableDivTextChange($event, 'to')">
                 </cds-textarea>
 
                 <!-- <mat-form-field class="box-textarea" appearance="fill">
@@ -42,7 +42,7 @@
                     [minRow]="1"
                     [maxRow]="1"
                     popoverVerticalAlign="above" 
-                    (onChange)="onEditableDivTextChange($event, 'subject')">
+                    (changeTextarea)="onEditableDivTextChange($event, 'subject')">
                 </cds-textarea>
             </div>
         </div>
@@ -61,7 +61,7 @@
             [emoijPikerBtn]="false"
             [text]="actionBody" 
             [minRow]="4"
-            (onChange)="onEditableDivTextChange($event, 'text')">
+            (changeTextarea)="onEditableDivTextChange($event, 'text')">
         </cds-textarea>
     </div>
 
