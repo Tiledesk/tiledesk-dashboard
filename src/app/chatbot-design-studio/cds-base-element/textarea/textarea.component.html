@@ -53,10 +53,10 @@
     </variable-list>
 </sat-popover>
 
-<emoji-mart
-*ngIf="isEmojiPickerVisible"
-class="emoji-mart"
-[style.visibility]="isEmojiPickerVisible?'visible':'hidden'"
+<!--  [style.visibility]="isEmojiPickerVisible?'visible':'hidden'" -->
+<emoji-mart *ngIf="isEmojiPickerVisible"
+class="box-emoji-mart"
+[class.picker-visible] = "isEmojiPickerVisible"
 [showPreview]="false" 
 [perLine]="emojiPerLine" 
 [include]="emojiiCategories"

@@ -45,7 +45,7 @@ export class CDSTextareaComponent implements OnInit {
   isSelected: boolean = false;
 
   public textArea: string = '';
-  public isEmojiPickerVisible: boolean;
+  public isEmojiPickerVisible: boolean = false;
   IS_ON_MOBILE_DEVICE = false;
   emojiPerLine: number = 8;
   emojiColor: string ="#ac8b2c";

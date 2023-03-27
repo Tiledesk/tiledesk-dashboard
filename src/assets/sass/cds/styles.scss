@@ -10,11 +10,58 @@ Ellips text
     overflow: hidden !important;
 }
 
-.emoji-mart {
+emoji-mart {
     border: 0;
     margin-top: 12px;
     float: right;
     ::ng-deep section.emoji-mart {
         border: 0;
+    }
+}
+
+// .emoji-mart {
+//     height: 1px;
+//     visibility: hidden;
+//     &.picker-visible {
+//         height: auto;
+//         visibility: visible;
+//     }
+// }
+/*
+.emoji-mart {
+    border: 0;
+    margin-top: 12px;
+    float: right;
+    &.picker-visible {
+        height: auto;
+        visibility: visible;
+    }
+    ::ng-deep section.emoji-mart {
+        border: 0;
+    }
+}
+*/
+
+
+
+
+
+.emoji-picker {
+    .emoji-picker-button {
+        align-items: center;
+        background: #fff;
+        border-radius: 100%;
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%);
+        cursor: pointer;
+        display: flex;
+        height: 23px;
+        justify-content: center;
+        margin-right: 5px;
+        width: 23px;
+        color: #647283;
+        &:hover {
+            background: #006cff;
+            color:#fff ;
+        }
     }
 }

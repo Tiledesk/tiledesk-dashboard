@@ -1,5 +1,20 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
+.emoji-picker {
+    position: absolute;
+    right: 10px;
+    bottom: -4px;
+}
+
+.box-emoji-mart {
+    height: 1px;
+    visibility: hidden;
+    &.picker-visible {
+        height: auto;
+        visibility: visible;
+    }
+}
+
 .button-tab {
     z-index: 1;
     height: 100%;
@@ -21,7 +36,7 @@
     background-color: #6474913d;
 }
 
-.buttons-drawer-title{
+.buttons-drawer-title {
     font-size: 18px;
     font-weight: 400;
     color: #9aa0a6;
@@ -88,6 +103,8 @@
             height: auto;
             opacity: 1;
             overflow: visible;
+            display: inline-block;
+            width: 100%;
         }
         &.titleField{
             padding: 0em 3em;

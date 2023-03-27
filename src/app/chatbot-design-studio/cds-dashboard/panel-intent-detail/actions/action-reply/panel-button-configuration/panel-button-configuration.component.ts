@@ -43,6 +43,13 @@ export class PanelButtonConfigurationComponent implements OnInit {
   buttonAttributes: any;
   openBlockAttributes: boolean = false;
 
+  emoijPikerBtn: boolean = true
+  isEmojiPickerVisible: boolean = false;
+  emojiPerLine: number = 8;
+  emojiColor: string ="#ac8b2c";
+  emojiiCategories = [ 'recent', 'people', 'nature', 'activity'];
+
+
   constructor() { }
 
 
@@ -254,6 +261,10 @@ export class PanelButtonConfigurationComponent implements OnInit {
     this.saveButton.emit(this.button);
   }
 
+  onAddEmoji(event){
+    this.buttonLabel = `${this.buttonLabel}${event.emoji.native}`;
+    this.isEmojiPickerVisible = false;
+  } 
 
   
   
