@@ -22,40 +22,43 @@
       <!-- CREATE VIEW -->
       <span *ngIf="CREATE_VIEW">
         <div class="col-md-8">
-          <!-- *********** start PROJECT PROFILE INFO  *********** -->
-          <div *ngIf="prjct_profile_type === 'payment'">
-
-            <div class="card" style="margin-top: 25px; margin-bottom: 0px;padding-bottom: 0px;">
+    
+                <!-- -------------------------------------------------- -->
+        <!--  PROJECT PROFILE INFO  -->
+        <!-- -------------------------------------------------- -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
               <div class="card-content">
-                <span *ngIf="subscription_is_active === true">
+                <span  *ngIf="((prjct_profile_type === 'payment' && subscription_is_active === true) || (prjct_profile_type === 'free' && trial_expired === false) || (prjct_profile_type === 'free' && trial_expired === true))">
                   <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
                   <span class="msg-alert">
                     {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
-                    {{ "Of" | translate }} {{ projectPlanAgentsNo }} {{ "ActiveOperatorSeatsInThe" | translate }}
+                    {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
                     <span style="text-transform: capitalize">
                       {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
                       (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
                   </span>
                 </span>
-                <span *ngIf="subscription_is_active === false">
+                <span  *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
                   <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
                   <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
                     <span style="text-transform: capitalize">
                       {{ prjct_profile_name }}
                     </span>
+                    {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | amDateFormat: 'LLL' }} -
 
-                    {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }} -
-
-                    <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">{{
-                      "Pricing.UpgradePlan" | translate }} </span>
+                    <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
+                      {{ "Pricing.UpgradePlan" | translate }} </span>
                   </span>
                 </span>
-
-
               </div>
             </div>
           </div>
-          <!-- *********** ./end PROJECT PROFILE INFO  *********** -->
+        </div>
+        <!-- -------------------------------------------------- -->
+        <!--  ./ PROJECT PROFILE INFO  -->
+        <!-- -------------------------------------------------- -->
 
           <div class="card" style="padding-top:25px; padding-bottom:25px;margin-top: 15px;">
             <div class="card-content">

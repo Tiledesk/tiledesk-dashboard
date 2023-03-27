@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
 import { BrandService } from '../services/brand.service';
-import { URL_understanding_default_roles } from '../utils/util';
+import { PLAN_NAME, PLAN_SEATS, URL_understanding_default_roles } from '../utils/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
@@ -25,6 +25,10 @@ const swal = require('sweetalert');
 })
 export class UserEditAddComponent implements OnInit, OnDestroy {
   // tparams = brand;
+  PLAN_NAME = PLAN_NAME;
+  PLAN_SEATS = PLAN_SEATS
+  seatsLimit: any;
+  trial_expired: any;
   tparams: any;
 
   CREATE_VIEW = false;
@@ -377,17 +381,34 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         if (projectProfileData) {
 
           if (projectProfileData.profile_type === 'free') {
+
             if (projectProfileData.trial_expired === false) {
-              this.profile_name_for_segment = "Pro plan (trial)"
+              this.prjct_profile_name = PLAN_NAME.B + " (trial)"
+              this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
+              console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             } else {
-              this.profile_name_for_segment = "Free"
+              this.prjct_profile_name = "Free";
+              this.seatsLimit = PLAN_SEATS.free
+              console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             }
           } else if (projectProfileData.profile_type === 'payment') {
-            if (projectProfileData.profile_name === 'pro') {
-              this.profile_name_for_segment = "Pro"
-            } else if (projectProfileData.profile_name === 'enterprise') {
-              this.profile_name_for_segment = "Enterprise"
+
+            if (projectProfileData.profile_name === PLAN_NAME.A) {
+              this.prjct_profile_name = PLAN_NAME.A + " plan";
+              this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
+              console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+
+            } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+              this.prjct_profile_name = PLAN_NAME.B + " plan";
+              this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
+              console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+
+            } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+              this.prjct_profile_name = PLAN_NAME.C + " plan";
+              this.seatsLimit = projectProfileData.profile_agents
+              console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             }
+
           }
 
           this.projectPlanAgentsNo = projectProfileData.profile_agents;
@@ -399,8 +420,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
           this.subscription_is_active = projectProfileData.subscription_is_active;
           this.subscription_end_date = projectProfileData.subscription_end_date
           this.profile_name = projectProfileData.profile_name
-
-          this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+          this.trial_expired = projectProfileData.trial_expired
+          // this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
         }
       }, err => {
         this.logger.error('[USER-EDIT-ADD] GET PROJECT PROFILE - ERROR', err);
@@ -766,16 +787,22 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.logger.log('[USER-EDIT-ADD] - INVITE USER No of PROJECT PROFILE TYPE ', this.prjct_profile_type)
 
 
-    if (this.prjct_profile_type === 'payment') {
-      if ((this.projectUsersLength + this.countOfPendingInvites) < this.projectPlanAgentsNo) {
-        this.doInviteUser();
-      } else {
-        this.notify._displayContactUsModal(true, 'operators_seats_unavailable');
-      }
-      /* IN THE "FREE TYPE PLAN" THERE ISN'T LIMIT TO THE NUMBER OF INVITED USER */
-    } else {
+    // if (this.prjct_profile_type === 'payment') {
+    if ((this.projectUsersLength + this.countOfPendingInvites) < this.seatsLimit) {
       this.doInviteUser();
+    } else if ((this.projectUsersLength + this.countOfPendingInvites) === this.seatsLimit) {
+      if (this.CURRENT_USER_ROLE === 'owner') {
+        this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      }
     }
+    /* IN THE "FREE TYPE PLAN" THERE ISN'T LIMIT TO THE NUMBER OF INVITED USER */
+
+
+    //  } else {
+    //   this.doInviteUser();
+    // }
   }
 
   doInviteUser() {

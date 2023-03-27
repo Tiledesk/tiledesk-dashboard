@@ -157,11 +157,11 @@ export class CannedResponsesStaticComponent extends StaticPageBaseComponent impl
 
           if (this.USER_ROLE === 'owner') {
 
-            if (this.profile_name !== 'enterprise') {
+            if (this.profile_name !== PLAN_NAME.C) {
 
               this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-            } else if (this.profile_name === 'enterprise') {
+            } else if (this.profile_name === PLAN_NAME.C) {
 
               this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
             }

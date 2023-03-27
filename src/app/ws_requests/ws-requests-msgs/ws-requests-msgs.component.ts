@@ -50,6 +50,10 @@ const swal = require('sweetalert');
 export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
   PLAN_NAME = PLAN_NAME
 
+  featureAvailableFromBPlan: string;
+  cancel: string;
+  upgradePlan: string;
+
   objectKeys = Object.keys;
   isVisiblePaymentTab: boolean;
   @ViewChild('scrollMe', { static: false })
@@ -371,6 +375,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag: string;
   profile_name: string;
   subscription_is_active: any;
+  trial_expired: any;
+  prjct_profile_type: string;
   agentCannotManageAdvancedOptions: string;
   subscription_end_date: any;
   onlyAvailableWithEnterprisePlan: string;
@@ -526,6 +532,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.listenToUpladAttachmentRemoved();
     this.getRouteParams();
     this.getQueryParams();
+    this.getProjectPlan();
 
     // this.getClickOutEditContactFullname()
   }
@@ -535,9 +542,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE', projectProfileData)
       if (projectProfileData) {
 
-        // this.prjct_profile_type = projectProfileData.profile_type;
-        // this.subscription_is_active = projectProfileData.subscription_is_active;
-
+        this.prjct_profile_type = projectProfileData.profile_type;
+        this.subscription_is_active = projectProfileData.subscription_is_active;
+        this.trial_expired = projectProfileData.trial_expired
         this.subscription_end_date = projectProfileData.subscription_end_date
         this.profile_name = projectProfileData.profile_name
 
@@ -3780,7 +3787,37 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   displayModalDownloadTranscript() {
-    this.displayModalTranscript = 'block'
+    if (this.isVisiblePaymentTab) {
+      if (this.CURRENT_USER_ROLE === 'owner') {
+        if (
+          (this.profile_name === PLAN_NAME.A) ||
+          (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+          (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+          (this.prjct_profile_type === 'free' && this.trial_expired === true)
+
+        ) {
+          this.presentModalFeautureAvailableFromBPlan()
+          console.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
+        } else if (
+          (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
+          (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
+          (this.prjct_profile_type === 'free' && this.trial_expired === false)
+
+        ) {
+          this.displayModalTranscript = 'block'
+          console.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
+        }
+
+      } else {
+
+        this.presentModalAgentCannotManageAvancedSettings()
+      }
+
+    } else {
+
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+
+    }
   }
 
   closeModalTranscript() {
@@ -3880,67 +3917,119 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // Ban Visitor
   // ---------------------------
   displayModalBanVisitor(leadid: string, ipaddress: string) {
-    if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
-      if (this.CURRENT_USER_ROLE === 'owner') {
-        this.logger.log('displayModalBanVisitor leadid ', leadid)
-        this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
-        const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
-        this.logger.log("displayModalBanVisitor bannedVisitorsArray", index)
-        // if (this.visitorIsBanned === false) {
-        if (index === -1) {
-          swal({
-            title: this.areYouSureLbl + '?',
-            icon: "info",
-            buttons: [this.cancelLbl, this.yesBanVisitorLbl],
-            dangerMode: true,
-            className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-          })
-            .then((willBan) => {
-              if (willBan) {
-                // console.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
+    console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor profile_name: ', this.profile_name)
+    console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor PLAN_NAME.C: ', PLAN_NAME.C)
+    console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor subscription_is_active: ', this.subscription_is_active)
+    // if ((this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) || (this.prjct_profile_type === 'free' && this.trial_expired === false)) {
+    this.logger.log('displayModalBanVisitor leadid ', leadid)
+    this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
+    if (this.CURRENT_USER_ROLE === 'owner') {
 
-                this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
-                  // console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
+      if (
+        (this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.trial_expired === true)
 
-                }, (error) => {
-                  // console.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
+      ) {
+        this.presentModalFeautureAvailableOnlyWithEnterprisePlan();
+        console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAILABLE')
+      } else if (
 
-                  swal(this.anErrorHasOccurredMsg, {
-                    icon: "error",
-                  });
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true)
 
-                }, () => {
-                  // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
 
-                  swal({
-                    title: this.done_msg + "!",
-                    icon: "success",
-                    button: "OK",
-                    className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-                  }).then((okpressed) => {
-                    this.findCurrentProjectAmongAll(this.id_project)
-                  });
-
-                });
-              } else {
-                // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
-                // swal("Your imaginary file is safe!");
-              }
-            });
-        } else {
-          this.presentModalVisitorAlreadyBanned()
-        }
-
-      } else {
-        this.presentModalAgentCannotManageAvancedSettings()
+      ) {
+        this.banVisitors(leadid, ipaddress)
+        console.log('[WS-REQUESTS-MSGS] - featureIsAvailable IS AVAILABLE')
       }
-    } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
-      this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
-    } else if (this.profile_name !== PLAN_NAME.C) {
-      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
-    }
 
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
+    }
+    // } else if (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) {
+    //   // this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.B, this.subscription_end_date);
+    //   this.notify.displaySubscripionHasExpiredModal(true, PLAN_NAME.B, this.subscription_end_date);
+    // } else if (this.profile_name !== PLAN_NAME.B) {
+    //   this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+    // }
   }
+
+
+  banVisitors(leadid: string, ipaddress: string) {
+    const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
+    this.logger.log("displayModalBanVisitor bannedVisitorsArray", index)
+    // if (this.visitorIsBanned === false) {
+    if (index === -1) {
+      swal({
+        title: this.areYouSureLbl + '?',
+        icon: "info",
+        buttons: [this.cancelLbl, this.yesBanVisitorLbl],
+        dangerMode: true,
+        className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      })
+        .then((willBan) => {
+          if (willBan) {
+            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
+
+            this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
+              // console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
+
+            }, (error) => {
+              // console.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
+
+              swal(this.anErrorHasOccurredMsg, {
+                icon: "error",
+              });
+            }, () => {
+              // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
+              swal({
+                title: this.done_msg + "!",
+                icon: "success",
+                button: "OK",
+                className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              }).then((okpressed) => {
+                this.findCurrentProjectAmongAll(this.id_project)
+              });
+
+            });
+          } else {
+            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+            // swal("Your imaginary file is safe!");
+          }
+        });
+    } else {
+      this.presentModalVisitorAlreadyBanned()
+    }
+  }
+
+
+
+  presentModalFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = this.featureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        console.log('featureAvailableFromBPlan value', value)
+        this.router.navigate(['project/' + this.id_project + '/pricing']);
+      }
+    });
+  }
+
+
 
   presentModalFeautureAvailableOnlyWithEnterprisePlan() {
     const el = document.createElement('div')
@@ -4422,10 +4511,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.onlyAvailableWithEnterprisePlan = translation;
       });
 
-      this.translate.get('LearnMoreAboutDefaultRoles')
+    this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
+      });
+
+
+    this.translate.get('Pricing.UpgradePlan')
+      .subscribe((translation: any) => {
+        this.upgradePlan = translation;
+      });
+
+    this.translate.get('Cancel')
+      .subscribe((translation: any) => {
+        this.cancel = translation;
+      });
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromBPlan = translation;
       });
 
   }

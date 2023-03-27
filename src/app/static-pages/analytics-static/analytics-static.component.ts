@@ -68,9 +68,9 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService
-  ) { 
-    super(translate); 
-    this.tparams = {'plan_name': PLAN_NAME.B}
+  ) {
+    super(translate);
+    this.tparams = { 'plan_name': PLAN_NAME.B }
   }
 
   ngOnInit() {
@@ -176,14 +176,16 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           if (this.USER_ROLE === 'owner') {
+            if (this.profile_name !== PLAN_NAME.A) {
+            
+              if (this.profile_name === PLAN_NAME.B) {
 
-            if (this.profile_name !== 'enterprise') {
+                this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-              this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+              } else if (this.profile_name === PLAN_NAME.C) {
 
-            } else if (this.profile_name === 'enterprise') {
-
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+                this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+              }
             }
           }
         }

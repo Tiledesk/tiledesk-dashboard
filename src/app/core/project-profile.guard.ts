@@ -83,6 +83,7 @@ export class ProjectProfileGuard implements CanActivate {
 
     if (type === 'payment') {
       console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) url', url);
+      console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 1', isActiveSubscription);
       if (isActiveSubscription === true) {
         this.userIsAuthorized = true;
         // PLAN A UNAUTHORIZED TO Analytics + Departments + GROUPS 
@@ -218,7 +219,7 @@ export class ProjectProfileGuard implements CanActivate {
           console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
         }
       } else if (isActiveSubscription === false) {
-
+        console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 2', isActiveSubscription);
         this.userIsAuthorized = false;
 
         console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);

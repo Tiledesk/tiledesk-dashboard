@@ -71,70 +71,31 @@
         </div>
 
 
-        <!-- -------------------------------------------------- -->
-        <!-- NEW PROJECT PROFILE INFO -->
-        <!-- -------------------------------------------------- -->
-        <!-- <div class="row" >
-          <div class="col-md-12">
-            <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
-              <div class="card-content">
-             
-                <span >
-                  <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
-                  <span class="msg-alert">
-                    {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
-                    {{ "Of" | translate }} {{ projectPlanAgentsNo }} {{ "ActiveOperatorSeatsInThe" | translate }}
-                    <span style="text-transform: capitalize">
-                      {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
-                      (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
-                  </span>
-                </span>
-              
-                <span>
-                  <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
-                  <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
-                    <span style="text-transform: capitalize">
-                      {{ prjct_profile_name }}
-                    </span>
-                    {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }} -
-
-                    <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">{{
-                      "Pricing.UpgradePlan" |
-                      translate }} </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- -------------------------------------------------- -->
-        <!-- ./ NEW PROJECT PROFILE INFO -->
-        <!-- -------------------------------------------------- -->
 
         <!-- -------------------------------------------------- -->
         <!--  PROJECT PROFILE INFO  -->
         <!-- -------------------------------------------------- -->
-        <div class="row" *ngIf="prjct_profile_type === 'payment'">
+        <div class="row">
           <div class="col-md-12">
             <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
               <div class="card-content">
-                <span *ngIf="subscription_is_active === true">
+                <span  *ngIf="((prjct_profile_type === 'payment' && subscription_is_active === true) || (prjct_profile_type === 'free' && trial_expired === false) || (prjct_profile_type === 'free' && trial_expired === true))">
                   <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
                   <span class="msg-alert">
                     {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
-                    {{ "Of" | translate }} {{ projectPlanAgentsNo }} {{ "ActiveOperatorSeatsInThe" | translate }}
+                    {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
                     <span style="text-transform: capitalize">
                       {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
                       (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
                   </span>
                 </span>
-                <span *ngIf="subscription_is_active === false">
+                <span  *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
                   <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
                   <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
                     <span style="text-transform: capitalize">
                       {{ prjct_profile_name }}
                     </span>
-                    {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }} -
+                    {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | amDateFormat: 'LLL' }} -
 
                     <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
                       {{ "Pricing.UpgradePlan" | translate }} </span>
@@ -158,27 +119,8 @@
               <div class="card-header card-header-custom-bckgrnd"
                 style="height:55px; border-bottom:1px solid rgb(239, 242, 246);">
 
-                <!-- ---------------------------------------- -->
-                <!-- New  -->
-                <!-- ---------------------------------------- -->
-                <!-- <button
-                  *ngIf="USER_ROLE !== 'agent' && ((projectUsersLength + countOfPendingInvites < 3) && profile_name === 'free') || ((projectUsersLength + countOfPendingInvites < 4) && profile_name === PLAN_NAME.A)"
-                  class="btn btn-primary pull-right" style="padding: 8px 16px;margin:0px; text-transform:unset "
-                  (click)="goToAddUser()">
-                  {{ "UsersPage.Invites" | translate }}
-                </button>
-
-                <button
-                  *ngIf="USER_ROLE !== 'agent' && ((projectUsersLength + countOfPendingInvites === 3) && profile_name === 'free') || ((projectUsersLength + countOfPendingInvites === 4) && profile_name === PLAN_NAME.A)"
-                  class="btn btn-primary pull-right" style="padding: 8px 16px;margin:0px; text-transform:unset"
-                  (click)="goToPricing()">
-                  {{ "UpgradeYourPlanToAddMoreTeammates" | translate }}
-                </button> -->
-                <!-- ---------------------------------------- -->
-                <!-- ./ New  -->
-                <!-- ---------------------------------------- -->
-
-                <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary" style="padding: 8px 16px;margin:0px;"
+            
+                <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary pull-right" style="padding: 8px 16px;margin:0px;"
                   (click)="goToAddUser()">
                   <span class="icon" style="padding-right:8px">
                     <i class="material-icons">add_circle</i>

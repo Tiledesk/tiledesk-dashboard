@@ -2310,7 +2310,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         (this.prjct_profile_type === 'free' && this.trial_expired === true)
         
       ) {
-        this.presentModalFeautureAvailableOnlyWithPaidPlans() 
+        this.presentModalFeautureAvailableFromBPlan() 
         console.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
       } else if (
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
@@ -2367,7 +2367,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // }
   }
 
-  presentModalFeautureAvailableOnlyWithPaidPlans() {
+  presentModalFeautureAvailableFromBPlan() {
     const el = document.createElement('div')
     el.innerHTML = this.featureAvailableFromBPlan
     swal({

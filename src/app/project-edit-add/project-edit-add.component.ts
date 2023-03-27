@@ -927,16 +927,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToProjectSettings_BannedVisitors() {
-
-    if (this.prjct_profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
+    console.log('[PRJCT-EDIT-ADD] displayModalBanVisitor profile_name: ', this.profile_name) 
+    console.log('[PRJCT-EDIT-ADD] displayModalBanVisitor PLAN_NAME.C: ', PLAN_NAME.C) 
+    console.log('[PRJCT-EDIT-ADD] displayModalBanVisitor subscription_is_active: ', this.subscription_is_active) 
+    console.log('[PRJCT-EDIT-ADD] displayModalBanVisitor USER_ROLE: ', this.USER_ROLE) 
+    if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
       if (this.USER_ROLE === 'owner') {
         this.router.navigate(['project/' + this.id_project + '/project-settings/banned'])
       } else {
         this.presentModalAgentCannotManageAvancedSettings()
       }
-    } else if (this.prjct_profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
+    } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
       this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
-    } else if (this.prjct_profile_name !== PLAN_NAME.C) {
+    } else if (this.profile_name !== PLAN_NAME.C) {
       this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
     }
   }
@@ -1545,7 +1548,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     //   window['tiledesk'].open();
     // }
 
-    window.open('mailto:' + this.contactUsEmail, 'mail')
+    // window.open('mailto:' + this.contactUsEmail, 'mail')
+    window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
+
   }
 
   goToPricing() {
