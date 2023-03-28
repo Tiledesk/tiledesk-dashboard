@@ -3,74 +3,34 @@
 div.operand-wrp {
     display: grid;
     align-items: center;
-    grid-template-columns: 6fr 1fr 6fr;
-    grid-column-gap: 10px;
+    grid-template-columns: 11fr 1fr;
+    grid-column-gap: 0px;
     grid-row-gap: 10px;
-
     background: rgb(66,85,117);
-    padding: 20px;
-    border-radius: 4px;
+    padding: 10px 10px 20px;
+    border-radius: 5px;
+    &.opened {
+        .select-function{
+            display:block;
+        }
+    }
+    .select-function{
+        display:none;
+    }
 
     .material-icons {
-        font-size: 43px;
+        font-size: 25px;
         color: #8ab4f8;
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
+        margin-top: 20px;
     }
 
     div.value-wrp{
         position: relative;
-        display: flex;
-        
-
-        .flex{
-            position: absolute;
-            top: 0px;
-            bottom: 0px;
-            right: 8px;
-    
-            display: flex;
-            align-items: center;
-            justify-content: center;
-    
-            .close{
-                // height: 16px;
-                width: 17px;
-                top: -7px;
-                right: -7px;
-                font-size: 15px;
-                border-radius: 50%;
-    
-                background: white;
-                cursor: pointer;
-                position: absolute;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                opacity: 1;
-                &:hover{
-                    background: #ecb606;
-                    color: white;
-                }
-            }
-    
-        }
-    
-        div.tag{
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 8px;
-            right: unset;
-    
-            border-radius: 7px;
-            margin: 5px;
-            padding: 5px 10px;
-            background-color: #ecb606;
-            color: white;
-    
-        }
+        display: block;
     }        
 
     .applay-function-button{
@@ -99,8 +59,22 @@ div.operand-wrp {
         border: 1px solid rgb(118, 118, 118) !important;
         resize: none !important; 
         padding: 8px 20px !important;
-
         height: 25px !important;
         min-height: 25px !important;
+        width: calc(100% - 45px);
+    }
+    textarea::placeholder {
+        font-family: 'Poppins','Roboto',Arial,sans-serif;
+        font-size: 13px;
+    }
+}
+
+
+::ng-deep cds-select#selectOperand {
+    .ng-value-container{
+        font-family: 'Poppins','Roboto',Arial,sans-serif;
+        .ng-placeholder {
+            font-size: 13px;
+        }
     }
 }

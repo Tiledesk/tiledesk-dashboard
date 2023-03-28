@@ -5,46 +5,29 @@
             <textarea matInput
                 id="text-area"
                 #autosize="cdkTextareaAutosize"
+                [class.invalid]="control.invalid"
                 [maxlength]="limitCharsText"
                 [formControl]="control"
-                [class.invalid]="control.invalid"
+                [placeholder]="placeholder"
                 cdkTextareaAutosize
                 cdkAutosizeMinRows="{{minRow}}"
                 cdkAutosizeMaxRows="{{maxRow}}"
                 [(ngModel)]="text"
                 [readonly]="readonly"
-                (ngModelChange)="onChangeTextarea($event)">
+                (ngModelChange)="onChangeTextArea($event)">
             </textarea>
         </mat-form-field>
 
-        <!-- <div *ngIf="showUtils === true" class="editor-utils">
-            <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
-            <div class="text-editor-insert-attribute">
-                <em class="material-icons">code</em>
-            </div> 
-            <div class="emoji-picker">
-                <em class="material-icons">insert_emoticon</em>
-            </div>
-        </div> -->
-
         <div *ngIf="showUtils === true" unselectable="on" tabIndex="-1" class="editor-utils">
-            
-            <!-- <div *ngIf="setAttributeBtn" class="insert-attribute-btn-wpr">
-                <input type="button" unselectable="on" class="insert-attribute-btn" [satPopoverAnchor]="addVariable"
-                (click)="addVariable.toggle(); openSetattributePopover();">
-                <span unselectable="on" class="material-icons material-icons-data-object" style="font-size: 16px;">
-                    data_object
-                </span>
-            </div> -->
 
-            <div *ngIf="setAttributeBtn" class="text-editor-insert-attribute" [satPopoverAnchor]="addVariable" (click)="addVariable.toggle(); openSetattributePopover();">
+            <div *ngIf="setAttributeBtn" class="text-editor-insert-attribute" [satPopoverAnchor]="addVariable" (click)="addVariable.toggle(); openSetAttributePopover();">
                 <span class="material-icons " style="font-size: 16px;">
                     data_object
                 </span>
             </div>
     
             <div *ngIf="emoijPikerBtn" class="emoji-picker">
-                <div class="emoji-picker-button" aria-expanded="false">
+                <div class="emoji-picker-button" aria-expanded="false" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">
                     <span class="material-icons" style="font-size: 16px;">
                         emoji_emotions
                     </span>
@@ -55,14 +38,35 @@
                 <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
             </div>
         </div>
+
+        <div class="tag" *ngIf="textTag">
+            <span class="material-icons close" (click)="onClearSelectedAttribute()">close</span>
+            <div class="tag-content ellips"><span class="tag-text">{{textTag}}</span></div>
+        </div>
+
     </div>
 </div>
-<!-- verticalAlign="{{popoverVerticalAlign}}"  lockAlignment -->
+
 <sat-popover #addVariable id="addVariable"  horizontalAlign="center" verticalAlign="center"  hasBackdrop (backdropClicked)="addVariable.close()" panelClass="texarea-add-filter-panel"  interactiveClose="false">
     <variable-list
-         (onSelected)="onVariableSelected($event)">
-     </variable-list>
- </sat-popover>
+        (onSelected)="onVariableSelected($event)">
+    </variable-list>
+</sat-popover>
+
+<emoji-mart
+*ngIf="isEmojiPickerVisible"
+class="emoji-mart"
+[style.visibility]="isEmojiPickerVisible?'visible':'hidden'"
+[showPreview]="false" 
+[perLine]="emojiPerLine" 
+[include]="emojiiCategories"
+[color]="emojiColor" 
+[darkMode]="false"
+[emojiSize] = "24"
+(emojiSelect)="onAddEmoji($event)">
+</emoji-mart>
+
+
 
 
 

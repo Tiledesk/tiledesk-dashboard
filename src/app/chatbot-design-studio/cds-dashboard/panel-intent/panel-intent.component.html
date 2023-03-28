@@ -248,6 +248,25 @@
 
 
                 <!-- ----------------------------- -->
+                <!-- @ Action Add function -->
+                <!-- ----------------------------- -->
+                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.ASSIGN_FUNCTION" cdkDragHandle>
+                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                        {{ action._tdActionTitle }}
+                    </div>
+                    <div class="cds-action-icon-wpr">
+                        <img [src]="ACTIONS_LIST['ASSIGN_FUNCTION'].src" [title]="ACTIONS_LIST['ASSIGN_FUNCTION'].name">
+                    </div>
+                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['ASSIGN_FUNCTION'].name}}</div>
+                    <div class="cds-action-arrow" *ngIf="!lastItem">
+                        <span class="material-icons">
+                            keyboard_backspace
+                        </span>
+                    </div>
+                </div>
+
+
+                <!-- ----------------------------- -->
                 <!-- @ Action Add var -->
                 <!-- ----------------------------- -->
                 <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.ASSIGN_VARIABLE" cdkDragHandle>

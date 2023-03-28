@@ -106,7 +106,7 @@ export class ActionReplyComponent implements OnInit {
   /** */
   private generateCommandsWithWaitOfElements() {
     let replyArrayElements: Array<Command> = [];
-    let textConversation: string = ''
+    let textConversation: string = '';
     this.arrayMessagesWithWait.forEach(el => {
       if (el.time && el.time > 0) {
         let elementWait = new Command(TYPE_COMMAND.WAIT);
@@ -121,7 +121,6 @@ export class ActionReplyComponent implements OnInit {
       if (el.metadata) {
         elementMessage.message.metadata = el.metadata;
       }
-
       replyArrayElements.push(elementMessage);
       if (el.text) {
         textConversation += el.text + '\r\n'

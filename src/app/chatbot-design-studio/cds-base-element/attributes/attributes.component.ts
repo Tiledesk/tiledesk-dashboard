@@ -90,7 +90,7 @@ export class AttributesComponent implements OnInit {
     this.changeAttributes.emit(attributes);
   }
 
-  onClearInput(index){
+  onClearSelectedAttribute(index){
     // console.log('onClearInput:: ',this.newAttributes, index);
     if(!this.newAttributes[index].value){
       this.newAttributes.splice(index, 1);
@@ -100,8 +100,8 @@ export class AttributesComponent implements OnInit {
     this.setChangedAttributes();
   }
   
-  onVariableSelected(variableSelected: {name: string, value: string}, index: number){
-    console.log('onVariableSelected:: ',variableSelected.value);
+  onSelectedAttribute(variableSelected: {name: string, value: string}, index: number){
+    console.log('onSelectedAttribute:: ',variableSelected.value);
     this.newAttributes[index].key = variableSelected.value;
     if(!this.newAttributes[index].value){
       this.newAttributes.push({key:"", value:""});

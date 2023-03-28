@@ -20,7 +20,6 @@ export class OperatorComponent implements OnInit {
         }
     }
           
-
     onSelectedOperator(event: any) {    
         this.operatorChange.emit(event);        
     }

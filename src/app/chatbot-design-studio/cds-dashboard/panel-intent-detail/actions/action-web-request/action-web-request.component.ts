@@ -125,12 +125,12 @@ export class ActionWebRequestComponent implements OnInit {
     // this.jsonHeader = attributes;
   }
 
-  onClearInput(){
+  onClearSelectedAttribute(){
     this.action.assignTo = '';
     this.hasSelectedVariable = false;
   }
   
-  onVariableSelected(variableSelected: {name: string, value: string}, step: number){
+  onSelectedAttribute(variableSelected: {name: string, value: string}, step: number){
     this.hasSelectedVariable = true;
     this.action.assignTo = variableSelected.value;
   }

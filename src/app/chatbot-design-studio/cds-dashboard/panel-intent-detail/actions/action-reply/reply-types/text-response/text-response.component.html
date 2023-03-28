@@ -48,7 +48,7 @@
             [minRow]="1"
             popoverVerticalAlign="above"
             [emoijPikerBtn]="true"
-            (onChange)="onChangeTextarea($event)">
+            (changeTextarea)="onChangeTextarea($event)">
         </cds-textarea>
              
         <div *ngIf="typeAction === typeActions.REPLY" class="text-editor-drop">

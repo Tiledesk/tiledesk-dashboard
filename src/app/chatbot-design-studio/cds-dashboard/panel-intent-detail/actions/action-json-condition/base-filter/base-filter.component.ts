@@ -61,21 +61,17 @@ export class BaseFilterComponent implements OnInit {
       //if condition already exist --> do not push new condition
       //else push new operaor and condition  
       if(this.selectedCondition){
-        this.expression.conditions[this.selectedIndex]= condition
+        this.expression.conditions[this.selectedIndex] = condition;
       }else {
-
         if(this.expression.conditions.length === 0){
-          this.expression.conditions.push(condition)
+          this.expression.conditions.push(condition);
         }else{
-          this.expression.conditions.push(new Operator())
-          this.expression.conditions.push(condition)
+          this.expression.conditions.push(new Operator());
+          this.expression.conditions.push(condition);
         }
-
       }
-      
     }
-    this.addConditionFilter.close()
-    
+    this.addConditionFilter.close();
   }
 
 }

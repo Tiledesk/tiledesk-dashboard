@@ -1,0 +1,20 @@
+/** GENERIC **/
+
+/*
+Ellips text
+*/
+.ellips {
+    line-height: auto;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden !important;
+}
+
+.emoji-mart {
+    border: 0;
+    margin-top: 12px;
+    float: right;
+    ::ng-deep section.emoji-mart {
+        border: 0;
+    }
+}

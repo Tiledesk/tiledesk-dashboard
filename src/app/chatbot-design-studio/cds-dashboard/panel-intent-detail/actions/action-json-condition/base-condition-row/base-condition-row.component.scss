@@ -7,7 +7,6 @@
     border-bottom: 1px solid #e8eef3;
     padding: 0px 15px;
     gap: 10px;
-
     input{
         background: transparent;
         border: 0;
@@ -16,8 +15,6 @@
         line-height: 20px;
         width: 100%;
     }
-
-    
 }
 
 .material-icons{
@@ -123,13 +120,11 @@
     width: 100%;
     border-top: 1px solid rgb(232, 238, 243);
     transition: all 0.3s ease 0s;
-
     color: rgb(34, 39, 45);
     font-size: 16px;
     font-weight: 600;
     line-height: 20px;
     transition: color 0.3s ease 0s;
-
     &:hover{
         color: #9ba6b3;
     }
@@ -191,6 +186,29 @@ section.attribute{
         font-size: 15px;
         height: 37px;
     }
+    .operand-attribute{
+        position: relative;
+        .close {
+            position: absolute;
+            display: flex;
+            top: 9px;
+            right: 0px;
+            width: 19px;
+            height: 19px;
+            font-size: 13px;
+            border-radius: 50%;
+            /* background: #fff; */
+            /* border: 1px solid #ecb606; */
+            color: #dde1e5;
+            cursor: pointer;
+            opacity: 1;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: auto 0;
+        }
+    }
+   
 }
 
 section.condition{

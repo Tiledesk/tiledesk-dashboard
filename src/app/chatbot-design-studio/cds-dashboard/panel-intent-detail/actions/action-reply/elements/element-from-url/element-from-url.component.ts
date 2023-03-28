@@ -57,10 +57,9 @@ export class ElementFromUrlComponent implements OnInit {
   }
 
   onLoadPathElement(){
-    // this.metadata.width = this.widthElement;
-    // this.metadata.height = this.heightElement;
+    this.metadata.width = this.widthElement;
+    this.metadata.height = this.heightElement;
     this.metadata.src = getEmbedUrl(this.pathElement);
-
     this.loadPathElement.emit();
   }
 }

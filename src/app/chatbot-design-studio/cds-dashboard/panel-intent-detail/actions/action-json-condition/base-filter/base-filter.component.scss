@@ -89,29 +89,39 @@
 
 
 ::ng-deep .base-filter--add-filter-panel {
-    display: flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    // max-height: 600px;
-    min-height: 200px;
-    box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
-        0 4px 4px -2px rgb(91 94 105 / 15%);
-    background: rgb(255, 255, 255);
+    // position: relative;
+    box-shadow: 0 0 20px 4px #9aa1b126, 0 4px 80px -8px #24282f40, 0 4px 4px -2px #5b5e6926;
+    background: rgb(255,255,255);
     border-radius: 4px;
-    // padding: 15px;
-    margin-top: 10px;
-    width: 500px; // nk
-    // max-height: calc(50vh - 100px) !important; nk
-    // overflow-y: scroll !important; // nk
+    margin: auto;
+    width: 500px;
+    max-height: calc(100vh - 0px);
+    min-height: 200px;
+    overflow: auto;
+    max-width: 500px;
+    display: inline-block;
+    // bottom: 0px!important;
+    // right: 0px!important;
+    .category-row-name {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden !important;
+    }
 }
 
+.filter-operator {
+    min-width: 100px;
+    width: fit-content;
+    margin: 10px auto;
+}
 
-.filter-row{
-    display: grid;
-    align-items: center;
-    grid-template-columns: 6fr 1fr;
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
+::ng-deep .filter-operator {
+    .select-bot-box {
+        width: max-content;
+        min-width: 70px;
+        text-align: center;
+        margin: 10px auto;
+    }
 }
 
 .filter-condition{
@@ -123,33 +133,27 @@
     padding: 8px 15px;
     transition: background-color 0.3s ease 0s, border 0.3s ease 0s, opacity 0.3s ease 0s;
     cursor: pointer;
-
     background: rgb(245, 245, 245);
     border-width: 1px;
     border-style: solid;
     border-color: rgb(245, 245, 245);
     border-image: initial;
-
     &:hover{
         background: #c6cdd4;
         border-color: #c6cdd4;
-
         div.remove{
             opacity: 1;
         }
     }
 
-
-    div.remove{
+    div.remove {
         position: absolute;
         right: -8px;
         top: -14px;
         transition: opacity 0.3s ease 0s;
         opacity: 0;
-
         height: 28px;
         width: 28px;
-
         -webkit-box-align: center;
         -webkit-box-pack: center;
         align-items: center;
@@ -161,13 +165,11 @@
         border-radius: 100%;
         transition: background-color 0.3s ease 0s;
         font-size: 12px;
-
-        span.material-icons{
+        span.material-icons {
             font-size: 20px;
             color: $icon-color;
         }
-
-        &:hover{
+        &:hover {
             background-color: $icon-color;
             span.material-icons{
                 color: white;
@@ -175,7 +177,7 @@
         }
     }
 
-    div.filter-icon{
+    div.filter-icon {
         -webkit-box-align: center;
         -webkit-box-pack: center;
         align-items: center;
@@ -186,8 +188,6 @@
         margin-right: 10px;
         width: 15px;
         transition: color 0.3s ease 0s;
-
-        
     }
 }
 
