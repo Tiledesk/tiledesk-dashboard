@@ -394,7 +394,7 @@ export class UsersComponent implements OnInit, OnDestroy {
             } else {
               this.prjct_profile_name = "Free plan";
               this.seatsLimit = PLAN_SEATS.free
-              this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
+              this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
               console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             }
           } else if (projectProfileData.profile_type === 'payment') {
@@ -722,7 +722,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     // if (this.prjct_profile_type === 'payment') {
     if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
       this.router.navigate(['project/' + this.id_project + '/user/add'])
-    } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
+    } else if (this.projectUsersLength + this.countOfPendingInvites >= this.seatsLimit) {
       if (this.USER_ROLE === 'owner') {
         this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
       } else {
