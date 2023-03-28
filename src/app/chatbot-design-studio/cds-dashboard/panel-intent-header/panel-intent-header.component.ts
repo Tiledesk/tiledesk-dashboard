@@ -43,7 +43,6 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
     this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intentSelected.intent_display_name)
     this.logger.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
-
     const untitledIntents = this.listOfIntents.filter((el) => {
       return el.intent_display_name.indexOf('untitled_block') > -1;
     });
@@ -102,6 +101,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   // EVENT FUNCTIONS //
   onChangeIntentName(name: string) {
     // this.changeIntentName.emit(name)
+    
     this.logger.log('[PANEL-INTENT-HEADER] onChangeIntentName name', name);
     this.logger.log('[PANEL-INTENT-HEADER] onChangeIntentName this.intentSelected.intent_display_name ', this.intentSelected.intent_display_name);
     if (name !== this.intentSelected.intent_display_name) {
@@ -131,7 +131,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     this.logger.log('[PANEL-INTENT-HEADER] intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters)
     this.intentNameResult = this.checkIntentName();
     if (this.intentNameResult && !this.intentNameAlreadyExist && this.intentNameNotHasSpecialCharacters === true) {
-      this.intentSelected.intent_display_name = this.intentName;
+      this.intentSelected.intent_display_name = this.intentName.trim();
       this.saveIntent.emit(this.intentSelected);
     }
   }
