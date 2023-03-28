@@ -19,18 +19,43 @@
 
     <div class="row">
 
+
+
+      <div class="col-xs-12" class="alert-exceed-numb-of-seats-allowed" *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
+          <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
+          <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
+            <span style="text-transform: capitalize">
+              {{ prjct_profile_name }}
+            </span>
+            {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | amDateFormat: 'LL' }}
+
+            <span style="display: block;padding-left: 25px;
+            padding-right: 25px;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free"> 
+              {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsSeatsNum}}
+            </span>
+            <div class="upgrade---plan-btn-wpr" style="text-align: center;">
+            <button class="upgrade---plan-btn"  (click)="openModalSubsExpired()">
+              {{ "Pricing.UpgradePlan" | translate }} 
+            </button>
+          </div>
+          </span> 
+      </div>
+
       <!-- CREATE VIEW -->
       <span *ngIf="CREATE_VIEW">
         <div class="col-md-8">
     
-                <!-- -------------------------------------------------- -->
+        <!-- -------------------------------------------------- -->
         <!--  PROJECT PROFILE INFO  -->
         <!-- -------------------------------------------------- -->
         <div class="row">
           <div class="col-md-12">
             <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
               <div class="card-content">
-                <span  *ngIf="((prjct_profile_type === 'payment' && subscription_is_active === true) || (prjct_profile_type === 'free' && trial_expired === false) || (prjct_profile_type === 'free' && trial_expired === true))">
+                <span  *ngIf="(
+                  (prjct_profile_type === 'payment' && subscription_is_active === true) || 
+                (prjct_profile_type === 'free' && trial_expired === false) || 
+                (prjct_profile_type === 'free' && trial_expired === true))">
                   <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
                   <span class="msg-alert">
                     {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
@@ -40,18 +65,7 @@
                       (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
                   </span>
                 </span>
-                <span  *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
-                  <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
-                  <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
-                    <span style="text-transform: capitalize">
-                      {{ prjct_profile_name }}
-                    </span>
-                    {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | amDateFormat: 'LLL' }} -
 
-                    <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
-                      {{ "Pricing.UpgradePlan" | translate }} </span>
-                  </span>
-                </span>
               </div>
             </div>
           </div>

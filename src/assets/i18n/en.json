@@ -2292,6 +2292,8 @@
     "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Stay informed on what's happening in your team all the time. Monitor (Team Inbox) gives you what you need for smart collaboration, all in one place",
     "CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Create an exceptional customer experience where you can have conversations with your customers across multiple channels",
     "HavingCannedResponsesCanPutYouGreatAdvantage": "Efficiency is everything when it comes to customer satisfaction. Having a collection of readily available, “canned responses” can put you at a great advantage when attending to a customer inquiry in a live chat session or just addressing frequently asked questions.",
+    "NumberOfTeammatesExceedsThePlan": "The number of teammates allowed is {{free_plan_allowed_seats_num}}. Update the plan or manually remove teammates that exceed the limit (the system will do it automatically in a month)",
+    "NumberOfTeammatesExceedsThePlan_2": "The number of teammates allowed for the {{plan_name}} plan is {{allowed_seats_num}}. Update the plan or manually remove excess teammates (the system will do it automatically in a month)",
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",

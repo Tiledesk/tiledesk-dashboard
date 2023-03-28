@@ -2292,6 +2292,8 @@
     "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Manténgase informado sobre lo que sucede en su equipo todo el tiempo. Monitor (Bandeja de entrada del equipo) le brinda lo que necesita para una colaboración inteligente, todo en un solo lugar.",
     "CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Cree una experiencia de cliente excepcional donde pueda tener conversaciones con sus clientes a través de múltiples canales",
     "HavingCannedResponsesCanPutYouGreatAdvantage": "La eficiencia lo es todo cuando se trata de la satisfacción del cliente. Tener una colección de “respuestas enlatadas“ fácilmente disponibles puede brindarle una gran ventaja cuando atiende una consulta de un cliente en una sesión de chat en vivo o simplemente responde preguntas frecuentes.",
+    "NumberOfTeammatesExceedsThePlan": "El número de compañeros de equipo permitido es {{free_plan_allowed_seats_num}}. Actualice el plan o elimine manualmente a los compañeros que excedan el límite (el sistema lo hará automáticamente en un mes)",
+    "NumberOfTeammatesExceedsThePlan_2":"El número de compañeros de equipo permitidos para el plan {{plan_name}} es {{allowed_seats_num}}. Actualice el plan o elimine manualmente el exceso de compañeros de equipo (el sistema lo hará automáticamente en un mes)",
     "AddIntentPage": {
         "AddForm": "Agregar forma",
         "SelectTemplateForm": "Seleccione un tipo de formulario entre los sugeridos o cree uno nuevo",

@@ -2292,6 +2292,8 @@
     "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Ekibinizde olan bitenden her zaman haberdar olun. İzleme (Ekip Gelen Kutusu), akıllı işbirliği için ihtiyaç duyduğunuz her şeyi tek bir yerde sunar.",
     "CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Müşterilerinizle birden çok kanalda iletişim kurabileceğiniz olağanüstü bir müşteri deneyimi yaratın",
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Müşteri memnuniyeti söz konusu olduğunda verimlilik her şeydir. Hazır yanıtlardan oluşan bir koleksiyona sahip olmak, canlı bir sohbet oturumunda bir müşteri sorgusuna katılırken veya yalnızca sık sorulan soruları yanıtlarken size büyük avantaj sağlayabilir.",
+    "NumberOfTeammatesExceedsThePlan":"İzin verilen takım arkadaşı sayısı {{free_plan_allowed_seats_num}}. Planı güncelleyin veya sınırı aşan ekip arkadaşlarını manuel olarak kaldırın (sistem bunu bir ay içinde otomatik olarak yapacaktır)",
+    "NumberOfTeammatesExceedsThePlan_2":"{{plan_name}} planı için izin verilen takım arkadaşı sayısı: {{allowed_seats_num}}. Planı güncelleyin veya fazla takım arkadaşlarını manuel olarak kaldırın (sistem bunu bir ay içinde otomatik olarak yapacaktır)",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",

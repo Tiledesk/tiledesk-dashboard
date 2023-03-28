@@ -2292,6 +2292,8 @@
 	"MonitorGivesYouWhatYouNeedForSmartCollaboration": "Bleiben Sie jederzeit auf dem Laufenden, was in Ihrem Team passiert. Monitor (Team-Posteingang) bietet Ihnen alles, was Sie für eine intelligente Zusammenarbeit benötigen, alles an einem Ort.",
 	"CreateAnExceptionalCustomerExperienceWhithEmailTicketing":"Schaffen Sie ein außergewöhnliches Kundenerlebnis, bei dem Sie Gespräche mit Ihren Kunden über mehrere Kanäle führen können",
 	"HavingCannedResponsesCanPutYouGreatAdvantage":"Effizienz ist alles, wenn es um Kundenzufriedenheit geht. Eine Sammlung leicht verfügbarer „vorgefertigter Antworten“ kann Ihnen einen großen Vorteil verschaffen, wenn Sie sich in einer Live-Chat-Sitzung um eine Kundenanfrage kümmern oder einfach nur häufig gestellte Fragen beantworten.",
+	"NumberOfTeammatesExceedsThePlan":"Die Anzahl der erlaubten Teamkollegen beträgt {{free_plan_allowed_seats_num}}. Aktualisieren Sie den Plan oder entfernen Sie manuell Teamkollegen, die das Limit überschreiten (das System erledigt dies automatisch in einem Monat).",
+	"NumberOfTeammatesExceedsThePlan_2":"Die Anzahl der zulässigen Teamkollegen für den Plan {{plan_name}} beträgt {{allowed_seats_num}}. Aktualisieren Sie den Plan oder entfernen Sie überschüssige Teamkollegen manuell (das System erledigt dies automatisch in einem Monat).",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",
