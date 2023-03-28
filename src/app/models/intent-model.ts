@@ -1,5 +1,5 @@
 import { TYPE_OPERATOR } from './../chatbot-design-studio/utils';
-import { TYPE_TD_ACTION_ID, TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR, TYPE_FUNCTION } from '../chatbot-design-studio/utils';
+import { TYPE_TD_ACTION_ID, TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR } from '../chatbot-design-studio/utils';
 
 export class Intent {
     webhook_enabled?: boolean;
@@ -61,7 +61,7 @@ export class Operation {
 export class Operand {
     value: string
     isVariable: boolean
-    function?: TYPE_FUNCTION
+    function?: any
 }
 
 export class ActionAssignVariable extends Action {
@@ -81,18 +81,12 @@ export class ActionAssignVariable extends Action {
 }
 
 export class ActionAssignFunction extends Action {
-    destination: string;
-    operation: Operation;
+    functionName: string;
+    assignTo: string;
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.ASSIGN_FUNCTION;
-        this.operation = {
-            operands: [{
-                value: '',
-                isVariable: false
-            }],
-            operators: []
-        };
+        this.assignTo = '';
     }
 }
 

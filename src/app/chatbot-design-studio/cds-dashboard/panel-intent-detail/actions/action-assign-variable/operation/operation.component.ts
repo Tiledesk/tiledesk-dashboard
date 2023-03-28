@@ -11,6 +11,8 @@ import { LoggerService } from 'app/services/logger/logger.service';
 export class OperationComponent implements OnInit {
 
     @Input() operation: Operation;
+    @Input() listOfFunctions: Array<{name: string, value: string, icon?:string}>;
+    
     @Output() onAddOperator = new EventEmitter<any>();
 
     list: Array< TYPE_MATH_OPERATOR | Operand | ''> = [];

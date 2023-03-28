@@ -10,7 +10,7 @@ export enum TYPE_MATH_OPERATOR {
     divideAsNumber = "divideAsNumber"
 }
 
-export enum TYPE_FUNCTION {
+export enum TYPE_FUNCTION_VAR {
     upperCaseAsString = "upperCaseAsString",
     lowerCaseAsString = "lowerCaseAsString",
     capitalizeAsString = "capitalizeAsString",
@@ -18,6 +18,11 @@ export enum TYPE_FUNCTION {
     ceilAsNumber = "ceilAsNumber",
     floorAsNumber = "floorAsNumber",
     roundAsNumber = "roundAsNumber"
+}
+
+export enum TYPE_FUNCTION_FUNC {
+    isOpenNowAsStrings = "openNow",
+    availableAgentsAsStrings = "availableAgents"
 }
 
 
@@ -197,14 +202,18 @@ export const TYPE_MATH_OPERATOR_LIST: { [key: string]: { name: string, type: TYP
     "divideAsNumbers": { name: "Divide", type: TYPE_MATH_OPERATOR.divideAsNumber, src: "assets/cds/images/operators/divide.svg" },
 }
 
-export const TYPE_FUNCTION_LIST: { [key: string]: { name: string, type: TYPE_FUNCTION, src?: string } } = {
-    "upperCaseAsStrings": { name: "Upper case", type: TYPE_FUNCTION.upperCaseAsString, src: "assets/cds/images/operators/upperCase.svg" },
-    "lowerCaseAsStrings": { name: "Lower case", type: TYPE_FUNCTION.lowerCaseAsString, src: "assets/cds/images/operators/lowerCase.svg" },
-    "capitalizeAsStrings": { name: "Capitalize", type: TYPE_FUNCTION.capitalizeAsString, src: "assets/cds/images/operators/capitalize.svg" },
-    "absAsNumbers": { name: "Absolute value", type: TYPE_FUNCTION.absAsNumber, src: "assets/cds/images/operators/abs.svg" },
-    "roundAsNumbers": { name: "Round", type: TYPE_FUNCTION.roundAsNumber, src: "assets/cds/images/operators/round.svg" },
-    "floorAsNumbers": { name: "Floor", type: TYPE_FUNCTION.floorAsNumber, src: "assets/cds/images/operators/floor.svg" },
-    "ceilAsNumbers": { name: "Ceil", type: TYPE_FUNCTION.ceilAsNumber, src: "assets/cds/images/operators/ceil.svg" },
+export const TYPE_FUNCTION_LIST_FOR_VARIABLES: { [key: string]: { name: string, type: TYPE_FUNCTION_VAR, src?: string } } = {
+    "upperCaseAsStrings": { name: "Upper case", type: TYPE_FUNCTION_VAR.upperCaseAsString, src: "assets/cds/images/operators/upperCase.svg" },
+    "lowerCaseAsStrings": { name: "Lower case", type: TYPE_FUNCTION_VAR.lowerCaseAsString, src: "assets/cds/images/operators/lowerCase.svg" },
+    "capitalizeAsStrings": { name: "Capitalize", type: TYPE_FUNCTION_VAR.capitalizeAsString, src: "assets/cds/images/operators/capitalize.svg" },
+    "absAsNumbers": { name: "Absolute value", type: TYPE_FUNCTION_VAR.absAsNumber, src: "assets/cds/images/operators/abs.svg" },
+    "roundAsNumbers": { name: "Round", type: TYPE_FUNCTION_VAR.roundAsNumber, src: "assets/cds/images/operators/round.svg" },
+    "floorAsNumbers": { name: "Floor", type: TYPE_FUNCTION_VAR.floorAsNumber, src: "assets/cds/images/operators/floor.svg" },
+    "ceilAsNumbers": { name: "Ceil", type: TYPE_FUNCTION_VAR.ceilAsNumber, src: "assets/cds/images/operators/ceil.svg" },
+}
+export const TYPE_FUNCTION_LIST_FOR_FUNCTIONS: { [key: string]: { name: string, type: TYPE_FUNCTION_FUNC, src?: string } } = {
+    "isOpenNowAsStrings": { name: "Is open now", type: TYPE_FUNCTION_FUNC.isOpenNowAsStrings, src: "" },
+    "availableAgentAsStrings": { name: "Available agents?", type: TYPE_FUNCTION_FUNC.availableAgentsAsStrings, src: "" },
 }
 
 

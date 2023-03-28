@@ -22,6 +22,9 @@
         </div>
     </div>
     
-    <operation [operation] = "action.operation" (onAddOperator)="onSelectedOperator()"></operation>
+    <operation 
+    [operation] = "action.operation" 
+    [listOfFunctions] = "listOfFunctions"
+    (onAddOperator)="onSelectedOperator()"></operation>
 
 </div>
