@@ -39,12 +39,13 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   public templates: any;
   public newlyCreatedProject = false
   public user: any
-  botid: string;
+  public botid: string;
   public defaultDeptID: string;
   public botname: string;
   public botDescription: string;
   public templateFeature: any;
   public templateTags: any;
+  public templatesCertifiedTags: any;
   project: Project;
   public TESTSITE_BASE_URL: string;
   constructor(
@@ -91,13 +92,13 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   getParamsTemplatesAndProjects() {
     this.route.params.subscribe((params) => {
 
-      console.log('[INSTALL-TEMPLATE] params ', params)
+      // console.log('[INSTALL-TEMPLATE] params ', params)
       this.projectId = params.projectid;
       // this.logger.log('[INSTALL-TEMPLATE] projectId ', this.projectId)
       this.botId = params.botid;
       this.langCode = params.langcode;
       this.langName = params.langname;
-      console.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
+      // console.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
       if (this.langCode && this.langName) {
         this.addNewLanguage(this.langCode, this.langName)
         this.newlyCreatedProject = true
@@ -177,7 +178,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     // this.faqKbService.getTemplates().subscribe((res: any) => {
     this.faqKbService.getChatbotTemplateById(botid).subscribe((res: any) => {
       if (res) {
-        console.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
+        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
 
         // const selectedTemplate = res.filter((obj) => {
         //   return obj._id === botid
@@ -187,10 +188,11 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
         this.botDescription = res['description']
         this.templateFeature = res['templateFeatures']
         this.templateTags = res['tags']
+        this.templatesCertifiedTags = res['certifiedTags']
         // this.openDialog(this.templates[0])
-        console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES > templateFeature', this.templateFeature)
-        console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES > templateTags', this.templateTags)
-        console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
+        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES > templateFeature', this.templateFeature)
+        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES > templateTags', this.templateTags)
+        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
 
         if (this.templates && this.templates.certifiedTags) {
           this.generateTagsBackgroundFromCertifiedTags(this.templates)
@@ -204,7 +206,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
         }
         if (  this.templates && this.templates['name']) {
         this.botname = this.templates['name']
-        console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES >  botname', this.botname)
+        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES >  botname', this.botname)
         }
 
         if (!isDevMode()) {
@@ -278,10 +280,10 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
 
   generateTagsBackgroundFromTags(template) {
     
-      console.log('generateTagsBackground template', template)
+      // console.log('generateTagsBackground template', template)
       if (template && template.tags) {
         template.tags.forEach(tag => {
-          console.log('generateTagsBackground tag', tag)
+          // console.log('generateTagsBackground tag', tag)
           let tagbckgnd = ''
           if (tag.color === "#a16300" || tag.color === "#A16300") {
             tagbckgnd = 'rgba(255,221,167,1)'

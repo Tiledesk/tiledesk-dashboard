@@ -92,7 +92,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     // this.logger.log('[GET START CHATBOT FORK] storedRoute ', storedRoute)
 
     const storedRoute = decodeURIComponent(this.router.url);
-    console.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
+    // console.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
     if (storedRoute) {
       // storedRoute.split('/')
       let storedRouteSegments = storedRoute.split('/')
@@ -106,7 +106,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
         const secondStoredRouteSegments = storedRouteSegments[2].split('?tn=')
 
-        console.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
+        // console.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
         this.botid = secondStoredRouteSegments[0]
         const _templateNameOnSite = secondStoredRouteSegments[1];
         try {
@@ -156,7 +156,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     // }
 
     this.faqKbService.getChatbotTemplateById(this.botid).subscribe((res: any) => {
-      console.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - RES ', res)
+      // console.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - RES ', res)
       if (res) {
         this.selectedTemplates = res
 

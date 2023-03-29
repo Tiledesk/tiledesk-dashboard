@@ -17,10 +17,6 @@
                 </div>
             </div>
 
-
-
-
-
             <div class="template-detail-btns-wpr">
                 <button type="button" class="btn btn-new btn-size-l btn--primary" (click)="forkTemplate()">
                     <!-- <span *ngIf="template?.certified === true" >Use template</span> -->
@@ -70,18 +66,18 @@
                                     <span>Use template</span>
                                 </button>
                             </div> -->
-                            <p weight="normal" class="install-template-tags-section-name">Categories</p>
+                            <p weight="normal" *ngIf="templatesCertifiedTags" class="install-template-tags-section-name">Categories</p>
                             <div class="template-card-footer template-footer">
                                 <div class="template-tags-wpr">
 
                                     
-                                    <div class="template-tags" *ngIf="templates?.certifiedTags">
+                                    <div class="template-tags" *ngIf="templatesCertifiedTags">
 
                                         <span aria-label="tag" class="template-tag"
                                             [ngStyle]="{'color': tag.color, 'background-color':  tag.background}"
                                             *ngFor="let tag of templates.certifiedTags">
                                             <p weight="normal" class="template-tag-name">
-                                                {{tag.name  }} </p>
+                                            {{tag.name  }} </p>
 
                                         </span>
 
@@ -89,10 +85,10 @@
 
                                     <div class="template-tags" *ngIf="templateTags">
 
-                                        <span aria-label="tag" class="template-tag"
+                                        <span aria-label="tag" class="template-no-certified-tag"
                                             *ngFor="let tag of templateTags">
                                             <p weight="normal" class="template-tag-name">
-                                                {{tag }} </p>
+                                               #{{tag }} </p>
 
                                         </span>
 
