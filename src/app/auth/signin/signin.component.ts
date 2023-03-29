@@ -59,7 +59,7 @@ export class SigninComponent implements OnInit {
     'password': {
       'required': 'Password is required.',
       'pattern': 'Password must be include at one letter and one number.',
-      'minlength': 'Password must be at least 6 characters long.',
+      'minlength': 'Password must be at least 8 characters long.',
       'maxlength': 'Password cannot be more than 25 characters long.',
     },
   };
@@ -231,7 +231,7 @@ export class SigninComponent implements OnInit {
       ]],
       'password': ['', [
         // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
-        Validators.minLength(6),
+        Validators.minLength(8),
         Validators.maxLength(4000),
       ]],
     });

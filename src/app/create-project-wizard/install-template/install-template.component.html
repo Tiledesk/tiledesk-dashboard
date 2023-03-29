@@ -17,10 +17,6 @@
                 </div>
             </div>
 
-
-
-
-
             <div class="template-detail-btns-wpr">
                 <button type="button" class="btn btn-new btn-size-l btn--primary" (click)="forkTemplate()">
                     <!-- <span *ngIf="template?.certified === true" >Use template</span> -->
@@ -41,7 +37,7 @@
                 <div class="col-xs-12">
                     <div class="install-template-card-wpr">
 
-                        <div class="install-template-card" *ngFor="let template of templates">
+                        <div class="install-template-card">
                             <!-- <svg aria-hidden="true" focusable="false"
                                 style="width: 0px; height: 0px; position: absolute;">
                                 <linearGradient id="bot-cool-gradient" x2="1" y2="1">
@@ -58,11 +54,11 @@
                             </div> -->
                             <span size="20" class="blank-span-h20"></span>
                             <h2 weight="normal" class="template-name template-card-title">
-                                {{template.name}}
+                                {{ botname}}
                             </h2>
                             <span size="8" class="blank-span-h08"></span>
                             <p weight="normal" class="template-description">
-                                {{template.description}}
+                                {{botDescription}}
                             </p>
                             <!-- <div class="use-template-btn-row use-template-btn-wpr">
                                 <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
@@ -70,18 +66,29 @@
                                     <span>Use template</span>
                                 </button>
                             </div> -->
-                            <p weight="normal" class="install-template-tags-section-name">Categories</p>
+                            <p weight="normal" *ngIf="templatesCertifiedTags" class="install-template-tags-section-name">Categories</p>
                             <div class="template-card-footer template-footer">
                                 <div class="template-tags-wpr">
 
                                     
-                                    <div class="template-tags" *ngIf="template.certifiedTags">
+                                    <div class="template-tags" *ngIf="templatesCertifiedTags">
 
                                         <span aria-label="tag" class="template-tag"
                                             [ngStyle]="{'color': tag.color, 'background-color':  tag.background}"
-                                            *ngFor="let tag of template.certifiedTags">
+                                            *ngFor="let tag of templates.certifiedTags">
                                             <p weight="normal" class="template-tag-name">
-                                                {{tag.name  }} </p>
+                                            {{tag.name  }} </p>
+
+                                        </span>
+
+                                    </div>
+
+                                    <div class="template-tags" *ngIf="templateTags">
+
+                                        <span aria-label="tag" class="template-no-certified-tag"
+                                            *ngFor="let tag of templateTags">
+                                            <p weight="normal" class="template-tag-name">
+                                               #{{tag }} </p>
 
                                         </span>
 
@@ -121,13 +128,13 @@
                             </div>
 
 
-                            <span size="24" class="blank-span-h24" *ngIf="template.templateFeatures"></span>
-                            <p weight="medium" class="template-detail-section-features-name" *ngIf="template.templateFeatures">
+                            <span size="24" class="blank-span-h24" *ngIf="templateFeature && templateFeature.length > 0" ></span>
+                            <p weight="medium" class="template-detail-section-features-name" *ngIf="templateFeature && templateFeature.length > 0">
                                 Template features:</p>
                             <span size="16" class="blank-span-h16"></span>
 
-                            <div class="template-detail-features-wpr" *ngIf="template.templateFeatures">
-                                <div class="template-detail-features" *ngFor="let feature of template.templateFeatures">
+                            <div class="template-detail-features-wpr" *ngIf="templateFeature && templateFeature.length > 0">
+                                <div class="template-detail-features" *ngFor="let feature of templateFeature">
                                     <div class="template-detail-features-dot"></div>
                                     <p weight="normal" class="template-detail-feature">{{feature}}</p>
                                 </div>
