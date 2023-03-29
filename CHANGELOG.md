@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.4.22
+- Deploys in production
+- Improves Community chatbot onboarding
+- Changes in widget unbranding section the default "Powered by"
+
 ### 2.4.21
 - Deploys in production
 - Adds a new textarea (cds-textarea) that allows to add tags
