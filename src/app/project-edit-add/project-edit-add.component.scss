@@ -535,15 +535,28 @@ $f21blue: #039be5;
   background: #f44336;
   position: relative;
   margin-left: -30px;
-  top: -14px;
+  top: -10px;
   margin-right: -30px;
-  height: 44px;
+  // height: 44px;
   vertical-align: middle;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
+  padding: 10px 30px;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.contact--us-btn {
+  background: #fff;
+  border: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-top: 6px;
+  color: #3ea9f5;
 }
 
 .project-edit-add-link-to-doc {

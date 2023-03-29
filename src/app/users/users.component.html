@@ -78,8 +78,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
-              <div class="card-content"
-                *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
+              <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
                  (prjct_profile_type === 'free' && trial_expired === false) || 
                  (prjct_profile_type === 'free' && trial_expired === true))  &&
                  (projectUsersLength + countOfPendingInvites <= seatsLimit))">
@@ -95,27 +94,26 @@
 
               </div>
 
-              <div class="card-content" style="background: #f44336;color: #fff;text-align: center;"
+              <div class="card-content" style="background: #f44336;color: #fff;text-align: center;" 
               *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
                (prjct_profile_type === 'free' && trial_expired === false) || 
                (prjct_profile_type === 'free' && trial_expired === true))  &&
                (projectUsersLength + countOfPendingInvites > seatsLimit))">
 
-              <!-- <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i> -->
-              <span class="msg-alert">
-               {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }} 
-              </span>
-              <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-                <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
-                  {{ "Pricing.UpgradePlan" | translate }}
-                </button>
+                <!-- <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i> -->
+                <span class="msg-alert">
+                  {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
+                </span>
+                <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+                  <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
+                    {{ "Pricing.UpgradePlan" | translate }}
+                  </button>
+                </div>
               </div>
-
-            </div>
               <div class="card-content" style="background: #f44336;color: #fff;text-align: center;"
                 *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
 
-                <!-- <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i> -->
+               
                 <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
                   <span style="text-transform: capitalize">
                     {{ prjct_profile_name }}
@@ -123,7 +121,7 @@
                   {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | amDateFormat: 'LL' }}
 
                   <span style="display: block;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
-                    {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsSeatsNum}}
+                    {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
                   </span>
                   <div class="upgrade--plan-btn-wpr" style="text-align: center;">
                     <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">

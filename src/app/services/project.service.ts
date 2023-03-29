@@ -273,7 +273,8 @@ export class ProjectService {
     };
 
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/cancelsubscription';
-    this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
+    // const url = 'https://8ba8-79-8-190-172.eu.ngrok.io/modules/payments/stripe/cancelsubscription';
+    console.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
 
     const body = { 'projectid': this.projectID, 'userid': this.user._id };
     this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT REQUEST BODY ', body);

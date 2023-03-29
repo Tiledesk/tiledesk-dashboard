@@ -23,12 +23,39 @@
             {{ "Pricing.WeWereUnableToAutomaticallyRenewYourSubscription" | translate }}.
             {{ "Pricing.PleaseContactUs" | translate }}
             {{ "Pricing.ToUpdateYourPaymentInformation" | translate }}.
-            <span style="text-decoration: underline; cursor: pointer;" (click)="launchWidget()">
-              {{'ContactUs' | translate}} </span>
+            <span style="display: block;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
+              {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
+            </span>
+            <div class="contact--us-btn-wpr" style="text-align: center;">
+            <button class="contact--us-btn" (click)="contactUs()">
+              {{'ContactUs' | translate}} 
+            </button>
+          </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
+    (prjct_profile_type === 'free' && prjct_trial_expired === false) || 
+    (prjct_profile_type === 'free' && prjct_trial_expired === true))  &&
+    (projectUsersLength + countOfPendingInvites > seatsLimit))" class="row">
+      <div class="col-sm-12">
+        <div class="payment--problem-wpr">
+          <div class="payment--problem-text">
+            <span class="msg-alert">
+            {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
+          </span>
+            <div class="contact--us-btn-wpr" style="text-align: center;">
+            <button class="contact--us-btn" (click)="contactUs()">
+              {{'ContactUs' | translate}} 
+            </button>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
 
     <div class="content-wpr" style="display: flex;">
       <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
@@ -233,7 +260,7 @@
                   </div> <!-- ./end row-->
 
                   <div class="input-wrapper" style="max-width: 992px;">
-                    <div style="display: none;" class="row">
+                    <div class="row">
                       <label class="col-sm-2 custom-label">
                         {{ 'YourCurrentPlan' | translate }}
                       </label>
@@ -246,12 +273,17 @@
 
                             <span style="font-weight: 400">
                               <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
-
+                              <!-- numberOf_agents_seats -->
+                             
                               <span *ngIf="profile_name !== PLAN_NAME.C">
-                                ( {{ numberOf_agents_seats }} {{ "AgentSeats" | translate }} x € {{ plan_amount / 100 }}
+                                ( {{ seatsLimit}} {{ "AgentSeats" | translate }} x € {{ plan_amount / 100 }}
                                 .00
                                 /
                                 {{ plan_interval | translate}} )
+                              </span>
+
+                              <span *ngIf="profile_name === PLAN_NAME.C">
+                                ( {{ seatsLimit}} {{ "AgentSeats" | translate }} )
                               </span>
                             </span>
                           </span>
@@ -264,36 +296,31 @@
 
                           <span class="payment-plan-name">
                             <!-- {{ 'YourCurrentPlan' | translate }}: -->
-
+                            
                             <span style="font-weight: 400">
                               <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
 
-                              - {{ projectUsersLength }}
-                              <span *ngIf="projectUsersLength === 1">
+                              <!-- - {{ projectUsersLength }} -->
+                              - {{ seatsLimit }}  {{ "AgentSeats" | translate }}
+                              <!-- <span *ngIf="projectUsersLength === 1">
                                 {{ "Agent" | translate }}
                               </span>
                               <span *ngIf="projectUsersLength > 1">
                                 {{ "Agents" | translate }}
-                              </span>
+                              </span> -->
 
-                              <span *ngIf="countOfPendingInvites > 0">
-
+                              <!-- <span *ngIf="countOfPendingInvites > 0">
                                 {{ 'And' | translate }} {{countOfPendingInvites }}
-
                                 <span *ngIf="countOfPendingInvites === 1">
                                   {{ 'PendingInvitation' | translate }}
                                 </span>
                                 <span *ngIf="countOfPendingInvites > 1">
                                   {{ 'PendingInvitations' | translate }}
                                 </span>
-                              </span>
-
+                              </span> -->
                               x € 0.00 / {{'PerMonth' | translate }}
-
                             </span>
                           </span>
-
-
                         </span>
                       </div>
                       <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" *ngIf="prjct_profile_type !== 'payment'">
@@ -407,6 +434,8 @@
                             <span *ngIf="SUBSCRIPTION_BUFFER_DAYS" style="margin-left:3px">
                               {{ "Pricing.SubscriptionExpired" | translate }} {{ 'On' | translate }}
                               {{ subscription_end_date | date: 'dd/MM/yyyy' }} -
+                              {{ subscription_end_date |  amDateFormat: 'LL' }} -
+                         
                               <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
                                 {{ "Pricing.UpgradePlan" | translate }}
                               </span>
@@ -429,8 +458,6 @@
                               {{ "Pricing.UpgradePlan" | translate }}
                             </span>
                           </span>
-
-
 
                           <!-- -------------------------------------------------------------------------------------  -->
                           <!-- SUBSCRIPTION STATUS - PROFILE TYPE:  FREE   -->
@@ -521,8 +548,6 @@
                     <!-- -------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION CREDIT CARD -->
                     <!-- -------------------------------------------------------------------------------------  -->
-
-
                     <div class="row"
                       *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise' &&  subscription_is_active === true"
                       style="margin-top: 16px;">
@@ -572,10 +597,15 @@
                             <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }} -->
 
                             <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
-                            <span *ngIf="profile_name === 'enterprise'">{{ subscription_creation_date | date:
-                              'dd/MM/yyyy' }} </span>
-                            <span *ngIf="profile_name !== 'enterprise'"> {{ subscription_creation_date * 1000 | date:
-                              'dd/MM/yyyy' }} </span>
+                            <span *ngIf="profile_name === PLAN_NAME.C">
+                              <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }}  -->
+                              {{ subscription_creation_date | amDateFormat: 'LL' }} 
+                              
+                            </span>
+                            <span *ngIf="profile_name !== PLAN_NAME.C"> 
+                              <!-- {{ subscription_creation_date * 1000 | date:'dd/MM/yyyy' }}  -->
+                              {{ subscription_creation_date * 1000 | amDateFormat: 'LL' }} 
+                            </span>
                           </span>
                         </span>
 
@@ -585,7 +615,7 @@
                     <!-- -------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CURRENT INVOICE START DATE -->
                     <!-- -------------------------------------------------------------------------------------  -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise'"
+                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME.C"
                       style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label">
                         {{ "CurrentInvoiceStartDate" | translate }}
@@ -598,7 +628,9 @@
                           </i>
 
                           <span style=" font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
-                            {{ subscription_start_date | date: 'dd/MM/yyyy' }}
+                            <!-- {{ subscription_start_date | date: 'dd/MM/yyyy' }} -->
+                            {{ subscription_start_date | amDateFormat: 'LL' }}
+                            
                           </span>
                         </span>
                       </div>
@@ -608,10 +640,10 @@
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CURRENT INVOICE END DATE OR PLAN EXIPIRATION DATE IF ENTERPRISE -->
                     <!-- ---------------------------------------------------------------------------------------------------------------  -->
                     <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== 'enterprise'">
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== PLAN_NAME.C">
                         {{ "CurrentInvoiceEndDate" | translate }}
                       </label>
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name === 'enterprise'">
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name === PLAN_NAME.C">
                         {{ "PlanExpirationDate" | translate }}
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -621,7 +653,9 @@
                           </i>
                           <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
 
-                            {{ subscription_end_date | date: 'dd/MM/yyyy' }}
+                            <!-- {{ subscription_end_date | date: 'dd/MM/yyyy' }} -->
+                            {{ subscription_end_date | amDateFormat: 'LL' }}
+                           
                           </span>
                         </span>
                       </div>
@@ -630,21 +664,23 @@
                     <!-- -------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - NUMBER OF AGENTS SEATS -->
                     <!-- -------------------------------------------------------------------------------------  -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                    <!-- *ngIf="prjct_profile_type !== 'free'" color: #f44336;-->
+                    <div class="row"  style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label">
                         {{ "NumberOfAgentSeats" | translate }}
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <span class="subscription-info">
-                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                          <i class="material-icons" [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#697386'}"  style="vertical-align: middle;">
                             people_alt
                           </i>
                           <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
-                            {{ numberOf_agents_seats }}
+                            <!-- {{ numberOf_agents_seats }} -->
+                            {{countOfPendingInvites + projectUsersLength}}
                           </span>
-                          <span class="add-more-operator-btn" (click)="getMoreOperatorsSeats()">
+                          <!-- <span class="add-more-operator-btn" (click)="getMoreOperatorsSeats()">
                             {{ "Pricing.AddMoreOperators" | translate }}
-                          </span>
+                          </span> -->
                         </span>
                       </div>
                     </div>
@@ -1893,7 +1929,7 @@
         <div style="text-align: center; margin-bottom: 25px;">
           <button type="button"
             style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"
-            id="checkout-button-plan_EjFHNnzJXE3jul" role="link" (click)="launchWidget()">
+            id="checkout-button-plan_EjFHNnzJXE3jul" role="link" (click)="contactUs()">
             {{'ContactUs' | translate}}
           </button>
         </div>

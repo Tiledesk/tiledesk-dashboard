@@ -33,7 +33,7 @@
 
           <span style="display: block;padding-left: 25px;
             padding-right: 25px;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
-            {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsSeatsNum}}
+            {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
           </span>
           <div class="upgrade---plan-btn-wpr" style="text-align: center;">
             <button class="upgrade---plan-btn" (click)="openModalSubsExpired()">
@@ -43,54 +43,54 @@
         </span>
       </div>
 
+      <!-- -------------------------------------------------- -->
+      <!--  PROJECT PROFILE INFO  -->
+      <!-- -------------------------------------------------- -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
+            <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) || 
+            (prjct_profile_type === 'free' && trial_expired === false) || 
+            (prjct_profile_type === 'free' && trial_expired === true)) && 
+            (projectUsersLength + countOfPendingInvites <= seatsLimit))">
+            
+                <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
+                <span class="msg-alert">
+                  {{ "YouCurrentlyAreUsing" | translate }}
+                  {{ this.projectUsersLength + this.countOfPendingInvites }}
+                  {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
+                  <span style="text-transform: capitalize">
+                    {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
+                    (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
+                </span>
+              
+            </div>
+            <div class="card-content alert-exceed-numb-of-seats-allowed-sub-active" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
+            (prjct_profile_type === 'free' && trial_expired === false) || 
+            (prjct_profile_type === 'free' && trial_expired === true))  &&
+            (projectUsersLength + countOfPendingInvites > seatsLimit))">
+          
+                <!-- <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i> -->
+                <span class="msg-alert">
+                  {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
+                </span>
+                <div class="upgrade---plan-btn-wpr" style="text-align: center;">
+                  <button class="upgrade---plan-btn" (click)="openModalSubsExpired()">
+                    {{ "Pricing.UpgradePlan" | translate }}
+                  </button>
+                </div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- -------------------------------------------------- -->
+      <!--  ./ PROJECT PROFILE INFO  -->
+      <!-- -------------------------------------------------- -->
+
       <!-- CREATE VIEW -->
       <span *ngIf="CREATE_VIEW">
         <div class="col-md-8">
-
-          <!-- -------------------------------------------------- -->
-          <!--  PROJECT PROFILE INFO  -->
-          <!-- -------------------------------------------------- -->
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
-                <div class="card-content">
-                  <span *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) || 
-                (prjct_profile_type === 'free' && trial_expired === false) || 
-                (prjct_profile_type === 'free' && trial_expired === true)) && 
-                (projectUsersLength + countOfPendingInvites <= seatsLimit))">
-                    <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
-                    <span class="msg-alert">
-                      {{ "YouCurrentlyAreUsing" | translate }}
-                      {{ this.projectUsersLength + this.countOfPendingInvites }}
-                      {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
-                      <span style="text-transform: capitalize">
-                        {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
-                        (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
-                    </span>
-                  </span>
-                </div>
-                <div class="card-content">
-                  <span *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
-                  (prjct_profile_type === 'free' && trial_expired === false) || 
-                  (prjct_profile_type === 'free' && trial_expired === true))  &&
-                  (projectUsersLength + countOfPendingInvites > seatsLimit))">
-                    <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
-                    <span class="msg-alert">
-                      {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }} 
-                    </span>
-                    <div class="upgrade---plan-btn-wpr" style="text-align: center;">
-                      <button class="upgrade---plan-btn" (click)="openModalSubsExpired()">
-                        {{ "Pricing.UpgradePlan" | translate }}
-                      </button>
-                    </div>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- -------------------------------------------------- -->
-          <!--  ./ PROJECT PROFILE INFO  -->
-          <!-- -------------------------------------------------- -->
 
           <div class="card" style="padding-top:25px; padding-bottom:25px;margin-top: 15px;">
             <div class="card-content">
