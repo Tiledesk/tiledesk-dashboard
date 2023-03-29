@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.4.21
+- Deploys in production
+- Adds a new textarea (cds-textarea) that allows to add tags
+- Adds the ability to add emojis
+- Adds the action "Set function"
+- Improvements and bug fixing
+
 ### 2.4.21-rc1
 - Adds a new textarea (cds-textarea) that allows to add tags
 - Adds the ability to add emojis
