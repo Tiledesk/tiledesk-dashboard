@@ -69,7 +69,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   }
 
   getCurrentProject() {
-   this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.projectId = project._id
         // this.logger.log('[GET START CHATBOT FORK]  - projectId ', this.projectId)
@@ -92,7 +92,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     // this.logger.log('[GET START CHATBOT FORK] storedRoute ', storedRoute)
 
     const storedRoute = decodeURIComponent(this.router.url);
-    // this.logger.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
+    console.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
     if (storedRoute) {
       // storedRoute.split('/')
       let storedRouteSegments = storedRoute.split('/')
@@ -106,7 +106,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
         const secondStoredRouteSegments = storedRouteSegments[2].split('?tn=')
 
-        // this.logger.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
+        console.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
         this.botid = secondStoredRouteSegments[0]
         const _templateNameOnSite = secondStoredRouteSegments[1];
         try {
@@ -129,28 +129,55 @@ export class GetStartChatbotForkComponent implements OnInit {
       }
     }
 
-    this.faqKbService.getTemplates().subscribe((res: any) => {
-      // this.logger.log('[GET START CHATBOT FORK] GET TEMPLATES - RES ', res)
+    //   this.faqKbService.getTemplates().subscribe((res: any) => {
+    //     // this.logger.log('[GET START CHATBOT FORK] GET TEMPLATES - RES ', res)
+    //     if (res) {
+    //       const templates = res
+
+    //       const selectedTemplates = templates.filter((obj) => {
+    //         return obj._id === this.botid
+    //       });
+    //       this.selectedTemplates = selectedTemplates[0]
+    //       // this.logger.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES ', this.selectedTemplates)
+
+    //       this.templateImg = this.selectedTemplates['bigImage'];
+    //       // this.templateNameOnSite = this.selectedTemplates['nameOnSite'];
+    //       // this.logger.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateImg ', this.templateImg)
+
+    //     }
+
+    //   }, (error) => {
+    //     this.logger.error('[GET START CHATBOT FORK] GET TEMPLATES ERROR ', error);
+
+    //   }, () => {
+    //     this.logger.log('[GET START CHATBOT FORK] GET TEMPLATES COMPLETE');
+
+    //   });
+    // }
+
+    this.faqKbService.getChatbotTemplateById(this.botid).subscribe((res: any) => {
+      console.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - RES ', res)
       if (res) {
-        const templates = res
+        this.selectedTemplates = res
 
-        const selectedTemplates = templates.filter((obj) => {
-          return obj._id === this.botid
-        });
-        this.selectedTemplates = selectedTemplates[0]
+        // const selectedTemplates = templates.filter((obj) => {
+        //   return obj._id === this.botid
+        // });
+        // this.selectedTemplates = selectedTemplates[0]
         // this.logger.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES ', this.selectedTemplates)
-
-        this.templateImg = this.selectedTemplates['bigImage'];
+        if (this.selectedTemplates && this.selectedTemplates['bigImage']) {
+          this.templateImg = this.selectedTemplates['bigImage'];
+        }
         // this.templateNameOnSite = this.selectedTemplates['nameOnSite'];
         // this.logger.log('[GET START CHATBOT FORK] GET TEMPLATES - SELECTED TEMPALTES templateImg ', this.templateImg)
 
       }
 
     }, (error) => {
-      this.logger.error('[GET START CHATBOT FORK] GET TEMPLATES ERROR ', error);
+      this.logger.error('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID ', error);
 
     }, () => {
-      this.logger.log('[GET START CHATBOT FORK] GET TEMPLATES COMPLETE');
+      this.logger.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID');
 
     });
   }
@@ -223,7 +250,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   }
 
   goToInstallTemplate() {
-    this.logger.log('[GET START CHATBOT FORK] goToInstallTemplate botid', this.botid , ' - selectedProjectId ', this.selectedProjectId)
+    this.logger.log('[GET START CHATBOT FORK] goToInstallTemplate botid', this.botid, ' - selectedProjectId ', this.selectedProjectId)
     this.router.navigate([`install-template/${this.botid}/${this.selectedProjectId}`]);
   }
 
@@ -232,7 +259,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   }
 
   goToCreateProject() {
-    this.logger.log('[GET START CHATBOT FORK] goToCreateProject (create-project-itw)  botid', this.botid )
+    this.logger.log('[GET START CHATBOT FORK] goToCreateProject (create-project-itw)  botid', this.botid)
     this.router.navigate([`/create-project-itw/${this.botid}`]);
   }
 
