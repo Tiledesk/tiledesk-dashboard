@@ -105,33 +105,25 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     // }
 
     if (changes.intentSelected) {
-      // this.logger.log('[PANEL INTENT] (ngOnChanges) - changes.intentSelected', changes.intentSelected)
-      // if (!changes.intentSelected.currentValue['form']) {
-
-      if (changes.intentSelected.currentValue['actions'] && changes.intentSelected.currentValue['actions'].length > 0) {
-        // this.logger.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected Exist actions', changes.intentSelected.currentValue['actions'][0])
-        setTimeout(() => {
-          const actionElement = <HTMLElement>document.querySelector(`#action_0`);
-          // this.logger.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
-          if (actionElement) {
-            actionElement.classList.add("cds-action-active");
-          }
-        }, 200);
-      }
+     
+      // if (changes.intentSelected.currentValue['actions'] && changes.intentSelected.currentValue['actions'].length > 0) {
+      //   setTimeout(() => {
+      //     const actionElement = <HTMLElement>document.querySelector(`#action_0`);
+      //     if (actionElement) {
+      //       actionElement.classList.add("cds-action-active");
+      //     }
+      //   }, 200);
       // }
+
       if (changes.intentSelected.firstChange === false) {
-        // this.logger.log('[PANEL INTENT] (ngOnChanges) changes', changes);
-        // this.logger.log('[PANEL INTENT] (ngOnChanges) changes intentSelected currentValue', changes.intentSelected.currentValue);
-        // this.logger.log('[PANEL INTENT] (ngOnChanges) changes intentSelected previousValue', changes.intentSelected.previousValue);
-        // this.logger.log('[PANEL INTENT] (ngOnChanges) changes intentSelected firstChange', changes.intentSelected.firstChange);
         if (changes.intentSelected.previousValue._id !== changes.intentSelected.currentValue._id) {
-          // this.saveIntent.emit(this.intentSelected);
           this.HAS_SELECTED_ANSWER = false
           this.HAS_SELECTED_QUESTION = false
           this.HAS_SELECTED_FORM = false
           this.HAS_SELECTED_ACTION = false
         }
       }
+
     }
 
     if (this.intentSelected) {
@@ -191,6 +183,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.actions, event.previousIndex, event.currentIndex);
+    this.saveIntent.emit(this.intentSelected);
   }
 
   toggleActions(_displayActions: boolean) {
@@ -230,6 +223,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
 
   onActionSelected(action, index: number) {
+    console.log('onActionSelected');
     this.HAS_SELECTED_ANSWER = false
     this.HAS_SELECTED_QUESTION = false
     this.HAS_SELECTED_FORM = false
@@ -290,11 +284,11 @@ export class PanelIntentComponent implements OnInit, OnChanges {
       .then((willdelete) => {
         this.logger.log('[PANEL INTENT] onDeleteAction willdelete', willdelete)
         if (willdelete) {
-
           this.logger.log('[PANEL INTENT] onDeleteAction index', actionindex);
           this.logger.log('[PANEL INTENT] onDeleteAction intentSelected', this.intentSelected);
           this.intentSelected.actions.splice(actionindex, 1);
           this.actionDeleted.emit(true);
+          // this.saveIntent.emit(this.intentSelected);
         }
 
       });

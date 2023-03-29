@@ -154,13 +154,20 @@
             </div>
             <!-- [events]="upadatedIntent.asObservable() *ngIf=!spinnerCreateIntent -->
             <div class="box-right-content">
-                <appdashboard-panel-intent *ngIf=intentSelected class="panel-intent" [intentSelected]="intentSelected"
-                    [actionDrawerIsOpen]="actionDrawerIsOpen" (openActionDrawer)=onOpenActionDrawer($event)
-                    (answerSelected)=onAnswerSelected($event) (actionSelected)=onActionSelected($event)
-                    (questionSelected)=onQuestionSelected($event) (actionDeleted)=onActionDeleted($event)
-                    (intentForm)=onIntentFormSelected($event) [isOpenActionDrawer]="isOpenActionDrawer"
+                <appdashboard-panel-intent *ngIf=intentSelected 
+                    class="panel-intent" 
+                    [intentSelected]="intentSelected"
+                    [actionDrawerIsOpen]="actionDrawerIsOpen" 
+                    [isOpenActionDrawer]="isOpenActionDrawer"
                     [eventUpadatedIntent]="upadatedIntent.asObservable()"
-                    [eventCreateIntent]="createIntent.asObservable()" (saveIntent)="onSaveIntent($event)">
+                    [eventCreateIntent]="createIntent.asObservable()" 
+                    (openActionDrawer)=onOpenActionDrawer($event)
+                    (answerSelected)=onAnswerSelected($event) 
+                    (actionSelected)=onActionSelected($event)
+                    (questionSelected)=onQuestionSelected($event) 
+                    (actionDeleted)=onActionDeleted($event)
+                    (intentForm)=onIntentFormSelected($event) 
+                    (saveIntent)="onSaveIntent($event)">
                 </appdashboard-panel-intent>
 
 

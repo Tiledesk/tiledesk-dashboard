@@ -90,7 +90,7 @@ export class CDSTextareaComponent implements OnInit {
   onChangeTextArea(event) {
     this.logger.log('[CDS-TEXAREA] onChangeTextarea-->', event);
     this.calculatingleftCharsText();
-    console.log('onChangeTextarea!! ',event);
+    // console.log('onChangeTextarea!! ',event);
     if(this.readonly && event){
       this.textTag = event;
       this.text = '';

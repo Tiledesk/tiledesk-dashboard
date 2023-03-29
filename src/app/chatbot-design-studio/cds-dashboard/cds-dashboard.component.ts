@@ -360,6 +360,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** ADD INTENT  */
   private creatIntent() {
+    console.log('creatIntent');
     this.spinnerCreateIntent = true
     this.logger.log('[CDS DSHBRD] creatIntent spinnerCreateIntent ', this.spinnerCreateIntent)
     this.startUpdatedIntent.next(true)
@@ -462,6 +463,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** EDIT INTENT  */
   private editIntent() {
+    console.log('editIntent');
     this.startUpdatedIntent.next(true)
     this.logger.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
     this.showSpinner = true;
@@ -504,7 +506,6 @@ export class CdsDashboardComponent implements OnInit {
         setTimeout(() => {
           button.classList.remove(pendingClassName);
           button.classList.add(successClassName);
-
           window.setTimeout(() => {
             button.classList.remove(successClassName)
             that.upadatedIntent.next(upadatedIntent);
@@ -531,7 +532,6 @@ export class CdsDashboardComponent implements OnInit {
       setTimeout(() => {
         button.classList.remove(pendingClassName);
         button.classList.add(failClassName);
-
         window.setTimeout(() => button.classList.remove(failClassName), stateDuration);
       }, stateDuration);
 
@@ -569,7 +569,6 @@ export class CdsDashboardComponent implements OnInit {
   /** appdashboard-intent: Save intent */
   onSaveIntent(intent: Intent) {
     this.logger.log("Intent:", intent);
-
     this.logger.log('[CDS DSHBRD] onSaveIntent intent:: ', intent);
     this.logger.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
     this.intentSelected = intent;
@@ -609,7 +608,7 @@ export class CdsDashboardComponent implements OnInit {
     //retriveListOfVariables(this.listOfIntents)
   }
 
-  onSelectIntent(intent: Intent) {
+  onSelectIntent(intent: Intent) { 
     this.EDIT_VIEW = true;
     this.intentSelected = intent;
     // this.MOCK_getFaqIntent();
@@ -619,15 +618,16 @@ export class CdsDashboardComponent implements OnInit {
     this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions length: ", this.intentSelected.actions.length);
     // && !this.intentSelected.form
     if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
-      this.logger.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0])
-      this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1, intent_display_name: this.intentSelected.intent_display_name })
+      this.logger.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0]);
+      this.onActionSelected({ action: null, index: null, maxLength: 1, intent_display_name: null })
+      // this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1, intent_display_name: this.intentSelected.intent_display_name })
     }
     else {
-
       this.elementIntentSelected = {};
       this.elementIntentSelected['type'] = ''
       this.elementIntentSelected['element'] = null
     }
+    console.log("onSelectIntent: ", this.elementIntentSelected);
     this.logger.log('[CDS DSBRD] onSelectIntent elementIntentSelected', this.elementIntentSelected)
   }
 
