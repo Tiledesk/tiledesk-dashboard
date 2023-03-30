@@ -2282,6 +2282,7 @@
     "EditProjectName":"Редактировать название проекта",
     "Duplicate": "Дублировать",
     "ContactUsByEmailToUpdateYourPlan": "Свяжитесь с нами по электронной почте, чтобы обновить свой план",
+    "ChatbotAttributes":"Атрибуты чат-бота",
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",

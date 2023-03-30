@@ -2282,6 +2282,7 @@
     "EditProjectName":"Editar nombre del proyecto",
     "Duplicate": "Duplicado",
     "ContactUsByEmailToUpdateYourPlan": "Contáctenos por correo electrónico para actualizar su plan",
+    "ChatbotAttributes":"Atributos de chatbots",
     "AddIntentPage": {
         "AddForm": "Agregar forma",
         "SelectTemplateForm": "Seleccione un tipo de formulario entre los sugeridos o cree uno nuevo",
