@@ -168,6 +168,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   attributesDecodedJWTAttributesArray: Array<any>
   attributesDecodedJWTArrayMerged: Array<any>
   preChatFormArray: Array<any>;
+  botConversationArray: Array<any>;
   rightSidebarWidth: number;
   tag: any;
   tagcolor: any;
@@ -363,6 +364,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   smartReassignmentForThisConversationWillBeEnabled: string;
   tagAlreadyAssigned: string
   thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag: string
+  isOpenChatbotAttributesAccordion: boolean
   /**
    * Constructor
    * @param router 
@@ -1192,7 +1194,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.route.params.subscribe((params) => {
       this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
       if (this.id_request) {
-        this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
+        // console.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
+
         this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-MSGS - id_request ', this.id_request);
 
         // Unsubcribe from old request
@@ -1209,12 +1212,80 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }
 
       this.id_request = params.requestid;
+
+      this.getBotConversationAttribute(params.requestid)
+
       this.logger.log('[WS-REQUESTS-MSGS] request_id (new)', this.id_request);
     });
 
     if (this.id_request) {
       this.subscribeToWs_RequestById(this.id_request);
     }
+  }
+
+
+  getBotConversationAttribute(requestid) {
+    this.wsRequestsService.getBotConversationAttribute(requestid)
+      .subscribe((data: any) => {
+        if (data) {
+          this.botConversationArray = []
+          for (let [key, value] of Object.entries(data)) {
+
+            // console.log(`[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT key : ${key} - value ${value}`);
+
+            let _value: any;
+            if (typeof value === 'object' && value !== null) {
+              // this.logger.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
+              _value = JSON.stringify(value)
+            } else {
+              _value = value
+            }
+
+            // https://stackoverflow.com/questions/50463738/how-to-find-width-of-each-character-in-pixels-using-javascript
+            let letterLength = {};
+            let letters = ["", " ", " ?", "= ", " -", " :", " _", " ,", " ", " ", " ", "(", ")", "}", "{", "\"", " ", "/", ".", "a", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+            for (let letter of letters) {
+              let span = document.createElement('span');
+              span.append(document.createTextNode(letter));
+              span.style.display = "inline-block";
+              document.body.append(span);
+              letterLength[letter] = span.offsetWidth;
+              span.remove();
+            }
+            let totalLength = 0;
+
+            // for (let i = 0; i < _value.length; i++) {
+            //   this.logger.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+            // }
+            if (_value) {
+              for (let i = 0; i < _value.length; i++) {
+                if (letterLength[_value[i]] !== undefined) {
+                  totalLength += letterLength[_value[i]];
+                } else {
+                  // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                  totalLength += letterLength['S'];
+                }
+              }
+              // this.logger.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+
+              let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
+              // if (key !== 'decoded_jwt') {
+              this.botConversationArray.push(entries)
+            }
+          }
+          // console.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT botConversationArray: ', this.botConversationArray);
+
+        } else {
+          // console.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT -  DATA IS UNDEFINED ');
+        }
+        // console.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT - RES: ', data);
+      }, (err) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT - ERROR: ', err);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT * COMPLETE *');
+      });
   }
 
   // https://stackoverflow.com/questions/40983055/how-to-reload-the-current-route-with-the-angular-2-router
@@ -2785,6 +2856,41 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     document.removeEventListener('copy', listener);
 
   }
+
+  // ---------------------------------------------------------------------------------------
+  // @ Chatbot attributes accordion
+  // ---------------------------------------------------------------------------------------
+
+  openChatbotAttributesAccordion(isOpenChatbotAttributesAccordion) {
+    // console.log('[WS-REQUESTS-MSGS] isOpenChatbotAttributesAccordion ', isOpenChatbotAttributesAccordion)
+
+    var footerEl = <HTMLElement>document.querySelector('footer')
+    // console.log('[WS-REQUESTS-MSGS] footerEl ', footerEl)
+    if (isOpenChatbotAttributesAccordion) {
+      if (footerEl) {
+        footerEl.style.display = 'none'
+      }
+    } else if (!isOpenChatbotAttributesAccordion) {
+      if (footerEl) {
+        footerEl.style.display = 'block'
+      }
+    }
+
+
+    var acc = <HTMLElement>document.querySelector('.chatbot-conv-accordion');
+
+    acc.classList.toggle("active");
+
+    var panel = <HTMLElement>document.querySelector('.chatbot-conv-accordion-panel')
+
+
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  }
+
 
 
 

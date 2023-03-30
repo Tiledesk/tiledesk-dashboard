@@ -2282,6 +2282,7 @@
     "EditProjectName": "تحرير اسم المشروع",
     "Duplicate": "نسخة مماثلة للأصل",
     "ContactUsByEmailToUpdateYourPlan": "اتصل بنا عن طريق البريد الإلكتروني لتحديث خطتك",
+    "ChatbotAttributes":"سمات Chatbot",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

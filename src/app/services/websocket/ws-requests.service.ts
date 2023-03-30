@@ -1147,6 +1147,25 @@ export class WsRequestsService implements OnDestroy {
       .patch(url, JSON.stringify(body), httpOptions)
   }
 
+    // -----------------------------------------------------------------------------------------
+  // Get Bot conversation attributes
+  // -----------------------------------------------------------------------------------------
+  public getBotConversationAttribute(id_request) {
+  
+    const url = this.SERVER_BASE_PATH + '/modules/tilebot/ext/parameters/requests/' + id_request;
+    // console.log('[WS-REQUESTS-SERV] - GET CONVERSATION WITH BOT URL ', url);
+
+    // 'Authorization': this.TOKEN,
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        
+      }),
+    };
+    return this._httpClient
+      .get(url, httpOptions)
+  }
+
 
   // ------------------------------------------------------
   // @ Download history request as CSV

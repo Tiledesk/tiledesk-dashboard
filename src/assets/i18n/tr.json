@@ -2282,6 +2282,7 @@
     "EditProjectName":"Proje adını düzenle",
     "Duplicate": "Kopyalamak",
     "ContactUsByEmailToUpdateYourPlan": "Planınızı güncellemek için e-posta ile bize ulaşın",
+    "ChatbotAttributes":"Chatbot öznitelikleri",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",
