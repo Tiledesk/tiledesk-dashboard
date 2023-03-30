@@ -283,7 +283,7 @@ export const emailDomainWhiteList = [
 export enum PLAN_NAME {
     A = 'Growth',
     B = 'Scale',
-    C = 'Enterprise',
+    C = 'Plus',
 }
 
 export enum PLAN_SEATS {

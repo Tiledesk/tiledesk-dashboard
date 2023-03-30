@@ -42,6 +42,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   PLAN_SEATS = PLAN_SEATS;
   tParamsPlanAndSeats: any;
   tParamsFreePlanSeatsNum: any;
+  tParamsFeatureAvailableWith: any;
   seatsLimit: any;
   agentCannotManageAdvancedOptions: string;
 
@@ -263,6 +264,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }
     this.translationParams = { plan_name: PLAN_NAME.B }
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
+    this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C}
   }
 
   ngOnInit() {
@@ -972,20 +974,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     } else if (this.profile_name !== PLAN_NAME.C) {
       this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
     }
-
-    // if (this.profile_name === 'enterprise' && this.subscription_is_active === true) {
-    //   if (this.USER_ROLE === 'owner') {
-    //     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage ');
-    //     this.router.navigate(['project/' + this.id_project + '/notification-email'])
-    //   } else {
-    //     
-    //   }
-    // } else if (this.profile_name === 'enterprise' && this.subscription_is_active === false) {
-    //   this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    // } else if (this.profile_name !== 'enterprise') {
-    //   this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
-    // }
-
   }
 
   goToManageEmailSettings() {

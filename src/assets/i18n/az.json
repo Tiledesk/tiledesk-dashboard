@@ -2294,6 +2294,7 @@
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Müştəri məmnuniyyətinə gəldikdə, səmərəlilik hər şeydir. Asanlıqla əldə edilə bilən “konservləşdirilmiş cavablar” kolleksiyasına sahib olmaq canlı söhbət sessiyasında müştəri sorğusuna qatılarkən və ya sadəcə tez-tez verilən suallara cavab verərkən sizə böyük üstünlük verə bilər.",
     "NumberOfTeammatesExceedsThePlan":"İcazə verilən komanda yoldaşlarının sayı {{free_plan_allowed_seats_num}} təşkil edir. Planı yeniləyin və ya limiti aşan komanda yoldaşlarını əl ilə silin (sistem bunu bir ay ərzində avtomatik edəcək)",
     "NumberOfTeammatesExceedsThePlan_2":"{{plan_name}} planı üçün icazə verilən komanda yoldaşlarının sayı {{allowed_seats_num}} təşkil edir. Planı yeniləyin və ya artıq komanda yoldaşlarını əl ilə silin (sistem bunu bir ay ərzində avtomatik edəcək)",
+    "OnlyWithPlan": "Yalnız {{plan_name}} plan",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

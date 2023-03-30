@@ -24,19 +24,19 @@ declare var Stripe: any;
 enum PLAN_DESC {
   Growth = 'Improve customer experience and qualify leads better with premium features',
   Scale = 'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
-  Enterprise = 'Exploit all the premium features and receive support to design chatbots tailor-made',
+  Plus = 'Exploit all the premium features and receive support to design chatbots tailor-made',
 }
 
 enum MONTHLY_PRICE {
   Growth = "19",
   Scale = "79",
-  Enterprise = '199'
+  Plus = 'Custom'
 }
 
 enum ANNUAL_PRICE {
   Growth = "190",
   Scale = "790",
-  Enterprise = '1.990'
+  Plus = 'Custom'
 }
 
 const featuresPlanA = [
@@ -54,6 +54,7 @@ const featuresPlanA = [
 const highlightedFeaturesPlanA = [
   { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 Seats' },
   { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' },
+  { 'color': '#19a95d', 'background': 'rgba(13,140,255,.2)', 'feature': '14 days free trial' }
 ]
 
 
@@ -73,6 +74,7 @@ const featuresPlanB = [
 const highlightedFeaturesPlanB = [
   { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats' },
   { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' },
+  { 'color': '#19a95d', 'background': 'rgba(13,140,255,.2)', 'feature': '14 days free trial' }
 ]
 
 const featuresPlanC = [
@@ -89,7 +91,7 @@ const featuresPlanC = [
 ]
 
 const highlightedFeaturesPlanC = [
-  { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': 'Chatbot design assistance' }
+  { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
 
 ]
 
@@ -105,6 +107,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   ANNUAL_PRICE = ANNUAL_PRICE;
   planName: string;
   planDecription: string;
+  profileType: string;
   planFeatures: Array<string>;
   annualPrice: string;
   monthlyPrice: string;
@@ -127,14 +130,13 @@ export class PricingComponent implements OnInit, OnDestroy {
   // operatorNo = 1
   operatorNo: number;
   numberOfAgentPerPrice: number
-  enterprisePlanNoAgentPerPrice: number
+  
 
   selectedPlanName: string;
   proPlanPerAgentPrice = 5;
 
   yearlyProPlanPerAgentPrice = 4.16;
-  // yearlyProPlanPerAgentPrice = 4;
-  enterprisePlanPerAgentPrice = 59;
+
 
   displayStipeCheckoutError: any;
   perMonth = true;
@@ -205,7 +207,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.getCurrentProject();
     this.selectedPlanName = 'pro'
 
-    // this.switchPlanPrice()
+  
 
     this.getBaseUrl()
 
@@ -288,7 +290,6 @@ export class PricingComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-
   // -------------------------------
   // PLAN B 
   // -------------------------------
@@ -311,6 +312,10 @@ export class PricingComponent implements OnInit, OnDestroy {
     console.log('[PRICING] PLAN C')
     const url = `https://buy.stripe.com/test_4gw1502Ds5X4ed26ot?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
     window.open(url, '_blank');
+  }
+
+  contactUs() {
+    window.open('mailto:sales@tiledesk.com?subject=Upgrade to Tiledesk Plus');
   }
  
 
@@ -390,18 +395,12 @@ export class PricingComponent implements OnInit, OnDestroy {
         this.annualPrice = ANNUAL_PRICE[PLAN_NAME.C]
       }
     }
-
   }
-
-
-
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
     console.log('[PRICING] - browser_lang ', this.browser_lang)
   }
-
-
 
   getRouteParamsAndAppId() {
     const appID = this.appConfigService.getConfig().firebase.appId;
@@ -419,15 +418,11 @@ export class PricingComponent implements OnInit, OnDestroy {
           this.DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE = true;
           this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE', this.DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE)
         }
-
-
       }
     });
   }
 
-
   setPlansPKandCode() {
-
     if (this.TILEDESK_V2 === true) {
       this.logger.log('[PRICING] - TILEDESK_V2 ?', this.TILEDESK_V2)
       this.STRIPE_LIVE_PK = 'pk_live_ED4EiI7FHgu0rv4lEHAl8pff00n2qPazOn';
@@ -453,8 +448,11 @@ export class PricingComponent implements OnInit, OnDestroy {
 
         this.subscription_id = projectProfileData.subscription_id;
         this.projectCurrenPlan = projectProfileData.profile_name
+        this.profileType = projectProfileData.profile_type
+        
         console.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
-        console.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
+        console.log('[PRICING]  - getProjectPlan > projectCurrenPlan ', this.projectCurrenPlan)
+        console.log('[PRICING]  - getProjectPlan > profileType ', this.profileType)
       }
     }, error => {
 
@@ -538,12 +536,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
 
-  selectedPlan(_selectedPlanName: string) {
-    this.selectedPlanName = _selectedPlanName
-    this.logger.log('[PRICING] selectePlanName ', this.selectedPlanName);
-
-    this.switchPlanPrice()
-  }
+ 
 
   setPeriod(selectedPeriod: string) {
     this.logger.log('[PRICING] - selectedPeriod ', selectedPeriod);
@@ -592,13 +585,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
   }
 
-  switchPlanPrice() {
-    if (this.selectedPlanName === 'pro') {
-      this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
-    } else {
-      this.numberOfAgentPerPrice = this.operatorNo * this.enterprisePlanPerAgentPrice;
-    }
-  }
+ 
 
   goBack() {
     this.location.back();

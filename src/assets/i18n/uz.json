@@ -2294,6 +2294,7 @@
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Mijozlarning qoniqishi haqida gap ketganda, samaradorlik hamma narsadir. Oson mavjud bo'lgan “konservalangan javoblar“ to'plamiga ega bo'lish jonli chat sessiyasida mijozlar so'roviga qatnashish yoki shunchaki tez-tez so'raladigan savollarga javob berishda sizga katta ustunlik berishi mumkin.",
     "NumberOfTeammatesExceedsThePlan":"Ruxsat berilgan jamoadoshlar soni: {{free_plan_allowed_seats_num}}. Rejani yangilang yoki chegaradan oshib ketgan jamoadoshlarni qo'lda olib tashlang (tizim buni bir oy ichida avtomatik ravishda bajaradi)",
     "NumberOfTeammatesExceedsThePlan_2":"{{plan_name}} rejasi uchun ruxsat etilgan jamoadoshlar soni: {{allowed_seats_num}}. Rejani yangilang yoki ortiqcha jamoadoshlarni qo'lda olib tashlang (tizim buni bir oy ichida avtomatik ravishda bajaradi)",
+    "OnlyWithPlan": "Faqat {{plan_name}} tarif rejasi",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

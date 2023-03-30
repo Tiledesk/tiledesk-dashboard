@@ -99,6 +99,7 @@ export class ProjectProfileGuard implements CanActivate {
           console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PLAN_NAME.A ', PLAN_NAME.A);
         }
 
+        // PLAN A and  AUTHORIZED TO CONTACTS
        if (planName === PLAN_NAME.A && url.indexOf('/contacts') !== -1) { 
           this.userIsAuthorized = true;
           console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
@@ -107,8 +108,8 @@ export class ProjectProfileGuard implements CanActivate {
         else {
           console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ', url.indexOf('/analytics') !== -1);
         }
-        // PLAN A and  AUTHORIZED TO CONTACTS
-     
+        
+
 
         // PLAN A and PLAN C AUTHORIZED TO MONITOR
         if ((planName === PLAN_NAME.A && url.indexOf('/wsrequests') !== -1) || (planName === PLAN_NAME.B && url.indexOf('/wsrequests') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/wsrequests') !== -1)) {

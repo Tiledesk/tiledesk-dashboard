@@ -822,7 +822,7 @@ $f21blue: #039be5;
   cursor: not-allowed;
 }
 
-.enterprise-only-badge {
+.c-plan-only-badge{
   background: #6772e5;
   font-size: 9px;
   color: #fff;
@@ -832,6 +832,7 @@ $f21blue: #039be5;
   font-weight: 400;
   position: relative;
   top: -2px;
+  white-space: nowrap;
 }
 
 .avatar {
@@ -860,9 +861,9 @@ $f21blue: #039be5;
 }
 
 
-.enterprise--only--badge {
+.c-plan--only--badge {
   background: #6772e5;
-  font-size: 14px;
+  font-size: 10px;
   color: #fff;
   border-radius: 3px;
   padding: 3px 6px;

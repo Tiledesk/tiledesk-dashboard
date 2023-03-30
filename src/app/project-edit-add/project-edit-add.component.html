@@ -122,7 +122,9 @@
               <span class="project-edit-add-link-to-doc" (click)="goToKBDocsSettingUpAutomaticAssignment()">
                 {{'SettingUpAutomaticAssignment' | translate}}  
               </span>
-              <span *ngIf="profile_name !== PLAN_NAME.C" class="enterprise--only--badge"> {{'EnterpriseOnly'| translate}} </span>
+              <span *ngIf="profile_name !== PLAN_NAME.C" class="c-plan--only--badge"> 
+                {{'OnlyWithPlan'| translate: tParamsFeatureAvailableWith}} 
+              </span>
             </div>
           </div>
           <!-- <div class="col-xs-12">
@@ -298,10 +300,10 @@
                             <!-- {{ 'YourCurrentPlan' | translate }}: -->
                             
                             <span style="font-weight: 400">
-                              <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
+                              <span style="text-transform: capitalize" (click)="goToPricing()">{{ prjct_profile_name }} </span>
 
                               <!-- - {{ projectUsersLength }} -->
-                              - {{ seatsLimit }}  {{ "AgentSeats" | translate }}
+                              - ( {{ seatsLimit }}  {{ "AgentSeats" | translate }}  x € 0.00 )
                               <!-- <span *ngIf="projectUsersLength === 1">
                                 {{ "Agent" | translate }}
                               </span>
@@ -318,7 +320,8 @@
                                   {{ 'PendingInvitations' | translate }}
                                 </span>
                               </span> -->
-                              x € 0.00 / {{'PerMonth' | translate }}
+                             
+                              <!-- / {{'PerMonth' | translate }} -->
                             </span>
                           </span>
                         </span>
@@ -433,8 +436,8 @@
 
                             <span *ngIf="SUBSCRIPTION_BUFFER_DAYS" style="margin-left:3px">
                               {{ "Pricing.SubscriptionExpired" | translate }} {{ 'On' | translate }}
-                              {{ subscription_end_date | date: 'dd/MM/yyyy' }} -
-                              {{ subscription_end_date |  amDateFormat: 'LL' }} -
+                              <!-- {{ subscription_end_date | date: 'dd/MM/yyyy' }} - -->
+                              {{ subscription_end_date |  amDateFormat: 'LLL' }} -
                          
                               <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
                                 {{ "Pricing.UpgradePlan" | translate }}
@@ -549,7 +552,7 @@
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION CREDIT CARD -->
                     <!-- -------------------------------------------------------------------------------------  -->
                     <div class="row"
-                      *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise' &&  subscription_is_active === true"
+                      *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME.C &&  subscription_is_active === true"
                       style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label">
                         {{"PaymentInformation" | translate }}
@@ -579,10 +582,10 @@
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION START DATE OR PLAN START DATE IF ENTERPRISE -->
                     <!-- -------------------------------------------------------------------------------------------------------  -->
                     <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== 'enterprise'">
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== PLAN_NAME.C">
                         {{ "SubscriptionStartDate" | translate }}
                       </label>
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name === 'enterprise'">
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name === PLAN_NAME.C">
                         {{ "PlanStartDate" | translate }}
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -599,12 +602,12 @@
                             <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
                             <span *ngIf="profile_name === PLAN_NAME.C">
                               <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }}  -->
-                              {{ subscription_creation_date | amDateFormat: 'LL' }} 
+                              {{ subscription_creation_date | amDateFormat: 'LLL' }} 
                               
                             </span>
                             <span *ngIf="profile_name !== PLAN_NAME.C"> 
                               <!-- {{ subscription_creation_date * 1000 | date:'dd/MM/yyyy' }}  -->
-                              {{ subscription_creation_date * 1000 | amDateFormat: 'LL' }} 
+                              {{ subscription_creation_date * 1000 | amDateFormat: 'LLL' }} 
                             </span>
                           </span>
                         </span>
@@ -629,7 +632,7 @@
 
                           <span style=" font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
                             <!-- {{ subscription_start_date | date: 'dd/MM/yyyy' }} -->
-                            {{ subscription_start_date | amDateFormat: 'LL' }}
+                            {{ subscription_start_date | amDateFormat: 'LLL' }}
                             
                           </span>
                         </span>
@@ -654,7 +657,7 @@
                           <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
 
                             <!-- {{ subscription_end_date | date: 'dd/MM/yyyy' }} -->
-                            {{ subscription_end_date | amDateFormat: 'LL' }}
+                            {{ subscription_end_date | amDateFormat: 'LLL' }}
                            
                           </span>
                         </span>
@@ -694,7 +697,7 @@
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SEE PAYMENTS BTN  -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise'"
+                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME.C"
                       style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label">
                         {{ "ProjectEditPage.Payments" | translate }}
@@ -711,7 +714,7 @@
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CANCEL SUBSCRIPTION  -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== 'enterprise'">
+                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME.C">
                       <label class="col-sm-2"> </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <button class="btn btn-danger" (click)="viewCancelSubscription()"
@@ -1342,7 +1345,11 @@
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
                           {{ "ProjectEditPage.CustomizeEmailTemplate" | translate }}
-                          <span class="enterprise-only-badge"> {{'EnterpriseOnly' | translate }} </span>
+                          <span class="c-plan-only-badge"> 
+                            
+                            {{'OnlyWithPlan' | translate : tParamsFeatureAvailableWith}}
+                            <!-- {{'EnterpriseOnly' | translate }}  -->
+                          </span>
                         </span>
                       </h3>
                     </div>
@@ -1369,7 +1376,10 @@
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
                           {{ "ProjectEditPage.SMTPSettings" | translate }} 
-                          <span class="enterprise-only-badge"> {{'EnterpriseOnly' | translate }} </span>
+                          <span class="c-plan-only-badge"> 
+                            <!-- {{'EnterpriseOnly' | translate }}  -->
+                            {{'OnlyWithPlan' | translate : tParamsFeatureAvailableWith}}
+                          </span>
                         </span>
                       </h3>
                     </div>
