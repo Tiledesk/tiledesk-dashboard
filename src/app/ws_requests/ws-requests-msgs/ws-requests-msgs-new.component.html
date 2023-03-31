@@ -149,7 +149,7 @@
 
 
 
-            <div #scrollMe id="chat-wpr"  class="card-content" (scroll)="onScrollMsgs($event)">
+            <div #scrollMe id="chat-wpr" class="card-content" (scroll)="onScrollMsgs($event)">
               <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
@@ -751,7 +751,8 @@
                     <div class="conv-info-sidebar-header-contact-info-wpr">
                       <div role="button" tabindex="-1" class="avatar"
                         [ngClass]="{'chat-avatar': CHAT_PANEL_MODE === true}"
-                        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"  (click)="goToContactDetails()">
+                        [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
+                        (click)="goToContactDetails()">
                         {{ requester_fullname_initial }}
                       </div>
                       <!-- ----------------------------------- -->
@@ -799,12 +800,13 @@
                           <div role="button" class="td-dropdown__trigger" tabindex="0"
                             (click)="openAddContactNameForm($event)">
                             <div id="edit-fullname-contact-info-wpr" class="contact-info-wpr">
-                              <h3 id="edit-fullname-contact-info--name" *ngIf="request?.lead?.fullname" class="contact-info--name">
-                            {{request?.lead?.fullname}}
+                              <h3 id="edit-fullname-contact-info--name" *ngIf="request?.lead?.fullname"
+                                class="contact-info--name">
+                                {{request?.lead?.fullname}}
                               </h3>
                               <!-- -->
                               <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24" class="edit--icon" >
+                                width="24" height="24" viewBox="0 0 24 24" class="edit--icon">
                                 <path
                                   d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
                                 </path>
@@ -951,15 +953,11 @@
                                 <img *ngIf="agent.isBot === false && agent.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                                   alt="human-agent-profile-photo" class="served-by-avatar--img eyj5dak1"
-                                  onerror="this.src='assets/img/no_image_user.png'" 
-                                  [satPopoverAnchor]="agentfbimg"
-                                  (click)="agentfbimg.toggle()" 
-                                  (click)="$event.stopPropagation()"
-                                  (document:click)="agentfbimg.close()"
-                                   matTooltipClass="custom-mat-tooltip" 
-                                   matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} {{'ClickToDisplayActions' | translate}}" 
-                                  #tooltip="matTooltip"
-                                  matTooltipPosition='left' matTooltipHideDelay="100" />
+                                  onerror="this.src='assets/img/no_image_user.png'" [satPopoverAnchor]="agentfbimg"
+                                  (click)="agentfbimg.toggle()" (click)="$event.stopPropagation()"
+                                  (document:click)="agentfbimg.close()" matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} {{'ClickToDisplayActions' | translate}}"
+                                  #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100" />
                                 <sat-popover #agentfbimg horizontalAlign="before">
                                   <div class="popover-wrapper">
                                     <div class="sat-popover-agent-fullname">
@@ -982,10 +980,9 @@
                                 <!-- (mouseenter)="agentntimg.open()" -->
                                 <img *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                  class="served-by-avatar--img"
-                                  [satPopoverAnchor]="agentntimg" (click)="agentntimg.toggle()"
-                                  (click)="$event.stopPropagation()" (document:click)="agentntimg.close()"
-                                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}}
+                                  class="served-by-avatar--img" [satPopoverAnchor]="agentntimg"
+                                  (click)="agentntimg.toggle()" (click)="$event.stopPropagation()"
+                                  (document:click)="agentntimg.close()" matTooltipClass="custom-mat-tooltip" matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}}
                                   {{'ClickToDisplayActions' | translate}}" #tooltip="matTooltip"
                                   matTooltipPosition='left' matTooltipHideDelay="100" />
 
@@ -1039,7 +1036,7 @@
                                 <!-- ---------------------------------------------------------------------------- -->
                                 <!-- @ Bot agent photo - USE CASE: BOT HAS IMAGE & UPLOAD ENGINE IS FIREBASE -->
                                 <!-- ---------------------------------------------------------------------------- -->
-                                
+
                                 <img *ngIf="agent.isBot === true && UPLOAD_ENGINE_IS_FIREBASE"
                                   class="served-by-avatar--img"
                                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4}}%2Fthumb_photo.jpg?alt=media"
@@ -1069,12 +1066,9 @@
                                   class="served-by-avatar--img"
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
-                                  
-                                  (click)="goToMemberProfile( agent?._id )" 
-                                  matTooltipClass="custom-mat-tooltip" 
-                                  matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)" 
-                                  #tooltip="matTooltip"
-                                  matTooltipPosition='left' matTooltipHideDelay="100" />
+                                  (click)="goToMemberProfile( agent?._id )" matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)"
+                                  #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100" />
 
                                 <!-- <sat-popover #botntengine horizontalAlign="before">
                                   <div class="popover-wrapper">
@@ -1294,8 +1288,9 @@
                       <!-- ----------------------------------------------------------  -->
                       <!-- Working status dropdow -->
                       <!-- ----------------------------------------------------------  -->
-                      <div class="dropdown" >
-                        <a class="btn working-status-dropdown-btn dropdown-toggle" style="min-width: 65px;" data-toggle="dropdown"
+                      <div class="dropdown">
+                        <a class="btn working-status-dropdown-btn dropdown-toggle" style="min-width: 65px;"
+                          data-toggle="dropdown"
                           [ngClass]="{
                           'working-status-dropdown-btn-chat': CHAT_PANEL_MODE === true,
                           'btn-deepred' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000,
@@ -1318,10 +1313,10 @@
                         </a>
                         <ul class="dropdown-menu" style="cursor: pointer;"
                           [ngClass]="{'dropdown-menu-working-status-chat': CHAT_PANEL_MODE === true}">
-                          <li 
-                            [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
-                            (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="conversation-open-assigned"
-                            *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
+                            (click)="hasSelectedOpen('updatedWorkingStatus', request)"
+                            class="conversation-open-assigned" *ngIf="!request?.subject"
+                            matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{'ConversationBeingProcessed' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
@@ -1330,8 +1325,7 @@
                               </span>
                             </a>
                           </li>
-                          <li 
-                            [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
                             (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="ticket-open-assigned"
                             *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{'TicketBeingProcessed' | translate }}" #tooltip="matTooltip"
@@ -1342,9 +1336,8 @@
                               </span>
                             </a>
                           </li>
-                     
-                          <li 
-                            [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
+
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
                             (click)="hasSelectedPending('updatedWorkingStatus', request)" class="pending"
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'WaitingForReplyFromTheRequester' | translate }}" #tooltip="matTooltip"
@@ -1367,9 +1360,9 @@
                                 {{'VisitorsPage.Resolve' | translate}} </span>
                             </a>
                           </li>
-                          <li 
-                          [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true }"
-                          (click)="hasSelectedSolved('updatedWorkingStatus')" class="ticket-resolved"
+                          <li
+                            [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true }"
+                            (click)="hasSelectedSolved('updatedWorkingStatus')" class="ticket-resolved"
                             *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
@@ -1414,10 +1407,11 @@
                           </div>
                         </div>
 
-                        <div class="reopen-btns-in-right-sidebar-wpr" *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000">
+                        <div class="reopen-btns-in-right-sidebar-wpr"
+                          *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000">
                           <!--  Reopen - use case Conversation -->
-                          <div *ngIf="!request?.subject"
-                            class="reopen-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
+                          <div *ngIf="!request?.subject" class="reopen-btn-in-right-sidebar-wpr"
+                            matTooltipClass="custom-mat-tooltip"
                             matTooltip=" {{ 'ReopenTheCurrentConversation' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
@@ -1430,8 +1424,8 @@
                           </div>
 
                           <!--  Reopen - use case Ticket -->
-                          <div *ngIf="request?.subject"
-                            class="reopen-btn-in-right-sidebar-wpr" matTooltipClass="custom-mat-tooltip"
+                          <div *ngIf="request?.subject" class="reopen-btn-in-right-sidebar-wpr"
+                            matTooltipClass="custom-mat-tooltip"
                             matTooltip=" {{ 'ReopenTheCurrentTicket' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
@@ -1448,8 +1442,7 @@
 
                       <div class="request-icons-in-right-sidebar" *ngIf="CHAT_PANEL_MODE === false">
                         <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
-                        <svg
-                          *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && !request?.subject"
+                        <svg *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && !request?.subject"
                           class="header-conv-svg-icon" height="24" width="24" viewBox="0 0 58.1 53.9"
                           xml:space="preserve" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
@@ -1714,12 +1707,14 @@
                           </svg>
                         </span>
                         <!-- (blur)="editContactEmail()"  -->
-                        <div class="form-group" style="margin-top: 2px;" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
+                        <div class="form-group" style="margin-top: 2px;"
+                          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
                           <input type="email" name="email" data-id="email" class="form-control input-md"
                             [(ngModel)]="contactNewEmail" (ngModelChange)="emailChange($event)"
                             pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" placeholder="Email..."
                             maxlength="255" (keydown.enter)='editContactEmail()' [(ngModel)]="contactNewEmail"
-                            autocomplete="off" style="padding-bottom: 2px;" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+                            autocomplete="off" style="padding-bottom: 2px;"
+                            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
                         </div>
                         <div class="action-btns">
                           <button type="button" data-id="email" (click)="removeEmailAnUpdateContact()">
@@ -1863,7 +1858,8 @@
                               d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-.61.08-1.21.21-1.78L8.99 15v1c0 1.1.9 2 2 2v1.93C7.06 19.43 4 16.07 4 12zm13.89 5.4c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41C17.92 5.77 20 8.65 20 12c0 2.08-.81 3.98-2.11 5.4z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;" (click)="openSourcePage(request?.sourcePage)" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
+                        <div class="form-group" style="margin-top: 9px;" (click)="openSourcePage(request?.sourcePage)"
+                          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
                           <input *ngIf="!showSpinner" id="source-page-input" name="sourcepage" type="text"
                             data-id="sourcepage" class="form-control input-md" title="{{request?.sourcePage}}" disabled
                             value="{{request?.sourcePage}}" style="cursor: pointer;"
@@ -2077,57 +2073,114 @@
                 <div *ngIf="tab0" class="tab0-card2">
                   <div class="tab0-card2-content-wpr"
                     [ngClass]="{'tab0-card2-content-wpr-chat': CHAT_PANEL_MODE === true}">
-                    <div class="tab0-card2-content" [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">
-                      <header class="tab0-card2-header ">
-                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
-                          viewBox="0 0 24 24" fill="none" style="min-width: 22px; min-height: 22px;" class="rating-icon"
-                          matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'RequestMsgsPage.Rating' | translate }}"
-                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
-                          <g>
-                            <path d="M0,0h24v24H0V0z" fill="none" />
-                          </g>
-                          <g>
+                    <ng-container *ngIf="displayChatRatings">
+                      <div class="tab0-card2-content" [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">
+                        <header class="tab0-card2-header ">
+                          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
+                            viewBox="0 0 24 24" fill="none" style="min-width: 22px; min-height: 22px;"
+                            class="rating-icon" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.Rating' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='right' matTooltipHideDelay="100">
                             <g>
-                              <path
-                                d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H5.17L4,17.17V4h16V16z" />
-                              <polygon points="12,15 13.57,11.57 17,10 13.57,8.43 12,5 10.43,8.43 7,10 10.43,11.57" />
+                              <path d="M0,0h24v24H0V0z" fill="none" />
                             </g>
-                          </g>
-                        </svg>
-                        <div>
-                          <div class="rating-group e9elja63" *ngIf="request">
+                            <g>
+                              <g>
+                                <path
+                                  d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H5.17L4,17.17V4h16V16z" />
+                                <polygon points="12,15 13.57,11.57 17,10 13.57,8.43 12,5 10.43,8.43 7,10 10.43,11.57" />
+                              </g>
+                            </g>
+                          </svg>
+                          <div>
+                            <div class="rating-group e9elja63" *ngIf="request">
 
-                            <span class="material-icons"
-                              [ngClass]="{'yellow-star': request?.rating === 1 || request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
-                              star
-                            </span>
-                            <span class="material-icons"
-                              [ngClass]="{'yellow-star': request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
-                              star
-                            </span>
-                            <span class="material-icons"
-                              [ngClass]="{'yellow-star': request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
-                              star
-                            </span>
-                            <span class="material-icons"
-                              [ngClass]="{'yellow-star': request?.rating === 4 || request?.rating === 5}">
-                              star
-                            </span>
-                            <span class="material-icons" [ngClass]="{'yellow-star': request?.rating === 5 }">
-                              star
+                              <span class="material-icons"
+                                [ngClass]="{'yellow-star': request?.rating === 1 || request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
+                                star
+                              </span>
+                              <span class="material-icons"
+                                [ngClass]="{'yellow-star': request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
+                                star
+                              </span>
+                              <span class="material-icons"
+                                [ngClass]="{'yellow-star': request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
+                                star
+                              </span>
+                              <span class="material-icons"
+                                [ngClass]="{'yellow-star': request?.rating === 4 || request?.rating === 5}">
+                                star
+                              </span>
+                              <span class="material-icons" [ngClass]="{'yellow-star': request?.rating === 5 }">
+                                star
+                              </span>
+                            </div>
+                            <span tabindex="0" class="rating-message" *ngIf="request">
+                              <span *ngIf="!request.rating_message">
+                                {{'NoCustomerReviewMessage' | translate}}
+                              </span>
+                              <span *ngIf="request.rating_message">
+                                {{request?.rating_message}}
+                              </span>
                             </span>
                           </div>
-                          <span tabindex="0" class="rating-message" *ngIf="request">
-                            <span *ngIf="!request.rating_message">
-                              {{'NoCustomerReviewMessage' | translate}}
+                        </header>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="!displayChatRatings">
+                      <div class="tab0-card2-content" [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">
+                        <header class="tab0-card2-header ">
+                          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
+                            viewBox="0 0 24 24" fill="none" style="min-width: 22px; min-height: 22px;"
+                            class="rating-icon" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.Rating' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='right' matTooltipHideDelay="100">
+                            <g>
+                              <path d="M0,0h24v24H0V0z" fill="none" />
+                            </g>
+                            <g>
+                              <g>
+                                <path
+                                  d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H5.17L4,17.17V4h16V16z" />
+                                <polygon points="12,15 13.57,11.57 17,10 13.57,8.43 12,5 10.43,8.43 7,10 10.43,11.57" />
+                              </g>
+                            </g>
+                          </svg>
+                          <div>
+                            <div class="rating-group e9elja63">
+                              <span class="material-icons">
+                              star
                             </span>
-                            <span *ngIf="request.rating_message">
-                              {{request?.rating_message}}
+                            <span class="material-icons">
+                              star
                             </span>
-                          </span>
-                        </div>
-                      </header>
-                    </div>
+                            <span class="material-icons">
+                              star
+                            </span>
+                            <span class="material-icons">
+                              star
+                            </span>
+                            <span class="material-icons">
+                              star
+                            </span>
+
+                            </div>
+                            <button class="btn btn-get--feature-no-boxshadow pull-right" (click)="goToPricing()"
+                              matTooltipClass="custom-mat-tooltip"
+                              matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
+                              matTooltipPosition='below' matTooltipHideDelay="100">
+                              <span class="material-icons-outlined get--feature-upgrade-plan-icon">
+                                upgrade
+                              </span>
+                              <span>
+                                {{ 'Pricing.UpgradePlan' | translate }}
+                              </span>
+                            </button>
+                           
+                          </div>
+                        </header>
+                      </div>
+                    </ng-container>
                   </div>
                   <!-- ------------------------------------- -->
                   <!-- Apps -->
@@ -3281,8 +3334,8 @@
                       <td style="cursor:pointer"
                         (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
                         <p style="font-size:14px; font-weight: 500; margin-bottom: 0px;">
-                          {{ projectUser?.id_user?.firstname }}   {{ projectUser?.id_user?.lastname }}
-                         
+                          {{ projectUser?.id_user?.firstname }} {{ projectUser?.id_user?.lastname }}
+
 
                           <!-- --------------------------------------------------- -->
                           <!-- user role in CHAT_PANEL_MODE x Project Users -->

@@ -170,6 +170,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   onlyOwnerCanManageTheAccountPlanMsg: string;
   onlyOwnerCanManageEmailTempalte: string;
   onlyAvailableWithEnterprisePlan: string;
+  cPlanOnly:string
   learnMoreAboutDefaultRoles: string;
   TESTSITE_BASE_URL: string;
   TEST_WIDGET_API_BASE_URL: string;
@@ -490,6 +491,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
+      });
+      this.translate.get('AvailableWithThePlan' , {plan_name: PLAN_NAME.C})
+      .subscribe((translation: any) => {
+        this.cPlanOnly = translation;
       });
   }
 
@@ -866,19 +871,28 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
-  presentModalFeautureAvailableOnlyWithEnterprisePlan() {
+  presentModalFeautureAvailableOnlyWithPlanC() {
     const el = document.createElement('div')
-    el.innerHTML = this.onlyAvailableWithEnterprisePlan
+    el.innerHTML = this.cPlanOnly
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
       icon: "info",
       // buttons: true,
-      button: {
-        text: "OK",
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
       },
       dangerMode: false,
-    })
+    }).then((value) => {
+      if (value === 'catch') {
+        console.log('featureAvailableFromPlanC value', value)
+        this.goToPricing()
+      }
+    });
   }
 
   presentModalOnlyOwnerCanManageEmailTempalte() {
@@ -925,7 +939,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
       this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
     } else if (this.profile_name !== PLAN_NAME.C) {
-      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+      this.presentModalFeautureAvailableOnlyWithPlanC()
     }
   }
 
@@ -947,7 +961,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
       this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
     } else if (this.profile_name !== PLAN_NAME.C) {
-      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+      this.presentModalFeautureAvailableOnlyWithPlanC()
     }
   }
 
@@ -972,7 +986,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
       this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
     } else if (this.profile_name !== PLAN_NAME.C) {
-      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+      this.presentModalFeautureAvailableOnlyWithPlanC()
     }
   }
 
@@ -989,7 +1003,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
       this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
     } else if (this.profile_name !== PLAN_NAME.C) {
-      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+      this.presentModalFeautureAvailableOnlyWithPlanC()
     }
   }
 
@@ -1600,10 +1614,25 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToPricing() {
+    // if (this.isVisiblePaymentTab) {
+    //   if (this.USER_ROLE === 'owner') {
+    //     this.router.navigate(['project/' + this.id_project + '/pricing']);
+    //     // this.notify.presentContactUsModalToUpgradePlan(true);
+    //   } else {
+    //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    //   }
+    // } else {
+    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
+    // }
+
     if (this.isVisiblePaymentTab) {
       if (this.USER_ROLE === 'owner') {
-        this.router.navigate(['project/' + this.id_project + '/pricing']);
-        // this.notify.presentContactUsModalToUpgradePlan(true);
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        } else {
+          this.router.navigate(['project/' + this.id_project + '/pricing']);
+     
+        }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }

@@ -314,8 +314,9 @@ export class PricingComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-  contactUs() {
-    window.open('mailto:sales@tiledesk.com?subject=Upgrade to Tiledesk Plus');
+  contactUs(planname) {
+    console.log('[PRICING] contactUs planname ', planname)
+    window.open(`mailto:sales@tiledesk.com?subject=Upgrade to Tiledesk ${planname}`);
   }
  
 

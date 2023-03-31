@@ -9,7 +9,7 @@ background-size: 475px 449px, 188px 100%, 179px 100%;
 background-position: right -12px bottom,right,calc(100% - 179px);    background-repeat: no-repeat; -->
 
   <div style="min-height: calc(100vh - 53px);" class="plan-bckgrnd"
-    [ngClass]="{'pro-plan-bckgrnd' : selectedPlanName === 'pro', 'enterprise-plan-bckgrnd' : selectedPlanName === 'enterprise'}">
+    [ngClass]="{'a-plan-bckgrnd' : planName === PLAN_NAME.A, 'b-plan-bckgrnd' : planName === PLAN_NAME.B, 'c-plan-bckgrnd' : planName === PLAN_NAME.C}">
     <!-- <div class="row">
       <div class="col-md-12"> -->
     <div class="close-pricing-page">
@@ -374,7 +374,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <!-- Plan A when already exist a Plan  -->
             <!-- --------------------------------- -->
             <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.A && profileType !== 'free'"
-              (click)="contactUs()">
+              (click)="contactUs(planName)">
               <button id="plan-a-contact-us" type="button"
                 class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Contact Sales </span>
@@ -407,7 +407,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <!-- Plan B when already exist a  payment type Plan -->
             <!-- ----------------------------------------------- -->
             <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.B && profileType !== 'free'"
-              (click)="contactUs()">
+              (click)="contactUs(planName)">
               <button id="plan-b-contact-us" type="button"
                 class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Contact Sales </span>
@@ -417,7 +417,8 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <!-- ----------------------------------------------- -->
             <!-- Plan C  openPaymentLinkPlanC() -->
             <!-- ----------------------------------------------- -->
-            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" (click)="contactUs()">
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" 
+              (click)="contactUs(planName)">
               <button id="plan-c" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Contact Sales </span>
               </button>

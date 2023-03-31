@@ -12,10 +12,6 @@ import { avatarPlaceholder, getColorBck, PLAN_SEATS, PLAN_NAME } from '../utils/
 import { URL_understanding_default_roles } from '../utils/util'
 import { LoggerService } from '../services/logger/logger.service'
 
-
-
-
-
 const swal = require('sweetalert')
 
 @Component({
@@ -387,7 +383,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
           if (projectProfileData.profile_type === 'free') {
             if (projectProfileData.trial_expired === false) {
-              this.prjct_profile_name = PLAN_NAME.B + " (trial)"
+              this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
               this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
               this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
               console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)

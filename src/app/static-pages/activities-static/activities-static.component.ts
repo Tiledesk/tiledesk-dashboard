@@ -151,16 +151,7 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
         this.profile_name = projectProfileData.profile_name;
         this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
 
-        // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-
-        //   if (this.USER_ROLE === 'owner') {
-        //     if (this.profile_name !== 'enterprise') {
-        //       this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
-        //     } else if (this.profile_name === 'enterprise') {
-        //       this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-        //     }
-        //   }
-        // }
+        
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           if (this.USER_ROLE === 'owner') {

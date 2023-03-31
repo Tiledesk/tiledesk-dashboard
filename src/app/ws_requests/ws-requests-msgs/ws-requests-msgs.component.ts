@@ -380,7 +380,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   agentCannotManageAdvancedOptions: string;
   subscription_end_date: any;
   onlyAvailableWithEnterprisePlan: string;
+  cPlanOnly:string
   learnMoreAboutDefaultRoles: string;
+  displayChatRatings: boolean; 
+  onlyOwnerCanManageTheAccountPlanMsg: string;
   /**
    * Constructor
    * @param router 
@@ -548,6 +551,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.subscription_end_date = projectProfileData.subscription_end_date
         this.profile_name = projectProfileData.profile_name
 
+       
+        if (projectProfileData.profile_type === 'free') {
+          if (projectProfileData.trial_expired === false) {
+            this.displayChatRatings = true;
+          } else {
+            this.displayChatRatings = false;
+          }
+        } else if (projectProfileData.profile_type === 'payment') {
+          if (projectProfileData.subscription_is_active === true) {
+            this.displayChatRatings = true;
+
+          } else if (projectProfileData.subscription_is_active === false) {
+            this.displayChatRatings = false;
+          }
+        }
+
         if (projectProfileData.profile_name === 'free' && projectProfileData.trial_expired === true && this.selectedResponseTypeID === 2) {
           const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
           console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
@@ -562,6 +581,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }, () => {
       console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE * COMPLETE *');
     });
+  }
+
+  goToPricing() {
+    if (this.isVisiblePaymentTab) {
+      if (this.CURRENT_USER_ROLE === 'owner') {
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        } else {
+          this.router.navigate(['project/' + this.id_project + '/pricing']);
+     
+        }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+
   }
 
   openUpgradePlanDialog(projectid) {
@@ -3932,7 +3974,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         (this.prjct_profile_type === 'free' && this.trial_expired === true)
 
       ) {
-        this.presentModalFeautureAvailableOnlyWithEnterprisePlan();
+        this.presentModalFeautureAvailableOnlyWithPlanC();
         console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAILABLE')
       } else if (
 
@@ -3947,12 +3989,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
-    // } else if (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) {
-    //   // this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.B, this.subscription_end_date);
-    //   this.notify.displaySubscripionHasExpiredModal(true, PLAN_NAME.B, this.subscription_end_date);
-    // } else if (this.profile_name !== PLAN_NAME.B) {
-    //   this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
-    // }
+ 
   }
 
 
@@ -4031,19 +4068,27 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
 
-  presentModalFeautureAvailableOnlyWithEnterprisePlan() {
+  presentModalFeautureAvailableOnlyWithPlanC() {
     const el = document.createElement('div')
-    el.innerHTML = this.onlyAvailableWithEnterprisePlan
+    el.innerHTML = this.cPlanOnly
     swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
       icon: "info",
       // buttons: true,
-      button: {
-        text: "OK",
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
       },
       dangerMode: false,
-    })
+    }).then((value) => {
+      if (value === 'catch') {
+        console.log('featureAvailableFromPlanC value', value)
+        this.goToPricing()
+      }
+    });
   }
 
   presentModalAgentCannotManageAvancedSettings() {
@@ -4504,16 +4549,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.agentCannotManageAdvancedOptions = translation;
       });
 
-
-    this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
+      
+    this.translate.get('AvailableWithThePlan' , {plan_name: PLAN_NAME.C})
       .subscribe((translation: any) => {
-
-        this.onlyAvailableWithEnterprisePlan = translation;
+        this.cPlanOnly = translation;
       });
 
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
-        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+
         this.learnMoreAboutDefaultRoles = translation;
       });
 
@@ -4531,6 +4575,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
       .subscribe((translation: any) => {
         this.featureAvailableFromBPlan = translation;
+      });
+
+      this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
   }

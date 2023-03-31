@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectService } from 'app/services/project.service';
-import { tranlatedLanguage } from 'app/utils/util';
+import { PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
 import { avatarPlaceholder, getColorBck } from '../../utils/util'
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
@@ -23,6 +23,7 @@ import { avatarPlaceholder, getColorBck } from '../../utils/util'
 
 })
 export class SidebarUserDetailsComponent implements OnInit {
+  PLAN_NAME = PLAN_NAME
   public HAS_CLICKED_OPEN_USER_DETAIL: boolean = false;
   // @Output() onCloseUserDetailsSidebar = new EventEmitter();
   public _prjct_profile_name: string;

@@ -193,7 +193,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
 
 
-      this.getPaidPlanTranslation(planName)
+      // this.getPaidPlanTranslation(planName)
       // if (browserLang === 'it') {
       //   this.prjct_profile_name = 'Piano ' + planName;
       //   return this.prjct_profile_name
@@ -204,26 +204,17 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  getPaidPlanTranslation(project_profile_name) {
-    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-      .subscribe((text: string) => {
-        this.prjct_profile_name = text;
+  // getPaidPlanTranslation(project_profile_name) {
+  //   this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+  //     .subscribe((text: string) => {
+  //       this.prjct_profile_name = text;
 
-        // this.logger.log('+ + + PaydPlanName ', text)
-      });
-  }
+  //       // this.logger.log('+ + + PaydPlanName ', text)
+  //     });
+  // }
 
 
   openModalExpiredSubscOrGoToPricing() {
-    // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-    //   this.notify.closeDataExportNotAvailable();
-    //   this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    // }
-
-    // if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-    //   this.notify.closeDataExportNotAvailable();
-    //   this.router.navigate(['project/' + this.projectId + '/pricing']);
-    // }
 
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
@@ -233,9 +224,9 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
       } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
         this.notify.closeDataExportNotAvailable();
-        if (this.profile_name !== 'enterprise') {
+        if (this.profile_name !== PLAN_NAME.C) {
           this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-        } else if (this.profile_name === 'enterprise') {
+        } else if (this.profile_name === PLAN_NAME.C) {
 
           this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         }

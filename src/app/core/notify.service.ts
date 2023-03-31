@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
-import { URL_understanding_default_roles } from './../utils/util';
+import { PLAN_NAME, URL_understanding_default_roles } from './../utils/util';
 const swal = require('sweetalert');
 declare var $: any;
 /// Notify users about errors and other helpful stuff
@@ -17,7 +17,7 @@ export interface Msg {
 
 @Injectable()
 export class NotifyService {
-
+  PLAN_NAME = PLAN_NAME
   displayExpiredSessionModal: string
 
   private _msgSource = new Subject<Msg | null>();
@@ -76,6 +76,10 @@ export class NotifyService {
   contacUsViaEmail() {
     window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
     this.closeContactUsModalToUpgradePlan()
+  }
+  contacUsViaEmailPlanC() {
+    window.open(`mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan (${PLAN_NAME.C} expired)`);
+    this.closeModalEnterpiseSubsExpired()
   }
 
   closeContactUsModalToUpgradePlan() {

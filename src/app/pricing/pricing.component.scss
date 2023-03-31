@@ -108,6 +108,24 @@ button.close {
       linear-gradient(to bottom, $color-enterprise-plan 0%, $color-enterprise-plan 100%),
       linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
+
+  .a-plan-bckgrnd {
+    background-image: url("/assets/img/background-card-vertical_2.svg"),
+    linear-gradient(to bottom, #3ea9f5 0%, #3ea9f5 100%),
+    linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  }
+
+  .b-plan-bckgrnd {
+    background-image: url("/assets/img/background-card-vertical_2.svg"),
+    linear-gradient(to bottom, #EB459E 0%, #EB459E 100%),
+    linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  }
+
+  .c-plan-bckgrnd {
+    background-image: url("/assets/img/background-card-vertical_2.svg"),
+    linear-gradient(to bottom, #5865f2 0%, #5865f2 100%),
+    linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  }
 }
 
 .quantity-status {
@@ -476,6 +494,7 @@ li:before {
 .pricing-page-header-title-text {
   -webkit-box-flex: 1;
   flex-grow: 1;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
 }
 
 .pricing-page-header-period-switch-wpr {
@@ -614,6 +633,7 @@ li:before {
   line-height: 31px;
   letter-spacing: -0.01em;
   color: rgb(8, 15, 26);
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
 }
 .span-8 {
   display: block;

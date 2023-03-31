@@ -122,7 +122,7 @@
               <span class="project-edit-add-link-to-doc" (click)="goToKBDocsSettingUpAutomaticAssignment()">
                 {{'SettingUpAutomaticAssignment' | translate}}  
               </span>
-              <span *ngIf="profile_name !== PLAN_NAME.C" class="c-plan--only--badge"> 
+              <span *ngIf="profile_name !== PLAN_NAME?.C" class="c-plan--only--badge"> 
                 {{'OnlyWithPlan'| translate: tParamsFeatureAvailableWith}} 
               </span>
             </div>
@@ -277,14 +277,14 @@
                               <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
                               <!-- numberOf_agents_seats -->
                              
-                              <span *ngIf="profile_name !== PLAN_NAME.C">
+                              <span *ngIf="profile_name !== PLAN_NAME?.C">
                                 ( {{ seatsLimit}} {{ "AgentSeats" | translate }} x € {{ plan_amount / 100 }}
                                 .00
                                 /
                                 {{ plan_interval | translate}} )
                               </span>
 
-                              <span *ngIf="profile_name === PLAN_NAME.C">
+                              <span *ngIf="profile_name === PLAN_NAME?.C">
                                 ( {{ seatsLimit}} {{ "AgentSeats" | translate }} )
                               </span>
                             </span>
@@ -411,14 +411,14 @@
                             </i>
 
                             <span *ngIf="!SUBSCRIPTION_BUFFER_DAYS">
-                              <span *ngIf="profile_name !== PLAN_NAME.C">
+                              <span *ngIf="profile_name !== PLAN_NAME?.C">
                                 {{ "Pricing.YourSubscriptionIsActive" | translate }}.
                               </span>
-                              <span *ngIf="profile_name === PLAN_NAME.C">
+                              <span *ngIf="profile_name === PLAN_NAME?.C">
                                 {{ "Pricing.ThePlanIsActive" | translate }}.
                               </span>
 
-                              <span *ngIf="profile_name !== PLAN_NAME.C">
+                              <span *ngIf="profile_name !== PLAN_NAME?.C">
                                 {{ "NextRenew" | translate }}
                                 <span *ngIf="days_to_next_renew === 0">
                                   {{ "Today" | translate}} {{ "At" | translate}} {{ timeOfNextRenew }}
@@ -552,7 +552,7 @@
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION CREDIT CARD -->
                     <!-- -------------------------------------------------------------------------------------  -->
                     <div class="row"
-                      *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME.C &&  subscription_is_active === true"
+                      *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C &&  subscription_is_active === true"
                       style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label">
                         {{"PaymentInformation" | translate }}
@@ -582,10 +582,10 @@
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION START DATE OR PLAN START DATE IF ENTERPRISE -->
                     <!-- -------------------------------------------------------------------------------------------------------  -->
                     <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== PLAN_NAME.C">
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== PLAN_NAME?.C">
                         {{ "SubscriptionStartDate" | translate }}
                       </label>
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name === PLAN_NAME.C">
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name === PLAN_NAME?.C">
                         {{ "PlanStartDate" | translate }}
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -600,12 +600,12 @@
                             <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }} -->
 
                             <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
-                            <span *ngIf="profile_name === PLAN_NAME.C">
+                            <span *ngIf="profile_name === PLAN_NAME?.C">
                               <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }}  -->
                               {{ subscription_creation_date | amDateFormat: 'LLL' }} 
                               
                             </span>
-                            <span *ngIf="profile_name !== PLAN_NAME.C"> 
+                            <span *ngIf="profile_name !== PLAN_NAME?.C"> 
                               <!-- {{ subscription_creation_date * 1000 | date:'dd/MM/yyyy' }}  -->
                               {{ subscription_creation_date * 1000 | amDateFormat: 'LLL' }} 
                             </span>
@@ -618,7 +618,7 @@
                     <!-- -------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CURRENT INVOICE START DATE -->
                     <!-- -------------------------------------------------------------------------------------  -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME.C"
+                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C"
                       style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label">
                         {{ "CurrentInvoiceStartDate" | translate }}
@@ -643,10 +643,10 @@
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CURRENT INVOICE END DATE OR PLAN EXIPIRATION DATE IF ENTERPRISE -->
                     <!-- ---------------------------------------------------------------------------------------------------------------  -->
                     <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== PLAN_NAME.C">
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== PLAN_NAME?.C">
                         {{ "CurrentInvoiceEndDate" | translate }}
                       </label>
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name === PLAN_NAME.C">
+                      <label class="col-sm-2 custom-label" *ngIf="profile_name === PLAN_NAME?.C">
                         {{ "PlanExpirationDate" | translate }}
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -697,7 +697,7 @@
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SEE PAYMENTS BTN  -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME.C"
+                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C"
                       style="margin-top: 16px;">
                       <label class="col-sm-2 custom-label">
                         {{ "ProjectEditPage.Payments" | translate }}
@@ -714,7 +714,7 @@
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CANCEL SUBSCRIPTION  -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME.C">
+                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C">
                       <label class="col-sm-2"> </label>
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <button class="btn btn-danger" (click)="viewCancelSubscription()"

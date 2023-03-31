@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
-import { tranlatedLanguage, avatarPlaceholder, getColorBck } from 'app/utils/util';
+import { tranlatedLanguage, avatarPlaceholder, getColorBck, PLAN_NAME } from 'app/utils/util';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -28,6 +28,7 @@ const swal = require('sweetalert');
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
+  PLAN_NAME = PLAN_NAME
   user: any;
   project: Project;
   userFirstname: string;
@@ -203,18 +204,29 @@ export class UserProfileComponent implements OnInit {
         this.prjct_name = projectProfileData.name
         if (projectProfileData.profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
-            this.prjct_profile_name = "Pro plan (trial)"
+           
+            this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
           } else {
 
-            this.prjct_profile_name = "Free"
+            this.prjct_profile_name = "Free plan"
 
           }
         } else if (projectProfileData.profile_type === 'payment') {
 
-          if (projectProfileData.profile_name === 'pro') {
-            this.prjct_profile_name = "Pro"
-          } else if (projectProfileData.profile_name === 'enterprise') {
-            this.prjct_profile_name = "Enterprise"
+          if (projectProfileData.profile_name === PLAN_NAME.A) {
+            this.prjct_profile_name = PLAN_NAME.A + " plan";
+           
+            console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
+
+          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+            this.prjct_profile_name = PLAN_NAME.B + " plan";
+           
+            console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
+
+          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+            this.prjct_profile_name = PLAN_NAME.C + " plan";
+           
+            console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
           }
 
         }

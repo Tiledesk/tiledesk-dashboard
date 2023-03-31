@@ -22,7 +22,7 @@ const swal = require('sweetalert');
   styleUrls: ['./contacts.component.scss'],
 })
 export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
- 
+
   PLAN_NAME = PLAN_NAME;
   profile_name: string;
   upgradePlan: string;
@@ -69,6 +69,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedContactEmailValue: string;
   IS_CURRENT_USER_AGENT: boolean;
   IS_CURRENT_USER_OWNER: boolean;
+  USER_ROLE: any;
 
   deleteLeadSuccessNoticationMsg: string;
   deleteLeadErrorNoticationMsg: string;
@@ -105,6 +106,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   payIsVisible: boolean;
   public_Key: any;
   isChromeVerGreaterThan100: boolean;
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
   constructor(
     private contactsService: ContactsService,
     private router: Router,
@@ -244,7 +247,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.moveToTrash_msg = text;
       });
 
-      this.translate.get('Pricing.UpgradePlan')
+    this.translate.get('Pricing.UpgradePlan')
       .subscribe((translation: any) => {
         this.upgradePlan = translation;
       });
@@ -257,6 +260,18 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
       .subscribe((translation: any) => {
         this.featureAvailableFromBPlan = translation;
+      });
+
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+
+        this.learnMoreAboutDefaultRoles = translation;
       });
 
     this.translatePlaceholder();
@@ -351,6 +366,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
       const current_user_role = user_role;
+      this.USER_ROLE = user_role;
       this.logger.log('[CONTACTS-COMP] - SUBSCRIBE PROJECT_USER_ROLE_BS ', current_user_role);
       if (current_user_role) {
         this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE ', current_user_role);
@@ -902,9 +918,9 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
         (this.prjct_profile_type === 'free' && this.trial_expired === true)
-        
+
       ) {
-        this.presentModalFeautureAvailableOnlyWithPaidPlans() 
+        this.presentModalFeautureAvailableOnlyWithPaidPlans()
         console.log('[CONTACTS-COMP] -  EXPORT DATA IS NOT AVAILABLE ')
       } else if (
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
@@ -977,9 +993,28 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     }).then((value) => {
       if (value === 'catch') {
         console.log('featureAvailableFromBPlan value', value)
-        this.router.navigate(['project/' + this.projectId + '/pricing']);
+        if (this.payIsVisible) {
+          if (this.USER_ROLE === 'owner') {
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else {
+              this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+            }
+          } else {
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+          }
+        } else {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
       }
     });
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+
   }
 
 

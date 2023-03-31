@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 import { environment } from '../../../environments/environment';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './../../services/brand.service';
@@ -33,11 +34,13 @@ export class FooterComponent implements OnInit {
   termsAndConditionsUrl: string;
   display_contact_us_email: string;
   contactUsEmail: string;
+  displayContactUs: boolean;
 
   constructor(
     public brandService: BrandService,
-    private logger: LoggerService
-  ) { 
+    private logger: LoggerService,
+    private prjctPlanService: ProjectPlanService,
+  ) {
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
     this.companySiteName = brand['company_site_name'];
@@ -54,7 +57,42 @@ export class FooterComponent implements OnInit {
   ngOnInit() {
     this.logger.log('[FOOTER-COMP] version ', this.version);
     // this.brandLog()
+    this.getProjectPlan()
   }
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$.subscribe(
+      (projectProfileData: any) => {
+        console.log('[FOOTER-COMP] - GET PROJECT PLAN - RES ', projectProfileData)
+        if (projectProfileData) {
+
+
+          if (projectProfileData.profile_type === 'free') {
+            if (projectProfileData.trial_expired === false) {
+              this.displayContactUs = true;
+            } else {
+              this.displayContactUs = false;
+            }
+          } else if (projectProfileData.profile_type === 'payment') {
+            if (projectProfileData.subscription_is_active === true) {
+              this.displayContactUs = true;
+
+            } else if (projectProfileData.subscription_is_active === false) {
+              this.displayContactUs = false;
+            }
+          }
+        }
+      },
+      (err) => {
+        this.logger.error('[USERS] GET PROJECT PROFILE - ERROR', err)
+      },
+      () => {
+        this.logger.log('[USERS] GET PROJECT PROFILE * COMPLETE *')
+      },
+    )
+  }
+
+
+
 
   brandLog() {
 

@@ -164,10 +164,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
   featureIsAvailableWithTheProPlan: string;
-
-
-  
-
   public_Key: string;
   isVisibleSmartAssignOption: boolean;
   isVisibleOPH: boolean;
@@ -186,6 +182,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   DISPLAY_ALL_TEAMMATES_TO_AGENT: boolean;
   newTicketRequestId: string;
   onlyAvailableWithEnterprisePlan: string;
+  isVisiblePay: boolean;
+  cancelLbl: string;
+  upgradePlan: string;
+  cPlanOnly: string;
   /**
    * 
    * @param wsRequestsService 
@@ -234,26 +234,19 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // console.log('SELECTED PRIORITY ', this.selectedPriority)
     this.getBrowserVersion()
     this.getOSCODE();
-
     this.getImageStorageAndThenProjectUsers();
     this.getDepartments();
     // this.getActiveContacts();
-
     this.getCurrentProject();
     this.getProjectPlan();
     this.getLoggedUser();
     this.getProjectUserRole();
-
     this.detectBrowserRefresh();
-
     this.getChatUrl();
     this.getTestSiteUrl();
-
     this.translateString()
     // this.listenToParentPostMessage()
-
     // this.getGroupsByProjectId();
-   
   }
 
 
@@ -330,7 +323,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
           this.DISPLAY_OPH_AS_DISABLED = true;
-        } else {
+        } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true || this.prjct_profile_type === 'free' && this.prjct_trial_expired === false) {
           this.DISPLAY_OPH_AS_DISABLED = false;
         }
       }
@@ -375,6 +368,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         }
       }
 
+      if (key.includes("PAY")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisiblePay = false;
+        } else {
+          this.isVisiblePay = true;
+        }
+      }
+
     });
 
 
@@ -386,6 +389,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     if (!this.public_Key.includes("OPH")) {
       // this.logger.log('[WS-REQUESTS-LIST] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
       this.isVisibleOPH = false;
+    }
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePay = false;
     }
   }
 
@@ -416,6 +422,20 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyAvailableWithEnterprisePlan = translation;
       });
+
+      this.translate.get('Cancel').subscribe((text: string) => {
+        this.cancelLbl = text;
+      });
+
+    this.translate.get('Pricing.UpgradePlan')
+    .subscribe((translation: any) => {
+      this.upgradePlan = translation;
+    });
+
+    this.translate.get('AvailableWithThePlan' , {plan_name: PLAN_NAME.C})
+    .subscribe((translation: any) => {
+      this.cPlanOnly = translation;
+    });
   }
 
 
@@ -915,23 +935,45 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
       this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
     } else if (this.profile_name !== PLAN_NAME.C) {
-      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+      this.presentModalFeautureAvailableOnlyWithPlanC()
     }
   }
 
-  presentModalFeautureAvailableOnlyWithEnterprisePlan() {
+  presentModalFeautureAvailableOnlyWithPlanC() {
     const el = document.createElement('div')
-    el.innerHTML = this.onlyAvailableWithEnterprisePlan
+    el.innerHTML = this.cPlanOnly
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
       icon: "info",
       // buttons: true,
-      button: {
-        text: "OK",
+      buttons: {
+        cancel: this.cancelLbl,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
       },
       dangerMode: false,
-    })
+    }).then((value) => {
+      if (value === 'catch') {
+        console.log('featureAvailableFromPlanC value', value)
+        if (this.isVisiblePay) {
+          if (this.CURRENT_USER_ROLE === 'owner') {
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else {
+              this.router.navigate(['project/' + this.projectId + '/pricing']);
+         
+            }
+          } else {
+            this.presentModalAgentCannotManageAvancedSettings();
+          }
+        } else {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    });
   }
 
   presentModalAgentCannotManageAvancedSettings() {
