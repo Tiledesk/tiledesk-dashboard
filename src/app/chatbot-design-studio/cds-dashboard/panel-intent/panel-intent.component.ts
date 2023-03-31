@@ -15,6 +15,7 @@ const swal = require('sweetalert');
 export class PanelIntentComponent implements OnInit, OnChanges {
   // objectKeys = Object.keys;
   @Input() intentSelected: Intent;
+  @Input() isIntentElementSelected: boolean = false;
   @Input() isOpenActionDrawer: boolean = false;
   // @Input() events: Observable<any>;
   private updatedIntentSubscription: Subscription;
@@ -25,6 +26,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   @Output() intentForm = new EventEmitter();
   @Output() questionSelected = new EventEmitter();
   @Output() actionDeleted = new EventEmitter();
+
   @Input() eventUpadatedIntent: Observable<any>;
   @Input() eventCreateIntent: Observable<any>;
   actions: Array<any>
@@ -35,15 +37,15 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   form: Form;
   formSize: number;
 
-  HAS_SELECTED_ANSWER = false
-  HAS_SELECTED_QUESTION = false
-  HAS_SELECTED_FORM = false
-  HAS_SELECTED_ACTION = false
+  // HAS_SELECTED_ANSWER = false
+  // HAS_SELECTED_QUESTION = false
+  // HAS_SELECTED_FORM = false
+  // HAS_SELECTED_ACTION = false
 
   TYPE_ACTION = TYPE_ACTION
   ACTIONS_LIST = ACTIONS_LIST
   questionCount: number;
-
+  idSelected:  string;
 
   constructor(
     private logger: LoggerService
@@ -75,7 +77,6 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   listenToIntentAdd() {
     this.eventCreateIntent.subscribe((intent: Intent) => {
       this.logger.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
-      // 
     })
   }
 
@@ -83,6 +84,10 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges) {
+    // console.log('2 ngOnChanges:::: ' , changes);
+    if(!this.isIntentElementSelected){
+      this.idSelected = null;
+    }
     // this.logger.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected', this.intentSelected);
 
     // this.logger.log("[PANEL INTENT]  (ngOnChanges) - this.intentSelected > actions: ", this.intentSelected.actions);
@@ -105,7 +110,6 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     // }
 
     if (changes.intentSelected) {
-     
       // if (changes.intentSelected.currentValue['actions'] && changes.intentSelected.currentValue['actions'].length > 0) {
       //   setTimeout(() => {
       //     const actionElement = <HTMLElement>document.querySelector(`#action_0`);
@@ -116,11 +120,13 @@ export class PanelIntentComponent implements OnInit, OnChanges {
       // }
 
       if (changes.intentSelected.firstChange === false) {
+        this.idSelected = null; 
         if (changes.intentSelected.previousValue._id !== changes.intentSelected.currentValue._id) {
-          this.HAS_SELECTED_ANSWER = false
-          this.HAS_SELECTED_QUESTION = false
-          this.HAS_SELECTED_FORM = false
-          this.HAS_SELECTED_ACTION = false
+          // this.HAS_SELECTED_ANSWER = false
+          // this.HAS_SELECTED_QUESTION = false
+          // this.HAS_SELECTED_FORM = false
+          // this.HAS_SELECTED_ACTION = false
+          // this.idSelected = null; 
         }
       }
 
@@ -192,78 +198,90 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   }
 
   openActionsDrawer() {
+    this.idSelected = null; 
     this.isOpenActionDrawer = !this.isOpenActionDrawer
     this.logger.log('[PANEL INTENT] isOpenActionDrawer', this.isOpenActionDrawer)
     this.openActionDrawer.emit(this.isOpenActionDrawer);
   }
 
-  onSelectQuestion() {
-    this.HAS_SELECTED_ANSWER = false
-    this.HAS_SELECTED_QUESTION = true
-    this.HAS_SELECTED_FORM = false
-    this.HAS_SELECTED_ACTION = false
-    this.questionSelected.emit(this.intentSelected);
-    let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
-    this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
-    if (elementsWithActiveClass.length != 0) {
-      elementsWithActiveClass.forEach((el) => {
-        el.classList.remove('cds-action-active');
-      })
-    }
+  onSelectQuestion(elementSelected) {
+    console.log('1 onSelectQuestion');
+    this.idSelected = elementSelected;
+    this.isIntentElementSelected = true;
+    // this.HAS_SELECTED_ANSWER = false
+    // this.HAS_SELECTED_QUESTION = true
+    // this.HAS_SELECTED_FORM = false
+    // this.HAS_SELECTED_ACTION = false
+    this.questionSelected.emit(this.question);
+    // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
+    // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
+    // if (elementsWithActiveClass.length != 0) {
+    //   elementsWithActiveClass.forEach((el) => {
+    //     el.classList.remove('cds-action-active');
+    //   })
+    // }
   }
 
 
-  onSelectAnswer() {
-    this.HAS_SELECTED_ANSWER = true
-    this.HAS_SELECTED_QUESTION = false
-    this.HAS_SELECTED_FORM = false
-    this.HAS_SELECTED_ACTION = false
+  onSelectAnswer(elementSelected) {
+    console.log('1 onSelectAnswer', );
+    this.idSelected = elementSelected;
+    this.isIntentElementSelected = true;
+    // this.HAS_SELECTED_ANSWER = true
+    // this.HAS_SELECTED_QUESTION = false
+    // this.HAS_SELECTED_FORM = false
+    // this.HAS_SELECTED_ACTION = false
     this.answerSelected.emit(this.answer);
   }
 
 
-  onActionSelected(action, index: number) {
-    console.log('onActionSelected');
-    this.HAS_SELECTED_ANSWER = false
-    this.HAS_SELECTED_QUESTION = false
-    this.HAS_SELECTED_FORM = false
-    this.HAS_SELECTED_ACTION = true
-    this.logger.log('[PANEL INTENT] onActionSelected action: ', action)
-    this.logger.log('[PANEL INTENT] onActionSelected index', index)
 
-    let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
-    this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
-    if (elementsWithActiveClass.length != 0) {
-      elementsWithActiveClass.forEach((el) => {
-        el.classList.remove('cds-action-active');
-      })
-    }
+  onActionSelected(action, index: number, idAction) {
+    console.log('onActionSelected action: ', action);
+    this.idSelected = idAction;
+    this.isIntentElementSelected = true;
+    // this.HAS_SELECTED_ANSWER = false
+    // this.HAS_SELECTED_QUESTION = false
+    // this.HAS_SELECTED_FORM = false
+    // this.HAS_SELECTED_ACTION = true
+   
+    // this.logger.log('[PANEL INTENT] onActionSelected action: ', action)
+    // this.logger.log('[PANEL INTENT] onActionSelected index', index)
 
-    const actionElement = <HTMLElement>document.querySelector(`#action_${index}`);
-    this.logger.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
-    actionElement.classList.add("cds-action-active");
+    // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
+    // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
+    // if (elementsWithActiveClass.length != 0) {
+    //   elementsWithActiveClass.forEach((el) => {
+    //     el.classList.remove('cds-action-active');
+    //   })
+    // }
 
+    // const actionElement = <HTMLElement>document.querySelector(`#action_${index}`);
+    // this.logger.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
+    // actionElement.classList.add("cds-action-active");
 
-    this.actionSelected.emit(action);
-    this.logger.log('[PANEL INTENT] onActionSelected ', action)
+    console.log('NN CAPISCO PERCHè 2 emit verifica !!! action: ', action);
+    // this.actionSelected.emit(action);
+    // this.logger.log('[PANEL INTENT] onActionSelected ', action)
     this.actionSelected.emit({ action: action, index: index, maxLength: this.actions.length });
   }
 
 
-  displayForm() {
-    this.HAS_SELECTED_ANSWER = false
-    this.HAS_SELECTED_QUESTION = false
-    this.HAS_SELECTED_FORM = true
-    this.HAS_SELECTED_ACTION = false
-    this.logger.log('[PANEL INTENT] displayForm HAS_SELECTED_FORM ', this.HAS_SELECTED_FORM)
+  displayForm(elementSelected) {
+    // this.HAS_SELECTED_ANSWER = false
+    // this.HAS_SELECTED_QUESTION = false
+    // this.HAS_SELECTED_FORM = true
+    // this.HAS_SELECTED_ACTION = false
+    // this.logger.log('[PANEL INTENT] displayForm HAS_SELECTED_FORM ', this.HAS_SELECTED_FORM)
 
-    let activeElements = Array.from(document.getElementsByClassName('cds-action-active'));
-    this.logger.log('[PANEL INTENT] activeElements', activeElements)
-    activeElements.forEach((activeElement) => {
-      this.logger.log('[PANEL INTENT] activeElement', activeElement)
-      activeElement.classList.remove('cds-action-active');
-    })
-
+    // let activeElements = Array.from(document.getElementsByClassName('cds-action-active'));
+    // this.logger.log('[PANEL INTENT] activeElements', activeElements)
+    // activeElements.forEach((activeElement) => {
+    //   this.logger.log('[PANEL INTENT] activeElement', activeElement)
+    //   activeElement.classList.remove('cds-action-active');
+    // })
+    this.idSelected = elementSelected;
+    this.isIntentElementSelected = true;
     if (this.intentSelected && !this.intentSelected.form) {
       let newForm = new Form()
       this.intentSelected.form = newForm;

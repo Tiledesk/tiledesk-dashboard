@@ -1,11 +1,14 @@
 <!-- [ngClass]="{'intent-two-columns-wpr': displayActions, 'intent--column-wpr':  !displayActions}" -->
 <div id="panel-intent-content">
     <!-- [ngClass]="{'intent--two-columns': displayActions, 'intent--column': !displayActions}" -->
-    <!-- [ngStyle]="{'border':question ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }" -->
+    <!-- [ngStyle]="{'border':question ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }" 
+                    'button-intent-active2': HAS_SELECTED_QUESTION,
+    -->
     <div>
-        <div class="button-intent button-intent-questions" (click)="onSelectQuestion()"
-            
-            [ngClass]="{'button-intent-active': HAS_SELECTED_QUESTION, 'no-question': questionCount === 0  || !question }">
+        <div class="button-intent button-intent-questions" (click)="onSelectQuestion('HAS_SELECTED_QUESTION')"
+            [ngClass]="{
+                'button-intent-active': idSelected === 'HAS_SELECTED_QUESTION', 
+                'no-question': questionCount === 0  || !question }">
             <!-- <span class="material-icons ">
                 question_mark
             </span> -->
@@ -58,11 +61,13 @@
     <!-- ------------------------ -->
     <!-- @ Form -->
     <!-- ------------------------ -->
-    <!-- 'action-box-exist-form': formSize > 0, -->
+    <!-- 'action-box-exist-form': formSize > 0,                 'cds-action-active2': HAS_SELECTED_FORM }" -->
     <div class="action--list-form">
         <div class="action--box-form"
-            [ngClass]="{'action-box-no-form': formSize === 0,  'cds-action-active': HAS_SELECTED_FORM }"
-            (click)="displayForm()">
+            [ngClass]="{
+                'action-box-no-form': formSize === 0, 
+                'cds-action-active': idSelected === 'HAS_SELECTED_FORM'}"
+            (click)="displayForm('HAS_SELECTED_FORM')">
 
             <div class="action--handle" style="pointer-events: none;">
                 <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#ff4000">
@@ -72,7 +77,8 @@
                 </svg>
             </div>
 
-            <div class="action-wpr" [ngClass]="{'action-wpr-exist-form': formSize > 0}">
+            <div class="action-wpr"
+             [ngClass]="{'action-wpr-exist-form': formSize > 0}">
                 <div class="cds-action-icon-wpr">
                     <span class="material-icons" style="font-size: 18px;">
                         list_alt
@@ -102,14 +108,18 @@
                     <div class="action--element"  *ngFor="let action of actions; let i = index;let lastItem = last; let firstItem = first">
 
 
-                        <div id="action_{{i}}" class="action--box" [ngSwitch]="action._tdActionType" [ngClass]="{
-                        'action--box-first-no-title': !action._tdActionTitle && firstItem,
-                        'action--box-first-with-title': action._tdActionTitle && firstItem,
-                        'action--box-no-title': !action._tdActionTitle && !firstItem, 
-                        'action--box-with-title': action._tdActionTitle && !firstItem}"
-                        cdkDrag
-                        cdkDragLockAxis="y" 
-                        (click)="onActionSelected(action, i)">
+                        <div id="action_{{i}}" 
+                            class="action--box" 
+                            [ngSwitch]="action._tdActionType" 
+                            [ngClass]="{
+                            'action--box-first-no-title': !action._tdActionTitle && firstItem,
+                            'action--box-first-with-title': action._tdActionTitle && firstItem,
+                            'action--box-no-title': !action._tdActionTitle && !firstItem, 
+                            'action--box-with-title': action._tdActionTitle && !firstItem,
+                            'cds-action-active': idSelected === 'action_'+i }"
+                            cdkDrag
+                            cdkDragLockAxis="y" 
+                            (click)="onActionSelected(action, i, 'action_'+i)">
                     
                     
                     
@@ -471,9 +481,10 @@
         </div>
     </div>
 
-    <div *ngIf="answer" class="button-intent" (click)="onSelectAnswer()"
+    <!-- 'button-intent-active2': HAS_SELECTED_ANSWER -->
+    <div *ngIf="answer" class="button-intent" (click)="onSelectAnswer('HAS_SELECTED_ANSWER')"
         [ngStyle]="{'border':answer ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
-        [ngClass]="{'button-intent-active': HAS_SELECTED_ANSWER }">
+        [ngClass]="{'button-intent-active': idSelected === 'HAS_SELECTED_ANSWER'}">
         <span class="material-icons ">
             message
         </span>

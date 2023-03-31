@@ -48,13 +48,14 @@ export class ActionReplyComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
+    console.log('ActionReplyComponent ngOnInit', this.reply);
     // console.log('ngOnInit panel-response::: ', this.typeAction);
     this.actionType = (this.typeAction === TYPE_ACTION.RANDOM_REPLY ? 'RANDOM_REPLY' : 'REPLY');
 
   }
 
   ngOnChanges() {
-    this.logger.log('ActionReplyComponent ngOnChanges');
+    this.logger.log('ActionReplyComponent ngOnChanges', this.reply);
     this.initialize();
     // this.generateCommandsOfElements();
     // this.elementIntentSelectedType = this.elementIntentSelected.type;

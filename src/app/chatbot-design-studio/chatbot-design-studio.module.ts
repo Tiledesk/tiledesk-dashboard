@@ -108,6 +108,7 @@ import { OperatorComponent } from './cds-dashboard/panel-intent-detail/actions/a
 import { DialogComponent } from './cds-base-element/dialog/dialog.component';
 import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-function/action-assign-function.component';
 
+
 @NgModule({
   declarations: [
     CdsDashboardComponent,

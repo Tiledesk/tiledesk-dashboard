@@ -1,7 +1,8 @@
-import { ACTIONS_LIST } from './../../../../utils';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ACTIONS_LIST2 } from './../../../../utils';
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Action } from 'app/models/intent-model';
 import { SatPopover } from '@ncstate/sat-popover';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'cds-action-description',
@@ -11,37 +12,54 @@ import { SatPopover } from '@ncstate/sat-popover';
 export class ActionDescriptionComponent implements OnInit {
 
   @ViewChild("descriptionTooltip") popover : SatPopover;
-  
-  @Input() actionType: string;
+
   @Input() actionSelected: Action;
   @Input() showTip: boolean = false;
-  @Input() tipText: string;
-  constructor() { }
 
-  titlePlaceholder: string = 'set a title to your action...'
-  action = ACTIONS_LIST
-  
-  ngOnInit(): void {
-    
+  @Output() closeIntent = new EventEmitter();
+  @Output() saveIntent = new EventEmitter();
+
+  constructor(
+    private logger: LoggerService
+  ) { 
   }
 
-  ngOnChanges(){
-    // if(this.actionSelected && this.actionSelected._tdActionTitle === ''){
-    //   this.titlePlaceholder = 'set a title to your action...'
-    // }
-    // console.log('showtipppp', this.showTip, this.tipText)
+  titlePlaceholder: string = 'set a title to your action...';
+  actionType: string;
+  action: any;
+  dataInput: string;
+  
+  ngOnInit(): void {
+    try {
+      this.actionType = this.actionSelected._tdActionType;
+      this.action = ACTIONS_LIST2.find(item => item.type === this.actionType);
+      if(this.actionSelected._tdActionTitle && this.actionSelected._tdActionTitle != ""){
+        this.dataInput = this.actionSelected._tdActionTitle;
+      }
+    } catch (error) {
+      this.logger.log("error ", error);
+    }
   }
 
   onChangeText(text: string){
-   this.actionSelected._tdActionTitle = text
-    // this.actionSel._tdActionTitle = text
+    console.log('ActionDescriptionComponent onChangeText:: ', text);
+    this.actionSelected._tdActionTitle = text;
   }
+
 
   manageTooltip(){
     this.popover.toggle()
-    setTimeout(() => {
-      // this.popover.close()
-    }, 3000);
+    // setTimeout(() => {
+    //   // this.popover.close()
+    // }, 3000);
+  }
+
+  onCloseIntent(){
+    this.closeIntent.emit();
+  }
+
+  onSaveIntent(){
+    this.saveIntent.emit();
   }
 
 }
