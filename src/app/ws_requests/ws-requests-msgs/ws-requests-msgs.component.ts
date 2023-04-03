@@ -1192,7 +1192,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ----------------------------------------------------------------------------
   getParamRequestId() {
     this.route.params.subscribe((params) => {
-      this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      // console.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      this.getBotConversationAttribute(params.requestid)
       if (this.id_request) {
         // console.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
 
@@ -1213,7 +1214,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       this.id_request = params.requestid;
 
-      this.getBotConversationAttribute(params.requestid)
+     
 
       this.logger.log('[WS-REQUESTS-MSGS] request_id (new)', this.id_request);
     });
@@ -1225,6 +1226,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   getBotConversationAttribute(requestid) {
+    // console.log('HERE YES requestid', requestid)
     this.wsRequestsService.getBotConversationAttribute(requestid)
       .subscribe((data: any) => {
         if (data) {
