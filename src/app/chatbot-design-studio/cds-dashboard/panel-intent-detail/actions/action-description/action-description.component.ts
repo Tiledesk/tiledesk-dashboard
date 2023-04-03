@@ -1,6 +1,6 @@
-import { ACTIONS_LIST2 } from './../../../../utils';
+import { ELEMENTS_LIST, TYPE_INTENT_ELEMENT } from './../../../../utils';
 import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Action } from 'app/models/intent-model';
+import { Action, Form } from 'app/models/intent-model';
 import { SatPopover } from '@ncstate/sat-popover';
 import { LoggerService } from 'app/services/logger/logger.service';
 
@@ -14,6 +14,7 @@ export class ActionDescriptionComponent implements OnInit {
   @ViewChild("descriptionTooltip") popover : SatPopover;
 
   @Input() actionSelected: Action;
+  @Input() form: Form;
   @Input() showTip: boolean = false;
 
   @Output() closeIntent = new EventEmitter();
@@ -25,17 +26,24 @@ export class ActionDescriptionComponent implements OnInit {
   }
 
   titlePlaceholder: string = 'set a title to your action...';
-  actionType: string;
-  action: any;
+  elementType: string;
+  element: any;
   dataInput: string;
   
   ngOnInit(): void {
+    console.log('ActionDescriptionComponent ngOnInit:: ', this.actionSelected);
+    if(this.form){
+      this.elementType = TYPE_INTENT_ELEMENT.FORM;
+    } else {
+      this.elementType = this.actionSelected._tdActionType;
+    }
+   
     try {
-      this.actionType = this.actionSelected._tdActionType;
-      this.action = ACTIONS_LIST2.find(item => item.type === this.actionType);
+      this.element = ELEMENTS_LIST.find(item => item.type === this.elementType);
       if(this.actionSelected._tdActionTitle && this.actionSelected._tdActionTitle != ""){
         this.dataInput = this.actionSelected._tdActionTitle;
       }
+      console.log('ActionDescriptionComponent action:: ', this.element);
     } catch (error) {
       this.logger.log("error ", error);
     }

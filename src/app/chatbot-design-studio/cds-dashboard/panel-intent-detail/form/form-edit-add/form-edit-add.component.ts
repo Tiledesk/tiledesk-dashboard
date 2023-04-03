@@ -28,6 +28,9 @@ export enum TYPE_REGEX {
 export class FormEditAddComponent implements OnInit, OnChanges {
   @Output() closeAddEditForm = new EventEmitter();
   @Output() saveAddEditForm = new EventEmitter();
+  @Output() editFormFields = new EventEmitter();
+  @Output() scrollToBottom = new EventEmitter();
+  
   @Input() displayAddForm: boolean;
   @Input() displayEditForm: boolean;
   @Input() field: any;
@@ -194,7 +197,6 @@ export class FormEditAddComponent implements OnInit, OnChanges {
         break;
       case TYPE_FIELD.PHONE:
         this.field.regex = TYPE_REGEX.phoneRGEX;
-
         break;
       case TYPE_FIELD.CUSTOM:
         this.field.regex = TYPE_REGEX.customRGEX;
@@ -213,19 +215,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.fieldName = parameterName.replace(/[^A-Z0-9_]+/ig, "");
   }
 
-  /** */
-  onChangeTypeField(typeFieldValue) {
-    // this.logger.log("onChange:: ", typeFieldValue);
-    if (typeFieldValue === TYPE_FIELD.CUSTOM) {
-      this.field.regex = TYPE_REGEX.customRGEX;
-      // this.showRegexField = true;
-    } else {
-      // this.field.regex = this.customRGEX;
-      // this.showRegexField = false;
-    }
-    this.field.type = typeFieldValue;
-    this.setRegex();
-  }
+
 
 
   displayPlaceholder(event) {
@@ -278,6 +268,10 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.closeAddEditForm.emit();
   }
 
+  onScrollToBottom(){
+    this.scrollToBottom.emit();
+  }
+
   /** START ACTIONS CDS-TEXTAREA */
   onSelectedAttributeParam(variableSelected: {name: string, value: string}){
     this.hasSelectedVariable = true;
@@ -309,11 +303,30 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     if (field === 'field_label') {
       this.infoMessage += " " + this.markbotLabel;
     }
+    this.onScrollToBottom();
   }
   /** END ACTIONS CDS-TEXTAREA */
 
 
+  onChangeValidationErrorMessage(errorLabel){
+    this.field.errorLabel = this.fieldErrorLabel.trim();
+    console.log('onChangeValidationErrorMessage:: ', errorLabel.data,  this.field);
+    this.editFormFields.emit(this.field);
+  }
   
+  onChangeValidationRegex(regex){
+    this.field.regex = this.fieldRegex;
+    console.log('onChangeValidationRegex:: ', regex.data, this.field);
+    this.editFormFields.emit(this.field);
+  }
 
-
+  /** */
+  onChangeTypeField(typeFieldValue) {
+    if (typeFieldValue === TYPE_FIELD.CUSTOM) {
+      this.field.regex = TYPE_REGEX.customRGEX;
+    }
+    this.field.type = typeFieldValue;
+    this.setRegex();
+    this.editFormFields.emit(this.field);
+  }
 }

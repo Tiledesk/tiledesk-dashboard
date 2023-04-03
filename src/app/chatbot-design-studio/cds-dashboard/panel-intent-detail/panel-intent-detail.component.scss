@@ -8,11 +8,12 @@ $padding: 10px;
     display: block;
     width: 480px;
     min-width: 400px;
-    height: fit-content;
+    height: auto;
+    // height: fit-content;
     max-height: calc(100% - 30px);
     border-radius: $panel-border-radius;
     border: 2px solid rgb(178 142 38);
-    overflow: auto;
+    overflow: hidden;
     padding: 0px;
     background-color: #51627e;
     margin-top: 10px;
@@ -29,7 +30,10 @@ $padding: 10px;
     background-color: #51627e;
     z-index: 2;
 }
-
+.content-panel{
+    height: calc(100% - 73px);
+    overflow: hidden;
+}
 
 .panel-form { 
     height: 100%;

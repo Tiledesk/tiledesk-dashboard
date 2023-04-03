@@ -95,13 +95,13 @@
     border-radius: 4px;
     margin: auto;
     width: 500px;
-    max-height: calc(100vh - 0px);
-    min-height: 200px;
+    max-height: 80%;
+    min-height: 385px;
     overflow: auto;
     max-width: 500px;
     display: inline-block;
-    // bottom: 0px!important;
-    // right: 0px!important;
+    top: 50%!important;
+    margin-top: -20%;
     .category-row-name {
         text-overflow: ellipsis;
         white-space: nowrap;

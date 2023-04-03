@@ -12,18 +12,18 @@
     <div class="section">
         
         <div class="action-title">
-            <img [src]="action?.src" [title]="action?.name">
-            <p class="text-action">{{action?.name}}</p>
+            <img [src]="element?.src" [title]="element?.name">
+            <p class="text-action">{{element?.name}}</p>
         </div>
 
-        <div *ngIf="action?.description || showTip" class="action-description">
-            <div *ngIf="action?.description"
+        <div *ngIf="showTip" class="action-description">
+            <div *ngIf="element?.description"
                 [satPopoverAnchor]="descriptionTooltip"
                 (click)="manageTooltip()">
                 <em class="material-icons">info</em>
             </div>
 
-            <div *ngIf="showTip" [innerHtml]="tipText"></div>
+            <div [innerHtml]="tipText"></div>
 
             <input class="action-input"
                 [ngModel]="dataInput"
@@ -41,7 +41,7 @@
     panelClass="description-tooltip">
     <div class="tooltip-wrp">
         <div class="caret_tooltip"></div>
-        <span [innerHTML]="action?.description"></span>
+        <span [innerHTML]="element?.description"></span>
    </div>
 </sat-popover>
 

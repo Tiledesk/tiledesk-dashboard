@@ -154,7 +154,7 @@ export function calculatingRemainingCharacters(text: string, limit: number): num
     }
 }
 
-export const ACTIONS_LIST2 = [
+export const ELEMENTS_LIST = [
     { name: 'Reply', type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: '<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '},
     { name: 'Random Reply', type: TYPE_ACTION.RANDOM_REPLY, src:"assets/cds/images/actions/random_reply.svg", description: 'Create some replies that will be randomly selected'},
     { name: 'Web Request', type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},
@@ -171,8 +171,10 @@ export const ACTIONS_LIST2 = [
     { name: 'If Online Agent', type: TYPE_ACTION.ONLINE_AGENTS, src: "assets/cds/images/actions/online_agents.svg", description: 'This action moves the flow to different blocks, based on the agents’ availability.<br>If there are agents available the <b>TRUE block</b> will be triggered.<br>If there are no agents available the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset Stop on met condition.' },
     { name: 'If Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the <b>TRUE block</b> will be triggered.<br>During offline hours the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.'},
     { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src: "assets/cds/images/actions/hidden_message.svg"},
-    { name: 'Condition', type: TYPE_ACTION.JSON_CONDITION, src: "assets/cds/images/actions/condition.svg"}
+    { name: 'Condition', type: TYPE_ACTION.JSON_CONDITION, src: "assets/cds/images/actions/condition.svg"},
+    { name: 'Form', type: TYPE_INTENT_ELEMENT.FORM, src: "assets/cds/images/form.svg", description: "Add a Form to ask user data"}
 ]
+
 
 export const ACTIONS_LIST= {
     REPLY : { name: 'Reply', type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: '<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '},

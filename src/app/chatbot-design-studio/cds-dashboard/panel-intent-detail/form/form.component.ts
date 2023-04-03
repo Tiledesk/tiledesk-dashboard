@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Field, Form, Intent } from 'app/models/intent-model';
@@ -22,6 +22,8 @@ export interface ModalDeleteModel {
   styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit, OnChanges {
+  @ViewChild('scrollMe', { static: false }) scrollContainer: ElementRef;
+
   @Output() passJsonIntentForm = new EventEmitter();
   @Input() intentForm: Form;
   @Input() intentSelected: Intent;
@@ -135,6 +137,31 @@ export class FormComponent implements OnInit, OnChanges {
     this.logger.log('[FORM-COMP] (OnChanges) intentSelected ', this.intentSelected)
   }
 
+
+  scrollToTop(): void {
+    setTimeout(() => {
+      try {
+        this.scrollContainer.nativeElement.scrollTop = 0;
+        this.scrollContainer.nativeElement.animate({ scrollTop: 0 }, '500');
+      } catch (error) {
+        this.logger.log('scrollToBottom ERROR: ', error);
+      }
+    }, 300);
+  }
+
+  scrollToBottom(): void {
+    console.log(this.scrollContainer);
+    setTimeout(() => {
+      try {
+        this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+        this.scrollContainer.nativeElement.animate({ scrollTop: 0 }, '500');
+      } catch (error) {
+        this.logger.log('scrollToBottom ERROR: ', error);
+        console.log(error);
+      }
+    }, 300);
+  }
+
   getFieldFromId(idForm: number) {
     this.logger.log('[FORM-COMP] getFieldFromId idForm ', idForm)
     // this.selectedForm = new FormModelsFactory().getModels()[0]
@@ -234,7 +261,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.cancelCommands = this.intentForm.cancelCommands;
     this.cancelReply = this.intentForm.cancelReply;
     this.cancelCommandsString = this.cancelCommands.toString();
-
+    this.scrollToTop();
     this.logger.log('[FORM-COMP] cancelCommands ', this.cancelCommands)
     this.logger.log('[FORM-COMP] cancelReply ', this.cancelReply)
     this.logger.log('[FORM-COMP] cancelCommandsString ', this.cancelCommandsString)
@@ -424,6 +451,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.displayAddForm = false;
     this.displayEditForm = false;
     this.displayTilebotAddEditForm = true;
+    this.scrollToBottom();
     this.logger.log('[FORM-COMP] closeAddEditForm displayAddForm ', this.displayAddForm)
     this.logger.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayEditForm)
     this.logger.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayTilebotAddEditForm)
@@ -447,10 +475,16 @@ export class FormComponent implements OnInit, OnChanges {
     this.jsonGenerator();
   }
 
+  onEditFormFields(fields){
+    this.intentForm.fields = fields;
+    this.logger.log('[FORM-COMP] saveAddEditForm intentForm ', this.intentForm)
+  }
+
   openAddEditForm() {
     this.displayTilebotAddEditForm = false;
     setTimeout(() => {
       this.displayTilebotAddEditForm = true;
+      this.scrollToBottom();
     }, 300);
   }
 

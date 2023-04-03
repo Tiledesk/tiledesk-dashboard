@@ -1,65 +1,72 @@
-<div class="form-fields" style="padding: 10px 24px;">
-    <div *ngIf="fields.length > 0" class="card-content table-responsive" style="padding: 15px 0 3px 0;">
-        <table class="table table-responsive table-hover form-fields-table ">
+<div class="form-fields">
+    <div *ngIf="fields.length > 0" class="card-content">
+
+        <table class="table table-hover form-fields-table">
             <thead>
-                <tr>
-                    <th class="col-sm-4">
-                        <span class="ff--column-th-span">
-                            {{ "Name" | translate }}
-                        </span>
-                    </th>
-                    <th class="col-sm-6">
-                        <span class="ff--column-th-span ">
-                            {{ "AddIntentPage.Label" | translate }}
-                        </span>
-                    </th>
-                    <th class="col-sm-2">
-                        <span class="ff--column-th-span">
-                            {{ "Actions" | translate }}
-                        </span>
-                    </th>
-                </tr>
+              <tr>
+                <th class="col-30">
+                    <span class="ff--column-th-span">
+                        {{ "Name" | translate }}
+                    </span>
+                </th>
+                <th style="width:auto">
+                    <span class="ff--column-th-span ">
+                        {{ "AddIntentPage.Label" | translate }}
+                    </span>
+                </th>
+                <th style="width:80px">
+                    <span class="ff--column-th-span">
+                        {{ "Actions" | translate }}
+                    </span>
+                </th>
+              </tr>
             </thead>
 
-            <tbody cdkDropList class="fields-list2" (cdkDropListDropped)="drop($event)">
-
-                <tr *ngFor="let field of fields; let i = index;" style="cursor:pointer;" class="field-box2 trigger"
-                    [ngClass]="{'selected':selectedObjectId === i}" cdkDrag cdkDragLockAxis="y">
+            <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="display:block">
+                
+                <tr *ngFor="let field of fields; let i = index;" 
+                [ngClass]="{'selected':selectedObjectId === i}" 
+                cdkDrag cdkDragLockAxis="y">
                     <!-- ------------------- -->
                     <!-- FIELS NAME -->
                     <!-- ------------------- -->
-                    <td class="col-sm-4" (click)='editField(i)'>
+                    <td class="ellips" class="col-30" (click)='editField(i)'>
                         <span class="label-field">
                             {{ field.name }}
                         </span>
                     </td>
                     <!-- LABEL -->
-                    <td class="col-sm-6 " (click)='editField(i)'>
-                        <span class="label-field"> {{ field?.label }}</span>
+                    <td style="width:auto" (click)='editField(i)'>
+                        <span class="label-field">
+                            {{ field?.label }}
+                        </span>
                     </td>
                     <!-- ------------------------------------------------ -->
                     <!-- ACTIONS -->
                     <!-- ------------------------------------------------ -->
-                    <td class="td-actions col-sm-2">
+                    <td class="td-actions">
                         <!-- EDIT -->
-                        <button type="button" class="btn btn-primary btn-simple btn-xs" (click)='editField(i)'>
-                            <i class="material-icons cds-edit-field-icon" >edit</i>
+                        <button 
+                            type="button" 
+                            class="btn btn-primary btn-simple btn-xs" 
+                            (click)='editField(i)'>
+                            <i class="material-icons cds-edit-field-icon">edit</i>
                             <span class="tooltiptext-custom" style="text-transform:none"></span>
                         </button>
-                         <!-- DELETE -->
-                        <button type="button" class="btn btn-danger btn-simple btn-xs"
+                        <!-- DELETE -->
+                        <button type="button" 
+                            class="btn btn-danger btn-simple btn-xs"
                             (click)='deleteFieldModal(i)'>
                             <i class="material-icons">close</i>
-                            
                         </button>
                         <!-- DRAG INDICATOR -->
                         <div class="td-order">
-                            <i class="material-icons" style="color: #647283;">drag_indicator</i>
-                            
+                            <i class="material-icons">drag_indicator</i>
                         </div>
                     </td>
                 </tr>
             </tbody>
+
         </table>
     </div>
 </div>

@@ -14,7 +14,8 @@
 
 .add-responses {
     grid-gap: 15px;
-    display: grid;
+    // display: grid;+
+    display: flex;
     .add-response { 
         text-align: center;
         cursor: pointer;

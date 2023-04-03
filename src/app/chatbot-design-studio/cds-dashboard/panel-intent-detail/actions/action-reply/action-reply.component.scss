@@ -11,12 +11,12 @@ $margin-bottom: 15px;
     width: 0px;
 }
 
-.disable-input-message {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    color: white;
-}
+// .disable-input-message {
+//     position: absolute;
+//     bottom: 10px;
+//     left: 10px;
+//     color: white;
+// }
 
 ::ng-deep .mat-checkbox.mat-accent .mat-checkbox-frame {
     border-color: $icon-color!important;
@@ -41,7 +41,13 @@ $margin-bottom: 15px;
 //   background-color: black !important;
 // }
 
-
+.box-up {
+    display: inline-block;
+    padding: 5px 20px;
+    background: #dcdcdc;
+    position: static;
+    width: 100%;
+}
 
 .box-sx {
     position: relative;
@@ -98,6 +104,7 @@ $margin-bottom: 15px;
     padding: 0;
     margin: 0;
     margin-bottom: 30px;
+    padding-bottom: 140px;
 }
 .content {
     position: relative;

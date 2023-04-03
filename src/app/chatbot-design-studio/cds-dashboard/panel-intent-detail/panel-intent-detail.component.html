@@ -19,7 +19,15 @@
     -->
     <div class="header-panel">
         <cds-action-description 
+            *ngIf="elementIntentSelectedType === typeIntentElement.ACTION"
             [actionSelected]="elementSelected"
+            [showTip]="false"
+            (closeIntent)="onCloseIntent()"
+            (saveIntent)="onSaveIntent()">
+        </cds-action-description>
+        <cds-action-description 
+            *ngIf="elementIntentSelectedType === typeIntentElement.FORM"
+            [form]="elementSelected"
             [showTip]="false"
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
