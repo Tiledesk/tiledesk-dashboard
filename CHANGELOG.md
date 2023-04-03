@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.23
+- Deploys in production
+- Adds the "Chatbot Attributes" accordion to the sidebar of the conversation details page
+
 ### 2.4.23-rc1
 - Adds the "Chatbot Attributes" accordion to the sidebar of the conversation details page
 
