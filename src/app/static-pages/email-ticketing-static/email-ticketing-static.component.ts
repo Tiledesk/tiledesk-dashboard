@@ -149,11 +149,11 @@ export class EmailTicketingStaticComponent extends StaticPageBaseComponent imple
 
             if (this.profile_name !== PLAN_NAME.C) {
 
-              this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
 
             } else if (this.profile_name === PLAN_NAME.C) {
 
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
             }
           }
         }

@@ -157,6 +157,7 @@ const routes: Routes = [
 
   /* PRIVATE */
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/chat-pricing', component: PricingComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
 
@@ -358,7 +359,7 @@ const routes: Routes = [
 
 
   // , ProjectProfileGuard
-  { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
   // 
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },

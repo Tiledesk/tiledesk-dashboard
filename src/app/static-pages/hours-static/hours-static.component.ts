@@ -145,11 +145,11 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
           if (this.USER_ROLE === 'owner') {
             if (this.profile_name !== PLAN_NAME.C) {
 
-              this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
 
             } else if (this.profile_name === PLAN_NAME.C) {
 
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
             }
           }
         }

@@ -2,7 +2,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { AuthService } from '../core/auth.service';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { UsersService } from '../services/users.service';
 import { ProjectService } from '../services/project.service';
 import { ProjectPlanService } from '../services/project-plan.service';
@@ -19,7 +19,7 @@ declare var Stripe: any;
 // enum PLAN_NAME {
 //   A = 'Growth',
 //   B = 'Scale',
-//   C = 'Enterprise',
+//   C = 'Plus',
 // }
 enum PLAN_DESC {
   Growth = 'Improve customer experience and qualify leads better with premium features',
@@ -41,52 +41,54 @@ enum ANNUAL_PRICE {
 
 const featuresPlanA = [
   'CRM',
-  'Canned Responses',
   'Private Notes',
-  '14-days conversations history',
+  'Unlimited Conversations History',
   'Working Hours',
   'Email Ticketing',
   'User Ratings',
-  'Analytics',
+  'Canned Responses',
   'Webhooks',
   'Email Support',
+  'Team Inbox'
 ]
 const highlightedFeaturesPlanA = [
   { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 Seats' },
-  { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' },
-  { 'color': '#19a95d', 'background': 'rgba(13,140,255,.2)', 'feature': '14 days free trial' }
+  { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' }
 ]
 
 
 
 const featuresPlanB = [
-  'Unbranding',
-  'Unlimited conversations history',
+  'Widget Unbranding',
   'WhatsApp Business',
   'Facebook Messenger',
   'Unlimited Departments',
   'Unlimited Groups',
-  'Smart Routing / Assignment',
-  'Knowledge Base',
+  'Zapier connector',
+  'Data export',
   'Livechat Support',
+  'Knowledge Base',
+  'Analytics'
 ]
 
 const highlightedFeaturesPlanB = [
   { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats' },
-  { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' },
-  { 'color': '#19a95d', 'background': 'rgba(13,140,255,.2)', 'feature': '14 days free trial' }
+  { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' }
 ]
 
 const featuresPlanC = [
   'Dedicated Customer Success Manager',
   'Chatbot Design Assistance',
   'Onboarding and Training',
+  'Smart Assignment',
   'IP Filtering',
-  'Ban Visitors',
   'Email Templates Customisation',
-  'SMTP Settings',
   'Activities Log',
-  'Data Export',
+  'Ban Visitors',
+  'Dialogflow connector',
+  'Rasa connector',
+  'SMTP Settings',
+  'Support to host Tiledesk on your Infrastructure',
   'Premium Customer Support',
 ]
 
@@ -130,7 +132,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   // operatorNo = 1
   operatorNo: number;
   numberOfAgentPerPrice: number
-  
+
 
   selectedPlanName: string;
   proPlanPerAgentPrice = 5;
@@ -165,7 +167,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
 
   contactUsEmail: string;
-
+  displayClosePricingPageBtn: boolean;
 
 
   constructor(
@@ -179,6 +181,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     public appConfigService: AppConfigService,
     private translate: TranslateService,
+    private router: Router
   ) {
 
     const brand = brandService.getBrand();
@@ -206,11 +209,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.auth.checkRoleForCurrentProjectAndRedirectAdminAndAgent(); // redirect admin and ahent -- only owner has access to payment
     this.getCurrentProject();
     this.selectedPlanName = 'pro'
-
-  
-
     this.getBaseUrl()
-
     // this.getAllUsersOfCurrentProject();
     this.getNoOfProjectUsersAndPendingInvitations();
 
@@ -226,6 +225,18 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.monthlyPeriod = true;
     this.annualPeriod = false;
     this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.A]
+
+    console.log('[PRICING] ROUTER URL ', this.router.url)
+    const current_url = this.router.url;
+    console.log('[PRICING] current_url ', current_url)
+    var n = current_url.lastIndexOf('/');
+    var valueAfterLastString = current_url.substring(n + 1);
+    console.log('[PRICING] valueAfterLastString ', valueAfterLastString)
+    if (valueAfterLastString === 'pricing') {
+      this.displayClosePricingPageBtn = true;
+    } else {
+      this.displayClosePricingPageBtn = false;
+    }
   }
 
 
@@ -267,7 +278,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   // ----------------- new 
   openPaymentLinkMontlyPlanA() {
-    console.log('[PRICING] PLAN A Montly') 
+    console.log('[PRICING] PLAN A Montly')
     // if (this.projectCurrenPlan === "free") {
     const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
     window.open(url, '_blank');
@@ -285,7 +296,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
   openPaymentLinkAnnuallyPlanA() {
-    console.log('[PRICING] PLAN A Annually') 
+    console.log('[PRICING] PLAN A Annually')
     const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
     window.open(url, '_blank');
   }
@@ -295,7 +306,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   // -------------------------------
   openPaymentLinkMontlyPlanB() {
     // if (this.projectCurrenPlan === "free") {
-      console.log('[PRICING] PLAN B Montly') 
+    console.log('[PRICING] PLAN B Montly')
     const url = `https://buy.stripe.com/test_7sI6pkce24T0d8YdQT?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
     window.open(url, '_blank');
 
@@ -303,7 +314,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
   openPaymentLinkAnnuallyPlanB() {
-    console.log('[PRICING] PLAN B Annually') 
+    console.log('[PRICING] PLAN B Annually')
     const url = `https://buy.stripe.com/test_fZeeVQ6TI85cglabIK?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
     window.open(url, '_blank');
   }
@@ -318,7 +329,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     console.log('[PRICING] contactUs planname ', planname)
     window.open(`mailto:sales@tiledesk.com?subject=Upgrade to Tiledesk ${planname}`);
   }
- 
+
 
   updatesubscription(price) {
     this.projectService.updatesubscription(price).subscribe((updatesubscription: any) => {
@@ -450,7 +461,7 @@ export class PricingComponent implements OnInit, OnDestroy {
         this.subscription_id = projectProfileData.subscription_id;
         this.projectCurrenPlan = projectProfileData.profile_name
         this.profileType = projectProfileData.profile_type
-        
+
         console.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
         console.log('[PRICING]  - getProjectPlan > projectCurrenPlan ', this.projectCurrenPlan)
         console.log('[PRICING]  - getProjectPlan > profileType ', this.profileType)
@@ -537,7 +548,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
 
- 
+
 
   setPeriod(selectedPeriod: string) {
     this.logger.log('[PRICING] - selectedPeriod ', selectedPeriod);
@@ -586,7 +597,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
   }
 
- 
+
 
   goBack() {
     this.location.back();

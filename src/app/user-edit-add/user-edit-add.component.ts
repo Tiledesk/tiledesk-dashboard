@@ -830,7 +830,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
     // if (this.prjct_profile_type === 'payment') {
       // this.seatsLimit
-    if (this.projectUsersLength + this.countOfPendingInvites < 20) {
+    if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
       this.doInviteUser();
     } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
       if (this.CURRENT_USER_ROLE === 'owner') {

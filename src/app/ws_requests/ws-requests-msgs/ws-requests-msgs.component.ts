@@ -380,10 +380,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   agentCannotManageAdvancedOptions: string;
   subscription_end_date: any;
   onlyAvailableWithEnterprisePlan: string;
-  cPlanOnly:string
+  cPlanOnly: string
   learnMoreAboutDefaultRoles: string;
-  displayChatRatings: boolean; 
+  displayChatRatings: boolean = true;
   onlyOwnerCanManageTheAccountPlanMsg: string;
+  DASHBORD_BASE_URL: string;
   /**
    * Constructor
    * @param router 
@@ -551,19 +552,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.subscription_end_date = projectProfileData.subscription_end_date
         this.profile_name = projectProfileData.profile_name
 
-       
+
         if (projectProfileData.profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
             this.displayChatRatings = true;
+            console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           } else {
             this.displayChatRatings = false;
+            console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           }
         } else if (projectProfileData.profile_type === 'payment') {
           if (projectProfileData.subscription_is_active === true) {
             this.displayChatRatings = true;
-
+            console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           } else if (projectProfileData.subscription_is_active === false) {
+            console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
             this.displayChatRatings = false;
+            console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           }
         }
 
@@ -590,8 +598,27 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
           this.router.navigate(['project/' + this.id_project + '/pricing']);
-     
+
         }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
+  }
+
+
+  goToPricingFromChat() {
+    if (this.isVisiblePaymentTab) {
+      if (this.CURRENT_USER_ROLE === 'owner') {
+        const href = window.location.href;
+        this.logger.log('[PRICING] href ', href)
+
+        const hrefArray = href.split('/#/');
+        this.dshbrdBaseUrl = hrefArray[0]
+        const pricingUrl = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/chat-pricing';
+        window.open(pricingUrl, '_blank');
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }
@@ -3989,7 +4016,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
- 
+
   }
 
 
@@ -4549,8 +4576,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.agentCannotManageAdvancedOptions = translation;
       });
 
-      
-    this.translate.get('AvailableWithThePlan' , {plan_name: PLAN_NAME.C})
+
+    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.C })
       .subscribe((translation: any) => {
         this.cPlanOnly = translation;
       });
@@ -4577,7 +4604,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.featureAvailableFromBPlan = translation;
       });
 
-      this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
 
         this.onlyOwnerCanManageTheAccountPlanMsg = translation;
