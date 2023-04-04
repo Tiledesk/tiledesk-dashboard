@@ -92,7 +92,7 @@ $color-text-box: #566787;
             width: auto;
             max-width: 0px;
             &.opened {
-                margin-left: 10px;
+                margin-left: 0px;
                 max-width: 100px;
             }
         }
@@ -326,6 +326,7 @@ $color-text-box: #566787;
     box-shadow: none !important;
     color: #202124;
     font-weight: 500;
+    padding-right: 10px;
 }
 
 #add-form-btn:hover {

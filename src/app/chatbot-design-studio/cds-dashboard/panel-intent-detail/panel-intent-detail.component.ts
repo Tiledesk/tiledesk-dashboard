@@ -106,11 +106,18 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   //   this.openCardButton = false;
   // }
 
-  passJsonIntentForm(json) {
-    this.logger.log('[PANEL-INTENT-DETAIL] passJsonIntentForm ', json);
-    if(json && json.fields && json.fields.length>0){
-      // this.intentForm = json;
-    }
+  passJsonIntentForm(intentForm) {
+    this.logger.log('[PANEL-INTENT-DETAIL] passJsonIntentForm ', intentForm);
+    // if(json && json.fields && json.fields.length>0){
+    //   // this.intentForm = json;
+    // }
+    
+    console.log("passJsonIntentForm:::: ", this.intentSelected);
+  }
+
+
+  onUpdateIntentForm(intentForm) {
+    this.intentSelected.form = intentForm;
   }
 
   onClickInside(){
@@ -132,7 +139,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
     } else if(this.elementIntentSelectedType === this.typeIntentElement.QUESTION){
       this.intentSelected.question = this.elementSelected;
     }
-    console.log('onSaveIntent:: ', this.elementIntentSelectedType, this.elementSelected);
+    console.log('onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     this.closeAndSavePanelIntentDetail.emit(this.intentSelected);
   }
 

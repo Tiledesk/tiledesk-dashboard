@@ -100,30 +100,15 @@
         </appdashboard-form-field>
     
         <!-- ------------------------------ -->
-        <!-- @ BUTTON ADD FIELD  -->
-        <!-- ------------------------------ -->
-        <!-- [disabled]="displayAddForm || displayEditForm || displaySettingForm" -->
-        <!-- <div class="header-list-form">
-            <button *ngIf="displayTilebotAddEditForm && intentFormSize > 0"
-                [ngClass]="{'hide':( displaySettingForm || displayAddForm || displayEditForm ) }"
-                class="btn btn-primary add-field btn-only-string" (click)="eventAddField()">
-                <span class="icon" style="padding-right: 4px;">
-                    <i class="material-icons">add_circle</i>
-                </span>
-                <span>{{ "AddIntentPage.AddField" | translate }}</span>
-            </button>
-        </div> -->
-    
-        <!-- ------------------------------ -->
         <!-- @ ADD EDIT FIELD -->
         <!-- ------------------------------ -->
         <appdashboard-form-edit-add 
             *ngIf="displayAddForm || displayEditForm" 
+            [field]="selectedField" 
             [displayAddForm]="displayAddForm"
             [displayEditForm]="displayEditForm" 
-            [field]="selectedField" 
             (scrollToBottom)="scrollToBottom()"
-            (editFormFields)="onEditFormFields($event)"
+            (changedFormFields)="onChangedFormFields($event)"
             (saveAddEditForm)="saveAddEditForm($event)"
             (closeAddEditForm)="closeAddEditForm()">
         </appdashboard-form-edit-add>
@@ -149,8 +134,11 @@
     <!-- ------------------------------ -->
     <!-- @ DELETE MODAL -->
     <!-- ------------------------------ -->
-    <appdashboard-modal-window *ngIf="displayMODAL" [translateMap]="translateMap" [objectId]="selectedObjectId"
-        (confirmDeleteModal)="confirmDeleteModal($event)" (closeDeleteModal)="closeDeleteModal($event)">
+    <appdashboard-modal-window *ngIf="displayMODAL" 
+        [translateMap]="translateMap" 
+        [objectId]="selectedObjectId"
+        (confirmDeleteModal)="confirmDeleteModal($event)" 
+        (closeDeleteModal)="closeDeleteModal($event)">
     </appdashboard-modal-window>
 
 </div>

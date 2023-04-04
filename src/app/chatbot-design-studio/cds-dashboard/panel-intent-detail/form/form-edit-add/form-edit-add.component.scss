@@ -53,7 +53,7 @@
     .validation-field-title {
         font-size: 16px;
         margin: 0;
-        font-weight: 300;
+        font-weight: 400;
         color: #e8eaed;
     }
 
@@ -85,14 +85,15 @@
 
 
     ::ng-deep .mat-expansion-panel-body {
-        padding: 0px 0px 0px;
+        padding: 0;
+        margin-top: 20px;
     }
     .mat-expansion-panel-content > .mat-expansion-panel-body {
         // padding: 20px 0px 16px!important;
         padding: 0px 0px 0px !important;
     }
     .input-wrapper {
-        margin-top: 20px;
+        margin: 10px 0 0 0;
     }
 }
 
@@ -100,10 +101,11 @@
     background-color: #fff;
     border: 1px solid #e8f0f5;
     box-shadow: none;
-    padding: 10px;
+    padding: 10px 0;
     display: flex;
     border-radius: 6px;
     font-size: 14px;
+    min-height: 64px;
     em.material-icons {
         vertical-align: middle;
         display: inline-flex;
@@ -130,13 +132,14 @@
     .form-control {
         margin-bottom: 7px;
         height: auto;
+        padding: 0;
         background-image: none;
     }
-    &.is-focused {
-        .form-control {
-            background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d200, #d2d2d200);
-        }
-    }
+    // &.is-focused {
+    //     .form-control {
+    //         background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d200, #d2d2d200);
+    //     }
+    // }
     label {
         font-size: 12px;
         line-height: normal;
@@ -149,6 +152,9 @@
             background-repeat: no-repeat;
             background-position: center bottom, center calc(100% - 1px);
         }
+    }
+    .input-regex{
+        background-color: #fff;
     }
 }
 
@@ -216,51 +222,42 @@ input.form-control {
     padding: 0;
     line-height: normal;
     position: absolute;
-
     font-weight: 400;
     font-size: 13px;
     white-space: normal;
     word-wrap: break-word;
     color: #e8eaed;
 }
-.form-group.is-empty label.control-label {
-    font-size: 14px;
-    line-height: normal;
-    position: absolute;
-    color: #fff;
-    z-index: 1;
-    pointer-events: none;
-}
+// .form-group.is-empty label.control-label {
+//     z-index: 1;
+//     pointer-events: none;
+// }
 
-.form-group.is-focused label.control-label {    
-    // font-size: 11px;
-    line-height: normal;
-    position: absolute;
-    pointer-events: none;
-    transition: 0.3s ease all;
-    color: #fff;
-}
+// .form-group.is-focused label.control-label {    
+//     pointer-events: none;
+//     transition: 0.3s ease all;
+// }
 
-.form-group.ng-select {
-    label.control-label {
-        font-size: 11px;
-        line-height: normal;
-        position: absolute;
-        pointer-events: none;
-        transition: 0.3s ease all;
-        color: #fff;
-    }
-    &.is-placeholder {
-        label.control-label {
-            font-size: 14px;
-            line-height: normal;
-            position: absolute;
-            color: #fff;
-            z-index: 1;
-            pointer-events: none;
-        }
-    }
-}
+// .form-group.ng-select {
+//     label.control-label {
+//         font-size: 11px;
+//         line-height: normal;
+//         position: absolute;
+//         pointer-events: none;
+//         transition: 0.3s ease all;
+//         color: #fff;
+//     }
+//     &.is-placeholder {
+//         label.control-label {
+//             font-size: 14px;
+//             line-height: normal;
+//             position: absolute;
+//             color: #fff;
+//             z-index: 1;
+//             pointer-events: none;
+//         }
+//     }
+// }
 
 .input-prefix {
     position: absolute;

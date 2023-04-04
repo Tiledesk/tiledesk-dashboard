@@ -8,7 +8,6 @@ import { FormModelsFactory } from './form-models-factory';
 const swal = require('sweetalert');
 // import { URL_more_info_chatbot_forms } from 'app/utils/util';
 
-
 export interface ModalDeleteModel {
   deleteField?: string;
   nameField?: string;
@@ -25,11 +24,12 @@ export class FormComponent implements OnInit, OnChanges {
   @ViewChild('scrollMe', { static: false }) scrollContainer: ElementRef;
 
   @Output() passJsonIntentForm = new EventEmitter();
+  @Output() updateIntentForm = new EventEmitter();
   @Input() intentForm: Form;
   @Input() intentSelected: Intent;
+
   langBot: string;
   fields = new Array() as Field[];;
-  // URL_to_form_more_info = URL_more_info_chatbot_forms;
   URL_to_form_more_info = "https://gethelp.tiledesk.com/articles/tiledesk-chatbot-forms/";
 
   // modal
@@ -68,7 +68,6 @@ export class FormComponent implements OnInit, OnChanges {
     private httpClient: HttpClient,
     private logger: LoggerService,
   ) {
-
     this.langBot = this.route.snapshot.params['botlang'];
     if (!this.langBot || this.langBot === undefined) {
       this.langBot = 'en';
@@ -76,65 +75,46 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    console.log('intentForm::::: ', this.intentForm);
     this.logger.log('[FORM-COMP] (OnInit) intentSelected ', this.intentSelected)
     this.logger.log('[FORM-COMP] (OnInit) intentForm ', this.intentForm)
 
     let modelsFactory = new FormModelsFactory()
-
     this.modelsOfForm = modelsFactory.getModels();
-    this.logger.log('[FORM-COMP] (OnInit) modelsOfForm ', this.modelsOfForm)
-
     this.selectedForm = this.modelsOfForm[0];
-    this.logger.log('[FORM-COMP] (OnInit) selectedForm ', this.selectedForm)
-
     this.selectedFormId = this.modelsOfForm[0].id ? this.modelsOfForm[0].id : null;
+
+    this.logger.log('[FORM-COMP] (OnInit) selectedForm ', this.selectedForm)
+    this.logger.log('[FORM-COMP] (OnInit) modelsOfForm ', this.modelsOfForm)
     this.logger.log('[FORM-COMP] (OnInit) selectedFormId ', this.selectedFormId)
 
-
-    // this.selectedForm = new Form()
-    //   this.selectedForm.to_JSON()
-    //   this.logger.log('[FORM-COMP] (OnInit) this.selectedForm.to_JSON() ',this.selectedForm.to_JSON())
-    // this.selectedForm = modelsFactory.getModels()[0];
-    // this.logger.log('[FORM-COMP] (OnInit) selectedForm ', this.selectedForm)
-    // this.modelsOfForm = modelsFactory.getModels();
-    // //this.modelsOfForm.push(modelsFactory.getModels());
-    // this.logger.log('[FORM-COMP] (OnInit) modelsOfForm ', this.modelsOfForm)
-    // this.selectedForm = this.modelsOfForm[0];
-    // this.logger.log('[FORM-COMP] (OnInit) selectedForm 2 ', this.selectedForm)
-    // this.selectedFormId = this.modelsOfForm[0].id ? this.modelsOfForm[0].id : null;
-    // this.logger.log('[FORM-COMP] (OnInit) selectedFormId ', this.selectedFormId)
-
     this.getCurrentTranslation();
-    // this.getModelsForm();
     this.translateMap = {};
     this.translations = {};
     this.intentFormSize = Object.keys(this.intentForm).length;
-    this.logger.log('[FORM-COMP] (OnInit) intentFormSize ', this.intentFormSize)
-    // if (this.intentForm ) {
+    
     if (this.intentFormSize > 0) {
       this.displayNewFormButton = false;
       this.displaySettingsButton = true;
       if (this.intentForm && this.intentForm.fields) {
+        // this.fields = this.intentForm.fields;
         this.fields = JSON.parse(JSON.stringify(this.intentForm.fields));
-        this.logger.log('[FORM-COMP] OnInit intentForm.fields ', this.fields)
       }
       this.cancelCommands = this.intentForm.cancelCommands;
       this.cancelReply = this.intentForm.cancelReply;
       this.cancelCommandsString = this.cancelCommands.toString();
 
+      this.logger.log('[FORM-COMP] (OnInit) intentFormSize ', this.intentFormSize)
+      this.logger.log('[FORM-COMP] OnInit intentForm.fields ', this.fields)
       this.logger.log('[FORM-COMP] cancelCommands ', this.cancelCommands)
       this.logger.log('[FORM-COMP] cancelReply ', this.cancelReply)
       this.logger.log('[FORM-COMP] cancelCommandsString ', this.cancelCommandsString)
     }
-    // else {
-    //   // this.displayNewFormButton = true;
-    //   this.openBoxNewFormForm()
-    // }
   }
 
   ngOnChanges() {
-    this.logger.log('[FORM-COMP] (OnChanges) intentForm ', this.intentForm)
-    this.logger.log('[FORM-COMP] (OnChanges) intentSelected ', this.intentSelected)
+    this.logger.log('[FORM-COMP] (OnChanges) intentForm ', this.intentForm);
+    // this.logger.log('[FORM-COMP] (OnChanges) intentSelected ', this.intentSelected)
   }
 
 
@@ -144,13 +124,12 @@ export class FormComponent implements OnInit, OnChanges {
         this.scrollContainer.nativeElement.scrollTop = 0;
         this.scrollContainer.nativeElement.animate({ scrollTop: 0 }, '500');
       } catch (error) {
-        this.logger.log('scrollToBottom ERROR: ', error);
+        this.logger.log('scrollToTop ERROR: ', error);
       }
-    }, 300);
+    }, 500);
   }
 
   scrollToBottom(): void {
-    console.log(this.scrollContainer);
     setTimeout(() => {
       try {
         this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
@@ -159,44 +138,39 @@ export class FormComponent implements OnInit, OnChanges {
         this.logger.log('scrollToBottom ERROR: ', error);
         console.log(error);
       }
-    }, 300);
+    }, 500);
   }
+
 
   getFieldFromId(idForm: number) {
     this.logger.log('[FORM-COMP] getFieldFromId idForm ', idForm)
     // this.selectedForm = new FormModelsFactory().getModels()[0]
-
     this.selectedForm = new FormModelsFactory().getModels().find(({ id }) => id === idForm);
     this.logger.log('[FORM-COMP] getFieldFromId selectedForm ', this.selectedForm)
-
     // this.translateparam = { selectedFormName: this.selectedForm.name, description_key: this.selectedForm.description_key };
   }
 
+  /** CREATE NEW FORM */
   generateJsonIntentForm() {
     this.logger.log('[FORM-COMP] generateJsonIntentForm')
     if (this.selectedFormId && !this.selectedForm) {
       this.getFieldFromId(this.selectedFormId);
     }
-
     this.logger.log('[FORM-COMP] selectedForm ', this.selectedForm)
-
     if (this.selectedForm) {
-      // this.selectedForm = new Form()
-      this.selectedForm.to_JSON()
+      this.selectedForm.to_JSON();
       this.intentForm = this.selectedForm;
       this.intentForm.cancelCommands = this.cancelCommands;
       this.intentForm.cancelReply = this.cancelReply;
-      this.intentForm.to_JSON()
+      this.intentForm.to_JSON();
       // this.fields = JSON.parse(JSON.stringify(this.selectedForm.fields));
       this.fields = this.selectedForm.fields;
       this.intentFormSize = Object.keys(this.intentForm).length;
       this.logger.log('[FORM-COMP] generateJsonIntentForm ', this.intentForm)
     }
-
     this.displayCancelButton = false;
     this.displaySettingsButton = true;
     this.logger.log('[FORM-COMP] generateJsonIntentForm displaySettingsButton:', this.displaySettingsButton, ' displayCancelButton', this.displayCancelButton)
-
     // se sto creando un form custom che non ha campi
     if (this.fields.length === 0) {
       this.displayEditForm = false;
@@ -243,15 +217,11 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   jsonGenerator() {
-    // this.intentForm = new Form();
-    // this.intentForm = this.selectedForm
-    // this.intentForm.to_JSON()
     this.logger.log('[FORM-COMP] jsonGenerator this.intentForm:: ', this.intentForm);
+    //this.intentSelected.form = this.intentForm;
     this.passJsonIntentForm.emit(this.intentForm);
-    // this.intentForm.push(this.intentForm)
-    
-    this.intentSelected.form = this.intentForm
-    this.logger.log('[FORM-COMP] jsonGenerator this.intentSelected:: ', this.intentSelected);
+    // this.logger.log('[FORM-COMP] jsonGenerator this.intentSelected:: ', this.intentSelected);
+    // console.log('jsonGenerator form::: ', this.intentSelected);
   }
 
   openSettingsForm() {
@@ -390,8 +360,6 @@ export class FormComponent implements OnInit, OnChanges {
     this.fields = [];
     this.intentFormSize = 0;
     this.logger.log('[FORM-COM] deleteForm - displayBoxNewForm ', this.displayBoxNewForm, 'intentForm', this.intentForm);
-   
-    this.logger.log('[FORM-COMP] deleteForm this.intentSelected:: ', this.intentSelected);
   }
 
 
@@ -433,6 +401,7 @@ export class FormComponent implements OnInit, OnChanges {
       this.displayEditForm = true;
       this.openAddEditForm();
     }, 300);
+    console.log('eventEditField:: ', this.selectedField, i, this.fields);
     this.logger.log('[FORM-COMP] eventEditField selectedField ', this.selectedField)
     this.logger.log('[FORM-COMP] eventEditField displayAddForm ', this.displayAddForm)
     this.logger.log('[FORM-COMP] eventEditField displayEditForm ', this.displayEditForm)
@@ -441,6 +410,7 @@ export class FormComponent implements OnInit, OnChanges {
   eventDropField(fields) {
     this.intentForm.fields = fields;
     this.fields = fields;
+    this.updateIntentForm.emit(this.intentForm);
     this.closeAddEditForm();
     this.selectedField = null;
   }
@@ -451,7 +421,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.displayAddForm = false;
     this.displayEditForm = false;
     this.displayTilebotAddEditForm = true;
-    this.scrollToBottom();
+    this.scrollToTop();
     this.logger.log('[FORM-COMP] closeAddEditForm displayAddForm ', this.displayAddForm)
     this.logger.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayEditForm)
     this.logger.log('[FORM-COMP] closeAddEditForm displayEditForm ', this.displayTilebotAddEditForm)
@@ -475,20 +445,12 @@ export class FormComponent implements OnInit, OnChanges {
     this.jsonGenerator();
   }
 
-  onEditFormFields(fields){
-    this.intentForm.fields = fields;
-    this.logger.log('[FORM-COMP] saveAddEditForm intentForm ', this.intentForm)
-  }
-
   openAddEditForm() {
     this.displayTilebotAddEditForm = false;
-    setTimeout(() => {
-      this.displayTilebotAddEditForm = true;
-      this.scrollToBottom();
-    }, 300);
+    this.displayTilebotAddEditForm = true;
+    this.scrollToBottom();
   }
 
-  /** */
   openDeleteForm() {
     this.logger.log('[FORM-COMP] openDeleteForm this.translations:::: ', this.translations);
     this.translateMap.deleteField = this.translations['DeleteForm'] ? this.translations['DeleteForm'] : '';
@@ -502,6 +464,31 @@ export class FormComponent implements OnInit, OnChanges {
   goToFormMoreInfo() {
     const url = this.URL_to_form_more_info;
     window.open(url, '_blank');
+  }
+
+
+
+
+
+  /** START EVENTS */
+  /** Events of FORM EDIT ADD */
+  onChangedFormFields(event:any){
+    try {
+      const objIndex = this.fields.findIndex(obj => obj.name === event.name);
+      if (objIndex === -1) {
+        this.fields.push(event);
+      } else {
+        this.fields.splice(objIndex, 1, event);
+      }
+      if (this.intentForm) {
+        this.intentForm.fields = this.fields;
+      }
+      // this.intentSelected.form = this.intentForm;
+      // this.updateIntentForm.emit(this.intentForm);
+      this.logger.log('[FORM-COMP] saveAddEditForm intentForm ', this.intentForm);
+    } catch (error) {
+      this.logger.log('[FORM-COMP] error ', error);
+    }
   }
 
 

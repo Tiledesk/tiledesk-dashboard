@@ -49,6 +49,21 @@ $margin-bottom: 15px;
     width: 100%;
 }
 
+.box-dw {
+    .reply-info{
+        color: aliceblue;
+        padding: 10px;
+        font-size: 14px;
+        text-align: center;
+        border: 2px solid #0F172A;
+        border-radius: 10px;
+        margin: 10px;
+        background: #425575;
+    }
+}
+
+
+/*
 .box-sx {
     position: relative;
     display: inline-flex;
@@ -98,6 +113,8 @@ $margin-bottom: 15px;
         padding: $padding;
     }
 }
+
+*/
 
 #scrollMe {
     scroll-behavior: smooth;
