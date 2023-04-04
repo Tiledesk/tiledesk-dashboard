@@ -27,7 +27,21 @@
         </cds-action-description>
         <cds-action-description 
             *ngIf="elementIntentSelectedType === typeIntentElement.FORM"
-            [form]="elementSelected"
+            [elementType]="typeIntentElement.FORM"
+            [showTip]="false"
+            (closeIntent)="onCloseIntent()"
+            (saveIntent)="onSaveIntent()">
+        </cds-action-description>
+        <cds-action-description 
+            *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER"
+            [elementType]="typeIntentElement.ANSWER"
+            [showTip]="false"
+            (closeIntent)="onCloseIntent()"
+            (saveIntent)="onSaveIntent()">
+        </cds-action-description>
+        <cds-action-description 
+            *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION"
+            [elementType]="elementSelected.QUESTION"
             [showTip]="false"
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">

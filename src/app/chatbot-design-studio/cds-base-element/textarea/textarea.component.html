@@ -47,7 +47,13 @@
     </div>
 </div>
 
-<sat-popover #addVariable id="addVariable"  horizontalAlign="center" verticalAlign="center"  hasBackdrop (backdropClicked)="addVariable.close()" panelClass="texarea-add-filter-panel"  interactiveClose="false">
+<sat-popover #addVariable id="addVariable"  
+    horizontalAlign="center" 
+    verticalAlign="center"  
+    hasBackdrop 
+    (backdropClicked)="addVariable.close()" 
+    panelClass="texarea-add-filter-panel"  
+    interactiveClose="false">
     <variable-list
         (onSelected)="onVariableSelected($event)">
     </variable-list>

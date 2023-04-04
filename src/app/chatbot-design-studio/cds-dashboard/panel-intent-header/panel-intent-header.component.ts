@@ -141,7 +141,8 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   toggleIntentWebhook(event) {
     this.logger.log('[PANEL-INTENT-HEADER] toggleWebhook ', event.checked);
-    this.intentSelected.webhook_enabled = event.checked
+    this.intentSelected.webhook_enabled = event.checked;
+    this.saveIntent.emit(this.intentSelected);
   }
   // getCurrentProject() {
   //   this.auth.project_bs.subscribe((project) => {

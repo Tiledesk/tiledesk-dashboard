@@ -14,7 +14,7 @@ export class ActionDescriptionComponent implements OnInit {
   @ViewChild("descriptionTooltip") popover : SatPopover;
 
   @Input() actionSelected: Action;
-  @Input() form: Form;
+  @Input() elementType: string;
   @Input() showTip: boolean = false;
 
   @Output() closeIntent = new EventEmitter();
@@ -26,18 +26,19 @@ export class ActionDescriptionComponent implements OnInit {
   }
 
   titlePlaceholder: string = 'set a title to your action...';
-  elementType: string;
   element: any;
   dataInput: string;
   
   ngOnInit(): void {
     console.log('ActionDescriptionComponent ngOnInit:: ', this.actionSelected);
-    if(this.form){
-      this.elementType = TYPE_INTENT_ELEMENT.FORM;
-    } else {
+    // if(this.elementSelected){
+    //   this.elementType = TYPE_INTENT_ELEMENT.FORM;
+    // } else {
+    //   this.elementType = this.actionSelected._tdActionType;
+    // }
+    if(this.actionSelected){
       this.elementType = this.actionSelected._tdActionType;
     }
-   
     try {
       this.element = ELEMENTS_LIST.find(item => item.type === this.elementType);
       if(this.actionSelected._tdActionTitle && this.actionSelected._tdActionTitle != ""){

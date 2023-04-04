@@ -115,14 +115,23 @@ $box-left-width: 250px;
         }
 
         .panel-intent-detail-wrapper {
+          // display: flex;
+          // margin: 0;
+          // background: rgba(34,48,74,.6);
+          // inset: 0px 0px 0px 60px;
+          // position: absolute;
+          // &.sidebar-opened{
+          //     inset: 0px 0px 0px 175px;
+          // } 
           display: flex;
           margin: 0;
           background: rgba(34,48,74,.6);
-            inset: 0px 0px 0px 60px;
-            position: absolute;
-            &.sidebar-opened{
-                inset: 0px 0px 0px 175px;
-            } 
+          inset: 0;
+          position: fixed;
+          top: 0;
+          left: 0;
+          padding: 85px 25px 25px 0;
+          z-index: 2;
         }
         
 

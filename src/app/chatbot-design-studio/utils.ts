@@ -172,7 +172,9 @@ export const ELEMENTS_LIST = [
     { name: 'If Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the <b>TRUE block</b> will be triggered.<br>During offline hours the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.'},
     { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src: "assets/cds/images/actions/hidden_message.svg"},
     { name: 'Condition', type: TYPE_ACTION.JSON_CONDITION, src: "assets/cds/images/actions/condition.svg"},
-    { name: 'Form', type: TYPE_INTENT_ELEMENT.FORM, src: "assets/cds/images/form.svg", description: "Add a Form to ask user data"}
+    { name: 'Form', type: TYPE_INTENT_ELEMENT.FORM, src: "assets/cds/images/form.svg", description: "Add a Form to ask user data"},
+    { name: 'Answer', type: TYPE_INTENT_ELEMENT.ANSWER, src: "assets/cds/images/form.svg", description: "Add an Answer"},
+    { name: 'Question', type: TYPE_INTENT_ELEMENT.QUESTION, src: "assets/cds/images/form.svg", description: "Add a Question"},
 ]
 
 
@@ -258,22 +260,21 @@ export function getEmbedUrl(url: string) {
 export var variableList = {
     userDefined: [],
     systemDefined: [
-        { name: 'Department ID', value: 'department_id', src: '', icon: 'domain' },
-        { name: 'Department name', value: 'department_name', src: '', icon: 'domain' },
-        { name: 'Project ID', value: 'project_id', src: '', icon: 'domain' },
-        { name: 'Last message ID', value: 'last_message_id', src: '', icon: 'textsms' },
-        { name: 'Conversation ID', value: 'conversation_id', src: '', icon: 'textsms' },
-        { name: 'Last user text', value: 'last_user_text', src: '', icon: 'send' },
-        { name: 'Chatbot Name', value: 'chatbot_name', src: '', icon: 'person' },
-        { name: 'User ID', value: 'user_id', src: '', icon: 'person' },
-        { name: 'User agent', value: 'user_agent', src: '', icon: 'person' },
-        { name: 'Source', value: 'user_source_page', src: '', icon: 'language' },
-        { name: 'Language', value: 'user_language', src: '', icon: 'language' },
-        { name: 'URL', value: 'chat_url', src: '', icon: 'laptop' },
-        { name: 'IP', value: 'user_ip_address', src: '', icon: 'laptop' },
-        { name: 'Country', value: 'user_country', src: '', icon: 'language' },
-        { name: 'City', value: 'user_city', src: '', icon: 'language' },
-
+        { name: 'department_id', value: 'department_id', src: '', icon: 'domain' },
+        { name: 'department_name', value: 'department_name', src: '', icon: 'domain' },
+        { name: 'project_id', value: 'project_id', src: '', icon: 'domain' },
+        { name: 'last_message_id', value: 'last_message_id', src: '', icon: 'textsms' },
+        { name: 'conversation_id', value: 'conversation_id', src: '', icon: 'textsms' },
+        { name: 'last_user_text', value: 'last_user_text', src: '', icon: 'send' },
+        { name: 'chatbot_name', value: 'chatbot_name', src: '', icon: 'person' },
+        { name: 'user_id', value: 'user_id', src: '', icon: 'person' },
+        { name: 'user_agent', value: 'user_agent', src: '', icon: 'person' },
+        { name: 'user_source_page', value: 'user_source_page', src: '', icon: 'language' },
+        { name: 'user_language', value: 'user_language', src: '', icon: 'language' },
+        { name: 'chat_url', value: 'chat_url', src: '', icon: 'laptop' },
+        { name: 'user_ip_address', value: 'user_ip_address', src: '', icon: 'laptop' },
+        { name: 'user_country', value: 'user_country', src: '', icon: 'language' },
+        { name: 'user_city', value: 'user_city', src: '', icon: 'language' }
     ]
 }
 
