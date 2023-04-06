@@ -117,32 +117,36 @@
     </div>
 
     <ng-template #settings [ngOutletContext]="context">
-        <cds-chatbot-details [selectedChatbot]="selectedChatbot">
-        </cds-chatbot-details>
+        <cds-chatbot-details [selectedChatbot]="selectedChatbot"></cds-chatbot-details>
     </ng-template>
 
 
     <ng-template #intents [ngOutletContext]="context">
         <div class="box-left">
-            <appdashboard-panel-intent-list class="panel-intent-list" [id_faq_kb]="id_faq_kb" [intent_id]="intent_id"
-                [projectID]="projectID" 
-                (selected_intent)=onSelectIntent($event)
-                (returnListOfIntents)=onReturnListOfIntents($event) 
-                (createIntent)="onCreateIntentBtnClicked()"
-                (deleteSelectedIntent)="onDeleteSelectedIntent()" 
+            <appdashboard-panel-intent-list 
+                class="panel-intent-list" 
+                [id_faq_kb]="id_faq_kb" 
+                [intent_id]="intent_id"
+                [projectID]="projectID"
                 [eventCreateIntent]="createIntent.asObservable()"
                 [eventUpadatedIntent]="upadatedIntent.asObservable()"
                 [eventStartUpdatedIntent]="startUpdatedIntent.asObservable()"
-                [eventNewIntentFromSplashScreen]="newIntentFromSplashScreen.asObservable()">
+                [eventNewIntentFromSplashScreen]="newIntentFromSplashScreen.asObservable()"
+                (selected_intent)=onSelectIntent($event)
+                (returnListOfIntents)=onReturnListOfIntents($event) 
+                (createIntent)="onCreateIntentBtnClicked()"
+                (deleteSelectedIntent)="onDeleteSelectedIntent()">
             </appdashboard-panel-intent-list>
         </div>
 
         <div class="box-right">
 
-            <cds-splash-screen *ngIf=!intentSelected [text]="'Select a block from the left sidebar or create a new one'"
+            <cds-splash-screen *ngIf=!intentSelected 
+                [text]="'Select a block from the left sidebar or create a new one'"
                 [videoUrl]="'https://www.youtube.com/embed/b0laljUl85E'"
                 [videoDescription]="'Learn about conversation blocks and how to create them here'"
-                [section]="'cds-sb-intents'" (onClickBtn)="onAddIntentFromSplashScreen($event)">
+                [section]="'cds-sb-intents'" 
+                (onClickBtn)="onAddIntentFromSplashScreen($event)">
             </cds-splash-screen>
 
             <!-- <cds-splash-screen *ngIf=spinnerCreateIntent
@@ -150,15 +154,19 @@
                 (onClickBtn)="onAddIntentFromSplashScreen($event)" > 
             </cds-splash-screen> -->
             <!-- *ngIf=!spinnerCreateIntent -->
+
             <div class="box-right-header">
-                <appdashboard-panel-intent-header *ngIf=intentSelected [intentSelected]="intentSelected"
-                    [listOfIntents]="listOfIntents" (saveIntent)=onSaveIntent($event)>
+                <appdashboard-panel-intent-header *ngIf=intentSelected 
+                    [intentSelected]="intentSelected"
+                    [listOfIntents]="listOfIntents" 
+                    (saveIntent)=onSaveIntent($event)>
                 </appdashboard-panel-intent-header>
             </div>
             <!-- [events]="upadatedIntent.asObservable() *ngIf=!spinnerCreateIntent -->
             <div id="box-right-content" class="box-right-content">
                 <appdashboard-panel-intent *ngIf=intentSelected 
                     class="panel-intent" 
+                    [idSelected]="idElementOfIntentSelected"
                     [intentSelected]="intentSelected"
                     [isIntentElementSelected]="isIntentElementSelected"
                     [actionDrawerIsOpen]="actionDrawerIsOpen" 
@@ -170,13 +178,16 @@
                     (actionSelected)=onActionSelected($event)
                     (questionSelected)=onQuestionSelected($event) 
                     (actionDeleted)=onActionDeleted($event)
-                    (intentForm)=onIntentFormSelected($event) 
-                    (saveIntent)="onSaveIntent($event)">
+                    (intentForm)=onIntentFormSelected($event)
+                    (dropAction)=onDropAction($event)>
                 </appdashboard-panel-intent>
 
 
-                <appdashboard-panel-actions style="z-index: 101;" *ngIf="isOpenActionDrawer" (openActionDrawer)=onOpenActionDrawer($event)
-                    [intentSelected]="intentSelected">
+                <appdashboard-panel-actions *ngIf="isOpenActionDrawer" 
+                    style="z-index: 101;" 
+                    [intentSelected]="intentSelected"
+                    (addNewAction)=onAddNewAction($event)
+                    (openActionDrawer)=onOpenActionDrawer($event)>
                 </appdashboard-panel-actions>
       
                 <appdashboard-panel-intent-detail *ngIf=isIntentElementSelected
@@ -188,8 +199,7 @@
                     [intentSelected]="intentSelected" 
                     [showSpinner]="showSpinner"
                     (closeAndSavePanelIntentDetail)="onCloseAndSavePanelIntentDetail($event)"
-                    (clickedInsidePanelIntentDetail)="onClickedInsidePanelIntentDetail()" 
-                    (openButtonPanel)=onOpenButtonPanel($event)>
+                    (clickedInsidePanelIntentDetail)="onClickedInsidePanelIntentDetail()">
                 </appdashboard-panel-intent-detail>
 
                 <!-- <cds-footer class="cds--footer" 
@@ -205,8 +215,7 @@
     </ng-template>
 
     <ng-template #fulfillment [ngOutletContext]="context">
-        <cds-fulfillment [chatbot]="selectedChatbot">
-        </cds-fulfillment>
+        <cds-fulfillment [chatbot]="selectedChatbot"></cds-fulfillment>
     </ng-template>
 
     <ng-template #training [ngOutletContext]="context">
@@ -214,8 +223,7 @@
     </ng-template>
 
     <ng-template #rules [ngOutletContext]="context">
-        <cds-rules [listOfIntents]="listOfIntents" [selectedChatbot]="selectedChatbot">
-        </cds-rules>
+        <cds-rules [listOfIntents]="listOfIntents" [selectedChatbot]="selectedChatbot"></cds-rules>
     </ng-template>
 
 

@@ -1,5 +1,6 @@
 import { TYPE_OPERATOR } from './../chatbot-design-studio/utils';
-import { TYPE_TD_ACTION_ID, TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR } from '../chatbot-design-studio/utils';
+import { TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR } from '../chatbot-design-studio/utils';
+import { v4 as uuidv4 } from 'uuid';
 
 export class Intent {
     webhook_enabled?: boolean;
@@ -28,7 +29,7 @@ export class Intent {
 export class Action {
     _tdActionType: string;
     _tdActionTitle: string = '';
-    _tdActionId: string = TYPE_TD_ACTION_ID.UUIDV4;
+    _tdActionId: any = uuidv4();
 }
 
 // export class ActionCondition extends Action {
@@ -338,7 +339,7 @@ export class Form {
     id?: number;
     name?: string;
     fields?: Field[];
-
+    description?: string;
     to_JSON() {
         let json = {};
         if (this.cancelCommands) {
@@ -356,9 +357,7 @@ export class Form {
         if (this.fields) {
             json['fields'] = JSON.parse(JSON.stringify(this.fields));
         }
-
         return json;
-
     }
 
 }

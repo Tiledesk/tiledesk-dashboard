@@ -57,8 +57,7 @@ export class FormComponent implements OnInit, OnChanges {
   cancelCommands: string[] = [];
   cancelCommandsString: string;
   cancelReply: string;
-  intentFormSize: number
-
+  intentFormSize: number;
 
   translateparam = { selectedFormName: "", description_key: "" };
 

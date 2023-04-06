@@ -43,6 +43,7 @@ export class CDSTextareaComponent implements OnInit {
   texareaIsEmpty = false;
   textTag: string = '';
   isSelected: boolean = false;
+  // strPlaceholder: string;
 
   public textArea: string = '';
   public isEmojiPickerVisible: boolean = false;
@@ -87,6 +88,14 @@ export class CDSTextareaComponent implements OnInit {
 
 
   /** */
+  onClickTextareaOpenSetAttributePopover(){
+    console.log('onClickTextareaOpenSetAttributePopover', this.readonly, this.setAttributeBtn);
+    if(this.readonly === true  && this.setAttributeBtn == true){
+      this.addVariable.toggle();
+      this.openSetAttributePopover();
+    }
+  }
+
   onChangeTextArea(event) {
     this.logger.log('[CDS-TEXAREA] onChangeTextarea-->', event);
     this.calculatingleftCharsText();
@@ -106,9 +115,8 @@ export class CDSTextareaComponent implements OnInit {
   }
 
   onVariableSelected(variableSelected: { name: string, value: string }) {
-    this.logger.log('variableSelectedddd', variableSelected);
     this.isSelected = true;
-    // console.log('onVariableSelected:: ', variableSelected);
+    console.log('onVariableSelected:: ', this.elTextarea.placeholder);
     let valueTextArea = {name: '', value: ''};
     if (this.elTextarea) {
       this.elTextarea.focus();
@@ -120,6 +128,7 @@ export class CDSTextareaComponent implements OnInit {
       this.elTextarea.value = '';
       valueTextArea.name = variableSelected.value;
       valueTextArea.value = variableSelected.value;
+      this.elTextarea.placeholder = '';
     } else {
       this.onChangeTextArea(valueTextArea.name);
     }
@@ -128,8 +137,10 @@ export class CDSTextareaComponent implements OnInit {
   }
 
   onClearSelectedAttribute() {
+    console.log('onClearSelectedAttribute:: ', this.elTextarea.placeholder);
     this.textTag = '';
     this.isSelected = false;
+    this.elTextarea.placeholder = this.placeholder;
     this.clearSelectedAttribute.emit({name: '', value: ''});
   }
 
@@ -158,8 +169,12 @@ export class CDSTextareaComponent implements OnInit {
   }
 
   onAddEmoji(event){
+    if(this.text){
       this.text = `${this.text}${event.emoji.native}`;
-      this.isEmojiPickerVisible = false;
+    } else {
+      this.text = `${event.emoji.native}`;
+    }
+    this.isEmojiPickerVisible = false;
   }
   
 

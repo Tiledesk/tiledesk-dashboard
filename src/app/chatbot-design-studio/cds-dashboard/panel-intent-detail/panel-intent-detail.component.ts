@@ -11,7 +11,7 @@ import { TYPE_INTENT_ELEMENT, TYPE_ACTION } from '../../utils';
   styleUrls: ['./panel-intent-detail.component.scss']
 })
 export class PanelIntentDetailComponent implements OnInit, OnChanges {
-  @Output() openButtonPanel = new EventEmitter();
+  // @Output() openButtonPanel = new EventEmitter();
   @Output() closeAndSavePanelIntentDetail = new EventEmitter();
   @Output() clickedInsidePanelIntentDetail = new EventEmitter();
 

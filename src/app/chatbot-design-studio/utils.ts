@@ -1,6 +1,6 @@
 import { AbstractControl } from "@angular/forms";
 import { ActionAssignVariable, Intent } from "app/models/intent-model";
-
+import { v4 as uuidv4 } from 'uuid';
 
 export enum TYPE_MATH_OPERATOR {
     addAsNumber = "addAsNumber",
@@ -86,9 +86,9 @@ export enum TYPE_ACTION {
     JSON_CONDITION = 'jsoncondition'
 }
 
-export enum TYPE_TD_ACTION_ID {
-    UUIDV4 = 'UUIDV4'
-}
+// export enum TYPE_TD_ACTION_ID {
+//     UUIDV4 = uuidv4()
+// }
 
 export enum TYPE_OPERATOR {
     equalAsNumbers = "equalAsNumbers",
@@ -281,8 +281,8 @@ export var variableList = {
 
 export function patchActionId(action) {
     try {
-        if(!action._tdActionId){
-            action._tdActionId = TYPE_TD_ACTION_ID.UUIDV4;
+        if(!action._tdActionId || action._tdActionId == "UUIDV4"){
+            action._tdActionId = uuidv4();
         }
     } catch (error) {
        // error 

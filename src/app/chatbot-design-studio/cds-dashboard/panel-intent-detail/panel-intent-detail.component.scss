@@ -9,15 +9,14 @@ $padding: 10px;
     width: 480px;
     min-width: 400px;
     height: auto;
-    // height: fit-content;
-    max-height: 100%; // calc(100% - 30px);
-    border-radius: $panel-border-radius;
-    border: 2px solid rgb(178 142 38);
+    max-height: 100%;
+    border-radius: 16px;
+    border: 2px solid rgb(178,142,38);
     overflow: hidden;
-    padding: 0px;
+    padding: 0;
     background-color: #51627e;
-    margin: 0;
-    margin-left: auto;
+    margin: 0 auto 0 auto;
+    inset: 0 0 0 200px;
 }
 
 .header-panel {

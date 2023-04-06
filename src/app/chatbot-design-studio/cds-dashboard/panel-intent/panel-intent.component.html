@@ -78,7 +78,7 @@
             </div>
 
             <div class="action-wpr"
-             [ngClass]="{'action-wpr-exist-form': formSize > 0}">
+                [ngClass]="{'action-wpr-exist-form': formSize > 0}">
                 <div class="cds-action-icon-wpr">
                     <span class="material-icons" style="font-size: 18px;">
                         list_alt
@@ -103,7 +103,7 @@
     <!-- [ngStyle]="{'margin-top': action._tdActionTitle && firstItem ? '25px' : '7px' , }" 
        'action-box-in-list-exist-form': formSize > 0 && firstItem, -->
     <div class="action-list-wpr" *ngIf="actions && actions?.length > 0">
-        <div cdkDropList class="action--list" (cdkDropListDropped)="drop($event)">
+        <div cdkDropList class="action--list" (cdkDropListDropped)="onDropAction($event)">
             
                     <div class="action--element"  *ngFor="let action of actions; let i = index;let lastItem = last; let firstItem = first">
 
@@ -121,9 +121,6 @@
                             cdkDragLockAxis="y" 
                             (click)="onActionSelected(action, i, 'action_'+i)">
                     
-                    
-                    
-
                             <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
                             <div class="action--handle" cdkDragHandle>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"

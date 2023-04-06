@@ -13,14 +13,14 @@ $color-text-box: #566787;
     padding: 0 0 10px 0;
     height: 100%;
     width: 100%;
+    overflow-y: auto;
     .content-buttons--form {
         position: relative;
         display: block;
         height: auto;
         width: 100%;
-        // min-height: 376px;
         margin-top: 0;
-        overflow: auto;
+        overflow: visible;
         max-height: calc(100% - 35px);
         .box-settings-form{
             background: #425575;
@@ -224,6 +224,7 @@ $color-text-box: #566787;
             color: #f1f3f4;
             font-size: 12px;
             font-weight: 400;
+            padding: 5px;
         }
     }
 
@@ -250,19 +251,27 @@ $color-text-box: #566787;
 
 
 .header-list-form {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #51627e;
+    // position: absolute;
+    // bottom: 0;
+    // left: 0;
+    // right: 0;
+    // background-color: #51627e;
+    // z-index: 2;
+    // margin: auto 0;
+    // padding: 7px 20px;
+    // border-top: 2px solid rgb(66,85,117);
+    // width: 100%;
+    // text-align: left;
+    // padding: 0px 23px;
+    position: relative;
+    background-color: #425575;
     z-index: 2;
     margin: auto 0;
-    padding: 7px 20px;
     border-top: 2px solid rgb(66,85,117);
-
     width: 100%;
-    text-align: left;
-    padding: 0px 23px;
+    text-align: center;
+    padding: 0 23px;
+
     .add-field {
         text-align: left;
         padding: 8px 16px;

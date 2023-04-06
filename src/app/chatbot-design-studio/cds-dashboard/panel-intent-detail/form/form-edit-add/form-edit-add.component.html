@@ -18,6 +18,7 @@
                     <div class="value-wrp">
                         <cds-textarea id="assignTo"
                             [ngClass]="{'assigned' : fieldName}"
+                            [placeholder]="fieldName?'':'Choose an attribute'"
                             [text]="fieldName"
                             [textLimitBtn]="false"
                             [emoijPikerBtn]="false"

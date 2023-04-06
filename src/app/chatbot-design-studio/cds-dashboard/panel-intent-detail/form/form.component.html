@@ -40,8 +40,7 @@
         </button>
 
         <!-- only-icon btn-settings -->
-        <button id="close-general-btn" *ngIf="displayCancelButton" class="btn btn-default add-form" (click)="closeGeneral()">
-            <!-- <span class="icon-label opened">{{ "Close" | translate }}</span> -->
+        <button id="close-general-btn" *ngIf="displayCancelButton && fields" class="btn btn-default add-form" (click)="closeGeneral()">
             <span class="icon">
                 <i class="material-icons">cancel</i>
             </span>
@@ -50,10 +49,8 @@
     </div>
 
 
-    <!-- CONTENT FORM -->
-    <div #scrollMe class="content-buttons--form scrollMe">
-        <!-- intentForm > {{ intentForm | json }} -->
-        <!-- <div *ngIf="displayBoxNewForm && !intentForm"> -->
+    <!-- SETTINGS FORM -->
+    <div>
         <div *ngIf="displayBoxNewForm && intentFormSize === 0">
             <div class="box--setting-form">
                 {{ "AddIntentPage.SelectTemplateForm" | translate }}
@@ -62,7 +59,7 @@
                 <ng-select [items]="modelsOfForm" bindLabel="name" bindValue="id" [clearable]=false
                     [(ngModel)]="selectedFormId" (change)="getFieldFromId(selectedFormId)">
                 </ng-select>
-                <p *ngIf=selectedForm?.fields>{{ "AddIntentPage.InfoTemplateForm" | translate: translateparam }}</p>
+                <p *ngIf=selectedForm?.description>{{ selectedForm?.description }}</p>
             </div>
             <div class="box-buttons">
                 <button id="create-intent-form" class="btn btn-primary" (click)="generateJsonIntentForm()">
@@ -85,14 +82,15 @@
                         rows="2"> </textarea>
                 </div>
             </div>
-    
         </div>
-    
-    
+
+    </div>
+    <!-- CONTENT FORM -->
+    <div *ngIf="intentFormSize > 0"  #scrollMe class="content-buttons--form scrollMe">
         <!-- ------------------------------ -->
         <!-- @ FIELDS LIST -->
         <!-- ------------------------------ -->
-        <appdashboard-form-field *ngIf="intentFormSize > 0" 
+        <appdashboard-form-field
             [fields]="fields"
             (eventEditField)="eventEditField($event)" 
             (eventDropField)="eventDropField($event)"
@@ -114,11 +112,10 @@
         </appdashboard-form-edit-add>
     </div>
 
-
     <!-- ------------------------------ -->
     <!-- @ BUTTON ADD FIELD  -->
     <!-- ------------------------------ -->
-    <div class="header-list-form">
+    <div *ngIf="!displaySettingForm && !displayAddForm && !displayEditForm" class="header-list-form">
         <button *ngIf="displayTilebotAddEditForm && intentFormSize > 0"
             [ngClass]="{'hide':( displaySettingForm || displayAddForm || displayEditForm ) }"
             class="btn btn-primary add-field btn-only-string" 
@@ -129,8 +126,6 @@
             <span>{{ "AddIntentPage.AddField" | translate }}</span>
         </button>
     </div>
-    
-
     <!-- ------------------------------ -->
     <!-- @ DELETE MODAL -->
     <!-- ------------------------------ -->

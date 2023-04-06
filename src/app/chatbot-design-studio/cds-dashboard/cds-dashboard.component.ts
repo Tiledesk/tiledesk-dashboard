@@ -47,6 +47,7 @@ export class CdsDashboardComponent implements OnInit {
 
   id_faq_kb: string;
   id_faq: string;
+  idElementOfIntentSelected: string;
   intent_id: string;
 
   botType: string;
@@ -580,87 +581,6 @@ export class CdsDashboardComponent implements OnInit {
     this.hideShowWidget('show')
   }
 
-
-  onCloseAndSavePanelIntentDetail(intentSelected: any){
-    console.log('onCloseAndSavePanelIntentDetail: --------->');
-    if(intentSelected && intentSelected != null){
-      this.onSaveIntent(intentSelected);
-    }
-    this.isIntentElementSelected = false;
-  }
-
-
-  /** appdashboard-intent: Save intent */
-  onSaveIntent(intent: Intent) {
-    console.log('onSaveIntent: ---------> ', intent);
-    // this.logger.log("Intent:", intent);
-    // this.logger.log('[CDS DSHBRD] onSaveIntent intent:: ', intent);
-    // this.logger.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
-    this.intentSelected = intent;
-    const intentNameAlreadyCreated = this.listOfIntents.some((el) => {
-      return el.id === this.intentSelected.id;
-    });
-    this.logger.log('[CDS DSHBRD]  intent name already saved', intentNameAlreadyCreated);
-    if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
-      this.creatIntent();
-    } else if (this.EDIT_VIEW) {
-      this.editIntent();
-    }
-
-    // retriveListOfVariables(this.listOfIntents)
-  }
-
-
-
-
-  /** appdashboard-intent-list: Select intent */
-  onReturnListOfIntents(intents) {
-    this.listOfIntents = intents;
-    this.listOfActions = intents.map(a => {
-      if (a.intent_display_name.trim() === 'start') {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
-      } else if (a.intent_display_name.trim() === 'defaultFallback') {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'undo' }
-      } else {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
-      }
-
-    });
-    this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
-    this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
-
-    //retriveListOfVariables(this.listOfIntents)
-  }
-
-  onSelectIntent(intent: Intent) { 
-    // console.log("onSelectIntent: ", intent);
-    this.EDIT_VIEW = true;
-    this.intentSelected = intent;
-    this.isIntentElementSelected = false;
-    // this.MOCK_getFaqIntent();
-    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", this.intentSelected);
-    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", intent);
-    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions: ", this.intentSelected.actions);
-    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions length: ", this.intentSelected.actions.length);
-    // && !this.intentSelected.form
-    if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
-      this.logger.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0]);
-      // this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1, intent_display_name: this.intentSelected.intent_display_name })
-    }
-    else {
-      this.elementIntentSelected = {};
-      this.elementIntentSelected['type'] = ''
-      this.elementIntentSelected['element'] = null
-    }
-    
-    this.logger.log('[CDS DSBRD] onSelectIntent elementIntentSelected', this.elementIntentSelected)
-  }
-
-
-  onClickedInsidePanelIntentDetail(){
-    this.isClickedInsidePanelIntentDetail = true;
-  }
-
   onClickPanelIntentDetail(){
     // console.log('dismiss panel intent detail', this.isClickedInsidePanelIntentDetail);
     if(this.isClickedInsidePanelIntentDetail === false){
@@ -670,14 +590,36 @@ export class CdsDashboardComponent implements OnInit {
     }
   }
 
-  onAddIntentFromSplashScreen(hasClickedAddNewIntent) {
-    this.logger.log('[CDS DSBRD] onAddIntentFromSplashScreen hasClickedAddNewIntent ', hasClickedAddNewIntent)
-    this.newIntentFromSplashScreen.next(hasClickedAddNewIntent)
-  }
 
+
+
+  /** START EVENTS PANEL ACTIONS */
+  onAddNewAction(action){
+    this.logger.log('[CDS DSBRD] onAddNewAction ', action)
+    this.isOpenActionDrawer = false;
+    this.intentSelected.actions.push(action);
+    let maxLength = this.intentSelected.actions.length;
+    let index = maxLength-1;
+    let intent_display_name = 'action_'+index;
+    let event = { action: action, index: index, maxLength: maxLength, intent_display_name: intent_display_name };
+    console.log('onAddNewAction', event);
+    this.idElementOfIntentSelected = intent_display_name;
+    this.actionSelected(event);
+  }
+  /** END EVENTS PANEL ACTIONS */
+
+
+
+
+  /** START EVENTS PANEL INTENT */
   onOpenActionDrawer(_isOpenActioDrawer: boolean) {
     this.logger.log('[CDS DSBRD] onOpenActionDrawer - isOpenActioDrawer ', _isOpenActioDrawer)
-    this.isOpenActionDrawer = _isOpenActioDrawer
+    this.isOpenActionDrawer = _isOpenActioDrawer;
+  }
+
+  onDropAction(actions){
+    this.intentSelected.actions = actions;
+    this.saveIntent(this.intentSelected);
   }
 
   onAnswerSelected(answer: string) {
@@ -686,22 +628,10 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ANSWER;
     this.elementIntentSelected['element'] = answer
     this.isIntentElementSelected = true;
-    console.log('onAnswerSelected:: ', this.elementIntentSelected);
   }
 
-
   onActionSelected(event: { action: Action, index: number, maxLength: number, intent_display_name: string }) {
-    // console.log('----> onActionSelected', event);
-    this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
-    this.elementIntentSelected = {};
-    this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
-    this.elementIntentSelected['element'] = event.action
-    this.elementIntentSelected['index'] = event.index
-    this.elementIntentSelected['maxLength'] = event.maxLength
-    this.elementIntentSelected['intent_display_name'] = event.intent_display_name
-    // this.openDialog();
-    this.isIntentElementSelected = true;
-    this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+    this.actionSelected(event);
   }
 
   onQuestionSelected(intent) {
@@ -729,7 +659,47 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = null
     this.editIntent();
   }
+  /** END EVENTS PANEL INTENT */
 
+
+
+
+  /** START EVENTS PANEL INTENT LIST */
+  onSelectIntent(intent: Intent) { 
+    this.EDIT_VIEW = true;
+    this.intentSelected = intent;
+    this.isIntentElementSelected = false;
+    // this.MOCK_getFaqIntent();
+    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", this.intentSelected);
+    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", intent);
+    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions: ", this.intentSelected.actions);
+    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions length: ", this.intentSelected.actions.length);
+    if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
+      this.logger.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0]);
+      // this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1, intent_display_name: this.intentSelected.intent_display_name })
+    }
+    else {
+      this.elementIntentSelected = {};
+      this.elementIntentSelected['type'] = ''
+      this.elementIntentSelected['element'] = null
+    }
+    this.logger.log('[CDS DSBRD] onSelectIntent elementIntentSelected', this.elementIntentSelected)
+  }
+
+  onReturnListOfIntents(intents) {
+    this.listOfIntents = intents;
+    this.listOfActions = intents.map(a => {
+      if (a.intent_display_name.trim() === 'start') {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
+      } else if (a.intent_display_name.trim() === 'defaultFallback') {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'undo' }
+      } else {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
+      }
+    });
+    this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
+    this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
+  }
 
   onCreateIntentBtnClicked() {
     this.CREATE_VIEW = true;
@@ -756,6 +726,77 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['type'] = ''
     this.elementIntentSelected['element'] = null
   }
+  /** END EVENTS PANEL INTENT LIST */
+
+
+
+
+  /** START EVENTS SPLASH SCREEN */
+  onAddIntentFromSplashScreen(hasClickedAddNewIntent) {
+    this.logger.log('[CDS DSBRD] onAddIntentFromSplashScreen hasClickedAddNewIntent ', hasClickedAddNewIntent)
+    this.newIntentFromSplashScreen.next(hasClickedAddNewIntent)
+  }
+  /** END EVENTS SPLASH SCREEN  */
+
+
+
+  
+  /** START EVENTS INTENT HEADER */
+  onSaveIntent(intent: Intent) {
+    this.saveIntent(intent);
+  }
+  /** END EVENTS INTENT HEADER  */
+
+
+
+   
+  /** START EVENTS PANEL INTENT DETAIL */
+  onCloseAndSavePanelIntentDetail(intentSelected: any){
+    if(intentSelected && intentSelected != null){
+      this.onSaveIntent(intentSelected);
+    }
+    this.isIntentElementSelected = false;
+  }
+
+  onClickedInsidePanelIntentDetail(){
+    this.isClickedInsidePanelIntentDetail = true;
+  }
+  /** END EVENTS PANEL INTENT DETAIL  */
+
+  
+  
+
+  /** STAR CUSTOM FUNCTIONS */
+  private saveIntent(intent: Intent){
+    this.logger.log("Intent:", intent);
+    this.logger.log('[CDS DSHBRD] onSaveIntent intent:: ', intent);
+    this.logger.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
+    this.intentSelected = intent;
+    const intentNameAlreadyCreated = this.listOfIntents.some((el) => {
+      return el.id === this.intentSelected.id;
+    });
+    this.logger.log('[CDS DSHBRD]  intent name already saved', intentNameAlreadyCreated);
+    if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
+      this.creatIntent();
+    } else if (this.EDIT_VIEW) {
+      this.editIntent();
+    }
+  }
+
+  private actionSelected(event){
+    console.log('-----> actionSelected: ',event);
+    this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
+    this.elementIntentSelected['element'] = event.action
+    this.elementIntentSelected['index'] = event.index
+    this.elementIntentSelected['maxLength'] = event.maxLength
+    this.elementIntentSelected['intent_display_name'] = event.intent_display_name
+    this.isIntentElementSelected = true;
+    this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+  }
+
+  /** END CUSTOM FUNCTIONS */
 
   // onChangeIntentName(event) {
   //   this.logger.log('[CDS DSBRD] onChangeIntentName  event', event)
