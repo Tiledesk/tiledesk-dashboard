@@ -41,7 +41,8 @@
             [attributes]="jsonHeader"
             (changeAttributes)="onChangeAttributes($event)"
         ></cds-attributes>
-        <textarea
+
+        <!-- <textarea
             *ngIf="methodSelectedBody"
             [ngClass]="{'jsonError': !jsonIsValid}"
             class = "text-editable-div"
@@ -50,7 +51,19 @@
             cdkAutosizeMinRows="5"
             cdkAutosizeMaxRows="10"
             (ngModelChange)="onChangeTextarea($event)">
-        </textarea>
+        </textarea> -->
+
+        <cds-textarea *ngIf="methodSelectedBody"
+            [ngClass]="{'jsonError': !jsonIsValid}"
+            class = "text-editable-div"
+            [text]="jsonBody"
+            [textLimitBtn]="false"
+            [emoijPikerBtn]="false"
+            [setAttributeBtn]="true"
+            [minRow]="5" [maxRow]="10"
+            [readonly]="false"
+            (changeTextarea)="onChangeTextarea($event)">
+        </cds-textarea>
     </div>
 
     <div *ngIf="methodSelectedBody"

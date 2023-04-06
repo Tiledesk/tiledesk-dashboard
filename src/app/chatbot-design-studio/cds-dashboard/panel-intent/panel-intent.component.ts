@@ -86,7 +86,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('----> ngOnChanges:::: ' , changes);
+    // console.log('----> ngOnChanges:::: ' , changes);
     // clicking the delete action does NOT open the panel intent detail !!!
     if(!this.isIntentElementSelected){
       this.idSelected = null;
@@ -111,7 +111,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     // }
 
     if (changes.intentSelected) {
-      console.log('----> 1:::: ' , changes.intentSelected);
+      // console.log('----> 1:::: ' , changes.intentSelected);
       // if (changes.intentSelected.currentValue['actions'] && changes.intentSelected.currentValue['actions'].length > 0) {
       //   setTimeout(() => {
       //     const actionElement = <HTMLElement>document.querySelector(`#action_0`);
@@ -122,7 +122,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
       // }
 
       if (changes.intentSelected.firstChange === false) {
-        console.log('----> 2:::: firstChange' );
+        // console.log('----> 2:::: firstChange' );
         this.idSelected = null; 
         if (changes.intentSelected.previousValue._id !== changes.intentSelected.currentValue._id) {
           // this.HAS_SELECTED_ANSWER = false
@@ -136,7 +136,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     }
 
     if (this.intentSelected) {
-      console.log('----> 3:::: intentSelected', this.intentSelected );
+      // console.log('----> 3:::: intentSelected', this.intentSelected );
       // this.logger.log('[PANEL INTENT] (ngOnChanges) intentSelected', this.intentSelected);
       this.patchAllActionsId();
       this.form = this.intentSelected.form;
@@ -176,7 +176,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
       // }
       // this.logger.log('[PANEL INTENT] webhook_enabled: ', this.webhook_enabled);
     } else {
-      console.log('----> 4:::: ELSE intentSelected', this.intentSelected );
+      // console.log('----> 4:::: ELSE intentSelected', this.intentSelected );
       // this.logger.log('[PANEL INTENT] actions - OPS! intentSelected ', this.intentSelected)
     }
     // this.logger.log('[PANEL INTENT] actions', this.actions)

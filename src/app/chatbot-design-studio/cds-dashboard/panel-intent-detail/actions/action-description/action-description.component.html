@@ -1,14 +1,23 @@
  <div class="action_welcome">
    
     <div class="edit-mode-header-buttons">
-        <div class="control-button" (click)="onCloseIntent()">
+        <div class="control-button" 
+            (click)="onCloseIntent()"
+            matTooltipClass="cds-custom-tooltip"
+            matTooltip="Close" 
+            matTooltipPosition='below'>
             <em class="material-icons">close</em>
         </div> 
-        <div class="control-button" (click)="onSaveIntent()">
+        <div class="control-button" 
+            (click)="onSaveIntent()"
+            matTooltipClass="cds-custom-tooltip"
+            matTooltip="Save & close" 
+            matTooltipPosition='below'>
             <em class="material-icons">check</em>
         </div> 
     </div>
 
+    
     <div class="section">
         
         <div class="action-title">

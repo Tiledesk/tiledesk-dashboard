@@ -1,22 +1,4 @@
 <div class="panel-intent-detail" (click)="onClickInside()">
-
-    <!-- <div class="edit-mode-header-buttons">
-        <div class="control-button" (click)="onCloseIntent()">
-            <em class="material-icons">close</em>
-        </div> 
-        <div class="control-button" (click)="onSaveIntent()">
-            <em class="material-icons">check</em>
-        </div> 
-    </div> -->
-
-    <!-- <div class="loading-btn-wrapper">
-        <button id="cds-save-intent-btn" class="btn btn-primary btn-save loading-btn" [disabled]="showSpinner"
-            type="button" (click)="onSaveIntent()">
-            <span style="color: #202124;font-weight: 500" class="loading-btn__text"> {{ 'Save' | translate }}</span>
-        </button>
-    </div>
-    [tipText]="'<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '" 
-    -->
     <div class="header-panel">
         <cds-action-description 
             *ngIf="elementIntentSelectedType === typeIntentElement.ACTION"
@@ -47,7 +29,6 @@
             (saveIntent)="onSaveIntent()">
         </cds-action-description>
     </div>
-
 
     <div class="content-panel">
         <div *ngIf="elementIntentSelectedType === typeIntentElement.ACTION" >
@@ -172,8 +153,6 @@
     </div>
 
 </div>
-
-
 
 
 

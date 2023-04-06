@@ -117,24 +117,24 @@
 
 .text-editable-div {
     width: 100%;
-}
-textarea{
-    border: 0px solid #000;
-    margin: 10.5px;
-    line-height: 25px;
-    appearance: textfield;
-    background: #fff;
-    border-radius: 8px;
-    width: calc(100% - 0px);
-    white-space: pre;
-    white-space: pre-wrap;
-    white-space: break-spaces;
-    display: inline-block;
-    font-size: 14px;
-    overflow: hidden auto;
-    padding: 5px 10px;
-    height: 200px;
+    // border: 0px solid #000;
+    // margin: 10.5px;
+    // line-height: 25px;
+    // appearance: textfield;
+    // background: #fff;
+    // border-radius: 8px;
+    // width: calc(100% - 0px);
+    // white-space: pre;
+    // white-space: pre-wrap;
+    // white-space: break-spaces;
+    // display: inline-block;
+    // font-size: 14px;
+    // overflow: hidden auto;
+    // padding: 5px 10px;
+    // height: 200px;
     &.jsonError {
+        border-radius: 8px;
+        padding: 2px 2px 0 0;
         outline: rgb(209, 47, 25) solid 2px !important; //rgb(236, 6, 6) solid 2px !important;
     }
 }
