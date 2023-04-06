@@ -159,6 +159,7 @@ const routes: Routes = [
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/chat-pricing', component: PricingComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
+  { path: 'success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
 
 

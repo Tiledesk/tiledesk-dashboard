@@ -436,22 +436,22 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
             }
 
              else if (this.subscription_is_active === false) {
-              this.seatsLimit = PLAN_SEATS.free
+              // this.seatsLimit = PLAN_SEATS.free
               if (projectProfileData.profile_name === PLAN_NAME.A) {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
-                this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
+                this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
                 console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
-                this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
+                this.seatsLimit =PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
                 console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
-                this.seatsLimit = projectProfileData.profile_agents
+                this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
                 console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
               }

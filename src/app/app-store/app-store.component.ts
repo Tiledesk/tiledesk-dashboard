@@ -48,6 +48,9 @@ export class AppStoreComponent implements OnInit {
   isVisiblePAY: boolean;
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
+  tPlanParams: any;
+  appIsAvailable: boolean = true;
+
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
@@ -62,16 +65,19 @@ export class AppStoreComponent implements OnInit {
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.tparams = { 'plan_name': PLAN_NAME.B }
   }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.getApps();
     this.getCurrentProject();
-    this.getToken()
-    this.getBrowserVersion()
-    this.translateLabels()
-    this.getProjectPlan()
+    this.getToken();
+    this.getBrowserVersion();
+    this.translateLabels();
+    this.getProjectPlan();
+    this.getOSCODE();
+    this.getProjectUserRole();
   }
 
   getOSCODE() {
@@ -303,11 +309,12 @@ export class AppStoreComponent implements OnInit {
 
   installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
     console.log('[APP-STORE] appId ', appId)
-    if (appId === '6319fe155f9ced0018413a06' &&
+    if ((appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger" || appTitle === "Zapier") &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
         (this.prjct_profile_type === 'free' && this.trial_expired === true))) {
+          this.appIsAvailable = false
       this.presentModalFeautureAvailableFromBPlan()
       return
 
@@ -364,18 +371,28 @@ export class AppStoreComponent implements OnInit {
     }).then((value) => {
       if (value === 'catch') {
         console.log('featureAvailableFromPlanC value', value)
+        console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        console.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
+        console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        console.log('[APP-STORE] trial_expired', this.trial_expired)
+        console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
         if (this.isVisiblePAY) {
+          console.log('[APP-STORE] HERE 1')
           if (this.USER_ROLE === 'owner') {
+            console.log('[APP-STORE] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              console.log('[APP-STORE] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'free' && this.trial_expired === true){
+            } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+              console.log('[APP-STORE] HERE 4')
               this.router.navigate(['project/' + this.projectId + '/pricing']);
-
             }
           } else {
+            console.log('[APP-STORE] HERE 5')
             this.presentModalAgentCannotManageAvancedSettings();
           }
         } else {
+          console.log('[APP-STORE] HERE 6')
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       }
@@ -387,6 +404,15 @@ export class AppStoreComponent implements OnInit {
   }
 
   openInAppStoreInstall(app) {
+    if ((app.title === "WhatsApp Business" || app.title === "Facebook Messenger") &&
+      ((this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.trial_expired === true))) {
+      this.presentModalFeautureAvailableFromBPlan()
+      return
+
+    }
     this.logger.log('openInAppStoreInstall app ', app)
     this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/run'])
   }

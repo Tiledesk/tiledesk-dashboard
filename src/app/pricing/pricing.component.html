@@ -384,7 +384,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <!-- --------------------- -->
             <!-- Plan B Montly -->
             <!-- --------------------- -->
-            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.B && profileType === 'free'" 
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.B && profileType === 'free'"
               (click)="openPaymentLinkMontlyPlanB()">
               <button id="monthly-plan-b" type="button"
                 class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
@@ -417,19 +417,17 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <!-- ----------------------------------------------- -->
             <!-- Plan C  openPaymentLinkPlanC() -->
             <!-- ----------------------------------------------- -->
-            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" 
-              (click)="contactUs(planName)">
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" (click)="contactUs(planName)">
               <button id="plan-c" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Contact Sales </span>
               </button>
             </div>
 
-            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" 
-            (click)="openPaymentLinkPlanC()">
-            <button id="plan-c" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
-              <span> Go to checkout </span>
-            </button>
-          </div>
+            <!-- <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" (click)="openPaymentLinkPlanC()">
+              <button id="plan-c" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div> -->
 
 
 

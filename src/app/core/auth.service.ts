@@ -329,6 +329,8 @@ export class AuthService {
               url_segments[1] !== 'install-template' &&
               url_segments[1] !== 'create-project-itw' &&
               url_segments[1] !== 'install-template-np' &&
+              url_segments[1] !== 'install-template-np' &&
+              url_segments[1] !== 'success' &&
               current_url !== '/projects'
             ) {
               this.logger.log(

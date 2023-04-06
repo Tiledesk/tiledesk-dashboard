@@ -163,12 +163,19 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
+  public TEST_PAYMENT_LINKS = true;
+
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
 
   contactUsEmail: string;
   displayClosePricingPageBtn: boolean;
+  PAYMENT_LINK_MONTLY_PLAN_A: string;
+  PAYMENT_LINK_MONTLY_PLAN_B: string;
 
+  PAYMENT_LINK_ANNUALLY_PLAN_A: string;
+  PAYMENT_LINK_ANNUALLY_PLAN_B: string;
+  PAYMENT_LINK_PLAN_C: string;
 
   constructor(
     public location: Location,
@@ -216,7 +223,10 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.getProjectPlan();
 
     this.setPlansPKandCode();
+    this.setpaymentLinks()
     this.getRouteParamsAndAppId();
+
+
 
     this.planName = PLAN_NAME.A
     this.planDecription = PLAN_DESC[PLAN_NAME.A]
@@ -275,54 +285,61 @@ export class PricingComponent implements OnInit, OnDestroy {
       // this.logger.log('No user is signed in');
     }
   }
-
-  // ----------------- new 
-  openPaymentLinkMontlyPlanA() {
-    console.log('[PRICING] PLAN A Montly')
-    // if (this.projectCurrenPlan === "free") {
-    const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
-    window.open(url, '_blank');
-    // } else {
-    //   console.log('selectedPeriod > openPaymentLinkMontlyPlanA projectCurrenPlan', this.projectCurrenPlan)
-    //   console.log('selectedPeriod > openPaymentLinkMontlyPlanA planName', this.planName)
-    //   console.log('selectedPeriod > openPaymentLinkMontlyPlanA monthlyPeriod',  this.monthlyPeriod)
-    //   console.log('selectedPeriod > openPaymentLinkMontlyPlanA annualPeriod',  this.annualPeriod)
-    //   // price Montly price_1MnhkYD1JyUWkzR91uPxN1tj Scale Plan
-
-    //   const PlanBAnnuallyPrice = 'price_1MnhkYD1JyUWkzR91uPxN1tj'
-    //   this.updatesubscription(PlanBAnnuallyPrice)
-    // }
+  setpaymentLinks() {
+    if (this.TEST_PAYMENT_LINKS === true) {
+      this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV";
+      this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/test_7sI6pkce24T0d8YdQT";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/test_fZeeVQ6TI85cglabIK";
+      this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_4gw1502Ds5X4ed26ot";
+    } else if (this.TEST_PAYMENT_LINKS === false) {
+      this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/aEU3ckc8ug3wdGwdQS";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/28oaEM1tQeZs6e4fYZ";
+      this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/8wM9AI0pMeZsbyo28c";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/8wM14cc8ug3weKA003";
+     
+    }
   }
 
+  // -------------------------------
+  // PLAN A 
+  // -------------------------------
+  openPaymentLinkMontlyPlanA() {
+    console.log('[PRICING] PLAN A Montly')
+    // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+    const url = `${this.PAYMENT_LINK_MONTLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}"`
+    window.open(url, '_self');
+  }
 
   openPaymentLinkAnnuallyPlanA() {
     console.log('[PRICING] PLAN A Annually')
-    const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
-    window.open(url, '_blank');
+    // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+    const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+    window.open(url, '_self');
   }
 
   // -------------------------------
   // PLAN B 
   // -------------------------------
   openPaymentLinkMontlyPlanB() {
-    // if (this.projectCurrenPlan === "free") {
     console.log('[PRICING] PLAN B Montly')
-    const url = `https://buy.stripe.com/test_7sI6pkce24T0d8YdQT?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
-    window.open(url, '_blank');
-
+    // const url = `https://buy.stripe.com/test_7sI6pkce24T0d8YdQT?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+    const url = `${this.PAYMENT_LINK_MONTLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+    window.open(url, '_self');
   }
-
 
   openPaymentLinkAnnuallyPlanB() {
     console.log('[PRICING] PLAN B Annually')
-    const url = `https://buy.stripe.com/test_fZeeVQ6TI85cglabIK?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
-    window.open(url, '_blank');
+    // const url = `https://buy.stripe.com/test_fZeeVQ6TI85cglabIK?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+    const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+    window.open(url, '_self');
   }
 
   openPaymentLinkPlanC() {
     console.log('[PRICING] PLAN C')
-    const url = `https://buy.stripe.com/test_4gw1502Ds5X4ed26ot?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
-    window.open(url, '_blank');
+    // const url = `https://buy.stripe.com/test_4gw1502Ds5X4ed26ot?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
+    const url = `${this.PAYMENT_LINK_PLAN_C}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
+    window.open(url, '_self');
   }
 
   contactUs(planname) {

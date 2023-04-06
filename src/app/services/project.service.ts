@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject} from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -20,7 +20,7 @@ export class ProjectService {
   public hasCreatedNewProject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
- 
+
     public auth: AuthService,
     public _httpclient: HttpClient,
     public appConfigService: AppConfigService,
@@ -767,6 +767,29 @@ export class ProjectService {
       .get<[any]>(url, httpOptions)
   }
 
+  // -----------------------------------
+  //  GET STRIPE SESSION by SESSION ID 
+  // -----------------------------------
+  public getStripeSessionById(sessionid: string): Observable<[any]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      }),
+      // responseType: 'text' as 'json'
+    };
+
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/checkoutSession/' + sessionid;
+    // const url = 'https://c1a0-79-8-190-172.eu.ngrok.io/modules/payments/stripe/checkoutSession/' + sessionid;
+    console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - ID', sessionid);
+    console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - URL', url);
+
+
+    return this._httpclient
+      .get<[any]>(url, httpOptions)
+  }
+
   // ----------------------------------------------------------------------
   // !!! NOT USED -  DOWNGRADE PLAN - todo from put to patch & TODO SERVICE
   // ----------------------------------------------------------------------
@@ -797,7 +820,7 @@ export class ProjectService {
     // const url =  'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerId;
     this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - ID', customerId);
     this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - URL', url);
-   
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -807,6 +830,6 @@ export class ProjectService {
     };
     return this._httpclient
       .get<[any]>(url, httpOptions)
-  } 
+  }
 
 }
