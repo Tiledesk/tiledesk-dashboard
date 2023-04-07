@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.4.25-rc1
+- Changes the endpoint of the app store
+
 ### 2.4.24
 - Deploys in production
 - Improvements and bug fixing
