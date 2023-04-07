@@ -65,7 +65,7 @@ export class AppStoreComponent implements OnInit {
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
-    this.tparams = { 'plan_name': PLAN_NAME.B }
+    this.tPlanParams = { 'plan_name': PLAN_NAME.B }
   }
 
   ngOnInit() {
