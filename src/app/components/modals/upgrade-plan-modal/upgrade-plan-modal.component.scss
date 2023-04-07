@@ -1,0 +1,49 @@
+#close-upgrade-modal {
+    position: absolute;
+    top: px;
+    min-width: 36px;
+    padding: 0px;
+    border-radius: 50%;
+    margin-top: -30px;
+    margin-right: -20px;
+}
+
+#close-upgrade-modal span {
+    position: relative;
+    top: -2px;
+}
+
+.upgrade-modal-content {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+}
+
+.upgrade-modal-title {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    text-align: center;
+    color: #1e88e5;
+    line-height: 35px;
+    font-weight: 400;
+    font-size: 21px;
+}
+
+.btn-size-m {
+    border-radius: 4px;
+    font-size: 14px;
+    height: 34px;
+    line-height: 18px;
+    min-width: 64px;
+    padding: 0 14px;
+    text-transform: none;
+}
+
+.btn--primary {
+    background-color: #0566ff;
+    border-color: #0566ff;
+    color: #fff;
+}

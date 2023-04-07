@@ -2073,57 +2073,114 @@
                 <div *ngIf="tab0" class="tab0-card2">
                   <div class="tab0-card2-content-wpr"
                     [ngClass]="{'tab0-card2-content-wpr-chat': CHAT_PANEL_MODE === true}">
-                    <div class="tab0-card2-content" [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">
-                      <header class="tab0-card2-header ">
-                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
-                          viewBox="0 0 24 24" fill="none" style="min-width: 22px; min-height: 22px;" class="rating-icon"
-                          matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'RequestMsgsPage.Rating' | translate }}"
-                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
-                          <g>
-                            <path d="M0,0h24v24H0V0z" fill="none" />
-                          </g>
-                          <g>
+                    <ng-container *ngIf="displayChatRatings">
+                      <div class="tab0-card2-content" [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">
+                        <header class="tab0-card2-header ">
+                          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
+                            viewBox="0 0 24 24" fill="none" style="min-width: 22px; min-height: 22px;"
+                            class="rating-icon" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.Rating' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='right' matTooltipHideDelay="100">
                             <g>
-                              <path
-                                d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H5.17L4,17.17V4h16V16z" />
-                              <polygon points="12,15 13.57,11.57 17,10 13.57,8.43 12,5 10.43,8.43 7,10 10.43,11.57" />
+                              <path d="M0,0h24v24H0V0z" fill="none" />
                             </g>
-                          </g>
-                        </svg>
-                        <div>
-                          <div class="rating-group e9elja63" *ngIf="request">
+                            <g>
+                              <g>
+                                <path
+                                  d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H5.17L4,17.17V4h16V16z" />
+                                <polygon points="12,15 13.57,11.57 17,10 13.57,8.43 12,5 10.43,8.43 7,10 10.43,11.57" />
+                              </g>
+                            </g>
+                          </svg>
+                          <div>
+                            <div class="rating-group e9elja63" *ngIf="request">
 
-                            <span class="material-icons"
-                              [ngClass]="{'yellow-star': request?.rating === 1 || request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
-                              star
-                            </span>
-                            <span class="material-icons"
-                              [ngClass]="{'yellow-star': request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
-                              star
-                            </span>
-                            <span class="material-icons"
-                              [ngClass]="{'yellow-star': request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
-                              star
-                            </span>
-                            <span class="material-icons"
-                              [ngClass]="{'yellow-star': request?.rating === 4 || request?.rating === 5}">
-                              star
-                            </span>
-                            <span class="material-icons" [ngClass]="{'yellow-star': request?.rating === 5 }">
-                              star
+                              <span class="material-icons"
+                                [ngClass]="{'yellow-star': request?.rating === 1 || request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
+                                star
+                              </span>
+                              <span class="material-icons"
+                                [ngClass]="{'yellow-star': request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
+                                star
+                              </span>
+                              <span class="material-icons"
+                                [ngClass]="{'yellow-star': request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
+                                star
+                              </span>
+                              <span class="material-icons"
+                                [ngClass]="{'yellow-star': request?.rating === 4 || request?.rating === 5}">
+                                star
+                              </span>
+                              <span class="material-icons" [ngClass]="{'yellow-star': request?.rating === 5 }">
+                                star
+                              </span>
+                            </div>
+                            <span tabindex="0" class="rating-message" *ngIf="request">
+                              <span *ngIf="!request.rating_message">
+                                {{'NoCustomerReviewMessage' | translate}}
+                              </span>
+                              <span *ngIf="request.rating_message">
+                                {{request?.rating_message}}
+                              </span>
                             </span>
                           </div>
-                          <span tabindex="0" class="rating-message" *ngIf="request">
-                            <span *ngIf="!request.rating_message">
-                              {{'NoCustomerReviewMessage' | translate}}
+                        </header>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="!displayChatRatings">
+                      <div class="tab0-card2-content" [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">
+                        <header class="tab0-card2-header ">
+                          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
+                            viewBox="0 0 24 24" fill="none" style="min-width: 22px; min-height: 22px;"
+                            class="rating-icon" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.Rating' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='right' matTooltipHideDelay="100">
+                            <g>
+                              <path d="M0,0h24v24H0V0z" fill="none" />
+                            </g>
+                            <g>
+                              <g>
+                                <path
+                                  d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H5.17L4,17.17V4h16V16z" />
+                                <polygon points="12,15 13.57,11.57 17,10 13.57,8.43 12,5 10.43,8.43 7,10 10.43,11.57" />
+                              </g>
+                            </g>
+                          </svg>
+                          <div>
+                            <div class="rating-group e9elja63">
+                              <span class="material-icons">
+                              star
                             </span>
-                            <span *ngIf="request.rating_message">
-                              {{request?.rating_message}}
+                            <span class="material-icons">
+                              star
                             </span>
-                          </span>
-                        </div>
-                      </header>
-                    </div>
+                            <span class="material-icons">
+                              star
+                            </span>
+                            <span class="material-icons">
+                              star
+                            </span>
+                            <span class="material-icons">
+                              star
+                            </span>
+
+                            </div>
+                            <button class="btn btn-get--feature-no-boxshadow pull-right" (click)="goToPricingFromChat()"
+                              matTooltipClass="custom-mat-tooltip"
+                              matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
+                              matTooltipPosition='below' matTooltipHideDelay="100">
+                              <span class="material-icons-outlined get--feature-upgrade-plan-icon">
+                                upgrade
+                              </span>
+                              <span>
+                                {{ 'Pricing.UpgradePlan' | translate }}
+                              </span>
+                            </button>
+                           
+                          </div>
+                        </header>
+                      </div>
+                    </ng-container>
                   </div>
                   <!-- ------------------------------------- -->
                   <!-- Apps -->

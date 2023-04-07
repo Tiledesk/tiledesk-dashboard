@@ -17,7 +17,7 @@ import { BrandService } from '../services/brand.service';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { tranlatedLanguage } from 'app/utils/util';
+import { PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -30,7 +30,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   // tparams = brand;
   // companyLogoBlack_Url = brand.company_logo_black__url;
   // companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
-
+  PLAN_NAME = PLAN_NAME
   tparams: any;
   companyLogoBlack_Url: string;
   companyLogoBlack_width: string;
@@ -474,36 +474,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
 
-  getPaidPlanTranslation(project, project_profile_name) {
-    this.logger.log('getPaidPlanTranslation project_profile_name ', project_profile_name) 
-    if (project_profile_name === 'free'){
-      project['plan_badge_background_type'] = 'free_badge'
-    } else if (project_profile_name === 'pro') {
-      project['plan_badge_background_type'] = 'pro_badge'
-    } else if (project_profile_name === 'enterprise') { 
-      project['plan_badge_background_type'] = 'enterprise_badge'
-    }
-    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-      .subscribe((text: string) => {
-        this.prjct_profile_name = text;
-        project['prjct_profile_name'] = this.prjct_profile_name
-        this.logger.log('+ + + PaydPlanName ', text)
-      });
-  }
-
-  getProPlanTrialTranslation(project) {
-    project['plan_badge_background_type'] = 'pro_badge'
-    this.translate.get('ProPlanTrial')
-      .subscribe((translation: any) => {
-        this.prjct_profile_name = translation;
-        project['prjct_profile_name'] = this.prjct_profile_name
-      });
-  }
+ 
   /**
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[PROJECTS] - GET PROJECTS ', projects);
+      // console.log('[PROJECTS] - GET PROJECTS ', projects);
 
       this.showSpinner = false;
 
@@ -521,13 +497,36 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
           if (project.id_project && project.id_project.profile.type === 'free') {
             if (project.id_project && project.id_project.trialExpired === false) {
-              this.getProPlanTrialTranslation(project);
+              // this.getProPlanTrialTranslation(project);
+              this.prjct_profile_name = PLAN_NAME.B + " plan (trial)";
+              project['prjct_profile_name'] = this.prjct_profile_name;
+              project['plan_badge_background_type'] = 'b_plan_badge';
             } else {
-              this.getPaidPlanTranslation(project, project.id_project.profile.name)
+              // this.getPaidPlanTranslation(project, project.id_project.profile.name)
+              this.prjct_profile_name = "Free plan";
+              project['prjct_profile_name'] = this.prjct_profile_name;
+              project['plan_badge_background_type'] = 'free_plan_badge'
             }
 
           } else if (project.id_project && project.id_project.profile.type === 'payment') {
-            this.getPaidPlanTranslation(project, project.id_project.profile.name);
+            // this.getPaidPlanTranslation(project, project.id_project.profile.name);
+            // if ( project.id_project.isActiveSubscription === true) {
+              if (project.id_project.profile.name  === PLAN_NAME.A ) {
+                this.prjct_profile_name = PLAN_NAME.A + " plan";
+                project['prjct_profile_name'] = this.prjct_profile_name;
+                project['plan_badge_background_type'] = 'a_plan_badge'
+              } else if (project.id_project.profile.name === PLAN_NAME.B) { 
+                project['prjct_profile_name'] = this.prjct_profile_name;
+                this.prjct_profile_name = PLAN_NAME.B + " plan";
+                project['prjct_profile_name'] = this.prjct_profile_name;
+                project['plan_badge_background_type'] = 'b_plan_badge'
+              }  else if (project.id_project.profile.name === PLAN_NAME.C) { 
+                this.prjct_profile_name = PLAN_NAME.C + " plan";
+                project['prjct_profile_name'] = this.prjct_profile_name;
+                project['plan_badge_background_type'] = 'c_plan_badge'
+              }
+            // } 
+            // else if ( project.id_project.isActiveSubscription === false) {}
 
           }
           if (project.id_project) {

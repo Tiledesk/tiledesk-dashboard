@@ -63,11 +63,11 @@ export class ProjectPlanService {
       if (ev instanceof NavigationEnd) {
 
         const current_url = ev.url
-        this.logger.log('[PROJECT-PLAN-SERV] - NavigationEnd current_url', current_url);
+        // console.log('[PROJECT-PLAN-SERV] - NavigationEnd current_url', current_url);
         const url_segments = current_url.split('/');
         this.logger.log('[PROJECT-PLAN-SERV] - CURRENT URL SEGMENTS ', url_segments);
         const nav_project_id = url_segments[2];
-        this.logger.log('[PROJECT-PLAN-SERV] - nav_project_id ', nav_project_id);
+        // console.log('[PROJECT-PLAN-SERV] - nav_project_id ', nav_project_id);
 
         this.progetIdGetFromParams = nav_project_id
         // -----------------------------------------------------------------
@@ -85,6 +85,7 @@ export class ProjectPlanService {
           url_segments[1] !== 'install-template' &&
           url_segments[1] !== 'create-project-itw' &&
           url_segments[1] !== 'install-template-np' &&
+          url_segments[1] !== 'success' &&
           current_url !== '/projects'
         ) {
           // this.getProjectByIdAndPublish(nav_project_id, calledBy)
@@ -124,7 +125,7 @@ export class ProjectPlanService {
         subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date']
       }
 
-      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
+      console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
 
       this.projectPlan$.next(projectPlanData);
 
