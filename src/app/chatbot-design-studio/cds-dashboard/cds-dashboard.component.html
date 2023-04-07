@@ -62,6 +62,16 @@
                             </div>
                         </a>
                     </li>
+                    <li>
+                        <a *ngIf="selectedChatbot?.public === true" 
+                            class="custom---anchor-community"
+                            (click)="onGoToCommunity()" 
+                            style="padding-left: 15px; padding-right: 15px;">
+                            <div class="btn-in-dropdown">
+                                Community window
+                            </div>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div *ngIf="TRY_ON_WA === true">

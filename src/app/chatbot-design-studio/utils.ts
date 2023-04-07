@@ -2,6 +2,11 @@ import { AbstractControl } from "@angular/forms";
 import { ActionAssignVariable, Intent } from "app/models/intent-model";
 import { v4 as uuidv4 } from 'uuid';
 
+export enum EXTERNAL_URL {
+    getchatbotinfo = "https://tiledesk.com/community/getchatbotinfo/chatbotId/"
+}
+
+
 export enum TYPE_MATH_OPERATOR {
     addAsNumber = "addAsNumber",
     addAsString = "addAsString",

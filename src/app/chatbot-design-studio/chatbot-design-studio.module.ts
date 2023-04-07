@@ -107,6 +107,7 @@ import { OperandComponent } from './cds-dashboard/panel-intent-detail/actions/ac
 import { OperatorComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operator/operator.component';
 import { DialogComponent } from './cds-base-element/dialog/dialog.component';
 import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-function/action-assign-function.component';
+import { DialogYesNoComponent } from './cds-base-element/dialog-yes-no/dialog-yes-no.component';
 
 
 @NgModule({
@@ -173,7 +174,8 @@ import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-deta
     OperandComponent,
     OperatorComponent,
     DialogComponent,
-    ActionAssignFunctionComponent
+    ActionAssignFunctionComponent,
+    DialogYesNoComponent
   ],
   imports: [
     A11yModule,

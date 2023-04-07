@@ -12,17 +12,18 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { HttpClient } from "@angular/common/http";
 import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssignVariable } from '../../models/intent-model';
-import { TYPE_COMMAND, TYPE_INTENT_ELEMENT, TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
+import { TYPE_COMMAND, TYPE_INTENT_ELEMENT, EXTERNAL_URL, TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
 import { Subject } from 'rxjs';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
 import { CdsPublishOnCommunityModalComponent } from './cds-publish-on-community-modal/cds-publish-on-community-modal.component';
-import { MatDialog } from '@angular/material/dialog';
 import { NotifyService } from 'app/core/notify.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 
+import { DialogYesNoComponent } from 'app/chatbot-design-studio/cds-base-element/dialog-yes-no/dialog-yes-no.component';
+import { MatDialog } from '@angular/material/dialog';
 const swal = require('sweetalert');
 
 @Component({
@@ -135,21 +136,6 @@ export class CdsDashboardComponent implements OnInit {
     this.getOSCODE();
   }
 
-  // openDialog() {
-  //   var that = this;
-  //   const dialogRef = this.dialog.open(PanelIntentDetailComponent, {
-  //     panelClass: 'custom-dialog-container',
-  //     data: {text: ''}
-  //   });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log(`Dialog result: ${result}`);
-  //     if(result && result !== undefined && result !== false){
-  //       let variable = {name: result, value: result};
-  //       that.variableListUserDefined.push(variable);
-  //       this.saveVariables(this.variableListUserDefined);
-  //     }
-  //   });
-  // }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -581,15 +567,6 @@ export class CdsDashboardComponent implements OnInit {
     this.hideShowWidget('show')
   }
 
-  onClickPanelIntentDetail(){
-    // console.log('dismiss panel intent detail', this.isClickedInsidePanelIntentDetail);
-    if(this.isClickedInsidePanelIntentDetail === false){
-      this.isIntentElementSelected = false;
-    } else {
-      this.isClickedInsidePanelIntentDetail = false;
-    }
-  }
-
 
 
 
@@ -754,12 +731,41 @@ export class CdsDashboardComponent implements OnInit {
   onCloseAndSavePanelIntentDetail(intentSelected: any){
     if(intentSelected && intentSelected != null){
       this.onSaveIntent(intentSelected);
+      this.isIntentElementSelected = false;
+    } else {
+      this.onOpenDialog();
     }
-    this.isIntentElementSelected = false;
+    // this.isIntentElementSelected = false;
   }
 
   onClickedInsidePanelIntentDetail(){
     this.isClickedInsidePanelIntentDetail = true;
+  }
+
+  onClickPanelIntentDetail(){
+    // console.log('dismiss panel intent detail', this.isClickedInsidePanelIntentDetail);
+    if(this.isClickedInsidePanelIntentDetail === false){
+      // this.isIntentElementSelected = false;
+      this.onOpenDialog();
+    } else {
+      this.isClickedInsidePanelIntentDetail = false;
+    }
+  }
+
+  onOpenDialog() { 
+    var that = this;
+    const dialogRef = this.dialog.open(DialogYesNoComponent, {
+      panelClass: 'custom-dialog-container',
+      data: {title: 'Unsaved changes', text:'Are you sure you want to leave without saving your changes?', yes:'Leave', no:'Cancel'}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log(`Dialog result: ${result}`);
+      if(result && result !== undefined && result !== false){
+        that.isIntentElementSelected = false;
+      } else {
+        that.isIntentElementSelected = true;
+      }
+    });
   }
   /** END EVENTS PANEL INTENT DETAIL  */
 
@@ -970,13 +976,11 @@ export class CdsDashboardComponent implements OnInit {
   publishOnCommunity() {
     this.logger.log('openDialog')
     const dialogRef = this.dialog.open(CdsPublishOnCommunityModalComponent, {
-
       data: {
         chatbot: this.selectedChatbot,
         projectId: this.project._id
       },
     });
-
     dialogRef.afterClosed().subscribe(result => {
       // this.logger.log(`Dialog result: ${result}`);
     });
@@ -1068,7 +1072,12 @@ export class CdsDashboardComponent implements OnInit {
     this.logger.log('[CDS DSBRD] closeRemenberToPublishPopup')
     this.usersLocalDbService.setInStorage('hasclosedcdspopup', 'true')
     this.popup_visibility = 'none'
+  }
 
+  onGoToCommunity(){
+    // console.log('2 onGoToCommunity:: ', EXTERNAL_URL.getchatbotinfo+this.selectedChatbot._id);
+    let url = EXTERNAL_URL.getchatbotinfo+this.selectedChatbot._id; //"https://tiledesk.com/community/getchatbotinfo/chatbotId/63e284400856170019a908e6";
+    window.open(url, "_blank");
   }
 
 

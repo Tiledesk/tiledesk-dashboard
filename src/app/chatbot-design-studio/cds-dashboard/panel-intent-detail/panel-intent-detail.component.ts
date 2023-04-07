@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, TemplateRef, ViewContainerRef } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
-
 import { Intent, Button, ActionReply, Action } from '../../../models/intent-model';
 import { TYPE_INTENT_ELEMENT, TYPE_ACTION } from '../../utils';
 
@@ -34,7 +33,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   // buttonSelected: Button;
 
   constructor(
-    private logger: LoggerService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit(): void {

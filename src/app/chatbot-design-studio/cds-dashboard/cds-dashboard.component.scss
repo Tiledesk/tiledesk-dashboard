@@ -154,6 +154,8 @@ $box-left-width: 250px;
     }
 }
 
+
+
 .navbar-brand {
     z-index: 1050;
     position: absolute;
@@ -340,6 +342,33 @@ $box-left-width: 250px;
     background-color:unset !important; 
     color: unset !important
 }
+
+
+.custom---anchor-community {
+  .btn-in-dropdown {
+    background: transparent;
+    color: #8ab4f8;
+    text-align: center;
+    opacity: .6;
+    text-decoration: underline; 
+  }
+  .btn-in-dropdown:hover { 
+    opacity: 1!important;
+  }
+}
+
+.dropdown-menu li a.custom---anchor-community:hover, .dropdown-menu li a.custom---anchor-community:focus, .dropdown-menu li a.custom---anchor-community:active {
+  background-color: transparent;
+  color: #8ab4f8;
+  box-shadow: none;
+  opacity: 1;
+}
+
+// .custom---anchor-community:hover {
+//   box-shadow: unset !important;
+//   background-color:unset !important; 
+//   color: unset !important
+// }
 
 .btn-in-dropdown {
     background: #8ab4f8;
