@@ -950,7 +950,7 @@ export class AuthService {
         const storedProject = localStorage.getItem(projectId)
         if (storedProject) {
           storedPrjctParsed = JSON.parse(storedProject)
-          console.log('[AUTH-SERV] storedPrjctParsed ', storedPrjctParsed)
+          // console.log('[AUTH-SERV] storedPrjctParsed ', storedPrjctParsed)
         }
 
 

@@ -26,12 +26,12 @@ export class UpgradePlanModalComponent implements OnInit {
     private notifyService: NotifyService,
     private translate: TranslateService
   ) { 
-    console.log('[UPGRADE-PLAN-MODAL] data ', data)
+    // console.log('[UPGRADE-PLAN-MODAL] data ', data)
     this.tparams = {'plan_name': data.featureAvailableFrom}
    
     this.id_project = data.projectId;
     this.USER_ROLE = data.userRole
-    console.log('[UPGRADE-PLAN-MODAL] data > USER_ROLE  ',  this.USER_ROLE)
+    // console.log('[UPGRADE-PLAN-MODAL] data > USER_ROLE  ',  this.USER_ROLE)
   }
 
   ngOnInit(): void {

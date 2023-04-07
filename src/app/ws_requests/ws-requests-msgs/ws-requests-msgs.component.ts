@@ -543,7 +543,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE', projectProfileData)
+      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_profile_type = projectProfileData.profile_type;
@@ -556,28 +556,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (projectProfileData.profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
             this.displayChatRatings = true;
-            console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
+            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           } else {
             this.displayChatRatings = false;
-            console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
+            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           }
         } else if (projectProfileData.profile_type === 'payment') {
           if (projectProfileData.subscription_is_active === true) {
             this.displayChatRatings = true;
-            console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
+            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           } else if (projectProfileData.subscription_is_active === false) {
-            console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
             this.displayChatRatings = false;
-            console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
+            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           }
         }
 
         if (projectProfileData.profile_name === 'free' && projectProfileData.trial_expired === true && this.selectedResponseTypeID === 2) {
           const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
-          console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
+          // console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
           if (elemTexareaSendMsg && this.isVisiblePaymentTab) {
             elemTexareaSendMsg.disabled = true;
             this.openUpgradePlanDialog(projectProfileData._id)
@@ -585,9 +585,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       }
     }, err => {
-      console.error('[WS-REQUESTS-MSGS] GET PROJECT PROFILE - ERROR', err);
+      // console.error('[WS-REQUESTS-MSGS] GET PROJECT PROFILE - ERROR', err);
     }, () => {
-      console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE * COMPLETE *');
+      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE * COMPLETE *');
     });
   }
 
@@ -646,11 +646,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       // console.log(`Dialog result: ${result}`);
       this.selectedResponseTypeID = 1
       const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
-      console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1) afterClosed', elemTexareaSendMsg);
+      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1) afterClosed', elemTexareaSendMsg);
 
       if (elemTexareaSendMsg && elemTexareaSendMsg.disabled) {
         elemTexareaSendMsg.disabled = false;
-        console.log('✅ element is disabled afterClosed');
+        // console.log('✅ element is disabled afterClosed');
       }
 
     });
@@ -3866,7 +3866,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         ) {
           this.presentModalFeautureAvailableFromBPlan()
-          console.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
+          // console.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
         } else if (
           (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
           (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
@@ -3874,7 +3874,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         ) {
           this.displayModalTranscript = 'block'
-          console.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
+          // console.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
         }
 
       } else {
@@ -3986,34 +3986,53 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // Ban Visitor
   // ---------------------------
   displayModalBanVisitor(leadid: string, ipaddress: string) {
-    console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor profile_name: ', this.profile_name)
-    console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor PLAN_NAME.C: ', PLAN_NAME.C)
-    console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor subscription_is_active: ', this.subscription_is_active)
+    // console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor profile_name: ', this.profile_name)
+    // console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor PLAN_NAME.C: ', PLAN_NAME.C)
+    // console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor subscription_is_active: ', this.subscription_is_active)
     // if ((this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) || (this.prjct_profile_type === 'free' && this.trial_expired === false)) {
     this.logger.log('displayModalBanVisitor leadid ', leadid)
     this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
+    // if (this.CURRENT_USER_ROLE === 'owner') {
+
+    //   if (
+    //     (this.profile_name === PLAN_NAME.A) ||
+    //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+    //     (this.prjct_profile_type === 'free' && this.trial_expired === true)
+
+    //   ) {
+    //     this.presentModalFeautureAvailableOnlyWithPlanC();
+    //     console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAILABLE')
+    //   } else if (
+
+    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true)
+
+
+    //   ) {
+    //     this.banVisitors(leadid, ipaddress)
+    //     console.log('[WS-REQUESTS-MSGS] - featureIsAvailable IS AVAILABLE')
+    //   }
+
+    // } else {
+    //   this.presentModalAgentCannotManageAvancedSettings()
+    // }
+
     if (this.CURRENT_USER_ROLE === 'owner') {
-
-      if (
-        (this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === true)
-
-      ) {
-        this.presentModalFeautureAvailableOnlyWithPlanC();
-        console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAILABLE')
-      } else if (
-
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true)
-
-
-      ) {
-        this.banVisitors(leadid, ipaddress)
-        console.log('[WS-REQUESTS-MSGS] - featureIsAvailable IS AVAILABLE')
+      if (this.profile_name === PLAN_NAME.C) {
+        // console.log('displayModalBanVisitor HERE 1 ')
+        if (this.subscription_is_active === true) {
+          // console.log('displayModalBanVisitor HERE 2 ')
+          this.router.navigate(['project/' + this.id_project + '/notification-email'])
+        } else  if (this.subscription_is_active === false) {
+          // console.log('displayModalBanVisitor HERE 3 ')
+          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+        }
+       } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.prjct_profile_type === 'free') {
+        // console.log('displayModalBanVisitor HERE 4 ')
+        this.presentModalFeautureAvailableOnlyWithPlanC()
       }
-
     } else {
+      // console.log('displayModalBanVisitor HERE 5 ')
       this.presentModalAgentCannotManageAvancedSettings()
     }
 
@@ -4087,7 +4106,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        console.log('featureAvailableFromBPlan value', value)
+        // console.log('featureAvailableFromBPlan value', value)
         this.router.navigate(['project/' + this.id_project + '/pricing']);
       }
     });
@@ -4112,9 +4131,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        console.log('featureAvailableFromPlanC value', value)
-        this.goToPricing()
+        // console.log('featureAvailableFromPlanC value', value)
+        if (this.isVisiblePaymentTab) {
+          if (this.CURRENT_USER_ROLE === 'owner') {
+            if(this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B ) {
+            // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'free') {
+              this.router.navigate(['project/' + this.id_project + '/pricing']);
+    
+            }
+          } else {
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+          }
+        } else {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
       }
+      
     });
   }
 
@@ -5055,20 +5089,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onChangeReplyType(selectedResponseTypeID) {
-    console.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)
+    // console.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)
     this.selectedResponseTypeID = selectedResponseTypeID;
     if (this.selectedResponseTypeID === 2) { // Private note
       this.getProjectPlan();
     }
     if (this.selectedResponseTypeID === 1) {
       const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
-      console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1)', elemTexareaSendMsg);
+      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1)', elemTexareaSendMsg);
 
       if (elemTexareaSendMsg && elemTexareaSendMsg.disabled) {
         elemTexareaSendMsg.disabled = false;
-        console.log('✅ element is disabled');
+        // console.log('✅ element is disabled');
       } else {
-        console.log('⛔️ element is not disabled');
+        // console.log('⛔️ element is not disabled');
       }
 
 

@@ -319,7 +319,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.getProjects().subscribe((projects: any) => {
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
+      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
       const projectProfileData = this.current_selected_prjct.id_project.profile
 
       this.prjct_name = this.current_selected_prjct.id_project.name;

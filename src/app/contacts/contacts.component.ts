@@ -921,7 +921,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       ) {
         this.presentModalFeautureAvailableOnlyWithPaidPlans()
-        console.log('[CONTACTS-COMP] -  EXPORT DATA IS NOT AVAILABLE ')
+        // console.log('[CONTACTS-COMP] -  EXPORT DATA IS NOT AVAILABLE ')
       } else if (
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
@@ -939,7 +939,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         }, () => {
           this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
         });
-        console.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
+        // console.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
       }
 
     } else {
@@ -992,7 +992,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        console.log('featureAvailableFromBPlan value', value)
+        // console.log('featureAvailableFromBPlan value', value)
         if (this.payIsVisible) {
           if (this.USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {

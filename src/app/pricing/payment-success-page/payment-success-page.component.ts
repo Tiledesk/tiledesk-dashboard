@@ -39,10 +39,10 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    console.log('[PRICING - PAYMENT-SUCCESS] HI !!! ');
+    // console.log('[PRICING - PAYMENT-SUCCESS] HI !!! ');
     this.route.queryParams
     .subscribe(params => {
-     console.log('[PRICING - PAYMENT-SUCCESS] GET QUERY PARAMS - params ', params);
+    //  console.log('[PRICING - PAYMENT-SUCCESS] GET QUERY PARAMS - params ', params);
      if (params.session_id)  {
        this.getSubriscriptionSessionById(params.session_id)
      }
@@ -158,38 +158,37 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
 
 
     this.projectService.getStripeSessionById(session_id).subscribe((res: any) => {
-      console.log('[PRICING - PAYMENT-SUCCESS] - GET STRIPE SESSION BY ID res ', res)
-
+      // console.log('[PRICING - PAYMENT-SUCCESS] - GET STRIPE SESSION BY ID res ', res)
       const clientReferenceId = res.client_reference_id 
-      console.log('[PRICING - PAYMENT-SUCCESS] clientReferenceId ', clientReferenceId)
+      // console.log('[PRICING - PAYMENT-SUCCESS] clientReferenceId ', clientReferenceId)
      
       this.user_id = clientReferenceId.split("_")[0];
-      console.log('[PRICING - PAYMENT-SUCCESS] stripe user_id:' + this.user_id);
+      // console.log('[PRICING - PAYMENT-SUCCESS] stripe user_id:' + this.user_id);
     
       this.project_id = clientReferenceId.split("_")[1];
-      console.log('[PRICING - PAYMENT-SUCCESS] stripe project_id: ' + this.project_id);
+      // console.log('[PRICING - PAYMENT-SUCCESS] stripe project_id: ' + this.project_id);
 
       this.findCurrentProjectAmongAll(this.project_id) 
     
       this.plan_name = clientReferenceId.split("_")[2];
-      console.log('[PRICING - PAYMENT-SUCCESS] stripe plan_name: ' + this.plan_name);
+      // console.log('[PRICING - PAYMENT-SUCCESS] stripe plan_name: ' + this.plan_name);
     
     
     }, (error) => {
-      console.error('[PRICING - PAYMENT-SUCCESS] - GET STRIPE SESSION BY ID error ', error);
+     this.logger.error('[PRICING - PAYMENT-SUCCESS] - GET STRIPE SESSION BY ID error ', error);
     }, () => {
-      console.log('[PRICING - PAYMENT-SUCCESS] - GET STRIPE SESSION BY ID  * COMPLETE *');
+      // console.log('[PRICING - PAYMENT-SUCCESS] - GET STRIPE SESSION BY ID  * COMPLETE *');
 
     });
 
   }
-  profile
+  
 
   
 findCurrentProjectAmongAll(projectId: string) { 
   this.projectService.getProjects().subscribe((projects: any) => {    
     const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-   console.log('[PRICING - PAYMENT-SUCCESS] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
+  //  console.log('[PRICING - PAYMENT-SUCCESS] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
    
    const project: Project = {
     _id: current_prjct.id_project.id,
@@ -202,11 +201,7 @@ findCurrentProjectAmongAll(projectId: string) {
   this.auth.projectSelected(project)
   
    }, error => {
-    console.error('[PRICING - PAYMENT-SUCCESS] - FIND CURRENT PROJECT AMONG ALL - ERROR ', error);
-
-  
-
-  
+    this.logger.error('[PRICING - PAYMENT-SUCCESS] - FIND CURRENT PROJECT AMONG ALL - ERROR ', error);
   }, () => {
     console.log('[PRICING - PAYMENT-SUCCESS] - FIND CURRENT PROJECT AMONG ALL -  * complete ');
   

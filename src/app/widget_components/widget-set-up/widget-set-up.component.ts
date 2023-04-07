@@ -582,7 +582,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
            
             ) {
             this.featureIsAvailable = false;
-            console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
+            // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
           } else if (
             (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
             (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
@@ -590,10 +590,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
            
             ) {
               this.featureIsAvailable = true;
-              console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
+              // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
             }
- 
-
         }
       }, error => {
 

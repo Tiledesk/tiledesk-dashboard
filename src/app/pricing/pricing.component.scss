@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Lato&display=swap");
+@import "./src/assets/sass/md/_variables.scss";
 $color-pro-plan: #3ea9f5;
 
 // #9c27b0;
@@ -111,19 +112,19 @@ button.close {
 
   .a-plan-bckgrnd {
     background-image: url("/assets/img/background-card-vertical_2.svg"),
-    linear-gradient(to bottom, #3ea9f5 0%, #3ea9f5 100%),
+    linear-gradient(to bottom, #19a95d 0%, #19a95d 100%),
     linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
 
   .b-plan-bckgrnd {
     background-image: url("/assets/img/background-card-vertical_2.svg"),
-    linear-gradient(to bottom, #EB459E 0%, #EB459E 100%),
+    linear-gradient(to bottom, #00a1c2 0%, #00a1c2 100%),
     linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
 
   .c-plan-bckgrnd {
     background-image: url("/assets/img/background-card-vertical_2.svg"),
-    linear-gradient(to bottom, #5865f2 0%, #5865f2 100%),
+    linear-gradient(to bottom, #9966ff 0%, #9966ff 100%),
     linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
 }

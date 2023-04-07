@@ -370,7 +370,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe(
       (projectProfileData: any) => {
-        console.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
+        // console.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
         if (projectProfileData) {
           this.prjct_id = projectProfileData._id
           this.prjct_name = projectProfileData.name
@@ -386,12 +386,12 @@ export class UsersComponent implements OnInit, OnDestroy {
               this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
               this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
               this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
-              console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+              // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             } else {
               this.prjct_profile_name = "Free plan";
               this.seatsLimit = PLAN_SEATS.free
               this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
-              console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+              // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             }
           } else if (projectProfileData.profile_type === 'payment') {
             if (this.subscription_is_active === true) {
@@ -399,19 +399,19 @@ export class UsersComponent implements OnInit, OnDestroy {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
                 this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-                console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
                 this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-                console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 this.seatsLimit = projectProfileData.profile_agents
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
-                console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
               }
 
             } else if (this.subscription_is_active === false) {
@@ -420,19 +420,19 @@ export class UsersComponent implements OnInit, OnDestroy {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-                console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-                console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
-                console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
               }
             }
           }

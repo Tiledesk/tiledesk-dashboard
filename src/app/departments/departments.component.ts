@@ -374,7 +374,7 @@ export class DepartmentsComponent implements OnInit {
      
       ) {
         this.router.navigate(['project/' + this.project._id + '/departments-demo']);
-      console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAIBLE ')
+      // console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAIBLE ')
     } else if (
       (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
       (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
@@ -382,7 +382,7 @@ export class DepartmentsComponent implements OnInit {
      
       ) {
         this.router.navigate(['project/' + this.project._id + '/department/create']);
-        console.log('[WIDGET-SET-UP] - featureIsAvailable IS AVAIBLE' )
+        // console.log('[WIDGET-SET-UP] - featureIsAvailable IS AVAIBLE' )
       }
   }
 

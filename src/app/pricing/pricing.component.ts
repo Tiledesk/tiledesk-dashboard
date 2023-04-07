@@ -236,12 +236,12 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.annualPeriod = false;
     this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.A]
 
-    console.log('[PRICING] ROUTER URL ', this.router.url)
+    // console.log('[PRICING] ROUTER URL ', this.router.url)
     const current_url = this.router.url;
-    console.log('[PRICING] current_url ', current_url)
+    // console.log('[PRICING] current_url ', current_url)
     var n = current_url.lastIndexOf('/');
     var valueAfterLastString = current_url.substring(n + 1);
-    console.log('[PRICING] valueAfterLastString ', valueAfterLastString)
+    // console.log('[PRICING] valueAfterLastString ', valueAfterLastString)
     if (valueAfterLastString === 'pricing') {
       this.displayClosePricingPageBtn = true;
     } else {
@@ -276,11 +276,11 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.logger.log('[PRICING] USER email ', this.currentUserEmail);
 
       this.clientReferenceIdForPlanA = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.A
-      console.log('[PRICING] clientReferenceIdForPlanA ', this.clientReferenceIdForPlanA)
+      // console.log('[PRICING] clientReferenceIdForPlanA ', this.clientReferenceIdForPlanA)
       this.clientReferenceIdForPlanB = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.B
-      console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanB)
+      // console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanB)
       this.clientReferenceIdForPlanC = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.C
-      console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanC)
+      // console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanC)
     } else {
       // this.logger.log('No user is signed in');
     }
@@ -305,14 +305,14 @@ export class PricingComponent implements OnInit, OnDestroy {
   // PLAN A 
   // -------------------------------
   openPaymentLinkMontlyPlanA() {
-    console.log('[PRICING] PLAN A Montly')
+    // console.log('[PRICING] PLAN A Montly')
     // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
     const url = `${this.PAYMENT_LINK_MONTLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}"`
     window.open(url, '_self');
   }
 
   openPaymentLinkAnnuallyPlanA() {
-    console.log('[PRICING] PLAN A Annually')
+    // console.log('[PRICING] PLAN A Annually')
     // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
     const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
     window.open(url, '_self');
@@ -322,28 +322,28 @@ export class PricingComponent implements OnInit, OnDestroy {
   // PLAN B 
   // -------------------------------
   openPaymentLinkMontlyPlanB() {
-    console.log('[PRICING] PLAN B Montly')
+    // console.log('[PRICING] PLAN B Montly')
     // const url = `https://buy.stripe.com/test_7sI6pkce24T0d8YdQT?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
     const url = `${this.PAYMENT_LINK_MONTLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
     window.open(url, '_self');
   }
 
   openPaymentLinkAnnuallyPlanB() {
-    console.log('[PRICING] PLAN B Annually')
+    // console.log('[PRICING] PLAN B Annually')
     // const url = `https://buy.stripe.com/test_fZeeVQ6TI85cglabIK?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
     const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
     window.open(url, '_self');
   }
 
   openPaymentLinkPlanC() {
-    console.log('[PRICING] PLAN C')
+    // console.log('[PRICING] PLAN C')
     // const url = `https://buy.stripe.com/test_4gw1502Ds5X4ed26ot?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
     const url = `${this.PAYMENT_LINK_PLAN_C}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
     window.open(url, '_self');
   }
 
   contactUs(planname) {
-    console.log('[PRICING] contactUs planname ', planname)
+    // console.log('[PRICING] contactUs planname ', planname)
     window.open(`mailto:sales@tiledesk.com?subject=Upgrade to Tiledesk ${planname}`);
   }
 
@@ -367,23 +367,23 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.planName = planname;
 
 
-    console.log('select plan name', planname)
+    // console.log('select plan name', planname)
     this.planDecription = PLAN_DESC[planname]
-    console.log('select planDecription', this.planDecription);
+    // console.log('select planDecription', this.planDecription);
 
     if (planname === PLAN_NAME.A) {
-      console.log(' PLAN A Features')
+      // console.log(' PLAN A Features')
       this.planFeatures = featuresPlanA;
       this.highlightedFeatures = highlightedFeaturesPlanA;
     }
     if (planname === PLAN_NAME.B) {
-      console.log(' PLAN B Features')
+      // console.log(' PLAN B Features')
       this.planFeatures = featuresPlanB;
       this.highlightedFeatures = highlightedFeaturesPlanB;
     }
 
     if (planname === PLAN_NAME.C) {
-      console.log(' PLAN C Features');
+      // console.log(' PLAN C Features');
       this.planFeatures = featuresPlanC;
       this.highlightedFeatures = highlightedFeaturesPlanC;
     }
@@ -392,8 +392,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   selectedPeriod(period) {
-    console.log('selectedPeriod > select plan name', this.planName)
-    console.log('selectedPeriod > select period', period)
+    // console.log('selectedPeriod > select plan name', this.planName)
+    // console.log('selectedPeriod > select period', period)
     // annualPeriod: boolean; 
     // monthlyPeriod: boolean; 
     if (period === 'monthly') {
@@ -428,7 +428,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-    console.log('[PRICING] - browser_lang ', this.browser_lang)
+    // console.log('[PRICING] - browser_lang ', this.browser_lang)
   }
 
   getRouteParamsAndAppId() {
@@ -472,23 +472,23 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
+      // console.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
       if (projectProfileData) {
 
         this.subscription_id = projectProfileData.subscription_id;
         this.projectCurrenPlan = projectProfileData.profile_name
         this.profileType = projectProfileData.profile_type
 
-        console.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
-        console.log('[PRICING]  - getProjectPlan > projectCurrenPlan ', this.projectCurrenPlan)
-        console.log('[PRICING]  - getProjectPlan > profileType ', this.profileType)
+        // console.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
+        // console.log('[PRICING]  - getProjectPlan > projectCurrenPlan ', this.projectCurrenPlan)
+        // console.log('[PRICING]  - getProjectPlan > profileType ', this.profileType)
       }
     }, error => {
 
-      console.error('[PRICING] - getProjectPlan - ERROR', error);
+      this.logger.error('[PRICING] - getProjectPlan - ERROR', error);
     }, () => {
 
-      console.log('[PRICING] - getProjectPlan * COMPLETE *')
+      // console.log('[PRICING] - getProjectPlan * COMPLETE *')
 
     });
   }

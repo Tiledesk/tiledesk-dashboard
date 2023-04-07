@@ -2311,7 +2311,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         
       ) {
         this.presentModalFeautureAvailableFromBPlan() 
-        console.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
+        // console.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
       } else if (
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
@@ -2331,7 +2331,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         }, () => {
           this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV * COMPLETE *')
         });
-        console.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
+        // console.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
       }
 
     } else {
@@ -2385,7 +2385,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        console.log('featureAvailableFromBPlan value', value)
+        // console.log('featureAvailableFromBPlan value', value)
         this.router.navigate(['project/' + this.projectId + '/pricing']);
       }
     });

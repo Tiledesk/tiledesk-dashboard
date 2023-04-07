@@ -744,7 +744,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
+      // console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_profile_name = projectProfileData.profile_name;
         this.profile_name = projectProfileData.profile_name;
@@ -754,15 +754,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.subscription_is_active = projectProfileData.subscription_is_active;
         // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
-        console.log('[NAVBAR]  prjc_trial_days_left ', this.prjc_trial_days_left)
+        // console.log('[NAVBAR]  prjc_trial_days_left ', this.prjc_trial_days_left)
 
         if (this.prjct_trial_expired === false) {
           this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 14;
-          console.log('[NAVBAR] prjc_trial_days_left_percentage ', this.prjc_trial_days_left_percentage)
+          // console.log('[NAVBAR] prjc_trial_days_left_percentage ', this.prjc_trial_days_left_percentage)
           // this.prjc_trial_days_left_percentage IT IS 
           // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
           const perc = 100 + this.prjc_trial_days_left_percentage
-          console.log('[NAVBAR] project perc ', perc)
+          // console.log('[NAVBAR] project perc ', perc)
 
           this.prjc_trial_days_left_percentage = this.round5(perc);
           // this.logger.log('ProjectPlanService (navbar) trial days left % rounded', this.prjc_trial_days_left_percentage);

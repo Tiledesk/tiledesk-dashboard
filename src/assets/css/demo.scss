@@ -1698,8 +1698,7 @@ footer ul {
 
 // Badge in app store
 appdashboard-app-store > div > div > div > div > div > div.card-content > div.available-from-b-plan-badge {
-  //  div.card-content > div.available-from-b-plan-badge {
-  // .available-from-b-plan-badge {
+
   font-size: 11px;
   display: block;
   font-weight: 400;
@@ -1719,6 +1718,11 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 }
 
 .b-plan-badge-color {
-  color: #00a1c2;
-  background: rgba(0, 161, 194, 0.3);
+  color: $plan-b-color;
+  background: $plan-b-background;
+}
+
+.c-plan-badge-color {
+  color: $plan-c-color;
+  background: $plan-c-background;
 }

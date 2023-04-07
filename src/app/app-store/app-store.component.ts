@@ -226,7 +226,7 @@ export class AppStoreComponent implements OnInit {
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      console.log('APP-STORE - getApps APPS ', this.apps);
+      // console.log('APP-STORE - getApps APPS ', this.apps);
       this.apps.forEach(app => {
         if (app.description.length > 118) {
           app.description = app.description.slice(0, 118) + '...'
@@ -308,7 +308,7 @@ export class AppStoreComponent implements OnInit {
   }
 
   installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
-    console.log('[APP-STORE] appId ', appId)
+    // console.log('[APP-STORE] appId ', appId)
     if ((appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger" || appTitle === "Zapier") &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
@@ -320,7 +320,7 @@ export class AppStoreComponent implements OnInit {
 
     }
 
-    console.log('[APP-STORE] app ', app)
+    // console.log('[APP-STORE] app ', app)
     this.logger.log('[APP-STORE] app app version', app.version)
     this.logger.log('[APP-STORE] installationType ', installationType);
     this.logger.log('[APP-STORE] installationUrl ', installationUrl);
@@ -370,29 +370,29 @@ export class AppStoreComponent implements OnInit {
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        console.log('featureAvailableFromPlanC value', value)
-        console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        console.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
-        console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        console.log('[APP-STORE] trial_expired', this.trial_expired)
-        console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
+        // console.log('featureAvailableFromPlanC value', value)
+        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
+        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[APP-STORE] trial_expired', this.trial_expired)
+        // console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
         if (this.isVisiblePAY) {
-          console.log('[APP-STORE] HERE 1')
+          // console.log('[APP-STORE] HERE 1')
           if (this.USER_ROLE === 'owner') {
-            console.log('[APP-STORE] HERE 2')
+            // console.log('[APP-STORE] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              console.log('[APP-STORE] HERE 3')
+              // console.log('[APP-STORE] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-              console.log('[APP-STORE] HERE 4')
+              // console.log('[APP-STORE] HERE 4')
               this.router.navigate(['project/' + this.projectId + '/pricing']);
             }
           } else {
-            console.log('[APP-STORE] HERE 5')
+            // console.log('[APP-STORE] HERE 5')
             this.presentModalAgentCannotManageAvancedSettings();
           }
         } else {
-          console.log('[APP-STORE] HERE 6')
+          // console.log('[APP-STORE] HERE 6')
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       }

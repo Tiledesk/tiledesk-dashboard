@@ -28,7 +28,7 @@ export class ProjectProfileGuard implements CanActivate {
     // this.logger.log('[PROJECT-PROFILE-GUARD] GUARD canActivate next > ****** PRJCT ID ****** ', prjct_id)
 
     const url = state.url;
-    console.log('[PROJECT-PROFILE-GUARD] canActivate state > ****** URL ****** ', url);
+    // console.log('[PROJECT-PROFILE-GUARD] canActivate state > ****** URL ****** ', url);
 
 
     const project = await this.prjctPlanService._getProjectById(prjct_id);
@@ -39,10 +39,10 @@ export class ProjectProfileGuard implements CanActivate {
     const isActiveSubscription = project['isActiveSubscription'];
     const trialExpired = project['trialExpired'];
 
-    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * type * ', type);
-    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * planName * ', planName);
-    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * isActiveSubscription * ', isActiveSubscription);
-    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * trialExpired * ', trialExpired);
+    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * type * ', type);
+    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * planName * ', planName);
+    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * isActiveSubscription * ', isActiveSubscription);
+    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * trialExpired * ', trialExpired);
 
 
     if (type === 'free') {
@@ -50,7 +50,7 @@ export class ProjectProfileGuard implements CanActivate {
 
         this.userIsAuthorized = false
 
-        console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
+        // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
 
       } else if (trialExpired === false) {
 
@@ -65,25 +65,18 @@ export class ProjectProfileGuard implements CanActivate {
         //   this.userIsAuthorized = false;
         // }
 
-
-
-
-
         if ((planName !== PLAN_NAME.C && url.indexOf('/activities') !== -1)) {
           this.userIsAuthorized = false;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
         }
-
-        console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
+        // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
       }
     }
 
-
-
     if (type === 'payment') {
-      console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) url', url);
-      console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 1', isActiveSubscription);
+      // console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) url', url);
+      // console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 1', isActiveSubscription);
       if (isActiveSubscription === true) {
         this.userIsAuthorized = true;
         // PLAN A UNAUTHORIZED TO Analytics + Departments + GROUPS 
@@ -94,28 +87,26 @@ export class ProjectProfileGuard implements CanActivate {
 
         ) {
           this.userIsAuthorized = false;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ', url);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PLAN_NAME.A ', PLAN_NAME.A);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ', url);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PLAN_NAME.A ', PLAN_NAME.A);
         }
 
         // PLAN A and  AUTHORIZED TO CONTACTS
        if (planName === PLAN_NAME.A && url.indexOf('/contacts') !== -1) { 
           this.userIsAuthorized = true;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ', url);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ', url);
         }
         else {
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ', url.indexOf('/analytics') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ', url.indexOf('/analytics') !== -1);
         }
         
-
-
         // PLAN A and PLAN C AUTHORIZED TO MONITOR
         if ((planName === PLAN_NAME.A && url.indexOf('/wsrequests') !== -1) || (planName === PLAN_NAME.B && url.indexOf('/wsrequests') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/wsrequests') !== -1)) {
           this.userIsAuthorized = true;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS wsrequests', url.indexOf('/wsrequests') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS wsrequests', url.indexOf('/wsrequests') !== -1);
 
         }
         // else {
@@ -125,8 +116,8 @@ export class ProjectProfileGuard implements CanActivate {
         // PLAN B and PLAN C AUTHORIZED TO CRM
         if ((planName === PLAN_NAME.B && url.indexOf('/contacts') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/contacts') !== -1)) {
           this.userIsAuthorized = true;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS contacts', url.indexOf('/contacts') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS contacts', url.indexOf('/contacts') !== -1);
 
         }
         // else {
@@ -136,8 +127,8 @@ export class ProjectProfileGuard implements CanActivate {
         // PLAN B and PLAN C  AUTHORIZED TO MONITOR
         if ((planName === PLAN_NAME.B && url.indexOf('/wsrequests') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/wsrequests') !== -1)) {
           this.userIsAuthorized = true;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS wsrequests', url.indexOf('/wsrequests') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS wsrequests', url.indexOf('/wsrequests') !== -1);
 
         }
         // else {
@@ -147,8 +138,8 @@ export class ProjectProfileGuard implements CanActivate {
         // PLAN B and PLAN C  AUTHORIZED TO OPERATING HOURS
         if ((planName === PLAN_NAME.B && url.indexOf('/hours') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/hours') !== -1)) {
           this.userIsAuthorized = true;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS hours', url.indexOf('/hours') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS hours', url.indexOf('/hours') !== -1);
 
         }
         // else {
@@ -158,8 +149,8 @@ export class ProjectProfileGuard implements CanActivate {
         // PLAN B and PLAN C  AUTHORIZED TO  email ticketing
         if ((planName === PLAN_NAME.B && url.indexOf('/email') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/email') !== -1)) {
           this.userIsAuthorized = true;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS email ticketing', url.indexOf('/email') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS email ticketing', url.indexOf('/email') !== -1);
 
         }
         // else {
@@ -169,8 +160,8 @@ export class ProjectProfileGuard implements CanActivate {
         // PLAN B and PLAN C  AUTHORIZED TO OPERATING CANNED RESPONSES
         if ((planName === PLAN_NAME.B && url.indexOf('/cannedresponses') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/cannedresponses') !== -1)) {
           this.userIsAuthorized = true;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS cannedresponses', url.indexOf('/cannedresponses') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS cannedresponses', url.indexOf('/cannedresponses') !== -1);
 
         }
         // else {
@@ -180,8 +171,8 @@ export class ProjectProfileGuard implements CanActivate {
         // PLAN B and PLAN C AUTHORIZED TO OPERATING DEPARTMENTS
         if ((planName === PLAN_NAME.B && url.indexOf('/departments') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/departments') !== -1)) {
           this.userIsAuthorized = true;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS departments', url.indexOf('/departments') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS departments', url.indexOf('/departments') !== -1);
 
         }
         // else {
@@ -191,8 +182,8 @@ export class ProjectProfileGuard implements CanActivate {
         // PLAN B and PLAN C AUTHORIZED TO OPERATING GROUPS
         if ((planName === PLAN_NAME.B && url.indexOf('/groups') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/groups') !== -1)) {
           this.userIsAuthorized = true;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS email groups', url.indexOf('/groups') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS email groups', url.indexOf('/groups') !== -1);
 
         }
         // else {
@@ -202,8 +193,8 @@ export class ProjectProfileGuard implements CanActivate {
         // PLAN B and PLAN C AUTHORIZED TO OPERATING ANALYTICS
         if ((planName === PLAN_NAME.B && url.indexOf('/analytics') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/analytics') !== -1)) {
           this.userIsAuthorized = true;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS analytics', url.indexOf('/analytics') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS analytics', url.indexOf('/analytics') !== -1);
 
         }
         // else {
@@ -213,17 +204,17 @@ export class ProjectProfileGuard implements CanActivate {
 
         if ((planName !== PLAN_NAME.C && url.indexOf('/activities') !== -1)) {
           this.userIsAuthorized = false;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
 
         } else {
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
         }
       } else if (isActiveSubscription === false) {
-        console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 2', isActiveSubscription);
+        // console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 2', isActiveSubscription);
         this.userIsAuthorized = false;
 
-        console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
+        // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
       }
     }
 

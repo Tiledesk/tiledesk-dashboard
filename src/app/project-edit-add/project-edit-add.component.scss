@@ -823,7 +823,7 @@ $f21blue: #039be5;
 }
 
 .c-plan-only-badge{
-  background: #5865f2;
+  background: $plan-c-color;
   font-size: 9px;
   color: #fff;
   border-radius: 3px;
@@ -862,7 +862,7 @@ $f21blue: #039be5;
 
 
 .c-plan--only--badge {
-  background: #5865f2;
+  background: $plan-c-color;
   font-size: 10px;
   color: #fff;
   border-radius: 3px;
@@ -870,4 +870,57 @@ $f21blue: #039be5;
   text-transform: uppercase;
   font-weight: 400;
   margin-left: 8px;
+}
+
+.btn-get-feature-no-boxshadow {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  background: transparent;
+  border: 1px solid #d1d9e0;
+  color: #3ea9f5;
+  font-weight: 400;
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 6px 15px !important;
+}
+
+.btn-get-feature-no-boxshadow:hover {
+  background-color: #eff2f6;
+  border: 1px solid #acb8cb;
+  color: #333;
+}
+
+.get-feature-upgrade-plan-icon {
+  vertical-align: middle;
+  color: #3ea9f5;
+  font-size: 21px;
+}
+
+
+.from-a-plan-badge{
+  background: #19a95d;
+  font-size: 9px;
+  color: #fff;
+  border-radius: 3px;
+  padding: 3px 6px;
+  text-transform: uppercase;
+  font-weight: 400;
+  position: relative;
+  top: -8px;
+  left: -140px;
+}
+
+::ng-deep .custom-mat-tooltip-in-widget-setup {
+  background-color: #555555 !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  line-height: 1.2;
+  border-radius: 2px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  border: 1px solid #555555 !important;
+  white-space: pre-line;
 }

@@ -62,7 +62,7 @@ export class FooterComponent implements OnInit {
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe(
       (projectProfileData: any) => {
-        console.log('[FOOTER-COMP] - GET PROJECT PLAN - RES ', projectProfileData)
+        // console.log('[FOOTER-COMP] - GET PROJECT PLAN - RES ', projectProfileData)
         if (projectProfileData) {
 
 

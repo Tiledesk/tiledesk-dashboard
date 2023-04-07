@@ -216,17 +216,17 @@ export class UserProfileComponent implements OnInit {
           if (projectProfileData.profile_name === PLAN_NAME.A) {
             this.prjct_profile_name = PLAN_NAME.A + " plan";
            
-            console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
+            // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
 
           } else if (projectProfileData.profile_name === PLAN_NAME.B) {
             this.prjct_profile_name = PLAN_NAME.B + " plan";
            
-            console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
+            // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
 
           } else if (projectProfileData.profile_name === PLAN_NAME.C) {
             this.prjct_profile_name = PLAN_NAME.C + " plan";
            
-            console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
+            // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
           }
 
         }

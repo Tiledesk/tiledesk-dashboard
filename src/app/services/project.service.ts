@@ -274,7 +274,7 @@ export class ProjectService {
 
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/cancelsubscription';
     // const url = 'https://8ba8-79-8-190-172.eu.ngrok.io/modules/payments/stripe/cancelsubscription';
-    console.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
+    // console.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
 
     const body = { 'projectid': this.projectID, 'userid': this.user._id };
     this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT REQUEST BODY ', body);
@@ -782,8 +782,8 @@ export class ProjectService {
 
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/checkoutSession/' + sessionid;
     // const url = 'https://c1a0-79-8-190-172.eu.ngrok.io/modules/payments/stripe/checkoutSession/' + sessionid;
-    console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - ID', sessionid);
-    console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - URL', url);
+    // console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - ID', sessionid);
+    // console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - URL', url);
 
 
     return this._httpclient

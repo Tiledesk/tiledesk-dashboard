@@ -957,7 +957,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        console.log('featureAvailableFromPlanC value', value)
+        // console.log('featureAvailableFromPlanC value', value)
         if (this.isVisiblePay) {
           if (this.CURRENT_USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
