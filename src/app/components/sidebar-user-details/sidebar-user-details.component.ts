@@ -158,18 +158,25 @@ export class SidebarUserDetailsComponent implements OnInit {
         this.prjct_name = this.current_selected_prjct.id_project.name;
         if (this.current_selected_prjct.id_project.profile.type === 'free') {
           if (this.current_selected_prjct.id_project.trialExpired === false) {
-
-            this.getProPlanTrialTranslation();
-
+            // this.getProPlanTrialTranslation();
+            this._prjct_profile_name = PLAN_NAME.B + " plan (trial)"
           } else {
-
-            this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
-
-
+            this._prjct_profile_name = "Free plan";
+            // this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
           }
         } else if (this.current_selected_prjct.id_project.profile.type === 'payment') {
+    
+          // this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
 
-          this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
+          if (this.plan_name === PLAN_NAME.A) {
+            this._prjct_profile_name = PLAN_NAME.A + " plan";
+
+          } else if (this.plan_name === PLAN_NAME.B) {
+            this._prjct_profile_name = PLAN_NAME.B + " plan";
+
+          } else if (this.plan_name === PLAN_NAME.C) {
+            this._prjct_profile_name = PLAN_NAME.C + " plan";
+          }
 
         }
       }

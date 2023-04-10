@@ -1,5 +1,5 @@
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
 import { Location } from '@angular/common';
 import { AuthService } from '../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router'
@@ -167,6 +167,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
+  DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE: boolean = false;
 
   contactUsEmail: string;
   displayClosePricingPageBtn: boolean;
@@ -176,7 +177,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   PAYMENT_LINK_ANNUALLY_PLAN_A: string;
   PAYMENT_LINK_ANNUALLY_PLAN_B: string;
   PAYMENT_LINK_PLAN_C: string;
-
+  user: any;
   constructor(
     public location: Location,
     public auth: AuthService,
@@ -225,6 +226,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.setPlansPKandCode();
     this.setpaymentLinks()
     this.getRouteParamsAndAppId();
+    this.getLoggedUser();
 
 
 
@@ -249,6 +251,12 @@ export class PricingComponent implements OnInit, OnDestroy {
     }
   }
 
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+
+      this.user = user;
+    })
+  }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -297,7 +305,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/28oaEM1tQeZs6e4fYZ";
       this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/8wM9AI0pMeZsbyo28c";
       this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/8wM14cc8ug3weKA003";
-     
+
     }
   }
 
@@ -309,6 +317,27 @@ export class PricingComponent implements OnInit, OnDestroy {
     // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
     const url = `${this.PAYMENT_LINK_MONTLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}"`
     window.open(url, '_self');
+    if (!isDevMode()) {
+      try {
+        window['analytics'].page('Pricing page', {
+
+        });
+      } catch (err) {
+        this.logger.error('Pricing page error', err);
+      }
+
+      try {
+        window['analytics'].track('Go to checkout for plan' + PLAN_NAME.A + ' /montly', {
+          "email": this.user.email,
+        }, {
+          "context": {
+            "groupId": this.projectId
+          }
+        });
+      } catch (err) {
+        this.logger.error('track go to checkout error', err);
+      }
+    }
   }
 
   openPaymentLinkAnnuallyPlanA() {
@@ -316,6 +345,28 @@ export class PricingComponent implements OnInit, OnDestroy {
     // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
     const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
     window.open(url, '_self');
+
+    if (!isDevMode()) {
+      try {
+        window['analytics'].page('Pricing page', {
+
+        });
+      } catch (err) {
+        this.logger.error('Pricing page error', err);
+      }
+
+      try {
+        window['analytics'].track('Go to checkout for plan' + PLAN_NAME.A + ' /annually', {
+          "email": this.user.email,
+        }, {
+          "context": {
+            "groupId": this.projectId
+          }
+        });
+      } catch (err) {
+        this.logger.error('track go to checkout error', err);
+      }
+    }
   }
 
   // -------------------------------
@@ -326,6 +377,27 @@ export class PricingComponent implements OnInit, OnDestroy {
     // const url = `https://buy.stripe.com/test_7sI6pkce24T0d8YdQT?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
     const url = `${this.PAYMENT_LINK_MONTLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
     window.open(url, '_self');
+    if (!isDevMode()) {
+      try {
+        window['analytics'].page('Pricing page', {
+
+        });
+      } catch (err) {
+        this.logger.error('Pricing page error', err);
+      }
+
+      try {
+        window['analytics'].track('Go to checkout for plan' + PLAN_NAME.B + ' /montly', {
+          "email": this.user.email,
+        }, {
+          "context": {
+            "groupId": this.projectId
+          }
+        });
+      } catch (err) {
+        this.logger.error('track go to checkout error', err);
+      }
+    }
   }
 
   openPaymentLinkAnnuallyPlanB() {
@@ -333,6 +405,27 @@ export class PricingComponent implements OnInit, OnDestroy {
     // const url = `https://buy.stripe.com/test_fZeeVQ6TI85cglabIK?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
     const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
     window.open(url, '_self');
+    if (!isDevMode()) {
+      try {
+        window['analytics'].page('Pricing page', {
+
+        });
+      } catch (err) {
+        this.logger.error('Pricing page error', err);
+      }
+
+      try {
+        window['analytics'].track('Go to checkout for plan' + PLAN_NAME.B + ' /annually', {
+          "email": this.user.email,
+        }, {
+          "context": {
+            "groupId": this.projectId
+          }
+        });
+      } catch (err) {
+        this.logger.error('track go to checkout error', err);
+      }
+    }
   }
 
   openPaymentLinkPlanC() {
@@ -342,9 +435,38 @@ export class PricingComponent implements OnInit, OnDestroy {
     window.open(url, '_self');
   }
 
+  // To test Live Plan 3.00 / Daily
+  openPaymentTestLivePaymentLink() {
+    const url = `https://buy.stripe.com/9AQ7sAfkGdVo7i8cMR?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
+    window.open(url, '_self');
+  }
+
+
   contactUs(planname) {
     // console.log('[PRICING] contactUs planname ', planname)
     window.open(`mailto:sales@tiledesk.com?subject=Upgrade to Tiledesk ${planname}`);
+
+    // if (!isDevMode()) {
+    try {
+      window['analytics'].page('Pricing page', {
+
+      });
+    } catch (err) {
+      this.logger.error('Pricing page error', err);
+    }
+
+    try {
+      window['analytics'].track(`Contact us to upgrade plan to ${planname}`, {
+        "email": this.user.email,
+      }, {
+        "context": {
+          "groupId": this.projectId
+        }
+      });
+    } catch (err) {
+      this.logger.error('track contact us to upgrade plan error', err);
+    }
+    // }
   }
 
 
@@ -439,13 +561,13 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.logger.log('[PRICING] - GET ROUTE-PARAMS & APPID - params: ', params)
       if (params.nk) {
         this.logger.log('[PRICING] -  GET ROUTE-PARAMS & APPID - params.nk: ', params.nk)
-        if (params.nk === 'y' && appID === "1:92907897826:web:f255664014a7cc14ee2fbb") {
-          this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD = true;
-          this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD', this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD)
-        }
+        // if (params.nk === 'y' && appID === "1:92907897826:web:f255664014a7cc14ee2fbb") {
+        //   this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD = true;
+        //   this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD', this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD)
+        // }
         if (params.nk === 'y' && appID === "1:269505353043:web:b82af070572669e3707da6") {
-          this.DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE = true;
-          this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE', this.DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE)
+          this.DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE = true;
+          // console.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE', this.DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE)
         }
       }
     });
@@ -776,10 +898,10 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
   /**
- **! *** *** *** *** *** *** *** *** *** *** *** !*
- **!  TEST DAILY WITH TRIAL PLAN €10.00 EUR/day  !*
- **! *** *** *** *** *** *** *** *** *** *** *** !*
- */
+  **! *** *** *** *** *** *** *** *** *** *** *** !*
+  **!  TEST DAILY WITH TRIAL PLAN €10.00 EUR/day  !*
+  **! *** *** *** *** *** *** *** *** *** *** *** !*
+  */
   stripeProPlanPerDayWithTrialCheckout() {
     const that = this;
     const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');

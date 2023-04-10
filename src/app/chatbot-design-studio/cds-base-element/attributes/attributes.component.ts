@@ -101,7 +101,7 @@ export class AttributesComponent implements OnInit {
   }
   
   onSelectedAttribute(variableSelected: {name: string, value: string}, index: number){
-    console.log('onSelectedAttribute:: ',variableSelected.value);
+    // console.log('onSelectedAttribute:: ',variableSelected.value);
     this.newAttributes[index].key = variableSelected.value;
     if(!this.newAttributes[index].value){
       this.newAttributes.push({key:"", value:""});

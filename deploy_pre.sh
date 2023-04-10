@@ -27,11 +27,11 @@ cd dist
 
 
 ####### tiledesk in version subfolder with cache control
-aws s3 sync --cache-control max-age=172800 . s3://tiledesk-dashboard-pre/stripe_3/dashboard/
+aws s3 sync --cache-control max-age=172800 . s3://tiledesk-dashboard-pre/stripe_4/dashboard/
 # aws s3 sync ./index.html s3://tiledesk-dashboard-pre/dashboard/ --exclude='*' --include='/index.html'
 # aws cloudfront create-invalidation --distribution-id E2DTAKWHWQ7C3J --paths "/*"
-echo new version deployed on s3://tiledesk-dashboard-pre/stripe_3/dashboard/
-echo available on https://support-pre.tiledesk.com/stripe_3/dashboard/index.html
+echo new version deployed on s3://tiledesk-dashboard-pre/stripe_4/dashboard/
+echo available on https://support-pre.tiledesk.com/stripe_4/dashboard/index.html
 
 
 ####### tiledesk in version subfolder 

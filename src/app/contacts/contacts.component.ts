@@ -974,6 +974,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     // }
   }
 
+  // Export CSV
   presentModalFeautureAvailableOnlyWithPaidPlans() {
     const el = document.createElement('div')
     el.innerHTML = this.featureAvailableFromBPlan
@@ -993,14 +994,37 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     }).then((value) => {
       if (value === 'catch') {
         // console.log('featureAvailableFromBPlan value', value)
+        // if (this.payIsVisible) {
+        //   if (this.USER_ROLE === 'owner') {
+        //     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+        //       this.notify._displayContactUsModal(true, 'upgrade_plan');
+        //     } else {
+        //       this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+        //     }
+        //   } else {
+        //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        //   }
+        // } else {
+        //   this.notify._displayContactUsModal(true, 'upgrade_plan');
+        // }
         if (this.payIsVisible) {
+
           if (this.USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              if (this.profile_name !== PLAN_NAME.C) {
+                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              } else if (this.profile_name === PLAN_NAME.C) {
+                this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              }
+    
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else {
+            } else if (this.profile_name === 'free') {  // 
               this.router.navigate(['project/' + this.projectId + '/pricing']);
-
+              // this.notify.presentContactUsModalToUpgradePlan(true);
             }
+    
           } else {
             this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }

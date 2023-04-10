@@ -349,7 +349,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.prjct_profile_type === 'free') {
         if (this.prjct_trial_expired === false) {
 
-          this.isVisibleANA = true
+          // this.isVisibleANA = true
 
           this.logger.log('[HOME] Find Current Project Among All BRS-LANG 2 ', this.browserLang);
           this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
@@ -357,7 +357,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // this.getProPlanTrialTranslation();
 
         } else {
-          this.isVisibleANA = false;
+          // this.isVisibleANA = false;
 
           this.profile_name_for_segment = "Free"
           this.prjct_profile_name = "Free plan";
@@ -373,25 +373,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.prjct_profile_name = PLAN_NAME.A + ' plan'
           this.profile_name_for_segment = PLAN_NAME.A
 
-          this.isVisibleANA = false;
+          // this.isVisibleANA = false;
 
 
         } else if (this.prjct_profile_name === PLAN_NAME.B) {
           this.prjct_profile_name = PLAN_NAME.B + ' plan'
           this.profile_name_for_segment = PLAN_NAME.B
           if (this.subscription_is_active) {
-            this.isVisibleANA = true;
+            // this.isVisibleANA = true;
           } else {
-            this.isVisibleANA = true;
+            // this.isVisibleANA = false;
           }
 
         } else if (this.prjct_profile_name === PLAN_NAME.C) {
           this.prjct_profile_name = PLAN_NAME.C + ' plan'
           this.profile_name_for_segment = PLAN_NAME.C
           if (this.subscription_is_active) {
-            this.isVisibleANA = true;
+            // this.isVisibleANA = true;
           } else {
-            this.isVisibleANA = true;
+            // this.isVisibleANA = false;
           }
         }
       }

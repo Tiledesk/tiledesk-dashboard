@@ -3019,15 +3019,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     var footerEl = <HTMLElement>document.querySelector('footer')
     // console.log('[WS-REQUESTS-MSGS] footerEl ', footerEl)
-    if (isOpenChatbotAttributesAccordion) {
-      if (footerEl) {
-        footerEl.style.display = 'none'
-      }
-    } else if (!isOpenChatbotAttributesAccordion) {
-      if (footerEl) {
-        footerEl.style.display = 'block'
-      }
-    }
+    // if (isOpenChatbotAttributesAccordion) {
+    //   if (footerEl) {
+    //     footerEl.style.display = 'none'
+    //   }
+    // } else if (!isOpenChatbotAttributesAccordion) {
+    //   if (footerEl) {
+    //     footerEl.style.display = 'block'
+    //   }
+    // }
 
 
     var acc = <HTMLElement>document.querySelector('.chatbot-conv-accordion');
@@ -4195,7 +4195,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-
+  // Download transcript
   presentModalFeautureAvailableFromBPlan() {
     const el = document.createElement('div')
     el.innerHTML = this.featureAvailableFromBPlan
@@ -4215,13 +4215,35 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }).then((value) => {
       if (value === 'catch') {
         // console.log('featureAvailableFromBPlan value', value)
-        this.router.navigate(['project/' + this.id_project + '/pricing']);
+        // this.router.navigate(['project/' + this.id_project + '/pricing']);
+        if (this.isVisiblePaymentTab) {
+
+          if (this.CURRENT_USER_ROLE === 'owner') {
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              if (this.profile_name !== PLAN_NAME.C) {
+                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              } else if (this.profile_name === PLAN_NAME.C) {
+                this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              }
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.profile_name === 'free') {  // 
+              this.router.navigate(['project/' + this.id_project + '/pricing']);
+              // this.notify.presentContactUsModalToUpgradePlan(true);
+            }
+    
+          } else {
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+          }
+        } else {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
       }
     });
   }
 
 
-
+// Banned visitors tab
   presentModalFeautureAvailableOnlyWithPlanC() {
     const el = document.createElement('div')
     el.innerHTML = this.cPlanOnly

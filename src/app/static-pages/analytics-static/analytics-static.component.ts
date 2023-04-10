@@ -180,12 +180,15 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
             
               if (this.profile_name === PLAN_NAME.B) {
 
-                this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
 
               } else if (this.profile_name === PLAN_NAME.C) {
 
-                this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+                this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
               }
+            } else if (this.profile_name === PLAN_NAME.A) {
+              
+              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
             }
           }
         }
@@ -204,9 +207,11 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
       if (this.USER_ROLE === 'owner') {
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           this.notify._displayContactUsModal(true, 'upgrade_plan');
-        } else {
+        } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+          
+          this.notify.presentContactUsModalToUpgradePlan(true);
+        } else if (this.prjct_profile_type === 'free') {
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-          // this.notify.presentContactUsModalToUpgradePlan(true);
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

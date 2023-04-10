@@ -201,6 +201,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   displayNewCustomPrechatFormBuilder: boolean;
   hasBuiltPrechatformWithVisualTool: boolean;
   NEW_PRECHAT_LABEL_ARE_MISSING: boolean = false;
+
+  featureAvailableFromBPlan: string;
+  cancel: string;
+  upgradePlan: string;
+
   en_missing_labels =
     {
       "Full name": "Full name",
@@ -387,7 +392,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.tparams = brand;
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
-    this.t_params= {'plan_name': PLAN_NAME.B}
+    this.t_params = { 'plan_name': PLAN_NAME.B }
   }
 
   ngOnInit() {
@@ -578,20 +583,20 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             (this.profile_name === PLAN_NAME.A) ||
             (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
             (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-            (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) 
-           
-            ) {
+            (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true)
+
+          ) {
             this.featureIsAvailable = false;
             // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
           } else if (
             (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
             (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
             (this.prjct_profile_type === 'free' && this.prjct_trial_expired === false)
-           
-            ) {
-              this.featureIsAvailable = true;
-              // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
-            }
+
+          ) {
+            this.featureIsAvailable = true;
+            // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
+          }
         }
       }, error => {
 
@@ -603,21 +608,75 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   goToPricing() {
     this.logger.log('[WIDGET-SET-UP] - goToPricing projectId ', this.id_project);
-    if (this.payIsVisible) {
-      if (this.USER_ROLE === 'owner') {
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
-        } else {
-          this.router.navigate(['project/' + this.id_project + '/pricing']);
-          // this.presentModalContactUsToUpgradePlan()
+    // if (this.payIsVisible) {
+    //   if (this.USER_ROLE === 'owner') {
+    //     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+    //       this.notify._displayContactUsModal(true, 'upgrade_plan');
+    //     } else {
+    //       this.router.navigate(['project/' + this.id_project + '/pricing']);
+    //       // this.presentModalContactUsToUpgradePlan()
 
+    //     }
+    //   } else {
+    //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    //   }
+    // } else {
+    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
+    // }
+
+    this.presentModalFeautureAvailableFromBPlan()
+  }
+
+  presentModalFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = this.featureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        // console.log('featureAvailableFromPlanC value', value)
+        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
+        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[APP-STORE] trial_expired', this.trial_expired)
+        // console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
+        if (this.payIsVisible) {
+          // console.log('[APP-STORE] HERE 1')
+          if (this.USER_ROLE === 'owner') {
+            // console.log('[APP-STORE] HERE 2')
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              if (this.profile_name !== PLAN_NAME.C) {
+                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              } else if (this.profile_name === PLAN_NAME.C) {
+                this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              }
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'free') {
+              // console.log('[APP-STORE] HERE 4')
+              this.router.navigate(['project/' + this.id_project + '/pricing']);
+            }
+          } else {
+            // console.log('[APP-STORE] HERE 5')
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+          }
+        } else {
+          // console.log('[APP-STORE] HERE 6')
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
-      } else {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
-    }
+    });
   }
 
 
@@ -702,6 +761,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
+      });
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromBPlan = translation;
+      });
+
+    this.translate.get('Cancel')
+      .subscribe((text: string) => {
+        this.cancel = text;
+      });
+
+    this.translate.get('Pricing.UpgradePlan')
+      .subscribe((translation: any) => {
+        this.upgradePlan = translation;
       });
 
   }

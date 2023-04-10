@@ -298,7 +298,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
       this.logger.log('[NOTIFICATION-MSG] - cancelSubscription RES ', confirmation);
 
       if (confirmation && confirmation.status === 'canceled') {
-        this.notify.showNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
         if (!isDevMode()) {
           if (window['analytics']) {
             try {

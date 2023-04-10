@@ -232,11 +232,24 @@ export class AppStoreComponent implements OnInit {
           app.description = app.description.slice(0, 118) + '...'
         }
         // console.log('APP-STORE - getApps APPS app ', app )
-        if (app && app.version === "v2")
+        if (app && app.version === "v2") {
           if (app.installActionURL === "") {
             // console.log('APP-STORE - getApps APPS app installActionURL', app.installActionURL)
             delete app.installActionURL
           }
+        }
+
+        // console.log('app.title', app.title)
+        // console.log('profile_name', this.profile_name)  
+
+        // if ((app.title === "WhatsApp Business" || app.title === "Facebook Messenger" || app.title === "Zapier") &&
+        //   ((this.profile_name === PLAN_NAME.A) ||
+        //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        //     (this.prjct_profile_type === 'free' && this.trial_expired === true))) {
+        //   app['isAvailable'] = false
+        //   console.log('here YES')
+        // }
       });
 
 
@@ -314,7 +327,8 @@ export class AppStoreComponent implements OnInit {
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
         (this.prjct_profile_type === 'free' && this.trial_expired === true))) {
-          this.appIsAvailable = false
+
+
       this.presentModalFeautureAvailableFromBPlan()
       return
 
@@ -382,6 +396,8 @@ export class AppStoreComponent implements OnInit {
             // console.log('[APP-STORE] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
               // console.log('[APP-STORE] HERE 3')
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
               // console.log('[APP-STORE] HERE 4')
