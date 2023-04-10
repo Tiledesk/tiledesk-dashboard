@@ -280,6 +280,21 @@ export const emailDomainWhiteList = [
     'bigpond.net.au'
 ]
 
+export enum PLAN_NAME {
+    A = 'Growth',
+    B = 'Scale',
+    C = 'Plus',
+}
+
+export enum PLAN_SEATS {
+    free = 3, 
+    Growth = 4, 
+    Scale = 20,
+};
+
+
+
+
 // Links to documentation
 export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
 export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'

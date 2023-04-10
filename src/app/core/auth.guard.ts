@@ -108,6 +108,7 @@ export class AuthGuard implements CanActivate {
         // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
 
         const url_segments = current_url.split('/');
+       
         // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS ', url_segments);
 
         this.nav_project_id = url_segments[2];
@@ -143,6 +144,7 @@ export class AuthGuard implements CanActivate {
           url_segments[1] !== 'install-template' &&
           url_segments[1] !== 'create-project-itw' &&
           url_segments[1] !== 'install-template-np' &&
+          url_segments[1] !== 'success' &&
           current_url !== '/projects') {
 
           this.subscription.unsubscribe();

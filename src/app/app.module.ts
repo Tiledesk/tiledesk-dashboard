@@ -315,6 +315,16 @@ import { CommunityTemplateDtlsComponent } from './bots/templates/community-templ
 import { HomePromoDesignStudioComponent } from './home-promo-design-studio/home-promo-design-studio.component';
 import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
 import { CloneBotComponent } from './bots/bots-list/clone-bot/clone-bot.component';
+import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component';
+import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component';
+import { UpgradePlanModalComponent } from './components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
+import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
+import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
+
+
+
+
+
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -555,7 +565,12 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CommunityTemplateDtlsComponent, 
     HomePromoDesignStudioComponent,
     PasswordStrengthComponent,
-    CloneBotComponent 
+    CloneBotComponent,
+    ContactsStaticComponent,
+    CannedResponsesStaticComponent,
+    UpgradePlanModalComponent,
+    WsrequestsStaticComponent,
+    EmailTicketingStaticComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

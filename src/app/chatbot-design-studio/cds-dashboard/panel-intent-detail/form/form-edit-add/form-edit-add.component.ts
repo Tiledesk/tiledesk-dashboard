@@ -209,7 +209,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   /** */
   onChangeParameterName(parameterName) {
     parameterName.toString();
-    console.log('onChangeParameterName', parameterName);
+    // console.log('onChangeParameterName', parameterName);
     this.fieldName = parameterName.replace(/[^A-Z0-9_]+/ig, "");
   }
 
@@ -292,7 +292,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   onChangeTextAreaLabel(text: string){
     this.field.label = text;
     this.fieldLabel = text;
-    console.log('onChangeTextAreaLabel:: ',  this.field.label, this.fieldLabel);
+    // console.log('onChangeTextAreaLabel:: ',  this.field.label, this.fieldLabel);
   }
   
   // onSelectedAttributeLabel(variableSelected: {name: string, value: string}){

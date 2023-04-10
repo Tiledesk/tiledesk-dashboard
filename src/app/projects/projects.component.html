@@ -280,9 +280,13 @@
                   {{ project?.id_project?._id }}
                 </p>
 
-                <div *ngIf="project_plan_badge" class="project-plan-badge" [ngClass]="{'pro-badge':  project?.plan_badge_background_type === 'pro_badge',
-                 'enterprise-badge': project?.plan_badge_background_type === 'enterprise_badge', 
-                 'free-badge': project?.plan_badge_background_type === 'free_badge' }">
+                <div *ngIf="project_plan_badge" class="project-plan-badge" 
+                [ngClass]="{
+                  'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
+                  'a-plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
+                  'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
+                  'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge'
+                }">
                   {{ project?.prjct_profile_name }}
                 </div>
 

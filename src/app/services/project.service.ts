@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject} from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -20,7 +20,7 @@ export class ProjectService {
   public hasCreatedNewProject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
- 
+
     public auth: AuthService,
     public _httpclient: HttpClient,
     public appConfigService: AppConfigService,
@@ -273,7 +273,8 @@ export class ProjectService {
     };
 
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/cancelsubscription';
-    this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
+    // const url = 'https://8ba8-79-8-190-172.eu.ngrok.io/modules/payments/stripe/cancelsubscription';
+    // console.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
 
     const body = { 'projectid': this.projectID, 'userid': this.user._id };
     this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT REQUEST BODY ', body);
@@ -722,7 +723,7 @@ export class ProjectService {
   // -------------------------------------
   // UPDATE SUBSCRIPTION !! Used for test
   // -------------------------------------
-  public updatesubscription() {
+  public updatesubscription(price) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -734,7 +735,7 @@ export class ProjectService {
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/updatesubscription';
     this.logger.log('[PROJECT-SERV] UPDATE SUBSCRIPTION PUT URL ', url);
 
-    const body = { 'projectid': this.projectID, 'userid': this.user._id };
+    const body = { 'projectid': this.projectID, 'userid': this.user._id, price: price };
     this.logger.log('[PROJECT-SERV] UPDATE SUBSCRIPTION PUT  BODY ', body);
 
     return this._httpclient
@@ -760,6 +761,29 @@ export class ProjectService {
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/stripesubs/' + subscriptionId;
     this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - ID', subscriptionId);
     this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - URL', url);
+
+
+    return this._httpclient
+      .get<[any]>(url, httpOptions)
+  }
+
+  // -----------------------------------
+  //  GET STRIPE SESSION by SESSION ID 
+  // -----------------------------------
+  public getStripeSessionById(sessionid: string): Observable<[any]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      }),
+      // responseType: 'text' as 'json'
+    };
+
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/checkoutSession/' + sessionid;
+    // const url = 'https://c1a0-79-8-190-172.eu.ngrok.io/modules/payments/stripe/checkoutSession/' + sessionid;
+    // console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - ID', sessionid);
+    // console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - URL', url);
 
 
     return this._httpclient
@@ -796,7 +820,7 @@ export class ProjectService {
     // const url =  'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerId;
     this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - ID', customerId);
     this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - URL', url);
-   
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -806,6 +830,6 @@ export class ProjectService {
     };
     return this._httpclient
       .get<[any]>(url, httpOptions)
-  } 
+  }
 
 }

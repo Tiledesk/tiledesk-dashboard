@@ -9,6 +9,7 @@ import { StaticPageBaseComponent } from './../static-page-base/static-page-base.
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { PLAN_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -17,14 +18,14 @@ const swal = require('sweetalert');
   styleUrls: ['./groups-static.component.scss']
 })
 export class GroupsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
-
+  PLAN_NAME = PLAN_NAME
   projectId: string;
   browserLang: string;
   prjct_profile_type: string;
   subscription_is_active: any;
   prjct_profile_name: string;
   subscription_end_date: Date;
-
+  tparams: any;
 
 
   imageObject = [
@@ -56,6 +57,7 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
     public appConfigService: AppConfigService
   ) {
     super(translate);
+    this.tparams = {'plan_name': PLAN_NAME.B } 
   }
 
   ngOnInit() {
@@ -164,10 +166,10 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
           if (this.USER_ROLE === 'owner') {
-            if (this.profile_name !== 'enterprise') {
-              this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-            } else if (this.profile_name === 'enterprise') {
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+            if (this.profile_name !== PLAN_NAME.C) {
+              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+            } else if (this.profile_name === PLAN_NAME.C) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
             }
           }
         }
@@ -187,8 +189,8 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
-          // this.router.navigate(['project/' + this.projectId + '/pricing']);
-          this.notify.presentContactUsModalToUpgradePlan(true);
+          this.router.navigate(['project/' + this.projectId + '/pricing']);
+          // this.notify.presentContactUsModalToUpgradePlan(true);
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

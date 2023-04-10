@@ -1,609 +1,784 @@
-
- <!-- background-repeat: no-repeat;  -->
- <!-- background-attachment: scroll; background-position: bottom right; -->
+<!-- background-repeat: no-repeat;  -->
+<!-- background-attachment: scroll; background-position: bottom right; -->
 
 <div class="main-content" style="padding-top:0px; background-color: #ffffff;
     min-height: calc(100% - 53px);margin-top: 0px; padding: 0px">
 
-<!-- background-image: url(), linear-gradient(to bottom, #3EA9F5 0%, #3EA9F5 100%),linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  <!-- background-image: url(), linear-gradient(to bottom, #3EA9F5 0%, #3EA9F5 100%),linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
 background-size: 475px 449px, 188px 100%, 179px 100%;
 background-position: right -12px bottom,right,calc(100% - 179px);    background-repeat: no-repeat; -->
 
-<div style="min-height: calc(100vh - 53px);" class="plan-bckgrnd"
-[ngClass]="{'pro-plan-bckgrnd' : selectedPlanName === 'pro', 'enterprise-plan-bckgrnd' : selectedPlanName === 'enterprise'}">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="close-pricing-page">
-        <i class="material-icons close-btn" (click)="goBack()">
-          clear
-        </i>
-      </div>
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <h1 style="margin-top:10px; font-family:'Poppins','Roboto', 'Arial', sans-serif">
-          
-          <!-- Upgrade Your Account  -->
-          {{'UpgradeYourAccount' | translate}}
-          <!-- to
-          <span *ngIf="selectedPlanName === 'pro'">Pro</span> 
-          <span *ngIf="selectedPlanName === 'enterprise'">Enterprise</span>
-          Plan -->
-        </h1>
-        <!-- <p>and bring your <strong>customer communication</strong> to a whole <strong>new level.</strong></p> -->
-      </div>
-      <!-- <div class="col-md-4">
-        <span class="highlight">  Try our PRO plan free for 30 days.</span> 
-      </div> -->
-    </div>
-
-    <div class="row">
-
-      <!-- /// PRO -->
-      <div class="col-md-6"> 
-
-        <div style="margin-top:30px">
-          <div class="btn-group btn-group-lg">
-            <a class="btn" 
-            [ngClass]="{'pro-plan-btn' : selectedPlanName === 'pro', 'btn-white' : selectedPlanName === 'enterprise'}"
-            (click)="selectedPlan('pro')" style="width: 152px;">
-              Pro
-              
-            </a>
-            <a class="btn" 
-              [ngClass]="{'enterprise-plan-btn' : selectedPlanName === 'enterprise', 'btn-white' : selectedPlanName === 'pro'}"
-              (click)="selectedPlan('enterprise')">
-              Enterprise
-            
-            </a>
-          </div>
-
-        </div>
-
-        <div class="row">
-          <div class="col-md-12">
-              <!-- <img class="pricing__use-case-squiggle u__hidden-md-min" src="https://marketing.intercomassets.com/assets/pricing/use-cases/squiggle-739aa764d68d44b1f5025ea2e1d93145f701abe535b64b9182e6b37bdc4e7c33.png" alt="Squiggle"> -->
-             <div style="margin-bottom:15px">
-                <h3 *ngIf="selectedPlanName === 'pro'" style="color: #3EA9F5;line-height: 1.3em;"> 
-                  <span style="font-weight:500"> Pro {{'Includes' | translate}} </span>
-                  <span style="display:block">
-                    <!-- everything in Free, and: -->
-                    {{'EverythingIn'| translate}} Free,  {{'And' | translate}}:
-                  </span> 
-                </h3>
-
-                <h3 *ngIf="selectedPlanName === 'enterprise'" style="color: #6772E5;line-height: 1.3em;"> 
-                  <span style="font-weight:500"> Enterprise {{'Includes' | translate}} </span>
-                  <span style="display:block">
-                    {{'EverythingIn' | translate}} Pro, {{'And' | translate}}:
-                  </span> 
-                </h3>
-              </div>
-          </div> 
-        </div>
-
-        <div class="row">
-          <div class="col-md-12">
-              <ul *ngIf="selectedPlanName === 'pro'" class="pro-plan-ul" >
-                <li>{{'WidgetUnbranding' | translate}}</li> 
-                <li>{{'SmartAssignment' | translate}}</li>
-                <li>{{ 'Hours'| translate}}</li> 
-                <li>{{'Unlimited'| translate}} {{'Departments' | translate}}</li> 
-                <li>{{'Unlimited'| translate}} {{'AgentsGroups'| translate}}</li>
-                <li>{{'UnlimitedChatHistory' | translate}} </li>
-                <li>{{'AnalyticsAndRealTimeMonitoring' | translate}} </li>
-                <li>{{'TicketingSystem' | translate}}</li>
-                <li>{{'DataExport' | translate}}</li>
-                <li>{{'ActivityLog' | translate}}</li>
-                <li>{{'EmailTicketing' | translate}}</li>
-                <li>{{'PostChatSurveys' | translate}}</li>
-                <li>{{'Triggers' | translate}}</li>
-                <li>{{'Triggers' | translate}}</li>
-                <li>{{'EmailAndLiveChatSupport' | translate}}</li>
-        
-                <!-- <li (click)="cancelSubcription()"> CANCEL SUBSCRIPTION</li> -->
-
-
-                <!-- <button  style="background-color:rgb(178, 36, 206);color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-                (click)="updatesubscription()">
-                  UPDATE SUBSCRIPTION
-                </button> -->
-                
-                <button *ngIf="DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE === true" style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-                  (click)="stripeProPlanPerDayCheckout()">
-                    TEST 3,00 €/day
-                </button>
-
-              <!--  <button  style="background-color:rgb(103, 229, 221);color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-                (click)="stripeProPlanPerDayWithTrialCheckout()">
-                   DAILY PLAN WITH TRIAL
-                </button> -->
-                
-                <button *ngIf="DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD === true"  style="background-color:rgb(227, 70, 196);color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-                (click)="stripeLiveProDailyCheckout()">
-                  LIVE 0,20 €/day MIN 3 QTY 
-                </button>
-              </ul>
-
-              <ul *ngIf="selectedPlanName === 'enterprise'" class="enterprise-plan-ul">
-               
-                <li>{{'DedicatedAccountManager' | translate}}</li> 
-                <li>Onboarding + {{'Training' | translate}}</li>
-                <li>{{'SoftwareEngineerSupport' | translate}} </li>
-                <li>{{'CustomizationOfEmailNotificationTemplates' | translate}}</li>
-                <li>{{'SmtpSettings' | translate}}</li>
-                <li>{{'AvailableAddOnsVoiceInteraction' | translate}}</li>
-                
-                
-              </ul>
-
-          </div>
-        </div>
-      </div>
-
-     
-      <div class="col-md-6" [ngClass]="{'hide-when-is-open-PaymentReport' : displayPaymentReport === 'block'}" > 
-         
-        <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22) !important; border-radius:10px ">
-
-          <div class="card-header"  *ngIf="selectedPlanName === 'pro'" 
-            [ngClass]="{'pro-plan-card-bckgrnd' : selectedPlanName === 'pro', 'enterprise-plan-card-bckgrnd' : selectedPlanName === 'enterprise'}"
-            style="margin:0px; box-shadow:none; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; height: 78px">
-            <!-- <h3 style="margin-top:5px;margin-bottom:5px;"> 
-              <span *ngIf="selectedPlanName === 'pro'">  Pro </span>
-              <span *ngIf="selectedPlanName === 'enterprise'">  Enterprise  </span>
-            </h3>  -->
-
-            <label class="price" style="line-height:15px" *ngIf="selectedPlanName === 'pro'">
-              
-              <span class="price-text">
-                
-                <span style="position: relative;top: -16px;"> € </span>  
-                  <span class="price" style="font-size:40px; font-weight: 400;font-family: 'Lato', sans-serif;">
-
-                    <span *ngIf="perMonth === true">
-                      {{proPlanPerAgentPrice}}.00 
-                    </span>
-                    <span *ngIf="perYear === true">
-                      {{yearlyProPlanPerAgentPrice}}
-                    </span>
-                  </span>
-                <span class="price-agent" style="display: block;">
-                  <!-- per agent per month -->
-                  {{'PerAgent' | translate}}  {{'PerMonth' | translate}}
-                </span>
-              </span>
-            </label>
-
-          </div>
-
-          <div class="card-content" *ngIf="selectedPlanName === 'pro'">
-            <div class="row">
-              <div class="col-md-12" > 
-                <div class="quantity-box-title"> 
-                  <h2 style="margin-top:10px"> 
-                    <!-- Operators -->
-                    {{ "Pricing.Operators" | translate }}
-                  </h2>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4"> 
-                <a>
-                  <!-- [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}" -->
-                 
-                  <!-- [disabled]="operatorNo <= projectUsersNumber" -->
-                  <button class="btn-only-icon pro-plan-btn-only-icon" (click)="decreaseOperatorNumber()" style="float: right">
-                    <i class="material-icons btn-icon">
-                      remove
-                    </i>
-                  </button>
-                  
-                </a>
-              </div>
-
-              <div class="col-xs-4 col-sm-4 col-md-4"> 
-                <div class="quantity" style="text-align:center; font-family: 'Lato', sans-serif;"
-                  [ngClass]="{'pro-plan-quantity' : selectedPlanName === 'pro', 'enterprise-plan-quantity' : selectedPlanName === 'enterprise'}">
-                  {{ operatorNo }}
-                </div>
-              </div>
-
-              <div class="col-xs-4 col-sm-4 col-md-4"> 
-                <a>
-
-                  <!-- [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}" -->
-                  <button class="btn-only-icon pro-plan-btn-only-icon" (click)="increaseOperatorNumber()">
-                    <i class="material-icons btn-icon">
-                      add
-                    </i>
-                  </button>
-                </a>
-              </div>
-            </div>
-
-            <div class="row">
-
-              <div class="col-sm-12">
-
-                <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-                <!-- *ngIf="!showSpinner" -->
-                <div class="total-price" style="height:104px">
-
-                  <span *ngIf="perMonth === true"> 
-                    <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
-                    <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif;">
-                        
-                      <span *ngIf="showSpinnerInTotalPrice">   <i class="fa fa-spinner fa-spin"></i></span>
-
-                      <span *ngIf="!showSpinnerInTotalPrice">  {{ numberOfAgentPerPrice }} </span>
-
-                      <span *ngIf="!showSpinnerInTotalPrice" style="font-size: 18px;position:relative;top: -4px;">
-                          <!-- per month -->
-                          {{'PerMonth' | translate}}
-                      </span>
-                    </span>
-                  </span>
-
-                  <span *ngIf="perYear === true"> 
-                    <div class="total-price-x-year"> 
-                      <div class="per-year-total"> 
-                        <span style="font-size: 15px;position: relative;top: -48px;left:5px">€</span> 
-                        <span style="position: relative;left: -7px;font-weight: 500;font-family: 'Lato', sans-serif; font-size:32px; text-decoration: line-through; top:-39px">
-                      
-                          <!-- 2mesi  {{ (numberOfAgentPerPrice * 2) }}  -->
-                          <!-- 12mesi  -->
-                          {{ (numberOfAgentPerPrice * 12) }}
-
-                          <!-- <span style="font-size: 18px;position:relative;top: -4px;">
-                              per year
-                          </span> -->
-                        </span>
-                      </div>
-                  
-                      <div class="per-year-total-discounted"> 
-                        <span style="font-size: 30px;position: relative;top: -87px;left:18px">€</span> 
-                        <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif; top: -72px;">
-                      
-                          {{ (numberOfAgentPerPrice * 10) }}
-                          <span style="font-size: 18px;position:relative;top: -4px;">
-                              <!-- per year -->
-                              {{'PerYear' | translate}}
-                          </span>
-                        </span>
-                      </div>
-
-                    </div>
-                  </span>
-                <!-- <span style="font-size: 18px;position:relative;top: -4px;">
-                 
-                  <span *ngIf="perMonth === true"> 
-                      per month
-                  </span>
-                  <span *ngIf="perYear === true"> 
-                      per year
-                  </span>
-                </span> -->
-                </div>
-              </div>
-            </div>
-
-
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="period-options" style="text-align:center; margin-top:25px"> 
-                  <div class="radio">
-                      <label>
-                          <!-- (click)="periodOptionSelected(perMonth)"  -->
-                        <input type="radio" name="optionsRadios" [checked]="perMonth === true"  value="perMonth"  (click)="setPeriod('perMonth')">
-                          <!-- per month  -->
-                          {{'PerMonth' | translate}}
-                          
-                      </label>
-
-                      <label>
-                        <input type="radio" name="optionsRadios" value="perYear" (click)="setPeriod('perYear')">
-                          <!-- per year -->
-                          {{'PerYear' | translate}}
-                      </label>
-                    </div>
-                  </div>
-              </div>
-            </div>
-
-
-
-            <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
-            <div style="text-align: center; margin-top: 15px;" *ngIf="selectedPlanName === 'pro'"> 
-              <button type="button" class="btn outline-btn btn-lg pro-plan-outline-btn"             
-                id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="openReportPaymentModal()" [disabled]="operatorNo < projectUsersNumber">
-                  <!-- Get Pro Plan -->
-                  {{'GetProPlan' | translate}}
-
-              </button>
-
-             
-              <!-- <button type="button" *ngIf="perMonth === true" class="btn outline-btn btn-lg pro-plan-outline-btn"             
-                id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
-                  Get Pro Plan (PerMonth)
-              </button>
-  
-              <button type="button" *ngIf="perYear === true" class="btn outline-btn btn-lg pro-plan-outline-btn" 
-                id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
-            
-                  Get Pro Plan (PerYear)
-              </button> -->
-             
-            </div>
-
-
-          </div>  <!-- ./ card-content x pro-plan-->
-
-           
-         <!-- ------------------------------------------------------------------------- -->
-         <!--   card-content for enterprise plan  -->
-         <!-- ------------------------------------------------------------------------- -->
-          <div class="card-content" *ngIf="selectedPlanName === 'enterprise'">
-              <div class="row">
-                <div class="col-md-12" style="text-align:center"> 
-                <h2>
-                  {{'ContactUs' | translate}}
-                </h2>
-      
-                <hr class="custom-hr"> 
-      
-                  <div style="max-width: 350px; text-align:center; margin-left:auto;  margin-right:auto;"> 
-                    <!-- <h3> for custom packages <br> and pricing </h3> -->
-                    <h3> 
-                      <!-- Our most comprehensive plan, with advanced features and dedicated support -->
-                      {{'OurMostComprehensivePlan' | translate}}
-                    
-                    </h3>
-                  </div>
-                </div>
-              </div>
-
-
-              <div style="text-align: center; margin-top: 15px;">
-                  <button class="btn outline-btn btn-lg enterprise-plan-outline-btn"
-                    id="checkout-button-plan_DidlhS2dfJrSST" role="link" (click)="launchWidget()">
-                      <!-- Let's chat -->
-                      
-                      {{'ContactUs' | translate}}
-                  </button>
-              </div>
-
-          </div>
-
-        </div> <!-- ./ card -->
-
-
-        <div class="col-md-12">
-          <div id="error-message">{{ displayStipeCheckoutError }} </div>
-        </div>
-
-      </div>
-    </div> <!-- ./ row -->
-
+  <div style="min-height: calc(100vh - 53px);" class="plan-bckgrnd"
+    [ngClass]="{'a-plan-bckgrnd' : planName === PLAN_NAME.A, 'b-plan-bckgrnd' : planName === PLAN_NAME.B, 'c-plan-bckgrnd' : planName === PLAN_NAME.C}">
     <!-- <div class="row">
-        <div class="col-sm-12">
-
-          <div style="text-align: center; margin-top: 15px;"> 
-            <button type="button" class="btn outline-btn btn-lg" 
-              [ngClass]="{'pro-plan-outline-btn' : selectedPlanName === 'pro', 'enterprise-plan-outline-btn' : selectedPlanName === 'enterprise'}">
-            
-            <span *ngIf="selectedPlanName === 'pro'"> + Get Pro Plan  </span> 
-            <span *ngIf="selectedPlanName === 'enterprise'"> Get Enterprise Plan  </span> 
-            </button>
-          </div>
-        </div>
+      <div class="col-md-12"> -->
+    <div class="close-pricing-page" *ngIf=displayClosePricingPageBtn>
+      <i class="material-icons close-btn" (click)="goBack()">
+        clear
+      </i>
+    </div>
+    <!-- </div>
     </div> -->
 
-  </div>
-</div>
-</div>
 
+    <div class="container">
+      <div class="row" style="display: flex;">
 
-<!-- ============= PAY WITH CARD MODAL ============= -->
-<div class="modal modal-payment-report" tabindex="-1" role="dialog" [ngStyle]="{'display':displayPaymentReport}" style="background-color: rgba(90,90,90,0.9); overflow: auto;">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
-        <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">
- 
-            <div class="close-payment-report-modal" style="font-weight: 100; right: 6px; position: absolute;cursor:pointer" (click)="closePaymentReportModal()">
-              <i class="material-icons close-payment-report-icon" style="font-size: 35px; opacity: 0.5;">
-                clear
-              </i>
-            </div>
-
-          <table dir="ltr" class="pricing-moda-header" width="100%" style="border:0;border-collapse:collapse;margin:0;padding:0;">
-              <tbody>
-              <tr>
-                  <!-- #f0806f -->
-                <td class="pricing-moda-header-Left" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-left-radius:5px" align="right" height="156" valign="bottom" width="252">
-                  <a href="#m_8887943420113036679_">
-                    <img alt="" height="156" width="252" src="assets/img/pricing_modal_header_Left.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
-                  </a>
-                </td>
-                <td class="pricing-moda-header-Center" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%" align="center" height="156" valign="bottom" width="96">
-                  <a style="outline:0;text-decoration:none">
-                    <img alt="" height="156" width="96" src="assets/img/pricing_modal_header_twelve_degree_icon@2x.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
-                  </a>
-                </td>
-                <td class="pricing-moda-header-Right" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-right-radius:5px" align="left" height="156" valign="bottom" width="252">
-                  <a href="#m_8887943420113036679_">
-                    <img alt="" height="156" width="252" src="assets/img/pricing_modal_header_Right.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
-                  </a>
-                </td>
-              </tr>
-              </tbody>
-          </table>
-
-          <h2 class="modal-title" style="color: #262f3c; text-align: center; font-family: 'Poppins','Roboto', 'Arial', sans-serif">
-            <span style="vertical-align: middle;">
-                {{ company_name }} {{'ProPlan' | translate}}
-            </span>
-            <hr class="custom-hr" style="margin-top:10px; margin-bottom:10px">
-            <span style="display: block; color: #8894ab; font-size: 24px">
-              <!-- Order details  -->
-              {{'OrderDetails' | translate}}
-            </span> 
-          </h2>
-
-
-        </div>
-        <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px; line-height: 1">
-
-          <div class="row">
-            
-            <div class="col-sm-6">
-
-                <h3 style="text-align: center">
-                    <!-- <i class="material-icons" style="display:block;color: #fff; font-size: 26px; line-height: 40px; width: 40px; height: 40px; text-align: center; border-radius: 50%;background-color: #3EA9F5; vertical-align: middle"> group </i> -->
-                    <span style="font-size:14px;display: block;  color: #fff; line-height: 1.5;background-color: #3EA9F5">  
-                      <!-- Operators  -->
-                      {{'Pricing.Operators' |  translate}}
-                    
-                    </span> 
-                    <span style="padding-top:8px; display:block;  font-family: 'Lato', sans-serif; font-size:25px">{{  operatorNo }}</span>
-                 </h3>
-            </div>
-
-            <div class="col-sm-6">
-
-                <h3 style="text-align: center">
-                    <!-- <i class="material-icons" style="display:block;color: #fff; font-size: 26px; line-height: 40px; width: 40px; height: 40px; text-align: center; border-radius: 50%;background-color: #3EA9F5; vertical-align: middle"> access_time </i> -->
-                    <span style="font-size:14px;display: block;  color: #fff; line-height: 1.5;background-color: #3EA9F5">  
-                      <!-- Subscription period  -->
-                      {{ 'SubscriptionPeriod' | translate }}
-                    </span>
-                    
-                    <!-- color: #5292e9; -->
-                    <span style="padding-top:8px; display:block;  font-family: 'Lato', sans-serif; font-size:25px">
-                    
-                      <span *ngIf="perMonth === true"> 
-                        <!-- per Month  -->
-                        {{'PerMonth' | translate}}
-                      </span>
-                     
-                      <span *ngIf="perYear === true">
-                        <!-- per Year  -->
-                        {{'PerYear' | translate}}
-                      </span>
-                    </span>
-                 </h3>
-            </div>
-
-          </div>
-
-          <div class="row">
-              <div class="col-md-12" style="text-align:center">
-                  <!-- margin-left: -109px; -->
-                  <div class="total">
-                  <h2 style="margin-top: 10px"> <span style="font-size: 32px; padding-right: 16px;color: #8894ab;"> 
-                    {{'Total' | translate}} 
-                  </span> 
-                  
-                    
-                  <span class="total-price" style="border:none">  
-                    <span style="position: relative;top: -16px;font-size: 35px;"> € </span>
-                    <span style="font-family: 'Lato', sans-serif; font-weight: 700;"> 
-                      
-                      <span *ngIf="perMonth === true"> 
-                        {{ numberOfAgentPerPrice }}<span style="font-size: 40px">,00  </span>
-                      </span>
-                      <span *ngIf="perYear === true"> 
-                        {{ numberOfAgentPerPrice * 10 }}<span style="font-size: 40px">,00  </span>
-                      </span>
-                    </span> 
-                  </span> 
+        <div class="css-1sjnt42  pricing-page-container">
+          <div class="css-1rnbwj2 pricing-page">
+            <div class="css-1169yzp pricing-page-header-wpr">
+              <h2 class="eab6zq55 css-10on0p6 eimqq0f0 pricing-page-header-title-wpr">
+                <div class="css-u49bkm e15c8v5c0  pricing-page-header-title ">
+                  <span class="css-1ff36h2 eab6zq53 pricing-page-header-title-text">Upgrade</span>
+                </div>
               </h2>
+              <!-- <div class="css-le9b4r ev1261q3 pricing-page-header-period-switch-wpr">
+                <div class="css-rx6g2d ev1261q2 pricing-page-header-period-switch">
+                  <button class="css-xie4lp ev1261q1 selected-period-btn ">Monthly</button>
+                  <button class="css-ppa1gj ev1261q1 period-btn">Annually</button>
+                </div>
+                <span class="css-ji9n63 ev1261q0">😍<span size="4" class="css-1mug68f e1soz8mc0">
+                  </span>2 months free
+                  <span size="4" class="css-1mug68f e1soz8mc0">
+                  </span>
+                  <svg width="24" height="24" viewBox="0 0 19 18" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    class="css-0 e11k6mr30" style="min-width: 24px; min-height: 24px;">
+                    <path
+                      d="M13.5 7.5l-1.057 1.058-.066-.058-1.627-1.627v3.277c0 2.07-1.68 3.75-3.75 3.75H3.5v-1.5H7a2.257 2.257 0 002.25-2.25V6.873L7.565 8.558 6.5 7.5 10 4l3.5 3.5z"
+                      fill="#080F1A"></path>
+                  </svg>
+                </span>
+              </div> -->
+            </div>
+            <div class="css-sjtw19 eg3bate2 plan-switch-wpr">
+              <div class="css-rx6g2d eg3bate1 plan-switch-btns-wpr">
+                <button class="css-xie4lp eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.A}"
+                  (click)="selected_Plan(PLAN_NAME.A)">
+                  For small teams & startups
+
+                </button>
+                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.B}"
+                  (click)="selected_Plan(PLAN_NAME.B)">
+                  For larger teams & scale-ups
+                </button>
+                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.C}"
+                  (click)="selected_Plan(PLAN_NAME.C)">
+                  For medium & large enterprises
+                </button>
+              </div>
+            </div>
+            <span size="24" class="css-5ovca5 e1soz8mc0 span-24"></span>
+            <!-- <div class="all-plan-features" style="display: flex;">
+              <div class="plan-features-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16" fill="primary"
+                  class="css-zbzjbd e11k6mr30 check-icon" style="min-width: 14px; min-height: 14px;">
+                  <path  fill="none" d="M0 0h16v16H0z"></path>
+                  <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                </svg>
+              </div>
+              <span size="8" class="span-8"></span>
+              <div class="plan-features-text">14 days free trial</div>
+              
+              <div class="plan-features-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16" fill="primary"
+                  class="css-zbzjbd e11k6mr30 check-icon" style="min-width: 14px; min-height: 14px;">
+                  <path  fill="none" d="M0 0h16v16H0z"></path>
+                  <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                </svg>
+              </div>
+              <span size="8" class="span-8"></span>
+              <div class="plan-features-text">No credit card required</div>
+
+              <div class="plan-features-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16" fill="primary"
+                  class="css-zbzjbd e11k6mr30 check-icon" style="min-width: 14px; min-height: 14px;">
+                  <path  fill="none" d="M0 0h16v16H0z"></path>
+                  <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                </svg>
+              </div>
+              <span size="8" class="span-8"></span>
+              <div class="plan-features-text">Auto switch to Free after trial</div>
+           
+            </div> -->
+
+            <span size="24" class="css-5ovca5 e1soz8mc0 span-24"></span>
+            <div data-testid="communicator" class="css-4lq111 e194a3xf5 plan-card-wpr">
+              <div class="css-82a6rk e194a3xf2 plan-card-left-content">
+                <h2 weight="500" class="e194a3xf4 css-ai3f0v eimqq0f0 plan-card-title">
+                  {{ planName }}
+                </h2>
+                <span size="8" class="css-yn1por e1soz8mc0 span-8"></span>
+                <p weight="400" class="e194a3xf3 css-1rr139x eimqq0f0 plan-description">
+                  <span>
+                    {{planDecription}}
+                  </span>
+                </p>
+                <span size="8" class="css-1sx5jt9 e1soz8mc0 span-8"> </span>
+
+                <div class="highlighted-features-wpr">
+                  <span *ngFor="let feature of highlightedFeatures" class="highlighted-features"
+                    [ngStyle]="{'color': feature.color, 'background-color':  feature.background}">
+                    <div class="highlighted-feature"> {{feature.feature}} </div>
+                  </span>
+                </div>
+
+                <span size="16" class="css-1sx5jt9 e1soz8mc0 span-16"> </span>
+                <div class="css-w1ej1e eaklcf32 plan-features">
+                  <ul class="css-1b45418 eaklcf34 plan-features-wpr">
+
+
+                    <li class="css-1655qqu eaklcf33 plan-features" *ngFor="let feature of planFeatures">
+                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="css-zbzjbd e11k6mr30 check-icon"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">{{feature}}</div>
+                      </div>
+                    </li>
+
+
+                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
+                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Live Visitors List</div>
+                      </div>
+                    </li> -->
+
+
+                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
+                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Viewed Pages</div>
+                      </div>
+                    </li> -->
+
+
+
+                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
+                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Advanced Shopify integration</div>
+                      </div>
+                    </li> -->
+
+                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
+                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Additional operator seats</div>
+                      </div>
+                    </li> -->
+
+
+                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
+                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Unlimited conversations</div>
+                      </div>
+                    </li> -->
+
+
+                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
+                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Analytics</div>
+                      </div>
+                    </li> -->
+
+                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
+                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Agent permissions</div>
+                      </div>
+                    </li> -->
+
+
+                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
+                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Customer notes</div>
+                      </div>
+                    </li> -->
+
+                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
+                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Departments</div>
+                      </div>
+                    </li> -->
+
+                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
+                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">24/5 Live Chat Support</div>
+                      </div>
+                    </li> -->
+                  </ul>
+                </div>
+                <!-- <span size="24" class="css-5ovca5 e1soz8mc0"></span>
+                <button type="button"
+                  class=" btn btn-new btn-size-m btn-link btn-inline undefined"><span>
+                    <div class="css-u49bkm e15c8v5c0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" class="eaklcf35 css-sn499c e11k6mr30"
+                        style="min-width: 24px; min-height: 24px;">
+                        <path d="M7 10l5 5 5-5z"></path>
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                      </svg><span>See all features</span></div>
+                  </span>
+                </button> -->
+              </div>
+              <div class="css-4xzedf e194a3xf0 plan-card-vertical-line"></div>
+              <div class="css-sm9en9 e194a3xf1 plan-card-right-content ">
+                <div class="css-1xm9zcw exhfskr0 plan-card-price-wpr">
+                  <span class="">
+                    <span class="e1q33r5y1 css-1wzstm6 eeqvxqv0 plan-card-price">
+                      <span *ngIf="monthlyPeriod"> {{monthlyPrice}} </span>
+                      <span *ngIf="annualPeriod"> {{annualPrice}} </span>
+                      <span *ngIf="planName !== PLAN_NAME.C" class="plan-card-currency">EUR</span>
+                    </span>
+                    <span *ngIf="planName !== PLAN_NAME.C">
+                      <span *ngIf="monthlyPeriod" class="css-1y0ino5 e1q33r5y0 plan-card-price-period">/mo.</span>
+                      <span *ngIf="annualPeriod" class="css-1y0ino5 e1q33r5y0 plan-card-price-period">/yr.</span>
+                    </span>
+                  </span>
+                </div>
+                <span size="12" class="css-14ola99 e1soz8mc0 span-12"></span>
+
+                <div *ngIf="planName !== PLAN_NAME.C" class="css-le9b4r ev1261q3 pricing-page-header-period-switch-wpr">
+                  <div class="css-rx6g2d ev1261q2 pricing-page-header-period-switch">
+                    <button class="css-xie4lp ev1261q1 period-btn" [ngClass]="{'selected-period-btn': monthlyPeriod}"
+                      (click)="selectedPeriod('monthly')">
+                      Monthly
+                    </button>
+                    <button class="css-ppa1gj ev1261q1 period-btn" [ngClass]="{'selected-period-btn': annualPeriod}"
+                      (click)="selectedPeriod('annual')">
+                      Annually
+                    </button>
+                  </div>
+                  <span class="css-ji9n63 ev1261q0 two-months-free-text-container">
+                    <span size="4" class="css-1mug68f e1soz8mc0"></span>
+                    2 months free
+                    <span size="4" class="css-1mug68f e1soz8mc0 span-4"></span>
+                    <svg width="23" height="26" viewBox="0 0 23 26" fill="#647491" xmlns="http://www.w3.org/2000/svg"
+                      class="absolute left-full ml-2.5" style="transform: translate(97px, -31px);">
+                      <path
+                        d="M1.15324 17.5239C0.890232 17.4397 0.608797 17.5847 0.524632 17.8477C0.440467 18.1107 0.585444 18.3921 0.848448 18.4763L1.15324 17.5239ZM15.7704 4.40175C15.5065 4.32035 15.2266 4.46828 15.1452 4.73215L13.8187 9.0322C13.7373 9.29607 13.8852 9.57597 14.1491 9.65737C14.413 9.73877 14.6929 9.59084 14.7743 9.32697L15.9534 5.50471L19.7756 6.68381C20.0395 6.76521 20.3194 6.61729 20.4008 6.35342C20.4822 6.08954 20.3343 5.80965 20.0704 5.72825L15.7704 4.40175ZM0.848448 18.4763C7.16209 20.4968 12.5024 20.0472 15.5257 17.4918C18.6129 14.8825 19.0555 10.3044 16.065 4.64591L15.1809 5.11316C18.0675 10.5751 17.4486 14.5573 14.8802 16.7281C12.248 18.9529 7.33875 19.5033 1.15324 17.5239L0.848448 18.4763Z">
+                      </path>
+                    </svg>
+
+                  </span>
+                </div>
+
+              </div> <!-- right-content -->
+            </div>
+            <!-- --------------------- -->
+            <!-- Plan A Montly -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.A && profileType === 'free'"
+              (click)="openPaymentLinkMontlyPlanA()">
+              <button id="monthly-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+            <!-- --------------------- -->
+            <!-- Plan A Annually -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.A && profileType === 'free'"
+              (click)="openPaymentLinkAnnuallyPlanA()">
+              <button id="annually-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
             </div>
 
-            <hr class="custom-hr" style="margin-top:0px"> 
+            <!-- --------------------------------- -->
+            <!-- Plan A when already exist a Plan  -->
+            <!-- --------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.A && profileType !== 'free'"
+              (click)="contactUs(planName)">
+              <button id="plan-a-contact-us" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Contact Sales </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan B Montly -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.B && profileType === 'free'"
+              (click)="openPaymentLinkMontlyPlanB()">
+              <button id="monthly-plan-b" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan B Annually -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.B && profileType === 'free'"
+              (click)="openPaymentLinkAnnuallyPlanB()">
+              <button id="annually-plan-b" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+            <!-- ----------------------------------------------- -->
+            <!-- Plan B when already exist a  payment type Plan -->
+            <!-- ----------------------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.B && profileType !== 'free'"
+              (click)="contactUs(planName)">
+              <button id="plan-b-contact-us" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Contact Sales </span>
+              </button>
+            </div>
+
+            <!-- ----------------------------------------------- -->
+            <!-- Plan C  openPaymentLinkPlanC() -->
+            <!-- ----------------------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" (click)="contactUs(planName)">
+              <button id="plan-c" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Contact Sales </span>
+              </button>
+            </div>
+
+            <!-- <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" (click)="openPaymentLinkPlanC()">
+              <button id="plan-c" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div> -->
+
+
+            <!-- ----------------------------------------------- -->
+            <!-- TEST LIVE PLAN 3.00 Eur/Daily-->
+            <!-- ----------------------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE === true" (click)="openPaymentTestLivePaymentLink()">
+              <button id="test-live-plan" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> TEST LIVE PLAN 3.00 Eur/Daily </span>
+              </button>
+            </div>
+
+            <span size="20" class="css-g4vijh e1soz8mc0"></span>
+            <!-- <div data-testid="automation" class="css-4lq111 e194a3xf5">
+              <div class="css-82a6rk e194a3xf2">
+                <h2 weight="500" class="e194a3xf4 css-ai3f0v eimqq0f0">Chatbots</h2><span size="8"
+                  class="css-yn1por e1soz8mc0"></span>
+                <p weight="400" class="e194a3xf3 css-1rr139x eimqq0f0"><span>Reach your customers with advanced
+                    chatbots</span></p><span size="32" class="css-1sx5jt9 e1soz8mc0"></span>
+                <div class="css-w1ej1e eaklcf32">
+                  <ul class="css-1b45418 eaklcf34">
+                    <li class="css-1655qqu eaklcf33">
+                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
+                        <div class="css-1sdeyeu eaklcf30">Generate more leads</div>
+                      </div>
+                    </li>
+                    <li class="css-1655qqu eaklcf33">
+                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
+                        <div class="css-1sdeyeu eaklcf30">Recover abandoned carts</div>
+                      </div>
+                    </li>
+                    <li class="css-1655qqu eaklcf33">
+                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
+                        <div class="css-1sdeyeu eaklcf30">Welcome your visitors</div>
+                      </div>
+                    </li>
+                    <li class="css-1655qqu eaklcf33">
+                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
+                        <div class="css-1sdeyeu eaklcf30">Answer common questions</div>
+                      </div>
+                    </li>
+                    <li class="css-1655qqu eaklcf33">
+                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
+                        <div class="css-1sdeyeu eaklcf30">Engage specific customers</div>
+                      </div>
+                    </li>
+                    <li class="css-1655qqu eaklcf33">
+                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
+                        <div class="css-1sdeyeu eaklcf30">24/5 Live Chat Support</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <span size="24" class="css-5ovca5 e1soz8mc0"></span>
+                <button type="button"
+                  class=" btn btn-new btn-size-m btn-link btn-inline undefined"><span>
+                    <div class="css-u49bkm e15c8v5c0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" class="eaklcf35 css-sn499c e11k6mr30"
+                        style="min-width: 24px; min-height: 24px;">
+                        <path d="M7 10l5 5 5-5z"></path>
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                      </svg><span>See all features</span></div>
+                  </span>
+                </button>
               </div>
+              <div class="css-4xzedf e194a3xf0"></div>
+              <div class="css-sm9en9 e194a3xf1">
+                <div class="css-1xm9zcw exhfskr0"><span class=""><span class="e1q33r5y1 css-1wzstm6 eeqvxqv0">39<span
+                        class="currency">EUR</span></span><span class="css-1y0ino5 e1q33r5y0">/mo.</span></span></div>
+                <span size="12" class="css-14ola99 e1soz8mc0"></span>
+                <div class="css-12e6gyj e77tja70">
+                  <div width="100%" class="css-leej9y e1crryeb2">
+                    <div class="css-fyxnnm e1crryeb1">
+                      <fieldset class="css-1qhn8e6 e144t2b01">
+                        <legend class="css-goc7yl e144t2b00"><span></span></legend>
+                      </fieldset>
+                      <div aria-activedescendant="" aria-controls="downshift-5-menu" aria-expanded="false"
+                        aria-haspopup="listbox" aria-labelledby="downshift-5-label" id="downshift-5-toggle-button"
+                        role="combobox" tabindex="0" class="css-aumheb e7vvrml3">
+                        <div class="css-y18qpr e7vvrml2">
+                          <div class="css-e81bce ex98fx71"><span>For 40k visitors reached</span></div>
+                        </div>
+                        <div class="css-1o7dtzw e15c8v5c0"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" class="e1ih5s1 css-ovx0f7 e11k6mr30"
+                            style="min-width: 24px; min-height: 24px;">
+                            <path d="M7 10l5 5 5-5z"></path>
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                          </svg></div>
+                      </div>
+                    </div>
+                    <ul id="downshift-5-menu" role="listbox" aria-labelledby="downshift-5-label" tabindex="-1"
+                      class="css-1on1jon e1crryeb0"></ul>
+                  </div>
+                </div><span size="12" class="css-14ola99 e1soz8mc0"></span><button type="button"
+                  class=" btn btn-new btn-size-xl btn-primary css-km1x31 epaijzs0"><span>Add to order</span></button>
+              </div>
+            </div> -->
+            <span size="20" class="css-g4vijh e1soz8mc0"></span>
+            <!-- <div data-testid="no_branding" class="css-4lq111 e194a3xf5">
+              <div class="css-82a6rk e194a3xf2">
+                <h2 weight="500" class="e194a3xf4 css-ai3f0v eimqq0f0">Remove Tidio Branding</h2><span size="8"
+                  class="css-yn1por e1soz8mc0"></span>
+                <p weight="400" class="e194a3xf3 css-1rr139x eimqq0f0"><span>Our "Powered by Tidio" logo won't be
+                    displayed to your clients</span></p><span size="32" class="css-1sx5jt9 e1soz8mc0"></span>
+                <div class="css-1qr390g eaklcf32">
+                  <ul class="css-1b45418 eaklcf34">
+                    <li class="css-1655qqu eaklcf33">
+                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
+                        <div class="css-1sdeyeu eaklcf30">No Tidio logo in your chat widget</div>
+                      </div>
+                    </li>
+                    <li class="css-1655qqu eaklcf33">
+                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
+                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
+                        <div class="css-1sdeyeu eaklcf30">No Tidio logo in your email footer</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div><span size="24" class="css-5ovca5 e1soz8mc0"></span>
+              </div>
+              <div class="css-4xzedf e194a3xf0"></div>
+              <div class="css-sm9en9 e194a3xf1">
+                <div class="css-1xm9zcw exhfskr0"><span class=""><span class="e1q33r5y1 css-1wzstm6 eeqvxqv0">20<span
+                        class="currency">EUR</span></span><span class="css-1y0ino5 e1q33r5y0">/mo.</span></span></div>
+                <span size="12" class="css-14ola99 e1soz8mc0"></span><button type="button"
+                  class=" btn btn-new btn-size-xl btn-primary css-km1x31 epaijzs0"><span>Add to order</span></button>
+              </div>
+            </div> -->
+            <span size="20" class="css-g4vijh e1soz8mc0"></span>
           </div>
-  
-  </div>
-
-  
-  <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
-    <div style="text-align: center; margin-bottom: 25px;" *ngIf="selectedPlanName === 'pro'"> 
-
-        <button class="pay-with-card-btn" type="button" *ngIf="perMonth === true" style="background-color:#f0806f;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"            
-          id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
-
-            <!-- Pay with a Card  -->
-            {{ 'PayWithACard' | translate }}
-        </button>
-
-        <button class="pay-with-card-btn" type="button" *ngIf="perYear === true" style="background-color:#f0806f;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"
-          id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
-
-            <!-- Pay with a Card  -->
-            {{ 'PayWithACard' | translate }}
-        </button>
-      </div>
-  </div>
-
+          <!-- <div class="css-1qe1uid eab6zq56">
+            <div class="css-1jjcpf8 em7mmwy2">
+              <div class="css-ezk3pk em7mmwy1">
+                <div class="css-18eua7s e1ihm3gv0">
+                  <ul class="css-17ahj8h enwu2w10">
+                    <li class="css-dsvc6p eapie0y0">Order Summary</li>
+                    <li data-testid="communicator"
+                      style="transform: translate3d(0px, 0px, 0px); max-height: 120px; opacity: 1;">
+                      <div class="css-x2zuam es7ipuw0">
+                        <div class="css-vhqjvd eowexd0">Communicator</div>
+                        <div class="css-6ic3ly e1g8tgre1">
+                          <div class="css-fgaqwq e1g8tgre0">
+                            <div class="css-12e6gyj ei1364b0">
+                              <div class="type-secondary select-container css-2b097c-container"><span aria-live="polite"
+                                  aria-atomic="false" aria-relevant="additions text" class="css-7pg0cj-a11yText"></span>
+                                <div class="type-secondary size-l select-content__control css-1bi0jn-control">
+                                  <div
+                                    class="type-secondary size-l select-content__value-container type-secondary size-l select-content__value-container--has-value css-1hwfws3">
+                                    <div
+                                      class="type-secondary size-l select-content__single-value css-1uccc91-singleValue">
+                                      <div class="css-1diyr2h eh3digu1"><span>For 3 operators</span></div>
+                                    </div><input id="react-select-2-input" readonly="" tabindex="0"
+                                      aria-autocomplete="list" class="css-62g3xt-dummyInput" value="">
+                                  </div>
+                                  <div class="type-secondary size-l select-content__indicators css-1wy0on6"><span
+                                      class="type-secondary size-l select-content__indicator-separator css-1okebmr-indicatorSeparator"></span>
+                                    <div
+                                      class="type-secondary size-l select-content__indicator type-secondary size-l select-content__dropdown-indicator css-tlfecz-indicatorContainer"
+                                      aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24">
+                                        <path d="M7 10l5 5 5-5z"></path>
+                                        <path d="M0 0h24v24H0z" fill="none"></path>
+                                      </svg></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="css-1tulx1v e1xb40060"><span class=""><span
+                                class="e1q33r5y1 css-qmszw0 eeqvxqv0">57<span class="currency">EUR</span></span><span
+                                class="css-1dhynug e1q33r5y0">/mo.</span></span></div><button color="#647491"
+                            type="button" class="icon button  css-1o9ebhp e1riv9iy0"><svg
+                              xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                              <path d="M0 0h24v24H0V0z" fill="none"></path>
+                              <path
+                                d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5z">
+                              </path>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                    <div class="css-x934ki e15anyr80"></div>
+                    <div class="css-7fbm1d e7w2x366">
+                      <div class="css-1eulqrd e7w2x364">
+                        <p weight="500" class="e7w2x365 css-1etkzix eimqq0f0">Add a discount code</p><svg
+                          xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"
+                          class="css-0 e11k6mr30" style="min-width: 20px; min-height: 20px;">
+                          <path d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="css-x934ki e15anyr80"></div>
+                    <li style="transform: translate3d(0px, 0px, 0px); height: 46px; opacity: 1;">
+                      <div class="css-luth1l es7ipuw0">
+                        <div class="css-vhqjvd eowexd0">Total:</div>
+                        <div class="css-1tulx1v e1xb40060">
+                          <div><span class=""><span class="e1q33r5y1 css-1yuoer6 eeqvxqv0">57<span
+                                  class="currency">EUR</span></span><span
+                                class="css-1eozk43 e1q33r5y0">/mo.</span></span></div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="css-4hrzlh ejmtfx50">
+                  <div class="expand-btn-wrapper"><button type="button"
+                      class=" btn btn-new btn-size-xl btn-primary undefined"><span>Update my account</span></button>
+                    <p class="help-text">Change or cancel your plan at any time</p>
+                  </div>
+                </div>
+              </div>
+              <div class="css-87gap3 eeiuv7k3">Monthly<label class="eeiuv7k2 css-aqqgh1 ejwv6lm3"><input type="checkbox"
+                    role="switch" class="css-yzoe38 ejwv6lm1" checked="">
+                  <div class="css-18cdu9c ejwv6lm2"></div>
+                </label>
+                <div class="css-1yuhvjn eeiuv7k1">Yearly<div class="css-7h6p3p eeiuv7k0">(2 months free <svg
+                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="css-0 e11k6mr30"
+                      style="min-width: 16px; min-height: 16px;">
+                      <g fill="none">
+                        <path fill="#FDD888"
+                          d="M16.5 14.58c0 1.056-.9 1.92-2 1.92h-11c-1.1 0-2-.864-2-1.92V6.42c0-1.056.9-1.92 2-1.92h11c1.1 0 2 .864 2 1.92v8.16z">
+                        </path>
+                        <path fill="#FDD888"
+                          d="M18 4.875c0 1.031-.9 1.875-2 1.875H2c-1.1 0-2-.844-2-1.875C0 3.844.9 3 2 3h14c1.1 0 2 .844 2 1.875z">
+                        </path>
+                        <path fill="#FCAB40" d="M1.5 6.75h15v.75h-15z"></path>
+                        <path fill="#DA2F47"
+                          d="M9.844.75h-.938C8.13.75 7.5 1.411 7.5 2.227V16.5h3.75V2.227c0-.815-.63-1.477-1.406-1.477z">
+                        </path>
+                        <path fill="#DA2F47"
+                          d="M7.98 3c.561 0 .644-.25.184-.555L4.737.166a.942.942 0 00-1.341.285L2.368 2.16c-.278.463-.047.841.514.841H7.98zm2.04 0c-.561 0-.644-.25-.184-.555L13.263.166a.943.943 0 011.342.285l1.027 1.708c.278.463.047.841-.514.841H10.02z">
+                        </path>
+                      </g>
+                    </svg>)</div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
       </div>
     </div>
+
+
   </div>
+</div>
+
+
+
+
 
 <!-- ============= INFO 'NO LESS OF THE NUMBER OF THE AGENT THET ARE ALREADY IN YOUR PROJECT' MODAL ============= -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.9);"> 
-    <div class="modal-dialog" role="document">
-      <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
-        <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">
-  
-          <!-- <div style="font-weight: 100; right: 6px; position: absolute;cursor:pointer" (click)="closeInfoModal()">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}"
+  style="background-color: rgba(90,90,90,0.9);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
+      <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">
+
+        <!-- <div style="font-weight: 100; right: 6px; position: absolute;cursor:pointer" (click)="closeInfoModal()">
             <i class="material-icons close-payment-report-icon" style="font-size: 35px; opacity: 0.5;">
               clear
             </i>
           </div> -->
-  
-          <h2 class="modal-title" style="color: #262f3c; text-align: center; font-family: 'Poppins','Roboto', 'Arial', sans-serif; margin-top: 25px">
-            <!-- <span style="vertical-align: middle;"> -->
-              <i class="material-icons" style="vertical-align: middle; font-size:49px; color:#facea8 ">
-                error_outline
-              </i>
-            <!-- </span> -->
-          </h2>
-  
-        </div>
-        <hr class="custom-hr" style="margin-top:10px; margin-bottom:10px">
-        <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px; line-height: 1">
-  
-          <div class="row">
-            <div class="col-sm-12">
-                <h3 style="text-align: center;  color: #8894ab; font-size: 24px">
-                    <!-- Contact us via chat and tell us how many operator seats you want to add to the project -->
-                    {{ "Pricing.TheNumberOfOperatorSeatsCannotBeLess" | translate }}
-                </h3>
-            </div>
-          </div>
-        </div>
-  
-        <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
-          <div style="text-align: center; margin-bottom: 25px;"> 
-  
-            <button type="button"  style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"            
-              id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="closeInfoModal()">
-              <!-- PerMonth -->
-              {{ "Close" | translate }}
-            </button>
+
+        <h2 class="modal-title"
+          style="color: #262f3c; text-align: center; font-family: 'Poppins','Roboto', 'Arial', sans-serif; margin-top: 25px">
+          <!-- <span style="vertical-align: middle;"> -->
+          <i class="material-icons" style="vertical-align: middle; font-size:49px; color:#facea8 ">
+            error_outline
+          </i>
+          <!-- </span> -->
+        </h2>
+
+      </div>
+      <hr class="custom-hr" style="margin-top:10px; margin-bottom:10px">
+      <div class="modal-body"
+        style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px; line-height: 1">
+
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 style="text-align: center;  color: #8894ab; font-size: 24px">
+              <!-- Contact us via chat and tell us how many operator seats you want to add to the project -->
+              {{ "Pricing.TheNumberOfOperatorSeatsCannotBeLess" | translate }}
+            </h3>
           </div>
         </div>
       </div>
+
+      <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
+        <div style="text-align: center; margin-bottom: 25px;">
+
+          <button type="button"
+            style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"
+            id="checkout-button-plan_EjFHNnzJXE3jul" role="link" (click)="closeInfoModal()">
+            <!-- PerMonth -->
+            {{ "Close" | translate }}
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 
 
-<!-- <script>
+  <!-- <script>
     var stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
   
     var checkoutButton = document.getElementById('checkout-button-plan_EjFHNnzJXE3jul');

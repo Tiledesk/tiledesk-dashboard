@@ -1,0 +1,645 @@
+
+ <!-- background-repeat: no-repeat;  -->
+ <!-- background-attachment: scroll; background-position: bottom right; -->
+
+<div class="main-content" style="padding-top:0px; background-color: #ffffff;
+    min-height: calc(100% - 53px);margin-top: 0px; padding: 0px">
+
+<!-- background-image: url(), linear-gradient(to bottom, #3EA9F5 0%, #3EA9F5 100%),linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+background-size: 475px 449px, 188px 100%, 179px 100%;
+background-position: right -12px bottom,right,calc(100% - 179px);    background-repeat: no-repeat; -->
+
+<div style="min-height: calc(100vh - 53px);" class="plan-bckgrnd"
+[ngClass]="{'pro-plan-bckgrnd' : selectedPlanName === 'pro', 'enterprise-plan-bckgrnd' : selectedPlanName === 'enterprise'}">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="close-pricing-page">
+        <i class="material-icons close-btn" (click)="goBack()">
+          clear
+        </i>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 style="margin-top:10px; font-family:'Poppins','Roboto', 'Arial', sans-serif">
+          
+          <!-- Upgrade Your Account  -->
+          {{'UpgradeYourAccount' | translate}}
+          <!-- to
+          <span *ngIf="selectedPlanName === 'pro'">Pro</span> 
+          <span *ngIf="selectedPlanName === 'enterprise'">Enterprise</span>
+          Plan -->
+        </h1>
+        <!-- <p>and bring your <strong>customer communication</strong> to a whole <strong>new level.</strong></p> -->
+      </div>
+      <!-- <div class="col-md-4">
+        <span class="highlight">  Try our PRO plan free for 30 days.</span> 
+      </div> -->
+    </div>
+
+    <div class="row">
+
+      <!-- /// PRO -->
+      <div class="col-md-6"> 
+
+        <div style="margin-top:30px">
+          <div class="btn-group btn-group-lg">
+            <a class="btn" 
+            [ngClass]="{'pro-plan-btn' : selectedPlanName === 'pro', 'btn-white' : selectedPlanName === 'enterprise'}"
+            (click)="selectedPlan('pro')" style="width: 152px;">
+              Pro
+              
+            </a>
+            <a class="btn" 
+              [ngClass]="{'enterprise-plan-btn' : selectedPlanName === 'enterprise', 'btn-white' : selectedPlanName === 'pro'}"
+              (click)="selectedPlan('enterprise')">
+              Enterprise
+            
+            </a>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+              <!-- <img class="pricing__use-case-squiggle u__hidden-md-min" src="https://marketing.intercomassets.com/assets/pricing/use-cases/squiggle-739aa764d68d44b1f5025ea2e1d93145f701abe535b64b9182e6b37bdc4e7c33.png" alt="Squiggle"> -->
+             <div style="margin-bottom:15px">
+                <h3 *ngIf="selectedPlanName === 'pro'" style="color: #3EA9F5;line-height: 1.3em;"> 
+                  <span style="font-weight:500"> Pro {{'Includes' | translate}} </span>
+                  <span style="display:block">
+                    <!-- everything in Free, and: -->
+                    {{'EverythingIn'| translate}} Free,  {{'And' | translate}}:
+                  </span> 
+                </h3>
+
+                <h3 *ngIf="selectedPlanName === 'enterprise'" style="color: #6772E5;line-height: 1.3em;"> 
+                  <span style="font-weight:500"> Enterprise {{'Includes' | translate}} </span>
+                  <span style="display:block">
+                    {{'EverythingIn' | translate}} Pro, {{'And' | translate}}:
+                  </span> 
+                </h3>
+              </div>
+          </div> 
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+              <ul *ngIf="selectedPlanName === 'pro'" class="pro-plan-ul" >
+                <li>{{'WidgetUnbranding' | translate}}</li> 
+                <li>{{'SmartAssignment' | translate}}</li>
+                <li>{{ 'Hours'| translate}}</li> 
+                <li>{{'Unlimited'| translate}} {{'Departments' | translate}}</li> 
+                <li>{{'Unlimited'| translate}} {{'AgentsGroups'| translate}}</li>
+                <li>{{'UnlimitedChatHistory' | translate}} </li>
+                <li>{{'AnalyticsAndRealTimeMonitoring' | translate}} </li>
+                <li>{{'TicketingSystem' | translate}}</li>
+                <li>{{'DataExport' | translate}}</li>
+                <li>{{'ActivityLog' | translate}}</li>
+                <li>{{'EmailTicketing' | translate}}</li>
+                <li>{{'PostChatSurveys' | translate}}</li>
+                <li>{{'Triggers' | translate}}</li>
+                <li>{{'Triggers' | translate}}</li>
+                <li>{{'EmailAndLiveChatSupport' | translate}}</li>
+        
+                <!-- <li (click)="cancelSubcription()"> CANCEL SUBSCRIPTION</li> -->
+
+
+                <!-- <button  style="background-color:rgb(178, 36, 206);color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+                (click)="updatesubscription()">
+                  UPDATE SUBSCRIPTION
+                </button> -->
+                
+                <button *ngIf="DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE === true" style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+                  (click)="stripeProPlanPerDayCheckout()">
+                    TEST 3,00 €/day
+                </button>
+
+              <!--  <button  style="background-color:rgb(103, 229, 221);color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+                (click)="stripeProPlanPerDayWithTrialCheckout()">
+                   DAILY PLAN WITH TRIAL
+                </button> -->
+
+                <!-- 63f4ad5e394cfe00132ac70d -->
+             > {{clientReferenceId}}
+              <stripe-buy-button
+                buy-button-id="buy_btn_1Mk6RBD1JyUWkzR9DzTHvDgb"
+                publishable-key="pk_test_51MhFEUD1JyUWkzR9FQk2tjFEigAnddgIo5cezm2wkTiQ2z2e7rgscoYYouEjd9xZookxo0Ad9voSkY2YHmZEgI2X004MLzq9Vf"
+               [client-reference-id]=projectId>
+              </stripe-buy-button>
+
+              <button (click)="stripeGrowthPaymentLinkCheckout()">
+
+              </button>
+                
+                <button *ngIf="DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD === true"  style="background-color:rgb(227, 70, 196);color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+                (click)="stripeLiveProDailyCheckout()">
+                  LIVE 0,20 €/day MIN 3 QTY 
+                </button>
+              </ul>
+
+              <ul *ngIf="selectedPlanName === 'enterprise'" class="enterprise-plan-ul">
+               
+                <li>{{'DedicatedAccountManager' | translate}}</li> 
+                <li>Onboarding + {{'Training' | translate}}</li>
+                <li>{{'SoftwareEngineerSupport' | translate}} </li>
+                <li>{{'CustomizationOfEmailNotificationTemplates' | translate}}</li>
+                <li>{{'SmtpSettings' | translate}}</li>
+                <li>{{'AvailableAddOnsVoiceInteraction' | translate}}</li>
+                
+                
+              </ul>
+
+          </div>
+        </div>
+      </div>
+
+     
+      <div class="col-md-6" [ngClass]="{'hide-when-is-open-PaymentReport' : displayPaymentReport === 'block'}" > 
+         
+        <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22) !important; border-radius:10px ">
+
+          <div class="card-header"  *ngIf="selectedPlanName === 'pro'" 
+            [ngClass]="{'pro-plan-card-bckgrnd' : selectedPlanName === 'pro', 'enterprise-plan-card-bckgrnd' : selectedPlanName === 'enterprise'}"
+            style="margin:0px; box-shadow:none; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; height: 78px">
+            <!-- <h3 style="margin-top:5px;margin-bottom:5px;"> 
+              <span *ngIf="selectedPlanName === 'pro'">  Pro </span>
+              <span *ngIf="selectedPlanName === 'enterprise'">  Enterprise  </span>
+            </h3>  -->
+
+            <label class="price" style="line-height:15px" *ngIf="selectedPlanName === 'pro'">
+              
+              <span class="price-text">
+                
+                <span style="position: relative;top: -16px;"> € </span>  
+                  <span class="price" style="font-size:40px; font-weight: 400;font-family: 'Lato', sans-serif;">
+
+                    <span *ngIf="perMonth === true">
+                      {{proPlanPerAgentPrice}}.00 
+                    </span>
+                    <span *ngIf="perYear === true">
+                      {{yearlyProPlanPerAgentPrice}}
+                    </span>
+                  </span>
+                <span class="price-agent" style="display: block;">
+                  <!-- per agent per month -->
+                  {{'PerAgent' | translate}}  {{'PerMonth' | translate}}
+                </span>
+              </span>
+            </label>
+
+          </div>
+
+          <div class="card-content" *ngIf="selectedPlanName === 'pro'">
+            <div class="row">
+              <div class="col-md-12" > 
+                <div class="quantity-box-title"> 
+                  <h2 style="margin-top:10px"> 
+                    <!-- Operators -->
+                    {{ "Pricing.Operators" | translate }}
+                  </h2>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 col-md-4"> 
+                <a>
+                  <!-- [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}" -->
+                 
+                  <!-- [disabled]="operatorNo <= projectUsersNumber" -->
+                  <button class="btn-only-icon pro-plan-btn-only-icon" (click)="decreaseOperatorNumber()" style="float: right">
+                    <i class="material-icons btn-icon">
+                      remove
+                    </i>
+                  </button>
+                  
+                </a>
+              </div>
+
+              <div class="col-xs-4 col-sm-4 col-md-4"> 
+                <div class="quantity" style="text-align:center; font-family: 'Lato', sans-serif;"
+                  [ngClass]="{'pro-plan-quantity' : selectedPlanName === 'pro', 'enterprise-plan-quantity' : selectedPlanName === 'enterprise'}">
+                  {{ operatorNo }}
+                </div>
+              </div>
+
+              <div class="col-xs-4 col-sm-4 col-md-4"> 
+                <a>
+
+                  <!-- [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}" -->
+                  <button class="btn-only-icon pro-plan-btn-only-icon" (click)="increaseOperatorNumber()">
+                    <i class="material-icons btn-icon">
+                      add
+                    </i>
+                  </button>
+                </a>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col-sm-12">
+
+                <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+                <!-- *ngIf="!showSpinner" -->
+                <div class="total-price" style="height:104px">
+
+                  <span *ngIf="perMonth === true"> 
+                    <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
+                    <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif;">
+                        
+                      <span *ngIf="showSpinnerInTotalPrice">   <i class="fa fa-spinner fa-spin"></i></span>
+
+                      <span *ngIf="!showSpinnerInTotalPrice">  {{ numberOfAgentPerPrice }} </span>
+
+                      <span *ngIf="!showSpinnerInTotalPrice" style="font-size: 18px;position:relative;top: -4px;">
+                          <!-- per month -->
+                          {{'PerMonth' | translate}}
+                      </span>
+                    </span>
+                  </span>
+
+                  <span *ngIf="perYear === true"> 
+                    <div class="total-price-x-year"> 
+                      <div class="per-year-total"> 
+                        <span style="font-size: 15px;position: relative;top: -48px;left:5px">€</span> 
+                        <span style="position: relative;left: -7px;font-weight: 500;font-family: 'Lato', sans-serif; font-size:32px; text-decoration: line-through; top:-39px">
+                      
+                          <!-- 2mesi  {{ (numberOfAgentPerPrice * 2) }}  -->
+                          <!-- 12mesi  -->
+                          {{ (numberOfAgentPerPrice * 12) }}
+
+                          <!-- <span style="font-size: 18px;position:relative;top: -4px;">
+                              per year
+                          </span> -->
+                        </span>
+                      </div>
+                  
+                      <div class="per-year-total-discounted"> 
+                        <span style="font-size: 30px;position: relative;top: -87px;left:18px">€</span> 
+                        <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif; top: -72px;">
+                      
+                          {{ (numberOfAgentPerPrice * 10) }}
+                          <span style="font-size: 18px;position:relative;top: -4px;">
+                              <!-- per year -->
+                              {{'PerYear' | translate}}
+                          </span>
+                        </span>
+                      </div>
+
+                    </div>
+                  </span>
+                <!-- <span style="font-size: 18px;position:relative;top: -4px;">
+                 
+                  <span *ngIf="perMonth === true"> 
+                      per month
+                  </span>
+                  <span *ngIf="perYear === true"> 
+                      per year
+                  </span>
+                </span> -->
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="period-options" style="text-align:center; margin-top:25px"> 
+                  <div class="radio">
+                      <label>
+                          <!-- (click)="periodOptionSelected(perMonth)"  -->
+                        <input type="radio" name="optionsRadios" [checked]="perMonth === true"  value="perMonth"  (click)="setPeriod('perMonth')">
+                          <!-- per month  -->
+                          {{'PerMonth' | translate}}
+                          
+                      </label>
+
+                      <label>
+                        <input type="radio" name="optionsRadios" value="perYear" (click)="setPeriod('perYear')">
+                          <!-- per year -->
+                          {{'PerYear' | translate}}
+                      </label>
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+
+
+            <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
+            <div style="text-align: center; margin-top: 15px;" *ngIf="selectedPlanName === 'pro'"> 
+              <button type="button" class="btn outline-btn btn-lg pro-plan-outline-btn"             
+                id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="openReportPaymentModal()" [disabled]="operatorNo < projectUsersNumber">
+                  <!-- Get Pro Plan -->
+                  {{'GetProPlan' | translate}}
+
+              </button>
+
+             
+              <!-- <button type="button" *ngIf="perMonth === true" class="btn outline-btn btn-lg pro-plan-outline-btn"             
+                id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
+                  Get Pro Plan (PerMonth)
+              </button>
+  
+              <button type="button" *ngIf="perYear === true" class="btn outline-btn btn-lg pro-plan-outline-btn" 
+                id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
+            
+                  Get Pro Plan (PerYear)
+              </button> -->
+             
+            </div>
+
+
+          </div>  <!-- ./ card-content x pro-plan-->
+
+           
+         <!-- ------------------------------------------------------------------------- -->
+         <!--   card-content for enterprise plan  -->
+         <!-- ------------------------------------------------------------------------- -->
+          <div class="card-content" *ngIf="selectedPlanName === 'enterprise'">
+              <div class="row">
+                <div class="col-md-12" style="text-align:center"> 
+                <h2>
+                  {{'ContactUs' | translate}}
+                </h2>
+      
+                <hr class="custom-hr"> 
+      
+                  <div style="max-width: 350px; text-align:center; margin-left:auto;  margin-right:auto;"> 
+                    <!-- <h3> for custom packages <br> and pricing </h3> -->
+                    <h3> 
+                      <!-- Our most comprehensive plan, with advanced features and dedicated support -->
+                      {{'OurMostComprehensivePlan' | translate}}
+                    
+                    </h3>
+                  </div>
+                </div>
+              </div>
+
+
+              <div style="text-align: center; margin-top: 15px;">
+                  <button class="btn outline-btn btn-lg enterprise-plan-outline-btn"
+                    id="checkout-button-plan_DidlhS2dfJrSST" role="link" (click)="launchWidget()">
+                      <!-- Let's chat -->
+                      
+                      {{'ContactUs' | translate}}
+                  </button>
+              </div>
+
+          </div>
+
+        </div> <!-- ./ card -->
+
+
+        <div class="col-md-12">
+          <div id="error-message">{{ displayStipeCheckoutError }} </div>
+        </div>
+
+      </div>
+    </div> <!-- ./ row -->
+
+    <!-- <div class="row">
+        <div class="col-sm-12">
+
+          <div style="text-align: center; margin-top: 15px;"> 
+            <button type="button" class="btn outline-btn btn-lg" 
+              [ngClass]="{'pro-plan-outline-btn' : selectedPlanName === 'pro', 'enterprise-plan-outline-btn' : selectedPlanName === 'enterprise'}">
+            
+            <span *ngIf="selectedPlanName === 'pro'"> + Get Pro Plan  </span> 
+            <span *ngIf="selectedPlanName === 'enterprise'"> Get Enterprise Plan  </span> 
+            </button>
+          </div>
+        </div>
+    </div> -->
+
+  </div>
+</div>
+</div>
+
+
+<!-- ============= PAY WITH CARD MODAL ============= -->
+<div class="modal modal-payment-report" tabindex="-1" role="dialog" [ngStyle]="{'display':displayPaymentReport}" style="background-color: rgba(90,90,90,0.9); overflow: auto;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
+        <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">
+ 
+            <div class="close-payment-report-modal" style="font-weight: 100; right: 6px; position: absolute;cursor:pointer" (click)="closePaymentReportModal()">
+              <i class="material-icons close-payment-report-icon" style="font-size: 35px; opacity: 0.5;">
+                clear
+              </i>
+            </div>
+
+          <table dir="ltr" class="pricing-moda-header" width="100%" style="border:0;border-collapse:collapse;margin:0;padding:0;">
+              <tbody>
+              <tr>
+                  <!-- #f0806f -->
+                <td class="pricing-moda-header-Left" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-left-radius:5px" align="right" height="156" valign="bottom" width="252">
+                  <a href="#m_8887943420113036679_">
+                    <img alt="" height="156" width="252" src="assets/img/pricing_modal_header_Left.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
+                  </a>
+                </td>
+                <td class="pricing-moda-header-Center" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%" align="center" height="156" valign="bottom" width="96">
+                  <a style="outline:0;text-decoration:none">
+                    <img alt="" height="156" width="96" src="assets/img/pricing_modal_header_twelve_degree_icon@2x.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
+                  </a>
+                </td>
+                <td class="pricing-moda-header-Right" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-right-radius:5px" align="left" height="156" valign="bottom" width="252">
+                  <a href="#m_8887943420113036679_">
+                    <img alt="" height="156" width="252" src="assets/img/pricing_modal_header_Right.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
+                  </a>
+                </td>
+              </tr>
+              </tbody>
+          </table>
+
+          <h2 class="modal-title" style="color: #262f3c; text-align: center; font-family: 'Poppins','Roboto', 'Arial', sans-serif">
+            <span style="vertical-align: middle;">
+                {{ company_name }} {{'ProPlan' | translate}}
+            </span>
+            <hr class="custom-hr" style="margin-top:10px; margin-bottom:10px">
+            <span style="display: block; color: #8894ab; font-size: 24px">
+              <!-- Order details  -->
+              {{'OrderDetails' | translate}}
+            </span> 
+          </h2>
+
+
+        </div>
+        <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px; line-height: 1">
+
+          <div class="row">
+            
+            <div class="col-sm-6">
+
+                <h3 style="text-align: center">
+                    <!-- <i class="material-icons" style="display:block;color: #fff; font-size: 26px; line-height: 40px; width: 40px; height: 40px; text-align: center; border-radius: 50%;background-color: #3EA9F5; vertical-align: middle"> group </i> -->
+                    <span style="font-size:14px;display: block;  color: #fff; line-height: 1.5;background-color: #3EA9F5">  
+                      <!-- Operators  -->
+                      {{'Pricing.Operators' |  translate}}
+                    
+                    </span> 
+                    <span style="padding-top:8px; display:block;  font-family: 'Lato', sans-serif; font-size:25px">{{  operatorNo }}</span>
+                 </h3>
+            </div>
+
+            <div class="col-sm-6">
+
+                <h3 style="text-align: center">
+                    <!-- <i class="material-icons" style="display:block;color: #fff; font-size: 26px; line-height: 40px; width: 40px; height: 40px; text-align: center; border-radius: 50%;background-color: #3EA9F5; vertical-align: middle"> access_time </i> -->
+                    <span style="font-size:14px;display: block;  color: #fff; line-height: 1.5;background-color: #3EA9F5">  
+                      <!-- Subscription period  -->
+                      {{ 'SubscriptionPeriod' | translate }}
+                    </span>
+                    
+                    <!-- color: #5292e9; -->
+                    <span style="padding-top:8px; display:block;  font-family: 'Lato', sans-serif; font-size:25px">
+                    
+                      <span *ngIf="perMonth === true"> 
+                        <!-- per Month  -->
+                        {{'PerMonth' | translate}}
+                      </span>
+                     
+                      <span *ngIf="perYear === true">
+                        <!-- per Year  -->
+                        {{'PerYear' | translate}}
+                      </span>
+                    </span>
+                 </h3>
+            </div>
+
+          </div>
+
+          <div class="row">
+              <div class="col-md-12" style="text-align:center">
+                  <!-- margin-left: -109px; -->
+                  <div class="total">
+                  <h2 style="margin-top: 10px"> <span style="font-size: 32px; padding-right: 16px;color: #8894ab;"> 
+                    {{'Total' | translate}} 
+                  </span> 
+                  
+                    
+                  <span class="total-price" style="border:none">  
+                    <span style="position: relative;top: -16px;font-size: 35px;"> € </span>
+                    <span style="font-family: 'Lato', sans-serif; font-weight: 700;"> 
+                      
+                      <span *ngIf="perMonth === true"> 
+                        {{ numberOfAgentPerPrice }}<span style="font-size: 40px">,00  </span>
+                      </span>
+                      <span *ngIf="perYear === true"> 
+                        {{ numberOfAgentPerPrice * 10 }}<span style="font-size: 40px">,00  </span>
+                      </span>
+                    </span> 
+                  </span> 
+              </h2>
+            </div>
+
+            <hr class="custom-hr" style="margin-top:0px"> 
+              </div>
+          </div>
+  
+  </div>
+
+  
+  <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
+    <div style="text-align: center; margin-bottom: 25px;" *ngIf="selectedPlanName === 'pro'"> 
+
+        <button class="pay-with-card-btn" type="button" *ngIf="perMonth === true" style="background-color:#f0806f;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"            
+          id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
+
+            <!-- Pay with a Card  -->
+            {{ 'PayWithACard' | translate }}
+        </button>
+
+        <button class="pay-with-card-btn" type="button" *ngIf="perYear === true" style="background-color:#f0806f;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"
+          id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
+
+            <!-- Pay with a Card  -->
+            {{ 'PayWithACard' | translate }}
+        </button>
+      </div>
+  </div>
+
+      </div>
+    </div>
+  </div>
+
+<!-- ============= INFO 'NO LESS OF THE NUMBER OF THE AGENT THET ARE ALREADY IN YOUR PROJECT' MODAL ============= -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.9);"> 
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
+        <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">
+  
+          <!-- <div style="font-weight: 100; right: 6px; position: absolute;cursor:pointer" (click)="closeInfoModal()">
+            <i class="material-icons close-payment-report-icon" style="font-size: 35px; opacity: 0.5;">
+              clear
+            </i>
+          </div> -->
+  
+          <h2 class="modal-title" style="color: #262f3c; text-align: center; font-family: 'Poppins','Roboto', 'Arial', sans-serif; margin-top: 25px">
+            <!-- <span style="vertical-align: middle;"> -->
+              <i class="material-icons" style="vertical-align: middle; font-size:49px; color:#facea8 ">
+                error_outline
+              </i>
+            <!-- </span> -->
+          </h2>
+  
+        </div>
+        <hr class="custom-hr" style="margin-top:10px; margin-bottom:10px">
+        <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px; line-height: 1">
+  
+          <div class="row">
+            <div class="col-sm-12">
+                <h3 style="text-align: center;  color: #8894ab; font-size: 24px">
+                    <!-- Contact us via chat and tell us how many operator seats you want to add to the project -->
+                    {{ "Pricing.TheNumberOfOperatorSeatsCannotBeLess" | translate }}
+                </h3>
+            </div>
+          </div>
+        </div>
+  
+        <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
+          <div style="text-align: center; margin-bottom: 25px;"> 
+  
+            <button type="button"  style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"            
+              id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="closeInfoModal()">
+              <!-- PerMonth -->
+              {{ "Close" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<!-- <script>
+    var stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
+  
+    var checkoutButton = document.getElementById('checkout-button-plan_EjFHNnzJXE3jul');
+    checkoutButton.addEventListener('click', function () {
+      // When the customer clicks on the button, redirect
+      // them to Checkout.
+      stripe.redirectToCheckout({
+        items: [{plan: 'plan_EjFHNnzJXE3jul', quantity: 1}],
+  
+        // Do not rely on the redirect to the successUrl for fulfilling
+        // purchases, customers may not always reach the success_url after
+        // a successful payment.
+        // Instead use one of the strategies described in
+        // https://stripe.com/docs/payments/checkout/fulfillment
+        successUrl: 'https://your-website.com/success',
+        cancelUrl: 'https://your-website.com/canceled',
+      })
+      .then(function (result) {
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer.
+          var displayError = document.getElementById('error-message');
+          displayError.textContent = result.error.message;
+        }
+      });
+    });
+  </script> -->

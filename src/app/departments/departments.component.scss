@@ -365,8 +365,8 @@ table > tbody > tr.default-dept-disabled > td {
   font-style: italic;
 }
 
-.pro-only-badge {
-  background: #3ea9f5;
+.from-b-plan-badge {
+  background: $plan-b-color;
   font-size: 9px;
   color: #fff;
   border-radius: 3px;

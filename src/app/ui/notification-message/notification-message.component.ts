@@ -12,6 +12,7 @@ import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { takeUntil } from 'rxjs/operators';
+import { PLAN_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 @Component({
   selector: 'notification-message',
@@ -20,6 +21,7 @@ const swal = require('sweetalert');
   encapsulation: ViewEncapsulation.None,
 })
 export class NotificationMessageComponent implements OnInit, OnDestroy {
+  PLAN_NAME = PLAN_NAME
   private unsubscribe$: Subject<any> = new Subject<any>();
   tparams: any;
   company_name: string;
@@ -148,15 +150,17 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
         if (projectProfileData.profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
-            this.profile_name_for_segment = "Pro plan (trial)"
+            this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
           } else {
             this.profile_name_for_segment = "Free"
           }
         } else if (projectProfileData.profile_type === 'payment') {
-          if (projectProfileData.profile_name === 'pro') {
-            this.profile_name_for_segment = "Pro"
-          } else if (projectProfileData.profile_name === 'enterprise') {
-            this.profile_name_for_segment = "Enterprise"
+          if (projectProfileData.profile_name === PLAN_NAME.A) {
+            this.profile_name_for_segment = PLAN_NAME.A
+          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+            this.profile_name_for_segment = PLAN_NAME.B
+          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+            this.profile_name_for_segment = PLAN_NAME.C
           }
         }
       }
@@ -176,7 +180,20 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
     if (planType === 'payment') {
 
-      this.getPaidPlanTranslation(planName)
+      if (planName === PLAN_NAME.A) {
+        this.prjct_profile_name = PLAN_NAME.A + 'plan'
+        this.profile_name_for_segment =  PLAN_NAME.A
+      } else if (this.prjct_profile_name ===  PLAN_NAME.B) {
+        this.prjct_profile_name = PLAN_NAME.B + 'plan'
+        this.profile_name_for_segment = PLAN_NAME.B
+      } else if (this.prjct_profile_name ===  PLAN_NAME.C) {
+        this.prjct_profile_name = PLAN_NAME.C + 'plan'
+        this.profile_name_for_segment = PLAN_NAME.C
+      }
+
+
+
+      // this.getPaidPlanTranslation(planName)
       // if (browserLang === 'it') {
       //   this.prjct_profile_name = 'Piano ' + planName;
       //   return this.prjct_profile_name
@@ -187,38 +204,29 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  getPaidPlanTranslation(project_profile_name) {
-    this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-      .subscribe((text: string) => {
-        this.prjct_profile_name = text;
+  // getPaidPlanTranslation(project_profile_name) {
+  //   this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+  //     .subscribe((text: string) => {
+  //       this.prjct_profile_name = text;
 
-        // this.logger.log('+ + + PaydPlanName ', text)
-      });
-  }
+  //       // this.logger.log('+ + + PaydPlanName ', text)
+  //     });
+  // }
 
 
   openModalExpiredSubscOrGoToPricing() {
-    // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-    //   this.notify.closeDataExportNotAvailable();
-    //   this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    // }
-
-    // if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-    //   this.notify.closeDataExportNotAvailable();
-    //   this.router.navigate(['project/' + this.projectId + '/pricing']);
-    // }
 
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
         this.notify.closeDataExportNotAvailable();
-        // this.router.navigate(['project/' + this.projectId + '/pricing']);
-        this.notify.presentContactUsModalToUpgradePlan(true);
+        this.router.navigate(['project/' + this.projectId + '/pricing']);
+        // this.notify.presentContactUsModalToUpgradePlan(true);
 
       } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
         this.notify.closeDataExportNotAvailable();
-        if (this.profile_name !== 'enterprise') {
+        if (this.profile_name !== PLAN_NAME.C) {
           this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-        } else if (this.profile_name === 'enterprise') {
+        } else if (this.profile_name === PLAN_NAME.C) {
 
           this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         }
@@ -290,7 +298,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
       this.logger.log('[NOTIFICATION-MSG] - cancelSubscription RES ', confirmation);
 
       if (confirmation && confirmation.status === 'canceled') {
-        this.notify.showNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
         if (!isDevMode()) {
           if (window['analytics']) {
             try {
@@ -344,10 +352,10 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
   goToPricing() {
     this.logger.log('goToPricing projectId ', this.projectId);
-    // this.router.navigate(['project/' + this.projectId + '/pricing']);
+    this.router.navigate(['project/' + this.projectId + '/pricing']);
   
     this.notify.closeModalSubsExpired();
-    this.notify.presentContactUsModalToUpgradePlan(true);
+    // this.notify.presentContactUsModalToUpgradePlan(true);
   }
 
   launchWidget() {

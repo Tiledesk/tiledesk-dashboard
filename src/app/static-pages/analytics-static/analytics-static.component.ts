@@ -9,6 +9,7 @@ import { StaticPageBaseComponent } from './../static-page-base/static-page-base.
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { PLAN_NAME } from 'app/utils/util';
 
 const swal = require('sweetalert');
 
@@ -19,7 +20,7 @@ const swal = require('sweetalert');
   encapsulation: ViewEncapsulation.None
 })
 export class AnalyticsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
-
+  PLAN_NAME = PLAN_NAME
   subscription: Subscription;
   projectId: string;
   browserLang: string;
@@ -57,6 +58,7 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   isChromeVerGreaterThan100: boolean;
+  tparams: any;
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -66,14 +68,16 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService
-  ) { super(translate); }
+  ) {
+    super(translate);
+    this.tparams = { 'plan_name': PLAN_NAME.B }
+  }
 
   ngOnInit() {
     this.getOSCODE();
     this.getCurrentProject();
     this.getBrowserLang();
     this.getProjectPlan();
-
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
@@ -88,8 +92,8 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[TRIGGER-BASECOMP] AppConfigService getAppConfig public_Key', this.public_Key)
-    this.logger.log('[TRIGGER-BASECOMP] public_Key', this.public_Key)
+    this.logger.log('[ANALYTICS-STATIC] AppConfigService getAppConfig public_Key', this.public_Key)
+    this.logger.log('[ANALYTICS-STATIC public_Key', this.public_Key)
 
     let keys = this.public_Key.split("-");
     // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
@@ -172,14 +176,19 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           if (this.USER_ROLE === 'owner') {
+            if (this.profile_name !== PLAN_NAME.A) {
+            
+              if (this.profile_name === PLAN_NAME.B) {
 
-            if (this.profile_name !== 'enterprise') {
+                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
 
-              this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+              } else if (this.profile_name === PLAN_NAME.C) {
 
-            } else if (this.profile_name === 'enterprise') {
-
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+                this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              }
+            } else if (this.profile_name === PLAN_NAME.A) {
+              
+              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
             }
           }
         }
@@ -198,9 +207,11 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
       if (this.USER_ROLE === 'owner') {
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           this.notify._displayContactUsModal(true, 'upgrade_plan');
-        } else {
-          // this.router.navigate(['project/' + this.projectId + '/pricing']);
+        } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+          
           this.notify.presentContactUsModalToUpgradePlan(true);
+        } else if (this.prjct_profile_type === 'free') {
+          this.router.navigate(['project/' + this.projectId + '/pricing']);
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

@@ -23,6 +23,7 @@ import { AppConfigService } from '../services/app-config.service'
 import { WebSocketJs } from '../services/websocket/websocket-js'
 import { LoggerService } from '../services/logger/logger.service'
 import { ScriptService } from '../services/script/script.service'
+import { PLAN_NAME } from 'app/utils/util'
 // import { SsoService } from './sso.service';
 
 // start SUPER USER
@@ -40,7 +41,7 @@ const superusers = [
 
 @Injectable()
 export class AuthService {
-
+  PLAN_NAME = PLAN_NAME
   SERVER_BASE_PATH: string
   SIGNUP_BASE_URL: string
   SIGNIN_BASE_URL: string
@@ -328,6 +329,8 @@ export class AuthService {
               url_segments[1] !== 'install-template' &&
               url_segments[1] !== 'create-project-itw' &&
               url_segments[1] !== 'install-template-np' &&
+              url_segments[1] !== 'install-template-np' &&
+              url_segments[1] !== 'success' &&
               current_url !== '/projects'
             ) {
               this.logger.log(
@@ -953,18 +956,18 @@ export class AuthService {
 
         if (storedPrjctParsed.profile_type === 'free') {
           if (storedPrjctParsed.trial_expired === false) {
-            projectProfileName = "Pro plan (trial)"
+            projectProfileName = PLAN_NAME.B + " (trial)"
           } else {
-
             projectProfileName = "Free"
-
           }
         } else if (storedPrjctParsed.profile_type === 'payment') {
 
-          if (storedPrjctParsed.profile_name === 'pro') {
-            projectProfileName = "Pro"
-          } else if (storedPrjctParsed.profile_name === 'enterprise') {
-            projectProfileName = "Enterprise"
+          if (storedPrjctParsed.profile_name === PLAN_NAME.A) {
+            projectProfileName = PLAN_NAME.A
+          } else if (storedPrjctParsed.profile_name === PLAN_NAME.B) {
+            projectProfileName = PLAN_NAME.B
+          } else if (storedPrjctParsed.profile_name === PLAN_NAME.B) {
+            projectProfileName = PLAN_NAME.B
           }
 
         }
