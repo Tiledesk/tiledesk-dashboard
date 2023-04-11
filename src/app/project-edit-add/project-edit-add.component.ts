@@ -1730,8 +1730,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     //   window['tiledesk'].open();
     // }
     // window.open('mailto:' + this.contactUsEmail, 'mail')
-    window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
-
+    if (this.USER_ROLE === 'owner') {
+      window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
+    }
   }
 
   goToPricing() {

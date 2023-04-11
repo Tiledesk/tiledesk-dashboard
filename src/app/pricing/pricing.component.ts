@@ -13,6 +13,7 @@ import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PLAN_NAME } from 'app/utils/util';
+import { NotifyService } from 'app/core/notify.service';
 
 declare var Stripe: any;
 
@@ -178,6 +179,9 @@ export class PricingComponent implements OnInit, OnDestroy {
   PAYMENT_LINK_ANNUALLY_PLAN_B: string;
   PAYMENT_LINK_PLAN_C: string;
   user: any;
+  USER_ROLE: any;
+  agentCannotManageAdvancedOptions: string;
+  learnMoreAboutDefaultRoles: string;
   constructor(
     public location: Location,
     public auth: AuthService,
@@ -189,7 +193,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     public appConfigService: AppConfigService,
     private translate: TranslateService,
-    private router: Router
+    private router: Router,
+    private notify: NotifyService
   ) {
 
     const brand = brandService.getBrand();
@@ -227,6 +232,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.setpaymentLinks()
     this.getRouteParamsAndAppId();
     this.getLoggedUser();
+    this.getProjectUserRole();
+    this.translateString();
 
 
 
@@ -249,6 +256,20 @@ export class PricingComponent implements OnInit, OnDestroy {
     } else {
       this.displayClosePricingPageBtn = false;
     }
+
+  }
+
+  translateString() {
+    this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
+      .subscribe((translation: any) => {
+        this.agentCannotManageAdvancedOptions = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+
+        this.learnMoreAboutDefaultRoles = translation;
+      });
   }
 
   getLoggedUser() {
@@ -256,6 +277,16 @@ export class PricingComponent implements OnInit, OnDestroy {
 
       this.user = user;
     })
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs
+      .subscribe((user_role) => {
+        this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', user_role);
+        if (user_role) {
+          this.USER_ROLE = user_role;
+        }
+      });
   }
 
   getCurrentProject() {
@@ -313,59 +344,68 @@ export class PricingComponent implements OnInit, OnDestroy {
   // PLAN A 
   // -------------------------------
   openPaymentLinkMontlyPlanA() {
-    // console.log('[PRICING] PLAN A Montly')
-    // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
-    const url = `${this.PAYMENT_LINK_MONTLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}"`
-    window.open(url, '_self');
-    if (!isDevMode()) {
-      try {
-        window['analytics'].page('Pricing page', {
+    if (this.USER_ROLE === 'owner') {
+      // console.log('[PRICING] PLAN A Montly')
+      // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_MONTLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}"`
+      window.open(url, '_self');
 
-        });
-      } catch (err) {
-        this.logger.error('Pricing page error', err);
-      }
+      if (!isDevMode()) {
+        try {
+          window['analytics'].page('Pricing page', {
 
-      try {
-        window['analytics'].track('Go to checkout for plan' + PLAN_NAME.A + ' /montly', {
-          "email": this.user.email,
-        }, {
-          "context": {
-            "groupId": this.projectId
-          }
-        });
-      } catch (err) {
-        this.logger.error('track go to checkout error', err);
+          });
+        } catch (err) {
+          this.logger.error('Pricing page error', err);
+        }
+
+        try {
+          window['analytics'].track('Go to checkout for plan' + PLAN_NAME.A + ' /montly', {
+            "email": this.user.email,
+          }, {
+            "context": {
+              "groupId": this.projectId
+            }
+          });
+        } catch (err) {
+          this.logger.error('track go to checkout error', err);
+        }
       }
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
     }
   }
 
   openPaymentLinkAnnuallyPlanA() {
-    // console.log('[PRICING] PLAN A Annually')
-    // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
-    const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
-    window.open(url, '_self');
+    if (this.USER_ROLE === 'owner') {
+      // console.log('[PRICING] PLAN A Annually')
+      // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+      window.open(url, '_self');
 
-    if (!isDevMode()) {
-      try {
-        window['analytics'].page('Pricing page', {
+      if (!isDevMode()) {
+        try {
+          window['analytics'].page('Pricing page', {
 
-        });
-      } catch (err) {
-        this.logger.error('Pricing page error', err);
+          });
+        } catch (err) {
+          this.logger.error('Pricing page error', err);
+        }
+
+        try {
+          window['analytics'].track('Go to checkout for plan' + PLAN_NAME.A + ' /annually', {
+            "email": this.user.email,
+          }, {
+            "context": {
+              "groupId": this.projectId
+            }
+          });
+        } catch (err) {
+          this.logger.error('track go to checkout error', err);
+        }
       }
-
-      try {
-        window['analytics'].track('Go to checkout for plan' + PLAN_NAME.A + ' /annually', {
-          "email": this.user.email,
-        }, {
-          "context": {
-            "groupId": this.projectId
-          }
-        });
-      } catch (err) {
-        this.logger.error('track go to checkout error', err);
-      }
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
     }
   }
 
@@ -373,66 +413,78 @@ export class PricingComponent implements OnInit, OnDestroy {
   // PLAN B 
   // -------------------------------
   openPaymentLinkMontlyPlanB() {
-    // console.log('[PRICING] PLAN B Montly')
-    // const url = `https://buy.stripe.com/test_7sI6pkce24T0d8YdQT?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
-    const url = `${this.PAYMENT_LINK_MONTLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
-    window.open(url, '_self');
-    if (!isDevMode()) {
-      try {
-        window['analytics'].page('Pricing page', {
+    if (this.USER_ROLE === 'owner') {
+      // console.log('[PRICING] PLAN B Montly')
+      // const url = `https://buy.stripe.com/test_7sI6pkce24T0d8YdQT?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_MONTLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+      window.open(url, '_self');
+      if (!isDevMode()) {
+        try {
+          window['analytics'].page('Pricing page', {
 
-        });
-      } catch (err) {
-        this.logger.error('Pricing page error', err);
-      }
+          });
+        } catch (err) {
+          this.logger.error('Pricing page error', err);
+        }
 
-      try {
-        window['analytics'].track('Go to checkout for plan' + PLAN_NAME.B + ' /montly', {
-          "email": this.user.email,
-        }, {
-          "context": {
-            "groupId": this.projectId
-          }
-        });
-      } catch (err) {
-        this.logger.error('track go to checkout error', err);
+        try {
+          window['analytics'].track('Go to checkout for plan' + PLAN_NAME.B + ' /montly', {
+            "email": this.user.email,
+          }, {
+            "context": {
+              "groupId": this.projectId
+            }
+          });
+        } catch (err) {
+          this.logger.error('track go to checkout error', err);
+        }
       }
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
     }
   }
 
   openPaymentLinkAnnuallyPlanB() {
-    // console.log('[PRICING] PLAN B Annually')
-    // const url = `https://buy.stripe.com/test_fZeeVQ6TI85cglabIK?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
-    const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
-    window.open(url, '_self');
-    if (!isDevMode()) {
-      try {
-        window['analytics'].page('Pricing page', {
+    if (this.USER_ROLE === 'owner') {
+      // console.log('[PRICING] PLAN B Annually')
+      // const url = `https://buy.stripe.com/test_fZeeVQ6TI85cglabIK?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+      window.open(url, '_self');
+      if (!isDevMode()) {
+        try {
+          window['analytics'].page('Pricing page', {
 
-        });
-      } catch (err) {
-        this.logger.error('Pricing page error', err);
-      }
+          });
+        } catch (err) {
+          this.logger.error('Pricing page error', err);
+        }
 
-      try {
-        window['analytics'].track('Go to checkout for plan' + PLAN_NAME.B + ' /annually', {
-          "email": this.user.email,
-        }, {
-          "context": {
-            "groupId": this.projectId
-          }
-        });
-      } catch (err) {
-        this.logger.error('track go to checkout error', err);
+        try {
+          window['analytics'].track('Go to checkout for plan' + PLAN_NAME.B + ' /annually', {
+            "email": this.user.email,
+          }, {
+            "context": {
+              "groupId": this.projectId
+            }
+          });
+        } catch (err) {
+          this.logger.error('track go to checkout error', err);
+        }
       }
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
     }
   }
 
   openPaymentLinkPlanC() {
-    // console.log('[PRICING] PLAN C')
-    // const url = `https://buy.stripe.com/test_4gw1502Ds5X4ed26ot?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
-    const url = `${this.PAYMENT_LINK_PLAN_C}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
-    window.open(url, '_self');
+    if (this.USER_ROLE === 'owner') {
+      // console.log('[PRICING] PLAN C')
+      // const url = `https://buy.stripe.com/test_4gw1502Ds5X4ed26ot?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_PLAN_C}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanC}&locale=${this.browser_lang}`
+      window.open(url, '_self');
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
+    }
   }
 
   // To test Live Plan 3.00 / Daily
@@ -441,32 +493,39 @@ export class PricingComponent implements OnInit, OnDestroy {
     window.open(url, '_self');
   }
 
+  presentModalAgentCannotManageAvancedSettings() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+  }
+
 
   contactUs(planname) {
-    // console.log('[PRICING] contactUs planname ', planname)
-    window.open(`mailto:sales@tiledesk.com?subject=Upgrade to Tiledesk ${planname}`);
+    if (this.USER_ROLE === 'owner') {
+      // console.log('[PRICING] contactUs planname ', planname)
+      window.open(`mailto:sales@tiledesk.com?subject=Upgrade to Tiledesk ${planname}`);
 
-    // if (!isDevMode()) {
-    try {
-      window['analytics'].page('Pricing page', {
+      // if (!isDevMode()) {
+      try {
+        window['analytics'].page('Pricing page', {
 
-      });
-    } catch (err) {
-      this.logger.error('Pricing page error', err);
+        });
+      } catch (err) {
+        this.logger.error('Pricing page error', err);
+      }
+
+      try {
+        window['analytics'].track(`Contact us to upgrade plan to ${planname}`, {
+          "email": this.user.email,
+        }, {
+          "context": {
+            "groupId": this.projectId
+          }
+        });
+      } catch (err) {
+        this.logger.error('track contact us to upgrade plan error', err);
+      }
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
     }
-
-    try {
-      window['analytics'].track(`Contact us to upgrade plan to ${planname}`, {
-        "email": this.user.email,
-      }, {
-        "context": {
-          "groupId": this.projectId
-        }
-      });
-    } catch (err) {
-      this.logger.error('track contact us to upgrade plan error', err);
-    }
-    // }
   }
 
 
@@ -565,7 +624,7 @@ export class PricingComponent implements OnInit, OnDestroy {
         //   this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD = true;
         //   this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD', this.DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD)
         // }
-        if (params.nk === 'y' && appID === "1:269505353043:web:b82af070572669e3707da6") {
+        if (params.nk === 'y' && appID === "1:522823349790:web:0d4ba710f38b586e1fa00f") {
           this.DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE = true;
           // console.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE', this.DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE)
         }

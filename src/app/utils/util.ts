@@ -287,7 +287,7 @@ export enum PLAN_NAME {
 }
 
 export enum PLAN_SEATS {
-    free = 3, 
+    free = 2, 
     Growth = 4, 
     Scale = 20,
 };

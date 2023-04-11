@@ -400,8 +400,8 @@ const routes: Routes = [
   // and then again to request' details page
   { path: 'project/:projectid/wsrequest/loading', component: LoadingPageComponent, canActivate: [AuthGuard] },
 
-  // TRIGGER
-  { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  // TRIGGER , ProjectProfileGuard
+  { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/trigger-demo', component: TriggerStaticComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/trigger/add', component: TriggerAddComponent, canActivate: [AuthGuard] },
