@@ -164,7 +164,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
-  public TEST_PAYMENT_LINKS = true;
+  public TEST_PAYMENT_LINKS = false;
 
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
