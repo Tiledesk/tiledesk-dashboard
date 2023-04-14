@@ -182,11 +182,11 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
       if (planName === PLAN_NAME.A) {
         this.prjct_profile_name = PLAN_NAME.A + 'plan'
-        this.profile_name_for_segment =  PLAN_NAME.A
-      } else if (this.prjct_profile_name ===  PLAN_NAME.B) {
+        this.profile_name_for_segment = PLAN_NAME.A
+      } else if (this.prjct_profile_name === PLAN_NAME.B) {
         this.prjct_profile_name = PLAN_NAME.B + 'plan'
         this.profile_name_for_segment = PLAN_NAME.B
-      } else if (this.prjct_profile_name ===  PLAN_NAME.C) {
+      } else if (this.prjct_profile_name === PLAN_NAME.C) {
         this.prjct_profile_name = PLAN_NAME.C + 'plan'
         this.profile_name_for_segment = PLAN_NAME.C
       }
@@ -291,69 +291,72 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
 
   cancelSubscription() {
-    this.notify.cancelSubscriptionCompleted(false)
+    if (this.USER_ROLE === 'owner') {
+      this.notify.cancelSubscriptionCompleted(false)
 
-    // this.showSpinner = true;
-    this.projectService.cancelSubscription().subscribe((confirmation: any) => {
-      this.logger.log('[NOTIFICATION-MSG] - cancelSubscription RES ', confirmation);
+      // this.showSpinner = true;
+      this.projectService.cancelSubscription().subscribe((confirmation: any) => {
+        this.logger.log('[NOTIFICATION-MSG] - cancelSubscription RES ', confirmation);
 
-      if (confirmation && confirmation.status === 'canceled') {
-        this.notify.showWidgetStyleUpdateNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
-        if (!isDevMode()) {
-          if (window['analytics']) {
-            try {
-              window['analytics'].identify(this.currentUser._id, {
-                name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
-                email: this.currentUser.email,
-                logins: 5,
-                plan: this.profile_name_for_segment,
-              });
-            } catch (err) {
-              this.logger.error('identify [NOTIFICATION-MSG] Cancel subscription error', err);
-            }
+        if (confirmation && confirmation.status === 'canceled') {
+          this.notify.showWidgetStyleUpdateNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
+          if (!isDevMode()) {
+            if (window['analytics']) {
+              try {
+                window['analytics'].identify(this.currentUser._id, {
+                  name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
+                  email: this.currentUser.email,
+                  logins: 5,
+                  plan: this.profile_name_for_segment,
+                });
+              } catch (err) {
+                this.logger.error('identify [NOTIFICATION-MSG] Cancel subscription error', err);
+              }
 
-            try {
-              window['analytics'].track('Cancel Subscription', {
-                "email": this.currentUser.email,
-              }, {
-                "context": {
-                  "groupId": this.projectId
-                }
-              });
-            } catch (err) {
-              this.logger.error('track [NOTIFICATION-MSG] Cancel subscrption error', err);
-            }
+              try {
+                window['analytics'].track('Cancel Subscription', {
+                  "email": this.currentUser.email,
+                }, {
+                  "context": {
+                    "groupId": this.projectId
+                  }
+                });
+              } catch (err) {
+                this.logger.error('track [NOTIFICATION-MSG] Cancel subscrption error', err);
+              }
 
-            try {
-              window['analytics'].group(this.projectId, {
-                name: this.prjct_name,
-                plan: this.profile_name_for_segment,
-              });
-            } catch (err) {
-              this.logger.error('group [NOTIFICATION-MSG] Cancel subscrption error', err);
+              try {
+                window['analytics'].group(this.projectId, {
+                  name: this.prjct_name,
+                  plan: this.profile_name_for_segment,
+                });
+              } catch (err) {
+                this.logger.error('group [NOTIFICATION-MSG] Cancel subscrption error', err);
+              }
             }
           }
+
+          this.notify.cancelSubscriptionCompleted(true);
         }
+      }, error => {
+        this.logger.error('[NOTIFICATION-MSG] - cancelSubscription - ERROR: ', error);
+        this.notify.showNotification(this.subscriptionCanceledError, 4, 'report_problem');
 
-        this.notify.cancelSubscriptionCompleted(true);
-      }
-    }, error => {
-      this.logger.error('[NOTIFICATION-MSG] - cancelSubscription - ERROR: ', error);
-      this.notify.showNotification(this.subscriptionCanceledError, 4, 'report_problem');
+        this.notify.cancelSubscriptionCompleted(true)
+      }, () => {
+        this.logger.log('[NOTIFICATION-MSG] - cancelSubscription * COMPLETE *');
 
-      this.notify.cancelSubscriptionCompleted(true)
-    }, () => {
-      this.logger.log('[NOTIFICATION-MSG] - cancelSubscription * COMPLETE *');
-
-    });
-
+      });
+    } else {
+      this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles);
+    }
   }
 
 
   goToPricing() {
     this.logger.log('goToPricing projectId ', this.projectId);
     this.router.navigate(['project/' + this.projectId + '/pricing']);
-  
+
     this.notify.closeModalSubsExpired();
     // this.notify.presentContactUsModalToUpgradePlan(true);
   }

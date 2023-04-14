@@ -314,12 +314,12 @@
               </div>
             </div>
             <!-- padding: 0px 20px; min-height: 52px; -->
-            <h5 class="card-title" style="margin-bottom: 5px;" [ngClass]="{'app-store-card-no-badge': (app?.title !== 'Zapier') && (app?.title !== 'WhatsApp Business') && (app?.title !== 'Facebook Messenger')}">
+            <h5 class="card-title" style="margin-bottom: 5px;" [ngClass]="{'app-store-card-no-badge': (app?.title !== 'Zapier') && (app?.title !== 'WhatsApp Business') && (app?.title !== 'Facebook Messenger') && (app?.title !== 'Help Center')}">
               {{ app.title}}
             </h5>
     
             <div class="available-from-b-plan-badge b-plan-badge-color"
-              *ngIf="(app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger')">
+              *ngIf="(app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center')">
               {{ 'AvailableFromThePlan' | translate: tPlanParams }}
             </div>
 

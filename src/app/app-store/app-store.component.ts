@@ -322,7 +322,7 @@ export class AppStoreComponent implements OnInit {
 
   installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
     // console.log('[APP-STORE] appId ', appId)
-    if ((appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger" || appTitle === "Zapier") &&
+    if ((appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger" || appTitle === "Zapier" || appTitle === 'Help Center') &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
