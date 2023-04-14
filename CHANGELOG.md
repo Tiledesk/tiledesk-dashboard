@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.4.25
+- Implements the management of new pricing plans
+
 ### 2.4.25-rc1
 - Changes the endpoint of the app store
 
