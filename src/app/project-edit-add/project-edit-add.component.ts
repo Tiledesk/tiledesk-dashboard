@@ -893,7 +893,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        console.log('featureAvailableFromPlanC value', value, 'this.profile_name', this.profile_name)
+        // console.log('featureAvailableFromPlanC value', value, 'this.profile_name', this.profile_name)
         if (this.isVisiblePaymentTab) {
           if (this.USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
