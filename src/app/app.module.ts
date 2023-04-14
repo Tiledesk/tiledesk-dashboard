@@ -269,6 +269,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { MomentModule } from 'ngx-moment';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
@@ -320,7 +322,10 @@ import { CannedResponsesStaticComponent } from './static-pages/canned-responses-
 import { UpgradePlanModalComponent } from './components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
 import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
-
+import { OnboardingContentComponent } from './create-new-project/onboarding-content/onboarding-content.component';
+import { CnpProjectNameComponent } from './create-new-project/cnp-project-name/cnp-project-name.component';
+import { CnpQuestionSelectComponent } from './create-new-project/cnp-question-select/cnp-question-select.component';
+import { CnpQuestionButtonComponent } from './create-new-project/cnp-question-button/cnp-question-button.component';
 
 
 
@@ -570,7 +575,11 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CannedResponsesStaticComponent,
     UpgradePlanModalComponent,
     WsrequestsStaticComponent,
-    EmailTicketingStaticComponent
+    EmailTicketingStaticComponent,
+    OnboardingContentComponent,
+    CnpProjectNameComponent,
+    CnpQuestionSelectComponent,
+    CnpQuestionButtonComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
@@ -595,6 +604,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MatTabsModule,
     MatExpansionModule,
     MatDialogModule,
+    MatCheckboxModule,
     /* PRIVATE */
     PricingModule,
     ChatbotDesignStudioModule,

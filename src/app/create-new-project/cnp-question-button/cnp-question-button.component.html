@@ -1,0 +1,36 @@
+<!-- -------------------------------------------------------------------------------- -->
+<!-- @ Button -->
+<!-- -------------------------------------------------------------------------------- -->
+<div class="row">
+    <div class="col-md-12">
+        <h4 class="title">{{question.title}}</h4>
+    </div>
+</div>
+<div class="row buttons">
+   
+        <div *ngFor="let button of question.buttons; index as i">
+            <!-- <button 
+                class="btn btn-lg btn-primary"
+                (click)="goToSelectedButton()">
+                {{button.label}}
+            </button> -->
+
+            <div class="css-bskbvc eb451o40">
+                <label class="css-1gpo4nc e59umvr1">
+                    <label class="css-1817epc eafbwzm3">
+                        <section class="disable-input-message-section">
+                            <mat-checkbox 
+                                [checked]="true"
+                                (change)="goToSelectedButton()">
+                            </mat-checkbox>
+                        </section>
+                    </label>
+                    <div class="css-1dra7n8 e1fjvpw20">
+                        <h2 weight="normal" class="e59umvr0 css-npfnnr eimqq0f0">🤖</h2>
+                        <p weight="400" color="default" class="css-19dojy7 eimqq0f0">{{button.label}}</p>
+                    </div>
+                </label>
+            </div>
+        </div>
+    
+</div>

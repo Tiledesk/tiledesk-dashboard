@@ -1,0 +1,122 @@
+{
+  "steps":[
+    {
+      "title": "Tell us more before starting, so we can personalise your experience ${userFullname}",
+      "buttons": {
+        "back": "Go back",
+        "next": "Continue"
+      },
+      "questions": [
+        {
+          "title": "What’s your company or project name?",
+          "type": "project-name",
+          "labels": {
+            "placeholder":"project name", 
+            "message":"The project name is required", 
+            "message-error":"Project name", 
+            "label-button": "CONTINUE"
+          }
+        },
+        {
+          "title": "What’s your industry?",
+          "type": "select",
+          "labels": {
+            "placeholder":"Please choose..."
+          },
+          "options": [
+            {"label": "Software & Technology", "value": "software_technology"},
+            {"label": "Tourism", "value": "tourism"},
+            {"label": "Food & Beverage", "value": "food_beverage"},
+            {"label": "Agency & Consulting", "value": "agency_consulting"},
+            {"label": "Healthcare", "value": "healthcare"},
+            {"label": "Legal Services", "value": "legal_services"},
+            {"label": "Financial Services", "value": "financial_services"},
+            {"label": "Retail & E-commerce", "value": "retail_ecommerce"},
+            {"label": "Other", "value": "other"}
+          ]
+        },
+        {
+          "title": "How many people work with you?",
+          "type": "select",
+          "labels": {
+            "placeholder":"Please choose..."
+          },
+          "options": [
+            {"label": "0", "value": "0"},
+            {"label": "1-10", "value": "1-10"},
+            {"label": "11-50", "value": "11-50"},
+            {"label": "51-200", "value": "51-200"},
+            {"label": "201-1000", "value": "201-1000"},
+            {"label": "1000+", "value": "1000+"}
+          ]
+        },
+        {
+          "title": "How did you discover Tiledesk?",
+          "type": "select",
+          "labels": {
+            "placeholder":"Please choose..."
+          },
+          "options": [
+            {"label": "Search Engines", "value": "search_engines"},
+            {"label": "Social Media (LinkedIn, Facebook, Instagram, etc.)", "value": "social_media"},
+            {"label": "Friends or colleagues", "value": "friends_colleagues"},
+            {"label": "Third party websites / blogs / videos", "value": "third_party_websites_blogs_videos"},
+            {"label": "Other", "value": "other"}
+          ]
+        }
+      ]
+    }, 
+
+    {
+      "title": "${userFullname} thank you 🙏 Last questions before starting...",
+      "buttons": {
+        "back": "Go back",
+        "next": "Continue"
+      },
+      "questions": [
+        {
+          "title": "What’s your main goal with Tiledesk?",
+          "type": "button",
+          "buttons": [
+            {"label": "Solve customer problems", "value": "1"},
+            {"label": "Increase online sales", "value": "2"}
+          ]
+        },
+        {
+          "title": "How do you want to reach your goal?",
+          "type": "button",
+          "buttons": [
+            {"label": "I want to talk to customers", "value": "1"},
+            {"label": "I want to automate conversations", "value": "2"}
+          ]
+        },
+        {
+          "title": "Which channel most interests you?",
+          "type": "button",
+          "buttons": [
+            {"label": "Web / Mobile", "value": "1"},
+            {"label": "WhatsApp / FB Messenger", "value": "2"}
+          ]
+        }
+      ]
+    },
+
+    {
+      "title": "${userFullname} congratulations 🎉 You are ready to start",
+      "buttons": {
+        "back": "Go back",
+        "next": "Continue"
+      },
+      "questions": [
+        {
+          "title": "Let’s set up together your welcome message to engage your customers",
+          "type": "button",
+          "buttons": [
+            {"label": "Create your first chatbot", "value": "1"}
+          ]
+        }
+      ]
+    }
+
+  ]
+}

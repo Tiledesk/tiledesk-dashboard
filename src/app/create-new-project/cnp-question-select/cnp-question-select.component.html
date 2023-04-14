@@ -1,0 +1,22 @@
+<!-- -------------------------------------------------------------------------------- -->
+<!-- @ Select -->
+<!-- -------------------------------------------------------------------------------- -->
+<div class="row">
+    <div class="col-md-12">
+        <h4 class="title">{{question.title}}</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <ng-select class="select-option" 
+            [clearable]="false" 
+            [(ngModel)]="selectedOption" 
+            [items]="question.options" 
+            bindLabel="label" 
+            [searchable] = false
+            groupBy="type"
+            [placeholder]="placeholder" 
+            (change)="onSelected()">
+        </ng-select>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+h4.title {
+    color: #566787;
+    position: relative;
+    line-height: normal;
+    margin-bottom: 1em;
+    font-size: 24px;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+button {
+    white-space: break-spaces;
+    width: 200px;
+    height: 80px;
+}
+
+.css-bskbvc {
+    position: relative;
+    overflow: hidden;
+    box-shadow: rgba(0, 27, 71, 0.24) 0px 1px 3px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.3s ease 0s;
+}

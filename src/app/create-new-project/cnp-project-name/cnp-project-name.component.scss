@@ -1,0 +1,29 @@
+@import "../../../assets/sass/md/_variables.scss";
+
+.cnp-project-name{
+
+    input {
+        max-width: 450px;
+        padding: 0 10px;
+    }
+
+    .first-row {
+        height: 180px;
+    }
+    .second-row {
+        max-width: 450px;
+        text-align: center;
+    }
+    .msg {
+        height:31px;
+        span.error {
+            padding-left: 5px; 
+            font-size: 0.9em; 
+            color:#da491c;
+        }
+    }
+
+    button {
+        margin-bottom: 30px;
+    }
+}

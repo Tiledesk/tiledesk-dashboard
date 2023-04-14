@@ -1,0 +1,107 @@
+<div class="main-content css-create-project">
+    <img [src]="companyLogoBlack_Url" class="logo" />
+    <div class="close-wizard-page">
+      <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">clear</i>
+    </div>
+  
+    <div class="col-left">
+
+        <!-- STEP NUMBER -->
+        <div class="box-steps">
+            <div class="step-number">
+                <span class="number-label">
+                    {{ "OnboardPage.Pass" | translate }}   
+                    <div class="number-list">
+                        <ul [ngStyle]="{'transform': translateY}">
+                            <li *ngFor="let item of steps; index as i">{{i+1}}</li>
+                        </ul>
+                    </div>
+                </span>
+                <span class="number-of"> / {{steps.length}}</span>
+            </div>
+            <div class="step-points">
+              <span *ngFor="let item of steps; index as i" class="point" [ngClass]="{'active': activeStepNumber >= i}"></span>
+            </div>
+        </div> 
+
+
+        
+        <!-- QUESTIONS -->
+        <div *ngIf="activeStep" class="active-step"
+            [ngClass]="stepDirectionIn?'fade-in-left':'fade-in-right'">
+            <div class = "title">{{activeStep.title}}</div>
+            <div *ngFor="let question of activeStep.questions; index as i">
+                
+                <div *ngIf="question.type === 'project-name'"
+                    class="question"
+                    [ngClass]="{
+                        'fade-in-left-question':questionDirectionIn,
+                        'fade-in-right-question':!questionDirectionIn,
+                        'active': (activeQuestionNumber == i),
+                        'disabled': (activeQuestionNumber != i)
+                    }">
+                    <cnp-project-name
+                        [projectName]="projectName"
+                        [question]="question"
+                        (goToSetProjectName)="goToSetProjectName($event)"
+                    ></cnp-project-name>
+                </div> 
+               
+                <div *ngIf="question.type === 'select'" 
+                    class="question"
+                    [ngClass]="{
+                        'fade-in-left-question':questionDirectionIn,
+                        'fade-in-right-question':!questionDirectionIn,
+                        'active': (activeQuestionNumber == i),
+                        'disabled': (activeQuestionNumber != i)}">
+                    <cnp-question-select
+                        class="question-type"
+                        [question]="question"
+                        (goToNext)="goToNextQuestion($event)"
+                    ></cnp-question-select>
+                </div>
+
+                <div *ngIf="question.type === 'button'" 
+                    class="question"
+                    [ngClass]="{
+                        'fade-in-left-question':questionDirectionIn,
+                        'fade-in-right-question':!questionDirectionIn,
+                        'active': (activeQuestionNumber == i),
+                        'disabled': (activeQuestionNumber != i)}">
+                    <cnp-question-button
+                        class="question-type"
+                        [question]="question"
+                        (goToNext)="goToNextQuestion($event)"
+                    ></cnp-question-button>
+                </div>
+                
+            </div>
+
+
+            <!-- BUTTONS -->
+            <div *ngIf="activeQuestion && activeQuestion.type !== 'project-name'"  class="row-navigation">
+                <div class="navigation-btn">
+                <button 
+                    type="button" 
+                    class="btn-back" 
+                    (click)="goToPrevQuestion()">
+                    <em class="material-icons">arrow_back</em>
+                </button>
+                <button
+                    class="btn btn-lg btn-primary"
+                    (click)="goToNextQuestion()">
+                    {{'OnboardPage.Next' | translate}}
+                </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-right">
+        <appdashboard-sidebar-claims></appdashboard-sidebar-claims>
+    </div>
+
+</div>
