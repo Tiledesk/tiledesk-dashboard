@@ -35,19 +35,22 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   translateY: string;
+  jsonInit: any;
   steps: any[] = [];
+  showStep: boolean = false;
   activeStep: any;
+  selectQuestionNumber: number = 0;
   activeStepNumber: number;
   activeQuestionNumber: number;
   activeQuestion: any;
   stepDirectionIn: boolean = false;
-  questionDirectionIn: boolean = false;
+  disabledNextButton: boolean = true;
+  // questionDirectionIn: boolean = false;
 
   projectName: string;
   userFullname: string;
-  
+  // onboardingConfig: any;
 
-  onboardingConfig: any;
 
   constructor(
     private auth: AuthService,
@@ -109,11 +112,18 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
   private initialize(){
-    this.projectName = this.setProjectName();
     this.translateY = 'translateY(0px)';
     this.activeStepNumber = 0;
     this.activeQuestionNumber = 0;
-    this.onboardingConfig = this.loadJsonOnboardingConfig();
+    this.loadJsonOnboardingConfig();
+    this.projectName = this.setProjectName();
+    // if(!this.projectName){
+    //   const index = this.steps.findIndex(obj => obj.type === 'project-name');
+    //   if (index !== -1) {
+    //     [...this.steps.slice(0, index), ...this.steps.slice(index + 1)];
+    //   }
+    //   console.log("------> ", this.steps);
+    // }
   }
 
   private setProjectName() {
@@ -128,10 +138,10 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           projectName = emailAfterAt;
         }
       } else {
-        projectName = 'prova';
+        projectName = null;
       }
     } else {
-      projectName = 'prova';;
+      projectName = null;
     }
     return projectName;
   }
@@ -148,6 +158,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       let jsonParse = JSON.parse(jsonString);
       //console.log('jsonParse::: ', jsonParse);
       if (jsonParse) {
+        this.jsonInit = jsonParse['init'];
         jsonSteps = jsonParse['steps'];
         //console.log('jsonSteps::: ', jsonSteps);
         jsonSteps.forEach(step => {
@@ -156,7 +167,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         });
         this.activeStep = this.steps[0];
         this.activeQuestion = this.activeStep.questions[0];
-        //console.log('activeQuestion::: ', this.activeQuestion);
       }
     });
   }
@@ -166,26 +176,49 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   // EVENTS FUNCTIONS //
   goToSetProjectName($event){
     this.projectName = $event;
+    this.showStep = true;
+    // this.goToNextStep();
+  }
+
+  goToNextSelect(index){
+    this.selectQuestionNumber = index+1;
     this.goToNextQuestion();
   }
-
-  goToPrevQuestion() {
-    if(this.activeQuestionNumber>0){
-      this.activeQuestionNumber--;
-      this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
-      this.questionDirectionIn = false;
-    } else {
-      this.goToPrevStep();
-    }
-  }
-
+  
   goToNextQuestion(){
     if(this.activeStep.questions && this.activeQuestionNumber<this.activeStep.questions.length-1){
       this.activeQuestionNumber++;
       this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
-      this.questionDirectionIn = true;
+      this.disabledNextButton = true;
     } else {
-      this.goToNextStep();
+      this.disabledNextButton = false;
+    }
+  }
+
+  // goToPrevQuestion() {
+  //   if(this.activeQuestionNumber>0){
+  //     this.activeQuestionNumber--;
+  //     this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
+  //     this.questionDirectionIn = false;
+  //   } else {
+  //     //this.goToPrevStep();
+  //   }
+  // }
+  
+
+  goToNextStep(){
+    this.selectQuestionNumber = 0;
+    if(this.activeStepNumber < (this.steps.length-1)){
+      this.activeStepNumber++;
+      this.activeStep = this.steps[this.activeStepNumber];
+      this.activeQuestionNumber = 0;
+      this.activeQuestion = this.activeStep.questions[0];
+      this.translateY = 'translateY('+(-(this.activeStepNumber+1)*20+20)+'px)';
+      this.stepDirectionIn = true;
+      if( this.activeStep.questions[0].answer){
+        this.activeQuestionNumber = this.activeStep.questions.length-1;
+      }
+      console.log('goToNextStep: ', this.selectQuestionNumber, this.activeStep);
     }
   }
 
@@ -193,19 +226,14 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     if(this.activeStepNumber > 0){
       this.activeStepNumber--;
       this.activeStep = this.steps[this.activeStepNumber];
-      this.activeQuestionNumber = this.activeStep.questions.length-1;
+      this.activeQuestionNumber = 0;
+      this.activeQuestion = this.activeStep.questions[0];
       this.translateY = 'translateY('+(-(this.activeStepNumber+1)*20+20)+'px)';
       this.stepDirectionIn = false;
-    }
-  }
-
-  goToNextStep(){
-    if(this.activeStepNumber < (this.steps.length-1)){
-      this.activeStepNumber++;
-      this.activeStep = this.steps[this.activeStepNumber];
-      this.activeQuestionNumber = 0;
-      this.translateY = 'translateY('+(-(this.activeStepNumber+1)*20+20)+'px)';
-      this.stepDirectionIn = true;
+      this.activeQuestionNumber = this.activeStep.questions.length-1;
+      console.log('goToPrevStep: ', this.activeStep);
+    } else {
+      this.showStep = false;
     }
   }
 

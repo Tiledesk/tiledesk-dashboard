@@ -13,10 +13,11 @@
             [(ngModel)]="selectedOption" 
             [items]="question.options" 
             bindLabel="label" 
+            bindValue="value"
             [searchable] = false
             groupBy="type"
             [placeholder]="placeholder" 
-            (change)="onSelected()">
+            (change)="onSelected($event)">
         </ng-select>
     </div>
 </div>

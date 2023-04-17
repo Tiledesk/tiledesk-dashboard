@@ -7,14 +7,14 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 })
 export class CnpProjectNameComponent implements OnInit {
   @Output() goToSetProjectName = new EventEmitter();
-  @Input() question: any;
+  @Input() jsonInit: any;
 
   projectName: string;
   LIMIT = 4;
   displayError: boolean = false;
   disabledButton: boolean = true;
 
-  title: string;
+  subtitle: string;
   placeholder: string;
   message: string;
   messageError: string;
@@ -28,29 +28,33 @@ export class CnpProjectNameComponent implements OnInit {
 
   initialize(){
     try {
-      this.title = this.question.title;
+      this.subtitle = this.jsonInit.subtitle;
     } catch (error) {
-      this.title = "";
+      this.subtitle = "";
     }
     try {
-      this.placeholder = this.question.labels['placeholder'];
+      this.placeholder = this.jsonInit.labels['placeholder'];
     } catch (error) {
       this.placeholder = "";
     }
     try {
-      this.message = this.question.labels['message'];
+      this.message = this.jsonInit.labels['message'];
     } catch (error) {
       this.message = "";
     }
     try {
-      this.messageError = this.question.labels['message-error'];
+      this.messageError = this.jsonInit.labels['message-error'];
     } catch (error) {
       this.messageError = "";
     }
     try {
-      this.labelButton = this.question.labels['label-button'];
+      this.labelButton = this.jsonInit.labels['label-button'];
     } catch (error) {
       this.labelButton = "CONTINUE";
+    }
+    if(this.jsonInit.answer){
+      this.disabledButton = false;
+      this.projectName = this.jsonInit.answer;
     }
   }
 
@@ -62,10 +66,10 @@ export class CnpProjectNameComponent implements OnInit {
     } else {
       this.disabledButton = true;
     }
-    
   }
 
   onGoToNext(){
+    this.jsonInit.answer = this.projectName;
     this.goToSetProjectName.emit(this.projectName);
   }
 }

@@ -1,4 +1,19 @@
 {
+  "init":{
+    "title": "Create a project",
+    "subtitle": "What’s your company or project name?",
+    "type": "project-name",
+    "buttons": {
+      "back": "Go back",
+      "next": "Continue"
+    },
+    "labels": {
+      "placeholder":"project name", 
+      "message":"The project name is required", 
+      "message-error":"the name must contain at least 4 characters", 
+      "label-button": "CONTINUE"
+    }
+  },
   "steps":[
     {
       "title": "Tell us more before starting, so we can personalise your experience ${userFullname}",
@@ -7,16 +22,6 @@
         "next": "Continue"
       },
       "questions": [
-        {
-          "title": "What’s your company or project name?",
-          "type": "project-name",
-          "labels": {
-            "placeholder":"project name", 
-            "message":"The project name is required", 
-            "message-error":"Project name", 
-            "label-button": "CONTINUE"
-          }
-        },
         {
           "title": "What’s your industry?",
           "type": "select",

@@ -8,22 +8,29 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 export class CnpQuestionSelectComponent implements OnInit {
   @Output() goToNext = new EventEmitter();
   @Input() question: any;
+  @Input() index: number;
 
-  selectedOption: any;
+  selectedOption: string;
   placeholder: string;
+  LABEL_PLACEHOLDER: string = 'Please choose...';
 
   constructor() { }
 
   ngOnInit(): void {
-    this.placeholder = this.question.labels.placeholder?this.question.labels.placeholder:'Please choose...';
+    this.initialize();
   }
 
   initialize(){
-    this.selectedOption = this.question[0];
+    this.placeholder = this.question.labels.placeholder?this.question.labels.placeholder:this.LABEL_PLACEHOLDER;
+    if(this.question.answer){
+      this.selectedOption = this.question.answer;
+    }
   }
 
-  onSelected(){
-    // this.goToNext.emit();
+  onSelected($event){
+    this.question.answer = $event.value;
+    // this.selectedOption = $event.value;
+    this.goToNext.emit(this.index);
   }
 
 }
