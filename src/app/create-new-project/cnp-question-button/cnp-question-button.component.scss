@@ -28,4 +28,26 @@ button {
     border: 2px solid transparent;
     cursor: pointer;
     transition: border-color 0.3s ease 0s;
+    width: 200px;
+    height: 150px;
+    margin: auto;
+    display: flex;
+    &:hover {
+        border: 2px solid #3ea9f5;
+    }
+    .content-button{
+        margin: auto;
+        text-align: center;
+        display: block;
+    }
+    section {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+    }
+    h2{
+        padding: 0;
+        margin: 0;
+        font-size: 40px;
+    }
 }

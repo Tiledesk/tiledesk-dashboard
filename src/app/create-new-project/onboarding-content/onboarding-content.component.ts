@@ -140,22 +140,23 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     let onboardingConfig = 'assets/config/onboarding-config.json';
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
-      console.log('loadJsonOnboardingConfig::: ', data);
+      //console.log('loadJsonOnboardingConfig::: ', data);
       let jsonString = JSON.stringify(data);
-      jsonString = jsonString.replace('${userFullname}', this.userFullname);
-      console.log('jsonString::: ', jsonString);
+      jsonString = jsonString.split('${userFullname}').join(this.userFullname);
+      // jsonString = jsonString.replace('${userFullname}', this.userFullname);
+      //console.log('jsonString::: ', jsonString);
       let jsonParse = JSON.parse(jsonString);
-      console.log('jsonParse::: ', jsonParse);
+      //console.log('jsonParse::: ', jsonParse);
       if (jsonParse) {
         jsonSteps = jsonParse['steps'];
-        console.log('jsonSteps::: ', jsonSteps);
+        //console.log('jsonSteps::: ', jsonSteps);
         jsonSteps.forEach(step => {
           this.steps.push(step);
-          console.log('step::: ', step);
+          //console.log('step::: ', step);
         });
         this.activeStep = this.steps[0];
         this.activeQuestion = this.activeStep.questions[0];
-        console.log('activeQuestion::: ', this.activeQuestion);
+        //console.log('activeQuestion::: ', this.activeQuestion);
       }
     });
   }

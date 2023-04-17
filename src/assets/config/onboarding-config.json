@@ -78,7 +78,7 @@
           "title": "What’s your main goal with Tiledesk?",
           "type": "button",
           "buttons": [
-            {"label": "Solve customer problems", "value": "1"},
+            {"icon":"💰", "label": "Solve customer problems", "value": "1"},
             {"label": "Increase online sales", "value": "2"}
           ]
         },
@@ -86,16 +86,16 @@
           "title": "How do you want to reach your goal?",
           "type": "button",
           "buttons": [
-            {"label": "I want to talk to customers", "value": "1"},
-            {"label": "I want to automate conversations", "value": "2"}
+            {"icon":"🤖", "label": "I want to talk to customers", "value": "1"},
+            {"icon":"💬", "label": "I want to automate conversations", "value": "2"}
           ]
         },
         {
           "title": "Which channel most interests you?",
           "type": "button",
           "buttons": [
-            {"label": "Web / Mobile", "value": "1"},
-            {"label": "WhatsApp / FB Messenger", "value": "2"}
+            {"icon":"🙌", "label": "Web / Mobile", "value": "1"},
+            {"icon":"💰", "label": "WhatsApp / FB Messenger", "value": "2"}
           ]
         }
       ]
