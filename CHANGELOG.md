@@ -1,6 +1,11 @@
 # tiledesk-dashboard
 
+### 2.4.26
+- Deploys in production
+- Adds markdown rendering for the community chatbot descriptions
+
 ### 2.4.25
+- Deploys in production
 - Implements the management of new pricing plans
 
 ### 2.4.25-rc1
