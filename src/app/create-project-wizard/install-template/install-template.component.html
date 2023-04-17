@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1 class="pre-title">
-                        Install template
+                        Install template <span style="font-weight: 500;"> {{ botname}} </span> 
                     </h1>
                 </div>
             </div>
@@ -53,6 +53,10 @@
 
                             </div> -->
                             <span size="20" class="blank-span-h20"></span>
+                            <!-- ------------------------------------------- -->
+                            <!-- @ Chatbot name and description  -->
+                            <!-- ------------------------------------------- -->
+                            <!--   
                             <h2 weight="normal" class="template-name template-card-title">
                                 {{ botname}}
                             </h2>
@@ -60,6 +64,11 @@
                             <p weight="normal" class="template-description">
                                 {{botDescription}}
                             </p>
+                             -->
+                            <!-- ------------------------------------------- -->
+                            <!-- @ end Chatbot name and description  -->
+                            <!-- ------------------------------------------- -->
+
                             <!-- <div class="use-template-btn-row use-template-btn-wpr">
                                 <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
                                     (click)="openDialog(template)">
@@ -67,6 +76,7 @@
                                 </button>
                             </div> -->
                             <p weight="normal" *ngIf="templatesCertifiedTags" class="install-template-tags-section-name">Categories</p>
+                            <p weight="normal" *ngIf="templateTags" class="install-template-tags-section-name">Tags</p>
                             <div class="template-card-footer template-footer">
                                 <div class="template-tags-wpr">
 
