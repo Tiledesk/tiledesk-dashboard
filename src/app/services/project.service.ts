@@ -832,4 +832,27 @@ export class ProjectService {
       .get<[any]>(url, httpOptions)
   }
 
+    // --------------------------------
+  //  APPSUMO TEST 
+  // --------------------------------
+  public activateAppSumoTier() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        
+      })
+    };
+
+    const url = "https://tiledesk-sumo.tiledesk.repl.co/notification";
+
+    const body = "action=activate&plan_id=tiledesk_tier1&uuid=65b9528a-702d-4326-9b23-3e0c37ce4553&activation_email=tacos@appsumo.com&invoice_item_uuid=01ae3d93-ec5f-44a8-b4b9-093cbd662164"
+
+    return this._httpclient
+      .post(url, body, httpOptions)
+  }
+
+
+
 }
