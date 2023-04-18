@@ -7,18 +7,11 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 })
 export class CnpProjectNameComponent implements OnInit {
   @Output() goToSetProjectName = new EventEmitter();
-  @Input() jsonInit: any;
+  @Input() projectName: any;
 
-  projectName: string;
   LIMIT = 4;
   displayError: boolean = false;
   disabledButton: boolean = true;
-
-  subtitle: string;
-  placeholder: string;
-  message: string;
-  messageError: string;
-  labelButton: string;
 
   constructor() { }
 
@@ -27,34 +20,8 @@ export class CnpProjectNameComponent implements OnInit {
   }
 
   initialize(){
-    try {
-      this.subtitle = this.jsonInit.subtitle;
-    } catch (error) {
-      this.subtitle = "";
-    }
-    try {
-      this.placeholder = this.jsonInit.labels['placeholder'];
-    } catch (error) {
-      this.placeholder = "";
-    }
-    try {
-      this.message = this.jsonInit.labels['message'];
-    } catch (error) {
-      this.message = "";
-    }
-    try {
-      this.messageError = this.jsonInit.labels['message-error'];
-    } catch (error) {
-      this.messageError = "";
-    }
-    try {
-      this.labelButton = this.jsonInit.labels['label-button'];
-    } catch (error) {
-      this.labelButton = "CONTINUE";
-    }
-    if(this.jsonInit.answer){
+    if(this.projectName){
       this.disabledButton = false;
-      this.projectName = this.jsonInit.answer;
     }
   }
 
@@ -69,7 +36,6 @@ export class CnpProjectNameComponent implements OnInit {
   }
 
   onGoToNext(){
-    this.jsonInit.answer = this.projectName;
     this.goToSetProjectName.emit(this.projectName);
   }
 }

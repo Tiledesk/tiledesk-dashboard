@@ -10,6 +10,7 @@ import { tranlatedLanguage } from 'app/utils/util';
 import { HttpClient } from "@angular/common/http";
 import { emailDomainWhiteList } from 'app/utils/util';
 
+
 @Component({
   selector: 'cnp-onboarding-content',
   templateUrl: './onboarding-content.component.html',
@@ -17,14 +18,9 @@ import { emailDomainWhiteList } from 'app/utils/util';
 })
 export class OnboardingContentComponent extends WidgetSetUpBaseComponent implements OnInit {
   logo_x_rocket: string;
-  // projects: Project[];
   project_name: string;
-  // id_project: string;
   DISPLAY_SPINNER_SECTION = false;
-  // DISPLAY_SPINNER = false;
-  // previousUrl: string;
   CLOSE_BTN_IS_HIDDEN = true
-  // new_project: any;
   user: any;
   companyLogoBlack_Url: string;
   CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION: boolean = false;
@@ -33,23 +29,33 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   botid: string;
   browser_lang: string;
 
-
   translateY: string;
-  jsonInit: any;
   steps: any[] = [];
-  showStep: boolean = false;
   activeStep: any;
-  selectQuestionNumber: number = 0;
   activeStepNumber: number;
   activeQuestionNumber: number;
   activeQuestion: any;
-  stepDirectionIn: boolean = false;
+  // stepDirectionIn: boolean = false;
   disabledNextButton: boolean = true;
+  disabledFirstPass: boolean = false;
+
+
+  welcomeMessage  = "";
+
+  // (nextPageNoFaq)="gotToHumanConfigurationWithoutFaq($event)"
+  // (nextPage)="gotToHumanConfiguration($event)"
+  // (prevPage) = "goToWelcomeMessage($event)"
   // questionDirectionIn: boolean = false;
 
   projectName: string;
   userFullname: string;
   // onboardingConfig: any;
+
+  showPass: number = 0;
+
+  numberTotalPass: number = 0;
+  arrayNumberTotalPass: any;
+  activeNumberPass: number = 0;
 
 
   constructor(
@@ -75,10 +81,28 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.logger.log('[WIZARD - CREATE-PRJCT] project_name ', this.project_name);
     this.checkCurrentUrlAndHideCloseBtn();
     this.getLoggedUser();
+    this.getCurrentTranslation();
   }
 
 
   // CUSTOM FUNCTIONS //
+  private getCurrentTranslation() {  
+    let langDashboard = 'en';
+    if(this.translate.currentLang){
+      langDashboard = this.translate.currentLang;
+    }  
+    let jsonWidgetLangURL = 'assets/i18n/'+langDashboard+'.json';
+    this.httpClient.get(jsonWidgetLangURL).subscribe(data =>{
+      try {
+        if(data['OnboardPage']){
+          let translations = data['OnboardPage'];
+          this.welcomeMessage = translations["WelcomeMessage"];
+        }
+      } catch (err) {
+        this.logger.error('error', err);
+      }
+    });
+  }
 
   private checkCurrentUrlAndHideCloseBtn() {
     if (this.router.url.startsWith('/create-project-itw/')) {
@@ -112,20 +136,22 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
   private initialize(){
+    this.numberTotalPass = 2;
     this.translateY = 'translateY(0px)';
     this.activeStepNumber = 0;
     this.activeQuestionNumber = 0;
     this.loadJsonOnboardingConfig();
     this.projectName = this.setProjectName();
-    // if(!this.projectName){
-    //   const index = this.steps.findIndex(obj => obj.type === 'project-name');
-    //   if (index !== -1) {
-    //     [...this.steps.slice(0, index), ...this.steps.slice(index + 1)];
-    //   }
-    //   console.log("------> ", this.steps);
-    // }
+    if(!this.projectName){
+      this.disabledFirstPass = true;
+      this.showPass = 1;
+    } else {
+      this.numberTotalPass += 1;
+      this.disabledFirstPass = false;
+      this.showPass = 0;
+    }
   }
-
+ 
   private setProjectName() {
     let projectName = '';
     const email = this.user.email;
@@ -146,81 +172,86 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     return projectName;
   }
 
-  loadJsonOnboardingConfig(){
+
+
+  private loadJsonOnboardingConfig(){
     let onboardingConfig = 'assets/config/onboarding-config.json';
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
-      //console.log('loadJsonOnboardingConfig::: ', data);
       let jsonString = JSON.stringify(data);
       jsonString = jsonString.split('${userFullname}').join(this.userFullname);
-      // jsonString = jsonString.replace('${userFullname}', this.userFullname);
-      //console.log('jsonString::: ', jsonString);
       let jsonParse = JSON.parse(jsonString);
-      //console.log('jsonParse::: ', jsonParse);
       if (jsonParse) {
-        this.jsonInit = jsonParse['init'];
         jsonSteps = jsonParse['steps'];
-        //console.log('jsonSteps::: ', jsonSteps);
         jsonSteps.forEach(step => {
           this.steps.push(step);
-          //console.log('step::: ', step);
         });
         this.activeStep = this.steps[0];
         this.activeQuestion = this.activeStep.questions[0];
+        this.numberTotalPass += this.steps.length;
+        this.arrayNumberTotalPass = Array(this.numberTotalPass);
       }
     });
   }
 
 
+  private nextNumberPass(){
+    this.activeNumberPass++;
+    this.translateY = 'translateY('+(-(this.activeNumberPass+1)*20+20)+'px)';
+  }
+
+  private prevNumberPass(){
+    this.activeNumberPass--;
+    this.translateY = 'translateY('+(-(this.activeNumberPass+1)*20+20)+'px)';
+  }
 
   // EVENTS FUNCTIONS //
   goToSetProjectName($event){
     this.projectName = $event;
-    this.showStep = true;
-    // this.goToNextStep();
+    this.showPass++;
+    this.nextNumberPass();
   }
 
-  goToNextSelect(index){
-    this.selectQuestionNumber = index+1;
-    this.goToNextQuestion();
-  }
-  
   goToNextQuestion(){
-    if(this.activeStep.questions && this.activeQuestionNumber<this.activeStep.questions.length-1){
-      this.activeQuestionNumber++;
-      this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
+    this.checkQuestions();
+    // console.log('goToNextQuestion:: ', this.activeQuestionNumber,this.activeStep.questions.length );
+  }
+
+
+  private checkQuestions(){
+    this.activeQuestionNumber = this.activeStep.questions.length;
+    for (let i = 0; i < this.activeStep.questions.length; i++) {
+      let action = this.activeStep.questions[i];
+      if(!action.answer){
+        this.activeQuestionNumber = i;
+        break;
+      }
+    }
+    this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
+    if(this.activeQuestionNumber<this.activeStep.questions.length){
       this.disabledNextButton = true;
     } else {
       this.disabledNextButton = false;
     }
   }
 
-  // goToPrevQuestion() {
-  //   if(this.activeQuestionNumber>0){
-  //     this.activeQuestionNumber--;
-  //     this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
-  //     this.questionDirectionIn = false;
-  //   } else {
-  //     //this.goToPrevStep();
-  //   }
-  // }
-  
-
   goToNextStep(){
-    this.selectQuestionNumber = 0;
+    this.activeQuestionNumber = 0;
+    this.activeQuestion = this.activeStep.questions[0];
     if(this.activeStepNumber < (this.steps.length-1)){
       this.activeStepNumber++;
       this.activeStep = this.steps[this.activeStepNumber];
-      this.activeQuestionNumber = 0;
-      this.activeQuestion = this.activeStep.questions[0];
-      this.translateY = 'translateY('+(-(this.activeStepNumber+1)*20+20)+'px)';
-      this.stepDirectionIn = true;
-      if( this.activeStep.questions[0].answer){
-        this.activeQuestionNumber = this.activeStep.questions.length-1;
-      }
-      console.log('goToNextStep: ', this.selectQuestionNumber, this.activeStep);
+      //this.translateY = 'translateY('+(-(this.activeStepNumber+1)*20+20)+'px)';
+      // this.stepDirectionIn = true;
+      this.checkQuestions();
+      this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
+      // console.log('goToNextStep: ', this.disabledNextButton, this.activeStep);
+      this.nextNumberPass();
+    } else {
+      this.goToNextPassage();
     }
   }
+
 
   goToPrevStep() {
     if(this.activeStepNumber > 0){
@@ -228,14 +259,32 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.activeStep = this.steps[this.activeStepNumber];
       this.activeQuestionNumber = 0;
       this.activeQuestion = this.activeStep.questions[0];
-      this.translateY = 'translateY('+(-(this.activeStepNumber+1)*20+20)+'px)';
-      this.stepDirectionIn = false;
+      // this.stepDirectionIn = false;
       this.activeQuestionNumber = this.activeStep.questions.length-1;
-      console.log('goToPrevStep: ', this.activeStep);
+      this.disabledNextButton = false;
+      this.prevNumberPass();
     } else {
-      this.showStep = false;
+      this.goToPrevPassage();
     }
   }
+
+
+  
+
+
+  goToPrevPassage() {
+    this.showPass--;
+    this.prevNumberPass();
+    console.log('goToPrevPassage::: ',  this.showPass, this.welcomeMessage);
+  }
+
+  goToNextPassage() {
+    this.showPass++;
+    this.nextNumberPass();
+    console.log('goToNextPassage::: ', this.showPass);
+  }
+
+
 
   goBack() {
     this.location.back();

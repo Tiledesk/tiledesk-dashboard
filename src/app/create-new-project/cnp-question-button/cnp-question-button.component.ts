@@ -8,14 +8,25 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 export class CnpQuestionButtonComponent implements OnInit {
   @Output() goToNext = new EventEmitter();
   @Input() question: any;
+  @Input() index: number;
+
+  selectedOption: string;
 
   constructor() { }
 
   ngOnInit(): void {
-    console.log('CnpQuestionButtonComponent');
+    this.initialize();
   }
 
-  goToSelectedButton(){
+  initialize(){
+    if(this.question.answer){
+      this.selectedOption = this.question.answer;
+    }
+  }
 
+  goToSelectedButton($event){
+    this.selectedOption = $event.value;
+    this.question.answer = $event.value;
+    this.goToNext.emit(this.index);
   }
 }

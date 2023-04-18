@@ -326,6 +326,7 @@ import { OnboardingContentComponent } from './create-new-project/onboarding-cont
 import { CnpProjectNameComponent } from './create-new-project/cnp-project-name/cnp-project-name.component';
 import { CnpQuestionSelectComponent } from './create-new-project/cnp-question-select/cnp-question-select.component';
 import { CnpQuestionButtonComponent } from './create-new-project/cnp-question-button/cnp-question-button.component';
+import { CnpChatbotWelcomeMessageComponent } from './create-new-project/cnp-chatbot-welcome-message/cnp-chatbot-welcome-message.component';
 
 
 
@@ -579,7 +580,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     OnboardingContentComponent,
     CnpProjectNameComponent,
     CnpQuestionSelectComponent,
-    CnpQuestionButtonComponent
+    CnpQuestionButtonComponent,
+    CnpChatbotWelcomeMessageComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

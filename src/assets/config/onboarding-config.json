@@ -104,24 +104,6 @@
           ]
         }
       ]
-    },
-
-    {
-      "title": "${userFullname} congratulations 🎉 You are ready to start",
-      "buttons": {
-        "back": "Go back",
-        "next": "Continue"
-      },
-      "questions": [
-        {
-          "title": "Let’s set up together your welcome message to engage your customers",
-          "type": "button",
-          "buttons": [
-            {"label": "Create your first chatbot", "value": "1"}
-          ]
-        }
-      ]
     }
-
   ]
 }

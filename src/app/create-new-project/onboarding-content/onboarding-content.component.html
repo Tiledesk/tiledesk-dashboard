@@ -6,93 +6,110 @@
   
     <div class="col-left">
 
+
         <!-- STEP NUMBER -->
-        <div *ngIf="showStep" class="box-steps">
+        <div class="box-steps">
             <div class="step-number">
                 <span class="number-label">
                     {{ "OnboardPage.Pass" | translate }}   
                     <div class="number-list">
                         <ul [ngStyle]="{'transform': translateY}">
-                            <li *ngFor="let item of steps; index as i">{{i+1}}</li>
+                            <li *ngFor="let item of arrayNumberTotalPass; index as i">{{i+1}}</li>
                         </ul>
                     </div>
                 </span>
-                <span class="number-of"> / {{steps.length}}</span>
+                <span class="number-of"> / {{numberTotalPass}}</span>
             </div>
             <div class="step-points">
-              <span *ngFor="let item of steps; index as i" class="point" [ngClass]="{'active': activeStepNumber >= i}"></span>
+              <span *ngFor="let item of arrayNumberTotalPass; index as i" class="point" [ngClass]="{'active': activeNumberPass >= i}"></span>
             </div>
+        </div> 
+        
+        <!-- INIT PROJECT -->
+        <div *ngIf="activeNumberPass === 0"
+            class="active-step fade-in-right">
+            <cnp-project-name
+                [projectName]="projectName"
+                (goToSetProjectName)="goToSetProjectName($event)"
+            ></cnp-project-name>
         </div> 
 
 
         
-        <!-- QUESTIONS -->
-        <div *ngIf="jsonInit && !showStep"
-            class="active-step fade-in-right">
-            <div class = "title">{{jsonInit.title}}</div>
-            <cnp-project-name
-                [projectName]="projectName"
-                [jsonInit]="jsonInit"
-                (goToSetProjectName)="goToSetProjectName($event)"
-            ></cnp-project-name>
-        </div> 
-//[ngClass]="stepDirectionIn?'fade-in-right':'fade-in-right'"
-        <div *ngIf="showStep" 
-            class="active-step">
-            <div class = "title">{{activeStep.title}}</div>
+        
+
+        <!-- STEP QUESTIONS -->
+        <div *ngFor="let step of steps; index as j">
             
-            <div *ngFor="let question of activeStep.questions; index as i">
+            <div *ngIf="j === activeStepNumber && (activeNumberPass > 0 && steps.length+1 > activeNumberPass)"  class="active-step fade-in-right">
 
-                <div *ngIf="question.type === 'select'" 
-                    class="question fade-in-left-question"
-                    [ngClass]="{
-                        'shown': (selectQuestionNumber > i || question.answer),
-                        'active': (activeQuestionNumber == i),
-                        'disabled': (activeQuestionNumber != i)}">
-                    <cnp-question-select
-                        class="question-type"
-                        [index]="i"
-                        [question]="question"
-                        (goToNext)="goToNextSelect($event)"
-                    ></cnp-question-select>
-                </div>
+                <div class = "title">{{activeStep.title}}</div>
+                
+                <div *ngFor="let question of step.questions; index as i">
 
-                <div *ngIf="question.type === 'button'" 
-                    class="question fade-in-left-question"
-                    [ngClass]="{
-                        'shown': (selectQuestionNumber > i || question.answer),
-                        'active': (activeQuestionNumber == i),
-                        'disabled': (activeQuestionNumber != i)}">
-                    <cnp-question-button
-                        class="question-type"
-                        [index]="i"
-                        [question]="question"
-                        (goToNext)="goToNextQuestion($event)"
-                    ></cnp-question-button>
+                    <div *ngIf="question.type === 'select'" 
+                        class="question fade-in-left-question"
+                        [ngClass]="{
+                            'shown': question.answer,
+                            'active': activeQuestionNumber == i,
+                            'disabled': activeQuestionNumber != i}">
+                        <cnp-question-select
+                            class="question-type"
+                            [index]="i"
+                            [question]="question"
+                            (goToNext)="goToNextQuestion($event)"
+                        ></cnp-question-select>
+                    </div>
+
+                    <div *ngIf="question.type === 'button'" 
+                        class="question fade-in-left-question"
+                        [ngClass]="{
+                            'shown': (question.answer),
+                            'active': (activeQuestionNumber == i),
+                            'disabled': (activeQuestionNumber != i)}">
+                        <cnp-question-button
+                            class="question-type"
+                            [index]="i"
+                            [question]="question"
+                            (goToNext)="goToNextQuestion($event)"
+                        ></cnp-question-button>
+                    </div>
+                    
                 </div>
                 
-            </div>
-            
 
-            <!-- BUTTONS -->
-            <div *ngIf="activeStep && activeStep.type !== 'project-name'"  class="row-navigation">
-                <div class="navigation-btn">
-                <button 
-                    type="button" 
-                    class="btn-back" 
-                    (click)="goToPrevStep()">
-                    <em class="material-icons">arrow_back</em>
-                </button>
-                <button
-                    class="btn btn-lg btn-primary"
-                    [disabled] = "disabledNextButton"
-                    (click)="goToNextStep()">
-                    {{'OnboardPage.Next' | translate}}
-                </button>
+                <!-- BUTTONS -->
+                <div *ngIf="activeStep && activeStep.type !== 'project-name'"  class="row-navigation">
+                    <div class="navigation-btn">
+                        <button 
+                            type="button" 
+                            class="btn-back" 
+                            (click)="goToPrevStep()">
+                            <em class="material-icons">arrow_back</em>
+                        </button>
+                        <button
+                            class="btn btn-lg btn-primary"
+                            [disabled] = "disabledNextButton"
+                            (click)="goToNextStep()">
+                            {{'OnboardPage.Next' | translate}}
+                        </button>
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
+
+        <!-- BOT WELCOME CONFIG -->
+        <div *ngIf="(activeNumberPass == steps.length+1)" class="box-welcome-msg">
+            <cnp-chatbot-welcome-message
+                [welcomeMessage] = welcomeMessage
+                [projectName]="projectName"
+                [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+                (nextPage)="goToNextPassage()"
+                (prevPage) = "goToPrevPassage()"
+            ></cnp-chatbot-welcome-message>
+        </div>
+
 
     </div>
 

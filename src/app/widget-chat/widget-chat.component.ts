@@ -27,11 +27,12 @@ export class WidgetChatComponent implements OnInit, OnChanges {
 
   @Input() questions: any;
   @Input() activeQuestion: number;
+  @Input() IS_ONBOARDING_PAGE: boolean = false;
 
   primaryColorRGBA_1: any
   primaryColorRGBA_050: any
   linearGradient: any
-  IS_ONBOARDING_PAGE: boolean = false;
+  // IS_ONBOARDING_PAGE: boolean = false;
   constructor(
     private router: Router,
     private elementRef: ElementRef

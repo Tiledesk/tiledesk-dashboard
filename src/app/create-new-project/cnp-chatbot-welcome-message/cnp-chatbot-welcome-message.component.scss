@@ -1,0 +1,183 @@
+// LOCAL COLORS //
+$color-white: #ffffff;
+$color-light-gray: #efefef;
+$color-middle-gray: #ccc;
+$color-gray: #333;
+$color-error: rgb(255, 95, 95);
+$color-error-shadow:rgba(255, 95, 95, 0.9);
+$color-text: #566787;
+$color-pro-plan: #3ea9f5;
+//---------------------//
+// STRUCTURE
+//---------------------//
+.box-step-1 {
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins',Arial,sans-serif;
+    .col-left {
+        background: $color-white;
+        width: 50%;
+        position: relative;
+        float: left;
+        margin:0;
+        padding: 0;
+      }
+      .col-right {
+        width: 50%;
+        position: relative;
+        float: left;
+        margin:0;
+        padding: 0;
+      }
+      .box-textarea {
+        .header-textarea {
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: justify;
+            justify-content: space-between;
+            flex-direction: row;
+            width: 100%;
+            .num-chars {
+                background: $color-light-gray;
+                padding: 0px 8px;
+                border-radius: 8px;
+                font-size: 11px;
+                color: $color-gray;
+            }
+        }
+        .input-error {
+            color: $color-error;
+            min-height: 40px;
+            padding: 10px;
+        }
+        .msg-error {
+            display: none;
+        }
+        &.error {
+            .header-textarea {
+                .num-chars {
+                    color: $color-error;
+                }
+            }
+            textarea {
+                border: 1px solid $color-error;
+                box-shadow: $color-error-shadow 0px 0px 1px;
+            }
+            .msg-error{
+                display: block;
+            }
+        }
+    }
+
+    /** NAVIGATION **/
+    .row-navigation {
+        display: flex;
+        flex-direction: column;
+        margin: 0px;
+    }
+    .navigation-btn {
+        display: flex;
+        flex-direction: row;
+    }
+    .btn {
+        font-size: 14px;
+        padding: 18px 36px;
+        width: 100%;
+        margin: 10px 0;
+    }
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: middle;
+        height: auto;
+        width: 50px;
+        max-width: 50px;
+        font-size: 20px;
+        line-height: 1.2;
+        border-color: $color-light-gray;
+        border-radius: 3px;
+        border: 0px solid $color-light-gray;
+        background: $color-light-gray;
+        margin: 10px 10px 10px 0;
+        padding: 10px;
+        svg {
+            fill: $color-gray;
+            width: 1em;
+        }
+    }
+
+    //---------------------//
+    // ELEMENTS
+    //---------------------//
+    .title {
+        font-size: 36px;
+        font-weight: 500;
+        line-height: 1.3em;
+        margin-top: 0px;
+        margin-bottom: 0.5em;
+    }
+    .description {
+        color: $color-text;
+        position: relative;
+        line-height: normal;
+        margin-bottom: 1em;
+        font-size: 24px;
+        font-weight: 300;
+        font-style: normal;
+    }
+
+    .label-textarea {
+        font-size: 12px;
+        color: $color-text;
+        text-align: left;
+        padding-bottom: 3px;
+        font-weight: 600;
+        letter-spacing: .2px;
+        padding-right: 4px;
+        padding-left: 4px;
+        .text-label-textarea::after {
+            content: "*";
+            margin-left: 3px;
+            color: $color-error;
+        }
+    }
+
+    textarea {
+        width: 100%;
+        min-width: 0px;
+        min-height: 64px;
+        outline: transparent solid 2px;
+        outline-offset: 2px;
+        position: relative;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        vertical-align: top;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 5px;
+        background: $color-white;
+        border: 1px solid $color-middle-gray;
+        padding: 10px 10px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        &:focus {
+            border: 1px solid $color-pro-plan;
+        }
+    }
+
+}
+
+
+
+// ANIMATIONS //
+.fade-in-right {
+  -webkit-animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.4s both;
+          animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.4s both;
+}
+.fade-in-left {
+  -webkit-animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
+          animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
+}

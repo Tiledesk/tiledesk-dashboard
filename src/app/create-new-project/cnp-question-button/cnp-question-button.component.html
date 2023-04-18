@@ -8,26 +8,28 @@
 </div>
 <div class="row buttons">
    
-        <div *ngFor="let button of question.buttons; index as i">
-            <!-- <button 
-                class="btn btn-lg btn-primary"
-                (click)="goToSelectedButton()">
-                {{button.label}}
-            </button> -->
+        <div *ngFor="let button of question.buttons">
+            <div class="question-button" 
+                [ngClass]="{'selected': selectedOption === button.value}"
+                (click)="goToSelectedButton(button)">
+                <!-- 
+                <section class="disable-input-message-section">
+                    <mat-checkbox 
+                        [checked]="false"
+                        (change)="goToSelectedButton(button)">
+                    </mat-checkbox>
+                </section> 
+                -->
 
-            <div class="css-bskbvc eb451o40">
-               
-                    <section class="disable-input-message-section">
-                        <mat-checkbox 
-                            [checked]="false"
-                            (change)="goToSelectedButton()">
-                        </mat-checkbox>
-                    </section>
+                <label class="button-radio">
+                    <input type="radio" [checked]="selectedOption === button.value" name="radio_{{index}}">
+                    <span class="checkmark"></span>
+                </label>
 
-                    <div class="content-button">
-                        <h2 *ngIf="button.icon">{{button.icon}}</h2>
-                        <p weight="400" color="default" class="css-19dojy7 eimqq0f0">{{button.label}}</p>
-                    </div>
+                <div class="content-button">
+                    <h2 *ngIf="button.icon" class="icon-button">{{button.icon}}</h2>
+                    <p class="label-button">{{button.label}}</p>
+                </div>
 
             </div>
         </div>
