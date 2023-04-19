@@ -384,8 +384,8 @@ export class UsersComponent implements OnInit, OnDestroy {
           if (projectProfileData.profile_type === 'free') {
             if (projectProfileData.trial_expired === false) {
               this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-              // this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-              this.seatsLimit = PLAN_SEATS.free
+              this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
+              // this.seatsLimit = PLAN_SEATS.free
               this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
               // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             } else {
