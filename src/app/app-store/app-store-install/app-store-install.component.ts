@@ -117,8 +117,20 @@ export class AppStoreInstallComponent implements OnInit {
             if (user && this.appurl !== undefined) {
               this.TOKEN = user.token
 
+              // use case 1 -> https://cms.tiledesk.com/
+              // use case 2 -> https://cms.tiledesk.com/?version=v3
+
+              let qsCharacterSeparator = ""
+              const appurlHasQueryParams = this.hasQueryParams(this.appurl)
+              // console.log('APP URL this.appurl', this.appurl)
+              // console.log('APP URL appurlHasQueryParams', appurlHasQueryParams)
+              if (appurlHasQueryParams === false) {
+                qsCharacterSeparator = '?'
+              } else {
+                qsCharacterSeparator = '&'
+              }
               // this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(parsed_json.installActionURL + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
-              this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(this.appurl + '?project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
+              this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(this.appurl + qsCharacterSeparator + 'project_id=' + params.projectid + '&app_id=' + params.appid + '&token=' + this.TOKEN);
               // console.log("[APP-STORE-INSTALL] - URL IFRAME: ", this.URL)
               if (this.URL) {
                 setTimeout(() => {
@@ -133,10 +145,14 @@ export class AppStoreInstallComponent implements OnInit {
             }
           });
         } else {
-          this.logger.error('Error getting app details' )
+          this.logger.error('Error getting app details')
         }
       })
     })
+  }
+
+  hasQueryParams(url) {
+    return url.includes('?');
   }
 
   getIframeHasLoaded(app) {
