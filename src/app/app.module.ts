@@ -320,6 +320,8 @@ import { CannedResponsesStaticComponent } from './static-pages/canned-responses-
 import { UpgradePlanModalComponent } from './components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
 import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
+import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
+
 
 
 
@@ -570,7 +572,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CannedResponsesStaticComponent,
     UpgradePlanModalComponent,
     WsrequestsStaticComponent,
-    EmailTicketingStaticComponent
+    EmailTicketingStaticComponent,
+    ActivateAppsumoProductComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

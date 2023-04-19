@@ -1903,6 +1903,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     return Math.max.apply(null, requestsByDay_series_array);
   }
 
+
+  activateAppSumoLicenceTest() {
+    this.projectService.activateAppSumoTier().subscribe((res) => {
+      console.log("[HOME] »» ACTIVATE APPSUMO TIER RES: ", res)
+
+    }, (error) => {
+      console.error('[HOME] »» ACTIVATE APPSUMO TIER - ERROR ', error);
+    }, () => {
+      console.log('[HOME] »» ACTIVATE APPSUMO TIER - * COMPLETE * ');
+    })
+
+  }
+
   // TRANSLATION
   translateString() {
     this.translateInstallWidget();
