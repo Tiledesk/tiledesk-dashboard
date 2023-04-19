@@ -141,6 +141,7 @@ export class AuthGuard implements CanActivate {
           url_segments[1] !== 'resetpassword' &&
           url_segments[1] !== 'autologin' &&
           url_segments[1] !== 'get-chatbot' &&
+          url_segments[1] !== 'activate-product' &&
           url_segments[1] !== 'install-template' &&
           url_segments[1] !== 'create-project-itw' &&
           url_segments[1] !== 'install-template-np' &&
@@ -347,14 +348,14 @@ export class AuthGuard implements CanActivate {
     // Check if a wannaurl is stored and remove it when the _decodeCurrentUrl is equal to it
     // ----------------------------------------
     const decodeCurrentUrl = decodeURIComponent(url)
-    // console.log('[AUTH-GUARD] _decodeCurrentUrl ', decodeCurrentUrl)
+    console.log('[AUTH-GUARD] _decodeCurrentUrl ', decodeCurrentUrl)
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
-    // console.log('[AUTH-GUARD] storedRoute ', storedRoute)
+    console.log('[AUTH-GUARD] storedRoute ', storedRoute)
 
     if (decodeCurrentUrl === storedRoute ) { 
       this.localDbService.removeFromStorage('wannago')
-      // console.log('Hey baby - I removes the wannago stored url')
+      console.log('Hey baby - I removes the wannago stored url')
     }
 
     // ----------------------------------------
@@ -390,11 +391,11 @@ export class AuthGuard implements CanActivate {
         // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
         // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
         const storedRoute = this.localDbService.getFromStorage('wannago')
-        // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url storedRoute', storedRoute);
+        console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url storedRoute', storedRoute);
 
         if (!storedRoute) {
           const URLtoStore = url;
-          // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore', URLtoStore);
+          console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore', URLtoStore);
           this.localDbService.setInStorage('wannago', URLtoStore);
         }
       } else {

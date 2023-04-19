@@ -1,4 +1,4 @@
-<div class="css-get-start-chatbotfork">
+<div class="activate-appsumo-product">
     <img [src]="companyLogoBlack_Url" class="logo" />
 
     <!-- <div class="close-wizard-page">
@@ -23,7 +23,7 @@
                        
                         <!-- <span *ngIf="projects && projects?.length > 1"> Install  {{ templateNameOnSite}} </span>
                         <span *ngIf="projects && projects?.length === 1"> Install {{ templateNameOnSite}} </span> -->
-                        <span *ngIf="projects && projects?.length === 0"> Create a project to complete the activation </span>
+                        <span *ngIf="projects && projects?.length === 0"> Your account is ready </span>
                     </h1>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                     </button> -->
 
                     <button *ngIf="projects && projects?.length === 0" class="btn btn-lg btn-primary" (click)="goToCreateProject()">
-                        {{ "ProjectsPage.Continue" | translate }}
+                        {{ "GetStarted" | translate }}
                     </button>
                 </div>
             </div>

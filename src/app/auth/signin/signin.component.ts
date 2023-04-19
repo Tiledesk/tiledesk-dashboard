@@ -95,7 +95,7 @@ export class SigninComponent implements OnInit {
 
   getStoredRoute() {
     this.storedRoute = this.localDbService.getFromStorage('wannago')
-    // console.log('[SIGN-IN] storedRoute ', this.storedRoute)
+    console.log('[SIGN-IN] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
       this.EXIST_STORED_ROUTE = true
     } else {
@@ -109,9 +109,6 @@ export class SigninComponent implements OnInit {
       this.logger.log('[SIGN-IN] - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
       this.router.navigate(['/projects']);
     } else if (storedUser && this.EXIST_STORED_ROUTE) {
-
-
-      // this.localDbService.removeFromStorage('wannago')
 
       this.router.navigate([this.storedRoute]);
     }

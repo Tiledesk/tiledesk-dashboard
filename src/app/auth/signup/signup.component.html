@@ -289,13 +289,19 @@
         </div>
 
         <div class="signup-title" style="text-align:center">
-          <h2>
+          <h2 *ngIf="!appSumoActivationEmail">
             {{ 'CreateAFreeAccount' | translate}}
+          </h2>
+          <h2 *ngIf="appSumoActivationEmail">
+             Welcome Sumo-ling!
           </h2>
         </div>
 
-        <div class="no-card-required">
+        <div *ngIf="!appSumoActivationEmail" class="no-card-required">
           {{ "NoCreditCardRequired" | translate }}
+        </div>
+        <div *ngIf="appSumoActivationEmail" class="no-card-required">
+         Your account is almost ready
         </div>
 
         <div class="login-container">
@@ -322,7 +328,7 @@
             <label for="email">Email <span style="color:#ff5252">*</span></label>
             <!-- id="email" -->
             <!-- [readonly]="SKIP_WIZARD"   [ngClass]="{'gray-bckgnd' : SKIP_WIZARD}" -->
-            <input type="email" class="input" formControlName="email" required autocomplete="off" autocorrect="off"
+            <input id="user-email" type="email" class="input" formControlName="email" required autocomplete="off" autocorrect="off"
               autocapitalize="off" spellcheck="false">
 
             <div *ngIf="formErrors.email" class="is-danger" translate>
