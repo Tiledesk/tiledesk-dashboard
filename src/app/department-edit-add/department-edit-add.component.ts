@@ -1040,7 +1040,9 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   }
 
   goTo_BotEditAddPage_CREATE() {
-    this.router.navigate(['project/' + this.project._id + '/bots/bot-select-type']);
+    // this.router.navigate(['project/' + this.project._id + '/bots/bot-select-type']);
+     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
+   
   }
 
   // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
