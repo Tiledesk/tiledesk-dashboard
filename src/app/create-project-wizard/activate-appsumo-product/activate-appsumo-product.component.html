@@ -69,8 +69,12 @@
                     <!-- <button *ngIf="projects && projects?.length === 1" class="btn btn-lg btn-primary" (click)="goToInstallTemplate()">
                         {{ "ProjectsPage.Continue" | translate }}
                     </button> -->
+                    
+                    <button  class="btn btn-lg btn-primary" (click)="updateProject()">
+                       UPDATE PRJCT
+                    </button>
 
-                    <button *ngIf="projects && projects?.length === 0" class="btn btn-lg btn-primary" (click)="goToCreateProject()">
+                    <button  class="btn btn-lg btn-primary" (click)="goToHome()">
                         {{ "GetStarted" | translate }}
                     </button>
                 </div>

@@ -15,6 +15,8 @@ export class ProjectService {
   user: any;
   currentUserID: string;
   projectID: string;
+ 
+  APP_SUMO_API_BASE_URL = "https://tiledesk-sumo.tiledesk.repl.co/"
 
   public myAvailabilityCount: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   public hasCreatedNewProject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -288,6 +290,28 @@ export class ProjectService {
   // ----------------------------------------------------------
 
 
+    // -----------------------------------------------------------------
+  // Used to update the project name - todo from put to patch
+  // -----------------------------------------------------------------
+  public updateAppSumoProject(proiectid: string, activationemail: string, licenseproductkeyuuid: string, plan_id: string) {
+    // 'Authorization': this.TOKEN
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        
+      })
+    };
+
+    let url = this.APP_SUMO_API_BASE_URL+ 'updateproject';
+    console.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT URL ', url);
+
+    const body = { 'proiectid': proiectid, 'extra1': activationemail, 'extra2': licenseproductkeyuuid, 'extra3': plan_id};
+    console.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT BODY ', body);
+
+    return this._httpclient
+      .post(url, body, httpOptions)
+  }
 
   // -----------------------------------------------------------------
   // Used to update the project name - todo from put to patch

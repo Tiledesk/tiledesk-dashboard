@@ -25,6 +25,7 @@ export class ActivateAppsumoProductComponent implements OnInit {
   public company_site_url: any;
   public appSumoActivationEmail: string;
   public appSumoPlanId: string;
+  public appSumoProductKey: string;
   constructor(
     private projectService: ProjectService,
     private auth: AuthService,
@@ -43,7 +44,7 @@ export class ActivateAppsumoProductComponent implements OnInit {
   ngOnInit(): void {
     this.getRouteParams()
     // this.getProjects();
-    // this.createNewProject()
+    this.createNewProject()
   }
 
 
@@ -52,7 +53,7 @@ export class ActivateAppsumoProductComponent implements OnInit {
       console.log('[ACTIVATE-APPSUMO-PRODUCT] GET ROUTE PARAMS > params', params);
       this.appSumoActivationEmail = params.activation_email
       this.appSumoPlanId = params.plan_id;
-
+      this.appSumoProductKey = params.licenseproductkeyuuid;
     });
   }
 
@@ -71,21 +72,21 @@ export class ActivateAppsumoProductComponent implements OnInit {
   createNewProject() {
     console.log()
     let projectName = ''
-    // const email = this.userForm.value['email']
-    // if (email.includes('@')) {
-    //   const emailAfterAt = email.split('@')[1];
-    //   if (!emailDomainWhiteList.includes(emailAfterAt)) {
-    //     if (emailAfterAt.includes('.'))
-    //       projectName = emailAfterAt.split('.')[0]
-    //     else if (!emailAfterAt.includes('.')) {
-    //       projectName = emailAfterAt
-    //     }
-    //   } else {
-    //     projectName = 'My awesome project'
-    //   }
-    // } else {
-    //   projectName = 'My awesome project'
-    // }
+    const email = this.appSumoActivationEmail
+    if (email.includes('@')) {
+      const emailAfterAt = email.split('@')[1];
+      if (!emailDomainWhiteList.includes(emailAfterAt)) {
+        if (emailAfterAt.includes('.'))
+          projectName = emailAfterAt.split('.')[0]
+        else if (!emailAfterAt.includes('.')) {
+          projectName = emailAfterAt
+        }
+      } else {
+        projectName = 'My awesome project'
+      }
+    } else {
+      projectName = 'My awesome project'
+    }
 
     console.log('[ACTIVATE-APPSUMO-PRODUCT] CREATE NEW PROJECT - PROJECT-NAME  ', projectName);
 
@@ -107,7 +108,7 @@ export class ActivateAppsumoProductComponent implements OnInit {
 
           // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
           this.auth.projectSelected(newproject)
-          this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] CREATED PROJECT ', newproject)
+          console.log('[ACTIVATE-APPSUMO-PRODUCT] CREATED PROJECT ', newproject)
         }
 
 
@@ -117,6 +118,8 @@ export class ActivateAppsumoProductComponent implements OnInit {
 
       }, () => {
         this.logger.log('[ACTIVATE-APPSUMO-PRODUCT]CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
+        this.updateProject()
+
         this.projectService.newProjectCreated(true);
 
 
@@ -161,6 +164,19 @@ export class ActivateAppsumoProductComponent implements OnInit {
       });
   }
 
+  updateProject() {
+    this.projectService.updateAppSumoProject(this.new_project._id, this.appSumoActivationEmail, this.appSumoProductKey, this.appSumoPlanId).subscribe((updatedproject) => {
+      console.log('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT - RES ', updatedproject);
+    }, (error) => {
+
+      console.error('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT - ERROR ', error);
+
+    }, () => {
+      console.log('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT * COMPLETE * ');
+    })
+  }
+
+
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
       this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
@@ -188,6 +204,9 @@ export class ActivateAppsumoProductComponent implements OnInit {
     }, () => {
       this.logger.log('[SIGN-UP] getProjectsAndSaveInStorage - COMPLETE')
     });
+  }
+  goToHome() {
+    this.router.navigate([`/project/${this.new_project._id}/home`]);
   }
 }
 

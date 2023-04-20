@@ -107,7 +107,7 @@ export class ProjectPlanService {
     this.projectService.getProjects().subscribe((projects: any) => {
    
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
+      console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
       const projectPlanData: Project = {
 
         _id: current_prjct.id_project._id,
