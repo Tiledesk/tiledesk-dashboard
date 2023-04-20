@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.29
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.28
 - Deploys in production
 - Increases the number of seats available for the trial plan
