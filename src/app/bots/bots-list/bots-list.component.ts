@@ -807,9 +807,9 @@ export class BotListComponent implements OnInit {
   // ---------------------------------------------------
   // Go to select bot type
   // ---------------------------------------------------
-  goToSelectBotType() {
-    this.router.navigate(['project/' + this.project._id + '/bots/bot-select-type']);
-  }
+  // goToSelectBotType() {
+  //   this.router.navigate(['project/' + this.project._id + '/bots/bot-select-type']);
+  // }
 
   goToBotAllTemplates() {
     this.router.navigate(['project/' + this.project._id + '/bots/templates/all']);
