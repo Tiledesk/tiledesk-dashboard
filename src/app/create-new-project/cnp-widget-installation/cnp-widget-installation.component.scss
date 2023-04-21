@@ -1,0 +1,29 @@
+// LOCAL COLORS //
+$color-white: #ffffff;
+$color-light-gray: #efefef;
+$color-middle-gray: #ccc;
+$color-gray: #333;
+$color-error: rgb(255, 95, 95);
+$color-error-shadow:rgba(255, 95, 95, 0.9);
+$color-text: #566787;
+$color-pro-plan: #3ea9f5;
+
+.cnp-widget-installation{
+    margin-top: 30px;
+    .title {
+        font-size: 36px;
+        font-weight: 500;
+        line-height: 1.3em;
+        margin-top: 0px;
+        margin-bottom: 0.5em;
+    }
+    .description {
+        color: $color-text;
+        position: relative;
+        line-height: normal;
+        margin-bottom: 1em;
+        font-size: 24px;
+        font-weight: 300;
+        font-style: normal;
+    }
+}

@@ -301,6 +301,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
 
+  goToCreateProject(){
+    
+  }
 
   goBack() {
     this.location.back();

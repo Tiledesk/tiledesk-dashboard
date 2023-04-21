@@ -1,18 +1,12 @@
-<div class="css-1x9k2nf ew10qdu0">
+<div class="cnp-widget-installation">
 
-    <h3 class="css-17nemy5 e1pw7erd0">Show live chat to your visitors</h3>
-    <p weight="400" class="e10kaal71 css-5kh7t6 eimqq0f0">Allow your visitors to contact you via live chat, by adding our widget to your website. </p>
-    <div class="css-1j2o185 e1t9e0v911">
-        <div class="css-7lpbi8 e1t9e0v96">
+    <h3 class="title">Show live chat to your visitors</h3>
+    <p class="description">Allow your visitors to contact you via live chat, by adding our widget to your website.</p>
+    
+
             <div width="100%" class="css-leej9y e1crryeb2">
                 
                 <div class="css-fyxnnm e1crryeb1">
-                    
-                    <fieldset class="css-1qhn8e6 e144t2b01">
-                        <legend class="css-16v9xis e144t2b00">
-                            <span>Select platform</span>
-                        </legend>
-                    </fieldset>
 
                     <label id="downshift-0-label" for="downshift-0-toggle-button" class="css-1l2qnpu e144t2b02">Select platform</label>
                     <ng-select class="select-option" 
@@ -32,15 +26,45 @@
                     </ng-select>
                 </div>
 
-                <div class="">
-                    <appdashboard-js-installation></appdashboard-js-installation>
-                    <appdashboard-joomla-installation></appdashboard-joomla-installation>
-                    <appdashboard-prestashop-installation></appdashboard-prestashop-installation>
-                    <appdashboard-wordpress-installation></appdashboard-wordpress-installation>
-                    <appdashboard-shopify-installation></appdashboard-shopify-installation>
-                    <appdashboard-google-tag-manager-installation></appdashboard-google-tag-manager-installation>
+                <div class="box-installation-instruction">
+                    <appdashboard-js-installation 
+                        *ngIf="selectedPlatform===typePlatform.JS"
+                    ></appdashboard-js-installation>
+                    <appdashboard-joomla-installation
+                        *ngIf="selectedPlatform===typePlatform.JOOMLA"
+                    ></appdashboard-joomla-installation>
+                    <appdashboard-prestashop-installation
+                        *ngIf="selectedPlatform===typePlatform.PRESTASHOP"
+                    ></appdashboard-prestashop-installation>
+                    <appdashboard-wordpress-installation
+                        *ngIf="selectedPlatform===typePlatform.WORDPRESS"
+                    ></appdashboard-wordpress-installation>
+                    <appdashboard-shopify-installation
+                        *ngIf="selectedPlatform===typePlatform.SHOPIFY"
+                    ></appdashboard-shopify-installation>
+                    <appdashboard-google-tag-manager-installation
+                        *ngIf="selectedPlatform===typePlatform.GTM"
+                    ></appdashboard-google-tag-manager-installation>
                 </div>
+
+                
             </div>
-        </div>
+
+</div>
+
+<!-- BUTTONS -->
+<div class="row-navigation">
+    <div class="navigation-btn">
+        <button 
+            type="button" 
+            class="btn-back" 
+            (click)="goToPrevStep()">
+            <em class="material-icons">arrow_back</em>
+        </button>
+        <button
+            class="btn btn-lg btn-primary"
+            (click)="goToNextStep()">
+            {{'OnboardPage.Next' | translate}}
+        </button>
     </div>
 </div>
