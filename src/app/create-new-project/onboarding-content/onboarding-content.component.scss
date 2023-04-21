@@ -14,6 +14,34 @@ $color-pro-plan: #3ea9f5;
 //---------------------//
 // STRUCTURE
 //---------------------//
+
+
+.type-step {
+    .title {
+        font-size: 36px;
+        font-weight: 500;
+        line-height: 1.3em;
+        margin-top: 0px;
+        margin-bottom: 0.5em;
+    }
+    display: none;
+    &.active {
+        display: block;
+    }
+}
+
+
+// .active-step {
+//     .title {
+//         font-size: 36px;
+//         font-weight: 500;
+//         line-height: 1.3em;
+//         margin-top: 0px;
+//         margin-bottom: 0.5em;
+//     }
+// } 
+
+
 .css-create-project {
     --width-col-rigth: 360px;
     font-family: $mdb-font-family-poppins;
@@ -74,15 +102,7 @@ $color-pro-plan: #3ea9f5;
 }  
 
 
-.active-step {
-    .title {
-        font-size: 36px;
-        font-weight: 500;
-        line-height: 1.3em;
-        margin-top: 0px;
-        margin-bottom: 0.5em;
-    }
-}
+
 
 /** CSS STEPS **/
 .box-steps {

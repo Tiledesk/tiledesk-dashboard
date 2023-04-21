@@ -1,0 +1,46 @@
+<div class="css-1x9k2nf ew10qdu0">
+
+    <h3 class="css-17nemy5 e1pw7erd0">Show live chat to your visitors</h3>
+    <p weight="400" class="e10kaal71 css-5kh7t6 eimqq0f0">Allow your visitors to contact you via live chat, by adding our widget to your website. </p>
+    <div class="css-1j2o185 e1t9e0v911">
+        <div class="css-7lpbi8 e1t9e0v96">
+            <div width="100%" class="css-leej9y e1crryeb2">
+                
+                <div class="css-fyxnnm e1crryeb1">
+                    
+                    <fieldset class="css-1qhn8e6 e144t2b01">
+                        <legend class="css-16v9xis e144t2b00">
+                            <span>Select platform</span>
+                        </legend>
+                    </fieldset>
+
+                    <label id="downshift-0-label" for="downshift-0-toggle-button" class="css-1l2qnpu e144t2b02">Select platform</label>
+                    <ng-select class="select-option" 
+                        [clearable]="false" 
+                        bindLabel="label" 
+                        bindValue="value"
+                        [searchable] = false
+                        groupBy="type"
+                        (change)="onSelected($event)">
+
+                        <ng-option *ngFor="let option of options" 
+                            [value]="option.value">
+                            <img src="{{option.image}}" width="20px" height="20px"/>
+                            {{ option.label }}
+                        </ng-option>
+
+                    </ng-select>
+                </div>
+
+                <div class="">
+                    <appdashboard-js-installation></appdashboard-js-installation>
+                    <appdashboard-joomla-installation></appdashboard-joomla-installation>
+                    <appdashboard-prestashop-installation></appdashboard-prestashop-installation>
+                    <appdashboard-wordpress-installation></appdashboard-wordpress-installation>
+                    <appdashboard-shopify-installation></appdashboard-shopify-installation>
+                    <appdashboard-google-tag-manager-installation></appdashboard-google-tag-manager-installation>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

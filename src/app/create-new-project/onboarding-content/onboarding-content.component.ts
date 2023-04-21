@@ -11,6 +11,13 @@ import { HttpClient } from "@angular/common/http";
 import { emailDomainWhiteList } from 'app/utils/util';
 
 
+export enum TYPE_STEP {
+  NAME_PROJECT= "nameProject",
+  CUSTOM_STEP = "customStep",
+  WELCOME_MESSAGE = "welcomeMessage",
+  WIDGET_INSTALLATION = "widgetInstallation"
+}
+
 @Component({
   selector: 'cnp-onboarding-content',
   templateUrl: './onboarding-content.component.html',
@@ -29,15 +36,16 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   botid: string;
   browser_lang: string;
 
-  translateY: string;
-  steps: any[] = [];
-  activeStep: any;
-  activeStepNumber: number;
+  
+  // activeStep: any;
+  
   activeQuestionNumber: number;
   activeQuestion: any;
+
+
   // stepDirectionIn: boolean = false;
   disabledNextButton: boolean = true;
-  disabledFirstPass: boolean = false;
+  // disabledFirstPass: boolean = false;
 
 
   welcomeMessage  = "";
@@ -51,12 +59,18 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   userFullname: string;
   // onboardingConfig: any;
 
-  showPass: number = 0;
+  // showPass: number = 0;
 
-  numberTotalPass: number = 0;
-  arrayNumberTotalPass: any;
-  activeNumberPass: number = 0;
 
+  translateY: string;
+
+  typeStep = TYPE_STEP;
+  arrayOfSteps: TYPE_STEP[];
+  activeTypeStepNumber: number = 0;
+
+  activeCustomStepNumber: number;
+  customSteps: any[] = [];
+  activeStep: any;
 
   constructor(
     private auth: AuthService,
@@ -136,19 +150,20 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
   private initialize(){
-    this.numberTotalPass = 2;
+    // this.numberTotalPass = 2;
     this.translateY = 'translateY(0px)';
-    this.activeStepNumber = 0;
+    
     this.activeQuestionNumber = 0;
     this.loadJsonOnboardingConfig();
     this.projectName = this.setProjectName();
     if(!this.projectName){
-      this.disabledFirstPass = true;
-      this.showPass = 1;
+      // this.disabledFirstPass = true;
+      this.arrayOfSteps = [TYPE_STEP.NAME_PROJECT];
+      // this.showPass = 1;
     } else {
-      this.numberTotalPass += 1;
-      this.disabledFirstPass = false;
-      this.showPass = 0;
+      // this.numberTotalPass += 1;
+      // this.disabledFirstPass = false;
+      // this.showPass = 0;
     }
   }
  
@@ -184,32 +199,36 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       if (jsonParse) {
         jsonSteps = jsonParse['steps'];
         jsonSteps.forEach(step => {
-          this.steps.push(step);
+          this.customSteps.push(step);
+          this.arrayOfSteps.push(TYPE_STEP.CUSTOM_STEP);
         });
-        this.activeStep = this.steps[0];
-        this.activeQuestion = this.activeStep.questions[0];
-        this.numberTotalPass += this.steps.length;
-        this.arrayNumberTotalPass = Array(this.numberTotalPass);
       }
+      if(this.customSteps.length>0){
+        // this.arrayOfSteps.push(TYPE_STEP.CUSTOM_STEP);
+        this.activeCustomStepNumber = 0;
+        this.activeStep = this.customSteps[0];
+        this.activeQuestion = this.customSteps[0].questions[0];
+      }
+      this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE, TYPE_STEP.WIDGET_INSTALLATION);
     });
   }
 
 
-  private nextNumberPass(){
-    this.activeNumberPass++;
-    this.translateY = 'translateY('+(-(this.activeNumberPass+1)*20+20)+'px)';
+  private nextNumberStep(){
+    this.activeTypeStepNumber++;
+    this.translateY = 'translateY('+(-(this.activeTypeStepNumber+1)*20+20)+'px)';
   }
 
-  private prevNumberPass(){
-    this.activeNumberPass--;
-    this.translateY = 'translateY('+(-(this.activeNumberPass+1)*20+20)+'px)';
+  private prevNumberStep(){
+    this.activeTypeStepNumber--;
+    this.translateY = 'translateY('+(-(this.activeTypeStepNumber+1)*20+20)+'px)';
   }
 
   // EVENTS FUNCTIONS //
   goToSetProjectName($event){
     this.projectName = $event;
-    this.showPass++;
-    this.nextNumberPass();
+    // this.showPass++;
+    this.nextNumberStep();
   }
 
   goToNextQuestion(){
@@ -219,6 +238,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   private checkQuestions(){
+    this.activeStep = this.customSteps[this.activeCustomStepNumber];
     this.activeQuestionNumber = this.activeStep.questions.length;
     for (let i = 0; i < this.activeStep.questions.length; i++) {
       let action = this.activeStep.questions[i];
@@ -228,43 +248,41 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       }
     }
     this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
-    if(this.activeQuestionNumber<this.activeStep.questions.length){
+    if(this.activeQuestionNumber < this.activeStep.questions.length){
       this.disabledNextButton = true;
     } else {
       this.disabledNextButton = false;
     }
   }
 
-  goToNextStep(){
-    this.activeQuestionNumber = 0;
-    this.activeQuestion = this.activeStep.questions[0];
-    if(this.activeStepNumber < (this.steps.length-1)){
-      this.activeStepNumber++;
-      this.activeStep = this.steps[this.activeStepNumber];
-      //this.translateY = 'translateY('+(-(this.activeStepNumber+1)*20+20)+'px)';
-      // this.stepDirectionIn = true;
+  goToNextCustomStep(){
+    if(this.activeCustomStepNumber < (this.customSteps.length-1)){
+      this.activeCustomStepNumber++;
+      this.activeStep = this.customSteps[this.activeCustomStepNumber];
       this.checkQuestions();
-      this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
-      // console.log('goToNextStep: ', this.disabledNextButton, this.activeStep);
-      this.nextNumberPass();
+      this.activeQuestionNumber = 0;
+      this.activeQuestion = this.activeStep.questions[0];
+      //this.nextNumberPass();
+      this.goToNextStep();
     } else {
-      this.goToNextPassage();
+      this.goToNextStep();
     }
   }
 
 
-  goToPrevStep() {
-    if(this.activeStepNumber > 0){
-      this.activeStepNumber--;
-      this.activeStep = this.steps[this.activeStepNumber];
-      this.activeQuestionNumber = 0;
-      this.activeQuestion = this.activeStep.questions[0];
-      // this.stepDirectionIn = false;
+  goToPrevCustomStep() {
+    if(this.activeCustomStepNumber > 0){
+      this.activeCustomStepNumber--;
+      this.activeStep = this.customSteps[this.activeCustomStepNumber];
+      // this.activeQuestionNumber = 0;
+      // this.activeQuestion = activeStep.questions[0];
       this.activeQuestionNumber = this.activeStep.questions.length-1;
+      this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
       this.disabledNextButton = false;
-      this.prevNumberPass();
+      // this.prevNumberPass();
+      this.goToPrevStep();
     } else {
-      this.goToPrevPassage();
+      this.goToPrevStep();
     }
   }
 
@@ -272,16 +290,14 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   
 
 
-  goToPrevPassage() {
-    this.showPass--;
-    this.prevNumberPass();
-    console.log('goToPrevPassage::: ',  this.showPass, this.welcomeMessage);
+  goToPrevStep() {
+    this.prevNumberStep();
+    // console.log('goToPrevPassage::: ',  this.showPass, this.welcomeMessage);
   }
 
-  goToNextPassage() {
-    this.showPass++;
-    this.nextNumberPass();
-    console.log('goToNextPassage::: ', this.showPass);
+  goToNextStep() {
+    this.nextNumberStep();
+    // console.log('goToNextPassage::: ', this.showPass);
   }
 
 
