@@ -65,7 +65,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   translateY: string;
 
   typeStep = TYPE_STEP;
-  arrayOfSteps: TYPE_STEP[];
+  arrayOfSteps: TYPE_STEP[] = [];
   activeTypeStepNumber: number = 0;
 
   activeCustomStepNumber: number;
@@ -158,7 +158,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.projectName = this.setProjectName();
     if(!this.projectName){
       // this.disabledFirstPass = true;
-      this.arrayOfSteps = [TYPE_STEP.NAME_PROJECT];
+      this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
       // this.showPass = 1;
     } else {
       // this.numberTotalPass += 1;
