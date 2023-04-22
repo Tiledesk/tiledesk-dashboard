@@ -17,7 +17,7 @@ import { BrandService } from '../services/brand.service';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -31,6 +31,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   // companyLogoBlack_Url = brand.company_logo_black__url;
   // companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
   PLAN_NAME = PLAN_NAME
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME
   tparams: any;
   companyLogoBlack_Url: string;
   companyLogoBlack_width: string;
@@ -492,7 +493,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
         this.projects.forEach(project => {
-          this.logger.log('[PROJECTS] - SET PROJECT IN STORAGE')
+          console.log('[PROJECTS] - SET PROJECT IN STORAGE > project ', project)
           project['is_selected'] = false
 
           if (project.id_project && project.id_project.profile.type === 'free') {
@@ -512,12 +513,21 @@ export class ProjectsComponent implements OnInit, OnDestroy {
             // this.getPaidPlanTranslation(project, project.id_project.profile.name);
             // if ( project.id_project.isActiveSubscription === true) {
               if (project.id_project.profile.name  === PLAN_NAME.A ) {
+                if(!project.id_project.profile.extra3 ) {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
                 project['prjct_profile_name'] = this.prjct_profile_name;
+                } else {
+                  this.prjct_profile_name = PLAN_NAME.A + ' plan ' + '(' + APP_SUMO_PLAN_NAME[project.id_project.profile.extra3] + ')'
+                  project['prjct_profile_name'] = this.prjct_profile_name;
+                }
                 project['plan_badge_background_type'] = 'a_plan_badge'
               } else if (project.id_project.profile.name === PLAN_NAME.B) { 
+                if(!project.id_project.profile.extra3 ) {
                 project['prjct_profile_name'] = this.prjct_profile_name;
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
+                } else {
+                  this.prjct_profile_name = PLAN_NAME.B + ' plan ' + '(' + APP_SUMO_PLAN_NAME[project.id_project.profile.extra3] + ')'
+                }
                 project['prjct_profile_name'] = this.prjct_profile_name;
                 project['plan_badge_background_type'] = 'b_plan_badge'
               }  else if (project.id_project.profile.name === PLAN_NAME.C) { 

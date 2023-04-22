@@ -23,7 +23,7 @@ import { Chart } from 'chart.js'; /// VISITOR GRAPH FOR THE NEW NOME
 import moment from "moment";
 import { ContactsService } from '../services/contacts.service'; // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
-import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators'
@@ -42,7 +42,8 @@ const swal = require('sweetalert');
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
-  PLAN_NAME = PLAN_NAME
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   private unsubscribe$: Subject<any> = new Subject<any>();
   @ViewChild('widgetsContent', { static: false, read: ElementRef }) public widgetsContent;
   // company_name = brand.company_name;
@@ -113,7 +114,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   DISPLAY_OPH_AS_DISABLED: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   current_selected_prjct: any;
-  popup_visibility: string = 'none'
+  popup_visibility: string = 'none';
+  appSumoProfile: string;
   // dispayPromoBanner: boolean = true;
   // promoBannerContent: any;
   // promoBannerSyle: any;
@@ -319,7 +321,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.getProjects().subscribe((projects: any) => {
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
+      console.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
       const projectProfileData = this.current_selected_prjct.id_project.profile
 
       this.prjct_name = this.current_selected_prjct.id_project.name;
@@ -329,6 +331,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.prjct_profile_type = projectProfileData.type;
       this.subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription;
       this.subscription_end_date = projectProfileData.subEnd;
+      if (projectProfileData && projectProfileData.extra3) {
+        console.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+
+        this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+        console.log('[HOME] Find Current Project appSumoProfile ', this.appSumoProfile)
+      }
 
       // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_name ', this.prjct_name);
       // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_name ', this.prjct_profile_name);
@@ -370,20 +378,26 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.logger.log('[HOME] Find Current Project Among All BRS-LANG 4 ', this.browserLang);
         if (this.prjct_profile_name === PLAN_NAME.A) {
-          this.prjct_profile_name = PLAN_NAME.A + ' plan'
-          this.profile_name_for_segment = PLAN_NAME.A
+          if (!this.appSumoProfile) {
+            this.prjct_profile_name = PLAN_NAME.A + ' plan'
+            this.profile_name_for_segment = PLAN_NAME.A
+          } else {
+            this.prjct_profile_name = PLAN_NAME.A + ' plan ' + '(' + this.appSumoProfile + ')'
+            this.profile_name_for_segment = PLAN_NAME.A + '(' + this.appSumoProfile + ')'
+          }
 
           // this.isVisibleANA = false;
 
 
         } else if (this.prjct_profile_name === PLAN_NAME.B) {
-          this.prjct_profile_name = PLAN_NAME.B + ' plan'
-          this.profile_name_for_segment = PLAN_NAME.B
-          if (this.subscription_is_active) {
-            // this.isVisibleANA = true;
+          if (!this.appSumoProfile) {
+            this.prjct_profile_name = PLAN_NAME.B + ' plan'
+            this.profile_name_for_segment = PLAN_NAME.B
           } else {
-            // this.isVisibleANA = false;
+            this.prjct_profile_name = PLAN_NAME.B + ' plan' + '(' + this.appSumoProfile + ')'
+            this.profile_name_for_segment = PLAN_NAME.B + '(' + this.appSumoProfile + ')'
           }
+
 
         } else if (this.prjct_profile_name === PLAN_NAME.C) {
           this.prjct_profile_name = PLAN_NAME.C + ' plan'
@@ -1912,6 +1926,42 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       console.error('[HOME] »» ACTIVATE APPSUMO TIER - ERROR ', error);
     }, () => {
       console.log('[HOME] »» ACTIVATE APPSUMO TIER - * COMPLETE * ');
+    })
+
+  }
+
+  updateAppSumoLicenceTest(){
+    this.projectService.updateAppSumoTier().subscribe((res) => {
+      console.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
+
+    }, (error) => {
+      console.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
+    }, () => {
+      console.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
+    })
+
+  }
+
+  downgradeAppSumoLicenceTest(){
+    this.projectService.downgradeAppSumoTier().subscribe((res) => {
+      console.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
+
+    }, (error) => {
+      console.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
+    }, () => {
+      console.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
+    })
+
+  }
+
+  refundAppSumoLicenceTest(){
+    this.projectService.refundAppSumoTier().subscribe((res) => {
+      console.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
+
+    }, (error) => {
+      console.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
+    }, () => {
+      console.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
     })
 
   }

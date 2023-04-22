@@ -101,6 +101,7 @@ export class SigninComponent implements OnInit {
     } else {
       this.EXIST_STORED_ROUTE = false
     }
+   
   }
 
   redirectIfLogged() {

@@ -23,7 +23,7 @@ import { takeUntil } from 'rxjs/operators'
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
-import { avatarPlaceholder, getColorBck, PLAN_NAME, PLAN_SEATS, URL_setting_up_automatic_assignment } from './../utils/util';
+import { appSumoHighlightedFeaturesPlanATier1, appSumoHighlightedFeaturesPlanATier2, appSumoHighlightedFeaturesPlanATier3, appSumoHighlightedFeaturesPlanATier4, APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, avatarPlaceholder, featuresPlanA, getColorBck, PLAN_NAME, PLAN_SEATS, URL_setting_up_automatic_assignment } from './../utils/util';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
@@ -41,6 +41,10 @@ type FormErrors = { [u in UserFields]: string };
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+  APPSUMO_PLAN_SEATS = APPSUMO_PLAN_SEATS;
+  appSumoProfile: string;
+  appSumoInvoiceUUID: string;
   tParamsPlanAndSeats: any;
   tParamsFreePlanSeatsNum: any;
   tParamsFeatureAvailableWith: any;
@@ -205,7 +209,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   cancel: string;
   featureAvailableOnlyWithPaidPlans: string;
   t_params: any;
-
+  planFeatures: any;
+  highlightedFeatures: any;
   formErrors: FormErrors = {
     'creditCard': '',
     'expirationDate': '',
@@ -1117,7 +1122,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         // this.prjct_profile_name = projectProfileData.profile_name;
@@ -1130,6 +1135,37 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.subscription_is_active = projectProfileData.subscription_is_active;
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.subscription_start_date = projectProfileData.subscription_start_date;
+
+        if (projectProfileData.extra3) {
+          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+          console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN  appSumoProfile ', this.appSumoProfile)
+        }
+
+        if (projectProfileData.extra4) {
+          this.appSumoInvoiceUUID = projectProfileData.extra4
+          console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN  appSumoInvoiceUUID ', this.appSumoInvoiceUUID)
+
+        }
+
+        if (projectProfileData.extra3 === 'tiledesk_tier1' || projectProfileData.extra3 === 'tiledesk_tier2') {
+
+          this.planFeatures = featuresPlanA;
+          if (projectProfileData.extra3 === 'tiledesk_tier1') {
+            this.highlightedFeatures = appSumoHighlightedFeaturesPlanATier1;
+          } else if (projectProfileData.extra3 === 'tiledesk_tier2') {
+            this.highlightedFeatures = appSumoHighlightedFeaturesPlanATier2;
+          }
+        }
+        else if (projectProfileData.extra3 === 'tiledesk_tier3' || projectProfileData.extra3 === 'tiledesk_tier4') {
+
+          this.planFeatures = featuresPlanA;
+          if (projectProfileData.extra3 === 'tiledesk_tier3') {
+            this.highlightedFeatures = appSumoHighlightedFeaturesPlanATier3;
+          } else if (projectProfileData.extra3 === 'tiledesk_tier4') {
+            this.highlightedFeatures = appSumoHighlightedFeaturesPlanATier4;
+          }
+        }
+
         if (projectProfileData.subscription_creation_date) {
           this.subscription_creation_date = projectProfileData.subscription_creation_date;
         } else {
@@ -1162,17 +1198,27 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         } else if (projectProfileData.profile_type === 'payment') {
           if (this.subscription_is_active === true) {
             if (projectProfileData.profile_name === PLAN_NAME.A) {
-              this.prjct_profile_name = PLAN_NAME.A + " plan";
-              this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
-              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
-
+              if (!this.appSumoProfile) {
+                this.prjct_profile_name = PLAN_NAME.A + " plan";
+                this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
+                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
+                console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+              } else {
+                this.prjct_profile_name = PLAN_NAME.A + ' plan ' + '(' + this.appSumoProfile + ')'
+                this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
+                this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
+              }
             } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-              this.prjct_profile_name = PLAN_NAME.B + " plan";
-              this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
-
+              if (!this.appSumoProfile) {
+                this.prjct_profile_name = PLAN_NAME.B + " plan";
+                this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
+                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
+                // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+              } else {
+                this.prjct_profile_name = PLAN_NAME.B + ' plan ' + '(' + this.appSumoProfile + ')'
+                this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
+                this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
+              }
             } else if (projectProfileData.profile_name === PLAN_NAME.C) {
               this.prjct_profile_name = PLAN_NAME.C + " plan";
               this.seatsLimit = projectProfileData.profile_agents
@@ -1315,7 +1361,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     });
   }
 
-
+  changeAppSumoProduct() {
+    const url = `https://appsumo.com/account/redemption/${this.appSumoInvoiceUUID}#change-plan`
+    window.open(url, '_blank');
+  }
   // getProPlanTrialTranslation() {
   //   this.translate.get('ProPlanTrial')
   //     .subscribe((translation: any) => {
@@ -1707,6 +1756,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
+  }
+
+  goToTeammates() {
+    this.router.navigate(['project/' + this.id_project + '/users'])
   }
 
   // openLetsChatModal() {

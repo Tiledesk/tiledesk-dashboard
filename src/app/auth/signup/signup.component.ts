@@ -255,8 +255,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
           this.segmentRecordPageAndIdentify()
         }
       })
-
   }
+
+  
+
   segmentRecordPageAndIdentify(queryParams?: any) {
     if (!isDevMode()) {
       setTimeout(() => {

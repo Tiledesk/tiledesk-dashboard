@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core'
 import { ProjectPlanService } from '../services/project-plan.service'
 import { Subscription } from 'rxjs'
 import { AppConfigService } from '../services/app-config.service'
-import { avatarPlaceholder, getColorBck, PLAN_SEATS, PLAN_NAME } from '../utils/util'
+import { avatarPlaceholder, getColorBck, PLAN_SEATS, PLAN_NAME, APP_SUMO_PLAN_NAME, APPSUMO_PLAN_SEATS } from '../utils/util'
 import { URL_understanding_default_roles } from '../utils/util'
 import { LoggerService } from '../services/logger/logger.service'
 
@@ -21,7 +21,9 @@ const swal = require('sweetalert')
 })
 export class UsersComponent implements OnInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
-  PLAN_SEATS = PLAN_SEATS
+  PLAN_SEATS = PLAN_SEATS;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+  APPSUMO_PLAN_SEATS = APPSUMO_PLAN_SEATS;
   seatsLimit: any;
   trial_expired: any;
   tParamsFreePlanSeatsNum: any;
@@ -95,7 +97,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   isChromeVerGreaterThan100: boolean
   prjct_id: string;
   prjct_name: string;
-
+  appSumoProfile: string;
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -107,7 +109,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
   ) {
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
-    
+
   }
 
   ngOnInit() {
@@ -370,7 +372,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe(
       (projectProfileData: any) => {
-        // console.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
+        console.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
         if (projectProfileData) {
           this.prjct_id = projectProfileData._id
           this.prjct_name = projectProfileData.name
@@ -381,13 +383,19 @@ export class UsersComponent implements OnInit, OnDestroy {
           this.profile_name = projectProfileData.profile_name;
           this.trial_expired = projectProfileData.trial_expired;
 
+          if (projectProfileData && projectProfileData.extra3) {
+            console.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+            this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+            console.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
+          }
+
           if (projectProfileData.profile_type === 'free') {
             if (projectProfileData.trial_expired === false) {
               this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-              // this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-              this.seatsLimit = PLAN_SEATS.free
+              this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
+              // this.seatsLimit = PLAN_SEATS.free
               this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
-              // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+              console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             } else {
               this.prjct_profile_name = "Free plan";
               this.seatsLimit = PLAN_SEATS.free
@@ -397,22 +405,34 @@ export class UsersComponent implements OnInit, OnDestroy {
           } else if (projectProfileData.profile_type === 'payment') {
             if (this.subscription_is_active === true) {
               if (projectProfileData.profile_name === PLAN_NAME.A) {
-                this.prjct_profile_name = PLAN_NAME.A + " plan";
-                this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
-                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
-
+                if (!this.appSumoProfile) {
+                  this.prjct_profile_name = PLAN_NAME.A + " plan";
+                  this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
+                  this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
+                  console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+                } else {
+                  this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+                  this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
+                  this.tParamsPlanAndSeats = { plan_name: 'AppSumo ' + this.appSumoProfile, allowed_seats_num: this.seatsLimit }
+                  console.log('[USERS] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
+                }
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-                this.prjct_profile_name = PLAN_NAME.B + " plan";
-                this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
-
+                if (!this.appSumoProfile) {
+                  this.prjct_profile_name = PLAN_NAME.B + " plan";
+                  this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
+                  this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
+                  console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+                } else {
+                  this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
+                  this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
+                  this.tParamsPlanAndSeats = { plan_name: 'AppSumo ' + this.appSumoProfile, allowed_seats_num: this.seatsLimit }
+                  console.log('[USERS] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
+                }
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 this.seatsLimit = projectProfileData.profile_agents
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
-                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
               }
 
             } else if (this.subscription_is_active === false) {
@@ -421,19 +441,19 @@ export class UsersComponent implements OnInit, OnDestroy {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
-                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
               }
             }
           }
@@ -490,7 +510,11 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   getMoreOperatorsSeats() {
     if (this.USER_ROLE === 'owner') {
-      this.notify._displayContactUsModal(true, 'upgrade_plan')
+      if (!this.appSumoProfile){
+        this.notify._displayContactUsModal(true, 'upgrade_plan')
+      } else {
+        this.router.navigate(['project/' + this.prjct_id  + '/project-settings/payments']);
+      }
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }

@@ -5,15 +5,21 @@ import { Project } from 'app/models/project-model';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
-import { emailDomainWhiteList } from 'app/utils/util';
-
+import { appSumoHighlightedFeaturesPlanATier1, appSumoHighlightedFeaturesPlanATier2, appSumoHighlightedFeaturesPlanATier3, appSumoHighlightedFeaturesPlanATier4, APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, emailDomainWhiteList, featuresPlanA, highlightedFeaturesPlanA, highlightedFeaturesPlanB, PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
+import { TranslateService } from '@ngx-translate/core';
+import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
+import { WidgetService } from 'app/services/widget.service';
+import { NotifyService } from 'app/core/notify.service';
+import { UsersService } from 'app/services/users.service';
 
 @Component({
   selector: 'appdashboard-activate-appsumo-product',
   templateUrl: './activate-appsumo-product.component.html',
   styleUrls: ['./activate-appsumo-product.component.scss']
 })
-export class ActivateAppsumoProductComponent implements OnInit {
+export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent implements OnInit {
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+  APPSUMO_PLAN_SEATS = APPSUMO_PLAN_SEATS;
   public user: any;
   public projects: Project[];
   public projectname: string;
@@ -26,6 +32,18 @@ export class ActivateAppsumoProductComponent implements OnInit {
   public appSumoActivationEmail: string;
   public appSumoPlanId: string;
   public appSumoProductKey: string;
+  public appSumoLicenseName: string;
+  public appSumoInvoiceItemKey
+  public planFeatures: any;
+  public highlightedFeatures: any;
+  public tiledeskProjectProfileName: string;
+  public appSumoPlanSeatsNum:number;
+  public langName: string;
+  public langCode: string;
+  public USER_ROLE: string;
+  public onlyOwnerCanManageTheAccountPlanMsg: string;
+  public learnMoreAboutDefaultRoles: string;
+
   constructor(
     private projectService: ProjectService,
     private auth: AuthService,
@@ -33,7 +51,12 @@ export class ActivateAppsumoProductComponent implements OnInit {
     private route: ActivatedRoute,
     private logger: LoggerService,
     public brandService: BrandService,
+    public translate: TranslateService,
+    private widgetService: WidgetService,
+    private notify: NotifyService,
+    private usersService: UsersService
   ) {
+    super(translate);
     const brand = brandService.getBrand();
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.tparams = brand;
@@ -43,10 +66,79 @@ export class ActivateAppsumoProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRouteParams()
+    this.getLangNameAndLangCode()
     // this.getProjects();
     this.createNewProject()
+    this.translateString()
+    this.getProjectUserRole() 
   }
 
+  translateString() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+    .subscribe((translation: any) => {
+      this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+    });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+    .subscribe((translation: any) => {
+      this.learnMoreAboutDefaultRoles = translation;
+    });
+
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs
+      .subscribe((user_role) => {
+        this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] - USER ROLE ', user_role);
+        if (user_role) {
+          this.USER_ROLE = user_role
+
+        }
+      });
+  }
+
+  getLangNameAndLangCode() {
+    const browser_lang = this.translate.getBrowserLang();
+    
+    if (tranlatedLanguage.includes(browser_lang)) {
+      this.langName = this.getLanguageNameFromCode(browser_lang)
+      // console.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
+      this.langCode = browser_lang
+      
+    } else {
+      // this.selectedTranslationLabel = 'en'
+      // ENGLISH ARE USED AS DEFAULT IF THE USER DOESN'T SELECT ANY OTHER ONE LANGUAGE
+      this.langName = 'English';
+      this.langCode = 'en'
+    
+    }
+
+  }
+
+  addNewLanguage(langCode: string, langName: string) {
+
+    console.log('[ACTIVATE-APPSUMO-PRODUCT] - ADD-NEW-LANG selectedTranslationCode', langCode);
+    this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] - ADD-NEW-LANG selectedTranslationLabel', langName);
+
+    this.widgetService.cloneLabel(langCode.toUpperCase())
+      .subscribe((res: any) => {
+
+        console.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG (clone-label) RES ', res.data);
+
+      }, error => {
+        console.error('[ACTIVATE-APPSUMO-PRODUCT] ADD-NEW-LANG (clone-label) - ERROR ', error)
+      }, () => {
+        console.log('[ACTIVATE-APPSUMO-PRODUCT] ADD-NEW-LANG (clone-label) * COMPLETE *')
+
+      });
+
+    // // ADD THE NEW LANGUAGE TO BOTTOM NAV
+    const newLang = { code: langCode, name: langName };
+    console.log('[ACTIVATE-APPSUMO-PRODUCT] Multilanguage saveNewLanguage newLang objct ', newLang);
+
+    this.availableTranslations.push(newLang)
+    console.log('[ACTIVATE-APPSUMO-PRODUCT] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
+  }
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
@@ -54,9 +146,39 @@ export class ActivateAppsumoProductComponent implements OnInit {
       this.appSumoActivationEmail = params.activation_email
       this.appSumoPlanId = params.plan_id;
       this.appSumoProductKey = params.licenseproductkeyuuid;
+      this.appSumoInvoiceItemKey = params.invoice_item_uuid;
+      // const appSumoPlanIdSegments = this.appSumoPlanId.split('_')
+      // console.log('[ACTIVATE-APPSUMO-PRODUCT] GET ROUTE PARAMS > appSumoPlanIdSegment', appSumoPlanIdSegments);
+      // const appSumoPlanIdSegmentOne = appSumoPlanIdSegments[1].split(/(\d+)/)
+      // console.log('[ACTIVATE-APPSUMO-PRODUCT] GET ROUTE PARAMS > appSumoPlanIdSegmentOne', appSumoPlanIdSegmentOne);
+      // this.appSumoLicenseName = appSumoPlanIdSegmentOne[0] + ' ' + appSumoPlanIdSegmentOne[1]
+      this.appSumoLicenseName = APP_SUMO_PLAN_NAME[this.appSumoPlanId]
+      if (this.appSumoPlanId === 'tiledesk_tier1' || this.appSumoPlanId === 'tiledesk_tier2') {
+        this.tiledeskProjectProfileName = PLAN_NAME.A
+        this.planFeatures = featuresPlanA;
+        if (this.appSumoPlanId === 'tiledesk_tier1') {
+          this.highlightedFeatures = appSumoHighlightedFeaturesPlanATier1;
+          this.appSumoPlanSeatsNum = APPSUMO_PLAN_SEATS[this.appSumoPlanId]
+        } else if (this.appSumoPlanId === 'tiledesk_tier2') {
+          this.highlightedFeatures = appSumoHighlightedFeaturesPlanATier2;
+          this.appSumoPlanSeatsNum = APPSUMO_PLAN_SEATS[this.appSumoPlanId]
+        }
+      }
+      else if (this.appSumoPlanId === 'tiledesk_tier3' || this.appSumoPlanId === 'tiledesk_tier4') {
+        this.tiledeskProjectProfileName = PLAN_NAME.B
+        this.planFeatures = featuresPlanA;
+        if (this.appSumoPlanId === 'tiledesk_tier3') {
+          this.highlightedFeatures = appSumoHighlightedFeaturesPlanATier3;
+          this.appSumoPlanSeatsNum = APPSUMO_PLAN_SEATS[this.appSumoPlanId]
+        } else if (this.appSumoPlanId === 'tiledesk_tier4') {
+          this.highlightedFeatures = appSumoHighlightedFeaturesPlanATier4;
+          this.appSumoPlanSeatsNum = APPSUMO_PLAN_SEATS[this.appSumoPlanId]
+        }
+      }
     });
   }
 
+ 
   getLoggedUser() {
     this.auth.user_bs
       .subscribe((user) => {
@@ -66,8 +188,6 @@ export class ActivateAppsumoProductComponent implements OnInit {
         }
       });
   }
-
-
 
   createNewProject() {
     console.log()
@@ -109,8 +229,8 @@ export class ActivateAppsumoProductComponent implements OnInit {
           // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
           this.auth.projectSelected(newproject)
           console.log('[ACTIVATE-APPSUMO-PRODUCT] CREATED PROJECT ', newproject)
+          this.addNewLanguage(this.langCode, this.langName)
         }
-
 
       }, (error) => {
         // this.DISPLAY_SPINNER = false;
@@ -121,9 +241,6 @@ export class ActivateAppsumoProductComponent implements OnInit {
         this.updateProject()
 
         this.projectService.newProjectCreated(true);
-
-
-
         if (!isDevMode()) {
           if (window['analytics']) {
             try {
@@ -139,7 +256,7 @@ export class ActivateAppsumoProductComponent implements OnInit {
                 name: this.user.firstname + ' ' + this.user.lastname,
                 email: this.user.email,
                 logins: 5,
-                plan: "Pro (trial)"
+                plan: this.appSumoLicenseName
               });
             } catch (err) {
               this.logger.error('Activate AppSumo product identify error', err);
@@ -148,7 +265,7 @@ export class ActivateAppsumoProductComponent implements OnInit {
             try {
               window['analytics'].group(this.new_project._id, {
                 name: this.new_project.name,
-                plan: "Pro (trial)",
+                plan: this.appSumoLicenseName
               });
             } catch (err) {
               this.logger.error('Activate AppSumo product group error', err);
@@ -156,17 +273,26 @@ export class ActivateAppsumoProductComponent implements OnInit {
           }
         }
 
-
         // 'getProjectsAndSaveInStorage()' was called only on the onInit lifehook, now recalling also after the creation 
         // of the new project resolve the bug  'the auth service not find the project in the storage'
         this.getProjectsAndSaveInStorage();
-
       });
   }
 
+  
   updateProject() {
-    this.projectService.updateAppSumoProject(this.new_project._id, this.appSumoActivationEmail, this.appSumoProductKey, this.appSumoPlanId).subscribe((updatedproject) => {
+    this.projectService.updateAppSumoProject(
+      this.new_project._id, 
+      this.tiledeskProjectProfileName,
+      this.appSumoPlanSeatsNum,
+      this.appSumoActivationEmail, 
+      this.appSumoProductKey, 
+      this.appSumoPlanId, 
+      this.appSumoInvoiceItemKey
+      )
+      .subscribe((updatedproject) => {
       console.log('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT - RES ', updatedproject);
+
     }, (error) => {
 
       console.error('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT - ERROR ', error);
@@ -207,6 +333,19 @@ export class ActivateAppsumoProductComponent implements OnInit {
   }
   goToHome() {
     this.router.navigate([`/project/${this.new_project._id}/home`]);
+  }
+
+  goToPayments() {
+    if (this.USER_ROLE === 'owner') {
+      this.router.navigate(['project/' + this.new_project._id + '/payments']);
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 }
 

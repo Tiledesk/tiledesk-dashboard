@@ -93,9 +93,9 @@
 
               <li *ngIf="isVisibleSecurityTab" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
                 [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
-                <a> Security  </a> 
-                  
-                 
+                <a> Security </a>
+
+
               </li>
 
               <li (click)="goToProjectSettings_BannedVisitors()" class="btn-with-border-effect"
@@ -279,12 +279,15 @@
                               <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
                               <!-- numberOf_agents_seats -->
 
-                              <span *ngIf="profile_name !== PLAN_NAME?.C">
-                                ( {{ seatsLimit}} {{ "AgentSeats" | translate }} x € {{ plan_amount / 100 }}
-                                .00
-                                /
-                                {{ plan_interval | translate}} )
+                              <span *ngIf="!appSumoProfile">
+                                <span *ngIf="profile_name !== PLAN_NAME?.C">
+                                  ( {{ seatsLimit}} {{ "AgentSeats" | translate }} x € {{ plan_amount / 100 }}
+                                  .00
+                                  /
+                                  {{ plan_interval | translate}} )
+                                </span>
                               </span>
+
 
                               <span *ngIf="profile_name === PLAN_NAME?.C">
                                 ( {{ seatsLimit}} {{ "AgentSeats" | translate }} )
@@ -329,63 +332,7 @@
                           </span>
                         </span>
                       </div>
-                      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" *ngIf="prjct_profile_type !== 'payment'">
 
-                        <!-- ---------------------------------------------------------------------------------------------- -->
-                        <!-- ******* YOUR CURRENT PLAN: FREE - CARD WITH LIST OF PRO FEATURES & UPGRADE PLAN BTN   ******* -->
-                        <!-- ******* NOTE: CARD what-youre-missing-card VISIBLE ONLY @ MEDIA > 768                 ******* -->
-                        <!-- ******* THE UPGRADE BTN @ MEDIA < 768 IS BOTTOM "NO PAYMENTS" ROW                     ******* -->
-                        <!-- ---------------------------------------------------------------------------------------------- -->
-                        <div class="card what-youre-missing-card"
-                          style="display: none;box-shadow: rgba(155, 155, 155, .3) 0px 2px 12px; border-radius:10px;border: 1px solid #e1eef4;position: absolute; margin-top: 0px;">
-                          <div class="card-content" style="padding-left:5px; padding-right:5px; padding-bottom:0px">
-                            <div style="border-radius: 10px 10px 0 0;  
-                          /* background: #3ea9f5; */
-                          background-image: linear-gradient(to right, #3ea9f5, #1fb3f6, #00bcf4, #00c4f0, #12cceb);
-                          margin-right: -5px;
-                          margin-left: -5px;
-                          margin-top: -20px;
-                          padding-top: 15px;
-                          padding-bottom: 1px;">
-                              <h4 class="card-title"
-                                style="text-transform: none; color: #ffffff;font-size:14px; font-weight:400; text-align: center; margin-top:0px; text-shadow: 0.2px 0.2px #000000;">
-                                <span *ngIf="prjct_trial_expired === false">
-
-                                  {{ 'OnceYourTrialHasEndedYouWillMissing' | translate }}:
-                                </span>
-                                <span *ngIf="prjct_trial_expired === true">
-                                  {{ 'WhatYoureMissing' | translate }}
-                                </span>
-                              </h4>
-                            </div>
-
-                            <ul class="pro-plan-ul"
-                              style="color: #566787; list-style-type: none;padding-left: 15px; padding-top: 16px;line-height: 1.6;font-weight: 400;">
-                              <li>{{'WidgetUnbranding' | translate}}</li>
-                              <li>{{'SmartAssignment' | translate}}</li>
-                              <li>{{ 'Hours'| translate}}</li>
-                              <li>{{'Unlimited'| translate}} {{'Departments' | translate}}</li>
-                              <li>{{'Unlimited'| translate}} {{'AgentsGroups'| translate}}</li>
-                              <li>{{'UnlimitedChatHistory' | translate}} </li>
-                              <li>{{'AnalyticsAndRealTimeMonitoring' | translate}} </li>
-                              <li>{{'TicketingSystem' | translate}}</li>
-                              <li>{{'DataExport' | translate}}</li>
-                              <li>{{'ActivityLog' | translate}}</li>
-                              <li>{{'EmailTicketing' | translate}}</li>
-                              <li>{{'PostChatSurveys' | translate}}</li>
-                              <li>{{'Triggers' | translate}}</li>
-                            </ul>
-
-                            <!-- ------------------------------------------------- -->
-                            <!-- PROFILE TYPE: FREE - UPGRADE PLAN BTN   -->
-                            <!-- ------------------------------------------------- -->
-                            <button class="btn btn-primary btn-block" style="padding-top:9px; padding-bottom:9px"
-                              (click)="goToPricing()">
-                              {{ "Pricing.UpgradePlan" | translate }}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
                     </div>
 
                     <!-- ------------------------------------------------- -->
@@ -413,28 +360,35 @@
                               error_outline
                             </i>
 
-                            <span *ngIf="!SUBSCRIPTION_BUFFER_DAYS">
-                              <span *ngIf="profile_name !== PLAN_NAME?.C">
-                                {{ "Pricing.YourSubscriptionIsActive" | translate }}.
-                              </span>
-                              <span *ngIf="profile_name === PLAN_NAME?.C">
-                                {{ "Pricing.ThePlanIsActive" | translate }}.
-                              </span>
-
-                              <span *ngIf="profile_name !== PLAN_NAME?.C">
-                                {{ "NextRenew" | translate }}
-                                <span *ngIf="days_to_next_renew === 0">
-                                  {{ "Today" | translate}} {{ "At" | translate}} {{ timeOfNextRenew }}
+                            <ng-container *ngIf="!appSumoProfile">
+                              <span *ngIf="!SUBSCRIPTION_BUFFER_DAYS">
+                                <span *ngIf="profile_name !== PLAN_NAME?.C">
+                                  {{ "Pricing.YourSubscriptionIsActive" | translate }}.
                                 </span>
-                                <span *ngIf="days_to_next_renew === 1">
-                                  {{ "Pricing.Tomorrow" | translate }}
+                                <span *ngIf="profile_name === PLAN_NAME?.C">
+                                  {{ "Pricing.ThePlanIsActive" | translate }}.
                                 </span>
 
-                                <span *ngIf="days_to_next_renew > 1">
-                                  {{ "In" | translate }} {{days_to_next_renew}} {{ "Pricing.Days" | translate }}
+                                <span *ngIf="profile_name !== PLAN_NAME?.C">
+                                  {{ "NextRenew" | translate }}
+                                  <span *ngIf="days_to_next_renew === 0">
+                                    {{ "Today" | translate}} {{ "At" | translate}} {{ timeOfNextRenew }}
+                                  </span>
+                                  <span *ngIf="days_to_next_renew === 1">
+                                    {{ "Pricing.Tomorrow" | translate }}
+                                  </span>
+
+                                  <span *ngIf="days_to_next_renew > 1">
+                                    {{ "In" | translate }} {{days_to_next_renew}} {{ "Pricing.Days" | translate }}
+                                  </span>
                                 </span>
                               </span>
-                            </span>
+                            </ng-container>
+
+                            <ng-container *ngIf="appSumoProfile">
+                              Lifetime Access to {{appSumoProfile}}
+                            </ng-container>
+
 
 
                             <span *ngIf="SUBSCRIPTION_BUFFER_DAYS" style="margin-left:3px">
@@ -554,212 +508,307 @@
                     <!-- -------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION CREDIT CARD -->
                     <!-- -------------------------------------------------------------------------------------  -->
-                    <div class="row"
-                      *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C &&  subscription_is_active === true"
-                      style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label">
-                        {{"PaymentInformation" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ng-container *ngIf="!appSumoProfile">
+                      <div class="row"
+                        *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C &&  subscription_is_active === true"
+                        style="margin-top: 16px;">
+                        <label class="col-sm-2 custom-label">
+                          {{"PaymentInformation" | translate }}
+                        </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 
-                        <span class="subscription-info">
+                          <span class="subscription-info">
 
-                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                            credit_card
-                          </i>
-                          <span
-                            style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px; text-transform: capitalize;">
+                            <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                              credit_card
+                            </i>
+                            <span
+                              style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px; text-transform: capitalize;">
 
-                            {{default_card_brand_name}} &nbsp; **** **** **** {{card_last_four_digits}}
+                              {{default_card_brand_name}} &nbsp; **** **** **** {{card_last_four_digits}}
+                            </span>
+
+                            <span class="add-more-operator-btn" (click)="openModalAddPaymentMethod()">
+                              {{'ChangeCard' | translate}}
+                            </span>
                           </span>
 
-                          <span class="add-more-operator-btn" (click)="openModalAddPaymentMethod()">
-                            {{'ChangeCard' | translate}}
-                          </span>
-                        </span>
-
+                        </div>
                       </div>
-                    </div>
+                    </ng-container>
 
                     <!-- -------------------------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION START DATE OR PLAN START DATE IF ENTERPRISE -->
                     <!-- -------------------------------------------------------------------------------------------------------  -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== PLAN_NAME?.C">
-                        {{ "SubscriptionStartDate" | translate }}
-                      </label>
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name === PLAN_NAME?.C">
-                        {{ "PlanStartDate" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ng-container *ngIf="!appSumoProfile">
+                      <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                        <label class="col-sm-2 custom-label" *ngIf="profile_name !== PLAN_NAME?.C">
+                          {{ "SubscriptionStartDate" | translate }}
+                        </label>
+                        <label class="col-sm-2 custom-label" *ngIf="profile_name === PLAN_NAME?.C">
+                          {{ "PlanStartDate" | translate }}
+                        </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 
-                        <span class="subscription-info">
-                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                            flag
-                          </i>
-                          <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
+                          <span class="subscription-info">
+                            <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                              flag
+                            </i>
+                            <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
 
-                            <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE PROJECT PROFILE -->
-                            <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }} -->
+                              <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE PROJECT PROFILE -->
+                              <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }} -->
 
-                            <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
-                            <span *ngIf="profile_name === PLAN_NAME?.C">
-                              <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }}  -->
-                              {{ subscription_creation_date | amDateFormat: 'LLL' }}
+                              <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
+                              <span *ngIf="profile_name === PLAN_NAME?.C">
+                                <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }}  -->
+                                {{ subscription_creation_date | amDateFormat: 'LLL' }}
 
-                            </span>
-                            <span *ngIf="profile_name !== PLAN_NAME?.C">
-                              <!-- {{ subscription_creation_date * 1000 | date:'dd/MM/yyyy' }}  -->
-                              {{ subscription_creation_date * 1000 | amDateFormat: 'LLL' }}
+                              </span>
+                              <span *ngIf="profile_name !== PLAN_NAME?.C">
+                                <!-- {{ subscription_creation_date * 1000 | date:'dd/MM/yyyy' }}  -->
+                                {{ subscription_creation_date * 1000 | amDateFormat: 'LLL' }}
+                              </span>
                             </span>
                           </span>
-                        </span>
 
+                        </div>
                       </div>
-                    </div>
+                    </ng-container>
 
                     <!-- -------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CURRENT INVOICE START DATE -->
                     <!-- -------------------------------------------------------------------------------------  -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C"
-                      style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label">
-                        {{ "CurrentInvoiceStartDate" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ng-container *ngIf="!appSumoProfile">
+                      <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C"
+                        style="margin-top: 16px;">
+                        <label class="col-sm-2 custom-label">
+                          {{ "CurrentInvoiceStartDate" | translate }}
+                        </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 
-                        <span class="subscription-info">
-                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                            calendar_today
-                          </i>
+                          <span class="subscription-info">
+                            <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                              calendar_today
+                            </i>
 
-                          <span style=" font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
-                            <!-- {{ subscription_start_date | date: 'dd/MM/yyyy' }} -->
-                            {{ subscription_start_date | amDateFormat: 'LLL' }}
+                            <span style=" font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
+                              <!-- {{ subscription_start_date | date: 'dd/MM/yyyy' }} -->
+                              {{ subscription_start_date | amDateFormat: 'LLL' }}
 
+                            </span>
                           </span>
-                        </span>
+                        </div>
                       </div>
-                    </div>
+                    </ng-container>
 
                     <!-- ---------------------------------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CURRENT INVOICE END DATE OR PLAN EXIPIRATION DATE IF ENTERPRISE -->
                     <!-- ---------------------------------------------------------------------------------------------------------------  -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name !== PLAN_NAME?.C">
-                        {{ "CurrentInvoiceEndDate" | translate }}
-                      </label>
-                      <label class="col-sm-2 custom-label" *ngIf="profile_name === PLAN_NAME?.C">
-                        {{ "PlanExpirationDate" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <span class="subscription-info">
-                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                            calendar_today
-                          </i>
-                          <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
+                    <ng-container *ngIf="!appSumoProfile">
+                      <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                        <label class="col-sm-2 custom-label" *ngIf="profile_name !== PLAN_NAME?.C">
+                          {{ "CurrentInvoiceEndDate" | translate }}
+                        </label>
+                        <label class="col-sm-2 custom-label" *ngIf="profile_name === PLAN_NAME?.C">
+                          {{ "PlanExpirationDate" | translate }}
+                        </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <span class="subscription-info">
+                            <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                              calendar_today
+                            </i>
+                            <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
 
-                            <!-- {{ subscription_end_date | date: 'dd/MM/yyyy' }} -->
-                            {{ subscription_end_date | amDateFormat: 'LLL' }}
+                              <!-- {{ subscription_end_date | date: 'dd/MM/yyyy' }} -->
+                              {{ subscription_end_date | amDateFormat: 'LLL' }}
 
+                            </span>
                           </span>
-                        </span>
+                        </div>
                       </div>
-                    </div>
+                    </ng-container>
 
                     <!-- -------------------------------------------------------------------------------------  -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - NUMBER OF AGENTS SEATS -->
                     <!-- -------------------------------------------------------------------------------------  -->
-                    <!-- *ngIf="prjct_profile_type !== 'free'" color: #f44336;-->
-                    <div class="row" style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label">
-                        {{ "NumberOfAgentSeats" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <span class="subscription-info">
-                          <i class="material-icons"
-                            [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#697386'}"
-                            style="vertical-align: middle;">
-                            people_alt
-                          </i>
-                          <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
-                            <!-- {{ numberOf_agents_seats }} -->
-                            {{countOfPendingInvites + projectUsersLength}}
-                          </span>
-                          <!-- <span class="add-more-operator-btn" (click)="getMoreOperatorsSeats()">
+                    <ng-container *ngIf="!appSumoProfile">
+                      <div class="row" style="margin-top: 16px;">
+                        <label class="col-sm-2 custom-label">
+                          {{ "NumberOfAgentSeats" | translate }}
+                        </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <span class="subscription-info">
+                            <i class="material-icons"
+                              [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#697386'}"
+                              style="vertical-align: middle;">
+                              people_alt
+                            </i>
+                            <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
+                              <!-- {{ numberOf_agents_seats }} -->
+                              {{countOfPendingInvites + projectUsersLength}}
+                            </span>
+                            <!-- <span class="add-more-operator-btn" (click)="getMoreOperatorsSeats()">
                             {{ "Pricing.AddMoreOperators" | translate }}
                           </span> -->
-                        </span>
+                          </span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
-                      <label class="col-sm-2 "> </label>
-                      <div class="col-sm-10" style="border-top: 1px solid #eeeeee;"></div>
-                    </div>
+                      <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                        <label class="col-sm-2 "> </label>
+                        <div class="col-sm-10" style="border-top: 1px solid #eeeeee;"></div>
+                      </div>
+                    </ng-container>
 
 
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SEE PAYMENTS BTN  -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C"
-                      style="margin-top: 16px;">
-                      <label class="col-sm-2 custom-label">
-                        {{ "ProjectEditPage.Payments" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <button class="btn btn-primary" (click)="goToPayments()"
-                          style="padding: 6px 38px; margin-top: 5px;">
-                          {{ "ProjectEditPage.SeePayments" | translate }}
-                        </button>
+                    <ng-container *ngIf="!appSumoProfile">
+                      <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C"
+                        style="margin-top: 16px;">
+                        <label class="col-sm-2 custom-label">
+                          {{ "ProjectEditPage.Payments" | translate }}
+                        </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <button class="btn btn-primary" (click)="goToPayments()"
+                            style="padding: 6px 38px; margin-top: 5px;">
+                            {{ "ProjectEditPage.SeePayments" | translate }}
+                          </button>
+                        </div>
                       </div>
-                    </div>
-
+                    </ng-container>
 
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CANCEL SUBSCRIPTION  -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C">
-                      <label class="col-sm-2"> </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <button class="btn btn-danger" (click)="viewCancelSubscription()"
-                          style="padding: 6px 15px; margin-top: 5px;">
-                          {{ "CancelSubscription" | translate }}
-                        </button>
+                    <ng-container *ngIf="!appSumoProfile">
+                      <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C">
+                        <label class="col-sm-2"> </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <button class="btn btn-danger" (click)="viewCancelSubscription()"
+                            style="padding: 6px 15px; margin-top: 5px;">
+                            {{ "CancelSubscription" | translate }}
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    </ng-container>
 
 
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <!--  NO PAYMENTS  -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
-                    <div class="row" style="margin-top: 16px;"
-                      *ngIf="subscriptionPaymentsLength === 0 && prjct_profile_type !== 'payment'">
-                      <label class="col-sm-2 custom-label" style="padding-top:15px">
-                        {{ "ProjectEditPage.Payments" | translate }} </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <!-- <button class="btn btn-danger" (click)="viewCancelSubscription()" style="padding: 6px 15px; margin-top: 5px;">
+                    <ng-container *ngIf="!appSumoProfile">
+                      <div class="row" style="margin-top: 16px;"
+                        *ngIf="subscriptionPaymentsLength === 0 && prjct_profile_type !== 'payment'">
+                        <label class="col-sm-2 custom-label" style="padding-top:15px">
+                          {{ "ProjectEditPage.Payments" | translate }} </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <!-- <button class="btn btn-danger" (click)="viewCancelSubscription()" style="padding: 6px 15px; margin-top: 5px;">
                             {{ "CancelSubscription" | translate }}
                           </button> -->
-                        <span class="subscription-info" style="font-weight: 400;">
-                          {{ 'NoPayments' | translate }}
-                        </span>
+                          <span class="subscription-info" style="font-weight: 400;">
+                            {{ 'NoPayments' | translate }}
+                          </span>
+                        </div>
                       </div>
-                    </div>
 
-                    <!-- ------------------------------------------------------------------------------------------------ -->
-                    <!--  PROFILE TYPE: FREE - SUBSCRIPTION BUTTON @ MEDIA < 768  -->
-                    <!-- ------------------------------------------------------------------------------------------------ -->
-                    <div style="margin-top: 16px;" class="row upgrade-plan-btn-row"
-                      *ngIf="prjct_profile_type !== 'payment'">
-                      <div class="col-xs-12" style="text-align: center;">
+                      <!-- ------------------------------------------------------------------------------------------------ -->
+                      <!--  PROFILE TYPE: FREE - SUBSCRIPTION BUTTON @ MEDIA < 768  -->
+                      <!-- ------------------------------------------------------------------------------------------------ -->
+                      <div style="margin-top: 16px;" class="row upgrade-plan-btn-row"
+                        *ngIf="prjct_profile_type !== 'payment'">
+                        <div class="col-xs-12" style="text-align: center;">
 
-                        <button class="btn btn-primary" style="padding-top:9px; padding-bottom:9px"
-                          (click)="goToPricing()">
-                          {{ "Pricing.UpgradePlan" | translate }}
-                        </button>
+                          <button class="btn btn-primary" style="padding-top:9px; padding-bottom:9px"
+                            (click)="goToPricing()">
+                            {{ "Pricing.UpgradePlan" | translate }}
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="appSumoProfile">
+                      <div class="wpr-plan-features-card" style="margin-top: 31px;">
+                        <div data-testid="communicator" class="css-4lq111 e194a3xf5 plan-card-wpr">
+                          <div class="css-82a6rk e194a3xf2 plan-card-left-content">
+                            <h2 weight="500" class="e194a3xf4 css-ai3f0v eimqq0f0 plan-card-title">
+                              {{ appSumoProfile }}
+                            </h2>
+                            <span size="8" class="css-yn1por e1soz8mc0 span-8"></span>
+
+                            <span size="8" class="css-1sx5jt9 e1soz8mc0 span-8"> </span>
+
+                            <div class="highlighted-features-wpr">
+                              <span *ngFor="let feature of highlightedFeatures" class="highlighted-features"
+                                [ngStyle]="{'color': feature.color, 'background-color':  feature.background}">
+                                <div class="highlighted-feature"> {{feature.feature}} </div>
+                              </span>
+                            </div>
+
+                            <span size="16" class="css-1sx5jt9 e1soz8mc0 span-16"> </span>
+                            <div class="css-w1ej1e eaklcf32 plan-features">
+                              <ul class="css-1b45418 eaklcf34 plan-features-wpr">
+
+
+                                <li class="css-1655qqu eaklcf33 plan-features" *ngFor="let feature of planFeatures">
+                                  <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr"
+                                    style="position: relative;">
+                                    <div class="css-i03ybx eaklcf31 plan-features-icon">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                                        fill="primary" class="css-zbzjbd e11k6mr30 check-icon"
+                                        style="min-width: 14px; min-height: 14px;">
+                                        <path fill="none" d="M0 0h16v16H0z"></path>
+                                        <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                                      </svg>
+                                    </div>
+                                    <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                                    <div class="css-1sdeyeu eaklcf30 plan-features-text">{{feature}}</div>
+                                  </div>
+                                </li>
+
+                              </ul>
+                            </div>
+
+                          </div>
+
+                        </div>
+                        <div class="change-appsumo-plan" style="text-align: center;">
+                          <button id="annually-plan-b" type="button" (click)="changeAppSumoProduct()"
+                            class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                            <span> Change Plan </span>
+                          </button>
+                          <!-- The number of teammates allowed is {{free_plan_allowed_seats_num}}. Update the plan or manually remove teammates that exceed the limit (the system will do it automatically in a month)", -->
+                          <div class="appsumo-account-instruction">
+                            <div class="appsumo-account-instruction-header">
+                              Instruction for AppSumo accounts
+                            </div>
+                            <div class="appsumo-account-instruction-title">
+                              Upgrading
+                            </div>
+                            <div class="appsumo-account-instruction-content">
+                              If you have no more seats left for teammates, please update your tier inside AppSumo
+                            </div>
+
+                            <div class="appsumo-account-instruction-title">
+                              Downgrading
+                            </div>
+
+                            <div class="appsumo-account-instruction-content">
+                              Before downgrading, be sure to remove Tiledesk teammates first (<span
+                                class="link-to-teammates" (click)="goToTeammates()">see here</span>).
+                              Before downgrading, the number of teammates must be equal to or less than the teammates
+                              allowed in the new tier. Otherwise the system will automatically remove teammates who
+                              exceed the limit in a month.
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </ng-container>
 
                   </div>
                   <!-- ****************** /.end project plan ****************** -->
@@ -866,8 +915,8 @@
                         </span>
 
                         <button class="btn btn-get-feature-no-boxshadow pull-left"
-                          style="margin-bottom: 0px;margin-top: 24px!important; margin-left: 15px;" (click)="goToPricing()"
-                          matTooltipClass="custom-mat-tooltip-in-widget-setup"
+                          style="margin-bottom: 0px;margin-top: 24px!important; margin-left: 15px;"
+                          (click)="goToPricing()" matTooltipClass="custom-mat-tooltip-in-widget-setup"
                           matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
                           matTooltipPosition='below' matTooltipHideDelay="100">
                           <span class="material-icons-outlined get-feature-upgrade-plan-icon">

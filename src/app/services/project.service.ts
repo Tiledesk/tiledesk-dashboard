@@ -293,7 +293,14 @@ export class ProjectService {
     // -----------------------------------------------------------------
   // Used to update the project name - todo from put to patch
   // -----------------------------------------------------------------
-  public updateAppSumoProject(proiectid: string, activationemail: string, licenseproductkeyuuid: string, plan_id: string) {
+  public updateAppSumoProject(
+    proiectid: string, 
+    projectProfileName: string, 
+    agentNumber: number,
+    activationemail: string, 
+    licenseproductkeyuuid: string, 
+    plan_id: string, 
+    invoice_item_uuid: string) {
     // 'Authorization': this.TOKEN
     const httpOptions = {
       headers: new HttpHeaders({
@@ -306,7 +313,7 @@ export class ProjectService {
     let url = this.APP_SUMO_API_BASE_URL+ 'updateproject';
     console.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT URL ', url);
 
-    const body = { 'proiectid': proiectid, 'extra1': activationemail, 'extra2': licenseproductkeyuuid, 'extra3': plan_id};
+    const body = { 'proiectid': proiectid, profileName: projectProfileName, seats: agentNumber, 'extra1': activationemail, 'extra2': licenseproductkeyuuid, 'extra3': plan_id, 'extra4': invoice_item_uuid};
     console.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT BODY ', body);
 
     return this._httpclient
@@ -871,10 +878,65 @@ export class ProjectService {
 
     const url = "https://tiledesk-sumo.tiledesk.repl.co/notification";
 
-    const body = "action=activate&plan_id=tiledesk_tier1&uuid=65b9528a-702d-4326-9b23-3e0c37ce4553&activation_email=tacos@appsumo.com&invoice_item_uuid=01ae3d93-ec5f-44a8-b4b9-093cbd662164"
+    const body = "action=activate&plan_id=tiledesk_tier1&uuid=65b9528a-702d-4326-9b23-3e0c37ce4553&activation_email=padokes502@lieboe.com&invoice_item_uuid=01ae3d93-ec5f-44a8-b4b9-093cbd662164"
 
     return this._httpclient
       .post(url, body, httpOptions)
+  }
+
+  public updateAppSumoTier() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        
+      })
+    };
+
+    const url = "https://tiledesk-sumo.tiledesk.repl.co/notification";
+
+    const body = "action=enhance_tier&plan_id=tiledesk_tier2&uuid=65b9528a-702d-4326-9b23-3e0c37ce4553&activation_email=padokes502@lieboe.com"
+
+    return this._httpclient
+      .post(url, body, httpOptions)
+  }
+
+  public downgradeAppSumoTier() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        
+      })
+    };
+
+    const url = "https://tiledesk-sumo.tiledesk.repl.co/notification";
+
+    const body = "action=reduce_tier&plan_id=tiledesk_tier1&uuid=65b9528a-702d-4326-9b23-3e0c37ce4553&activation_email=padokes502@lieboe.com"
+
+    return this._httpclient
+      .post(url, body, httpOptions)
+  }
+
+  refundAppSumoTier() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        
+      })
+    };
+
+    const url = "https://tiledesk-sumo.tiledesk.repl.co/notification";
+
+    const body = "action=refund&plan_id=yourproduct_tier1&uuid=65b9528a-702d-4326-9b23-3e0c37ce4553&activation_email=padokes502@lieboe.com&invoice_item_uuid=01ae3d93-ec5f-44a8-b4b9-093cbd662164"
+
+    return this._httpclient
+      .post(url, body, httpOptions)
+
   }
 
 

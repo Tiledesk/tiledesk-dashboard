@@ -123,7 +123,9 @@ export class ProjectPlanService {
         subscription_start_date: current_prjct.id_project.profile['subStart'],
         subscription_end_date: current_prjct.id_project.profile['subEnd'],
         subscription_id: current_prjct.id_project.profile['subscriptionId'],
-        subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date']
+        subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date'],
+        extra3: current_prjct.id_project.profile['extra3'],
+        extra4: current_prjct.id_project.profile['extra4']
       }
 
       console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 

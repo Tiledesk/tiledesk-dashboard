@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 
 import { LoggerService } from '../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
-import { coerceStringArray } from '@angular/cdk/coercion';
+
 // import { RequestsMsgsComponent } from '../requests-msgs/requests-msgs.component';
 // import { HomeComponent } from '../home/home.component';
 
@@ -397,6 +397,9 @@ export class AuthGuard implements CanActivate {
           const URLtoStore = url;
           console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore', URLtoStore);
           this.localDbService.setInStorage('wannago', URLtoStore);
+          if (URLtoStore.indexOf('/activate-product') !== -1) {
+            this.router.navigate(['/signup']);
+          }
         }
       } else {
         // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
