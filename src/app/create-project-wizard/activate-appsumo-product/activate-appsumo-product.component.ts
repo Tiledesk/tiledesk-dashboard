@@ -71,6 +71,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
     this.createNewProject()
     this.translateString()
     this.getProjectUserRole() 
+    this.getLoggedUser() 
   }
 
   translateString() {
@@ -176,6 +177,11 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
         }
       }
     });
+    const storedUser = localStorage.getItem('user');
+    console.log('[ACTIVATE-APPSUMO-PRODUCT] - storedUser', storedUser)
+    if (!storedUser) {
+      window.location.reload();
+    }
   }
 
  
@@ -184,7 +190,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       .subscribe((user) => {
         if (user) {
           this.user = user;
-          // this.logger.log('[GET START CHATBOT FORK]  - user ', this.user)
+          console.log('[ACTIVATE-APPSUMO-PRODUCT]  - user ', this.user)
         }
       });
   }

@@ -21,7 +21,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -42,7 +42,8 @@ import { isDevMode } from '@angular/core';
 
 
 export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
-  PLAN_NAME = PLAN_NAME
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   public disabled = false;
   public color: ThemePalette = 'primary';
   public touchUi = false;
@@ -392,7 +393,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.tparams = brand;
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
-    this.t_params = { 'plan_name': PLAN_NAME.B }
+    // this.t_params = { 'plan_name': PLAN_NAME.B }
   }
 
   ngOnInit() {
@@ -560,7 +561,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectProfileData: any) => {
-        this.logger.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
+       console.log('[WIDGET-SET-UP] - getProjectPlan project Profile Data', projectProfileData)
         if (projectProfileData) {
 
 
@@ -571,6 +572,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.prjct_profile_type = projectProfileData.profile_type;
           this.subscription_is_active = projectProfileData.subscription_is_active;
           this.subscription_end_date = projectProfileData.subscription_end_date;
+
+          if (projectProfileData.extra3) {
+            console.log(projectProfileData.extra3)
+            if (projectProfileData.extra3 === "tiledesk_tier1" || projectProfileData.extra3 === "tiledesk_tier2") {
+              this.t_params = { 'plan_name': "AppSumo License Tier 3"}
+            }
+          } else if (!projectProfileData.extra3 ){
+            this.t_params = { 'plan_name': PLAN_NAME.B }
+          }
 
           // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
           //   this.featureIsAvailable = false;

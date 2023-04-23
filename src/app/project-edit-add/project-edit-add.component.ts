@@ -1362,8 +1362,39 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   changeAppSumoProduct() {
-    const url = `https://appsumo.com/account/redemption/${this.appSumoInvoiceUUID}#change-plan`
-    window.open(url, '_blank');
+    const el = document.createElement('div')
+    el.innerHTML = "Hi Sumo-ling! After managing your subscription in AppSumo, refresh the page to see plan updates",
+
+      swal({
+
+        content: el,
+        icon: "info",
+        // buttons: true,
+        buttons: {
+          cancel: this.cancel,
+          catch: {
+            text: "Change Plan",
+            value: "catch",
+          },
+        },
+        dangerMode: false,
+      }).then((value) => {
+        if (value === 'catch') {
+          // console.log('featureAvailableFromPlanC value', value, 'this.profile_name', this.profile_name)
+
+          if (this.USER_ROLE === 'owner') {
+            const url = `https://appsumo.com/account/redemption/${this.appSumoInvoiceUUID}#change-plan`
+            window.open(url, '_blank');
+
+          } else {
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+          }
+        } else {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+
+      });
+
   }
   // getProPlanTrialTranslation() {
   //   this.translate.get('ProPlanTrial')

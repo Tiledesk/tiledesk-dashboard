@@ -75,6 +75,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   project_name: string;
   id_project: string;
   appSumoActivationEmail: string;
+  isValidAppSumoActivationEmail: boolean;
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
   // 'maxlength': 'Password cannot be more than 25 characters long.',
@@ -257,7 +258,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       })
   }
 
-  
+
 
   segmentRecordPageAndIdentify(queryParams?: any) {
     if (!isDevMode()) {
@@ -371,7 +372,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
         const storedRouteSegment = this.storedRoute.split('/')
         console.log('[SIGN-UP] storedRouteSegment', storedRouteSegment)
         this.appSumoActivationEmail = storedRouteSegment[2]
+        console.log('[SIGN-UP] this.appSumoActivationEmail ', this.appSumoActivationEmail)
         this.userForm.patchValue({ 'email': this.appSumoActivationEmail })
+        this.isValidAppSumoActivationEmail= this.validateEmail(this.appSumoActivationEmail)
+        console.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
         const emailInputElm = document.getElementById("user-email") as HTMLInputElement;
         console.log('[SIGN-UP] emailInputElm ', emailInputElm)
         emailInputElm.disabled = true;
@@ -396,6 +400,17 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
       this.SKIP_WIZARD = false;
       this.logger.log('[SIGN-UP] checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
+    }
+  }
+
+  validateEmail(appSumoActivationEmail) {
+    var validateEmailRegex = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/
+    if (appSumoActivationEmail.match(validateEmailRegex)) {
+      console.log('Valid email address!')
+      return true;
+    } else {
+      console.log('Invalid email address!')
+      return false;
     }
   }
 

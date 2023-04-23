@@ -104,11 +104,11 @@ export class AuthGuard implements CanActivate {
     this.subscription = this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         const current_url = e.url
-  
+
         // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
 
         const url_segments = current_url.split('/');
-       
+
         // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS ', url_segments);
 
         this.nav_project_id = url_segments[2];
@@ -351,9 +351,9 @@ export class AuthGuard implements CanActivate {
     console.log('[AUTH-GUARD] _decodeCurrentUrl ', decodeCurrentUrl)
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
-    console.log('[AUTH-GUARD] storedRoute ', storedRoute)
+    console.log('[AUTH-GUARD] storedRoute getFromStorage ', storedRoute)
 
-    if (decodeCurrentUrl === storedRoute ) { 
+    if (decodeCurrentUrl === storedRoute) {
       this.localDbService.removeFromStorage('wannago')
       console.log('Hey baby - I removes the wannago stored url')
     }
@@ -370,7 +370,7 @@ export class AuthGuard implements CanActivate {
     // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams stringified', stringifed_queryParams);
 
     const HAS_JWT = stringifed_queryParams.includes('JWT');
-    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
+    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
 
     let token = next.queryParams.token
     // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT Token ', token);
@@ -381,11 +381,11 @@ export class AuthGuard implements CanActivate {
       (this.is_reset_psw_page === true) ||
       (this.is_handleinvitation_page === true) ||
       (this.is_signup_on_invitation_page === true)) {
-    
-      return true;
-   
-    } else {
 
+      return true;
+
+    } else {
+      console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT (2)', HAS_JWT);
       if (!HAS_JWT) {
         this.router.navigate(['/login']);
         // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
@@ -396,7 +396,9 @@ export class AuthGuard implements CanActivate {
         if (!storedRoute) {
           const URLtoStore = url;
           console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore', URLtoStore);
-          this.localDbService.setInStorage('wannago', URLtoStore);
+          if (URLtoStore !== '/projects') {
+            this.localDbService.setInStorage('wannago', URLtoStore);
+          }
           if (URLtoStore.indexOf('/activate-product') !== -1) {
             this.router.navigate(['/signup']);
           }
@@ -423,9 +425,9 @@ export class AuthGuard implements CanActivate {
       (this.is_signup_on_invitation_page === true)) {
       // this.router.navigate(['/home']);
       return true;
-      
+
     } else {
-  
+
       this.router.navigate(['/login']);
       return false;
     }
