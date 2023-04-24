@@ -9,7 +9,7 @@ import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
-import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
 import { Subscription } from 'rxjs';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -84,7 +84,8 @@ const swal = require('sweetalert');
 
 
 export class HistoryAndNortConvsComponent extends WsSharedComponent implements OnInit, OnDestroy {
-  PLAN_NAME = PLAN_NAME
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   // @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
@@ -272,7 +273,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   upgradePlan: string;
   cancel: string;
   featureAvailableFromBPlan: string;
-
+  appSumoProfile: string;
+  appSumoProfilefeatureAvailableFromBPlan: string;
   /**
    * 
    * @param router 
@@ -1362,8 +1364,18 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         this.subscription_is_active = projectProfileData.subscription_is_active;
 
         this.subscription_end_date = projectProfileData.subscription_end_date;
-        this.trial_expired = projectProfileData.trial_expired
-        this.profile_name = projectProfileData.profile_name
+        this.trial_expired = projectProfileData.trial_expired;
+        this.profile_name = projectProfileData.profile_name;
+
+        if (projectProfileData.extra3) {
+          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+        }
+
+        
+
+
+
         // this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
 
         // tslint:disable-next-line:max-line-length
@@ -2308,9 +2320,15 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
         (this.prjct_profile_type === 'free' && this.trial_expired === true)
-        
+
       ) {
-        this.presentModalFeautureAvailableFromBPlan() 
+
+
+        if (!this.appSumoProfile) {
+          this.presentModalFeautureAvailableFromBPlan()
+        } else if (this.appSumoProfile) {
+          this.presentModalAppSumoFeautureAvailableFromBPlan()
+        }
         // console.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
       } else if (
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
@@ -2399,12 +2417,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               }
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
-            
+
             } else if (this.profile_name === 'free') {  // 
               this.router.navigate(['project/' + this.projectId + '/pricing']);
               // this.notify.presentContactUsModalToUpgradePlan(true);
             }
-    
+
           } else {
             this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
@@ -2415,6 +2433,33 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     });
   }
 
+
+  presentModalAppSumoFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.CURRENT_USER_ROLE === 'owner') {
+          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+        } else {
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        }
+      }
+    });
+  }
 
   downloadFile(data) {
     const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });

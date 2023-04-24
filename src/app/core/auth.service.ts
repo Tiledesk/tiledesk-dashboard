@@ -24,6 +24,7 @@ import { WebSocketJs } from '../services/websocket/websocket-js'
 import { LoggerService } from '../services/logger/logger.service'
 import { ScriptService } from '../services/script/script.service'
 import { PLAN_NAME } from 'app/utils/util'
+
 // import { SsoService } from './sso.service';
 
 // start SUPER USER
@@ -86,7 +87,7 @@ export class AuthService {
     private _httpClient: HttpClient,
     private router: Router,
     private notify: NotifyService,
-    private usersLocalDbService: LocalDbService,
+    private localDbService: LocalDbService,
     private route: ActivatedRoute,
     public location: Location,
     public appConfigService: AppConfigService,
@@ -326,6 +327,7 @@ export class AuthService {
               url_segments[1] !== 'resetpassword' &&
               url_segments[1] !== 'autologin' &&
               url_segments[1] !== 'get-chatbot' &&
+              url_segments[1] !== 'activate-product' &&
               url_segments[1] !== 'install-template' &&
               url_segments[1] !== 'create-project-itw' &&
               url_segments[1] !== 'install-template-np' &&
@@ -1054,6 +1056,11 @@ export class AuthService {
       '[AUTH-SERV] SIGNOUT project_bs VALUE: ',
       this.project_bs.value,
     )
+
+    const storedRoute = this.localDbService.getFromStorage('wannago')
+    if (storedRoute) {
+      this.localDbService.removeFromStorage('wannago')
+    }
 
     localStorage.removeItem('user')
     localStorage.removeItem('project')

@@ -7,7 +7,7 @@ import { Contact } from '../models/contact-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { NotifyService } from '../core/notify.service';
-import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
 import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
@@ -24,6 +24,9 @@ const swal = require('sweetalert');
 export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+  appSumoProfile: string;
+  appSumoProfilefeatureAvailableFromBPlan: string;
   profile_name: string;
   upgradePlan: string;
   cancel: string;
@@ -315,7 +318,11 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.trial_expired = projectProfileData.trial_expired
 
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        // this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        if (projectProfileData.extra3) {
+          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+        }
       }
     }, error => {
 
@@ -920,7 +927,11 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         (this.prjct_profile_type === 'free' && this.trial_expired === true)
 
       ) {
+        if (!this.appSumoProfile) {
         this.presentModalFeautureAvailableOnlyWithPaidPlans()
+      } else if (this.appSumoProfile) {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+      }
         // console.log('[CONTACTS-COMP] -  EXPORT DATA IS NOT AVAILABLE ')
       } else if (
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
@@ -1035,10 +1046,36 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  presentModalAppSumoFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.USER_ROLE === 'owner') {
+          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+        } else {
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        }
+      }
+    });
+  }
+
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-
   }
 
 

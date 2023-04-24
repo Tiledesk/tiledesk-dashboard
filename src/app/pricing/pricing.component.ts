@@ -12,7 +12,7 @@ import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
 import { TranslateService } from '@ngx-translate/core';
-import { PLAN_NAME } from 'app/utils/util';
+import { featuresPlanA, featuresPlanB, highlightedFeaturesPlanA, highlightedFeaturesPlanB, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
 
 declare var Stripe: any;
@@ -40,63 +40,60 @@ enum ANNUAL_PRICE {
   Plus = 'Custom'
 }
 
-const featuresPlanA = [
-  'CRM',
-  'Private Notes',
-  'Unlimited Conversations History',
-  'Working Hours',
-  'Email Ticketing',
-  'User Ratings',
-  'Canned Responses',
-  'Webhooks',
-  'Email Support',
-  'Team Inbox'
-]
-const highlightedFeaturesPlanA = [
-  { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 Seats' },
-  { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' }
-]
+// const featuresPlanA = [
+//   'CRM',
+//   'Private Notes',
+//   'Unlimited Conversations History',
+//   'Working Hours',
+//   'Email Ticketing',
+//   'User Ratings',
+//   'Canned Responses',
+//   'Webhooks',
+//   'Email Support',
+//   'Team Inbox'
+// ]
+// const highlightedFeaturesPlanA = [
+//   { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 Seats' },
+//   { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' }
+// ]
 
+// const featuresPlanB = [
+//   'Widget Unbranding',
+//   'WhatsApp Business',
+//   'Facebook Messenger',
+//   'Unlimited Departments',
+//   'Unlimited Groups',
+//   'Zapier connector',
+//   'Data export',
+//   'Livechat Support',
+//   'Knowledge Base',
+//   'Analytics'
+// ]
 
+// const highlightedFeaturesPlanB = [
+//   { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats' },
+//   { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' }
+// ]
 
-const featuresPlanB = [
-  'Widget Unbranding',
-  'WhatsApp Business',
-  'Facebook Messenger',
-  'Unlimited Departments',
-  'Unlimited Groups',
-  'Zapier connector',
-  'Data export',
-  'Livechat Support',
-  'Knowledge Base',
-  'Analytics'
-]
+// const featuresPlanC = [
+//   'Dedicated Customer Success Manager',
+//   'Chatbot Design Assistance',
+//   'Onboarding and Training',
+//   'Smart Assignment',
+//   'IP Filtering',
+//   'Email Templates Customisation',
+//   'Activities Log',
+//   'Ban Visitors',
+//   'Dialogflow connector',
+//   'Rasa connector',
+//   'SMTP Settings',
+//   'Support to host Tiledesk on your Infrastructure',
+//   'Premium Customer Support',
+// ]
 
-const highlightedFeaturesPlanB = [
-  { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats' },
-  { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' }
-]
-
-const featuresPlanC = [
-  'Dedicated Customer Success Manager',
-  'Chatbot Design Assistance',
-  'Onboarding and Training',
-  'Smart Assignment',
-  'IP Filtering',
-  'Email Templates Customisation',
-  'Activities Log',
-  'Ban Visitors',
-  'Dialogflow connector',
-  'Rasa connector',
-  'SMTP Settings',
-  'Support to host Tiledesk on your Infrastructure',
-  'Premium Customer Support',
-]
-
-const highlightedFeaturesPlanC = [
-  { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
-
-]
+// const highlightedFeaturesPlanC = [
+//   { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
+// ]
 
 @Component({
   selector: 'appdashboard-pricing',
@@ -565,8 +562,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
     if (planname === PLAN_NAME.C) {
       // console.log(' PLAN C Features');
-      this.planFeatures = featuresPlanC;
-      this.highlightedFeatures = highlightedFeaturesPlanC;
+      this.planFeatures = featuresPlanA;
+      this.highlightedFeatures = highlightedFeaturesPlanA;
     }
 
     this.selectedPeriod('monthly')

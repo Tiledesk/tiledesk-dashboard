@@ -1,4 +1,4 @@
-<div class="css-get-start-chatbotfork">
+<div class="activate-appsumo-product">
     <img [src]="companyLogoBlack_Url" class="logo" />
 
     <!-- <div class="close-wizard-page">
@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1 class="pre-title">
-                        We are ready to go
+                       We are ready to go in the AppSumo plan for exclusive lifetime deals
                     </h1>
                 </div>
             </div>
@@ -20,25 +20,40 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1 class="title">
-                       
+
                         <!-- <span *ngIf="projects && projects?.length > 1"> Install  {{ templateNameOnSite}} </span>
                         <span *ngIf="projects && projects?.length === 1"> Install {{ templateNameOnSite}} </span> -->
-                        <span *ngIf="projects && projects?.length === 0"> Create a project to complete the activation </span>
+                        <span style="text-transform: capitalize;">{{appSumoLicenseName}} </span>
+                            is active 
                     </h1>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12">
-                    <!-- <div class="description" *ngIf="projects && projects?.length === 0" >
-                        Before installing the {{ templateNameOnSite }}, you must first create a project where the chatbot will be installed
-                    </div> -->
-                  
+                    <div class="description">
+                        <span> 
+                            You can still upgrade or downgrade your plan:
+                            <ul>
+                                <li>
+                                    on the <span (click)="goToPayments()" class="link-to-payments"> Subscription page </span> available at the following path: 
+                                    <span style="font-style: italic;">Settings > Project settings > Subscription</span>
+                                </li>
+                                <li>
+                                    from the Home by clicking on the badge next to the project name
+                                </li>
+                            </ul>
+                            
+                         </span>
+                         
+                        
+                    </div>
+
                 </div>
             </div>
 
             <span size="24" class="blank-span-h24"></span>
-         
+
 
             <!-- -------------------------------------------------------------------------------- -->
             <!-- Select a project  -->
@@ -70,26 +85,77 @@
                         {{ "ProjectsPage.Continue" | translate }}
                     </button> -->
 
-                    <button *ngIf="projects && projects?.length === 0" class="btn btn-lg btn-primary" (click)="goToCreateProject()">
-                        {{ "ProjectsPage.Continue" | translate }}
+                    <!-- <button class="btn btn-lg btn-primary" (click)="updateProject()">
+                        UPDATE PRJCT
+                    </button> -->
+
+                    <button class="btn btn-lg btn-primary" (click)="goToHome()">
+                        {{ "GetStarted" | translate }}
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="wpr-plan-features-card" style="margin-top: 180px;margin-right: 50px;">
+        <div data-testid="communicator" class="css-4lq111 e194a3xf5 plan-card-wpr">
+            <div class="css-82a6rk e194a3xf2 plan-card-left-content">
+                <h2 weight="500" class="e194a3xf4 css-ai3f0v eimqq0f0 plan-card-title">
+                    {{ appSumoLicenseName }}
+                </h2>
+                <span size="8" class="css-yn1por e1soz8mc0 span-8"></span>
+                <!-- <p weight="400" class="e194a3xf3 css-1rr139x eimqq0f0 plan-description">
+            <span>
+              {{planDecription}}
+            </span>
+          </p> -->
+                <span size="8" class="css-1sx5jt9 e1soz8mc0 span-8"> </span>
+
+                <div class="highlighted-features-wpr">
+                    <span *ngFor="let feature of highlightedFeatures" class="highlighted-features"
+                        [ngStyle]="{'color': feature.color, 'background-color':  feature.background}">
+                        <div class="highlighted-feature"> {{feature.feature}} </div>
+                    </span>
+                </div>
+
+                <span size="16" class="css-1sx5jt9 e1soz8mc0 span-16"> </span>
+                <div class="css-w1ej1e eaklcf32 plan-features">
+                    <ul class="css-1b45418 eaklcf34 plan-features-wpr">
+
+
+                        <li class="css-1655qqu eaklcf33 plan-features" *ngFor="let feature of planFeatures">
+                            <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr"
+                                style="position: relative;">
+                                <div class="css-i03ybx eaklcf31 plan-features-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                                        fill="primary" class="css-zbzjbd e11k6mr30 check-icon"
+                                        style="min-width: 14px; min-height: 14px;">
+                                        <path fill="none" d="M0 0h16v16H0z"></path>
+                                        <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                                    </svg>
+                                </div>
+                                <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                                <div class="css-1sdeyeu eaklcf30 plan-features-text">{{feature}}</div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
     <!-- background-image: url(https://tiledesk.com/wp-content/uploads/2022/10/background_arancio.png?id=8843); -->
-    <div class="col-right" style="  background-image: linear-gradient(to bottom, #1a73e8 0%, #3ea9f5 100%), linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);">
+    <!-- <div class="col-right"
+        style="  background-image: linear-gradient(to bottom, #1a73e8 0%, #3ea9f5 100%), linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);">
         <div class="bot--image" style="height: auto;
         position: absolute;
         top: 50%;
         transform: translateY(-50%);">
-        <!-- <blockquote class="oval-thought-border">
-            <p>This is a blockquote that is styled to look like a speech bubble</p>
-          </blockquote> -->
 
-            <!-- <img style="width: 300px; padding-left: 55px;" [src]="templateImg"> -->
         </div>
 
-    </div>
+    </div> -->
 </div>
