@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.30
+- Deploys in production
+- AppSumo implementation
+
 ### 2.4.29
 - Deploys in production
 - Improvements and bug fixing
