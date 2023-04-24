@@ -65,13 +65,12 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
   }
 
   ngOnInit(): void {
-    this.getRouteParams()
-    this.getLangNameAndLangCode()
-    // this.getProjects();
-    this.createNewProject()
-    this.translateString()
-    this.getProjectUserRole() 
-    this.getLoggedUser() 
+    this.getRouteParams();
+    this.getLangNameAndLangCode();
+    this.getProjects();
+    this.translateString();
+    this.getProjectUserRole(); 
+    this.getLoggedUser(); 
   }
 
   translateString() {
@@ -90,10 +89,9 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
   getProjectUserRole() {
     this.usersService.project_user_role_bs
       .subscribe((user_role) => {
-        this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] - USER ROLE ', user_role);
+        // console.log('[ACTIVATE-APPSUMO-PRODUCT] - USER ROLE ', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
-
         }
       });
   }
@@ -111,13 +109,10 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       // ENGLISH ARE USED AS DEFAULT IF THE USER DOESN'T SELECT ANY OTHER ONE LANGUAGE
       this.langName = 'English';
       this.langCode = 'en'
-    
     }
-
   }
 
   addNewLanguage(langCode: string, langName: string) {
-
     this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] - ADD-NEW-LANG selectedTranslationCode', langCode);
     this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] - ADD-NEW-LANG selectedTranslationLabel', langName);
 
@@ -188,9 +183,43 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       .subscribe((user) => {
         if (user) {
           this.user = user;
-          this.logger.log('[ACTIVATE-APPSUMO-PRODUCT]  - user ', this.user)
+          // console.log('[ACTIVATE-APPSUMO-PRODUCT]  - user ', this.user)
         }
       });
+  }
+
+
+  getProjects() {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      // console.log('[ACTIVATE-APPSUMO-PRODUCT]  getProjects > projects ', projects);
+      if(projects.length === 0) {
+        this.createNewProject()
+        // console.log('[ACTIVATE-APPSUMO-PRODUCT] user has not a projects - create a new one ') 
+      } else {
+        this.logger.info('[ACTIVATE-APPSUMO-PRODUCT] user has already a project ');
+        this.USER_ROLE = projects[0].role
+        this.new_project = projects[0].id_project;
+      }
+
+      // if (projects && projects.length > 0) {
+      //   // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
+      //   // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
+      //   // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
+      //   projects.forEach(project => {
+      //     this.logger.log('[ACTIVATE-APPSUMO-PRODUCT]  getProjects PRJCT CREATED BY ',project.id_project.createdBy)
+      //     this.logger.log('[ACTIVATE-APPSUMO-PRODUCT]  getProjects LOGGED USER ID  ',this.user._id)
+      //     if (project.id_project.createdBy === this.user._id) {
+      //       this.new_project = project;
+      //       this.logger.info('[ACTIVATE-APPSUMO-PRODUCT] user has already a project ')
+      //       this.USER_ROLE = project.role
+      //     } 
+      //   });
+      // }
+    }, error => {
+      this.logger.error('[SIGN-UP] getProjectsAndSaveInStorage - ERROR ', error)
+    }, () => {
+      this.logger.log('[SIGN-UP] getProjectsAndSaveInStorage - COMPLETE')
+    });
   }
 
   createNewProject() {
@@ -215,7 +244,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
     this.projectService.createProject(projectName)
       .subscribe((project) => {
-        this.logger.log('[SIGN-UP] POST DATA PROJECT RESPONSE ', project);
+        // console.log('[ACTIVATE-APPSUMO-PRODUCT] CREATE NEW PROJECT RESPONSE ', project);
         if (project) {
           this.new_project = project
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
@@ -308,14 +337,14 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+      // console.log('[ACTIVATE-APPSUMO-PRODUCT]  !!! getProjectsAndSaveInStorage PROJECTS ', projects);
 
       if (projects) {
         // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
         // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
         projects.forEach(project => {
-          this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
+          this.logger.log('[ACTIVATE-APPSUMO-PRODUCT]  !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
           if (project.id_project) {
             const prjct: Project = {
               _id: project.id_project._id,
@@ -340,7 +369,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
   goToPayments() {
     if (this.USER_ROLE === 'owner') {
-      this.router.navigate(['project/' + this.new_project._id + '/payments']);
+      this.router.navigate(['project/' + this.new_project._id + '/project-settings/payments']);
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
