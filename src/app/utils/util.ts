@@ -286,12 +286,101 @@ export enum PLAN_NAME {
     C = 'Plus',
 }
 
+export enum APP_SUMO_PLAN_NAME {
+    tiledesk_tier1 = 'AppSumo License Tier 1',
+    tiledesk_tier2 = 'AppSumo License Tier 2',
+    tiledesk_tier3 = 'AppSumo License Tier 3',
+    tiledesk_tier4 = 'AppSumo License Tier 4',
+}
+
 export enum PLAN_SEATS {
     free = 2, 
     Growth = 4, 
     Scale = 20,
 };
 
+export enum APPSUMO_PLAN_SEATS {
+    tiledesk_tier1 = 2, 
+    tiledesk_tier2 = 5, 
+    tiledesk_tier3 = 10,
+    tiledesk_tier4 = 20,
+};
+
+
+export const featuresPlanA = [
+    'CRM',
+    'Private Notes',
+    'Unlimited Conversations History',
+    'Working Hours',
+    'Email Ticketing',
+    'User Ratings',
+    'Canned Responses',
+    'Webhooks',
+    'Email Support',
+    'Team Inbox'
+  ]
+  export const highlightedFeaturesPlanA = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 Seats' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' }
+  ]
+
+  export const appSumoHighlightedFeaturesPlanATier1 = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '2 Seats' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '500 Chat/mo.' }
+  ]
+
+  export const appSumoHighlightedFeaturesPlanATier2 = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '5 Seats' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '1.000 Chat/mo.' }
+  ]
+  
+  export const featuresPlanB = [
+    'Widget Unbranding',
+    'WhatsApp Business',
+    'Facebook Messenger',
+    'Unlimited Departments',
+    'Unlimited Groups',
+    'Zapier connector',
+    'Data export',
+    'Livechat Support',
+    'Knowledge Base',
+    'Analytics'
+  ]
+  
+  export const highlightedFeaturesPlanB = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' }
+  ]
+  export const appSumoHighlightedFeaturesPlanATier3 = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '10 Seats' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '2.500 Chat/mo.' }
+  ]
+
+  export const appSumoHighlightedFeaturesPlanATier4 = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '5.000 Chat/mo.' }
+  ]
+  
+  export const featuresPlanC = [
+    'Dedicated Customer Success Manager',
+    'Chatbot Design Assistance',
+    'Onboarding and Training',
+    'Smart Assignment',
+    'IP Filtering',
+    'Email Templates Customisation',
+    'Activities Log',
+    'Ban Visitors',
+    'Dialogflow connector',
+    'Rasa connector',
+    'SMTP Settings',
+    'Support to host Tiledesk on your Infrastructure',
+    'Premium Customer Support',
+  ]
+  
+  export const highlightedFeaturesPlanC = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
+  
+  ]
 
 
 

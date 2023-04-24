@@ -96,10 +96,10 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
     //   let images = null
     //   if (elem.getElementsByTagName("img")) {
     //     images = elem.getElementsByTagName("img");
-    //     // console.log('img', images)
+    //      console.log('img', images)
     //     if (images) {
     //       let imageWidth = images[0]['width'];
-    //       // console.log('img imageWidth', imageWidth)
+    //      console.log('img imageWidth', imageWidth)
     //       this.footerImageWidth = imageWidth
 
 
@@ -107,21 +107,21 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
     //   } else if (elem.getElementsByTagName("image")) {
     //     images = elem.getElementsByTagName("image");
     //     if (images) {
-    //       // console.log('image', images)
+    //        console.log('image', images)
     //       let imageWidth = images[0]['width'];
     //       this.footerImageWidth = imageWidth
-    //       // console.log('image imageWidth', imageWidth)
+    //        console.log('image imageWidth', imageWidth)
 
     //     }
     //   }
     //   for (var i = 0; i < images.length; i++) {
-    //     // console.log(images[i].src);
+    //      console.log(images[i].src);
     //     this.footerImageUrl = images[i].src
     //   }
 
     //   let regexHref = /href="([^\'\"]+)/g
     //   var href = regexHref.exec(this.footerBrand);
-    //   // console.log('href ', href[1])
+    //    console.log('href ', href[1])
     //   this.footerImageHref = href[1]
 
 

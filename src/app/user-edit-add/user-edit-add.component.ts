@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
 import { BrandService } from '../services/brand.service';
-import { PLAN_NAME, PLAN_SEATS, URL_understanding_default_roles } from '../utils/util';
+import { APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, PLAN_NAME, PLAN_SEATS, URL_understanding_default_roles } from '../utils/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
@@ -27,6 +27,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   // tparams = brand;
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+  APPSUMO_PLAN_SEATS = APPSUMO_PLAN_SEATS;
   tParamsFreePlanSeatsNum: any;
   tParamsPlanAndSeats: any;
   seatsLimit: any;
@@ -130,6 +132,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   currentUser: any;
   invitedProjectUser: any
   profile_name_for_segment: string;
+  appSumoProfile: string;
 
   constructor(
     private router: Router,
@@ -380,7 +383,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectProfileData: any) => {
-        // console.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - RES', projectProfileData)
+        this.logger.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - RES', projectProfileData)
         if (projectProfileData) {
 
           this.projectPlanAgentsNo = projectProfileData.profile_agents;
@@ -397,67 +400,96 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
           // console.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - profile_name ', this.profile_name);
           this.trial_expired = projectProfileData.trial_expired
           // console.log('[USER-EDIT-ADD] - GET PROJECT PROFILE - trial_expired ', this.trial_expired);
+          if (projectProfileData && projectProfileData.extra3) {
+            this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+            this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+            this.logger.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
+          }
 
           if (projectProfileData.profile_type === 'free') {
 
             if (projectProfileData.trial_expired === false) {
               this.prjct_profile_name = PLAN_NAME.B + " (trial)"
+              this.profile_name_for_segment =  PLAN_NAME.B + " (trial)"
               this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
               // this.seatsLimit = PLAN_SEATS.free
               this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
-              // console.log('[USER-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+              this.logger.log('[USER-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             } else {
               this.prjct_profile_name = "Free";
+              this.profile_name_for_segment = "Free";
               this.seatsLimit = PLAN_SEATS.free
               this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
-              // console.log('[USER-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+              this.logger.log('[USER-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             }
           } else if (projectProfileData.profile_type === 'payment') {
             if (this.subscription_is_active === true) {
               if (projectProfileData.profile_name === PLAN_NAME.A) {
-                this.prjct_profile_name = PLAN_NAME.A + " plan";
-                this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
-                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-                // console.log('[USER-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
-                // console.log('[USER-EDIT-ADD] - GET PROJECT PLAN - prjct_profile_name: ', this.prjct_profile_name)
+                if (!this.appSumoProfile) {
+                  this.prjct_profile_name = PLAN_NAME.A + " plan";
+                  this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
+                  this.profile_name_for_segment =  PLAN_NAME.A + " plan";
+                  this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
+                  this.logger.log('[USER-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+                  this.logger.log('[USER-EDIT-ADD] - GET PROJECT PLAN - prjct_profile_name: ', this.prjct_profile_name)
+                } else {
+                  this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+                  this.profile_name_for_segment =  PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';;
+                  this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
+                  this.tParamsPlanAndSeats = { plan_name: 'AppSumo ' + this.appSumoProfile, allowed_seats_num: this.seatsLimit }
+                  this.logger.log('[USER-EDIT-ADD] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
+                }
 
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-                this.prjct_profile_name = PLAN_NAME.B + " plan";
-                this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-                // console.log('[USER-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
-                // console.log('[USER-EDIT-ADD] - GET PROJECT PLAN - prjct_profile_name: ', this.prjct_profile_name)
+                if (!this.appSumoProfile) {
+                  this.prjct_profile_name = PLAN_NAME.B + " plan";
+                  this.profile_name_for_segment = PLAN_NAME.B + " plan";
+                  this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
+                  this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
+                  this.logger.log('[USER-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+                  this.logger.log('[USER-EDIT-ADD] - GET PROJECT PLAN - prjct_profile_name: ', this.prjct_profile_name)
+                } else {
+                  this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
+                  this.profile_name_for_segment =  this.prjct_profile_name
+                  this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
+                  this.tParamsPlanAndSeats = { plan_name: 'AppSumo ' + this.appSumoProfile, allowed_seats_num: this.seatsLimit }
+                  this.logger.log('[USER-EDIT-ADD] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
+                }
 
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
+                this.profile_name_for_segment = PLAN_NAME.C + " plan";
                 this.seatsLimit = projectProfileData.profile_agents
-                // console.log('[USER-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
-                // console.log('[USER-EDIT-ADD] - GET PROJECT PLAN - prjct_profile_name: ', this.prjct_profile_name)
+                this.logger.log('[USER-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+                this.logger.log('[USER-EDIT-ADD] - GET PROJECT PLAN - prjct_profile_name: ', this.prjct_profile_name)
               }
             }
 
-             else if (this.subscription_is_active === false) {
+            else if (this.subscription_is_active === false) {
               // this.seatsLimit = PLAN_SEATS.free
               if (projectProfileData.profile_name === PLAN_NAME.A) {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
+                this.profile_name_for_segment = PLAN_NAME.A + " plan";
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
-                this.seatsLimit =PLAN_SEATS.free
+                this.profile_name_for_segment = PLAN_NAME.B + " plan";
+                this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
+                this.profile_name_for_segment = PLAN_NAME.C + " plan";
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
-                // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
               }
             }
-         
+
           }
 
 
@@ -830,7 +862,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
 
     // if (this.prjct_profile_type === 'payment') {
-      // this.seatsLimit
+    // this.seatsLimit
     if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
       this.doInviteUser();
     } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {

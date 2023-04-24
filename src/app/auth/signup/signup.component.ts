@@ -74,6 +74,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
   new_project: any;
   project_name: string;
   id_project: string;
+  appSumoActivationEmail: string;
+  isValidAppSumoActivationEmail: boolean;
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
   // 'maxlength': 'Password cannot be more than 25 characters long.',
@@ -141,7 +143,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.buildForm();
     this.getBrowserLang();
     this.getOSCODE();
-
     this.getQueryParamsAndSegmentRecordPageAndIdentify()
     // 
 
@@ -227,7 +228,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
         var size = Object.keys(this.queryParams).length;
         // this.logger.log('queryParams size ', size)
         const storedRoute = this.localDbService.getFromStorage('wannago')
-        // this.logger.log('[SIGN-UP] storedRoute', storedRoute)
+        // console.log('[SIGN-UP] storedRoute', storedRoute)
         if (size > 0) {
 
           for (const [key, value] of Object.entries(this.queryParams)) {
@@ -255,8 +256,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
           this.segmentRecordPageAndIdentify()
         }
       })
-
   }
+
+
+
   segmentRecordPageAndIdentify(queryParams?: any) {
     if (!isDevMode()) {
       setTimeout(() => {
@@ -357,18 +360,32 @@ export class SignupComponent implements OnInit, AfterViewInit {
   checkCurrentUrlAndSkipWizard() {
 
     this.storedRoute = this.localDbService.getFromStorage('wannago')
-    // this.logger.log('[SIGN-UP] storedRoute ', this.storedRoute)
+    // console.log('[SIGN-UP] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
       this.EXIST_STORED_ROUTE = true
     } else {
       this.EXIST_STORED_ROUTE = false
     }
 
+    if (this.storedRoute) {
+      if (this.storedRoute.indexOf('/activate-product') !== -1) {
+        const storedRouteSegment = this.storedRoute.split('/')
+        // console.log('[SIGN-UP] storedRouteSegment', storedRouteSegment)
+        this.appSumoActivationEmail = storedRouteSegment[2]
+        // console.log('[SIGN-UP] this.appSumoActivationEmail ', this.appSumoActivationEmail)
+        this.userForm.patchValue({ 'email': this.appSumoActivationEmail })
+        this.isValidAppSumoActivationEmail= this.validateEmail(this.appSumoActivationEmail)
+        // console.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
+        const emailInputElm = document.getElementById("user-email") as HTMLInputElement;
+        // console.log('[SIGN-UP] emailInputElm ', emailInputElm)
+        emailInputElm.disabled = true;
+      }
+    }
 
 
-    this.logger.log('[SIGN-UP] checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
+    // console.log('[SIGN-UP] checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
 
-    // (this.router.url === '/signup-on-invitation')
+    
     if (this.router.url.indexOf('/signup-on-invitation') !== -1) {
       this.SKIP_WIZARD = true;
       this.logger.log('[SIGN-UP] checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
@@ -386,11 +403,22 @@ export class SignupComponent implements OnInit, AfterViewInit {
     }
   }
 
+  validateEmail(appSumoActivationEmail) {
+    var validateEmailRegex = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/
+    if (appSumoActivationEmail.match(validateEmailRegex)) {
+      // console.log('Valid email address!')
+      return true;
+    } else {
+      // console.log('Invalid email address!')
+      return false;
+    }
+  }
+
   getAndPatchInvitationEmail() {
     this.pendingInvitationEmail = this.route.snapshot.params['pendinginvitationemail'];
 
     this.userForm.patchValue({ 'email': this.pendingInvitationEmail })
-    this.logger.log('[SIGN-UP] Pending Invitation Email (get From URL)  ', this.pendingInvitationEmail)
+    // console.log('[SIGN-UP] Pending Invitation Email (get From URL)  ', this.pendingInvitationEmail)
   }
 
 
@@ -592,8 +620,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
           window['tiledesk_widget_login']();
         }
 
-        // this.logger.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
-        // this.logger.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
+        // console.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
+        // console.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
 
         if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {

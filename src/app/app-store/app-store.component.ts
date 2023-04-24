@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs'
 import { LoggerService } from '../services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-import { URL_configure_your_first_chatbot, URL_connect_your_dialogflow_agent, URL_rasa_ai_integration, URL_external_chatbot_connect_your_own_chatbot, PLAN_NAME } from './../utils/util';
+import { URL_configure_your_first_chatbot, URL_connect_your_dialogflow_agent, URL_rasa_ai_integration, URL_external_chatbot_connect_your_own_chatbot, PLAN_NAME, APP_SUMO_PLAN_NAME } from './../utils/util';
 import { BrandService } from 'app/services/brand.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
@@ -20,7 +20,8 @@ const swal = require('sweetalert');
   styleUrls: ['./app-store.component.scss']
 })
 export class AppStoreComponent implements OnInit {
-  PLAN_NAME = PLAN_NAME
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   private unsubscribe$: Subject<any> = new Subject<any>();
   apps: any;
   subscription: Subscription;
@@ -50,7 +51,8 @@ export class AppStoreComponent implements OnInit {
   learnMoreAboutDefaultRoles: string;
   tPlanParams: any;
   appIsAvailable: boolean = true;
-
+  appSumoProfile: string;
+  appSumoProfilefeatureAvailableFromBPlan: string;
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
@@ -65,7 +67,7 @@ export class AppStoreComponent implements OnInit {
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
-    this.tPlanParams = { 'plan_name': PLAN_NAME.B }
+
   }
 
   ngOnInit() {
@@ -299,8 +301,7 @@ export class AppStoreComponent implements OnInit {
   //   }
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRICING - PAYMENT-LIST] getProjectPlan project Profile Data', projectProfileData)
-
+      // console.log('[PRICING - PAYMENT-LIST] getProjectPlan project Profile Data', projectProfileData)
 
       if (projectProfileData) {
         this.profile_name = projectProfileData.profile_name
@@ -308,7 +309,16 @@ export class AppStoreComponent implements OnInit {
         this.subscription_is_active = projectProfileData.subscription_is_active;
 
         this.subscription_end_date = projectProfileData.subscription_end_date;
-        this.trial_expired = projectProfileData.trial_expired
+        this.trial_expired = projectProfileData.trial_expired;
+        if (projectProfileData.extra3) {
+          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+
+          this.tPlanParams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
+
+        } else if (!projectProfileData.extra3) {
+          this.tPlanParams = { 'plan_name': PLAN_NAME.B }
+        }
       }
     }, error => {
 
@@ -328,10 +338,13 @@ export class AppStoreComponent implements OnInit {
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
         (this.prjct_profile_type === 'free' && this.trial_expired === true))) {
 
-
-      this.presentModalFeautureAvailableFromBPlan()
-      return
-
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromBPlan()
+        return
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return
+      }
     }
 
     // console.log('[APP-STORE] app ', app)
@@ -415,6 +428,35 @@ export class AppStoreComponent implements OnInit {
     });
   }
 
+  presentModalAppSumoFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.USER_ROLE === 'owner') {
+          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+        } else {
+          // console.log('[APP-STORE] HERE 5')
+          this.presentModalAgentCannotManageAvancedSettings();
+        }
+      }
+    });
+
+  }
+
   presentModalAgentCannotManageAvancedSettings() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
   }
@@ -425,8 +467,17 @@ export class AppStoreComponent implements OnInit {
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
         (this.prjct_profile_type === 'free' && this.trial_expired === true))) {
-      this.presentModalFeautureAvailableFromBPlan()
-      return
+
+      // this.presentModalFeautureAvailableFromBPlan()
+      // return
+
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromBPlan()
+        return
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return
+      }
 
     }
     this.logger.log('openInAppStoreInstall app ', app)

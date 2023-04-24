@@ -82,6 +82,7 @@ export class ProjectPlanService {
           url_segments[1] !== 'resetpassword' &&
           url_segments[1] !== 'autologin' &&
           url_segments[1] !== 'get-chatbot' &&
+          url_segments[1] !== 'activate-product' &&
           url_segments[1] !== 'install-template' &&
           url_segments[1] !== 'create-project-itw' &&
           url_segments[1] !== 'install-template-np' &&
@@ -106,7 +107,7 @@ export class ProjectPlanService {
     this.projectService.getProjects().subscribe((projects: any) => {
    
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
+      console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
       const projectPlanData: Project = {
 
         _id: current_prjct.id_project._id,
@@ -122,7 +123,9 @@ export class ProjectPlanService {
         subscription_start_date: current_prjct.id_project.profile['subStart'],
         subscription_end_date: current_prjct.id_project.profile['subEnd'],
         subscription_id: current_prjct.id_project.profile['subscriptionId'],
-        subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date']
+        subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date'],
+        extra3: current_prjct.id_project.profile['extra3'],
+        extra4: current_prjct.id_project.profile['extra4']
       }
 
       console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 

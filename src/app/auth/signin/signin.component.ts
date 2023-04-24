@@ -101,6 +101,7 @@ export class SigninComponent implements OnInit {
     } else {
       this.EXIST_STORED_ROUTE = false
     }
+   
   }
 
   redirectIfLogged() {
@@ -109,9 +110,6 @@ export class SigninComponent implements OnInit {
       this.logger.log('[SIGN-IN] - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
       this.router.navigate(['/projects']);
     } else if (storedUser && this.EXIST_STORED_ROUTE) {
-
-
-      // this.localDbService.removeFromStorage('wannago')
 
       this.router.navigate([this.storedRoute]);
     }

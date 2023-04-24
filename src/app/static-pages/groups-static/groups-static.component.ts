@@ -9,7 +9,7 @@ import { StaticPageBaseComponent } from './../static-page-base/static-page-base.
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { PLAN_NAME } from 'app/utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -18,7 +18,10 @@ const swal = require('sweetalert');
   styleUrls: ['./groups-static.component.scss']
 })
 export class GroupsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
-  PLAN_NAME = PLAN_NAME
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+  appSumoProfile: string;
+  appSumoProfilefeatureAvailableFromBPlan: string;
   projectId: string;
   browserLang: string;
   prjct_profile_type: string;
@@ -26,7 +29,6 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
   prjct_profile_name: string;
   subscription_end_date: Date;
   tparams: any;
-
 
   imageObject = [
     {
@@ -57,7 +59,7 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
     public appConfigService: AppConfigService
   ) {
     super(translate);
-    this.tparams = {'plan_name': PLAN_NAME.B } 
+
   }
 
   ngOnInit() {
@@ -163,6 +165,16 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
         this.profile_name = projectProfileData.profile_name
         this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
 
+
+        if (projectProfileData.extra3) {
+          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+
+          this.tparams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
+        } else if (!projectProfileData.extra3) {
+          this.tparams = { 'plan_name': PLAN_NAME.B }
+        }
+
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
           if (this.USER_ROLE === 'owner') {
@@ -184,19 +196,23 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
 
   goToPricing() {
     this.logger.log('[GROUPS-STATIC] - goToPricing projectId ', this.projectId);
-    if (this.payIsVisible) {
-      if (this.USER_ROLE === 'owner') {
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
+    if (!this.appSumoProfile) {
+      if (this.payIsVisible) {
+        if (this.USER_ROLE === 'owner') {
+          if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+            this.notify._displayContactUsModal(true, 'upgrade_plan');
+          } else {
+            // this.router.navigate(['project/' + this.projectId + '/pricing']);
+            this.notify.presentContactUsModalToUpgradePlan(true);
+          }
         } else {
-          this.router.navigate(['project/' + this.projectId + '/pricing']);
-          // this.notify.presentContactUsModalToUpgradePlan(true);
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
         }
       } else {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
       }
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    } else if (this.appSumoProfile) {
+      this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
     }
   }
 
