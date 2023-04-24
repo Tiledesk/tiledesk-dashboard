@@ -321,7 +321,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.getProjects().subscribe((projects: any) => {
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
+      this.logger.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
       const projectProfileData = this.current_selected_prjct.id_project.profile
 
       this.prjct_name = this.current_selected_prjct.id_project.name;
@@ -332,10 +332,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription;
       this.subscription_end_date = projectProfileData.subEnd;
       if (projectProfileData && projectProfileData.extra3) {
-        console.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+        this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
 
         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-        console.log('[HOME] Find Current Project appSumoProfile ', this.appSumoProfile)
+        this.logger.log('[HOME] Find Current Project appSumoProfile ', this.appSumoProfile)
       }
 
       // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_name ', this.prjct_name);
@@ -1920,48 +1920,42 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   activateAppSumoLicenceTest() {
     this.projectService.activateAppSumoTier().subscribe((res) => {
-      console.log("[HOME] »» ACTIVATE APPSUMO TIER RES: ", res)
-
+      this.logger.log("[HOME] »» ACTIVATE APPSUMO TIER RES: ", res)
     }, (error) => {
-      console.error('[HOME] »» ACTIVATE APPSUMO TIER - ERROR ', error);
+      this.logger.error('[HOME] »» ACTIVATE APPSUMO TIER - ERROR ', error);
     }, () => {
-      console.log('[HOME] »» ACTIVATE APPSUMO TIER - * COMPLETE * ');
+      this.logger.log('[HOME] »» ACTIVATE APPSUMO TIER - * COMPLETE * ');
     })
-
   }
 
   updateAppSumoLicenceTest(){
     this.projectService.updateAppSumoTier().subscribe((res) => {
-      console.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
-
+      this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
     }, (error) => {
-      console.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
+      this.logger.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
     }, () => {
-      console.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
+      this.logger.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
     })
-
   }
 
   downgradeAppSumoLicenceTest(){
     this.projectService.downgradeAppSumoTier().subscribe((res) => {
-      console.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
-
+      this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
     }, (error) => {
-      console.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
+      this.logger.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
     }, () => {
-      console.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
+      this.logger.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
     })
 
   }
 
   refundAppSumoLicenceTest(){
     this.projectService.refundAppSumoTier().subscribe((res) => {
-      console.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
-
+      this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
     }, (error) => {
-      console.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
+      this.logger.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
     }, () => {
-      console.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
+      this.logger.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
     })
 
   }

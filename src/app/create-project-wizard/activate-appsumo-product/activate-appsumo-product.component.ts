@@ -118,32 +118,30 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
   addNewLanguage(langCode: string, langName: string) {
 
-    console.log('[ACTIVATE-APPSUMO-PRODUCT] - ADD-NEW-LANG selectedTranslationCode', langCode);
+    this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] - ADD-NEW-LANG selectedTranslationCode', langCode);
     this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] - ADD-NEW-LANG selectedTranslationLabel', langName);
 
     this.widgetService.cloneLabel(langCode.toUpperCase())
       .subscribe((res: any) => {
-
-        console.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG (clone-label) RES ', res.data);
-
+        this.logger.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG (clone-label) RES ', res.data);
       }, error => {
-        console.error('[ACTIVATE-APPSUMO-PRODUCT] ADD-NEW-LANG (clone-label) - ERROR ', error)
+        this.logger.error('[ACTIVATE-APPSUMO-PRODUCT] ADD-NEW-LANG (clone-label) - ERROR ', error)
       }, () => {
-        console.log('[ACTIVATE-APPSUMO-PRODUCT] ADD-NEW-LANG (clone-label) * COMPLETE *')
+        this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] ADD-NEW-LANG (clone-label) * COMPLETE *')
 
       });
 
     // // ADD THE NEW LANGUAGE TO BOTTOM NAV
     const newLang = { code: langCode, name: langName };
-    console.log('[ACTIVATE-APPSUMO-PRODUCT] Multilanguage saveNewLanguage newLang objct ', newLang);
+    this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] Multilanguage saveNewLanguage newLang objct ', newLang);
 
     this.availableTranslations.push(newLang)
-    console.log('[ACTIVATE-APPSUMO-PRODUCT] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
+    this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
   }
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-      console.log('[ACTIVATE-APPSUMO-PRODUCT] GET ROUTE PARAMS > params', params);
+      this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] GET ROUTE PARAMS > params', params);
       this.appSumoActivationEmail = params.activation_email
       this.appSumoPlanId = params.plan_id;
       this.appSumoProductKey = params.licenseproductkeyuuid;
@@ -178,7 +176,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       }
     });
     const storedUser = localStorage.getItem('user');
-    console.log('[ACTIVATE-APPSUMO-PRODUCT] - storedUser', storedUser)
+    this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] - storedUser', storedUser)
     if (!storedUser) {
       window.location.reload();
     }
@@ -190,13 +188,12 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       .subscribe((user) => {
         if (user) {
           this.user = user;
-          console.log('[ACTIVATE-APPSUMO-PRODUCT]  - user ', this.user)
+          this.logger.log('[ACTIVATE-APPSUMO-PRODUCT]  - user ', this.user)
         }
       });
   }
 
   createNewProject() {
-    console.log()
     let projectName = ''
     const email = this.appSumoActivationEmail
     if (email.includes('@')) {
@@ -214,7 +211,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       projectName = 'My awesome project'
     }
 
-    console.log('[ACTIVATE-APPSUMO-PRODUCT] CREATE NEW PROJECT - PROJECT-NAME  ', projectName);
+    this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] CREATE NEW PROJECT - PROJECT-NAME  ', projectName);
 
     this.projectService.createProject(projectName)
       .subscribe((project) => {
@@ -234,7 +231,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
           // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
           this.auth.projectSelected(newproject)
-          console.log('[ACTIVATE-APPSUMO-PRODUCT] CREATED PROJECT ', newproject)
+          this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] CREATED PROJECT ', newproject)
           this.addNewLanguage(this.langCode, this.langName)
         }
 
@@ -297,14 +294,14 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       this.appSumoInvoiceItemKey
       )
       .subscribe((updatedproject) => {
-      console.log('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT - RES ', updatedproject);
+        this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT - RES ', updatedproject);
 
     }, (error) => {
 
-      console.error('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT - ERROR ', error);
+      this.logger.error('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT - ERROR ', error);
 
     }, () => {
-      console.log('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT * COMPLETE * ');
+      this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT * COMPLETE * ');
     })
   }
 

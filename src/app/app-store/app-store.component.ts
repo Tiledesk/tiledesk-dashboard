@@ -301,8 +301,7 @@ export class AppStoreComponent implements OnInit {
   //   }
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[PRICING - PAYMENT-LIST] getProjectPlan project Profile Data', projectProfileData)
-
+      // console.log('[PRICING - PAYMENT-LIST] getProjectPlan project Profile Data', projectProfileData)
 
       if (projectProfileData) {
         this.profile_name = projectProfileData.profile_name

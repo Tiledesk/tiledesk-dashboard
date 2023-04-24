@@ -311,10 +311,10 @@ export class ProjectService {
     };
 
     let url = this.APP_SUMO_API_BASE_URL+ 'updateproject';
-    console.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT URL ', url);
+    this.logger.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT URL ', url);
 
     const body = { 'proiectid': proiectid, profileName: projectProfileName, seats: agentNumber, 'extra1': activationemail, 'extra2': licenseproductkeyuuid, 'extra3': plan_id, 'extra4': invoice_item_uuid};
-    console.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT BODY ', body);
+    this.logger.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT BODY ', body);
 
     return this._httpclient
       .post(url, body, httpOptions)

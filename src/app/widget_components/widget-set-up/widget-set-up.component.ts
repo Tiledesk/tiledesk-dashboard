@@ -563,7 +563,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectProfileData: any) => {
-        console.log('[WIDGET-SET-UP] - getProjectPlan project Profile Data', projectProfileData)
+        this.logger.log('[WIDGET-SET-UP] - getProjectPlan project Profile Data', projectProfileData)
         if (projectProfileData) {
 
 
@@ -576,7 +576,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.subscription_end_date = projectProfileData.subscription_end_date;
 
           if (projectProfileData.extra3) {
-            console.log('[WIDGET-SET-UP] projectProfileData.extra3 ',projectProfileData.extra3)
+            this.logger.log('[WIDGET-SET-UP] projectProfileData.extra3 ',projectProfileData.extra3)
             this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
             this.appSumoProfilefeatureAvailableFromBPlan =  APP_SUMO_PLAN_NAME['tiledesk_tier3']
             if (projectProfileData.extra3 === "tiledesk_tier1" || projectProfileData.extra3 === "tiledesk_tier2") {

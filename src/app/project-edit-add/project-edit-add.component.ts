@@ -1122,7 +1122,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         // this.prjct_profile_name = projectProfileData.profile_name;
@@ -1138,13 +1138,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         if (projectProfileData.extra3) {
           this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN  appSumoProfile ', this.appSumoProfile)
+          this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN  appSumoProfile ', this.appSumoProfile)
         }
 
         if (projectProfileData.extra4) {
           this.appSumoInvoiceUUID = projectProfileData.extra4
-          console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN  appSumoInvoiceUUID ', this.appSumoInvoiceUUID)
-
+          this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN  appSumoInvoiceUUID ', this.appSumoInvoiceUUID)
         }
 
         if (projectProfileData.extra3 === 'tiledesk_tier1' || projectProfileData.extra3 === 'tiledesk_tier2') {
@@ -1202,7 +1201,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
                 this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-                console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+                this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
               } else {
                 this.prjct_profile_name = PLAN_NAME.A + ' plan ' + '(' + this.appSumoProfile + ')'
                 this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
