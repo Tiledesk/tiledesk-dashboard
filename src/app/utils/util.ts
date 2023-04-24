@@ -287,10 +287,10 @@ export enum PLAN_NAME {
 }
 
 export enum APP_SUMO_PLAN_NAME {
-    tiledesk_tier1 = 'AppSumo license Tier 1',
-    tiledesk_tier2 = 'AppSumo license Tier 2',
-    tiledesk_tier3 = 'AppSumo license Tier 3',
-    tiledesk_tier4 = 'AppSumo license Tier 4',
+    tiledesk_tier1 = 'AppSumo License Tier 1',
+    tiledesk_tier2 = 'AppSumo License Tier 2',
+    tiledesk_tier3 = 'AppSumo License Tier 3',
+    tiledesk_tier4 = 'AppSumo License Tier 4',
 }
 
 export enum PLAN_SEATS {

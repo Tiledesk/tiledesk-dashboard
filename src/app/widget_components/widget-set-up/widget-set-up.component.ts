@@ -206,6 +206,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   featureAvailableFromBPlan: string;
   cancel: string;
   upgradePlan: string;
+  appSumoProfile: string;
+  appSumoProfilefeatureAvailableFromBPlan:string;
 
   en_missing_labels =
     {
@@ -561,7 +563,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectProfileData: any) => {
-       console.log('[WIDGET-SET-UP] - getProjectPlan project Profile Data', projectProfileData)
+        console.log('[WIDGET-SET-UP] - getProjectPlan project Profile Data', projectProfileData)
         if (projectProfileData) {
 
 
@@ -574,11 +576,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.subscription_end_date = projectProfileData.subscription_end_date;
 
           if (projectProfileData.extra3) {
-            console.log(projectProfileData.extra3)
+            console.log('[WIDGET-SET-UP] projectProfileData.extra3 ',projectProfileData.extra3)
+            this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+            this.appSumoProfilefeatureAvailableFromBPlan =  APP_SUMO_PLAN_NAME['tiledesk_tier3']
             if (projectProfileData.extra3 === "tiledesk_tier1" || projectProfileData.extra3 === "tiledesk_tier2") {
-              this.t_params = { 'plan_name': "AppSumo License Tier 3"}
+              this.t_params = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
             }
-          } else if (!projectProfileData.extra3 ){
+          } else if (!projectProfileData.extra3) {
             this.t_params = { 'plan_name': PLAN_NAME.B }
           }
 
@@ -618,6 +622,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   goToPricing() {
     this.logger.log('[WIDGET-SET-UP] - goToPricing projectId ', this.id_project);
+
     // if (this.payIsVisible) {
     //   if (this.USER_ROLE === 'owner') {
     //     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
@@ -633,8 +638,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // } else {
     //   this.notify._displayContactUsModal(true, 'upgrade_plan');
     // }
-
-    this.presentModalFeautureAvailableFromBPlan()
+    if (!this.appSumoProfile) {
+      this.presentModalFeautureAvailableFromBPlan()
+    } else {
+      this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
+    }
   }
 
   presentModalFeautureAvailableFromBPlan() {
@@ -1866,7 +1874,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // ------------------------------------------------------------------------
           this.logger.log('[WIDGET-SET-UP] - onInit WIDGET DEFINED BUT POWERED-BY IS: ', project.widget.poweredBy, ' > SET DEFAULT ')
           // this.calloutTimerSecondSelected = -1;
-                              
+
           this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>';
         }
 
@@ -2185,9 +2193,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // @ POWERED-BY
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
-        
+
         this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>'
-       
+
 
         // -----------------------------------------------------------------------
         // @ Single conversation

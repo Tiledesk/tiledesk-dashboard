@@ -24,7 +24,7 @@ import { TagsService } from '../../services/tags.service';
 
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
-import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 
 import 'firebase/database';
@@ -48,8 +48,10 @@ const swal = require('sweetalert');
   styleUrls: ['./ws-requests-msgs.component.scss']
 })
 export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
-  PLAN_NAME = PLAN_NAME
-
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+  appSumoProfile: string;
+  appSumoProfilefeatureAvailableFromBPlan: string;
   featureAvailableFromBPlan: string;
   cancel: string;
   upgradePlan: string;
@@ -550,9 +552,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
-        this.trial_expired = projectProfileData.trial_expired
-        this.subscription_end_date = projectProfileData.subscription_end_date
-        this.profile_name = projectProfileData.profile_name
+        this.trial_expired = projectProfileData.trial_expired;
+        this.subscription_end_date = projectProfileData.subscription_end_date;
+        this.profile_name = projectProfileData.profile_name;
+
+        if (projectProfileData.extra3) {
+          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+        }
 
 
         if (projectProfileData.profile_type === 'free') {
@@ -1365,7 +1372,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       this.id_request = params.requestid;
 
-     
+
 
       this.logger.log('[WS-REQUESTS-MSGS] request_id (new)', this.id_request);
     });
@@ -3973,7 +3980,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           (this.prjct_profile_type === 'free' && this.trial_expired === true)
 
         ) {
-          this.presentModalFeautureAvailableFromBPlan()
+          if (!this.appSumoProfile) {
+            this.presentModalFeautureAvailableFromBPlan()
+          } else if (this.appSumoProfile) {
+            this.presentModalAppSumoFeautureAvailableFromBPlan()
+          }
           // console.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
         } else if (
           (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
@@ -3984,14 +3995,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.displayModalTranscript = 'block'
           // console.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
         }
-
       } else {
-
         this.presentModalAgentCannotManageAvancedSettings()
       }
 
     } else {
-
       this.notify._displayContactUsModal(true, 'upgrade_plan');
 
     }
@@ -4129,13 +4137,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       if (this.profile_name === PLAN_NAME.C) {
         // console.log('displayModalBanVisitor HERE 1 ')
         if (this.subscription_is_active === true) {
-          // console.log('displayModalBanVisitor HERE 2 ')
-          this.router.navigate(['project/' + this.id_project + '/notification-email'])
-        } else  if (this.subscription_is_active === false) {
+          this.banVisitors(leadid, ipaddress)
+        } else if (this.subscription_is_active === false) {
           // console.log('displayModalBanVisitor HERE 3 ')
           this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
         }
-       } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.prjct_profile_type === 'free') {
+      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.prjct_profile_type === 'free') {
         // console.log('displayModalBanVisitor HERE 4 ')
         this.presentModalFeautureAvailableOnlyWithPlanC()
       }
@@ -4231,7 +4238,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               this.router.navigate(['project/' + this.id_project + '/pricing']);
               // this.notify.presentContactUsModalToUpgradePlan(true);
             }
-    
+
           } else {
             this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
@@ -4242,8 +4249,35 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
   }
 
+  presentModalAppSumoFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.CURRENT_USER_ROLE === 'owner') {
+          this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
+        } else {
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        }
+      }
+    });
+  }
 
-// Banned visitors tab
+
+  // Banned visitors tab
   presentModalFeautureAvailableOnlyWithPlanC() {
     const el = document.createElement('div')
     el.innerHTML = this.cPlanOnly
@@ -4264,12 +4298,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // console.log('featureAvailableFromPlanC value', value)
         if (this.isVisiblePaymentTab) {
           if (this.CURRENT_USER_ROLE === 'owner') {
-            if(this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B ) {
-            // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B) {
+              // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free') {
               this.router.navigate(['project/' + this.id_project + '/pricing']);
-    
+
             }
           } else {
             this.presentModalOnlyOwnerCanManageTheAccountPlan();
@@ -4278,7 +4312,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       }
-      
+
     });
   }
 

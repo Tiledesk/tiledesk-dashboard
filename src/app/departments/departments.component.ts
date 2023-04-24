@@ -9,7 +9,7 @@ import { GroupService } from '../services/group.service';
 import { FaqKbService } from '../services/faq-kb.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
-import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { LoggerService } from '../services/logger/logger.service';
@@ -21,6 +21,7 @@ import { LoggerService } from '../services/logger/logger.service';
 
 export class DepartmentsComponent implements OnInit {
   PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME
   t_params: any;
   departments: Department[] = [];
 
@@ -63,6 +64,9 @@ export class DepartmentsComponent implements OnInit {
   subscriptionInactiveOrTrialExpired: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
+  appSumoProfile: string;
+ 
+  appSumoProfilefeatureAvailableFromBPlan: string;
   constructor(
     private deptService: DepartmentService,
     private router: Router,
@@ -75,7 +79,7 @@ export class DepartmentsComponent implements OnInit {
     public appConfigService: AppConfigService,
     private logger: LoggerService
   ) { 
-    this.t_params= {'plan_name': PLAN_NAME.B}
+   
   }
 
   ngOnInit() {
@@ -338,6 +342,17 @@ export class DepartmentsComponent implements OnInit {
         this.logger.log('[DEPTS] getProjectPlan subscription_is_active', this.subscription_is_active)
         this.trialExpired = projectProfileData.trial_expired;
         this.logger.log('[DEPTS] getProjectPlan trialExpired', this.trialExpired)
+
+       
+        if (projectProfileData.extra3) {
+          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+
+          this.t_params = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
+
+        } else if (!projectProfileData.extra3) {
+          this.t_params = { 'plan_name': PLAN_NAME.B }
+        }
 
         if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trialExpired === true)) {
           this.subscriptionInactiveOrTrialExpired = true;
