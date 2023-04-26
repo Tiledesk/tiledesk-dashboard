@@ -242,7 +242,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
     this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] CREATE NEW PROJECT - PROJECT-NAME  ', projectName);
 
-    this.projectService.createProject(projectName)
+    this.projectService.createProject(projectName, 'activate-appsumo')
       .subscribe((project) => {
         // console.log('[ACTIVATE-APPSUMO-PRODUCT] CREATE NEW PROJECT RESPONSE ', project);
         if (project) {
@@ -372,6 +372,18 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       this.router.navigate(['project/' + this.new_project._id + '/project-settings/payments']);
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  contactUs() {
+    // if (window && window['tiledesk']) {
+    //   window['tiledesk'].open();
+    // }
+    // window.open('mailto:' + this.contactUsEmail, 'mail')
+    if (this.USER_ROLE === 'owner') {
+      window.open(`mailto:sales@tiledesk.com?subject=Support request for AppSumo license id project ${this.new_project._id}` );
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
 

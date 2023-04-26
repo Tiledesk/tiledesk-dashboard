@@ -945,7 +945,7 @@ $f21blue: #039be5;
 }
 
 .appsumo-account-instruction-header {
-  font-size: 21px;
+  font-size: 24px;
   font-weight: 400;
   margin-top: 12px;
   margin-bottom: 12px;
@@ -955,6 +955,15 @@ $f21blue: #039be5;
   font-weight: 500;
   margin-bottom: 3px;
   margin-top: 3px;
+}
+
+.link-to-contact-us {
+  color: #03a5e8;
+  cursor: pointer;
+}
+
+.link-to-contact-us:hover { 
+  text-decoration: underline;
 }
 
 

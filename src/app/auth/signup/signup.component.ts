@@ -670,7 +670,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     // this.DISPLAY_SPINNER = true;
     this.logger.log('[SIGN-UP] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', projectName);
 
-    this.projectService.createProject(projectName)
+    this.projectService.createProject(projectName, 'signup')
       .subscribe((project) => {
         this.logger.log('[SIGN-UP] POST DATA PROJECT RESPONSE ', project);
         if (project) {
