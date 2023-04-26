@@ -296,7 +296,7 @@ export enum APP_SUMO_PLAN_NAME {
 export enum PLAN_SEATS {
     free = 2, 
     Growth = 4, 
-    Scale = 20,
+    Scale = 15,
 };
 
 export enum APPSUMO_PLAN_SEATS {

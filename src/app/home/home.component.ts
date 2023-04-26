@@ -1217,9 +1217,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goToPayment() {
     if (this.USER_ROLE === 'owner') {
-      if (this.prjct_profile_type === 'payment') {
+      // if (this.prjct_profile_type === 'payment') {
         this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
-      }
+      // }
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
