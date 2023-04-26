@@ -35,7 +35,7 @@ enum MONTHLY_PRICE {
 }
 
 enum ANNUAL_PRICE {
-  Growth = "190",
+  Growth = "225",
   Scale = "790",
   Plus = 'Custom'
 }
@@ -330,7 +330,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_4gw1502Ds5X4ed26ot";
     } else if (this.TEST_PAYMENT_LINKS === false) {
       this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/5kA3ck5K604y9qg3ck"; // "https://buy.stripe.com/aEU3ckc8ug3wdGwdQS";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/28oaEM1tQeZs6e4fYZ";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/fZefZ6egCeZsgSI14d",// "https://buy.stripe.com/28oaEM1tQeZs6e4fYZ";
       this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/cN2aEMfkGaJc1XObIO"; //"https://buy.stripe.com/8wM9AI0pMeZsbyo28c";
       this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/8wM14cc8ug3weKA003";
 
