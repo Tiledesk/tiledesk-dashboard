@@ -348,7 +348,7 @@ export const featuresPlanA = [
   ]
   
   export const highlightedFeaturesPlanB = [
-    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats' },
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '15 Seats' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' }
   ]
   export const appSumoHighlightedFeaturesPlanATier3 = [
