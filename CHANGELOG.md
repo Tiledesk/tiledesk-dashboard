@@ -2,7 +2,7 @@
 
 ### 2.4.31
 - Deploys in production
-- Changes the price of the plans
+- Updates plans prices
 
 ### 2.4.30
 - Deploys in production
