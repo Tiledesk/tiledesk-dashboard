@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.32
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.31
 - Deploys in production
 - Updates plans prices
