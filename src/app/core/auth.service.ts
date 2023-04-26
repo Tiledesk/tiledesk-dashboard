@@ -777,6 +777,8 @@ export class AuthService {
       .put<User[]>(url, JSON.stringify(body), httpOptions)
   }
 
+
+
   // --------------------------------------------------
   // REPUBLISH AND RESET IN STORAGE THE (UPDATED) USER
   // --------------------------------------------------
@@ -1259,5 +1261,10 @@ export class AuthService {
       }
       // alert('logout');
     }
+  }
+
+  authWithGoogle() {
+    this.SERVER_BASE_PATH + "auth/google"
+    console.log('authWithGoogle url' , this.SERVER_BASE_PATH + "auth/google")
   }
 }

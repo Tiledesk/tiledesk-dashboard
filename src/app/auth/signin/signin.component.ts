@@ -101,7 +101,10 @@ export class SigninComponent implements OnInit {
     } else {
       this.EXIST_STORED_ROUTE = false
     }
-   
+  }
+
+  signinWithGoogle() {
+    this.auth.authWithGoogle()
   }
 
   redirectIfLogged() {

@@ -327,6 +327,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.checkCurrentUrlAndSkipWizard();
   }
 
+
+  signupWithGoogle() {
+    this.auth.authWithGoogle()
+  }
+
   redirectIfLogged() {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
