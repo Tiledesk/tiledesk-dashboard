@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.31
+- Deploys in production
+- Changes the price of the plans
+
 ### 2.4.30
 - Deploys in production
 - AppSumo implementation
