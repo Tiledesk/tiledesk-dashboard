@@ -542,7 +542,8 @@
                 <p class="row-header  attributes-decoded-jwt-cntct-accordion"
                   (click)="openAttributesDecodedJWTAccordion()"
                   style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
-                  <i class="material-icons" style="vertical-align: middle; color: #8796af;margin-left: 6px;"> gpp_good </i>
+                  <i class="material-icons" style="vertical-align: middle; color: #8796af;margin-left: 6px;"> gpp_good
+                  </i>
                   <span style="vertical-align: middle; color: #555 ">
                     {{ "decodedJWT" | translate }}
                   </span>
@@ -751,7 +752,7 @@
                             </span>
 
                             <!-- ------------------------------------ -->
-                            <!-- PostalCode (field name 'zipcode') -->
+                            <!-- Country  -->
                             <!-- ------------------------------------ -->
                             <span style="display: block; margin-left: 20px;">
                               <span class="address-label">
@@ -886,7 +887,7 @@
             <!-- --------------------------------------------------------------------- -->
             <!-- Lead ID -->
             <!-- --------------------------------------------------------------------- -->
-            <div class="row" style="margin-top:6px">
+            <!-- <div class="row" style="margin-top:6px">
               <div class="col-sm-12">
                 <p style="margin-bottom: 0px;">
                   <span class="tool_tip">
@@ -905,6 +906,87 @@
                   </span>
                 </p>
               </div>
+            </div> -->
+            <!-- ------------------------ -->
+            <!-- @ Lead tag -->
+            <!-- ------------------------ -->
+            <div class="row" style="margin-top:6px">
+              <div class="col-sm-12">
+
+                <div class="tag-content-wpr" [ngClass]="{'tag-content-wpr-chat': CHAT_PANEL_MODE === true}">
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                    style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'Tags.Tags' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                    matTooltipHideDelay="100">
+                    <path d="M0 0h22v22H0z" fill="none"></path>
+                    <path
+                      d="M19.626 10.615l-8.25-8.25a1.822 1.822 0 00-1.293-.532H3.667a1.839 1.839 0 00-1.834 1.834v6.416c0 .505.202.963.541 1.302l8.25 8.25c.33.33.788.532 1.293.532.504 0 .962-.202 1.292-.541l6.417-6.417c.339-.33.54-.788.54-1.292 0-.505-.21-.972-.54-1.302zM5.042 6.417c-.761 0-1.375-.614-1.375-1.375s.614-1.375 1.375-1.375c.76 0 1.375.614 1.375 1.375 0 .76-.614 1.375-1.375 1.375z">
+                    </path>
+                  </svg> -->
+
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 25px; height: 28px">
+                    <!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                    <path
+                      d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                    </svg>
+
+                  <form>
+                    <div class="tags--container-wpr">
+                      <div class="tags--container">
+                        <div class="lead-tag" *ngFor="let tag of contactTags" role="button">
+
+                          <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
+                          <!-- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
+                          <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
+                          <div (click)="removeTag(tag)">
+                            <div class="icon-container" style="display: inline-block;">
+                              <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px; margin-left: 2px; fill:#0566ff"
+                                aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                                class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                                <path class="tag_icon_in_ws_msgs"
+                                  d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                </path>
+                              </svg>
+                              <span class="tag-delete">
+                                <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
+                              </span>
+                            </div>
+                          <span style="margin-right: 6px;
+                            font-weight: 400;
+                           font-family: 'Poppins','Roboto', 'Arial', sans-serif;">{{tag}}</span>  
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="ng-select-tags-wpr">
+
+                        <ng-select class="ng-select-tags" id="select-tag" #ngSelect (change)="addTag(tag)"
+                          [clearable]="false" [(ngModel)]="tag" bindLabel="tag" [items]="contactTempTags"
+                          [clearSearchOnAdd]="true" [hideSelected]="true" placeholder="Add tag" addTagText="Create New"
+                          [addTag]="createNewTag" (keyup.enter)="ngSelect.close()"
+                          notFoundText="No tags found. Type to create a tag">
+
+                          <ng-template ng-label-tmp let-item="item">
+
+                            {{item.tag}}
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item" let-index="index">
+
+                            {{item.tag}}
+                          </ng-template>
+                        </ng-select>
+                      </div>
+
+                    </div>
+                  </form>
+                </div>
+
+
+
+
+              </div>
             </div>
 
 
@@ -912,8 +994,8 @@
             <!-- @ ATTRIBUTES -->
             <!-- -------------------------------------- -->
             <!-- style="margin-bottom: 8px; color: #566787; border-top: 1px solid #e1eef4; padding-top: 8px; font-weight: 400; font-size: 18px" -->
-            <div *ngIf="contact_details?.attributes" class="row"
-              style="margin-top: 6px; padding-left: 15px;padding-right: 15px;">
+            <div id="attributes-row" *ngIf="contact_details?.attributes" class="row" [ngStyle]="{ 'margin-top': tagContainerElementHeight }"
+              style="padding-left: 15px;padding-right: 15px;">
               <div class="col-sm-12"
                 style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;border-top: 1px solid #eeeeee;">
                 <p class="row-header attributes-accordion" (click)="toggleAttributes()"

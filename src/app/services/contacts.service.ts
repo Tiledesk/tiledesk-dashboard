@@ -328,6 +328,36 @@ export class ContactsService {
   }
 
   // ---------------------------------------------
+  // @ Add contact tag
+  // ---------------------------------------------
+ 
+
+  public addTagtoContact(
+    id: string,
+    tags: string,
+  ) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + id;
+    console.log('[CONTACTS-SERV] ADD LEAD TAG - URL ', url);
+
+    const body = {
+      'tags': tags
+    };
+
+    console.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
+
+    return this.httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+  }
+
+  // ---------------------------------------------
   // @ Delete lead (move to trash)
   // ---------------------------------------------
   public deleteLead(id: string) {

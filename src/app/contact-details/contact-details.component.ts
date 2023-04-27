@@ -81,6 +81,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   attributesDecodedJWTAttributesArray: Array<any>
   attributesDecodedJWTArrayMerged: Array<any>
   isChromeVerGreaterThan100: boolean;
+  contactTags: Array<any>
+  contactTempTags: Array<any> = []
+  tag: any;
+  tagcolor: any;
+  tagContainerElementHeight: any;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -235,6 +240,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
     this.logger.log(`[CONTACTS-DTLS] - ATTRIBUTES AfterViewInit attributeValueElem offsetWidth:`, this.rightSidebarWidth);
 
+    setTimeout(() => {
+    this.getTagContainerElementHeight()
+  }, 1500);
   }
 
 
@@ -285,7 +293,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   getRequesterIdParam_AndThenGetRequestsAndContactById() {
     this.requester_id = this.route.snapshot.params['requesterid'];
-    this.logger.log('[CONTACTS-DTLS] - GET REQUESTER ID PARAM & THEN GET REQUESTS AND CONTACT BY ID -> REQUESTER ID ', this.requester_id);
+   console.log('[CONTACTS-DTLS] - GET REQUESTER ID PARAM & THEN GET REQUESTS AND CONTACT BY ID -> REQUESTER ID ', this.requester_id);
 
     if (this.requester_id) {
       this.getContactById();
@@ -435,12 +443,107 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  addTag(tag) {
+    console.log('CONTACTS-DTLS] - ADD TAG - this.tag TO ADD: ', tag);
+    this.contactTags.push(tag.tag.trim())
+    // this.tag = null
+
+    setTimeout(() => {
+      this.tag = null;
+    })
+  }
+
+  getTagContainerElementHeight() {
+
+    const tagContainerElement = <HTMLElement>document.querySelector('.tags--container');
+      console.log('tagContainerElement ', tagContainerElement)
+    if (tagContainerElement) {
+      this.tagContainerElementHeight =  tagContainerElement.offsetHeight + 'px'
+     console.log('tagContainerElement.offsetHeight tagContainerElementHeight ', this.tagContainerElementHeight)
+     console.log('tagContainerElement.clientHeight ', tagContainerElement.clientHeight)
+    
+      // this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
+      // this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
+    }
+  }
+
+  createNewTag = (newTag: string) => {
+    let self = this;
+    console.log("Create New TAG Clicked : " + newTag)
+    let newTagTrimmed = newTag.trim()
+    self.contactTags.push(newTagTrimmed)
+    console.log("Create New TAG Clicked - leads tag: ",  self.contactTags)
+    self.addContactTag(self.requester_id, self.contactTags) 
+
+
+    // var index = this.request.tags.findIndex(t => t.tag === newTag);
+    // if (index === -1) {
+    //   this.logger.log("Create New TAG Clicked - Tag NOT exist")
+
+
+    //   let self = this;
+    //   this.logger.log(' this.ngSelect', this.ngSelect)
+    //   if (this.ngSelect) {
+    //     this.ngSelect.close()
+    //     this.ngSelect.blur()
+    //   }
+    //   this.getTagContainerElementHeight()
+
+    //   self.tag_selected_color = '#f0806f'
+
+    //   self.tagsService.createTag(newTag, this.tag_selected_color)
+    //     .subscribe((tag: any) => {
+    //       this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
+
+    //       const tagObject = { tag: tag.tag, color: tag.color }
+    //       self.tagsArray.push(tagObject);
+
+    //       self.updateRequestTags(this.id_request, this.tagsArray, 'create')
+
+    //     }, (error) => {
+    //       this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
+    //       self.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+    //     }, () => {
+    //       this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
+
+    //     });
+
+    // } else {
+    //   this.logger.log("Create New TAG Clicked - Tag already exist ")
+    //   this.presentModalTagAlredyAssigned()
+    // }
+
+  }
+ 
+
+  removeTag(tag: string) { 
+    // this.contactTempTags = []
+    console.log( 'contactTempTags tag', tag)
+    var index = this.contactTags.indexOf(tag);
+    if (index !== -1) {
+      this.contactTags.splice(index, 1);
+      this.contactTempTags.push({tag: tag})
+      this.contactTempTags = this.contactTempTags.slice(0)
+      console.log( 'contactTempTags', this.contactTempTags)
+    }
+
+  }
+  
+  addContactTag(requester_id, tags) {
+    this.contactsService.addTagtoContact(requester_id, tags)
+    .subscribe((lead: any) => { 
+      console.log('[CONTACTS-DTLS] - ADD CONTACT TAGS  lead ', lead);
+      this.contactTags = lead.tags
+    })
+  }
+
   getContactById() {
     this.contactsService.getLeadById(this.requester_id)
       .subscribe((lead: any) => {
 
         if (lead) {
-          // console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
+          console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
           this.contact_details = lead;
 
           if (this.contact_details && this.contact_details.lead_id) {
@@ -489,6 +592,10 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
             this.contact_fullname_initial = 'N/A';
             this.fillColour = '#6264a7';
+          }
+
+          if (this.contact_details.tags) {
+            this.contactTags = this.contact_details.tags
           }
 
           // No more used -- now is get from projrct user
