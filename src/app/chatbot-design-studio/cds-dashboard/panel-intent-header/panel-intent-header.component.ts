@@ -120,10 +120,18 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     // console.log('intentNameAlreadyExist:: ', this.intentNameAlreadyExist);
   }
 
-  /** */
+  /** BLUR EVENT*/
   onBlurIntentName(event) {
     this.checkIntentName(this.intentName);
     this.onSaveIntent();
+  }
+
+  /** ENTER KEYBOARD EVENT*/
+  onEnterButtonPressed(event){
+    console.log('[PANEL-INTENT-HEADER] Intent name: onEnterButtonPressed event', event)
+    this.checkIntentName(this.intentName);
+    this.onSaveIntent();
+    event.target.blur()
   }
 
   /** */
@@ -191,5 +199,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   //   let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
   //   window.open(url, '_blank', params);
   // }
+
+  
 
 }
