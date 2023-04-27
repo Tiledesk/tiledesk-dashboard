@@ -1263,8 +1263,31 @@ export class AuthService {
     }
   }
 
-  authWithGoogle() {
-    this.SERVER_BASE_PATH + "auth/google"
-    console.log('authWithGoogle url' , this.SERVER_BASE_PATH + "auth/google")
+  // authWithGoogle() {
+  //   this.SERVER_BASE_PATH + "auth/google"
+  //   console.log('authWithGoogle url' , this.SERVER_BASE_PATH + "auth/google")
+  // }
+
+
+  public authWithGoogle(): Observable<[any]> {
+  
+    const url = this.SERVER_BASE_PATH + "auth/google"
+    console.log('authWithGoogle url' , url)
+
+    // 'Authorization': this.TOKEN
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        
+      })
+    };
+
+    return this._httpClient
+      .get<[any]>(url, httpOptions)
   }
+
+
+
+
+  
 }
