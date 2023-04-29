@@ -108,6 +108,7 @@ import { OperatorComponent } from './cds-dashboard/panel-intent-detail/actions/a
 import { DialogComponent } from './cds-base-element/dialog/dialog.component';
 import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-function/action-assign-function.component';
 import { DialogYesNoComponent } from './cds-base-element/dialog-yes-no/dialog-yes-no.component';
+import { CDSFilterComponent } from './cds-base-element/filter/filter.component';
 
 
 @NgModule({
@@ -147,6 +148,7 @@ import { DialogYesNoComponent } from './cds-base-element/dialog-yes-no/dialog-ye
     //BASE-ELEMENT
     CDSTextComponent,
     CDSDelaySliderComponent,
+    CDSFilterComponent,
     CDSTextareaComponent,
     ActionDeleteVariableComponent,
     ActionAssignVariableComponent,
