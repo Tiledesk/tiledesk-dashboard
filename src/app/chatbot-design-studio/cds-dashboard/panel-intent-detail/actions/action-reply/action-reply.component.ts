@@ -115,7 +115,7 @@ export class ActionReplyComponent implements OnInit {
         replyArrayElements.push(elementWait);
       }
       let elementMessage = new Command(TYPE_COMMAND.MESSAGE);
-      elementMessage.message = new Message(el.type, el.text);
+      elementMessage.message = new Message(el.type, el.text, el.filter);
       if (el.attributes) {
         elementMessage.message.attributes = el.attributes;
       }
@@ -141,7 +141,7 @@ export class ActionReplyComponent implements OnInit {
           time = element.time;
         }
         if (element.type === TYPE_COMMAND.MESSAGE) {
-          let message = new MessageWithWait(element.message.type, element.message.text, time);
+          let message = new MessageWithWait(element.message.type, element.message.text, time, element.message.filter);
           if (element.message.attributes) {
             message.attributes = element.message.attributes;
           }

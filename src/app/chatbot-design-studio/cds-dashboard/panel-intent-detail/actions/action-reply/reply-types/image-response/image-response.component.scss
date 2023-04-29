@@ -13,14 +13,18 @@
     position: relative;
     width: 100%;
     height: auto;
-    margin: 0;
-    padding: 0;
-    .delay-wrapper {
+    margin: 27px 0px 0px 0px;
+    padding: 0px 33px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 5px;
+    column-gap: 5px;
+    .delay-wrapper,
+    .filter-wrapper {
         display: block;
         height: auto;
         width: auto;
-        margin: 27px 0px 0px 20px;
-        padding: 0em 0.75em 0;
+        // padding: 0em 0.75em 0;
     }
 }
 

@@ -21,10 +21,10 @@
             <div *ngIf="message.type === typeMessage.TEXT">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-text-response
-                    [index] = i
-                    [typeAction] = typeAction
-                    [response] = message
-                    ></appdashboard-text-response>
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message>
+                    </appdashboard-text-response>
                 </div>
                 
                 <div class="response">
@@ -36,16 +36,16 @@
                         cdkDragHandle>
                     </div> 
                     <appdashboard-text-response
-                    [index] = i
-                    [typeAction] = typeAction
-                    [response] = message
-                    (moveUpResponse) = onMoveUpResponse($event)
-                    (moveDownResponse) = onMoveDownResponse($event)
-                    (deleteResponse) = onDeleteResponse($event)
-                    (openButtonPanel) = onOpenButtonPanel($event)
-                    (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
-                    (changeReplyElement) = onChangeReplyElement()
-                    ></appdashboard-text-response>
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message
+                        (moveUpResponse) = onMoveUpResponse($event)
+                        (moveDownResponse) = onMoveDownResponse($event)
+                        (deleteResponse) = onDeleteResponse($event)
+                        (openButtonPanel) = onOpenButtonPanel($event)
+                        (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                        (changeReplyElement) = onChangeReplyElement()>
+                    </appdashboard-text-response>
                 </div>
             </div>
             
