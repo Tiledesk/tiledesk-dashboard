@@ -25,6 +25,7 @@ export class ActionWebRequestComponent implements OnInit {
 
   hasSelectedVariable: boolean = false;
   typeMethodAttribute = TYPE_METHOD_ATTRIBUTE;
+  assignments: {} = {}
 
   constructor(
     private logger: LoggerService
@@ -53,6 +54,7 @@ export class ActionWebRequestComponent implements OnInit {
       this.jsonBody = this.action.jsonBody;
       this.jsonBody = this.formatJSON(this.jsonBody, "\t");
     }
+    this.assignments = this.action.assignments
   }
 
   private setActionWebRequest(){
@@ -135,6 +137,11 @@ export class ActionWebRequestComponent implements OnInit {
   onSelectedAttribute(variableSelected: {name: string, value: string}, step: number){
     this.hasSelectedVariable = true;
     this.action.assignTo = variableSelected.value;
+  }
+
+
+  onChangeAttributesResponse(attributes:{[key: string]: string }){
+    this.action.assignments = attributes ;
   }
 
 }
