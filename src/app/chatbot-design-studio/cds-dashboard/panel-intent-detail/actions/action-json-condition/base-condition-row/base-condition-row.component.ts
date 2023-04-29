@@ -74,7 +74,6 @@ export class BaseConditionRowComponent implements OnInit {
 
 /** START EVENTS cds-textarea **/
   onChangeTextArea(text: string){
-    console.log('******* onChangeTextArea-->', text);
     this.logger.log('textttt', text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)));
     if(text){
       this.disableSubmit = false;
@@ -92,7 +91,6 @@ export class BaseConditionRowComponent implements OnInit {
   }
 
   onSelectedAttribute(variableSelected: {name: string, value: string}, step: number){ 
-    console.log('******* onVariableSelected-->', step, variableSelected);   
     this.logger.log('1 onVariableSelected-->', step, this.conditionForm, variableSelected);
     if(step === 0){
       this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
