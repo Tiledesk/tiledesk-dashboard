@@ -170,12 +170,14 @@ export class ActionWebRequest extends Action {
     headersString: any;
     jsonBody: string;
     assignTo: string;
+    assignments: {}
     constructor(){
         super();
         this.url = '';
         this.headersString = {"Content-Type":"application/json", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"};
         this.jsonBody = JSON.stringify({});
         this.assignTo = '';
+        this.assignments = {};
         this.method = TYPE_METHOD_REQUEST.GET;
         this._tdActionType = TYPE_ACTION.WEB_REQUEST;
     }
@@ -227,6 +229,7 @@ export class Command {
     type: string;
     message?: Message;
     time?: number;
+    filter?: Expression;
     constructor(type: string) {
         this.type = type;
     }
@@ -283,20 +286,22 @@ export class Message {
     // time?: number;
     attributes?: MessageAttributes;
     metadata?: Metadata;
-    constructor(type: string, text: string) {
+    filter?: Expression = new Expression();
+    constructor(type: string, text: string, filter?: Expression) {
         this.type = type;
         this.text = text;
+        if(filter)
+            this.filter = filter
     }
 }
 
 export class MessageWithWait extends Message {
     time?: number = 500;
-    constructor(type: string, text: string, time: number) {
-        super(type,text);
+    constructor(type: string, text: string, time: number, filter?: Expression) {
+        super(type,text, filter);
         this.time = time?time:500;
     }
 }
-
 
 
 export class MessageAttributes {
