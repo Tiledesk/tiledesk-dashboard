@@ -332,7 +332,7 @@ export class ContactsService {
   // ---------------------------------------------
  
 
-  public addTagtoContact(
+  public updateLeadTag(
     id: string,
     tags: string,
   ) {

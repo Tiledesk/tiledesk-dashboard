@@ -88,6 +88,8 @@
     "CreatedBy": "انشأ من قبل",
     "NoContact": "لا اتصال",
     "SearchYourContacts": "ابحث في جهات الاتصال الخاصة بك",
+    "SearchByFirstAndOrLastName": "ابحث بالاسم الأول و / أو الأخير",
+    "SelectAnEmail": "حدد بريدًا إلكترونيًا",
     "SearchByEmail": "البحث عن طريق البريد الإلكتروني",
     "ClearSearch": "مسح البحث",
     "ViewDetails": "عرض التفاصيل",
@@ -1203,7 +1205,8 @@
         "TypeALabelAndPressEnter": "اكتب علامة واضغط على Enter",
         "YouHaveNotAddedAnyTags": "لم تقم بإضافة أي علامات",
         "DoYouReallyWantToCancelTheTag": "هل تريد حقًا حذف العلامة",
-        "SelectTag": "حدد العلامة",
+        "SelectTag": "حدد TAG",
+        "SearchByTAG": "البحث عن طريق TAG",
         "TagsAreLabelsThatYouCanAddToConversationsAndTicket": "العلامات هي تسميات يمكنك إضافتها إلى المحادثات والتذكرة. أنها تساعدك على تصنيف وتنظيم جميع اتصالات العملاء.",
         "Color": {
             "red": "أحمر",

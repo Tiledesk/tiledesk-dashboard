@@ -400,24 +400,24 @@ p.member:hover {
   color: #039be5;
   font-size: 25px;
   position: relative;
-  top: 4px;
+  top: -1px;
 }
 
 /* Lead tag 
-/* ************************************ */ 
-.tag-content-wpr {
+/* ************************************ */
+.lead-tag-content-wpr {
   padding: 6px 9px;
   display: flex;
   -webkit-box-align: center;
   align-items: center;
 }
 
-.tag-content-wpr-chat {
-  padding: 6px 12px 6px 12px !important;
-}
+// .tag-content-wpr-chat {
+//   padding: 6px 12px 6px 12px !important;
+// }
 
-.tag-content-wpr > svg {
-  fill: rgba(100, 116, 145, 0.6);
+.lead-tag-content-wpr > svg {
+  fill: #8796af;
   margin-right: 12px;
   margin-top: 2px;
   align-self: flex-start;
@@ -428,7 +428,7 @@ p.member:hover {
 //   fill: rgb(5, 102, 255);
 // }
 
-.tag-content-wpr input {
+.lead-tag-content-wpr input {
   display: inline-block;
   margin: 0px;
   padding: 0px;
@@ -446,13 +446,13 @@ p.member:hover {
   letter-spacing: -0.01em;
 }
 
-.tag-content-wpr form {
+.lead-tag-content-wpr form {
   position: relative;
   width: 100%;
   height: 26px;
 }
 
-.tags--container-wpr {
+.lead-tags--container-wpr {
   // display: flex;
   // flex-flow: row wrap;
   // -webkit-box-align: center;
@@ -460,7 +460,7 @@ p.member:hover {
   margin: 0px -12px;
 }
 
-.tags--container {
+.lead-tags--container {
   width: 100%;
   position: relative;
   top: -3px;
@@ -468,22 +468,31 @@ p.member:hover {
 }
 
 .lead-tag {
-display: inline-block;
+  display: inline-block;
+}
+
+.lead-assigned-tag {
+  margin-right: 6px;
+  font-weight: 400;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-size: 12px;
+  color: #757575;
 }
 
 .ng-select-tags-wpr {
   height: 30px;
 }
 
-.tag-delete {
+.lead-tag-delete {
   opacity: 0;
+  color: #f44336;
 }
 
 .lead-tag:hover {
   .tag_icon_in_ws_msgs {
     fill: rgba(233, 235, 238, 0.3) !important;
   }
-  .tag-delete {
+  .lead-tag-delete {
     opacity: 1;
     font-size: 16px;
     position: relative;
@@ -495,3 +504,12 @@ display: inline-block;
 
 /* ./ Lead tag 
 /* ************************************ */
+
+::ng-deep .custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}

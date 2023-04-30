@@ -534,7 +534,7 @@
               </div> -->
 
             <!-- ------------------------------------------------------ -->
-            <!-- @ Attributes decoded JWT accordion   -->
+            <!-- @ Attributes decoded JWT accordion     -->
             <!-- ------------------------------------------------------ -->
             <div *ngIf="contact_details?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED" class="row"
               style="padding-right: 15px; padding-left: 15px;">
@@ -609,11 +609,19 @@
               </div> -->
 
               <!-- --------------------------------------------------------------------- -->
-              <!-- email -->
+              <!-- Email -->
               <!-- --------------------------------------------------------------------- -->
               <div class="col-sm-12 contact-email-col-12">
-                <p style="margin-bottom: 0px;margin-top: 6px; ">
-                  <span class="tool_tip">
+                <p style="margin-bottom: 8px;margin-top: 6px; ">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px" fill="#8796af"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'ContactEmail' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                    style="vertical-align: middle; cursor: pointer;" (click)='goToEditContact(contact_details?._id)'>
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path
+                      d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 4.99L4 6h16zm0 12H4V8l8 5 8-5v10z" />
+                  </svg>
+                  <!-- <span class="tool_tip">
                     <i class="material-icons right-sidebar--m-icon"
                       (click)='goToEditContact(contact_details?._id)'>email</i>
 
@@ -625,7 +633,7 @@
                       </span>
                       <i style="top: 88%;"></i>
                     </span>
-                  </span>
+                  </span> -->
 
                   <a style="font-size: 14px; color: #0f62ff !important;font-weight: 400;" target="_blank"
                     *ngIf="contact_details?.email" href="mailto:{{contact_details?.email}}">
@@ -644,8 +652,16 @@
             <!-- --------------------------------------------------------------------- -->
             <div class="row">
               <div class="col-sm-12">
-                <p style="margin-bottom: 0px;margin-top: 6px;">
-                  <span class="tool_tip">
+                <p style="margin-bottom: 8px;margin-top: 6px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px" fill="#8796af"
+                  matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Company' | translate }}"
+                  #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                  style="vertical-align: middle; cursor: pointer;" (click)='goToEditContact(contact_details?._id)'>
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path
+                      d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z" />
+                    </svg>
+                  <!-- <span class="tool_tip">
                     <i class="material-icons right-sidebar--m-icon"
                       (click)='goToEditContact(contact_details?._id)'>business</i>
 
@@ -657,7 +673,7 @@
                       <i style="top: 88%;"></i>
                     </span>
 
-                  </span>
+                  </span> -->
                   <span *ngIf="contact_details?.company" class="contact-sidebar-label">
                     {{ contact_details?.company }}
                   </span>
@@ -671,13 +687,22 @@
             <!-- --------------------------------------------------------------------- -->
             <!-- Address -->
             <!-- --------------------------------------------------------------------- -->
-            <div class="row" style="margin-top:6px">
+            <div class="row">
               <div class="col-sm-12">
-                <p style="margin-bottom: 0px;">
+                <p style="margin-bottom: 8px;margin-top: 6px;">
                   <span style="position: relative;top: 1px;">
                     <div class="row">
                       <div class="col-xs-10" style="padding-right:10px">
-                        <span class="tool_tip">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px"
+                          fill="#8796af" matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Address' | translate }}"
+                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                          style="vertical-align: middle; cursor: pointer;" (click)='goToEditContactAddress(contact_details?._id)'>
+                          <path d="M0 0h24v24H0z" fill="none" />
+                          <path
+                            d="M12 11c1.33 0 4 .67 4 2v.16c-.97 1.12-2.4 1.84-4 1.84s-3.03-.72-4-1.84V13c0-1.33 2.67-2 4-2zm0-1c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 .2C18 6.57 15.35 4 12 4s-6 2.57-6 6.2c0 2.34 1.95 5.44 6 9.14 4.05-3.7 6-6.8 6-9.14zM12 2c4.2 0 8 3.22 8 8.2 0 3.32-2.67 7.25-8 11.8-5.33-4.55-8-8.48-8-11.8C4 5.22 7.8 2 12 2z" />
+                        </svg>
+                        <!-- <span class="tool_tip">
                           <i class="material-icons right-sidebar--m-icon"
                             (click)='goToEditContactAddress(contact_details?._id)'>person_pin_circle</i>
 
@@ -688,7 +713,7 @@
                               {{'ClickToEdit' | translate}} </span>
                             <i style="top: 88%;"></i>
                           </span>
-                        </span>
+                        </span> -->
 
                         <span style=" font-weight: 500; font-size: 12px;">
 
@@ -784,8 +809,16 @@
             <div class="row">
               <div class="col-sm-12">
 
-                <p style="margin-bottom: 0px;margin-top: 6px;">
-                  <span class="tool_tip">
+                <p style="margin-bottom:8px;margin-top: 0px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px" fill="#8796af"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'PhoneNumber' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                    style="vertical-align: middle; cursor: pointer;" (click)='goToEditContactPhone(contact_details?._id)'>
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path
+                      d="M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.1-.04-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.45-5.15-3.76-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z" />
+                  </svg>
+                  <!-- <span class="tool_tip">
                     <i class="material-icons right-sidebar--m-icon"
                       (click)='goToEditContactPhone(contact_details?._id)'>call</i>
 
@@ -797,7 +830,7 @@
                       <i style="top: 88%;"></i>
                     </span>
 
-                  </span>
+                  </span> -->
                   <span *ngIf="contact_details?.phone" class="contact-sidebar-label">
                     {{ contact_details?.phone }}
                   </span>
@@ -812,14 +845,22 @@
             <!-- -------------------------------------- -->
             <!-- Note -->
             <!-- -------------------------------------- -->
-            <div class="row" style="margin-top:6px">
+            <div class="row">
               <div class="col-sm-12" style="padding-bottom: 4px;">
-                <p style="margin-bottom: 0px;">
+                <p style="margin-bottom: 8px; margin-top: 6px;">
 
                   <span class="showPosts tool_tip">
                     <span class="greekCross">
                       <span style="white-space: nowrap; margin-right: 3px;">
-                        <span class="tool_tip">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px"
+                          fill="#8796af" matTooltipClass="custom-mat-tooltip" matTooltip="Note"
+                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                          style="vertical-align: middle; cursor: pointer;" (click)='goToEditContactNote(contact_details?._id)'>
+                          <path d="M0 0h24v24H0V0z" fill="none" />
+                          <path d="M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z" />
+                        </svg>
+                        <!-- <span class="tool_tip">
                           <i class="material-icons right-sidebar--m-icon"
                             (click)='goToEditContactNote(contact_details?._id)'>subject</i>
 
@@ -831,7 +872,7 @@
                             <i style="top: 88%;"></i>
                           </span>
 
-                        </span>
+                        </span> -->
 
                         <!-- <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Poppins', sans-serif !important;">
@@ -853,10 +894,19 @@
             <!-- --------------------------------------------------------------------- -->
             <!-- Created At -->
             <!-- --------------------------------------------------------------------- -->
-            <div class="row" style="margin-top:6px">
+            <div class="row">
               <div class="col-sm-12">
-                <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
-                  <span class="tool_tip">
+                <p style="margin-bottom: 8px;margin-top:6px">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px" fill="#8796af"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'StartDate' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                    style="vertical-align: middle;">
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path
+                      d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V10h16v11zm0-13H4V5h16v3z" />
+                  </svg>
+                  <!-- <span class="tool_tip">
 
                     <i class="material-icons right-sidebar--m-icon">calendar_today</i>
 
@@ -867,12 +917,12 @@
                       <i style="top: 88%;"></i>
                     </span>
 
-                  </span>
+                  </span> -->
 
                   <span *ngIf="contact_details?.createdAt" class="contact-sidebar-label">
-                    {{ contact_details?.createdAt | amTimeAgo }}
+                    <!-- {{ contact_details?.createdAt | amTimeAgo }} -->
                     <!-- <span>({{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}) </span> -->
-                    <span>({{ contact_details?.createdAt | amDateFormat: 'LLL'}}) </span>
+                    <span style="margin-left: 4px;">{{ contact_details?.createdAt | amDateFormat: 'LLL'}} </span>
 
                   </span>
                   <span *ngIf="!contact_details?.createdAt" class="contact-sidebar-label">
@@ -910,29 +960,21 @@
             <!-- ------------------------ -->
             <!-- @ Lead tag -->
             <!-- ------------------------ -->
-            <div class="row" style="margin-top:6px">
+            <div *ngIf="isVisibleLBS === true" class="row" style="margin-top:6px">
               <div class="col-sm-12">
 
-                <div class="tag-content-wpr" [ngClass]="{'tag-content-wpr-chat': CHAT_PANEL_MODE === true}">
-                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                    style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'Tags.Tags' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-                    matTooltipHideDelay="100">
-                    <path d="M0 0h22v22H0z" fill="none"></path>
-                    <path
-                      d="M19.626 10.615l-8.25-8.25a1.822 1.822 0 00-1.293-.532H3.667a1.839 1.839 0 00-1.834 1.834v6.416c0 .505.202.963.541 1.302l8.25 8.25c.33.33.788.532 1.293.532.504 0 .962-.202 1.292-.541l6.417-6.417c.339-.33.54-.788.54-1.292 0-.505-.21-.972-.54-1.302zM5.042 6.417c-.761 0-1.375-.614-1.375-1.375s.614-1.375 1.375-1.375c.76 0 1.375.614 1.375 1.375 0 .76-.614 1.375-1.375 1.375z">
-                    </path>
-                  </svg> -->
+                <div class="lead-tag-content-wpr">
 
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 25px; height: 28px">
-                    <!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 25px; height: 28px"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Tags.Tags' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                     <path
                       d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
-                    </svg>
+                  </svg>
 
                   <form>
-                    <div class="tags--container-wpr">
-                      <div class="tags--container">
+                    <div class="lead-tags--container-wpr">
+                      <div class="lead-tags--container">
                         <div class="lead-tag" *ngFor="let tag of contactTags" role="button">
 
                           <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
@@ -940,7 +982,8 @@
                           <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
                           <div (click)="removeTag(tag)">
                             <div class="icon-container" style="display: inline-block;">
-                              <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px; margin-left: 2px; fill:#0566ff"
+                              <svg
+                                style="width: 13px; height: auto;position:absolute;margin-top: 6px; margin-left: 2px; fill:#757575"
                                 aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
                                 class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -949,31 +992,27 @@
                                   d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
                                 </path>
                               </svg>
-                              <span class="tag-delete">
-                                <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
+                              <span class="lead-tag-delete">
+                                <i class="material-icons" style="font-size: 16px;"> close </i>
                               </span>
                             </div>
-                          <span style="margin-right: 6px;
-                            font-weight: 400;
-                           font-family: 'Poppins','Roboto', 'Arial', sans-serif;">{{tag}}</span>  
+                            <span class="lead-assigned-tag">{{tag}}</span>
                           </div>
 
                         </div>
                       </div>
                       <div class="ng-select-tags-wpr">
 
-                        <ng-select class="ng-select-tags" id="select-tag" #ngSelect (change)="addTag(tag)"
+                        <ng-select class="ng-select-tags" id="select-tag"  style="top: -4px;" #ngSelect (change)="addTag(tag)"
                           [clearable]="false" [(ngModel)]="tag" bindLabel="tag" [items]="contactTempTags"
                           [clearSearchOnAdd]="true" [hideSelected]="true" placeholder="Add tag" addTagText="Create New"
                           [addTag]="createNewTag" (keyup.enter)="ngSelect.close()"
                           notFoundText="No tags found. Type to create a tag">
 
                           <ng-template ng-label-tmp let-item="item">
-
                             {{item.tag}}
                           </ng-template>
                           <ng-template ng-option-tmp let-item="item" let-index="index">
-
                             {{item.tag}}
                           </ng-template>
                         </ng-select>
@@ -982,10 +1021,6 @@
                     </div>
                   </form>
                 </div>
-
-
-
-
               </div>
             </div>
 
@@ -994,8 +1029,8 @@
             <!-- @ ATTRIBUTES -->
             <!-- -------------------------------------- -->
             <!-- style="margin-bottom: 8px; color: #566787; border-top: 1px solid #e1eef4; padding-top: 8px; font-weight: 400; font-size: 18px" -->
-            <div id="attributes-row" *ngIf="contact_details?.attributes" class="row" [ngStyle]="{ 'margin-top': tagContainerElementHeight }"
-              style="padding-left: 15px;padding-right: 15px;">
+            <div id="attributes-row" *ngIf="contact_details?.attributes" class="row"
+              [ngStyle]="{ 'margin-top': tagContainerElementHeight }" style="padding-left: 15px;padding-right: 15px;">
               <div class="col-sm-12"
                 style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;border-top: 1px solid #eeeeee;">
                 <p class="row-header attributes-accordion" (click)="toggleAttributes()"
@@ -1032,7 +1067,7 @@
                     </svg>
                   </span>
 
-                  <span style="position: relative;top: -7px;color: #555">
+                  <span style="position: relative;top: -7px;color: #555;margin-left: 8px;">
                     {{ "Attributes" | translate }}
                   </span>
 
