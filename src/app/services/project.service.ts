@@ -470,8 +470,8 @@ export class ProjectService {
     };
 
     let url = this.PROJECTS_URL + this.projectID + '/'
-    this.logger.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - PUT URL ', url);
-    this.logger.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - temaplateName ', temaplateName);
+    console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - PUT URL ', url);
+    console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - temaplateName ', temaplateName);
     // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
 
     // const body = { "settings.email.templates": template }

@@ -21,7 +21,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
 
   textToSearch: string;
 
-  EMAIL_TEMPLATE_NAME = ["assignedRequest", "assignedEmailMessage", "pooledRequest", "pooledEmailMessage", "newMessage", "ticket", "sendTranscript"]
+  EMAIL_TEMPLATE_NAME = ["assignedRequest", "assignedEmailMessage", "pooledRequest", "pooledEmailMessage", "newMessage", "ticket", "sendTranscript", "emailDirect", "newMessageFollower"]
   iframePlaceholderText: string;
   active_template: string = "assignedRequest"
   iFrame_placeholder: string
@@ -46,7 +46,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
     // this.getAssignedRequestTemplate();
     this.subscribeToCurrentProjectAndGetProjectById()
 
-    this.logger.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE - ACTIVE TEMPLATE ', this.active_template);
+    console.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE - ACTIVE TEMPLATE ', this.active_template);
     this.auth.checkRoleForCurrentProjectPermissionOnlyToOwner()
     this.getTranslations();
 
@@ -91,7 +91,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.projectId = project._id
-        this.logger.log('[NOTIFICATION-EMAIL] - projectId ', this.projectId)
+        console.log('[NOTIFICATION-EMAIL] - projectId ', this.projectId)
         this.getProjectById(this.projectId)
       }
     });
@@ -99,10 +99,10 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
 
   getProjectById(project_id: string) {
     this.projectService.getProjectById(project_id).subscribe((project: any) => {
-      this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project ', project);
+      console.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project ', project);
       // console.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates ', project.settings.email.templates);
       if (project && project.settings && project.settings.email && project.settings.email.templates) {
-        this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates ', project.settings.email.templates);
+        console.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates ', project.settings.email.templates);
 
 
         // project.settings.email.templates.forEach(templatename => {
@@ -110,31 +110,31 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
         // });
 
         if (project.settings.email.templates.hasOwnProperty(this.active_template)) {
-          this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates hasOwnProperty ', this.active_template);
+          console.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates hasOwnProperty ', this.active_template);
           this.emailTemplate = project.settings.email.templates[this.active_template];
           if (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")) {
             (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")).srcdoc = this.emailTemplate
           }
         } else {
-          this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates NOT hasOwnProperty ', this.active_template, 'RUN GET DEFAULT TEMPLATE');
+          console.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - project.settings.email.templates NOT hasOwnProperty ', this.active_template, 'RUN GET DEFAULT TEMPLATE');
           this.getAssignedRequestTemplate();
         }
       } else {
-        this.logger.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - NOT EXIST project.settings.email.templates ');
+        console.log('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - NOT EXIST project.settings.email.templates ');
         this.getAssignedRequestTemplate();
       }
 
     }, error => {
-      this.logger.error('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - ERROR ', error);
+      console.error('[NOTIFICATION-EMAIL] - GET PROJECT BY ID - ERROR ', error);
 
     }, () => {
-      this.logger.log('[NOTIFICATION-EMAIL] - getProjectByID * complete ');
+      console.log('[NOTIFICATION-EMAIL] - getProjectByID * complete ');
     });
   }
 
   getAssignedRequestTemplate() {
     this.projectService.getEmailTemplate(this.active_template).subscribe((res: any) => {
-      this.logger.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE res ', res)
+      console.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE res ', res)
       if (res && res.template) {
         this.emailTemplate = res.template;
         if (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")) {
@@ -142,9 +142,9 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
         }
       }
     }, (error) => {
-      this.logger.error('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE error ', error);
+      console.error('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE error ', error);
     }, () => {
-      this.logger.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE  * COMPLETE *');
+      console.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE  * COMPLETE *');
 
     });
   }
@@ -159,7 +159,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   getTranslationsAndSetIframePlaceholder() {
     this.translate.get('ProjectEditPage.SeeThePreviewOfTheEmail')
       .subscribe((text: string) => {
-        this.logger.log('[NOTIFICATION-EMAIL] - GET TRANSLATION - text ', text);
+        console.log('[NOTIFICATION-EMAIL] - GET TRANSLATION - text ', text);
         this.iframePlaceholderText = text;
       });
   }
@@ -181,9 +181,9 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   }
 
   selectedTemplate(tmplt) {
-    this.logger.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE - SELECTED TEMPALTE ', tmplt)
+    console.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE - SELECTED TEMPALTE ', tmplt)
     this.active_template = tmplt
-    this.logger.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE - SELECTED TEMPALTE - ACTIVE TEMPLATE ', this.active_template)
+    console.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE - SELECTED TEMPALTE - ACTIVE TEMPLATE ', this.active_template)
     this.getProjectById(this.projectId);
     // (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")).srcdoc = this.iFrame_placeholder;
   }
@@ -200,7 +200,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   }
 
   onChangeEmailTempalte(event) {
-    this.logger.log('[NOTIFICATION-EMAIL] - SAVE EMAIL TEMPLATE onChangeEmailTempalte ', this.emailTemplate);
+    console.log('[NOTIFICATION-EMAIL] - SAVE EMAIL TEMPLATE onChangeEmailTempalte ', this.emailTemplate);
     (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")).srcdoc = this.emailTemplate
   }
 
@@ -208,17 +208,17 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
     const save_email_template_btn = <HTMLElement>document.querySelector('.save_email_template');
     save_email_template_btn.blur();
 
-    this.logger.log('[NOTIFICATION-EMAIL] - SAVE EMAIL TEMPLATE emailTemplate ', this.emailTemplate)
+    console.log('[NOTIFICATION-EMAIL] - SAVE EMAIL TEMPLATE emailTemplate ', this.emailTemplate)
     this.projectService.updateEmailTempalte(this.active_template, this.emailTemplate)
 
       .subscribe((res: any) => {
 
-        this.logger.log('[NOTIFICATION-EMAIL] - SAVE EMAIL TEMPLATE res ', res)
+        console.log('[NOTIFICATION-EMAIL] - SAVE EMAIL TEMPLATE res ', res)
       }, (error) => {
-        this.logger.error('[NOTIFICATION-EMAIL] - SAVE EMAIL TEMPLATE error ', error);
+        console.error('[NOTIFICATION-EMAIL] - SAVE EMAIL TEMPLATE error ', error);
         this.notify.showWidgetStyleUpdateNotification(this.anErrorHasOccurredMsg, 4, 'report_problem');
       }, () => {
-        this.logger.log('[NOTIFICATION-EMAIL] - SAVE EMAIL TEMPLATE * COMPLETE *');
+        console.log('[NOTIFICATION-EMAIL] - SAVE EMAIL TEMPLATE * COMPLETE *');
         this.notify.showWidgetStyleUpdateNotification(this.emailTemplateUpdatedSuccessfullyMsg, 2, 'done');
       });
   }
