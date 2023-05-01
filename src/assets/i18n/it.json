@@ -2001,6 +2001,8 @@
     "newMessage": "Nuovo messaggio",
     "ticket": "Ticket",
     "sendTranscript": "Invia chat transcript",
+    "emailDirect": "E-mail diretta",
+    "newMessageFollower":"Email inviata al follower di un TICKET",
     "ResetToDefaults": "Ripristina predefiniti",
     "ThisActionIsNotReversible": "Questa azione non è reversibile. Ripristinerà il trigger alle impostazioni originali rimuovendo le modifiche apportate.",
     "SendTo": "Invia a",

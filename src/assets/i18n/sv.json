@@ -2001,6 +2001,8 @@
     "newMessage": "Nytt meddelande",
     "ticket": "Biljett",
     "sendTranscript": "Skicka chattutskrift",
+    "emailDirect": "Direkt e-post",
+    "newMessageFollower":"E-post skickat till TICKET-följare",
     "ResetToDefaults": "Återställ till standardinställningar",
     "ThisActionIsNotReversible": "Denna åtgärd är inte reversibel. Det kommer att återställa utlösaren till dess ursprungliga inställningar genom att ta bort alla ändringar som gjorts.",
     "SendTo": "Skicka till",

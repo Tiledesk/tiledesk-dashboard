@@ -2001,6 +2001,8 @@
     "newMessage": "Nouveau message",
     "ticket": "Ticket",
     "sendTranscript": "Envoyer la transcription du chat",
+    "emailDirect": "E-mail direct",
+    "newMessageFollower":"E-mail envoyé à l'abonné TICKET",
     "ResetToDefaults": "Réinitialiser les paramètres par défaut",
     "ThisActionIsNotReversible": "Cette action n'est pas réversible. Il restaurera le déclencheur à ses paramètres d'origine en supprimant toutes les modifications apportées.",
     "SendTo": "Envoyer à",

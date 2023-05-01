@@ -2001,6 +2001,8 @@
     "newMessage": "Yeni Mesaj",
     "ticket": "Bilet",
     "sendTranscript": "Sohbet dökümü gönder",
+    "emailDirect": "Doğrudan e-posta",
+    "newMessageFollower":"TICKET takipçisine gönderilen e-posta",
     "ResetToDefaults": "Varsayılanlara dön",
     "ThisActionIsNotReversible": "Bu eylem geri alınamaz. Yapılan değişiklikleri kaldırarak tetikleyiciyi orijinal ayarlarına geri yükleyecektir.",
     "SendTo": "Gönderildi",

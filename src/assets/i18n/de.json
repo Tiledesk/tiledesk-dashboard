@@ -2001,6 +2001,8 @@
 	"newMessage": "Neue Nachricht",
 	"ticket": "Fahrkarte",
 	"sendTranscript": "Chat-Transkript senden",
+	"emailDirect": "Direkte E-Mail",
+	"newMessageFollower":"E-Mail an TICKET-Follower gesendet",
 	"ResetToDefaults": "Voreinstellung",
 	"ThisActionIsNotReversible": "Diese Aktion ist nicht umkehrbar. Der Trigger wird auf seine ursprünglichen Einstellungen zurückgesetzt, indem alle vorgenommenen Änderungen entfernt werden.",
 	"SendTo": "Senden an",
