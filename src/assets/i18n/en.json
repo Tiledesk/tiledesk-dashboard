@@ -2001,7 +2001,7 @@
     "newMessage": "New Message",
     "ticket": "Ticket",
     "sendTranscript": "Send chat transcript",
-    "emailDirect": "Direct email",
+    "emailDirect": "Direct email (sent when visitor is offline)",
     "newMessageFollower":"Email sent to ticket follower",
     "ResetToDefaults": "Reset to defaults",
     "ThisActionIsNotReversible": "This action is not reversible. It will restore the trigger to its original settings by removing any changes made.",
