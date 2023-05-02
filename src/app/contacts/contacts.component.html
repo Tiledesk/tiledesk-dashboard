@@ -67,10 +67,10 @@
                           style="color:grey; font-size: 18px;"></i>
                       </button>
                     </span>
-                    <!-- (keyup.enter)="search()"  (focus)="onFocusSearchField()" {{ 'SearchYourContacts' | translate }} placeholder=" {{fullTextSearchPlaholder}}" -->
+                    <!-- (ngModelChange)="onChangeFullText($event)" (keyup.enter)="search()"  (focus)="onFocusSearchField()" {{ 'SearchYourContacts' | translate }} placeholder=" {{fullTextSearchPlaholder}}" -->
                     <div class="search_field_wrap">
                       <input (keyup.enter)="search()" id="search_field" name="fullText"
-                        (focus)="onfocusFullTextSearchField($event)" [(ngModel)]="fullText" autocomplete="off"
+                        (focus)="onfocusFullTextSearchField($event)" [(ngModel)]="fullText"  autocomplete="off"
                         class="search-field"
                         [placeholder]="hasClickedTrashed === false ? searchInYourContactsPlaceholder : searchInTrashPlaceholder">
                     </div>
@@ -107,7 +107,7 @@
                                 style="margin-top:2px;border-radius:5px!important" name="contactEmail"
                                 autocomplete="off" [(ngModel)]="selectedContactEmail"
                                 placeholder="{{ 'SearchByEmail' | translate }}"> -->
-                              <label class="col-sm-12 label-7695a5">
+                              <label class="col-sm-12 label-7695a5" style="margin-top: 2px;">
                                 {{ 'SearchByEmail' | translate }}
                               </label>
 
@@ -254,11 +254,8 @@
                 <div class="lead-text-wpr">
                   {{selectedContactTAG }}
                 </div>
-
               </div>
             </div>
-
-
           </div>
         </ng-container>
 
@@ -314,10 +311,10 @@
             </div>
           </div>
 
-          <!-- 
-    // -------------------------------------------------------
-    // Contacts list
-    // ------------------------------------------------------- -->
+
+          <!-- ------------------------------------------------------- -->
+          <!-- Contacts list -->
+          <!-- ------------------------------------------------------- -->
           <div id="contacts-content">
             <div class="row">
               <div class="col-xs-12">
@@ -628,13 +625,13 @@
                             </button>
 
                             <!-- EDIT CONTACT -->
-                            <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
+                            <!-- <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
                               (click)='goToEditContact(contact?._id)'>
                               <i class="material-icons">edit</i>
                               <span class="tooltiptext-custom" style="text-transform:none">
                                 {{ 'EditContact' | translate }}
                               </span>
-                            </button>
+                            </button> -->
 
                             <!-- DELETE CONTACT -->
                             <button type="button" class="btn btn-danger btn-simple btn-xs tooltipx"

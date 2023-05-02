@@ -116,6 +116,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   tagsArray = [];
   emailArray = [];
   HAS_SEARCHED: boolean = false
+  fullTextIsAValidEmail: boolean = false;
   constructor(
     private contactsService: ContactsService,
     private router: Router,
@@ -427,6 +428,17 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getContacts()
   }
 
+  validateEmail(appSumoActivationEmail) {
+    var validateEmailRegex = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/
+    if (appSumoActivationEmail.match(validateEmailRegex)) {
+      console.log('Valid email address!')
+      return true;
+    } else {
+      console.log('Invalid email address!')
+      return false;
+    }
+  }
+
   search() {
     this.HAS_SEARCHED = true
     // ---------------------------------------------------------------------
@@ -457,21 +469,19 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.fullText) {
 
-      this.logger.log('[CONTACTS-COMP] - SEARCH FULLTEXT CONTAINS email: ', this.fullText.includes('email:'));
-      // this.logger.log('!!!! CONTACTS - SEARCH FULLTEXT CONTAINS index of email: ', this.fullText.substring(0, this.fullText.indexOf('email:')));
+      this.fullTextIsAValidEmail = this.validateEmail(this.fullText)
+      console.log('[CONTACTS-COMP] - FULL TEXT IS A VALID EMAIL: ',  this.fullTextIsAValidEmail);
+      
 
-      // if (this.fullText.includes('email:') === true) {
+      if ( this.fullTextIsAValidEmail === false) {
+        this.fullTextValue = this.fullText;
+      } else {
+        this.selectedContactEmail = this.fullText;
+        this.fullTextValue = '';
+        this.fullText = undefined 
+      }
 
-      //   const cleanedFullText = this.fullText.substring(0, this.fullText.indexOf('email:'))
-      //   this.logger.log('!!!! CONTACTS - FULLTEXT - cleanedFullText', cleanedFullText);
-      //   this.fullText = cleanedFullText;
-      // }
-
-
-      this.fullTextValue = this.fullText;
-
-
-      this.logger.log('[CONTACTS-COMP] - SEARCH FOR FULL TEXT ', this.fullTextValue);
+      console.log('[CONTACTS-COMP] - SEARCH FOR FULL TEXT ', this.fullTextValue);
     } else {
       this.logger.log('[CONTACTS-COMP] - SEARCH FOR FULL TEXT ', this.fullText);
       this.fullTextValue = ''
