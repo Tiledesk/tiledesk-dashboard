@@ -139,7 +139,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getProjectUserRole();
     this.getProjectPlan();
     this.selectedContactTAG
-    console.log('oninit this.selectedContactTAG', this.selectedContactTAG)
+    // console.log('oninit this.selectedContactTAG', this.selectedContactTAG)
 
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
 
@@ -431,10 +431,10 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   validateEmail(appSumoActivationEmail) {
     var validateEmailRegex = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/
     if (appSumoActivationEmail.match(validateEmailRegex)) {
-      console.log('Valid email address!')
+      // console.log('Valid email address!')
       return true;
     } else {
-      console.log('Invalid email address!')
+      // console.log('Invalid email address!')
       return false;
     }
   }
@@ -470,7 +470,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.fullText) {
 
       this.fullTextIsAValidEmail = this.validateEmail(this.fullText)
-      console.log('[CONTACTS-COMP] - FULL TEXT IS A VALID EMAIL: ',  this.fullTextIsAValidEmail);
+      // console.log('[CONTACTS-COMP] - FULL TEXT IS A VALID EMAIL: ',  this.fullTextIsAValidEmail);
       
 
       if ( this.fullTextIsAValidEmail === false) {
@@ -481,7 +481,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.fullText = undefined 
       }
 
-      console.log('[CONTACTS-COMP] - SEARCH FOR FULL TEXT ', this.fullTextValue);
     } else {
       this.logger.log('[CONTACTS-COMP] - SEARCH FOR FULL TEXT ', this.fullText);
       this.fullTextValue = ''
@@ -502,15 +501,15 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.selectedContactTAG) {
       this.selectedContactTAGValue = this.selectedContactTAG;
-      console.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactTAGValue ', this.selectedContactTAGValue);
+      this.logger.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactTAGValue ', this.selectedContactTAGValue);
     } else {
 
       this.selectedContactTAGValue = ''
-      console.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactTAGValue ', this.selectedContactTAGValue);
+      this.logger.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactTAGValue ', this.selectedContactTAGValue);
     }
 
     this.queryString = 'full_text=' + this.fullTextValue + '&email=' + this.selectedContactEmailValue + '&tags=' + this.selectedContactTAGValue
-    console.log('[CONTACTS-COMP] - SEARCH - QUERY STRING ', this.queryString);
+    this.logger.log('[CONTACTS-COMP] - SEARCH - QUERY STRING ', this.queryString);
 
     this.getContacts();
 
@@ -566,7 +565,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   clearFullText() {
     this.HAS_SEARCHED = false;
     const clearSearchBtnEle = <HTMLInputElement>document.querySelector('#clear-search-btn');
-    console.log('[CONTACTS-COMP] clearSearchBtnEle', clearSearchBtnEle)
+    this.logger.log('[CONTACTS-COMP] clearSearchBtnEle', clearSearchBtnEle)
     if (clearSearchBtnEle) {
       clearSearchBtnEle.blur()
     }
@@ -593,7 +592,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.queryString = '';
-    console.log('[CONTACTS-COMP] - CLEAR SEARCH - QUERY STRING ', this.queryString);
+    this.logger.log('[CONTACTS-COMP] - CLEAR SEARCH - QUERY STRING ', this.queryString);
 
     this.getContacts();
   }
@@ -601,7 +600,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   clearSearch() {
     // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED
     const clearSearchBtn = <HTMLElement>document.querySelector('.clearsearchbtn');
-    console.log('[CONTACTS-COMP] - CLEAR SEARCH BTN', clearSearchBtn)
+    this.logger.log('[CONTACTS-COMP] - CLEAR SEARCH BTN', clearSearchBtn)
     clearSearchBtn.blur()
 
     this.pageNo = 0
@@ -616,66 +615,53 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   // @ Tags - on change tags get selected tag name
   // ------------------------------------------------------------------------------
   tagNameSelected() {
-    console.log('[CONTACTS-COMP] - selectedContactTAG ', this.selectedContactTAG);
+    this.logger.log('[CONTACTS-COMP] - selectedContactTAG ', this.selectedContactTAG);
   }
 
   emailSelected () {
-    console.log('[CONTACTS-COMP] - selectedContactEmail ', this.selectedContactEmail);
+    this.logger.log('[CONTACTS-COMP] - selectedContactEmail ', this.selectedContactEmail);
   }
 
   getAllContacts() {
     this.contactsService.getAllLeadsActiveWithLimit(10000).subscribe((res: any) => {
 
       const allContacts = res['leads'];
-
+      this.logger.log('[CONTACTS-COMP] - GET ALL LEADS - LEADS  ', allContacts);
       allContacts.forEach(contact => {
         // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
         if (contact && contact.tags.length > 0) {
-          console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags ', contact.tags);
+          // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags ', contact.tags);
           contact.tags.forEach((tag: string) => {
-            console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
+            // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
             let index = this.tagsArray.findIndex(x => x.name == tag)
-            console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag index', index);
+            // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag index', index);
             if (index === -1) {
               this.tagsArray.push({ 'name': tag });
             } else {
-              console.log("object already exists ")
+              // console.log("object already exists ")
             }
           });
         }
-        console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > TAG ARRAY ', this.tagsArray);
+        // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > TAG ARRAY ', this.tagsArray);
         this.tagsArray = this.tagsArray.slice(0)
 
 
         // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
         if (contact && contact.email) {
-          console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > email ', contact.email);
+          // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > email ', contact.email);
           this.emailArray.push({ 'name': contact.email });
-          // contact.tags.forEach((tag: string) => {
-          //   console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
-          //   let index = this.tagsArray.findIndex(x => x.name == tag)
-          //   console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag index', index);
-          //   if (index === -1) {
-          //     this.tagsArray.push({ 'name': tag });
-          //   } else {
-          //     console.log("object already exists ")
-          //   }
         }
 
-        console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > EMAIL ARRAY ', this.emailArray);
-        this.emailArray = this.emailArray.slice(0)
-
-
+        // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > EMAIL ARRAY ', this.emailArray);
+        this.emailArray = this.emailArray.slice(0);
       });
 
-
-
-      console.log('[CONTACTS-COMP] - GET ALL LEADS - RES  ', allContacts);
+      // console.log('[CONTACTS-COMP] - GET ALL LEADS - RES  ', allContacts);
     }, (error) => {
-      console.error('[CONTACTS-COMP] - GET ALL LEADS - ERROR  ', error);
+      this.logger.error('[CONTACTS-COMP] - GET ALL LEADS - ERROR  ', error);
 
     }, () => {
-      console.log('[CONTACTS-COMP] - GET ALL LEADS * COMPLETE *');
+      this.logger.log('[CONTACTS-COMP] - GET ALL LEADS * COMPLETE *');
 
     });
   }
@@ -691,31 +677,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[CONTACTS-COMP] - GET LEADS RESPONSE ', leads_object);
 
       this.contacts = leads_object['leads'];
-      console.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
-      // if (this.contacts && this.contacts['tags'].length > 0) {
-
-      // this.contacts.forEach(contact => {
-      //   // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
-      //   if (contact && contact.tags.length > 0) {
-      //     console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags ', contact.tags);
-      //     contact.tags.forEach((tag: string) => {
-      //       console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
-      //       let index = this.tagsArray.findIndex(x => x.name == tag)
-      //       console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag index', index);
-      //       if (index === -1) {
-      //         this.tagsArray.push({ 'name': tag });
-      //       } else {
-      //         console.log("object already exists ")
-      //       }
-      //     });
-      //   }
-      //   console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > TAG ARRAY ', this.tagsArray);
-      //   this.tagsArray = this.tagsArray.slice(0)
-      //   // if (!arr.includes(value1)) {
-      //   //   arr.push(value1);
-      //   // }
-      // });
-      // }
+      this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
+ 
 
       const contactsCount = leads_object['count'];
       this.logger.log('[CONTACTS-COMP] - CONTACTS COUNT ', contactsCount);
@@ -1270,7 +1233,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     // const url = this.CHAT_BASE_URL + '?' + 'recipient=' + contact._id + '&recipientFullname=' + contact.fullname;
-    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + contact._id + '/' + contact.fullname + '/new'
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + contact._id + '/' + contact.fullname + '/active'
     this.logger.log("[CONTACTS-COMP] CHAT WITH AGENT -> CHAT URL ", url);
     window.open(url, '_blank');
   }

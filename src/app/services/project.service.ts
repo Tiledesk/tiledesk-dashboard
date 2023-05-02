@@ -143,7 +143,7 @@ export class ProjectService {
    * @param id_user
    */
   public createProject(name: string, calledBy) {
-    console.log('[PROJECT-SERV] CREATE calledBy ', calledBy);
+    this.logger.log('[PROJECT-SERV] CREATE calledBy ', calledBy);
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -470,8 +470,8 @@ export class ProjectService {
     };
 
     let url = this.PROJECTS_URL + this.projectID + '/'
-    console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - PUT URL ', url);
-    console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - temaplateName ', temaplateName);
+    this.logger.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - PUT URL ', url);
+    this.logger.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - temaplateName ', temaplateName);
     // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
 
     // const body = { "settings.email.templates": template }

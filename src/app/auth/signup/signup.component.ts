@@ -335,13 +335,13 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   signupWithGoogle() {
     this.auth.authWithGoogle().subscribe((res: any) => {
-      console.log('[SIGN-UP] - GOOGLE AUTH - RES  ', res);
+      this.logger.log('[SIGN-UP] - GOOGLE AUTH - RES  ', res);
 
     }, (error) => {
-      console.error('[SIGN-UP] - GOOGLE AUTH - ERROR  ', error);
+      this.logger.error('[SIGN-UP] - GOOGLE AUTH - ERROR  ', error);
 
     }, () => {
-      console.log('[SIGN-UP] - GOOGLE AUTH * COMPLETE *');
+      this.logger.log('[SIGN-UP] - GOOGLE AUTH * COMPLETE *');
 
     });
   }

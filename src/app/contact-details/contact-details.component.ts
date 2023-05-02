@@ -322,7 +322,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   getRequesterIdParam_AndThenGetRequestsAndContactById() {
     this.requester_id = this.route.snapshot.params['requesterid'];
-    console.log('[CONTACTS-DTLS] - GET REQUESTER ID PARAM & THEN GET REQUESTS AND CONTACT BY ID -> REQUESTER ID ', this.requester_id);
+    this.logger.log('[CONTACTS-DTLS] - GET REQUESTER ID PARAM & THEN GET REQUESTS AND CONTACT BY ID -> REQUESTER ID ', this.requester_id);
 
     if (this.requester_id) {
       this.getContactById();
@@ -475,16 +475,16 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   // When the user select a tag from the combo-box 
   addTag(tag) {
-    console.log('[CONTACTS-DTLS] - ADD TAG > tag: ', tag);
+    this.logger.log('[CONTACTS-DTLS] - ADD TAG > tag: ', tag);
     this.contactTags.push(tag.tag)
     var index = this.contactTempTags.indexOf(tag);
     if (index !== -1) {
       this.contactTempTags.splice(index, 1);
     }
     this.contactTempTags = this.contactTempTags.slice(0)
-    console.log('[CONTACTS-DTLS] - ADD TAG > contactTags: ', this.contactTags);
+    this.logger.log('[CONTACTS-DTLS] - ADD TAG > contactTags: ', this.contactTags);
     
-    console.log('[CONTACTS-DTLS] - ADD TAG > contactTempTags: ', this.contactTempTags);
+    this.logger.log('[CONTACTS-DTLS] - ADD TAG > contactTempTags: ', this.contactTempTags);
 
     setTimeout(() => {
       this.tag = null;
@@ -494,23 +494,23 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   createNewTag = (newTag: string) => {
     let self = this;
-    console.log("Create New TAG Clicked : " + newTag)
+    self.logger.log("Create New TAG Clicked : " + newTag)
     let newTagTrimmed = newTag.trim()
     self.contactTags.push(newTagTrimmed)
-    console.log("Create New TAG Clicked - leads tag: ", self.contactTags)
+    self.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
     self.updateContactTag(self.requester_id, self.contactTags)
   }
 
   removeTag(tag: string) {
     // this.contactTempTags = []
-    console.log('[CONTACTS-DTLS] removeTag tag', tag)
+    this.logger.log('[CONTACTS-DTLS] removeTag tag', tag)
     var index = this.contactTags.indexOf(tag);
     if (index !== -1) {
       this.contactTags.splice(index, 1);
       this.contactTempTags.push({ tag: tag })
       this.contactTempTags = this.contactTempTags.slice(0)
-      console.log('[CONTACTS-DTLS] removeTag contactTempTags', this.contactTempTags)
-      console.log('[CONTACTS-DTLS] removeTag contactTags', this.contactTags)
+     this.logger.log('[CONTACTS-DTLS] removeTag contactTempTags', this.contactTempTags)
+     this.logger.log('[CONTACTS-DTLS] removeTag contactTags', this.contactTags)
 
       this.updateContactTag(this.requester_id, this.contactTags)
     }
@@ -520,7 +520,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   updateContactTag(requester_id: string, tags: any) {
     this.contactsService.updateLeadTag(requester_id, tags)
       .subscribe((lead: any) => {
-        console.log('[CONTACTS-DTLS] - ADD CONTACT TAGS  lead ', lead);
+        this.logger.log('[CONTACTS-DTLS] - ADD CONTACT TAGS  lead ', lead);
         if (lead) {
           this.contactTags = lead.tags
           this.getTagContainerElementHeight()
@@ -534,11 +534,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   getTagContainerElementHeight() {
     const tagContainerElement = <HTMLElement>document.querySelector('.lead-tags--container');
-    console.log('tagContainerElement ', tagContainerElement)
+    this.logger.log('tagContainerElement ', tagContainerElement)
     if (tagContainerElement) {
       this.tagContainerElementHeight = tagContainerElement.offsetHeight + 'px'
-      console.log('[CONTACTS-DTLS] tagContainerElement.offsetHeight tagContainerElementHeight ', this.tagContainerElementHeight)
-      console.log('[CONTACTS-DTLS] tagContainerElement.clientHeight ', tagContainerElement.clientHeight)
+      this.logger.log('[CONTACTS-DTLS] tagContainerElement.offsetHeight tagContainerElementHeight ', this.tagContainerElementHeight)
+      this.logger.log('[CONTACTS-DTLS] tagContainerElement.clientHeight ', tagContainerElement.clientHeight)
 
       // this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
       // this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
@@ -550,12 +550,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       .subscribe((lead: any) => {
 
         if (lead) {
-          console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
+          this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
           this.contact_details = lead;
 
           if (this.contact_details && this.contact_details.lead_id) {
             this.lead_id = this.contact_details.lead_id;
-
             this.getProjectUserById(this.lead_id)
 
             this.logger.log('[CONTACTS-DTLS] this.lead_id', this.lead_id)

@@ -2436,35 +2436,35 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ---------------------------------------------------------------------------------------
   toggleAddTagInputAndGetTags() {
     const elem_add_tag_btn = <HTMLElement>document.querySelector('.add_tag_btn');
-    console.log('% Ws-REQUESTS-Msgs - elem_add_tag_btn ', elem_add_tag_btn);
+    this.logger.log('% Ws-REQUESTS-Msgs - elem_add_tag_btn ', elem_add_tag_btn);
     elem_add_tag_btn.blur();
     this.getTag();
     this.diplayAddTagInput = !this.diplayAddTagInput
-    console.log('[WS-REQUESTS-MSGS] - toggleAddTagInputAndGetTags - DISPLAY TAG INPUT : ', this.diplayAddTagInput);
+    this.logger.log('[WS-REQUESTS-MSGS] - toggleAddTagInputAndGetTags - DISPLAY TAG INPUT : ', this.diplayAddTagInput);
   }
 
   addTag() {
-    console.log('[WS-REQUESTS-MSGS] - ADD TAG - this.tag TO ADD: ', this.tag);
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - this.tag TO ADD: ', this.tag);
     const foundtag = this.tagsList.filter((obj: any) => {
       return obj._id === this.tag;
     });
     let tagObject = {}
-    console.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
     if (foundtag.length > 0) {
       tagObject = { tag: foundtag[0].tag, color: foundtag[0].color }
     }
-    console.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject: ', tagObject);
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject: ', tagObject);
     setTimeout(() => {
       this.tag = null;
     })
     const tagObjectsize = Object.keys(tagObject).length
-    console.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
     if (tagObjectsize > 0) {
       this.tagsArray.push(tagObject);
       // this.getTag()
     }
 
-    console.log('[WS-REQUESTS-MSGS] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
     // const firstTagObjectsize = Object.keys(this.tagsArray[0]).length
     // console.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG firstTagObjectsize: ', firstTagObjectsize);
     // console.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG this.tagsArray.length: ', this.tagsArray.length);

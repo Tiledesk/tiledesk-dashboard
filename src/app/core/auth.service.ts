@@ -1272,7 +1272,7 @@ export class AuthService {
   public authWithGoogle(): Observable<[any]> {
   
     const url = this.SERVER_BASE_PATH + "auth/google"
-    console.log('authWithGoogle url' , url)
+    // console.log('authWithGoogle url' , url)
 
     // 'Authorization': this.TOKEN
     const httpOptions = {
