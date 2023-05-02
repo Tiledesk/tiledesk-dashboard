@@ -124,7 +124,8 @@ $f21blue: #039be5;
 .nav-email-tmplt-li {
   height: 40px;
   border-radius: 0 20px 20px 0;
-  margin-right: 16px;
+  // margin-right: 16px;
+  margin-right: 0px;
   // line-height: 39px;
   font-weight: 400;
   cursor: pointer;
@@ -227,4 +228,16 @@ $f21blue: #039be5;
 
 .hide-stretchspinner {
   display: none;
+}
+
+.notification-email-left-sidebar-menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+  margin-left: -10px;
+  margin-right: 6px;
 }
