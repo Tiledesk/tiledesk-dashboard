@@ -321,9 +321,9 @@ import { UpgradePlanModalComponent } from './components/modals/upgrade-plan-moda
 import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
 import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
-
-
-
+import { ContactCustomPropertiesComponent } from './components/modals/contact-custom-properties/contact-custom-properties.component';
+import { ContactInfoComponent } from './components/shared/contact-info/contact-info.component';
+import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
 
 
 
@@ -573,7 +573,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     UpgradePlanModalComponent,
     WsrequestsStaticComponent,
     EmailTicketingStaticComponent,
-    ActivateAppsumoProductComponent
+    ActivateAppsumoProductComponent,
+    ContactCustomPropertiesComponent,
+    ContactInfoComponent,
+    CreateProjectGsComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

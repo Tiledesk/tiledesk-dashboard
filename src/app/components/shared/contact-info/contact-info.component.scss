@@ -1,0 +1,163 @@
+.tab0-card1 {
+    min-height: 225px;
+}
+
+.tab0-card1-ticket {
+    min-height: 191px !important;
+}
+
+.ul-wpr {
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    box-shadow: rgb(0 27 71 / 8%) 0px 3px 8px;
+    padding: 10px 0px 10px;
+    margin-top: 12px !important;
+}
+
+.ul-wpr ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.ul-wpr li {
+    margin-bottom: 4px;
+    transition: all 0.3s ease 0s;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.ul-wpr li .contact-row {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 30px;
+}
+
+.ul-wpr li .contact-row > span {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.ul-wpr li .contact-row svg {
+    fill: rgb(135, 150, 175);
+    margin-right: 12px;
+    transition: fill 0.2s ease-in-out 0s;
+}
+
+// .ul-wpr li .form-control {
+//     background-image: none !important;
+// }
+.ul-wpr li input {
+    flex: 1 0 172px;
+    display: inline-block;
+    margin: 0px;
+    padding-right: 12px;
+    padding-left: 0px;
+    border-radius: 0px;
+    border-width: 0px 0px 2px;
+    border-top-style: initial;
+    border-right-style: initial;
+    border-left-style: initial;
+    border-top-color: initial;
+    border-right-color: initial;
+    border-left-color: initial;
+    border-image: initial;
+    border-bottom-style: solid;
+    border-bottom-color: transparent;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 200px;
+    background-image: none !important;
+    cursor: pointer;
+}
+
+.ul-wpr li input:focus {
+    background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d2, #d2d2d2) !important;
+    cursor: text;
+}
+
+.ul-wpr li .action-btns {
+    opacity: 0;
+    height: 30px;
+    width: 30px;
+    margin-left: auto;
+    transition: opacity 0.2s ease-in-out 0s;
+}
+
+.ul-wpr li .action-btns button {
+    background: transparent;
+    outline: none;
+    border: 0px;
+    cursor: pointer;
+    color: rgb(100, 116, 145);
+    float: right;
+    transition: all 0.2s ease-in-out 0s;
+    padding: 5px;
+}
+.ul-wpr li:hover .contact-row {
+    border-radius: 4px;
+    background-color: rgb(245, 247, 249);
+}
+.ul-wpr li:hover .action-btns {
+    opacity: 1;
+}
+
+.ul-wpr li .action-btns button:hover svg {
+    fill: rgb(5, 102, 255);
+}
+
+.ul-wpr li .contact-row:hover span svg {
+    fill: rgb(5, 102, 255);
+}
+
+.ul-wpr li #contact-row-source-page:hover div input {
+    color: rgb(5, 102, 255);
+    text-decoration: underline;
+}
+
+.ul-wpr-chat {
+    margin-right: 8px !important;
+    margin-left: 8px !important;
+}
+.ul-wpr-chat li {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+
+.project-name-icon {
+    fill: #8796af;
+}
+
+.contact-row:hover > span > .project-name-icon {
+    fill: #0566ff;
+}
+
+.project-name-icon:hover {
+    fill: #0566ff;
+}
+
+.invalid--email {
+    color: #f44336;
+    position: relative;
+    top: -8px;
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 34px;
+    margin-top: 5px;
+}
+
+::ng-deep .custom-mat-tooltip {
+    background-color: #2d323e !important;
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    white-space: pre-line !important;
+    text-align: center !important;
+    line-height: 17px !important;
+}

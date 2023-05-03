@@ -414,7 +414,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
       this.logger.log('[HOME] - Find Current Project Among All project trialEndDate', trialStarDate)
 
-      const trialEndDate = moment(new Date(projectCreatedAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
+      const trialEndDate = moment(new Date(projectCreatedAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
       this.logger.log('[HOME] - Find Current Project Among All project trialEndDate', trialEndDate)
 
       const currentTime = moment();
@@ -443,7 +443,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
                   "userId": this.user._id,
                   "trial_start_date": trialStarDate,
                   "trial_end_date": trialEndDate,
-                  "trial_plan_name": "Pro (trial) "
+                  "trial_plan_name": "Scale (trial) "
                 }, {
                   "context": {
                     "groupId": this.current_selected_prjct.id_project._id

@@ -281,6 +281,47 @@ export class ContactsService {
       .put(url, JSON.stringify(body), httpOptions)
   }
 
+
+   // ---------------------------------------------
+  // @ Update lead Company
+  // ---------------------------------------------
+  public updateLeadCompany(leadid: string, leadcompany: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      })
+    };
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + leadid;
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD - URL ', url);
+    const body = {
+      'company': leadcompany
+    };
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
+    return this.httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+  }
+
+     // ---------------------------------------------
+  // @ Update lead Phone
+  // ---------------------------------------------
+  public updateLeadPhone(leadid: string, leadphone: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      })
+    };
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + leadid;
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD - URL ', url);
+    const body = {
+      'phone': leadphone
+    };
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
+    return this.httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+  }
+
   // ---------------------------------------------
   // @ Update lead
   // ---------------------------------------------

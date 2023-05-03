@@ -550,7 +550,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       .subscribe((lead: any) => {
 
         if (lead) {
-          this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
+          console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
           this.contact_details = lead;
 
           if (this.contact_details && this.contact_details.lead_id) {

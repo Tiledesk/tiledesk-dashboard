@@ -389,6 +389,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   displayChatRatings: boolean = true;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   DASHBORD_BASE_URL: string;
+  contact_details: any;
   /**
    * Constructor
    * @param router 
@@ -1099,7 +1100,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   ngOnDestroy() {
-    this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
+    console.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 
@@ -1883,7 +1884,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // ---------------------------------------------------------
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
-            this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
+            this.contact_details = this.request.lead;
+            console.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
+            console.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
             // console.log('this.request.lead ' , this.request.lead)
             if (this.request.lead && this.request.lead.email) {
               this.logger.log('this.request.lead email ', this.request.lead.email)
