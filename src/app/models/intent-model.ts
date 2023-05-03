@@ -225,11 +225,11 @@ export class Attributes {
         }
     }
 }
+
 export class Command {
     type: string;
     message?: Message;
     time?: number;
-    filter?: Expression;
     constructor(type: string) {
         this.type = type;
     }
@@ -286,19 +286,19 @@ export class Message {
     // time?: number;
     attributes?: MessageAttributes;
     metadata?: Metadata;
-    filter?: Expression = new Expression();
-    constructor(type: string, text: string, filter?: Expression) {
+    _tdJSONCondition?: Expression = new Expression();
+    constructor(type: string, text: string, _tdJSONCondition?: Expression) {
         this.type = type;
         this.text = text;
-        if(filter)
-            this.filter = filter
+        if(_tdJSONCondition)
+            this._tdJSONCondition = _tdJSONCondition
     }
 }
 
 export class MessageWithWait extends Message {
     time?: number = 500;
-    constructor(type: string, text: string, time: number, filter?: Expression) {
-        super(type,text, filter);
+    constructor(type: string, text: string, time: number, _tdJSONCondition?: Expression) {
+        super(type,text, _tdJSONCondition);
         this.time = time?time:500;
     }
 }
