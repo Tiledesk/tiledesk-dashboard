@@ -322,7 +322,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   getRequesterIdParam_AndThenGetRequestsAndContactById() {
     this.requester_id = this.route.snapshot.params['requesterid'];
-    this.logger.log('[CONTACTS-DTLS] - GET REQUESTER ID PARAM & THEN GET REQUESTS AND CONTACT BY ID -> REQUESTER ID ', this.requester_id);
+    console.log('[CONTACTS-DTLS] - GET REQUESTER ID PARAM & THEN GET REQUESTS AND CONTACT BY ID -> REQUESTER ID ', this.requester_id);
 
     if (this.requester_id) {
       this.getContactById();

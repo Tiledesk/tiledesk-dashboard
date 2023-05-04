@@ -6,7 +6,7 @@
     <!-- Project name only for chat-->
     <!-- ------------------------------------- -->
     <li class="project" *ngIf="CHAT_PANEL_MODE === true">
-      <div class="contact-row">
+      <div class="contact-row input-row">
         <span>
           <svg class="project-icon" fill="none" height="22" viewBox="0 0 24 24" width="22"
             xmlns="http://www.w3.org/2000/svg" style="min-width: 22px; min-height: 22px;"
@@ -30,7 +30,7 @@
     <!-- Contact email -->
     <!-- ------------------------------------- -->
     <li class="email">
-      <div class="contact-row">
+      <div class="contact-row input-row">
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
             style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
@@ -71,7 +71,7 @@
     <!-- Phone -->
     <!-- ------------------------------------- -->
     <li class="phone">
-      <div class="contact-row">
+      <div class="contact-row input-row">
         <span>
           <!-- <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" style="min-width: 22px; min-height: 22px;" fill="none"
             matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Company' | translate }}" #tooltip="matTooltip"
@@ -80,13 +80,14 @@
             <path
               d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z" />
           </svg> -->
-          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" style="min-width: 22px; min-height: 22px;" fill="none"
-          matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'PhoneNumber' | translate }}"
-          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
-          <path d="M0 0h24v24H0V0z" fill="none" />
-          <path
-            d="M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.1-.04-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.45-5.15-3.76-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z" />
-        </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
+            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
+            matTooltip="{{ 'PhoneNumber' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+            matTooltipHideDelay="100">
+            <path d="M0 0h24v24H0V0z" fill="none" />
+            <path
+              d="M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.1-.04-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.45-5.15-3.76-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z" />
+          </svg>
 
         </span>
 
@@ -115,11 +116,12 @@
     <!-- Company -->
     <!-- ------------------------------------- -->
     <li class="company">
-      <div class="contact-row">
+      <div class="contact-row input-row">
         <span>
-          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" style="min-width: 22px; min-height: 22px;" fill="none"
-            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Company' | translate }}" #tooltip="matTooltip"
-            matTooltipPosition='right' matTooltipHideDelay="100">
+          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
+            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
+            matTooltip="{{ 'Company' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+            matTooltipHideDelay="100">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
               d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z" />
@@ -371,7 +373,70 @@
         </div>
       </div>
     </li> -->
+    <!--  -->
+    <li *ngIf="isVisibleLBS === true" class="row" style="margin-top:6px">
+     
+        <div class="lead-tag-content-wpr">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 25px; height: 25px"
+            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Tags.Tags' | translate }}"
+            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+            <path
+              d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+          </svg>
+
+          <form>
+            <div class="lead-tags--container-wpr">
+              <div class="lead-tags--container">
+                <div class="lead-tag" *ngFor="let tag of contactTags" role="button">
+
+                  <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
+                  <!-- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
+                  <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
+                  <div (click)="removeTag(tag)">
+                    <div class="icon-container" style="display: inline-block;">
+                      <svg
+                        style="width: 13px; height: auto;position:absolute;margin-top: 6px; margin-left: 2px; fill:#757575"
+                        aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                        class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                        <path class="tag_icon_in_ws_msgs"
+                          d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                        </path>
+                      </svg>
+                      <span class="lead-tag-delete">
+                        <i class="material-icons" style="font-size: 16px;"> close </i>
+                      </span>
+                    </div>
+                    <span class="lead-assigned-tag">{{tag}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ng-select-tags-wpr">
+                <ng-select class="ng-select-tags" id="select-tag" style="top: -4px;" #ngSelect
+                  (change)="addTag(tag)" [clearable]="false" [(ngModel)]="tag" bindLabel="tag"
+                  [items]="contactTempTags" [clearSearchOnAdd]="true" [hideSelected]="true"
+                  placeholder="Add tag" addTagText="Create New" [addTag]="createNewTag"
+                  (keyup.enter)="ngSelect.close()" notFoundText="No tags found. Type to create a tag">
+
+                  <ng-template ng-label-tmp let-item="item">
+                    {{item.tag}}
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-index="index">
+                    {{item.tag}}
+                  </ng-template>
+                </ng-select>
+              </div>
+
+            </div>
+          </form>
+        </div>
+     
+    </li>
   </ul>
 
-  <button (click)="addInput()">ADD INPUT</button>
+
+
 </div>
