@@ -1998,6 +1998,8 @@
     "newMessage": "Yangi xabar",
     "ticket": "Chipta",
     "sendTranscript": "Suhbat transkriptini yuboring",
+    "emailDirect": "To'g'ridan-to'g'ri elektron pochta (tashrifchi oflayn bo'lganda yuboriladi)",
+    "newMessageFollower":"TICKET obunachisiga elektron pochta xabari yuborildi",
     "ResetToDefaults": "Standart sozlamalarni tiklash",
     "ThisActionIsNotReversible": "Bu harakatni qaytarib bo'lmaydi. U kiritilgan o'zgarishlarni olib tashlash orqali triggerni asl sozlamalariga qaytaradi.",
     "SendTo": "Kimga yuboring",

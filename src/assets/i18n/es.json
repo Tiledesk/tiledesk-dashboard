@@ -1998,6 +1998,8 @@
     "newMessage": "Nuevo mensaje",
     "ticket": "Ticket",
     "sendTranscript": "Enviar transcripción del chat",
+    "emailDirect": "Email directo (enviado cuando el visitante está desconectado)",
+    "newMessageFollower":"Email enviado a seguidor de TICKET",
     "ResetToDefaults": "Restablecer valores por defecto",
     "ThisActionIsNotReversible": "Esta acción no es reversible. Restaurará el activador a su configuración original eliminando cualquier cambio realizado.",
     "SendTo": "Enviar a",

@@ -101,7 +101,20 @@ export class SigninComponent implements OnInit {
     } else {
       this.EXIST_STORED_ROUTE = false
     }
-   
+  }
+
+  signinWithGoogle() {
+    this.auth.authWithGoogle()
+    // this.auth.authWithGoogle().subscribe((res: any) => {
+    //   console.log('[SIGN-IN] - GOOGLE AUTH - RES  ', res);
+
+    // }, (error) => {
+    //   console.error('[SIGN-IN] - GOOGLE AUTH - ERROR  ', error);
+
+    // }, () => {
+    //   console.log('[SIGN-IN] - GOOGLE AUTH * COMPLETE *');
+
+    // });
   }
 
   redirectIfLogged() {
@@ -333,7 +346,7 @@ export class SigninComponent implements OnInit {
           this.signin_errormsg = 'Sorry, there was an error connecting to the server'
           this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
         } else {
-         
+
 
           // this.logger.log('SIGNIN USER - POST REQUEST ERROR ', error);
           // this.logger.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);

@@ -139,7 +139,7 @@ import { CannedResponsesStaticComponent } from './static-pages/canned-responses-
 import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
 import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
-
+import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
 
 
 const routes: Routes = [
@@ -177,6 +177,7 @@ const routes: Routes = [
   { path: 'install-template/:botid/:projectid', component: InstallTemplateComponent, canActivate: [AuthGuard] },
   { path: 'install-template-np/:botid/:projectid/:langcode/:langname', component: InstallTemplateComponent, canActivate: [AuthGuard] },
   { path: 'create-project-itw/:botid', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
+  { path: 'create-project-gs', component: CreateProjectGsComponent, canActivate: [AuthGuard] }, 
 
   // **** NEW - WIZARD CREATE PROJECT ****
   // { path: 'project/create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },

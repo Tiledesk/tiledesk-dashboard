@@ -321,12 +321,7 @@ import { UpgradePlanModalComponent } from './components/modals/upgrade-plan-moda
 import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
 import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
-
-
-
-
-
-
+import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -573,7 +568,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     UpgradePlanModalComponent,
     WsrequestsStaticComponent,
     EmailTicketingStaticComponent,
-    ActivateAppsumoProductComponent
+    ActivateAppsumoProductComponent,
+    CreateProjectGsComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

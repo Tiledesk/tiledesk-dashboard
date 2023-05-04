@@ -251,7 +251,7 @@ export class ImageUploadComponent implements OnInit {
 
   checkAcceptedFile(draggedFileMimeType) {
     let isAcceptFile = false;
-    let accept_files_array = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif'];
+    let accept_files_array = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'webp'];
     try {
       const accept_file_segment = draggedFileMimeType.split('/');
       let fileType = accept_file_segment[1];

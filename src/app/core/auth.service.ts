@@ -777,6 +777,8 @@ export class AuthService {
       .put<User[]>(url, JSON.stringify(body), httpOptions)
   }
 
+
+
   // --------------------------------------------------
   // REPUBLISH AND RESET IN STORAGE THE (UPDATED) USER
   // --------------------------------------------------
@@ -1260,4 +1262,35 @@ export class AuthService {
       // alert('logout');
     }
   }
+
+  
+
+  // public authWithGoogle(): Observable<[any]> {
+  
+  //   const url = this.SERVER_BASE_PATH + "auth/google"
+  //   console.log('authWithGoogle url' , url)
+
+  //   // 'Authorization': this.TOKEN
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+        
+  //     })
+  //   };
+
+  //   return this._httpClient
+  //     .get<[any]>(url, httpOptions)
+  // }
+
+  public authWithGoogle() {
+
+    const url = this.SERVER_BASE_PATH + "auth/google"
+    window.open(url, '_self');
+
+  }
+
+
+
+
+  
 }

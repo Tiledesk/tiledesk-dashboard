@@ -327,6 +327,27 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.checkCurrentUrlAndSkipWizard();
   }
 
+
+  // signupWithGoogle() {
+  //   this.auth.authWithGoogle()
+  // }
+
+
+  signupWithGoogle() {
+    this.auth.authWithGoogle()
+    // this.auth.authWithGoogle().subscribe((res: any) => {
+    //   console.log('[SIGN-UP] - GOOGLE AUTH - RES  ', res);
+
+    // }, (error) => {
+    //   console.error('[SIGN-UP] - GOOGLE AUTH - ERROR  ', error);
+
+    // }, () => {
+    //   console.log('[SIGN-UP] - GOOGLE AUTH * COMPLETE *');
+
+    // });
+  }
+
+
   redirectIfLogged() {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {

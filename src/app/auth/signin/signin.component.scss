@@ -378,10 +378,63 @@ label {
   box-shadow: unset;
   font-family: Poppins, Roboto, Arial, sans-serif;
   border: 2px solid #8ab4f8;
-  transition: background-color .5s;
+  transition: background-color 0.5s;
 }
 
 #go-to-signup-btn:hover {
   background-color: #8ab4f8;
   color: #0f172a;
+}
+
+/* AUTH with Google
+/* ***************************** */
+
+.auth---divider {
+  font-size: 16px;
+  text-align: center;
+  border-bottom: 1px solid #d9d9d9;
+  line-height: 0em;
+  display: block !important;
+  font-weight: 400;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+}
+
+.auth---divider span {
+  background: #ffffff;
+}
+
+.h-20 {
+  height: 20px;
+}
+
+.google-button {
+  // background-color: rgb(66, 133, 244);
+  display: inline-flex;
+  align-items: center;
+  // color: rgb(255, 255, 255);
+  // box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px 0px, rgba(0, 0, 0, 0.24) 0px 0px 1px 0px;
+  padding: 0px;
+  border-radius: 3px;
+  border: 1px solid #4285f4;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  width: 100%;
+  // border-color: #c7e1ff !important;
+  // box-shadow: none !important;
+  background: #ffff !important;
+  color: #4285f4 !important;
+  margin-bottom: 30px;
+  height: 56px;
+}
+
+.google-button:hover {
+  border-color: #94c8ff !important;
+  background-color: #f4f9ff !important;
+  opacity: 1 !important;
+}
+.google-button:hover > div {
+  border-color: #94c8ff !important;
+  background-color: #f4f9ff !important;
+  opacity: 1 !important;
 }
