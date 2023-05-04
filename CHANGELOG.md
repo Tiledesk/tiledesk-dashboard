@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.4.33
+- Deploys in production
+- Adds the ability to customize the “Direct Email (sent when visitor is offline)” template and the “Email sent to ticket follower” template
+- Adds the ability to upload images in webp format
+
 ### 2.4.32
 - Deploys in production
 - Improvements and bug fixing
