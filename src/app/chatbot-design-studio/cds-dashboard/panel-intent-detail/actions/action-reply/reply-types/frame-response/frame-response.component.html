@@ -6,7 +6,7 @@
             (clickDelayTime)="onClickDelayTime($event)">
         </appdashboard-delay-slider>
     </div>
-    <div class="filter-wrapper" *ngIf="canShowFilter || response._tdJSONCondition.conditions.length > 0">
+    <div class="filter-wrapper" *ngIf="canShowFilter || response._tdJSONCondition?.conditions?.length > 0">
         <appdashboard-filter
             [expression]="response._tdJSONCondition"
             [booleanOperators]="booleanOperators"

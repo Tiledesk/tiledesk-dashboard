@@ -13,7 +13,7 @@ export class CDSFilterComponent implements OnInit {
 
   @ViewChild("addConditionFilter") addConditionFilter : SatPopover;
 
-  @Input() expression: Expression
+  @Input() expression: Expression = new Expression();
   @Input() booleanOperators: {}
   @Output() onChangeExpression = new EventEmitter<Expression>()
   @Output() onDeleteGroup = new EventEmitter()
@@ -28,10 +28,13 @@ export class CDSFilterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if(!this.expression){
+      this.expression = new Expression()
+    }
   }
 
   ngOnChanges(){
-    this.logger.log('[BASE_FILTER] expression selected-->', this.expression)
+    console.log('[BASE_FILTER] expression selected-->', this.expression)
   }
 
   onOpenConditionDetail(index: number){

@@ -225,7 +225,6 @@ export class Attributes {
         }
     }
 }
-
 export class Command {
     type: string;
     message?: Message;
@@ -286,7 +285,7 @@ export class Message {
     // time?: number;
     attributes?: MessageAttributes;
     metadata?: Metadata;
-    _tdJSONCondition?: Expression = new Expression();
+    _tdJSONCondition?: Expression;
     constructor(type: string, text: string, _tdJSONCondition?: Expression) {
         this.type = type;
         this.text = text;

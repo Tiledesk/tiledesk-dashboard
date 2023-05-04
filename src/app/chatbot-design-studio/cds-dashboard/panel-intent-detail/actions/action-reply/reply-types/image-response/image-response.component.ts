@@ -119,6 +119,7 @@ export class ImageResponseComponent implements OnInit {
   }
 
   onChangeExpression(expression: Expression){
+    this.response._tdJSONCondition = expression;
     this.changeReplyElement.emit();
   }
   

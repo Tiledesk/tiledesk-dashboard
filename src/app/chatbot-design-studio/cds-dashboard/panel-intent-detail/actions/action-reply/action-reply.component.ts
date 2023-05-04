@@ -115,13 +115,17 @@ export class ActionReplyComponent implements OnInit {
         replyArrayElements.push(elementWait);
       }
       let elementMessage = new Command(TYPE_COMMAND.MESSAGE);
-      elementMessage.message = new Message(el.type, el.text, el._tdJSONCondition);
+      elementMessage.message = new Message(el.type, el.text);
       if (el.attributes) {
         elementMessage.message.attributes = el.attributes;
       }
       if (el.metadata) {
         elementMessage.message.metadata = el.metadata;
       }
+      if(el._tdJSONCondition){
+        elementMessage.message._tdJSONCondition = el._tdJSONCondition
+      }
+
       replyArrayElements.push(elementMessage);
       if (el.text) {
         textConversation += el.text + '\r\n'
@@ -141,12 +145,15 @@ export class ActionReplyComponent implements OnInit {
           time = element.time;
         }
         if (element.type === TYPE_COMMAND.MESSAGE) {
-          let message = new MessageWithWait(element.message.type, element.message.text, time, element.message._tdJSONCondition);
+          let message = new MessageWithWait(element.message.type, element.message.text, time);
           if (element.message.attributes) {
             message.attributes = element.message.attributes;
           }
           if (element.message.metadata) {
             message.metadata = element.message.metadata;
+          }
+          if(element.message._tdJSONCondition){
+            message._tdJSONCondition = element.message._tdJSONCondition
           }
           this.logger.log('MessageWithWait:::', message);
           this.arrayMessagesWithWait.push(message);

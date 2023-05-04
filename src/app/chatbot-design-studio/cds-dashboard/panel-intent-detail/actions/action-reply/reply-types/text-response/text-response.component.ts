@@ -133,6 +133,7 @@ export class TextResponseComponent implements OnInit {
   }
 
   onChangeExpression(expression: Expression){
+    this.response._tdJSONCondition = expression
     this.changeReplyElement.emit();
   }
 
