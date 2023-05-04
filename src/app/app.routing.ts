@@ -187,8 +187,8 @@ const routes: Routes = [
   { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
 
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
-  { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
-  { path: 'create-new-project2', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
+  //{ path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
+  { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
 
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
 

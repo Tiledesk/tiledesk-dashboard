@@ -26,4 +26,50 @@ $color-pro-plan: #3ea9f5;
         font-weight: 300;
         font-style: normal;
     }
+    .installation-options{
+        margin-bottom: 30px;
+    }
+
+
+    /** NAVIGATION **/
+    .row-navigation {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+    }
+    .navigation-btn {
+        display: flex;
+        flex-direction: row;
+    }
+    .btn {
+        font-size: 14px;
+        padding: 18px 36px;
+        width: 100%;
+        max-width: 300px;
+        margin: 10px 0;
+    }
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: middle;
+        height: auto;
+        width: 50px;
+        max-width: 50px;
+        font-size: 20px;
+        line-height: 1.2;
+        border-color: $color-light-gray;
+        border-radius: 3px;
+        border: 0px solid $color-light-gray;
+        background: $color-light-gray;
+        margin: 10px 10px 10px 0;
+        padding: 10px;
+        svg {
+            fill: $color-gray;
+            width: 1em;
+        }
+    }
+    button.hidden{
+        opacity: 0;
+    }
 }

@@ -39,9 +39,11 @@ import { DepartmentService } from './services/department.service';
 import { DepartmentsComponent } from './departments/departments.component';
 
 import { FaqService } from './services/faq.service';
+import { UrlService } from './services/shared/url.service';
 
 import { ProjectsComponent } from './projects/projects.component';
 import { UsersComponent } from './users/users.component';
+
 
 // BOTS & FAQ
 import { FaqKbService } from './services/faq-kb.service';
@@ -328,6 +330,7 @@ import { CnpQuestionSelectComponent } from './create-new-project/cnp-question-se
 import { CnpQuestionButtonComponent } from './create-new-project/cnp-question-button/cnp-question-button.component';
 import { CnpChatbotWelcomeMessageComponent } from './create-new-project/cnp-chatbot-welcome-message/cnp-chatbot-welcome-message.component';
 import { CnpWidgetInstallationComponent } from './create-new-project/cnp-widget-installation/cnp-widget-installation.component';
+import { LoadingSectionComponent } from './create-new-project/loading-section/loading-section.component';
 
 
 
@@ -583,7 +586,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CnpQuestionSelectComponent,
     CnpQuestionButtonComponent,
     CnpChatbotWelcomeMessageComponent,
-    CnpWidgetInstallationComponent
+    CnpWidgetInstallationComponent,
+    LoadingSectionComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
@@ -677,6 +681,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     TagsService,
     DepartmentService,
     FaqService,
+    UrlService,
     FaqKbService,
     ProjectService,
     LocalDbService,

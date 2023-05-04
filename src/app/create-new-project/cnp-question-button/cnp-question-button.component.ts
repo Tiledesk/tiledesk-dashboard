@@ -9,6 +9,7 @@ export class CnpQuestionButtonComponent implements OnInit {
   @Output() goToNext = new EventEmitter();
   @Input() question: any;
   @Input() index: number;
+  @Input() segmentAttributes: any;
 
   selectedOption: string;
 
@@ -27,6 +28,11 @@ export class CnpQuestionButtonComponent implements OnInit {
   goToSelectedButton($event){
     this.selectedOption = $event.value;
     this.question.answer = $event.value;
-    this.goToNext.emit(this.index);
+    try {
+      this.segmentAttributes[this.question.attribute_name] = $event.value;
+    } catch (error) {
+      // error; 
+    }
+    this.goToNext.emit(this.segmentAttributes);
   }
 }

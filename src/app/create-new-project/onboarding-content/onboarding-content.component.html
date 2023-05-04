@@ -1,11 +1,9 @@
 <div class="main-content css-create-project">
-    <img [src]="companyLogoBlack_Url" class="logo" />
-    <div class="close-wizard-page">
-      <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">clear</i>
-    </div>
-  
-    <div class="col-left">
-
+    <div class="step-header">
+        <img [src]="companyLogoBlack_Url" class="logo" />
+        <div class="close-wizard-page">
+          <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">clear</i>
+        </div>
         <!-- STEP NUMBER -->
         <div class="box-steps">
             <div class="step-number">
@@ -23,9 +21,14 @@
               <span *ngFor="let item of arrayOfSteps; index as i" class="point" [ngClass]="{'active': activeTypeStepNumber >= i}"></span>
             </div>
         </div> 
-
-
-        <div *ngFor="let nameStep of arrayOfSteps; index as i">
+    </div>
+    
+  
+    
+    <div class="col-left">
+        <div *ngFor="let nameStep of arrayOfSteps; index as i" 
+            class="step-page"
+            [ngClass]="{'hidden': DISPLAY_SPINNER_SECTION}">
 
             <!-- SET NAME PROJECT -->
             <div *ngIf="nameStep === typeStep.NAME_PROJECT"
@@ -37,7 +40,7 @@
                 ></cnp-project-name>
             </div> 
 
-
+            
             <!-- STEP QUESTIONS -->
             <div *ngIf="nameStep === typeStep.CUSTOM_STEP && activeTypeStepNumber === i"
                 class="type-step fade-in-right"
@@ -59,6 +62,7 @@
                                     class="question-type"
                                     [index]="i"
                                     [question]="question"
+                                    [segmentAttributes]="segmentAttributes"
                                     (goToNext)="goToNextQuestion($event)"
                                 ></cnp-question-select>
                             </div>
@@ -73,6 +77,7 @@
                                     class="question-type"
                                     [index]="i"
                                     [question]="question"
+                                    [segmentAttributes]="segmentAttributes"
                                     (goToNext)="goToNextQuestion($event)"
                                 ></cnp-question-button>
                             </div>
@@ -80,19 +85,20 @@
                         </div>
                     <!-- </div> -->
                 <!-- </div> -->
-
+                
                 <!-- BUTTONS -->
                 <div class="row-navigation">
                     <div class="navigation-btn">
                         <button 
                             type="button" 
-                            class="btn-back" 
+                            class="btn-back"
+                            [disabled] ="DISABLED_PREV_BUTTON"
                             (click)="goToPrevCustomStep()">
                             <em class="material-icons">arrow_back</em>
                         </button>
                         <button
                             class="btn btn-lg btn-primary"
-                            [disabled] = "disabledNextButton"
+                            [disabled] = "DISABLED_NEXT_BUTTON"
                             (click)="goToNextCustomStep()">
                             {{'OnboardPage.Next' | translate}}
                         </button>
@@ -111,7 +117,7 @@
                     [welcomeMessage] = welcomeMessage
                     [projectName]="projectName"
                     [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
-                    (nextPage)="goToNextStep()"
+                    (nextPage)="goToSaveWelcomeMessage($event)"
                     (prevPage) = "goToPrevStep()"
                 ></cnp-chatbot-welcome-message>
             </div>
@@ -124,12 +130,30 @@
                     [welcomeMessage] = welcomeMessage
                     [projectName]="projectName"
                     [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
-                    (nextPage)="goToCreateProject()"
+                    (nextPage)="goToSaveProjectAndCreateBot($event)"
                     (prevPage) = "goToPrevStep()"
                 ></cnp-widget-installation>
             </div>
 
         </div>
+
+        <!-- LOADING SECTION -->
+        <!-- <loading-section
+            [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+            [DISPLAY_SPINNER]="DISPLAY_SPINNER"
+            (continueToNextStep)="goToNextStep()"
+        ></loading-section> -->
+        
+        <appdashboard-error-result
+            *ngIf="DISPLAY_SPINNER_SECTION"
+            [DISPLAY_SPINNER]="DISPLAY_SPINNER"
+            [DISPLAY_BOT]="DISPLAY_BOT"
+            [DISPLAY_FAQ]="DISPLAY_FAQ"
+            [CREATE_BOT_ERROR]="CREATE_BOT_ERROR"
+            [CREATE_FAQ_ERROR]="CREATE_FAQ_ERROR"
+            (cancel)="cancel($event)"
+            (continueToNextStep)="goToExitOnboarding()"
+      ></appdashboard-error-result>
         
     </div>
 

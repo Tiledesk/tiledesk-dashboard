@@ -1,0 +1,40 @@
+<div *ngIf="DISPLAY_SPINNER_SECTION" class="loading-section">
+    <div class="images-wrapper">
+        <div *ngIf="!DISPLAY_SPINNER">
+            <div class="success-checkmark-project">
+                <div class="check-icon-project">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                    <div class="icon-circle"></div>
+                    <div class="icon-fix"></div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="DISPLAY_SPINNER" class="svg-wrapper">
+            <div class="dot-spinner">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="DISPLAY_SPINNER" class="wizard-success-container">
+      <div class="success-label">
+        <span class="wizard-span-processing-msg">{{ "Processing" | translate }}</span>
+      </div>
+    </div>
+    <div *ngIf="!DISPLAY_SPINNER" class="wizard-success-container">
+        <div class="success-label">
+            <p class="wizard-span-success-msg">
+                {{ "ProjectsPage.YourNewProject" | translate }} 
+                {{ project_name }} 
+                {{ "ProjectsPage.IsReady" | translate }}
+            </p>
+        </div>
+        <button id="continue-btn-after-project-created"
+            class="btn btn-lg btn-primary" 
+            style="margin-top: 64px;" 
+            (click)="goToContinueToNextStep()">
+            {{ "ProjectsPage.Continue" | translate }}
+        </button>
+    </div>
+</div>

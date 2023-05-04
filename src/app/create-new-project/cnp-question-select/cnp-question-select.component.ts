@@ -9,6 +9,7 @@ export class CnpQuestionSelectComponent implements OnInit {
   @Output() goToNext = new EventEmitter();
   @Input() question: any;
   @Input() index: number;
+  @Input() segmentAttributes: any;
 
   selectedOption: string;
   placeholder: string;
@@ -29,8 +30,12 @@ export class CnpQuestionSelectComponent implements OnInit {
 
   onSelected($event){
     this.question.answer = $event.value;
-    // this.selectedOption = $event.value;
-    this.goToNext.emit(this.index);
+    try {
+      this.segmentAttributes[this.question.attribute_name] = $event.value;
+    } catch (error) {
+      // error;
+    }
+    this.goToNext.emit(this.segmentAttributes);
   }
 
 }

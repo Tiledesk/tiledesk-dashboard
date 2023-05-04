@@ -1,14 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { Location } from '@angular/common';
-import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
-import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BrandService } from '../../services/brand.service';
-import { LoggerService } from '../../services/logger/logger.service';
-import { TranslateService } from '@ngx-translate/core';
-import { tranlatedLanguage } from 'app/utils/util';
 import { HttpClient } from "@angular/common/http";
-import { emailDomainWhiteList } from 'app/utils/util';
+import { TranslateService } from '@ngx-translate/core';
+import moment from 'moment';
+// import { Observable } from 'rxjs';
+import { UrlService } from 'app/services/shared/url.service';
+
+import { Project } from 'app/models/project-model';
+import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
+import { ProjectService } from 'app/services/project.service';
+import { BrandService } from 'app/services/brand.service';
+import { LoggerService } from 'app/services/logger/logger.service';
+import { AuthService } from 'app/core/auth.service';
+// import { tranlatedLanguage, emailDomainWhiteList } from 'app/utils/util';
+import { FaqKbService } from 'app/services/faq-kb.service';
+import { BotLocalDbService } from 'app/services/bot-local-db.service';
+import { DepartmentService } from 'app/services/department.service';
+import { FaqService } from 'app/services/faq.service';
 
 
 export enum TYPE_STEP {
@@ -24,63 +33,63 @@ export enum TYPE_STEP {
   styleUrls: ['./onboarding-content.component.scss']
 })
 export class OnboardingContentComponent extends WidgetSetUpBaseComponent implements OnInit {
+  previousUrl:string;
   logo_x_rocket: string;
-  project_name: string;
   DISPLAY_SPINNER_SECTION = false;
-  CLOSE_BTN_IS_HIDDEN = true
-  user: any;
+  CLOSE_BTN_IS_HIDDEN = true;
+  DISPLAY_SPINNER = false;
+
   companyLogoBlack_Url: string;
-  CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION: boolean = false;
   temp_SelectedLangName: string;
   temp_SelectedLangCode: string;
   botid: string;
   browser_lang: string;
-
-  
-  // activeStep: any;
   
   activeQuestionNumber: number;
   activeQuestion: any;
+  DISABLED_NEXT_BUTTON: boolean = true;
+  DISABLED_PREV_BUTTON: boolean = true;
+  welcomeMessage: string = "";
+  defaultFallback: string = "";
 
-
-  // stepDirectionIn: boolean = false;
-  disabledNextButton: boolean = true;
-  // disabledFirstPass: boolean = false;
-
-
-  welcomeMessage  = "";
-
-  // (nextPageNoFaq)="gotToHumanConfigurationWithoutFaq($event)"
-  // (nextPage)="gotToHumanConfiguration($event)"
-  // (prevPage) = "goToWelcomeMessage($event)"
-  // questionDirectionIn: boolean = false;
-
+  projects: Project[];
+  newProject: any;
   projectName: string;
+  projectID: string;
+  user: any;
   userFullname: string;
-  // onboardingConfig: any;
-
-  // showPass: number = 0;
-
 
   translateY: string;
-
   typeStep = TYPE_STEP;
   arrayOfSteps: TYPE_STEP[] = [];
   activeTypeStepNumber: number = 0;
-
   activeCustomStepNumber: number;
   customSteps: any[] = [];
   activeStep: any;
 
+  // DISPLAY_BOT:boolean = false;
+  CREATE_BOT_ERROR: boolean = false;
+  botId: string;
+  CREATE_FAQ_ERROR: boolean = false;
+
+  segmentAttributes: any = {};
+  
+
   constructor(
     private auth: AuthService,
-    private router: Router,
+    // private router: Router,
     public location: Location,
     public brandService: BrandService,
     private logger: LoggerService,
     private route: ActivatedRoute,
     public translate: TranslateService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private projectService: ProjectService,
+    private urlService: UrlService,
+    private faqService: FaqService,
+    private faqKbService: FaqKbService,
+    private botLocalDbService: BotLocalDbService,
+    private departmentService: DepartmentService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -90,13 +99,23 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
 
+
   // SYSTEM FUNCTIONS //
   ngOnInit() {
-    this.logger.log('[WIZARD - CREATE-PRJCT] project_name ', this.project_name);
-    this.checkCurrentUrlAndHideCloseBtn();
-    this.getLoggedUser();
+    //this.checkCurrentUrlAndHideCloseBtn();
     this.getCurrentTranslation();
+    this.getLoggedUser();
+    this.previousUrl = this.urlService.getPreviousUrl();
+    //console.log('[WIZARD - CREATE-PRJCT] previousUrl ', this.previousUrl);
+    if(this.previousUrl.endsWith('/signup')){
+      //console.log('[WIZARD - CREATE-PRJCT] project_name ', this.projectName);
+      this.getCurrentProject();
+    } 
+    this.initialize();
   }
+
+
+
 
 
   // CUSTOM FUNCTIONS //
@@ -111,83 +130,63 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         if(data['OnboardPage']){
           let translations = data['OnboardPage'];
           this.welcomeMessage = translations["WelcomeMessage"];
+          this.defaultFallback = translations["DefaultFallback"];
         }
       } catch (err) {
         this.logger.error('error', err);
       }
     });
   }
+    
 
-  private checkCurrentUrlAndHideCloseBtn() {
-    if (this.router.url.startsWith('/create-project-itw/')) {
-      this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = true;
-      this.browser_lang = this.translate.getBrowserLang();
-      if (tranlatedLanguage.includes(this.browser_lang)) {
-        const langName = this.getLanguageNameFromCode(this.browser_lang);
-        this.temp_SelectedLangName = langName;
-        this.temp_SelectedLangCode = this.browser_lang;
-      } else {
-        this.temp_SelectedLangName = 'English';
-        this.temp_SelectedLangCode = 'en';
-      }
-    }  else if (this.router.url === '/create-project') {
-      this.CLOSE_BTN_IS_HIDDEN = true;
-      this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
-    } else if (this.router.url === '/create-new-project') {
-      this.CLOSE_BTN_IS_HIDDEN = false;
-      this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
-    }
-  }
+  // private checkCurrentUrlAndHideCloseBtn() {
+  //   if (this.router.url.startsWith('/create-project-itw/')) {
+  //     // this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = true;
+  //     this.browser_lang = this.translate.getBrowserLang();
+  //     if (tranlatedLanguage.includes(this.browser_lang)) {
+  //       const langName = this.getLanguageNameFromCode(this.browser_lang);
+  //       this.temp_SelectedLangName = langName;
+  //       this.temp_SelectedLangCode = this.browser_lang;
+  //     } else {
+  //       this.temp_SelectedLangName = 'English';
+  //       this.temp_SelectedLangCode = 'en';
+  //     }
+  //   }  else if (this.router.url === '/create-project') {
+  //     this.CLOSE_BTN_IS_HIDDEN = true;
+  //     // this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
+  //   } else if (this.router.url === '/create-new-project') {
+  //     this.CLOSE_BTN_IS_HIDDEN = false;
+  //     // this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
+  //   }
+  // }
 
   private getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
         this.user = user;
         this.userFullname = user.displayName?user.displayName:user.firstname;
-        this.initialize();
       }
     });
   }
 
+  private getCurrentProject() {
+    this.auth.project_bs
+      .subscribe((project) => {
+        if (project) {
+          this.projectID = project._id;
+          this.projectName = project.name;
+        }
+      });
+  }
+
   private initialize(){
-    // this.numberTotalPass = 2;
     this.translateY = 'translateY(0px)';
-    
     this.activeQuestionNumber = 0;
     this.loadJsonOnboardingConfig();
-    this.projectName = this.setProjectName();
     if(!this.projectName){
-      // this.disabledFirstPass = true;
       this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
-      // this.showPass = 1;
-    } else {
-      // this.numberTotalPass += 1;
-      // this.disabledFirstPass = false;
-      // this.showPass = 0;
     }
   }
- 
-  private setProjectName() {
-    let projectName = '';
-    const email = this.user.email;
-    if (email.includes('@')) {
-      const emailAfterAt = email.split('@')[1];
-      if (!emailDomainWhiteList.includes(emailAfterAt)) {
-        if (emailAfterAt.includes('.'))
-          projectName = emailAfterAt.split('.')[0];
-        else if (!emailAfterAt.includes('.')) {
-          projectName = emailAfterAt;
-        }
-      } else {
-        projectName = null;
-      }
-    } else {
-      projectName = null;
-    }
-    return projectName;
-  }
-
-
 
   private loadJsonOnboardingConfig(){
     let onboardingConfig = 'assets/config/onboarding-config.json';
@@ -207,12 +206,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         // this.arrayOfSteps.push(TYPE_STEP.CUSTOM_STEP);
         this.activeCustomStepNumber = 0;
         this.activeStep = this.customSteps[0];
-        this.activeQuestion = this.customSteps[0].questions[0];
+        this.activeQuestion = this.customSteps[0].questions[0];    
       }
       this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE, TYPE_STEP.WIDGET_INSTALLATION);
     });
   }
-
 
   private nextNumberStep(){
     this.activeTypeStepNumber++;
@@ -223,19 +221,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.activeTypeStepNumber--;
     this.translateY = 'translateY('+(-(this.activeTypeStepNumber+1)*20+20)+'px)';
   }
-
-  // EVENTS FUNCTIONS //
-  goToSetProjectName($event){
-    this.projectName = $event;
-    // this.showPass++;
-    this.nextNumberStep();
-  }
-
-  goToNextQuestion(){
-    this.checkQuestions();
-    // console.log('goToNextQuestion:: ', this.activeQuestionNumber,this.activeStep.questions.length );
-  }
-
 
   private checkQuestions(){
     this.activeStep = this.customSteps[this.activeCustomStepNumber];
@@ -249,10 +234,33 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     }
     this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
     if(this.activeQuestionNumber < this.activeStep.questions.length){
-      this.disabledNextButton = true;
+      this.DISABLED_NEXT_BUTTON = true;
     } else {
-      this.disabledNextButton = false;
+      this.DISABLED_NEXT_BUTTON = false;
     }
+  }
+
+
+  private checkPrevButton(){
+    if(this.activeTypeStepNumber == 0 || (this.activeTypeStepNumber == 1 && this.arrayOfSteps[0] === TYPE_STEP.NAME_PROJECT)){
+      this.DISABLED_PREV_BUTTON = true;
+    } else {
+      this.DISABLED_PREV_BUTTON = false
+    }
+  }
+  
+
+
+  // ---------- EVENTS FUNCTIONS -------------- //
+  goToSetProjectName($event){
+    this.projectName = $event;
+    this.nextNumberStep();
+    //this.createNewProject(true);
+  }
+
+  goToNextQuestion($event){
+    this.segmentAttributes = $event;
+    this.checkQuestions();
   }
 
   goToNextCustomStep(){
@@ -262,51 +270,384 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.checkQuestions();
       this.activeQuestionNumber = 0;
       this.activeQuestion = this.activeStep.questions[0];
-      //this.nextNumberPass();
       this.goToNextStep();
     } else {
       this.goToNextStep();
     }
   }
-
 
   goToPrevCustomStep() {
     if(this.activeCustomStepNumber > 0){
       this.activeCustomStepNumber--;
       this.activeStep = this.customSteps[this.activeCustomStepNumber];
-      // this.activeQuestionNumber = 0;
-      // this.activeQuestion = activeStep.questions[0];
       this.activeQuestionNumber = this.activeStep.questions.length-1;
       this.activeQuestion = this.activeStep.questions[this.activeQuestionNumber];
-      this.disabledNextButton = false;
-      // this.prevNumberPass();
+      this.DISABLED_NEXT_BUTTON = false;
       this.goToPrevStep();
     } else {
       this.goToPrevStep();
     }
   }
 
-
-  
-
-
   goToPrevStep() {
     this.prevNumberStep();
-    // console.log('goToPrevPassage::: ',  this.showPass, this.welcomeMessage);
+    this.checkPrevButton();
   }
 
   goToNextStep() {
+    // this.DISPLAY_SPINNER_SECTION = false;  
     this.nextNumberStep();
-    // console.log('goToNextPassage::: ', this.showPass);
+    this.checkPrevButton();
   }
 
+  goToSaveWelcomeMessage($event){
+    try {
+      this.welcomeMessage = $event.msg;
+    } catch (error) {
+      this.logger.error('[WIZARD - error: ', error);
+    }
+    this.goToNextStep();
+  }
 
-  goToCreateProject(){
-    
+  goToSaveProjectAndCreateBot($event){
+    if(!this.projectID){
+      this.createNewProject();
+    } else {
+      this.createBot();
+    }
   }
 
   goBack() {
     this.location.back();
   }
 
+  goToExitOnboarding(){
+    this.location.back();
+  }
+
+
+
+  /** 
+   * SERVICES  
+   * create project and bot 
+   * */
+  private createNewProject() {
+    this.DISPLAY_SPINNER_SECTION = true;
+    this.DISPLAY_SPINNER = true;
+    this.projectService.createProject(this.projectName).subscribe((project) => {
+      this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
+      if (project) {
+        this.newProject = project
+        // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
+        // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
+        const newproject: Project = {
+          _id: project['_id'],
+          name: project['name'],
+          operatingHours: project['activeOperatingHours'],
+          profile_type: project['profile'].type,
+          profile_name: project['profile'].name,
+          trial_expired: project['trialExpired']
+        }
+        // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
+        this.auth.projectSelected(newproject)
+        this.logger.log('[WIZARD - CREATE-PRJCT] CREATED PROJECT ', newproject)
+        this.projectID = newproject._id
+      }
+      /* 
+        * !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
+        * SET THE project_id IN THE LOCAL STORAGE
+        * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE 
+      */
+    }, (error) => {
+      this.DISPLAY_SPINNER = false;
+      this.logger.error('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - POST REQUEST - ERROR ', error);
+    }, () => {
+      console.log('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
+      this.projectService.newProjectCreated(true);
+      const trialStarDate = moment(new Date(this.newProject.createdAt)).format("YYYY-MM-DD hh:mm:ss")
+      const trialEndDate = moment(new Date(this.newProject.createdAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
+      
+      // let segmentPageName = "Wizard, Create project";
+      // let segmentTrackName = "Trial Started";
+      // let segmentTrackAttr = {
+      //   "userId": this.user._id,
+      //   "trial_start_date": trialStarDate,
+      //   "trial_end_date": trialEndDate,
+      //   "trial_plan_name": "Pro (trial)",
+      //   "context": {
+      //     "groupId": this.newProject._id
+      //   }
+      // }
+      // this.segment(segmentPageName, segmentTrackName,segmentTrackAttr);
+
+      if (!isDevMode()) {
+        if (window['analytics']) {
+          try {
+            window['analytics'].page("Wizard, Create project", {
+            });
+          } catch (err) {
+            this.logger.error('Wizard Create project page error', err);
+          }
+          try {
+            window['analytics'].identify(this.user._id, {
+              name: this.user.firstname + ' ' + this.user.lastname,
+              email: this.user.email,
+              logins: 5,
+              plan: "Pro (trial)"
+            });
+          } catch (err) {
+            this.logger.error('Wizard Create project identify error', err);
+          }
+          try {
+            window['analytics'].track('Trial Started', {
+              "userId": this.user._id,
+              "trial_start_date": trialStarDate,
+              "trial_end_date": trialEndDate,
+              "trial_plan_name": "Pro (trial)",
+              "context": {
+                "groupId": this.newProject._id
+              }
+            });
+          } catch (err) {
+            this.logger.error('Wizard Create track Trial Started event error', err);
+          }
+          try {
+            window['analytics'].group(this.newProject._id, {
+              name: this.newProject.name,
+              plan: "Pro (trial)",
+            });
+          } catch (err) {
+            this.logger.error('Wizard Create project group error', err);
+          }
+        }
+      }
+      // setTimeout(() => {
+      //   if(auto == true){
+      //     this.DISPLAY_SPINNER_SECTION = false;
+      //   }
+      //   this.DISPLAY_SPINNER = false;
+      // }, 2000);
+      this.getProjectsAndSaveInStorage();
+      this.callback('createNewProject');
+    });
+  }
+
+
+  /** 
+   *  GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   
+   * */
+  getProjectsAndSaveInStorage() {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      console.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+      if (projects) {
+        this.projects = projects;
+        // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
+        // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
+        // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
+        this.projects.forEach(project => {
+          console.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
+          if (project.id_project) {
+            const prjct: Project = {
+              _id: project.id_project._id,
+              name: project.id_project.name,
+              role: project.role,
+              operatingHours: project.id_project.activeOperatingHours
+            }
+            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+          }
+        });
+      }
+    }, error => {
+      console.log('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - ERROR ', error)
+    }, () => {
+      console.log('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - COMPLETE')
+    });
+  }
+
+
+  // -----------------  FUNCTION CALLBACK   ------------------------ //
+  callback(step:string, variable?: any){
+    if(step === 'createNewProject'){
+      this.createBot();
+    }
+    else if(step === 'createBot'){
+      this.hookBotToDept(variable);
+    }
+    else if(step === 'hookBotToDept'){
+      this.createDefaultFaqOnBot();
+    }
+    else if(step === 'uploadFaqFromCSV'){
+      //this.goToNextStep();
+      this.DISPLAY_SPINNER_SECTION = true;
+      this.DISPLAY_SPINNER = false;
+
+
+      
+      this.segmentAttributes["projectId"] = this.projectID;
+      this.segmentAttributes["projectName"] = this.projectName;
+      this.segmentAttributes["userId"] = this.user._id;
+      this.segmentAttributes["username"] = this.user.firstname + ' ' + this.user.lastname;
+      this.segmentAttributes["botId"] = this.botId;
+
+
+      let segmentPageName = "Wizard, Onboarding";
+      let segmentTrackName = "Onboarding";
+      let segmentTrackAttr = this.segmentAttributes;
+
+      this.segment(segmentPageName, segmentTrackName,segmentTrackAttr);
+      // this.DISPLAY_BOT = true;
+    }
+  }
+  // -----------------  FUNCTION CALLBACK   ------------------------ //
+
+
+
+  segment(pageName, trackName, trackAttr){
+    //"attribute_name": "solution",
+    console.log('segment::: ', trackAttr);
+    if (!isDevMode()) {
+      // let  trackAttr = {
+      //   "projectId": this.projectID,
+      //   "projectName": this.projectName,
+      //   "userId": this.user._id,
+      //   "username": this.user.firstname + ' ' + this.user.lastname,
+      //   "chatbot": attributes.chatbot,
+      //   "faq": attributes.faq,
+      //   "agent": attributes.agent
+      // };
+      try {
+        window['analytics'].page(pageName, {
+        });
+      } catch (err) {
+        this.logger.error(pageName+' error', err);
+      }
+      try {
+        window['analytics'].identify(this.user._id, {
+          name: this.user.firstname + ' ' + this.user.lastname,
+          email: this.user.email,
+          logins: 5
+        });
+      } catch (err) {
+        this.logger.error(pageName+' identify error', err);
+      }
+      try {
+        window['analytics'].track(trackName, trackAttr);
+      } catch (err) {
+        this.logger.error(pageName+' track error', err);
+      }
+    }
+  }
+
+  // ----------------- 1 : CREATE A BOT ------------------------ // 
+  createBot(){    
+    // this.DISPLAY_BOT = true;
+    let faqKbName = this.projectName;
+    let faqKbUrl = '';
+    let botType = 'tilebot';
+    let bot_description = '';
+    let language = this.translate.currentLang;
+    let template = '';
+    this.faqKbService.createFaqKb(faqKbName, faqKbUrl, botType, bot_description, language, template)
+      .subscribe((faqKb) => {
+        this.logger.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
+        if (faqKb) {
+          this.botId = faqKb['_id'];
+          this.botLocalDbService.saveBotsInStorage(this.botId, faqKb);
+          this.callback('createBot', this.botId);
+        }
+      }, (error) => {
+        this.logger.error('[BOT-CREATE] CREATE FAQKB - POST REQUEST ERROR ', error);
+        this.DISPLAY_SPINNER = false;
+        this.CREATE_BOT_ERROR = true;
+      }, () => {
+        console.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
+      });
+  }
+
+  // ----------------- 2 : GET DEFAULT DEPARTMENT OF THE PROJECT  ------------------------ // 
+  getDeptsByProjectId(){
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+      if (departments && departments.length > 0) {
+          const departmentId = departments[0]._id;
+          this.callback('getDeptsByProjectId', departmentId);
+      } else {
+        this.DISPLAY_SPINNER = false;
+        this.CREATE_BOT_ERROR = true;
+      }     
+    }, error => {
+      this.logger.error('[BOT-CREATE --->  DEPTS RES - ERROR', error);
+      this.DISPLAY_SPINNER = false;
+      this.CREATE_BOT_ERROR = true;
+    }, () => {
+      console.log('[BOT-CREATE --->  DEPTS RES - COMPLETE')
+    });
+  }
+
+
+  // ----------------- 3 : ASSIGN BOT TO THE DEFAULT DEPARTMENT  ------------------------ //
+  hookBotToDept(departmentId) {
+    this.departmentService.updateExistingDeptWithSelectedBot(departmentId, this.botId).subscribe((res) => {
+      console.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+      this.callback('hookBotToDept', res);
+    }, (error) => {
+      this.logger.error('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
+      this.DISPLAY_SPINNER = false;
+      this.CREATE_BOT_ERROR = true;
+    }, () => {
+      console.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
+    });
+  }
+
+
+  // ----------------- 4 : ADD START AND DEFAULTFALLBACK TO FAQ    ------------------------ //
+  createDefaultFaqOnBot() {
+    let answer = this.welcomeMessage;
+    let intents = ['start','defaultFallback'];
+    let questions = ['\\start','defaultFallback'];
+    let answers = [answer,this.defaultFallback];
+    this.uploadFaqFromCSV(questions, answers, intents);
+  }
+
+  // ----------------- 5 : ADD FAQ TO CHATBOT VIA CSV UPLOAD   ------------------------ //
+  uploadFaqFromCSV(questions, answers, intents) {
+    let csvColumnsDelimiter = ';'
+    var csv = '';
+    let buttons = '';
+    for(let i=0;i<questions.length;i++) {
+      let domanda = '"'+questions[i]+'";';
+      let risposta = '"'+answers[i]+'";';
+      let intent = '"'+intents[i]+'";';
+      csv += domanda+risposta+';'+intent+'false'+'\r\n';
+      buttons += "* "+questions[i]+"\n";
+    }
+    var myBlob = new Blob([csv], {type: "text/csv"});
+    const formData: FormData = new FormData();
+    formData.set('id_faq_kb', this.botId);
+    formData.set('delimiter', csvColumnsDelimiter);
+    formData.append('uploadFile', myBlob, 'csvFile');
+    //formData.append('uploadFile', csvContent, 'nomeFile');
+    //this.logger.log('FORM DATA ', formData)
+    this.faqService.uploadFaqCsv(formData)
+      .subscribe(data => {
+        // console.log('uploadFaqCsv()::: ', data);
+        console.log('[TILEBOT] UPLOAD CSV DATA ', data);
+        if (data['success'] === true) {
+          // this.callback('uploadFaqCsv');
+          this.callback('uploadFaqFromCSV');
+        } else if (data['success'] === false) {
+          this.DISPLAY_SPINNER = false;
+          this.CREATE_FAQ_ERROR = true;
+        }
+      }, (error) => {
+        this.logger.error('[TILEBOT] UPLOAD CSV - ERROR ', error);
+        this.DISPLAY_SPINNER = false;
+        this.CREATE_FAQ_ERROR = true;
+      }, () => {
+        console.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
+        // setTimeout(() => {
+        //   this.DISPLAY_SPINNER_SECTION = false;
+        //   this.DISPLAY_SPINNER = false;
+        // }, 2000);
+      });
+  }
 }

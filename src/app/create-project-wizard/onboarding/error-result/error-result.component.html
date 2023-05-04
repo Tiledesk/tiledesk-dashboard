@@ -92,6 +92,12 @@
                 </button>
             </div>
 
+            <div *ngIf="!DISPLAY_FAQ && !DISPLAY_BOT">
+                <button style="margin-top: 76px;" class="btn btn-lg btn-primary create-faqs-continue-to-next-step" (click)="goToContinueToNextStep()" >
+                    {{ "ProjectsPage.Continue" | translate }}
+                </button>
+            </div>
+
         </div>
 
     </div>

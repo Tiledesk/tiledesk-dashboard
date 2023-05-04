@@ -1,19 +1,4 @@
 {
-  "init":{
-    "title": "Create a project",
-    "subtitle": "What’s your company or project name?",
-    "type": "project-name",
-    "buttons": {
-      "back": "Go back",
-      "next": "Continue"
-    },
-    "labels": {
-      "placeholder":"project name", 
-      "message":"The project name is required", 
-      "message-error":"the name must contain at least 4 characters", 
-      "label-button": "CONTINUE"
-    }
-  },
   "steps":[
     {
       "title": "Tell us more before starting, so we can personalise your experience ${userFullname}",
@@ -24,6 +9,7 @@
       "questions": [
         {
           "title": "What’s your industry?",
+          "attribute_name": "company_industry",
           "type": "select",
           "labels": {
             "placeholder":"Please choose..."
@@ -43,6 +29,7 @@
         {
           "title": "How many people work with you?",
           "type": "select",
+          "attribute_name": "company_size",
           "labels": {
             "placeholder":"Please choose..."
           },
@@ -58,6 +45,7 @@
         {
           "title": "How did you discover Tiledesk?",
           "type": "select",
+          "attribute_name": "acquisition_source",
           "labels": {
             "placeholder":"Please choose..."
           },
@@ -82,25 +70,28 @@
         {
           "title": "What’s your main goal with Tiledesk?",
           "type": "button",
+          "attribute_name": "use_case",
           "buttons": [
-            {"icon":"💰", "label": "Solve customer problems", "value": "1"},
-            {"label": "Increase online sales", "value": "2"}
+            {"icon":"💰", "label": "Solve customer problems", "value": "solve_customer_problems"},
+            {"label": "Increase online sales", "value": "increase_online_sales"}
           ]
         },
         {
           "title": "How do you want to reach your goal?",
           "type": "button",
+          "attribute_name": "solution",
           "buttons": [
-            {"icon":"🤖", "label": "I want to talk to customers", "value": "1"},
-            {"icon":"💬", "label": "I want to automate conversations", "value": "2"}
+            {"icon":"🤖", "label": "I want to talk to customers", "value": "want_to_talk_to_customers"},
+            {"icon":"💬", "label": "I want to automate conversations", "value": "want_to_automate_conversations"}
           ]
         },
         {
           "title": "Which channel most interests you?",
           "type": "button",
+          "attribute_name": "solution_channel",
           "buttons": [
-            {"icon":"🙌", "label": "Web / Mobile", "value": "1"},
-            {"icon":"💰", "label": "WhatsApp / FB Messenger", "value": "2"}
+            {"icon":"🙌", "label": "Web / Mobile", "value": "web_mobile"},
+            {"icon":"💰", "label": "WhatsApp / FB Messenger", "value": "whatsapp_fb_messenger"}
           ]
         }
       ]

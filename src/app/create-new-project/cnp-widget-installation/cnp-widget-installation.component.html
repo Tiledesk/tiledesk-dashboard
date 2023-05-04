@@ -4,67 +4,69 @@
     <p class="description">Allow your visitors to contact you via live chat, by adding our widget to your website.</p>
     
 
-            <div width="100%" class="css-leej9y e1crryeb2">
-                
-                <div class="css-fyxnnm e1crryeb1">
+        <div width="100%">
+            
+            <div class="installation-options">
 
-                    <label id="downshift-0-label" for="downshift-0-toggle-button" class="css-1l2qnpu e144t2b02">Select platform</label>
-                    <ng-select class="select-option" 
-                        [clearable]="false" 
-                        bindLabel="label" 
-                        bindValue="value"
-                        [searchable] = false
-                        groupBy="type"
-                        (change)="onSelected($event)">
+                <label id="downshift-0-label" for="downshift-0-toggle-button" class="css-1l2qnpu e144t2b02">Select platform</label>
+                <ng-select class="select-option" 
+                    [clearable]="false" 
+                    bindLabel="label" 
+                    bindValue="value"
+                    [searchable] = false
+                    groupBy="type"
+                    [placeholder]="LABEL_PLACEHOLDER" 
+                    (change)="onSelected($event)">
 
-                        <ng-option *ngFor="let option of options" 
-                            [value]="option.value">
-                            <img src="{{option.image}}" width="20px" height="20px"/>
-                            {{ option.label }}
-                        </ng-option>
+                    <ng-option *ngFor="let option of options" 
+                        [value]="option.value">
+                        <img src="{{option.image}}" width="20px" height="20px"/>
+                        {{ option.label }}
+                    </ng-option>
 
-                    </ng-select>
-                </div>
-
-                <div class="box-installation-instruction">
-                    <appdashboard-js-installation 
-                        *ngIf="selectedPlatform===typePlatform.JS"
-                    ></appdashboard-js-installation>
-                    <appdashboard-joomla-installation
-                        *ngIf="selectedPlatform===typePlatform.JOOMLA"
-                    ></appdashboard-joomla-installation>
-                    <appdashboard-prestashop-installation
-                        *ngIf="selectedPlatform===typePlatform.PRESTASHOP"
-                    ></appdashboard-prestashop-installation>
-                    <appdashboard-wordpress-installation
-                        *ngIf="selectedPlatform===typePlatform.WORDPRESS"
-                    ></appdashboard-wordpress-installation>
-                    <appdashboard-shopify-installation
-                        *ngIf="selectedPlatform===typePlatform.SHOPIFY"
-                    ></appdashboard-shopify-installation>
-                    <appdashboard-google-tag-manager-installation
-                        *ngIf="selectedPlatform===typePlatform.GTM"
-                    ></appdashboard-google-tag-manager-installation>
-                </div>
-
-                
+                </ng-select>
             </div>
 
-</div>
+            <div class="box-installation-instruction">
+                <appdashboard-js-installation 
+                    *ngIf="selectedPlatform===typePlatform.JS"
+                ></appdashboard-js-installation>
+                <appdashboard-joomla-installation
+                    *ngIf="selectedPlatform===typePlatform.JOOMLA"
+                ></appdashboard-joomla-installation>
+                <appdashboard-prestashop-installation
+                    *ngIf="selectedPlatform===typePlatform.PRESTASHOP"
+                ></appdashboard-prestashop-installation>
+                <appdashboard-wordpress-installation
+                    *ngIf="selectedPlatform===typePlatform.WORDPRESS"
+                ></appdashboard-wordpress-installation>
+                <appdashboard-shopify-installation
+                    *ngIf="selectedPlatform===typePlatform.SHOPIFY"
+                ></appdashboard-shopify-installation>
+                <appdashboard-google-tag-manager-installation
+                    *ngIf="selectedPlatform===typePlatform.GTM"
+                ></appdashboard-google-tag-manager-installation>
+            </div>
 
-<!-- BUTTONS -->
-<div class="row-navigation">
-    <div class="navigation-btn">
-        <button 
-            type="button" 
-            class="btn-back" 
-            (click)="goToPrevStep()">
-            <em class="material-icons">arrow_back</em>
-        </button>
-        <button
-            class="btn btn-lg btn-primary"
-            (click)="goToNextStep()">
-            {{'OnboardPage.Next' | translate}}
-        </button>
+            
+        </div>
+
+
+    <!-- BUTTONS -->
+    <div class="row-navigation">
+        <div class="navigation-btn">
+            <button 
+                type="button" 
+                class="btn-back" 
+                (click)="goToPrevStep()">
+                <em class="material-icons">arrow_back</em>
+            </button>
+            <button
+                class="btn btn-lg btn-primary"
+                (click)="goToNextStep()">
+                {{'OnboardPage.Next' | translate}}
+            </button>
+        </div>
     </div>
+
 </div>

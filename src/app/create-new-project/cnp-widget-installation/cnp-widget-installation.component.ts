@@ -27,6 +27,7 @@ export class CnpWidgetInstallationComponent implements OnInit {
 
   typePlatform = TYPE_PLATFORM;
   selectedPlatform: string;
+  LABEL_PLACEHOLDER: string = 'Please choose...';
 
   constructor() { }
 
@@ -37,13 +38,14 @@ export class CnpWidgetInstallationComponent implements OnInit {
 
   private initialize(){
     this.options = [
-      {label: 'JavaScript', value:TYPE_PLATFORM.JS, image:'assets/img/integration_app/javascript.svg'},
-      {label: 'Google Tag Manager', value:TYPE_PLATFORM.GTM, image:'./assets/img/integration_app/googletagmanager.svg'},
-      {label: 'Shopify', value:TYPE_PLATFORM.SHOPIFY, image:'assets/img/integration_app/shopify.svg'},
-      {label: 'Wordpress', value:TYPE_PLATFORM.WORDPRESS, image:'assets/img/integration_app/wordpress.svg'},
-      {label: 'Prestashop', value:TYPE_PLATFORM.PRESTASHOP, image:'assets/img/integration_app/prestashop.svg'},
-      {label: 'Joomla', value:TYPE_PLATFORM.JOOMLA, image:'assets/img/integration_app/joomla.svg'}
+      {label: 'JavaScript', value:TYPE_PLATFORM.JS, image:'assets/img/integrations_apps/javascript.svg'},
+      {label: 'Google Tag Manager', value:TYPE_PLATFORM.GTM, image:'assets/img/integrations_apps/googletagmanager.svg'},
+      {label: 'Shopify', value:TYPE_PLATFORM.SHOPIFY, image:'assets/img/integrations_apps/shopify.svg'},
+      {label: 'Wordpress', value:TYPE_PLATFORM.WORDPRESS, image:'assets/img/integrations_apps/wordpress.svg'},
+      {label: 'Prestashop', value:TYPE_PLATFORM.PRESTASHOP, image:'assets/img/integrations_apps/prestashop.svg'},
+      {label: 'Joomla', value:TYPE_PLATFORM.JOOMLA, image:'assets/img/integrations_apps/joomla.svg'}
     ]
+    this.selectedPlatform = this.options[0];
   }
 
   onSelected($event){

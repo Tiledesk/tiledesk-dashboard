@@ -15,6 +15,16 @@ $color-pro-plan: #3ea9f5;
 // STRUCTURE
 //---------------------//
 
+.step-header{
+    position: absolute;
+    width: calc(100% - 360px);
+    height: 70px;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    z-index: 31;
+}
 
 .type-step {
     .title {
@@ -26,8 +36,10 @@ $color-pro-plan: #3ea9f5;
     }
     display: none;
     &.active {
+        min-height: calc(100vh - 150px);
         display: block;
     }
+
 }
 
 
@@ -81,15 +93,14 @@ $color-pro-plan: #3ea9f5;
 
 
 .col-left {
-    
-
     min-height: 100vh;
+    // max-height: 100vh;
     height: auto;
     background: white;
     width: calc(100% - var(--width-col-rigth));
     position: relative;
     float: left;
-    padding: 100px 60px 60px;
+    padding: 100px 40px 40px;
     z-index: 20;
 
     // width: 100%;
@@ -170,11 +181,25 @@ $color-pro-plan: #3ea9f5;
     }
 }
 
+.step-page {
+    // overflow-y: auto;
+    // max-height: calc(100% - 60px);
+    // min-height: calc(100% - 60px);
+    opacity: 1;
+    &.hidden{
+        opacity: 0;
+    }
+}
+
 /** NAVIGATION **/
 .row-navigation {
-    display: flex;
-    flex-direction: column;
-    margin: 50px 0 0 0;
+    position: relative;
+    left: 0;
+    width: 100%;
+    z-index: 0;
+    bottom: 0;
+    padding: 0px;
+    background-color: #fff;
 }
 .navigation-btn {
     display: flex;
@@ -207,7 +232,14 @@ $color-pro-plan: #3ea9f5;
         fill: $color-gray;
         width: 1em;
     }
+    &:disabled{
+        cursor: not-allowed;
+        box-shadow: none;
+        opacity: .65;
+    }
 }
+
+
 button.hidden{
     opacity: 0;
 }

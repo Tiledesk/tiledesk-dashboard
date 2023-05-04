@@ -436,7 +436,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
     if (email.includes('@')) {
       const emailBeforeAt = email.split('@')[0];
       if (emailBeforeAt && !emailBeforeAt.includes('.')) {
-
         yourname = emailBeforeAt;
         this.logger.log('[SIGN-UP] signup  yourname (use case email without dot before @) ', yourname)
         this.userForm.controls['firstName'].patchValue(yourname)
@@ -599,8 +598,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
           if (self.SKIP_WIZARD === false) {
             // self.router.navigate(['/create-project']);
             self.createNewProject(signupResponse)
-
-
           } else {
             self.router.navigate(['/projects']);
           }
@@ -663,9 +660,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIGN-UP] CREATED PROJECT ', newproject)
 
           this.id_project = newproject._id
-          this.router.navigate([`/project/${this.id_project}/configure-widget`]);
-
-
+          // this.router.navigate([`/project/${this.id_project}/configure-widget`]);
+          this.router.navigate(['/create-new-project']);
         }
 
 
