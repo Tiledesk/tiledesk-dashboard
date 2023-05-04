@@ -1998,6 +1998,8 @@
     "newMessage": "Yeni Mesaj",
     "ticket": "Bilet",
     "sendTranscript": "Söhbət transkriptini göndərin",
+    "emailDirect": "Birbaşa e-poçt (ziyarətçi oflayn olduqda göndərilir)",
+    "newMessageFollower":"TICKET izləyicisinə e-poçt göndərildi",
     "ResetToDefaults": "Defoltlara sıfırlayın",
     "ThisActionIsNotReversible": "Bu hərəkət geri qaytarılmır. O, edilən hər hansı dəyişikliyi silməklə tətiyi orijinal parametrlərinə qaytaracaq.",
     "SendTo": "Göndər",
