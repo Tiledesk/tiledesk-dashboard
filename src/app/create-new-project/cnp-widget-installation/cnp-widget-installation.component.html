@@ -2,54 +2,95 @@
 
     <h3 class="title">Show live chat to your visitors</h3>
     <p class="description">Allow your visitors to contact you via live chat, by adding our widget to your website.</p>
-    
-
-        <div width="100%">
-            
-            <div class="installation-options">
-
-                <label id="downshift-0-label" for="downshift-0-toggle-button" class="css-1l2qnpu e144t2b02">Select platform</label>
-                <ng-select class="select-option" 
-                    [clearable]="false" 
-                    bindLabel="label" 
-                    bindValue="value"
-                    [searchable] = false
-                    groupBy="type"
-                    [placeholder]="LABEL_PLACEHOLDER" 
-                    (change)="onSelected($event)">
-
-                    <ng-option *ngFor="let option of options" 
-                        [value]="option.value">
-                        <img src="{{option.image}}" width="20px" height="20px"/>
-                        {{ option.label }}
-                    </ng-option>
-
-                </ng-select>
+    <div width="100%" class="big">
+        <div class="installation-options">
+            <div class="left">
+                <ul>
+                    <li *ngFor="let option of options">
+                        <button 
+                            [ngClass]="{'active': selectedPlatform===option.value}"
+                            (click)="onSelected(option.value)">
+                            <img src="{{option.image}}" width="20px" height="20px"/>
+                            <span>{{ option.label }}</span>
+                        </button>
+                    </li>
+                </ul>
             </div>
-
-            <div class="box-installation-instruction">
+            <div class="right box-installation-instruction">
                 <appdashboard-js-installation 
                     *ngIf="selectedPlatform===typePlatform.JS"
+                    class="conf-installation"
                 ></appdashboard-js-installation>
                 <appdashboard-joomla-installation
                     *ngIf="selectedPlatform===typePlatform.JOOMLA"
+                    class="conf-installation"
                 ></appdashboard-joomla-installation>
                 <appdashboard-prestashop-installation
                     *ngIf="selectedPlatform===typePlatform.PRESTASHOP"
+                    class="conf-installation"
                 ></appdashboard-prestashop-installation>
                 <appdashboard-wordpress-installation
                     *ngIf="selectedPlatform===typePlatform.WORDPRESS"
+                    class="conf-installation"
                 ></appdashboard-wordpress-installation>
                 <appdashboard-shopify-installation
                     *ngIf="selectedPlatform===typePlatform.SHOPIFY"
+                    class="conf-installation"
                 ></appdashboard-shopify-installation>
                 <appdashboard-google-tag-manager-installation
                     *ngIf="selectedPlatform===typePlatform.GTM"
+                    class="conf-installation"
                 ></appdashboard-google-tag-manager-installation>
             </div>
-
-            
+    
         </div>
+    </div>
+
+
+    <div width="100%" class="small">
+        <div class="installation-options">
+
+            <label id="downshift-0-label" for="downshift-0-toggle-button" class="css-1l2qnpu e144t2b02">Select platform</label>
+            <ng-select class="select-option" 
+                [clearable]="false" 
+                bindLabel="label" 
+                bindValue="value"
+                [searchable] = false
+                groupBy="type"
+                [placeholder]="LABEL_PLACEHOLDER" 
+                (change)="onSelected($event)">
+                <ng-option *ngFor="let option of options" 
+                    [value]="option.value">
+                    <img src="{{option.image}}" width="20px" height="20px"/>
+                    {{ option.label }}
+                </ng-option>
+
+            </ng-select>
+        </div>
+
+        <div class="box-installation-instruction">
+            <appdashboard-js-installation 
+                *ngIf="selectedPlatform===typePlatform.JS"
+            ></appdashboard-js-installation>
+            <appdashboard-joomla-installation
+                *ngIf="selectedPlatform===typePlatform.JOOMLA"
+            ></appdashboard-joomla-installation>
+            <appdashboard-prestashop-installation
+                *ngIf="selectedPlatform===typePlatform.PRESTASHOP"
+            ></appdashboard-prestashop-installation>
+            <appdashboard-wordpress-installation
+                *ngIf="selectedPlatform===typePlatform.WORDPRESS"
+            ></appdashboard-wordpress-installation>
+            <appdashboard-shopify-installation
+                *ngIf="selectedPlatform===typePlatform.SHOPIFY"
+            ></appdashboard-shopify-installation>
+            <appdashboard-google-tag-manager-installation
+                *ngIf="selectedPlatform===typePlatform.GTM"
+            ></appdashboard-google-tag-manager-installation>
+        </div>
+
+        
+    </div>
 
 
     <!-- BUTTONS -->

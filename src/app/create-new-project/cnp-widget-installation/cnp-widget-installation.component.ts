@@ -45,11 +45,11 @@ export class CnpWidgetInstallationComponent implements OnInit {
       {label: 'Prestashop', value:TYPE_PLATFORM.PRESTASHOP, image:'assets/img/integrations_apps/prestashop.svg'},
       {label: 'Joomla', value:TYPE_PLATFORM.JOOMLA, image:'assets/img/integrations_apps/joomla.svg'}
     ]
-    this.selectedPlatform = this.options[0];
+    this.selectedPlatform = this.options[0].value;
   }
 
   onSelected($event){
-    console.log('onSelected:::: ',$event);
+    // console.log('onSelected:::: ',$event);
     this.selectedPlatform = $event;
   }
 

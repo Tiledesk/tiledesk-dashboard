@@ -28,6 +28,71 @@ $color-pro-plan: #3ea9f5;
     }
     .installation-options{
         margin-bottom: 30px;
+        display: flex;
+        .left {
+            display: block;
+            border-right: 1px solid rgb(239, 242, 246);
+            margin: 0;
+            ul {
+                list-style-type: none;
+                margin: 0px;
+                padding: 0px 16px 0px 0px;
+                width: 232px;
+                background: transparent;
+            }
+            li {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                position: relative;
+                color: $color-text;
+                padding: 0px;
+                font-size: 14px;
+                line-height: 18px;
+                letter-spacing: -0.01em;
+                font-weight: 500;
+                button {
+                    position: relative;
+                    outline: none;
+                    border: none;
+                    border-radius: 4px;
+                    display: flex;
+                    -webkit-box-align: center;
+                    align-items: center;
+                    width: 100%;
+                    text-align: left;
+                    cursor: pointer;
+                    background-color: transparent;
+                    font-weight: 400;
+                    color: inherit;
+                    padding: 8px 12px;
+                    min-height: 36px;
+                    img{
+                        min-width: 20px;
+                        min-height: 20px;
+                        margin-right: 8px;
+                    }
+                }
+                button:hover {
+                    border-radius: 4px;
+                    background-color: $color-light-gray;
+                    color: $color-gray;
+                }
+                button.active {
+                    background-color: aliceblue;
+                }
+            }
+        }
+        .right {
+            display: block;
+            padding: 0 30px;    
+            max-width: calc(100% - 200px);
+        }
+
+        .select-option {
+            margin-top: 0;
+            max-width: 500px;
+        }
     }
 
 
@@ -71,5 +136,24 @@ $color-pro-plan: #3ea9f5;
     }
     button.hidden{
         opacity: 0;
+    }
+}
+
+.small{
+    display:none;
+}
+.big{
+    display:block;
+}
+/** **/
+@media (max-width: 1199px) {
+    .small{
+        display:block;
+        .installation-options{
+            display: block;
+        }
+    }
+    .big{
+        display:none;
     }
 }

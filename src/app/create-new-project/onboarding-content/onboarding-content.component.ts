@@ -242,7 +242,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   private checkPrevButton(){
-    if(this.activeTypeStepNumber == 0 || (this.activeTypeStepNumber == 1 && this.arrayOfSteps[0] === TYPE_STEP.NAME_PROJECT)){
+    // || (this.activeTypeStepNumber == 1 && this.arrayOfSteps[0] === TYPE_STEP.NAME_PROJECT)
+    if(this.activeTypeStepNumber == 0){
       this.DISABLED_PREV_BUTTON = true;
     } else {
       this.DISABLED_PREV_BUTTON = false
@@ -503,18 +504,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   segment(pageName, trackName, trackAttr){
-    //"attribute_name": "solution",
     console.log('segment::: ', trackAttr);
     if (!isDevMode()) {
-      // let  trackAttr = {
-      //   "projectId": this.projectID,
-      //   "projectName": this.projectName,
-      //   "userId": this.user._id,
-      //   "username": this.user.firstname + ' ' + this.user.lastname,
-      //   "chatbot": attributes.chatbot,
-      //   "faq": attributes.faq,
-      //   "agent": attributes.agent
-      // };
       try {
         window['analytics'].page(pageName, {
         });
