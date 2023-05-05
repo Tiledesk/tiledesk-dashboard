@@ -37,7 +37,7 @@ export class QuestionComponent implements OnInit, OnChanges {
   }
 
   addQuestion() {
-    this.logger.log('[INTENT-QUESTION] ADD QUESTION new question', this.newQuestion)
+    console.log('[INTENT-QUESTION] ADD QUESTION new question', this.newQuestion, this.intentSelected)
     this.questions_array.push(this.newQuestion)
     this.logger.log('[INTENT-QUESTION] ADD QUESTION questions_array ', this.questions_array)
     const questionArrayJoinedWithNewLine = this.questions_array.join('\n')

@@ -31,7 +31,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   @Input() eventUpadatedIntent: Observable<any>;
   @Input() eventCreateIntent: Observable<any>;
   actions: Array<any>
-  question: any
+  question: any = ""
   answer: string;
   webhook_enabled: boolean;
   displayActions: boolean = true
@@ -55,6 +55,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.listenToIntentUpdates();
+    console.log('intente sekectttttt-->', this.intentSelected)
     // this.actions = this.intentSelected.actions
   }
 
@@ -86,6 +87,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log('intente sekectttttt--> ngOnChanges', this.intentSelected)
     // console.log('----> ngOnChanges:::: ' , changes);
     // clicking the delete action does NOT open the panel intent detail !!!
     if(!this.isIntentElementSelected){
@@ -154,8 +156,8 @@ export class PanelIntentComponent implements OnInit, OnChanges {
         this.question = this.intentSelected.question;
         // console.log('[PANEL INTENT] (ngOnChanges) question: ', this.question);
       } else {
-        this.question = this.intentSelected.question;
-        // console.log('[PANEL INTENT] (ngOnChanges) - else - question: ', this.question);
+        // this.question = this.intentSelected.question;
+        console.log('[PANEL INTENT] (ngOnChanges) - else - question: ', this.question);
       }
       // if (this.HAS_SELECTED_QUESTION) {
       //   this.onSelectQuestion()
@@ -208,6 +210,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     // this.HAS_SELECTED_QUESTION = true
     // this.HAS_SELECTED_FORM = false
     // this.HAS_SELECTED_ACTION = false
+    console.log('onSelectQuestion-->', elementSelected, this.question)
     this.questionSelected.emit(this.question);
     // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
     // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)

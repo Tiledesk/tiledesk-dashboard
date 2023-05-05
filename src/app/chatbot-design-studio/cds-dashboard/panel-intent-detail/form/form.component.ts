@@ -216,7 +216,7 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   jsonGenerator() {
-    this.logger.log('[FORM-COMP] jsonGenerator this.intentForm:: ', this.intentForm);
+    console.log('[FORM-COMP] jsonGenerator this.intentForm:: ', this.intentForm);
     //this.intentSelected.form = this.intentForm;
     this.passJsonIntentForm.emit(this.intentForm);
     // this.logger.log('[FORM-COMP] jsonGenerator this.intentSelected:: ', this.intentSelected);

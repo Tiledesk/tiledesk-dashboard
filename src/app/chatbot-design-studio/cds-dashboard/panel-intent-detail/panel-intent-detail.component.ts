@@ -43,7 +43,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
       this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
       // this.elementSelected = this.elementIntentSelected.element;
       this.elementIntentSelectedType = this.elementIntentSelected.type;
-      this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) elementIntentSelectedType ', this.elementIntentSelectedType);
+      console.log('[PANEL-INTENT-DETAIL] (OnInit) elementIntentSelectedType ', this.elementIntentSelectedType);
       this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) elementSelected ', this.elementSelected);
     } catch (error) {
       this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) ERROR', error);
@@ -52,16 +52,20 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.elementIntentSelected);
-    // this.elementIntentSelectedType = this.elementIntentSelected.type;
-    // this.elementSelected = this.elementIntentSelected.element;
-    // this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
-    this.elementSelectedIndex = this.elementIntentSelected.index
-    this.elementSelectedMaxLength = [...Array(this.elementIntentSelected.maxLength).keys()]
-    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
-    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
-    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
-    
-    console.log('intentSelected ------> ', this.intentSelected);
+    try{
+      this.elementIntentSelectedType = this.elementIntentSelected.type;
+      this.elementSelected = this.elementIntentSelected.element;
+      this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
+      this.elementSelectedIndex = this.elementIntentSelected.index
+      this.elementSelectedMaxLength = [...Array(this.elementIntentSelected.maxLength).keys()]
+      this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
+      this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
+      this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
+      
+    }catch(error){
+      this.logger.log('[PANEL-INTENT-DETAIL] (ngOnChanges) ERROR', error);
+    }
+    console.log('intentSelected ------> ', this.intentSelected, this.elementIntentSelectedType);
   }
   // EVENT FUNCTIONS //
 
@@ -106,16 +110,16 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   // }
 
   passJsonIntentForm(intentForm) {
-    this.logger.log('[PANEL-INTENT-DETAIL] passJsonIntentForm ', intentForm);
-    // if(json && json.fields && json.fields.length>0){
-    //   // this.intentForm = json;
-    // }
+    console.log('[PANEL-INTENT-DETAIL] passJsonIntentForm ', intentForm);
+    if(intentForm && intentForm.fields && intentForm.fields.length>0){
+      this.intentSelected.form = intentForm;
+    }
     
-    console.log("passJsonIntentForm:::: ", this.intentSelected);
   }
 
 
   onUpdateIntentForm(intentForm) {
+    console.log("onUpdateIntentForm:::: ", this.intentSelected, intentForm);
     this.intentSelected.form = intentForm;
   }
 
@@ -133,8 +137,6 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
       this.intentSelected.actions[this.elementSelectedIndex] = this.elementSelected;
     } else if(this.elementIntentSelectedType === this.typeIntentElement.ANSWER){
       this.intentSelected.answer = this.elementSelected;
-    } else if(this.elementIntentSelectedType === this.typeIntentElement.FORM){
-      this.intentSelected.form = this.elementSelected;
     } else if(this.elementIntentSelectedType === this.typeIntentElement.QUESTION){
       this.intentSelected.question = this.elementSelected;
     }
