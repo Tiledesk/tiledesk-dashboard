@@ -182,14 +182,33 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private initialize(){
     this.translateY = 'translateY(0px)';
     this.activeQuestionNumber = 0;
-    this.loadJsonOnboardingConfig();
+
+    let lang = "en";
+    if(this.translate.currentLang){
+      lang = this.translate.currentLang;
+    }
+    let onboardingConfig = '../assets/config/onboarding-config-'+lang+'.json';
+    //console.log('onboardingConfig:: ', onboardingConfig, lang);
+    this.checkFileExists(onboardingConfig).then(result => {
+      if(result === false){
+        onboardingConfig = '../assets/config/onboarding-config.json';
+      }
+      this.loadJsonOnboardingConfig(onboardingConfig);
+      //console.log('onboardingConfig:: result', result);
+    });
+
+    
     if(!this.projectName){
       this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
     }
   }
 
-  private loadJsonOnboardingConfig(){
-    let onboardingConfig = 'assets/config/onboarding-config.json';
+  private loadJsonOnboardingConfig(onboardingConfig){
+    // let lang = "en";
+    // if(this.translate.currentLang){
+    //   lang = this.translate.currentLang;
+    // }
+    // let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
       let jsonString = JSON.stringify(data);
@@ -210,6 +229,14 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       }
       this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE, TYPE_STEP.WIDGET_INSTALLATION);
     });
+  }
+
+  private checkFileExists(fileName: string): Promise<boolean> {
+    const url = `assets/${fileName}`;
+    return this.httpClient.get(url, { responseType: 'json' })
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 
   private nextNumberStep(){
@@ -363,7 +390,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.DISPLAY_SPINNER = false;
       this.logger.error('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - POST REQUEST - ERROR ', error);
     }, () => {
-      console.log('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
+      // console.log('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
       this.projectService.newProjectCreated(true);
       const trialStarDate = moment(new Date(this.newProject.createdAt)).format("YYYY-MM-DD hh:mm:ss")
       const trialEndDate = moment(new Date(this.newProject.createdAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
@@ -461,7 +488,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     }, error => {
       console.log('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - ERROR ', error)
     }, () => {
-      console.log('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - COMPLETE')
+      // console.log('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - COMPLETE')
     });
   }
 
@@ -504,7 +531,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   segment(pageName, trackName, trackAttr){
-    console.log('segment::: ', trackAttr);
+    // console.log('segment::: ', trackAttr);
     if (!isDevMode()) {
       try {
         window['analytics'].page(pageName, {
@@ -551,7 +578,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.DISPLAY_SPINNER = false;
         this.CREATE_BOT_ERROR = true;
       }, () => {
-        console.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
+        // console.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
       });
   }
 
@@ -570,7 +597,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.DISPLAY_SPINNER = false;
       this.CREATE_BOT_ERROR = true;
     }, () => {
-      console.log('[BOT-CREATE --->  DEPTS RES - COMPLETE')
+      // console.log('[BOT-CREATE --->  DEPTS RES - COMPLETE')
     });
   }
 
@@ -578,14 +605,14 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   // ----------------- 3 : ASSIGN BOT TO THE DEFAULT DEPARTMENT  ------------------------ //
   hookBotToDept(departmentId) {
     this.departmentService.updateExistingDeptWithSelectedBot(departmentId, this.botId).subscribe((res) => {
-      console.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+      // console.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
       this.callback('hookBotToDept', res);
     }, (error) => {
       this.logger.error('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
       this.DISPLAY_SPINNER = false;
       this.CREATE_BOT_ERROR = true;
     }, () => {
-      console.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
+      // console.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
     });
   }
 
@@ -621,7 +648,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.faqService.uploadFaqCsv(formData)
       .subscribe(data => {
         // console.log('uploadFaqCsv()::: ', data);
-        console.log('[TILEBOT] UPLOAD CSV DATA ', data);
+        // console.log('[TILEBOT] UPLOAD CSV DATA ', data);
         if (data['success'] === true) {
           // this.callback('uploadFaqCsv');
           this.callback('uploadFaqFromCSV');
@@ -634,7 +661,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.DISPLAY_SPINNER = false;
         this.CREATE_FAQ_ERROR = true;
       }, () => {
-        console.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
+        // console.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
         // setTimeout(() => {
         //   this.DISPLAY_SPINNER_SECTION = false;
         //   this.DISPLAY_SPINNER = false;

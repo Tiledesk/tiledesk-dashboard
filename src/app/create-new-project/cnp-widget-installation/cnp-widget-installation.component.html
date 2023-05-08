@@ -50,7 +50,7 @@
     <div width="100%" class="small">
         <div class="installation-options">
 
-            <label id="downshift-0-label" for="downshift-0-toggle-button" class="css-1l2qnpu e144t2b02">Select platform</label>
+            <label>Select platform</label>
             <ng-select class="select-option" 
                 [clearable]="false" 
                 bindLabel="label" 
@@ -58,8 +58,9 @@
                 [searchable] = false
                 groupBy="type"
                 [placeholder]="LABEL_PLACEHOLDER" 
+                [(ngModel)]="selectedPlatform"
                 (change)="onSelected($event)">
-                <ng-option *ngFor="let option of options" 
+                <ng-option *ngFor="let option of options"
                     [value]="option.value">
                     <img src="{{option.image}}" width="20px" height="20px"/>
                     {{ option.label }}

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
- 
+import { HttpClient } from "@angular/common/http";
+
 @Component({
   selector: 'appdashboard-sidebar-claims',
   templateUrl: './sidebar-claims.component.html',
@@ -16,7 +17,9 @@ export class SidebarClaimsComponent implements OnInit {
  
 
 
-  constructor() { 
+  constructor(
+    private httpClient: HttpClient
+  ) { 
     // is empty
   }
 
@@ -28,15 +31,7 @@ export class SidebarClaimsComponent implements OnInit {
       { stars: 5, message: 'The best open source live chat, especially with its bot replies',  author:'Peter X.', role:'Co-Founder'},
       { stars: 5, message: 'Great system with lots of features',  author:'Richard M.', role:'CTO'}
     ];
-    this.claimVisible = 0;
-    this.stars = Array(this.claims[this.claimVisible].stars);
-    if(this.claims.length > 1 ){
-      this.id = setInterval(() => {
-        this.randomClaim(); 
-      }, 10000);
-    }
-   
-    
+    this.loadJsonClaim();
   }
   ngOnDestroy() {
     if (this.id) {
@@ -44,6 +39,31 @@ export class SidebarClaimsComponent implements OnInit {
     }
   }
 
+  private loadJsonClaim(){
+    let onboardingConfig = 'assets/config/onboarding-claims.json';
+    let jsonSteps: any;
+    this.httpClient.get(onboardingConfig).subscribe(data => {
+      let jsonString = JSON.stringify(data);
+      let jsonParse = JSON.parse(jsonString);
+      if (jsonParse) {
+        //jsonSteps = jsonParse['claims'];
+        jsonParse.forEach(claim => {
+          this.claims.push(claim);
+        });
+        this.setClaims();
+      }
+    });
+  }
+
+  setClaims(){
+    this.claimVisible = 0;
+    this.stars = Array(this.claims[this.claimVisible].stars);
+    if(this.claims.length > 1 ){
+      this.id = setInterval(() => {
+        this.randomClaim(); 
+      }, 10000);
+    }
+  }
   /** */
   randomClaim(){
     let arrayIndex = Array.from(Array(this.claims.length).keys());

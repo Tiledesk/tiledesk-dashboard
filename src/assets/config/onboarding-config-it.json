@@ -1,0 +1,100 @@
+{
+    "steps":[
+      {
+        "title": "IT Tell us more before starting, so we can personalise your experience ${userFullname}",
+        "buttons": {
+          "back": "Go back",
+          "next": "Continue"
+        },
+        "questions": [
+          {
+            "title": "What’s your industry?",
+            "attribute_name": "company_industry",
+            "type": "select",
+            "labels": {
+              "placeholder":"Please choose..."
+            },
+            "options": [
+              {"label": "Software & Technology", "value": "software_technology"},
+              {"label": "Tourism", "value": "tourism"},
+              {"label": "Food & Beverage", "value": "food_beverage"},
+              {"label": "Agency & Consulting", "value": "agency_consulting"},
+              {"label": "Healthcare", "value": "healthcare"},
+              {"label": "Legal Services", "value": "legal_services"},
+              {"label": "Financial Services", "value": "financial_services"},
+              {"label": "Retail & E-commerce", "value": "retail_ecommerce"},
+              {"label": "Other", "value": "other"}
+            ]
+          },
+          {
+            "title": "How many people work with you?",
+            "type": "select",
+            "attribute_name": "company_size",
+            "labels": {
+              "placeholder":"Please choose..."
+            },
+            "options": [
+              {"label": "0", "value": "0"},
+              {"label": "1-10", "value": "1-10"},
+              {"label": "11-50", "value": "11-50"},
+              {"label": "51-200", "value": "51-200"},
+              {"label": "201-1000", "value": "201-1000"},
+              {"label": "1000+", "value": "1000+"}
+            ]
+          },
+          {
+            "title": "How did you discover Tiledesk?",
+            "type": "select",
+            "attribute_name": "acquisition_source",
+            "labels": {
+              "placeholder":"Please choose..."
+            },
+            "options": [
+              {"label": "Search Engines", "value": "search_engines"},
+              {"label": "Social Media (LinkedIn, Facebook, Instagram, etc.)", "value": "social_media"},
+              {"label": "Friends or colleagues", "value": "friends_colleagues"},
+              {"label": "Third party websites / blogs / videos", "value": "third_party_websites_blogs_videos"},
+              {"label": "Other", "value": "other"}
+            ]
+          }
+        ]
+      }, 
+  
+      {
+        "title": "${userFullname} thank you 🙏 Last questions before starting...",
+        "buttons": {
+          "back": "Go back",
+          "next": "Continue"
+        },
+        "questions": [
+          {
+            "title": "What’s your main goal with Tiledesk?",
+            "type": "button",
+            "attribute_name": "use_case",
+            "buttons": [
+              {"icon":"💰", "label": "Solve customer problems", "value": "solve_customer_problems"},
+              {"label": "Increase online sales", "value": "increase_online_sales"}
+            ]
+          },
+          {
+            "title": "How do you want to reach your goal?",
+            "type": "button",
+            "attribute_name": "solution",
+            "buttons": [
+              {"icon":"🤖", "label": "I want to talk to customers", "value": "want_to_talk_to_customers"},
+              {"icon":"💬", "label": "I want to automate conversations", "value": "want_to_automate_conversations"}
+            ]
+          },
+          {
+            "title": "Which channel most interests you?",
+            "type": "button",
+            "attribute_name": "solution_channel",
+            "buttons": [
+              {"icon":"🙌", "label": "Web / Mobile", "value": "web_mobile"},
+              {"icon":"💰", "label": "WhatsApp / FB Messenger", "value": "whatsapp_fb_messenger"}
+            ]
+          }
+        ]
+      }
+    ]
+}
