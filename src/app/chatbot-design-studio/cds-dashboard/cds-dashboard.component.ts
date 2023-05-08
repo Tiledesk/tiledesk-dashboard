@@ -89,6 +89,7 @@ export class CdsDashboardComponent implements OnInit {
 
   popup_visibility: string = 'none'
 
+  isBetaUrl: boolean = true;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -134,6 +135,10 @@ export class CdsDashboardComponent implements OnInit {
     this.getDeptsByProjectId();
     this.hideShowWidget('show');
     this.getOSCODE();
+
+    if(window.location.href.includes('beta')){
+      this.isBetaUrl = true
+    }
   }
 
 

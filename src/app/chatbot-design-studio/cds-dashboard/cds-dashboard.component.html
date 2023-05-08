@@ -29,7 +29,13 @@
         <!-- <i class="material-icons cds-btn-back" (click)="goBack()">keyboard_arrow_left</i> -->
         <div class="header-title">{{ selectedChatbot?.name }}</div>
         <div class="right-opts">
-           
+            <div *ngIf="isBetaUrl">
+                <button class="btn btn-primary pull-right cds-blue-button cds-beta"
+                    type="button">
+                    BETA
+                </button>
+            </div>
+
             <div class="btn-group"  [ngStyle]="{'z-index':popup_visibility === 'block' ? '1051' : '1' }">
                 <button id="cds-publish-btn" class="btn btn-primary" type="button" style="margin-left: 14px;"
                     (click)="publish()">
