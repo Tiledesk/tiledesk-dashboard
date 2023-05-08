@@ -92,13 +92,21 @@ export class ActionWebRequestComponent implements OnInit {
     this.action.method = e;
   }
 
-  onChangeTextarea(e){
-    console.log('onChangeTextarea:', e);
-    this.jsonBody = e;
-    this.setActionWebRequest();
-    setTimeout(() => {
-      this.jsonIsValid = this.isValidJson(this.jsonBody);
-    }, 500);
+  onChangeTextarea(e, type: 'url' | 'jsonBody'){
+    this.logger.debug('onChangeTextarea:', e, type );
+    switch(type){
+      case 'jsonBody': {
+        this.jsonBody = e;
+        this.setActionWebRequest();
+        setTimeout(() => {
+          this.jsonIsValid = this.isValidJson(this.jsonBody);
+        }, 500);
+        break;
+      }
+      case 'url' : {
+        this.action.url = e
+      }
+    }
   }
 
   onChangeParamsButton(){

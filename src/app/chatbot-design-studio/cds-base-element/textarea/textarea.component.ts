@@ -19,7 +19,7 @@ export class CDSTextareaComponent implements OnInit {
   @Input() text: string = '';
   @Input() limitCharsText: number = TEXT_CHARS_LIMIT;
   // @Input() textMessage: string;
-  @Input() control: FormControl = new FormControl();
+  @Input() control: FormControl<string> = new FormControl();
   @Input() showUtils: boolean = true;
   @Input() emoijPikerBtn: boolean = true;
   @Input() setAttributeBtn: boolean = true;
@@ -97,7 +97,7 @@ export class CDSTextareaComponent implements OnInit {
   }
 
   onChangeTextArea(event) {
-    this.logger.log('[CDS-TEXAREA] onChangeTextarea-->', event);
+    this.logger.log('[CDS-TEXAREA] onChangeTextarea-->', event, this.readonly);
     this.calculatingleftCharsText();
     // console.log('onChangeTextarea!! ',event);
     if(this.readonly && event){

@@ -52,10 +52,6 @@
                     (clearSelectedAttribute)="onClearSelectedAttribute()"
                     (changeTextarea)="onChangeTextArea($event)">
                 </cds-textarea>
-                <cds-selected-variable *ngIf="conditionForm.value.operand2.type=='var'"
-                    [text]="conditionForm.value.operand2.name"
-                    (clearInput)="onClearInput(i)"
-                ></cds-selected-variable>
             </div>
         </section>
         <section class="submit">
