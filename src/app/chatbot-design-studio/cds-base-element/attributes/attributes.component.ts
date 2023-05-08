@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { TYPE_METHOD_ATTRIBUTE } from 'app/chatbot-design-studio/utils';
+import { LoggerService } from 'app/services/logger/logger.service';
 @Component({
   selector: 'cds-attributes',
   templateUrl: './attributes.component.html',
@@ -17,7 +18,7 @@ export class AttributesComponent implements OnInit {
 
   panelOpenState = true;
 
-  constructor() { }
+  constructor(private logger: LoggerService) { }
 
   ngOnInit(): void {
     // this.initialize();
@@ -61,6 +62,13 @@ export class AttributesComponent implements OnInit {
     }
   }
 
+  onChangeTextarea(event, index){
+    if(event){
+      this.newAttributes[index].value = event
+    }
+    this.setChangedAttributes();
+  }
+
   onChangeAttributes(attribute: any, index: number){
     let that = this;
     if(attribute.key.length>0 || attribute.value.length>0){
@@ -100,12 +108,34 @@ export class AttributesComponent implements OnInit {
     this.setChangedAttributes();
   }
   
-  onSelectedAttribute(variableSelected: {name: string, value: string}, index: number){
-    console.log('onSelectedAttribute:: ',variableSelected.value);
-    this.newAttributes[index].key = variableSelected.value;
-    if(!this.newAttributes[index].value){
-      this.newAttributes.push({key:"", value:""});
+  onSelectedAttribute(variableSelected: {name: string, value: string}, index: number, type: "key" | "value"){
+    this.logger.log('onSelectedAttribute:: ',variableSelected.value, "type::", type);
+    switch(type){
+      case 'key': {
+        this.newAttributes[index].key = variableSelected.value;
+        if(!this.newAttributes[index].value){
+          this.newAttributes.push({key:"", value:""});
+        }
+        break;
+      }
+      case 'value':{
+        this.newAttributes[index].value += variableSelected.value;
+        if(!this.newAttributes[index].value){
+          this.newAttributes.push({key:"", value:""});
+        }
+        break;
+      }
+      default: {
+        this.newAttributes[index].key = variableSelected.value;
+        if(!this.newAttributes[index].value){
+          this.newAttributes.push({key:"", value:""});
+        }
+        break;
+      }
+      
     }
+
+    this.logger.log('[ATTRIBUTES] onSelectedAttribute: newAttributes', this.newAttributes)
     this.setChangedAttributes();
   }
 
