@@ -5,6 +5,23 @@ $width-card-tools: 160px;
 $margin-left-card: 30px;
 $margin-top-card: 30px;
 
+.beta-icon {
+  position: absolute;
+  background: #cc0700;
+  right: 0px;
+  top: 50px;
+  padding: 0 10px;
+  margin: auto;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 1;
+  color: white;
+  cursor: auto;
+}
+
 .chatboat-dashboard {
     background-color: rgb($bg-color-dark-rgb);
     position: relative;
@@ -267,6 +284,7 @@ $box-left-width: 250px;
           background-color: red;
           color: white;
           border: 1px solid red;
+          cursor: auto;
         }
     }
 }
