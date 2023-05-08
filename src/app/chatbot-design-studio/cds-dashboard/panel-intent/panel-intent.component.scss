@@ -25,6 +25,21 @@
   }
 }
 
+.button-intent-answer{
+  background-color: #425575;
+  color: #d2e3fc;
+  width: fit-content;
+  margin: 9px auto 2px;
+  border-radius: 30px;
+  padding: 8px 15px;
+  border: 3px solid #0f172a;
+  .material-icons {
+    width: 30px;
+    height: auto;
+    vertical-align: middle;
+  }
+}
+
 .button-intent-questions {
   background-color: rgb(66,85,117) !important;
   color: #d2e3fc !important;

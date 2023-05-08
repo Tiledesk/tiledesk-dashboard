@@ -38,25 +38,16 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
 
   HAS_SELECTED_TYPE = HAS_SELECTED_TYPE;
+  TYPE_ACTION = TYPE_ACTION;
+  ACTIONS_LIST = ACTIONS_LIST;
   form: Form;
   formSize: number;
   actions: Array<any>;
   question: any;
   answer: string;
   questionCount: number;
-
   // webhook_enabled: boolean;
   displayActions: boolean = true
-
-
-  // HAS_SELECTED_ANSWER = false
-  // HAS_SELECTED_QUESTION = false;
-  // HAS_SELECTED_FORM = false
-  // HAS_SELECTED_ACTION = false
-
-  TYPE_ACTION = TYPE_ACTION
-  ACTIONS_LIST = ACTIONS_LIST
-  
   // idSelected:  string;
   isDeleting: boolean = false;
 
@@ -100,103 +91,6 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges){
     this.setIntentSelected();
-    return;
-    // console.log('----> ngOnChanges:::: ' , changes);
-    // clicking the delete action does NOT open the panel intent detail !!!
-    if(!this.isIntentElementSelected){
-      this.idSelected = null;
-    }
-    // this.logger.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected', this.intentSelected);
-    // this.logger.log("[PANEL INTENT]  (ngOnChanges) - this.intentSelected > actions: ", this.intentSelected.actions);
-    // this.logger.log("[PANEL INTENT] (ngOnChanges) - this.intentSelected > actions length: ", this.intentSelected.actions.length);
-    // let elementsActive = Array.from(document.getElementsByClassName('cds-action-active'));
-    // this.logger.log('[PANEL INTENT] (ngOnChanges) - elementsActive', elementsActive);
-    // this.logger.log('[PANEL INTENT] (ngOnChanges) - elementsActive length ', elementsActive.length);
-    
-    // this.HAS_SELECTED_FORM = false;
-    // if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
-    //   // this.logger.log('[PANEL INTENT] (ngOnChanges) - this.intentSelected Exist actions', this.intentSelected.actions[0])
-    //   setTimeout(() => {
-    //     const actionElement = <HTMLElement>document.querySelector(`#action_0`);
-    //     // this.logger.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
-    //     if (actionElement) {
-    //       actionElement.classList.add("cds-action-active");
-    //     }
-    //   }, 200);
-    // }
-
-    if (changes.intentSelected) {
-      // console.log('----> 1:::: ' , changes.intentSelected);
-      // if (changes.intentSelected.currentValue['actions'] && changes.intentSelected.currentValue['actions'].length > 0) {
-      //   setTimeout(() => {
-      //     const actionElement = <HTMLElement>document.querySelector(`#action_0`);
-      //     if (actionElement) {
-      //       actionElement.classList.add("cds-action-active");
-      //     }
-      //   }, 200);
-      // }
-
-      if (changes.intentSelected.firstChange === false) {
-        // console.log('----> 2:::: firstChange' );
-        this.idSelected = null; 
-        if (changes.intentSelected.previousValue._id !== changes.intentSelected.currentValue._id) {
-          // this.HAS_SELECTED_ANSWER = false
-          // this.HAS_SELECTED_QUESTION = false
-          // this.HAS_SELECTED_FORM = false
-          // this.HAS_SELECTED_ACTION = false
-          // this.idSelected = null; 
-        }
-      }
-
-    }
-
-    if (this.intentSelected) {
-      // console.log('----> 3:::: intentSelected', this.intentSelected );
-      // this.logger.log('[PANEL INTENT] (ngOnChanges) intentSelected', this.intentSelected);
-      this.patchAllActionsId();
-      this.form = this.intentSelected.form;
-      this.actions = this.intentSelected.actions;
-      this.answer = this.intentSelected.answer;
-      // this.webhook_enabled = this.intentSelected.webhook_enabled;
-      // this.logger.log('[PANEL INTENT] (ngOnChanges) actions', this.actions);
-      if (this.intentSelected && this.intentSelected.question) {
-        // const question_segment = this.intentSelected.question.split(\n);
-        // https://bobbyhadz.com/blog/javascript-split-string-by-newline
-        const question_segment = this.intentSelected.question.split(/\r?\n/).filter(element => element);
-        // console.log('[PANEL INTENT] question_segment', question_segment);
-        this.questionCount = question_segment.length;
-        // console.log('[PANEL INTENT] (ngOnChanges) questionCount: ', this.questionCount);
-        this.question = this.intentSelected.question;
-        // console.log('[PANEL INTENT] (ngOnChanges) question: ', this.question);
-      } else {
-        // this.question = this.intentSelected.question;
-        console.log('[PANEL INTENT] (ngOnChanges) - else - question: ', this.question);
-      }
-      // if (this.HAS_SELECTED_QUESTION) {
-      //   this.onSelectQuestion()
-      // }
-      // this.logger.log('[PANEL INTENT] (ngOnChanges) answer: ', this.answer);
-      // if (this.HAS_SELECTED_ANSWER) {
-      //   this.onSelectAnswer()
-      // }
-      if (this.form && this.form !== undefined) {
-        this.formSize = Object.keys(this.form).length;
-      } else {
-        this.formSize = 0;
-      }
-      // this.logger.log('[PANEL INTENT] (ngOnChanges) form: ', this.form);
-      // this.logger.log('[PANEL INTENT] (ngOnChanges) form size: ', this.formSize);
-      // if (this.HAS_SELECTED_ANSWER) {
-      //   this.onSelectAnswer()
-      // }
-      // this.logger.log('[PANEL INTENT] webhook_enabled: ', this.webhook_enabled);
-    } else {
-      // console.log('----> 4:::: ELSE intentSelected', this.intentSelected );
-      // this.logger.log('[PANEL INTENT] actions - OPS! intentSelected ', this.intentSelected)
-    }
-    // this.logger.log('[PANEL INTENT] actions', this.actions)
-    // this.logger.log('[PANEL INTENT] intentSelected', this.intentSelected)
-    // this.logger.log('[PANEL INTENT] *** ->  isOpenActionDrawer', this.isOpenActionDrawer)
   }
 
   
@@ -208,7 +102,6 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     this.answer = null;
     this.question = null;
     this.questionCount = 0;
-    // this.idSelected = null; 
     console.log('PanelIntentComponent ngOnChanges-->', this.idSelected);
     try {
       if (this.intentSelected) {
@@ -315,13 +208,12 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   }
 
 
-  displayForm(elementSelected) {
+  onDisplayForm(elementSelected) {
     // this.HAS_SELECTED_ANSWER = false
     // this.HAS_SELECTED_QUESTION = false
     // this.HAS_SELECTED_FORM = true
     // this.HAS_SELECTED_ACTION = false
     // this.logger.log('[PANEL INTENT] displayForm HAS_SELECTED_FORM ', this.HAS_SELECTED_FORM)
-
     // let activeElements = Array.from(document.getElementsByClassName('cds-action-active'));
     // this.logger.log('[PANEL INTENT] activeElements', activeElements)
     // activeElements.forEach((activeElement) => {
@@ -333,10 +225,8 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     if (this.intentSelected && !this.intentSelected.form) {
       let newForm = new Form()
       this.intentSelected.form = newForm;
-
     }
     this.intentForm.emit(this.intentSelected.form);
-
   }
 
   onDeleteAction(actionindex) {

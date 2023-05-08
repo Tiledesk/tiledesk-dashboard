@@ -41,7 +41,6 @@ export class QuestionComponent implements OnInit {
     this.logger.log('[INTENT-QUESTION] ADD QUESTION questions_array ', this.questions_array);
     const questionArrayJoinedWithNewLine = this.questions_array.join('\n');
     this.question = questionArrayJoinedWithNewLine.toString();
-    // this.intentSelected.question = questionArrayJoinedWithNewLine.toString();
     this.newQuestion = '';
     this.updateIntentSelected.emit(this.question);
   }
@@ -51,7 +50,6 @@ export class QuestionComponent implements OnInit {
     this.logger.log('[INTENT-QUESTION] REMOVE QUESTION questions_array ', this.questions_array);
     const questionArrayJoinedWithNewLine = this.questions_array.join('\n');
     this.question = questionArrayJoinedWithNewLine.toString();
-    // this.intentSelected.question = questionArrayJoinedWithNewLine.toString();
     this.updateIntentSelected.emit(this.question);
   }
 
@@ -66,13 +64,13 @@ export class QuestionComponent implements OnInit {
     this.logger.log('[INTENT-QUESTION] onChangeText EDITED questions_array ', this.questions_array)
     this.logger.log('[INTENT-QUESTION] onChangeText EDITED questions_array questionArrayJoinedWithNewLine', questionArrayJoinedWithNewLine)
     this.logger.log('[INTENT-QUESTION] onChangeText EDITED questions_array questionArrayJoinedWithNewLine TO STRING', questionArrayJoinedWithNewLine.toString())
-    // this.intentSelected.question = questionArrayJoinedWithNewLine.toString();
     this.question = questionArrayJoinedWithNewLine.toString();
     this.updateIntentSelected.emit(this.question);
   }
 
-  // trackByIndex(index: number, obj: any): any {
-  //   return index;
-  // }
+  // serve per mantenere il focus nel campo input mentre si edita un valore
+  trackByIndex(index: number, obj: any): any {
+    return index;
+  }
 
 }

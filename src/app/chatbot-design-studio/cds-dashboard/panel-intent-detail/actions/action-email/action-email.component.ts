@@ -11,12 +11,11 @@ import { LoggerService } from 'app/services/logger/logger.service';
 export class ActionEmailComponent implements OnInit, OnChanges {
 
   @Input() action: ActionEmail;
- 
 
   email_error: boolean = false;
-  public actionTo: string = ''
-  public actionSubject: string = ''
-  public actionBody: string = ''
+  actionTo: string = ''
+  actionSubject: string = ''
+  actionBody: string = ''
 
   // isOpenSetAttributesPanel: boolean = false
   // intents = ['uno', 'due', 'tre'];

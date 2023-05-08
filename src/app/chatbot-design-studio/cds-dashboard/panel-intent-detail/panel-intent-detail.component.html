@@ -62,16 +62,12 @@
                     <cds-action-intent *ngSwitchCase="typeAction.INTENT"
                         class="panel-response"
                         [action]="elementSelected"
-                        [intents]="listOfActions"
-                        [showSpinner] = "showSpinner"
-                        (openButtonPanel) = onOpenButtonPanel($event)>
+                        [intents]="listOfActions">
                     </cds-action-intent>
             
                     <cds-action-email *ngSwitchCase="typeAction.EMAIL"
                         class="panel-response"
-                        [action]="elementSelected"
-                        [showSpinner] = "showSpinner"
-                        (openButtonPanel) = onOpenButtonPanel($event)>
+                        [action]="elementSelected">
                     </cds-action-email>
                 
                     <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
@@ -138,8 +134,7 @@
             <appdashboard-form 
                 [intentForm]="elementSelected" 
                 [intentSelected]="intentSelected" 
-                (updateIntentForm)="onUpdateIntentForm($event)"
-                (passJsonIntentForm)="passJsonIntentForm($event)">
+                (updateIntentForm)="onUpdateFormIntentSelected($event)">
             </appdashboard-form>
         </div>
     

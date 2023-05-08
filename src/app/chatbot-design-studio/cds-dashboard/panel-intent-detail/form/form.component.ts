@@ -23,7 +23,7 @@ export interface ModalDeleteModel {
 export class FormComponent implements OnInit, OnChanges {
   @ViewChild('scrollMe', { static: false }) scrollContainer: ElementRef;
 
-  @Output() passJsonIntentForm = new EventEmitter();
+  // @Output() passJsonIntentForm = new EventEmitter();
   @Output() updateIntentForm = new EventEmitter();
   @Input() intentForm: Form;
   @Input() intentSelected: Intent;
@@ -77,21 +77,17 @@ export class FormComponent implements OnInit, OnChanges {
     console.log('intentForm::::: ', this.intentForm);
     this.logger.log('[FORM-COMP] (OnInit) intentSelected ', this.intentSelected)
     this.logger.log('[FORM-COMP] (OnInit) intentForm ', this.intentForm)
-
     let modelsFactory = new FormModelsFactory()
     this.modelsOfForm = modelsFactory.getModels();
     this.selectedForm = this.modelsOfForm[0];
     this.selectedFormId = this.modelsOfForm[0].id ? this.modelsOfForm[0].id : null;
-
     this.logger.log('[FORM-COMP] (OnInit) selectedForm ', this.selectedForm)
     this.logger.log('[FORM-COMP] (OnInit) modelsOfForm ', this.modelsOfForm)
     this.logger.log('[FORM-COMP] (OnInit) selectedFormId ', this.selectedFormId)
-
     this.getCurrentTranslation();
     this.translateMap = {};
     this.translations = {};
     this.intentFormSize = Object.keys(this.intentForm).length;
-    
     if (this.intentFormSize > 0) {
       this.displayNewFormButton = false;
       this.displaySettingsButton = true;
@@ -217,8 +213,8 @@ export class FormComponent implements OnInit, OnChanges {
 
   jsonGenerator() {
     console.log('[FORM-COMP] jsonGenerator this.intentForm:: ', this.intentForm);
-    //this.intentSelected.form = this.intentForm;
-    this.passJsonIntentForm.emit(this.intentForm);
+    // this.intentSelected.form = this.intentForm;
+    this.updateIntentForm.emit(this.intentForm);
     // this.logger.log('[FORM-COMP] jsonGenerator this.intentSelected:: ', this.intentSelected);
     // console.log('jsonGenerator form::: ', this.intentSelected);
   }
@@ -410,6 +406,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.intentForm.fields = fields;
     this.fields = fields;
     this.updateIntentForm.emit(this.intentForm);
+    //this.updateIntentForm.emit(this.intentForm);
     this.closeAddEditForm();
     this.selectedField = null;
   }

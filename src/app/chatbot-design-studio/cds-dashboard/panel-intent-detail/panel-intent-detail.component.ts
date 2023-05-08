@@ -27,25 +27,17 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   elementSelectedIndex: number;
   elementSelectedMaxLength: number[] = [];
   elementIntentSelectedType: string;
-
-
-  // updateQuestionsIntentSelected: string = "";
-  // updateAnswerIntentSelected: string = "";
   openCardButton = false;
-  // buttonSelected: Button;
 
   constructor(
     private logger: LoggerService
   ) { }
 
   ngOnInit(): void {
-    console.log('elementIntentSelected: ', this.elementIntentSelected);
-    console.log('intentSelected: ', this.intentSelected);
+    this.logger.log('[PANEL-INTENT-DETAIL] (ngOnInit) @Input elementIntentSelected ', this.elementIntentSelected);
     try {
       this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
-      // this.elementSelected = this.elementIntentSelected.element;
       this.elementIntentSelectedType = this.elementIntentSelected.type;
-      console.log('[PANEL-INTENT-DETAIL] (OnInit) elementIntentSelectedType ', this.elementIntentSelectedType);
       this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) elementSelected ', this.elementSelected);
     } catch (error) {
       this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) ERROR', error);
@@ -63,11 +55,9 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
       this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
       this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
       this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
-      
     }catch(error){
       this.logger.log('[PANEL-INTENT-DETAIL] (ngOnChanges) ERROR', error);
     }
-    console.log('intentSelected ------> ', this.intentSelected, this.elementIntentSelectedType);
   }
   // EVENT FUNCTIONS //
 
@@ -89,14 +79,14 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
 
 
   /** appdashboard-intent: Open button panel */
-  onOpenButtonPanel(event) {
-    this.logger.log('onOpenButtonPanel :: ', event);
-    // if (this.openCardButton === true) {
-    //   this.onCloseButtonPanel();
-    // }
-    // this.buttonSelected = event;
-    // this.openCardButton = true;
-  }
+  // onOpenButtonPanel(event) {
+  //   this.logger.log('onOpenButtonPanel :: ', event);
+  //   // if (this.openCardButton === true) {
+  //   //   this.onCloseButtonPanel();
+  //   // }
+  //   // this.buttonSelected = event;
+  //   // this.openCardButton = true;
+  // }
 
   
   /** appdashboard-button-configuration-panel: Save button */
@@ -111,38 +101,33 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   //   this.openCardButton = false;
   // }
 
-  passJsonIntentForm(intentForm) {
-    console.log('[PANEL-INTENT-DETAIL] passJsonIntentForm ', intentForm);
-    if(intentForm && intentForm.fields && intentForm.fields.length>0){
-      this.intentSelected.form = intentForm;
-    }
-    
-  }
+  // passJsonIntentForm(intentForm) {
+  //   console.log('[PANEL-INTENT-DETAIL] passJsonIntentForm ', intentForm);
+  //   if(intentForm && intentForm.fields && intentForm.fields.length>0){
+  //     this.intentSelected.form = intentForm;
+  //   }
+  // }
 
+  onUpdateFormIntentSelected($event){
+    this.elementSelected = $event;
+    // console.log("onUpdateFormIntentSelected:::: ", $event);
+  }
 
   onUpdateAnswerIntentSelected($event){
     this.elementSelected = $event;
-    console.log("updateAnswerIntentSelected:::: ", $event);
+    // console.log("updateAnswerIntentSelected:::: ", $event);
   }
 
   onUpdateQuestionsIntentSelected($event){
     this.elementSelected = $event;
-    console.log("onUpdateQuestionsIntentSelected:::: ", $event);
-  }
-
-  onUpdateIntentForm(intentForm) {
-    console.log("onUpdateIntentForm:::: ", this.intentSelected, intentForm);
-    this.intentSelected.form = intentForm;
+    // console.log("onUpdateQuestionsIntentSelected:::: ", $event);
   }
 
   onClickInside(){
+    console.log("----> onClickInside:::: ");
     this.clickedInsidePanelIntentDetail.emit();
   }
 
-  // onChangeAnswer(event){
-  //   console.log('onChangeAnswer:: ', event);
-  //   this.elementSelected = event;
-  // }
 
   onSaveIntent(){
     if(this.elementIntentSelectedType === this.typeIntentElement.ACTION){
@@ -151,13 +136,14 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
       this.intentSelected.answer = this.elementSelected;
     } else if(this.elementIntentSelectedType === this.typeIntentElement.QUESTION){
       this.intentSelected.question = this.elementSelected;
+    } else if(this.elementIntentSelectedType === this.typeIntentElement.FORM){
+      this.intentSelected.form = this.elementSelected;
     }
     console.log('----> onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     this.closeAndSavePanelIntentDetail.emit(this.intentSelected);
   }
 
   onCloseIntent(){
-    // this.elementIntentSelected = null;
     console.log('----> onCloseIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     this.closeAndSavePanelIntentDetail.emit();
   }
