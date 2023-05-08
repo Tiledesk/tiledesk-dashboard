@@ -157,7 +157,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   }
 
   onCloseIntent(){
-    this.elementIntentSelected = null;
+    // this.elementIntentSelected = null;
     console.log('----> onCloseIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     this.closeAndSavePanelIntentDetail.emit();
   }
