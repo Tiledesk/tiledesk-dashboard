@@ -29,6 +29,8 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   elementIntentSelectedType: string;
 
 
+  // updateQuestionsIntentSelected: string = "";
+  // updateAnswerIntentSelected: string = "";
   openCardButton = false;
   // buttonSelected: Button;
 
@@ -118,6 +120,16 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   }
 
 
+  onUpdateAnswerIntentSelected($event){
+    this.elementSelected = $event;
+    console.log("updateAnswerIntentSelected:::: ", $event);
+  }
+
+  onUpdateQuestionsIntentSelected($event){
+    this.elementSelected = $event;
+    console.log("onUpdateQuestionsIntentSelected:::: ", $event);
+  }
+
   onUpdateIntentForm(intentForm) {
     console.log("onUpdateIntentForm:::: ", this.intentSelected, intentForm);
     this.intentSelected.form = intentForm;
@@ -127,10 +139,10 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
     this.clickedInsidePanelIntentDetail.emit();
   }
 
-  onChangeAnswer(event){
-    console.log('onChangeAnswer:: ', event);
-    this.elementSelected = event;
-  }
+  // onChangeAnswer(event){
+  //   console.log('onChangeAnswer:: ', event);
+  //   this.elementSelected = event;
+  // }
 
   onSaveIntent(){
     if(this.elementIntentSelectedType === this.typeIntentElement.ACTION){
@@ -140,11 +152,13 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
     } else if(this.elementIntentSelectedType === this.typeIntentElement.QUESTION){
       this.intentSelected.question = this.elementSelected;
     }
-    console.log('onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
+    console.log('----> onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     this.closeAndSavePanelIntentDetail.emit(this.intentSelected);
   }
 
   onCloseIntent(){
+    this.elementIntentSelected = null;
+    console.log('----> onCloseIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     this.closeAndSavePanelIntentDetail.emit();
   }
 

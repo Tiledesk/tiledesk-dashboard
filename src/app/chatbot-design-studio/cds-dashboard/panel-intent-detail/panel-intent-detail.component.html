@@ -23,7 +23,7 @@
         </cds-action-description>
         <cds-action-description 
             *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION"
-            [elementType]="elementSelected.QUESTION"
+            [elementType]="typeIntentElement.QUESTION"
             [showTip]="false"
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
@@ -129,7 +129,8 @@
 
         <div *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
             <appdashboard-question 
-                [intentSelected]="intentSelected">
+                [intentSelected]="intentSelected"
+                (updateIntentSelected)="onUpdateQuestionsIntentSelected($event)">
             </appdashboard-question>
         </div>
     
@@ -145,7 +146,7 @@
         <div *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">
             <appdashboard-answer
                 [intentSelected]="intentSelected"
-                (changeAnswer)="onChangeAnswer($event)">
+                (updateAnswerIntentSelected)="onUpdateAnswerIntentSelected($event)">
             </appdashboard-answer>
         </div>
 

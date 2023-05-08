@@ -1,51 +1,62 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Form, Intent } from '../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Observable, Subscription } from 'rxjs';
+// import { Observable, Subscription } from 'rxjs';
 import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 const swal = require('sweetalert');
+
+export enum HAS_SELECTED_TYPE {
+  ANSWER = "HAS_SELECTED_ANSWER",
+  QUESTION = "HAS_SELECTED_QUESTION",
+  FORM = "HAS_SELECTED_FORM",
+  ACTION = "HAS_SELECTED_ACTION",
+}
+
 @Component({
   selector: 'appdashboard-panel-intent',
   templateUrl: './panel-intent.component.html',
   styleUrls: ['./panel-intent.component.scss']
 })
 
-
 export class PanelIntentComponent implements OnInit, OnChanges {
+  @Input() idSelected: string;
   @Input() intentSelected: Intent;
   @Input() isIntentElementSelected: boolean = false;
   @Input() isOpenActionDrawer: boolean = false;
-  @Input() idSelected: string;
-  
+  // @Input() eventUpadatedIntent: Observable<any>;
+  // @Input() eventCreateIntent: Observable<any>;
   // @Input() events: Observable<any>;
-  private updatedIntentSubscription: Subscription;
+  // private updatedIntentSubscription: Subscription;
   @Output() openActionDrawer = new EventEmitter();
+  @Output() questionSelected = new EventEmitter();
   @Output() answerSelected = new EventEmitter();
   @Output() actionSelected = new EventEmitter();
   @Output() intentForm = new EventEmitter();
-  @Output() questionSelected = new EventEmitter();
   @Output() actionDeleted = new EventEmitter();
   @Output() dropAction = new EventEmitter();
 
-  @Input() eventUpadatedIntent: Observable<any>;
-  @Input() eventCreateIntent: Observable<any>;
-  actions: Array<any>
-  question: any = ""
-  answer: string;
-  webhook_enabled: boolean;
-  displayActions: boolean = true
+
+  HAS_SELECTED_TYPE = HAS_SELECTED_TYPE;
   form: Form;
   formSize: number;
+  actions: Array<any>;
+  question: any;
+  answer: string;
+  questionCount: number;
+
+  // webhook_enabled: boolean;
+  displayActions: boolean = true
+
 
   // HAS_SELECTED_ANSWER = false
-  // HAS_SELECTED_QUESTION = false
+  // HAS_SELECTED_QUESTION = false;
   // HAS_SELECTED_FORM = false
   // HAS_SELECTED_ACTION = false
 
   TYPE_ACTION = TYPE_ACTION
   ACTIONS_LIST = ACTIONS_LIST
-  questionCount: number;
+  
   // idSelected:  string;
   isDeleting: boolean = false;
 
@@ -54,9 +65,10 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    this.listenToIntentUpdates();
-    console.log('intente sekectttttt-->', this.intentSelected)
+    // this.listenToIntentUpdates();
+    console.log('PanelIntentComponent ngOnInit-->', this.intentSelected)
     // this.actions = this.intentSelected.actions
+    this.setIntentSelected();
   }
 
   private patchAllActionsId(){
@@ -70,24 +82,25 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     // console.log('patchAllActionsId:: ', this.actions);
   }
 
-  listenToIntentUpdates() {
-    this.eventUpadatedIntent.subscribe((intent: Intent) => {
-      this.logger.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
-      // this.intentSelected = intent; 
-    })
-  }
+  // listenToIntentUpdates() {
+  //   this.eventUpadatedIntent.subscribe((intent: Intent) => {
+  //     this.logger.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
+  //     this.intentSelected = intent; 
+  //   })
+  // }
 
-  listenToIntentAdd() {
-    this.eventCreateIntent.subscribe((intent: Intent) => {
-      this.logger.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
-    })
-  }
-
-
+  // listenToIntentAdd() {
+  //   this.eventCreateIntent.subscribe((intent: Intent) => {
+  //     this.logger.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
+  //   })
+  // }
 
 
-  ngOnChanges(changes: SimpleChanges) {
-    console.log('intente sekectttttt--> ngOnChanges', this.intentSelected)
+
+
+  ngOnChanges(changes: SimpleChanges){
+    this.setIntentSelected();
+    return;
     // console.log('----> ngOnChanges:::: ' , changes);
     // clicking the delete action does NOT open the panel intent detail !!!
     if(!this.isIntentElementSelected){
@@ -144,7 +157,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
       this.form = this.intentSelected.form;
       this.actions = this.intentSelected.actions;
       this.answer = this.intentSelected.answer;
-      this.webhook_enabled = this.intentSelected.webhook_enabled;
+      // this.webhook_enabled = this.intentSelected.webhook_enabled;
       // this.logger.log('[PANEL INTENT] (ngOnChanges) actions', this.actions);
       if (this.intentSelected && this.intentSelected.question) {
         // const question_segment = this.intentSelected.question.split(\n);
@@ -186,6 +199,41 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     // this.logger.log('[PANEL INTENT] *** ->  isOpenActionDrawer', this.isOpenActionDrawer)
   }
 
+  
+
+  private setIntentSelected(){
+    this.form = null;
+    this.formSize = 0;
+    this.actions = null;
+    this.answer = null;
+    this.question = null;
+    this.questionCount = 0;
+    // this.idSelected = null; 
+    console.log('PanelIntentComponent ngOnChanges-->', this.idSelected);
+    try {
+      if (this.intentSelected) {
+        this.patchAllActionsId();
+        this.form = this.intentSelected.form;
+        this.actions = this.intentSelected.actions;
+        this.answer = this.intentSelected.answer;
+        if (this.intentSelected.question) {
+          const question_segment = this.intentSelected.question.split(/\r?\n/).filter(element => element);
+          this.questionCount = question_segment.length;
+          this.question = this.intentSelected.question;
+        } 
+        // this.webhook_enabled = this.intentSelected.webhook_enabled;
+      }
+      if (this.form && this.form !== undefined) {
+        this.formSize = Object.keys(this.form).length;
+      } else {
+        this.formSize = 0;
+      }
+    } catch (error) {
+      this.logger.error("error: ", error);
+    }
+    console.log('PanelIntentComponent questionCount , question -->', this.questionCount, this.question);
+  }
+
   onDropAction(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.actions, event.previousIndex, event.currentIndex);
     this.dropAction.emit(this.actions);
@@ -204,14 +252,15 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   }
 
   onSelectQuestion(elementSelected) {
+    console.log('onSelectQuestion-->', elementSelected, this.intentSelected.question)
     this.idSelected = elementSelected;
     this.isIntentElementSelected = true;
+    this.questionSelected.emit(this.intentSelected.question);
     // this.HAS_SELECTED_ANSWER = false
     // this.HAS_SELECTED_QUESTION = true
     // this.HAS_SELECTED_FORM = false
     // this.HAS_SELECTED_ACTION = false
-    console.log('onSelectQuestion-->', elementSelected, this.question)
-    this.questionSelected.emit(this.question);
+    
     // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
     // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
     // if (elementsWithActiveClass.length != 0) {
@@ -235,7 +284,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
 
   onActionSelected(action, index: number, idAction) {
-    // console.log('onActionSelected action: ', action);
+    console.log('onActionSelected action: ', action);
     if(this.isDeleting){return;}
     this.idSelected = idAction;
     this.isIntentElementSelected = true;

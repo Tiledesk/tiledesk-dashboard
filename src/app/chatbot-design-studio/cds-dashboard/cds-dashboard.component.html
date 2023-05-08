@@ -142,7 +142,7 @@
                 [eventUpadatedIntent]="upadatedIntent.asObservable()"
                 [eventStartUpdatedIntent]="startUpdatedIntent.asObservable()"
                 [eventNewIntentFromSplashScreen]="newIntentFromSplashScreen.asObservable()"
-                (selected_intent)=onSelectIntent($event)
+                (selectIntent)=onSelectIntent($event)
                 (returnListOfIntents)=onReturnListOfIntents($event) 
                 (createIntent)="onCreateIntentBtnClicked()"
                 (deleteSelectedIntent)="onDeleteSelectedIntent()">
@@ -177,9 +177,8 @@
                 <appdashboard-panel-intent *ngIf=intentSelected 
                     class="panel-intent" 
                     [idSelected]="idElementOfIntentSelected"
-                    [intentSelected]="intentSelected"
+                    [intentSelected]="intentSelected" 
                     [isIntentElementSelected]="isIntentElementSelected"
-                    [actionDrawerIsOpen]="actionDrawerIsOpen" 
                     [isOpenActionDrawer]="isOpenActionDrawer"
                     [eventUpadatedIntent]="upadatedIntent.asObservable()"
                     [eventCreateIntent]="createIntent.asObservable()" 

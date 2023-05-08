@@ -645,6 +645,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** START EVENTS PANEL INTENT LIST */
   onSelectIntent(intent: Intent) { 
+    console.log('onSelectIntent::: ', intent);
     this.EDIT_VIEW = true;
     this.intentSelected = intent;
     this.isIntentElementSelected = false;
@@ -656,8 +657,7 @@ export class CdsDashboardComponent implements OnInit {
     if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
       this.logger.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0]);
       // this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1, intent_display_name: this.intentSelected.intent_display_name })
-    }
-    else {
+    } else {
       this.elementIntentSelected = {};
       this.elementIntentSelected['type'] = ''
       this.elementIntentSelected['element'] = null
@@ -762,11 +762,13 @@ export class CdsDashboardComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       // console.log(`Dialog result: ${result}`);
+      this.idElementOfIntentSelected = null;
       if(result && result !== undefined && result !== false){
         that.isIntentElementSelected = false;
       } else {
         that.isIntentElementSelected = true;
       }
+      console.log('afterClosed:: ', this.idElementOfIntentSelected);
     });
   }
   /** END EVENTS PANEL INTENT DETAIL  */

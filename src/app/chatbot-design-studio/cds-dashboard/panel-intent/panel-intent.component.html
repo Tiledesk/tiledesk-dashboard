@@ -5,9 +5,9 @@
                     'button-intent-active2': HAS_SELECTED_QUESTION,
     -->
     <div>
-        <div class="button-intent button-intent-questions" (click)="onSelectQuestion('HAS_SELECTED_QUESTION')"
+        <div class="button-intent button-intent-questions" (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
             [ngClass]="{
-                'button-intent-active': idSelected === 'HAS_SELECTED_QUESTION', 
+                'button-intent-active': idSelected === HAS_SELECTED_TYPE.QUESTION, 
                 'no-question': questionCount === 0  || !question }">
             <!-- <span class="material-icons ">
                 question_mark
@@ -66,8 +66,8 @@
         <div class="action--box-form"
             [ngClass]="{
                 'action-box-no-form': formSize === 0, 
-                'cds-action-active': idSelected === 'HAS_SELECTED_FORM'}"
-            (click)="displayForm('HAS_SELECTED_FORM')">
+                'cds-action-active': idSelected === HAS_SELECTED_TYPE.FORM}"
+            (click)="displayForm(HAS_SELECTED_TYPE.FORM)">
 
             <div class="action--handle" style="pointer-events: none;">
                 <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#ff4000">
@@ -478,10 +478,10 @@
         </div>
     </div>
 
-    <!-- 'button-intent-active2': HAS_SELECTED_ANSWER -->
-    <div *ngIf="answer" class="button-intent" (click)="onSelectAnswer('HAS_SELECTED_ANSWER')"
+    <!-- 'button-intent-active2': HAS_SELECTED_TYPE.ANSWER -->
+    <div *ngIf="answer" class="button-intent" (click)="onSelectAnswer(HAS_SELECTED_TYPE.ANSWER)"
         [ngStyle]="{'border':answer ? '0.1em solid #d2d2d2' : '0.1em  dashed #d2d2d2' }"
-        [ngClass]="{'button-intent-active': idSelected === 'HAS_SELECTED_ANSWER'}">
+        [ngClass]="{'button-intent-active': idSelected === HAS_SELECTED_TYPE.ANSWER}">
         <span class="material-icons ">
             message
         </span>
