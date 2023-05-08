@@ -10,16 +10,13 @@ import { TYPE_INTENT_ELEMENT, TYPE_ACTION } from '../../utils';
   styleUrls: ['./panel-intent-detail.component.scss']
 })
 export class PanelIntentDetailComponent implements OnInit, OnChanges {
-  // @Output() openButtonPanel = new EventEmitter();
   @Output() closeAndSavePanelIntentDetail = new EventEmitter();
   @Output() clickedInsidePanelIntentDetail = new EventEmitter();
-
   @Input() listOfActions: Array<string>;
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
   @Input() intentSelected: Intent;
   
-
   typeIntentElement = TYPE_INTENT_ELEMENT;
   typeAction = TYPE_ACTION;
   
@@ -61,53 +58,6 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   }
   // EVENT FUNCTIONS //
 
-
-
-
-  /** appdashboard-tools: add new response **/
-  // onAddNewResponse(element){
-  //   try {
-
-  //     // this.intentSelected.reply.attributes.commands.push(element);
-  //     this.intentSelected.actions.push(element);
-  //     this.logger.log('onAddNewResponse---->', this.intentSelected.actions);
-  //   } catch (error) {
-  //     this.logger.log('onAddNewResponse ERROR', error);
-  //   }
-  // }
-
-
-
-  /** appdashboard-intent: Open button panel */
-  // onOpenButtonPanel(event) {
-  //   this.logger.log('onOpenButtonPanel :: ', event);
-  //   // if (this.openCardButton === true) {
-  //   //   this.onCloseButtonPanel();
-  //   // }
-  //   // this.buttonSelected = event;
-  //   // this.openCardButton = true;
-  // }
-
-  
-  /** appdashboard-button-configuration-panel: Save button */
-  // onSaveButton(button) {
-  //   this.logger.log('onSaveButton :: ', this.elementSelected);
-  //   this.elementSelected.text = "...";
-  //   this.openCardButton = false;
-  // }
-
-  // /** appdashboard-button-configuration-panel: Close button panel */
-  // onCloseButtonPanel() {
-  //   this.openCardButton = false;
-  // }
-
-  // passJsonIntentForm(intentForm) {
-  //   console.log('[PANEL-INTENT-DETAIL] passJsonIntentForm ', intentForm);
-  //   if(intentForm && intentForm.fields && intentForm.fields.length>0){
-  //     this.intentSelected.form = intentForm;
-  //   }
-  // }
-
   onUpdateFormIntentSelected($event){
     this.elementSelected = $event;
     // console.log("onUpdateFormIntentSelected:::: ", $event);
@@ -124,7 +74,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
   }
 
   onClickInside(){
-    console.log("----> onClickInside:::: ");
+    // console.log("----> onClickInside:::: ");
     this.clickedInsidePanelIntentDetail.emit();
   }
 
