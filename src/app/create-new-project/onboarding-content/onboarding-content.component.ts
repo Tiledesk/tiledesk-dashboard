@@ -187,11 +187,12 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     if(this.translate.currentLang){
       lang = this.translate.currentLang;
     }
-    let onboardingConfig = '../assets/config/onboarding-config-'+lang+'.json';
+
+    let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
     //console.log('onboardingConfig:: ', onboardingConfig, lang);
     this.checkFileExists(onboardingConfig).then(result => {
       if(result === false){
-        onboardingConfig = '../assets/config/onboarding-config.json';
+        onboardingConfig = 'assets/config/onboarding-config.json';
       }
       this.loadJsonOnboardingConfig(onboardingConfig);
       //console.log('onboardingConfig:: result', result);

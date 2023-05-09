@@ -1,7 +1,7 @@
 {
     "steps":[
       {
-        "title": "IT Tell us more before starting, so we can personalise your experience ${userFullname}",
+        "title": "Tell us more before starting, so we can personalise your experience ${userFullname}",
         "buttons": {
           "back": "Go back",
           "next": "Continue"
