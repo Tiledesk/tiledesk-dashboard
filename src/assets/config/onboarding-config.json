@@ -73,7 +73,7 @@
           "attribute_name": "use_case",
           "buttons": [
             {"icon":"💰", "label": "Solve customer problems", "value": "solve_customer_problems"},
-            {"label": "Increase online sales", "value": "increase_online_sales"}
+            {"icon": "🛠", "label": "Increase online sales", "value": "increase_online_sales"}
           ]
         },
         {
@@ -81,8 +81,8 @@
           "type": "button",
           "attribute_name": "solution",
           "buttons": [
-            {"icon":"🤖", "label": "I want to talk to customers", "value": "want_to_talk_to_customers"},
-            {"icon":"💬", "label": "I want to automate conversations", "value": "want_to_automate_conversations"}
+            {"icon":"💬", "label": "I want to talk to customers", "value": "want_to_talk_to_customers"},
+            {"icon":"🤖", "label": "I want to automate conversations", "value": "want_to_automate_conversations"}
           ]
         },
         {
@@ -90,8 +90,8 @@
           "type": "button",
           "attribute_name": "solution_channel",
           "buttons": [
-            {"icon":"🙌", "label": "Web / Mobile", "value": "web_mobile"},
-            {"icon":"💰", "label": "WhatsApp / FB Messenger", "value": "whatsapp_fb_messenger"}
+            {"icon":"🌐", "label": "Web / Mobile", "value": "web_mobile"},
+            {"icon":"📱", "label": "WhatsApp / FB Messenger", "value": "whatsapp_fb_messenger"}
           ]
         }
       ]

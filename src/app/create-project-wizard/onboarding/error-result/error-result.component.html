@@ -47,8 +47,9 @@
         </div>
 
         <div *ngIf="!DISPLAY_SPINNER">
-        
+           
             <div *ngIf="DISPLAY_BOT && !DISPLAY_FAQ">
+                
                 <div *ngIf="!CREATE_BOT_ERROR" class="success-label">
                     <p class="wizard-span-success-msg">
                         {{ "BotsAddEditPage.TheBot" | translate }} 
@@ -93,6 +94,7 @@
             </div>
 
             <div *ngIf="!DISPLAY_FAQ && !DISPLAY_BOT">
+                <div class="success-label"><p class="wizard-span-success-msg">ARE YOU READY TO START?</p></div>
                 <button style="margin-top: 76px;" class="btn btn-lg btn-primary create-faqs-continue-to-next-step" (click)="goToContinueToNextStep()" >
                     {{ "ProjectsPage.Continue" | translate }}
                 </button>
