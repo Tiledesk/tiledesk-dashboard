@@ -152,32 +152,31 @@
 
 /* Lead tags
 /* ************************************** */
-/* Lead tag 
-/* ************************************ */
+
 .lead-tag-content-wpr {
-    padding: 6px 9px;
+    // padding: 6px 9px;
     display: flex;
     -webkit-box-align: center;
     align-items: center;
-  }
-  
-  // .tag-content-wpr-chat {
-  //   padding: 6px 12px 6px 12px !important;
-  // }
-  
-  .lead-tag-content-wpr > svg {
+}
+
+// .tag-content-wpr-chat {
+//   padding: 6px 12px 6px 12px !important;
+// }
+
+.lead-tag-content-wpr > svg {
     fill: #8796af;
     margin-right: 12px;
     margin-top: 2px;
     align-self: flex-start;
     transition: all 0.2s ease-in-out 0s;
-  }
-  
-  // .tag-content-wpr:hover > svg {
-  //   fill: rgb(5, 102, 255);
-  // }
-  
-  .lead-tag-content-wpr input {
+}
+
+// .tag-content-wpr:hover > svg {
+//   fill: rgb(5, 102, 255);
+// }
+
+.lead-tag-content-wpr input {
     display: inline-block;
     margin: 0px;
     padding: 0px;
@@ -193,66 +192,149 @@
     font-size: 14px;
     line-height: 18px;
     letter-spacing: -0.01em;
-  }
-  
-  .lead-tag-content-wpr form {
+}
+
+.lead-tag-content-wpr form {
     position: relative;
     width: 100%;
     height: 26px;
-  }
-  
-  .lead-tags--container-wpr {
+}
+
+.lead-tags--container-wpr {
     // display: flex;
     // flex-flow: row wrap;
     // -webkit-box-align: center;
     // align-items: center;
     margin: 4px -12px;
-  }
-  
-  .lead-tags--container {
+}
+
+.lead-tags--container {
     width: 100%;
     position: relative;
     top: -3px;
     left: 8px;
-  }
-  
-  .lead-tag {
+}
+
+.lead-tag {
     display: inline-block;
-  }
-  
-  .lead-assigned-tag {
+}
+
+.lead-assigned-tag {
     margin-right: 6px;
     font-weight: 400;
     font-family: "Poppins", "Roboto", "Arial", sans-serif;
     font-size: 12px;
     color: #757575;
-  }
-  
-  .ng-select-tags-wpr {
+}
+
+.ng-select-tags-wpr {
     height: 30px;
-  }
-  
-  .lead-tag-delete {
+}
+
+.lead-tag-delete {
     opacity: 0;
     color: #f44336;
-  }
-  
-  .lead-tag:hover {
+}
+
+.lead-tag:hover {
     .tag_icon_in_ws_msgs {
-      fill: rgba(233, 235, 238, 0.3) !important;
+        fill: rgba(233, 235, 238, 0.3) !important;
     }
     .lead-tag-delete {
-      opacity: 1;
-      font-size: 16px;
-      position: relative;
-      // top: -3px;
-      // left: -2px;
-      top: 3px;
+        opacity: 1;
+        font-size: 16px;
+        position: relative;
+        // top: -3px;
+        // left: -2px;
+        top: 3px;
     }
-  }
-  
-  /* ./ Lead tag 
+}
+
+/* ./ Lead tag 
   /* ************************************ */
+
+/*  Lead properties 
+  /* ************************************ */
+.lead-property-wpr {
+    min-height: 36px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 6px 12px;
+    transition: all 0.3s ease 0s;
+}
+.lead-property {
+    display: flex;
+    flex-direction: row;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    align-items: center;
+    flex: 1 1 0%;
+    max-width: 247px;
+}
+.lead-property svg {
+width: 22px;
+    height: 22px;
+    fill: rgba(100, 116, 145, 0.6);
+    margin-right: 16px;
+}
+
+.ul-lead-properties .lead-property-wpr .propertyName {
+    flex: 0 0 auto;
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ul-wpr .lead-property-wpr .propertyColon {
+    margin-right: 4px;
+    display: inline-block;
+}
+
+.ul-wpr .lead-property-wpr input {
+    flex-basis: auto;
+    flex-shrink: 1;
+    padding-bottom: 0px;
+    padding-top: 2px;
+    background-color: transparent;
+    flex: 1 0 172px;
+    display: inline-block;
+    margin: 0px;
+    padding-right: 12px;
+    padding-left: 0px;
+    border-radius: 0px;
+    border-width: 0px 0px 2px;
+    border-top-style: initial;
+    border-right-style: initial;
+    border-left-style: initial;
+    border-top-color: initial;
+    border-right-color: initial;
+    border-left-color: initial;
+    border-image: initial;
+    border-bottom-style: solid;
+    border-bottom-color: transparent;
+    padding-top: 2px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 24px;
+}
+
+.label-and-input-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.propertyLabel {
+    position: relative;
+    top: 2px;
+    margin-right: 6px;
+}
 
 ::ng-deep .custom-mat-tooltip {
     background-color: #2d323e !important;

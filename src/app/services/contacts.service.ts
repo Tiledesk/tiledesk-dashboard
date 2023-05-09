@@ -371,8 +371,6 @@ export class ContactsService {
   // ---------------------------------------------
   // @ Add contact tag
   // ---------------------------------------------
- 
-
   public updateLeadTag(
     id: string,
     tags: string,
@@ -397,6 +395,80 @@ export class ContactsService {
     return this.httpClient
       .put(url, JSON.stringify(body), httpOptions)
   }
+
+  // -------------------------------------------------
+  // @ Lead property - CREATE NEW PROPERTY
+   // -------------------------------------------------
+  public createNewLeadProperty(propertyLabel: string, propertyName: string): Observable<Contact[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    const url = this.SERVER_BASE_PATH + this.projectId + '/properties';
+    const body = { "label":propertyLabel, "name":propertyName, "type":"text" };
+    this.logger.log('[CONTACTS-SERV] - CREATE NEW LEAD PROPERTY body', body);
+
+    return this.httpClient
+      .post<Contact[]>(url, JSON.stringify(body), httpOptions)
+  }
+
+  // -------------------------------------------------
+  // @ Lead property - GET ALL
+   // -------------------------------------------------
+  public getAllLeadProperty(): Observable<Contact[]> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + this.projectId + '/properties';
+    this.logger.log('[CONTACTS-SERV] - GET ALL LEAD PROPERTIES URL', url);
+
+    return this.httpClient
+      .get<Contact[]>(url, httpOptions)
+  }
+
+  // addCustoPropertyToLead(contactid,propertyName, propertyValue  ){
+    addCustoPropertyToLead(contactid,contactCustomPropertiesAssigned ){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH +  this.projectId + '/leads/' + contactid + "/attributes"
+    console.log('[CONTACTS-SERV] - ADD CUSTOM PROPERTY TO LEAD - URL', url);
+    // var key = 'ccp_'+propertyName;
+    // const body = { [key]: propertyValue };
+    const body = {ccp: contactCustomPropertiesAssigned}
+    console.log('[DEPTS-SERV] - ADD CUSTOM PROPERTY - BODY', body);
+
+    return this.httpClient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+  updatedContactAttributes(contactid, attributes) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH +  this.projectId + '/leads/' + contactid + "/attributes"
+    console.log('[CONTACTS-SERV] - UPDATED CONTACT ATTRIBUTES - URL', url);
+    
+    return this.httpClient
+      .patch(url, JSON.stringify(attributes), httpOptions)
+
+  } 
 
   // ---------------------------------------------
   // @ Delete lead (move to trash)
