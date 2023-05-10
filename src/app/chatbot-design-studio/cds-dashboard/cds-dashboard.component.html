@@ -115,7 +115,7 @@
 
 </div>
 
-<div class="chatboat-dashboard">
+<div id="chatboat-dashboard"  class="chatboat-dashboard">
 
     <div class="cds-sidebar" [class.is_opened]="IS_OPEN">
         <cds-sidebar [extendedWidth]="IS_OPEN" [projectID]="projectID" (onClickItemList)="onClickItemList($event)">
@@ -155,7 +155,7 @@
             </appdashboard-panel-intent-list>
         </div>
 
-        <div class="box-right">
+        <div id="box-right" class="box-right">
 
             <cds-splash-screen *ngIf=!intentSelected 
                 [text]="'Select a block from the left sidebar or create a new one'"

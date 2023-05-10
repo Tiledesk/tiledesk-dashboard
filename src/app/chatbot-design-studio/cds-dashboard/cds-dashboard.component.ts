@@ -1,6 +1,6 @@
 import { TYPE_ACTION, variableList } from 'app/chatbot-design-studio/utils';
 import { MultichannelService } from 'app/services/multichannel.service';
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { FaqService } from '../../services/faq.service';
@@ -24,7 +24,11 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 
 import { DialogYesNoComponent } from 'app/chatbot-design-studio/cds-base-element/dialog-yes-no/dialog-yes-no.component';
 import { MatDialog } from '@angular/material/dialog';
+import { timeInterval } from 'rxjs/operators';
 const swal = require('sweetalert');
+
+
+declare function setDrawer(el, drawer);
 
 @Component({
   selector: 'appdashboard-cds-dashboard',
@@ -141,8 +145,22 @@ export class CdsDashboardComponent implements OnInit {
     this.getDeptsByProjectId();
     this.hideShowWidget('show');
     this.getOSCODE();
+
+    setTimeout(() => {
+      this.setDragConfig();
+    }, 1000);
+    
   }
 
+
+  private setDragConfig(){
+    // drag study
+    let el = document.getElementById("chatboat-dashboard");
+    console.log('getElementById:: el', el);
+    let drawer = document.getElementById("box-right");
+    console.log('getElementById:: drawer', drawer);
+    setDrawer(el, drawer);
+  }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
