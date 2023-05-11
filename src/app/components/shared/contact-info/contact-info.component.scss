@@ -1,3 +1,22 @@
+textarea[type=text] {
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    padding-right: 8px;
+    padding-top: 5px;
+    padding-left: 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #fff !important;
+    border: solid 1px #ddd;
+}
+
+
+
 .tab0-card1 {
     min-height: 225px;
 }
@@ -368,13 +387,13 @@
     font-weight: 500;
 }
 
-#address_arrow_down {
+#address-arrow-down {
     -moz-transition: all 0.2s linear;
     -webkit-transition: all 0.2s linear;
     transition: all 0.2s linear;
 }
 
-#address_arrow_down.up {
+#address-arrow-down.up {
     -moz-transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);

@@ -48,9 +48,11 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   public contactProvince: string;
   public contactZipCode: string;
   public contactCountry: string;
+  public contactNote: string;
   editContactSuccessNoticationMsg: string;
   editContactErrorNoticationMsg: string;
   leadPropertiesObjct: any = {}
+  showNote: boolean = false
 
 
   public form: FormGroup;
@@ -133,6 +135,12 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
         this.contactCountry = this.contact_details.country.toUpperCase()
         console.log('contactCountry ', this.contactCountry)
       }
+
+      if (this.contact_details.note) {
+        this.contactNote = this.contact_details.note
+        console.log('contactNote ', this.contactNote)
+      }
+
 
 
 
@@ -331,12 +339,12 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
         console.log('[CONTACT-INFO] - UPDATED CONTACT ', contact);
       }, (error) => {
         console.error('[CONTACT-INFO] - UPDATE CONTACT - ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+        
+        this.notify.showNotification(this.editContactErrorNoticationMsg, 4, 'report_problem');
       }, () => {
         console.log('[CONTACT-INFO] - UPDATE CONTACT * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
-        this.notify.showWidgetStyleUpdateNotification('Contact successfully updated', 2, 'done')
+       
+        this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
       });
   }
 
@@ -385,9 +393,22 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     }
   }
 
+  editContactNote () {
+    this.toggleContactNote()
+    console.log('editContactNote ', this.contactNote )
+    if (this.contactNote !== undefined) {
+      this.updateContactNote(this.contact_details._id, this.contactNote)
+    }
+  }
+
   removePhoneAnUpdateContact() {
     this.contactPhone = ""
     this.updateContactPhone(this.contact_details._id, this.contactPhone)
+  }
+
+  removeNoteAnUpdateContact() {
+    this.contactNote = ""
+    this.updateContactNote(this.contact_details._id, this.contactNote)
   }
 
   updateContactPhone(contactid, contactphone) {
@@ -406,6 +427,27 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
     }, () => {
       console.log('[CONTACT-INFO] - UPDATE CONTACT updateContactPhone - COMPLETED ');
+      this.notify.showWidgetStyleUpdateNotification('Contact successfully updated', 2, 'done')
+    })
+
+  }
+
+  updateContactNote(contactid, contactnote) {
+    this.contactsService.updateLeadNote(
+      contactid,
+      contactnote
+    ).subscribe((contact) => {
+      console.log('[CONTACT-INFO] - UPDATED CONTACT updateContactNote', contact);
+
+    }, (error) => {
+
+      console.error('[CONTACT-INFO] - UPDATE CONTACT updateContactNote - ERROR ', error);
+      // =========== NOTIFY ERROR ===========
+      // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+      // this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
+
+    }, () => {
+      console.log('[CONTACT-INFO] - UPDATE CONTACT updateContactNote - COMPLETED ');
       this.notify.showWidgetStyleUpdateNotification('Contact successfully updated', 2, 'done')
     })
 
@@ -498,7 +540,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // -----------------------------------------------------
   toggleAddress() {
     this.showAllAddress = !this.showAllAddress;
-    const addressArrowIconElem = <HTMLElement>document.querySelector('#address_arrow_down');
+    const addressArrowIconElem = <HTMLElement>document.querySelector('#address-arrow-down');
     console.log('toggleAddress ', addressArrowIconElem)
     if (this.showAllAddress === true) {
       addressArrowIconElem.classList.add("up");
@@ -509,32 +551,39 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     }
   }
 
+  // -----------------------------------------------------
+  // @ Lead Note
+  // -----------------------------------------------------
+  toggleContactNote() {
+    this.showNote = !this.showNote;
+  }
+
   removeContactStreet() {
     this.contactStreet = ""
-    this.editContactContactAddress()
+    this.editContactAddress()
     console.log('[CONTACT-INFO] - REMOVE CONTACT STREET ', this.contactStreet);
 
   }
   removeContactCity() {
     this.contactCity = ""
-    this.editContactContactAddress()
+    this.editContactAddress()
     console.log('[CONTACT-INFO] - REMOVE CONTACT CITY ', this.contactCity);
   }
   removeContactProvince() {
     this.contactProvince = ""
-    this.editContactContactAddress()
+    this.editContactAddress()
     console.log('[CONTACT-INFO] - REMOVE CONTACT PROVINCE ', this.contactProvince);
   }
 
   removeContactPostalCode() {
     this.contactZipCode = ""
-    this.editContactContactAddress()
+    this.editContactAddress()
     console.log('[CONTACT-INFO] - REMOVE CONTACT POSTAL CODE ', this.contactZipCode);
   }
 
   removeContactCountry() {
     this.contactCountry = ""
-    this.editContactContactAddress()
+    this.editContactAddress()
     console.log('[CONTACT-INFO] - REMOVE CONTACT COUNTRY ', this.contactCountry);
   }
 
@@ -556,7 +605,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
 
 
-  editContactContactAddress() {
+  editContactAddress() {
     if (this.contactStreet) {
       this.contactStreet = this.contactStreet.trim()
     }
@@ -570,9 +619,10 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       this.contactZipCode = this.contactZipCode.trim()
     }
     if (this.contactCountry) {
-      this.contactCountry = this.contactCountry.trim()
+      this.contactCountry = this.contactCountry.trim().toUpperCase()
     }
-    this.genetateContactAddress(this.contactStreet, this.contactCity, this.contactProvince, this.contactZipCode, this.contactCountry.toUpperCase())
+ 
+    this.genetateContactAddress(this.contactStreet, this.contactCity, this.contactProvince, this.contactZipCode, this.contactCountry)
 
 
     this.contactsService.updateLeadAddress(
@@ -694,7 +744,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
           // console.log('[CONTACT-INFO] - GET CONTACT PROPERTIES LIST contactCustomProperties.indexOf', property.name, 'index ', index)
           // this.contactsCustomProperties.push({ label: property.label, name: property.name })
           var index = this.contactCustomProperties.findIndex((e) => e.name === property.name)
-          if (index !== 0) {
+          console.log('[CONTACT-INFO] ->> GET CONTACT PROPERTIES LIST index of contactCustomProperties name',  property.name, 'index ', index  ) 
+          if (index === -1) {
             this.contactPropertiesToSelect.push({ label: property.label, name: property.name })
           }
         });
@@ -703,7 +754,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
         // this.contactCustomProperties = contactCustomPropertiesTemp
 
         this.contactPropertiesToSelect = this.contactPropertiesToSelect.slice(0)
-        console.log('contactsCustomProperties Array ', this.contactPropertiesToSelect)
+        console.log('CONTACT-INFO] ->> GET CONTACT PROPERTIES LIST contactPropertiesToSelect Array ', this.contactPropertiesToSelect)
 
         console.log('[CONTACT-INFO] - GET CONTACT PROPERTIES LIST contactCustomProperties', this.contactCustomProperties)
         // this.contactsCustomProperties = this.contactsCustomProperties.slice(0)
@@ -744,7 +795,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       console.log('contactPropertyToSelect name', contactPropertyToSelect.name)
       console.log('event name', event.name)
       if (contactPropertyToSelect.name === event.name) {
-        console.log('[CONTACT-INFO] - REMOVE CUSTOM PROPERTY FROM contactPropertiesToSelect index ', index);
+        console.log('[CONTACT-INFO] - ON SELECT CONTACT PROPERTY REMOVE CUSTOM PROPERTY FROM contactPropertiesToSelect index ', index);
         this.contactPropertiesToSelect.splice(index, 1);
       }
     });
@@ -762,8 +813,10 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
         console.log('[CONTACT-INFO] - REMOVE CUSTOM PROPERTY  index ', index);
         this.contactCustomProperties.splice(index, 1);
       }
-      this.contactPropertiesToSelect.push({ label: propertyLabel, name: propertyName })
+     
     });
+
+    this.contactPropertiesToSelect.push({ label: propertyLabel, name: propertyName })
 
     for (let [key, value] of Object.entries(this.leadPropertiesObjct)) {
       console.log(`[CONTACT-INFO] - REMOVE CUSTOM PROPERTY leadPropertiesObjct key`, key);
@@ -859,6 +912,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
       }, () => {
         console.log('[CONTACT-INFO] - ADD CUSTOM PROPERTY TO LEAD (New) - COMPLETED ');
+        this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
 
       })
   }
@@ -874,9 +928,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       }, (error) => {
 
         console.error('[CONTACT-INFO] - ADD CUSTOM PROPERTY TO LEAD - ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
-        // this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
+       
+        this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
 
       }, () => {
         console.log('[CONTACT-INFO] - ADD CUSTOM PROPERTY TO LEAD - COMPLETED ');

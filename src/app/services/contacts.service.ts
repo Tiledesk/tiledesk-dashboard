@@ -322,6 +322,27 @@ export class ContactsService {
       .put(url, JSON.stringify(body), httpOptions)
   }
 
+   // ---------------------------------------------
+  // @ Update lead Note
+  // ---------------------------------------------
+  public updateLeadNote(leadid: string, leadNote: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      })
+    };
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + leadid;
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD - URL ', url);
+    const body = {
+      'note': leadNote
+    };
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
+    return this.httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+  }
+
+
   // ---------------------------------------------
   // @ Update lead
   // ---------------------------------------------
@@ -483,7 +504,7 @@ export class ContactsService {
     lead_postalcode: string,
     lead_country: string,
   ) {
-    console.log('lead_street_address', lead_street_address)
+    
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -499,7 +520,7 @@ export class ContactsService {
       'city': lead_city,
       'region': lead_state,
       'zipcode': lead_postalcode,
-      'country': lead_country,
+      'country': lead_country
 
     };
 
