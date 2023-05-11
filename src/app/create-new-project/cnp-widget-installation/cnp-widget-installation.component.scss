@@ -9,7 +9,7 @@ $color-text: #566787;
 $color-pro-plan: #3ea9f5;
 
 .cnp-widget-installation{
-    margin-top: 30px;
+    margin-top: 0px;
     .title {
         font-size: 36px;
         font-weight: 500;
@@ -101,10 +101,11 @@ $color-pro-plan: #3ea9f5;
         display: flex;
         flex-direction: column;
         margin: 0;
+        text-align: center;
     }
     .navigation-btn {
-        display: flex;
-        flex-direction: row;
+        // display: flex;
+        // flex-direction: row;
     }
     .btn {
         font-size: 14px;

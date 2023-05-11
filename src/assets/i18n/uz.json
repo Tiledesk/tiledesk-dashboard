@@ -2185,6 +2185,7 @@
         "DoYouWantChatbot": "Sizga ba'zi tez-tez savollarga biron bir xayoliy avtomatlashtirish yoki javob berishni istaysizmi?",
         "YesChatboat": "Ha, birinchi ChatBotimni sozlashimga ijozat bering!",
         "NoChatboat": "Hozir emas, menimcha, odamlar boshlanish uchun etarli",
+        "CustomizeWelcomeMessage": "Customize your welcome message",
         "SetupChatbotTitle": "Birinchi ChatBotingizni o'rnating",
         "TitleWelcomeMessage": "Veb-saytingizga kelganida, ular tashrif buyuruvchilarga qanday salom berishni yaxshi ko'rasiz?",
         "LabelWelcomeMessage": "Xush kelibsiz xabar",

@@ -597,7 +597,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
         if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {
             // self.router.navigate(['/create-project']);
-            self.createNewProject(signupResponse)
+            // self.createNewProject(signupResponse)
+            self.router.navigate(['/create-new-project']);
           } else {
             self.router.navigate(['/projects']);
           }

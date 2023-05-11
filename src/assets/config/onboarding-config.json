@@ -72,8 +72,8 @@
           "type": "button",
           "attribute_name": "use_case",
           "buttons": [
-            {"icon":"💰", "label": "Solve customer problems", "value": "solve_customer_problems"},
-            {"icon": "🛠", "label": "Increase online sales", "value": "increase_online_sales"}
+            {"icon":"🛠", "label": "Solve customer problems", "value": "solve_customer_problems"},
+            {"icon": "💰", "label": "Increase online sales", "value": "increase_online_sales"}
           ]
         },
         {

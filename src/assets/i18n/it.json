@@ -2185,6 +2185,7 @@
         "DoYouWantChatbot": "Vorresti un chatbot che ti aiuti a vendere e/o ti automatizzi le risposte alle domande più frequenti?",
         "YesChatboat": "Sì, voglio creare il mio primo chatbot!",
         "NoChatboat": "Non ora, penso che gli umani siano sufficienti per iniziare",
+        "CustomizeWelcomeMessage": "Personalizza il tuo messaggio di benvenuto",
         "SetupChatbotTitle": "Crea il tuo primo chatbot",
         "TitleWelcomeMessage": "Come vuoi accogliere i visitatori che arrivano sul tuo sito web o salutarli con WhatsApp?",
         "LabelWelcomeMessage": "Messaggio di benvenuto",

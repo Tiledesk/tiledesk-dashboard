@@ -4,8 +4,9 @@
         <div class="close-wizard-page">
           <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">clear</i>
         </div>
-        <!-- STEP NUMBER -->
-        <div class="box-steps">
+        <!-- STEP NUMBER  arrayOfSteps.length >= activeTypeStepNumber ||  -->
+        
+        <div *ngIf="arrayOfSteps.length>0 && arrayOfSteps.length>activeTypeStepNumber" class="box-steps">
             <div class="step-number">
                 <span class="number-label">
                     {{ "OnboardPage.Pass" | translate }}   
@@ -122,19 +123,19 @@
                 ></cnp-chatbot-welcome-message>
             </div>
 
-            <!-- WIDGET INSTALLATION -->
-            <div *ngIf="nameStep === typeStep.WIDGET_INSTALLATION" 
-                class="type-step fade-in-right"
-                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.WIDGET_INSTALLATION}">
-                <cnp-widget-installation
-                    [welcomeMessage] = welcomeMessage
-                    [projectName]="projectName"
-                    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
-                    (nextPage)="goToSaveProjectAndCreateBot($event)"
-                    (prevPage) = "goToPrevStep()"
-                ></cnp-widget-installation>
-            </div>
+        </div>
 
+        <!-- WIDGET INSTALLATION -->
+        <div *ngIf="nameLastStep === typeStep.WIDGET_INSTALLATION" 
+            class="type-step fade-in-right"
+            [ngClass]="{'active': nameLastStep===typeStep.WIDGET_INSTALLATION}">
+            <cnp-widget-installation
+                [welcomeMessage] = welcomeMessage
+                [projectName]="projectName"
+                [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+                (nextPage)="goToSaveProjectAndCreateBot($event)"
+                (prevPage) = "goToPrevStep()"
+            ></cnp-widget-installation>
         </div>
 
         <!-- LOADING SECTION -->
@@ -143,8 +144,16 @@
             [DISPLAY_SPINNER]="DISPLAY_SPINNER"
             (continueToNextStep)="goToNextStep()"
         ></loading-section> -->
-        
-        <appdashboard-error-result
+
+        <div class="bck-loader"*ngIf="DISPLAY_SPINNER_SECTION">
+            <div class="loader">
+                <svg class="circular" viewBox="25 25 50 50">
+                  <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- <appdashboard-error-result
             *ngIf="DISPLAY_SPINNER_SECTION"
             [DISPLAY_SPINNER]="DISPLAY_SPINNER"
             [DISPLAY_BOT]="DISPLAY_BOT"
@@ -153,7 +162,7 @@
             [CREATE_FAQ_ERROR]="CREATE_FAQ_ERROR"
             (cancel)="cancel($event)"
             (continueToNextStep)="goToExitOnboarding()"
-      ></appdashboard-error-result>
+      ></appdashboard-error-result> -->
         
     </div>
 
