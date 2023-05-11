@@ -74,7 +74,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   CREATE_FAQ_ERROR: boolean = false;
 
   segmentAttributes: any = {};
-  isSignupPrevPage: boolean;
+  isFirstProject: boolean = false;
 
   constructor(
     private auth: AuthService,
@@ -103,19 +103,19 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   // SYSTEM FUNCTIONS //
   ngOnInit() {
-    this.previousUrl = this.urlService.getPreviousUrl();
-    this.isSignupPrevPage = false;
-    if(this.previousUrl.endsWith('/signup')){
-      this.isSignupPrevPage = true;
-    }
+
+    // this.previousUrl = this.urlService.getPreviousUrl(); //!!! non sempre restituisce la pg di prev !!!
+    // this.isFirstProject = false;
+    // if(this.previousUrl.endsWith('/signup')){
+    //   this.isFirstProject = true;
+    // }
+    // console.log('previousUrl2:: ', this.previousUrl, this.isSignupPrevPage);
     //this.checkCurrentUrlAndHideCloseBtn();
-    // this.getCurrentProject();
+    // 
     this.getCurrentTranslation();
     // console.log('[WIZARD - CREATE-PRJCT] previousUrl ', this.previousUrl);
     this.initialize();
   }
-
-
 
 
 
@@ -182,20 +182,38 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
 
-  // private getCurrentProject() {
-  //   this.auth.project_bs
-  //     .subscribe((project) => {
-  //       if (project) {
-  //         this.projectID = project._id;
-  //         this.projectName = project.name;
-  //       }
-  //     });
-  // }
-
   private initialize(){
     this.translateY = 'translateY(0px)';
     this.activeQuestionNumber = 0;
-    this.getLoggedUser();
+    this.getProjects();
+  }
+
+
+
+  private getProjects() {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      this.isFirstProject = true;
+      if (projects) {
+        this.projects = projects;
+      }
+      if (projects.length>0) {
+        this.isFirstProject = false;
+      }
+      // console.log('getProjects:: ', projects, this.isFirstProject);
+      this.getLoggedUser();
+    });
+
+    // this.auth.project_bs
+    //   .subscribe((project) => {
+    //     this.isFirstProject = true;
+    //     if (project) {
+    //       this.projectID = project._id;
+    //       this.projectName = project.name;
+    //       this.isFirstProject = false;
+    //     }
+    //     console.log('getCurrentProject:: ', project);
+    //     this.getLoggedUser();
+    //   });
   }
 
   private getLoggedUser() {
@@ -206,16 +224,18 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         // console.log('getLoggedUser:: ', user);
         // this.projectName = this.setProjectName();
         // console.log('setProjectName:: ', this.projectName, this.isSignupPrevPage);
-        if(this.isSignupPrevPage){
+        if(this.isFirstProject){
           // console.log('[WIZARD - CREATE-PRJCT] project_name ', this.projectName);
           this.projectName = this.setProjectName();
           if (!this.projectName){
             this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           }
           this.setFirstStep();
+          // console.log('YES isFirstProject:: ', this.arrayOfSteps);
         } else {
           this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
+          // console.log('NO isFirstProject:: ', this.arrayOfSteps);
         }
       }
     });
@@ -223,7 +243,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   
   private setFirstStep(){
-    // console.log('this.previousUrl:: ', this.previousUrl);
+    // console.log('setFirstStep:: ');
     // if(this.previousUrl.endsWith('/signup')){
       let lang = "en";
       if(this.translate.currentLang){
@@ -250,6 +270,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //   lang = this.translate.currentLang;
     // }
     // let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
+    // console.log('loadJsonOnboardingConfig:: ');
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
       let jsonString = JSON.stringify(data);
@@ -537,6 +558,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
             localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
           }
         });
+      } else {
+
       }
     }, error => {
       console.log('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - ERROR ', error)
