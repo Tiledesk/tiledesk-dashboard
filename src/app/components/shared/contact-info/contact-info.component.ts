@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ContactCustomPropertiesComponent } from 'app/components/modals/contact-custom-properties/contact-custom-properties.component';
 import { FormControl, FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'appdashboard-contact-info',
   templateUrl: './contact-info.component.html',
@@ -24,6 +25,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   public EMAIL_IS_VALID: boolean = true
   public contactCompany: string;
   public contactPhone: string;
+
   contactTags: Array<any>
   contactTempTags: Array<any> = []
 
@@ -38,6 +40,19 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   contactCustomProperties: Array<any> = [];
   contactCustomPropertiesAssigned: Array<any> = [];
   contactAttributesCCP: any;
+  // lead Address
+  showAllAddress: boolean = false
+  public contactAddress: any;
+  public contactStreet: string;
+  public contactCity: string;
+  public contactProvince: string;
+  public contactZipCode: string;
+  public contactCountry: string;
+  editContactSuccessNoticationMsg: string;
+  editContactErrorNoticationMsg: string;
+  leadPropertiesObjct: any = {}
+
+
   public form: FormGroup;
 
   constructor(
@@ -46,7 +61,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     public contactsService: ContactsService,
     public notify: NotifyService,
     private appConfigService: AppConfigService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private translate: TranslateService
   ) { }
 
 
@@ -54,14 +70,15 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // @ Lifehook
   // -------------------------------------------------------------
   ngOnInit(): void {
+    this.translateEditContactSuccessMsg();
+    this.translateEditContactErrorMsg();
     this.getIfRouteUrlIsRequestForPanel();
     this.getCurrentProject();
     this.getOSCODE();
-    this.getAllContactProperties()
+    // this.getAllContactProperties()
   }
 
   ngAfterViewInit() {
-
     setTimeout(() => {
       this.getTagContainerElementHeight()
     }, 1000);
@@ -91,6 +108,36 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
         this.contactPhone = this.contact_details.phone
         console.log('contactPhone ', this.contactPhone)
       }
+
+      if (this.contact_details.streetAddress) {
+        this.contactStreet = this.contact_details.streetAddress
+        console.log('contactStreet ', this.contactStreet)
+      }
+
+      if (this.contact_details.city) {
+        this.contactCity = this.contact_details.city
+        console.log('contactCity ', this.contactCity)
+      }
+
+      if (this.contact_details.region) {
+        this.contactProvince = this.contact_details.region
+        console.log('contactProvince ', this.contactProvince)
+      }
+
+      if (this.contact_details.zipcode) {
+        this.contactZipCode = this.contact_details.zipcode
+        console.log('contactZipCode ', this.contactZipCode)
+      }
+
+      if (this.contact_details.country) {
+        this.contactCountry = this.contact_details.country.toUpperCase()
+        console.log('contactCountry ', this.contactCountry)
+      }
+
+
+
+      this.genetateContactAddress(this.contactStreet, this.contactCity, this.contactProvince, this.contactZipCode, this.contactCountry)
+
 
       if (this.contact_details.tags) {
         this.contactTags = this.contact_details.tags
@@ -139,25 +186,39 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
 
         // });
-        console.log(`[CONTACT-INFO] - ATTRIBUTES  > this.contact_details.attributes.ccp:`, this.contact_details.attributes.ccp);
-        // const  contactCustomPropertyLabel = this.contact_details.attributes.ccp[i].label;
-        for (let i = 0; i < this.contact_details.attributes.ccp.length; i++) {
-          const contactCustomPropertyLabel = this.contact_details.attributes.ccp[i].label;
-          const contactCustomPropertyName = this.contact_details.attributes.ccp[i].name;
-          const contactCustomPropertyValue = this.contact_details.attributes.ccp[i].value;
-          console.log(`[CONTACT-INFO] - ATTRIBUTES  > contactCustomPropertyLabel:`, contactCustomPropertyLabel);
-          console.log(`[CONTACT-INFO] - ATTRIBUTES  > contactCustomPropertyName:`, contactCustomPropertyName);
-          console.log(`[CONTACT-INFO] - ATTRIBUTES  > contactCustomPropertyValue:`, contactCustomPropertyValue);
-          this.contactCustomProperties.push({ label: contactCustomPropertyLabel, name: contactCustomPropertyName, value: contactCustomPropertyValue })
-          setTimeout(() => {
-            const inputEl = <HTMLInputElement>document.querySelector(`.lead--properties-${contactCustomPropertyName} div div input`);
-            console.log('inputEl ', inputEl)
-            inputEl.value = contactCustomPropertyValue
-          }, 1500);
-        }
 
-        console.log(`[CONTACT-INFO] - ATTRIBUTES > contactCustomProperties : `), this.contactCustomProperties;
+
+        // * the good one *
+        // console.log(`[CONTACT-INFO] - ATTRIBUTES  > this.contact_details.attributes.ccp:`, this.contact_details.attributes.ccp);
+        // // const  contactCustomPropertyLabel = this.contact_details.attributes.ccp[i].label;
+        // for (let i = 0; i < this.contact_details.attributes.ccp.length; i++) {
+        //   const contactCustomPropertyLabel = this.contact_details.attributes.ccp[i].label;
+        //   const contactCustomPropertyName = this.contact_details.attributes.ccp[i].name;
+        //   const contactCustomPropertyValue = this.contact_details.attributes.ccp[i].value;
+        //   console.log(`[CONTACT-INFO] - ATTRIBUTES  > contactCustomPropertyLabel:`, contactCustomPropertyLabel);
+        //   console.log(`[CONTACT-INFO] - ATTRIBUTES  > contactCustomPropertyName:`, contactCustomPropertyName);
+        //   console.log(`[CONTACT-INFO] - ATTRIBUTES  > contactCustomPropertyValue:`, contactCustomPropertyValue);
+        //   this.contactCustomProperties.push({ label: contactCustomPropertyLabel, name: contactCustomPropertyName, value: contactCustomPropertyValue })
+        //   setTimeout(() => {
+        //     const inputEl = <HTMLInputElement>document.querySelector(`.lead--properties-${contactCustomPropertyName} div div input`);
+        //     console.log('inputEl ', inputEl)
+        //     inputEl.value = contactCustomPropertyValue
+        //   }, 1500);
+        // }
+
+        // console.log(`[CONTACT-INFO] - ATTRIBUTES > contactCustomProperties : `), this.contactCustomProperties;
       }
+
+
+      if (this.contact_details.properties) {
+        console.log('[CONTACT-INFO] - CONTACT DETAILS > contact_details.properties : ', this.contact_details['properties']);
+        this.leadPropertiesObjct = this.contact_details.properties
+        console.log('[CONTACT-INFO] - CONTACT DETAILS > leadPropertiesObjct : ', this.leadPropertiesObjct);
+        this.getAllContactProperties(this.leadPropertiesObjct)
+      }
+
+
+
 
       // setTimeout(() => {
       //   const liEl = <HTMLInputElement>document.querySelector('.lead--properties-company_2 div div input');
@@ -424,12 +485,118 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     console.log('tagContainerElement ', tagContainerElement)
     if (tagContainerElement) {
       this.tagContainerElementHeight = tagContainerElement.offsetHeight + 'px'
-      console.log('[CONTACTS-DTLS] tagContainerElement.offsetHeight tagContainerElementHeight ', this.tagContainerElementHeight)
-      console.log('[CONTACTS-DTLS] tagContainerElement.clientHeight ', tagContainerElement.clientHeight)
+      console.log('[CONTACT-INFO] tagContainerElement.offsetHeight tagContainerElementHeight ', this.tagContainerElementHeight)
+      console.log('[CONTACT-INFO] tagContainerElement.clientHeight ', tagContainerElement.clientHeight)
 
       // this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
       // this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
     }
+  }
+
+  // -----------------------------------------------------
+  // @ Lead Address
+  // -----------------------------------------------------
+  toggleAddress() {
+    this.showAllAddress = !this.showAllAddress;
+    const addressArrowIconElem = <HTMLElement>document.querySelector('#address_arrow_down');
+    console.log('toggleAddress ', addressArrowIconElem)
+    if (this.showAllAddress === true) {
+      addressArrowIconElem.classList.add("up");
+    }
+    if (this.showAllAddress === false) {
+      addressArrowIconElem.classList.remove("up")
+      // = addressArrowIconElem.className.replace(/\bup\b/g, "");
+    }
+  }
+
+  removeContactStreet() {
+    this.contactStreet = ""
+    this.editContactContactAddress()
+    console.log('[CONTACT-INFO] - REMOVE CONTACT STREET ', this.contactStreet);
+
+  }
+  removeContactCity() {
+    this.contactCity = ""
+    this.editContactContactAddress()
+    console.log('[CONTACT-INFO] - REMOVE CONTACT CITY ', this.contactCity);
+  }
+  removeContactProvince() {
+    this.contactProvince = ""
+    this.editContactContactAddress()
+    console.log('[CONTACT-INFO] - REMOVE CONTACT PROVINCE ', this.contactProvince);
+  }
+
+  removeContactPostalCode() {
+    this.contactZipCode = ""
+    this.editContactContactAddress()
+    console.log('[CONTACT-INFO] - REMOVE CONTACT POSTAL CODE ', this.contactZipCode);
+  }
+
+  removeContactCountry() {
+    this.contactCountry = ""
+    this.editContactContactAddress()
+    console.log('[CONTACT-INFO] - REMOVE CONTACT COUNTRY ', this.contactCountry);
+  }
+
+
+  genetateContactAddress(contactStreet, contactCity, contactProvince, contactZipCode, contactCountry) {
+    let contactAddressTemp = [contactStreet, contactCity, contactProvince, contactZipCode, contactCountry]
+    contactAddressTemp = contactAddressTemp.filter((element) => {
+      return element !== undefined && element !== '';
+    });
+    console.log('contactAddressTemp ', contactAddressTemp)
+    if (contactAddressTemp.length > 0) {
+      contactAddressTemp.join(", ")
+      const contactAddressTempString = contactAddressTemp.toString()
+      const contactAddressTempSpaced = contactAddressTempString.replace(/,/g, ', ');
+      this.contactAddress = contactAddressTempSpaced
+      console.log('[CONTACT-INFO] - contactAddress ', this.contactAddress);
+    }
+  }
+
+
+
+  editContactContactAddress() {
+    if (this.contactStreet) {
+      this.contactStreet = this.contactStreet.trim()
+    }
+    if (this.contactCity) {
+      this.contactCity = this.contactCity.trim()
+    }
+    if (this.contactProvince) {
+      this.contactProvince = this.contactProvince.trim()
+    }
+    if (this.contactZipCode) {
+      this.contactZipCode = this.contactZipCode.trim()
+    }
+    if (this.contactCountry) {
+      this.contactCountry = this.contactCountry.trim()
+    }
+    this.genetateContactAddress(this.contactStreet, this.contactCity, this.contactProvince, this.contactZipCode, this.contactCountry.toUpperCase())
+
+
+    this.contactsService.updateLeadAddress(
+      this.requester_id,
+      this.contactStreet,
+      this.contactCity,
+      this.contactProvince,
+      this.contactZipCode,
+      this.contactCountry
+    ).subscribe((contactAddress) => {
+      console.log('[CONTACT-INFO] - UPDATED CONTACT ADDRESS ', contactAddress);
+
+    }, (error) => {
+
+      console.error('[CONTACT-INFO] - UPDATE CONTACT ADDRESS - ERROR ', error);
+
+      this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
+
+    }, () => {
+      console.log('[CONTACT-INFO]- UPDATE CONTACT ADDRESS * COMPLETE *');
+
+      this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done');
+
+    });
   }
 
 
@@ -480,27 +647,68 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
         console.log('[CONTACT-INFO] - CREATE CONTACT PROPERTY - COMPLETED ');
         this.notify.showWidgetStyleUpdateNotification('Contact successfully updated', 2, 'done')
 
-        this.contactCustomProperties.push({label: propertyLabel, name: propertyName})
+        this.contactCustomProperties.push({ label: propertyLabel, name: propertyName })
         // this.getAllContactProperties()
       })
   }
 
 
-  getAllContactProperties() {
+  getAllContactProperties(leadPropertiesObjct) {
+    console.log('[CONTACT-INFO] - GET CONTACT PROPERTIES LIST - leadPropertiesObjct ', leadPropertiesObjct);
+    const contactCustomPropertiesTemp = []
+    for (let [key, value] of Object.entries(leadPropertiesObjct)) {
+      console.log(`[CONTACT-INFO] - GET CONTACT PROPERTIES LIST - leadPropertiesObjct : key`, key);
+      console.log(`[CONTACT-INFO] - GET CONTACT PROPERTIES LIST - leadPropertiesObjct : - value `, value);
 
+      // contactCustomPropertiesTemp.push({ 'label': '', 'name': key, 'value': value })
+      if (value !== null) {
+        this.contactCustomProperties.push({ 'label': '', 'name': key, 'value': value })
+      }
+    }
+    console.log(`[CONTACT-INFO] ->> GET CONTACT PROPERTIES LIST - this.contactCustomProperties `, this.contactCustomProperties);
     this.contactsService.getAllLeadProperty()
       .subscribe((leadProperties: any) => {
         console.log('[CONTACT-INFO] - GET CONTACT PROPERTIES LIST ', leadProperties);
         leadProperties.forEach(property => {
           console.log('[CONTACT-INFO] - GET CONTACT PROPERTIES LIST property', property)
+
+          const propertyName = property.name;
+          // contactCustomPropertiesTemp.forEach(contactCustomPropertyTemp => {
+          this.contactCustomProperties.forEach(contactCustomProperty => {
+
+            console.log('[CONTACT-INFO] - GET CONTACT PROPERTIES LIST contactCustomProperty', contactCustomProperty)
+
+            if (propertyName === contactCustomProperty.name) {
+              contactCustomProperty.label = property.label
+
+              setTimeout(() => {
+                const inputEl = <HTMLInputElement>document.querySelector(`.lead--properties-${contactCustomProperty.name} div div input`);
+                console.log('inputEl ', inputEl)
+                inputEl.value = contactCustomProperty.value
+              }, 1500);
+            }
+          });
+
+          // var index = this.contactCustomProperties.indexOf(property.name);
+
+          // console.log('[CONTACT-INFO] - GET CONTACT PROPERTIES LIST contactCustomProperties.indexOf', property.name, 'index ', index)
           // this.contactsCustomProperties.push({ label: property.label, name: property.name })
-          this.contactPropertiesToSelect.push({ label: property.label, name: property.name })
+          var index = this.contactCustomProperties.findIndex((e) => e.name === property.name)
+          if (index !== 0) {
+            this.contactPropertiesToSelect.push({ label: property.label, name: property.name })
+          }
         });
-        // this.contactsCustomProperties = this.contactsCustomProperties.slice(0)
-        // console.log('contactsCustomProperties Array ', this.contactsCustomProperties)
+        console.log(`[CONTACT-INFO] ->> GET CONTACT PROPERTIES LIST - contactCustomPropertiesTemp (after) `, contactCustomPropertiesTemp);
+
+        // this.contactCustomProperties = contactCustomPropertiesTemp
 
         this.contactPropertiesToSelect = this.contactPropertiesToSelect.slice(0)
         console.log('contactsCustomProperties Array ', this.contactPropertiesToSelect)
+
+        console.log('[CONTACT-INFO] - GET CONTACT PROPERTIES LIST contactCustomProperties', this.contactCustomProperties)
+        // this.contactsCustomProperties = this.contactsCustomProperties.slice(0)
+        // console.log('contactsCustomProperties Array ', this.contactsCustomProperties)
+
         // this.form = new FormGroup({
         //   fields: new FormControl(JSON.stringify(this.contactProperties))
         // })
@@ -544,43 +752,49 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   removeCustomProperty(propertyLabel, propertyName) {
-    console.log('[CONTACT-INFO] - REMOVE CUSTOM PROPERTY FROM ATTRIBUTES propertyName ', propertyLabel);
-    console.log('[CONTACT-INFO] - REMOVE CUSTOM PROPERTY FROM ATTRIBUTES propertyName ', propertyName);
+    console.log('[CONTACT-INFO] - REMOVE CUSTOM PROPERTY propertyLabel ', propertyLabel);
+    console.log('[CONTACT-INFO] - REMOVE CUSTOM PROPERTY propertyName ', propertyName);
     //   delete  this.contactAttributes['ccp_' + propertyName]
     //   console.log('[CONTACT-INFO] - REMOVE CUSTOM PROPERTY FROM ATTRIBUTES contactAttributes ', this.contactAttributes);
 
-    console.log('[CONTACT-INFO] - REMOVE CUSTOM PROPERTY FROM ATTRIBUTES contactCustomProperties ', this.contactCustomProperties);
-
-
     this.contactCustomProperties.forEach((contactProperty, index) => {
       if (contactProperty.name === propertyName) {
-        console.log('[CONTACT-INFO] - REMOVE CUSTOM PROPERTY FROM ATTRIBUTES index ', index);
+        console.log('[CONTACT-INFO] - REMOVE CUSTOM PROPERTY  index ', index);
         this.contactCustomProperties.splice(index, 1);
       }
       this.contactPropertiesToSelect.push({ label: propertyLabel, name: propertyName })
     });
+
+    for (let [key, value] of Object.entries(this.leadPropertiesObjct)) {
+      console.log(`[CONTACT-INFO] - REMOVE CUSTOM PROPERTY leadPropertiesObjct key`, key);
+      console.log(`[CONTACT-INFO] - REMOVE CUSTOM PROPERTY leadPropertiesObjct value `, value);
+      if (key === propertyName) {
+        this.leadPropertiesObjct[key] = null
+        this.updateLeadCustomProperties(this.requester_id, this.leadPropertiesObjct)
+      }
+    }
+    // this.leadPropertiesObjct
     this.contactPropertiesToSelect = this.contactPropertiesToSelect.slice(0)
+    console.log('[CONTACT-INFO] - REMOVE CUSTOM PROPERTY FROM ATTRIBUTES contactCustomProperties ', this.contactCustomProperties);
+    // this.saveCustomProperty(this.requester_id, this.contactCustomProperties)
+
+
     // this.updatedAttributes(this.contactAttributes)
   }
 
-  updatedAttributes(contactAttributes) {
-    this.contactsService.updatedContactAttributes(this.requester_id, contactAttributes)
-      .subscribe((res: any) => {
-        console.log('[CONTACT-INFO] - UPDATED CONTACT ATTRIBUTES ', res);
-
-      }, (error) => {
-
-        console.error('[CONTACT-INFO] - UPDATED CONTACT ATTRIBUTES - ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
-        // this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
-
-      }, () => {
-        console.log('[CONTACT-INFO] - UPDATED CONTACT ATTRIBUTES - COMPLETED ');
-
-      })
-
-  }
+  // updatedAttributes(contactAttributes) {
+  //   this.contactsService.updatedContactAttributes(this.requester_id, contactAttributes)
+  //     .subscribe((res: any) => {
+  //       console.log('[CONTACT-INFO] - UPDATED CONTACT ATTRIBUTES ', res);
+  //     }, (error) => {
+  //       console.error('[CONTACT-INFO] - UPDATED CONTACT ATTRIBUTES - ERROR ', error);
+  //       // =========== NOTIFY ERROR ===========
+  //       // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+  //       // this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
+  //     }, () => {
+  //       console.log('[CONTACT-INFO] - UPDATED CONTACT ATTRIBUTES - COMPLETED ');
+  //     })
+  // }
 
   addCustomPropertyValue(propertyName) {
     console.log('[CONTACT-INFO] - ADD VALUE AT THE CUSTOM PROPERTY input id', propertyName);
@@ -598,27 +812,57 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     const inputValue = event.target.value;
     console.log('[CONTACT-INFO] - onKey inputValue', inputValue);
     console.log('[CONTACT-INFO] - onKey contactCustomPropertiesAssigned', this.contactCustomPropertiesAssigned);
-    if (this.contactCustomPropertiesAssigned.length > 0) {
-      console.log('[CONTACT-INFO] - onKey usecase contactCustomPropertiesAssigned.length ', this.contactCustomPropertiesAssigned.length)
-      this.contactCustomPropertiesAssigned.forEach(property => {
-        console.log('[CONTACT-INFO] - onKey property', property.name);
-        if (property.name !== propertyName) {
-          console.log('[CONTACT-INFO] - USE CASE PROPERTY ADDED IF NOT YET ADDED property.name', property.name, 'propertyName selected:  ', propertyName);
-          // this.contactCustomPropertiesAssigned.push({ [propertyName]: inputValue, label: propertylabel })
-          this.contactCustomPropertiesAssigned.push({ label: propertylabel, name: propertyName, value: inputValue })
-          this.saveCustomProperty(this.requester_id, this.contactCustomPropertiesAssigned)
-        }
-      });
-    } else {
-      // this.contactCustomPropertiesAssigned.push({ [propertyName]: inputValue, label: propertylabel })
-      console.log('[CONTACT-INFO] - onKey usecase contactCustomPropertiesAssigned.length ', this.contactCustomPropertiesAssigned.length)
-      this.contactCustomPropertiesAssigned.push({ label: propertylabel, name: propertyName, value: inputValue })
-      this.saveCustomProperty(this.requester_id, this.contactCustomPropertiesAssigned)
-    }
+
+
+
+    // ----- new 
+    this.leadPropertiesObjct[propertyName] = inputValue
+    console.log('[CONTACT-INFO] - onKey leadPropertiesObjct', this.leadPropertiesObjct);
+    this.updateLeadCustomProperties(this.requester_id, this.leadPropertiesObjct)
+    // ----- ./new 
+
+    // if (this.contactCustomPropertiesAssigned.length > 0) {
+    //   console.log('[CONTACT-INFO] - onKey usecase contactCustomPropertiesAssigned.length ', this.contactCustomPropertiesAssigned.length)
+    //   this.contactCustomPropertiesAssigned.forEach(property => {
+    //     console.log('[CONTACT-INFO] - onKey property', property.name);
+    //     // if (property.name !== propertyName) {
+    //       console.log('[CONTACT-INFO] - USE CASE PROPERTY ADDED IF NOT YET ADDED property.name', property.name, 'propertyName selected:  ', propertyName);
+    //       // this.contactCustomPropertiesAssigned.push({ [propertyName]: inputValue, label: propertylabel })
+    //       this.contactCustomPropertiesAssigned.push({ label: propertylabel, name: propertyName, value: inputValue })
+    //       this.saveCustomProperty(this.requester_id, this.contactCustomPropertiesAssigned)
+    //     // }
+    //   });
+    // } else {
+    //   // this.contactCustomPropertiesAssigned.push({ [propertyName]: inputValue, label: propertylabel })
+    //   console.log('[CONTACT-INFO] - onKey usecase contactCustomPropertiesAssigned.length ', this.contactCustomPropertiesAssigned.length)
+    //   this.contactCustomPropertiesAssigned.push({ label: propertylabel, name: propertyName, value: inputValue })
+    //   this.saveCustomProperty(this.requester_id, this.contactCustomPropertiesAssigned)
+    // }
     console.log('[CONTACT-INFO] - onKey contactCustomProperties', this.contactCustomProperties);
     // this.contactCustomProperties.push({ label: propertylabel, name: propertyName, value: inputValue })
     // this.saveCustomProperty(this.requester_id, this.contactCustomProperties)
   }
+
+
+  updateLeadCustomProperties(requester_id, customPropertiesObjct) {
+    this.contactsService.updateLeadCustomProperties(requester_id, customPropertiesObjct)
+
+      .subscribe((res: any) => {
+        console.log('[CONTACT-INFO] - ADD CUSTOM PROPERTY TO LEAD (New)', res);
+
+      }, (error) => {
+
+        console.error('[CONTACT-INFO] - ADD CUSTOM PROPERTY TO LEAD (New) - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+        // this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
+
+      }, () => {
+        console.log('[CONTACT-INFO] - ADD CUSTOM PROPERTY TO LEAD (New) - COMPLETED ');
+
+      })
+  }
+
 
   // saveCustomProperty(requester_id, propertyName, inputValue) {
   saveCustomProperty(requester_id, contactCustomPropertiesAssigned) {
@@ -641,7 +885,26 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
 
+  // ----------------------------------------------
+  // Translation
+  // ----------------------------------------------
+  translateEditContactSuccessMsg() {
+    this.translate.get('EditContactSuccessNoticationMsg')
+      .subscribe((text: string) => {
 
+        this.editContactSuccessNoticationMsg = text;
+        // this.logger.log('[CONTACT-EDIT] + + + EditContactSuccessNoticationMsg', text)
+      });
+  }
+  // TRANSLATION
+  translateEditContactErrorMsg() {
+    this.translate.get('EditContactErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.editContactErrorNoticationMsg = text;
+        // this.logger.log('[CONTACT-EDIT] + + + EditContactErrorNoticationMsg', text)
+      });
+  }
 
   // _addInput() {
   //   let ulElm = <HTMLElement>document.querySelector('.contact-info-list');

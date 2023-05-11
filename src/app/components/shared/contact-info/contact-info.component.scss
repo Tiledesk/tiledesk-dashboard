@@ -98,6 +98,32 @@
     transition: all 0.2s ease-in-out 0s;
     padding: 5px;
 }
+
+.ul-wpr li .action-btns-arrow {
+    opacity: 1;
+    height: 30px;
+    width: 30px;
+    margin-left: auto;
+    transition: opacity 0.2s ease-in-out 0s;
+}
+
+.ul-wpr li .action-btns-arrow button {
+    background: transparent;
+    outline: none;
+    border: 0px;
+    cursor: pointer;
+    color: rgb(100, 116, 145);
+    float: right;
+    transition: all 0.2s ease-in-out 0s;
+    padding: 5px;
+    width: 41px;
+    height: 36px;
+}
+
+.ul-wpr li .action-btns-arrow button:hover svg {
+    fill: rgb(5, 102, 255);
+}
+
 .ul-wpr li:hover .input-row {
     border-radius: 4px;
     background-color: rgb(245, 247, 249);
@@ -111,6 +137,10 @@
 }
 
 .ul-wpr li .contact-row:hover span svg {
+    fill: rgb(5, 102, 255);
+}
+
+.ul-wpr li .contact-row:hover div svg {
     fill: rgb(5, 102, 255);
 }
 
@@ -275,7 +305,7 @@
     max-width: 247px;
 }
 .lead-property svg {
-width: 22px;
+    width: 22px;
     height: 22px;
     fill: rgba(100, 116, 145, 0.6);
     margin-right: 16px;
@@ -332,8 +362,22 @@ width: 22px;
 
 .propertyLabel {
     position: relative;
-    top: 2px;
+    // top: 2px;
     margin-right: 6px;
+    color: #8796af;
+    font-weight: 500;
+}
+
+#address_arrow_down {
+    -moz-transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+
+#address_arrow_down.up {
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 ::ng-deep .custom-mat-tooltip {

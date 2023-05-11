@@ -282,7 +282,7 @@ export class ContactsService {
   }
 
 
-   // ---------------------------------------------
+  // ---------------------------------------------
   // @ Update lead Company
   // ---------------------------------------------
   public updateLeadCompany(leadid: string, leadcompany: string) {
@@ -302,7 +302,7 @@ export class ContactsService {
       .put(url, JSON.stringify(body), httpOptions)
   }
 
-     // ---------------------------------------------
+  // ---------------------------------------------
   // @ Update lead Phone
   // ---------------------------------------------
   public updateLeadPhone(leadid: string, leadphone: string) {
@@ -398,7 +398,7 @@ export class ContactsService {
 
   // -------------------------------------------------
   // @ Lead property - CREATE NEW PROPERTY
-   // -------------------------------------------------
+  // -------------------------------------------------
   public createNewLeadProperty(propertyLabel: string, propertyName: string): Observable<Contact[]> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -408,7 +408,7 @@ export class ContactsService {
       })
     };
     const url = this.SERVER_BASE_PATH + this.projectId + '/properties';
-    const body = { "label":propertyLabel, "name":propertyName, "type":"text" };
+    const body = { "label": propertyLabel, "name": propertyName, "type": "text" };
     this.logger.log('[CONTACTS-SERV] - CREATE NEW LEAD PROPERTY body', body);
 
     return this.httpClient
@@ -417,7 +417,7 @@ export class ContactsService {
 
   // -------------------------------------------------
   // @ Lead property - GET ALL
-   // -------------------------------------------------
+  // -------------------------------------------------
   public getAllLeadProperty(): Observable<Contact[]> {
 
     const httpOptions = {
@@ -435,7 +435,7 @@ export class ContactsService {
   }
 
   // addCustoPropertyToLead(contactid,propertyName, propertyValue  ){
-    addCustoPropertyToLead(contactid,contactCustomPropertiesAssigned ){
+  addCustoPropertyToLead(contactid, contactCustomPropertiesAssigned) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -443,18 +443,20 @@ export class ContactsService {
       })
     };
 
-    let url = this.SERVER_BASE_PATH +  this.projectId + '/leads/' + contactid + "/attributes"
+    let url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + contactid + "/attributes"
     console.log('[CONTACTS-SERV] - ADD CUSTOM PROPERTY TO LEAD - URL', url);
     // var key = 'ccp_'+propertyName;
     // const body = { [key]: propertyValue };
-    const body = {ccp: contactCustomPropertiesAssigned}
+    const body = { ccp: contactCustomPropertiesAssigned }
     console.log('[DEPTS-SERV] - ADD CUSTOM PROPERTY - BODY', body);
 
     return this.httpClient
       .patch(url, JSON.stringify(body), httpOptions)
   }
 
-  updatedContactAttributes(contactid, attributes) {
+  // curl -v -X PATCH -H 'Content-Type:application/json' -u andrea.leo@frontiere21.it:258456td -d '{"a1":"a2", "b1":"b2"}' http://localhost:3000/6307a210f6c98c2d6c9c74ef/leads/630e19bf8ddb5f633abfedbf/properties
+
+  updateLeadCustomProperties(contactid, contactCustomPropertiesObjct) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -462,13 +464,66 @@ export class ContactsService {
       })
     };
 
-    let url = this.SERVER_BASE_PATH +  this.projectId + '/leads/' + contactid + "/attributes"
-    console.log('[CONTACTS-SERV] - UPDATED CONTACT ATTRIBUTES - URL', url);
-    
-    return this.httpClient
-      .patch(url, JSON.stringify(attributes), httpOptions)
+    let url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + contactid + "/properties"
+    console.log('[CONTACTS-SERV] - ADD CUSTOM PROPERTY TO LEAD - URL', url);
+    // var key = 'ccp_'+propertyName;
+    // const body = { [key]: propertyValue };
+    const body = contactCustomPropertiesObjct
+    console.log('[DEPTS-SERV] - ADD CUSTOM PROPERTY - BODY', body);
 
-  } 
+    return this.httpClient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+  public updateLeadAddress(
+    contactid: string,
+    lead_street_address: string,
+    lead_city: string,
+    lead_state: string,
+    lead_postalcode: string,
+    lead_country: string,
+  ) {
+    console.log('lead_street_address', lead_street_address)
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + contactid;
+    console.log('[CONTACTS-SERV] UPDATE LEAD - URL ', url);
+
+    const body = {
+      'streetAddress': lead_street_address,
+      'city': lead_city,
+      'region': lead_state,
+      'zipcode': lead_postalcode,
+      'country': lead_country,
+
+    };
+
+    console.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
+
+    return this.httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+  }
+
+  // updatedContactAttributes(contactid, attributes) {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+  //       'Authorization': this.TOKEN
+  //     })
+  //   };
+
+  //   let url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + contactid + "/attributes"
+  //   console.log('[CONTACTS-SERV] - UPDATED CONTACT ATTRIBUTES - URL', url);
+
+  //   return this.httpClient
+  //     .patch(url, JSON.stringify(attributes), httpOptions)
+
+  // }
 
   // ---------------------------------------------
   // @ Delete lead (move to trash)
