@@ -13,6 +13,9 @@ export enum HAS_SELECTED_TYPE {
   ACTION = "HAS_SELECTED_ACTION",
 }
 
+
+declare function dragElement(el);
+
 @Component({
   selector: 'appdashboard-panel-intent',
   templateUrl: './panel-intent.component.html',
@@ -59,6 +62,14 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     // this.listenToIntentUpdates();
     console.log('PanelIntentComponent ngOnInit-->', this.intentSelected)
     // this.actions = this.intentSelected.actions
+   
+
+    setTimeout(() => {
+      let el = document.getElementById("panel-intent-content");
+      console.log('getElementById:: el', el);
+      dragElement(el);
+    }, 1000);
+
     this.setIntentSelected();
   }
 

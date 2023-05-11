@@ -3,7 +3,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { Intent, Button, ActionReply, Action } from '../../../models/intent-model';
 import { TYPE_INTENT_ELEMENT, TYPE_ACTION } from '../../utils';
 
-
+// declare function setDrawer(el, drawer);
 @Component({
   selector: 'appdashboard-panel-intent-detail',
   templateUrl: './panel-intent-detail.component.html',
@@ -39,6 +39,9 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
     } catch (error) {
       this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) ERROR', error);
     }
+    // setTimeout(() => {
+    //   this.setDragConfig();
+    // }, 1000);
   }
 
   ngOnChanges() {
@@ -56,6 +59,17 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
       this.logger.log('[PANEL-INTENT-DETAIL] (ngOnChanges) ERROR', error);
     }
   }
+
+
+  // private setDragConfig(){
+  //   // drag study
+  //   let el = document.getElementById("content-panel");
+  //   console.log('getElementById:: el', el);
+  //   let drawer = document.getElementById("box-right");
+  //   console.log('getElementById:: drawer', drawer);
+  //   setDrawer(el, drawer);
+  // }
+
   // EVENT FUNCTIONS //
 
   onUpdateFormIntentSelected($event){

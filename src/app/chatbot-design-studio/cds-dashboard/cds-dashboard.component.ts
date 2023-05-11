@@ -155,9 +155,9 @@ export class CdsDashboardComponent implements OnInit {
 
   private setDragConfig(){
     // drag study
-    let el = document.getElementById("chatboat-dashboard");
+    let el = document.getElementById("box-right");
     console.log('getElementById:: el', el);
-    let drawer = document.getElementById("box-right");
+    let drawer = document.getElementById("box-right-content");
     console.log('getElementById:: drawer', drawer);
     setDrawer(el, drawer);
   }
