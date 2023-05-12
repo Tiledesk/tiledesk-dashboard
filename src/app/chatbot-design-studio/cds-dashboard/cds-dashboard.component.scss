@@ -99,7 +99,14 @@ $box-left-width: 250px;
     }
 }
 
+#box-right{
+  background-size: 16px 16px;
+  background-image: radial-gradient(rgb(218, 226, 226) 1.14286px, rgb(244, 246, 246) 1.14286px);
+  background-position: 593.4px -230.4px;
+}
+
 .box-right {
+  
     /* background-color: bisque; */
     // width: calc(100% -  $box-left-width);
     flex-grow: 1;

@@ -1,5 +1,5 @@
 
-<div id="panel-intent-content">
+<div id="panel-intent-content" draggable="true" (ondragstart)="dragElement2($event)">
     <div>
         <div class="button-intent button-intent-questions" (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
             [ngClass]="{

@@ -64,15 +64,24 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     // this.actions = this.intentSelected.actions
    
 
-    setTimeout(() => {
-      let el = document.getElementById("panel-intent-content");
-      console.log('getElementById:: el', el);
-      dragElement(el);
-    }, 1000);
+    // setTimeout(() => {
+    //   let el = document.getElementById("panel-intent-content");
+    //   console.log('getElementById:: el', el);
+    //   dragElement(el);
+    // }, 1000);
 
     this.setIntentSelected();
   }
 
+
+  dragElement2(el){
+    // document.getElementById("myDIV").addEventListener("ondragstart", myFunction);
+
+    console.log('dragElement:: el', el.target.id);
+    dragElement(el);
+  }
+
+  
   private patchAllActionsId(){
     if(this.actions && this.actions.length>0){
       this.actions.forEach(function(action, index, object) {
