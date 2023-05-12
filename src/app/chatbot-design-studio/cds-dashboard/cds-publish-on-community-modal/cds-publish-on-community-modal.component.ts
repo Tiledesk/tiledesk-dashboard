@@ -33,7 +33,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
   showSpinnerInUploadImageBtn = false;
   botProfileImageurl: string;
   timeStamp: any;
-  selectedIndex = 0;
+  selectedIndex = 1;
   @ViewChild('cdsfileInputBotProfileImage', { static: false }) cdsfileInputBotProfileImage: any;
   @ViewChild('editbotbtn', { static: false }) private elementRef: ElementRef;
 
@@ -61,6 +61,8 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
 
       this.faqKb_description = this.selectedChatbot.description;
       this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - faqKb_description ', this.faqKb_description);
+      
+      this.tagsList = this.selectedChatbot.tags
       this.checkBotImageExist()
     }
   }

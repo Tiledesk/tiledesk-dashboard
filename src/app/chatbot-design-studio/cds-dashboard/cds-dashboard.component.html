@@ -10,7 +10,7 @@
     </span>
 </div> -->
 
-<!-- <div *ngIf="isBetaUrl" class="beta-icon">BETA</div> -->
+
 <div class="cds-header">
     <div class="header-left" [class.is_opened]="IS_OPEN">
         <img *ngIf="!IS_OPEN" src="assets/img/logos/tiledesk_logo_white_small.svg">
@@ -40,18 +40,18 @@
                 <button id="cds-publish-btn" class="btn btn-primary" type="button" style="margin-left: 14px;"
                     (click)="publish()">
                     <span class="material-icons">
-                        send
+                        cached
                     </span>
                     Publish
                 </button>
                 <!-- (click)="isOpenDropdown(isOpen = !isOpen)"  [ngClass]="{'caret-rotate-0': is0penDropDown === true, 'caret-rotate-180': is0penDropDown === false}" -->
-                <button id="cds-publish-btn-option" type="button" class="btn btn-primary dropdown-toggle"
+                <!-- <button id="cds-publish-btn-option" type="button" class="btn btn-primary dropdown-toggle"
                     data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
-                </button>
+                </button> -->
 
-                <ul class="dropdown-menu" role="menu" style="border-radius: 3px ;background-color: rgb(51, 64, 94)">
+                <!-- <ul class="dropdown-menu" role="menu" style="border-radius: 3px ;background-color: rgb(51, 64, 94)">
                     <li>
 
                         <a class="custom---anchor" *ngIf="selectedChatbot?.public === false"
@@ -78,20 +78,22 @@
                             </div>
                         </a>
                     </li>
-                </ul>
+                </ul> -->
             </div>
             <div *ngIf="TRY_ON_WA === true">
                 <button id="cds-test-it-wab-out-btn" class="btn btn-primary cds-blue-button cds-test-it-out"
                     style="background-color: #45c351; color: #fff; border-color: #fff; height: 34px; margin-top: 8px;"
                     type="button" (click)="openWhatsappPage()">
-                    <img width="18px" height="auto" src="assets/img/channel_icons/whatsapp-logo_green.svg">Try on
-                    WhatsApp
+                    <img width="18px" height="auto" src="assets/img/channel_icons/whatsapp-logo_green.svg">
+                    Try on WhatsApp
                 </button>
             </div>
             <div>
                 <button id="cds-test-it-out-btn" class="btn btn-primary pull-right cds-blue-button cds-test-it-out"
                     type="button" (click)="openTestSiteInPopupWindow()">
-                    Test it out
+                    <span class="material-icons">
+                        play_arrow
+                    </span>
                 </button>
             </div>
             <div class="cds-close-btn-wpr">

@@ -89,7 +89,7 @@ export class CdsDashboardComponent implements OnInit {
 
   popup_visibility: string = 'none'
 
-  isBetaUrl: boolean;
+  isBetaUrl: boolean = true;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -129,18 +129,16 @@ export class CdsDashboardComponent implements OnInit {
         //this.MOCK_getFaqById();
       }
     }
-
-    this.isBetaUrl = false;
-    if(this.router.url.includes('beta')){
-      this.isBetaUrl = true;
-    }
-
     this.getCurrentProject();
     this.getBrowserVersion();
     this.getTestSiteUrl();
     this.getDeptsByProjectId();
     this.hideShowWidget('show');
     this.getOSCODE();
+
+    if(window.location.href.includes('beta')){
+      this.isBetaUrl = true
+    }
   }
 
 

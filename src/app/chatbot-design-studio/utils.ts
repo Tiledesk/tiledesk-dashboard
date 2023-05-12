@@ -245,6 +245,13 @@ export const TYPE_FUNCTION_LIST_FOR_FUNCTIONS: { [key: string]: { name: string, 
     "availableAgentAsStrings": { name: "Available agents?", type: TYPE_FUNCTION_FUNC.availableAgentsAsStrings, src: "" },
 }
 
+export const CERTIFIED_TAGS: Array<{color: string, name: string}> = [
+    { "color": "#a16300", "name": "Lead-Gen" },
+    { "color": "#25833e", "name": "Support" }, 
+    // { "color": "#00699e", "name": "Pre-Sale" }, 
+    // { "color": "#0049bd", "name": "Self-serve" }, 
+]
+
 
 export function OperatorValidator(control: AbstractControl): { [key: string]: boolean } | null {
     if (control.value in TYPE_OPERATOR) {
