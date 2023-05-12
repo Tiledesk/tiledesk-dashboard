@@ -63,6 +63,7 @@ export class AttributesComponent implements OnInit {
   }
 
   onChangeTextarea(event, index){
+    console.log('onChangeTextarea-->', event)
     if(event){
       this.newAttributes[index].value = event
     }
@@ -90,7 +91,7 @@ export class AttributesComponent implements OnInit {
   private setChangedAttributes(){
     let attributes = {};
     this.newAttributes.forEach(function(item) {
-      if(item.key || item.value){
+      if(item.key && item.value){
         attributes[item.key] = item.value;
       }
     });
@@ -119,8 +120,8 @@ export class AttributesComponent implements OnInit {
         break;
       }
       case 'value':{
-        this.newAttributes[index].value += variableSelected.value;
-        if(!this.newAttributes[index].value){
+        // this.newAttributes[index].value = variableSelected.value;
+        if(!this.newAttributes[index].key){
           this.newAttributes.push({key:"", value:""});
         }
         break;
@@ -135,8 +136,8 @@ export class AttributesComponent implements OnInit {
       
     }
 
-    this.logger.log('[ATTRIBUTES] onSelectedAttribute: newAttributes', this.newAttributes)
     this.setChangedAttributes();
+    console.log('[ATTRIBUTES] onSelectedAttribute: newAttributes', this.newAttributes)
   }
 
 }

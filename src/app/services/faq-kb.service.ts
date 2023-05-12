@@ -500,14 +500,19 @@ export class FaqKbService {
     this.logger.log('update BOT - URL ', url);
 
     let body = {}
-    body = { 'name': name, 'url': urlfaqkb, 'type': bottype, 'description': faqKb_description };
+    body = { 
+      'name': name, 
+      'url': urlfaqkb, 
+      'type': bottype, 
+      'description': faqKb_description
+    };
+    
     if (bottype === 'internal' || bottype === 'tilebot') {
       body['webhook_enabled'] = webkookisenalbled;
       body['webhook_url'] = webhookurl
       body['language'] = resbotlanguage
     }
     this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
-
     return this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
   }
