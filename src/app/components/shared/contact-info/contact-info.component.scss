@@ -1,4 +1,4 @@
-textarea[type=text] {
+textarea[type="text"] {
     font-size: 14px;
     width: 100%;
     margin-bottom: 10px;
@@ -14,8 +14,6 @@ textarea[type=text] {
     background-color: #fff !important;
     border: solid 1px #ddd;
 }
-
-
 
 .tab0-card1 {
     min-height: 225px;
@@ -399,6 +397,14 @@ textarea[type=text] {
     transform: rotate(180deg);
 }
 
+.extra-small-btn {
+    box-shadow: unset !important;
+}
+.btn-cancel {
+    color: #555;
+    background-color: #efefef;
+    box-shadow: unset !important;
+}
 ::ng-deep .custom-mat-tooltip {
     background-color: #2d323e !important;
     font-size: 12px !important;

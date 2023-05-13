@@ -296,9 +296,14 @@ p.member:hover {
   transition: 0.4s;
 }
 
-.attributes-accordion:hover {
+.attributes-accordion span svg{
+  fill: #8796af
+}
+
+.attributes-accordion:hover span svg{
   // background-color: #ccc;
-  background-color: #f7f8fc;
+  // background-color: #f7f8fc;
+  fill: rgb(5, 102, 255);
 }
 
 /* 
@@ -512,4 +517,21 @@ p.member:hover {
   font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
+}
+
+#attributes-row {
+  padding-left: 12px;
+  padding-right: 24px;
+  margin-top: 22px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: #001b4714 0 3px 8px;
+
+  margin-top: 12px !important;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+#attributes-row:hover div p span svg {
+ fill: rgb(5, 102, 255);
 }

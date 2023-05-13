@@ -84,6 +84,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // messagesList: WsMessage[] = [];
   messagesList: any;
   showSpinner = true;
+  showViewedPages: boolean = false
+  ipAddress: string;
   // showSpinner = false;
   showSpinner_inModalUserList = true;
   id_project: string;
@@ -172,7 +174,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   bot_participant_id: string;
   selected_bot_id: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
-
+  viewedPages = [];
   timeout: any;
 
   attributesArray: Array<any>;
@@ -281,6 +283,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   imageViewerModal: any;
   locationCity: string;
   locationCountry: string;
+  locationLat: string;
+  locationLng: string;
 
   OPEN_MAP_RIGHT_SIDEBAR: boolean = false
   conv_detail_map_sidebar_height: any;
@@ -1503,7 +1507,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getWsRequestById$();
   }
 
-
+  // No more used -> replaced by google maps link
   openMapRightSideBar() {
     this.OPEN_MAP_RIGHT_SIDEBAR = true;
     this.logger.log('[WS-REQUESTS-LIST] »»»» OPEN RIGHT SIDEBAR ', this.OPEN_MAP_RIGHT_SIDEBAR);
@@ -1517,7 +1521,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     //   _elemMainPanel.classList.add("main-panel-map-open");
     // }
   }
-
+  // No more used -> replaced by google maps link
   handleCloseMapRightSidebar(event) {
     this.logger.log('[WS-REQUESTS-LIST] »»»» CLOSE RIGHT SIDEBAR ', event);
     this.OPEN_MAP_RIGHT_SIDEBAR = false;
@@ -1526,6 +1530,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     //   _elemMainPanel.classList.remove("main-panel-map-open");
     // }
   }
+
+  viewInGooleMaps() {
+    console.log('this.locationLat', this.locationLat) 
+    console.log('this.locationLng', this.locationLng) 
+    const url = `https://www.google.com/maps/search/?api=1&query=${this.locationLat},${this.locationLng}`
+    window.open(url, '_blank');
+  }
+
   // -----------------------------------
   // @ Subscribe to bs request by id
   // -----------------------------------
@@ -1574,7 +1586,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1582,6 +1594,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           if (this.request.subject) {
             this.ticketSubject = this.request.subject
+          }
+
+          if (this.request.attributes && this.request.attributes.ipAddress) {
+            this.ipAddress = this.request.attributes.ipAddress
+          } else {
+            this.ipAddress = "not available"
           }
 
           if (this.request['closed_at']) {
@@ -1709,19 +1727,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
             if (this.request.location.city) {
-
               this.locationCity = this.request.location.city;
               // console.log('[WS-REQUESTS-MSGS] - this.request > locationCity: ', this.locationCity);
             }
 
             if (this.request.location.country) {
-
               this.locationCountry = this.request.location.country
               // console.log('[WS-REQUESTS-MSGS] - this.request > locationCountry: ', this.locationCountry);
             }
+
+            if (this.request.location.geometry && this.request.location.geometry.coordinates) {
+              this.locationLat = this.request.location.geometry.coordinates[0]
+              this.locationLng = this.request.location.geometry.coordinates[1]
+              // console.log('[WS-REQUESTS-MSGS] - this.request > locationCountry: ', this.locationCountry);
+            }
           }
-
-
+          
 
           // -------------------------------------------------------------------
           // User Agent
@@ -2314,6 +2335,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
+  toggleViewedPages() {
+    this.showViewedPages = !this.showViewedPages;
+  }
+
   getWsMsgs$() {
     this.wsMsgsService.wsMsgsList$
       .pipe(
@@ -2324,7 +2349,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (wsmsgs) {
           this.logger.log('[WS-REQUESTS-MSGS] getWsMsgs$ WSMSGS lenght', wsmsgs.length)
           this.messagesList = wsmsgs;
-          // console.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
+          console.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
+
+
+          this.messagesList.forEach(message => {
+            console.log('[WS-REQUESTS-MSGS] message attributes', message.attributes);
+
+
+            if (message.attributes.sourceTitle && message.attributes.sourcePage) {
+              const index = this.viewedPages.findIndex((e) => e.viewedPageTitle === message.attributes.sourceTitle);
+              if (index === -1) {
+                this.viewedPages.push({ viewedPageTitle: message.attributes.sourceTitle, viewedPageLink: message.attributes.sourcePage })
+              }
+            }
+          });
+
+          console.log('[WS-REQUESTS-MSGS] message viewedPages array', this.viewedPages);
+
         }
 
         this.showSpinner = false;
