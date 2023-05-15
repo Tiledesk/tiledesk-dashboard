@@ -2302,6 +2302,9 @@
     "NumberOfTeammatesExceedsThePlan_2":"{{plan_name}} planı için izin verilen takım arkadaşı sayısı: {{allowed_seats_num}}. Planı güncelleyin veya fazla takım arkadaşlarını manuel olarak kaldırın (sistem bunu bir ay içinde otomatik olarak yapacaktır)",
     "OnlyWithPlan": "Yalnızca {{plan_name}} planı",
     "CreateNewContactProperty":"Yeni Bir Kişi Özelliği Oluşturun",
+    "PropertyLabel":"Özellik Etiketi",
+    "InternalPropertyName": "Dahili Mülk Adı",
+    "PropertyNameIsInvalid": "Mülk adı geçersiz",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",

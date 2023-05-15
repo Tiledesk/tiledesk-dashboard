@@ -2302,6 +2302,9 @@
     "NumberOfTeammatesExceedsThePlan_2":"{{plan_name}} planı üçün icazə verilən komanda yoldaşlarının sayı {{allowed_seats_num}} təşkil edir. Planı yeniləyin və ya artıq komanda yoldaşlarını əl ilə silin (sistem bunu bir ay ərzində avtomatik edəcək)",
     "OnlyWithPlan": "Yalnız {{plan_name}} plan",
     "CreateNewContactProperty":"Yeni Əlaqə Mülkiyyəti yaradın",
+    "PropertyLabel":"Əmlak Etiketi",
+    "InternalPropertyName": "Daxili Mülkiyyət Adı",
+    "PropertyNameIsInvalid": "Mülk adı etibarsızdır",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

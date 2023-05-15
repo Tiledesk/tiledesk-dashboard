@@ -2302,6 +2302,9 @@
     "NumberOfTeammatesExceedsThePlan_2":"{{plan_name}} жоспары үшін рұқсат етілген командаластар саны: {{allowed_seats_num}}. Жоспарды жаңартыңыз немесе артық командаластарды қолмен жойыңыз (жүйе оны бір айдан кейін автоматты түрде жасайды)",
     "OnlyWithPlan": "Тек {{plan_name}} жоспары",
     "CreateNewContactProperty":"Жаңа контакт сипатын жасаңыз",
+    "PropertyLabel":"Меншік белгісі",
+    "InternalPropertyName": "Ішкі меншік атауы",
+    "PropertyNameIsInvalid": "Сипат атауы жарамсыз",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",

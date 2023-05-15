@@ -2302,6 +2302,9 @@
     "NumberOfTeammatesExceedsThePlan_2":"Количество товарищей по команде, разрешенное для плана {{plan_name}}: {{allowed_seats_num}}. Обновите план или вручную удалите лишних тиммейтов (система сделает это автоматически через месяц)",
     "OnlyWithPlan": "Только план {{plan_name}}",
     "CreateNewContactProperty":"Создать новое свойство контакта",
+    "PropertyLabel":"Ярлык свойства",
+    "InternalPropertyName": "Имя внутреннего свойства",
+    "PropertyNameIsInvalid": "Недопустимое имя свойства",
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",

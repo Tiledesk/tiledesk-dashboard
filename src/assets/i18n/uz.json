@@ -2302,6 +2302,9 @@
     "NumberOfTeammatesExceedsThePlan_2":"{{plan_name}} rejasi uchun ruxsat etilgan jamoadoshlar soni: {{allowed_seats_num}}. Rejani yangilang yoki ortiqcha jamoadoshlarni qo'lda olib tashlang (tizim buni bir oy ichida avtomatik ravishda bajaradi)",
     "OnlyWithPlan": "Faqat {{plan_name}} tarif rejasi",
     "CreateNewContactProperty":"Yangi kontakt mulkini yarating",
+    "PropertyLabel":"Mulk yorlig'i",
+    "InternalPropertyName": "Ichki mulk nomi",
+    "PropertyNameIsInvalid": "Mulk nomi noto‘g‘ri",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

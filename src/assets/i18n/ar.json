@@ -2302,6 +2302,9 @@
     "NumberOfTeammatesExceedsThePlan_2": "عدد زملاء الفريق المسموح به لخطة {{plan_name}} هو {{allowed_seats_num}}. قم بتحديث الخطة أو إزالة الزملاء الزائدين يدويًا (سيقوم النظام بذلك تلقائيًا في غضون شهر) ",
     "OnlyWithPlan": "فقط خطة {{plan_name}}",
     "CreateNewContactProperty": "قم بإنشاء خاصية جهة اتصال جديدة",
+    "PropertyLabel":"تسمية العقار",
+    "InternalPropertyName": "اسم الملكية الداخلية",
+    "PropertyNameIsInvalid":"اسم الخاصية غير صالح",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

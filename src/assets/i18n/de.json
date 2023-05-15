@@ -2302,6 +2302,9 @@
 	"NumberOfTeammatesExceedsThePlan_2":"Die Anzahl der zulässigen Teamkollegen für den Plan {{plan_name}} beträgt {{allowed_seats_num}}. Aktualisieren Sie den Plan oder entfernen Sie überschüssige Teamkollegen manuell (das System erledigt dies automatisch in einem Monat).",
 	"OnlyWithPlan": "Nur {{plan_name}}-Plan",
 	"CreateNewContactProperty":"Erstellen Sie eine neue Kontakteigenschaft",
+	"PropertyLabel":"Eigenschaftsbezeichnung",
+	"InternalPropertyName": "Interner Eigenschaftsname",
+	"PropertyNameIsInvalid": "Der Eigenschaftsname ist ungültig",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",

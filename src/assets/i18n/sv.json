@@ -2302,6 +2302,9 @@
     "NumberOfTeammatesExceedsThePlan_2":"Antalet lagkamrater som tillåts för planen {{plan_name}} är {{allowed_seats_num}}. Uppdatera planen eller ta bort överflödiga lagkamrater manuellt (systemet kommer att göra det automatiskt om en månad)",
     "OnlyWithPlan": "Endast {{plan_name}} plan",
     "CreateNewContactProperty":"Skapa en ny kontaktfastighet",
+    "PropertyLabel":"Fastighetsetikett",
+    "InternalPropertyName": "Internt egendomsnamn",
+    "PropertyNameIsInvalid": "Egendomens namn är ogiltigt",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

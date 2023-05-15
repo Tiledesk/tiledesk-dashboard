@@ -2302,6 +2302,9 @@
     "NumberOfTeammatesExceedsThePlan_2":"O número de companheiros de equipe permitido para o plano {{plan_name}} é {{allowed_seats_num}}. Atualize o plano ou remova manualmente os colegas de equipe em excesso (o sistema fará isso automaticamente em um mês)",
     "OnlyWithPlan": "Somente plano {{plan_name}}",
     "CreateNewContactProperty":"Criar uma nova propriedade de contato",
+    "PropertyLabel":"Rótulo de propriedade",
+    "InternalPropertyName": "Ішкі меншік атауы",
+    "PropertyNameIsInvalid": "O nome da propriedade é inválido",
     "AddIntentPage": {
         "AddForm": "Adicione o formulário",
         "SelectTemplateForm": "Selecione um tipo de forma entre os sugeridos ou crie um novo",
