@@ -2306,7 +2306,8 @@
     "InternalPropertyName": "Ichki mulk nomi",
     "PropertyNameIsInvalid": "Mulk nomi noto‘g‘ri",
     "AddContactProperty":"Kontakt xususiyatini qo‘shish...",
-    "AddNewContactProperty":"Yangi kontakt xususiyatini qo'shing", 
+    "AddNewContactProperty":"Yangi kontakt xususiyatini qo'shing",
+    "CreateNew":"Yangi yaratish", 
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

@@ -2307,6 +2307,7 @@
     "PropertyNameIsInvalid": "Egendomens namn är ogiltigt",
     "AddContactProperty":"Lägg till en kontaktegenskap...", 
     "AddNewContactProperty":"Lägg till en ny kontaktegenskap",
+    "CreateNew":"Skapa ny",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

@@ -2307,6 +2307,7 @@
     "PropertyNameIsInvalid": "Назва властивості недійсна",
     "AddContactProperty":"Додати властивість контакту...", 
     "AddNewContactProperty":"Додайте нову властивість контакту",
+    "CreateNew":"Створити новий",
     "AddIntentPage": {
         "AddForm": "Додати форму",
         "SelectTemplateForm": "Виберіть тип форми серед запропонованих або створіть новий",

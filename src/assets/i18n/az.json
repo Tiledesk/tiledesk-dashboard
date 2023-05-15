@@ -2307,6 +2307,7 @@
     "PropertyNameIsInvalid": "Mülk adı etibarsızdır",
     "AddContactProperty":"Əlaqə mülkiyyəti əlavə edin...", 
     "AddNewContactProperty":"Yeni bir əlaqə xüsusiyyəti əlavə edin",
+    "CreateNew":"Yeni Yarat",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

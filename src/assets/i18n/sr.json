@@ -2307,6 +2307,7 @@
     "PropertyNameIsInvalid": "Назив својства је неважећи",
     "AddContactProperty":"Додајте својство контакта...", 
     "AddNewContactProperty":"Додајте ново својство контакта",
+    "CreateNew":"Цреате Нев",
     "AddIntentPage": {
         "AddForm": "Додати образац",
         "SelectTemplateForm": "Изаберите врсту обрасца међу онима који су предложени или створили нови",

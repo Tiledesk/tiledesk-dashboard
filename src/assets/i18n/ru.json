@@ -2307,6 +2307,7 @@
     "PropertyNameIsInvalid": "Недопустимое имя свойства",
     "AddContactProperty":"Добавить свойство контакта...", 
     "AddNewContactProperty":"Добавить новое свойство контакта",
+    "CreateNew":"Создавать новое",
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",

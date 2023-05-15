@@ -2307,6 +2307,7 @@
     "PropertyNameIsInvalid":"اسم الخاصية غير صالح",
     "AddContactProperty":"إضافة خاصية جهة اتصال ...", 
     "AddNewContactProperty":"إضافة خاصية جهة اتصال جديدة",
+    "CreateNew":"أنشئ جديد",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",
