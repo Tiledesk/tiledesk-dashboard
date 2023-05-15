@@ -479,7 +479,7 @@
     "Address": "Address",
     "StreetAddress": "Street Address",
     "City": "City",
-    "State": "Province",
+    "State": "Province/State",
     "PostalCode": "Postal/Zip",
     "Country": "Country",
     "PhoneNumber": "Phone number",
@@ -2301,6 +2301,7 @@
     "NumberOfTeammatesExceedsThePlan": "The number of teammates allowed is {{free_plan_allowed_seats_num}}. Update the plan or manually remove teammates that exceed the limit (the system will do it automatically in a month)",
     "NumberOfTeammatesExceedsThePlan_2": "The number of teammates allowed for the {{plan_name}} plan is {{allowed_seats_num}}. Update the plan or manually remove excess teammates (the system will do it automatically in a month)",
     "OnlyWithPlan": "Only {{plan_name}} plan",
+    "CreateNewContactProperty":"Create a New Contact Property",
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",

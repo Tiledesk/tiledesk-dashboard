@@ -479,7 +479,7 @@
     "Address": "Adress",
     "StreetAddress": "Gatuadress",
     "City": "Stad",
-    "State": "Provins",
+    "State": "Provins/Stat",
     "PostalCode": "Post/Post",
     "Country": "Land",
     "PhoneNumber": "Telefonnummer",
@@ -2301,6 +2301,7 @@
     "NumberOfTeammatesExceedsThePlan":"Antalet tillåtna lagkamrater är {{free_plan_allowed_seats_num}}. Uppdatera planen eller ta bort lagkamrater som överskrider gränsen manuellt (systemet kommer att göra det automatiskt om en månad)",
     "NumberOfTeammatesExceedsThePlan_2":"Antalet lagkamrater som tillåts för planen {{plan_name}} är {{allowed_seats_num}}. Uppdatera planen eller ta bort överflödiga lagkamrater manuellt (systemet kommer att göra det automatiskt om en månad)",
     "OnlyWithPlan": "Endast {{plan_name}} plan",
+    "CreateNewContactProperty":"Skapa en ny kontaktfastighet",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

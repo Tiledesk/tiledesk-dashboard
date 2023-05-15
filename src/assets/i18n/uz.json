@@ -479,7 +479,7 @@
     "Address": "Manzil",
     "StreetAddress": "Ko'cha manzili",
     "City": "Shahar",
-    "State": "Viloyat",
+    "State": "Viloyat/Shtat",
     "PostalCode": "Pochta/Zip",
     "Country": "Mamlakat",
     "PhoneNumber": "Telefon raqami",
@@ -2301,6 +2301,7 @@
     "NumberOfTeammatesExceedsThePlan":"Ruxsat berilgan jamoadoshlar soni: {{free_plan_allowed_seats_num}}. Rejani yangilang yoki chegaradan oshib ketgan jamoadoshlarni qo'lda olib tashlang (tizim buni bir oy ichida avtomatik ravishda bajaradi)",
     "NumberOfTeammatesExceedsThePlan_2":"{{plan_name}} rejasi uchun ruxsat etilgan jamoadoshlar soni: {{allowed_seats_num}}. Rejani yangilang yoki ortiqcha jamoadoshlarni qo'lda olib tashlang (tizim buni bir oy ichida avtomatik ravishda bajaradi)",
     "OnlyWithPlan": "Faqat {{plan_name}} tarif rejasi",
+    "CreateNewContactProperty":"Yangi kontakt mulkini yarating",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

@@ -479,7 +479,7 @@
     "Address": "Adres",
     "StreetAddress": "Sokak adresi",
     "City": "Şehir",
-    "State": "Vilayet",
+    "State": "İl/Eyalet",
     "PostalCode": "Posta/Posta",
     "Country": "Ülke",
     "PhoneNumber": "Telefon numarası",
@@ -2301,6 +2301,7 @@
     "NumberOfTeammatesExceedsThePlan":"İzin verilen takım arkadaşı sayısı {{free_plan_allowed_seats_num}}. Planı güncelleyin veya sınırı aşan ekip arkadaşlarını manuel olarak kaldırın (sistem bunu bir ay içinde otomatik olarak yapacaktır)",
     "NumberOfTeammatesExceedsThePlan_2":"{{plan_name}} planı için izin verilen takım arkadaşı sayısı: {{allowed_seats_num}}. Planı güncelleyin veya fazla takım arkadaşlarını manuel olarak kaldırın (sistem bunu bir ay içinde otomatik olarak yapacaktır)",
     "OnlyWithPlan": "Yalnızca {{plan_name}} planı",
+    "CreateNewContactProperty":"Yeni Bir Kişi Özelliği Oluşturun",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",

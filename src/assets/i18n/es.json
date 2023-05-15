@@ -479,7 +479,7 @@
     "Address": "Dirección",
     "StreetAddress": "Dirección de calle",
     "City": "Ciudad",
-    "State": "Provenza",
+    "State": "Provincia/Estado",
     "PostalCode": "Postal/Zip",
     "Country": "País",
     "PhoneNumber": "Número de teléfono",
@@ -2301,6 +2301,7 @@
     "NumberOfTeammatesExceedsThePlan": "El número de compañeros de equipo permitido es {{free_plan_allowed_seats_num}}. Actualice el plan o elimine manualmente a los compañeros que excedan el límite (el sistema lo hará automáticamente en un mes)",
     "NumberOfTeammatesExceedsThePlan_2":"El número de compañeros de equipo permitidos para el plan {{plan_name}} es {{allowed_seats_num}}. Actualice el plan o elimine manualmente el exceso de compañeros de equipo (el sistema lo hará automáticamente en un mes)",
     "OnlyWithPlan": "Solo {{plan_name}} plan",
+    "CreateNewContactProperty":"Crear una nueva propiedad de contacto",
     "AddIntentPage": {
         "AddForm": "Agregar forma",
         "SelectTemplateForm": "Seleccione un tipo de formulario entre los sugeridos o cree uno nuevo",

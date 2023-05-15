@@ -479,7 +479,7 @@
     "Address": "عنوان",
     "StreetAddress": "عنوان الشارع",
     "City": "مدينة",
-    "State": "المحافظة",
+    "State": "مقاطعة / ولاية",
     "PostalCode": "البريدي / الرمز البريدي",
     "Country": "دولة",
     "PhoneNumber": "رقم التليفون",
@@ -2301,6 +2301,7 @@
     "NumberOfTeammatesExceedsThePlan": "عدد أعضاء الفريق المسموح به هو {{free_plan_allowed_seats_num}}. تحديث الخطة أو إزالة أعضاء الفريق يدويًا الذين يتجاوزون الحد (سيقوم النظام بذلك تلقائيًا في غضون شهر)",
     "NumberOfTeammatesExceedsThePlan_2": "عدد زملاء الفريق المسموح به لخطة {{plan_name}} هو {{allowed_seats_num}}. قم بتحديث الخطة أو إزالة الزملاء الزائدين يدويًا (سيقوم النظام بذلك تلقائيًا في غضون شهر) ",
     "OnlyWithPlan": "فقط خطة {{plan_name}}",
+    "CreateNewContactProperty": "قم بإنشاء خاصية جهة اتصال جديدة",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",
