@@ -5,6 +5,49 @@ $width-card-tools: 160px;
 $margin-left-card: 30px;
 $margin-top-card: 30px;
 
+/*********** START Draggable  *************/
+.drag-content {
+  position:relative;
+  display: block;
+  background-size: 16px 16px;
+  background-image: radial-gradient(rgb(218, 226, 226) 1.14286px, rgb(244, 246, 246) 1.14286px);
+  background-position: 593.4px -230.4px;
+}
+
+.drag-drawer {
+  position: static!important;
+  display: block!important;
+  width: 100px!important;
+  height: 100px!important;
+  background-color: coral;
+}
+
+.draggable {
+  position: absolute!important;
+  display: table!important;
+  z-index: 9!important;
+  cursor: move!important;
+  margin:0!important;
+  top: 0px;
+  left: 0px;
+  text-align: center;
+}
+/*********** END Draggable  *************/
+
+#cds-panel-intent {
+  background-color: #0f172a;
+}
+
+
+// #box-right {
+//   background-size: 16px 16px;
+//   background-image: radial-gradient(rgb(218, 226, 226) 1.14286px, rgb(244, 246, 246) 1.14286px);
+//   background-position: 593.4px -230.4px;
+// }
+
+
+
+
 .beta-icon {
   position: absolute;
   background: #cc0700;
@@ -99,14 +142,9 @@ $box-left-width: 250px;
     }
 }
 
-#box-right{
-  background-size: 16px 16px;
-  background-image: radial-gradient(rgb(218, 226, 226) 1.14286px, rgb(244, 246, 246) 1.14286px);
-  background-position: 593.4px -230.4px;
-}
-
 .box-right {
-  
+    display: block;
+    position: relative;
     /* background-color: bisque; */
     // width: calc(100% -  $box-left-width);
     flex-grow: 1;
@@ -120,9 +158,7 @@ $box-left-width: 250px;
         height: 50px;
         /* background-color: rgb(76, 227, 30); */
     }
-    #cds-panel-intent{
-      background-color: #0f172a;
-    }
+    
     .box-right-content {
         width: 100%;
         display: flex;
@@ -139,6 +175,8 @@ $box-left-width: 250px;
             margin: 0 10px;
             padding: 0px;
             min-width: 260px;
+            left: 330px;
+            top:70px;
         }
 
         .panel-intent-detail-wrapper {

@@ -155,7 +155,7 @@
             </appdashboard-panel-intent-list>
         </div>
 
-        <div id="box-right" class="box-right">
+        <div id="box-right" class="drag-content box-right">
 
             <cds-splash-screen *ngIf=!intentSelected 
                 [text]="'Select a block from the left sidebar or create a new one'"
@@ -180,11 +180,12 @@
             </div>
             <!-- [events]="upadatedIntent.asObservable() *ngIf=!spinnerCreateIntent -->
             <!-- draggable="true" (ondragstart)="dragElement2($event)" *ngIf=intentSelected -->
-            <div id="box-right-content" class="box-right-content">
+            <div id="box-right-content" class="drag-drawer box-right-content">
+
                 <appdashboard-panel-intent  
                     id="cds-panel-intent"
                     draggable="true"
-                    class="panel-intent" 
+                    class="draggable panel-intent" 
                     [idSelected]="idElementOfIntentSelected"
                     [intentSelected]="intentSelected" 
                     [isIntentElementSelected]="isIntentElementSelected"

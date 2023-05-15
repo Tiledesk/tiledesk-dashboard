@@ -29,7 +29,7 @@ const swal = require('sweetalert');
 
 
 declare function setDrawer(el, drawer);
-declare function dragElement(el);
+declare function setDragElement(el);
 
 @Component({
   selector: 'appdashboard-cds-dashboard',
@@ -134,7 +134,7 @@ export class CdsDashboardComponent implements OnInit {
         //this.MOCK_getFaqById();
       }
     }
-
+  
     this.isBetaUrl = false;
     if(this.router.url.includes('beta')){
       this.isBetaUrl = true;
@@ -164,12 +164,10 @@ export class CdsDashboardComponent implements OnInit {
     let drawer = document.getElementById("box-right-content");
     console.log('getElementById:: drawer', drawer);
     setDrawer(el, drawer);
-
     let el2 = document.getElementById("cds-panel-intent");
     //document.getElementById("panel-intent-content").addEventListener("ondragstart", dragElement);
     console.log('dragElement:: el', el2);
-    dragElement(el2);
-
+    setDragElement('cds-panel-intent');
   }
 
   getOSCODE() {
