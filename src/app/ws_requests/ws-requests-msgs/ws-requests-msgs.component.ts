@@ -2353,9 +2353,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
           this.messagesList.forEach(message => {
-            console.log('[WS-REQUESTS-MSGS] message attributes', message.attributes);
-
-
+            // console.log('[WS-REQUESTS-MSGS] message attributes', message.attributes);
             if (message.attributes.sourceTitle && message.attributes.sourcePage) {
               const index = this.viewedPages.findIndex((e) => e.viewedPageTitle === message.attributes.sourceTitle);
               if (index === -1) {

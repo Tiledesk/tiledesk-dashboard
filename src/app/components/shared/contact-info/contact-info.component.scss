@@ -63,6 +63,27 @@ textarea[type="text"] {
     transition: fill 0.2s ease-in-out 0s;
 }
 
+
+// ---
+.ul-wpr li .tag--row {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 30px;
+}
+
+.ul-wpr li .tag--row > span {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.ul-wpr li .tag--row .tag--icon {
+    fill: rgb(135, 150, 175);
+    margin-right: 12px;
+    transition: fill 0.2s ease-in-out 0s;
+}
+
 // .ul-wpr li .form-control {
 //     background-image: none !important;
 // }
@@ -158,6 +179,14 @@ textarea[type="text"] {
 }
 
 .ul-wpr li .contact-row:hover div svg {
+    fill: rgb(5, 102, 255);
+}
+// ----
+.ul-wpr li .tag--row:hover span .tag--icon {
+    fill: rgb(5, 102, 255);
+}
+
+.ul-wpr li .tag--row:hover div .tag--icon {
     fill: rgb(5, 102, 255);
 }
 
@@ -260,6 +289,14 @@ textarea[type="text"] {
     position: relative;
     top: -3px;
     left: 8px;
+
+    display: flex;
+    flex-flow: row wrap;
+    -webkit-box-align: center;
+    align-items: center;
+    gap: 6px 4px;
+    margin-bottom: 6px;
+
 }
 
 .lead-tag {
@@ -295,6 +332,49 @@ textarea[type="text"] {
         // left: -2px;
         top: 3px;
     }
+}
+
+
+// ---- Assigned tag without icon 
+.css-1f6nz3l {
+    display: flex;
+    border-radius: 4px;
+    background-color: rgba(100, 116, 145, 0.08);
+    color: rgb(100, 116, 145);
+}
+
+.css-yhmjem {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: -0.01em;
+    padding: 3px 5px 4px;
+    word-break: break-word;
+}
+
+.css-1f6nz3l button {
+    margin-left: -2px;
+}
+
+.css-1hf9nkf {
+    border: none;
+    outline: none;
+    background: transparent;
+    border-radius: 0px 4px 4px 0px;
+    padding: 0px 4px 0px 3px;
+    cursor: pointer;
+}
+
+.css-1f6nz3l button svg {
+    position: relative;
+    top: 1px;
+    fill: rgb(100, 116, 145);
+}
+
+.css-1hf9nkf:hover {
+    background: rgb(248, 166, 178);
 }
 
 /* ./ Lead tag 
@@ -400,11 +480,16 @@ textarea[type="text"] {
 .extra-small-btn {
     box-shadow: unset !important;
 }
-.btn-cancel {
+.btn-cancel-lead-note {
     color: #555;
     background-color: #efefef;
     box-shadow: unset !important;
 }
+
+.btn-cancel-lead-note:hover {
+    background-color: #e8e8e8
+}
+
 ::ng-deep .custom-mat-tooltip {
     background-color: #2d323e !important;
     font-size: 12px !important;

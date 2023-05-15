@@ -1873,7 +1873,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Deparment -->
                     <!-- ------------------------------------- -->
-                    <li class="deparment" *ngIf="request?.department">
+                    <li class="deparment" *ngIf="request?.department && request?.department?.name !== 'Default Department'">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
@@ -2635,7 +2635,7 @@
 
 
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
-                      <!--  Btn Add Notes (note: is disabled if if the current user has agent role and is not among the participants) -->
+                      <!--  Btn Add Notes (note: is disabled if the current user has agent role and is not among the participants) -->
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
 
                       <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont

@@ -1481,18 +1481,24 @@ span .conv-svg-icon {
 }
 
 .attributes-accordion:hover svg {
-  fill: #0049bd;
+  // fill: #0049bd;
+  fill: #0566ff
 }
 
 .attributes-accordion:after {
   content: "\f107";
   font-family: FontAwesome;
-  color: #039be5;
+  // color: #039be5;
+  color: #8796af;
   font-weight: bold;
   float: right;
   font-size: 20px;
   padding-right: 4px;
   margin-top: 6px;
+}
+
+.attributes-accordion:hover:after {
+  color: #0566ff;
 }
 .attributes-accordion.active:after {
   content: "\f106";
@@ -1593,7 +1599,8 @@ span .conv-svg-icon {
 }
 
 .attributes-pre-chat-form-accordion:hover svg {
-  fill: #0049bd;
+  // fill: #0049bd;
+  fill: #0566ff;
 }
 
 .attributes-pre-chat-form-accordion:hover {
@@ -1604,15 +1611,20 @@ span .conv-svg-icon {
   // content: "\002B";
   content: "\f107";
   font-family: FontAwesome;
-  // color: #777;
-  color: #039be5;
+  // color: #0566ff;
+  color: #8796af;
   font-weight: bold;
   float: right;
-  // margin-left: 5px;
   font-size: 20px;
-  padding-right: 4px;
+  // padding-right: 4px;
+  padding-right: 20px;
   margin-top: 3px;
 }
+
+.attributes-pre-chat-form-accordion:hover:after {
+  color: #0566ff;
+}
+
 .attributes-pre-chat-form-accordion.active:after {
   content: "\f106";
   font-family: FontAwesome;
@@ -1626,11 +1638,10 @@ span .conv-svg-icon {
 }
 /* ./ Attributes Pre-chat Form Accordion */
 
-
 /*
 /* Chatbot attributes accordion
 /* ----------------------------------- */
- .chatbot-conv-accordion-wpr {
+.chatbot-conv-accordion-wpr {
   // margin-top: 12px!important;
   background-color: #fff;
   border-radius: 4px;
@@ -1641,8 +1652,7 @@ span .conv-svg-icon {
   margin-left: 8px !important;
 }
 
-.chatbot-conv-accordion{
-
+.chatbot-conv-accordion {
   cursor: pointer;
   position: relative;
   padding: 16px 20px;
@@ -4432,7 +4442,6 @@ label {
   margin-right: 12px;
 }
 
-
 .ul-wpr {
   background-color: rgb(255, 255, 255);
   border-radius: 4px;
@@ -4502,7 +4511,6 @@ label {
   background-color: rgb(245, 247, 249);
 }
 
-
 .ul-wpr li .action-btns {
   opacity: 0;
   height: 30px;
@@ -4539,7 +4547,7 @@ label {
 }
 
 .ul-wpr li:hover .viewed-pages-anchor {
-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .ul-wpr li .action-btns-arrow {
@@ -4566,7 +4574,6 @@ text-decoration: underline;
 .ul-wpr li:hover .action-btns-arrow button svg {
   fill: rgb(5, 102, 255);
 }
-
 
 .ul-wpr-chat {
   margin-right: 8px !important;
@@ -4655,7 +4662,6 @@ text-decoration: underline;
 
 //  ----- ./ end new tags
 
-
 .dropdown-menu-working-status-chat {
   left: 10px !important;
 }
@@ -4666,14 +4672,11 @@ text-decoration: underline;
   min-height: 225px;
 }
 
-
 /* tab0-card1B
 /* ***************************************** */
 .tab0-card1B-ticket {
   min-height: 191px !important;
 }
-
-
 
 /* Second card - tab 1
 /* ***************************************** */

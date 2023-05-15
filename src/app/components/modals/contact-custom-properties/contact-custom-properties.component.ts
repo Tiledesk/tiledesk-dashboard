@@ -34,7 +34,7 @@ export class ContactCustomPropertiesComponent implements OnInit {
 
   isValid(str) {
 
-    if (str.match(/[^a-zA-Z0-9_-]/)) {
+    if (str.match(/[^a-zA-Z0-9_]/)) {
       
       return false
     } else {
