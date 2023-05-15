@@ -50,7 +50,7 @@ export class CDSTextareaComponent implements OnInit {
   IS_ON_MOBILE_DEVICE = false;
   emojiPerLine: number = 8;
   emojiColor: string ="#ac8b2c";
-  emojiiCategories = [ 'recent', 'people', 'nature', 'activity'];
+  emojiiCategories = [ 'recent', 'people', 'nature', 'activity', 'flags'];
 
   constructor(
     private logger: LoggerService
