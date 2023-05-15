@@ -2305,6 +2305,8 @@
     "PropertyLabel":"Property Label",
     "InternalPropertyName": "Internal Property Name",
     "PropertyNameIsInvalid": "Property name is invalid",
+    "AddContactProperty":"Add a contact property...", 
+    "AddNewContactProperty":"Add a new contact property",
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",

@@ -2305,6 +2305,8 @@
     "PropertyLabel":"Etichetta della proprietà",
     "InternalPropertyName": "Nome proprietà interna",
     "PropertyNameIsInvalid": "Il nome della proprietà non è valido",
+    "AddContactProperty":"Aggiungi una proprietà al contatto...", 
+    "AddNewContactProperty":"Aggiungi una nuova proprietà al contatto",
     "AddIntentPage": {
         "AddForm": "Aggiungi form",
         "SelectTemplateForm": "Selezionare un tipo di form tra quelli suggeriti o crearne uno nuovo",

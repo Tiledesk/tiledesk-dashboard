@@ -2305,6 +2305,8 @@
     "PropertyLabel":"Əmlak Etiketi",
     "InternalPropertyName": "Daxili Mülkiyyət Adı",
     "PropertyNameIsInvalid": "Mülk adı etibarsızdır",
+    "AddContactProperty":"Əlaqə mülkiyyəti əlavə edin...", 
+    "AddNewContactProperty":"Yeni bir əlaqə xüsusiyyəti əlavə edin",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

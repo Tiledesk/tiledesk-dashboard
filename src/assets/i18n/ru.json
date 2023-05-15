@@ -2305,6 +2305,8 @@
     "PropertyLabel":"Ярлык свойства",
     "InternalPropertyName": "Имя внутреннего свойства",
     "PropertyNameIsInvalid": "Недопустимое имя свойства",
+    "AddContactProperty":"Добавить свойство контакта...", 
+    "AddNewContactProperty":"Добавить новое свойство контакта",
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",

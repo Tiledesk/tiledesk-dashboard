@@ -2305,6 +2305,8 @@
     "PropertyLabel":"تسمية العقار",
     "InternalPropertyName": "اسم الملكية الداخلية",
     "PropertyNameIsInvalid":"اسم الخاصية غير صالح",
+    "AddContactProperty":"إضافة خاصية جهة اتصال ...", 
+    "AddNewContactProperty":"إضافة خاصية جهة اتصال جديدة",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

@@ -2305,6 +2305,8 @@
 	"PropertyLabel":"Eigenschaftsbezeichnung",
 	"InternalPropertyName": "Interner Eigenschaftsname",
 	"PropertyNameIsInvalid": "Der Eigenschaftsname ist ungültig",
+	"AddContactProperty":"Əlaqə mülkiyyəti əlavə edin...", 
+	"AddNewContactProperty":"Fügen Sie eine neue Kontakteigenschaft hinzu",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",

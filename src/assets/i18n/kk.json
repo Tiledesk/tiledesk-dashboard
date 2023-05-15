@@ -2305,6 +2305,8 @@
     "PropertyLabel":"Меншік белгісі",
     "InternalPropertyName": "Ішкі меншік атауы",
     "PropertyNameIsInvalid": "Сипат атауы жарамсыз",
+    "AddContactProperty":"Контакт сипатын қосу...", 
+    "AddNewContactProperty":"Жаңа контакт сипатын қосыңыз",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",

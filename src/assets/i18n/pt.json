@@ -2305,6 +2305,8 @@
     "PropertyLabel":"Rótulo de propriedade",
     "InternalPropertyName": "Ішкі меншік атауы",
     "PropertyNameIsInvalid": "O nome da propriedade é inválido",
+    "AddContactProperty":"Adicionar uma propriedade de contato...", 
+    "AddNewContactProperty":"Adicionar uma nova propriedade de contato",
     "AddIntentPage": {
         "AddForm": "Adicione o formulário",
         "SelectTemplateForm": "Selecione um tipo de forma entre os sugeridos ou crie um novo",
