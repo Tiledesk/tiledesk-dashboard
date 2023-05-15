@@ -30,6 +30,7 @@ input[type="text"] {
     font-size: 14px;
     width: 100%;
     margin-bottom: 10px;
+    appearance: none;
     -webkit-appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
@@ -48,6 +49,7 @@ textarea[type="text"] {
     font-size: 14px;
     width: 100%;
     margin-bottom: 10px;
+    appearance: none;
     -webkit-appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
@@ -104,6 +106,7 @@ ng-select {
     font-size: 14px;
     width: 100%;
     margin-bottom: 10px;
+    appearance: none;
     -webkit-appearance: none;
     background: #fff;
     // border: 1px solid #d9d9d9 !important;
@@ -125,12 +128,27 @@ ng-select {
     }
 }
 
+.cds-community-btns-wrp{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 10px;
+    margin: 0 15px;
+}
+
+.link{
+    margin: 0;
+    .material-icons{
+        transform: rotate(135deg);
+    }
+}
+
 /*
 /* Tags
 /* ------------------------------------ */
 .cds-select-chatbot-tags-wpr {
-    // height: 78px;
-    // margin-top: 12px;
+    height: 78px;
+    margin-top: 12px;
 }
 
 .csd-chatbot-tags--container {

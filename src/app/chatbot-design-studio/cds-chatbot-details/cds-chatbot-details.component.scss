@@ -503,6 +503,7 @@ and also iPads specifically.
 .nw-onoffswitch {
     position: relative;
     width: 45px;
+    user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -883,7 +884,7 @@ and also iPads specifically.
     color: $brand-primary !important;
 }
 .disabled-li {
-    // pointer-events: none;
+    pointer-events: none;
 }
 
 @media (max-width: 991px) {
