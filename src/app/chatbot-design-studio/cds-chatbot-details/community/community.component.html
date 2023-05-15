@@ -1,13 +1,12 @@
 <div class="chatbot-community-wpr">
 
     <div class="row" >
-        <div class="col-sm-12 col-md-12" style="display: flex; flex-direction: row-reverse;">
-            <label *ngIf="selectedChatbot?.public === true">
-                <a [href]="selectedChatbot.url">Link</a>
-            </label>
+        <div class="col-sm-12 col-md-12" class="cds-community-btns-wrp">
+            
             <button *ngIf="selectedChatbot?.public === false"
                 id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left cds-blue-button"
-                (click)="publishOnCommunity()" [disabled]="(!certifiedTag && selectedChatbot?.short_description === '')">
+                (click)="publishOnCommunity()" [disabled]="(!selectedChatbot.hasOwnProperty('short_description') || selectedChatbot.short_description === '') || 
+                                                            (!selectedChatbot.hasOwnProperty('title') || selectedChatbot.title === '') || !certifiedTag ">
                 Go live on Community
             </button>
             <button *ngIf="selectedChatbot?.public === true"
@@ -15,6 +14,11 @@
                 (click)="removeFromCommunity()">
                 Remove from community
             </button>
+            <label class="link">
+                <a [href]="selectedChatbot.url" *ngIf="selectedChatbot?.public === true">
+                    <span class="material-icons">link</span>
+                </a>
+            </label>
         </div>
         
     </div>
@@ -95,7 +99,7 @@
         <label class="col-sm-2 cds-custom-label">
             <!-- {{ 'Description' | translate }} -->
             Description
-            <span class="bot-description-note"> Markbot supported - use the Markbot language to enrich your text</span>
+            <span class="bot-description-note"> Markup supported - use the Markup language to enrich your text</span>
         </label>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <textarea id="bot_description" name="bot_description" [(ngModel)]="selectedChatbot.description" rows="6"

@@ -258,6 +258,7 @@ $box-left-width: 250px;
             background-color: transparent;
             border: 1px solid $light-blue;
             color: $light-blue;
+            border-radius: 10px;
             &:hover{
                 opacity: 0.8;
             }
@@ -304,7 +305,8 @@ $box-left-width: 250px;
     background-color: #45c351 !important;
     color: white !important;
     border-color: white !important;
-
+    border-radius: 10px;
+    
     img {
         margin-top: 1px;
         margin-right: 6px;
@@ -321,6 +323,7 @@ $box-left-width: 250px;
     text-transform: capitalize;
     font-size: 14px;
     padding: 6px 12px;
+    border-radius: 10px;
 }
 
 #cds-publish-btn:hover { 
