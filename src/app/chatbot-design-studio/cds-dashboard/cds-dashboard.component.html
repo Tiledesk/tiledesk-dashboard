@@ -179,8 +179,11 @@
                 </appdashboard-panel-intent-header>
             </div>
             <!-- [events]="upadatedIntent.asObservable() *ngIf=!spinnerCreateIntent -->
+            <!-- draggable="true" (ondragstart)="dragElement2($event)" *ngIf=intentSelected -->
             <div id="box-right-content" class="box-right-content">
-                <appdashboard-panel-intent *ngIf=intentSelected 
+                <appdashboard-panel-intent  
+                    id="cds-panel-intent"
+                    draggable="true"
                     class="panel-intent" 
                     [idSelected]="idElementOfIntentSelected"
                     [intentSelected]="intentSelected" 

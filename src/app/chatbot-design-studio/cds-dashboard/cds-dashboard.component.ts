@@ -29,6 +29,7 @@ const swal = require('sweetalert');
 
 
 declare function setDrawer(el, drawer);
+declare function dragElement(el);
 
 @Component({
   selector: 'appdashboard-cds-dashboard',
@@ -153,6 +154,9 @@ export class CdsDashboardComponent implements OnInit {
   }
 
 
+
+
+
   private setDragConfig(){
     // drag study
     let el = document.getElementById("box-right");
@@ -160,6 +164,12 @@ export class CdsDashboardComponent implements OnInit {
     let drawer = document.getElementById("box-right-content");
     console.log('getElementById:: drawer', drawer);
     setDrawer(el, drawer);
+
+    let el2 = document.getElementById("cds-panel-intent");
+    //document.getElementById("panel-intent-content").addEventListener("ondragstart", dragElement);
+    console.log('dragElement:: el', el2);
+    dragElement(el2);
+
   }
 
   getOSCODE() {
