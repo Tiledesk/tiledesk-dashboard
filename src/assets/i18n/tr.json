@@ -1885,6 +1885,7 @@
     "ViewRequesterDetails": "İstek sahibi ayrıntılarını görüntüle",
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Yalnızca sahip rolüne sahip ekip arkadaşları hesabın planını yönetebilir",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Yalnızca sahip rolüne sahip ekip üyeleri e-posta şablonlarını yönetebilir",
+    "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Yalnızca Sahip rolüne sahip bir takım arkadaşı SMTP ayarlarını yönetebilir",
     "LearnMoreAboutDefaultRoles": "Varsayılan roller hakkında daha fazla bilgi edinin",
     "LearnHowCreateAGroup": "Nasıl grup oluşturacağınızı öğrenin",
     "HookTheBot": "Bu botu etkinleştir",

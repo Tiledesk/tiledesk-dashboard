@@ -1885,6 +1885,7 @@
     "ViewRequesterDetails": "عرض تفاصيل الطالب",
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "يمكن لأعضاء الفريق الذين لديهم دور المالك فقط إدارة خطة الحساب",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "يمكن فقط لأعضاء الفريق الذين لديهم دور المالك إدارة قوالب البريد الإلكتروني",
+    "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "يمكن فقط لزميل في الفريق مع دور المالك إدارة إعدادات SMTP",
     "LearnMoreAboutDefaultRoles": "تعرف على المزيد حول الأدوار الافتراضية",
     "LearnHowCreateAGroup": "تعرف على كيفية إنشاء مجموعة",
     "HookTheBot": "قم بتنشيط هذا الروبوت",

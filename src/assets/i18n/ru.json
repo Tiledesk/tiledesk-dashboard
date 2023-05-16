@@ -1885,6 +1885,7 @@
     "ViewRequesterDetails": "Просмотр сведений о запросителе",
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Только товарищи по команде с ролью владельца могут управлять планом учетной записи",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Только члены команды с ролью владельца могут управлять шаблонами электронной почты",
+    "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Только товарищ по команде с ролью владельца может управлять настройками SMTP",
     "LearnMoreAboutDefaultRoles": "Узнайте больше о ролях по умолчанию",
     "LearnHowCreateAGroup": "Узнайте, как создать группу",
     "HookTheBot": "Активировать этого бота",

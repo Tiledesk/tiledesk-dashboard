@@ -1885,6 +1885,7 @@
     "ViewRequesterDetails": "Visa förfrågans detaljer",
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Endast lagkamrater med ägarrollen kan hantera kontots plan",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Endast teammedlemmar med rollen ägare kan hantera e-postmallar",
+    "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Endast en lagkamrat med rollen Ägare kan hantera SMTP-inställningar",
     "LearnMoreAboutDefaultRoles": "Läs mer om standardroller",
     "LearnHowCreateAGroup": "Lär dig hur du skapar en grupp",
     "HookTheBot": "Aktivera denna bot",

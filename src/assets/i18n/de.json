@@ -1885,6 +1885,7 @@
 	"ViewRequesterDetails": "Anfordererdetails anzeigen",
 	"OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Nur Benutzer mit der Eigentümerrolle können den Plan des Kontos verwalten",
 	"OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Nur Teammitglieder mit der Eigentümerrolle können E-Mail-Vorlagen verwalten",
+	"OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Nur ein Teamkollege mit der Rolle „Besitzer“ kann SMTP-Einstellungen verwalten",
 	"LearnMoreAboutDefaultRoles": "Erfahren Sie mehr über Standardrollen",
 	"LearnHowCreateAGroup": "Erfahren Sie, wie Sie eine Gruppe erstellen",
 	"HookTheBot": "Aktiviere diesen Bot",

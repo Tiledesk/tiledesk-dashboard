@@ -1885,6 +1885,7 @@
     "ViewRequesterDetails": "So'rovchi tafsilotlarini ko'rish",
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Hisob rejasini faqat egasi roliga ega jamoadoshlar boshqarishi mumkin",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Faqat egasi roliga ega bo'lgan jamoa a'zolari elektron pochta shablonlarini boshqarishi mumkin",
+    "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "SMTP sozlamalarini faqat Egasi roliga ega jamoadoshi boshqarishi mumkin",
     "LearnMoreAboutDefaultRoles": "Standart rollar haqida ko'proq bilib oling",
     "LearnHowCreateAGroup": "Guruhni qanday yaratishni bilib oling",
     "HookTheBot": "Ushbu botni faollashtiring",

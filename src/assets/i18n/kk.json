@@ -1885,6 +1885,7 @@
     "ViewRequesterDetails": "Сұраушының мәліметтерін көру",
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Есептік жазба жоспарын тек иесі рөлі бар командаластар басқара алады",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Ие рөлі бар топ мүшелері ғана электрондық пошта үлгілерін басқара алады",
+    "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "SMTP параметрлерін тек Ие рөлі бар командалас басқара алады",
     "LearnMoreAboutDefaultRoles": "Әдепкі рөлдер туралы көбірек біліңіз",
     "LearnHowCreateAGroup": "Топты құру жолын біліңіз",
     "HookTheBot": "Бұл ботты іске қосыңыз",
