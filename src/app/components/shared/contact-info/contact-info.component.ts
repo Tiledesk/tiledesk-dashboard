@@ -101,20 +101,20 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   ngOnChanges() {
-    console.log('[CONTACT-INFO] contact_details', this.contact_details)
+    this.logger.log('[CONTACT-INFO] contact_details', this.contact_details)
     if (this.contact_details) {
 
       if (this.contact_details._id) {
         this.requester_id = this.contact_details._id
-       console.log('[CONTACT-INFO] requester_id ', this.requester_id)
+       this.logger.log('[CONTACT-INFO] requester_id ', this.requester_id)
       }
 
       if (this.contact_details.lead_id) {
         this.lead_id = this.contact_details.lead_id
-       console.log('[CONTACT-INFO] lead_id ', this.lead_id)
+       this.logger.log('[CONTACT-INFO] lead_id ', this.lead_id)
        if (this.lead_id.startsWith('wab-')) { 
           this.whatsAppPhoneNumber =  this.lead_id.slice(4);
-          console.log('[CONTACT-INFO] whatsAppPhoneNumber ', this.whatsAppPhoneNumber)
+          this.logger.log('[CONTACT-INFO] whatsAppPhoneNumber ', this.whatsAppPhoneNumber)
        }
       }
 
@@ -132,9 +132,9 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
       if (this.contact_details.phone) {
         this.contactPhone = this.contact_details.phone
-        console.log('[CONTACT-INFO] contactPhone ', this.contactPhone)
+        this.logger.log('[CONTACT-INFO] contactPhone ', this.contactPhone)
       } else {
-        console.log('[CONTACT-INFO] else contactPhone ', this.contactPhone)
+        this.logger.log('[CONTACT-INFO] else contactPhone ', this.contactPhone)
         if (this.whatsAppPhoneNumber) {
           this.contactPhone = this.whatsAppPhoneNumber;
         }
@@ -481,9 +481,9 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   getTagContainerElementHeight() {
     const tagContainerElement = <HTMLElement>document.querySelector('.lead-tags--container');
-    this.logger.log('tagContainerElement ', tagContainerElement)
+    // this.logger.log('tagContainerElement ', tagContainerElement)
     if (tagContainerElement) {
-      this.tagContainerElementHeight = tagContainerElement.offsetHeight + 10 + 'px'
+      this.tagContainerElementHeight = tagContainerElement.offsetHeight + 50 + 'px'
       this.logger.log('[CONTACT-INFO] tagContainerElement.offsetHeight tagContainerElementHeight ', this.tagContainerElementHeight)
       this.logger.log('[CONTACT-INFO] tagContainerElement.clientHeight ', tagContainerElement.clientHeight)
 

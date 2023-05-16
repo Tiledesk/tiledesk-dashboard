@@ -1,4 +1,4 @@
-<!-- [ngStyle]="{ 'height': tagContainerElementHeight }" -->
+
 <div class="ul-wpr tab0-card1" [ngClass]="{ 'ul-wpr-chat': CHAT_PANEL_MODE === true }">
   <ul class="contact-info-list">
 
@@ -559,10 +559,10 @@
 
 
     <!-- --------------------------------------------- -->
-    <!-- @ Lead tag -->
+    <!-- @ Lead tag [ngStyle]="{'margin-bottom':tagContainerElementHeight } -->
     <!-- --------------------------------------------- -->
-    <li id="lead--tag" *ngIf="isVisibleLBS === true" style="margin-top:6px"
-      [ngStyle]="{'margin-bottom':tagContainerElementHeight }">
+    <li id="lead--tag" *ngIf="isVisibleLBS === true" style="margin-top:6px; min-height: 60px"
+      [ngStyle]="{'height':tagContainerElementHeight }">
 
       <div class="tag--row  lead-tag-content-wpr">
         <span>

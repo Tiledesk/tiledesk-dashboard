@@ -289,14 +289,13 @@ textarea[type="text"] {
     position: relative;
     top: -3px;
     left: 8px;
-
     display: flex;
     flex-flow: row wrap;
     -webkit-box-align: center;
     align-items: center;
     gap: 6px 4px;
     margin-bottom: 6px;
-
+    padding-right: 20px;
 }
 
 .lead-tag {
@@ -384,7 +383,6 @@ textarea[type="text"] {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background: aliceblue;
     width: calc(100% - 20px);
 }
 
