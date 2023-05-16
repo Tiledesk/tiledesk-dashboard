@@ -744,7 +744,7 @@ button.close {
 .right-col {
   // background: #f8fafc;
   background: #ffff;
-  height: 100vh;
+  // height: 100vh;
 }
 
 .chat-right-col {
@@ -1481,18 +1481,24 @@ span .conv-svg-icon {
 }
 
 .attributes-accordion:hover svg {
-  fill: #0049bd;
+  // fill: #0049bd;
+  fill: #0566ff
 }
 
 .attributes-accordion:after {
   content: "\f107";
   font-family: FontAwesome;
-  color: #039be5;
+  // color: #039be5;
+  color: #8796af;
   font-weight: bold;
   float: right;
   font-size: 20px;
   padding-right: 4px;
   margin-top: 6px;
+}
+
+.attributes-accordion:hover:after {
+  color: #0566ff;
 }
 .attributes-accordion.active:after {
   content: "\f106";
@@ -1593,7 +1599,8 @@ span .conv-svg-icon {
 }
 
 .attributes-pre-chat-form-accordion:hover svg {
-  fill: #0049bd;
+  // fill: #0049bd;
+  fill: #0566ff;
 }
 
 .attributes-pre-chat-form-accordion:hover {
@@ -1604,15 +1611,20 @@ span .conv-svg-icon {
   // content: "\002B";
   content: "\f107";
   font-family: FontAwesome;
-  // color: #777;
-  color: #039be5;
+  // color: #0566ff;
+  color: #8796af;
   font-weight: bold;
   float: right;
-  // margin-left: 5px;
   font-size: 20px;
-  padding-right: 4px;
+  // padding-right: 4px;
+  padding-right: 20px;
   margin-top: 3px;
 }
+
+.attributes-pre-chat-form-accordion:hover:after {
+  color: #0566ff;
+}
+
 .attributes-pre-chat-form-accordion.active:after {
   content: "\f106";
   font-family: FontAwesome;
@@ -1626,11 +1638,10 @@ span .conv-svg-icon {
 }
 /* ./ Attributes Pre-chat Form Accordion */
 
-
 /*
 /* Chatbot attributes accordion
 /* ----------------------------------- */
- .chatbot-conv-accordion-wpr {
+.chatbot-conv-accordion-wpr {
   // margin-top: 12px!important;
   background-color: #fff;
   border-radius: 4px;
@@ -1641,8 +1652,7 @@ span .conv-svg-icon {
   margin-left: 8px !important;
 }
 
-.chatbot-conv-accordion{
-
+.chatbot-conv-accordion {
   cursor: pointer;
   position: relative;
   padding: 16px 20px;
@@ -4040,6 +4050,7 @@ label {
 
 .contact-location:hover {
   color: #0047b7;
+  text-decoration: underline;
 }
 
 // ---------------
@@ -4430,21 +4441,6 @@ label {
   font-size: 20px;
   margin-right: 12px;
 }
-.tab0-card1 {
-  min-height: 225px;
-}
-
-.dropdown-menu-working-status-chat {
-  left: 10px !important;
-}
-
-.tab0-card1-ticket {
-  min-height: 191px !important;
-}
-
-.tab0-card2-content-wpr.tab0-card2-content-wpr > * + * {
-  margin-top: 12px;
-}
 
 .ul-wpr {
   background-color: rgb(255, 255, 255);
@@ -4510,6 +4506,11 @@ label {
   width: 200px;
 }
 
+.ul-wpr li:hover .input-row {
+  border-radius: 4px;
+  background-color: rgb(245, 247, 249);
+}
+
 .ul-wpr li .action-btns {
   opacity: 0;
   height: 30px;
@@ -4540,9 +4541,38 @@ label {
   fill: rgb(5, 102, 255);
 }
 
-.ul-wpr li #contact-row-source-page:hover div input {
+.ul-wpr li #contact-row-source-pages:hover div input {
   color: rgb(5, 102, 255);
+  // text-decoration: underline;
+}
+
+.ul-wpr li:hover .viewed-pages-anchor {
   text-decoration: underline;
+}
+
+.ul-wpr li .action-btns-arrow {
+  opacity: 1;
+  height: 30px;
+  width: 30px;
+  margin-left: auto;
+  transition: opacity 0.2s ease-in-out 0s;
+}
+
+.ul-wpr li .action-btns-arrow button {
+  background: transparent;
+  outline: none;
+  border: 0px;
+  cursor: pointer;
+  color: rgb(100, 116, 145);
+  float: right;
+  transition: all 0.2s ease-in-out 0s;
+  padding: 5px;
+  width: 41px;
+  height: 36px;
+}
+
+.ul-wpr li:hover .action-btns-arrow button svg {
+  fill: rgb(5, 102, 255);
 }
 
 .ul-wpr-chat {
@@ -4632,10 +4662,32 @@ label {
 
 //  ----- ./ end new tags
 
-// second card - tab 1
+.dropdown-menu-working-status-chat {
+  left: 10px !important;
+}
+
+/* First card - tab 1
+/* ***************************************** */
+.tab0-card1 {
+  min-height: 225px;
+}
+
+/* tab0-card1B
+/* ***************************************** */
+.tab0-card1B-ticket {
+  min-height: 191px !important;
+}
+
+/* Second card - tab 1
+/* ***************************************** */
 .tab0-card2 {
   margin-top: 12px !important;
 }
+
+.tab0-card2-content-wpr.tab0-card2-content-wpr > * + * {
+  margin-top: 12px;
+}
+
 .tab0-card2-content-wpr {
   display: flex;
   flex-direction: column;

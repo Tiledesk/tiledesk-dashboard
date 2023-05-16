@@ -9,5 +9,6 @@ export interface Contact {
     createdBy?: string;
     avatar_fill_colour?: string;
     name_initial?: string;
+    tags?: any;
     __v: any;
 }

@@ -105,16 +105,6 @@ export class SigninComponent implements OnInit {
 
   signinWithGoogle() {
     this.auth.authWithGoogle()
-    // this.auth.authWithGoogle().subscribe((res: any) => {
-    //   console.log('[SIGN-IN] - GOOGLE AUTH - RES  ', res);
-
-    // }, (error) => {
-    //   console.error('[SIGN-IN] - GOOGLE AUTH - ERROR  ', error);
-
-    // }, () => {
-    //   console.log('[SIGN-IN] - GOOGLE AUTH * COMPLETE *');
-
-    // });
   }
 
   redirectIfLogged() {

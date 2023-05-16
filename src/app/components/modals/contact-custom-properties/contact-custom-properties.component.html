@@ -1,0 +1,65 @@
+<mat-dialog-content class="mat-typography" style="min-height: 30px;">
+    <div class="lead-property-modal">
+        <div class="lead-property-modal-header">
+            <h2 class="lead-property-modal-title">
+                <!-- Create a New Contact Property -->
+                {{ 'CreateNewContactProperty' | translate }}
+            </h2>
+        </div>
+        <div class="lead-property-inputs-wpr">
+            <div class="lead-property-input-wpr">
+                <label>
+                    <span>{{'PropertyLabel' | translate}}</span>
+                    <input name="lead-property-label" class="lead-property-input"
+                        (ngModelChange)="onChangeleadPropertyLabel($event)" [(ngModel)]="leadPropertyLabel"
+                        [ngClass]="{'lead-property-input-error': leadPropertyLabel?.length === 0}">
+                    <span class="new-contact-property-form-error" *ngIf="leadPropertyLabel?.length === 0"> Field
+                        required </span>
+                </label>
+                <!-- <div class="css-1myzdw e1uwiaj02">
+                <div class="css-1x8dwat e1kjifyw0"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+                        viewBox="0 0 18 18" class="css-0 e11k6mr30">
+                        <path d="M0-3h24v24H0V-3z" fill="none"></path>
+                        <path
+                            d="M8.2 12h1.5v1.5H8.2zM9 4.5c-1.6 0-3 1.4-3 3h1.5C7.5 6.7 8.2 6 9 6s1.5.7 1.5 1.5c0 1.5-2.2 1.4-2.2 3.8h1.5c0-1.6 2.2-1.9 2.2-3.8 0-1.6-1.4-3-3-3z">
+                        </path>
+                    </svg></div>
+            </div> -->
+            </div>
+
+            <div class="lead-property-input-wpr">
+                <label>
+                    <span>{{'InternalPropertyName' | translate}}</span>
+                    <input name="property-name" class="lead-property-input" [(ngModel)]="leadPropertyName"
+                        (ngModelChange)="onChangeleadPropertyName($event)"
+                        [ngClass]="{'lead-property-input-error': propertyNameIsValid === false}">
+                    <span class="new-contact-property-form-error" *ngIf="propertyNameIsValid === false"> 
+                        {{'PropertyNameIsInvalid' | translate}}
+                    </span>
+                </label>
+                <!-- <div class="css-1myzdw e1uwiaj02">
+                <div class="css-1x8dwat e1kjifyw0"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+                        viewBox="0 0 18 18" class="css-0 e11k6mr30">
+                        <path d="M0-3h24v24H0V-3z" fill="none"></path>
+                        <path
+                            d="M8.2 12h1.5v1.5H8.2zM9 4.5c-1.6 0-3 1.4-3 3h1.5C7.5 6.7 8.2 6 9 6s1.5.7 1.5 1.5c0 1.5-2.2 1.4-2.2 3.8h1.5c0-1.6 2.2-1.9 2.2-3.8 0-1.6-1.4-3-3-3z">
+                        </path>
+                    </svg></div>
+            </div> -->
+            </div>
+        </div>
+
+
+    </div>
+
+</mat-dialog-content>
+<!-- class="btn-size-xl btn-new btn--primary" -->
+<mat-dialog-actions align="center" class="contact-property-modal-action">
+    <button tabindex="-1" mat-button mat-dialog-close>
+        {{'Cancel' | translate}}
+    </button>
+    <button tabindex="-1" mat-button (click)="createContactProperty()"
+        [disabled]="leadPropertyLabel?.length === 0 || propertyNameIsValid === false">
+        {{'Create' | translate}}
+    </button>
+</mat-dialog-actions>

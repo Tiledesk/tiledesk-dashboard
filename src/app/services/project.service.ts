@@ -143,7 +143,7 @@ export class ProjectService {
    * @param id_user
    */
   public createProject(name: string, calledBy) {
-    console.log('[PROJECT-SERV] CREATE calledBy ', calledBy);
+    this.logger.log('[PROJECT-SERV] CREATE calledBy ', calledBy);
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',

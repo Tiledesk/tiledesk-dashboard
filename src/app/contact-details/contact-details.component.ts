@@ -81,6 +81,13 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   attributesDecodedJWTAttributesArray: Array<any>
   attributesDecodedJWTArrayMerged: Array<any>
   isChromeVerGreaterThan100: boolean;
+  contactTags: Array<any>
+  contactTempTags: Array<any> = []
+  tag: any;
+  tagcolor: any;
+  tagContainerElementHeight: any;
+  isVisibleLBS: boolean;
+  public_Key: string;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -108,6 +115,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     if (rightSidebar) {
       this.rightSidebarWidth = rightSidebar.offsetWidth
     }
+
+    this.getTagContainerElementHeight()
     // this.logger.log(`:-D CONTACT DETAILS - ATTRIBUTES onResize attributeValueElem offsetWidth:`, this.rightSidebarWidth);
   }
 
@@ -119,7 +128,32 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.getCurrentUser();
     this.getTranslation();
     this.getChatUrl();
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+    this.getOSCODE();
+  }
+
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[CONTACTS-DTLS]  getAppConfig public_Key', this.public_Key)
+
+    let keys = this.public_Key.split("-");
+    this.logger.log('[CONTACTS-DTLS] - public_Key keys', keys)
+
+    keys.forEach(key => {
+   
+      if (key.includes("LBS")) {
+        let lbs = key.split(":");
+        if (lbs[1] === "F") {
+          this.isVisibleLBS = false;
+        } else {
+          this.isVisibleLBS = true;
+        }
+      }
+    });
+    if (!this.public_Key.includes("LBS")) {
+      this.isVisibleLBS = false;
+    }
   }
 
   getBrowserVersion() {
@@ -235,6 +269,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
     this.logger.log(`[CONTACTS-DTLS] - ATTRIBUTES AfterViewInit attributeValueElem offsetWidth:`, this.rightSidebarWidth);
 
+    setTimeout(() => {
+      this.getTagContainerElementHeight()
+    }, 1500);
   }
 
 
@@ -435,17 +472,89 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  // When the user select a tag from the combo-box 
+  addTag(tag) {
+    this.logger.log('[CONTACTS-DTLS] - ADD TAG > tag: ', tag);
+    this.contactTags.push(tag.tag)
+    var index = this.contactTempTags.indexOf(tag);
+    if (index !== -1) {
+      this.contactTempTags.splice(index, 1);
+    }
+    this.contactTempTags = this.contactTempTags.slice(0)
+    this.logger.log('[CONTACTS-DTLS] - ADD TAG > contactTags: ', this.contactTags);
+    
+    this.logger.log('[CONTACTS-DTLS] - ADD TAG > contactTempTags: ', this.contactTempTags);
+
+    setTimeout(() => {
+      this.tag = null;
+    })
+    this.updateContactTag(this.requester_id, this.contactTags)
+  }
+
+  createNewTag = (newTag: string) => {
+    let self = this;
+    self.logger.log("Create New TAG Clicked : " + newTag)
+    let newTagTrimmed = newTag.trim()
+    self.contactTags.push(newTagTrimmed)
+    self.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
+    self.updateContactTag(self.requester_id, self.contactTags)
+  }
+
+  removeTag(tag: string) {
+    // this.contactTempTags = []
+    this.logger.log('[CONTACTS-DTLS] removeTag tag', tag)
+    var index = this.contactTags.indexOf(tag);
+    if (index !== -1) {
+      this.contactTags.splice(index, 1);
+      this.contactTempTags.push({ tag: tag })
+      this.contactTempTags = this.contactTempTags.slice(0)
+     this.logger.log('[CONTACTS-DTLS] removeTag contactTempTags', this.contactTempTags)
+     this.logger.log('[CONTACTS-DTLS] removeTag contactTags', this.contactTags)
+
+      this.updateContactTag(this.requester_id, this.contactTags)
+    }
+
+  }
+
+  updateContactTag(requester_id: string, tags: any) {
+    this.contactsService.updateLeadTag(requester_id, tags)
+      .subscribe((lead: any) => {
+        this.logger.log('[CONTACTS-DTLS] - ADD CONTACT TAGS  lead ', lead);
+        if (lead) {
+          this.contactTags = lead.tags
+          this.getTagContainerElementHeight()
+        }
+
+      })
+  }
+
+  
+
+
+  getTagContainerElementHeight() {
+    const tagContainerElement = <HTMLElement>document.querySelector('.lead-tags--container');
+    this.logger.log('tagContainerElement ', tagContainerElement)
+    if (tagContainerElement) {
+      this.tagContainerElementHeight = tagContainerElement.offsetHeight + 'px'
+      this.logger.log('[CONTACTS-DTLS] tagContainerElement.offsetHeight tagContainerElementHeight ', this.tagContainerElementHeight)
+      this.logger.log('[CONTACTS-DTLS] tagContainerElement.clientHeight ', tagContainerElement.clientHeight)
+
+      // this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
+      // this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
+    }
+  }
+
   getContactById() {
     this.contactsService.getLeadById(this.requester_id)
       .subscribe((lead: any) => {
 
         if (lead) {
-          // console.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
+          this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
           this.contact_details = lead;
 
           if (this.contact_details && this.contact_details.lead_id) {
             this.lead_id = this.contact_details.lead_id;
-
             this.getProjectUserById(this.lead_id)
 
             this.logger.log('[CONTACTS-DTLS] this.lead_id', this.lead_id)
@@ -489,6 +598,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
             this.contact_fullname_initial = 'N/A';
             this.fillColour = '#6264a7';
+          }
+
+          if (this.contact_details.tags) {
+            this.contactTags = this.contact_details.tags
+            this.getTagContainerElementHeight()
           }
 
           // No more used -- now is get from projrct user

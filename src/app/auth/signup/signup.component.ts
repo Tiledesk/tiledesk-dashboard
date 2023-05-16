@@ -335,16 +335,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   signupWithGoogle() {
     this.auth.authWithGoogle()
-    // this.auth.authWithGoogle().subscribe((res: any) => {
-    //   console.log('[SIGN-UP] - GOOGLE AUTH - RES  ', res);
-
-    // }, (error) => {
-    //   console.error('[SIGN-UP] - GOOGLE AUTH - ERROR  ', error);
-
-    // }, () => {
-    //   console.log('[SIGN-UP] - GOOGLE AUTH * COMPLETE *');
-
-    // });
+ 
   }
 
 
@@ -728,7 +719,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
         const trialStarDate = moment(new Date(this.new_project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
-        const trialEndDate = moment(new Date(this.new_project.createdAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
+        const trialEndDate = moment(new Date(this.new_project.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
 
         if (!isDevMode()) {
@@ -746,7 +737,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
                 name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
                 email: signupResponse.user.email,
                 logins: 5,
-                plan: "Pro (trial)"
+                plan: "Scale (trial)"
               });
             } catch (err) {
               this.logger.error('Signup Create project identify error', err);
@@ -757,7 +748,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
                 "userId": signupResponse.user._id,
                 "trial_start_date": trialStarDate,
                 "trial_end_date": trialEndDate,
-                "trial_plan_name": "Pro (trial)",
+                "trial_plan_name": "Scale (trial)",
                 "context": {
                   "groupId": this.new_project._id
                 }
@@ -769,7 +760,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
             try {
               window['analytics'].group(this.new_project._id, {
                 name: this.new_project.name,
-                plan: "Pro (trial)",
+                plan: "Scale (trial)",
               });
             } catch (err) {
               this.logger.error('Signup Create project group error', err);

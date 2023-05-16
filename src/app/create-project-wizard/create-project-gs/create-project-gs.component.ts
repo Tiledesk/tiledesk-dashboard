@@ -17,6 +17,7 @@ export class CreateProjectGsComponent implements OnInit {
   public user: any;
   public new_project: any;
   public id_project: string;
+
   constructor(
     public auth: AuthService,
     private projectService: ProjectService,
@@ -27,6 +28,8 @@ export class CreateProjectGsComponent implements OnInit {
   ngOnInit(): void {
     this.getLoggedUser()
   }
+
+
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
