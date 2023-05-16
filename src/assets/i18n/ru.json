@@ -2308,6 +2308,7 @@
     "AddContactProperty":"Добавить свойство контакта...", 
     "AddNewContactProperty":"Добавить новое свойство контакта",
     "CreateNew":"Создавать новое",
+    "NoTAGFoundTypeToCreateATAG":"Тег не найден. Введите, чтобы создать ТЕГ",
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",

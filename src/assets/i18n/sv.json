@@ -2308,6 +2308,7 @@
     "AddContactProperty":"Lägg till en kontaktegenskap...", 
     "AddNewContactProperty":"Lägg till en ny kontaktegenskap",
     "CreateNew":"Skapa ny",
+    "NoTAGFoundTypeToCreateATAG":"Ingen TAG hittades. Skriv för att skapa en TAG",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

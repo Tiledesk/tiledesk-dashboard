@@ -2308,6 +2308,7 @@
     "AddContactProperty":"Bir kişi özelliği ekleyin...", 
     "AddNewContactProperty":"Yeni bir kişi özelliği ekleyin",
     "CreateNew":"Yeni oluşturmak",
+    "NoTAGFoundTypeToCreateATAG":"TAG bulunamadı. Bir TAG oluşturmak için yazın",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",

@@ -2308,6 +2308,7 @@
     "AddContactProperty":"Kontakt xususiyatini qo‘shish...",
     "AddNewContactProperty":"Yangi kontakt xususiyatini qo'shing",
     "CreateNew":"Yangi yaratish", 
+    "NoTAGFoundTypeToCreateATAG":"Hech qanday TAG topilmadi TAG yaratish uchun terish",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

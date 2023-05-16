@@ -2308,6 +2308,7 @@
     "AddContactProperty":"Añadir una propiedad de contacto...", 
     "AddNewContactProperty":"Agregar una nueva propiedad de contacto",
     "CreateNew":"Crear nueva",
+    "NoTAGFoundTypeToCreateATAG":"No se encontró ninguna ETIQUETA. Escribe para crear una ETIQUETA",
     "AddIntentPage": {
         "AddForm": "Agregar forma",
         "SelectTemplateForm": "Seleccione un tipo de formulario entre los sugeridos o cree uno nuevo",

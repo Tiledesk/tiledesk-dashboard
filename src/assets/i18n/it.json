@@ -2308,6 +2308,7 @@
     "AddContactProperty":"Aggiungi una proprietà al contatto...", 
     "AddNewContactProperty":"Aggiungi una nuova proprietà al contatto",
     "CreateNew":"Crea nuovo",
+    "NoTAGFoundTypeToCreateATAG":"Nessun TAG trovato. Digita per creare un TAG",
     "AddIntentPage": {
         "AddForm": "Aggiungi form",
         "SelectTemplateForm": "Selezionare un tipo di form tra quelli suggeriti o crearne uno nuovo",

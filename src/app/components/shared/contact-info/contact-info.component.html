@@ -619,7 +619,7 @@
                 [clearable]="false" [(ngModel)]="tag" bindLabel="tag" [items]="contactTempTags"
                 [clearSearchOnAdd]="true" [hideSelected]="true" placeholder="{{ 'Tags.AddTags' | translate }}" addTagText="{{ 'CreateNew' | translate}}"
                 [addTag]="createNewTag" (keyup.enter)="ngSelect.close()"
-                notFoundText="No tags found. Type to create a tag">
+                notFoundText="{{'NoTAGFoundTypeToCreateATAG' | translate}}">
 
                 <ng-template ng-label-tmp let-item="item">
                   {{item.tag}}

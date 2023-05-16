@@ -2308,6 +2308,7 @@
     "AddContactProperty":"Контакт сипатын қосу...", 
     "AddNewContactProperty":"Жаңа контакт сипатын қосыңыз",
     "CreateNew":"Жаңа жасау",
+    "NoTAGFoundTypeToCreateATAG":"Ешқандай TAG табылмады. TAG жасау үшін теріңіз",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",
