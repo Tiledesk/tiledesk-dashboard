@@ -328,14 +328,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
 
-  // signupWithGoogle() {
-  //   this.auth.authWithGoogle()
-  // }
-
 
   signupWithGoogle() {
-    this.auth.authWithGoogle()
- 
+    this.auth.siginUpWithGoogle()
   }
 
 

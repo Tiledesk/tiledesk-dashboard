@@ -104,7 +104,7 @@ export class SigninComponent implements OnInit {
   }
 
   signinWithGoogle() {
-    this.auth.authWithGoogle()
+    this.auth.siginWithGoogle()
   }
 
   redirectIfLogged() {
