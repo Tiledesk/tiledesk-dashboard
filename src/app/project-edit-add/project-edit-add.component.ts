@@ -986,7 +986,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   presentModalAgentCannotManageAvancedSettings() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Only a teammate with the Owner role can manage advanced settings', this.learnMoreAboutDefaultRoles)
   }
 
   goToProjectSettings_BannedVisitors() {
@@ -1086,7 +1086,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // console.log('goToManageEmailSettings HERE 1 ')
         if (this.subscription_is_active === true) {
           // console.log('goToManageEmailSettings HERE 2 ')
-          this.router.navigate(['project/' + this.id_project + '/notification-email'])
+          this.router.navigate(['project/' + this.id_project + '/smtp-settings'])
         } else if (this.subscription_is_active === false) {
           // console.log('goToManageEmailSettings HERE 3 ')
           this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
