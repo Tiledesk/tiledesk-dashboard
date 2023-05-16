@@ -161,6 +161,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   is_disabled_unavailable_status_section: boolean;
   notificationNothingToSave: string;
   onlyATeammateWithTheOwnerRoleCanDeleteAProject_lbl: string;
+  onlyUsersWithTheOwnerRoleCanManageSMTPsettings: string;
+  onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
   project_id_to_delete: string;
   SHOW_CIRCULAR_SPINNER = false;
   DISPLAY_DELETE_PRJCT_BTN: boolean;
@@ -439,7 +441,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.featureAvailableOnlyWithPaidPlans = translation;
       });
 
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageSMTPsettings')
+      .subscribe((translation: any) => {
+        this.onlyUsersWithTheOwnerRoleCanManageSMTPsettings = translation;
+      });
 
+      this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
+      .subscribe((translation: any) => {
+        this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings = translation;
+      });
+
+      
   }
 
   translateThereHasBeenAnErrorProcessing() {
@@ -623,9 +635,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
         }
       }
-
-
-
 
       if (key.includes("MTS")) {
         // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
@@ -938,6 +947,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   }
 
+  presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings() {
+    this.notify.presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings(this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
+  }
+
 
 
   goToProjectSettings_General() {
@@ -981,9 +994,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
     } else {
       // console.log('goToProjectSettings_Security HERE 5 ')
-      this.presentModalAgentCannotManageAvancedSettings()
+      this.presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings()
     }
   }
+
+
 
   presentModalAgentCannotManageAvancedSettings() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
@@ -1021,7 +1036,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
     } else {
       // console.log('displayModalBanVisitor HERE 5 ')
-      this.presentModalAgentCannotManageAvancedSettings()
+      this.presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings()
     }
   }
 
@@ -1032,7 +1047,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     // if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
     //   if (this.USER_ROLE === 'owner') {
-    //     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToManageEmailSettings');
+    //     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage');
     //     this.router.navigate(['project/' + this.id_project + '/notification-email'])
     //   } else {
     //     this.presentModalOnlyOwnerCanManageEmailTempalte()
@@ -1059,7 +1074,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
     } else {
       // console.log('goToCustomizeNotificationEmailPage HERE 5 ')
-      this.presentModalAgentCannotManageAvancedSettings()
+      this.presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings()
     }
   }
 
@@ -1086,7 +1101,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // console.log('goToManageEmailSettings HERE 1 ')
         if (this.subscription_is_active === true) {
           // console.log('goToManageEmailSettings HERE 2 ')
-          this.router.navigate(['project/' + this.id_project + '/notification-email'])
+          this.router.navigate(['project/' + this.id_project + '/smtp-settings'])
         } else if (this.subscription_is_active === false) {
           // console.log('goToManageEmailSettings HERE 3 ')
           this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
@@ -1097,10 +1112,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
     } else {
       // console.log('goToManageEmailSettings HERE 5 ')
-      this.presentModalAgentCannotManageAvancedSettings()
+      this.presentModalOnlyOwnerCanManageTSMTPsettings()
     }
   }
-
+  presentModalOnlyOwnerCanManageTSMTPsettings() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyUsersWithTheOwnerRoleCanManageSMTPsettings, this.learnMoreAboutDefaultRoles)
+  }
 
 
   // "SubscriptionSuccessfullyCanceled":"Abbonamento annullato correttamente",
@@ -1816,10 +1833,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (this.USER_ROLE === 'owner') {
       window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
     } else {
-      this.presentModalAgentCannotManageAvancedSettings()
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
-
+  
   goToPricing() {
     // if (this.isVisiblePaymentTab) {
     //   if (this.USER_ROLE === 'owner') {
