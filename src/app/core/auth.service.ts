@@ -1265,9 +1265,15 @@ export class AuthService {
 
   
 
-  public authWithGoogle() {
+  public siginWithGoogle() {
 
     const url = this.SERVER_BASE_PATH + "auth/google"
+    window.open(url, '_self');
+
+  }
+
+  public siginUpWithGoogle() {
+    const url = this.SERVER_BASE_PATH + "auth/google?redirect_url=create-project-gs"
     window.open(url, '_self');
 
   }
