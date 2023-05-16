@@ -2309,6 +2309,8 @@
     "AddNewContactProperty":"إضافة خاصية جهة اتصال جديدة",
     "CreateNew":"أنشئ جديد",
     "NoTAGFoundTypeToCreateATAG": "لم يتم العثور على TAG. اكتب لإنشاء TAG",
+    "ViewedPages":"الصفحات التي تمت مشاهدتها",
+    "IPAddress":"عنوان IP",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

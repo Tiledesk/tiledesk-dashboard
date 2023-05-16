@@ -1830,7 +1830,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px"
                           viewBox="0 0 24 24" width="22px" fill="none" style="min-width: 22px; min-height: 22px;"
                           matTooltipClass="custom-mat-tooltip"
-                          matTooltip="IP Address"
+                          matTooltip="{{'IPAddress' | translate}}"
                           #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                             <path d="M0 0h24v24H0V0z" fill="none" />
                             <path
@@ -1910,7 +1910,7 @@
 
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
                             style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="Viewed Pages" #tooltip="matTooltip" matTooltipPosition='right'
+                            matTooltip="{{'ViewedPages' | translate}}" #tooltip="matTooltip" matTooltipPosition='right'
                             matTooltipHideDelay="100">
                             <path d="M0 0h24v24H0V0z" fill="none" />
                             <path
@@ -1920,7 +1920,7 @@
                         <div class="form-group" style="margin-top: 9px;" (click)="toggleViewedPages()"
                           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
                           <input id="source-page-input" name="sourcepage" type="text" data-id="sourcepage"
-                            class="form-control input-md" disabled value="Viewed pages" style="cursor: pointer;"
+                            class="form-control input-md" disabled value="{{'ViewedPages' | translate}}" style="cursor: pointer;"
                             [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '220px' : '100%' }">
                         </div>
                         <div class="action-btns-arrow" (click)="toggleViewedPages()">

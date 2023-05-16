@@ -2309,6 +2309,8 @@
 	"AddNewContactProperty":"Fügen Sie eine neue Kontakteigenschaft hinzu",
 	"CreateNew":"Neu erstellen",
 	"NoTAGFoundTypeToCreateATAG":"Kein TAG gefunden. Geben Sie ein, um einen TAG zu erstellen",
+	"ViewedPages":"Angesehene Seiten",
+	"IPAddress":"IP Adresse",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",

@@ -2309,6 +2309,8 @@
     "AddNewContactProperty":"Добавить новое свойство контакта",
     "CreateNew":"Создавать новое",
     "NoTAGFoundTypeToCreateATAG":"Тег не найден. Введите, чтобы создать ТЕГ",
+    "ViewedPages":"Просмотренные страницы",
+    "IPAddress":"IP-адрес",
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",

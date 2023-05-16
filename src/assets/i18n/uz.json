@@ -2309,6 +2309,8 @@
     "AddNewContactProperty":"Yangi kontakt xususiyatini qo'shing",
     "CreateNew":"Yangi yaratish", 
     "NoTAGFoundTypeToCreateATAG":"Hech qanday TAG topilmadi TAG yaratish uchun terish",
+    "ViewedPages":"Koʻrilgan sahifalar",
+    "IPAddress":"IP manzili",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

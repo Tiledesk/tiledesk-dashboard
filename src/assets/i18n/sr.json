@@ -2309,6 +2309,8 @@
     "AddNewContactProperty":"Додајте ново својство контакта",
     "CreateNew":"Цреате Нев",
     "NoTAGFoundTypeToCreateATAG":"Није пронађен ТАГ. Укуцајте да бисте креирали ТАГ",
+    "ViewedPages":"Прегледане странице",
+    "IPAddress":"ИП Аддресс",
     "AddIntentPage": {
         "AddForm": "Додати образац",
         "SelectTemplateForm": "Изаберите врсту обрасца међу онима који су предложени или створили нови",
