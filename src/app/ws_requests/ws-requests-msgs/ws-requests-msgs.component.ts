@@ -439,7 +439,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     private prjctPlanService: ProjectPlanService,
-    public dialog: MatDialog,
+    public dialog: MatDialog
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
