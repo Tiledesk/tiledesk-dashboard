@@ -405,13 +405,13 @@ export class ContactsService {
     };
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + id;
-    console.log('[CONTACTS-SERV] ADD LEAD TAG - URL ', url);
+    this.logger.log('[CONTACTS-SERV] ADD LEAD TAG - URL ', url);
 
     const body = {
       'tags': tags
     };
 
-    console.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
 
     return this.httpClient
       .put(url, JSON.stringify(body), httpOptions)
@@ -465,11 +465,11 @@ export class ContactsService {
     };
 
     let url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + contactid + "/attributes"
-    console.log('[CONTACTS-SERV] - ADD CUSTOM PROPERTY TO LEAD - URL', url);
+    this.logger.log('[CONTACTS-SERV] - ADD CUSTOM PROPERTY TO LEAD - URL', url);
     // var key = 'ccp_'+propertyName;
     // const body = { [key]: propertyValue };
     const body = { ccp: contactCustomPropertiesAssigned }
-    console.log('[DEPTS-SERV] - ADD CUSTOM PROPERTY - BODY', body);
+    this.logger.log('[DEPTS-SERV] - ADD CUSTOM PROPERTY - BODY', body);
 
     return this.httpClient
       .patch(url, JSON.stringify(body), httpOptions)
@@ -486,11 +486,11 @@ export class ContactsService {
     };
 
     let url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + contactid + "/properties"
-    console.log('[CONTACTS-SERV] - ADD CUSTOM PROPERTY TO LEAD - URL', url);
+    this.logger.log('[CONTACTS-SERV] - ADD CUSTOM PROPERTY TO LEAD - URL', url);
     // var key = 'ccp_'+propertyName;
     // const body = { [key]: propertyValue };
     const body = contactCustomPropertiesObjct
-    console.log('[DEPTS-SERV] - ADD CUSTOM PROPERTY - BODY', body);
+    this.logger.log('[DEPTS-SERV] - ADD CUSTOM PROPERTY - BODY', body);
 
     return this.httpClient
       .patch(url, JSON.stringify(body), httpOptions)
@@ -513,7 +513,7 @@ export class ContactsService {
     };
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + contactid;
-    console.log('[CONTACTS-SERV] UPDATE LEAD - URL ', url);
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD - URL ', url);
 
     const body = {
       'streetAddress': lead_street_address,
@@ -524,7 +524,7 @@ export class ContactsService {
 
     };
 
-    console.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
+    this.logger.log('[CONTACTS-SERV] UPDATE LEAD REQUEST - BODY ', body);
 
     return this.httpClient
       .put(url, JSON.stringify(body), httpOptions)
@@ -539,7 +539,7 @@ export class ContactsService {
   //   };
 
   //   let url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + contactid + "/attributes"
-  //   console.log('[CONTACTS-SERV] - UPDATED CONTACT ATTRIBUTES - URL', url);
+  //   this.logger.log('[CONTACTS-SERV] - UPDATED CONTACT ATTRIBUTES - URL', url);
 
   //   return this.httpClient
   //     .patch(url, JSON.stringify(attributes), httpOptions)

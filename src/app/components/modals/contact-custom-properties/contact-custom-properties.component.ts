@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { LoggerService } from 'app/services/logger/logger.service';
 @Component({
   selector: 'appdashboard-contact-custom-properties',
   templateUrl: './contact-custom-properties.component.html',
@@ -13,23 +14,24 @@ export class ContactCustomPropertiesComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ContactCustomPropertiesComponent>,
     public dialog: MatDialog,
+    public logger: LoggerService
   ) { }
 
   ngOnInit(): void {
   }
 
   onChangeleadPropertyLabel(event) {
-    console.log('onChangeleadPropertyLabel', event)
+    this.logger.log('onChangeleadPropertyLabel', event)
     const propertyLabelSanitazed = event.replace(/[^a-zA-Z0-9 ]/g, '')
-    console.log('propertyLabelSanitazed', propertyLabelSanitazed)
+    this.logger.log('propertyLabelSanitazed', propertyLabelSanitazed)
     const tempLeadPropertyName = propertyLabelSanitazed.replaceAll(' ', '_');
     this.leadPropertyName = tempLeadPropertyName.toLowerCase()
   }
 
   onChangeleadPropertyName(event) {
-    console.log('onChangeleadPropertyName', event)
+    this.logger.log('onChangeleadPropertyName', event)
     this.propertyNameIsValid = this.isValid(event)
-    console.log('onChangeleadPropertyName propertyNameIsValid isValid', this.propertyNameIsValid )
+    this.logger.log('onChangeleadPropertyName propertyNameIsValid isValid', this.propertyNameIsValid )
   }
 
   isValid(str) {

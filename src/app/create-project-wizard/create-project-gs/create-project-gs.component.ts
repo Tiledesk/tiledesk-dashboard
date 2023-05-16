@@ -32,7 +32,7 @@ export class CreateProjectGsComponent implements OnInit {
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
-        console.log('[CREATE-PROJECT-GOOGLE-AUTH] USER  ', user)
+        this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] USER  ', user)
         this.user = user
         this.createNewProject(user)
       }
@@ -59,11 +59,11 @@ export class CreateProjectGsComponent implements OnInit {
     }
     // this.DISPLAY_SPINNER_SECTION = true;
     // this.DISPLAY_SPINNER = true;
-    console.log('[CREATE-PROJECT-GOOGLE-AUTH] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', projectName);
+    this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', projectName);
 
     this.projectService.createProject(projectName, 'signup')
       .subscribe((project) => {
-        console.log('[CREATE-PROJECT-GOOGLE-AUTH] POST DATA PROJECT RESPONSE ', project);
+        this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] POST DATA PROJECT RESPONSE ', project);
         if (project) {
           this.new_project = project
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
@@ -79,7 +79,7 @@ export class CreateProjectGsComponent implements OnInit {
 
           // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
           this.auth.projectSelected(newproject)
-          console.log('[CREATE-PROJECT-GOOGLE-AUTH] CREATED PROJECT ', newproject)
+          this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] CREATED PROJECT ', newproject)
 
           this.id_project = newproject._id
           this.router.navigate([`/project/${this.id_project}/configure-widget`]);
@@ -90,10 +90,10 @@ export class CreateProjectGsComponent implements OnInit {
 
       }, (error) => {
         // this.DISPLAY_SPINNER = false;
-        console.error('[CREATE-PROJECT-GOOGLE-AUTH] CREATE NEW PROJECT - POST REQUEST - ERROR ', error);
+        this.logger.error('[CREATE-PROJECT-GOOGLE-AUTH] CREATE NEW PROJECT - POST REQUEST - ERROR ', error);
 
       }, () => {
-        console.log('[CREATE-PROJECT-GOOGLE-AUTH] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
+        this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
         this.projectService.newProjectCreated(true);
 
         const trialStarDate = moment(new Date(this.new_project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
@@ -108,7 +108,7 @@ export class CreateProjectGsComponent implements OnInit {
 
               });
             } catch (err) {
-             console.error('Google Auth project page error', err);
+             this.logger.error('Google Auth project page error', err);
             }
 
             try {
@@ -119,7 +119,7 @@ export class CreateProjectGsComponent implements OnInit {
                 plan: "Scale (trial)"
               });
             } catch (err) {
-              console.error('Google Auth project identify error', err);
+              this.logger.error('Google Auth project identify error', err);
             }
 
             try {
@@ -133,7 +133,7 @@ export class CreateProjectGsComponent implements OnInit {
                 }
               });
             } catch (err) {
-             console.error('Google Auth track Trial Started event error', err);
+             this.logger.error('Google Auth track Trial Started event error', err);
             }
 
             try {
@@ -142,7 +142,7 @@ export class CreateProjectGsComponent implements OnInit {
                 plan: "Scale (trial)",
               });
             } catch (err) {
-              console.error('Google Auth project group error', err);
+              this.logger.error('Google Auth project group error', err);
             }
           }
         }
@@ -158,14 +158,14 @@ export class CreateProjectGsComponent implements OnInit {
 
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[CREATE-PROJECT-GOOGLE-AUTH] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+      this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
 
       if (projects) {
         // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
         // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
         projects.forEach(project => {
-          console.log('[CREATE-PROJECT-GOOGLE-AUTH] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
+          this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
           if (project.id_project) {
             const prjct: Project = {
               _id: project.id_project._id,
@@ -179,9 +179,9 @@ export class CreateProjectGsComponent implements OnInit {
         });
       }
     }, error => {
-      console.error('[CREATE-PROJECT-GOOGLE-AUTH] getProjectsAndSaveInStorage - ERROR ', error)
+      this.logger.error('[CREATE-PROJECT-GOOGLE-AUTH] getProjectsAndSaveInStorage - ERROR ', error)
     }, () => {
-      console.log('[CREATE-PROJECT-GOOGLE-AUTH] getProjectsAndSaveInStorage - COMPLETE')
+      this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] getProjectsAndSaveInStorage - COMPLETE')
     });
   }
 
