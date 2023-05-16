@@ -4021,7 +4021,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   displayModalDownloadTranscript() {
     if (this.isVisiblePaymentTab) {
-      if (this.CURRENT_USER_ROLE === 'owner') {
+      // if (this.CURRENT_USER_ROLE === 'owner') {
         if (
           (this.profile_name === PLAN_NAME.A) ||
           (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
@@ -4044,13 +4044,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.displayModalTranscript = 'block'
           // this.logger.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
         }
-      } else {
-        this.presentModalAgentCannotManageAvancedSettings()
-      }
+      // } else {
+      //   this.presentModalAgentCannotManageAvancedSettings()
+      // }
 
     } else {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
-
     }
   }
 
