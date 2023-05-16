@@ -552,7 +552,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE', projectProfileData)
+      // this.logger.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_profile_type = projectProfileData.profile_type;
@@ -570,28 +570,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (projectProfileData.profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
             this.displayChatRatings = true;
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
+            // this.logger.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // this.logger.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           } else {
             this.displayChatRatings = false;
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
+            // this.logger.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // this.logger.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           }
         } else if (projectProfileData.profile_type === 'payment') {
           if (projectProfileData.subscription_is_active === true) {
             this.displayChatRatings = true;
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
+            // this.logger.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // this.logger.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           } else if (projectProfileData.subscription_is_active === false) {
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // this.logger.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
             this.displayChatRatings = false;
-            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
+            // this.logger.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
           }
         }
 
         if (projectProfileData.profile_name === 'free' && projectProfileData.trial_expired === true && this.selectedResponseTypeID === 2) {
           const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
-          // console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
+          // this.logger.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
           if (elemTexareaSendMsg && this.isVisiblePaymentTab) {
             elemTexareaSendMsg.disabled = true;
             this.openUpgradePlanDialog(projectProfileData._id)
@@ -599,9 +599,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       }
     }, err => {
-      // console.error('[WS-REQUESTS-MSGS] GET PROJECT PROFILE - ERROR', err);
+     this.logger.error('[WS-REQUESTS-MSGS] GET PROJECT PROFILE - ERROR', err);
     }, () => {
-      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE * COMPLETE *');
+      // this.logger.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE * COMPLETE *');
     });
   }
 
@@ -657,14 +657,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Dialog result: ${result}`);
+      // this.logger.log(`Dialog result: ${result}`);
       this.selectedResponseTypeID = 1
       const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
-      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1) afterClosed', elemTexareaSendMsg);
+      // this.logger.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1) afterClosed', elemTexareaSendMsg);
 
       if (elemTexareaSendMsg && elemTexareaSendMsg.disabled) {
         elemTexareaSendMsg.disabled = false;
-        // console.log('✅ element is disabled afterClosed');
+        // this.logger.log('✅ element is disabled afterClosed');
       }
 
     });
@@ -673,14 +673,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getQueryParams() {
     this.route.queryParams
       .subscribe(params => {
-        // console.log('[WS-REQUESTS-MSGS]  queryParams', params);
+        // this.logger.log('[WS-REQUESTS-MSGS]  queryParams', params);
         this.queryParams = params
       });
   }
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-      // console.log('[WS-REQUESTS-MSGS] params', params)
+      // this.logger.log('[WS-REQUESTS-MSGS] params', params)
 
       if (params.isopenadvancedsearch) {
         this.isOpenedAdvancedSearch = params.isopenadvancedsearch
@@ -815,9 +815,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   removeFollower(event) {
     this.logger.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - event  ', event);
     const projectUserId = event.value.value;
-    // console.log('removeFollower projectUserId', projectUserId)
+    // this.logger.log('removeFollower projectUserId', projectUserId)
     const userId = event.value.userid;
-    // console.log('removeFollower userId', userId)
+    // this.logger.log('removeFollower userId', userId)
     if (userId === this.currentUserID) {
       this.CURRENT_USER_IS_A_FOLLOWER = false;
     }
@@ -856,19 +856,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   getValues(event) {
-    // console.log('getValues event', event)
+    // this.logger.log('getValues event', event)
     this.followers = event
     if (this.followers)
       this.followers.forEach(follower => {
-        // console.log('getValues follower', follower)
+        // this.logger.log('getValues follower', follower)
       });
   }
 
   follow() {
-    // console.log('follow HERE Y ')
+    // this.logger.log('follow HERE Y ')
     this.projectTeammates.forEach(teammate => {
-      // console.log('follow teammate', teammate)
-      // console.log('follow currentUserID', this.currentUserID)
+      // this.logger.log('follow teammate', teammate)
+      // this.logger.log('follow currentUserID', this.currentUserID)
       if (teammate.userid === this.currentUserID) {
         // this.projectTeammates.push({label:  teammate['fullname'], value: teammate._id })
         this.followers.push({ label: teammate['label'], value: teammate['value'], userid: teammate['userid'] })
@@ -877,15 +877,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         event['label'] = teammate['label']
         event['value'] = teammate['value']
         event['userid'] = teammate['userid']
-        // console.log(' follow  event object  ', event)
+        // this.logger.log(' follow  event object  ', event)
         // this.selected = followTeammate
         this.addFollower(event)
       }
     });
-    // console.log('followers ', this.followers)
+    // this.logger.log('followers ', this.followers)
     this.selectedFollowers = this.followers
     this.selectedFollowers = this.selectedFollowers.slice(0)
-    // console.log('selectedFollowers ', this.selectedFollowers)
+    // this.logger.log('selectedFollowers ', this.selectedFollowers)
   }
 
   unfollow() {
@@ -906,7 +906,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.followers.splice(i, 1);
       }
     }
-    //  console.log( 'unfollow  this.followers ' ,  this.followers)
+    //  this.logger.log( 'unfollow  this.followers ' ,  this.followers)
     this.selectedFollowers = this.followers
     this.selectedFollowers = this.selectedFollowers.slice(0)
     this.CURRENT_USER_IS_A_FOLLOWER = false
@@ -948,7 +948,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((user) => {
         if (user) {
           this.currentUserID = user._id
-          // console.log('[WS-REQUESTS-MSGS] - USER ', user);
+          // this.logger.log('[WS-REQUESTS-MSGS] - USER ', user);
           this.logger.log('[WS-REQUESTS-MSGS] GET LOGGED USER currentUserID', this.currentUserID)
           this.logged_user_fullname = user.firstname + ' ' + user.lastname
         }
@@ -956,7 +956,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
   setMomentLocale() {
     this.browserLang = this.translate.getBrowserLang();
-    // console.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
+    // this.logger.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
 
     let stored_preferred_lang = undefined
     if (this.auth.user_bs && this.auth.user_bs.value) {
@@ -974,7 +974,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   openImageViewerModal(imageMetadata) {
-    // console.log("[WS-REQUESTS-MSGS] downloadImage imageMetadata  ", imageMetadata);
+    // this.logger.log("[WS-REQUESTS-MSGS] downloadImage imageMetadata  ", imageMetadata);
     this.imageViewerModal = document.getElementById("image-viewer-modal");
     this.imageViewerModal.style.display = "block";
     var modalImg = <HTMLImageElement>document.getElementById("image-viewer-img");
@@ -983,20 +983,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (captionText) {
 
       captionText.innerHTML = imageMetadata.name ? imageMetadata.name : decodeURIComponent(decodeURIComponent(imageMetadata.name).split('/').pop());
-      // console.log('XXXX ', decodeURIComponent(decodeURIComponent(url).split('/').pop()))
+      // this.logger.log('XXXX ', decodeURIComponent(decodeURIComponent(url).split('/').pop()))
     }
   }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
   getSafaryBrowser() {
     this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    // console.log("[WS-REQUESTS-MSGS]] isSafari ",this.isSafari);
+    // this.logger.log("[WS-REQUESTS-MSGS]] isSafari ",this.isSafari);
   }
 
   ngAfterViewInit() {
@@ -1020,7 +1020,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getAppsInstalledApps() {
     let promise = new Promise((resolve, reject) => {
       this.appStoreService.getInstallationWithApp(this.id_project).then((installations: any) => {
-        // console.log("[WS-REQUESTS-MSGS] Get Installation Response: ", installations);
+        // this.logger.log("[WS-REQUESTS-MSGS] Get Installation Response: ", installations);
 
         this.dashboardApps = []
         this.webchatApps = []
@@ -1041,19 +1041,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
         });
 
-        // console.log("[WS-REQUESTS-MSGS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
-        // console.log("[WS-REQUESTS-MSGS] WEBCHAT APPS ARRAY: ", this.webchatApps);
+        // this.logger.log("[WS-REQUESTS-MSGS] DASHBOARD APPS ARRAY: ", this.dashboardApps);
+        // this.logger.log("[WS-REQUESTS-MSGS] WEBCHAT APPS ARRAY: ", this.webchatApps);
 
 
 
         if (this.dashboardApps && this.dashboardApps.length > 0 && this.CHAT_PANEL_MODE === false) {
           this.displayAppsinSidebar = true
-          // console.log("[WS-REQUESTS-MSGS] - DASHBOARD - DISPLAY APPS ", this.displayAppsinSidebar);
+          // this.logger.log("[WS-REQUESTS-MSGS] - DASHBOARD - DISPLAY APPS ", this.displayAppsinSidebar);
         }
 
         if (this.webchatApps && this.webchatApps.length > 0 && this.CHAT_PANEL_MODE === true) {
           this.displayAppsinSidebar = true
-          // console.log("[WS-REQUESTS-MSGS] - CHAT - DISPLAY APPS ", this.displayAppsinSidebar);
+          // this.logger.log("[WS-REQUESTS-MSGS] - CHAT - DISPLAY APPS ", this.displayAppsinSidebar);
         }
         resolve(installations);
       }).catch((err) => {
@@ -1104,7 +1104,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   ngOnDestroy() {
-    console.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
+    this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 
@@ -1155,11 +1155,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   getBaseUrl() {
     const href = window.location.href;
-    // console.log('[WS-REQUESTS-MSGS] - getBaseUrl - href ', href)
+    // thia.logger.log('[WS-REQUESTS-MSGS] - getBaseUrl - href ', href)
 
     const hrefArray = href.split('/#/');
     this.dshbrdBaseUrl = hrefArray[0]
-    // console.log('[WS-REQUESTS-MSGS] - getBaseUrl - dshbrdBaseUrl ', this.dshbrdBaseUrl)
+    // thia.logger.log('[WS-REQUESTS-MSGS] - getBaseUrl - dshbrdBaseUrl ', this.dshbrdBaseUrl)
   }
 
   getProfileImageStorage() {
@@ -1203,17 +1203,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.CHAT_PANEL_MODE = false
     if (this.router.url.indexOf('/request-for-panel') !== -1) {
       this.CHAT_PANEL_MODE = true;
-      // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+      // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
 
       const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-      // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
+      // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
       _elemMainPanel.classList.add("main-panel-chat-panel-mode");
 
     } else {
       this.CHAT_PANEL_MODE = false;
-      // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+      // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
       const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-      // console.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
+      // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
       if (_elemMainPanel.classList.contains('main-panel-chat-panel-mode')) {
         _elemMainPanel.classList.remove("main-panel-chat-panel-mode");
       }
@@ -1260,7 +1260,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         } else {
           this.isVisibleAPP = true;
         }
-        //  console.log('PUBLIC-KEY (SIDEBAR) - IS VISIBLE APP ', this.isVisibleAPP);
+        //  thia.logger.log('PUBLIC-KEY (SIDEBAR) - IS VISIBLE APP ', this.isVisibleAPP);
       }
     });
     if (!this.public_Key.includes("LBS")) {
@@ -1330,13 +1330,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.bannedVisitorsArray = []
     this.projectService.getProjects().subscribe((projects: any) => {
       // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
-      // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+      // thia.logger.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      // thia.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.bannedUsers) {
         this.bannedVisitorsArray = this.current_selected_prjct.id_project.bannedUsers;
-        // console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
+        // this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
       }
 
       this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
@@ -1355,10 +1355,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ----------------------------------------------------------------------------
   getParamRequestId() {
     this.route.params.subscribe((params) => {
-      // console.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
       this.getBotConversationAttribute(params.requestid)
       if (this.id_request) {
-        // console.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
+        // this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
 
         this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-MSGS - id_request ', this.id_request);
 
@@ -1389,14 +1389,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   getBotConversationAttribute(requestid) {
-    // console.log('HERE YES requestid', requestid)
+    // this.logger.log('HERE YES requestid', requestid)
     this.wsRequestsService.getBotConversationAttribute(requestid)
       .subscribe((data: any) => {
         if (data) {
           this.botConversationArray = []
           for (let [key, value] of Object.entries(data)) {
 
-            // console.log(`[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT key : ${key} - value ${value}`);
+            // this.logger.log(`[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT key : ${key} - value ${value}`);
 
             let _value: any;
             if (typeof value === 'object' && value !== null) {
@@ -1439,12 +1439,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               this.botConversationArray.push(entries)
             }
           }
-          // console.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT botConversationArray: ', this.botConversationArray);
+          // this.logger.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT botConversationArray: ', this.botConversationArray);
 
         } else {
-          // console.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT -  DATA IS UNDEFINED ');
+          // this.logger.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT -  DATA IS UNDEFINED ');
         }
-        // console.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT - RES: ', data);
+        // this.logger.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT - RES: ', data);
       }, (err) => {
         this.logger.error('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT - ERROR: ', err);
 
@@ -1487,14 +1487,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * @param id_request 
    */
   subscribeToWs_RequestById(id_request) {
-    // console.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id: ', id_request)
+    // this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id: ', id_request)
     let _id_request = ''
     if (id_request.includes('%2B')) {
-      // console.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request contains %2B' ,id_request.includes('%2B') ,' run replace' )
+      // this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request contains %2B' ,id_request.includes('%2B') ,' run replace' )
       _id_request = id_request.replace(/\%2B/g, '+')
 
     } else {
-      // console.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request NOT contains %2B' ,id_request.includes('%2B') , )
+      // this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request NOT contains %2B' ,id_request.includes('%2B') , )
       _id_request = id_request
     }
 
@@ -1532,8 +1532,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   viewInGooleMaps() {
-    console.log('this.locationLat', this.locationLat) 
-    console.log('this.locationLng', this.locationLng) 
+    this.logger.log('this.locationLat', this.locationLat) 
+    this.logger.log('this.locationLng', this.locationLng) 
     const url = `https://www.google.com/maps/search/?api=1&query=${this.locationLat},${this.locationLng}`
     window.open(url, '_blank');
   }
@@ -1544,11 +1544,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   editTicketSubjectFocusOut() {
     this.ticketSubjectEditMode = false
-    // console.log('[WS-REQUESTS-MSGS] - editTicketSubjectFocusOut  ticketSubjectEditMode', this.ticketSubjectEditMode)
+    // this.logger.log('[WS-REQUESTS-MSGS] - editTicketSubjectFocusOut  ticketSubjectEditMode', this.ticketSubjectEditMode)
   }
 
   saveEditInPlaceSubject() {
-    // console.log('[WS-REQUESTS-MSGS] - editTicketSubjectonFocusOut saveSubject ', this.ticketSubject)
+    // this.logger.log('[WS-REQUESTS-MSGS] - editTicketSubjectonFocusOut saveSubject ', this.ticketSubject)
     this.wsRequestsService.updateRequestsById_UpdateTicketSubject(this.id_request, this.ticketSubject)
       .subscribe((data: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - UPDATE TICKET SUBJECT - RES: ', data);
@@ -1586,7 +1586,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1604,22 +1604,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           if (this.request['closed_at']) {
             const requestclosedAt = moment(this.request['closed_at']);
-            // console.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
+            // this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
             const currentTime = moment();
             this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
 
 
             const daysDiff = currentTime.diff(requestclosedAt, 'd');
-            // console.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+            // this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
 
 
             if (daysDiff > 10) {
               this.disableReopeRequest = true;
-              // console.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - disableReopeRequest ', this.disableReopeRequest)
+              // this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - disableReopeRequest ', this.disableReopeRequest)
             }
           }
 
-          // console.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
+          // this.logger.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {
             this.getContactRequests(this.request.lead._id)
             this.request.lead.email
@@ -1642,13 +1642,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               } else {
                 this.usersService.getProjectUserByUserId(this.request['closed_by'])
                   .subscribe((projectUser: any) => {
-                    // console.log('projectUser ', projectUser)
+                    // this.logger.log('projectUser ', projectUser)
                     if (projectUser && projectUser[0] && projectUser[0].id_user) {
                       this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user, 'ws-requests-msgs');
                       this.logger.log('WS-REQUESTS-MSGS] GET projectUser by USER-ID projectUser id', projectUser);
                       this.request['closed_by_label'] = this.translate.instant('By') + ' ' + projectUser[0].id_user.firstname + ' ' + projectUser[0].id_user.lastname
                     } else {
-                      // console.log('[WS-REQUESTS-MSGS] THE REQUEST HAS NOT BEEN CLOSED BY A PROJECT USER');
+                      // this.logger.log('[WS-REQUESTS-MSGS] THE REQUEST HAS NOT BEEN CLOSED BY A PROJECT USER');
                       this.request['closed_by_label'] = this.translate.instant('By') + ' ' + this.request.requester_fullname
                     }
                   }, (error) => {
@@ -1664,29 +1664,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // @ followers  && ( this.projectTeammates && this.projectTeammates.length > 0)
           // -------------------------------------------------------------------
           if ((this.request && this.request.followers && this.request.followers.length > 0)) {
-            // console.log('this.request.followers id', this.request.followers)
+            // this.logger.log('this.request.followers id', this.request.followers)
             const storedProjectUsersArray = []
             this.request.followers.forEach(requestfollowerid => {
-              // console.log('requestfollowerid ', requestfollowerid)
+              // this.logger.log('requestfollowerid ', requestfollowerid)
               let storedProjectUser = localStorage.getItem('dshbrd----' + requestfollowerid)
-              // console.log('follower from storage ', storedProjectUser)
-              // console.log('follower  parsed from storage ', storedProjectUser)
+              // this.logger.log('follower from storage ', storedProjectUser)
+              // this.logger.log('follower  parsed from storage ', storedProjectUser)
               if (storedProjectUser) {
                 const parsedStoredProjectUser = JSON.parse(storedProjectUser)
-                // console.log('follower parsed from storage ', parsedStoredProjectUser)
+                // this.logger.log('follower parsed from storage ', parsedStoredProjectUser)
                 let fullname = parsedStoredProjectUser['firstname'] + ' ' + parsedStoredProjectUser['lastname']
-                // console.log('follower fullname' ,fullname ) 
+                // this.logger.log('follower fullname' ,fullname ) 
                 let id_user = parsedStoredProjectUser['_id']
                 if (id_user === this.currentUserID) {
-                  // console.log('CURRENT USER IS A FOLLOWER')
+                  // this.logger.log('CURRENT USER IS A FOLLOWER')
                   this.CURRENT_USER_IS_A_FOLLOWER = true
                 }
-                // console.log('follower id_user' ,id_user ) 
+                // this.logger.log('follower id_user' ,id_user ) 
                 //  this.projectTeammates.push({ label: teammate['fullname'], value: teammate._id, userid: teammate['id_user']['_id'] })
                 storedProjectUsersArray.push({ label: fullname, value: requestfollowerid, userid: id_user })
               }
             });
-            // console.log('follower storedProjectUsersArray' ,storedProjectUsersArray ) 
+            // this.logger.log('follower storedProjectUsersArray' ,storedProjectUsersArray ) 
             this.selectedFollowers = storedProjectUsersArray;
             this.followers = storedProjectUsersArray
 
@@ -1699,7 +1699,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             // });
             // this.selectedFollowers = myArrayFiltered;
             // this.followers = myArrayFiltered
-            // console.log('this.request. myArrayFiltered', myArrayFiltered)
+            // this.logger.log('this.request. myArrayFiltered', myArrayFiltered)
 
           }
 
@@ -1728,18 +1728,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
             if (this.request.location.city) {
               this.locationCity = this.request.location.city;
-              // console.log('[WS-REQUESTS-MSGS] - this.request > locationCity: ', this.locationCity);
+              // this.logger.log('[WS-REQUESTS-MSGS] - this.request > locationCity: ', this.locationCity);
             }
 
             if (this.request.location.country) {
               this.locationCountry = this.request.location.country
-              // console.log('[WS-REQUESTS-MSGS] - this.request > locationCountry: ', this.locationCountry);
+              // this.logger.log('[WS-REQUESTS-MSGS] - this.request > locationCountry: ', this.locationCountry);
             }
 
             if (this.request.location.geometry && this.request.location.geometry.coordinates) {
               this.locationLat = this.request.location.geometry.coordinates[0]
               this.locationLng = this.request.location.geometry.coordinates[1]
-              // console.log('[WS-REQUESTS-MSGS] - this.request > locationCountry: ', this.locationCountry);
+              // this.logger.log('[WS-REQUESTS-MSGS] - this.request > locationCountry: ', this.locationCountry);
             }
           }
           
@@ -1906,9 +1906,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
             this.contact_details = this.request.lead;
-            console.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
-            console.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
-            // console.log('this.request.lead ' , this.request.lead)
+            this.logger.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
+            this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
+            // this.logger.log('this.request.lead ' , this.request.lead)
             if (this.request.lead && this.request.lead.email) {
               this.logger.log('this.request.lead email ', this.request.lead.email)
 
@@ -2315,7 +2315,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Messages ws-subscription and get msgs from BS subscription
   // -----------------------------------------------------------------------------------------------------
   subscribeToWs_MsgsByRequestId(id_request: string) {
-    //  console.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
+    //  this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.listenToGotAllMsg()
     this.getWsMsgs$();
@@ -2349,11 +2349,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (wsmsgs) {
           this.logger.log('[WS-REQUESTS-MSGS] getWsMsgs$ WSMSGS lenght', wsmsgs.length)
           this.messagesList = wsmsgs;
-          console.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
+          this.logger.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
 
 
           this.messagesList.forEach(message => {
-            // console.log('[WS-REQUESTS-MSGS] message attributes', message.attributes);
+            // this.logger.log('[WS-REQUESTS-MSGS] message attributes', message.attributes);
             if (message.attributes.sourceTitle && message.attributes.sourcePage) {
               const index = this.viewedPages.findIndex((e) => e.viewedPageTitle === message.attributes.sourceTitle);
               if (index === -1) {
@@ -2362,7 +2362,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }
           });
 
-          console.log('[WS-REQUESTS-MSGS] message viewedPages array', this.viewedPages);
+          this.logger.log('[WS-REQUESTS-MSGS] message viewedPages array', this.viewedPages);
 
         }
 
@@ -2508,8 +2508,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
     // const firstTagObjectsize = Object.keys(this.tagsArray[0]).length
-    // console.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG firstTagObjectsize: ', firstTagObjectsize);
-    // console.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG this.tagsArray.length: ', this.tagsArray.length);
+    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG firstTagObjectsize: ', firstTagObjectsize);
+    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG this.tagsArray.length: ', this.tagsArray.length);
     if (tagObjectsize > 0) {
       this.updateRequestTags(this.id_request, this.tagsArray, 'add')
     }
@@ -3064,10 +3064,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ---------------------------------------------------------------------------------------
 
   openChatbotAttributesAccordion(isOpenChatbotAttributesAccordion) {
-    // console.log('[WS-REQUESTS-MSGS] isOpenChatbotAttributesAccordion ', isOpenChatbotAttributesAccordion)
+    // this.logger.log('[WS-REQUESTS-MSGS] isOpenChatbotAttributesAccordion ', isOpenChatbotAttributesAccordion)
 
     var footerEl = <HTMLElement>document.querySelector('footer')
-    // console.log('[WS-REQUESTS-MSGS] footerEl ', footerEl)
+    // this.logger.log('[WS-REQUESTS-MSGS] footerEl ', footerEl)
     // if (isOpenChatbotAttributesAccordion) {
     //   if (footerEl) {
     //     footerEl.style.display = 'none'
@@ -3166,7 +3166,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   handleCloseRightSidebar(event) {
-    // console.log('[WS-REQUESTS-MSGS] - CLOSE RIGHT SIDEBAR ', event);
+    // this.logger.log('[WS-REQUESTS-MSGS] - CLOSE RIGHT SIDEBAR ', event);
     this.OPEN_RIGHT_SIDEBAR = event;
     this.usersLocalDbService.storeIsOpenAppSidebar(false)
   }
@@ -3180,7 +3180,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const elemRightSidebar = <HTMLElement>document.querySelector('.right-card');
 
 
-    // console.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.apps_sidebar_height);
+    // this.logger.log('[WS-REQUESTS-MSGS] ON OPEN APPS RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.apps_sidebar_height);
 
     this.usersLocalDbService.storeIsOpenAppSidebar(true)
 
@@ -3221,7 +3221,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openSelectUsersModal(actionSelected) {
     this.actionInModal = actionSelected
-    // console.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
+    // this.logger.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
     this.closeMoreOptionDropdown();
 
 
@@ -3263,7 +3263,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (this.CHAT_PANEL_MODE === false) {
       if (actualWidth <= 991) {
         this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px'
-        // console.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
+        // this.logger.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
         this.logger.log('[WS-REQUESTS-MSGS] - USER LIST MODAL - ON OPEN  <=991 - users_list_modal_height', this.users_list_modal_height);
       }
     }
@@ -3297,7 +3297,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
-        // console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        // this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
         // this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
@@ -3694,17 +3694,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   reopenArchivedRequest(request, request_id) {
     this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
     this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
-    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
     // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
     // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
-    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
 
     // const closedAt = moment(new Date(request['closed_at'])).toDate()
-    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
     // const createdAt = moment(new Date(request['createdAt'])).format("YYYY-MM-DD") // for test
-    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
     // const today = moment(new Date()).format("YYYY-MM-DD")
-    // console.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
+    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
     // unarchiveRequest
 
 
@@ -3722,7 +3722,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
       this.presentModalReopenConvIsNotPossible()
     } else {
-      // console.log(moment(closedAtPlusTen).isSame(today))
+      // this.logger.log(moment(closedAtPlusTen).isSame(today))
       this.reopenConversation(request_id)
 
       let convWokingStatus = 'open'
@@ -4027,7 +4027,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           } else if (this.appSumoProfile) {
             this.presentModalAppSumoFeautureAvailableFromBPlan()
           }
-          // console.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
+          // this.logger.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
         } else if (
           (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
           (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
@@ -4035,7 +4035,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         ) {
           this.displayModalTranscript = 'block'
-          // console.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
+          // this.logger.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
         }
       } else {
         this.presentModalAgentCannotManageAvancedSettings()
@@ -4052,19 +4052,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onChangeTranscriptDownloadPreference(value) {
-    // console.log(" Value is : ", value);
+    // this.logger.log(" Value is : ", value);
     this.transcriptDwnldPreference = value
   }
 
   downloadTranscript() {
     this.closeModalTranscript();
-    // console.log('transcriptDwnldPreference', this.transcriptDwnldPreference)
+    // this.logger.log('transcriptDwnldPreference', this.transcriptDwnldPreference)
     if (this.transcriptDwnldPreference === 'CSV') {
       this.exportTranscriptToCSV()
     }
 
     if (this.transcriptDwnldPreference === 'PDF') {
-      // console.log('[WS-REQUESTS-MSGS - HERE 1');
+      // this.logger.log('[WS-REQUESTS-MSGS - HERE 1');
       // this.exportTranscriptToPDF()
       const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.pdf'
       window.open(url, '_blank');
@@ -4079,28 +4079,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   exportTranscriptToCSV() {
     this.wsRequestsService.exportTranscriptAsCSVFile(this.id_request).subscribe((res: any) => {
-      // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV', res);
+      // this.logger.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV', res);
       if (res) {
         this.downloadTranscriptAsCSVFile(res)
       }
     }, (error) => {
-      // console.error('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV - ERROR  ', error);
+      // this.logger.error('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV - ERROR  ', error);
     }, () => {
-      // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV * COMPLETE *');
+      // this.logger.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV * COMPLETE *');
     });
   }
 
   exportTranscriptToPDF() {
-    // console.log('[WS-REQUESTS-MSGS - HERE 2');
+    // this.logger.log('[WS-REQUESTS-MSGS - HERE 2');
     this.wsRequestsService.exportTranscriptAsPDFFile(this.id_request).subscribe((res: any) => {
-      // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF', res);
+      // this.logger.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF', res);
       if (res) {
         this.downloadTranscriptAsPDFFile(res)
       }
     }, (error) => {
-      // console.error('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF - ERROR  ', error);
+      // this.logger.error('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF - ERROR  ', error);
     }, () => {
-      // console.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF * COMPLETE *');
+      // this.logger.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF * COMPLETE *');
     });
 
 
@@ -4144,9 +4144,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // Ban Visitor
   // ---------------------------
   displayModalBanVisitor(leadid: string, ipaddress: string) {
-    // console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor profile_name: ', this.profile_name)
-    // console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor PLAN_NAME.C: ', PLAN_NAME.C)
-    // console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor subscription_is_active: ', this.subscription_is_active)
+    // this.logger.log('[WS-REQUESTS-MSGS] displayModalBanVisitor profile_name: ', this.profile_name)
+    // this.logger.log('[WS-REQUESTS-MSGS] displayModalBanVisitor PLAN_NAME.C: ', PLAN_NAME.C)
+    // this.logger.log('[WS-REQUESTS-MSGS] displayModalBanVisitor subscription_is_active: ', this.subscription_is_active)
     // if ((this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) || (this.prjct_profile_type === 'free' && this.trial_expired === false)) {
     this.logger.log('displayModalBanVisitor leadid ', leadid)
     this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
@@ -4160,7 +4160,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     //   ) {
     //     this.presentModalFeautureAvailableOnlyWithPlanC();
-    //     console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAILABLE')
+    //     this.logger.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAILABLE')
     //   } else if (
 
     //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true)
@@ -4168,7 +4168,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     //   ) {
     //     this.banVisitors(leadid, ipaddress)
-    //     console.log('[WS-REQUESTS-MSGS] - featureIsAvailable IS AVAILABLE')
+    //     this.logger.log('[WS-REQUESTS-MSGS] - featureIsAvailable IS AVAILABLE')
     //   }
 
     // } else {
@@ -4177,19 +4177,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     if (this.CURRENT_USER_ROLE === 'owner') {
       if (this.profile_name === PLAN_NAME.C) {
-        // console.log('displayModalBanVisitor HERE 1 ')
+        // this.logger.log('displayModalBanVisitor HERE 1 ')
         if (this.subscription_is_active === true) {
           this.banVisitors(leadid, ipaddress)
         } else if (this.subscription_is_active === false) {
-          // console.log('displayModalBanVisitor HERE 3 ')
+          // this.logger.log('displayModalBanVisitor HERE 3 ')
           this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
         }
       } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.prjct_profile_type === 'free') {
-        // console.log('displayModalBanVisitor HERE 4 ')
+        // this.logger.log('displayModalBanVisitor HERE 4 ')
         this.presentModalFeautureAvailableOnlyWithPlanC()
       }
     } else {
-      // console.log('displayModalBanVisitor HERE 5 ')
+      // this.logger.log('displayModalBanVisitor HERE 5 ')
       this.presentModalAgentCannotManageAvancedSettings()
     }
 
@@ -4210,19 +4210,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       })
         .then((willBan) => {
           if (willBan) {
-            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
+            // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
 
             this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
-              // console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
+              // this.logger.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
 
             }, (error) => {
-              // console.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
+              // this.logger.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
 
               swal(this.anErrorHasOccurredMsg, {
                 icon: "error",
               });
             }, () => {
-              // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
+              // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
               swal({
                 title: this.done_msg + "!",
                 icon: "success",
@@ -4234,7 +4234,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
             });
           } else {
-            // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+            // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
             // swal("Your imaginary file is safe!");
           }
         });
@@ -4263,7 +4263,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        // console.log('featureAvailableFromBPlan value', value)
+        // this.logger.log('featureAvailableFromBPlan value', value)
         // this.router.navigate(['project/' + this.id_project + '/pricing']);
         if (this.isVisiblePaymentTab) {
 
@@ -4337,7 +4337,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        // console.log('featureAvailableFromPlanC value', value)
+        // this.logger.log('featureAvailableFromPlanC value', value)
         if (this.isVisiblePaymentTab) {
           if (this.CURRENT_USER_ROLE === 'owner') {
             if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B) {
@@ -4456,15 +4456,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
     // const chatTabCount = localStorage.getItem('tabCount')
-    // console.log('[WS-REQUESTS-MSGS] chatWithAgent chatTabCount ', chatTabCount)
+    // this.logger.log('[WS-REQUESTS-MSGS] chatWithAgent chatTabCount ', chatTabCount)
     // let url = ''
     // if (chatTabCount) {
     //   if (+chatTabCount > 0) {
-    //     console.log('[WS-REQUESTS-MSGS]  chatWithAgent chatTabCount > 0 ')
+    //     this.logger.log('[WS-REQUESTS-MSGS]  chatWithAgent chatTabCount > 0 ')
     //     url = this.CHAT_BASE_URL + '#/conversation-detail?contact_id=' + agentId + '&contact_fullname=' + agentFullname
     //     this.openWindow('Tiledesk - Open Source Live Chat', url)
     //   } else if (chatTabCount && +chatTabCount === 0) {
-    //     console.log('[WS-REQUESTS-MSGS]  chatWithAgent chatTabCount = 0 ')
+    //     this.logger.log('[WS-REQUESTS-MSGS]  chatWithAgent chatTabCount = 0 ')
     //     url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
     //     this.openWindow('Tiledesk - Open Source Live Chat', url)
     //   }
@@ -4494,7 +4494,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         const id_bot = member_id.substring(4);
         // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
         const bot = this.botLocalDbService.getBotFromStorage(id_bot);
-        // console.log('[WS-REQUESTS-MSGS] - goToMemberProfile - BOT FROM STORAGE ', bot)
+        // this.logger.log('[WS-REQUESTS-MSGS] - goToMemberProfile - BOT FROM STORAGE ', bot)
 
         let botType = ''
         if (bot.type === 'internal') {
@@ -5004,7 +5004,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.metadata.src = downloadURL
           this.metadata.width = this.imgWidth,
             this.metadata.height = this.imgHeight,
-            // console.log(`[WS-REQUESTS-MSGS] - upload metadata `, this.metadata);
+            // this.logger.log(`[WS-REQUESTS-MSGS] - upload metadata `, this.metadata);
 
             this.fileUpload.nativeElement.value = '';
 
@@ -5095,7 +5095,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   sendChatMessage() {
-    // console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
+    // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
@@ -5129,9 +5129,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       }
 
-      // console.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
-      // console.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
-      // console.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
+      // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
+      // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
+      // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
 
       this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, _chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
         .subscribe((msg) => {
@@ -5194,9 +5194,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       let convWokingStatus = 'open'
       this.updateRequestWorkingStatus(convWokingStatus)
     }
-    // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
-    // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
-    // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
+    // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
+    // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
+    // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
   }
 
   hasSelectedPending(calledby, request) {
@@ -5213,13 +5213,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       let convWokingStatus = 'pending'
       this.updateRequestWorkingStatus(convWokingStatus)
     }
-    // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
-    // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
-    // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
+    // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
+    // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
+    // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
   }
 
   hasSelectedSolved(calledby) {
-    // console.log('[WS-REQUESTS-MSGS] HAS SELECTED SOLVED ', calledby)
+    // this.logger.log('[WS-REQUESTS-MSGS] HAS SELECTED SOLVED ', calledby)
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = true;
@@ -5229,14 +5229,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
     this.archiveRequest(this.id_request)
 
-    // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
-    // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
-    // console.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
+    // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
+    // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
+    // this.logger.log('[WS-REQUESTS-MSGS] HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
   }
 
   isOpenDropdown(_is0penDropDown) {
     this.is0penDropDown = _is0penDropDown
-    // console.log('[WS-REQUESTS-MSGS] this.is0penDropDown ',this.is0penDropDown)  
+    // this.logger.log('[WS-REQUESTS-MSGS] this.is0penDropDown ',this.is0penDropDown)  
   }
 
   presenModalMessageCouldNotBeSent() {
@@ -5284,7 +5284,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (event.key === 'Enter' && event.altKey || event.key === 'Enter' && event.ctrlKey || event.key === 'Enter' && event.metaKey) {
       this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
       if (this.chat_message !== undefined && this.chat_message.trim() !== '') {
-        //  console.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
+        //  this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
         this.chat_message = this.chat_message + "\r\n"
         this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
       }
@@ -5295,20 +5295,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onChangeReplyType(selectedResponseTypeID) {
-    // console.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)
+    // this.logger.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)
     this.selectedResponseTypeID = selectedResponseTypeID;
     if (this.selectedResponseTypeID === 2) { // Private note
       this.getProjectPlan();
     }
     if (this.selectedResponseTypeID === 1) {
       const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
-      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1)', elemTexareaSendMsg);
+      // this.logger.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1)', elemTexareaSendMsg);
 
       if (elemTexareaSendMsg && elemTexareaSendMsg.disabled) {
         elemTexareaSendMsg.disabled = false;
-        // console.log('✅ element is disabled');
+        // this.logger.log('✅ element is disabled');
       } else {
-        // console.log('⛔️ element is not disabled');
+        // this.logger.log('⛔️ element is not disabled');
       }
 
 
@@ -5353,7 +5353,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           });
         } else {
-          // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+          // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -5395,7 +5395,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           });
         } else {
-          // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+          // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -5437,14 +5437,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (clicked_element_id.startsWith("edit-fullname")) {
       this.logger.log('>>> click inside')
       // const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
-      // // console.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
+      // // this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
       // if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
 
       //   elemDropDown.classList.add("dropdown__menu-form--active");
-      //   // console.log('here 1 A')
+      //   // this.logger.log('here 1 A')
       // } else if (elemDropDown.classList.contains("dropdown__menu-form--active")) {
       //   elemDropDown.classList.remove("dropdown__menu-form--active");
-      //   // console.log('here 2 A')
+      //   // this.logger.log('here 2 A')
       // }
     } else {
       this.logger.log('[WS-REQUESTS-MSGS] >>> click outside')
