@@ -2311,6 +2311,7 @@
     "NoTAGFoundTypeToCreateATAG":"No se encontró ninguna ETIQUETA. Escribe para crear una ETIQUETA",
     "ViewedPages":"Páginas vistas",
     "IPAddress":"Dirección IP",
+    "NoTAGAssignedToThisContactYet":"No hay TAG asignado a este contacto todavía",
     "AddIntentPage": {
         "AddForm": "Agregar forma",
         "SelectTemplateForm": "Seleccione un tipo de formulario entre los sugeridos o cree uno nuevo",

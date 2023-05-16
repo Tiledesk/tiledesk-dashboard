@@ -2311,6 +2311,7 @@
     "NoTAGFoundTypeToCreateATAG":"Ешқандай TAG табылмады. TAG жасау үшін теріңіз",
     "ViewedPages":"Қаралған беттер",
     "IPAddress":"IP мекенжайы",
+    "NoTAGAssignedToThisContactYet":"Бұл контактіге әлі бірде-бір TAG тағайындалмаған",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",

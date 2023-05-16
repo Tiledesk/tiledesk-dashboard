@@ -92,7 +92,7 @@
         <!-- (keydown.enter)='editContactPhone()' -->
         <div class="form-group" style="margin-top: 2px;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
-          <input #inputleadphone type="number" name="company" data-id="company" class="form-control input-md"
+          <input #inputleadphone type="tel" name="phone" data-id="phone" class="form-control input-md"
             [(ngModel)]="contactPhone" placeholder="{{'PhoneNumber' | translate }}..." maxlength="255"
             (keydown.enter)='inputleadphone.blur()' (blur)="editContactPhone()" autocomplete="off"
             style="padding-bottom: 2px;" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
@@ -597,6 +597,10 @@
                   <span class="lead-assigned-tag">{{tag}}</span>
                 </div>
               </div> -->
+
+              <span *ngIf="contactTags?.length === 0"  class="no-contact-tags">
+                {{'NoTAGAssignedToThisContactYet' | translate}}
+              </span>
 
               <span *ngFor="let tag of contactTags" aria-label="tag" class="css-1f6nz3l e6hb4333">
                 <p weight="400" class="e6hb4332 css-yhmjem eimqq0f0">{{tag}}</p>

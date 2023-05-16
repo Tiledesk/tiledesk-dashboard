@@ -51,6 +51,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   public contactZipCode: string;
   public contactCountry: string;
   public contactNote: string;
+  public lead_id: string;
+  public whatsAppPhoneNumber: string;
   editContactSuccessNoticationMsg: string;
   editContactErrorNoticationMsg: string;
   leadPropertiesObjct: any = {}
@@ -99,28 +101,43 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   ngOnChanges() {
-    this.logger.log('[CONTACT-INFO] contact_details', this.contact_details)
+    console.log('[CONTACT-INFO] contact_details', this.contact_details)
     if (this.contact_details) {
 
       if (this.contact_details._id) {
         this.requester_id = this.contact_details._id
-        this.logger.log('requester_id ', this.requester_id)
+       console.log('[CONTACT-INFO] requester_id ', this.requester_id)
       }
+
+      if (this.contact_details.lead_id) {
+        this.lead_id = this.contact_details.lead_id
+       console.log('[CONTACT-INFO] lead_id ', this.lead_id)
+       if (this.lead_id.startsWith('wab-')) { 
+          this.whatsAppPhoneNumber =  this.lead_id.slice(4);
+          console.log('[CONTACT-INFO] whatsAppPhoneNumber ', this.whatsAppPhoneNumber)
+       }
+      }
+
 
 
       if (this.contact_details.email) {
         this.contactNewEmail = this.contact_details.email
-        this.logger.log('contactNewEmail ', this.contactNewEmail)
+        this.logger.log('[CONTACT-INFO] contactNewEmail ', this.contactNewEmail)
       }
 
       if (this.contact_details.company) {
         this.contactCompany = this.contact_details.company
-        this.logger.log('contactCompany ', this.contactCompany)
+        this.logger.log('[CONTACT-INFO] contactCompany ', this.contactCompany)
       }
 
       if (this.contact_details.phone) {
         this.contactPhone = this.contact_details.phone
-        this.logger.log('contactPhone ', this.contactPhone)
+        console.log('[CONTACT-INFO] contactPhone ', this.contactPhone)
+      } else {
+        console.log('[CONTACT-INFO] else contactPhone ', this.contactPhone)
+        if (this.whatsAppPhoneNumber) {
+          this.contactPhone = this.whatsAppPhoneNumber;
+        }
       }
 
       if (this.contact_details.streetAddress) {
@@ -323,18 +340,12 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // -----------------------------------------------------
 
   editContactPhone() {
-    if (this.contactPhone !== undefined) {
+    if (this.contactPhone !== undefined && this.contactPhone.length > 0) {
       this.updateContactPhone(this.contact_details._id, this.contactPhone)
     }
   }
 
-  editContactNote() {
-    this.toggleContactNote()
-    this.logger.log('editContactNote ', this.contactNote)
-    if (this.contactNote !== undefined) {
-      this.updateContactNote(this.contact_details._id, this.contactNote)
-    }
-  }
+ 
 
   removePhoneAnUpdateContact() {
     this.contactPhone = ""
@@ -367,6 +378,9 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   }
 
+    // -----------------------------------------------------
+  // @ Lead Note
+  // -----------------------------------------------------
   updateContactNote(contactid, contactnote) {
     this.logger.log('updateContactNote contactid', contactid)
     this.contactsService.updateLeadNote(
@@ -389,6 +403,13 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   }
 
+  editContactNote() {
+    this.toggleContactNote()
+    this.logger.log('editContactNote ', this.contactNote)
+    if (this.contactNote !== undefined) {
+      this.updateContactNote(this.contact_details._id, this.contactNote)
+    }
+  }
 
   // -----------------------------------------------------
   // @ Lead Tags

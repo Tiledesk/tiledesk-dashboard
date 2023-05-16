@@ -2311,6 +2311,7 @@
     "NoTAGFoundTypeToCreateATAG":"Hech qanday TAG topilmadi TAG yaratish uchun terish",
     "ViewedPages":"Koʻrilgan sahifalar",
     "IPAddress":"IP manzili",
+    "NoTAGAssignedToThisContactYet":"Hozircha bu kontaktga TAG tayinlanmagan",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

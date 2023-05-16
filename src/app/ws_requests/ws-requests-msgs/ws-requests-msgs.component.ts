@@ -394,6 +394,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   onlyOwnerCanManageTheAccountPlanMsg: string;
   DASHBORD_BASE_URL: string;
   contact_details: any;
+  whatsAppPhoneNumber: string;
   /**
    * Constructor
    * @param router 
@@ -599,7 +600,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       }
     }, err => {
-     this.logger.error('[WS-REQUESTS-MSGS] GET PROJECT PROFILE - ERROR', err);
+      this.logger.error('[WS-REQUESTS-MSGS] GET PROJECT PROFILE - ERROR', err);
     }, () => {
       // this.logger.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE * COMPLETE *');
     });
@@ -1532,8 +1533,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   viewInGooleMaps() {
-    this.logger.log('this.locationLat', this.locationLat) 
-    this.logger.log('this.locationLng', this.locationLng) 
+    this.logger.log('this.locationLat', this.locationLat)
+    this.logger.log('this.locationLng', this.locationLng)
     const url = `https://www.google.com/maps/search/?api=1&query=${this.locationLat},${this.locationLng}`
     window.open(url, '_blank');
   }
@@ -1586,7 +1587,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1742,7 +1743,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               // this.logger.log('[WS-REQUESTS-MSGS] - this.request > locationCountry: ', this.locationCountry);
             }
           }
-          
+
 
           // -------------------------------------------------------------------
           // User Agent
@@ -1906,9 +1907,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
             this.contact_details = this.request.lead;
-            this.logger.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
+            console.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
             this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
             // this.logger.log('this.request.lead ' , this.request.lead)
+            if (this.request.lead.lead_id.startsWith('wab-')) {
+              console.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
+              this.whatsAppPhoneNumber = this.request.lead.lead_id.slice(4);
+              console.log('[WS-REQUESTS-MSGS] whatsAppPhoneNumber ',this.whatsAppPhoneNumber)
+            }
+
             if (this.request.lead && this.request.lead.email) {
               this.logger.log('this.request.lead email ', this.request.lead.email)
 
@@ -2354,7 +2361,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           this.messagesList.forEach(message => {
             // this.logger.log('[WS-REQUESTS-MSGS] message attributes', message.attributes);
-            if (message.attributes.sourceTitle && message.attributes.sourcePage) {
+            if (message.attributes && message.attributes.sourceTitle && message.attributes.sourcePage) {
               const index = this.viewedPages.findIndex((e) => e.viewedPageTitle === message.attributes.sourceTitle);
               if (index === -1) {
                 this.viewedPages.push({ viewedPageTitle: message.attributes.sourceTitle, viewedPageLink: message.attributes.sourcePage })

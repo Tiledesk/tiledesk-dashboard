@@ -2311,6 +2311,7 @@
 	"NoTAGFoundTypeToCreateATAG":"Kein TAG gefunden. Geben Sie ein, um einen TAG zu erstellen",
 	"ViewedPages":"Angesehene Seiten",
 	"IPAddress":"IP Adresse",
+	"NoTAGAssignedToThisContactYet":"Diesem Kontakt wurde noch kein TAG zugeordnet",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",

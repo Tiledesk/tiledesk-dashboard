@@ -2311,6 +2311,7 @@
     "NoTAGFoundTypeToCreateATAG": "لم يتم العثور على TAG. اكتب لإنشاء TAG",
     "ViewedPages":"الصفحات التي تمت مشاهدتها",
     "IPAddress":"عنوان IP",
+    "NoTAGAssignedToThisContactYet":"لم يتم تعيين TAG لجهة الاتصال هذه حتى الآن",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

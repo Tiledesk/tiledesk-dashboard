@@ -377,6 +377,17 @@ textarea[type="text"] {
     background: rgb(248, 166, 178);
 }
 
+.no-contact-tags {
+    height: 25px;
+    color: #8796af;
+    margin-left: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: aliceblue;
+    width: calc(100% - 20px);
+}
+
 /* ./ Lead tag 
   /* ************************************ */
 

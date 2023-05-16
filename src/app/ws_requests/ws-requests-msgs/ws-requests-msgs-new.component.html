@@ -1894,9 +1894,9 @@
                     </li>
 
                     <!-- ------------------------------------- -->
-                    <!-- viewed-pages  *ngIf="viewedPages && viewedPages-lengt"-->
+                    <!-- viewed-pages -->
                     <!-- ------------------------------------- -->
-                    <li class="viewed-pages">
+                    <li class="viewed-pages" *ngIf="viewedPages && viewedPages?.length > 0">
                       <div id="contact-row-source-pages" class="contact-row input-row">
                         <span>
                           <!-- <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
@@ -1937,11 +1937,16 @@
                     </li>
 
                     <li *ngIf="showViewedPages" class="viewed-pages-list">
-                      <a style="font-weight: 400;margin-left: 32px;" class="viewed-pages-anchor"
-                        *ngFor="let page of viewedPages" title="page?.viewedPageTitle" href="{{page?.viewedPageLink}}"
-                        target="_blank">
-                        {{page?.viewedPageTitle}}
-                      </a>
+                      <ul>
+                        <li *ngFor="let page of viewedPages" style="width: calc(100% - 16px);white-space: nowrap;overflow: hidden; text-overflow: ellipsis;">
+                          <a style="font-weight: 400;margin-left: 15px;" class="viewed-pages-anchor"
+                           title="page?.viewedPageTitle" href="{{page?.viewedPageLink}}"
+                          target="_blank">
+                          {{page?.viewedPageTitle}}
+                        </a>
+                        </li>
+                      </ul>
+                     
                     </li>
 
                     <!-- ---------------------------------------- -->
@@ -1985,7 +1990,7 @@
                           </svg> -->
 
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="22px" width="22px"
-                            matTooltip="{{ 'MessageChannel' | translate }}: WhatsApp" #tooltip="matTooltip"
+                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}: WhatsApp" #tooltip="matTooltip"
                             matTooltipPosition='right' matTooltipHideDelay="100">
 
                             <path
@@ -1994,7 +1999,7 @@
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="whatsapp-channel" type="text" data-id="whatsapp-channel"
-                            class="form-control input-md" title="WhatsApp" disabled value="WhatsApp"
+                            class="form-control input-md" title="WhatsApp" disabled value="WhatsApp ({{whatsAppPhoneNumber}})"
                             style="cursor: default;width: 240px;">
                         </div>
                       </div>

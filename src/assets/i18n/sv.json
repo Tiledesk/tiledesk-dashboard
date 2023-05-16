@@ -2311,6 +2311,7 @@
     "NoTAGFoundTypeToCreateATAG":"Ingen TAG hittades. Skriv för att skapa en TAG",
     "ViewedPages":"Sedda sidor",
     "IPAddress":"IP-adress",
+    "NoTAGAssignedToThisContactYet":"Ingen TAG har tilldelats den här kontakten ännu",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",
