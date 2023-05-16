@@ -1886,6 +1886,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Yalnız sahibi roluna malik komanda yoldaşları hesabın planını idarə edə bilər",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Yalnız sahib roluna malik komanda üzvləri e-poçt şablonlarını idarə edə bilər",
     "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Yalnız Sahib roluna malik komanda yoldaşı SMTP parametrlərini idarə edə bilər",
+    "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Yalnız Sahib roluna malik komanda yoldaşları təkmil layihə parametrlərini idarə edə bilər",
     "LearnMoreAboutDefaultRoles": "Defolt rollar haqqında ətraflı məlumat əldə edin",
     "LearnHowCreateAGroup": "Qrup yaratmağı öyrənin",
     "HookTheBot": "Bu botu aktivləşdirin",

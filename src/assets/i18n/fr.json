@@ -1886,6 +1886,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Seuls les coéquipiers ayant le rôle de propriétaire peuvent gérer le plan du compte",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Seuls les membres de l'équipe ayant le rôle de propriétaire peuvent gérer les modèles d'e-mail",
     "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Seul un coéquipier avec le rôle Propriétaire peut gérer les paramètres SMTP",
+    "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Seuls les coéquipiers ayant le rôle de propriétaire peuvent gérer les paramètres de projet avancés",
     "LearnMoreAboutDefaultRoles": "En savoir plus sur les rôles par défaut",
     "LearnHowCreateAGroup": "Apprendre à créer un groupe",
     "HookTheBot": "Activer ce robot",

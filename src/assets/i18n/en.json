@@ -1886,6 +1886,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Only teammates with the owner role can manage the account’s plan",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Only teammates with the owner role can manage email templates",
     "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Only a teammate with the Owner role can manage SMTP settings",
+    "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Only teammates with the Owner role can manage advanced project settings",
     "LearnMoreAboutDefaultRoles": "Learn more about default roles",
     "LearnHowCreateAGroup": "Learn how create a group",
     "HookTheBot": "Activate this bot",

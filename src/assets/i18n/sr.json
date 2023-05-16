@@ -1886,6 +1886,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Само саиграчи са улогом власника могу да управљају планом налога",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Само чланови тима са улогом власника могу да управљају шаблонима е-поште",
     "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Само саиграч са улогом власника може да управља подешавањима СМТП-а",
+    "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Само саиграчи са улогом власника могу да управљају напредним подешавањима пројекта",
     "LearnMoreAboutDefaultRoles": "Сазнајте више о подразумеваним улогама",
     "LearnHowCreateAGroup": "Научите како да креирате групу",
     "HookTheBot": "Активирајте овог бота",

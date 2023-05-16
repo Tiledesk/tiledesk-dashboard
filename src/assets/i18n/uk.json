@@ -1886,6 +1886,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan": "Лише товариші по команді з роллю власника можуть керувати планом облікового запису",
     "OnlyUsersWithTheOwnerRoleCanManageTheEmailTemplate": "Лише члени команди з роллю власника можуть керувати шаблонами електронних листів",
     "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Лише член команди з роллю власника може керувати налаштуваннями SMTP",
+    "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Лише члени команди з роллю власника можуть керувати розширеними налаштуваннями проекту",
     "LearnMoreAboutDefaultRoles": "Докладніше про ролі за замовчуванням",
     "LearnHowCreateAGroup": "Дізнайтеся, як створити групу",
     "HookTheBot": "Активуйте цього бота",
