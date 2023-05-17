@@ -478,6 +478,7 @@
     "Company": "Şirkət",
     "Address": "Ünvan",
     "StreetAddress": "Küçə ünvanı",
+    "Street":"Küçə",
     "City": "Şəhər",
     "State": "Vilayət/Ştat",
     "PostalCode": "Poçt/Poçt",

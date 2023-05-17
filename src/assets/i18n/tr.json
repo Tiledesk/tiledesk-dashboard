@@ -478,6 +478,7 @@
     "Company": "Şirket",
     "Address": "Adres",
     "StreetAddress": "Sokak adresi",
+    "Street":"Sokak",
     "City": "Şehir",
     "State": "İl/Eyalet",
     "PostalCode": "Posta/Posta",

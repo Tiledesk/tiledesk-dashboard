@@ -478,6 +478,7 @@
     "Company": "Azienda",
     "Address": "Indirizzo",
     "StreetAddress": "Via",
+    "Street":"Via",
     "City": "Città",
     "State": "Provincia/Stato",
     "PostalCode": "Codice Postale",

@@ -478,6 +478,7 @@
     "Company": "Компания",
     "Address": "Мекенжай",
     "StreetAddress": "Көше адресі",
+    "Street":"Көше",
     "City": "Қала",
     "State": "Провинция/штат",
     "PostalCode": "Пошта/почта",

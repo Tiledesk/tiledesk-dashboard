@@ -478,6 +478,7 @@
     "Company": "Empresa",
     "Address": "Dirección",
     "StreetAddress": "Dirección de calle",
+    "Street":"Calle",
     "City": "Ciudad",
     "State": "Provincia/Estado",
     "PostalCode": "Postal/Zip",
