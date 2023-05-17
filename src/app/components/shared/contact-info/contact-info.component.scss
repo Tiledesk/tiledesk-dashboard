@@ -113,6 +113,10 @@ textarea[type="text"] {
     cursor: pointer;
 }
 
+.ul-wpr li .inputChat { 
+    flex: 1 0 0px !important;
+}
+
 .ul-wpr li input:focus {
     background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d2, #d2d2d2) !important;
     cursor: text;
@@ -460,6 +464,7 @@ textarea[type="text"] {
     height: 24px;
 }
 
+
 .label-and-input-wpr {
     display: flex;
     flex-direction: row;
@@ -472,7 +477,10 @@ textarea[type="text"] {
     margin-right: 6px;
     color: #8796af;
     font-weight: 500;
+    white-space: nowrap;
 }
+
+
 
 #address-arrow-down {
     -moz-transition: all 0.2s linear;

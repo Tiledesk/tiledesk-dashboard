@@ -233,14 +233,16 @@
     <!-- ------------------------------------- -->
     <li class="street" *ngIf="showAllAddress">
       <div class="contact-row input-row">
-        <div class="form-group" style="margin-top: 2px; margin-left: 34px"
-          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
+        <!-- margin-left: 34px 'width':CHAT_PANEL_MODE === true ? 'unset' : '100%',-->
+        <div class="form-group" style="margin-top: 2px; width: 100%;"
+          [ngStyle]="{ 'margin-left': CHAT_PANEL_MODE === true ? '0px' : '34px' }">
           <div class="label-and-input-wpr">
-            <div class="propertyLabel">{{'StreetAddress' | translate}}: </div>
-            <input #inputleadstreet type="text" name="contactstreet" data-id="contactstreet"
+            <div class="propertyLabel">{{'Street' | translate}}: </div>
+            <!-- [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }" -->
+            <input [ngClass]="{'inputChat': CHAT_PANEL_MODE === true}" #inputleadstreet type="text" name="contactstreet" data-id="contactstreet"
               class="form-control input-md" [(ngModel)]="contactStreet" placeholder="{{'StreetAddress' | translate}}..."
               maxlength="255" (keydown.enter)='inputleadstreet.blur()' (blur)="editContactAddress()" autocomplete="off"
-              [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+              style="width: 100%;">
           </div>
         </div>
         <div class="action-btns">
@@ -262,15 +264,17 @@
     <!-- Address > City (keydown.enter)='editContactAddress()'  -->
     <!-- ------------------------------------- -->
     <li class="city" *ngIf="showAllAddress">
+      <!-- margin-left: 34px 'width':CHAT_PANEL_MODE === true ? 'unset' : '100%',-->
       <div class="contact-row input-row">
-        <div class="form-group" style="margin-top: 2px; margin-left: 34px"
-          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
+        <div class="form-group" style="margin-top: 2px; width: 100%"
+          [ngStyle]="{ 'margin-left': CHAT_PANEL_MODE === true ? '0px' : '34px' }">
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'City' | translate}}: </div>
-            <input #inputleadcity type="text" name="city" data-id="city" class="form-control input-md"
+            <!-- [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }" -->
+            <input [ngClass]="{'inputChat': CHAT_PANEL_MODE === true}" #inputleadcity type="text" name="city" data-id="city" class="form-control input-md"
               [(ngModel)]="contactCity" placeholder="{{'City' | translate}}..." maxlength="255"
               (keydown.enter)='inputleadcity.blur()' (blur)="editContactAddress()" autocomplete="off"
-              [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+              style="width: 100%">
           </div>
         </div>
         <div class="action-btns">
@@ -292,14 +296,16 @@
     <!-- ------------------------------------- -->
     <li class="province" *ngIf="showAllAddress">
       <div class="contact-row input-row">
-        <div class="form-group" style="margin-top: 2px; margin-left: 34px"
-          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
+        <!-- margin-left: 34px 'width':CHAT_PANEL_MODE === true ? 'unset' : '100%', -->
+        <div class="form-group" style="margin-top: 2px; width: 100%"
+          [ngStyle]="{ 'margin-left': CHAT_PANEL_MODE === true ? '0px' : '34px' }">
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'State' | translate}}: </div>
-            <input #inputleadstate type="text" name="province" data-id="province" class="form-control input-md"
+            <!-- [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }" -->
+            <input [ngClass]="{'inputChat': CHAT_PANEL_MODE === true}" #inputleadstate type="text" name="province" data-id="province" class="form-control input-md"
               [(ngModel)]="contactProvince" placeholder="{{'State' | translate}}..." maxlength="255"
               (keydown.enter)='inputleadstate.blur()' (blur)="editContactAddress()" autocomplete="off"
-              [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+              style="width: 100%">
           </div>
         </div>
         <div class="action-btns">
@@ -322,14 +328,17 @@
     <!-- ------------------------------------- -->
     <li class="postalzip" *ngIf="showAllAddress">
       <div class="contact-row input-row">
-        <div class="form-group" style="margin-top: 2px; margin-left: 34px"
-          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
+        <!-- margin-left: 34px  'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' , -->
+        <div class="form-group" style="margin-top: 2px; width: 100%"
+          [ngStyle]="{ 'margin-left': CHAT_PANEL_MODE === true ? '0px' : '34px'}">
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'PostalCode' | translate}}: </div>
-            <input #inputpostalzip type="text" name="postalzip" data-id="postalzip" class="form-control input-md"
+            <!-- [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }" -->
+            <input [ngClass]="{'inputChat': CHAT_PANEL_MODE === true}" #inputpostalzip type="text" name="postalzip" data-id="postalzip" 
+              class="form-control input-md"
               [(ngModel)]="contactZipCode" placeholder="{{'PostalCode' | translate}}..." maxlength="255"
               (keydown.enter)='inputpostalzip.blur()' (blur)="editContactAddress()" autocomplete="off"
-              [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+              style="width:100%">
           </div>
         </div>
         <div class="action-btns">
@@ -351,14 +360,16 @@
     <!-- ------------------------------------- -->
     <li class="country" *ngIf="showAllAddress">
       <div class="contact-row input-row">
-        <div class="form-group" style="margin-top: 2px; margin-left: 34px"
-          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
+        <!-- margin-left: 34px  'width':CHAT_PANEL_MODE === true ? 'unset' : '100%',-->
+        <div class="form-group" style="margin-top: 2px; width: 100%;"
+          [ngStyle]="{'margin-left': CHAT_PANEL_MODE === true ? '0px' : '34px' }">
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'Country' | translate}}: </div>
-            <input #inputleadcountry type="text" name="country" data-id="country" class="form-control input-md"
+            <!-- [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }" -->
+            <input [ngClass]="{'inputChat': CHAT_PANEL_MODE === true}" #inputleadcountry type="text" name="country" data-id="country" class="form-control input-md"
               [(ngModel)]="contactCountry" placeholder="{{'Country' | translate}}..." maxlength="255"
               (keydown.enter)='inputleadcountry.blur()' (blur)="editContactAddress()" autocomplete="off"
-              [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+               style="width: 100%;">
           </div>
         </div>
         <div class="action-btns">
@@ -463,9 +474,8 @@
       *ngFor="let property of contactCustomProperties">
 
       <div class="contact-row input-row">
-
-        <div class="form-group" style="margin-top: 6px;"
-          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
+        <!-- [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }" -->
+        <div class="form-group" style="margin-top: 6px; width: 100%;">
           <!-- ----------------------------------------------------- -->
           <!-- Assigned custom properties -->
           <!-- ----------------------------------------------------- -->
@@ -488,12 +498,13 @@
                 </g>
               </g>
             </svg>
-            <div class="propertyLabel">{{property.label}}: </div>
-            <input #inputcustomproperties id="{{property.name}}" type="text" name="{{property.name}}"
+            <div [ngClass]="{'propertyLabelChat': CHAT_PANEL_MODE === true}" class="propertyLabel">{{property.label}}: </div>
+            <!-- [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }" -->
+            <input [ngClass]="{'inputChat': CHAT_PANEL_MODE === true}" #inputcustomproperties id="{{property.name}}" type="text" name="{{property.name}}"
               data-id="{{property.name}}" class="form-control input-md" placeholder="{{property.label}}..."
               maxlength="255" (keydown.enter)='inputcustomproperties.blur()'
               (blur)="onKey(property.name, property.label ,$event)" autocomplete="off" style="padding-bottom: 5px;"
-              [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+              style="width: 100%;">
           </div>
         </div>
         <div class="action-btns">

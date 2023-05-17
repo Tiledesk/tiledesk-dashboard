@@ -296,7 +296,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       }, () => {
         this.logger.log('[CONTACT-INFO] - UPDATE CONTACT * COMPLETE *');
 
-        this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
+        // this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
       });
   }
 
@@ -330,7 +330,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
     }, () => {
       this.logger.log('[CONTACT-INFO] - UPDATE CONTACT updateCompany - COMPLETED ');
-      this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
+      // this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
     })
 
   }
@@ -373,7 +373,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
     }, () => {
       this.logger.log('[CONTACT-INFO] - UPDATE CONTACT updateContactPhone - COMPLETED ');
-      this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
+      // this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
     })
 
   }
@@ -398,7 +398,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
     }, () => {
       this.logger.log('[CONTACT-INFO] - UPDATE CONTACT updateContactNote - COMPLETED ');
-      this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
+      // this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
     })
 
   }
@@ -475,7 +475,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
       }, () => {
         this.logger.log('[CONTACT-INFO] - UPDATE CONTACT ADD CONTACT TAGS - COMPLETED ');
-        this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
+        // this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
       })
   }
 
@@ -521,30 +521,30 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   removeContactStreet() {
     this.contactStreet = ""
-    this.editContactAddress()
+    this.updateContactAddress()
     this.logger.log('[CONTACT-INFO] - REMOVE CONTACT STREET ', this.contactStreet);
 
   }
   removeContactCity() {
     this.contactCity = ""
-    this.editContactAddress()
+    this.updateContactAddress()
     this.logger.log('[CONTACT-INFO] - REMOVE CONTACT CITY ', this.contactCity);
   }
   removeContactProvince() {
     this.contactProvince = ""
-    this.editContactAddress()
+    this.updateContactAddress()
     this.logger.log('[CONTACT-INFO] - REMOVE CONTACT PROVINCE ', this.contactProvince);
   }
 
   removeContactPostalCode() {
     this.contactZipCode = ""
-    this.editContactAddress()
+    this.updateContactAddress()
     this.logger.log('[CONTACT-INFO] - REMOVE CONTACT POSTAL CODE ', this.contactZipCode);
   }
 
   removeContactCountry() {
     this.contactCountry = ""
-    this.editContactAddress()
+    this.updateContactAddress()
     this.logger.log('[CONTACT-INFO] - REMOVE CONTACT COUNTRY ', this.contactCountry);
   }
 
@@ -554,34 +554,61 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     contactAddressTemp = contactAddressTemp.filter((element) => {
       return element !== undefined && element !== '';
     });
-    this.logger.log('contactAddressTemp ', contactAddressTemp)
+    console.log('contactAddressTemp ', contactAddressTemp)
     if (contactAddressTemp.length > 0) {
       contactAddressTemp.join(", ")
       const contactAddressTempString = contactAddressTemp.toString()
       const contactAddressTempSpaced = contactAddressTempString.replace(/,/g, ', ');
       this.contactAddress = contactAddressTempSpaced
       this.logger.log('[CONTACT-INFO] - contactAddress ', this.contactAddress);
+    } else {
+      this.contactAddress = undefined
+    }
+  }
+
+  editContactAddress() {
+    if (this.contactStreet && this.contactStreet.length > 0 )  {
+      this.contactStreet = this.contactStreet.trim();
+      this.updateContactAddress();
+    }
+    if (this.contactCity && this.contactCity.length > 0) {
+      this.contactCity = this.contactCity.trim();
+      this.updateContactAddress();
+    }
+
+    if (this.contactProvince && this.contactProvince.length > 0) {
+      this.contactProvince = this.contactProvince.trim();
+      this.updateContactAddress();
+    }
+
+    if (this.contactZipCode && this.contactZipCode.length > 0) {
+      this.contactZipCode = this.contactZipCode.trim();
+      this.updateContactAddress();
+    }
+
+    if (this.contactCountry && this.contactCountry.length > 0 ) {
+      this.contactCountry = this.contactCountry.trim().toUpperCase();
+      this.updateContactAddress();
     }
   }
 
 
-
-  editContactAddress() {
-    if (this.contactStreet) {
-      this.contactStreet = this.contactStreet.trim()
-    }
-    if (this.contactCity) {
-      this.contactCity = this.contactCity.trim()
-    }
-    if (this.contactProvince) {
-      this.contactProvince = this.contactProvince.trim()
-    }
-    if (this.contactZipCode) {
-      this.contactZipCode = this.contactZipCode.trim()
-    }
-    if (this.contactCountry) {
-      this.contactCountry = this.contactCountry.trim().toUpperCase()
-    }
+  updateContactAddress() {
+    // if (this.contactStreet) {
+    //   this.contactStreet = this.contactStreet.trim()
+    // }
+    // if (this.contactCity) {
+    //   this.contactCity = this.contactCity.trim()
+    // }
+    // if (this.contactProvince) {
+    //   this.contactProvince = this.contactProvince.trim()
+    // }
+    // if (this.contactZipCode) {
+    //   this.contactZipCode = this.contactZipCode.trim()
+    // }
+    // if (this.contactCountry) {
+    //   this.contactCountry = this.contactCountry.trim().toUpperCase()
+    // }
 
     this.genetateContactAddress(this.contactStreet, this.contactCity, this.contactProvince, this.contactZipCode, this.contactCountry)
 
@@ -600,12 +627,12 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
       this.logger.error('[CONTACT-INFO] - UPDATE CONTACT ADDRESS - ERROR ', error);
 
-      this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
+      // this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
 
     }, () => {
       this.logger.log('[CONTACT-INFO]- UPDATE CONTACT ADDRESS * COMPLETE *');
 
-      this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done');
+      // this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done');
 
     });
   }
@@ -656,7 +683,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
       }, () => {
         this.logger.log('[CONTACT-INFO] - CREATE CONTACT PROPERTY - COMPLETED ');
-        this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
+        // this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
 
         this.contactCustomProperties.push({ label: propertyLabel, name: propertyName })
         // this.getAllContactProperties()
@@ -893,7 +920,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
       }, () => {
         this.logger.log('[CONTACT-INFO] - ADD CUSTOM PROPERTY TO LEAD (New) - COMPLETED ');
-        this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
+        // this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
 
       })
   }
