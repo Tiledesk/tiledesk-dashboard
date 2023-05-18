@@ -141,6 +141,10 @@ ng-select {
     .material-icons{
         transform: rotate(135deg);
     }
+    &:hover{
+        opacity: 0.8;
+        cursor: pointer;
+    }
 }
 
 .title-buttons{
