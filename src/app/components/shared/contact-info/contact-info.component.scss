@@ -63,7 +63,6 @@ textarea[type="text"] {
     transition: fill 0.2s ease-in-out 0s;
 }
 
-
 // ---
 .ul-wpr li .tag--row {
     display: flex;
@@ -113,7 +112,7 @@ textarea[type="text"] {
     cursor: pointer;
 }
 
-.ul-wpr li .inputChat { 
+.ul-wpr li .inputChat {
     flex: 1 0 0px !important;
 }
 
@@ -337,8 +336,36 @@ textarea[type="text"] {
     }
 }
 
+// ---- Assigned tag without icon
 
-// ---- Assigned tag without icon 
+.no-contact-tags-wpr {
+    display: flex;
+}
+.no-contact-tags-old {
+    height: 25px;
+    color: #8796af;
+    margin-left: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(100% - 20px);
+}
+.no-contact-tags {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: -.01em;
+    padding: 3px 20px 4px 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    color: #8796af;
+}
+
 .css-1f6nz3l {
     display: flex;
     border-radius: 4px;
@@ -380,15 +407,7 @@ textarea[type="text"] {
     background: rgb(248, 166, 178);
 }
 
-.no-contact-tags {
-    height: 25px;
-    color: #8796af;
-    margin-left: 3px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: calc(100% - 20px);
-}
+
 
 /* ./ Lead tag 
   /* ************************************ */
@@ -464,7 +483,6 @@ textarea[type="text"] {
     height: 24px;
 }
 
-
 .label-and-input-wpr {
     display: flex;
     flex-direction: row;
@@ -479,8 +497,6 @@ textarea[type="text"] {
     font-weight: 500;
     white-space: nowrap;
 }
-
-
 
 #address-arrow-down {
     -moz-transition: all 0.2s linear;
@@ -504,7 +520,7 @@ textarea[type="text"] {
 }
 
 .btn-cancel-lead-note:hover {
-    background-color: #e8e8e8
+    background-color: #e8e8e8;
 }
 
 ::ng-deep .custom-mat-tooltip {
