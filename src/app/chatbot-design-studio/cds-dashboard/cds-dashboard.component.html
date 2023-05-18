@@ -16,7 +16,7 @@
         <img *ngIf="!IS_OPEN" src="assets/img/logos/tiledesk_logo_white_small.svg">
         <img *ngIf="IS_OPEN" src="assets/img/logos/tiledesk-logo_new_white.svg">
     </div>
-    <div class="header-right">
+    <div class="header-right" >
         <div class="toggle-setting-sidebar-icon-wpr" [class.is_opened]="IS_OPEN"
             (click)="toggleSidebarWith(IS_OPEN = !IS_OPEN)">
             <span *ngIf="IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
@@ -29,6 +29,10 @@
         <!-- <i class="material-icons cds-btn-back" (click)="goBack()">keyboard_arrow_left</i> -->
         <div class="header-title">{{ selectedChatbot?.name }}</div>
         <div class="right-opts">
+            <!-- <div id="opt-train-wrp">
+                <label>AI train</label>
+                <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            </div> -->
             <div *ngIf="isBetaUrl">
                 <button class="btn btn-primary pull-right cds-blue-button cds-beta"
                     type="button">

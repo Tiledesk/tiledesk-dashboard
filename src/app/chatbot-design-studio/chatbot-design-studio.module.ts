@@ -114,6 +114,7 @@ import { DialogYesNoComponent } from './cds-base-element/dialog-yes-no/dialog-ye
 import { CDSFilterComponent } from './cds-base-element/filter/filter.component';
 import { CDSDetailBotDetailComponent } from './cds-chatbot-details/detail/detail.component';
 import { CDSDetailImportExportComponent } from './cds-chatbot-details/import-export/import-export.component';
+import { WsChatbotService } from 'app/services/websocket/ws-chatbot.service';
 
 
 
@@ -231,6 +232,9 @@ import { CDSDetailImportExportComponent } from './cds-chatbot-details/import-exp
         deps: [HttpClient],
       },
     })
+  ],
+  providers: [
+    WsChatbotService
   ]
 })
 export class ChatbotDesignStudioModule { }

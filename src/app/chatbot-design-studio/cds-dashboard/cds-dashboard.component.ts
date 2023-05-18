@@ -24,6 +24,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 
 import { DialogYesNoComponent } from 'app/chatbot-design-studio/cds-base-element/dialog-yes-no/dialog-yes-no.component';
 import { MatDialog } from '@angular/material/dialog';
+import { WsChatbotService } from 'app/services/websocket/ws-chatbot.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -89,7 +90,7 @@ export class CdsDashboardComponent implements OnInit {
 
   popup_visibility: string = 'none'
 
-  isBetaUrl: boolean = true;
+  isBetaUrl: boolean = false;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -106,6 +107,7 @@ export class CdsDashboardComponent implements OnInit {
     public dialog: MatDialog,
     private notify: NotifyService,
     public usersLocalDbService: LocalDbService,
+    private wsChatbotService: WsChatbotService
   ) { }
 
   // SYSTEM FUNCTIONS //
@@ -135,7 +137,7 @@ export class CdsDashboardComponent implements OnInit {
     this.getDeptsByProjectId();
     this.hideShowWidget('show');
     this.getOSCODE();
-
+    this.subscribeToChatbotAI()
     if(window.location.href.includes('beta')){
       this.isBetaUrl = true
     }
@@ -244,6 +246,9 @@ export class CdsDashboardComponent implements OnInit {
         this.translateparamBotName = { bot_name: this.selectedChatbot.name }
         if (this.selectedChatbot && this.selectedChatbot.attributes) {
           variableList.userDefined = this.convertJsonToArray(this.selectedChatbot.attributes.variables);
+        }
+        if(this.selectedChatbot.intentsEngine == 'tiledesk-ai'){
+          // this.wsChatbotService.subsToAITrain_ByBot_id(this.selectedChatbot._id)
         }
         //console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);
       }
@@ -981,91 +986,15 @@ export class CdsDashboardComponent implements OnInit {
       this.logger.error("--> error getting testing code from whatsapp: ", err);
     })
   }
-  // maxWidth: '688px',
-  publishOnCommunity() {
-    this.logger.log('openDialog')
-    const dialogRef = this.dialog.open(CdsPublishOnCommunityModalComponent, {
-      data: {
-        chatbot: this.selectedChatbot,
-        projectId: this.project._id
-      },
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      // this.logger.log(`Dialog result: ${result}`);
-    });
-  }
 
 
-
-  _publishOnCommunity() {
-    swal({
-      title: "Publish the chatbot",
-      text: 'You are about to publish the chatbot in the community',
-      icon: "info",
-      buttons: ["Cancel", 'Publish'],
-      dangerMode: false,
+  subscribeToChatbotAI(){
+    this.wsChatbotService.wsChatbotTraining$.subscribe((train)=>{
+      console.log('[CDS DSBRD] TRAIN CHATBOT--> ',train)
     })
-      .then((WillPublish) => {
-        if (WillPublish) {
-          this.logger.log('[CDS DSBRD] publishOnCommunity swal WillPublish', WillPublish)
-          this.selectedChatbot.public = true
-          this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((data) => {
-            this.logger.log('[CDS DSBRD] publishOnCommunity - RES ', data)
-          }, (error) => {
-            swal('An error has occurred', {
-              icon: "error",
-            });
-            this.logger.error('[CDS DSBRD] publishOnCommunity ERROR ', error);
-          }, () => {
-            this.logger.log('[CDS DSBRD] publishOnCommunity * COMPLETE *');
-            swal("Done!", "The Chatbot has been published in the community", {
-              icon: "success",
-            }).then((okpressed) => {
-
-            });
-          });
-        } else {
-          this.logger.log('[CDS DSBRD] publishOnCommunity (else)')
-        }
-      });
   }
 
-  removeFromCommunity() {
-
-    swal({
-      title: "Are you sure",
-      text: 'You are about to remove the chatbot from the community',
-      icon: "warning",
-      buttons: ["Cancel", 'Remove'],
-      dangerMode: false,
-    })
-      .then((WillRemove) => {
-        if (WillRemove) {
-          this.logger.log('[CDS DSBRD] removeFromCommunity swal WillRemove', WillRemove)
-          this.selectedChatbot.public = false
-          this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((data) => {
-            this.logger.log('[CDS DSBRD] removeFromCommunity - RES ', data)
-          }, (error) => {
-            swal('An error has occurred', {
-              icon: "error",
-            });
-            this.logger.error('[CDS DSBRD] removeFromCommunity ERROR ', error);
-          }, () => {
-            this.logger.log('[CDS DSBRD] removeFromCommunity * COMPLETE *');
-            swal("Done!", "The Chatbot has been removed from the community", {
-              icon: "success",
-            }).then((okpressed) => {
-
-            });
-          });
-        } else {
-          this.logger.log('[CDS DSBRD] removeFromCommunity (else)')
-        }
-      });
-
-  }
-
-
+  
   diplayPopup() {
     const hasClosedPopup = this.usersLocalDbService.getFromStorage('hasclosedcdspopup')
     this.logger.log('[CDS DSBRD] hasClosedPopup', hasClosedPopup)
