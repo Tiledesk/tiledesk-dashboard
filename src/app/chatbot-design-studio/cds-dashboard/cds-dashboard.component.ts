@@ -1,5 +1,5 @@
 import { TYPE_ACTION, variableList } from 'app/chatbot-design-studio/utils';
-import { MultichannelService } from 'app/services/multichannel.service';
+// import { MultichannelService } from 'app/services/multichannel.service';
 import { Component, OnInit, ElementRef, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -16,11 +16,11 @@ import { TYPE_COMMAND, TYPE_INTENT_ELEMENT, EXTERNAL_URL, TYPE_MESSAGE, TIME_WAI
 import { Subject } from 'rxjs';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Chatbot } from 'app/models/faq_kb-model';
-import { AppConfigService } from 'app/services/app-config.service';
-import { DepartmentService } from 'app/services/department.service';
-import { CdsPublishOnCommunityModalComponent } from './cds-publish-on-community-modal/cds-publish-on-community-modal.component';
-import { NotifyService } from 'app/core/notify.service';
-import { LocalDbService } from 'app/services/users-local-db.service';
+// import { AppConfigService } from 'app/services/app-config.service';
+// import { DepartmentService } from 'app/services/department.service';
+// import { CdsPublishOnCommunityModalComponent } from './cds-publish-on-community-modal/cds-publish-on-community-modal.component';
+// import { NotifyService } from 'app/core/notify.service';
+// import { LocalDbService } from 'app/services/users-local-db.service';
 
 import { DialogYesNoComponent } from 'app/chatbot-design-studio/cds-base-element/dialog-yes-no/dialog-yes-no.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -50,13 +50,14 @@ export class CdsDashboardComponent implements OnInit {
   showSpinner = false;
   isIntentElementSelected: boolean = false;
   isClickedInsidePanelIntentDetail: boolean = false;
-
   id_faq_kb: string;
-  id_faq: string;
   idElementOfIntentSelected: string;
+
+
+  id_faq: string;
+  botType: string;
   intent_id: string;
 
-  botType: string;
   project: Project;
   projectID: string;
   // openCardButton = false;
@@ -74,27 +75,26 @@ export class CdsDashboardComponent implements OnInit {
   spinnerCreateIntent: boolean = false;
   IS_OPEN: boolean = false;
   public TESTSITE_BASE_URL: string;
-  public defaultDepartmentId: string;
-  public_Key: string;
-  TRY_ON_WA: boolean;
+  // public defaultDepartmentId: string;
+  // public_Key: string;
+  // TRY_ON_WA: boolean;
 
   // Attach bot to dept
-  displayModalAttacchBotToDept: string;
   dept_id: string;
-  DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
-  PRESENTS_MODAL_ATTACH_BOT_TO_DEPT: boolean = false;
-  depts_without_bot_array = [];
-  selected_bot_id: string;
-  selected_bot_name: string;
-  HAS_CLICKED_HOOK_BOOT_TO_DEPT: boolean = false;
-  HAS_COMPLETED_HOOK_BOOT_TO_DEPT: boolean = false;
-  HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS: boolean = false;
-  HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR: boolean = false;
+  // DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
+  // PRESENTS_MODAL_ATTACH_BOT_TO_DEPT: boolean = false;
+  // depts_without_bot_array = [];
+  // selected_bot_id: string;
+  // selected_bot_name: string;
+  // HAS_CLICKED_HOOK_BOOT_TO_DEPT: boolean = false;
+  // HAS_COMPLETED_HOOK_BOOT_TO_DEPT: boolean = false;
+  // HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS: boolean = false;
+  // HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR: boolean = false;
   translateparamBotName: any;
 
-  popup_visibility: string = 'none'
+  // popup_visibility: string = 'none'
 
-  isBetaUrl: boolean;
+  // isBetaUrl: boolean;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -104,13 +104,13 @@ export class CdsDashboardComponent implements OnInit {
     private logger: LoggerService,
     private httpClient: HttpClient,
     private faqKbService: FaqKbService,
-    public appConfigService: AppConfigService,
-    private departmentService: DepartmentService,
-    private multichannelService: MultichannelService,
+    // public appConfigService: AppConfigService,
+    // private departmentService: DepartmentService,
+    // private multichannelService: MultichannelService,
     private el: ElementRef,
     public dialog: MatDialog,
-    private notify: NotifyService,
-    public usersLocalDbService: LocalDbService,
+    // private notify: NotifyService,
+    // public usersLocalDbService: LocalDbService,
   ) { }
 
   // SYSTEM FUNCTIONS //
@@ -119,7 +119,7 @@ export class CdsDashboardComponent implements OnInit {
     this.getTranslations();
     this.auth.checkRoleForCurrentProject();
     this.getUrlParams();
-    this.diplayPopup();
+    // this.diplayPopup();
     // this.getFaqKbId();
     if (this.router.url.indexOf('/createfaq') !== -1) {
       this.logger.log('[CDS DSHBRD] HAS CLICKED CREATE ');
@@ -129,23 +129,23 @@ export class CdsDashboardComponent implements OnInit {
     } else {
       this.logger.log('[CDS DSHBRD] HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
-      if (this.id_faq) {
-        // this.getFaqById();
-        //this.MOCK_getFaqById();
-      }
+      // if (this.id_faq) {
+      //   // this.getFaqById();
+      //   //this.MOCK_getFaqById();
+      // }
     }
   
-    this.isBetaUrl = false;
-    if(this.router.url.includes('beta')){
-      this.isBetaUrl = true;
-    }
+    // this.isBetaUrl = false;
+    // if(this.router.url.includes('beta')){
+    //   this.isBetaUrl = true;
+    // }
 
     this.getCurrentProject();
     this.getBrowserVersion();
-    this.getTestSiteUrl();
-    this.getDeptsByProjectId();
+    // this.getTestSiteUrl();
+    // this.getDeptsByProjectId();
     this.hideShowWidget('show');
-    this.getOSCODE();
+    // this.getOSCODE();
 
     setTimeout(() => {
       this.setDragConfig();
@@ -159,53 +159,17 @@ export class CdsDashboardComponent implements OnInit {
 
   private setDragConfig(){
     // drag study
-    let el = document.getElementById("box-right");
+    let el = document.getElementById("cds-box-right");
     console.log('getElementById:: el', el);
-    let drawer = document.getElementById("box-right-content");
+    let drawer = document.getElementById("cds-box-right-content");
     console.log('getElementById:: drawer', drawer);
     setDrawer(el, drawer);
-    let el2 = document.getElementById("cds-panel-intent");
-    //document.getElementById("panel-intent-content").addEventListener("ondragstart", dragElement);
-    console.log('dragElement:: el', el2);
-    setDragElement('cds-panel-intent');
-  }
-
-  getOSCODE() {
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    // this.logger.log('AppConfigService getAppConfig (SIGNUP) public_Key', this.public_Key)
-    // this.logger.log('NavbarComponent public_Key', this.public_Key)
-
-    let keys = this.public_Key.split("-");
-
-    if (this.public_Key.includes("TOW") === true) {
-
-      keys.forEach(key => {
-        // this.logger.log('NavbarComponent public_Key key', key)
-        if (key.includes("TOW")) {
-          // this.logger.log('PUBLIC-KEY (SIGNUP) - key', key);
-          let tow = key.split(":");
-          // this.logger.log('PUBLIC-KEY (SIGNUP) - mt key&value', mt);
-          if (tow[1] === "F") {
-            this.TRY_ON_WA = false;
-            // this.logger.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
-          } else {
-            this.TRY_ON_WA = true;
-            // this.logger.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
-          }
-        }
-      });
-
-    } else {
-      this.TRY_ON_WA = false;
-      // this.logger.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
-    }
   }
 
   private hideShowWidget(status: "hide" | "show") {
     try {
       if (window && window['tiledesk']) {
         this.logger.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
-
         if (status === 'hide') {
           window['tiledesk'].hide();
         } else if (status === 'show') {
@@ -258,10 +222,6 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** */
-  private createNewEmptyIntent() {
-    this.intentSelected = new Intent();
-  }
-
   getBotById(botid: string) {
     this.logger.log('getFaqById');
     this.showSpinner = true;
@@ -293,46 +253,6 @@ export class CdsDashboardComponent implements OnInit {
   /**
    * GET THE ID OF FAQ-KB PASSED BY FAQ PAGE (AND THAT FAQ PAGE HAS RECEIVED FROM FAQ-KB)
   */
-  // private getFaqKbId() {
-  //   this.id_faq_kb = this.route.snapshot.params['faqkbid'];
-  //   if (this.intentSelected) {
-  //     this.intentSelected.id_faq_kb = this.id_faq_kb;
-  //     this.logger.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
-  //   } else {
-  //     this.logger.log('[CDS DSHBRD]  intentSelected ', this.intentSelected);
-  //   }
-  // }
-
-  /**
-   * GET FAQ BY ID (GET THE DATA OF THE FAQ BY THE ID PASSED FROM FAQ LIST)
-   * USED TO SHOW IN THE TEXAREA THE QUESTION AND THE ANSWER THAT USER WANT UPDATE
-  */
-  // private getFaqById() {
-  //   this.logger.log('getFaqById');
-  //   this.showSpinner = true;
-  //   this.faqService.getFaqById(this.id_faq).subscribe((faq: any) => {
-  //     this.logger.log('[CDS DSHBRD] - FAQ GET BY ID RES', faq);
-  //     if (faq) {
-  //       this.intentSelected = faq;
-  //     }
-  //     this.logger.log('faq', faq);
-  //     this.showSpinner = false;
-  //   }, (error) => {
-  //     this.logger.error('[CDS DSHBRD] - FAQ GET BY ID - ERROR ', error);
-  //     this.showSpinner = false;
-  //   }, () => {
-  //     this.logger.log('[CDS DSHBRD] - FAQ GET BY ID - COMPLETE ');
-  //     this.showSpinner = false;
-  //     //this.translateTheAnswerWillBeDeleted();
-  //   });
-  // }
-
-  // translateTheAnswerWillBeDeleted() {
-  //   let parameter = { intent_name: this.intent_name };
-  //   this.translate.get('TheAnswerWillBeDeleted', parameter).subscribe((text: string) => {
-  //     this.answerWillBeDeletedMsg = text;
-  //   });
-  // }
 
   /** */
   private getCurrentProject() {
@@ -351,48 +271,8 @@ export class CdsDashboardComponent implements OnInit {
     });
   }
 
-
-
-
-  // drop(event: CdkDragDrop<string[]>) {
-  //   if (event.previousContainer === event.container) {
-  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  //   } else {
-  //     transferArrayItem(
-  //       event.previousContainer.data,
-  //       event.container.data,
-  //       event.previousIndex,
-  //       event.currentIndex,
-  //     );
-  //   }
-  // }
-
-
   // SERVICE FUNCTIONS //
 
-  /**
-   * !!! this function is temporary and will be replaced with a server function 
-  */
-  // MOCK_getFaqIntents() {
-  //   let url = 'assets/mock-data/tilebot/faq/intents.json';
-  //   this.httpClient.get<Intent[]>(url).subscribe(data => {
-  //     this.listOfIntents = data;
-  //     this.intentSelected = this.listOfIntents[0];
-  //     this.logger.log("[CDS DSHBRD] - MOCK_getFaqIntents  this.intentSelected ", this.intentSelected)
-  //   });
-  // }
-
-  // MOCK_getFaqIntent() {
-  //   let url = 'assets/mock-data/tilebot/faq/intent.json';
-  //   this.httpClient.get<Intent>(url).subscribe(data => {
-
-  //     this.intentSelected = data;
-  //     this.elementIntentSelected = {};
-  //     this.elementIntentSelected['type'] = 'action';
-  //     this.elementIntentSelected['element'] = this.intentSelected.actions[0];
-  //     this.logger.log('MOCK_getFaqIntent', this.elementIntentSelected);
-  //   });
-  // }
 
   /** ADD INTENT  */
   private creatIntent() {
@@ -465,16 +345,6 @@ export class CdsDashboardComponent implements OnInit {
       this.spinnerCreateIntent = false
       this.logger.log('[CDS DSHBRD] creatIntent ERROR spinnerCreateIntent ', this.spinnerCreateIntent)
       this.logger.error('[CDS DSHBRD] CREATED FAQ - ERROR ', error);
-      // if (error && error['status']) {
-      //   this.error_status = error['status']
-      //   if (this.error_status === 409) {
-      //     this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
-      //     this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
-      //   }
-      // }
-      // =========== NOTIFY ERROR ===========
-      // this.notify.showWidgetStyleUpdateNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
-
       //FAIL STATE
       setTimeout(() => {
         // if (button) {
@@ -553,19 +423,7 @@ export class CdsDashboardComponent implements OnInit {
     }, (error) => {
       this.showSpinner = false;
       this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR ', error);
-      // =========== NOTIFY ERROR ===========
-      // this.notify.showWidgetStyleUpdateNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
-
-      // if (error && error['status']) {
-      //   this.error_status = error['status']
-      //   this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR - ERROR-STATUS', this.error_status);
-
-      //   if (this.error_status === 409) {
-      //     this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR - ERROR-STATUS - TRANSLATE & PRESENT MODAL');
-      //     this.translateAndPresentModalIntentNameAlreadyExist(this.intent_name);
-      //   }
-      // }
-
+      // =========== NOTIFY ERROR ==========
       //FAIL STATE
       setTimeout(() => {
         // button.classList.remove(pendingClassName);
@@ -590,16 +448,18 @@ export class CdsDashboardComponent implements OnInit {
     this.activeSidebarSection = event;
   }
 
-  toggleSidebarWith(IS_OPEN) {
-    // this.logger.log('[SETTINGS-SIDEBAR] IS_OPEN ', IS_OPEN)
+
+
+  onToggleSidebarWith(IS_OPEN) {
     this.IS_OPEN = IS_OPEN;
   }
 
 
   /** Go back to previous page */
   goBack() {
+    console.log('goBack    -----> ');
     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
-    this.hideShowWidget('show')
+    this.hideShowWidget('show');
   }
 
 
@@ -711,6 +571,15 @@ export class CdsDashboardComponent implements OnInit {
     });
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
+
+    console.log('onReturnListOfIntents:::: ');
+    setTimeout(() => {
+      this.listOfIntents.forEach(element => {
+        console.log('SET -----> '+ element.id);
+        setDragElement(element.id);
+      });
+    }, 2000);
+
   }
 
   onCreateIntentBtnClicked() {
@@ -841,281 +710,123 @@ export class CdsDashboardComponent implements OnInit {
 
   /** END CUSTOM FUNCTIONS */
 
-  // onChangeIntentName(event) {
-  //   this.logger.log('[CDS DSBRD] onChangeIntentName  event', event)
-  //   this.newIntentName = event
+  // getDeptsByProjectId() {
+  //   this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+  //     this.logger.log('[CDS DSBRD] - DEPT GET DEPTS ', departments);
+  //     this.logger.log('[CDS DSBRD] - DEPT BOT ID ', this.id_faq_kb);
+
+  //     if (departments) {
+  //       departments.forEach((dept: any) => {
+  //         // this.logger.log('[CDS DSBRD] - DEPT', dept);
+  //         if (dept.default === true) {
+  //           this.defaultDepartmentId = dept._id;
+  //           this.logger.log('[CDS DSBRD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
+  //         }
+  //       })
+  //       const depts_length = departments.length
+  //       this.logger.log('[CDS DSBRD] ---> GET DEPTS DEPTS LENGHT ', depts_length);
+
+  //       if (depts_length === 1) {
+  //         this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = false
+  //         this.dept_id = departments[0]['_id']
+
+  //         this.logger.log('[CDS DSBRD]  --->  DEFAULT DEPT HAS BOT ', departments[0].hasBot);
+  //         if (departments[0].hasBot === true) {
+
+  //           this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT ');
+  //           // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
+  //           // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
+  //           // this.logger.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
+  //           this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+  //         } else {
+  //           this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
+  //           this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+  //         }
+  //       }
+
+  //       if (depts_length > 1) {
+  //         this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = true;
+  //         departments.forEach(dept => {
+
+  //           if (dept.hasBot === true) {
+  //             this.logger.log('[CDS DSBRD] --->  DEPT HAS BOT ');
+  //             this.logger.log('[CDS DSBRD] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+  //           } else {
+
+  //             this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
+
+  //             this.logger.log('[CDS DSBRD] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+
+  //             this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
+  //           }
+
+  //         });
+
+  //         this.logger.log('[CDS DSBRD] --->  DEPT ARRAY OF DEPT WITHOUT BOT ', this.depts_without_bot_array);
+  //       }
+
+  //     }
+  //   }, error => {
+  //     this.logger.error('[CDS DSBRD] - DEPT - GET DEPTS  - ERROR', error);
+  //   }, () => {
+  //     this.logger.log('[CDS DSBRD] - DEPT - GET DEPTS - COMPLETE')
+  //   });
   // }
 
-  publish() {
-    this.faqKbService.publish(this.selectedChatbot).subscribe((data) => {
-      this.logger.log('[CDS DSBRD] publish  - RES ', data)
-    }, (error) => {
+  // onSelectBotId() {
+  //   this.logger.log('[CDS DSBRD] --->  onSelectBotId ', this.selected_bot_id);
+  //   this.dept_id = this.selected_bot_id
+  //   const hasFound = this.depts_without_bot_array.filter((obj: any) => {
+  //     return obj.id === this.selected_bot_id;
+  //   });
+  //   this.logger.log('[CDS DSBRD]  onSelectBotId found', hasFound);
 
-      this.logger.error('[CDS DSBRD] publish ERROR ', error);
-    }, () => {
-      this.logger.log('[CDS DSBRD] publish * COMPLETE *');
-      this.notify.showWidgetStyleUpdateNotification('Successfully published', 2, 'done');
+  //   if (hasFound.length > 0) {
+  //     this.selected_bot_name = hasFound[0]['name']
+  //   }
+  // }
 
-      this.getBotById(this.id_faq_kb)
+  // hookBotToDept() {
+  //   this.HAS_CLICKED_HOOK_BOOT_TO_DEPT = true;
+  //   this.departmentService.updateExistingDeptWithSelectedBot(this.dept_id, this.selectedChatbot._id).subscribe((res) => {
+  //     this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+  //   }, (error) => {
+  //     this.logger.error('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
 
-    });
-    if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === true) {
-      this.present_modal_attacch_bot_to_dept()
-      // } else {
+  //     this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
+  //     this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR = true;
 
-    }
-  }
+  //     this.logger.error('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
+  //   }, () => {
+  //     this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE ');
 
-  present_modal_attacch_bot_to_dept() {
-    this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
-    this.displayModalAttacchBotToDept = 'block'
-
-  }
-
-  onCloseModalAttacchBotToDept() {
-    this.displayModalAttacchBotToDept = 'none'
-  }
-
-  getDeptsByProjectId() {
-    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
-      this.logger.log('[CDS DSBRD] - DEPT GET DEPTS ', departments);
-      this.logger.log('[CDS DSBRD] - DEPT BOT ID ', this.id_faq_kb);
-
-      if (departments) {
-
-        departments.forEach((dept: any) => {
-          // this.logger.log('[CDS DSBRD] - DEPT', dept);
-          if (dept.default === true) {
-            this.defaultDepartmentId = dept._id;
-            this.logger.log('[CDS DSBRD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
-          }
-        })
-
-        const depts_length = departments.length
-        this.logger.log('[CDS DSBRD] ---> GET DEPTS DEPTS LENGHT ', depts_length);
-
-        if (depts_length === 1) {
-          this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = false
-          this.dept_id = departments[0]['_id']
-
-          this.logger.log('[CDS DSBRD]  --->  DEFAULT DEPT HAS BOT ', departments[0].hasBot);
-          if (departments[0].hasBot === true) {
-
-            this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT ');
-            // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
-            // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
-            // this.logger.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
-            this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
-          } else {
-            this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
-            this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
-          }
-        }
-
-        if (depts_length > 1) {
-          this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = true;
-          departments.forEach(dept => {
-
-            if (dept.hasBot === true) {
-              this.logger.log('[CDS DSBRD] --->  DEPT HAS BOT ');
-              this.logger.log('[CDS DSBRD] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
-            } else {
-
-              this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
-
-              this.logger.log('[CDS DSBRD] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
-
-              this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
-            }
-
-          });
-
-          this.logger.log('[CDS DSBRD] --->  DEPT ARRAY OF DEPT WITHOUT BOT ', this.depts_without_bot_array);
-        }
-
-      }
-    }, error => {
-      this.logger.error('[CDS DSBRD] - DEPT - GET DEPTS  - ERROR', error);
-    }, () => {
-      this.logger.log('[CDS DSBRD] - DEPT - GET DEPTS - COMPLETE')
-    });
-  }
-
-  onSelectBotId() {
-    this.logger.log('[CDS DSBRD] --->  onSelectBotId ', this.selected_bot_id);
-    this.dept_id = this.selected_bot_id
-    const hasFound = this.depts_without_bot_array.filter((obj: any) => {
-      return obj.id === this.selected_bot_id;
-    });
-    this.logger.log('[CDS DSBRD]  onSelectBotId found', hasFound);
-
-    if (hasFound.length > 0) {
-      this.selected_bot_name = hasFound[0]['name']
-    }
-  }
-
-  hookBotToDept() {
-    this.HAS_CLICKED_HOOK_BOOT_TO_DEPT = true;
-    this.departmentService.updateExistingDeptWithSelectedBot(this.dept_id, this.selectedChatbot._id).subscribe((res) => {
-      this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
-    }, (error) => {
-      this.logger.error('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
-
-      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
-      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR = true;
-
-      this.logger.error('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
-    }, () => {
-      this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE ');
-
-      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
-      this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS = true;
-      this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
-    });
-  }
-
-  getTestSiteUrl() {
-    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
-    this.logger.log('[CDS DSBRD] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
-  }
-
-  openTestSiteInPopupWindow() {
-    const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
-    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-
-    const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&td_draft=true'
-
-    let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
-    window.open(url, '_blank', params);
-  }
-
-  openWhatsappPage() {
-    let tiledesk_phone_number = this.appConfigService.getConfig().tiledeskPhoneNumber;
-
-    let info = {
-      project_id: this.projectID,
-      bot_id: this.selectedChatbot._id
-    }
-
-    this.logger.log("--> info: ", info)
-
-    this.multichannelService.getCodeForWhatsappTest(info).then((response: any) => {
-      this.logger.log("--> testing code from whatsapp: ", response);
-      // let code = "%23td" + response.short_uid;
-      let text = "%23td" + response.short_uid + " Send me to start testing your bot";
-      const testItOutOnWhatsappUrl = `https://api.whatsapp.com/send/?phone=${tiledesk_phone_number}&text=${text}&type=phone_number&app_absent=0`
-      window.open(testItOutOnWhatsappUrl, 'blank');
-    }).catch((err) => {
-      this.logger.error("--> error getting testing code from whatsapp: ", err);
-    })
-  }
-  // maxWidth: '688px',
-  publishOnCommunity() {
-    this.logger.log('openDialog')
-    const dialogRef = this.dialog.open(CdsPublishOnCommunityModalComponent, {
-      data: {
-        chatbot: this.selectedChatbot,
-        projectId: this.project._id
-      },
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      // this.logger.log(`Dialog result: ${result}`);
-    });
-  }
+  //     this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
+  //     this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS = true;
+  //     this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
+  //   });
+  // }
 
 
 
-  _publishOnCommunity() {
-    swal({
-      title: "Publish the chatbot",
-      text: 'You are about to publish the chatbot in the community',
-      icon: "info",
-      buttons: ["Cancel", 'Publish'],
-      dangerMode: false,
-    })
-      .then((WillPublish) => {
-        if (WillPublish) {
-          this.logger.log('[CDS DSBRD] publishOnCommunity swal WillPublish', WillPublish)
-          this.selectedChatbot.public = true
-          this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((data) => {
-            this.logger.log('[CDS DSBRD] publishOnCommunity - RES ', data)
-          }, (error) => {
-            swal('An error has occurred', {
-              icon: "error",
-            });
-            this.logger.error('[CDS DSBRD] publishOnCommunity ERROR ', error);
-          }, () => {
-            this.logger.log('[CDS DSBRD] publishOnCommunity * COMPLETE *');
-            swal("Done!", "The Chatbot has been published in the community", {
-              icon: "success",
-            }).then((okpressed) => {
-
-            });
-          });
-        } else {
-          this.logger.log('[CDS DSBRD] publishOnCommunity (else)')
-        }
-      });
-  }
-
-  removeFromCommunity() {
-
-    swal({
-      title: "Are you sure",
-      text: 'You are about to remove the chatbot from the community',
-      icon: "warning",
-      buttons: ["Cancel", 'Remove'],
-      dangerMode: false,
-    })
-      .then((WillRemove) => {
-        if (WillRemove) {
-          this.logger.log('[CDS DSBRD] removeFromCommunity swal WillRemove', WillRemove)
-          this.selectedChatbot.public = false
-          this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((data) => {
-            this.logger.log('[CDS DSBRD] removeFromCommunity - RES ', data)
-          }, (error) => {
-            swal('An error has occurred', {
-              icon: "error",
-            });
-            this.logger.error('[CDS DSBRD] removeFromCommunity ERROR ', error);
-          }, () => {
-            this.logger.log('[CDS DSBRD] removeFromCommunity * COMPLETE *');
-            swal("Done!", "The Chatbot has been removed from the community", {
-              icon: "success",
-            }).then((okpressed) => {
-
-            });
-          });
-        } else {
-          this.logger.log('[CDS DSBRD] removeFromCommunity (else)')
-        }
-      });
-
-  }
 
 
-  diplayPopup() {
-    const hasClosedPopup = this.usersLocalDbService.getFromStorage('hasclosedcdspopup')
-    this.logger.log('[CDS DSBRD] hasClosedPopup', hasClosedPopup)
-    if (hasClosedPopup === null) {
-      this.popup_visibility = 'block'
-      this.logger.log('[CDS DSBRD] popup_visibility', this.popup_visibility)
-    }
-    if (hasClosedPopup === 'true') {
-      this.popup_visibility = 'none'
-    }
-  }
-  closeRemenberToPublishPopup() {
-    this.logger.log('[CDS DSBRD] closeRemenberToPublishPopup')
-    this.usersLocalDbService.setInStorage('hasclosedcdspopup', 'true')
-    this.popup_visibility = 'none'
-  }
 
-  onGoToCommunity(){
-    // console.log('2 onGoToCommunity:: ', EXTERNAL_URL.getchatbotinfo+this.selectedChatbot._id);
-    let url = EXTERNAL_URL.getchatbotinfo+this.selectedChatbot._id; //"https://tiledesk.com/community/getchatbotinfo/chatbotId/63e284400856170019a908e6";
-    window.open(url, "_blank");
-  }
-
+  /* POP UP */
+  // diplayPopup() {
+  //   const hasClosedPopup = this.usersLocalDbService.getFromStorage('hasclosedcdspopup')
+  //   this.logger.log('[CDS DSBRD] hasClosedPopup', hasClosedPopup)
+  //   if (hasClosedPopup === null) {
+  //     this.popup_visibility = 'block'
+  //     this.logger.log('[CDS DSBRD] popup_visibility', this.popup_visibility)
+  //   }
+  //   if (hasClosedPopup === 'true') {
+  //     this.popup_visibility = 'none'
+  //   }
+  // }
+  // closeRemenberToPublishPopup() {
+  //   this.logger.log('[CDS DSBRD] closeRemenberToPublishPopup')
+  //   this.usersLocalDbService.setInStorage('hasclosedcdspopup', 'true')
+  //   this.popup_visibility = 'none'
+  // }
 
 }

@@ -16,7 +16,7 @@ function setDrawer(el,drawer) {
 }
 
 function setDragElement(id){
-  console.log("dragElement: ", id);
+  console.log("setDragElement: ", id);
   //elmnt.dragElement;
   dragElement(document.getElementById(id));
   // dragElement(document.getElementById("block1"));

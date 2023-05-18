@@ -109,6 +109,9 @@ import { DialogComponent } from './cds-base-element/dialog/dialog.component';
 import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-function/action-assign-function.component';
 import { DialogYesNoComponent } from './cds-base-element/dialog-yes-no/dialog-yes-no.component';
 import { CDSFilterComponent } from './cds-base-element/filter/filter.component';
+import { CdsHeaderComponent } from './cds-dashboard/cds-header/cds-header.component';
+import { CdsPopupComponent } from './cds-dashboard/cds-popup/cds-popup.component';
+import { CdsModalActivateBotComponent } from './cds-dashboard/cds-modal-activate-bot/cds-modal-activate-bot.component';
 
 
 @NgModule({
@@ -177,7 +180,10 @@ import { CDSFilterComponent } from './cds-base-element/filter/filter.component';
     OperatorComponent,
     DialogComponent,
     ActionAssignFunctionComponent,
-    DialogYesNoComponent
+    DialogYesNoComponent,
+    CdsHeaderComponent,
+    CdsPopupComponent,
+    CdsModalActivateBotComponent
   ],
   imports: [
     A11yModule,
