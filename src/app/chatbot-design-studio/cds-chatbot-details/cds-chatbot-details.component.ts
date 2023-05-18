@@ -83,6 +83,8 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
       this.logger.log('[CDS-CHATBOT-DTLS] project from AUTH service subscription  ', this.project)
     });
   }
+
+  
   
 
   toggleTab(section) {

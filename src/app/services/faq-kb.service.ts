@@ -1,3 +1,4 @@
+import { stripEmojis } from './../utils/util';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -530,8 +531,22 @@ export class FaqKbService {
     this.logger.log('update BOT - URL ', url);
     this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', chatbot);
 
-    return this._httpClient
-      .put(url, JSON.stringify(chatbot), httpOptions)
+    return this._httpClient.put(url, JSON.stringify(chatbot), httpOptions)
+  }
+
+  public getJWT(id: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    let url = this.FAQKB_URL + id + '/jwt';
+    this.logger.log('update BOT - URL ', url);
+
+    return this._httpClient.get(url, httpOptions)
   }
   // http://localhost:3000/63ea8812b48b3e22c9372f05/faq_kb/63ea8820b48b3e22c9372f83/publish
 
