@@ -1,37 +1,33 @@
 <div class="chatbot-community-wpr">
 
-    <div class="row" >
-        <div class="col-sm-12 col-md-12" class="cds-community-btns-wrp">
-            
-            <button *ngIf="selectedChatbot?.public === false"
-                id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left cds-blue-button"
-                (click)="publishOnCommunity()" [disabled]="(!selectedChatbot.hasOwnProperty('short_description') || selectedChatbot.short_description === '') || 
-                                                            (!selectedChatbot.hasOwnProperty('title') || selectedChatbot.title === '') || !certifiedTag ">
-                Go live on Community
-            </button>
-            <button *ngIf="selectedChatbot?.public === true"
-                id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left cds-blue-button"
-                (click)="removeFromCommunity()">
-                Remove from community
-            </button>
-            <label class="link">
-                <a [href]="selectedChatbot.url" *ngIf="selectedChatbot?.public === true">
-                    <span class="material-icons">link</span>
-                </a>
-            </label>
-        </div>
-        
-    </div>
-
     <div class="row">
-        <div class="col-sm-10 col-md-10">
-          <h3 class="card_title__underlined" style="color: #e8eaed;">
-            <span class="card_title__underline">
+        <div class="col-sm-10 col-md-10 title-buttons">
+            <h3 class="card_title__underlined" style="color: #e8eaed;">
+                <span class="card_title__underline buttons-inside">
 
-              <!-- {{ "UserProfile.Profile" | translate }} -->
-              Setup Chatbot community info
-            </span>
-          </h3>
+                    <!-- {{ "UserProfile.Profile" | translate }} -->
+                    Setup Chatbot community info
+                </span>
+            </h3>
+            <div class="cds-community-btns-wrp">
+                
+                <button *ngIf="selectedChatbot?.public === false"
+                    id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left cds-blue-button"
+                    (click)="publishOnCommunity()" [disabled]="(!selectedChatbot.hasOwnProperty('short_description') || selectedChatbot.short_description === '') || 
+                                                                (!selectedChatbot.hasOwnProperty('title') || selectedChatbot.title === '') || !certifiedTag ">
+                    Go live on Community
+                </button>
+                <button *ngIf="selectedChatbot?.public === true"
+                    id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left cds-blue-button"
+                    (click)="removeFromCommunity()">
+                    Remove from community
+                </button>
+                <label class="link">
+                    <a (click)="goToCommunityChatbotDetail(selectedChatbot?._id)" *ngIf="selectedChatbot?.public === true">
+                        <span class="material-icons">link</span>
+                    </a>
+                </label>
+            </div>
         </div>
         <div class="col-sm-10 col-md-10">
           <div class="section-subtitle"> </div>

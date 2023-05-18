@@ -143,6 +143,17 @@ ng-select {
     }
 }
 
+.title-buttons{
+    display: flex;
+    justify-content: space-between;
+}
+.buttons-inside{
+    height: 40px;
+    position: relative;
+    display: block;
+    top: 3px;
+}
+
 /*
 /* Tags
 /* ------------------------------------ */
