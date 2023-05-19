@@ -39,9 +39,11 @@ import { DepartmentService } from './services/department.service';
 import { DepartmentsComponent } from './departments/departments.component';
 
 import { FaqService } from './services/faq.service';
+import { UrlService } from './services/shared/url.service';
 
 import { ProjectsComponent } from './projects/projects.component';
 import { UsersComponent } from './users/users.component';
+
 
 // BOTS & FAQ
 import { FaqKbService } from './services/faq-kb.service';
@@ -269,6 +271,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { MomentModule } from 'ngx-moment';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
@@ -320,6 +324,13 @@ import { CannedResponsesStaticComponent } from './static-pages/canned-responses-
 import { UpgradePlanModalComponent } from './components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
 import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
+import { OnboardingContentComponent } from './create-new-project/onboarding-content/onboarding-content.component';
+import { CnpProjectNameComponent } from './create-new-project/cnp-project-name/cnp-project-name.component';
+import { CnpQuestionSelectComponent } from './create-new-project/cnp-question-select/cnp-question-select.component';
+import { CnpQuestionButtonComponent } from './create-new-project/cnp-question-button/cnp-question-button.component';
+import { CnpChatbotWelcomeMessageComponent } from './create-new-project/cnp-chatbot-welcome-message/cnp-chatbot-welcome-message.component';
+import { CnpWidgetInstallationComponent } from './create-new-project/cnp-widget-installation/cnp-widget-installation.component';
+import { LoadingSectionComponent } from './create-new-project/loading-section/loading-section.component';
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
 import { ContactCustomPropertiesComponent } from './components/modals/contact-custom-properties/contact-custom-properties.component';
 import { ContactInfoComponent } from './components/shared/contact-info/contact-info.component';
@@ -573,6 +584,13 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     UpgradePlanModalComponent,
     WsrequestsStaticComponent,
     EmailTicketingStaticComponent,
+    OnboardingContentComponent,
+    CnpProjectNameComponent,
+    CnpQuestionSelectComponent,
+    CnpQuestionButtonComponent,
+    CnpChatbotWelcomeMessageComponent,
+    CnpWidgetInstallationComponent,
+    LoadingSectionComponent,
     ActivateAppsumoProductComponent,
     ContactCustomPropertiesComponent,
     ContactInfoComponent,
@@ -601,6 +619,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MatTabsModule,
     MatExpansionModule,
     MatDialogModule,
+    MatCheckboxModule,
     /* PRIVATE */
     PricingModule,
     ChatbotDesignStudioModule,
@@ -669,6 +688,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     TagsService,
     DepartmentService,
     FaqService,
+    UrlService,
     FaqKbService,
     ProjectService,
     LocalDbService,

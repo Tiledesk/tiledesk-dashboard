@@ -1,0 +1,46 @@
+<div class="cnp-project-name">
+    <div class="row first-row">
+        <div class="col-md-12">
+            <h1 class="title">
+                {{ 'CreateAProject' | translate }}
+            </h1>
+        </div>
+        <div class="col-md-12">
+            <h4 class="title">
+                {{ 'StartByEnteringTheNameOf' | translate }}
+                <span> {{ 'YourSite' | translate }} </span>
+            </h4>
+        </div>
+
+        <div class="col-md-12">
+            <div class="project-name">
+
+                <div class="form-group label-floating">
+                    <label class="control-label">{{ 'SiteName' | translate }}</label>
+                    <input (input)="onChange()" [(ngModel)]="projectName" id="projectName" type="text" class="form-control">
+                </div>
+
+                <div class="msg">
+                    <span *ngIf="!projectName" class="info">
+                        {{ 'TheSiteNameIsRequested'| translate }}
+                    </span>
+                    <span *ngIf="displayError" class="error">
+                        {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
+                    </span>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+    <div class="row second-row">
+        <div class="col-sm-12">
+            <button [disabled]="disabledButton" 
+                class="btn btn-lg btn-primary"
+                (click)="onGoToNext()">
+                {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }}
+            </button>
+        </div>
+    </div>
+    
+</div>

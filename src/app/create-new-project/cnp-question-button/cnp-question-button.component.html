@@ -1,0 +1,37 @@
+<!-- -------------------------------------------------------------------------------- -->
+<!-- @ Button -->
+<!-- -------------------------------------------------------------------------------- -->
+<div class="row">
+    <div class="col-md-12">
+        <h4 class="title">{{question.title}}</h4>
+    </div>
+</div>
+<div class="row buttons">
+   
+        <div *ngFor="let button of question.buttons">
+            <div class="question-button" 
+                [ngClass]="{'selected': selectedOption === button.value}"
+                (click)="goToSelectedButton(button)">
+                <!-- 
+                <section class="disable-input-message-section">
+                    <mat-checkbox 
+                        [checked]="false"
+                        (change)="goToSelectedButton(button)">
+                    </mat-checkbox>
+                </section> 
+                -->
+
+                <label class="button-radio">
+                    <input type="radio" [checked]="selectedOption === button.value" name="radio_{{index}}">
+                    <span class="checkmark"></span>
+                </label>
+
+                <div class="content-button">
+                    <h2 *ngIf="button.icon" class="icon-button">{{button.icon}}</h2>
+                    <p class="label-button">{{button.label}}</p>
+                </div>
+
+            </div>
+        </div>
+    
+</div>

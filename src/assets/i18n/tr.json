@@ -2193,6 +2193,7 @@
         "DoYouWantChatbot": "Kullanıcılarınıza bazı fantezi otomasyon konusunda yardımcı olacak veya bazı sık soruları yanıtlamak için bir sohbet botu mu istiyorsunuz?",
         "YesChatboat": "Evet, ilk sohbet botumu yapılandırmama izin verin!",
         "NoChatboat": "Şimdi değil, bence insanlar başlamak için yeterli",
+        "CustomizeWelcomeMessage": "Customize your welcome message",
         "SetupChatbotTitle": "İlk sohbet botunuzu kurun",
         "TitleWelcomeMessage": "Web sitenize vardıklarında ziyaretçileri selamlamayı nasıl istersiniz?",
         "LabelWelcomeMessage": "Karşılama mesajı",
@@ -2225,6 +2226,8 @@
     "AlternativeMethod": "alternatif yöntem",
     "FromHere": "buradan",
     "WidgetInstallations": {
+        "Title": "Show live chat to your visitors",
+        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
         "GenericStep1": "Aşağıdaki JavaScript kodunu kopyalayın",
         "WordpressStep1": "Wordpress kontrol paneline giriş yapın.",
         "WordpressStep2": "“Görünüm > Tema Düzenleyici“ye gidin.",

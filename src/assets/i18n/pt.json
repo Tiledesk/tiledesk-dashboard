@@ -2193,6 +2193,7 @@
         "DoYouWantChatbot": "Deseja um chatbot para ajudar seus usuários com alguma automação sofisticada ou responder a algumas perguntas frequentes?",
         "YesChatboat": "Sim, deixe -me configurar meu primeiro chatbot!",
         "NoChatboat": "Não agora, acho que os humanos são suficientes para começar",
+        "CustomizeWelcomeMessage": "Customize your welcome message",
         "SetupChatbotTitle": "Configure seu primeiro chatbot",
         "TitleWelcomeMessage": "Como você gosta de cumprimentar os visitantes quando eles chegam no seu site?",
         "LabelWelcomeMessage": "Mensagem de boas-vindas",
@@ -2225,6 +2226,8 @@
     "AlternativeMethod": "Método alternativo",
     "FromHere": "daqui",
     "WidgetInstallations": {
+        "Title": "Show live chat to your visitors",
+        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
         "GenericStep1": "Copie o seguinte código JavaScript",
         "WordpressStep1": "Faça login no painel de controle do Wordpress.",
         "WordpressStep2": "Vá para “Aparência > Editor de Temas“.",
