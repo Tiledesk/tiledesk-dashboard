@@ -1587,7 +1587,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1907,13 +1907,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
             this.contact_details = this.request.lead;
-            console.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
+            // console.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
             this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
             // this.logger.log('this.request.lead ' , this.request.lead)
             if (this.request.lead.lead_id.startsWith('wab-')) {
-              console.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
+              // console.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
               this.whatsAppPhoneNumber = this.request.lead.lead_id.slice(4);
-              console.log('[WS-REQUESTS-MSGS] whatsAppPhoneNumber ',this.whatsAppPhoneNumber)
+              // console.log('[WS-REQUESTS-MSGS] whatsAppPhoneNumber ',this.whatsAppPhoneNumber)
             }
 
             if (this.request.lead && this.request.lead.email) {

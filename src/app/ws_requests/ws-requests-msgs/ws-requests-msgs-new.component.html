@@ -1924,7 +1924,7 @@
                             [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '220px' : '100%' }">
                         </div>
                         <div class="action-btns-arrow" (click)="toggleViewedPages()">
-                          <button type="button" data-id="address">
+                          <button type="button" data-id="toggle-viewed-pages"  [ngStyle]="{'margin-right':CHAT_PANEL_MODE === true ? '0px' : '-11px' }">
                             <svg id="viewed-page-arrow-down" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                               viewBox="0 0 24 24" width="24px"
                               style="min-width: 24px; min-height: 24px;position: relative;right: 3px;top: -2px;">
@@ -1952,7 +1952,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel telegram  -->
                     <!-- ---------------------------------------- -->
-                    <!--  -->
+                    
                     <li class="telegram-channel" *ngIf="request?.channel?.name === 'telegram'">
                       <div id="contact-row-telegram-channel" class="contact-row">
                         <span>
@@ -1977,7 +1977,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel whatsapp   -->
                     <!-- ---------------------------------------- -->
-                    <!--  -->
+                    
                     <li class="whatsapp-channel" *ngIf="request?.channel?.name === 'whatsapp'">
                       <div id="contact-row-whatsapp-channel" class="contact-row">
                         <span>
@@ -2111,7 +2111,7 @@
 
                             <! -- --------------------------------------------------------------------------------------------------------------------------------------- -- >
                             <! -- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
-                  <!-- --------------------------------------------------------------------------------------------------------------------------------------- -- >
+                            <!-- --------------------------------------------------------------------------------------------------------------------------------------- -- >
                             <div (click)="removeTag(tag)">
                               <div class="icon-container" style="display: inline-block;">
                                 <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
@@ -2277,11 +2277,6 @@
                     </ng-container>
                   </div>
 
-
-
-
-
-
                   <!-- ------------------------------------- -->
                   <!-- Apps -->
                   <!-- ------------------------------------- -->
@@ -2339,7 +2334,7 @@
                           </g>
                         </svg>
 
-                        <span style="position: relative;top: -6px;">
+                        <span style="position: relative;top: -6px; font-weight: 400;margin-left: -6px;">
                           {{ "PreChatFormData" | translate }}
                         </span>
                       </div>
@@ -2379,8 +2374,7 @@
                   <!--  ---------------------------------------------------------------- -->
                   <!--  @ Chatbot attributes accordion -->
                   <!--  ---------------------------------------------------------------- -->
-                  <div id="chatbot-attributes-accordion"
-                    *ngIf="tab0 && botConversationArray && botConversationArray.length > 0">
+                  <div id="chatbot-attributes-accordion" *ngIf="tab0 && botConversationArray && botConversationArray.length > 0">
                     <div class="chatbot-conv-accordion-wpr"
                       [ngClass]="{'chatbot-conv-accordion-wpr-chat': CHAT_PANEL_MODE === true}">
 
@@ -2407,7 +2401,7 @@
                           </g>
                         </svg>
 
-                        <span style="position: relative;top: -6px;">{{ "ChatbotAttributes" | translate }} </span>
+                        <span style="position: relative;top: -6px;font-weight: 400; margin-left: -2px;">{{ "ChatbotAttributes" | translate }} </span>
                       </div>
 
                       <div class="chatbot-conv-accordion-panel">

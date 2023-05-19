@@ -1619,6 +1619,7 @@ span .conv-svg-icon {
   // padding-right: 4px;
   padding-right: 20px;
   margin-top: 3px;
+  margin-right: -11px;
 }
 
 .attributes-pre-chat-form-accordion:hover:after {
@@ -1673,7 +1674,8 @@ span .conv-svg-icon {
 }
 
 .chatbot-conv-accordion:hover svg {
-  fill: #0049bd;
+  // fill: #0049bd;
+  fill: #0566ff;
 }
 
 .chatbot-conv-accordion:hover {
@@ -1685,13 +1687,18 @@ span .conv-svg-icon {
   content: "\f107";
   font-family: FontAwesome;
   // color: #777;
-  color: #039be5;
+  // color: #039be5;
+  color:#64749199;
   font-weight: bold;
   float: right;
   // margin-left: 5px;
   font-size: 20px;
-  padding-right: 4px;
+  padding-right: 9px;
   margin-top: 3px;
+}
+
+.chatbot-conv-accordion:hover:after {
+  color: #0566ff;
 }
 .chatbot-conv-accordion.active:after {
   content: "\f106";
@@ -1863,7 +1870,8 @@ span .conv-svg-icon {
 }
 
 .attributes-decoded-jwt-accordion:hover svg {
-  fill: #0049bd;
+  // fill: #0049bd;
+  fill: #0566ff;
 }
 
 .attributes-decoded-jwt-accordion:hover {
@@ -1873,12 +1881,17 @@ span .conv-svg-icon {
 .attributes-decoded-jwt-accordion:after {
   content: "\f107";
   font-family: FontAwesome;
-  color: #039be5;
+  // color: #039be5;
+  color: #64749199;
   font-weight: bold;
   float: right;
   font-size: 20px;
   padding-right: 4px;
   margin-top: 6px;
+}
+
+.attributes-decoded-jwt-accordion:hover:after {
+  color: #0566ff;
 }
 
 .attributes-decoded-jwt-accordion.active:after {
@@ -4780,7 +4793,8 @@ label {
   background-color: rgb(245, 247, 249);
 }
 .tab0-card3-content-wpr:hover svg {
-  fill: rgb(0, 73, 189);
+  // fill: rgb(0, 73, 189);
+  fill: #0566ff
 }
 
 .tab0-card3-content-wpr,
