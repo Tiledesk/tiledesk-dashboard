@@ -2218,6 +2218,8 @@
 	"AlternativeMethod": "Alternative methode",
 	"FromHere": "von hier",
 	"WidgetInstallations": {
+		"Title": "Show live chat to your visitors",
+        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
 		"GenericStep1": "Kopieren Sie den folgenden JavaScript-Code",
 		"WordpressStep1": "Melden Sie sich in der WordPress-Systemsteuerung an.",
 		"WordpressStep2": "Gehen Sie zu „Darstellung > Themen-Editor“.",

@@ -2218,6 +2218,8 @@
     "AlternativeMethod": "Méthode alternative",
     "FromHere": "d'ici",
     "WidgetInstallations": {
+        "Title": "Montrez le chat en direct à vos visiteurs",
+        "Subtitle": "Permettez à vos visiteurs de vous contacter via le chat en direct, en ajoutant notre widget à votre site Web.",
         "GenericStep1": "Copiez le code JavaScript suivant",
         "WordpressStep1": "Connectez-vous au panneau de configuration Wordpress.",
         "WordpressStep2": "Allez dans “Apparence > Éditeur de thème“.",

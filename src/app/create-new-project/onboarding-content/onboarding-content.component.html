@@ -123,20 +123,22 @@
                 ></cnp-chatbot-welcome-message>
             </div>
 
+            <!-- WIDGET INSTALLATION -->
+            <div *ngIf="nameStep === typeStep.WIDGET_INSTALLATION" 
+                class="type-step fade-in-right"
+                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.WIDGET_INSTALLATION}">
+                <cnp-widget-installation
+                    [welcomeMessage] = welcomeMessage
+                    [projectName]="projectName"
+                    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+                    (nextPage)="goToSaveProjectAndCreateBot($event)"
+                    (prevPage) = "goToPrevStep()"
+                ></cnp-widget-installation>
+            </div>
+            
         </div>
 
-        <!-- WIDGET INSTALLATION -->
-        <div *ngIf="nameLastStep === typeStep.WIDGET_INSTALLATION" 
-            class="type-step fade-in-right"
-            [ngClass]="{'active': nameLastStep===typeStep.WIDGET_INSTALLATION}">
-            <cnp-widget-installation
-                [welcomeMessage] = welcomeMessage
-                [projectName]="projectName"
-                [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
-                (nextPage)="goToSaveProjectAndCreateBot($event)"
-                (prevPage) = "goToPrevStep()"
-            ></cnp-widget-installation>
-        </div>
+        
 
         <!-- LOADING SECTION -->
         <!-- <loading-section

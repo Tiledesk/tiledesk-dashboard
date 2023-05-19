@@ -1,37 +1,37 @@
 {
   "steps":[
     {
-      "title": "Tell us more before starting, so we can personalise your experience ${userFullname}",
+      "title": "Dicci di più prima di iniziare, in modo da personalizzare la tua esperienza con noi, ${userFullname}",
       "buttons": {
-        "back": "Go back",
-        "next": "Continue"
+        "back": "Indietro",
+        "next": "Continua"
       },
       "questions": [
         {
-          "title": "What’s your industry?",
+          "title": "Qual è la tua industria?",
           "attribute_name": "company_industry",
           "type": "select",
           "labels": {
-            "placeholder":"Please choose..."
+            "placeholder":"Seleziona..."
           },
           "options": [
             {"label": "Software & Technology", "value": "software_technology"},
-            {"label": "Tourism", "value": "tourism"},
-            {"label": "Food & Beverage", "value": "food_beverage"},
+            {"label": "Turismo", "value": "tourism"},
+            {"label": "Ristorazione", "value": "food_beverage"},
             {"label": "Agency & Consulting", "value": "agency_consulting"},
-            {"label": "Healthcare", "value": "healthcare"},
-            {"label": "Legal Services", "value": "legal_services"},
-            {"label": "Financial Services", "value": "financial_services"},
-            {"label": "Retail & E-commerce", "value": "retail_ecommerce"},
-            {"label": "Other", "value": "other"}
+            {"label": "Servizi sanitari", "value": "healthcare"},
+            {"label": "Servizi legali", "value": "legal_services"},
+            {"label": "Servizi finanziari", "value": "financial_services"},
+            {"label": "Vendita al dettaglio & E-commerce", "value": "retail_ecommerce"},
+            {"label": "Altro", "value": "other"}
           ]
         },
         {
-          "title": "How many people work with you?",
+          "title": "Quante persone lavorano con te?",
           "type": "select",
           "attribute_name": "company_size",
           "labels": {
-            "placeholder":"Please choose..."
+            "placeholder":"Seleziona..."
           },
           "options": [
             {"label": "0", "value": "0"},
@@ -43,50 +43,50 @@
           ]
         },
         {
-          "title": "How did you discover Tiledesk?",
+          "title": "Come hai scoperto Tiledesk?",
           "type": "select",
           "attribute_name": "acquisition_source",
           "labels": {
-            "placeholder":"Please choose..."
+            "placeholder":"Seleziona..."
           },
           "options": [
-            {"label": "Search Engines", "value": "search_engines"},
-            {"label": "Social Media (LinkedIn, Facebook, Instagram, etc.)", "value": "social_media"},
-            {"label": "Friends or colleagues", "value": "friends_colleagues"},
-            {"label": "Third party websites / blogs / videos", "value": "third_party_websites_blogs_videos"},
-            {"label": "Other", "value": "other"}
+            {"label": "Motore di ricerca", "value": "search_engines"},
+            {"label": "Social Media (LinkedIn, Facebook, Instagram, ecc.)", "value": "social_media"},
+            {"label": "Amici o colleghi", "value": "friends_colleagues"},
+            {"label": "I website / blog / video altrui", "value": "third_party_websites_blogs_videos"},
+            {"label": "Altro", "value": "other"}
           ]
         }
       ]
     }, 
 
     {
-      "title": "${userFullname} thank you 🙏 Last questions before starting...",
+      "title": "${userFullname} grazie 🙏 Ultime domande prima di iniziare...",
       "buttons": {
-        "back": "Go back",
-        "next": "Continue"
+        "back": "Indietro",
+        "next": "Continua"
       },
       "questions": [
         {
-          "title": "What’s your main goal with Tiledesk?",
+          "title": "Qual è il tuo obiettivo principale con Tiledesk?",
           "type": "button",
           "attribute_name": "use_case",
           "buttons": [
-            {"icon":"🛠", "label": "Solve customer problems", "value": "solve_customer_problems"},
-            {"icon": "💰", "label": "Increase online sales", "value": "increase_online_sales"}
+            {"icon":"🛠", "label": "Risolvere i problemi dei clienti", "value": "solve_customer_problems"},
+            {"icon": "💰", "label": "Aumentare le vendite online", "value": "increase_online_sales"}
           ]
         },
         {
-          "title": "How do you want to reach your goal?",
+          "title": "Come vuoi raggiungere questo obiettivo?",
           "type": "button",
           "attribute_name": "solution",
           "buttons": [
-            {"icon":"💬", "label": "I want to talk to customers", "value": "want_to_talk_to_customers"},
-            {"icon":"🤖", "label": "I want to automate conversations", "value": "want_to_automate_conversations"}
+            {"icon":"💬", "label": "Voglio parlare con i clienti", "value": "want_to_talk_to_customers"},
+            {"icon":"🤖", "label": "Voglio automatizzare le conversazioni", "value": "want_to_automate_conversations"}
           ]
         },
         {
-          "title": "Which channel most interests you?",
+          "title": "Quali canali ti interessano di più?",
           "type": "button",
           "attribute_name": "solution_channel",
           "buttons": [

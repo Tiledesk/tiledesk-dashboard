@@ -2218,6 +2218,8 @@
     "AlternativeMethod": "алтернативни метод",
     "FromHere": "одавде",
     "WidgetInstallations": {
+        "Title": "Show live chat to your visitors",
+        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
         "GenericStep1": "Копирајте следећи ЈаваСкрипт код",
         "WordpressStep1": "Пријавите се на Wordpress контролну таблу.",
         "WordpressStep2": "Идите на „Изглед> Уређивач теме“.",

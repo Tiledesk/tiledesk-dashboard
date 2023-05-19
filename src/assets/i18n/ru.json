@@ -2218,6 +2218,8 @@
     "AlternativeMethod": "альтернативный метод",
     "FromHere": "отсюда",
     "WidgetInstallations": {
+        "Title": "Show live chat to your visitors",
+        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
         "GenericStep1": "Скопируйте следующий код JavaScript",
         "WordpressStep1": "Войдите в панель управления Wordpress.",
         "WordpressStep2": "Перейдите в «Внешний вид > Редактор тем».",

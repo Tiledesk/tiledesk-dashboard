@@ -2218,6 +2218,8 @@
     "AlternativeMethod": "طريقة بديلة",
     "FromHere": "من هنا",
     "WidgetInstallations": {
+        "Title": "Show live chat to your visitors",
+        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
         "GenericStep1": "انسخ كود JavaScript التالي",
         "WordpressStep1": "قم بتسجيل الدخول إلى لوحة تحكم Wordpress.",
         "WordpressStep2": "انتقل إلى“ المظهر> محرر السمات“",

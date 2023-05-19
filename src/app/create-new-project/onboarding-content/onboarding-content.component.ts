@@ -62,6 +62,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   translateY: string;
   typeStep = TYPE_STEP;
   nameLastStep: TYPE_STEP = null;
+  nameMsgStep: TYPE_STEP = null;
   arrayOfSteps: TYPE_STEP[] = [];
   activeTypeStepNumber: number = 0;
   activeCustomStepNumber: number;
@@ -78,7 +79,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   constructor(
     private auth: AuthService,
-    // private router: Router,
+    private router: Router,
     public location: Location,
     public brandService: BrandService,
     private logger: LoggerService,
@@ -90,7 +91,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     private faqService: FaqService,
     private faqKbService: FaqKbService,
     private botLocalDbService: BotLocalDbService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -185,6 +186,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private initialize(){
     this.translateY = 'translateY(0px)';
     this.activeQuestionNumber = 0;
+    this.setFirstStep();
     this.getProjects();
   }
 
@@ -230,11 +232,12 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           if (!this.projectName){
             this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           }
-          this.setFirstStep();
+          // this.setFirstStep();
           // console.log('YES isFirstProject:: ', this.arrayOfSteps);
         } else {
           this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
+          this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
           // console.log('NO isFirstProject:: ', this.arrayOfSteps);
         }
       }
@@ -243,14 +246,14 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   
   private setFirstStep(){
-    // console.log('setFirstStep:: ');
+    console.log('setFirstStep:: ');
     // if(this.previousUrl.endsWith('/signup')){
       let lang = "en";
       if(this.translate.currentLang){
         lang = this.translate.currentLang;
       }
       let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
-      // console.log('onboardingConfig:: ', onboardingConfig, lang);
+      console.log('onboardingConfig:: ', onboardingConfig, lang);
       this.checkFileExists(onboardingConfig).then(result => {
         if(result === false){
           onboardingConfig = 'assets/config/onboarding-config.json';
@@ -270,7 +273,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //   lang = this.translate.currentLang;
     // }
     // let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
-    // console.log('loadJsonOnboardingConfig:: ');
+    console.log('loadJsonOnboardingConfig:: ',onboardingConfig);
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
       let jsonString = JSON.stringify(data);
@@ -290,11 +293,12 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.activeQuestion = this.customSteps[0].questions[0];    
       }
       this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
+      this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
     });
   }
 
   private checkFileExists(fileName: string): Promise<boolean> {
-    const url = `assets/${fileName}`;
+    const url = `${fileName}`;
     return this.httpClient.get(url, { responseType: 'json' })
       .toPromise()
       .then(() => true)
@@ -386,9 +390,15 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   goToNextStep() {
     // this.DISPLAY_SPINNER_SECTION = false;  
-    this.nextNumberStep();
-    this.checkPrevButton();
+    if(this.segmentAttributes["solution_channel"] === "whatsapp_fb_messenger"){
+      this.arrayOfSteps.splice(this.arrayOfSteps.length - 2);
+      this.createNewProject();
+    } else {
+      this.nextNumberStep();
+      this.checkPrevButton();
+    }
   }
+
 
   goToSaveWelcomeMessage($event){
     try {
@@ -397,17 +407,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.logger.error('[WIZARD - error: ', error);
     }
     // console.log('segmentAttributes:: ',this.segmentAttributes);
-    if(this.segmentAttributes["solution_channel"] === "whatsapp_fb_messenger" ){
-      this.createNewProject();
-      // if(this.arrayOfSteps[0] === TYPE_STEP.NAME_PROJECT){
-      //   this.createNewProject();
-      // } else {
-      //   this.createBot();
-      // }
-    } else {
-      this.nameLastStep = TYPE_STEP.WIDGET_INSTALLATION;
-      this.goToNextStep();
-    }
+    this.goToNextStep();
   }
 
   goToSaveProjectAndCreateBot($event){
@@ -424,7 +424,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
   goToExitOnboarding(){
-    this.location.back();
+    if(this.isFirstProject){
+      this.router.navigate(['project/' + this.newProject.id  + '/home'])
+    } else {
+      this.location.back();
+    }
   }
 
 

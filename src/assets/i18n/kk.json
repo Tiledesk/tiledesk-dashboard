@@ -2218,6 +2218,8 @@
     "AlternativeMethod": "балама әдіс",
     "FromHere": "осы жерден",
     "WidgetInstallations": {
+        "Title": "Show live chat to your visitors",
+        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
         "GenericStep1": "Келесі JavaScript кодын көшіріңіз",
         "WordpressStep1": "Wordpress басқару тақтасына кіріңіз.",
         "WordpressStep2": "«Көрініс > Тақырып редакторы» тармағына өтіңіз.",

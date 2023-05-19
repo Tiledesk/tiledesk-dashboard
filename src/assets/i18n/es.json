@@ -2218,6 +2218,8 @@
     "AlternativeMethod": "Método alternativo",
     "FromHere": "de aquí",
     "WidgetInstallations": {
+        "Title": "Muestra el chat en vivo a tus visitantes",
+        "Subtitle": "Permita que sus visitantes se comuniquen con usted a través del chat en vivo, agregando nuestro widget a su sitio web.",
         "GenericStep1": "Copie el siguiente código JavaScript",
         "WordpressStep1": "Inicie sesión en el panel de control de Wordpress.",
         "WordpressStep2": "Vaya a “Apariencia > Editor de temas“.",

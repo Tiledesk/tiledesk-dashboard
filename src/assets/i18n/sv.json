@@ -2218,6 +2218,8 @@
     "AlternativeMethod": "alternativ metod",
     "FromHere": "härifrån",
     "WidgetInstallations": {
+        "Title": "Show live chat to your visitors",
+        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
         "GenericStep1": "Kopiera följande JavaScript-kod",
         "WordpressStep1": "Logga in på Wordpress kontrollpanel.",
         "WordpressStep2": "Gå till “Utseende > Temaredigerare“.",

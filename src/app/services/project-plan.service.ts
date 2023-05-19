@@ -125,7 +125,7 @@ export class ProjectPlanService {
         subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date']
       }
 
-      console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
+      // console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
 
       this.projectPlan$.next(projectPlanData);
 
