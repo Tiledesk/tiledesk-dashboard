@@ -1,0 +1,109 @@
+h4.title {
+    color: #566787;
+    position: relative;
+    line-height: normal;
+    margin-bottom: 0.5em;
+    font-size: 24px;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.question-button {
+    position: relative;
+    overflow: hidden;
+    box-shadow: #001b473d 0 1px 3px;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color .3s ease 0s;
+    width: 200px;
+    height: 74px;
+    margin: auto;
+    padding: 0px 10px 0 0px;
+    display: flex;
+    &:hover {
+        border: 2px solid #3ea9f5;
+    }
+    &.selected{
+        border: 2px solid #3ea9f5;
+    }
+    .content-button{
+        margin: auto;
+        text-align: left;
+        display: flex;
+    }
+    .button-radio{
+        position: absolute;
+        width: auto;
+        padding: 0;
+        margin: 0;
+        top: 0;
+        left: 0;
+        input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;  
+        }
+        .checkmark {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            height: 16px;
+            width: 16px;
+            background-color: #eee;
+            border-radius: 50%;
+        }
+
+        input:checked ~ .checkmark {
+            background-color: #2196F3;
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        
+        input:checked ~ .checkmark:after {
+            display: block;
+        }
+        
+        .checkmark:after {
+            top: 5px;
+            left: 5px;
+            width: 6px;
+            margin: auto;
+            display: flex;
+            height: 6px;
+            border-radius: 50%;
+            background: white;
+        }
+    }
+
+
+    section {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+    }
+    h2.icon-button {
+        padding: 0 10px;
+        margin: 0;
+        font-size: 28px;
+    }
+
+    p.label-button {
+        display: flex;
+        justify-content: flex-start;
+        margin: auto;
+        line-height: 1.2em;
+        font-weight: 400;
+    }
+}

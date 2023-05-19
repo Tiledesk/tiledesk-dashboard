@@ -1,0 +1,41 @@
+@import "../../../assets/sass/md/_variables.scss";
+
+.cnp-project-name{
+    h1.title {
+        font-size: 36px;
+        font-weight: 500;
+        line-height: 1.3em;
+        margin-top: 0px;
+        margin-bottom: 0.5em;
+    }
+    h4.title {
+        color: #566787;
+        position: relative;
+        line-height: normal;
+        margin-bottom: 1em;
+        font-size: 24px;
+        font-weight: 300;
+        font-style: normal;
+    }
+    input {
+        max-width: 450px;
+        padding: 0 10px;
+    }
+
+    .second-row {
+        max-width: 450px;
+        text-align: center;
+    }
+    .msg {
+        height:31px;
+        span.error {
+            padding-left: 5px; 
+            font-size: 0.9em; 
+            color:#da491c;
+        }
+    }
+
+    button {
+        margin-bottom: 30px;
+    }
+}

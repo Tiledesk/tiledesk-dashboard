@@ -128,7 +128,7 @@ export class ProjectPlanService {
         extra4: current_prjct.id_project.profile['extra4']
       }
 
-      console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
+      // console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
 
       this.projectPlan$.next(projectPlanData);
 

@@ -2193,6 +2193,7 @@
         "DoYouWantChatbot": "Да ли желите да Цхатбот помогне својим корисницима неке маштовите аутоматизацијом или да одговоре на неколико честих питања?",
         "YesChatboat": "Да, дозволите ми да конфигуришем свој први Цхатбот!",
         "NoChatboat": "Не сада, мислим да су људи довољни за почетак",
+        "CustomizeWelcomeMessage": "Customize your welcome message",
         "SetupChatbotTitle": "Подесите свој први Цхатбот",
         "TitleWelcomeMessage": "Како желите да поздравите посетиоце када стигну на вашу веб страницу?",
         "LabelWelcomeMessage": "Порука добродошлице",
@@ -2225,6 +2226,8 @@
     "AlternativeMethod": "алтернативни метод",
     "FromHere": "одавде",
     "WidgetInstallations": {
+        "Title": "Show live chat to your visitors",
+        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
         "GenericStep1": "Копирајте следећи ЈаваСкрипт код",
         "WordpressStep1": "Пријавите се на Wordpress контролну таблу.",
         "WordpressStep2": "Идите на „Изглед> Уређивач теме“.",

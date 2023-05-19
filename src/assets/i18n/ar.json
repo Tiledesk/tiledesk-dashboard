@@ -2193,6 +2193,7 @@
         "DoYouWantChatbot": "هل تريد chatbot لمساعدة المستخدمين على بعض الأتمتة الفاخرة أو الرد على بعض الأسئلة المتكررة؟",
         "YesChatboat": "نعم ، اسمحوا لي أن أقوم بتكوين أول chatbot!",
         "NoChatboat": "ليس الآن ، أعتقد أن البشر كافية للبدء",
+        "CustomizeWelcomeMessage": "Customize your welcome message",
         "SetupChatbotTitle": "قم بإعداد أول chatbot",
         "TitleWelcomeMessage": "كيف تحب أن تستقبل الزائرين عند وصولهم إلى موقع الويب الخاص بك؟",
         "LabelWelcomeMessage": "ترحيب رسالة",
@@ -2225,6 +2226,8 @@
     "AlternativeMethod": "طريقة بديلة",
     "FromHere": "من هنا",
     "WidgetInstallations": {
+        "Title": "Show live chat to your visitors",
+        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
         "GenericStep1": "انسخ كود JavaScript التالي",
         "WordpressStep1": "قم بتسجيل الدخول إلى لوحة تحكم Wordpress.",
         "WordpressStep2": "انتقل إلى“ المظهر> محرر السمات“",

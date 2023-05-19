@@ -2193,6 +2193,7 @@
         "DoYouWantChatbot": "Вы хотите, чтобы чат -бот помог вашим пользователям с какой -то причудливой автоматизацией или отвечая на некоторые частые вопросы?",
         "YesChatboat": "Да, позвольте мне настроить мой первый чат -бот!",
         "NoChatboat": "Не сейчас, я думаю, что люди достаточно, чтобы начать",
+        "CustomizeWelcomeMessage": "Customize your welcome message",
         "SetupChatbotTitle": "Настройте свой первый чат -бот",
         "TitleWelcomeMessage": "Как вам нравится приветствовать посетителей, когда они прибывают на ваш сайт?",
         "LabelWelcomeMessage": "Приветственное сообщение",
@@ -2225,6 +2226,8 @@
     "AlternativeMethod": "альтернативный метод",
     "FromHere": "отсюда",
     "WidgetInstallations": {
+        "Title": "Show live chat to your visitors",
+        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
         "GenericStep1": "Скопируйте следующий код JavaScript",
         "WordpressStep1": "Войдите в панель управления Wordpress.",
         "WordpressStep2": "Перейдите в «Внешний вид > Редактор тем».",

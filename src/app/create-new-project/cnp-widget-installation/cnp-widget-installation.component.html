@@ -1,0 +1,114 @@
+<div class="cnp-widget-installation">
+
+    <h3 class="title">{{ 'WidgetInstallations.Title' | translate }}</h3>
+    <p class="description">{{ 'WidgetInstallations.Subtitle' | translate }}</p>
+    <div width="100%" class="big">
+        <div class="installation-options">
+            <div class="left">
+                <ul>
+                    <li *ngFor="let option of options">
+                        <button 
+                            [ngClass]="{'active': selectedPlatform===option.value}"
+                            (click)="onSelected(option.value)">
+                            <img src="{{option.image}}" width="20px" height="20px"/>
+                            <span>{{ option.label }}</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="right box-installation-instruction">
+                <appdashboard-js-installation 
+                    *ngIf="selectedPlatform===typePlatform.JS"
+                    class="conf-installation"
+                ></appdashboard-js-installation>
+                <appdashboard-joomla-installation
+                    *ngIf="selectedPlatform===typePlatform.JOOMLA"
+                    class="conf-installation"
+                ></appdashboard-joomla-installation>
+                <appdashboard-prestashop-installation
+                    *ngIf="selectedPlatform===typePlatform.PRESTASHOP"
+                    class="conf-installation"
+                ></appdashboard-prestashop-installation>
+                <appdashboard-wordpress-installation
+                    *ngIf="selectedPlatform===typePlatform.WORDPRESS"
+                    class="conf-installation"
+                ></appdashboard-wordpress-installation>
+                <appdashboard-shopify-installation
+                    *ngIf="selectedPlatform===typePlatform.SHOPIFY"
+                    class="conf-installation"
+                ></appdashboard-shopify-installation>
+                <appdashboard-google-tag-manager-installation
+                    *ngIf="selectedPlatform===typePlatform.GTM"
+                    class="conf-installation"
+                ></appdashboard-google-tag-manager-installation>
+            </div>
+    
+        </div>
+    </div>
+
+
+    <div width="100%" class="small">
+        <div class="installation-options">
+
+            <label>Select platform</label>
+            <ng-select class="select-option" 
+                [clearable]="false" 
+                bindLabel="label" 
+                bindValue="value"
+                [searchable] = false
+                groupBy="type"
+                [placeholder]="LABEL_PLACEHOLDER" 
+                [(ngModel)]="selectedPlatform"
+                (change)="onSelected($event)">
+                <ng-option *ngFor="let option of options"
+                    [value]="option.value">
+                    <img src="{{option.image}}" width="20px" height="20px"/>
+                    {{ option.label }}
+                </ng-option>
+
+            </ng-select>
+        </div>
+
+        <div class="box-installation-instruction">
+            <appdashboard-js-installation 
+                *ngIf="selectedPlatform===typePlatform.JS"
+            ></appdashboard-js-installation>
+            <appdashboard-joomla-installation
+                *ngIf="selectedPlatform===typePlatform.JOOMLA"
+            ></appdashboard-joomla-installation>
+            <appdashboard-prestashop-installation
+                *ngIf="selectedPlatform===typePlatform.PRESTASHOP"
+            ></appdashboard-prestashop-installation>
+            <appdashboard-wordpress-installation
+                *ngIf="selectedPlatform===typePlatform.WORDPRESS"
+            ></appdashboard-wordpress-installation>
+            <appdashboard-shopify-installation
+                *ngIf="selectedPlatform===typePlatform.SHOPIFY"
+            ></appdashboard-shopify-installation>
+            <appdashboard-google-tag-manager-installation
+                *ngIf="selectedPlatform===typePlatform.GTM"
+            ></appdashboard-google-tag-manager-installation>
+        </div>
+
+        
+    </div>
+
+
+    <!-- BUTTONS -->
+    <div class="row-navigation">
+        <div class="navigation-btn">
+            <!-- <button 
+                type="button" 
+                class="btn-back" 
+                (click)="goToPrevStep()">
+                <em class="material-icons">arrow_back</em>
+            </button> -->
+            <button
+                class="btn btn-lg btn-primary"
+                (click)="goToNextStep()">
+                {{'OnboardPage.Next' | translate}}
+            </button>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,14 @@
+
+[
+    { "stars": 5, "message": "We switched to Tiledesk from Drift, and are not looking back!",  "author":"Peter X.", "role":"Co-Founder", "lang": "EN"},
+    { "stars": 5, "message": "Good automated chatbot software",  "author":"Susang R.", "role":"Product Marketing Manager", "lang": "EN"},
+    { "stars": 5, "message": "Best easy to use chat software",  "author":"Kiran S.", "role":"Social Media Manager", "lang": "EN"},
+    { "stars": 5, "message": "Meeting all customer services at your comfort.",  "author":"Brian M.", "role":"Digital Marketing Specialist", "lang": "EN"},
+    { "stars": 5, "message": "Friendly Intuitive Chat Platform",  "author":"Andrew S.", "role":"DevOps engineer", "lang": "EN"},
+    { "stars": 5, "message": "El mejor chatbot que uso, sencillo de manejar",  "author":"Alberto P.", "role":"CEO", "lang": "ES"},
+    { "stars": 5, "message": "Tiledesk soddisfa le aspettative dei nostri studenti",  "author":"Mauro M.", "role":"IT Manager UniSalento DevOps engineer", "lang": "IT"},
+    { "stars": 5, "message": "Comunicazione facile e immediata con i clienti",  "author":"Francesca M.", "role":"Bed and breakfast", "lang": "IT"},
+    { "stars": 5, "message": "Muy buen chat en vivo",  "author":"Catalina F.", "role":"Head of Human Talent", "lang": "ES"},
+    { "stars": 5, "message": "Streamline Your Lead Qualifications with TileDesk",  "author":"Israel B.", "role":"CEO", "lang": "EN"}
+]
+
