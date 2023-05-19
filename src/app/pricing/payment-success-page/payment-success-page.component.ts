@@ -237,6 +237,17 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
       if (user) {
         this.currentUser = user
 
+        console.log('[PRICING - PAYMENT-SUCCESS] currentUser email ', this.currentUser.email)
+
+        window['rewardful']('ready', () => {
+          // console.log('[PRICING - PAYMENT-SUCCESS] Rewardful Ready!')
+          // console.log('[PRICING - PAYMENT-SUCCESS] window.rewardful.referral', window['rewardful'].referral )
+          // console.log('[PRICING - PAYMENT-SUCCESS] window.rewardful.campaign', window['rewardful'].campaign )
+       
+          window['rewardful']('convert', { email: this.currentUser.email })
+          
+        });
+
         if (!isDevMode()) {
           if (window['analytics']) {
             try {
