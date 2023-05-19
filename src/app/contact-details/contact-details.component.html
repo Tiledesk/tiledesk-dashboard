@@ -350,14 +350,15 @@
 
       <!-- ------------============ RIGHT SIDEBAR ============------------ -->
       <div class="col-sm-5">
-        <div class="card right-card card--no-border" style="padding-top:0px;">
+        <div class="card right-card card--no-border" style="padding-top:0px;margin-top: 23px;">
           <!-- style="border-bottom: 1px solid #eeeeee; padding-left:16px; padding-right:16px; height: 50px;" -->
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
-          <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
+          <div *ngIf="!showSpinner" class="card-content"
+            style="padding-top: 0px;    padding-left: 1px;padding-right: 1px;">
 
-            <div class="row">
-              <div class="col-xs-6 col-sm-6 col-md-6">
+            <div class="row" style="border-bottom: 1px solid #ddd;">
+              <div class="col-xs-12">
                 <h3 class="card_title__underlined">
                   <!-- <span class="card_title__underline" style="white-space: nowrap;">
                     {{ "ContactDetails" | translate }}
@@ -400,45 +401,93 @@
 
                     </span>
                   </span>
-                  <span class="contact-details-fullname"
+                  <span class="contact-details-fullname" (click)="openAddContactNameForm($event)"
                     [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
-                    {{ contact_details?.fullname }}
+                    <span *ngIf="contact_details?.fullname">
+                      {{ contact_details?.fullname }}
+                    </span>
+
+                    <span *ngIf="!contact_details?.fullname">
+                      n/a
+                    </span>
+
+                    <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg" width="24"
+                      height="24" viewBox="0 0 24 24" class="lead-edit--icon">
+                      <path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
+                      </path>
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+
+
                   </span>
-                  <span class="contact-details-fullname" *ngIf="!contact_details?.fullname"
+                  <!-- <span class="contact-details-fullname" *ngIf="!contact_details?.fullname"
                     [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
                     n/a
-                  </span>
+                  </span> -->
                 </h3>
+
+
               </div>
-              <div class="col-xs-6 col-sm-6 col-md-6">
+              <!-- <div class="col-xs-6 col-sm-6 col-md-6"> -->
 
-                <div class="contact-action-wpr">
-                  <div class="contact-action tool_tip" (click)='goToEditContact(contact_details?._id)'>
-                    <span class="material-icons" style="color:#8796af;">
-                      edit
-                    </span>
-                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
+              <div class="contact-action-wpr">
+                <!-- (click)='goToEditContact(contact_details?._id)' -->
+                <!-- <div class="contact-action tool_tip" (click)="openAddContactNameForm($event)">
+                  <span class="material-icons" style="color:#8796af;">
+                    edit
+                  </span>
+                  <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
                     line-height: 16px;font-size: 12px; left: -100%;">
-                      {{ "EditContact" | translate }}
-                      <i style="top: 88%;"></i>
-                    </span>
-                  </div>
+                    {{ "EditContact" | translate }}
+                    <i style="top: 88%;"></i>
+                  </span>
+                </div> -->
 
+                <div class="contact-action tool_tip" style="margin-left: 8px;"
+                  (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'>
+                  <span class="material-icons" style="color:#f44336;; margin-left: 12px">
+                    delete
+                  </span>
+                  <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
+                  line-height: 16px;font-size: 12px; left: -100%;">
+                    {{ "MoveToTrash" | translate }}
+                    <i style="top: 88%;margin-left: 12px"></i>
+                  </span>
+                </div>
 
-                  <div class="contact-action tool_tip" style="margin-left: 8px;"
-                    (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'>
-                    <span class="material-icons" style="color:#f44336;; margin-left: 12px">
-                      delete
-                    </span>
-                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
-                    line-height: 16px;font-size: 12px; left: -100%;">
-                      {{ "MoveToTrash" | translate }}
-                      <i style="top: 88%;margin-left: 12px"></i>
-                    </span>
+                <div class="lead-dropdown__menu-form" [ngStyle]="{'left':CHAT_PANEL_MODE === false ? '0px' : '-48px;' }">
+                  <div id="edit-fullname-content-form" class="dropdown__content-form">
+                    <form id="edit-fullname-form" class="contact-form">
+                      <div #editFullnameDropdown id="edit-fullname-input-wrapper" class="input-wrapper">
+                        <label id="edit-fullname-firstname-label" for="edit-fullname-firstname-input">
+                          {{'FirstName' | translate}}
+                        </label>
+                        <input id="edit-fullname-firstname-input" type="text" class="form-input" autocomplete="off"
+                          [(ngModel)]="contactNewFirstName">
+
+                        <label id="edit-fullname-lastname-label" for="edit-fullname-lastname-input">
+                          {{'LastName' | translate}}
+                        </label>
+                        <input id="edit-fullname-lastname-input" type="text" class="form-input" autocomplete="off"
+                          [(ngModel)]="contactNewLastName">
+                      </div>
+                      <div id="edit-fullname-submit-btn-wpr">
+                        <button id="edit-fullname-submit-btn" class="done--btn" type="submit"
+                          (click)="updateContactFullName()"
+                          [disabled]="!contactNewFirstName || contactNewFirstName.length < 2">
+                          {{'Done' | translate}}
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
 
-                <!-- <div style="display: none;" class="dropdown pull-right">
+
+
+              </div>
+
+              <!-- <div style="display: none;" class="dropdown pull-right">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="material-icons" style="color:rgba(0, 0, 0, 0.87); margin-top: 14px;">
                       more_vert
@@ -459,82 +508,82 @@
                     </li>
                   </ul>
                 </div> -->
-              </div>
-              <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="section-subtitle"> </div>
-              </div>
             </div>
+            <!-- <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="section-subtitle"> </div>
+              </div> -->
+          </div>
 
 
 
-            <!-- ------------------------------------------------------ -->
-            <!-- @ Attributes decoded JWT accordion -->
-            <!-- ------------------------------------------------------ -->
-            <div *ngIf="contact_details?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED" class="row"
-              style="padding-right: 15px; padding-left: 15px;">
-              <div class="col-sm-12 attributes-jwt-decoded-cntct-accordion-wpr" style="border-top: unset !important">
-                <p class="row-header  attributes-decoded-jwt-cntct-accordion"
-                  (click)="openAttributesDecodedJWTAccordion()"
-                  style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
-                  <i class="material-icons" style="vertical-align: middle; color: #8796af;margin-left: 6px;"> gpp_good
-                  </i>
-                  <span style="vertical-align: middle; color: #555 ">
-                    {{ "decodedJWT" | translate }}
-                  </span>
-                </p>
-                <!-- ------------------------------------------------------ -->
-                <!-- @ Attributes decoded JWT panel -->
-                <!-- ------------------------------------------------------ -->
-                <!-- attributesDecodedJWTArray -->
-                <div class="attributes-decoded-jwt-panel" style="padding: 0px 5px !important;">
-                  <div *ngFor="let attribute of  attributesDecodedJWTArrayMerged; let i = index">
-                    <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+          <!-- ------------------------------------------------------ -->
+          <!-- @ Attributes decoded JWT accordion -->
+          <!-- ------------------------------------------------------ -->
+          <div *ngIf="contact_details?.attributes?.decoded_jwt && CONTACT_IS_VERIFIED" class="row"
+            style="padding-right: 15px; padding-left: 15px;">
+            <div class="col-sm-12 attributes-jwt-decoded-cntct-accordion-wpr" style="border-top: unset !important">
+              <p class="row-header  attributes-decoded-jwt-cntct-accordion"
+                (click)="openAttributesDecodedJWTAccordion()"
+                style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
+                <i class="material-icons" style="vertical-align: middle; color: #8796af;margin-left: 6px;"> gpp_good
+                </i>
+                <span style="vertical-align: middle; color: #555 ">
+                  {{ "decodedJWT" | translate }}
+                </span>
+              </p>
+              <!-- ------------------------------------------------------ -->
+              <!-- @ Attributes decoded JWT panel -->
+              <!-- ------------------------------------------------------ -->
+              <!-- attributesDecodedJWTArray -->
+              <div class="attributes-decoded-jwt-panel" style="padding: 0px 5px !important;">
+                <div *ngFor="let attribute of  attributesDecodedJWTArrayMerged; let i = index">
+                  <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
-                      <div class="row">
-                        <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
-                          <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
-                            class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
+                    <div class="row">
+                      <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                        <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
+                          class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
                               font-size: 11px;"> {{Attributes | translate}} </div>
-                          <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes"
-                            [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
-                            {{attribute?.attributeName }}:
-                          </div>
-
-                          <div aria-expanded="false" [id]="attribute?.attributeName +'_value'" class="attribute"
-                            [ngClass]="{'attribute_cutted_text': !attribute?.decodedJWTType}">
-                            {{attribute?.attributeValue }}
-                          </div>
-
+                        <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes"
+                          [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
+                          {{attribute?.attributeName }}:
                         </div>
-                        <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
-                        <!-- [ngClass]="{'down' : attributeFullText === true}" -->
-                        <!-- white-space: nowrap;width: 1%; -->
-                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
-                          style="text-align: right;">
-                          <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
-                            style="cursor: pointer; color: #039be5; font-size:18px;"
-                            (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
-                            keyboard_arrow_down
-                          </i>
 
+                        <div aria-expanded="false" [id]="attribute?.attributeName +'_value'" class="attribute"
+                          [ngClass]="{'attribute_cutted_text': !attribute?.decodedJWTType}">
+                          {{attribute?.attributeValue }}
                         </div>
+
+                      </div>
+                      <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
+                      <!-- [ngClass]="{'down' : attributeFullText === true}" -->
+                      <!-- white-space: nowrap;width: 1%; -->
+                      <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                        style="text-align: right;">
+                        <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
+                          style="cursor: pointer; color: #039be5; font-size:18px;"
+                          (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
+                          keyboard_arrow_down
+                        </i>
+
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div> <!-- ./ end attributes decoded JWT accordion-->
+            </div>
+          </div> <!-- ./ end attributes decoded JWT accordion-->
 
 
 
-            <div class="row" style="margin-top:5px">
+          <div class="row" style="margin-top:5px">
 
-              <appdashboard-contact-info [contact_details]="contact_details"> </appdashboard-contact-info>
+            <appdashboard-contact-info [contact_details]="contact_details"> </appdashboard-contact-info>
 
-              <!-- --------------------------------------------------------------------- -->
-              <!-- Chat With -->
-              <!-- --------------------------------------------------------------------- -->
-              <!-- <div class="col-sm-12">
+            <!-- --------------------------------------------------------------------- -->
+            <!-- Chat With -->
+            <!-- --------------------------------------------------------------------- -->
+            <!-- <div class="col-sm-12">
                 <button id="btn-chat-with" type="button" class="btn btn-primary btn-simple btn-xs pull-left"
                   (click)="chatWithAgent(contact)">
                   <i class="material-icons"
@@ -544,10 +593,10 @@
                 <span class="chat-with-fullname"> {{ contact_details?.fullname }}</span>
               </div> -->
 
-              <!-- --------------------------------------------------------------------- -->
-              <!-- Email (old) -->
-              <!-- --------------------------------------------------------------------- -->
-              <!-- <div class="col-sm-12 contact-email-col-12">
+            <!-- --------------------------------------------------------------------- -->
+            <!-- Email (old) -->
+            <!-- --------------------------------------------------------------------- -->
+            <!-- <div class="col-sm-12 contact-email-col-12">
                 <p style="margin-bottom: 8px;margin-top: 6px; ">
                   <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px" fill="#8796af"
                     matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'ContactEmail' | translate }}"
@@ -886,8 +935,7 @@
             <!-- style="margin-bottom: 8px; color: #566787; border-top: 1px solid #e1eef4; padding-top: 8px; font-weight: 400; font-size: 18px" -->
             <div id="attributes-row" *ngIf="contact_details?.attributes" class="row"
               [ngStyle]="{ 'margin-top': tagContainerElementHeight }">
-              <div class="col-sm-12"
-                style="padding-left: 0px; padding-right: 0px;">
+              <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
                 <p class="row-header attributes-accordion" (click)="toggleAttributes()"
                   style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
 
@@ -895,7 +943,7 @@
                     <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18"
                       style="enable-background:new 0 0 18 18; width: 24px; height: 24px;margin-left: 6px;"
-                      xml:space="preserve"  fill="none">
+                      xml:space="preserve" fill="none">
                       <g>
                         <path fill="none" d="M0,0h18v18H0V0z" />
                       </g>
@@ -918,9 +966,7 @@
                   </span>
 
                   <span style="float: right;" (click)="toggleAttributes()">
-                    <i id="attributes_arrow_down" class="material-icons rotate"
-                      style="cursor: pointer; color: #039be5; font-size:25px;position:relative; top:2px; left: 2px;"
-                      (click)="toggleAttributes()">
+                    <i id="lead-attributes_arrow_down" class="material-icons rotate" (click)="toggleAttributes()">
                       keyboard_arrow_down
                     </i>
                   </span>

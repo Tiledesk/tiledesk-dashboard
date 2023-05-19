@@ -88,6 +88,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   tagContainerElementHeight: any;
   isVisibleLBS: boolean;
   public_Key: string;
+  isOpenEditContactFullnameDropdown: boolean = false;
+  contactNewFirstName: string;
+  contactNewLastName: string;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -427,7 +430,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   toggleAttributes() {
     this.showAttributes = !this.showAttributes;
     this.logger.log('[CONTACTS-DTLS] SHOW ALL ATTRIBUTES ', this.showAttributes);
-    const attributesArrowIconElem = <HTMLElement>document.querySelector('#attributes_arrow_down');
+    const attributesArrowIconElem = <HTMLElement>document.querySelector('#lead-attributes_arrow_down');
     if (this.showAttributes === true) {
       attributesArrowIconElem.classList.add("up");
     }
@@ -993,6 +996,113 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.router.navigate(['project/' + this.projectId + '/contacts']);
   }
 
+  openAddContactNameForm($event) {
+    $event.stopPropagation();
+    this.isOpenEditContactFullnameDropdown = !this.isOpenEditContactFullnameDropdown
+    this.logger.log('openAddContactNameForm - isOpenEditContactFullnameDropdown', this.isOpenEditContactFullnameDropdown)
+    const elemDropDown = <HTMLElement>document.querySelector('.lead-dropdown__menu-form');
+    this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
+    if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
+
+      elemDropDown.classList.add("dropdown__menu-form--active");
+      this.logger.log('here 1')
+    } else if (elemDropDown.classList.contains("dropdown__menu-form--active")) {
+      elemDropDown.classList.remove("dropdown__menu-form--active");
+      this.logger.log('here 2')
+    }
+
+    this.contactNewFirstName = undefined;
+    this.contactNewLastName = undefined;
+  }
+
+
+
+  updateContactFullName() {
+    // const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu');
+    // elemDropDown.classList.remove("dropdown__menu--active");
+
+    const elemDropDown = <HTMLElement>document.querySelector('.lead-dropdown__menu-form');
+    elemDropDown.classList.remove("dropdown__menu-form--active");
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewFirstName', this.contactNewFirstName)
+    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewLastName', this.contactNewLastName)
+   
+    // request?.lead?.fullname
+    if (this.contactNewFirstName && !this.contactNewLastName) {
+
+      const lead_fullname = this.contactNewFirstName
+      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase only contactNewFirstName - lead_fullname', lead_fullname)
+      this._createRequesterAvatar(lead_fullname)
+
+      this.contact_details.fullname = lead_fullname
+      this.updateContactName(this.contact_details._id, lead_fullname);
+    } else if (this.contactNewFirstName && this.contactNewLastName) {
+
+      const lead_fullname = this.contactNewFirstName + ' ' + this.contactNewLastName
+      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase  contactNewFirstName & contactNewLastName - lead_fullname', lead_fullname)
+      this.contact_details.fullname = lead_fullname
+      this._createRequesterAvatar(lead_fullname)
+      this.updateContactName(this.contact_details._id, lead_fullname);
+    }
+  }
+  _createRequesterAvatar(lead_fullname) {
+    if (lead_fullname) {
+      this.contact_fullname_initial = avatarPlaceholder(lead_fullname);
+      this.fillColour = getColorBck(lead_fullname)
+    } else {
+
+      this.contact_fullname_initial = 'N/A';
+      this.fillColour = 'rgb(98, 100, 167)';
+    }
+
+  }
+
+  updateContactName(lead_id, lead_fullname) {
+    this.contactsService.updateLeadFullname(lead_id, lead_fullname)
+      .subscribe((contact) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATED CONTACT ', contact);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('Contact successfully updated', 2, 'done')
+      });
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+
+    this.logger.log('[WS-REQUESTS-MSGS] clickout event.target.id)', event.target.id)
+
+    const clicked_element_id = event.target.id
+
+
+    if (clicked_element_id.startsWith("edit-fullname")) {
+      this.logger.log('>>> click inside')
+      // const elemDropDown = <HTMLElement>document.querySelector('.lead-dropdown__menu-form');
+      // // this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
+      // if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
+
+      //   elemDropDown.classList.add("dropdown__menu-form--active");
+      //   // this.logger.log('here 1 A')
+      // } else if (elemDropDown.classList.contains("dropdown__menu-form--active")) {
+      //   elemDropDown.classList.remove("dropdown__menu-form--active");
+      //   // this.logger.log('here 2 A')
+      // }
+    } else {
+      this.logger.log('[WS-REQUESTS-MSGS] >>> click outside')
+      this.closeEditContactFullnameDropdown()
+    }
+  }
+
+  closeEditContactFullnameDropdown() {
+    const elemDropDown = <HTMLElement>document.querySelector('.lead-dropdown__menu-form');
+    if (elemDropDown && elemDropDown.classList.contains("dropdown__menu-form--active")) {
+      elemDropDown.classList.remove("dropdown__menu-form--active");
+    }
+  }
 
 
 }
