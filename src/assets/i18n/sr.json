@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "Тренутни датум почетка фактуре",
     "CurrentInvoiceEndDate": "Тренутни датум завршетка фактуре",
     "NumberOfAgentSeats": "Број места",
+    "SeatsRedeemed":"Места су откупљена",
     "AgentSeats": "седишта",
     "YourCurrentPlan": "Ваш тренутни план",
     "NextRenew": "Следећа обнова",

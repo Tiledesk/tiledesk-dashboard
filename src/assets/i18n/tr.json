@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "Geçerli fatura başlangıç tarihi",
     "CurrentInvoiceEndDate": "Geçerli fatura bitiş tarihi",
     "NumberOfAgentSeats": "Koltukların sayısı",
+    "SeatsRedeemed":"Kullanılan koltuk sayısı",
     "AgentSeats": "koltuklar",
     "YourCurrentPlan": "Mevcut planınız",
     "NextRenew": "Sonraki yenileme",

@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "Data di inizio della fattura corrente",
     "CurrentInvoiceEndDate": "Data di fine della fattura corrente",
     "NumberOfAgentSeats": "Numero di posti",
+    "SeatsRedeemed":"Posti riscattati",
     "AgentSeats": "posti",
     "YourCurrentPlan": "Il tuo piano corrente",
     "NextRenew": "Prossimo rinnovo",

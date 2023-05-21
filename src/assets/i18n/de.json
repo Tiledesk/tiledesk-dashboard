@@ -340,6 +340,7 @@
 	"CurrentInvoiceStartDate": "Aktuelles Rechnungsstartdatum",
 	"CurrentInvoiceEndDate": "Aktuelles Rechnungsenddatum",
 	"NumberOfAgentSeats": "Anzahl der Sitze",
+	"SeatsRedeemed":"Sitzplätze eingelöst",
 	"AgentSeats": "sitze",
 	"YourCurrentPlan": "Derzeit aktiv",
 	"NextRenew": "Nächste Verlängerung",

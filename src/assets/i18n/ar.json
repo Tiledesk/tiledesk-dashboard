@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "تاريخ بدء الفاتورة الحالي",
     "CurrentInvoiceEndDate": "تاريخ انتهاء الفاتورة الحالي",
     "NumberOfAgentSeats": "عدد المقاعد",
+    "SeatsRedeemed":"عدد المقاعد المستعملة",
     "AgentSeats": "مقاعد",
     "YourCurrentPlan": "خطتك الحالية",
     "NextRenew": "التجديد التالي",

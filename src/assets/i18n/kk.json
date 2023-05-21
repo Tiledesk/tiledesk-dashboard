@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "Ағымдағы шот-фактураның басталу күні",
     "CurrentInvoiceEndDate": "Ағымдағы шот-фактураның аяқталу күні",
     "NumberOfAgentSeats": "Орындар саны",
+    "SeatsRedeemed":"Орындар өтелді",
     "AgentSeats": "орындықтар",
     "YourCurrentPlan": "Сіздің ағымдағы жоспарыңыз",
     "NextRenew": "Келесі жаңарту",

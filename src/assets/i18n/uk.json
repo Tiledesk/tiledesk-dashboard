@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "Поточна дата початку виставлення рахунку",
     "CurrentInvoiceEndDate": "Поточна дата закінчення рахунку-фактури",
     "NumberOfAgentSeats": "Кількість місць",
+    "SeatsRedeemed":"Кількість використаних місць",
     "AgentSeats": "Місця",
     "YourCurrentPlan": "Ваш поточний план",
     "NextRenew": "Наступне оновлення",

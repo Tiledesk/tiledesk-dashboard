@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "Joriy hisob-fakturaning boshlanish sanasi",
     "CurrentInvoiceEndDate": "Joriy hisob-fakturaning tugash sanasi",
     "NumberOfAgentSeats": "O'rindiqlar soni",
+    "SeatsRedeemed":"Ishlatilgan o'rindiqlar soni",
     "AgentSeats": "o'rindiqlar",
     "YourCurrentPlan": "Sizning joriy rejangiz",
     "NextRenew": "Keyingi yangilash",

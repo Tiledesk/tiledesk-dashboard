@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "Aktuellt fakturastartdatum",
     "CurrentInvoiceEndDate": "Aktuellt slutdatum för faktura",
     "NumberOfAgentSeats": "Antal platser",
+    "SeatsRedeemed":"Säten inlösta",
     "AgentSeats": "säten",
     "YourCurrentPlan": "Din nuvarande plan",
     "NextRenew": "Nästa förnyelse",

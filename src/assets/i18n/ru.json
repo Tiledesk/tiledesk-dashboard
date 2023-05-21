@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "Текущая дата начала счета",
     "CurrentInvoiceEndDate": "Текущая дата окончания счета",
     "NumberOfAgentSeats": "Количество мест",
+    "SeatsRedeemed":"Выкуплены места",
     "AgentSeats": "места",
     "YourCurrentPlan": "Ваш текущий план",
     "NextRenew": "Следующее продление",

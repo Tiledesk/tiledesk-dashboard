@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "Current invoice start date",
     "CurrentInvoiceEndDate": "Current invoice end date",
     "NumberOfAgentSeats": "Number of seats",
+    "SeatsRedeemed":"Seats redeemed",
     "AgentSeats": "seats",
     "YourCurrentPlan": "Your current plan",
     "NextRenew": "Next renew",

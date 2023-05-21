@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "Fecha de inicio de la factura actual",
     "CurrentInvoiceEndDate": "Fecha de fin de la factura actual",
     "NumberOfAgentSeats": "Número de asientos",
+    "SeatsRedeemed":"Asientos canjeados",
     "AgentSeats": "asientos",
     "YourCurrentPlan": "Tu plan actual",
     "NextRenew": "Próxima renovación",

@@ -340,6 +340,7 @@
     "CurrentInvoiceStartDate": "Cari faktura başlama tarixi",
     "CurrentInvoiceEndDate": "Cari faktura bitmə tarixi",
     "NumberOfAgentSeats": "Oturacaqların sayı",
+    "SeatsRedeemed":"İstifadə olunan oturacaqların sayı",
     "AgentSeats": "oturacaqlar",
     "YourCurrentPlan": "Cari planınız",
     "NextRenew": "Növbəti yeniləmə",
