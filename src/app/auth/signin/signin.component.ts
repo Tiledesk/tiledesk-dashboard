@@ -422,9 +422,19 @@ export class SigninComponent implements OnInit {
     this.router.navigate(['forgotpsw']);
   }
 
+  // goToSignupPage() {
+  //   this.router.navigate(['signup']);
+  // }
   goToSignupPage() {
+    const storedUser = localStorage.getItem('user');
+    console.log('[SIGN-IN] GO TO SIGNUO PAGE STORED USER ',storedUser) 
+    if(storedUser) {
+      // localStorage.removeItem('user')
+      this.auth.signOut('signin');
+    }
     this.router.navigate(['signup']);
   }
+
 
 
   goToTiledekV1() {
