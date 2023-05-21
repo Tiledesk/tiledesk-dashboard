@@ -407,6 +407,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           } else {
             // this.isVisibleANA = false;
           }
+        } else if (this.prjct_profile_name !== PLAN_NAME.A && this.prjct_profile_name !== PLAN_NAME.B && this.prjct_profile_name !== PLAN_NAME.C) {
+          this.prjct_profile_name = this.prjct_profile_name + ' plan (UNSUPPORTED)'
         }
       }
       const projectCreatedAt = this.current_selected_prjct.id_project.createdAt
