@@ -15,6 +15,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 import { ProjectService } from 'app/services/project.service';
 import { Project } from 'app/models/project-model';
 import { emailDomainWhiteList } from 'app/utils/util';
+import { TitleCasePipe } from '@angular/common';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -22,7 +23,8 @@ type FormErrors = { [u in UserFields]: string };
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  styleUrls: ['./signup.component.scss'],
+  providers: [TitleCasePipe]
 })
 export class SignupComponent implements OnInit, AfterViewInit {
 
@@ -120,6 +122,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private logger: LoggerService,
     private localDbService: LocalDbService,
     private projectService: ProjectService,
+    public titleCasePipe: TitleCasePipe
   ) {
 
     const brand = brandService.getBrand();
@@ -459,6 +462,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     }
   }
 
+ 
   signup() {
     this.showSpinnerInLoginBtn = true;
     const email = this.userForm.value['email']
@@ -468,13 +472,13 @@ export class SignupComponent implements OnInit, AfterViewInit {
     if (email.includes('@')) {
       const emailBeforeAt = email.split('@')[0];
       if (emailBeforeAt && !emailBeforeAt.includes('.')) {
-        yourname = emailBeforeAt;
+        yourname = this.titleCasePipe.transform(emailBeforeAt);
         this.logger.log('[SIGN-UP] signup  yourname (use case email without dot before @) ', yourname)
         this.userForm.controls['firstName'].patchValue(yourname)
       } else if (emailBeforeAt && emailBeforeAt.includes('.')) {
         const emailBeforeAtAndFirstOfDot = email.split('.')[0];
         this.logger.log('[SIGN-UP] signup  emailBeforeAtAndFirstDot ', emailBeforeAtAndFirstOfDot)
-        yourname = emailBeforeAtAndFirstOfDot;
+        yourname = this.titleCasePipe.transform(emailBeforeAtAndFirstOfDot);
         this.logger.log('[SIGN-UP] signup  yourname (use case email with dot before @) ', yourname)
         this.userForm.controls['firstName'].patchValue(yourname)
       }
@@ -483,6 +487,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.logger.log('[SIGN-UP] signup  this.userForm ', this.userForm)
 
     this.auth.showExpiredSessionPopup(true);
+
+    // const stringOnlyFirstCharacter = this.userForm.value['firstName'].charAt(0)
+    // const stringWithoutFirstCharacter = this.userForm.value['firstName'].slice(1);
+
+    // const _first_name = stringOnlyFirstCharacter + stringWithoutFirstCharacter
 
     this.auth.signup(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['firstName'], this.userForm.value['lastName'])
 
