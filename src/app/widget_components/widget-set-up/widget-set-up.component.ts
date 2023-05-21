@@ -77,8 +77,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public secondaryColor: string;
 
   // PrimaryColor opacity
-  public primaryColorOpacityEnabled: boolean = true
-  public themeColorOpacity: string = "0.50"
+  public primaryColorOpacityEnabled: boolean = false
+  // public themeColorOpacity: string = "0.50"
+  public themeColorOpacity: string = "1"
 
   public logoUrl: string;
   public hasOwnLogo = false;
@@ -1833,6 +1834,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
 
       // console.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
+      //  console.log('[WIDGET-SET-UP] - PRJCT > widget (onInit): ', project.widget);
 
       if (project.widget) {
         this.widgetObj = project.widget;
@@ -2041,17 +2043,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR: ', this.primaryColor);
           this.primaryColorRgb = this.hexToRgb(this.primaryColor)
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
-          // if (project.widget.themeColorOpacity === 100) {
-          //   this.themeColorOpacity = "1";
-          //   console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR OPACITY: ', this.themeColorOpacity);
-          //   this.primaryColorOpacityEnabled = true
-          //   this.generateRgbaGradientAndBorder(this.primaryColorRgb);
-          // } else if (!project.widget.themeColorOpacity) {
-          //   this.themeColorOpacity = "0.50";
-          //   this.primaryColorOpacityEnabled = false
-          //   this.generateRgbaGradientAndBorder(this.primaryColorRgb);
-          // }
-
+     
         } else {
 
           // ------------------------------------------------------------------------
@@ -2069,12 +2061,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
 
         // theme color opacity
-        if (project.widget.themeColorOpacity === 100) {
+        if (!project.widget.themeColorOpacity || project.widget.themeColorOpacity === 100) {
           this.themeColorOpacity = "1";
           // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR OPACITY: ', this.themeColorOpacity);
           this.primaryColorOpacityEnabled = false
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
-        } else if (!project.widget.themeColorOpacity) {
+        } 
+        if (project.widget.themeColorOpacity === 0) {
+          // console.log('here yes project.widget.themeColorOpacity ', project.widget.themeColorOpacity)
           this.themeColorOpacity = "0.50";
           this.primaryColorOpacityEnabled = true
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
@@ -2169,8 +2163,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.primaryColor = this.widgetDefaultSettings.themeColor
         this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME COLOR: ', this.primaryColor);
         this.primaryColorRgb = this.hexToRgb(this.primaryColor);
-        this.themeColorOpacity = "0.50";
-        this.primaryColorOpacityEnabled = true;
+        this.themeColorOpacity = "1";
+        this.primaryColorOpacityEnabled = false;
 
         this.generateRgbaGradientAndBorder(this.primaryColorRgb);
 
@@ -2466,12 +2460,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.primaryColorOpacityEnabled = event.target.checked;
     if (this.primaryColorOpacityEnabled === false) {
       this.themeColorOpacity = "1";
+      // this.themeColorOpacity = "0.50"
       this.widgetObj['themeColorOpacity'] = 100;
       this.generateRgbaGradientAndBorder(this.primaryColorRgb)
       this.widgetService.updateWidgetProject(this.widgetObj)
     } else if (this.primaryColorOpacityEnabled === true) {
       this.themeColorOpacity = "0.50"
-      delete this.widgetObj['themeColorOpacity'];
+      // this.themeColorOpacity = "1"
+      this.widgetObj['themeColorOpacity'] = 0;
+      // delete this.widgetObj['themeColorOpacity'];
       this.generateRgbaGradientAndBorder(this.primaryColorRgb)
       this.widgetService.updateWidgetProject(this.widgetObj)
     }
