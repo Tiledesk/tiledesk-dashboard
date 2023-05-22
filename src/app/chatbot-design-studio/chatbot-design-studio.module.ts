@@ -115,6 +115,7 @@ import { CDSFilterComponent } from './cds-base-element/filter/filter.component';
 import { CDSDetailBotDetailComponent } from './cds-chatbot-details/detail/detail.component';
 import { CDSDetailImportExportComponent } from './cds-chatbot-details/import-export/import-export.component';
 import { WsChatbotService } from 'app/services/websocket/ws-chatbot.service';
+import { ChangeBotLangModalComponent } from 'app/components/modals/change-bot-lang/change-bot-lang.component';
 
 
 
@@ -193,7 +194,9 @@ import { WsChatbotService } from 'app/services/websocket/ws-chatbot.service';
     CDSDetailDeveloperComponent,
     CDSDetailCommunityComponent,
     CDSDetailBotDetailComponent,
-    CDSDetailImportExportComponent
+    CDSDetailImportExportComponent,
+    //DETAIL COMPONENT SECTION
+    ChangeBotLangModalComponent
   ],
   imports: [
     A11yModule,

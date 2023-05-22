@@ -1,8 +1,10 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BotsBaseComponent } from 'app/bots/bots-base/bots-base.component';
+import { ChangeBotLangModalComponent } from 'app/components/modals/change-bot-lang/change-bot-lang.component';
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { Chatbot } from 'app/models/faq_kb-model';
@@ -79,6 +81,7 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
     private notify: NotifyService,
     private sanitizer: DomSanitizer,
     private translate: TranslateService,
+    public dialog: MatDialog,
   ) {  super(); }
 
   ngOnInit(): void {
@@ -496,6 +499,20 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
         this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotSuccess'), 2, 'done');
         this.selectedChatbot.name
       });
+  }
+
+  updateBotLanguage(){
+    console.log('open modal to updateeeeee')
+    this.logger.log('openDialog')
+    const dialogRef = this.dialog.open(ChangeBotLangModalComponent, {
+      data: {
+        chatbot: this.selectedChatbot,
+        projectId: this.project._id
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.logger.log(`Dialog result: ${result}`);
+    });
   }
 
   goToRoutingAndDepts() {

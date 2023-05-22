@@ -109,13 +109,16 @@
             Language
         </label>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-
+          <div class="input-group" style="max-width: 540px;" *ngIf="depts_without_bot_array?.length > 0">
             <input id="bot-default-selected-lang" name="bot-default-selected-lang" [(ngModel)]="botDefaultSelectedLang"
-                class="input csd-chatbot-dtls-input" type="text" style="color:#808080" disabled>
-            <button id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left cds-blue-button"
-                (click)="editBot()" [disabled]="faqKb_name?.length === 0">
-                {{ "BotsAddEditPage.UpdateBotName" | translate }}
-            </button>
+            class="input csd-chatbot-dtls-input" type="text" style="color:#808080" disabled>
+  
+            <span class="input-group-btn">
+              <button id="csd-update-bot-btn" class="btn btn-primary pull-left cds-blue-button" (click)="updateBotLanguage()">
+                  {{ "Change" | translate }}
+              </button>
+            </span>
+          </div>
         </div>
 
     </div>
