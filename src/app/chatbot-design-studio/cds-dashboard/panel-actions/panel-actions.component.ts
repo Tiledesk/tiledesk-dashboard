@@ -89,7 +89,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   }
 
   onActionSelected(typeAction: TYPE_ACTION) {
-    this.logger.log('[PANEL ACTION] actionSelected ', typeAction);
+    console.log('[PANEL ACTION] actionSelected ', typeAction);
     let action: any;
     if(typeAction === TYPE_ACTION.REPLY){
       action = new ActionReply();
@@ -120,6 +120,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       action = new ActionWait();
     }
     if(typeAction === TYPE_ACTION.INTENT) {
+      action = new ActionIntentConnected()
     }
     if(typeAction === TYPE_ACTION.EMAIL) {
       action = new ActionEmail();
@@ -148,6 +149,9 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     if(typeAction === TYPE_ACTION.JSON_CONDITION){
       action = new ActionJsonCondition();
       action.groups.push( new Expression());
+    }
+    if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
+      action = new ActionAssignFunction();
     }
     if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
       action = new ActionAssignFunction();
