@@ -1094,7 +1094,7 @@
                                   <div class="dropdown pull-right">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                       <div role="button" class="served-by-avatar--others-agents"
-                                        style="position: absolute;z-index: 6;top: 3px;left:-6px">
+                                        style="position: absolute;z-index: 6;top: 0px;left:-6px">
                                         +{{agents_array?.length - 2 }}
                                       </div>
                                     </a>
@@ -1938,11 +1938,13 @@
 
                     <li *ngIf="showViewedPages" class="viewed-pages-list">
                       <ul>
-                        <li *ngFor="let page of viewedPages" style="width: calc(100% - 16px);white-space: nowrap;overflow: hidden; text-overflow: ellipsis;">
-                          <a style="font-weight: 400;margin-left: 15px;" class="viewed-pages-anchor"
-                           title="page?.viewedPageTitle" href="{{page?.viewedPageLink}}"
+                        <li *ngFor="let page of viewedPages" class="viewed-pages-wpr" style="padding-left: 8px;">
+                          <a style="font-weight: 400;" class="viewed-pages-anchor"
+                           title="{{page?.viewedPageTitle}}" href="{{page?.viewedPageLink}}"
                           target="_blank">
-                          {{page?.viewedPageTitle}}
+                           <div class="viewed-pages-dot"> </div> 
+                           {{page?.viewedPageTitle}} 
+                          <div class="viewed-pages-url">  {{page?.viewedPageLink}} </div>
                         </a>
                         </li>
                       </ul>

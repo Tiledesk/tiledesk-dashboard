@@ -2361,10 +2361,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           this.messagesList.forEach(message => {
             // this.logger.log('[WS-REQUESTS-MSGS] message attributes', message.attributes);
+            let viewedPageTitleValue = ''
+            if (message.attributes.sourceTitle) {
+              viewedPageTitleValue = message.attributes.sourceTitle
+            } else {
+             viewedPageTitleValue = "Not available"
+            }
             if (message.attributes && message.attributes.sourceTitle && message.attributes.sourcePage) {
-              const index = this.viewedPages.findIndex((e) => e.viewedPageTitle === message.attributes.sourceTitle);
+              const index = this.viewedPages.findIndex((e) => e.viewedPageLink === message.attributes.sourcePage);
+              // console.log('[WS-REQUESTS-MSGS] viewedPage index ', index )
               if (index === -1) {
-                this.viewedPages.push({ viewedPageTitle: message.attributes.sourceTitle, viewedPageLink: message.attributes.sourcePage })
+                this.viewedPages.push({ viewedPageTitle: viewedPageTitleValue, viewedPageLink: message.attributes.sourcePage })
               }
             }
           });

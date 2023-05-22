@@ -1482,7 +1482,7 @@ span .conv-svg-icon {
 
 .attributes-accordion:hover svg {
   // fill: #0049bd;
-  fill: #0566ff
+  fill: #0566ff;
 }
 
 .attributes-accordion:after {
@@ -1688,7 +1688,7 @@ span .conv-svg-icon {
   font-family: FontAwesome;
   // color: #777;
   // color: #039be5;
-  color:#64749199;
+  color: #64749199;
   font-weight: bold;
   float: right;
   // margin-left: 5px;
@@ -4563,6 +4563,32 @@ label {
 //   text-decoration: underline;
 // }
 
+.viewed-pages-wpr {
+  width: calc(100% - 20px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.viewed-pages-url {
+  margin-left: 15px;
+  font-size: 12px;
+  width: calc(100% - 20px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewed-pages-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgb(100, 116, 145);
+  display: inline-block;
+  margin-right: 3px;
+  position: relative;
+  top: -2px;
+}
+
 .ul-wpr li .action-btns-arrow {
   opacity: 1;
   height: 30px;
@@ -4794,7 +4820,7 @@ label {
 }
 .tab0-card3-content-wpr:hover svg {
   // fill: rgb(0, 73, 189);
-  fill: #0566ff
+  fill: #0566ff;
 }
 
 .tab0-card3-content-wpr,
