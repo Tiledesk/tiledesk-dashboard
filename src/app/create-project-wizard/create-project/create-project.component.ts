@@ -167,7 +167,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
         const trialStarDate = moment(new Date(this.new_project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
         // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
-        const trialEndDate = moment(new Date(this.new_project.createdAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
+        const trialEndDate = moment(new Date(this.new_project.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
         // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
 
         if (!isDevMode()) {
@@ -185,7 +185,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
                 name: this.user.firstname + ' ' + this.user.lastname,
                 email: this.user.email,
                 logins: 5,
-                plan: "Pro (trial)"
+                plan: "Scale (trial)"
               });
             } catch (err) {
               this.logger.error('Wizard Create project identify error', err);
@@ -196,7 +196,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
                 "userId": this.user._id,
                 "trial_start_date": trialStarDate,
                 "trial_end_date": trialEndDate,
-                "trial_plan_name": "Pro (trial)",
+                "trial_plan_name": "Scale (trial)",
                 "context": {
                   "groupId": this.new_project._id
                 }
@@ -208,7 +208,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
             try {
               window['analytics'].group(this.new_project._id, {
                 name: this.new_project.name,
-                plan: "Pro (trial)",
+                plan: "Scale (trial)",
               });
             } catch (err) {
               this.logger.error('Wizard Create project group error', err);

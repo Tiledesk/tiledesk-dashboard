@@ -355,10 +355,10 @@
                 </div>
               </div>
 
-              <!-- 
-              // --------------------------------------------------------------------
-              // Display more tags
-              // -------------------------------------------------------------------- -->
+               
+              <!-- -------------------------------------------------------------------- -->
+              <!-- Display more tags -->
+              <!-- -------------------------------------------------------------------- -->
               <div [id]="'more_tags_btn_for_request_' + request?.request_id" style="display: inline-block;"
                 *ngIf="request?.tags?.length > 2">
                 <a (click)="$event.stopPropagation(); displayMoreTags(request?.request_id)" style="font-size: 11px;
@@ -368,10 +368,10 @@
                 </a>
               </div>
 
-              <!-- 
-              // --------------------------------------------------------------------
-              // Tag from 3 to ... 
-              // -------------------------------------------------------------------- -->
+               
+              <!-- -------------------------------------------------------------------- -->
+              <!-- Tag from 3 to ... -->
+              <!-- -------------------------------------------------------------------- -->
               <div (click)="$event.stopPropagation(); displayLessTag(request?.request_id)"
                 [id]="'more_tags_for_request_' + request?.request_id" style="display: none"
                 *ngIf="request?.tags?.length > 2">

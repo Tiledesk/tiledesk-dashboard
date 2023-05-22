@@ -350,14 +350,15 @@
 
       <!-- ------------============ RIGHT SIDEBAR ============------------ -->
       <div class="col-sm-5">
-        <div class="card right-card card--no-border" style="padding-top:0px;">
+        <div class="card right-card card--no-border" style="padding-top:0px;margin-top: 23px;">
           <!-- style="border-bottom: 1px solid #eeeeee; padding-left:16px; padding-right:16px; height: 50px;" -->
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
-          <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
+          <div *ngIf="!showSpinner" class="card-content"
+            style="padding-top: 0px;    padding-left: 1px;padding-right: 1px;">
 
-            <div class="row">
-              <div class="col-xs-6 col-sm-6 col-md-6">
+            <div class="row" style="border-bottom: 1px solid #ddd;">
+              <div class="col-xs-12">
                 <h3 class="card_title__underlined">
                   <!-- <span class="card_title__underline" style="white-space: nowrap;">
                     {{ "ContactDetails" | translate }}
@@ -400,45 +401,93 @@
 
                     </span>
                   </span>
-                  <span class="contact-details-fullname"
+                  <span class="contact-details-fullname" (click)="openAddContactNameForm($event)"
                     [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
-                    {{ contact_details?.fullname }}
+                    <span *ngIf="contact_details?.fullname">
+                      {{ contact_details?.fullname }}
+                    </span>
+
+                    <span *ngIf="!contact_details?.fullname">
+                      n/a
+                    </span>
+
+                    <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg" width="24"
+                      height="24" viewBox="0 0 24 24" class="lead-edit--icon">
+                      <path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
+                      </path>
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+
+
                   </span>
-                  <span class="contact-details-fullname" *ngIf="!contact_details?.fullname"
+                  <!-- <span class="contact-details-fullname" *ngIf="!contact_details?.fullname"
                     [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
                     n/a
-                  </span>
+                  </span> -->
                 </h3>
+
+
               </div>
-              <div class="col-xs-6 col-sm-6 col-md-6">
+              <!-- <div class="col-xs-6 col-sm-6 col-md-6"> -->
 
-                <div class="contact-action-wpr">
-                  <div class="contact-action tool_tip" (click)='goToEditContact(contact_details?._id)'>
-                    <span class="material-icons" style="color:#8796af;">
-                      edit
-                    </span>
-                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
+              <div class="contact-action-wpr">
+                <!-- (click)='goToEditContact(contact_details?._id)' -->
+                <!-- <div class="contact-action tool_tip" (click)="openAddContactNameForm($event)">
+                  <span class="material-icons" style="color:#8796af;">
+                    edit
+                  </span>
+                  <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
                     line-height: 16px;font-size: 12px; left: -100%;">
-                      {{ "EditContact" | translate }}
-                      <i style="top: 88%;"></i>
-                    </span>
-                  </div>
+                    {{ "EditContact" | translate }}
+                    <i style="top: 88%;"></i>
+                  </span>
+                </div> -->
 
+                <div class="contact-action tool_tip" style="margin-left: 8px;"
+                  (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'>
+                  <span class="material-icons" style="color:#f44336;; margin-left: 12px">
+                    delete
+                  </span>
+                  <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
+                  line-height: 16px;font-size: 12px; left: -100%;">
+                    {{ "MoveToTrash" | translate }}
+                    <i style="top: 88%;margin-left: 12px"></i>
+                  </span>
+                </div>
 
-                  <div class="contact-action tool_tip" style="margin-left: 8px;"
-                    (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'>
-                    <span class="material-icons" style="color:#f44336;; margin-left: 12px">
-                      delete
-                    </span>
-                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
-                    line-height: 16px;font-size: 12px; left: -100%;">
-                      {{ "MoveToTrash" | translate }}
-                      <i style="top: 88%;margin-left: 12px"></i>
-                    </span>
+                <div class="lead-dropdown__menu-form" [ngStyle]="{'left':CHAT_PANEL_MODE === false ? '0px' : '-48px;' }">
+                  <div id="edit-fullname-content-form" class="dropdown__content-form">
+                    <form id="edit-fullname-form" class="contact-form">
+                      <div #editFullnameDropdown id="edit-fullname-input-wrapper" class="input-wrapper">
+                        <label id="edit-fullname-firstname-label" for="edit-fullname-firstname-input">
+                          {{'FirstName' | translate}}
+                        </label>
+                        <input id="edit-fullname-firstname-input" type="text" class="form-input" autocomplete="off"
+                          [(ngModel)]="contactNewFirstName">
+
+                        <label id="edit-fullname-lastname-label" for="edit-fullname-lastname-input">
+                          {{'LastName' | translate}}
+                        </label>
+                        <input id="edit-fullname-lastname-input" type="text" class="form-input" autocomplete="off"
+                          [(ngModel)]="contactNewLastName">
+                      </div>
+                      <div id="edit-fullname-submit-btn-wpr">
+                        <button id="edit-fullname-submit-btn" class="done--btn" type="submit"
+                          (click)="updateContactFullName()"
+                          [disabled]="!contactNewFirstName || contactNewFirstName.length < 2">
+                          {{'Done' | translate}}
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
 
-                <!-- <div style="display: none;" class="dropdown pull-right">
+
+
+              </div>
+
+              <!-- <div style="display: none;" class="dropdown pull-right">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="material-icons" style="color:rgba(0, 0, 0, 0.87); margin-top: 14px;">
                       more_vert
@@ -459,145 +508,82 @@
                     </li>
                   </ul>
                 </div> -->
-              </div>
-              <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="section-subtitle"> </div>
-              </div>
             </div>
-
-
-            <!-- <div class="row">
-              <div class="col-xs-12">
-                <span class="contact-avatar-wrapper">
-                  <span class="contact-avatar" [ngStyle]="{'background-color': fillColour }"
-                    style="float: left; margin-right: 8px;">
-                    <span style="color: #ffffff;font-size: 18px;font-weight: 400; position: relative;
-                    top: 1px;">
-                      {{ contact_fullname_initial }}
-                    </span>
-
-                  </span>
-                  <span *ngIf="CONTACT_IS_VERIFIED === true" class="tooltipx">
-                    <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="18"
-                      height="18" style="position: relative;left: -58px;top: 0px;" xml:space="preserve">
-                      <style type="text/css">
-                        .st0 {
-                          fill: none;
-                        }
-
-                        .st1 {
-                          fill: #FFFFFF;
-                        }
-
-                        .st2 {
-                          fill: #18BDF7;
-                        }
-                      </style>
-                      <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
-                      <path class="st1"
-                        d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                      <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
-                            l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                    </svg>
-                    <span class="tooltiptext-custom"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
-                  </span>
-                </span>
-                <span class="truncate"
-                  style="margin-top: 11px; display: block;font-size: 18px; margin-left: 5px;white-space: nowrap;"
-                  [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
-                  {{ contact_details?.fullname }}
-                </span>
-                <span *ngIf="!contact_details?.fullname"
-                  style="margin-top: 11px; display: block;font-size: 18px; margin-left: 5px;"
-                  [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
-                  n/a
-                </span>
-              </div>
-            </div> -->
-
-            <!-- <div class="col-xs-3">
-                <span>
-                  <span class="White__Tooltip" style="margin-top: 12px;">
-                    <i class="material-icons chat-with-agent"
-                      (click)="chatWithAgent(contact)">
-                      chat
-                    </i>
-                    <span class="White__Tooltiptext" style="font-size: 12px; white-space: nowrap;font-weight: 100;">
-                      {{ "ChatWith" | translate }}:
-                      <span style="display:block">
-                        {{ contact_details?.fullname }}
-                      </span>
-                    </span>
-                  </span>
-                </span>
+            <!-- <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="section-subtitle"> </div>
               </div> -->
+          </div>
 
-            <!-- ------------------------------------------------------ -->
-            <!-- @ Attributes decoded JWT accordion   -->
-            <!-- ------------------------------------------------------ -->
-            <div *ngIf="contact_details?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED" class="row"
-              style="padding-right: 15px; padding-left: 15px;">
-              <div class="col-sm-12 attributes-jwt-decoded-cntct-accordion-wpr" style="border-top: unset !important">
-                <p class="row-header  attributes-decoded-jwt-cntct-accordion"
-                  (click)="openAttributesDecodedJWTAccordion()"
-                  style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
-                  <i class="material-icons" style="vertical-align: middle; color: #8796af;margin-left: 6px;"> gpp_good </i>
-                  <span style="vertical-align: middle; color: #555 ">
-                    {{ "decodedJWT" | translate }}
-                  </span>
-                </p>
-                <!-- ------------------------------------------------------ -->
-                <!-- @ Attributes decoded JWT panel -->
-                <!-- ------------------------------------------------------ -->
-                <!-- attributesDecodedJWTArray -->
-                <div class="attributes-decoded-jwt-panel" style="padding: 0px 5px !important;">
-                  <div *ngFor="let attribute of  attributesDecodedJWTArrayMerged; let i = index">
-                    <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
-                      <div class="row">
-                        <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
-                          <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
-                            class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
+
+          <!-- ------------------------------------------------------ -->
+          <!-- @ Attributes decoded JWT accordion -->
+          <!-- ------------------------------------------------------ -->
+          <div *ngIf="contact_details?.attributes?.decoded_jwt && CONTACT_IS_VERIFIED" class="row"
+            style="padding-right: 15px; padding-left: 15px;">
+            <div class="col-sm-12 attributes-jwt-decoded-cntct-accordion-wpr" style="border-top: unset !important">
+              <p class="row-header  attributes-decoded-jwt-cntct-accordion"
+                (click)="openAttributesDecodedJWTAccordion()"
+                style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
+                <i class="material-icons" style="vertical-align: middle; color: #8796af;margin-left: 6px;"> gpp_good
+                </i>
+                <span style="vertical-align: middle; color: #555 ">
+                  {{ "decodedJWT" | translate }}
+                </span>
+              </p>
+              <!-- ------------------------------------------------------ -->
+              <!-- @ Attributes decoded JWT panel -->
+              <!-- ------------------------------------------------------ -->
+              <!-- attributesDecodedJWTArray -->
+              <div class="attributes-decoded-jwt-panel" style="padding: 0px 5px !important;">
+                <div *ngFor="let attribute of  attributesDecodedJWTArrayMerged; let i = index">
+                  <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+
+                    <div class="row">
+                      <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                        <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
+                          class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
                               font-size: 11px;"> {{Attributes | translate}} </div>
-                          <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes"
-                            [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
-                            {{attribute?.attributeName }}:
-                          </div>
-
-                          <div aria-expanded="false" [id]="attribute?.attributeName +'_value'" class="attribute"
-                            [ngClass]="{'attribute_cutted_text': !attribute?.decodedJWTType}">
-                            {{attribute?.attributeValue }}
-                          </div>
-
+                        <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes"
+                          [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
+                          {{attribute?.attributeName }}:
                         </div>
-                        <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
-                        <!-- [ngClass]="{'down' : attributeFullText === true}" -->
-                        <!-- white-space: nowrap;width: 1%; -->
-                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
-                          style="text-align: right;">
-                          <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
-                            style="cursor: pointer; color: #039be5; font-size:18px;"
-                            (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
-                            keyboard_arrow_down
-                          </i>
 
+                        <div aria-expanded="false" [id]="attribute?.attributeName +'_value'" class="attribute"
+                          [ngClass]="{'attribute_cutted_text': !attribute?.decodedJWTType}">
+                          {{attribute?.attributeValue }}
                         </div>
+
+                      </div>
+                      <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
+                      <!-- [ngClass]="{'down' : attributeFullText === true}" -->
+                      <!-- white-space: nowrap;width: 1%; -->
+                      <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                        style="text-align: right;">
+                        <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
+                          style="cursor: pointer; color: #039be5; font-size:18px;"
+                          (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
+                          keyboard_arrow_down
+                        </i>
+
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div> <!-- ./ end attributes decoded JWT accordion-->
+            </div>
+          </div> <!-- ./ end attributes decoded JWT accordion-->
 
 
 
-            <div class="row" style="margin-top:5px">
+          <div class="row" style="margin-top:5px">
 
-              <!-- --------------------------------------------------------------------- -->
-              <!-- Chat With -->
-              <!-- --------------------------------------------------------------------- -->
-              <!-- <div class="col-sm-12">
+            <appdashboard-contact-info [contact_details]="contact_details"> </appdashboard-contact-info>
+
+            <!-- --------------------------------------------------------------------- -->
+            <!-- Chat With -->
+            <!-- --------------------------------------------------------------------- -->
+            <!-- <div class="col-sm-12">
                 <button id="btn-chat-with" type="button" class="btn btn-primary btn-simple btn-xs pull-left"
                   (click)="chatWithAgent(contact)">
                   <i class="material-icons"
@@ -607,25 +593,19 @@
                 <span class="chat-with-fullname"> {{ contact_details?.fullname }}</span>
               </div> -->
 
-              <!-- --------------------------------------------------------------------- -->
-              <!-- email -->
-              <!-- --------------------------------------------------------------------- -->
-              <div class="col-sm-12 contact-email-col-12">
-                <p style="margin-bottom: 0px;margin-top: 6px; ">
-                  <span class="tool_tip">
-                    <i class="material-icons right-sidebar--m-icon"
-                      (click)='goToEditContact(contact_details?._id)'>email</i>
-
-
-                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
-                      line-height: 16px;">
-                      {{ "ContactEmail" | translate }}
-                      <span style="display: block; font-size: 11px;font-weight: 300;"> {{'ClickToEdit' | translate}}
-                      </span>
-                      <i style="top: 88%;"></i>
-                    </span>
-                  </span>
-
+            <!-- --------------------------------------------------------------------- -->
+            <!-- Email (old) -->
+            <!-- --------------------------------------------------------------------- -->
+            <!-- <div class="col-sm-12 contact-email-col-12">
+                <p style="margin-bottom: 8px;margin-top: 6px; ">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px" fill="#8796af"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'ContactEmail' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                    style="vertical-align: middle; cursor: pointer;" (click)='goToEditContact(contact_details?._id)'>
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path
+                      d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 4.99L4 6h16zm0 12H4V8l8 5 8-5v10z" />
+                  </svg>
                   <a style="font-size: 14px; color: #0f62ff !important;font-weight: 400;" target="_blank"
                     *ngIf="contact_details?.email" href="mailto:{{contact_details?.email}}">
                     {{ contact_details?.email }}
@@ -635,28 +615,23 @@
                   </span>
                 </p>
               </div>
-            </div>
+            </div> -->
 
 
             <!-- --------------------------------------------------------------------- -->
-            <!-- Company -->
+            <!-- Company (old) -->
             <!-- --------------------------------------------------------------------- -->
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-sm-12">
-                <p style="margin-bottom: 0px;margin-top: 6px;">
-                  <span class="tool_tip">
-                    <i class="material-icons right-sidebar--m-icon"
-                      (click)='goToEditContact(contact_details?._id)'>business</i>
-
-                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;    text-align: center;
-                      line-height: 16px;">
-                      {{ "Company" | translate }}
-                      <span style="display: block; font-size: 11px;font-weight: 300;"> {{'ClickToEdit' | translate}}
-                      </span>
-                      <i style="top: 88%;"></i>
-                    </span>
-
-                  </span>
+                <p style="margin-bottom: 8px;margin-top: 6px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px" fill="#8796af"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Company' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100"
+                    style="vertical-align: middle; cursor: pointer;" (click)='goToEditContact(contact_details?._id)'>
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path
+                      d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z" />
+                  </svg>
                   <span *ngIf="contact_details?.company" class="contact-sidebar-label">
                     {{ contact_details?.company }}
                   </span>
@@ -665,46 +640,45 @@
                   </span>
                 </p>
               </div>
-            </div>
+            </div> -->
 
             <!-- --------------------------------------------------------------------- -->
-            <!-- Address -->
+            <!-- Address (old) -->
             <!-- --------------------------------------------------------------------- -->
-            <div class="row" style="margin-top:6px">
+            <!-- <div class="row">
               <div class="col-sm-12">
-                <p style="margin-bottom: 0px;">
+                <p style="margin-bottom: 8px;margin-top: 6px;">
                   <span style="position: relative;top: 1px;">
                     <div class="row">
                       <div class="col-xs-10" style="padding-right:10px">
-                        <span class="tool_tip">
-                          <i class="material-icons right-sidebar--m-icon"
-                            (click)='goToEditContactAddress(contact_details?._id)'>person_pin_circle</i>
 
-                          <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;    text-align: center;
-                            line-height: 16px;">
-                            {{ "Address" | translate }}
-                            <span style="display: block; font-size: 11px;font-weight: 300;">
-                              {{'ClickToEdit' | translate}} </span>
-                            <i style="top: 88%;"></i>
-                          </span>
-                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px"
+                          fill="#8796af" matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Address' | translate }}"
+                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                          style="vertical-align: middle; cursor: pointer;"
+                          (click)='goToEditContactAddress(contact_details?._id)'>
+                          <path d="M0 0h24v24H0z" fill="none" />
+                          <path
+                            d="M12 11c1.33 0 4 .67 4 2v.16c-.97 1.12-2.4 1.84-4 1.84s-3.03-.72-4-1.84V13c0-1.33 2.67-2 4-2zm0-1c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 .2C18 6.57 15.35 4 12 4s-6 2.57-6 6.2c0 2.34 1.95 5.44 6 9.14 4.05-3.7 6-6.8 6-9.14zM12 2c4.2 0 8 3.22 8 8.2 0 3.32-2.67 7.25-8 11.8-5.33-4.55-8-8.48-8-11.8C4 5.22 7.8 2 12 2z" />
+                        </svg>
 
                         <span style=" font-weight: 500; font-size: 12px;">
 
-                          <!-- ------------------------------------ -->
-                          <!-- Street Address -->
-                          <!-- ------------------------------------ -->
+                           ------------------------------------ 
+                           Street Address 
+                           ------------------------------------ 
                           <span *ngIf="!showAllAddress">
                             <span class="contact-sidebar-label" (click)="toggleAddress()" style="cursor: pointer;">
                               {{streetAddress}} ...
                             </span>
-                          </span> <!-- ./end !showAllAddress -->
+                          </span>
+                          <!- - ./end !showAllAddress - ->
 
                           <span *ngIf="showAllAddress" style="word-wrap: break-word;">
 
-                            <!-- ------------------------------------ -->
-                            <!-- Street Address -->
-                            <!-- ------------------------------------ -->
+                              ------------------------------------
+                             Street Addres
+                             ------------------------------------ 
                             <span style="display: block; margin-left: 20px;">
                               <span class="address-label">
                                 {{ 'StreetAddress' | translate }}:
@@ -714,9 +688,9 @@
                               </span>
                             </span>
 
-                            <!-- ------------------------------------ -->
-                            <!-- City -->
-                            <!-- ------------------------------------ -->
+                            ------------------------------------ 
+                              City
+                              ------------------------------------ 
                             <span style="display: block; margin-left: 20px;">
                               <span class="address-label">
                                 {{ 'City' | translate }}:
@@ -726,9 +700,9 @@
                               </span>
                             </span>
 
-                            <!-- ------------------------------------ -->
-                            <!-- State (field name 'region') -->
-                            <!-- ------------------------------------ -->
+                            ------------------------------------ 
+                             State (field name 'region') 
+                            ------------------------------------ 
                             <span style="display: block; margin-left: 20px;">
                               <span class="address-label">
                                 {{ 'State' | translate }}:
@@ -738,9 +712,9 @@
                               </span>
                             </span>
 
-                            <!-- ------------------------------------ -->
-                            <!-- PostalCode (field name 'zipcode') -->
-                            <!-- ------------------------------------ -->
+                             ------------------------------------ 
+                             PostalCode (field name 'zipcode') 
+                          ------------------------------------ 
                             <span style="display: block; margin-left: 20px;">
                               <span class="address-label">
                                 {{ 'PostalCode' | translate }}:
@@ -750,9 +724,9 @@
                               </span>
                             </span>
 
-                            <!-- ------------------------------------ -->
-                            <!-- PostalCode (field name 'zipcode') -->
-                            <!-- ------------------------------------ -->
+                             ------------------------------------
+                             Country
+                             ------------------------------------
                             <span style="display: block; margin-left: 20px;">
                               <span class="address-label">
                                 {{ 'Country' | translate }}:
@@ -761,7 +735,7 @@
                                 {{country}}
                               </span>
                             </span>
-                          </span> <!-- ./end showAllAddress -->
+                          </span> 
                         </span>
                       </div>
 
@@ -774,29 +748,26 @@
                   </span>
                 </p>
               </div>
-            </div>
+            </div> -->
 
 
             <!-- --------------------------------------------------------------------- -->
             <!-- Phone -->
             <!-- --------------------------------------------------------------------- -->
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-sm-12">
 
-                <p style="margin-bottom: 0px;margin-top: 6px;">
-                  <span class="tool_tip">
-                    <i class="material-icons right-sidebar--m-icon"
-                      (click)='goToEditContactPhone(contact_details?._id)'>call</i>
-
-                    <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap; text-align: center;
-                      line-height: 16px;">
-                      {{ "PhoneNumber" | translate }}
-                      <span style="display: block; font-size: 11px;font-weight: 300;"> {{'ClickToEdit' | translate}}
-                      </span>
-                      <i style="top: 88%;"></i>
-                    </span>
-
-                  </span>
+                <p style="margin-bottom:8px;margin-top: 0px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px" fill="#8796af"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'PhoneNumber' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                    style="vertical-align: middle; cursor: pointer;"
+                    (click)='goToEditContactPhone(contact_details?._id)'>
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path
+                      d="M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.1-.04-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.45-5.15-3.76-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z" />
+                  </svg>
+                
                   <span *ngIf="contact_details?.phone" class="contact-sidebar-label">
                     {{ contact_details?.phone }}
                   </span>
@@ -805,37 +776,29 @@
                   </span>
                 </p>
               </div>
-            </div>
+            </div> -->
 
 
             <!-- -------------------------------------- -->
             <!-- Note -->
             <!-- -------------------------------------- -->
-            <div class="row" style="margin-top:6px">
+            <!-- <div class="row">
               <div class="col-sm-12" style="padding-bottom: 4px;">
-                <p style="margin-bottom: 0px;">
+                <p style="margin-bottom: 8px; margin-top: 6px;">
 
                   <span class="showPosts tool_tip">
                     <span class="greekCross">
                       <span style="white-space: nowrap; margin-right: 3px;">
-                        <span class="tool_tip">
-                          <i class="material-icons right-sidebar--m-icon"
-                            (click)='goToEditContactNote(contact_details?._id)'>subject</i>
 
-                          <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap; text-align: center;
-                            line-height: 16px;">
-                            Note
-                            <span style="display: block; font-size: 11px;font-weight: 300;">
-                              {{'ClickToEdit' | translate}} </span>
-                            <i style="top: 88%;"></i>
-                          </span>
-
-                        </span>
-
-                        <!-- <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Poppins', sans-serif !important;">
-                          Note
-                        </span> -->
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px"
+                          fill="#8796af" matTooltipClass="custom-mat-tooltip" matTooltip="Note" #tooltip="matTooltip"
+                          matTooltipPosition='right' matTooltipHideDelay="100"
+                          style="vertical-align: middle; cursor: pointer;"
+                          (click)='goToEditContactNote(contact_details?._id)'>
+                          <path d="M0 0h24v24H0V0z" fill="none" />
+                          <path d="M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z" />
+                        </svg>
+        
 
                       </span>
                     </span>
@@ -847,31 +810,28 @@
                   </span>
                 </p>
               </div>
-            </div>
+            </div> -->
 
             <!-- --------------------------------------------------------------------- -->
             <!-- Created At -->
             <!-- --------------------------------------------------------------------- -->
-            <div class="row" style="margin-top:6px">
+            <!-- <div class="row">
               <div class="col-sm-12">
-                <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
-                  <span class="tool_tip">
+                <p style="margin-bottom: 8px;margin-top:6px">
 
-                    <i class="material-icons right-sidebar--m-icon">calendar_today</i>
-
-
-                    <span class="top"
-                      style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
-                      {{ "StartDate" | translate }}
-                      <i style="top: 88%;"></i>
-                    </span>
-
-                  </span>
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="36px" fill="#8796af"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'StartDate' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                    style="vertical-align: middle;">
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path
+                      d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V10h16v11zm0-13H4V5h16v3z" />
+                  </svg>
+          
 
                   <span *ngIf="contact_details?.createdAt" class="contact-sidebar-label">
-                    {{ contact_details?.createdAt | amTimeAgo }}
-                    <!-- <span>({{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}) </span> -->
-                    <span>({{ contact_details?.createdAt | amDateFormat: 'LLL'}}) </span>
+                   
+                    <span style="margin-left: 4px;">{{ contact_details?.createdAt | amDateFormat: 'LLL'}} </span>
 
                   </span>
                   <span *ngIf="!contact_details?.createdAt" class="contact-sidebar-label">
@@ -880,13 +840,13 @@
 
                 </p>
               </div>
-            </div>
+            </div> -->
 
 
             <!-- --------------------------------------------------------------------- -->
             <!-- Lead ID -->
             <!-- --------------------------------------------------------------------- -->
-            <div class="row" style="margin-top:6px">
+            <!-- <div class="row" style="margin-top:6px">
               <div class="col-sm-12">
                 <p style="margin-bottom: 0px;">
                   <span class="tool_tip">
@@ -905,17 +865,77 @@
                   </span>
                 </p>
               </div>
-            </div>
+            </div> -->
+            <!-- ------------------------ -->
+            <!-- @ Lead tag -->
+            <!-- ------------------------ -->
+            <!-- <div *ngIf="isVisibleLBS === true" class="row" style="margin-top:6px">
+              <div class="col-sm-12">
+                <div class="lead-tag-content-wpr">
 
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 25px; height: 25px"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Tags.Tags' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                    <path
+                      d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                  </svg>
+
+                  <form>
+                    <div class="lead-tags--container-wpr">
+                      <div class="lead-tags--container">
+                        <div class="lead-tag" *ngFor="let tag of contactTags" role="button">
+
+      
+                          <div (click)="removeTag(tag)">
+                            <div class="icon-container" style="display: inline-block;">
+                              <svg
+                                style="width: 13px; height: auto;position:absolute;margin-top: 6px; margin-left: 2px; fill:#757575"
+                                aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                                class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                                <path class="tag_icon_in_ws_msgs"
+                                  d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                </path>
+                              </svg>
+                              <span class="lead-tag-delete">
+                                <i class="material-icons" style="font-size: 16px;"> close </i>
+                              </span>
+                            </div>
+                            <span class="lead-assigned-tag">{{tag}}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="ng-select-tags-wpr">
+                        <ng-select class="ng-select-tags" id="select-tag" style="top: -4px;" #ngSelect
+                          (change)="addTag(tag)" [clearable]="false" [(ngModel)]="tag" bindLabel="tag"
+                          [items]="contactTempTags" [clearSearchOnAdd]="true" [hideSelected]="true"
+                          placeholder="Add tag" addTagText="Create New" [addTag]="createNewTag"
+                          (keyup.enter)="ngSelect.close()" notFoundText="No tags found. Type to create a tag">
+
+                          <ng-template ng-label-tmp let-item="item">
+                            {{item.tag}}
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.tag}}
+                          </ng-template>
+                        </ng-select>
+                      </div>
+
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div> -->
 
             <!-- -------------------------------------- -->
             <!-- @ ATTRIBUTES -->
             <!-- -------------------------------------- -->
             <!-- style="margin-bottom: 8px; color: #566787; border-top: 1px solid #e1eef4; padding-top: 8px; font-weight: 400; font-size: 18px" -->
-            <div *ngIf="contact_details?.attributes" class="row"
-              style="margin-top: 6px; padding-left: 15px;padding-right: 15px;">
-              <div class="col-sm-12"
-                style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #eeeeee;border-top: 1px solid #eeeeee;">
+            <div id="attributes-row" *ngIf="contact_details?.attributes" class="row"
+              [ngStyle]="{ 'margin-top': tagContainerElementHeight }">
+              <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
                 <p class="row-header attributes-accordion" (click)="toggleAttributes()"
                   style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
 
@@ -923,18 +943,9 @@
                     <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18"
                       style="enable-background:new 0 0 18 18; width: 24px; height: 24px;margin-left: 6px;"
-                      xml:space="preserve">
-                      <style type="text/css">
-                        .st0_attributes_icon {
-                          fill: none;
-                        }
-
-                        .st1_attributes_icon {
-                          fill: #8796af;
-                        }
-                      </style>
+                      xml:space="preserve" fill="none">
                       <g>
-                        <path class="st0_attributes_icon" d="M0,0h18v18H0V0z" />
+                        <path fill="none" d="M0,0h18v18H0V0z" />
                       </g>
                       <polygon points="31.3,2.1 29.7,2.1 29.7,0.5 34.2,-4 35.8,-2.4 " />
                       <path
@@ -950,14 +961,12 @@
                     </svg>
                   </span>
 
-                  <span style="position: relative;top: -7px;color: #555">
+                  <span style="position: relative;top: -7px;color: #555;margin-left: 8px;">
                     {{ "Attributes" | translate }}
                   </span>
 
                   <span style="float: right;" (click)="toggleAttributes()">
-                    <i id="attributes_arrow_down" class="material-icons rotate"
-                      style="cursor: pointer; color: #039be5; font-size:25px;position:relative; top:2px; left: 2px;"
-                      (click)="toggleAttributes()">
+                    <i id="lead-attributes_arrow_down" class="material-icons rotate" (click)="toggleAttributes()">
                       keyboard_arrow_down
                     </i>
                   </span>

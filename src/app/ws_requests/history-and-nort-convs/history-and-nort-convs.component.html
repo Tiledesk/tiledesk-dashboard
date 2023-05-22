@@ -90,8 +90,6 @@
               </ul>
             </div>
           </div>
-
-
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - central section -->
           <!-- ---------------------------------------------------------------- -->
@@ -283,12 +281,12 @@
                       <ng-template ng-label-tmp let-item="item">
                         <!-- <img height="15" width="15" [src]="item.avatar" /> -->
                         <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div>
-                        <span>{{item.name}}</span>
+                        <span style="margin-left:6px;">{{item.name}}</span>
                       </ng-template>
                       <ng-template ng-option-tmp let-item="item" let-index="index">
                         <!-- <img height="15" width="15" [src]="item.avatar" /> -->
                         <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div>
-                        <span>{{item.name}}</span>
+                        <span style="margin-left:6px;">{{item.name}}</span>
                       </ng-template>
                     </ng-select>
                   </div>

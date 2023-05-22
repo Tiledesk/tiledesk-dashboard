@@ -70,6 +70,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   selectedContactEmail: string;
   selectedContactEmailValue: string;
+  selectedContactTAG: string;
+  selectedContactTAGValue: string;
   IS_CURRENT_USER_AGENT: boolean;
   IS_CURRENT_USER_OWNER: boolean;
   USER_ROLE: any;
@@ -111,6 +113,10 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   isChromeVerGreaterThan100: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+  tagsArray = [];
+  emailArray = [];
+  HAS_SEARCHED: boolean = false
+  fullTextIsAValidEmail: boolean = false;
   constructor(
     private contactsService: ContactsService,
     private router: Router,
@@ -128,9 +134,12 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getOSCODE();
     // this.auth.checkRoleForCurrentProject();
     this.getContacts();
+    this.getAllContacts()
     this.getCurrentProject();
     this.getProjectUserRole();
     this.getProjectPlan();
+    this.selectedContactTAG
+    // console.log('oninit this.selectedContactTAG', this.selectedContactTAG)
 
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
 
@@ -154,6 +163,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
     })
   }
+
+
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -282,7 +293,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   translatePlaceholder() {
-    this.translate.get('SearchYourContacts')
+    // this.translate.get('SearchYourContacts')
+    this.translate.get('SearchByFirstAndOrLastName')
       .subscribe((text: string) => {
         this.searchInYourContactsPlaceholder = text;
         // this.logger.log('[CONTACTS-COMP] + + + translatePlaceholder SearchYourContacts', text)
@@ -416,9 +428,19 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getContacts()
   }
 
+  validateEmail(appSumoActivationEmail) {
+    var validateEmailRegex = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/
+    if (appSumoActivationEmail.match(validateEmailRegex)) {
+      // console.log('Valid email address!')
+      return true;
+    } else {
+      // console.log('Invalid email address!')
+      return false;
+    }
+  }
+
   search() {
-
-
+    this.HAS_SEARCHED = true
     // ---------------------------------------------------------------------
     // Programmatically close Dropdown Menu
     // ---------------------------------------------------------------------
@@ -447,52 +469,50 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.fullText) {
 
-      this.logger.log('[CONTACTS-COMP] - SEARCH FULLTEXT CONTAINS email: ', this.fullText.includes('email:'));
-      // this.logger.log('!!!! CONTACTS - SEARCH FULLTEXT CONTAINS index of email: ', this.fullText.substring(0, this.fullText.indexOf('email:')));
+      this.fullTextIsAValidEmail = this.validateEmail(this.fullText)
+      // console.log('[CONTACTS-COMP] - FULL TEXT IS A VALID EMAIL: ',  this.fullTextIsAValidEmail);
+      
 
-      // if (this.fullText.includes('email:') === true) {
+      if ( this.fullTextIsAValidEmail === false) {
+        this.fullTextValue = this.fullText;
+      } else {
+        this.selectedContactEmail = this.fullText;
+        this.fullTextValue = '';
+        this.fullText = undefined 
+      }
 
-      //   const cleanedFullText = this.fullText.substring(0, this.fullText.indexOf('email:'))
-      //   this.logger.log('!!!! CONTACTS - FULLTEXT - cleanedFullText', cleanedFullText);
-      //   this.fullText = cleanedFullText;
-      // }
-
-
-      this.fullTextValue = this.fullText;
-
-
-      this.logger.log('[CONTACTS-COMP] - SEARCH FOR FULL TEXT ', this.fullTextValue);
     } else {
       this.logger.log('[CONTACTS-COMP] - SEARCH FOR FULL TEXT ', this.fullText);
       this.fullTextValue = ''
 
-      if (this.selectedContactEmail) {
+      if (this.selectedContactEmail || this.selectedContactTAG) {
         this.searchInYourContactsPlaceholder = "ADVANCED SEARCH"
       }
     }
 
     if (this.selectedContactEmail) {
       this.selectedContactEmailValue = this.selectedContactEmail;
-      this.logger.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactEmail ', this.selectedContactEmailValue);
+      this.logger.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactEmailValue ', this.selectedContactEmailValue);
     } else {
-      this.logger.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactEmail ', this.selectedContactEmailValue);
+
       this.selectedContactEmailValue = ''
+      this.logger.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactEmailValue ', this.selectedContactEmailValue);
     }
 
-    this.queryString = 'full_text=' + this.fullTextValue + '&email=' + this.selectedContactEmailValue;
+    if (this.selectedContactTAG) {
+      this.selectedContactTAGValue = this.selectedContactTAG;
+      this.logger.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactTAGValue ', this.selectedContactTAGValue);
+    } else {
+
+      this.selectedContactTAGValue = ''
+      this.logger.log('[CONTACTS-COMP]  - SEARCH FOR selectedContactTAGValue ', this.selectedContactTAGValue);
+    }
+
+    this.queryString = 'full_text=' + this.fullTextValue + '&email=' + this.selectedContactEmailValue + '&tags=' + this.selectedContactTAGValue
     this.logger.log('[CONTACTS-COMP] - SEARCH - QUERY STRING ', this.queryString);
 
     this.getContacts();
 
-
-    // let search_params_to_dislay_in_fulltext = ''
-    // search_params_to_dislay_in_fulltext = this.fullTextValue
-    // if (this.selectedContactEmailValue) {
-
-    //   search_params_to_dislay_in_fulltext = this.fullTextValue + ' email:' + this.selectedContactEmailValue
-    // }
-
-    // this.fullText = search_params_to_dislay_in_fulltext
   }
 
   // Not used
@@ -543,6 +563,12 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   clearFullText() {
+    this.HAS_SEARCHED = false;
+    const clearSearchBtnEle = <HTMLInputElement>document.querySelector('#clear-search-btn');
+    this.logger.log('[CONTACTS-COMP] clearSearchBtnEle', clearSearchBtnEle)
+    if (clearSearchBtnEle) {
+      clearSearchBtnEle.blur()
+    }
 
     if (this.searchInYourContactsPlaceholder === "ADVANCED SEARCH") {
 
@@ -561,6 +587,9 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.selectedContactEmail = '';
     }
 
+    if (this.selectedContactTAG) {
+      this.selectedContactTAG = '';
+    }
 
     this.queryString = '';
     this.logger.log('[CONTACTS-COMP] - CLEAR SEARCH - QUERY STRING ', this.queryString);
@@ -577,8 +606,64 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pageNo = 0
     this.fullText = '';
     this.selectedContactEmail = '';
+    this.selectedContactTAG = undefined;
     this.queryString = '';
     this.getContacts();
+  }
+
+  // ------------------------------------------------------------------------------
+  // @ Tags - on change tags get selected tag name
+  // ------------------------------------------------------------------------------
+  tagNameSelected() {
+    this.logger.log('[CONTACTS-COMP] - selectedContactTAG ', this.selectedContactTAG);
+  }
+
+  emailSelected () {
+    this.logger.log('[CONTACTS-COMP] - selectedContactEmail ', this.selectedContactEmail);
+  }
+
+  getAllContacts() {
+    this.contactsService.getAllLeadsActiveWithLimit(10000).subscribe((res: any) => {
+
+      const allContacts = res['leads'];
+      this.logger.log('[CONTACTS-COMP] - GET ALL LEADS - LEADS  ', allContacts);
+      allContacts.forEach(contact => {
+        // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
+        if (contact && contact.tags.length > 0) {
+          // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags ', contact.tags);
+          contact.tags.forEach((tag: string) => {
+            // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
+            let index = this.tagsArray.findIndex(x => x.name == tag)
+            // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag index', index);
+            if (index === -1) {
+              this.tagsArray.push({ 'name': tag });
+            } else {
+              // console.log("object already exists ")
+            }
+          });
+        }
+        // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > TAG ARRAY ', this.tagsArray);
+        this.tagsArray = this.tagsArray.slice(0)
+
+
+        // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
+        if (contact && contact.email) {
+          // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > email ', contact.email);
+          this.emailArray.push({ 'name': contact.email });
+        }
+
+        // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > EMAIL ARRAY ', this.emailArray);
+        this.emailArray = this.emailArray.slice(0);
+      });
+
+      // console.log('[CONTACTS-COMP] - GET ALL LEADS - RES  ', allContacts);
+    }, (error) => {
+      this.logger.error('[CONTACTS-COMP] - GET ALL LEADS - ERROR  ', error);
+
+    }, () => {
+      this.logger.log('[CONTACTS-COMP] - GET ALL LEADS * COMPLETE *');
+
+    });
   }
 
   /**
@@ -593,6 +678,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.contacts = leads_object['leads'];
       this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
+ 
 
       const contactsCount = leads_object['count'];
       this.logger.log('[CONTACTS-COMP] - CONTACTS COUNT ', contactsCount);
@@ -676,6 +762,33 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  // --------------------------------------------------
+  // @ Tags - display more tags
+  // --------------------------------------------------
+  displayMoreTags(contactid) {
+    const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_${contactid}`);
+    this.logger.log("[WS-REQUESTS-LIST][SERVED] - displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
+    hiddenTagsElem.style.display = "inline-block";
+
+    const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_${contactid}`);
+    this.logger.log("[WS-REQUESTS-LIST][SERVED] - displayMoreTags - moreTagsBtn ", moreTagsBtn);
+    moreTagsBtn.style.display = "none";
+
+  }
+
+  // --------------------------------------------------
+  // @ Tags - display less tags
+  // --------------------------------------------------
+  displayLessTag(contactid) {
+    const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_${contactid}`);
+    this.logger.log("[WS-REQUESTS-LIST][SERVED] - displayLessTag - hiddenTagsElem ", hiddenTagsElem);
+    hiddenTagsElem.style.display = "none";
+
+    const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_${contactid}`);
+    this.logger.log("[WS-REQUESTS-LIST][SERVED] - displayLessTag - moreTagsBtn ", moreTagsBtn);
+    moreTagsBtn.style.display = "inline-block";
+  }
+
   getProjectUserById(contact, leadid) {
     this.usersService.getProjectUserById(leadid).subscribe((projectUser: any) => {
 
@@ -702,6 +815,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pageNo = 0
     this.fullText = '';
     this.selectedContactEmail = '';
+    this.selectedContactTAG = '';
     this.queryString = '';
     this.hasClickedTrashed = true
     this.getContacts()
@@ -712,6 +826,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pageNo = 0
     this.fullText = '';
     this.selectedContactEmail = '';
+    this.selectedContactTAG = ''
     this.queryString = '';
     this.hasClickedTrashed = false;
     this.getContacts();
@@ -928,10 +1043,10 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       ) {
         if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableOnlyWithPaidPlans()
-      } else if (this.appSumoProfile) {
-        this.presentModalAppSumoFeautureAvailableFromBPlan()
-      }
+          this.presentModalFeautureAvailableOnlyWithPaidPlans()
+        } else if (this.appSumoProfile) {
+          this.presentModalAppSumoFeautureAvailableFromBPlan()
+        }
         // console.log('[CONTACTS-COMP] -  EXPORT DATA IS NOT AVAILABLE ')
       } else if (
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
@@ -1028,14 +1143,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
               } else if (this.profile_name === PLAN_NAME.C) {
                 this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
               }
-    
+
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.profile_name === 'free') {  // 
               this.router.navigate(['project/' + this.projectId + '/pricing']);
               // this.notify.presentContactUsModalToUpgradePlan(true);
             }
-    
+
           } else {
             this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
@@ -1118,7 +1233,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     // const url = this.CHAT_BASE_URL + '?' + 'recipient=' + contact._id + '&recipientFullname=' + contact.fullname;
-    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + contact._id + '/' + contact.fullname + '/new'
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + contact._id + '/' + contact.fullname + '/active'
     this.logger.log("[CONTACTS-COMP] CHAT WITH AGENT -> CHAT URL ", url);
     window.open(url, '_blank');
   }

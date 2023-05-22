@@ -1,0 +1,70 @@
+<div class="box-step-1">
+
+
+    <div class="fade-in-left col-left">
+
+      <div *ngIf="!DISPLAY_SPINNER_SECTION">
+        <h1 class="title">{{'OnboardPage.CustomizeWelcomeMessage' | translate}}</h1>
+        <p class="description">
+          {{'OnboardPage.TitleWelcomeMessage' | translate}}
+        </p>  
+        <div>
+          <form>
+            <div class="box-textarea" [ngClass]="{'error' : messegeError}">
+              <div class="header-textarea">
+                <label class="label-textarea" for="message">
+                  <span class="text-label-textarea">{{'OnboardPage.LabelWelcomeMessage' | translate}}</span>
+                </label>
+                <p class="num-chars">{{numChars}}/{{limitChars}}</p>
+              </div>
+              <textarea rows="4" name="message" type="text" 
+              data-testid="onboarding-chatbot-wizard-message-textarea" 
+              [(ngModel)]="welcomeMessage"   
+              (ngModelChange)="messageChange($event)">
+              {{welcomeMessage}}
+              </textarea>
+              <div class="input-error">
+                <span class="msg-error">{{'OnboardPage.ErrorCharsLimit' | translate}}</span>
+              </div>
+              
+            </div>
+          </form>
+        </div>   
+      </div>
+
+      <div *ngIf="!DISPLAY_SPINNER_SECTION"  class="row-navigation">
+        <div class="navigation-btn">
+          
+          <button 
+            type="button" 
+            class="btn-back" 
+            (click)="goToPrevPage()">
+            <svg viewBox="0 0 24 24" focusable="false" class="chakra-icon css-abioxt" role="presentation" aria-hidden="true"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg>
+          </button>
+
+          <button 
+            class="btn btn-lg btn-primary"
+            (click)="goToNextPage()">
+            {{'OnboardPage.Next' | translate}}
+          </button>
+
+        </div>
+      </div>
+        
+    </div>
+
+    <div class="fade-in-right col-right">
+      <div class="container-webchat">
+          <appdashboard-widget-chat 
+            [HAS_FOCUSED_ONLINE_MSG]="true"
+            [IS_ONBOARDING_PAGE]="true"
+            [onlineMsg]="welcomeMessage"
+            [projectName]="projectName"
+          ></appdashboard-widget-chat>
+      </div>  
+    </div>
+
+    
+
+
+</div> 

@@ -610,6 +610,37 @@ export class NotifyService {
 
   }
 
+  presentModalOnlyOwnerCanManageTSMTPsettings(onlyOwnerCanManageSMTPSettings: string, learnMoreAboutDefaultRoles: string) {
+    const el = document.createElement('div')
+    el.innerHTML = onlyOwnerCanManageSMTPSettings + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+  }
+
+  presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings (onlyOwnerCanAdvencedProjectSettings: string, learnMoreAboutDefaultRoles: string) {
+    const el = document.createElement('div')
+    el.innerHTML = onlyOwnerCanAdvencedProjectSettings + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+  }
+
+
 
 
 }

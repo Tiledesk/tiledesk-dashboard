@@ -1,0 +1,176 @@
+<div class="main-content css-create-project">
+    <div class="step-header">
+        <img [src]="companyLogoBlack_Url" class="logo" />
+        <div class="close-wizard-page">
+          <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">clear</i>
+        </div>
+        <!-- STEP NUMBER  arrayOfSteps.length >= activeTypeStepNumber ||  -->
+        
+        <div *ngIf="arrayOfSteps.length>0 && arrayOfSteps.length>activeTypeStepNumber" class="box-steps">
+            <div class="step-number">
+                <span class="number-label">
+                    {{ "OnboardPage.Pass" | translate }}   
+                    <div class="number-list">
+                        <ul [ngStyle]="{'transform': translateY}">
+                            <li *ngFor="let typeStep of arrayOfSteps; index as i">{{i+1}}</li>
+                        </ul>
+                    </div>
+                </span>
+                <span class="number-of"> / {{arrayOfSteps.length}}</span>
+            </div>
+            <div class="step-points">
+              <span *ngFor="let item of arrayOfSteps; index as i" class="point" [ngClass]="{'active': activeTypeStepNumber >= i}"></span>
+            </div>
+        </div> 
+    </div>
+    
+  
+    
+    <div class="col-left">
+        <div *ngFor="let nameStep of arrayOfSteps; index as i" 
+            class="step-page"
+            [ngClass]="{'hidden': DISPLAY_SPINNER_SECTION}">
+
+            <!-- SET NAME PROJECT -->
+            <div *ngIf="nameStep === typeStep.NAME_PROJECT"
+                class="type-step fade-in-right"
+                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.NAME_PROJECT}">
+                <cnp-project-name
+                    [projectName]="projectName"
+                    (goToSetProjectName)="goToSetProjectName($event)"
+                ></cnp-project-name>
+            </div> 
+
+            
+            <!-- STEP QUESTIONS -->
+            <div *ngIf="nameStep === typeStep.CUSTOM_STEP && activeTypeStepNumber === i"
+                class="type-step fade-in-right"
+                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.CUSTOM_STEP}">
+
+                <!-- <div *ngFor="let step of customSteps; index as j"> -->
+                    <!-- <div *ngIf="activeCustomStepNumber === j" class="fade-in-right"> -->
+
+                        <div class = "title">{{activeStep.title}}</div>
+                        <div *ngFor="let question of activeStep.questions; index as i">
+                            
+                            <div *ngIf="question.type === 'select'" 
+                                class="question fade-in-left-question"
+                                [ngClass]="{
+                                    'shown': question.answer,
+                                    'active': activeQuestionNumber == i,
+                                    'disabled': activeQuestionNumber != i}">
+                                <cnp-question-select
+                                    class="question-type"
+                                    [index]="i"
+                                    [question]="question"
+                                    [segmentAttributes]="segmentAttributes"
+                                    (goToNext)="goToNextQuestion($event)"
+                                ></cnp-question-select>
+                            </div>
+
+                            <div *ngIf="question.type === 'button'" 
+                                class="question fade-in-left-question"
+                                [ngClass]="{
+                                    'shown': (question.answer),
+                                    'active': (activeQuestionNumber == i),
+                                    'disabled': (activeQuestionNumber != i)}">
+                                <cnp-question-button
+                                    class="question-type"
+                                    [index]="i"
+                                    [question]="question"
+                                    [segmentAttributes]="segmentAttributes"
+                                    (goToNext)="goToNextQuestion($event)"
+                                ></cnp-question-button>
+                            </div>
+                            
+                        </div>
+                    <!-- </div> -->
+                <!-- </div> -->
+                
+                <!-- BUTTONS -->
+                <div class="row-navigation">
+                    <div class="navigation-btn">
+                        <button 
+                            type="button" 
+                            class="btn-back"
+                            [disabled] ="DISABLED_PREV_BUTTON"
+                            (click)="goToPrevCustomStep()">
+                            <em class="material-icons">arrow_back</em>
+                        </button>
+                        <button
+                            class="btn btn-lg btn-primary"
+                            [disabled] = "DISABLED_NEXT_BUTTON"
+                            (click)="goToNextCustomStep()">
+                            {{'OnboardPage.Next' | translate}}
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            
+
+
+            <!-- CHATBOT WELCOME MESSAGE -->
+            <div *ngIf="nameStep === typeStep.WELCOME_MESSAGE" 
+                class="type-step box-welcome-msg"
+                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.WELCOME_MESSAGE}">
+                <cnp-chatbot-welcome-message
+                    [welcomeMessage] = welcomeMessage
+                    [projectName]="projectName"
+                    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+                    (nextPage)="goToSaveWelcomeMessage($event)"
+                    (prevPage) = "goToPrevStep()"
+                ></cnp-chatbot-welcome-message>
+            </div>
+
+            <!-- WIDGET INSTALLATION -->
+            <div *ngIf="nameStep === typeStep.WIDGET_INSTALLATION" 
+                class="type-step fade-in-right"
+                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.WIDGET_INSTALLATION}">
+                <cnp-widget-installation
+                    [welcomeMessage] = welcomeMessage
+                    [projectName]="projectName"
+                    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+                    (nextPage)="goToSaveProjectAndCreateBot($event)"
+                    (prevPage) = "goToPrevStep()"
+                ></cnp-widget-installation>
+            </div>
+            
+        </div>
+
+        
+
+        <!-- LOADING SECTION -->
+        <!-- <loading-section
+            [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
+            [DISPLAY_SPINNER]="DISPLAY_SPINNER"
+            (continueToNextStep)="goToNextStep()"
+        ></loading-section> -->
+
+        <div class="bck-loader"*ngIf="DISPLAY_SPINNER_SECTION">
+            <div class="loader">
+                <svg class="circular" viewBox="25 25 50 50">
+                  <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- <appdashboard-error-result
+            *ngIf="DISPLAY_SPINNER_SECTION"
+            [DISPLAY_SPINNER]="DISPLAY_SPINNER"
+            [DISPLAY_BOT]="DISPLAY_BOT"
+            [DISPLAY_FAQ]="DISPLAY_FAQ"
+            [CREATE_BOT_ERROR]="CREATE_BOT_ERROR"
+            [CREATE_FAQ_ERROR]="CREATE_FAQ_ERROR"
+            (cancel)="cancel($event)"
+            (continueToNextStep)="goToExitOnboarding()"
+      ></appdashboard-error-result> -->
+        
+    </div>
+
+
+    <div class="col-right">
+        <appdashboard-sidebar-claims></appdashboard-sidebar-claims>
+    </div>
+
+</div>

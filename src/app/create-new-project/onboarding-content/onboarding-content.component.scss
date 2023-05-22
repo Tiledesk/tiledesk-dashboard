@@ -1,0 +1,303 @@
+@import "../../../assets/sass/md/_variables.scss";
+@import "./src/assets/sass/_spinner-section.scss";
+@import "./src/assets/sass/_animations.scss";
+
+// LOCAL COLORS //
+$color-white: #ffffff;
+$color-light-gray: #efefef;
+$color-middle-gray: #ccc;
+$color-gray: #333;
+$color-error: rgb(255, 95, 95);
+$color-error-shadow:rgba(255, 95, 95, 0.9);
+$color-text: #566787;
+$color-pro-plan: #3ea9f5;
+//---------------------//
+// STRUCTURE
+//---------------------//
+
+.step-header{
+    position: absolute;
+    width: calc(100% - 360px);
+    height: 70px;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    z-index: 31;
+}
+
+.type-step {
+    .title {
+        font-size: 36px;
+        font-weight: 500;
+        line-height: 1.3em;
+        margin-top: 0px;
+        margin-bottom: 0.5em;
+    }
+    display: none;
+    &.active {
+        min-height: calc(100vh - 150px);
+        display: block;
+    }
+
+}
+
+
+// .active-step {
+//     .title {
+//         font-size: 36px;
+//         font-weight: 500;
+//         line-height: 1.3em;
+//         margin-top: 0px;
+//         margin-bottom: 0.5em;
+//     }
+// } 
+
+
+.css-create-project {
+    --width-col-rigth: 360px;
+    font-family: $mdb-font-family-poppins;
+    background: white;
+    width: 100%;
+    margin: 0px; 
+    padding: 0px;
+    display: flex;
+    .logo {
+      position:absolute;
+      width: 150px;
+      top: 20px;
+      left: 20px;
+      z-index: 9999;
+    }
+    .close-wizard-page {
+      text-align: left;
+      height: 66px;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      margin-left: -100%;
+      color: $white;
+      z-index: 9999;
+      .close-btn {
+        font-size: 60px;
+        font-weight: 100;
+        color: $white;
+        cursor: pointer;
+        opacity: 0.8;
+      }
+      .close-btn:hover {
+        opacity: 0.5;
+      }
+    }
+}
+
+
+.col-left {
+    min-height: 100vh;
+    // max-height: 100vh;
+    height: auto;
+    background: white;
+    width: calc(100% - var(--width-col-rigth));
+    position: relative;
+    float: left;
+    padding: 100px 40px 40px;
+    z-index: 20;
+
+    // width: 100%;
+    // max-height: calc(100vh - 1px);
+    // overflow: initial;
+    // background: bisque;
+
+}
+.col-right {
+    min-height: 100vh;
+    height: auto;
+    width: var(--width-col-rigth);
+    position: relative;
+    float: left;
+    overflow: hidden;
+    z-index: 10;
+    background-color: #4caf50;
+}  
+
+
+
+
+/** CSS STEPS **/
+.box-steps {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 10px;
+    margin-right: 10px;
+    width: 300px;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: 18px;
+    font-family: "Poppins","Roboto", "Arial", sans-serif;
+    .step-number {
+        display: flex;
+    }
+    .number-label {
+        line-height: 20px;
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        font-weight: bold;
+        color: $color-text;
+    }
+    .number-list {
+        height: 20px;
+        overflow: hidden;
+        margin-right: 4px;
+        margin-left: 10px;
+        ul {
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+            transition: all 0.4s ease 0s;
+        }
+    }
+    .number-of {
+        margin-right: 10px;
+    }
+    .step-points {
+        display: flex;
+    }
+    .point {
+        display: flex;
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        margin-right: 4px;
+        background-color: $color-light-gray;
+        &.active{
+            background-color: $color-pro-plan;
+        }
+    }
+}
+
+.step-page {
+    // overflow-y: auto;
+    // max-height: calc(100% - 60px);
+    // min-height: calc(100% - 60px);
+    opacity: 1;
+    &.hidden{
+        opacity: 0;
+    }
+}
+
+/** NAVIGATION **/
+.row-navigation {
+    position: relative;
+    left: 0;
+    width: 100%;
+    z-index: 0;
+    bottom: 0;
+    padding: 0px;
+    background-color: #fff;
+}
+.navigation-btn {
+    display: flex;
+    flex-direction: row;
+}
+.btn {
+    font-size: 14px;
+    padding: 18px 36px;
+    width: 100%;
+    max-width: 300px;
+    margin: 10px 0;
+}
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    height: auto;
+    width: 50px;
+    max-width: 50px;
+    font-size: 20px;
+    line-height: 1.2;
+    border-color: $color-light-gray;
+    border-radius: 3px;
+    border: 0px solid $color-light-gray;
+    background: $color-light-gray;
+    margin: 10px 10px 10px 0;
+    padding: 10px;
+    svg {
+        fill: $color-gray;
+        width: 1em;
+    }
+    &:disabled{
+        cursor: not-allowed;
+        box-shadow: none;
+        opacity: .65;
+    }
+}
+
+
+button.hidden{
+    opacity: 0;
+}
+
+.bck-loader{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+}
+
+.css-create-project {
+    .question {
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+        z-index: 1;
+        position: relative;
+        &.active {
+            opacity: 1;
+            height: auto;
+            overflow: visible;
+            margin-left: 0;
+        }
+        &.active.fade-in-left-question:not(.shown) {
+            -webkit-animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
+                animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
+        }
+        &.active.fade-in-right-question:not(.shown) {
+            -webkit-animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
+                animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
+        }
+        &.shown {
+            opacity: 1;
+            height: auto;
+            overflow: visible;
+            z-index: auto;
+        }
+
+    }
+    .question-type {
+        display: block;
+        margin-bottom: 24px;
+        // min-height: 180px;
+    }
+
+
+    // ANIMATIONS //
+    .fade-in-right {
+        -webkit-animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.4s both;
+            animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.4s both;
+    }
+    .fade-in-left {
+        -webkit-animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
+            animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
+    }
+}
+
+    

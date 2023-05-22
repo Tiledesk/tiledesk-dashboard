@@ -635,7 +635,8 @@
                     <ng-container *ngIf="!appSumoProfile">
                       <div class="row" style="margin-top: 16px;">
                         <label class="col-sm-2 custom-label">
-                          {{ "NumberOfAgentSeats" | translate }}
+                          <!-- {{ "NumberOfAgentSeats" | translate }} -->
+                          {{ "SeatsRedeemed" | translate }}
                         </label>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                           <span class="subscription-info">
@@ -717,9 +718,12 @@
                       <!-- ------------------------------------------------------------------------------------------------ -->
                       <!--  PROFILE TYPE: FREE - SUBSCRIPTION BUTTON @ MEDIA < 768  -->
                       <!-- ------------------------------------------------------------------------------------------------ -->
+                      <!-- {{ prjct_profile_type}} -->
                       <div style="margin-top: 16px;" class="row upgrade-plan-btn-row"
                         *ngIf="prjct_profile_type !== 'payment'">
-                        <div class="col-xs-12" style="text-align: center;">
+                        <label class="col-sm-2"> </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <!-- <div class="col-xs-12" style="text-align: center;"> -->
 
                           <button class="btn btn-primary" style="padding-top:9px; padding-bottom:9px"
                             (click)="goToPricing()">

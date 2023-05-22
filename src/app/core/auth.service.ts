@@ -567,7 +567,7 @@ export class AuthService {
    * @param email
    * @param password
    */
-  signin(email: string, password: string, baseUrl:string, callback) {
+  signin(email: string, password: string, baseUrl: string, callback) {
     const self = this
 
     const httpOptions = {
@@ -1072,7 +1072,7 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] Signout this.router.url +++++ ', this.router.url)
     const current_url = this.router.url
     const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
-   
+
     if (current_url.indexOf('request-for-panel') === -1) {
       this.logger.log('[AUTH-SERV] Signout current url  NOT contains request-for-panel ')
 
@@ -1082,7 +1082,7 @@ export class AuthService {
         localStorage.removeItem(chatPrefix + '__currentUser')
       }
 
-      const chat_stored__tiledeskToken = localStorage.getItem(chatPrefix +'__tiledeskToken')
+      const chat_stored__tiledeskToken = localStorage.getItem(chatPrefix + '__tiledeskToken')
       if (chat_stored__tiledeskToken) {
         localStorage.removeItem(chatPrefix + '__tiledeskToken')
         this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_stored__tiledeskToken : ', chat_stored__currentUser)
@@ -1265,26 +1265,15 @@ export class AuthService {
 
   
 
-  // public authWithGoogle(): Observable<[any]> {
-  
-  //   const url = this.SERVER_BASE_PATH + "auth/google"
-  //   console.log('authWithGoogle url' , url)
-
-  //   // 'Authorization': this.TOKEN
-  //   const httpOptions = {
-  //     headers: new HttpHeaders({
-  //       'Content-Type': 'application/json',
-        
-  //     })
-  //   };
-
-  //   return this._httpClient
-  //     .get<[any]>(url, httpOptions)
-  // }
-
-  public authWithGoogle() {
+  public siginWithGoogle() {
 
     const url = this.SERVER_BASE_PATH + "auth/google"
+    window.open(url, '_self');
+
+  }
+
+  public siginUpWithGoogle() {
+    const url = this.SERVER_BASE_PATH + "auth/google?redirect_url=#/create-project-gs"
     window.open(url, '_self');
 
   }
@@ -1292,5 +1281,4 @@ export class AuthService {
 
 
 
-  
 }

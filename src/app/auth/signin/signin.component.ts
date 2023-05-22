@@ -104,17 +104,7 @@ export class SigninComponent implements OnInit {
   }
 
   signinWithGoogle() {
-    this.auth.authWithGoogle()
-    // this.auth.authWithGoogle().subscribe((res: any) => {
-    //   console.log('[SIGN-IN] - GOOGLE AUTH - RES  ', res);
-
-    // }, (error) => {
-    //   console.error('[SIGN-IN] - GOOGLE AUTH - ERROR  ', error);
-
-    // }, () => {
-    //   console.log('[SIGN-IN] - GOOGLE AUTH * COMPLETE *');
-
-    // });
+    this.auth.siginWithGoogle()
   }
 
   redirectIfLogged() {
@@ -432,9 +422,19 @@ export class SigninComponent implements OnInit {
     this.router.navigate(['forgotpsw']);
   }
 
+  // goToSignupPage() {
+  //   this.router.navigate(['signup']);
+  // }
   goToSignupPage() {
+    const storedUser = localStorage.getItem('user');
+    console.log('[SIGN-IN] GO TO SIGNUO PAGE STORED USER ',storedUser) 
+    if(storedUser) {
+      // localStorage.removeItem('user')
+      this.auth.signOut('signin');
+    }
     this.router.navigate(['signup']);
   }
+
 
 
   goToTiledekV1() {

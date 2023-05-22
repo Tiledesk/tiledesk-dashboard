@@ -166,6 +166,62 @@ input:-webkit-autofill:active {
     font-size: 0.9em !important;
 }
 
+#lead--email::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #999 !important;
+    font-size: 14px !important;
+}
+
+#lead--email:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #999 !important;
+    font-size: 14px !important;
+}
+#lead--email::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: #999 !important;
+    font-size: 14px !important;
+}
+
+.lead-applied-filter-wpr {
+    margin-top: 0px;
+    display: flex;
+    position: relative;
+    margin-bottom: 16px;
+    flex-direction: row;
+    justify-content: center;
+}
+.lead-applied-filter-title {
+    color: #353f45;
+    padding: 6px 12px;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    border-radius: 10px;
+    font-weight: 500;
+    height: 32px;
+}
+
+.lead-applied-filter {
+    display: flex;
+    background-color: #e8f0fe;
+    color: #1a73e8;
+    padding: 6px 12px;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    border-radius: 10px;
+    font-weight: 500;
+    height: 32px;
+    margin-right: 12px;
+}
+
+.lead-filter-icon-and-text-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.lead-icon-wpr {
+    margin-right: 6px;
+}
+
 .avatar {
     // margin: 0 8px 0 0;
     border-radius: 50%;
@@ -310,7 +366,6 @@ input:-webkit-autofill:active {
     display: block;
 }
 
-
 .nav-contacts-li {
     height: 40px;
     border-radius: 0 20px 20px 0;
@@ -334,7 +389,6 @@ input:-webkit-autofill:active {
 }
 
 .nav-contacts-li-active i {
-
     color: #fff !important;
 }
 
@@ -352,14 +406,12 @@ input:-webkit-autofill:active {
 }
 
 #contacts-content {
-   
     flex: 1 0 auto;
     /* enable grow, disable shrink */
 }
 
 @media screen and (max-width: 1065px) {
     #contacts-content {
-        
         flex: 1 1 auto;
         /* enable grow, disable shrink */
     }
@@ -378,11 +430,10 @@ input:-webkit-autofill:active {
     // }
 }
 
-@media screen and (min-width: 1064px) { 
+@media screen and (min-width: 1064px) {
     .mobile-trash-contacs-btn {
         display: none;
     }
-
 }
 
 // .search_field_wrap input::-webkit-input-placeholder {
@@ -426,11 +477,11 @@ input:-webkit-autofill:active {
     line-height: 1.2;
     // font-size: 16px;
     // border: 1px solid #eee;
-  
+
     /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
     opacity: 0;
     transition: opacity 1s;
-  
+
     // NEW
     color: #fff;
     font-size: 14px;
@@ -441,7 +492,6 @@ input:-webkit-autofill:active {
 .White__Tooltip:hover .White__Tooltiptext {
     visibility: visible;
     opacity: 1;
-  
 }
 
 .chat-with-agent {
@@ -454,6 +504,24 @@ input:-webkit-autofill:active {
 
 .contacts-paginantion > .input-group:focus-within {
     box-shadow: unset !important;
-  }
-  
-  
+}
+
+.lead-list--lead-tag {
+    font-size: 11px;
+    color: #757575;
+    position: relative;
+    top: -2px;
+    left: -2px;
+    font-weight: 400;
+}
+
+.display-more-tags-btn {
+    font-size: 11px;
+    color: #3ea9f5;
+    position: relative;
+    top: -2px;
+}
+
+.display-more-tags-btn:hover {
+    text-decoration: underline;
+}

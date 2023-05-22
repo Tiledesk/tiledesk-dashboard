@@ -1,0 +1,160 @@
+// LOCAL COLORS //
+$color-white: #ffffff;
+$color-light-gray: #efefef;
+$color-middle-gray: #ccc;
+$color-gray: #333;
+$color-error: rgb(255, 95, 95);
+$color-error-shadow:rgba(255, 95, 95, 0.9);
+$color-text: #566787;
+$color-pro-plan: #3ea9f5;
+
+.cnp-widget-installation{
+    margin-top: 0px;
+    .title {
+        font-size: 36px;
+        font-weight: 500;
+        line-height: 1.3em;
+        margin-top: 0px;
+        margin-bottom: 0.5em;
+    }
+    .description {
+        color: $color-text;
+        position: relative;
+        line-height: normal;
+        margin-bottom: 1em;
+        font-size: 24px;
+        font-weight: 300;
+        font-style: normal;
+    }
+    .installation-options{
+        margin-bottom: 30px;
+        display: flex;
+        .left {
+            display: block;
+            border-right: 1px solid rgb(239, 242, 246);
+            margin: 0;
+            ul {
+                list-style-type: none;
+                margin: 0px;
+                padding: 0px 16px 0px 0px;
+                width: 232px;
+                background: transparent;
+            }
+            li {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                position: relative;
+                color: $color-text;
+                padding: 0px;
+                font-size: 14px;
+                line-height: 18px;
+                letter-spacing: -0.01em;
+                font-weight: 500;
+                button {
+                    position: relative;
+                    outline: none;
+                    border: none;
+                    border-radius: 4px;
+                    display: flex;
+                    -webkit-box-align: center;
+                    align-items: center;
+                    width: 100%;
+                    text-align: left;
+                    cursor: pointer;
+                    background-color: transparent;
+                    font-weight: 400;
+                    color: inherit;
+                    padding: 8px 12px;
+                    min-height: 36px;
+                    img{
+                        min-width: 20px;
+                        min-height: 20px;
+                        margin-right: 8px;
+                    }
+                }
+                button:hover {
+                    border-radius: 4px;
+                    background-color: $color-light-gray;
+                    color: $color-gray;
+                }
+                button.active {
+                    background-color: aliceblue;
+                }
+            }
+        }
+        .right {
+            display: block;
+            padding: 0 30px;    
+            max-width: calc(100% - 200px);
+        }
+
+        .select-option {
+            margin-top: 0;
+            max-width: 500px;
+        }
+    }
+
+
+    /** NAVIGATION **/
+    .row-navigation {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        text-align: center;
+    }
+    .navigation-btn {
+        // display: flex;
+        // flex-direction: row;
+    }
+    .btn {
+        font-size: 14px;
+        padding: 18px 36px;
+        width: 100%;
+        max-width: 300px;
+        margin: 10px 0;
+    }
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: middle;
+        height: auto;
+        width: 50px;
+        max-width: 50px;
+        font-size: 20px;
+        line-height: 1.2;
+        border-color: $color-light-gray;
+        border-radius: 3px;
+        border: 0px solid $color-light-gray;
+        background: $color-light-gray;
+        margin: 10px 10px 10px 0;
+        padding: 10px;
+        svg {
+            fill: $color-gray;
+            width: 1em;
+        }
+    }
+    button.hidden{
+        opacity: 0;
+    }
+}
+
+.small{
+    display:none;
+}
+.big{
+    display:block;
+}
+/** **/
+@media (max-width: 1199px) {
+    .small{
+        display:block;
+        .installation-options{
+            display: block;
+        }
+    }
+    .big{
+        display:none;
+    }
+}

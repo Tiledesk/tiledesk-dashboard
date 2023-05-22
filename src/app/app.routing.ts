@@ -101,6 +101,7 @@ import { PaymentSuccessPageComponent } from './pricing/payment-success-page/paym
 import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/payment-canceled-page.component';
 import { PaymentsListComponent } from './pricing/payments-list/payments-list.component';
 import { CreateProjectComponent } from './create-project-wizard/create-project/create-project.component';
+import { OnboardingContentComponent } from './create-new-project/onboarding-content/onboarding-content.component';
 import { InstallWidgetComponent } from './create-project-wizard/install-widget/install-widget.component';
 import { ConfigureWidgetComponent } from './create-project-wizard/configure-widget/configure-widget.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
@@ -140,6 +141,7 @@ import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsre
 import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
 import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
+
 
 
 const routes: Routes = [
@@ -184,10 +186,13 @@ const routes: Routes = [
 
   // FOR CreateProjectComponent I HAVE CREATE TO PATH TO HIDE THE BUTTON 'close' WHEN THE
   // COMPONENT IS CALLED AFTER THE SIGNUP
+
   // USED AFTER THE SIGNUP
   { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
+
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
-  { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
+  //{ path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
+  { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
 
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
 

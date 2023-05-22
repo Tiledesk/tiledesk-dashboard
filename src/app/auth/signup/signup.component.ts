@@ -15,6 +15,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 import { ProjectService } from 'app/services/project.service';
 import { Project } from 'app/models/project-model';
 import { emailDomainWhiteList } from 'app/utils/util';
+import { TitleCasePipe } from '@angular/common';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -22,7 +23,8 @@ type FormErrors = { [u in UserFields]: string };
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  styleUrls: ['./signup.component.scss'],
+  providers: [TitleCasePipe]
 })
 export class SignupComponent implements OnInit, AfterViewInit {
 
@@ -120,6 +122,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private logger: LoggerService,
     private localDbService: LocalDbService,
     private projectService: ProjectService,
+    public titleCasePipe: TitleCasePipe
   ) {
 
     const brand = brandService.getBrand();
@@ -328,23 +331,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
 
-  // signupWithGoogle() {
-  //   this.auth.authWithGoogle()
-  // }
-
 
   signupWithGoogle() {
-    this.auth.authWithGoogle()
-    // this.auth.authWithGoogle().subscribe((res: any) => {
-    //   console.log('[SIGN-UP] - GOOGLE AUTH - RES  ', res);
-
-    // }, (error) => {
-    //   console.error('[SIGN-UP] - GOOGLE AUTH - ERROR  ', error);
-
-    // }, () => {
-    //   console.log('[SIGN-UP] - GOOGLE AUTH * COMPLETE *');
-
-    // });
+    this.auth.siginUpWithGoogle()
   }
 
 
@@ -411,14 +400,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
       this.SKIP_WIZARD = true;
       this.logger.log('[SIGN-UP] checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
       this.getAndPatchInvitationEmail();
-
     } else if (this.router.url.indexOf('/signup-on-invitation') === -1 && this.MT === false) {
-
       this.SKIP_WIZARD = true;
       this.logger.log('[SIGN-UP]checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
     }
     else if (this.router.url.indexOf('/signup-on-invitation') === -1 && this.MT === true) {
-
       this.SKIP_WIZARD = false;
       this.logger.log('[SIGN-UP] checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
     }
@@ -476,6 +462,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     }
   }
 
+ 
   signup() {
     this.showSpinnerInLoginBtn = true;
     const email = this.userForm.value['email']
@@ -485,14 +472,13 @@ export class SignupComponent implements OnInit, AfterViewInit {
     if (email.includes('@')) {
       const emailBeforeAt = email.split('@')[0];
       if (emailBeforeAt && !emailBeforeAt.includes('.')) {
-
-        yourname = emailBeforeAt;
+        yourname = this.titleCasePipe.transform(emailBeforeAt);
         this.logger.log('[SIGN-UP] signup  yourname (use case email without dot before @) ', yourname)
         this.userForm.controls['firstName'].patchValue(yourname)
       } else if (emailBeforeAt && emailBeforeAt.includes('.')) {
         const emailBeforeAtAndFirstOfDot = email.split('.')[0];
         this.logger.log('[SIGN-UP] signup  emailBeforeAtAndFirstDot ', emailBeforeAtAndFirstOfDot)
-        yourname = emailBeforeAtAndFirstOfDot;
+        yourname = this.titleCasePipe.transform(emailBeforeAtAndFirstOfDot);
         this.logger.log('[SIGN-UP] signup  yourname (use case email with dot before @) ', yourname)
         this.userForm.controls['firstName'].patchValue(yourname)
       }
@@ -501,6 +487,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.logger.log('[SIGN-UP] signup  this.userForm ', this.userForm)
 
     this.auth.showExpiredSessionPopup(true);
+
+    // const stringOnlyFirstCharacter = this.userForm.value['firstName'].charAt(0)
+    // const stringWithoutFirstCharacter = this.userForm.value['firstName'].slice(1);
+
+    // const _first_name = stringOnlyFirstCharacter + stringWithoutFirstCharacter
 
     this.auth.signup(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['firstName'], this.userForm.value['lastName'])
 
@@ -625,7 +616,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
     this.auth.signin(userEmail, this.userForm.value['password'], this.appConfigService.getConfig().SERVER_BASE_URL, function (error) {
       self.logger.log('[SIGN-UP] autoSignin 1. POST DATA ', error);
-
+      // console.log('autoSignin: ', error);
       if (!error) {
         // --------------------------------------------
         // Run widget login
@@ -644,23 +635,24 @@ export class SignupComponent implements OnInit, AfterViewInit {
         // console.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
         // console.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
 
-        if (!self.EXIST_STORED_ROUTE) {
+        // console.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
+        // console.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
+        
+        //if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {
             // self.router.navigate(['/create-project']);
-            self.createNewProject(signupResponse)
-
-
+            // self.createNewProject(signupResponse)
+            self.router.navigate(['/create-new-project']);
           } else {
             self.router.navigate(['/projects']);
           }
-        } else {
-          // self.localDbService.removeFromStorage('wannago')
-          self.router.navigate([self.storedRoute]);
-        }
+        // } else {
+        //   // self.localDbService.removeFromStorage('wannago')
+        //   self.router.navigate([self.storedRoute]);
+        // }
 
       } else {
         self.showSpinnerInLoginBtn = false;
-
         const signin_errorbody = error['error']
         self.signin_errormsg = signin_errorbody['msg']
         self.display = 'block';
@@ -712,9 +704,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIGN-UP] CREATED PROJECT ', newproject)
 
           this.id_project = newproject._id
-          this.router.navigate([`/project/${this.id_project}/configure-widget`]);
-
-
+          // this.router.navigate([`/project/${this.id_project}/configure-widget`]);
+          this.router.navigate(['/create-new-project']);
         }
 
 
@@ -728,7 +719,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
         const trialStarDate = moment(new Date(this.new_project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
-        const trialEndDate = moment(new Date(this.new_project.createdAt)).add(30, 'days').format("YYYY-MM-DD hh:mm:ss")
+        const trialEndDate = moment(new Date(this.new_project.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
 
         if (!isDevMode()) {
@@ -746,7 +737,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
                 name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
                 email: signupResponse.user.email,
                 logins: 5,
-                plan: "Pro (trial)"
+                plan: "Scale (trial)"
               });
             } catch (err) {
               this.logger.error('Signup Create project identify error', err);
@@ -757,7 +748,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
                 "userId": signupResponse.user._id,
                 "trial_start_date": trialStarDate,
                 "trial_end_date": trialEndDate,
-                "trial_plan_name": "Pro (trial)",
+                "trial_plan_name": "Scale (trial)",
                 "context": {
                   "groupId": this.new_project._id
                 }
@@ -769,7 +760,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
             try {
               window['analytics'].group(this.new_project._id, {
                 name: this.new_project.name,
-                plan: "Pro (trial)",
+                plan: "Scale (trial)",
               });
             } catch (err) {
               this.logger.error('Signup Create project group error', err);
