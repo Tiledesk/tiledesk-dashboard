@@ -14,7 +14,7 @@ export class CdsModalActivateBotComponent implements OnInit {
 
   id_faq_kb: string;
   defaultDepartmentId: string;
-  displayModalAttacchBotToDept: string = 'block';
+  displayModalAttacchBotToDept: string = 'none';
   DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
   PRESENTS_MODAL_ATTACH_BOT_TO_DEPT: boolean = false;
   depts_without_bot_array = [];

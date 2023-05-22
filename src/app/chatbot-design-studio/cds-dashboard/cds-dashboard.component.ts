@@ -1,6 +1,6 @@
 import { TYPE_ACTION, variableList } from 'app/chatbot-design-studio/utils';
 // import { MultichannelService } from 'app/services/multichannel.service';
-import { Component, OnInit, ElementRef, OnChanges } from '@angular/core';
+import { Component, OnInit, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { FaqService } from '../../services/faq.service';
@@ -11,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { HttpClient } from "@angular/common/http";
-import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssignVariable } from '../../models/intent-model';
+import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssignVariable, Attributes } from '../../models/intent-model';
 import { TYPE_COMMAND, TYPE_INTENT_ELEMENT, EXTERNAL_URL, TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
 import { Subject } from 'rxjs';
 import { FaqKbService } from 'app/services/faq-kb.service';
@@ -155,7 +155,9 @@ export class CdsDashboardComponent implements OnInit {
 
 
 
-
+  ngOnDestroy() {
+    //this.elRef.nativeElement.removeEventListener('mouseenter', this.onMouseEnter);
+  }
 
   private setDragConfig(){
     // drag study
@@ -371,11 +373,12 @@ export class CdsDashboardComponent implements OnInit {
 
   /** EDIT INTENT  */
   private editIntent() {
-    console.log('editIntent');
+    console.log('******** editIntent ******** ', this.intentSelected);
     this.startUpdatedIntent.next(true)
     this.logger.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
     this.showSpinner = true;
     let id = this.intentSelected.id;
+    let attributes = this.intentSelected.attributes;
     let questionIntentSelected = this.intentSelected.question;
     let answerIntentSelected = this.intentSelected.answer;
     let displayNameIntentSelected = this.intentSelected.intent_display_name;
@@ -400,6 +403,7 @@ export class CdsDashboardComponent implements OnInit {
 
     this.faqService.updateIntent(
       id,
+      attributes,
       questionIntentSelected,
       answerIntentSelected,
       displayNameIntentSelected,
@@ -559,6 +563,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   onReturnListOfIntents(intents) {
+    console.log('onReturnListOfIntents:::: ', intents);
     this.listOfIntents = intents;
     this.listOfActions = intents.map(a => {
       if (a.intent_display_name.trim() === 'start') {
@@ -571,15 +576,97 @@ export class CdsDashboardComponent implements OnInit {
     });
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
-
-    console.log('onReturnListOfIntents:::: ');
     setTimeout(() => {
       this.listOfIntents.forEach(element => {
-        console.log('SET -----> '+ element.id);
-        setDragElement(element.id);
-      });
-    }, 2000);
 
+        try {
+          if(!element.attributes){
+            element.attributes = {'x':0, 'y':0};
+          }
+        } catch (error) {
+          
+        }
+        
+        console.log('SET -----> ',element);
+        // setDragElement(element.id);
+        let elem = document.getElementById(element.id);
+        setDragElement(elem);
+        // elem.addEventListener('mouseup', this.onMouseUp);
+        elem.addEventListener('mouseup',(evt) => this.onMouseUp(evt, element));
+        // elem.addEventListener('mousedown', this.onDragEnd);
+
+        // elem.addEventListener("mousedown", function(event) {
+        //   console.log("CHIAMA ON mousedown", event);
+        //   //event.preventDefault();
+        // });
+        // elem.addEventListener("mouseup", function(event) {
+        //   console.log("CHIAMA ON mouseup", event);
+        //   //event.preventDefault();
+        // });
+        // elem.addEventListener("mousemove", function(event) {
+        //   console.log("CHIAMA ON mousemove", event);
+        //   //event.preventDefault();
+        // });
+
+        // elem.addEventListener("mouseenter", function(event) {
+        //   console.log("CHIAMA ON mouseenter", event);
+        // });
+        // elem.addEventListener("dragstart", function(event) {
+        //   // document.getElementById("demo").innerHTML = "Finished dragging the p element.";
+        //   // event.target.style.opacity = "1";
+        //   console.log("CHIAMA ON dragstart", event);
+        // });
+        // elem.addEventListener("dragover", function(event) {
+        //   // document.getElementById("demo").innerHTML = "Finished dragging the p element.";
+        //   // event.target.style.opacity = "1";
+        //   console.log("CHIAMA ON dragover", event);
+        // });
+        // elem.addEventListener("dragleave", function(event) {
+        //   // document.getElementById("demo").innerHTML = "Finished dragging the p element.";
+        //   // event.target.style.opacity = "1";
+        //   console.log("CHIAMA ON dragleave", event);
+        // });
+        
+        // document.getElementById(element.id).addEventListener('dragstart', (e) => {
+        //   console.log("CHIAMA ON dragstart");
+        //   e.preventDefault();
+        //   //e.target.style.backgroundColor = "";
+        // });
+        
+        // document.getElementById(element.id).addEventListener('drop', (e) => {
+        //   console.log("CHIAMA ON drop");
+        //   //e.target.style.backgroundColor = "";
+        //   e.preventDefault();
+        // });
+        
+        // document.getElementById(element.id).addEventListener('dragover', (e) => {
+        //   console.log("CHIAMA ON dragover");
+        //   e.preventDefault();
+        //   // e.target.style.backgroundColor = 'blue';
+        // });
+        
+        // document.getElementById(element.id).addEventListener('dragleave', (e) => {
+        //   console.log("CHIAMA ON dragleave");
+        //   e.preventDefault();
+          
+        //   // e.target.style.backgroundColor = "";
+        // })
+        
+
+
+      });
+    }, 0);
+
+  }
+
+
+  onMouseUp(event, ele){
+    console.log("CHIAMA ON mouseup", ele, event);
+    if(event.x != ele.attributes.x || event.y != ele.attributes.y){
+      ele.attributes.x = event.x;
+      ele.attributes.y = event.y;
+       // this.saveIntent(ele);
+    }
   }
 
   onCreateIntentBtnClicked() {
@@ -624,6 +711,7 @@ export class CdsDashboardComponent implements OnInit {
   
   /** START EVENTS INTENT HEADER */
   onSaveIntent(intent: Intent) {
+    console.log('onSaveIntent:: ');
     this.saveIntent(intent);
   }
   /** END EVENTS INTENT HEADER  */
@@ -680,13 +768,16 @@ export class CdsDashboardComponent implements OnInit {
 
   /** STAR CUSTOM FUNCTIONS */
   private saveIntent(intent: Intent){
+    console.log("********* saveIntent ********* ", intent);
     this.logger.log("Intent:", intent);
     this.logger.log('[CDS DSHBRD] onSaveIntent intent:: ', intent);
     this.logger.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
     this.intentSelected = intent;
     const intentNameAlreadyCreated = this.listOfIntents.some((el) => {
+      console.log("********* el.id ********* ", el.id, this.intentSelected.id);
       return el.id === this.intentSelected.id;
     });
+    console.log("********* el.id ********* ");
     this.logger.log('[CDS DSHBRD]  intent name already saved', intentNameAlreadyCreated);
     if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
       this.creatIntent();

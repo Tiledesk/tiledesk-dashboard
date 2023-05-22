@@ -20,8 +20,11 @@ export class Intent {
     createdAt?: Date;
     updatedAt?: Date;
     id?: string;
+    attributes?: any;
     constructor() {
         this.actions = [];
+        this.attributes.x = 0;
+        this.attributes.y = 0;
     }
 }
 

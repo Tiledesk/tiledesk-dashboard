@@ -30,8 +30,28 @@ $margin-top-card: 30px;
   margin:0!important;
   top: 0px;
   left: 0px;
-  text-align: center;
 }
+
+.prevent-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+
+// .draggable {
+//   position: absolute;
+//   z-index: 9;
+//   cursor: move;
+//   height: 200px;
+//   width: 112px;
+//   top: 200px;
+//   left: 0px;
+//   background-color: #f1f1f1;
+//   text-align: center;
+//   border: 1px solid #d3d3d3;
+// }
+
 /*********** END Draggable  *************/
 
 #cds-panel-intent {
@@ -166,7 +186,7 @@ $box-left-width: 250px;
         .panel-intent {
             position: relative;
             display: inline-block;
-            width: 260px;
+            // width: 260px;
             height: auto;
             max-height: 100%;
             /* background-color: rgb($bg-color-bck-rgb); */
@@ -174,7 +194,7 @@ $box-left-width: 250px;
             overflow: hidden;
             margin: 0 10px;
             padding: 0px;
-            min-width: 260px;
+            // min-width: 260px;
             // left: 330px;
             // top:70px;
         }

@@ -5,6 +5,7 @@
     [defaultDepartmentId]=""
     [selectedChatbot]="selectedChatbot"
     (goToGetBotById)="getBotById($event)"
+    (goToBck)="goBack()"
     (toggleSidebarWith)="onToggleSidebarWith($event)"> 
 </cds-header>
 
@@ -85,14 +86,20 @@
                 </appdashboard-panel-intent-header>
             </div> -->
 
-            <div id="box-right-content" class="drag-drawer box-right-content">
+            <div id="cds-box-right-content" class="drag-drawer box-right-content">
                 
-                <div *ngFor="let intent of listOfIntents; let i = index;let lastIntent = last; let firstIntent = first"
-                    [id]="intent.id"
-                    class="draggable">
-                    <appdashboard-panel-intent
+                <!-- <div *ngFor="let intent of listOfIntents; let i = index;let lastIntent = last; let firstIntent = first"> -->
+                    <!-- <div [id]="intent.id" class="draggable prevent-select input-block">
+                        <p>Move2</p>
+                    </div> 
+                   [ngStyle]="{'top.px':intent.attribute.y ? intent.attribute.y : '0px' }"-->
+                    
+                    <cds-panel-intent *ngFor="let intent of listOfIntents; let i = index;let lastIntent = last; let firstIntent = first"
+                        [id]="intent.id"
+                        [style.top.px]="(intent.attribute && intent.attribute.x)?intent.attribute.x:0" 
+                        [style.left.px]="(intent.attribute && intent.attribute.y)?intent.attribute.y:0"
                         draggable="true"
-                        class="panel-intent"
+                        class="panel-intent draggable prevent-select input-block"
                         [idSelected]="idElementOfIntentSelected"
                         [intentSelected]="intent"
                         [isIntentElementSelected]="isIntentElementSelected"
@@ -106,8 +113,8 @@
                         (actionDeleted)=onActionDeleted($event)
                         (intentForm)=onIntentFormSelected($event)
                         (dropAction)=onDropAction($event)>
-                    </appdashboard-panel-intent>
-                </div>
+                    </cds-panel-intent>
+                <!-- </div> -->
 
                 <!-- <appdashboard-panel-actions *ngIf="isOpenActionDrawer" 
                     style="z-index: 101;" 

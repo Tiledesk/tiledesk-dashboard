@@ -15,10 +15,11 @@ function setDrawer(el,drawer) {
   
 }
 
-function setDragElement(id){
-  console.log("setDragElement: ", id);
+function setDragElement(element){
+  console.log("setDragElement: ", element);
   //elmnt.dragElement;
-  dragElement(document.getElementById(id));
+  dragElement(element);
+  // dragElement(document.getElementById(id));
   // dragElement(document.getElementById("block1"));
 }
 
@@ -102,8 +103,6 @@ function dragElement(elmnt) {
 
   /* otherwise, move the DIV from anywhere inside the DIV:*/
   elmnt.onmousedown = dragMouseDown;
-
-
   function dragMouseDown(e) {
     //console.log("e.id", e.target.id)
     if (!e.target.classList.contains("draggable")) {
@@ -128,7 +127,7 @@ function dragElement(elmnt) {
     e = e || window.event;
     e.preventDefault();
     // calculate the new cursor position:
-    const drawer = document.getElementById("drawer");
+    // const drawer = document.getElementById("drawer");
     //var d_rect = drawer.getBoundingClientRect();
     //const e_rect = e.target.getBoundingClientRect();
     //console.log("e_rect.left:", e_rect.left, "e_rect.top:", e_rect.top);

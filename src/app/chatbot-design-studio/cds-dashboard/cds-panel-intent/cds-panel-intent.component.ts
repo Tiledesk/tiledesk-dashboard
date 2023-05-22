@@ -14,14 +14,14 @@ export enum HAS_SELECTED_TYPE {
 }
 
 // declare function setDragElement(el);
-
 @Component({
-  selector: 'appdashboard-panel-intent',
-  templateUrl: './panel-intent.component.html',
-  styleUrls: ['./panel-intent.component.scss']
+  selector: 'cds-panel-intent',
+  templateUrl: './cds-panel-intent.component.html',
+  styleUrls: ['./cds-panel-intent.component.scss']
 })
 
-export class PanelIntentComponent implements OnInit, OnChanges {
+export class CdsPanelIntentComponent implements OnInit, OnChanges {
+
   @Input() idSelected: string;
   @Input() intentSelected: Intent;
   @Input() isIntentElementSelected: boolean = false;
@@ -68,9 +68,15 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     //   setDragElement(el);
     // }, 1000);
 
+    // imposto le coordinate
     this.setIntentSelected();
   }
-  
+
+
+
+  ngAfterViewInit(){
+    console.log('PanelIntentComponent ngAfterViewInit-->');
+  }
   
   private patchAllActionsId(){
     if(this.actions && this.actions.length>0){
@@ -219,17 +225,6 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
 
   onDisplayForm(elementSelected) {
-    // this.HAS_SELECTED_ANSWER = false
-    // this.HAS_SELECTED_QUESTION = false
-    // this.HAS_SELECTED_FORM = true
-    // this.HAS_SELECTED_ACTION = false
-    // this.logger.log('[PANEL INTENT] displayForm HAS_SELECTED_FORM ', this.HAS_SELECTED_FORM)
-    // let activeElements = Array.from(document.getElementsByClassName('cds-action-active'));
-    // this.logger.log('[PANEL INTENT] activeElements', activeElements)
-    // activeElements.forEach((activeElement) => {
-    //   this.logger.log('[PANEL INTENT] activeElement', activeElement)
-    //   activeElement.classList.remove('cds-action-active');
-    // })
     this.idSelected = elementSelected;
     this.isIntentElementSelected = true;
     if (this.intentSelected && !this.intentSelected.form) {

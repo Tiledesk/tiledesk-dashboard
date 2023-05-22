@@ -112,6 +112,7 @@ import { CDSFilterComponent } from './cds-base-element/filter/filter.component';
 import { CdsHeaderComponent } from './cds-dashboard/cds-header/cds-header.component';
 import { CdsPopupComponent } from './cds-dashboard/cds-popup/cds-popup.component';
 import { CdsModalActivateBotComponent } from './cds-dashboard/cds-modal-activate-bot/cds-modal-activate-bot.component';
+import { CdsPanelIntentComponent } from './cds-dashboard/cds-panel-intent/cds-panel-intent.component';
 
 
 @NgModule({
@@ -183,7 +184,8 @@ import { CdsModalActivateBotComponent } from './cds-dashboard/cds-modal-activate
     DialogYesNoComponent,
     CdsHeaderComponent,
     CdsPopupComponent,
-    CdsModalActivateBotComponent
+    CdsModalActivateBotComponent,
+    CdsPanelIntentComponent
   ],
   imports: [
     A11yModule,

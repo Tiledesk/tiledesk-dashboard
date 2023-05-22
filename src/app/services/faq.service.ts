@@ -424,7 +424,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
    * @param webhook_enabled 
    * @returns 
    */
-   public updateIntent(id: string, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
+   public updateIntent(id: string, attributes: any, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -435,6 +435,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
     let url = this.FAQ_URL + id; 
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT URL ', url);
     const body = { 
+      'attributes': attributes, 
       'question': question, 
       'answer': answer, 
       'intent_display_name': intent_display_name, 
