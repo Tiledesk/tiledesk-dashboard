@@ -1,5 +1,20 @@
 # tiledesk-dashboard
 
+### 2.4.35
+- Deploys in production
+- Adds the ability to all teammates to download the chat transcript
+- Adds the list of pages viewed by visitors to the sidebar of the request details page
+- Adds the ability to tag a contact in the sidebar of the request detail page
+- Displays the WhatsApp number in the sidebar of the request detail page, if available
+- Adds the ability to add custom properties to contacts
+- Fixes the messages of the dialog windows  displayed for features that only the owner can manage
+- Displays the location of the contact, available in the sidebar of the request detail page, in the Google maps
+- Fixes the bug: "Go to sign up page" button redirect to Recent Projects page in some cases
+- Manages the badge for plans that are no longer supported on the Recent Projects page and on the Home page
+- Fixes the bug:  in widget settings gradient is not turned off by default
+- Displays in Project settings > Subscription, for free plans and for trial plans, the "Update plan" button
+- Transforms, when registering a new user, the name in camelcase
+
 ### 2.4.34
 - Deploys in production
 - Improvements and bug fixing
