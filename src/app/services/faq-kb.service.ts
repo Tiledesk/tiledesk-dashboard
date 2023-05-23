@@ -517,6 +517,28 @@ export class FaqKbService {
     return this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
   }
+  // PROJECT_ID/faq_kb/FAQ_KB_ID/language/LANGUAGE
+
+  updateFaqKbLanguage (id: string, chatbotlanguage: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.FAQKB_URL + id + '/language/' + chatbotlanguage;
+    console.log('update BOT LANG - URL ', url);
+
+  
+   const body = {  'language': chatbotlanguage };
+    
+    this.logger.log('[FAQ-KB.SERV] update BOT LANG - BODY ', body);
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+
+  }
 
   public updateChatbot(chatbot: Chatbot) {
     const httpOptions = {

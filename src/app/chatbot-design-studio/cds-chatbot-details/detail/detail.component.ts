@@ -283,7 +283,7 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
     this.webhookUrl = selectedChatbot.webhook_url
     this.logger.log('[CDS-CHATBOT-DTLS] - BOT webhookUrl ', this.webhookUrl);
 
-    this.logger.log('[CDS-CHATBOT-DTLS] - BOT LANGUAGE ', selectedChatbot.language);
+    console.log('[CDS-CHATBOT-DTLS] - BOT LANGUAGE ', selectedChatbot.language);
 
     if (selectedChatbot && selectedChatbot.language) {
       this.faqkb_language = selectedChatbot.language;
@@ -501,18 +501,68 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
       });
   }
 
+  // let dialogRef = dialog.open(UserProfileComponent, {
+  //   height: '400px',
+  //   width: '600px',
+  // });
+
   updateBotLanguage(){
     console.log('open modal to updateeeeee')
     this.logger.log('openDialog')
     const dialogRef = this.dialog.open(ChangeBotLangModalComponent, {
+      width: '600px',
       data: {
         chatbot: this.selectedChatbot,
         projectId: this.project._id
       },
     });
-    dialogRef.afterClosed().subscribe(result => {
-      // this.logger.log(`Dialog result: ${result}`);
+    dialogRef.afterClosed().subscribe(langCode => {
+      console.log(`Dialog result: ${langCode}`);
+      if (langCode !== 'close') {
+        this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(langCode)].name
+      }
+      this.updateChatbotLanguage(langCode)
+    })
+  }
+
+
+  updateChatbotLanguage(langCode) {
+    this.faqKbService.updateFaqKbLanguage(this.id_faq_kb, langCode).subscribe((faqKb) => {
+      console.log('[CDS-CHATBOT-DTLS] EDIT BOT LANG - FAQ KB UPDATED ', faqKb);
+      if (faqKb) {
+       
+      }
+    }, (error) => {
+      this.logger.error('[CDS-CHATBOT-DTLS] EDIT BOT LANG-  ERROR ', error);
+
+
+      // =========== NOTIFY ERROR ===========
+      this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotError'), 4, 'report_problem');
+
+    }, () => {
+      console.log('[CDS-CHATBOT-DTLS] EDIT BOT LANG - * COMPLETE *');
+      // =========== NOTIFY SUCCESS===========
+      this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotSuccess'), 2, 'done');
+      this.updateChatbot(this.selectedChatbot, langCode)
     });
+
+  }
+
+  updateChatbot(selectedChatbot, langCode) {
+    console.log('updateChatbot langCode', langCode) 
+    this.selectedChatbot.language = langCode
+
+    this.faqKbService.updateChatbot(selectedChatbot)
+      .subscribe((chatbot: any) => {
+        console.log('[CDS-CHATBOT-DTLS] - UPDATED CHATBOT - RES ', chatbot);
+
+      }, (error) => {
+        this.logger.error('[CDS-CHATBOT-DTLS] - UPDATED CHATBOT - ERROR  ', error);
+        // self.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+      }, () => {
+        console.log('[CDS-CHATBOT-DTLS] - UPDATED CHATBOT * COMPLETE *');
+
+      });
   }
 
   goToRoutingAndDepts() {

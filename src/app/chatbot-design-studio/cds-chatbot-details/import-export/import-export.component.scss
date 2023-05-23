@@ -15,6 +15,12 @@
     background-color: rgb(207, 210, 215) !important;
 }
 
+.chatbot-faq-export-import-wpr,
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
 /* MODAL START */
 
 // MODAL BOOTSTRAP BREAKPOINTS
@@ -53,7 +59,6 @@
 //             margin-left: 40%;
 //         }
 //     }
-
 
 .modal {
     top: 0;
@@ -159,16 +164,15 @@ input[type="file"] {
     color: #9aa0a6;
 }
 
-.cds-blue-button{
+.cds-blue-button {
     padding: 12px 30px !important;
 }
 
-.import-faq-from-csv-btn-wpr{
+.import-faq-from-csv-btn-wpr {
     margin-left: 10px;
     display: flex;
     gap: 10px;
 }
-
 
 #upload-intents-from-json-overwrite {
     box-shadow: unset !important;

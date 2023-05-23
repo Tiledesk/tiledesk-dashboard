@@ -136,10 +136,9 @@ input[type="file"] {
     background: rgba(244, 67, 54, 0.8) !important;
 }
 
-#csd-update-bot-btn{
+#csd-update-bot-btn {
     border-radius: 3px;
 }
-
 
 .cds-custom-label {
     color: #9aa0a6;
@@ -162,7 +161,6 @@ input[type="file"] {
     }
 }
 
-
 @media (max-width: 767px) {
     .onoffswitch-wrapper {
         top: -41px;
@@ -173,12 +171,10 @@ input[type="file"] {
     }
 }
 
-
 /* REMOVE THE BORDER THAT IS USED TO SHOW THAT THE ELEMENT IS FOCUSED */
 *:focus {
     outline: none;
 }
-
 
 .dept-avatar-wrapper {
     cursor: pointer;
@@ -209,4 +205,28 @@ input[type="file"] {
     position: relative;
     top: 2px;
     font-weight: 400;
+}
+
+.chatbot-details-wpr,
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+#activate-bot {
+    margin-top: 0px;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 0px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    background: #8ab4f8 !important;
+    box-shadow: unset !important;
+    color: #202124;
+    font-weight: 500 !important;
+}
+
+
+.custom-link {
+    color: #0f62ff;
+    cursor: pointer;
 }
