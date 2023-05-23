@@ -7,7 +7,6 @@
     text-align: right !important;
 }
 
-
 @media (max-width: 768px) {
     .cds-custom-label {
         height: 0px !important;
@@ -101,7 +100,6 @@ input[type="text"]:disabled::placeholder {
     font-weight: 300 !important;
 }
 
-
 ng-select {
     font-size: 14px;
     width: 100%;
@@ -128,7 +126,7 @@ ng-select {
     }
 }
 
-.cds-community-btns-wrp{
+.cds-community-btns-wrp {
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
@@ -136,22 +134,22 @@ ng-select {
     margin: 0 15px;
 }
 
-.link{
+.link {
     margin: 0;
-    .material-icons{
+    .material-icons {
         transform: rotate(135deg);
     }
-    &:hover{
+    &:hover {
         opacity: 0.8;
         cursor: pointer;
     }
 }
 
-.title-buttons{
+.title-buttons {
     display: flex;
     justify-content: space-between;
 }
-.buttons-inside{
+.buttons-inside {
     height: 40px;
     position: relative;
     display: block;
@@ -181,13 +179,12 @@ ng-select {
     border: 1px solid #d2d4d6;
     padding: 0px 6px;
     display: flex;
-    
+
     justify-content: center;
     align-items: center;
     gap: 3px;
     font-size: 14px;
     font-weight: 400;
-
 }
 .cds-chatbot-tag-wpr:hover {
     background: #fff;
@@ -209,12 +206,25 @@ ng-select {
     color: #5c5f66;
 }
 
-.cds-mandatory{
+.cds-mandatory {
     color: #9aa0a6;
     font-size: 11px;
     height: 36px;
     padding-top: 7px;
     padding-left: 16px;
     padding-right: 16px;
-    text-align: right!important;
+    text-align: right !important;
+}
+
+.chatbot-community-wpr,
+.row {
+    margin-right: 0px;
+    margin-left: 8px;
+}
+
+.csd-community-required-field {
+    font-size: 12px;
+    color: #f44336;
+    font-weight: 400;
+    display: block;
 }

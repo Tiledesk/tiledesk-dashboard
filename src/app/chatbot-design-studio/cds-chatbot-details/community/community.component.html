@@ -44,7 +44,7 @@
         </label>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <ng-select class="csd-chatbot-dtls-input" id="select-tag" #ngSelectTags [items]="certifiedTags" bindLabel="name"
-                    [clearable]="false" placeholder="Select a category and press enter" [(ngModel)]="certifiedTag"
+                    [clearable]="true" placeholder="Select a category and press enter" [(ngModel)]="certifiedTag"
                     (change)="addMainCategory($event)" (keyup.enter)="ngSelectTags.close()">
 
                     <ng-template ng-label-tmp let-item="item">
@@ -54,6 +54,7 @@
                         {{item.name}}
                     </ng-template>
             </ng-select>
+            <span *ngIf="certifiedTagNotSelected" class="csd-community-required-field">Required</span>
         </div>
     </div>
     
@@ -63,13 +64,17 @@
     <div class="row" style="margin-bottom: 16px;">
         <label class="col-sm-2 cds-custom-label">
             <!-- {{ "BotsAddEditPage.Type" | translate }} -->
+            <!-- {{ 'Title' | translate }} -->
             Title <span>*</span>
         </label>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-            <input id="bot_type" name="bot_type" [(ngModel)]="selectedChatbot.title" class="input csd-chatbot-dtls-input"
+            <input id="bot_type" name="bot_type" [(ngModel)]="selectedChatbot.title" (ngModelChange)="onChangeTitle($event)" 
+            class="input csd-chatbot-dtls-input"
             type="text" style="margin-bottom: 0px; color:#808080"
-            placeholder="{{ 'Title' | translate }}">
+            placeholder="Title">
+            <span *ngIf="titleIsEmpty" class="csd-community-required-field">Required</span>
         </div>
+       
     </div>
 
     <!-- ------------------------------------------------------------------------------------------- -->
@@ -81,11 +86,14 @@
             Short Description <span>*</span>
         </label>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-            <textarea id="bot_description" name="bot_description" [(ngModel)]="selectedChatbot.short_description" rows="4"
+            <textarea id="bot_description" name="bot_description" [(ngModel)]="selectedChatbot.short_description" (ngModelChange)="onChangeShortDescription($event)" 
+            rows="4"
                 style="resize: vertical; margin-bottom: 0px; color:#808080" class="input csd-chatbot-dtls-input" type="text"
-                placeholder="{{ 'Description' | translate }}">
+                placeholder="Short Description">
             </textarea>
+            <span *ngIf="shortDescriptionIsEmpty" style="margin-top: -5px;" class="csd-community-required-field">Required</span>
         </div>
+        
     </div>
 
     <!-- ------------------------------------------------------------------------------------------- -->
@@ -100,7 +108,7 @@
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <textarea id="bot_description" name="bot_description" [(ngModel)]="selectedChatbot.description" rows="6"
                 style="resize: vertical; margin-bottom: 0px; color:#808080" class="input csd-chatbot-dtls-input" type="text"
-                placeholder="{{ 'Description' | translate }}">
+                placeholder="Description">
             </textarea>
         </div>
     </div>
@@ -170,11 +178,11 @@
     <!-- ------------------------------------------------------------------------------------------- -->
     <!-- mandatory field  -->
     <!-- ------------------------------------------------------------------------------------------- -->
-    <div class="row">
+    <!-- <div class="row">
         <label class="col-xs-2 cds-mandatory">
             <span>*</span> mandatory field
         </label>
-    </div>
+    </div> -->
 
 
 

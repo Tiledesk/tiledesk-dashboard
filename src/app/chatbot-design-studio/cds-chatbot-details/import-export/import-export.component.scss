@@ -18,7 +18,7 @@
 .chatbot-faq-export-import-wpr,
 .row {
     margin-right: 0px;
-    margin-left: 0px;
+    margin-left: 8px;
 }
 
 /* MODAL START */
@@ -130,7 +130,7 @@ input[type="file"] {
 }
 
 .export-import-section-title {
-    margin-left: 15px;
+    margin-left: 22px;
     color: #9aa0a6;
 }
 
@@ -154,18 +154,11 @@ input[type="file"] {
     background: rgba(138, 180, 248, 0.8) !important;
 }
 
-.export-import-section-title {
-    margin-left: 15px;
-    color: #9aa0a6;
-}
 
-.export-import-section-title {
-    margin-left: 15px;
-    color: #9aa0a6;
-}
 
 .cds-blue-button {
     padding: 12px 30px !important;
+    margin-left: 12px;
 }
 
 .import-faq-from-csv-btn-wpr {

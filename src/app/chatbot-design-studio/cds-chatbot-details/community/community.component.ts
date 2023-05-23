@@ -18,7 +18,7 @@ const swal = require('sweetalert');
 export class CDSDetailCommunityComponent implements OnInit {
 
   @ViewChild(NgSelectComponent, { static: false }) ngSelect: NgSelectComponent
-  
+
   @Input() selectedChatbot: Chatbot
   @Input() project: Project;
   @Input() translationsMap: Map<string, string> = new Map();
@@ -27,11 +27,14 @@ export class CDSDetailCommunityComponent implements OnInit {
   tagsList: Array<any> = []
   tags: Array<any> = []
   tag: any;
-  
-  certifiedTag: {name: string, color: string}
+
+  certifiedTag: { name: string, color: string }
   certifiedTags = CERTIFIED_TAGS
-  
-  
+
+  certifiedTagNotSelected: boolean;
+  titleIsEmpty: boolean;
+  shortDescriptionIsEmpty: boolean;
+
   constructor(
     private logger: LoggerService,
     public dialog: MatDialog,
@@ -41,10 +44,10 @@ export class CDSDetailCommunityComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('[CDS-DETAIL-COMMUNITY] onInit-->', this.selectedChatbot)
-    if(this.selectedChatbot && this.selectedChatbot.tags){
+    if (this.selectedChatbot && this.selectedChatbot.tags) {
       this.tagsList = this.selectedChatbot.tags
     }
-    if(this.selectedChatbot && this.selectedChatbot.certifiedTags && this.selectedChatbot.certifiedTags.length > 0){
+    if (this.selectedChatbot && this.selectedChatbot.certifiedTags && this.selectedChatbot.certifiedTags.length > 0) {
       this.certifiedTag = this.selectedChatbot.certifiedTags[0]
     }
     console.log('[CDS-DETAIL-COMMUNITY] onInit-->', this.certifiedTag)
@@ -173,39 +176,78 @@ export class CDSDetailCommunityComponent implements OnInit {
       });
 
   }
-  
-  addMainCategory(category){
+
+  addMainCategory(category) {
     console.log('[CDS-DETAIL-COMMUNITY] addMainCategory -->', category)
-    if(category){
-      this.selectedChatbot.certifiedTags = [ category ]
+    if (category) {
+      this.selectedChatbot.certifiedTags = [category]
+      this.certifiedTagNotSelected = false
     }
   }
-  
 
-  update(){
-    console.log('[CDS-DETAIL-COMMUNITY] updateDataOnCommunity chatbot -->', this.selectedChatbot)
-    this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((chatbot)=> {
-        console.log('responseeeeeee--> ', chatbot)
-      }, (error) => {
-        this.logger.error('[CDS-CHATBOT-DTLS] EDIT BOT -  ERROR ', error);
+  onChangeTitle(event) {
+    console.log('[CDS-DETAIL-COMMUNITY] onChangeTitle > event', event)
+    if (event.length > 0) {
+      this.titleIsEmpty = false
+    } else {
+      this.titleIsEmpty = true
+      this.selectedChatbot.title = undefined
+    }
+  }
 
-
-        // =========== NOTIFY ERROR ===========
-        this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotError'), 4, 'report_problem');
-
-      }, () => {
-        this.logger.log('[CDS-CHATBOT-DTLS] EDIT BOT - * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
-        this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotSuccess'), 2, 'done');
-        this.selectedChatbot.name
-      })
+  onChangeShortDescription(event) {
+    console.log('[CDS-DETAIL-COMMUNITY] onChangeShortDescription > event', event)
+    if (event.length > 0) {
+      this.shortDescriptionIsEmpty = false
+    } else {
+      this.shortDescriptionIsEmpty = true
+      this.selectedChatbot.short_description = undefined
+    }
   }
 
 
-  goToCommunityChatbotDetail(bot_id: string){
+  update() {
+    if (!this.certifiedTag) {
+      this.certifiedTagNotSelected = true
+    }
+
+    if (!this.selectedChatbot.title) {
+      this.titleIsEmpty = true
+    }
+
+    if (!this.selectedChatbot.short_description ){
+      this.shortDescriptionIsEmpty = true
+    }
+    
+    if (!this.certifiedTag || !this.selectedChatbot.title || !this.selectedChatbot.short_description) {
+      return
+    }
+
+   
+
+    console.log('[CDS-DETAIL-COMMUNITY] updateDataOnCommunity chatbot -->', this.selectedChatbot)
+    this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((chatbot) => {
+      console.log('responseeeeeee--> ', chatbot)
+    }, (error) => {
+      this.logger.error('[CDS-CHATBOT-DTLS] EDIT BOT -  ERROR ', error);
+
+
+      // =========== NOTIFY ERROR ===========
+      this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotError'), 4, 'report_problem');
+
+    }, () => {
+      this.logger.log('[CDS-CHATBOT-DTLS] EDIT BOT - * COMPLETE *');
+      // =========== NOTIFY SUCCESS===========
+      this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotSuccess'), 2, 'done');
+      this.selectedChatbot.name
+    })
+  }
+
+
+  goToCommunityChatbotDetail(bot_id: string) {
     let urlCommunity = 'https://tiledesk.com/community/search/getchatbotinfo/chatbotId/' + bot_id + '-' + this.selectedChatbot.title.replace(/[^a-zA-Z0-9]/g, '-')
     window.open(urlCommunity, '_blank')
-  
+
   }
 
 
