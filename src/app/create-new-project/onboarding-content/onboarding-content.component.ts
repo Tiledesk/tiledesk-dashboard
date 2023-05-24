@@ -356,6 +356,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   goToNextQuestion($event){
     this.segmentIdentifyAttributes = $event;
+    // console.log('goToNextQuestion::: ', $event, this.segmentIdentifyAttributes)
     this.checkQuestions();
   }
 
@@ -619,7 +620,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   segment(pageName, trackName, trackAttr, segmentIdentifyAttributes){
-    // console.log('segment::: ', trackAttr);
+    // console.log('segment::: ', segmentIdentifyAttributes);
     if (!isDevMode()) {
       try {
         window['analytics'].page(pageName, {
