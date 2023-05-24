@@ -122,15 +122,6 @@ export class CdsDashboardComponent implements OnInit {
     this.auth.checkRoleForCurrentProject();
     this.executeTailAsyncFunctions();
     this.hideShowWidget('show');
-    setTimeout(() => {
-      // sincrono ma dopo il render dell'html
-      this.setDragConfig();
-    }, 1000);
-    
-    // this.getTranslations();
-    // this.getUrlParams();
-    // // this.diplayPopup();
-    // // this.getFaqKbId();
     // // if (this.router.url.indexOf('/createfaq') !== -1) {
     // //   this.logger.log('[CDS DSHBRD] HAS CLICKED CREATE ');
     // //   this.CREATE_VIEW = true;
@@ -144,26 +135,20 @@ export class CdsDashboardComponent implements OnInit {
     // //   //   //this.MOCK_getFaqById();
     // //   // }
     // // }
-  
-    // // this.isBetaUrl = false;
-    // // if(this.router.url.includes('beta')){
-    // //   this.isBetaUrl = true;
-    // // }
-    // // this.getAllIntents(this.id_faq_kb);
-
-    // this.getCurrentProject();
-    // this.getBrowserVersion();
-    // // this.getTestSiteUrl();
     // // this.getDeptsByProjectId();
-   
-    
-   
+  }
+
+  ngAfterViewInit(){
+  }
+
+  ngOnDestroy() {
   }
 
 
 
   
   async  executeTailAsyncFunctions() {
+    // Le funzioni asincrone sono state eseguite in coda
     try {
       const GetTranslations = await this.getTranslations();
       console.log('Risultato 1:', GetTranslations);
@@ -178,9 +163,13 @@ export class CdsDashboardComponent implements OnInit {
       const getBrowserVersion = await this.getBrowserVersion();
       console.log('Risultato 5:', getBrowserVersion);
       const getAllIntents = await this.getAllIntents(this.id_faq_kb);
-      console.log('Risultato 6:', getAllIntents);
+      console.log('Risultato 6:', getAllIntents, this.listOfIntents);
+      this.setDragConfig();
+      setTimeout(() => {
+        this.setDragAndListnerEventToElements();
+      }, 500);
+      
 
-      // Le funzioni asincrone sono state eseguite in coda
     } catch (errore) {
       console.log('Si è verificato un errore:', errore);
       console.error('Si è verificato un errore:', errore);
@@ -188,41 +177,13 @@ export class CdsDashboardComponent implements OnInit {
   }
   
 
-
-  ngOnDestroy() {
-    //this.elRef.nativeElement.removeEventListener('mouseenter', this.onMouseEnter);
-  }
-
-  private setDragConfig(){
-    // drag study
-    let el = document.getElementById("cds-box-right");
-    console.log('getElementById:: el', el);
-    let drawer = document.getElementById("cds-box-right-content");
-    console.log('getElementById:: drawer', drawer);
-    setDrawer(el, drawer);
-  }
-
-  private hideShowWidget(status: "hide" | "show") {
-    try {
-      if (window && window['tiledesk']) {
-        this.logger.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
-        if (status === 'hide') {
-          window['tiledesk'].hide();
-        } else if (status === 'show') {
-          window['tiledesk'].show();
-        }
-        // alert('signin reinit');
-      }
-    } catch (error) {
-      this.logger.error('tiledesk_widget_hide ERROR', error)
-    }
-  }
+  
 
 
 
   // CUSTOM FUNCTIONS //
 
-  /** */
+  /** GET TRANSLATIONS */
   private async getTranslations(): Promise<boolean> { 
     return new Promise((resolve, reject) => {
       // this.translateCreateFaqSuccessMsg();
@@ -262,16 +223,16 @@ export class CdsDashboardComponent implements OnInit {
         resolve(true);
       }, (error) => {
         this.logger.error('ERROR: ', error);
-        console.log('error: funzioneAsincrona2');
+        // console.log('error: funzioneAsincrona2');
         reject(false);
       }, () => {
         this.logger.log('COMPLETE');
-        console.log('end: funzioneAsincrona2');
+        // console.log('end: funzioneAsincrona2');
       });
     });
   }
 
-  /** */
+  /** GET BOT BY ID */
   private async getBotById(botid: string): Promise<boolean> { 
     return new Promise((resolve, reject) => {
       this.showSpinner = true;
@@ -283,33 +244,57 @@ export class CdsDashboardComponent implements OnInit {
           if (this.selectedChatbot && this.selectedChatbot.attributes) {
             variableList.userDefined = this.convertJsonToArray(this.selectedChatbot.attributes.variables);
           }
-          console.log('ok: funzioneAsincrona3');
+          // console.log('ok: funzioneAsincrona3');
           resolve(true);
           //console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);
         }
       }, (error) => {
         this.logger.error('ERROR: ', error);
-        console.log('ERROR: funzioneAsincrona3');
+        // console.log('ERROR: funzioneAsincrona3');
         reject(false);
       }, () => {
         this.logger.log('COMPLETE ');
-        console.log('COMPLETE: funzioneAsincrona3');
+        // console.log('COMPLETE: funzioneAsincrona3');
         resolve(true);
       });
     });
   }
 
-  private convertJsonToArray(jsonData) {
+  /** convertJsonToArray */
+  private convertJsonToArray(jsonData:any) {
     const arrayOfObjs = Object.entries(jsonData).map(([key, value]) => ({ 'name': key, 'value': value }))
     return arrayOfObjs;
   }
 
 
-  /**
-   * GET THE ID OF FAQ-KB PASSED BY FAQ PAGE (AND THAT FAQ PAGE HAS RECEIVED FROM FAQ-KB)
-  */
+  /**  setDragConfig */
+  private setDragConfig(){
+    let el = document.getElementById("cds-box-right");
+    // console.log('getElementById:: el', el);
+    let drawer = document.getElementById("cds-box-right-content");
+    // console.log('getElementById:: drawer', drawer);
+    setDrawer(el, drawer);
+  }
 
-  /** */
+
+  /** hideShowWidget */
+  private hideShowWidget(status: "hide" | "show") {
+    try {
+      if (window && window['tiledesk']) {
+        this.logger.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
+        if (status === 'hide') {
+          window['tiledesk'].hide();
+        } else if (status === 'show') {
+          window['tiledesk'].show();
+        }
+      }
+    } catch (error) {
+      this.logger.error('tiledesk_widget_hide ERROR', error)
+    }
+  }
+
+
+  /** getCurrentProject */
   private async getCurrentProject(): Promise<boolean> { 
     return new Promise((resolve, reject) => {
       this.auth.project_bs.subscribe((project) => {
@@ -317,6 +302,7 @@ export class CdsDashboardComponent implements OnInit {
           this.project = project;
           this.projectID = project._id;
         }
+        resolve(true);
       }, (error) => {
         this.logger.error('ERROR: ', error);
         reject(false);
@@ -327,11 +313,12 @@ export class CdsDashboardComponent implements OnInit {
     });
   }
 
-  /** */
+  /** getBrowserVersion */
   private async getBrowserVersion(): Promise<boolean> { 
     return new Promise((resolve, reject) => {
       this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
         this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+        resolve(true);
       }, (error) => {
         this.logger.error('ERROR: ', error);
         reject(false);
@@ -341,27 +328,18 @@ export class CdsDashboardComponent implements OnInit {
       });
     });
   }
+  // END CUSTOM FUNCTIONS //
+
   // SERVICE FUNCTIONS //
-
-
-
   /** GET ALL INTENTS  */
   private async getAllIntents(id_faq_kb): Promise<boolean> { 
     return new Promise((resolve, reject) => {
       this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
         if (faqs) {
           this.listOfIntents = JSON.parse(JSON.stringify(faqs));
-          this.intentStart = null;
-          this.intentDefaultFallback = null;
-          let start_index = this.listOfIntents.indexOf(this.listOfIntents.find(o => o.intent_display_name.trim() === 'start'));
-          if (start_index != -1) {
-            this.intentStart = this.listOfIntents.splice(this.listOfIntents.indexOf(this.listOfIntents.find(o => o.intent_display_name.trim() === 'start')), 1)[0];
-          }
-          let default_index = this.listOfIntents.indexOf(this.listOfIntents.find(o => o.intent_display_name.trim() === 'defaultFallback'));
-          if (default_index != -1) {
-            this.intentDefaultFallback = this.listOfIntents.splice(this.listOfIntents.indexOf(this.listOfIntents.find(o => o.intent_display_name.trim() === 'defaultFallback')), 1)[0];
-          }
         }
+        // console.log('getAllIntents: ',faqs);
+        resolve(true);
       }, (error) => {
         this.logger.error('ERROR: ', error);
         reject(false);
@@ -371,6 +349,54 @@ export class CdsDashboardComponent implements OnInit {
       });
     });
   }
+
+
+  /** setDragAndListnerEventToElements */
+  private setDragAndListnerEventToElements(){
+    this.listOfIntents.forEach(intent => {
+      try {
+        if(!intent.attributes){
+          intent.attributes = {'x':0, 'y':0};
+        }
+      } catch (error) {
+        console.error('ERROR: ',error);
+      }
+      console.log('SET -----> ', intent);
+      let elem = document.getElementById(intent.id);
+      setDragElement(elem);
+      elem.addEventListener('mouseup',(evt) => this.onMouseUp(intent, elem));
+      elem.addEventListener('mousedown',(evt) => this.onMouseDown(elem));
+      elem.addEventListener('mousemove',(evt) => this.onMouseMove(elem));
+    });
+  }
+
+
+  onMouseDown(element){
+    const x = element.offsetLeft; 
+    const y = element.offsetTop; 
+    element.style.zIndex = 2;
+    console.log("CHIAMA ON mouseDown x:", x, " y: ",y);
+  }
+
+  onMouseUp(intent, element){
+    const x = element.offsetLeft; 
+    const y = element.offsetTop; 
+    console.log("CHIAMA ON mouseup x:", x, " y: ",y);
+    if(x != intent.attributes.x || y != intent.attributes.y){
+      intent.attributes.x = x;
+      intent.attributes.y = y;
+      element.style.zIndex = 'auto';
+      // this.CREATE_VIEW = false;
+      // this.saveIntent(intent);
+    }
+  }
+
+  onMouseMove(element){
+    // const x = element.offsetLeft; 
+    // const y = element.offsetTop; 
+    // console.log("CHIAMA ON onMouseMove x:", x, " y: ",y);
+  }
+    
   
 
   /** ADD INTENT  */
@@ -541,6 +567,12 @@ export class CdsDashboardComponent implements OnInit {
   }
 
 
+
+
+
+
+
+
   // EVENTS //
 
   /** SIDEBAR OUTPUT EVENTS */
@@ -644,146 +676,128 @@ export class CdsDashboardComponent implements OnInit {
     this.intentSelected = intent;
     this.isIntentElementSelected = false;
     // this.MOCK_getFaqIntent();
-    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", this.intentSelected);
-    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected: ", intent);
-    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions: ", this.intentSelected.actions);
-    this.logger.log("[CDS DSHBRD]  onSelectIntent - intentSelected > actions length: ", this.intentSelected.actions.length);
     if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
       this.logger.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0]);
       // this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1, intent_display_name: this.intentSelected.intent_display_name })
     } else {
       this.elementIntentSelected = {};
-      this.elementIntentSelected['type'] = ''
-      this.elementIntentSelected['element'] = null
+      this.elementIntentSelected['type'] = '';
+      this.elementIntentSelected['element'] = null;
     }
-    this.logger.log('[CDS DSBRD] onSelectIntent elementIntentSelected', this.elementIntentSelected)
+    this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.intentSelected.id], { replaceUrl: true })
   }
 
-  onReturnListOfIntents(intents) {
-    console.log('onReturnListOfIntents:::: ', intents);
-    return;
+  /** onDeleteIntent */
+  onDeleteIntent(intents) {
     this.listOfIntents = intents;
-    this.listOfActions = intents.map(a => {
-      if (a.intent_display_name.trim() === 'start') {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
-      } else if (a.intent_display_name.trim() === 'defaultFallback') {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'undo' }
-      } else {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
-      }
-    });
-    this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
-    this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
-    setTimeout(() => {
-      this.listOfIntents.forEach(intent => {
+    console.log('onDeleteIntent::: ',intents, this.listOfIntents);
+    this.intentSelected = null;
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = '';
+    this.elementIntentSelected['element'] = null;
+  }
 
-        try {
-          if(!intent.attributes){
-            intent.attributes = {'x':0, 'y':0};
-          }
-        } catch (error) {
+  // onReturnListOfIntents(intents) {
+  //   console.log('onReturnListOfIntents:::: ', intents);
+  //   return;
+  //   this.listOfIntents = intents;
+  //   this.listOfActions = intents.map(a => {
+  //     if (a.intent_display_name.trim() === 'start') {
+  //       return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
+  //     } else if (a.intent_display_name.trim() === 'defaultFallback') {
+  //       return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'undo' }
+  //     } else {
+  //       return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
+  //     }
+  //   });
+  //   this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
+  //   this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
+  //   setTimeout(() => {
+  //     this.listOfIntents.forEach(intent => {
+
+  //       try {
+  //         if(!intent.attributes){
+  //           intent.attributes = {'x':0, 'y':0};
+  //         }
+  //       } catch (error) {
           
-        }
+  //       }
         
-        console.log('SET -----> ',intent);
-        // setDragElement(element.id);
-        let elem = document.getElementById(intent.id);
-        setDragElement(elem);
-        // elem.addEventListener('mouseup', this.onMouseUp);
-        elem.addEventListener('mouseup',(evt) => this.onMouseUp(intent, elem));
-        elem.addEventListener('mousedown',(evt) => this.onMouseDown(elem));
-        elem.addEventListener('mousemove',(evt) => this.onMouseMove(elem));
-        // elem.addEventListener('mousedown', this.onDragEnd);
+  //       console.log('SET -----> ',intent);
+  //       // setDragElement(element.id);
+  //       let elem = document.getElementById(intent.id);
+  //       setDragElement(elem);
+  //       // elem.addEventListener('mouseup', this.onMouseUp);
+  //       elem.addEventListener('mouseup',(evt) => this.onMouseUp(intent, elem));
+  //       elem.addEventListener('mousedown',(evt) => this.onMouseDown(elem));
+  //       elem.addEventListener('mousemove',(evt) => this.onMouseMove(elem));
+  //       // elem.addEventListener('mousedown', this.onDragEnd);
 
-        // elem.addEventListener("mousedown", function(event) {
-        //   console.log("CHIAMA ON mousedown", event);
-        //   //event.preventDefault();
-        // });
-        // elem.addEventListener("mouseup", function(event) {
-        //   console.log("CHIAMA ON mouseup", event);
-        //   //event.preventDefault();
-        // });
-        // elem.addEventListener("mousemove", function(event) {
-        //   console.log("CHIAMA ON mousemove", event);
-        //   //event.preventDefault();
-        // });
+  //       // elem.addEventListener("mousedown", function(event) {
+  //       //   console.log("CHIAMA ON mousedown", event);
+  //       //   //event.preventDefault();
+  //       // });
+  //       // elem.addEventListener("mouseup", function(event) {
+  //       //   console.log("CHIAMA ON mouseup", event);
+  //       //   //event.preventDefault();
+  //       // });
+  //       // elem.addEventListener("mousemove", function(event) {
+  //       //   console.log("CHIAMA ON mousemove", event);
+  //       //   //event.preventDefault();
+  //       // });
 
-        // elem.addEventListener("mouseenter", function(event) {
-        //   console.log("CHIAMA ON mouseenter", event);
-        // });
-        // elem.addEventListener("dragstart", function(event) {
-        //   // document.getElementById("demo").innerHTML = "Finished dragging the p element.";
-        //   // event.target.style.opacity = "1";
-        //   console.log("CHIAMA ON dragstart", event);
-        // });
-        // elem.addEventListener("dragover", function(event) {
-        //   // document.getElementById("demo").innerHTML = "Finished dragging the p element.";
-        //   // event.target.style.opacity = "1";
-        //   console.log("CHIAMA ON dragover", event);
-        // });
-        // elem.addEventListener("dragleave", function(event) {
-        //   // document.getElementById("demo").innerHTML = "Finished dragging the p element.";
-        //   // event.target.style.opacity = "1";
-        //   console.log("CHIAMA ON dragleave", event);
-        // });
+  //       // elem.addEventListener("mouseenter", function(event) {
+  //       //   console.log("CHIAMA ON mouseenter", event);
+  //       // });
+  //       // elem.addEventListener("dragstart", function(event) {
+  //       //   // document.getElementById("demo").innerHTML = "Finished dragging the p element.";
+  //       //   // event.target.style.opacity = "1";
+  //       //   console.log("CHIAMA ON dragstart", event);
+  //       // });
+  //       // elem.addEventListener("dragover", function(event) {
+  //       //   // document.getElementById("demo").innerHTML = "Finished dragging the p element.";
+  //       //   // event.target.style.opacity = "1";
+  //       //   console.log("CHIAMA ON dragover", event);
+  //       // });
+  //       // elem.addEventListener("dragleave", function(event) {
+  //       //   // document.getElementById("demo").innerHTML = "Finished dragging the p element.";
+  //       //   // event.target.style.opacity = "1";
+  //       //   console.log("CHIAMA ON dragleave", event);
+  //       // });
         
-        // document.getElementById(element.id).addEventListener('dragstart', (e) => {
-        //   console.log("CHIAMA ON dragstart");
-        //   e.preventDefault();
-        //   //e.target.style.backgroundColor = "";
-        // });
+  //       // document.getElementById(element.id).addEventListener('dragstart', (e) => {
+  //       //   console.log("CHIAMA ON dragstart");
+  //       //   e.preventDefault();
+  //       //   //e.target.style.backgroundColor = "";
+  //       // });
         
-        // document.getElementById(element.id).addEventListener('drop', (e) => {
-        //   console.log("CHIAMA ON drop");
-        //   //e.target.style.backgroundColor = "";
-        //   e.preventDefault();
-        // });
+  //       // document.getElementById(element.id).addEventListener('drop', (e) => {
+  //       //   console.log("CHIAMA ON drop");
+  //       //   //e.target.style.backgroundColor = "";
+  //       //   e.preventDefault();
+  //       // });
         
-        // document.getElementById(element.id).addEventListener('dragover', (e) => {
-        //   console.log("CHIAMA ON dragover");
-        //   e.preventDefault();
-        //   // e.target.style.backgroundColor = 'blue';
-        // });
+  //       // document.getElementById(element.id).addEventListener('dragover', (e) => {
+  //       //   console.log("CHIAMA ON dragover");
+  //       //   e.preventDefault();
+  //       //   // e.target.style.backgroundColor = 'blue';
+  //       // });
         
-        // document.getElementById(element.id).addEventListener('dragleave', (e) => {
-        //   console.log("CHIAMA ON dragleave");
-        //   e.preventDefault();
+  //       // document.getElementById(element.id).addEventListener('dragleave', (e) => {
+  //       //   console.log("CHIAMA ON dragleave");
+  //       //   e.preventDefault();
           
-        //   // e.target.style.backgroundColor = "";
-        // })
+  //       //   // e.target.style.backgroundColor = "";
+  //       // })
         
 
 
-      });
-    }, 0);
+  //     });
+  //   }, 0);
 
-  }
+  // }
 
-  onMouseDown(element){
-    const x = element.offsetLeft; 
-    const y = element.offsetTop; 
-    element.style.zIndex = 2;
-    console.log("CHIAMA ON mouseDown x:", x, " y: ",y);
-  }
 
-  onMouseUp(intent, element){
-    const x = element.offsetLeft; 
-    const y = element.offsetTop; 
-    console.log("CHIAMA ON mouseup x:", x, " y: ",y);
-    if(x != intent.attributes.x || y != intent.attributes.y){
-      intent.attributes.x = x;
-      intent.attributes.y = y;
-      element.style.zIndex = 'auto';
-      // this.CREATE_VIEW = false;
-      // this.saveIntent(intent);
-    }
-  }
-
-  onMouseMove(element){
-    // const x = element.offsetLeft; 
-    // const y = element.offsetTop; 
-    // console.log("CHIAMA ON onMouseMove x:", x, " y: ",y);
-  }
 
   onCreateIntentBtnClicked() {
     this.CREATE_VIEW = true;
@@ -798,14 +812,6 @@ export class CdsDashboardComponent implements OnInit {
     action.attributes.commands.push(command);
     this.intentSelected.actions.push(action)
     this.logger.log('[CDS DSBRD] addNewIntent intentSelected ', this.intentSelected)
-    this.elementIntentSelected = {};
-    this.elementIntentSelected['type'] = ''
-    this.elementIntentSelected['element'] = null
-  }
-
-  onDeleteSelectedIntent() {
-    this.logger.log('[CDS DSBRD] onDeleteSelectedIntent  ')
-    this.intentSelected = null;
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = ''
     this.elementIntentSelected['element'] = null

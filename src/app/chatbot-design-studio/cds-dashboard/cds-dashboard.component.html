@@ -53,18 +53,12 @@
         
         <div id="cds-box-left" class="box-left">
             <appdashboard-panel-intent-list 
+                *ngIf="listOfIntents"
                 class="panel-intent-list" 
-                [id_faq_kb]="id_faq_kb" 
+                [intents] = "listOfIntents"
                 [intent_id]="intent_id"
-                [projectID]="projectID"
-                [eventCreateIntent]="createIntent.asObservable()"
-                [eventUpadatedIntent]="upadatedIntent.asObservable()"
-                [eventStartUpdatedIntent]="startUpdatedIntent.asObservable()"
-                [eventNewIntentFromSplashScreen]="newIntentFromSplashScreen.asObservable()"
                 (selectIntent)=onSelectIntent($event)
-                (returnListOfIntents)=onReturnListOfIntents($event) 
-                (createIntent)="onCreateIntentBtnClicked()"
-                (deleteSelectedIntent)="onDeleteSelectedIntent()">
+                (deleteIntent)="onDeleteIntent($event)">
             </appdashboard-panel-intent-list>
         </div>
 

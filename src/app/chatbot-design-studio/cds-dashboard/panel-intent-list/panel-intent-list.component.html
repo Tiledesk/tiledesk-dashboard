@@ -11,10 +11,7 @@
 
     </div>
 
-
-    <!-- <p class="title">Intents</p> -->
-    <div class="title-box">
-        <!-- <p class="title">Intents</p> -->
+    <!-- <div class="title-box">
         <div class="new-intent-box">
             <div class="new-intent-button" [ngClass]="{'disable-add-intent-btn': addBtnDisabled === true}" (click)="addNewIntent()">
                 <span class="material-icons icon plus-icon" *ngIf="addBtnDisabled === false">add</span>
@@ -22,7 +19,7 @@
                 <p class="button-text"  *ngIf="addBtnDisabled === true">Updating ...</p>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
     <div class="intents-list">
@@ -117,64 +114,10 @@
                 id="intent_{{id}}" 
                 class="intent"
                 [ngClass]="{'active': idSelectedIntent === id}"
-                style="padding-left: 10px;" value="intent.id" (click)="onSelectIntent(intent, id)">
+                style="padding-left: 10px;" 
+                value="intent.id" 
+                (click)="onSelectIntent(intent, id)">
 
-                
-                <!-- <div *ngIf="intent.intent_display_name === 'start'" class="icon-container">
-                    <span class="material-icons rocket-launch-icon">rocket_launch</span>
-                </div>
-
-                <div *ngIf="intent.intent_display_name === 'defaultFallback'" class="icon-container">
-                    <span class="material-icons undo-icon">undo</span>
-                </div>
-
-                <div *ngIf="intent.intent_display_name === 'start'" class="item-box">
-
-                    <div>
-                        <p class="intent-display-name">{{ intent?.intent_display_name }}</p>
-                        <div class="icon-list">
-                            <p *ngIf="intent.questions" class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
-                            <span *ngIf="intent.webhook_enabled"
-                                class="material-icons icon webhook-icon">webhook</span>
-                            <span *ngIf="intent.form" class="material-icons icon list-alt-icon">list_alt</span>
-                            <div *ngIf="intent?.actions && intent?.actions?.length > 0" class="actions">
-                                <span class="material-icons icon bolt-icon">bolt</span>
-                                <p class="action-counter icon">{{ intent?.actions.length }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="delete-box">
-                        <span class="material-icons delete-icon"
-                            (click)="$event.stopPropagation();onDeleteButtonClicked(intent)">delete</span>
-                    </div>
-                </div>
-
-                <div *ngIf="intent.intent_display_name === 'defaultFallback'" class="item-box">
-
-                    <div>
-                        <p class="intent-display-name">{{ intent?.intent_display_name }}</p>
-                        <div class="icon-list">
-                            <p *ngIf="intent.questions" class="ai-icon icon" style="margin-bottom: 0px">
-                                Ai
-                            </p>
-                            <span *ngIf="intent.webhook_enabled"
-                                class="material-icons icon webhook-icon">webhook</span>
-                            <span *ngIf="intent.form"
-                                class="material-icons icon list-alt-icon">list_alt</span>
-                            <div *ngIf="intent?.actions && intent?.actions.length > 0"
-                                class="actions"><span class="material-icons icon bolt-icon">bolt</span>
-                                <p class="action-counter icon">{{ intent?.actions?.length }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="delete-box">
-                        <span class="material-icons delete-icon"
-                            (click)="$event.stopPropagation();onDeleteButtonClicked(intent)">delete</span>
-                    </div>
-                </div>  -->
-                
-
-                <!-- <div *ngIf="intent.intent_display_name !== 'start' && intent.intent_display_name !== 'defaultFallback'" class="item-box"> -->
                 <div class="item-box">
                     <div>
                         <p class="intent-display-name">{{intent?.intent_display_name}}</p>
@@ -193,7 +136,9 @@
                             (click)="$event.stopPropagation();onDeleteButtonClicked(intent)">delete</span>
                     </div>
                 </div>
+
             </div>
+            
         </div>
     </div>
 </div>
