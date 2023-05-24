@@ -1,0 +1,71 @@
+$bck_color_1:  rgba(231, 238, 239, 0.8);
+$bck_color_2: rgba(238, 244, 246, 0.85);
+
+.cds-panel-elements {
+    position: absolute;
+    top: 12px;
+    left: 100%;
+    transform: translateX(12px);
+    padding: 4px;
+    border-radius: 10px;
+    background-color: $bck_color_1;
+    z-index: 10;
+}
+svg {
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.cds-elements {
+    padding: 4px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: rgba(19, 33, 68, 0.01) 0px 1px 3px 1px, rgba(19, 33, 68, 0.12) 0px 5px 8px -8px, rgba(19, 33, 68, 0.12) 0px 2px 4px -3px, rgba(19, 33, 68, 0.03) 0px 0px 0px 1px;
+    overflow: hidden;
+    transition: height 0.15s ease 0s;
+}
+
+.cds-button-element {
+    animation: 0.1s ease-in-out 0s 1 normal both running;
+}
+
+.cds-box-button {
+    transition: background-color 0.15s ease 0s;
+    width: 64px;
+    height: 64px;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cds-box-button:hover, .cds-box-button:focus {
+    background-color: $bck_color_1;
+}
+
+
+.box-img {
+    transition: opacity 0.15s ease 0s, background-color 0.15s ease 0s, color 0.15s ease 0s, transform 0.15s ease 0s;
+    box-sizing: content-box;
+    width: 22px;
+    height: 22px;
+    color: currentcolor;
+    background: transparent;
+    size:22px;
+}
+
+.box-img > svg {
+    display: block;
+    width: inherit;
+    height: inherit;
+}
+
+.box-title {
+    padding-top: 3px;
+    font-size: 11px;
+    font-weight: 600; 
+}

@@ -48,14 +48,14 @@ export class PanelIntentListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.logger.log("[PANEL-INTENT-LIST] ngOnInit()")
-    this.logger.log("[PANEL-INTENT-LIST] - Selected chatbot ID: ", this.id_faq_kb);
-    this.logger.log("[PANEL-INTENT-LIST] changes: ", this.intent_id);
-    this.selectedIntent = null;
-    this.getAllIntents(this.id_faq_kb).then((resp) => {
-      // this.preselectIntent();
-    })
-    this.onEventListener();
+    // this.logger.log("[PANEL-INTENT-LIST] ngOnInit()")
+    // this.logger.log("[PANEL-INTENT-LIST] - Selected chatbot ID: ", this.id_faq_kb);
+    // this.logger.log("[PANEL-INTENT-LIST] changes: ", this.intent_id);
+    // this.selectedIntent = null;
+    // this.getAllIntents(this.id_faq_kb).then((resp) => {
+    //   // this.preselectIntent();
+    // })
+    // this.onEventListener();
   }
 
   preselectIntent() {

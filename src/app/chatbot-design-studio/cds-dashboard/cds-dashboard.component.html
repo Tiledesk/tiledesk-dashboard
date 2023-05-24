@@ -1,10 +1,10 @@
+<!-- (goToGetBotById)="getBotById($event)" -->
 <cds-header class="cds-header"
     [IS_OPEN]="IS_OPEN"
     [projectID]="projectID"
     [id_faq_kb]="id_faq_kb"
     [defaultDepartmentId]=""
     [selectedChatbot]="selectedChatbot"
-    (goToGetBotById)="getBotById($event)"
     (goToBck)="goBack()"
     (toggleSidebarWith)="onToggleSidebarWith($event)"> 
 </cds-header>
@@ -70,6 +70,10 @@
 
         <div id="cds-box-right" class="drag-content box-right">
 
+            <cds-panel-elements class="cds-panel-elements"
+                (addNewElement)="onAddNewElement()">
+            </cds-panel-elements>
+
             <!-- <cds-splash-screen *ngIf=!intentSelected 
                 [text]="'Select a block from the left sidebar or create a new one'"
                 [videoUrl]="'https://www.youtube.com/embed/b0laljUl85E'"
@@ -96,8 +100,8 @@
                     
                     <cds-panel-intent *ngFor="let intent of listOfIntents; let i = index;let lastIntent = last; let firstIntent = first"
                         [id]="intent.id"
-                        [style.top.px]="(intent.attribute && intent.attribute.x)?intent.attribute.x:0" 
-                        [style.left.px]="(intent.attribute && intent.attribute.y)?intent.attribute.y:0"
+                        [style.top.px]="(intent.attributes && intent.attributes.y)?intent.attributes.y:0" 
+                        [style.left.px]="(intent.attributes && intent.attributes.x)?intent.attributes.x:0"
                         draggable="true"
                         class="panel-intent draggable prevent-select input-block"
                         [idSelected]="idElementOfIntentSelected"

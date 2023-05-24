@@ -19,17 +19,18 @@ $margin-top-card: 30px;
   display: block!important;
   width: 100px!important;
   height: 100px!important;
-  background-color: coral;
+  // background-color: coral;
 }
 
 .draggable {
   position: absolute!important;
   display: table!important;
-  z-index: 9!important;
+  // z-index: 9!important;
   cursor: move!important;
   margin:0!important;
   top: 0px;
   left: 0px;
+  z-index: auto;
 }
 
 .prevent-select {
@@ -191,7 +192,7 @@ $box-left-width: 250px;
             max-height: 100%;
             /* background-color: rgb($bg-color-bck-rgb); */
             border-radius: 1em;
-            overflow: hidden;
+            // overflow: hidden;
             margin: 0 10px;
             padding: 0px;
             // min-width: 260px;
@@ -239,7 +240,9 @@ $box-left-width: 250px;
     }
 }
 
-
+.cds-panel-elements{
+  position: absolute;
+}
 
 .navbar-brand {
     z-index: 1050;

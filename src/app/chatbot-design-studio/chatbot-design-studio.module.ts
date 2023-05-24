@@ -113,6 +113,7 @@ import { CdsHeaderComponent } from './cds-dashboard/cds-header/cds-header.compon
 import { CdsPopupComponent } from './cds-dashboard/cds-popup/cds-popup.component';
 import { CdsModalActivateBotComponent } from './cds-dashboard/cds-modal-activate-bot/cds-modal-activate-bot.component';
 import { CdsPanelIntentComponent } from './cds-dashboard/cds-panel-intent/cds-panel-intent.component';
+import { CdsPanelElementsComponent } from './cds-dashboard/cds-panel-elements/cds-panel-elements.component';
 
 
 @NgModule({
@@ -185,7 +186,8 @@ import { CdsPanelIntentComponent } from './cds-dashboard/cds-panel-intent/cds-pa
     CdsHeaderComponent,
     CdsPopupComponent,
     CdsModalActivateBotComponent,
-    CdsPanelIntentComponent
+    CdsPanelIntentComponent,
+    CdsPanelElementsComponent
   ],
   imports: [
     A11yModule,

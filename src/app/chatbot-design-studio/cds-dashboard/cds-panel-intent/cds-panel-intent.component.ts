@@ -26,10 +26,8 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
   @Input() intentSelected: Intent;
   @Input() isIntentElementSelected: boolean = false;
   @Input() isOpenActionDrawer: boolean = false;
-  // @Input() eventUpadatedIntent: Observable<any>;
-  // @Input() eventCreateIntent: Observable<any>;
-  // @Input() events: Observable<any>;
-  // private updatedIntentSubscription: Subscription;
+
+  
   @Output() openActionDrawer = new EventEmitter();
   @Output() questionSelected = new EventEmitter();
   @Output() answerSelected = new EventEmitter();
@@ -106,7 +104,7 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges){
-    this.setIntentSelected();
+    //this.setIntentSelected();
   }
 
   

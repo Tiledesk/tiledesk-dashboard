@@ -39,9 +39,13 @@ declare function setDragElement(el);
 export class CdsDashboardComponent implements OnInit {
 
   listOfIntents: Array<Intent>;
+  intentStart: Intent;
+  intentDefaultFallback: Intent;
+  intentSelected: Intent;
+
   listOfActions: Array<{ name: string, value: string, icon?: string }>;
   listOfVariables: { userDefined: Array<any>, systemDefined: Array<any> };
-  intentSelected: Intent;
+  
   elementIntentSelected: any;
   newIntentName: string;
 
@@ -115,44 +119,74 @@ export class CdsDashboardComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit() {
-
-    this.getTranslations();
     this.auth.checkRoleForCurrentProject();
-    this.getUrlParams();
-    // this.diplayPopup();
-    // this.getFaqKbId();
-    if (this.router.url.indexOf('/createfaq') !== -1) {
-      this.logger.log('[CDS DSHBRD] HAS CLICKED CREATE ');
-      this.CREATE_VIEW = true;
-      // this.createNewEmptyIntent();
-      // this.getFaqKbId();
-    } else {
-      this.logger.log('[CDS DSHBRD] HAS CLICKED EDIT ');
-      this.EDIT_VIEW = true;
-      // if (this.id_faq) {
-      //   // this.getFaqById();
-      //   //this.MOCK_getFaqById();
-      // }
-    }
-  
-    // this.isBetaUrl = false;
-    // if(this.router.url.includes('beta')){
-    //   this.isBetaUrl = true;
-    // }
-
-    this.getCurrentProject();
-    this.getBrowserVersion();
-    // this.getTestSiteUrl();
-    // this.getDeptsByProjectId();
+    this.executeTailAsyncFunctions();
     this.hideShowWidget('show');
-    // this.getOSCODE();
-
     setTimeout(() => {
+      // sincrono ma dopo il render dell'html
       this.setDragConfig();
     }, 1000);
     
+    // this.getTranslations();
+    // this.getUrlParams();
+    // // this.diplayPopup();
+    // // this.getFaqKbId();
+    // // if (this.router.url.indexOf('/createfaq') !== -1) {
+    // //   this.logger.log('[CDS DSHBRD] HAS CLICKED CREATE ');
+    // //   this.CREATE_VIEW = true;
+    // //   // this.createNewEmptyIntent();
+    // //   // this.getFaqKbId();
+    // // } else {
+    // //   this.logger.log('[CDS DSHBRD] HAS CLICKED EDIT ');
+    // //   this.EDIT_VIEW = true;
+    // //   // if (this.id_faq) {
+    // //   //   // this.getFaqById();
+    // //   //   //this.MOCK_getFaqById();
+    // //   // }
+    // // }
+  
+    // // this.isBetaUrl = false;
+    // // if(this.router.url.includes('beta')){
+    // //   this.isBetaUrl = true;
+    // // }
+    // // this.getAllIntents(this.id_faq_kb);
+
+    // this.getCurrentProject();
+    // this.getBrowserVersion();
+    // // this.getTestSiteUrl();
+    // // this.getDeptsByProjectId();
+   
+    
+   
   }
 
+
+
+  
+  async  executeTailAsyncFunctions() {
+    try {
+      const GetTranslations = await this.getTranslations();
+      console.log('Risultato 1:', GetTranslations);
+      const GetUrlParams = await this.getUrlParams();
+      console.log('Risultato 2:', GetUrlParams, this.id_faq_kb);
+      if (this.id_faq_kb) {
+        const GetBotById = await this.getBotById(this.id_faq_kb);
+        console.log('Risultato 3:', GetBotById);
+      }
+      const getCurrentProject = await this.getCurrentProject();
+      console.log('Risultato 4:', getCurrentProject);
+      const getBrowserVersion = await this.getBrowserVersion();
+      console.log('Risultato 5:', getBrowserVersion);
+      const getAllIntents = await this.getAllIntents(this.id_faq_kb);
+      console.log('Risultato 6:', getAllIntents);
+
+      // Le funzioni asincrone sono state eseguite in coda
+    } catch (errore) {
+      console.log('Si è verificato un errore:', errore);
+      console.error('Si è verificato un errore:', errore);
+    }
+  }
+  
 
 
   ngOnDestroy() {
@@ -189,17 +223,20 @@ export class CdsDashboardComponent implements OnInit {
   // CUSTOM FUNCTIONS //
 
   /** */
-  private getTranslations() {
-    // this.translateCreateFaqSuccessMsg();
-    // this.translateCreateFaqErrorMsg();
-    // this.translateUpdateFaqSuccessMsg();
-    // this.translateUpdateFaqErrorMsg();
-    // this.translateWarningMsg();
-    // this.translateAreYouSure();
-    // this.translateErrorDeleting();
-    // this.translateDone();
-    // this.translateErrorOccurredDeletingAnswer();
-    // this.translateAnswerSuccessfullyDeleted();
+  private async getTranslations(): Promise<boolean> { 
+    return new Promise((resolve, reject) => {
+      // this.translateCreateFaqSuccessMsg();
+      // this.translateCreateFaqErrorMsg();
+      // this.translateUpdateFaqSuccessMsg();
+      // this.translateUpdateFaqErrorMsg();
+      // this.translateWarningMsg();
+      // this.translateAreYouSure();
+      // this.translateErrorDeleting();
+      // this.translateDone();
+      // this.translateErrorOccurredDeletingAnswer();
+      // this.translateAnswerSuccessfullyDeleted();
+      resolve(true);
+    });
   }
 
   /** 
@@ -207,42 +244,58 @@ export class CdsDashboardComponent implements OnInit {
    * THE FAQ ID - WHEN THE CALLBACK IS COMPLETED RUN GET-FAQ-BY-ID THAT RETURN THE OBJECT FAQ
    * AND THE FAQ KB ID (THEN USED IN THE GOBACK)
   */
-  private getUrlParams() {
-    this.route.params.subscribe((params) => {
-      this.id_faq_kb = params.faqkbid;
-      if (this.id_faq_kb) {
-        this.getBotById(this.id_faq_kb)
-      }
-      this.id_faq = params.faqid;
-      this.botType = params.bottype
-      this.intent_id = params.intent_id
-      this.logger.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
-      this.logger.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
-      this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
-      this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.intent_id);
+  private async getUrlParams(): Promise<boolean> { 
+    return new Promise((resolve, reject) => {
+      this.route.params.subscribe((params) => {
+        this.id_faq_kb = params.faqkbid;
+        // if (this.id_faq_kb) {
+        //   this.getBotById(this.id_faq_kb);
+        // }
+        this.id_faq = params.faqid;
+        this.botType = params.bottype;
+        this.intent_id = params.intent_id;
+        this.logger.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
+        this.logger.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
+        this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
+        this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.intent_id);
+        console.log('ok: funzioneAsincrona2');
+        resolve(true);
+      }, (error) => {
+        this.logger.error('ERROR: ', error);
+        console.log('error: funzioneAsincrona2');
+        reject(false);
+      }, () => {
+        this.logger.log('COMPLETE');
+        console.log('end: funzioneAsincrona2');
+      });
     });
   }
 
   /** */
-  getBotById(botid: string) {
-    this.logger.log('getFaqById');
-    this.showSpinner = true;
-    this.faqKbService.getBotById(botid).subscribe((chatbot: Chatbot) => {
-      // console.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
-      if (chatbot) {
-        this.selectedChatbot = chatbot;
-        this.translateparamBotName = { bot_name: this.selectedChatbot.name }
-        if (this.selectedChatbot && this.selectedChatbot.attributes) {
-          variableList.userDefined = this.convertJsonToArray(this.selectedChatbot.attributes.variables);
+  private async getBotById(botid: string): Promise<boolean> { 
+    return new Promise((resolve, reject) => {
+      this.showSpinner = true;
+      this.faqKbService.getBotById(botid).subscribe((chatbot: Chatbot) => {
+        // console.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
+        if (chatbot) {
+          this.selectedChatbot = chatbot;
+          this.translateparamBotName = { bot_name: this.selectedChatbot.name }
+          if (this.selectedChatbot && this.selectedChatbot.attributes) {
+            variableList.userDefined = this.convertJsonToArray(this.selectedChatbot.attributes.variables);
+          }
+          console.log('ok: funzioneAsincrona3');
+          resolve(true);
+          //console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);
         }
-        //console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);
-      }
-    }, (error) => {
-      this.logger.error('[CDS DSHBRD] - GET BOT BY ID RES - ERROR ', error);
-
-    }, () => {
-      this.logger.log('[CDS DSHBRD] - GET BOT BY ID RES - COMPLETE ');
-
+      }, (error) => {
+        this.logger.error('ERROR: ', error);
+        console.log('ERROR: funzioneAsincrona3');
+        reject(false);
+      }, () => {
+        this.logger.log('COMPLETE ');
+        console.log('COMPLETE: funzioneAsincrona3');
+        resolve(true);
+      });
     });
   }
 
@@ -257,34 +310,78 @@ export class CdsDashboardComponent implements OnInit {
   */
 
   /** */
-  private getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      if (project) {
-        this.project = project;
-        this.projectID = project._id
-      }
+  private async getCurrentProject(): Promise<boolean> { 
+    return new Promise((resolve, reject) => {
+      this.auth.project_bs.subscribe((project) => {
+        if (project) {
+          this.project = project;
+          this.projectID = project._id;
+        }
+      }, (error) => {
+        this.logger.error('ERROR: ', error);
+        reject(false);
+      }, () => {
+        this.logger.log('COMPLETE ');
+        resolve(true);
+      });
     });
   }
 
   /** */
-  private getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+  private async getBrowserVersion(): Promise<boolean> { 
+    return new Promise((resolve, reject) => {
+      this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+        this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      }, (error) => {
+        this.logger.error('ERROR: ', error);
+        reject(false);
+      }, () => {
+        this.logger.log('COMPLETE ');
+        resolve(true);
+      });
     });
   }
-
   // SERVICE FUNCTIONS //
 
 
+
+  /** GET ALL INTENTS  */
+  private async getAllIntents(id_faq_kb): Promise<boolean> { 
+    return new Promise((resolve, reject) => {
+      this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
+        if (faqs) {
+          this.listOfIntents = JSON.parse(JSON.stringify(faqs));
+          this.intentStart = null;
+          this.intentDefaultFallback = null;
+          let start_index = this.listOfIntents.indexOf(this.listOfIntents.find(o => o.intent_display_name.trim() === 'start'));
+          if (start_index != -1) {
+            this.intentStart = this.listOfIntents.splice(this.listOfIntents.indexOf(this.listOfIntents.find(o => o.intent_display_name.trim() === 'start')), 1)[0];
+          }
+          let default_index = this.listOfIntents.indexOf(this.listOfIntents.find(o => o.intent_display_name.trim() === 'defaultFallback'));
+          if (default_index != -1) {
+            this.intentDefaultFallback = this.listOfIntents.splice(this.listOfIntents.indexOf(this.listOfIntents.find(o => o.intent_display_name.trim() === 'defaultFallback')), 1)[0];
+          }
+        }
+      }, (error) => {
+        this.logger.error('ERROR: ', error);
+        reject(false);
+      }, () => {
+        this.logger.log('COMPLETE ');
+        resolve(true);
+      });
+    });
+  }
+  
+
   /** ADD INTENT  */
   private creatIntent() {
-    console.log('creatIntent');
+    console.log('creatIntent', this.intentSelected, this.id_faq_kb);
     this.spinnerCreateIntent = true
     this.logger.log('[CDS DSHBRD] creatIntent spinnerCreateIntent ', this.spinnerCreateIntent)
     this.startUpdatedIntent.next(true)
     this.logger.log('creatIntent')
     this.showSpinner = true;
-    let id_faq_kb = this.intentSelected.id_faq_kb;
+    // let id_faq_kb = this.intentSelected.id_faq_kb;
     let questionIntentSelected = this.intentSelected.question;
     let answerIntentSelected = this.intentSelected.answer;
     let displayNameIntentSelected = this.intentSelected.intent_display_name;
@@ -564,6 +661,7 @@ export class CdsDashboardComponent implements OnInit {
 
   onReturnListOfIntents(intents) {
     console.log('onReturnListOfIntents:::: ', intents);
+    return;
     this.listOfIntents = intents;
     this.listOfActions = intents.map(a => {
       if (a.intent_display_name.trim() === 'start') {
@@ -577,22 +675,24 @@ export class CdsDashboardComponent implements OnInit {
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfActions', this.listOfActions);
     this.logger.log('[CDS DSHBRD]  onReturnListOfIntents: listOfIntents', this.listOfIntents);
     setTimeout(() => {
-      this.listOfIntents.forEach(element => {
+      this.listOfIntents.forEach(intent => {
 
         try {
-          if(!element.attributes){
-            element.attributes = {'x':0, 'y':0};
+          if(!intent.attributes){
+            intent.attributes = {'x':0, 'y':0};
           }
         } catch (error) {
           
         }
         
-        console.log('SET -----> ',element);
+        console.log('SET -----> ',intent);
         // setDragElement(element.id);
-        let elem = document.getElementById(element.id);
+        let elem = document.getElementById(intent.id);
         setDragElement(elem);
         // elem.addEventListener('mouseup', this.onMouseUp);
-        elem.addEventListener('mouseup',(evt) => this.onMouseUp(evt, element));
+        elem.addEventListener('mouseup',(evt) => this.onMouseUp(intent, elem));
+        elem.addEventListener('mousedown',(evt) => this.onMouseDown(elem));
+        elem.addEventListener('mousemove',(evt) => this.onMouseMove(elem));
         // elem.addEventListener('mousedown', this.onDragEnd);
 
         // elem.addEventListener("mousedown", function(event) {
@@ -659,14 +759,30 @@ export class CdsDashboardComponent implements OnInit {
 
   }
 
+  onMouseDown(element){
+    const x = element.offsetLeft; 
+    const y = element.offsetTop; 
+    element.style.zIndex = 2;
+    console.log("CHIAMA ON mouseDown x:", x, " y: ",y);
+  }
 
-  onMouseUp(event, ele){
-    console.log("CHIAMA ON mouseup", ele, event);
-    if(event.x != ele.attributes.x || event.y != ele.attributes.y){
-      ele.attributes.x = event.x;
-      ele.attributes.y = event.y;
-       // this.saveIntent(ele);
+  onMouseUp(intent, element){
+    const x = element.offsetLeft; 
+    const y = element.offsetTop; 
+    console.log("CHIAMA ON mouseup x:", x, " y: ",y);
+    if(x != intent.attributes.x || y != intent.attributes.y){
+      intent.attributes.x = x;
+      intent.attributes.y = y;
+      element.style.zIndex = 'auto';
+      // this.CREATE_VIEW = false;
+      // this.saveIntent(intent);
     }
+  }
+
+  onMouseMove(element){
+    // const x = element.offsetLeft; 
+    // const y = element.offsetTop; 
+    // console.log("CHIAMA ON onMouseMove x:", x, " y: ",y);
   }
 
   onCreateIntentBtnClicked() {
@@ -696,8 +812,38 @@ export class CdsDashboardComponent implements OnInit {
   }
   /** END EVENTS PANEL INTENT LIST */
 
+  /** START EVENTS PANEL ELEMENTS */
+  onAddNewElement(){
+    this.CREATE_VIEW = true;
+    this.logger.log('[CDS DSBRD] addNewIntent  ')
+    this.intentSelected = new Intent();
+    this.intentSelected.id_faq_kb = this.id_faq_kb;
+    this.intentSelected.intent_display_name = this.setDisplayName();
+    let action = new ActionReply();
+    let commandWait = new Command(TYPE_COMMAND.WAIT);
+    action.attributes.commands.push(commandWait);
+    let command = new Command(TYPE_COMMAND.MESSAGE);
+    command.message = new Message('text', 'A chat message will be sent to the visitor');
+    action.text = command.message.text; //Set default reply global text
+    action.attributes.commands.push(command);
+    this.intentSelected.actions.push(action)
+    this.intentSelected.attributes.x = 300;
+    this.intentSelected.attributes.y = 80;
+    console.log(':::: onAddNewElement :::: ', this.intentSelected);
+    this.listOfIntents.push(this.intentSelected);
+    this.creatIntent();
+  }
 
-
+  private setDisplayName(){
+    const preDisplayName = 'untitled_block';
+    const untitledIntents = this.listOfIntents.filter((el) => {
+      return el.intent_display_name.indexOf(preDisplayName) > -1;
+    });
+    let num:number = untitledIntents.length+1;
+    let intent_display_name = preDisplayName+'_'+num;
+    return intent_display_name;
+  }
+  /** END EVENTS PANEL ELEMENTS  */
 
   /** START EVENTS SPLASH SCREEN */
   onAddIntentFromSplashScreen(hasClickedAddNewIntent) {
@@ -711,8 +857,23 @@ export class CdsDashboardComponent implements OnInit {
   
   /** START EVENTS INTENT HEADER */
   onSaveIntent(intent: Intent) {
-    console.log('onSaveIntent:: ');
-    this.saveIntent(intent);
+    console.log('onSaveIntent:: ', intent);
+    this.CREATE_VIEW = true;
+    this.intentSelected = new Intent();
+    this.intentSelected.intent_display_name = this.setDisplayName();
+    let action = new ActionReply();
+    let commandWait = new Command(TYPE_COMMAND.WAIT);
+    action.attributes.commands.push(commandWait);
+    let command = new Command(TYPE_COMMAND.MESSAGE);
+    command.message = new Message('text', 'A chat message will be sent to the visitor');
+    action.text = command.message.text;
+    action.attributes.commands.push(command);
+    this.intentSelected.actions.push(action)
+    this.intentSelected.attributes.x = 300;
+    this.intentSelected.attributes.y = 80;
+    console.log(':::: onAddNewElement :::: ', this.intentSelected);
+    this.listOfIntents.push(this.intentSelected);
+    //this.saveIntent(this.intentSelected);
   }
   /** END EVENTS INTENT HEADER  */
 
@@ -769,16 +930,11 @@ export class CdsDashboardComponent implements OnInit {
   /** STAR CUSTOM FUNCTIONS */
   private saveIntent(intent: Intent){
     console.log("********* saveIntent ********* ", intent);
-    this.logger.log("Intent:", intent);
-    this.logger.log('[CDS DSHBRD] onSaveIntent intent:: ', intent);
-    this.logger.log('[CDS DSHBRD] listOfIntents :: ', this.listOfIntents);
     this.intentSelected = intent;
     const intentNameAlreadyCreated = this.listOfIntents.some((el) => {
-      console.log("********* el.id ********* ", el.id, this.intentSelected.id);
       return el.id === this.intentSelected.id;
     });
-    console.log("********* el.id ********* ");
-    this.logger.log('[CDS DSHBRD]  intent name already saved', intentNameAlreadyCreated);
+    console.log("********* el.id ********* ", this.CREATE_VIEW, intentNameAlreadyCreated, this.intentSelected.id);
     if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
       this.creatIntent();
     } else if (this.EDIT_VIEW) {
